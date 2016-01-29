@@ -1,4 +1,6 @@
-﻿namespace HoloToolkit.Unity
+﻿using UnityEngine;
+
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// The different rules for how audio should be played back
