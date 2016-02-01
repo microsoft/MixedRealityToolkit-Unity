@@ -1,8 +1,4 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-//
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 

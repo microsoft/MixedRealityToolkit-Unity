@@ -1,4 +1,4 @@
-//Vert fast unlit shader
+//Very fast unlit shader
 //no lighting, lightmap support, etc.
 //Compiles down to only performing the operations you're actually using
 //Uses material property drawers rather than a custom editor for ease of maintainance

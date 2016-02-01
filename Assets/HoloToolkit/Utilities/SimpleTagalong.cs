@@ -6,7 +6,7 @@ namespace HoloToolkit.Unity
     /// A Tagalong that stays at a fixed distance from the camera and always
     /// seeks to have a part of itself in the view frustum of the camera.
     /// </summary>
-    [RequireComponent(typeof(BoxCollider))]
+    [RequireComponent(typeof(BoxCollider), typeof(Interpolator))]
     public class SimpleTagalong : MonoBehaviour
     {
         // Simple Tagalongs seek to stay at a fixed distance from the Camera.
@@ -44,16 +44,10 @@ namespace HoloToolkit.Unity
         {
             // Make sure the Tagalong object has a BoxCollider.
             tagalongCollider = GetComponent<BoxCollider>();
-            if (!tagalongCollider)
-            {
-                // If we can't find one, disable the script.
-                Debug.LogWarning("BoxCollider not found; disabling Tagalong");
-                enabled = false;
-            }
-
-            // Add an Interpolator component and set some default parameters for
-            // it. These parameters can be adjusted in Unity's Inspector.
-            interpolator = gameObject.AddComponent<Interpolator>();
+            
+            // Get the Interpolator component and set some default parameters for
+            // it. These parameters can be adjusted in Unity's Inspector as well.
+            interpolator = gameObject.GetComponent<Interpolator>();
             interpolator.SmoothLerpToTarget = SmoothMotion;
             interpolator.SmoothPositionLerpRatio = SmoothingFactor;
         }

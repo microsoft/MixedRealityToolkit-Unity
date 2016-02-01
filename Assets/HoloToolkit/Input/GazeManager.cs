@@ -5,6 +5,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// GazeManager determines the location of the user's gaze, hit position and normals.
     /// </summary>
+    [RequireComponent(typeof(GazeStabilizer))]
     public class GazeManager : Singleton<GazeManager>
     {
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]

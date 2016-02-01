@@ -92,7 +92,7 @@ namespace HoloToolkit.Unity
         {
             // Update the distance from IndicatorParent based on the user's hand's distance from the center of the view.
             // Bound this distance by this maxDistanceFromCenter field, in meters.
-            float maxDistanceFromCenter = 0.3f;
+            const float maxDistanceFromCenter = 0.3f;
             float distanceFromCenter = (float)(hand.properties.sourceLossRisk * maxDistanceFromCenter);
             
             // Subtract direction from origin so that the indicator is between the hand and the origin.
