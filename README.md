@@ -1,5 +1,5 @@
 # HoloToolkit-Unity
-This is effectively part of the existing HoloToolkit, but is the repo that will contain all Unity specific components.
+This is effectively part of the existing HoloToolkit, but this is the repo that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate the development of holographic applications targeting Windows Holographic
 
 ---
