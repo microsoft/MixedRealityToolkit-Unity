@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity
     {
         // A very small number that is used in determining if the Interpolator
         // needs to run at all.
-        private const float SmallNumber = 0.0000001f;
+        private const float smallNumber = 0.0000001f;
 
         // The movement speed in meters per second
         [HideInInspector]
@@ -114,7 +114,7 @@ namespace HoloToolkit.Unity
             targetPosition = target;
 
             float magsq = (targetPosition - transform.position).sqrMagnitude;
-            if (magsq > SmallNumber)
+            if (magsq > smallNumber)
             {
                 AnimatingPosition = true;
                 enabled = true;
@@ -264,7 +264,7 @@ namespace HoloToolkit.Unity
                 }
 
                 Vector3 newPosition = NonLinearInterpolateTo(transform.position, lerpTargetPosition, Time.deltaTime, PositionPerSecond);
-                if ((targetPosition - newPosition).sqrMagnitude <= SmallNumber)
+                if ((targetPosition - newPosition).sqrMagnitude <= smallNumber)
                 {
                     // Snap to final position
                     newPosition = targetPosition;
@@ -343,7 +343,7 @@ namespace HoloToolkit.Unity
                 }
 
                 Vector3 newScale = NonLinearInterpolateTo(transform.localScale, lerpTargetLocalScale, Time.deltaTime, ScalePerSecond);
-                if ((targetLocalScale - newScale).sqrMagnitude <= SmallNumber)
+                if ((targetLocalScale - newScale).sqrMagnitude <= smallNumber)
                 {
                     // Snap to final scale
                     newScale = targetLocalScale;

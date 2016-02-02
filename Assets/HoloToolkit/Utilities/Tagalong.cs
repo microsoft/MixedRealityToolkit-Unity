@@ -42,9 +42,9 @@ namespace HoloToolkit.Unity
         // These members are useful for debugging the Tagalong in Unity's
         // editor or the HoloLens.
         [Tooltip("Set to true to draw lines of interest in Unity's scene view during play-mode.")]
-        public bool debug_drawLines = false;
+        public bool DebugDrawLines = false;
         [Tooltip("Useful for visualizing the Raycasts used for determining the depth to place the Tagalong. Set to 'None' to disable.")]
-        public Light debug_pointLight;
+        public Light DebugPointLight;
 
         protected override void Start()
         {
@@ -143,7 +143,7 @@ namespace HoloToolkit.Unity
             // of interest, we need to move the tagalong so it is at least
             // TargetHorizontalOverlap inside the view frustum.
             needsToMoveX = verticalFrustumPlane.GetDistanceToPoint(targetPoint) < 0;
-            if (needsToMoveX || debug_drawLines)
+            if (needsToMoveX || DebugDrawLines)
             {
                 // Calculate the new target position, ignoring the vertical.
                 Vector3 newCalculatedTargetPosition =
@@ -171,7 +171,7 @@ namespace HoloToolkit.Unity
             targetPoint = centermostVerticalEdge + (-verticalTowardCenter * (height * MinimumVerticalOverlap));
             // We've determined the Tagalong needs to move in the YZ plane.
             needsToMoveY = horizontalFrustumPlane.GetDistanceToPoint(targetPoint) < 0;
-            if (needsToMoveY || debug_drawLines)
+            if (needsToMoveY || DebugDrawLines)
             {
                 // Calculate the new target position, ignoring the vertical.
                 Vector3 newCalculatedTargetPosition =
@@ -287,9 +287,9 @@ namespace HoloToolkit.Unity
                         {
                             closestHit = allHits[h];
                             closestHitDistance = closestHit.distance;
-                            if (debug_pointLight != null)
+                            if (DebugPointLight != null)
                             {
-                                Light clonedLight = Instantiate(debug_pointLight, closestHit.point, Quaternion.identity) as Light;
+                                Light clonedLight = Instantiate(DebugPointLight, closestHit.point, Quaternion.identity) as Light;
                                 clonedLight.color = Color.red;
                                 DestroyObject(clonedLight, 1.0f);
                             }

@@ -5,7 +5,6 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// GazeManager determines the location of the user's gaze, hit position and normals.
     /// </summary>
-    [RequireComponent(typeof(GazeStabilizer))]
     public class GazeManager : Singleton<GazeManager>
     {
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]
@@ -35,27 +34,14 @@ namespace HoloToolkit.Unity
         /// </summary>
         public Vector3 Normal { get; private set; }
 
-        private GazeStabilizer gazeStabilizer;
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
-
-        void Awake()
-        {
-            gazeStabilizer = GetComponent<GazeStabilizer>();
-        }
 
         private void Update()
         {
             // Stabilize the gaze ray.
             gazeOrigin = Camera.main.transform.position;
             gazeDirection = Camera.main.transform.forward;
-            if (gazeStabilizer != null)
-            {
-                gazeStabilizer.UpdateHeadStability(gazeOrigin, Camera.main.transform.rotation);
-
-                // Update the gazeOrigin with the stabilized position.
-                gazeOrigin = gazeStabilizer.StableHeadPosition;
-            }
 
             UpdateRaycast();
         }
