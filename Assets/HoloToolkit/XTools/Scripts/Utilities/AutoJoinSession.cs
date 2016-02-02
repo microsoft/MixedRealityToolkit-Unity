@@ -9,6 +9,8 @@ public class AutoJoinSession : MonoBehaviour
     // local cached pointer to the SessionManager
     private SessionManager sessionMgr;
 
+    private bool callbackRegistered = false;
+
     void Start()
     {
         // Get the SessionManager to use later.  Note that if this processes takes the role of a secondary client,
@@ -22,7 +24,7 @@ public class AutoJoinSession : MonoBehaviour
     void Update()
     {
         // If we are a Primary Client and can join sessions...
-        if (this.sessionMgr != null)
+        if (this.sessionMgr != null && sessionMgr.GetSessionCount() > 0)
         {
             // Check to see if we aren't already in the desired session
             Session currentSession = this.sessionMgr.GetCurrentSession();
@@ -31,14 +33,39 @@ public class AutoJoinSession : MonoBehaviour
                 currentSession.GetName().GetString() != this.SessionName ||                     // We're in the wrong session
                 currentSession.GetMachineSessionState() == MachineSessionState.DISCONNECTED)    // We aren't joined or joining the right session
             {
+                Debug.Log("Session conn " + sessionMgr.IsServerConnected() + " sessions: " + sessionMgr.GetSessionCount());
+                Debug.Log("Looking for " + SessionName);
+                bool sessionFound = false;
+
                 for (int i = 0; i < this.sessionMgr.GetSessionCount(); ++i)
                 {
                     Session s = this.sessionMgr.GetSession(i);
+                    Debug.Log(string.Format("session {0}", s.GetName().GetString()));
+
                     if (s.GetName().GetString() == this.SessionName)
                     {
                         s.Join();
+                        sessionFound = true;
                         break;
                     }
+                }
+                if (sessionMgr.IsServerConnected() && !sessionFound)
+                {
+                    Debug.Log("Didn't find session, making a new one");
+                    sessionMgr.CreateSession(new XString(SessionName));
+
+                    for (int i = 0; i < this.sessionMgr.GetSessionCount(); ++i)
+                    {
+                        Session s = this.sessionMgr.GetSession(i);
+                        if (s.GetName().GetString() == this.SessionName)
+                        {
+                            s.Join();
+                            Debug.Log("Joining our new session");
+                            sessionFound = true;
+                            break;
+                        }
+                    }
+
                 }
             }
         }
@@ -47,6 +74,13 @@ public class AutoJoinSession : MonoBehaviour
             if (XToolsStage.Instance != null && XToolsStage.Instance.Manager != null)
             {
                 this.sessionMgr = XToolsStage.Instance.Manager.GetSessionManager();
+
+                if (callbackRegistered == false && sessionMgr != null)
+                {
+                    Debug.Log("Registering for callbacks");
+                    callbackRegistered = true;
+                    sessionMgr.AddListener(new ClientLogonBehavior());
+                }
             }
         }
     }
