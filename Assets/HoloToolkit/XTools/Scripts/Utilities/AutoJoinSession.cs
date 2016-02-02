@@ -9,8 +9,6 @@ public class AutoJoinSession : MonoBehaviour
     // local cached pointer to the SessionManager
     private SessionManager sessionMgr;
 
-    private bool callbackRegistered = false;
-
     void Start()
     {
         // Get the SessionManager to use later.  Note that if this processes takes the role of a secondary client,
@@ -73,14 +71,7 @@ public class AutoJoinSession : MonoBehaviour
         {
             if (XToolsStage.Instance != null && XToolsStage.Instance.Manager != null)
             {
-                this.sessionMgr = XToolsStage.Instance.Manager.GetSessionManager();
-
-                if (callbackRegistered == false && sessionMgr != null)
-                {
-                    Debug.Log("Registering for callbacks");
-                    callbackRegistered = true;
-                    sessionMgr.AddListener(new ClientLogonBehavior());
-                }
+                this.sessionMgr = XToolsStage.Instance.Manager.GetSessionManager();                
             }
         }
     }
