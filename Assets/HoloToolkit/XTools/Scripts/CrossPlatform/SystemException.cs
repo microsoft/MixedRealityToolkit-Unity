@@ -1,8 +1,4 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-//
-
-#if UNITY_METRO && !UNITY_EDITOR
+﻿#if UNITY_METRO && !UNITY_EDITOR
 namespace System
 {
     public class SystemException : Exception

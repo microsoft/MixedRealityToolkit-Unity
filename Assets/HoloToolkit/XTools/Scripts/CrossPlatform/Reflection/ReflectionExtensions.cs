@@ -1,8 +1,4 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-//
-
-#if UNITY_METRO && !UNITY_EDITOR
+﻿#if UNITY_METRO && !UNITY_EDITOR
 
 using System;
 using System.Collections.Generic;
