@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// All possible plane types that a SurfacePlane can be.

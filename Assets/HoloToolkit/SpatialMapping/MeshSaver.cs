@@ -7,7 +7,7 @@ using Windows.Storage;
 #endif
 using UnityEngine;
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// MeshSaver is a static class containing methods used for saving and loading meshes.

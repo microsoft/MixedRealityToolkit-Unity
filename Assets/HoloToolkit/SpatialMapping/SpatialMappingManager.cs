@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// The SpatialMappingManager class allows applications to use a SurfaceObserver or a stored 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     public class FileSurfaceObserver : SpatialMappingSource
     {

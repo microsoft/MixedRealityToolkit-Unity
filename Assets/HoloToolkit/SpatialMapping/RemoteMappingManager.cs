@@ -2,7 +2,7 @@
 using UnityEngine.WSA.Speech;
 using System.Collections.Generic;
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     [RequireComponent(typeof(RemoteMeshTarget))]
     public class RemoteMappingManager : Singleton<RemoteMappingManager>

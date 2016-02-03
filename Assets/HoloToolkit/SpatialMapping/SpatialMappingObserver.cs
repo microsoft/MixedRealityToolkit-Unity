@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Spatial Mapping Observer states.

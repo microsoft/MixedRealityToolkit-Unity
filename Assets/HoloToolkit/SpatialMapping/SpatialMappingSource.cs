@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     public class SpatialMappingSource : MonoBehaviour
     {

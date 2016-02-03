@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 #endif
 
-namespace HoloToolkit
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// SurfaceMeshesToPlanes will find and create planes based on the meshes returned by the SpatialMappingManager's Observer.
