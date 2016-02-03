@@ -151,21 +151,10 @@ namespace HoloToolkit.Unity
             GameObject surface;
             if (surfaces.TryGetValue(cookedData.id.handle, out surface))
             {
-                // Reset the surface mesh collider to fit the updated mesh. 
-                // Unity tribal knowledge indicates that to change the mesh assigned to a
-                // mesh collider, the mesh must first be set to null.  Presumably there
-                // is a side effect in the setter when setting the shared mesh to null.
-                MeshCollider collider = surface.GetComponent<MeshCollider>();
-                collider.sharedMesh = null;
-                collider.sharedMesh = surface.GetComponent<MeshFilter>().mesh;
-
                 // Set the draw material for the renderer.
                 MeshRenderer renderer = surface.GetComponent<MeshRenderer>();
                 renderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
                 renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
-
-                // We don't want the real world surfaces to cast shadows on other holograms.
-                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             }
 
             surfaceWorkOutstanding = false;
@@ -236,7 +225,7 @@ namespace HoloToolkit.Unity
                                                         surface.GetComponent<WorldAnchor>(),
                                                         surface.GetComponent<MeshCollider>(),
                                                         TrianglesPerCubicMeter,
-                                                        false);
+                                                        true);
 
             surfaceWorkQueue.Enqueue(surfaceData);
         }

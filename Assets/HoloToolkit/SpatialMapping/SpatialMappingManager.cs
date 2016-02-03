@@ -60,7 +60,7 @@ namespace HoloToolkit.Unity
             remoteMeshTarget = FindObjectOfType<RemoteMeshTarget>();
 
 #if !UNITY_EDITOR
-        StartObserver();
+            StartObserver();
 #endif
 
 #if UNITY_EDITOR

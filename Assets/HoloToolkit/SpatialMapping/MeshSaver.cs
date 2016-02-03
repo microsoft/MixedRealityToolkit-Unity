@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity
             get
             {
 #if !UNITY_EDITOR
-            return ApplicationData.Current.RoamingFolder.Path;
+                return ApplicationData.Current.RoamingFolder.Path;
 #else
                 return Application.persistentDataPath;
 #endif
@@ -114,15 +114,15 @@ namespace HoloToolkit.Unity
             Stream stream = null;
 
 #if !UNITY_EDITOR
-        Task task = new Task(
-                        async () =>
-                        {
-                            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
-                            StorageFile file = await folder.GetFileAsync(fileName);
-                            stream = await file.OpenStreamForReadAsync();
-                        });
-        task.Start();
-        task.Wait();
+            Task task = new Task(
+                            async () =>
+                            {
+                                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
+                                StorageFile file = await folder.GetFileAsync(fileName);
+                                stream = await file.OpenStreamForReadAsync();
+                            });
+            task.Start();
+            task.Wait();
 #else
             stream = new FileStream(Path.Combine(folderName, fileName), FileMode.Open, FileAccess.Read);
 #endif
@@ -141,15 +141,15 @@ namespace HoloToolkit.Unity
             Stream stream = null;
 
 #if !UNITY_EDITOR
-        Task task = new Task(
-                        async () =>
-                        {
-                            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
-                            StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-                            stream = await file.OpenStreamForWriteAsync();
-                        });
-        task.Start();
-        task.Wait();
+            Task task = new Task(
+                            async () =>
+                            {
+                                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
+                                StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                                stream = await file.OpenStreamForWriteAsync();
+                            });
+            task.Start();
+            task.Wait();
 #else
             stream = new FileStream(Path.Combine(folderName, fileName), FileMode.Create, FileAccess.Write);
 #endif

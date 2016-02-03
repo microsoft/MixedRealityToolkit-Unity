@@ -186,15 +186,15 @@ namespace HoloToolkit.Unity
             yield return null;
 
 #if !UNITY_EDITOR
-        // When not in the unity editor we can use a cool background task to help manage FindPlanes().
-        Task<BoundedPlane[]> planeTask = Task.Run(() => PlaneFinding.FindPlanes(meshData, minArea, snapToGravityThreshold));
+            // When not in the unity editor we can use a cool background task to help manage FindPlanes().
+            Task<BoundedPlane[]> planeTask = Task.Run(() => PlaneFinding.FindPlanes(meshData, minArea, snapToGravityThreshold));
         
-        while (planeTask.IsCompleted == false)
-        {
-            yield return null;
-        }
+            while (planeTask.IsCompleted == false)
+            {
+                yield return null;
+            }
 
-        BoundedPlane[] planes = planeTask.Result;
+            BoundedPlane[] planes = planeTask.Result;
 #else
             // In the unity editor, the task class isn't available, but perf is usually good, so we'll just wait for FindPlanes to complete.
             BoundedPlane[] planes = PlaneFinding.FindPlanes(meshData, snapToGravityThreshold, MinArea);

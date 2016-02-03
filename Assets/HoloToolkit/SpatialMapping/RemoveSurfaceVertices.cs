@@ -43,10 +43,10 @@ namespace HoloToolkit.Unity
         /// </summary>
         private static readonly float FrameTime = .016f;
 #else
-    /// <summary>
-    /// How much time (in sec) to allow RemoveSurfaceVertices to consume before returning control to the main program.
-    /// </summary>
-    private static readonly float FrameTime = .008f;
+        /// <summary>
+        /// How much time (in sec) to allow RemoveSurfaceVertices to consume before returning control to the main program.
+        /// </summary>
+        private static readonly float FrameTime = .008f;
 #endif
 
         // GameObject initialization.
@@ -173,7 +173,7 @@ namespace HoloToolkit.Unity
                     int[] indices = mesh.GetTriangles(0);
                     List<int> updatedIndices = new List<int>();
 
-                    for (int index = 0; index < indices.Length; index+=3)
+                    for (int index = 0; index < indices.Length; index += 3)
                     {
                         // Each triangle utilizes three slots in the index buffer, check to see if any of the
                         // triangle indices contain a vertex that should be removed.
