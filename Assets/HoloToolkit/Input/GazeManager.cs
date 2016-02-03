@@ -39,7 +39,6 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            // Stabilize the gaze ray.
             gazeOrigin = Camera.main.transform.position;
             gazeDirection = Camera.main.transform.forward;
 

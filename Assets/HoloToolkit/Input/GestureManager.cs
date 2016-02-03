@@ -12,17 +12,17 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(GazeManager))]
     public class GestureManager : Singleton<GestureManager>
     {
-        private GestureRecognizer GestureRecognizer;
+        private GestureRecognizer gestureRecognizer;
         private GameObject focusedObject;
 
         void Start()
         {
             // Create a new GestureRecognizer.  Sign up for tapped events.
-            GestureRecognizer = new GestureRecognizer();
-            GestureRecognizer.TappedEvent += GestureRecognizer_TappedEvent;
+            gestureRecognizer = new GestureRecognizer();
+            gestureRecognizer.TappedEvent += GestureRecognizer_TappedEvent;
 
             // Start looking for gestures.
-            GestureRecognizer.StartCapturingGestures();
+            gestureRecognizer.StartCapturingGestures();
         }
 
         private void GestureRecognizer_TappedEvent(SourceKind source, Ray headRay)
@@ -52,14 +52,15 @@ namespace HoloToolkit.Unity
             {
                 // If the currently focused object doesn't match the old focused object, cancel the current gesture.
                 // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
-                GestureRecognizer.CancelGestures();
-                GestureRecognizer.StartCapturingGestures();
+                gestureRecognizer.CancelGestures();
+                gestureRecognizer.StartCapturingGestures();
             }
         }
 
         void OnDestroy()
         {
-            GestureRecognizer.TappedEvent -= GestureRecognizer_TappedEvent;
+            gestureRecognizer.StopCapturingGestures();
+            gestureRecognizer.TappedEvent -= GestureRecognizer_TappedEvent;
         }
     }
 }

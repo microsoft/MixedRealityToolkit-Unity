@@ -115,7 +115,7 @@ namespace HoloToolkit.Unity
             colliderBounds.center = rayTemp.GetPoint(TagalongDistance);
 
 #if UNITY_EDITOR
-            Debug_DrawColliderBox(debug_drawLines, colliderBounds);
+            DebugDrawColliderBox(DebugDrawLines, colliderBounds);
 #endif // UNITY_EDITOR
 
             // Get the actual width and height of the Tagalong's BoxCollider.
@@ -243,7 +243,7 @@ namespace HoloToolkit.Unity
             Vector3 newCalculatedTargetPosition = cameraPosition + rotQuat * vectorToRotate;
 
 #if UNITY_EDITOR
-            Debug_DrawDebuggingLines(debug_drawLines, center, cameraPosition,
+            DebugDrawDebuggingLines(DebugDrawLines, center, cameraPosition,
                 cameraPosition + (targetPoint - cameraPosition),
                 centeredPoint, pointOnFrustum, recalculatedPointOnFrustum,
                 newCalculatedTargetPosition);
@@ -294,7 +294,7 @@ namespace HoloToolkit.Unity
                                 DestroyObject(clonedLight, 1.0f);
                             }
 #if UNITY_EDITOR
-                            Debug_DrawLine(debug_drawLines, cameraPosition, targetCoord, Color.red);
+                            DebugDrawLine(DebugDrawLines, cameraPosition, targetCoord, Color.red);
 #endif // UNITY_EDITOR
                         }
                     }
@@ -332,12 +332,12 @@ namespace HoloToolkit.Unity
         }
 
 #if UNITY_EDITOR
-        protected void Debug_DrawLine(bool draw, Vector3 start, Vector3 end)
+        protected void DebugDrawLine(bool draw, Vector3 start, Vector3 end)
         {
-            Debug_DrawLine(draw, start, end, Color.white);
+            DebugDrawLine(draw, start, end, Color.white);
         }
 
-        protected void Debug_DrawLine(bool draw, Vector3 start, Vector3 end, Color color)
+        protected void DebugDrawLine(bool draw, Vector3 start, Vector3 end, Color color)
         {
             if (draw)
             {
@@ -350,7 +350,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="draw">If true, drawing happens.</param>
         /// <param name="colliderBounds">The bounds to draw the box.</param>
-        void Debug_DrawColliderBox(bool draw, Bounds colliderBounds)
+        void DebugDrawColliderBox(bool draw, Bounds colliderBounds)
         {
             Vector3 extents = colliderBounds.extents;
 
@@ -360,10 +360,10 @@ namespace HoloToolkit.Unity
             backUpperRight = colliderBounds.center + new Vector3(extents.x, extents.y, extents.z);
             frontUpperRight = colliderBounds.center + new Vector3(extents.x, extents.y, -extents.z);
 
-            Debug_DrawLine(draw, frontUpperLeft, backUpperLeft, Color.blue);
-            Debug_DrawLine(draw, backUpperLeft, backUpperRight, Color.red);
-            Debug_DrawLine(draw, backUpperRight, frontUpperRight, Color.blue);
-            Debug_DrawLine(draw, frontUpperRight, frontUpperLeft, Color.red);
+            DebugDrawLine(draw, frontUpperLeft, backUpperLeft, Color.blue);
+            DebugDrawLine(draw, backUpperLeft, backUpperRight, Color.red);
+            DebugDrawLine(draw, backUpperRight, frontUpperRight, Color.blue);
+            DebugDrawLine(draw, frontUpperRight, frontUpperLeft, Color.red);
 
             Vector3 frontLowerLeft, backLowerLeft, backLowerRight, frontLowerRight;
             frontLowerLeft = colliderBounds.center + new Vector3(-extents.x, -extents.y, -extents.z);
@@ -371,28 +371,28 @@ namespace HoloToolkit.Unity
             backLowerRight = colliderBounds.center + new Vector3(extents.x, -extents.y, extents.z);
             frontLowerRight = colliderBounds.center + new Vector3(extents.x, -extents.y, -extents.z);
 
-            Debug_DrawLine(draw, frontLowerLeft, backLowerLeft, Color.blue);
-            Debug_DrawLine(draw, backLowerLeft, backLowerRight, Color.red);
-            Debug_DrawLine(draw, backLowerRight, frontLowerRight, Color.blue);
-            Debug_DrawLine(draw, frontLowerRight, frontLowerLeft, Color.red);
+            DebugDrawLine(draw, frontLowerLeft, backLowerLeft, Color.blue);
+            DebugDrawLine(draw, backLowerLeft, backLowerRight, Color.red);
+            DebugDrawLine(draw, backLowerRight, frontLowerRight, Color.blue);
+            DebugDrawLine(draw, frontLowerRight, frontLowerLeft, Color.red);
 
-            Debug_DrawLine(draw, frontUpperLeft, frontLowerLeft, Color.green);
-            Debug_DrawLine(draw, backUpperLeft, backLowerLeft, Color.green);
-            Debug_DrawLine(draw, backUpperRight, backLowerRight, Color.green);
-            Debug_DrawLine(draw, frontUpperRight, frontLowerRight, Color.green);
+            DebugDrawLine(draw, frontUpperLeft, frontLowerLeft, Color.green);
+            DebugDrawLine(draw, backUpperLeft, backLowerLeft, Color.green);
+            DebugDrawLine(draw, backUpperRight, backLowerRight, Color.green);
+            DebugDrawLine(draw, frontUpperRight, frontLowerRight, Color.green);
         }
 
-        void Debug_DrawDebuggingLines(bool draw, Vector3 center, Vector3 cameraPosition,
+        void DebugDrawDebuggingLines(bool draw, Vector3 center, Vector3 cameraPosition,
             Vector3 cameraToTarget,
             Vector3 centeredPoint, Vector3 pointOnFrustum, Vector3 recalculatedPointOnFrustum,
             Vector3 calculatedPosition)
         {
-            Debug_DrawLine(draw, cameraPosition, center, Color.blue);
-            Debug_DrawLine(draw, cameraPosition, cameraToTarget, Color.yellow);
-            Debug_DrawLine(draw, cameraPosition, centeredPoint, Color.red);
-            Debug_DrawLine(draw, centeredPoint, pointOnFrustum, Color.red);
-            Debug_DrawLine(draw, cameraPosition, recalculatedPointOnFrustum, Color.red);
-            Debug_DrawLine(draw, cameraPosition, calculatedPosition, Color.cyan);
+            DebugDrawLine(draw, cameraPosition, center, Color.blue);
+            DebugDrawLine(draw, cameraPosition, cameraToTarget, Color.yellow);
+            DebugDrawLine(draw, cameraPosition, centeredPoint, Color.red);
+            DebugDrawLine(draw, centeredPoint, pointOnFrustum, Color.red);
+            DebugDrawLine(draw, cameraPosition, recalculatedPointOnFrustum, Color.red);
+            DebugDrawLine(draw, cameraPosition, calculatedPosition, Color.cyan);
         }
 #endif // UNITY_EDITOR
     }

@@ -21,6 +21,10 @@ namespace HoloToolkit.Unity
         [Range(-0.3f, 0.3f)]
         public float TitleSafeFactor = 0.1f;
 
+        [Tooltip("Multiplier to decrease the distance from the cursor center an object is rendered to keep it in view.")]
+        [Range(0.1f, 1.0f)]
+        public float MetersFromCursor = 0.3f;
+
         // The default rotation of the cursor direction indicator.
         private Quaternion directionIndicatorDefaultRotation = Quaternion.identity;
 
@@ -134,8 +138,7 @@ namespace HoloToolkit.Unity
             out Quaternion rotation)
         {
             // Find position:
-            // Use this value to decrease the distance from the cursor center an object is rendered to keep it in view.
-            float metersFromCursor = 0.3f;
+            
 
             // Save the cursor transform position in a variable.
             Vector3 origin = Cursor.transform.position;
@@ -152,7 +155,7 @@ namespace HoloToolkit.Unity
             }
 
             // The final position is translated from the center of the screen along this direction vector.
-            position = origin + cursorIndicatorDirection * metersFromCursor;
+            position = origin + cursorIndicatorDirection * MetersFromCursor;
 
             // Find the rotation from the facing direction to the target object.
             rotation = Quaternion.LookRotation(

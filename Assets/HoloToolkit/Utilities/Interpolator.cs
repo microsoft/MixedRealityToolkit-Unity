@@ -295,7 +295,7 @@ namespace HoloToolkit.Unity
                 float speedScale = 1.0f + (Mathf.Pow(angleDiff, RotationSpeedScaler) / 180.0f);
                 float ratio = Mathf.Clamp01((speedScale * RotationDegreesPerSecond * Time.deltaTime) / angleDiff);
 
-                if (angleDiff < float.Epsilon)
+                if (angleDiff < Mathf.Epsilon)
                 {
                     AnimatingRotation = false;
                     transform.rotation = targetRotation;
@@ -321,7 +321,7 @@ namespace HoloToolkit.Unity
                 float speedScale = 1.0f + (Mathf.Pow(angleDiff, RotationSpeedScaler) / 180.0f);
                 float ratio = Mathf.Clamp01((speedScale * RotationDegreesPerSecond * Time.deltaTime) / angleDiff);
 
-                if (angleDiff < float.Epsilon)
+                if (angleDiff < Mathf.Epsilon)
                 {
                     AnimatingLocalRotation = false;
                     transform.localRotation = targetLocalRotation;
