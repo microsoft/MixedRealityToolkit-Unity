@@ -146,8 +146,6 @@ namespace HoloToolkit.Unity
         /// <returns>Yield result.</returns>
         private IEnumerator MakePlanesRoutine()
         {
-            Debug.Log("Entering SurfaceMeshesToPlanes.MakePlanesRoutine()");
-
             // Remove any previously existing planes, as they may no longer be valid.
             for (int index = 0; index < ActivePlanes.Count; index++)
             {
@@ -187,7 +185,7 @@ namespace HoloToolkit.Unity
 
 #if !UNITY_EDITOR
             // When not in the unity editor we can use a cool background task to help manage FindPlanes().
-            Task<BoundedPlane[]> planeTask = Task.Run(() => PlaneFinding.FindPlanes(meshData, minArea, snapToGravityThreshold));
+            Task<BoundedPlane[]> planeTask = Task.Run(() => PlaneFinding.FindPlanes(meshData, snapToGravityThreshold, MinArea));
         
             while (planeTask.IsCompleted == false)
             {
@@ -254,6 +252,7 @@ namespace HoloToolkit.Unity
                 {
                     destPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     destPlane.AddComponent<SurfacePlane>();
+                    destPlane.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
 
                 destPlane.transform.parent = planesParent.transform;
@@ -284,7 +283,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            Debug.Log("Exiting SurfaceMeshesToPlanes.MakePlanesRoutine()");
+            Debug.Log("Finished making planes.");
 
             // We are done creating planes, trigger an event.
             EventHandler handler = MakePlanesComplete;

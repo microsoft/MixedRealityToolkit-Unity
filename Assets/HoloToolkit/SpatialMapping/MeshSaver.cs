@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
+
 #if !UNITY_EDITOR
 using System.Threading.Tasks;
 using Windows.Storage;
 #endif
-using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
@@ -17,7 +18,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// The extension given to mesh files.
         /// </summary>
-        public static string FileExtension = ".room";
+        private static string fileExtension = ".room";
 
         /// <summary>
         /// Read-only property which returns the folder path where mesh files are stored.
@@ -55,9 +56,9 @@ namespace HoloToolkit.Unity
 
             // Create the mesh file.
             String folderName = MeshFolderName;
-            Debug.Log(String.Format("Saving mesh file: {0}", Path.Combine(folderName, fileName + FileExtension)));
+            Debug.Log(String.Format("Saving mesh file: {0}", Path.Combine(folderName, fileName + fileExtension)));
 
-            using (Stream stream = OpenFileForWrite(folderName, fileName + FileExtension))
+            using (Stream stream = OpenFileForWrite(folderName, fileName + fileExtension))
             {
                 // Serialize and write the meshes to the file.
                 byte[] data = SimpleMeshSerializer.Serialize(meshes);
@@ -67,7 +68,7 @@ namespace HoloToolkit.Unity
 
             Debug.Log("Mesh file saved.");
 
-            return Path.Combine(folderName, fileName + FileExtension);
+            return Path.Combine(folderName, fileName + fileExtension);
         }
 
         /// <summary>
@@ -87,9 +88,9 @@ namespace HoloToolkit.Unity
 
             // Open the mesh file.
             String folderName = MeshFolderName;
-            Debug.Log(String.Format("Loading mesh file: {0}", Path.Combine(folderName, fileName + FileExtension)));
+            Debug.Log(String.Format("Loading mesh file: {0}", Path.Combine(folderName, fileName + fileExtension)));
 
-            using (Stream stream = OpenFileForRead(folderName, fileName + FileExtension))
+            using (Stream stream = OpenFileForRead(folderName, fileName + fileExtension))
             {
                 // Read the file and deserialize the meshes.
                 byte[] data = new byte[stream.Length];

@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 using System.IO;
+using UnityEngine;
+
 #if UNITY_EDITOR
 using System.Net;
 using System.Net.Sockets;
@@ -89,15 +90,17 @@ namespace HoloToolkit.Unity
                     // For each mesh, create a gameobject to render it.
                     for (int index = 0; index < meshes.Count; index++)
                     {
-                        GameObject surface = AddSurfaceObject(
-                            meshes[index],
-                            string.Format("Beamed-{0}", surfaceObjects.Count),
-                            transform);
+                        GameObject surface = AddSurfaceObject(meshes[index], string.Format("Beamed-{0}", surfaceObjects.Count), transform);
                         surface.transform.parent = SpatialMappingManager.Instance.transform;
 
                         if (SpatialMappingManager.Instance.DrawVisualMeshes == false)
                         {
                             surface.GetComponent<MeshRenderer>().enabled = false;
+                        }
+
+                        if(SpatialMappingManager.Instance.CastShadows == false)
+                        {
+                            surface.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                         }
                     }
 

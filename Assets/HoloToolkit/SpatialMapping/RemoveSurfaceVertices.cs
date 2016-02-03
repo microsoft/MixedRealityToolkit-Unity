@@ -114,8 +114,6 @@ namespace HoloToolkit.Unity
         /// <returns>Yield result.</returns>
         private IEnumerator RemoveSurfaceVerticesWithinBoundsRoutine()
         {
-            Debug.Log("Entering RemoveSurfaceVertices.RemoveSurfaceVerticesWithinBoundsRoutine()");
-
             List<MeshFilter> meshFilters = SpatialMappingManager.Instance.GetMeshFilters();
             float start = Time.realtimeSinceStartup;
 
@@ -222,7 +220,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            Debug.Log("Exiting RemoveSurfaceVertices.RemoveSurfaceVerticesWithinBoundsRoutine()");
+            Debug.Log("Finished removing vertices.)");
 
             // We are done removing vertices, trigger an event.
             EventHandler handler = RemoveVerticesComplete;

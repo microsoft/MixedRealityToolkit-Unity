@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
@@ -30,9 +30,16 @@ namespace HoloToolkit.Unity
                 foreach (Mesh mesh in storedMeshes)
                 {
                     GameObject surface = AddSurfaceObject(mesh, "storedmesh-" + surfaceObjects.Count, transform);
+                    Renderer renderer = surface.GetComponent<MeshRenderer>();
+
                     if (SpatialMappingManager.Instance.DrawVisualMeshes == false)
                     {
-                        surface.GetComponent<MeshRenderer>().enabled = false;
+                        renderer.enabled = false;
+                    }
+
+                    if(SpatialMappingManager.Instance.CastShadows == false)
+                    {
+                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     }
 
                     // Reset the surface mesh collider to fit the updated mesh. 

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.WSA.Speech;
-using System.Collections.Generic;
 
 namespace HoloToolkit.Unity
 {
@@ -17,14 +18,22 @@ namespace HoloToolkit.Unity
         /// </summary>
         private KeywordRecognizer keywordRecognizer;
 
+        /// <summary>
+        /// Collection of supported keywords and their associated actions.
+        /// </summary>
+        private Dictionary<string, System.Action> keywordCollection;
+
         // Use this for initialization.
         private void Start()
         {
-            // Setup a keyword recognizer to allow the user to send meshes over the network.
-            List<string> Keywords = new List<string>();
-            Keywords.Add("send meshes");
+            // Create our keyword collection.
+            keywordCollection = new Dictionary<string, System.Action>();
+            keywordCollection.Add("send meshes", () => SendMeshes());
 
-            keywordRecognizer = new KeywordRecognizer(Keywords.ToArray());
+            // Tell the KeywordRecognizer about our keywords.
+            keywordRecognizer = new KeywordRecognizer(keywordCollection.Keys.ToArray());
+
+            // Register a callback for the KeywordRecognizer and start recognizing.
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
             keywordRecognizer.Start();
 
@@ -57,11 +66,11 @@ namespace HoloToolkit.Unity
         /// <param name="args">Information about the recognition event.</param>
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
-            switch (args.text.ToLower())
+            System.Action keywordAction;
+
+            if(keywordCollection.TryGetValue(args.text, out keywordAction))
             {
-                case "send meshes":
-                    SendMeshes();
-                    break;
+                keywordAction.Invoke();
             }
         }
 

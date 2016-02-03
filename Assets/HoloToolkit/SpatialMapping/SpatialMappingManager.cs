@@ -18,8 +18,11 @@ namespace HoloToolkit.Unity
         [Tooltip("The material to use for rendering spatial mapping data.")]
         public Material surfaceMaterial;
 
-        [Tooltip("If true, the Spatial Mapping data will be rendered.")]
+        [Tooltip("Determines if spatial mapping data will be rendered.")]
         public bool drawVisualMeshes = false;
+
+        [Tooltip("Determines if spatial mapping data will cast shadows.")]
+        public bool castShadows = false;
 
         /// <summary>
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
@@ -155,6 +158,25 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Specifies whether or not the SpatialMapping meshes can cast shadows.
+        /// </summary>
+        public bool CastShadows
+        {
+            get
+            {
+                return castShadows;
+            }
+            set
+            {
+                if (value != castShadows)
+                {
+                    castShadows = value;
+                    SetShadowCasting(castShadows);
+                }
+            }
+        }
+
+        /// <summary>
         /// Sets the source of surface information.
         /// </summary>
         /// <param name="mappingSource">The source to switch to. Null means return to the live stream if possible.</param>
@@ -172,6 +194,25 @@ namespace HoloToolkit.Unity
             }
 
             UpdateRendering(DrawVisualMeshes);
+        }
+
+        /// <summary>
+        /// Sets the material used by all Spatial Mapping meshes.
+        /// </summary>
+        /// <param name="surfaceMaterial">New material to apply.</param>
+        public void SetSurfaceMaterial(Material surfaceMaterial)
+        {
+            SurfaceMaterial = surfaceMaterial;
+            if (DrawVisualMeshes)
+            {
+                foreach (Renderer renderer in Source.GetMeshRenderers())
+                {
+                    if (renderer != null)
+                    {
+                        renderer.sharedMaterial = surfaceMaterial;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -237,19 +278,22 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Sets the material used by all Spatial Mapping Meshes.
+        /// Sets the Cast Shadows property for each Spatial Mapping mesh renderer.
         /// </summary>
-        /// <param name="surfaceMaterial">New material to apply.</param>
-        public void SetSurfaceMaterial(Material surfaceMaterial)
+        private void SetShadowCasting(bool castShadows)
         {
-            SurfaceMaterial = surfaceMaterial;
-            if (DrawVisualMeshes)
+            CastShadows = castShadows;
+            foreach(Renderer renderer in Source.GetMeshRenderers())
             {
-                foreach (Renderer renderer in Source.GetMeshRenderers())
+                if (renderer != null)
                 {
-                    if (renderer != null)
+                    if (castShadows)
                     {
-                        renderer.sharedMaterial = surfaceMaterial;
+                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                    }
+                    else
+                    {
+                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     }
                 }
             }
@@ -257,6 +301,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Updates the rendering state on the currently enabled surfaces.
+        /// Updates the material and shadow casting mode for each renderer.
         /// </summary>
         /// <param name="Enable">True, if meshes should be rendered.</param>
         private void UpdateRendering(bool Enable)

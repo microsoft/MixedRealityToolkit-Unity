@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+
 #if !UNITY_EDITOR
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
@@ -138,25 +139,26 @@ namespace HoloToolkit.Unity
             // Status completed is successful.
             if (status == AsyncStatus.Completed)
             {
-                // Since we are connected we can send the data we set aside when establishing the 
-                // connection.
-                DataWriter networkDataWriter = new DataWriter(networkConnection.OutputStream);
+                DataWriter networkDataWriter;
+                
+                // Since we are connected, we can send the data we set aside when establishing the connection.
+                using(networkDataWriter = new DataWriter(networkConnection.OutputStream))
+                {
+                    // Write how much data we are sending.
+                    networkDataWriter.WriteInt32(nextDataBufferToSend.Length);
 
-                // Write how much data we are sending.
-                networkDataWriter.WriteInt32(nextDataBufferToSend.Length);
+                    // Then write the data.
+                    networkDataWriter.WriteBytes(nextDataBufferToSend);
 
-                // Then write the data.
-                networkDataWriter.WriteBytes(nextDataBufferToSend);
-
-                // Again, this is an async operation, so we'll set a callback.
-                DataWriterStoreOperation dswo = networkDataWriter.StoreAsync();
-                dswo.Completed = new AsyncOperationCompletedHandler<uint>(DataSentHandler);
+                    // Again, this is an async operation, so we'll set a callback.
+                    DataWriterStoreOperation dswo = networkDataWriter.StoreAsync();
+                    dswo.Completed = new AsyncOperationCompletedHandler<uint>(DataSentHandler);
+                }
             }
             else
             {
                 Debug.Log("Failed to establish connection. Error Code: " + asyncInfo.ErrorCode);
-                // In the failure case we'll requeue the data and wait before 
-                // trying again.
+                // In the failure case we'll requeue the data and wait before trying again.
                 networkConnection.Dispose();
 
                 // Didn't send, so requeue the data.

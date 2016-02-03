@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 
@@ -155,6 +154,11 @@ namespace HoloToolkit.Unity
                 MeshRenderer renderer = surface.GetComponent<MeshRenderer>();
                 renderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
                 renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+
+                if(SpatialMappingManager.Instance.CastShadows == false)
+                {
+                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                }
             }
 
             surfaceWorkOutstanding = false;

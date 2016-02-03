@@ -112,6 +112,7 @@ PlaneFinding addon that can be used to find planar surfaces (ie: walls/floors/ta
 **IMPORTANT**: Please make sure to add the Spatial Perception capability in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
+If using the RemoteMapping components, you will also need to set the InternetClientServer, PrivateNetworkClientServer, and Microphone capabilities. 
 
 ### FileSurfaceObserver.cs
 A SpatialMappingSource that loads spatial mapping data from a file in Unity.
@@ -120,8 +121,6 @@ A SpatialMappingSource that loads spatial mapping data from a file in Unity.
 
 ### MeshSaver.cs
 Static class that can read and write mesh data to the file specified in FileSurfaceObserver.cs.
-
-**FileExtension** Extension of the file containing the mesh to save or load.
 
 ### PlaneFinding.cs
 Unity script that wraps the native PlaneFinding DLL. Used by SurfaceMeshesToPlanes.cs.
@@ -158,7 +157,9 @@ Manages interactions between the application and all spatial mapping data source
 
 **SurfaceMaterial** The material to apply when rendering the spatial mapping mesh data.
 
-**DrawVisualMeshes** Determines if the spatial mapping mesh data should be rendered.
+**DrawVisualMeshes** Determines if spatial mapping meshes will be rendered.
+
+**CastShadows** Determines if spatial mapping meshes can cast shadows.
 
 ### SpatialMappingObserver.cs
 Adds and updates spatial mapping data for all surfaces discovered by the SurfaceObserver running on the HoloLens.
