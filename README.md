@@ -1,6 +1,6 @@
 # HoloToolkit-Unity
 This is effectively part of the existing HoloToolkit, but this is the repo that will contain all Unity specific components.
-The HoloToolkit is a collection of scripts and components intended to accelerate the development of holographic applications targeting Windows Holographic
+The HoloToolkit is a collection of scripts and components intended to accelerate the development of holographic applications targeting Windows Holographic.
 
 ---
 
@@ -109,9 +109,100 @@ or in your Visual Studio Package.appxmanifest capabilities.
 ## SpatialMapping
 Any scripts that leverage SpatialMapping.
 PlaneFinding addon that can be used to find planar surfaces (ie: walls/floors/tables/etc) in the mesh data returned by Spatial Mapping.
+**IMPORTANT**: Please make sure to add the Spatial Perception capability in your app, in Unity under  
+Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
+or in your Visual Studio Package.appxmanifest capabilities.
+
+### FileSurfaceObserver.cs
+A SpatialMappingSource that loads spatial mapping data from a file in Unity.
+
+**MeshFileName** Name of file to use when saving or loading surface mesh data.
+
+### MeshSaver.cs
+Static class that can read and write mesh data to the file specified in FileSurfaceObserver.cs.
+
+**FileExtension** Extension of the file containing the mesh to save or load.
 
 ### PlaneFinding.cs
-Unity script that wraps the native PlaneFinding DLL
+Unity script that wraps the native PlaneFinding DLL. Used by SurfaceMeshesToPlanes.cs.
+
+### RemoteMappingManager.cs
+Allows sending meshes remotely from HoloLens to Unity.
+
+### RemoteMeshSource.cs
+Networking component that runs on the HoloLens and can send meshes to Unity.
+
+**ServerIP** The IPv4 address of the machine running the Unity editor.
+
+**ConnectionPort** The network port of the Unity machine that will recieve spatial mapping data from the HoloLens.
+
+### RemoteMeshTarget.cs
+SpatialMappingSource object that runs in the Unity editor and recieve spatial mapping data from the HoloLens.
+
+**ServerIP** The IPv4 address of the machine running the Unity editor.
+
+**ConnectionPort** The network port of the Unity machine that will recieve mesh data from the HoloLens.
+
+### RemoveSurfaceVertices.cs
+A spatial processing component that will remove any spatial mapping vertices that fall within the specified bounding volumes.
+
+**BoundsExpansion** The amount, if any, to expand each bounding volume by.
+
+### SimpleMeshSerializer.cs
+Static class that converts a Unity mesh to an array of bytes. Used by MeshSaver.cs to serialize and deserialize mesh data.
+
+### SpatialMappingManager.cs
+Manages interactions between the application and all spatial mapping data sources (file, observer, network).
+
+**PhysicsLayer** The physics layer to use for all spatial mapping mesh data.
+
+**SurfaceMaterial** The material to apply when rendering the spatial mapping mesh data.
+
+**DrawVisualMeshes** Determines if the spatial mapping mesh data should be rendered.
+
+### SpatialMappingObserver.cs
+Adds and updates spatial mapping data for all surfaces discovered by the SurfaceObserver running on the HoloLens.
+
+**TrianglesPerCubicMeter** Level of detail to use for each mesh found by the SurfaceObserver.
+
+**Extents** Extents of the observation volume which expand out from the camera's position.
+
+**TimeBetweenUpdates** Time to wait (sec) before processing updates from the SurfaceObserver.
+
+### SpatialMappingSource.cs
+Generates and retrieves meshes based on spatial mapping data coming from the current source object (file, observer, network). SpatialMappingManager.cs manages switching between source types and interacting with this class.
+
+### SurfaceMeshesToPlanes.cs
+A spatial processing component that can find and create planes based on spatial mapping meshes. Uses PlaneFinding.cs and requires the PlaneFinding plugin.
+
+**ActivePlanes** Collection of planes found within the spatial mapping data.
+
+**_SurfacePlanePrefab_** A GameObject that will be used for generating planes. If no prefab is provided, a Unity cube primitive will be used instead.
+
+**MinArea** Minimum area required for a plane to be created.
+
+**DrawPlanes** Bit mask which specifies the type of planes that should be rendered (walls, floors, ceilings, etc).
+
+**DestroyPlanes** Bit mask which specifies the type of planes that should be discarded.
+
+### SurfacePlane.cs
+Generates planes and classifies them by type (wall, ceiling, floor, table, unknown). Should be a component on the SurfacePlanePrefab used by SurfaceMeshesToPlanes.cs.
+
+**PlaneThickness** How thick each plane should be.
+
+**UpNormalThreshold** Threshold for acceptable normals. Used to determine if a plane is horizontal or vertical.
+
+**FloorBuffer** Max distance from the largest floor plane before a horizontal plane will be classified as a table.
+
+**CeilingBuffer** Max distance from the largest ceiling plane before a horizontal plane will be classified as a table.
+
+**WallMaterial** Material to use when rendering wall plane types.
+
+**FloorMaterial** Material to use when rendering ceiling plane types.
+
+**TableMaterial** Material to use when rendering table plane types.
+
+**UnknownMaterial** Material to use when rendering unknown plane types.
 
 ---
 
@@ -146,6 +237,12 @@ Feature configurable vertex lit shader.  Use when a higher performance but lower
 
 ### VertexLitConfigurableTransparent.shader
 Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting tradeoff is acceptable, and transprency is needed.
+
+### Occlusion.shader
+A basic occlusion shader that can be used to occlude objects behind spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
+
+### Wireframe.shader
+A basic wireframe shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
 
 ---
 
