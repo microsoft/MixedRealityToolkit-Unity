@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
     
-namespace XTools.Utilities
+namespace HoloToolkit.XTools.Utilities
 {
     public class ExternalProcess : IDisposable
     {
