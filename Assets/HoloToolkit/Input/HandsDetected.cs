@@ -5,12 +5,12 @@ using UnityEngine.VR.WSA.Input;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// HandsDetected determins if the hand is detected or lost.
+    /// HandsDetected determines if the hand is currently detected or not.
     /// </summary>
     public class HandsDetected : Singleton<HandsDetected>
     {
         /// <summary>
-        /// HandDetected is a bool that tracks the hand detected state.
+        /// HandDetected tracks the hand detected state.
         /// </summary>
         public bool HandDetected
         {
@@ -21,11 +21,20 @@ namespace HoloToolkit.Unity
         void Awake()
         {
             SourceManager.SourceDetected += SourceManager_SourceDetected;
+            SourceManager.SourceUpdated += SourceManager_SourceUpdated;
             SourceManager.SourceLost += SourceManager_SourceLost;
         }
 
         private void SourceManager_SourceDetected(SourceState state)
         {
+            HandDetected = true;
+        }
+
+        private void SourceManager_SourceUpdated(SourceState state)
+        {
+            // SourceUpdated sets HandDetected to true so that in the case of
+            // using two hands, if one hand is lost, the HandDetected state reflects
+            // that there is still one hand detected.
             HandDetected = true;
         }
 
@@ -38,6 +47,7 @@ namespace HoloToolkit.Unity
         {
             // Unregister the SourceManager events.
             SourceManager.SourceDetected -= SourceManager_SourceDetected;
+            SourceManager.SourceUpdated -= SourceManager_SourceUpdated;
             SourceManager.SourceLost -= SourceManager_SourceLost;
         }
     }
