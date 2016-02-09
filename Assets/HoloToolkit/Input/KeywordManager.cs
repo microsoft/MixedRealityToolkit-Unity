@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.WSA.Speech;
+using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Unity
 {
