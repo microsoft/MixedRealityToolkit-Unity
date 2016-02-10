@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity
     /// holograms in the scene. This class also orients the cursor
     /// to match the normal of this hologram.
     /// </summary>
+    [RequireComponent(typeof(GazeManager))]
     public class CursorManager : Singleton<CursorManager>
     {
         [Tooltip("The cursor GameObject to show when the user's gaze intersects with a hologram.")]
@@ -31,11 +32,6 @@ namespace HoloToolkit.Unity
             if (CursorOnHolograms == null || CursorOffHolograms == null)
             {
                 return;
-            }
-
-            if (GazeManager.Instance == null)
-            {
-                Debug.LogError("Must have a GazeManager in the scene.");
             }
 
             if ((GazeManager.Instance.RaycastLayerMask & CursorOnHolograms.layer) == 0 ||
