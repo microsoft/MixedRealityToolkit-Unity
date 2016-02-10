@@ -5,51 +5,51 @@ using UnityEngine.VR.WSA.Input;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// HandsDetected determines if the hand is currently detected or not.
+    /// HandDetected tracks the hand detected state.
+    /// Returns true if the list of tracked hands is not empty.
     /// </summary>
-    public class HandsDetected : Singleton<HandsDetected>
+    public bool HandDetected
     {
-        /// <summary>
-        /// HandDetected tracks the hand detected state.
-        /// </summary>
-        public bool HandDetected
+        get { return trackedHands.Count > 0; }
+    }
+
+    private List<uint> trackedHands = new List<uint>();
+
+    void Awake()
+    {
+        SourceManager.SourceDetected += SourceManager_SourceDetected;
+        SourceManager.SourceLost += SourceManager_SourceLost;
+    }
+
+    private void SourceManager_SourceDetected(SourceState state)
+    {
+        // Check to see that the source is a hand.
+        if (state.source.kind != SourceKind.Hand)
         {
-            get;
-            private set;
+            return;
         }
 
-        void Awake()
+        trackedHands.Add(state.source.id);
+    }
+
+    private void SourceManager_SourceLost(SourceState state)
+    {
+        // Check to see that the source is a hand.
+        if (state.source.kind != SourceKind.Hand)
         {
-            SourceManager.SourceDetected += SourceManager_SourceDetected;
-            SourceManager.SourceUpdated += SourceManager_SourceUpdated;
-            SourceManager.SourceLost += SourceManager_SourceLost;
+            return;
         }
 
-        private void SourceManager_SourceDetected(SourceState state)
+        if (trackedHands.Contains(state.source.id))
         {
-            HandDetected = true;
-        }
-
-        private void SourceManager_SourceUpdated(SourceState state)
-        {
-            // SourceUpdated sets HandDetected to true so that in the case of
-            // using two hands, if one hand is lost, the HandDetected state reflects
-            // that there is still one hand detected.
-            HandDetected = true;
-        }
-
-        private void SourceManager_SourceLost(SourceState state)
-        {
-            HandDetected = false;
-        }
-
-        void OnDestroy()
-        {
-            // Unregister the SourceManager events.
-            SourceManager.SourceDetected -= SourceManager_SourceDetected;
-            SourceManager.SourceUpdated -= SourceManager_SourceUpdated;
-            SourceManager.SourceLost -= SourceManager_SourceLost;
+            trackedHands.Remove(state.source.id);
         }
     }
-}
 
+    void OnDestroy()
+    {
+        // Unregister the SourceManager events.
+        SourceManager.SourceDetected -= SourceManager_SourceDetected;
+        SourceManager.SourceLost -= SourceManager_SourceLost;
+    }
+}
