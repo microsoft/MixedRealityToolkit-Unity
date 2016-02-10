@@ -87,14 +87,15 @@ namespace HoloToolkit.Unity
                 MeshFilter filter = MeshFilters[index];
                 Mesh source = filter.sharedMesh;
                 Mesh clone = new Mesh();
-                Vector3[] verts = (Vector3[])source.vertices.Clone();
+                List<Vector3> verts = new List<Vector3>();
+                verts.AddRange(source.vertices);
             
-                for(int vertIndex=0; vertIndex < verts.Length; vertIndex++)
+                for(int vertIndex=0; vertIndex < verts.Count; vertIndex++)
                 {
                     verts[vertIndex] = filter.transform.TransformPoint(verts[vertIndex]);
                 }
 
-                clone.SetVertices(verts, verts.Length); 
+                clone.SetVertices(verts); 
                 clone.SetTriangles(source.triangles, 0);
                 meshesToSend.Add(clone);
                 byte[] serialized = SimpleMeshSerializer.Serialize(meshesToSend);
