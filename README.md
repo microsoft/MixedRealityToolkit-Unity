@@ -257,4 +257,19 @@ Now hit Play. The PlaneFinding algorithm will run in a loop, visualing the plane
 
 NOTE: In the interest of simplicity, this test script calls the PlaneFinding APIs directly from the main Unity thread in Update(). In a real application, the PlaneFinding APIs **MUST** be called from a background thread in order to avoid stalling the rendering thread and causing a drop in framerate.
 
+### XTools
+XTools scene demonstrates how to use the XTools prefabs for networking and sharing custom messages with clients. 
+It also demonstrates how to share world anchors between clients to establish a shared space.
+
+Project Settings requirements:
+1. In Player Settings -> Windows Store -> Publishing Settings check:
+InternetClientServer
+PrivateNetworkClientServer
+SpatialPerception
+2. In Player Settings -> Windows Store -> Other Settings check:
+Virtual Reality Supported
+In Virtual Reality Devices click '+' and select HoloLens
+3. Player Settings -> Windows Store -> Resolution and Presentation check:
+Run In Background
+
 ---
