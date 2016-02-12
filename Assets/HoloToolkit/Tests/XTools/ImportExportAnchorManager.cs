@@ -67,7 +67,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     WorldAnchorStore anchorStore = null;
 
-    const uint messageSize = 100000;
+    const uint minTrustworthySerializedAnchorDataSize = 100000;
 
     void Start()
     {
@@ -211,7 +211,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         if (RawAnchorData == null) // only process an anchor once.
         {
             uint dataLen = (uint)msg.ReadInt32();
-            if (dataLen > messageSize)
+            if (dataLen > minTrustworthySerializedAnchorDataSize)
             {
                 RawAnchorData = new byte[dataLen];
                 msg.ReadArray(RawAnchorData, dataLen);
@@ -287,6 +287,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             Debug.Log(ids[index]);
             if (ids[index] == AnchorName)
             {
+                Debug.Log("Using locally stored anchor rather than requesting the full serialized anchor blob.");
                 WorldAnchor wa = anchorStore.Load(ids[index], gameObject);
                 if (wa.isLocated)
                 {
@@ -412,7 +413,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         public void ExportComplete(SerializationCompletionReason status)
         {
             Debug.Log("status " + status + " bytes: " + bytes.Count);
-            if (status == SerializationCompletionReason.Succeeded && bytes.Count > messageSize)
+            if (status == SerializationCompletionReason.Succeeded && bytes.Count > minTrustworthySerializedAnchorDataSize)
             {
                 Debug.Log("Sending " + anchorName);
                 XtoolsServerManager.Instance.SendPostAnchorName(anchorName);
