@@ -67,9 +67,12 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     WorldAnchorStore anchorStore = null;
 
+    const uint messageSize = 100000;
+
     void Start()
     {
         Debug.Log("Import Export Manager starting");
+
         XtoolsServerManager.Instance.MessageHandlers[XtoolsServerManager.TestMessageID.PostAnchorName] = this.OnPostAnchorName;
         XtoolsServerManager.Instance.MessageHandlers[XtoolsServerManager.TestMessageID.RequestAnchorName] = this.OnRequestAnchorName;
         XtoolsServerManager.Instance.MessageHandlers[XtoolsServerManager.TestMessageID.PostAnchorData] = this.OnPostAnchorData;
@@ -189,9 +192,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     {
         // on device this is a noop.
 #if UNITY_EDITOR
-        Debug.Log("Anchor data requested");
-        // Parse the message
-        
+        Debug.Log("Anchor data requested");        
+        // Parse the message        
         XtoolsServerManager.Instance.SendPostAnchorData(RawAnchorData);
 #endif
     }
@@ -209,7 +211,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         if (RawAnchorData == null) // only process an anchor once.
         {
             uint dataLen = (uint)msg.ReadInt32();
-            if (dataLen > 100000)
+            if (dataLen > messageSize)
             {
                 RawAnchorData = new byte[dataLen];
                 msg.ReadArray(RawAnchorData, dataLen);
@@ -219,13 +221,13 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             }
             else
             {
-                Debug.Log("got bad data");
+                Debug.Log("Got bad anchor data");
                 currentState = ImportExportState.Failed;
             }
         }
         else
         {
-            Debug.Log("Ignoring");
+            Debug.Log("Ignoring already processed anchor");
         }
 
     }
@@ -246,7 +248,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         {
             currentState = ImportExportState.ReadyToExportInitialAnchor;
         }
-        else {
+        else
+        {
             anchor.OnTrackingChanged += Anchor_OnTrackingChanged;
         }
     }
@@ -277,14 +280,13 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <returns>True if it attached, false if it could not attach</returns>
     bool AttachToCachedAnchor(string AnchorName)
     {
-        Debug.Log("Looking for " + AnchorName);
+        Debug.Log("Looking for anchor:" + AnchorName);
         string[] ids = anchorStore.GetAllIds();
         for (int index = 0; index < ids.Length; index++)
         {
             Debug.Log(ids[index]);
             if (ids[index] == AnchorName)
             {
-                Debug.Log("Using what we have");
                 WorldAnchor wa = anchorStore.Load(ids[index], gameObject);
                 if (wa.isLocated)
                 {
@@ -309,7 +311,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <param name="located"></param>
     private void ImportExportAnchorManager_OnTrackingChanged(WorldAnchor self, bool located)
     {
-        Debug.Log("anchor " + located);
+        Debug.Log("Anchor located: " + located);
         if (located)
         {
             currentState = ImportExportState.Ready;
@@ -361,13 +363,15 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         WorldAnchor[] anchors = new WorldAnchor[1];
         anchors[0] = anchor;
         DataWriter dw = new DataWriter();
-        dw.OnExportFailed = (() => {
+        dw.OnExportFailed = (() =>
+        {
             Debug.Log("This anchor didn't work, trying again");
             currentState = ImportExportState.InitialAnchorRequired;
         });
+
         string guidString = Guid.NewGuid().ToString();
         dw.anchorName = guidString;
-        Debug.Log(dw.anchorName);
+        Debug.Log("Anchor name: " + dw.anchorName);
         if (anchorStore.Save(dw.anchorName, anchor))
         {
             sharedAnchorInterface = new WorldAnchorTransferBatch();
@@ -376,7 +380,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         }
         else
         {
-            Debug.Log("This anchor didn't work, trying again");
+            Debug.Log("This anchor store save didn't work, trying again");
             currentState = ImportExportState.InitialAnchorRequired;
         }
         
@@ -408,7 +412,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         public void ExportComplete(SerializationCompletionReason status)
         {
             Debug.Log("status " + status + " bytes: " + bytes.Count);
-            if (status == SerializationCompletionReason.Succeeded && bytes.Count > 100000)
+            if (status == SerializationCompletionReason.Succeeded && bytes.Count > messageSize)
             {
                 Debug.Log("Sending " + anchorName);
                 XtoolsServerManager.Instance.SendPostAnchorName(anchorName);

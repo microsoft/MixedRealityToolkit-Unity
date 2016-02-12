@@ -33,6 +33,8 @@ public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
     private SessionManager sessionManager;
     List<long> userIds = new List<long>();
 
+    private const uint pollingFrequency = 60;
+
     void SendJoinEvent(User user)
     {
         Debug.Log("User joining session: " + user.GetID());
@@ -68,7 +70,7 @@ public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
         }
 
         // Only poll every second.
-        if (Time.frameCount % 60 == 0 && this.sessionManager != null && sessionManager.GetSessionCount() > 0)
+        if (Time.frameCount % pollingFrequency == 0 && this.sessionManager != null && sessionManager.GetSessionCount() > 0)
         {
             Session currentSession = this.sessionManager.GetCurrentSession();
             if (currentSession != null)
