@@ -68,6 +68,26 @@ public class NetworkConnection : global::System.IDisposable {
     XToolsClientPINVOKE.NetworkConnection_Send__SWIG_4(swigCPtr, NetworkOutMessage.getCPtr(msg));
   }
 
+  public virtual void SendTo(User user, ClientRole deviceRole, NetworkOutMessage msg, MessagePriority priority, MessageReliability reliability, MessageChannel channel, bool releaseMessage) {
+    XToolsClientPINVOKE.NetworkConnection_SendTo__SWIG_0(swigCPtr, User.getCPtr(user), (int)deviceRole, NetworkOutMessage.getCPtr(msg), (int)priority, (int)reliability, (int)channel, releaseMessage);
+  }
+
+  public virtual void SendTo(User user, ClientRole deviceRole, NetworkOutMessage msg, MessagePriority priority, MessageReliability reliability, MessageChannel channel) {
+    XToolsClientPINVOKE.NetworkConnection_SendTo__SWIG_1(swigCPtr, User.getCPtr(user), (int)deviceRole, NetworkOutMessage.getCPtr(msg), (int)priority, (int)reliability, (int)channel);
+  }
+
+  public virtual void SendTo(User user, ClientRole deviceRole, NetworkOutMessage msg, MessagePriority priority, MessageReliability reliability) {
+    XToolsClientPINVOKE.NetworkConnection_SendTo__SWIG_2(swigCPtr, User.getCPtr(user), (int)deviceRole, NetworkOutMessage.getCPtr(msg), (int)priority, (int)reliability);
+  }
+
+  public virtual void SendTo(User user, ClientRole deviceRole, NetworkOutMessage msg, MessagePriority priority) {
+    XToolsClientPINVOKE.NetworkConnection_SendTo__SWIG_3(swigCPtr, User.getCPtr(user), (int)deviceRole, NetworkOutMessage.getCPtr(msg), (int)priority);
+  }
+
+  public virtual void SendTo(User user, ClientRole deviceRole, NetworkOutMessage msg) {
+    XToolsClientPINVOKE.NetworkConnection_SendTo__SWIG_4(swigCPtr, User.getCPtr(user), (int)deviceRole, NetworkOutMessage.getCPtr(msg));
+  }
+
   public virtual void Broadcast(NetworkOutMessage msg, MessagePriority priority, MessageReliability reliability, MessageChannel channel, bool releaseMessage) {
     XToolsClientPINVOKE.NetworkConnection_Broadcast__SWIG_0(swigCPtr, NetworkOutMessage.getCPtr(msg), (int)priority, (int)reliability, (int)channel, releaseMessage);
   }

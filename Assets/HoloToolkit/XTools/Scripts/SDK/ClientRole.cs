@@ -10,7 +10,8 @@ namespace HoloToolkit.XTools {
 
 public enum ClientRole {
   Primary = 0,
-  Secondary
+  Secondary,
+  Unspecified = 255
 }
 
 }

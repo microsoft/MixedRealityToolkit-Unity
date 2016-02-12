@@ -368,6 +368,26 @@ class XToolsClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnectionListener_director_connect")]
   public static extern void NetworkConnectionListener_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, NetworkConnectionListener.SwigDelegateNetworkConnectionListener_0 delegate0, NetworkConnectionListener.SwigDelegateNetworkConnectionListener_1 delegate1, NetworkConnectionListener.SwigDelegateNetworkConnectionListener_2 delegate2, NetworkConnectionListener.SwigDelegateNetworkConnectionListener_3 delegate3);
 
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_kInvalidUserID_get")]
+  public static extern uint User_kInvalidUserID_get();
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_GetName")]
+  public static extern global::System.IntPtr User_GetName(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_GetID")]
+  public static extern uint User_GetID(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_IsValid")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool User_IsValid(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_GetMuteState")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool User_GetMuteState(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_delete_User")]
+  public static extern void delete_User(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_IsConnected")]
   [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
   public static extern bool NetworkConnection_IsConnected(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -389,6 +409,21 @@ class XToolsClientPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_Send__SWIG_4")]
   public static extern void NetworkConnection_Send__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_SendTo__SWIG_0")]
+  public static extern void NetworkConnection_SendTo__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, int jarg5, int jarg6, int jarg7, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_SendTo__SWIG_1")]
+  public static extern void NetworkConnection_SendTo__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, int jarg5, int jarg6, int jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_SendTo__SWIG_2")]
+  public static extern void NetworkConnection_SendTo__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, int jarg5, int jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_SendTo__SWIG_3")]
+  public static extern void NetworkConnection_SendTo__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, int jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_SendTo__SWIG_4")]
+  public static extern void NetworkConnection_SendTo__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnection_Broadcast__SWIG_0")]
   public static extern void NetworkConnection_Broadcast__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, int jarg4, int jarg5, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg6);
@@ -432,26 +467,6 @@ class XToolsClientPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_delete_NetworkConnection")]
   public static extern void delete_NetworkConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_kInvalidUserID_get")]
-  public static extern uint User_kInvalidUserID_get();
-
-  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_GetName")]
-  public static extern global::System.IntPtr User_GetName(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_GetID")]
-  public static extern uint User_GetID(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_IsValid")]
-  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
-  public static extern bool User_IsValid(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_User_GetMuteState")]
-  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
-  public static extern bool User_GetMuteState(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_delete_User")]
-  public static extern void delete_User(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_Element_GetElementType")]
   public static extern int Element_GetElementType(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -780,7 +795,7 @@ class XToolsClientPINVOKE {
   public static extern bool SessionManager_IsServerConnected(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_delete_SessionManager")]
-  public static extern void delete_SessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);  
+  public static extern void delete_SessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_new_ClientConfig")]
   public static extern global::System.IntPtr new_ClientConfig(int jarg1);
@@ -867,7 +882,7 @@ class XToolsClientPINVOKE {
   public static extern global::System.IntPtr Settings_GetLocalUserName(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_delete_Settings")]
-  public static extern void delete_Settings(global::System.Runtime.InteropServices.HandleRef jarg1);  
+  public static extern void delete_Settings(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_XToolsManager_Create")]
   public static extern global::System.IntPtr XToolsManager_Create(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -913,7 +928,7 @@ class XToolsClientPINVOKE {
   public static extern void XToolsManager_SetUserName(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_delete_XToolsManager")]
-  public static extern void delete_XToolsManager(global::System.Runtime.InteropServices.HandleRef jarg1);  
+  public static extern void delete_XToolsManager(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_NetworkConnectionListener_SWIGUpcast")]
   public static extern global::System.IntPtr NetworkConnectionListener_SWIGUpcast(global::System.IntPtr jarg1);
@@ -940,8 +955,7 @@ class XToolsClientPINVOKE {
   public static extern global::System.IntPtr SessionListener_SWIGUpcast(global::System.IntPtr jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("XToolsClient", EntryPoint="CSharp_SessionManagerListener_SWIGUpcast")]
-  public static extern global::System.IntPtr SessionManagerListener_SWIGUpcast(global::System.IntPtr jarg1);
-  
+  public static extern global::System.IntPtr SessionManagerListener_SWIGUpcast(global::System.IntPtr jarg1);  
 }
 
 }

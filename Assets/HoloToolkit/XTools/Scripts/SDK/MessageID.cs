@@ -12,7 +12,7 @@ public enum MessageID {
   Start = 134,
   StatusOnly = Start,
   Broadcast,
-  SessionStatus,
+  SendTo,
   SessionControl,
   MouseXToClient,
   MouseXToServer,
