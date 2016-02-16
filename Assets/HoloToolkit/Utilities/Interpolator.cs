@@ -303,7 +303,7 @@ namespace HoloToolkit.Unity
                 else
                 {
                     // Only lerp rotation here, as ratio is NaN if angleDiff is 0.0f
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, ratio);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lerpTargetRotation, ratio);
                     interpOccuredThisFrame = true;
                 }
             }
@@ -329,7 +329,7 @@ namespace HoloToolkit.Unity
                 else
                 {
                     // Only lerp rotation here, as ratio is NaN if angleDiff is 0.0f
-                    transform.localRotation = Quaternion.Slerp(transform.localRotation, targetLocalRotation, ratio);
+                    transform.localRotation = Quaternion.Slerp(transform.localRotation, lerpTargetLocalRotation, ratio);
                     interpOccuredThisFrame = true;
                 }
             }
