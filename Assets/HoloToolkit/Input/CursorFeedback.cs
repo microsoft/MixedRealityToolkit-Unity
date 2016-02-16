@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            handDetectedGameObject.SetActive(HandsDetected.Instance.HandDetected);
+            handDetectedGameObject.SetActive(HandsManager.Instance.HandDetected);
         }
     }
 }
