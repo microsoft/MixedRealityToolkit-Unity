@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity
@@ -6,7 +7,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// HandsDetected determines if the hand is currently detected or not.
     /// </summary>
-    public class HandsDetected : Singleton<HandsDetected>
+    public class HandsManager : Singleton<HandsManager>
     {
         /// <summary>
         /// HandDetected tracks the hand detected state.
