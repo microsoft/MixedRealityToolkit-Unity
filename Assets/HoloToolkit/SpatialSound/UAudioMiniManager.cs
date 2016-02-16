@@ -1,8 +1,10 @@
-﻿using System.Threading;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// The UAudioMiniManager class organization and control of a GameObject's MiniAudioEvents.  
+    /// </summary>
     public class UAudioMiniManager : UAudioManagerBase<MiniAudioEvent>
     {
         /// <summary>
@@ -10,7 +12,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void PlayAll()
         {
-            for (int i = 0; i < this.events.Length; i++)
+            for (int i = 0; i < events.Length; i++)
             {
                 PlayEvent(this.events[i]);
             }
@@ -27,7 +29,8 @@ namespace HoloToolkit.Unity
                 Debug.LogErrorFormat(this, "Emitter on object \"{0}\" is null! Cannot play sound.", audioEvent.name);
                 return;
             }
-            if (AudioEvent.IsContinuous(audioEvent))
+
+            if (audioEvent.IsContinuous())
             {
                 if (audioEvent.secondarySource == null)
                 {
@@ -35,10 +38,9 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            ActiveEvent tempEvent = CreateNewActiveEvent(audioEvent);
-            tempEvent.PrimarySource = audioEvent.primarySource;
-            tempEvent.SecondarySource = audioEvent.secondarySource;
-            SetSourceProperties(tempEvent.PrimarySource, tempEvent);
+            ActiveEvent tempEvent = new ActiveEvent(audioEvent, audioEvent.primarySource.gameObject, audioEvent.primarySource, audioEvent.secondarySource);
+
+            // Do this last. The base class owns this event once we pass it to PlayContainer, and may dispose it if it cannot be played.
             PlayContainer(tempEvent);
         }
 
@@ -47,21 +49,27 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void SetMute(bool mute)
         {
-            for (int i = 0; i < this.events.Length; i++)
+            for (int i = 0; i < events.Length; i++)
             {
-                this.events[i].primarySource.mute = mute;
+                events[i].primarySource.mute = mute;
             }
         }
 
         /// <summary>
         /// Sets the pitch value for all AudioSource components in the event
         /// </summary>
-        /// <param name="newPitch"></param>
-        public void SetPitch(float newPitch = 1)
+        /// <param name="newPitch">The value to set the pitch, between 0 (exclusive) and 3 (inclusive).</param>
+        public void SetPitch(float newPitch)
         {
+            if (newPitch <= 0 || newPitch > 3)
+            {
+                Debug.LogErrorFormat(this, "Invalid pitch {0} set", newPitch);
+                return;
+            }
+
             for (int i = 0; i < this.events.Length; i++)
             {
-                this.events[i].primarySource.pitch = newPitch;
+                events[i].primarySource.pitch = newPitch;
             }
         }
     }

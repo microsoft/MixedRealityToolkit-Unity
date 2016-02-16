@@ -1,13 +1,16 @@
-﻿namespace HoloToolkit.Unity
+﻿using System;
+
+namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// A single audio clip with playback settings
+    /// Encapsulate a single Unity AudioClip with playback settings.
     /// </summary>
-    [System.Serializable]
-    public class AudioClip
+    [Serializable]
+    public class UAudioClip
     {
         public UnityEngine.AudioClip sound = null;
         public bool looping = false;
+
         public float delayCenter = 0;
         public float delayRandomization = 0;
     }

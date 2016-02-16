@@ -13,6 +13,8 @@ namespace HoloToolkit.Unity
 
         public override void OnInspectorGUI()
         {
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("globalEventInstanceLimit"));
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("globalInstanceBehavior"));
             DrawInspectorGUI(false);
         }
     }

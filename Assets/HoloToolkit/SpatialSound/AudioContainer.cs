@@ -1,15 +1,21 @@
-﻿namespace HoloToolkit.Unity
+﻿using System;
+using UnityEngine;
+
+namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// The sound container for an event, with rules about how to play back audio clips
+    /// The AudioContainer class is sound container for an AudioEvent. It also specifies the rules of how to 
+    /// play back the contained AudioClips.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class AudioContainer
     {
+        [Tooltip("The type of the audio container.")]
         public AudioContainerType containerType = AudioContainerType.Random;
+        
         public bool looping = false;
-        public float loopTime = 0;
-        public AudioClip[] sounds = null;
+        public float loopTime = 0;      
+        public UAudioClip[] sounds = null;
         public float crossfadeTime = 0f;
         public int currentClip = 0;
     }

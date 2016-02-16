@@ -1,338 +1,464 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// The UAudioManager class is a singleton that provides organization and control of an application's AudioEvents.  
+    /// Designers and coders can share the names of the AudioEvents to enable rapid iteration on the application's
+    /// sound similar to how XAML is used for user interfaces.
+    /// </summary>
     public class UAudioManager : UAudioManagerBase<AudioEvent>
     {
-        public static UAudioManager Instance;
+        [Tooltip("The maximum number of AudioEvents that can be played at once. Zero (0) indicates there is no limit.")]
+        [SerializeField]
+        private int globalEventInstanceLimit = 0;
+
+        [Tooltip("The desired behavior when the instance limit is reached.")]
+        [SerializeField]
+        private AudioEventInstanceBehavior globalInstanceBehavior = AudioEventInstanceBehavior.KillOldest;
+
         /// <summary>
-        /// Dictionary for quick lookup of events from the event name
+        /// Optional transformation applied to the audio event emitter passed to calls to play event.
+        /// This allows events to be redirected to a different emitter.
+        /// </summary>
+        /// <remarks>This class is a singleton, the last transform set will be applied to all audio
+        /// emitters when their state changes (from stopped to playing, volume changes, etc).</remarks>
+        public Func<GameObject, GameObject> AudioEmitterTransform { get; set; }
+
+        /// <summary>
+        /// Dictionary for quick lookup of events by name.
         /// </summary>
         private Dictionary<string, AudioEvent> eventsDictionary;
+
+        private static UAudioManager _Instance;
+        public static UAudioManager Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = FindObjectOfType<UAudioManager>();
+                }
+                return _Instance;
+            }
+        }
 
         protected new void Awake()
         {
             base.Awake();
-            if (Instance != null)
-            {
-                Debug.LogWarningFormat(this, "UAudioManager {0} already exists.", Instance.gameObject.name);
-            }
-            Instance = this;
+
             CreateEventsDictionary();
-        }
 
-        /// <summary>
-        /// Remove the instance reference if object is destroyed
-        /// </summary>
-        protected new void OnDestroy()
-        {
-            Instance = null;
-            base.OnDestroy();
-        }
-
-        /// <summary>
-        /// Play the event matching eventName on the specified AudioSource component(s)
-        /// </summary>
-        /// <param name="eventName">The name of the event to match in the events Dictionary</param>
-        /// <param name="primarySource">The AudioSource component to use as the primarySource for the event</param>
-        /// <param name="secondarySource">The AudioSource component to use as the secondarySource for the event</param>
-        public void PlayEvent(string eventName, AudioSource primarySource, AudioSource secondarySource = null)
-        {
-            if (primarySource == null)
+            if (events.Length > 0)
             {
-                Debug.LogErrorFormat(this, "Trying to play event \"{0}\" on null AudioSource. Cancelling.", eventName);
-                return;
-            }
-            AudioEvent currentEvent = this.eventsDictionary[eventName];
-            if (currentEvent == null)
-            {
-                Debug.LogErrorFormat(this, "Could not find event \"{0}\"", eventName);
-                return;
-            }
-
-            if (currentEvent.instanceLimit == 0 || GetInstances(eventName) < currentEvent.instanceLimit)
-            {
-                if (AudioEvent.IsContinuous(currentEvent) && secondarySource == null)
-                {
-                    secondarySource = GetUnusedAudioSource(primarySource.gameObject, primarySource);
-                }
-                PlayEvent(currentEvent, primarySource, secondarySource);
-            }
-            else
-            {
-                Debug.LogFormat(this, "Instance limit reached, not playing event \"{0}\"", eventName);
+                string key = events[0].name;
+                PlayEvent(key);
+                StopEvent(key);
             }
         }
 
         /// <summary>
-        /// Play the event matching eventName on the specified emitter
+        /// Plays an AudioEvent.
         /// </summary>
-        /// <param name="eventName">The name of the event to match in the events Dictionary</param>
-        /// <param name="emitter">The GameObject on which to find or add AudioSource components to emit the sound</param>
-        public void PlayEvent(string eventName, GameObject emitter)
-        {
-            AudioEvent currentEvent = this.eventsDictionary[eventName];
-            if (currentEvent == null)
-            {
-                Debug.LogErrorFormat(this, "Could not find event \"{0}\"", eventName);
-            }
-            else if (currentEvent.instanceLimit == 0 || GetInstances(eventName) < currentEvent.instanceLimit)
-            {
-                PlayEvent(currentEvent, emitter);
-            }
-            else
-            {
-                Debug.LogFormat(this, "Instance limit reached, not playing event \"{0}\"", eventName);
-            }
-        }
-
-        /// <summary>
-        /// Plays the event matching eventName on the UAudioManager GameObject
-        /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <remarks>The AudioEvent is attached to the same GameObject as this script.</remarks>
         public void PlayEvent(string eventName)
         {
-            PlayEvent(eventName, this.gameObject);
+            PlayEvent(eventName, gameObject);
         }
 
         /// <summary>
-		/// Stops all events with the name matching eventName
-		/// </summary>
-		public void StopAllEvents(string eventName)
+        /// Plays an AudioEvent.
+        /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="emitter">The GameObject on which the AudioEvent is to be played.</param>
+        public void PlayEvent(string eventName, GameObject emitter)
         {
-            for (int i = this.activeEvents.Count - 1; i >= 0; i--)
+            PlayEvent(
+                eventName,
+                emitter,
+                null,
+                null);
+        }
+
+        /// <summary>
+        /// Plays an AudioEvent.
+        /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
+        public void PlayEvent(string eventName, AudioSource primarySource)
+        {
+            PlayEvent(eventName, primarySource, null);
+        }
+
+        /// <summary>
+        /// Plays an AudioEvent.
+        /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
+        /// <param name="secondarySource">The AudioSource component to use as the secondary source for the event.</param>
+        public void PlayEvent(string eventName, 
+                            AudioSource primarySource, 
+                            AudioSource secondarySource)
+        {
+            PlayEvent(eventName,
+                    primarySource.gameObject,
+                    primarySource,
+                    secondarySource);
+        }
+
+        /// <summary>
+        /// Plays an AudioEvent.
+        /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="emitter">The GameObject on which the AudioEvent is to be played.</param>
+        /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
+        /// <param name="secondarySource">The AudioSource component to use as the secondary source for the event.</param>
+        private void PlayEvent(string eventName,
+                            GameObject emitter,
+                            AudioSource primarySource,
+                            AudioSource secondarySource)
+        {
+            if (!CanPlayNewEvent())
             {
-                if (this.activeEvents[i].audioEvent.name == eventName)
+                return;
+            }
+            emitter = ApplyAudioEmitterTransform(emitter);
+            if (emitter == null)
+            {
+                return;
+            }
+
+            AudioEvent currentEvent;
+
+            if (!eventsDictionary.TryGetValue(eventName, out currentEvent))
+            {
+                Debug.LogErrorFormat(this, "Could not find event \"{0}\"", eventName);
+                return;
+            }
+
+            // If the instance limit has been reached...
+            if (currentEvent.instanceLimit != 0 && GetInstances(eventName) >= currentEvent.instanceLimit)
+            {
+                if (currentEvent.instanceBehavior == AudioEventInstanceBehavior.KillNewest)
                 {
-                    StopEvent(this.activeEvents[i]);
+                    // Do not play the event.
+                    Debug.LogFormat(this, "Instance limit reached, not playing event \"{0}\"", eventName);
+                    return;
+                }
+                else
+                {
+                    // Top the oldest instance of this event.
+                    KillOldestInstance(eventName);
+                }
+            }
+
+            if (primarySource == null)
+            {
+                primarySource = GetUnusedAudioSource(emitter);
+            }
+
+            if (currentEvent.IsContinuous() && secondarySource == null)
+            {
+                secondarySource = GetUnusedAudioSource(emitter);
+            }
+
+            PlayEvent(currentEvent, emitter, primarySource, secondarySource);
+        }
+
+        /// <summary>
+        /// Plays an AudioEvent.
+        /// </summary>
+        /// <param name="audioEvent">The AudioEvent to play.</param>
+        /// <param name="emitter">The GameObject on which the AudioEvent is to be played.</param>
+        /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
+        /// <param name="secondarySource">The AudioSource component to use as the secondary source for the event.</param>
+        private void PlayEvent(AudioEvent audioEvent,
+                            GameObject emitter,
+                            AudioSource primarySource,
+                            AudioSource secondarySource)
+        {
+            ActiveEvent tempEvent = new ActiveEvent(audioEvent, emitter, primarySource, secondarySource);
+
+            // The base class owns this event once we pass it to PlayContainer, and may dispose it if it cannot be played.
+            PlayContainer(tempEvent);
+        }
+
+        /// <summary>
+        /// Stops all events with the name matching eventName.
+        /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvents.</param>
+        public void StopAllEvents(string eventName)
+        {
+            for (int i = activeEvents.Count - 1; i >= 0; i--)
+            {
+                if (activeEvents[i].audioEvent.name == eventName)
+                {
+                    StopEvent(activeEvents[i]);
                 }
             }
         }
 
         /// <summary>
-        /// Stops the event matching eventName on the UAudioManager GameObject
+        /// Stops an AudioEvent.
         /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
         public void StopEvent(string eventName)
         {
-            StopEvent(eventName, this.gameObject);
+            StopEvent(eventName, gameObject);
         }
 
         /// <summary>
-        /// Fades out and stops the event matching eventName on the UAudioManager GameObject
+        /// Stops an AudioEvent.
         /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="fadeTime">The amount of time in seconds to completely fade out the sound.</param>
         public void StopEvent(string eventName, float fadeTime)
         {
-            StopEvent(eventName, this.gameObject, fadeTime);
+            StopEvent(eventName, gameObject, fadeTime);
         }
 
         /// <summary>
-        /// Stops an event matching eventName on the specified emitter
+        /// Stops an AudioEvent.
         /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="emitter">The GameObject on which the AudioEvent will stopped.</param>
         public void StopEvent(string eventName, GameObject emitter)
         {
-            for (int i = this.activeEvents.Count - 1; i >= 0; i--)
+            emitter = ApplyAudioEmitterTransform(emitter);
+            if (emitter == null)
             {
-                if (this.activeEvents[i].audioEvent.name == eventName && this.activeEvents[i].PrimarySource.gameObject == emitter)
+                return;
+            }
+
+            for (int i = activeEvents.Count - 1; i >= 0; i--)
+            {
+                if (activeEvents[i].audioEvent.name == eventName && activeEvents[i].AudioEmitter == emitter)
                 {
-                    StopEvent(this.activeEvents[i]);
+                    StopEvent(activeEvents[i]);
                 }
             }
         }
 
         /// <summary>
-        /// Fades out and stops an event matching eventName on the specified emitter
+        /// Stops an AudioEvent.
         /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="emitter">The GameObject on which the AudioEvent will stopped.</param>
+        /// <param name="fadeTime">The amount of time in seconds to completely fade out the sound.</param>
         public void StopEvent(string eventName, GameObject emitter, float fadeTime)
         {
-            for (int i = this.activeEvents.Count - 1; i >= 0; i--)
+            emitter = ApplyAudioEmitterTransform(emitter);
+            if (emitter == null)
             {
-                ActiveEvent activeEvent = this.activeEvents[i];
-                if (activeEvent.audioEvent.name == eventName && activeEvent.PrimarySource.gameObject == emitter)
+                return;
+            }
+
+            for (int i = activeEvents.Count - 1; i >= 0; i--)
+            {
+                ActiveEvent activeEvent = activeEvents[i];
+                if (activeEvent.audioEvent.name == eventName &&
+                    activeEvent.AudioEmitter == emitter)
                 {
                     StartCoroutine(StopEventWithFadeCoroutine(activeEvent, fadeTime));
-                    //CoroutineEx.Run(StopEventWithFadeCoroutine(activeEvent, fadeTime), activeEvent.cancelSource.Token);
                 }
             }
         }
 
         /// <summary>
-        /// Sets the volume value for the Primary Source on Active Events matching the name eventName
+        /// Sets the pitch value on active AudioEvents.
         /// </summary>
-        /// <param name="eventName">The name of the Active Event</param>
-        /// <param name="newVolume">The value to set the volume, between 0 and 1</param>
-        /// <param name="fadeTime">Optional: the amount of time in seconds over which to gradually make the volume change</param>
-        public void SetEventVolume(string eventName, float newVolume, float fadeTime = 0)
-        {
-            if (newVolume < 0 || newVolume > 1)
-            {
-                Debug.LogErrorFormat(this, "Invalid volume set for event \"{0}\"", eventName);
-                return;
-            }
-            for (int i = 0; i < this.activeEvents.Count; i++)
-            {
-                ActiveEvent currentEvent = this.activeEvents[i];
-                if (currentEvent.audioEvent.name == eventName)
-                {
-                    currentEvent.volDest = newVolume;
-                    currentEvent.currentFade = fadeTime;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the volume value for the Primary Source on Active Events matching the name eventName on the GameObject emitter
-        /// </summary>
-        /// <param name="eventName">The name of the Active Event</param>
-        /// <param name="emitter">The GameObject on which the event is playing</param>
-        /// <param name="newVolume">The value to set the volume, between 0 and 1</param>
-        /// <param name="fadeTime">Optional: the amount of time in seconds over which to gradually make the volume change</param>
-        public void SetEventVolume(string eventName, GameObject emitter, float newVolume, float fadeTime = 0)
-        {
-            if (newVolume < 0 || newVolume > 1)
-            {
-                Debug.LogErrorFormat(this, "Invalid volume set for event \"{0}\"", eventName);
-                return;
-            }
-            for (int i = 0; i < this.activeEvents.Count; i++)
-            {
-                ActiveEvent currentEvent = this.activeEvents[i];
-                if (currentEvent.audioEvent.name == eventName && currentEvent.PrimarySource.gameObject == emitter)
-                {
-                    currentEvent.volDest = newVolume;
-                    currentEvent.currentFade = fadeTime;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the pitch value for the Primary Source on Active Events matching the name eventName
-        /// </summary>
-        /// <param name="eventName">The name of the Active Event</param>
-        /// <param name="newPitch">The value to set the pitch, between 0 (exclusive) and 3 (inclusive)</param>
-        public void SetEventPitch(string eventName, float newPitch)
+        /// <param name="eventName">The name associated with the AudioEvents.</param>
+        /// <param name="newPitch">The value to set the pitch, between 0 (exclusive) and 3 (inclusive).</param>
+        public void SetPitch(string eventName, float newPitch)
         {
             if (newPitch <= 0 || newPitch > 3)
             {
-                Debug.LogErrorFormat(this, "Invalid pitch set for event \"{0}\"", eventName);
+                Debug.LogErrorFormat(this, "Invalid pitch {0} set for event \"{1}\"", newPitch, eventName);
                 return;
             }
-            for (int i = 0; i < this.activeEvents.Count; i++)
+
+            for (int i = activeEvents.Count - 1; i >= 0; i--)
             {
-                ActiveEvent currentEvent = this.activeEvents[i];
-                if (currentEvent.audioEvent.name == eventName)
+                ActiveEvent activeEvent = activeEvents[i];
+                if (activeEvent.audioEvent.name == eventName)
                 {
-                    currentEvent.PrimarySource.pitch = newPitch;
+                    activeEvent.SetPitch(newPitch);
                 }
             }
         }
 
         /// <summary>
-        /// Change the frequency with which the container for the event matching eventName loops
+        /// Sets an AudioEvent's container loop frequency 
         /// </summary>
-        /// <param name="eventName">The event to modify</param>
-        /// <param name="newLoopTime">The new loop time in seconds</param>
+        /// <param name="eventName">The name associated with the AudioEvent.</param>
+        /// <param name="newLoopTime">The new loop time in seconds.</param>
         public void SetLoopingContainerFrequency(string eventName, float newLoopTime)
         {
-            AudioEvent currentEvent = this.eventsDictionary[eventName];
-            if (currentEvent == null)
+            AudioEvent currentEvent;
+
+            if (!eventsDictionary.TryGetValue(eventName, out currentEvent))
             {
                 Debug.LogErrorFormat(this, "Could not find event \"{0}\"", eventName);
                 return;
             }
+
             if (newLoopTime <= 0)
             {
                 Debug.LogErrorFormat(this, "Invalid loop time set for event \"{0}\"", eventName);
                 return;
             }
+
             currentEvent.container.loopTime = newLoopTime;
         }
 
         /// <summary>
-        /// Create the Dictionary for quick lookup of AudioEvents in the manager
+        /// Sets the volume for active AudioEvents.
         /// </summary>
-        private void CreateEventsDictionary()
+        /// <param name="eventName">The name associated with the AudioEvents.</param>
+        /// <param name="emitter">The GameObject associated, as the audio emitter, for the AudioEvents.</param>
+        /// <param name="volume">The new volume.</param>
+        public void ModulateVolume(string eventName, GameObject emitter, float volume)
         {
-            this.eventsDictionary = new Dictionary<string, AudioEvent>(this.events.Length);
-            for (int i = 0; i < this.events.Length; i++)
-            {
-                AudioEvent tempEvent = this.events[i];
-                this.eventsDictionary.Add(tempEvent.name, tempEvent);
-            }
-        }
+            emitter = ApplyAudioEmitterTransform(emitter);
 
-        /// <summary>
-        /// Play an AudioEvent on the GameObject that contains this UAudioManager component
-        /// </summary>
-        /// <param name="audioEvent">The AudioEvent to play</param>
-        private void PlayEvent(AudioEvent audioEvent)
-        {
-            PlayEvent(audioEvent, this.gameObject);
-        }
-
-        /// <summary>
-        /// Play an AudioEvent on a particular GameObject
-        /// </summary>
-        /// <param name="audioEvent">The AudioEvent to play</param>
-        /// <param name="emitter">The GameObject to use as the emitter via an AudioSource component</param>
-        private void PlayEvent(AudioEvent audioEvent, GameObject emitter)
-        {
-            AudioSource newPrimarySource = GetUnusedAudioSource(emitter);
-            if (AudioEvent.IsContinuous(audioEvent))
+            if (emitter == null)
             {
-                AudioSource newSecondarySource = GetUnusedAudioSource(emitter, newPrimarySource);
-                PlayEvent(audioEvent, newPrimarySource, newSecondarySource);
+                return;
             }
-            else
-            {
-                PlayEvent(audioEvent, newPrimarySource);
-            }
-        }
 
-        /// <summary>
-        /// Play an AudioEvent on a particular AudioSource
-        /// </summary>
-        /// <param name="audioEvent">The AudioEvent to play</param>
-        /// <param name="emitter">The AudioSource component to use as an emitter for the AudioEvent</param>
-        private void PlayEvent(AudioEvent audioEvent, AudioSource primarySource, AudioSource secondarySource = null)
-        {
-            ActiveEvent tempEvent = CreateNewActiveEvent(audioEvent);
-            tempEvent.PrimarySource = primarySource;
-            SetSourceProperties(tempEvent.PrimarySource, tempEvent);
-            if (secondarySource != null)
+            for (int i = 0; i < activeEvents.Count; i++)
             {
-                tempEvent.SecondarySource = secondarySource;
-                SetSourceProperties(tempEvent.SecondarySource, tempEvent);
-            }
-            PlayContainer(tempEvent);
-        }
+                ActiveEvent activeEvent = activeEvents[i];
 
-        /// <summary>
-        /// Gets an unused AudioSource component on the emitter GameObject, or create a new one if one does not exist
-        /// </summary>
-        /// <param name="emitter">The GameObject on which to find or add the AudioSource component</param>
-        /// <param name="currentEvent">The pre-existing event</param>
-        /// <returns>The AudioSource component to be used in an ActiveEvent</returns>
-        private AudioSource GetUnusedAudioSource(GameObject emitter, AudioSource primarySource = null)
-        {
-            //Get or create valid AudioSource
-            AudioSource[] sources = emitter.GetComponents<AudioSource>();
-            for (int s = 0; s < sources.Length; s++)
-            {
-                if (!sources[s].isPlaying)
+                if (activeEvents[i].audioEvent.name == eventName && activeEvents[i].AudioEmitter == emitter)
                 {
-                    if (primarySource == null)
+                    activeEvent.volDest = volume;
+                    activeEvent.altVolDest = volume;
+                    activeEvent.currentFade = 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get an available AudioSource.
+        /// </summary>
+        /// <param name="emitter">The audio emitter on which the AudioSource is desired.</param>
+        /// <param name="currentEvent">The current audio event.</param>
+        /// <returns></returns>
+        private AudioSource GetUnusedAudioSource(GameObject emitter, ActiveEvent currentEvent = null)
+        {
+            // Get or create valid AudioSource.
+            AudioSourcesReference sourcesReference = emitter.GetComponent<AudioSourcesReference>();
+            if (sourcesReference != null)
+            {
+                List<AudioSource> sources = sourcesReference.AudioSources;
+                for (int s = 0; s < sources.Count; s++)
+                {
+                    if (!sources[s].isPlaying && !sources[s].enabled)
                     {
-                        return sources[s];
-                    }
-                    else if (sources[s] != primarySource)
-                    {
-                        return sources[s];
+                        if (currentEvent == null)
+                        {
+                            return sources[s];
+                        }
+                        else if (sources[s] != currentEvent.PrimarySource)
+                        {
+                            return sources[s];
+                        }
                     }
                 }
             }
-            AudioSource source = emitter.AddComponent<AudioSource>();
-            source.playOnAwake = false;
-            return source;
+            else
+            {
+                sourcesReference = emitter.AddComponent<AudioSourcesReference>();
+            }
+
+            return sourcesReference.AddNewAudioSource();
         }
+
+        /// <summary>
+        /// Checks to see if a new AudioEvent can be played.
+        /// </summary>
+        /// <returns>True if a new AudioEvent can be played, otherwise false.</returns>
+        /// <remarks>If the global instance behavior is set to AudioEventInstanceBehavior.KillOldest,
+        /// the oldest event will be stopped to allow a new event to be played.</remarks>
+        private bool CanPlayNewEvent()
+        {
+            if (globalEventInstanceLimit == 0 || activeEvents.Count < globalEventInstanceLimit)
+            {
+                return true;
+            }
+            else
+            {
+                if (globalInstanceBehavior == AudioEventInstanceBehavior.KillOldest)
+                {
+                    StopEvent(activeEvents[0]);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stops the first (oldest) instance of an event with the matching name
+        /// </summary>
+        /// <param name="eventName">The name associated with the AudioEvent to stop.</param>
+        private void KillOldestInstance(string eventName)
+        {
+            for (int i = 0; i < activeEvents.Count; i++)
+            {
+                ActiveEvent tempEvent = activeEvents[i];
+
+                if (tempEvent.audioEvent.name == eventName)
+                {
+                    StopEvent(tempEvent);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies the registered transform to an audio emitter.
+        /// </summary>
+        /// <param name="emitter"></param>
+        /// <returns></returns>
+        /// <remarks>If there is no registered transform, the GameObject specified in the
+        /// emitter parameter will be returned.</remarks>
+        private GameObject ApplyAudioEmitterTransform(GameObject emitter)
+        {
+            if (AudioEmitterTransform != null)
+            {
+                emitter = AudioEmitterTransform(emitter);
+            }
+
+            return emitter;
+        }
+
+        /// <summary>
+        /// Create the Dictionary for quick lookup of AudioEvents.
+        /// </summary>
+        private void CreateEventsDictionary()
+        {
+            eventsDictionary = new Dictionary<string, AudioEvent>(events.Length);
+
+            for (int i = 0; i < events.Length; i++)
+            {
+                AudioEvent tempEvent = events[i];
+                eventsDictionary.Add(tempEvent.name, tempEvent);
+            }
+        }
+
+#if UNITY_EDITOR
+        [ContextMenu("Sort Events")]
+        private void AlphabetizeEventList()
+        {
+            Array.Sort<AudioEvent>(events);
+        }
+#endif
     }
 }

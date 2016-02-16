@@ -1,20 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// The main object of UAudioMiniManager: contains the settings and a container for playing audio clips
+    /// The MiniAudioEvent class is the main component of UAudioMiniManager and contains settings and a container for playing audio clips.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class MiniAudioEvent : AudioEvent
     {
-        /// <summary>
-        /// Main AudioSource to be set in the inspector
-        /// </summary>
+        [Tooltip("The primary AudioSource.")]
         public AudioSource primarySource = null;
-        /// <summary>
-        /// Secondary AudioSource for continuous containers to be set in the inspector
-        /// </summary>
+
+        [Tooltip("The secondary AudioSource for continuous containers.")]
         public AudioSource secondarySource = null;
     }
 }
