@@ -8,9 +8,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 475158}
-  - 114: {fileID: 114000011410703654}
-  - 114: {fileID: 114000010565161520}
-  - 114: {fileID: 114000011596193348}
+  - 114: {fileID: 114000012157813786}
+  - 114: {fileID: 114000010455059908}
+  - 114: {fileID: 114000012574535674}
   m_Layer: 0
   m_Name: XToolsStage
   m_TagString: Untagged
@@ -41,7 +41,7 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 163528}
   m_IsPrefabParent: 1
---- !u!114 &114000010565161520
+--- !u!114 &114000010455059908
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -49,11 +49,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 163528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41584219d9daca643b46663aa5766ba5, type: 3}
+  m_Script: {fileID: 11500000, guid: 41255bb77c92e9e43a38c4824b1335b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SessionName: Default
---- !u!114 &114000011410703654
+--- !u!114 &114000012157813786
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -61,14 +60,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 163528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93337cb0593f6ad4180e17e35d1e083a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e593e4d4f666984cac3431750e6e1d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Role: 0
   ServerAddress: localhost
   ServerPort: 20602
   IsAudioEndpoint: 1
---- !u!114 &114000011596193348
+--- !u!114 &114000012574535674
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -76,6 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 163528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a1bc85d7cb44bb448491cca80fdad56, type: 3}
+  m_Script: {fileID: 11500000, guid: 7861d23e22831d5468330c74af1a9a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SessionName: Default

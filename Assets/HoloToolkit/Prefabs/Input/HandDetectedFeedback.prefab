@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 408678}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: cursor_sizeNorthSouth_ring_interaction_root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23,7 +23,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 423990}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: cursor_sizeNorthSouth_ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - 4: {fileID: 405604}
   - 33: {fileID: 3374494}
   - 23: {fileID: 2336532}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: cursor_sizeNorthSouth_ring_interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 489468}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: ring_observation_scale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,8 +70,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 420132}
-  m_Layer: 2
-  m_Name: HandDetectedAsset
+  m_Layer: 0
+  m_Name: HandDetectedFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 447900}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: cursor_cross_root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 405794}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Cursor_Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 417894}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: cursor_sizeNorthSouth_ring_press_scale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 402240}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Cursor_SizeNorthSouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
