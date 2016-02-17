@@ -1,0 +1,10 @@
+*.ipch
+*.opensdf
+*.sdf
+*.obj
+*.suo
+*.tlog
+*.log
+*.idb
+*.opendb
+*.cs.meta
