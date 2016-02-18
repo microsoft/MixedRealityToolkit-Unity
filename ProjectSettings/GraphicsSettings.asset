@@ -28,11 +28,11 @@ GraphicsSettings:
   - {fileID: 10782, guid: 0000000000000000f000000000000000, type: 0}
   m_PreloadedShaders: []
   m_ShaderSettings_Tier1:
-    useCascadedShadowMaps: 1
+    useCascadedShadowMaps: 0
     useSinglePassStereoRendering: 0
-    standardShaderQuality: 2
-    useReflectionProbeBoxProjection: 1
-    useReflectionProbeBlending: 1
+    standardShaderQuality: 0
+    useReflectionProbeBoxProjection: 0
+    useReflectionProbeBlending: 0
   m_ShaderSettings_Tier2:
     useCascadedShadowMaps: 1
     useSinglePassStereoRendering: 0

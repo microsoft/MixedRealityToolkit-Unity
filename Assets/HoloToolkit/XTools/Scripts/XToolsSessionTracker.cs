@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// </summary>
 public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
 {
-    public class SessionJoinedEventArgs: EventArgs
+    public class SessionJoinedEventArgs : EventArgs
     {
         public User joiningUser;
     }
@@ -17,7 +17,7 @@ public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
     public class SessionLeftEventArgs : EventArgs
     {
         public long exitingUserId;
-    }    
+    }
 
     /// <summary>
     /// SessionJoined event notifies when a user joins a session.
@@ -33,6 +33,8 @@ public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
     private SessionManager sessionManager;
     List<long> userIds = new List<long>();
 
+    private Dictionary<long, User> userIdToUser = new Dictionary<long, User>();
+
     private const uint pollingFrequency = 60;
 
     void SendJoinEvent(User user)
@@ -45,6 +47,12 @@ public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
             SessionJoinedEventArgs sjea = new SessionJoinedEventArgs();
             sjea.joiningUser = user;
             joinEvent(this, sjea);
+        }
+
+        long userId = user.GetID();
+        if (userIdToUser.ContainsKey(userId) == false)
+        {
+            userIdToUser.Add(userId, user);
         }
     }
 
@@ -59,6 +67,37 @@ public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
             slea.exitingUserId = userId;
             leftEvent(this, slea);
         }
+
+        if (userIdToUser.ContainsKey(userId) == true)
+        {
+            userIdToUser.Remove(userId);
+        }
+    }
+
+    public User GetUserById(long userId)
+    {
+        User retval = null;
+        userIdToUser.TryGetValue(userId, out retval);
+
+        if (retval == null)
+        {
+            Session currentSession = this.sessionManager.GetCurrentSession();
+            if (currentSession != null)
+            {
+                int userCount = currentSession.GetUserCount();
+                for (int index = 0; index < userCount; index++)
+                {
+                    User user = currentSession.GetUser(index);
+                    if ((long)user.GetID() == userId)
+                    {
+                        retval = user;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return retval;
     }
 
     void Update()
@@ -89,7 +128,8 @@ public class XToolsSessionTracker : Singleton<XToolsSessionTracker>
                     {
                         User user = currentSession.GetUser(index);
                         long userId = user.GetID();
-                        updatedUserIds.Add(userId);                        
+                        updatedUserIds.Add(userId);
+                        Debug.Log(index + ": id: " + user.GetID() + " or: " + userId);
 
                         // It's an edge case, but if a user joins and a user exits at the same
                         // time, we need to handle that.

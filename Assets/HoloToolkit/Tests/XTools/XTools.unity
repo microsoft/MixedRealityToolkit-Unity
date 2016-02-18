@@ -380,6 +380,11 @@ Prefab:
       propertyPath: ServerAddress
       value: 10.124.204.193
       objectReference: {fileID: 0}
+    - target: {fileID: 114000012157813786, guid: 8aaf37823b26ee449bb3b3d7775965c3,
+        type: 2}
+      propertyPath: ServerAddress
+      value: 10.124.204.193
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8aaf37823b26ee449bb3b3d7775965c3, type: 2}
   m_IsPrefabParent: 0

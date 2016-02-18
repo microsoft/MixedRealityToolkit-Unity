@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 using HoloToolkit.Unity;
 using HoloToolkit.XTools;
+using System;
 
 public class XtoolsServerManager : Singleton<XtoolsServerManager>
 {
@@ -18,36 +18,15 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
         RequestAnchorName,
         RequestAnchorData,
         PostAnchorName,
-        PostAnchorData,        
+        PostAnchorData,
         Max
     }
 
-    /// <summary>
-    /// Using the UserMessageChannelStart for sending user messages.
-    /// </summary>
     public enum UserMessageChannels
     {
         Anchors = MessageChannel.UserMessageChannelStart,
     }
-    
-    /// <summary>
-    /// Cache the local user's ID to use when sending messages.
-    /// </summary>
-    public long localUserID
-    {
-        get; set;
-    }
 
-    public delegate void MessageCallback(NetworkInMessage msg);
-    private Dictionary<TestMessageID, MessageCallback> _MessageHandlers = new Dictionary<TestMessageID, MessageCallback>();
-
-    public Dictionary<TestMessageID, MessageCallback> MessageHandlers
-    {
-        get
-        {
-            return _MessageHandlers;
-        }
-    }
 
     /// <summary>
 	/// Helper object that we use to route incoming message callbacks to the member
@@ -60,6 +39,31 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
     /// </summary>
     NetworkConnection serverConnection;
 
+    /// <summary>
+    /// Cache the local user's ID to use when sending messages
+    /// </summary>
+    public long localUserID
+    {
+        get; set;
+    }
+
+#if UNITY_EDITOR
+    byte isEditor = 1;
+#else
+    byte isEditor = 0;
+#endif
+
+    public delegate void MessageCallback(NetworkInMessage msg);
+    private Dictionary<TestMessageID, MessageCallback> _MessageHandlers = new Dictionary<TestMessageID, MessageCallback>();
+    public Dictionary<TestMessageID, MessageCallback> MessageHandlers
+    {
+        get
+        {
+            return _MessageHandlers;
+        }
+    }
+
+    // Use this for initialization
     void Start()
     {
         InitializeXTools();
@@ -69,18 +73,18 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
     {
         XToolsStage xtoolsStage = XToolsStage.Instance;
         if (xtoolsStage != null)
-        {           
+        {
+
             this.serverConnection = xtoolsStage.Manager.GetServerConnection();
-           
+
             this.connectionAdapter = new NetworkConnectionAdapter();
             this.connectionAdapter.MessageReceivedCallback += OnMessageReceived;
-            
+
             // Cache the local user ID
             this.localUserID = xtoolsStage.Manager.GetLocalUser().GetID();
-           
+
             for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
             {
-                Debug.Log(index);
                 if (MessageHandlers.ContainsKey((TestMessageID)index) == false)
                 {
                     MessageHandlers.Add((TestMessageID)index, null);
@@ -99,7 +103,7 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
         msg.Write(localUserID);
         return msg;
     }
-    
+
     public void SendHeadTransform(Vector3 position, Quaternion rotation)
     {
         // If we are connected to a session, broadcast our head info
@@ -109,8 +113,6 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
             NetworkOutMessage msg = CreateMessage((byte)TestMessageID.HeadTransform);
 
             AppendTransform(msg, position, rotation);
-
-            msg.Write(DateTime.Now.ToBinary());
 
             // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
             this.serverConnection.Broadcast(
@@ -123,6 +125,7 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
 
     public bool SendRequestAnchorName()
     {
+        // If we are connected to a session, broadcast our head info
         if (this.serverConnection != null && this.serverConnection.IsConnected())
         {
             // Create an outgoing network message to contain all the info we want to send
@@ -131,9 +134,9 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
             // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
             this.serverConnection.Broadcast(
                 msg,
-                MessagePriority.Medium,                         // Send immediately, do not buffer
-                MessageReliability.ReliableSequenced,           // Do not retransmit, but don't deliver out of order
-                (MessageChannel)UserMessageChannels.Anchors);   // Only order with respect to other messages in the Avatar channel
+                MessagePriority.Medium,                   // Send immediately, do not buffer
+                MessageReliability.ReliableSequenced,      // Do not retransmit, but don't deliver out of order
+                (MessageChannel)UserMessageChannels.Anchors);                      // Only order with respect to other messages in the Avatar channel
 
             return true;
         }
@@ -143,6 +146,7 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
 
     public bool SendRequestAnchorData()
     {
+        // If we are connected to a session, broadcast our head info
         if (this.serverConnection != null && this.serverConnection.IsConnected())
         {
             // Create an outgoing network message to contain all the info we want to send
@@ -151,9 +155,9 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
             // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
             this.serverConnection.Broadcast(
                 msg,
-                MessagePriority.Medium,                         // Send immediately, do not buffer
-                MessageReliability.ReliableSequenced,           // Do not retransmit, but don't deliver out of order
-                (MessageChannel)UserMessageChannels.Anchors);   // Only order with respect to other messages in the Avatar channel
+                MessagePriority.Medium,                   // Send immediately, do not buffer
+                MessageReliability.ReliableSequenced,      // Do not retransmit, but don't deliver out of order
+                (MessageChannel)UserMessageChannels.Anchors);                      // Only order with respect to other messages in the Avatar channel
 
             return true;
         }
@@ -163,28 +167,32 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
 
     public void SendPostAnchorName(string Name)
     {
+        // If we are connected to a session, broadcast our head info
         if (this.serverConnection != null && this.serverConnection.IsConnected())
         {
             // Create an outgoing network message to contain all the info we want to send
             NetworkOutMessage msg = CreateMessage((byte)TestMessageID.PostAnchorName);
-            msg.Write(new XString(Name));
+            msg.Write(isEditor);
 
-            Debug.Log("Sending anchor name: " + Name);
+            msg.Write(new XString(Name));
+            Debug.Log("sending anchor name " + Name);
             // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
             this.serverConnection.Broadcast(
                 msg,
-                MessagePriority.Medium,                         // Send immediately, do not buffer
-                MessageReliability.ReliableSequenced,           // Do not retransmit, but don't deliver out of order
-                (MessageChannel)UserMessageChannels.Anchors);   // Only order with respect to other messages in the Avatar channel
+                MessagePriority.Medium,                   // Send immediately, do not buffer
+                MessageReliability.ReliableSequenced,      // Do not retransmit, but don't deliver out of order
+                 (MessageChannel)UserMessageChannels.Anchors);                      // Only order with respect to other messages in the Avatar channel
         }
     }
 
-    public void SendPostAnchorData(byte[] anchorData)
+    public void SendPostAnchorData(long UserId, byte[] anchorData)
     {
+        // If we are connected to a session, broadcast our head info
         if (this.serverConnection != null && this.serverConnection.IsConnected())
         {
             // Create an outgoing network message to contain all the info we want to send
             NetworkOutMessage msg = CreateMessage((byte)TestMessageID.PostAnchorData);
+            msg.Write(isEditor);
 
             if (anchorData != null)
             {
@@ -197,13 +205,21 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
                 msg.WriteArray(new byte[1], 1);
             }
 
-            Debug.Log("Sending anchor.");
-            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
-            this.serverConnection.Broadcast(
-                msg,
-                MessagePriority.Medium,                         // Send immediately, do not buffer
-                MessageReliability.ReliableSequenced,           // Do not retransmit, but don't deliver out of order
-                (MessageChannel)UserMessageChannels.Anchors);   // Only order with respect to other messages in the Avatar channel
+            User targetUser = XToolsSessionTracker.Instance.GetUserById(UserId);
+
+            if (targetUser == null)
+            {
+                Debug.Log("User no longer in session");
+                return;
+            }
+
+            Debug.Log("Sending anchor ");
+            serverConnection.SendTo(
+                targetUser,
+                ClientRole.Unspecified, msg,
+                MessagePriority.Medium,
+                MessageReliability.ReliableOrdered,
+                (MessageChannel)UserMessageChannels.Anchors);
         }
     }
 
@@ -232,7 +248,6 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
     #region HelperFunctionsForWriting
     void AppendTransform(NetworkOutMessage msg, Vector3 position, Quaternion rotation)
     {
-        // Pack the head position and rotation into the packet
         AppendVector3(msg, position);
         AppendQuaternion(msg, rotation);
     }

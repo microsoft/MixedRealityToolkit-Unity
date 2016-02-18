@@ -40,7 +40,7 @@ PlayerSettings:
   disableDepthAndStencilBuffers: 0
   defaultIsFullScreen: 1
   defaultIsNativeResolution: 1
-  runInBackground: 0
+  runInBackground: 1
   captureSingleScreen: 0
   Override IPod Music: 0
   Prepare IOS For Recording: 0
@@ -172,7 +172,13 @@ PlayerSettings:
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
   resolutionDialogBanner: {fileID: 0}
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 128
+      m_Height: 128
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsAPIs: []
   webPlayerTemplate: APPLICATION:Default
@@ -329,12 +335,12 @@ PlayerSettings:
   spritePackerPolicy: 
   scriptingDefineSymbols: {}
   metroPackageName: HoloToolkit-Unity
-  metroPackageVersion: 
-  metroCertificatePath: 
+  metroPackageVersion: 1.0.0.0
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: DefaultCompany
+  metroCertificateIssuer: DefaultCompany
+  metroCertificateNotAfter: 001a4854e788d201
   metroApplicationDescription: HoloToolkit-Unity
   wsaImages: {}
   metroTileShortName: 
@@ -349,7 +355,32 @@ PlayerSettings:
   metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628,
     a: 1}
   metroSplashScreenUseBackgroundColor: 0
-  platformCapabilities: {}
+  platformCapabilities:
+    WindowsStoreApps:
+      AllJoyn: False
+      BlockedChatMessages: False
+      Bluetooth: False
+      Chat: False
+      CodeGeneration: False
+      EnterpriseAuthentication: False
+      HumanInterfaceDevice: False
+      InternetClient: False
+      InternetClientServer: True
+      Location: False
+      Microphone: True
+      MusicLibrary: False
+      Objects3D: False
+      PhoneCall: False
+      PicturesLibrary: False
+      PrivateNetworkClientServer: True
+      Proximity: False
+      RemovableStorage: False
+      SharedUserCertificates: False
+      SpatialPerception: True
+      UserAccountInformation: False
+      VideosLibrary: False
+      VoipCall: False
+      WebCam: False
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
@@ -402,10 +433,15 @@ PlayerSettings:
   Standalone::ScriptingBackend: 0
   WebPlayer::ScriptingBackend: 0
   boolPropertyNames:
+  - Metro::VR::enable
   - XboxOne::enus
+  Metro::VR::enable: 1
   XboxOne::enus: 1
   stringPropertyNames: []
-  vectorPropertyNames: []
+  vectorPropertyNames:
+  - Metro::VR::enabledDevices
+  Metro::VR::enabledDevices:
+  - HoloLens
   cloudProjectId: 
   projectName: 
   organizationId: 

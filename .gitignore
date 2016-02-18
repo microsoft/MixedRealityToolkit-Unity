@@ -7,3 +7,5 @@
 *.log
 *.idb
 *.opendb
+/Library
+/Temp
