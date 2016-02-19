@@ -12,13 +12,25 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(GazeManager))]
     public class GestureManager : Singleton<GestureManager>
     {
+        /// <summary>
+        /// To select even when a hologram is not being gazed at,
+        /// set the override focused object.
+        /// If its null, then the gazed at object will be selected.
+        /// </summary>
+        public GameObject OverrideFocusedObject
+        {
+            get; set;
+        }
+
         private GestureRecognizer gestureRecognizer;
         private GameObject focusedObject;
 
         void Start()
         {
-            // Create a new GestureRecognizer.  Sign up for tapped events.
+            // Create a new GestureRecognizer. Sign up for tapped events.
             gestureRecognizer = new GestureRecognizer();
+            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap);
+
             gestureRecognizer.TappedEvent += GestureRecognizer_TappedEvent;
 
             // Start looking for gestures.
@@ -36,16 +48,17 @@ namespace HoloToolkit.Unity
         void Update()
         {
             GameObject oldFocusedObject = focusedObject;
-
-            if (GazeManager.Instance.Hit)
+            
+            if (GazeManager.Instance.Hit && OverrideFocusedObject != null)
             {
                 // If gaze hits a hologram, set the focused object to that game object.
+                // Also if the caller has not decided to override the focused object.
                 focusedObject = GazeManager.Instance.HitInfo.collider.gameObject;
             }
             else
             {
-                // If our gaze doesn't hit a hologram, set the focused object to null.
-                focusedObject = null;
+                // If our gaze doesn't hit a hologram, set the focused object to null or override focused object.
+                focusedObject = OverrideFocusedObject;
             }
 
             if (focusedObject != oldFocusedObject)
