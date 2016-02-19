@@ -54,8 +54,6 @@ Shader "HoloToolkit/Unlit Configurable Transparent"
 			#pragma target 5.0
 			#pragma only_renderers d3d11
 
-			#pragma multi_compile ___ VRINSTANCINGEXT_ON
-
 			#pragma shader_feature _USECOLOR_ON
 			#pragma shader_feature _USEMAINTEX_ON
 

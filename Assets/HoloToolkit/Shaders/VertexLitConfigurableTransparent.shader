@@ -60,8 +60,6 @@ Shader "HoloToolkit/Vertex Lit Configurable Transparent"
 			//we only target the hololens (and the unity editor) so take advantage of shader model 5
 			#pragma target 5.0
 			#pragma only_renderers d3d11
-
-			#pragma multi_compile ___ VRINSTANCINGEXT_ON
 			
 			#pragma shader_feature _USECOLOR_ON
 			#pragma shader_feature _USEMAINTEX_ON

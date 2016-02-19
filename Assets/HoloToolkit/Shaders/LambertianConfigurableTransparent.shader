@@ -56,7 +56,7 @@ Shader "HoloToolkit/Lambertian Configurable Transparent"
 		#pragma target 5.0
 		#pragma only_renderers d3d11
 
-		#pragma surface surf Lambert
+		#pragma surface surf Lambert alpha:fade
 
 		#pragma shader_feature _USECOLOR_ON
 		#pragma shader_feature _USEMAINTEX_ON

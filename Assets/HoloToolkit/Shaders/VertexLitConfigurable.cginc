@@ -26,9 +26,6 @@ struct appdata_t
         float2 texcoord : TEXCOORD0;
     #endif
     float3 normal : NORMAL;
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        uint instId : SV_InstanceID;
-    #endif
 };
 
 struct v2f_surf
@@ -41,9 +38,6 @@ struct v2f_surf
         float2 lmap : TEXCOORD1;
     #else
         float3 vlight : TEXCOORD1;
-    #endif
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        uint renderTargetIndex: SV_RenderTargetArrayIndex;
     #endif
     LIGHTING_COORDS(2, 3)
     UNITY_FOG_COORDS(4)
@@ -60,12 +54,7 @@ v2f_surf vert(appdata_t v)
     v2f_surf o;
     UNITY_INITIALIZE_OUTPUT(v2f_surf, o);
 
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        o.pos = mul(UNITY_MATRIX_MVP_STEREO[v.instId], v.vertex);
-        o.renderTargetIndex = v.instId;
-    #else
-        o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-    #endif
+    o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 
     #if _USEMAINTEX_ON || _USEEMISSIONTEX_ON
         o.pack0.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
