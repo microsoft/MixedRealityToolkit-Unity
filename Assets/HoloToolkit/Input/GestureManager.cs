@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
         {
             GameObject oldFocusedObject = focusedObject;
             
-            if (GazeManager.Instance.Hit && OverrideFocusedObject != null)
+            if (GazeManager.Instance.Hit && OverrideFocusedObject == null)
             {
                 // If gaze hits a hologram, set the focused object to that game object.
                 // Also if the caller has not decided to override the focused object.
