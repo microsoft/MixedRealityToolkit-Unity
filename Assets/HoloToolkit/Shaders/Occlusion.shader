@@ -23,18 +23,22 @@ Shader "HoloToolkit/Occlusion"
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			#pragma exclude_renderers d3d11_9x
+
+            //we only target the hololens (and the unity editor) so take advantage of shader model 5
+            #pragma target 5.0
+            #pragma only_renderers d3d11
 
 			#include "UnityCG.cginc"
 
-			struct v2f {
-				float4  pos : SV_POSITION;
+			struct v2f 
+            {
+				float4 pos : SV_POSITION;
 			};
 
 			v2f vert (appdata_base v)
 			{
 				v2f o;
-				o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				return o;
 			}
 
