@@ -22,14 +22,14 @@ namespace HoloToolkit.Unity
 
         void Awake()
         {
-            SourceManager.SourceDetected += SourceManager_SourceDetected;
-            SourceManager.SourceLost += SourceManager_SourceLost;
+            InteractionManager.SourceDetected += SourceManager_SourceDetected;
+            InteractionManager.SourceLost += SourceManager_SourceLost;
         }
 
-        private void SourceManager_SourceDetected(SourceState state)
+        private void SourceManager_SourceDetected(InteractionSourceState state)
         {
             // Check to see that the source is a hand.
-            if (state.source.kind != SourceKind.Hand)
+            if (state.source.kind != InteractionSourceKind.Hand)
             {
                 return;
             }
@@ -37,10 +37,10 @@ namespace HoloToolkit.Unity
             trackedHands.Add(state.source.id);
         }
 
-        private void SourceManager_SourceLost(SourceState state)
+        private void SourceManager_SourceLost(InteractionSourceState state)
         {
             // Check to see that the source is a hand.
-            if (state.source.kind != SourceKind.Hand)
+            if (state.source.kind != InteractionSourceKind.Hand)
             {
                 return;
             }
@@ -53,9 +53,8 @@ namespace HoloToolkit.Unity
 
         void OnDestroy()
         {
-            // Unregister the SourceManager events.
-            SourceManager.SourceDetected -= SourceManager_SourceDetected;
-            SourceManager.SourceLost -= SourceManager_SourceLost;
+            InteractionManager.SourceDetected -= SourceManager_SourceDetected;
+            InteractionManager.SourceLost -= SourceManager_SourceLost;
         }
     }
 }

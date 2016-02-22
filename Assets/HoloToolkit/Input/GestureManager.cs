@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity
             gestureRecognizer.StartCapturingGestures();
         }
 
-        private void GestureRecognizer_TappedEvent(SourceKind source, Ray headRay)
+        private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
             if (focusedObject != null)
             {

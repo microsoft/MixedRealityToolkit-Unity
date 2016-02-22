@@ -39,9 +39,9 @@ namespace HoloToolkit.Unity
 
             // Register for hand and finger events to know where your hand
             // is being tracked and what state it is in.
-            SourceManager.SourceLost += SourceManager_SourceLost;
-            SourceManager.SourceUpdated += SourceManager_SourceUpdated;
-            SourceManager.SourceReleased += SourceManager_SourceReleased;
+            InteractionManager.SourceLost += SourceManager_SourceLost;
+            InteractionManager.SourceUpdated += SourceManager_SourceUpdated;
+            InteractionManager.SourceReleased += SourceManager_SourceReleased;
 
             if (HandGuidanceIndicator != null)
             {
@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity
             handGuidanceIndicatorGameObject.SetActive(false);
         }
 
-        private void ShowHandGuidanceIndicator(SourceState hand)
+        private void ShowHandGuidanceIndicator(InteractionSourceState hand)
         {
             if (!currentlyTrackedHand.HasValue)
             {
@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void HideHandGuidanceIndicator(SourceState hand)
+        private void HideHandGuidanceIndicator(InteractionSourceState hand)
         {
             if (!currentlyTrackedHand.HasValue)
             {
@@ -88,7 +88,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void GetIndicatorPositionAndRotation(SourceState hand, out Vector3 position, out Quaternion rotation)
+        private void GetIndicatorPositionAndRotation(InteractionSourceState hand, out Vector3 position, out Quaternion rotation)
         {
             // Update the distance from IndicatorParent based on the user's hand's distance from the center of the view.
             // Bound this distance by this maxDistanceFromCenter field, in meters.
@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity
             rotation = Quaternion.LookRotation(Camera.main.transform.forward, hand.properties.sourceLossMitigationDirection);
         }
         
-        private void SourceManager_SourceUpdated(SourceState hand)
+        private void SourceManager_SourceUpdated(InteractionSourceState hand)
         {
             // Only display hand indicators when we are in a holding state, since hands going out of view will affect any active gestures.
             if (!hand.pressed)
@@ -130,19 +130,19 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void SourceManager_SourceReleased(SourceState hand)
+        private void SourceManager_SourceReleased(InteractionSourceState hand)
         {
             // Stop displaying the guidance indicator when the user releases their finger from the pressed state.
             RemoveTrackedHand(hand);
         }
 
-        private void SourceManager_SourceLost(SourceState hand)
+        private void SourceManager_SourceLost(InteractionSourceState hand)
         {
             // Stop displaying the guidance indicator when the user's hand leaves the view.
             RemoveTrackedHand(hand);
         }
 
-        private void RemoveTrackedHand(SourceState hand)
+        private void RemoveTrackedHand(InteractionSourceState hand)
         {
             // Only remove a hand if we are currently tracking a hand, and the hand to remove matches this tracked hand.
             if (currentlyTrackedHand.HasValue && currentlyTrackedHand.Value == hand.source.id)
@@ -155,9 +155,9 @@ namespace HoloToolkit.Unity
 
         void OnDestroy()
         {
-            SourceManager.SourceLost -= SourceManager_SourceLost;
-            SourceManager.SourceUpdated -= SourceManager_SourceUpdated;
-            SourceManager.SourceReleased -= SourceManager_SourceReleased;
+            InteractionManager.SourceLost -= SourceManager_SourceLost;
+            InteractionManager.SourceUpdated -= SourceManager_SourceUpdated;
+            InteractionManager.SourceReleased -= SourceManager_SourceReleased;
         }
     }
 }

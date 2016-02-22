@@ -16,6 +16,7 @@ PlayerSettings:
   m_SplashScreenStyle: 0
   m_ShowUnitySplashScreen: 1
   m_VirtualRealitySplashScreen: {fileID: 0}
+  m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
   defaultScreenWidthWeb: 960
@@ -95,6 +96,7 @@ PlayerSettings:
   bundleVersion: 1.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
+  m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 0
   singlePassStereoRendering: 0
   protectGraphicsMemory: 0
