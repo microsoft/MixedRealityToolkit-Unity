@@ -39,9 +39,9 @@ namespace HoloToolkit.Unity
 
             // Register for hand and finger events to know where your hand
             // is being tracked and what state it is in.
-            InteractionManager.SourceLost += SourceManager_SourceLost;
-            InteractionManager.SourceUpdated += SourceManager_SourceUpdated;
-            InteractionManager.SourceReleased += SourceManager_SourceReleased;
+            InteractionManager.SourceLost += InteractionManager_SourceLost;
+            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
+            InteractionManager.SourceReleased += InteractionManager_SourceReleased;
 
             if (HandGuidanceIndicator != null)
             {
@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity
             rotation = Quaternion.LookRotation(Camera.main.transform.forward, hand.properties.sourceLossMitigationDirection);
         }
         
-        private void SourceManager_SourceUpdated(InteractionSourceState hand)
+        private void InteractionManager_SourceUpdated(InteractionSourceState hand)
         {
             // Only display hand indicators when we are in a holding state, since hands going out of view will affect any active gestures.
             if (!hand.pressed)
@@ -130,13 +130,13 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void SourceManager_SourceReleased(InteractionSourceState hand)
+        private void InteractionManager_SourceReleased(InteractionSourceState hand)
         {
             // Stop displaying the guidance indicator when the user releases their finger from the pressed state.
             RemoveTrackedHand(hand);
         }
 
-        private void SourceManager_SourceLost(InteractionSourceState hand)
+        private void InteractionManager_SourceLost(InteractionSourceState hand)
         {
             // Stop displaying the guidance indicator when the user's hand leaves the view.
             RemoveTrackedHand(hand);
@@ -155,9 +155,9 @@ namespace HoloToolkit.Unity
 
         void OnDestroy()
         {
-            InteractionManager.SourceLost -= SourceManager_SourceLost;
-            InteractionManager.SourceUpdated -= SourceManager_SourceUpdated;
-            InteractionManager.SourceReleased -= SourceManager_SourceReleased;
+            InteractionManager.SourceLost -= InteractionManager_SourceLost;
+            InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
+            InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
         }
     }
 }
