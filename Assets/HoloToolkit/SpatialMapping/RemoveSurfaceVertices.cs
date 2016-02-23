@@ -220,7 +220,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            Debug.Log("Finished removing vertices.)");
+            Debug.Log("Finished removing vertices.");
 
             // We are done removing vertices, trigger an event.
             EventHandler handler = RemoveVerticesComplete;
