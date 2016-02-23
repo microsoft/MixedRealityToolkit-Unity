@@ -1,7 +1,7 @@
 //Faster version of the Unity Standard Shader
 //Forces compilation for shader model 5.0
 //Sets several defines to make perf/quality tradeoffs that are more realistic for less beefy hardware
-//Based on the shader sources from 5.3
+//Based on the shader sources from 5.4
 //Merging should be relatively easy as none of the .cginc files need be touched
 //Supports stereo instancing
 
@@ -15,8 +15,14 @@ Shader "HoloToolkit/StandardFast"
 		_Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
 
 		_Glossiness("Smoothness", Range(0.0, 1.0)) = 0.5
+		_GlossMapScale("Smoothness Scale", Range(0.0, 1.0)) = 1.0
+		[Enum(Metallic Alpha,0,Albedo Alpha,1)] _SmoothnessTextureChannel ("Smoothness texture channel", Float) = 0
+
 		[Gamma] _Metallic("Metallic", Range(0.0, 1.0)) = 0.0
 		_MetallicGlossMap("Metallic", 2D) = "white" {}
+
+		[ToggleOff] _SpecularHighlights("Specular Highlights", Float) = 1.0
+		[ToggleOff] _GlossyReflections("Glossy Reflections", Float) = 1.0
 
 		_BumpScale("Scale", Float) = 1.0
 		_BumpMap("Normal Map", 2D) = "bump" {}
@@ -92,6 +98,9 @@ Shader "HoloToolkit/StandardFast"
 			#pragma shader_feature _EMISSION
 			#pragma shader_feature _METALLICGLOSSMAP 
 			#pragma shader_feature ___ _DETAIL_MULX2
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
+			#pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
 			#pragma shader_feature _PARALLAXMAP
 			
 			#pragma multi_compile_fwdbase
@@ -125,6 +134,8 @@ Shader "HoloToolkit/StandardFast"
 			#pragma shader_feature _NORMALMAP
 			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
 			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
 			#pragma shader_feature ___ _DETAIL_MULX2
 			#pragma shader_feature _PARALLAXMAP
 			
@@ -182,6 +193,8 @@ Shader "HoloToolkit/StandardFast"
 			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
 			#pragma shader_feature _EMISSION
 			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
 			#pragma shader_feature ___ _DETAIL_MULX2
 			#pragma shader_feature _PARALLAXMAP
 
@@ -214,6 +227,7 @@ Shader "HoloToolkit/StandardFast"
 
 			#pragma shader_feature _EMISSION
 			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 			#pragma shader_feature ___ _DETAIL_MULX2
 
 			#include "UnityStandardMeta.cginc"
@@ -243,7 +257,10 @@ Shader "HoloToolkit/StandardFast"
 			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
 			#pragma shader_feature _EMISSION 
 			#pragma shader_feature _METALLICGLOSSMAP 
-			#pragma shader_feature ___ _DETAIL_MULX2
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
+			#pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
+			// SM2.0: NOT SUPPORTED shader_feature ___ _DETAIL_MULX2
 			// SM2.0: NOT SUPPORTED shader_feature _PARALLAXMAP
 
 			#pragma skip_variants SHADOWS_SOFT DIRLIGHTMAP_COMBINED DIRLIGHTMAP_SEPARATE
@@ -274,6 +291,8 @@ Shader "HoloToolkit/StandardFast"
 			#pragma shader_feature _NORMALMAP
 			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
 			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
 			#pragma shader_feature ___ _DETAIL_MULX2
 			// SM2.0: NOT SUPPORTED shader_feature _PARALLAXMAP
 			#pragma skip_variants SHADOWS_SOFT
@@ -326,6 +345,7 @@ Shader "HoloToolkit/StandardFast"
 
 			#pragma shader_feature _EMISSION
 			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 			#pragma shader_feature ___ _DETAIL_MULX2
 
 			#include "UnityStandardMeta.cginc"
