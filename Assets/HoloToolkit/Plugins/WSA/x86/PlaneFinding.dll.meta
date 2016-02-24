@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f670afcb463c4a8448e54449d2193cf9
+guid: d0499d67557ffef4abc380ff3154ff6d
 licenseType: Pro
 PluginImporter:
   serializedVersion: 1
@@ -11,11 +11,11 @@ PluginImporter:
       enabled: 0
       settings: {}
     Editor:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: AnyCPU
+        CPU: x86
         DefaultValueInitialized: true
-        OS: AnyOS
+        OS: Windows
     Linux:
       enabled: 0
       settings:
@@ -41,12 +41,13 @@ PluginImporter:
       settings:
         CPU: AnyCPU
     WindowsStoreApps:
-      enabled: 1
+      enabled: 0
       settings:
-        CPU: X86
+        CPU: AnyCPU
         DontProcess: False
         PlaceholderPath: 
         SDK: AnySDK
+        ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
   assetBundleVariant: 
