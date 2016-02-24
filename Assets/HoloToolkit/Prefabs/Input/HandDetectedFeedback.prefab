@@ -151,6 +151,7 @@ Transform:
   - {fileID: 423990}
   m_Father: {fileID: 420132}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &405604
 Transform:
   m_ObjectHideFlags: 1
@@ -163,6 +164,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 408678}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &405794
 Transform:
   m_ObjectHideFlags: 1
@@ -176,6 +178,7 @@ Transform:
   - {fileID: 489468}
   m_Father: {fileID: 420132}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &408678
 Transform:
   m_ObjectHideFlags: 1
@@ -189,6 +192,7 @@ Transform:
   - {fileID: 405604}
   m_Father: {fileID: 423990}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &417894
 Transform:
   m_ObjectHideFlags: 1
@@ -201,6 +205,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 423990}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &420132
 Transform:
   m_ObjectHideFlags: 1
@@ -215,6 +220,7 @@ Transform:
   - {fileID: 402240}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &423990
 Transform:
   m_ObjectHideFlags: 1
@@ -229,6 +235,7 @@ Transform:
   - {fileID: 417894}
   m_Father: {fileID: 402240}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &447900
 Transform:
   m_ObjectHideFlags: 1
@@ -241,6 +248,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402240}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &489468
 Transform:
   m_ObjectHideFlags: 1
@@ -253,6 +261,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 405794}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2336532
 MeshRenderer:
   m_ObjectHideFlags: 1
