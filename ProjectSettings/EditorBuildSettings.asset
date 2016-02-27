@@ -6,4 +6,4 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/HoloToolkit/Tests/XTools/XTools.unity
+    path: Assets/HoloToolkit/Tests/Sharing/Sharing.unity
