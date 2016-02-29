@@ -15,18 +15,8 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
 	public enum TestMessageID : byte
     {
         HeadTransform = MessageID.UserMessageIDStart,
-        RequestAnchorName,
-        RequestAnchorData,
-        PostAnchorName,
-        PostAnchorData,
         Max
     }
-
-    public enum UserMessageChannels
-    {
-        Anchors = MessageChannel.UserMessageChannelStart,
-    }
-
 
     /// <summary>
 	/// Helper object that we use to route incoming message callbacks to the member
@@ -46,12 +36,6 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
     {
         get; set;
     }
-
-#if UNITY_EDITOR
-    byte isEditor = 1;
-#else
-    byte isEditor = 0;
-#endif
 
     public delegate void MessageCallback(NetworkInMessage msg);
     private Dictionary<TestMessageID, MessageCallback> _MessageHandlers = new Dictionary<TestMessageID, MessageCallback>();
@@ -120,106 +104,6 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
                 MessagePriority.Immediate,                   // Send immediately, do not buffer
                 MessageReliability.UnreliableSequenced,      // Do not retransmit, but don't deliver out of order
                 MessageChannel.Avatar);                      // Only order with respect to other messages in the Avatar channel
-        }
-    }
-
-    public bool SendRequestAnchorName()
-    {
-        // If we are connected to a session, broadcast our head info
-        if (this.serverConnection != null && this.serverConnection.IsConnected())
-        {
-            // Create an outgoing network message to contain all the info we want to send
-            NetworkOutMessage msg = CreateMessage((byte)TestMessageID.RequestAnchorName);
-
-            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
-            this.serverConnection.Broadcast(
-                msg,
-                MessagePriority.Medium,                   // Send immediately, do not buffer
-                MessageReliability.ReliableSequenced,      // Do not retransmit, but don't deliver out of order
-                (MessageChannel)UserMessageChannels.Anchors);                      // Only order with respect to other messages in the Avatar channel
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool SendRequestAnchorData()
-    {
-        // If we are connected to a session, broadcast our head info
-        if (this.serverConnection != null && this.serverConnection.IsConnected())
-        {
-            // Create an outgoing network message to contain all the info we want to send
-            NetworkOutMessage msg = CreateMessage((byte)TestMessageID.RequestAnchorData);
-
-            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
-            this.serverConnection.Broadcast(
-                msg,
-                MessagePriority.Medium,                   // Send immediately, do not buffer
-                MessageReliability.ReliableSequenced,      // Do not retransmit, but don't deliver out of order
-                (MessageChannel)UserMessageChannels.Anchors);                      // Only order with respect to other messages in the Avatar channel
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public void SendPostAnchorName(string Name)
-    {
-        // If we are connected to a session, broadcast our head info
-        if (this.serverConnection != null && this.serverConnection.IsConnected())
-        {
-            // Create an outgoing network message to contain all the info we want to send
-            NetworkOutMessage msg = CreateMessage((byte)TestMessageID.PostAnchorName);
-            msg.Write(isEditor);
-
-            msg.Write(new XString(Name));
-            Debug.Log("sending anchor name " + Name);
-            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
-            this.serverConnection.Broadcast(
-                msg,
-                MessagePriority.Medium,                   // Send immediately, do not buffer
-                MessageReliability.ReliableSequenced,      // Do not retransmit, but don't deliver out of order
-                 (MessageChannel)UserMessageChannels.Anchors);                      // Only order with respect to other messages in the Avatar channel
-        }
-    }
-
-    public void SendPostAnchorData(long UserId, byte[] anchorData)
-    {
-        // If we are connected to a session, broadcast our head info
-        if (this.serverConnection != null && this.serverConnection.IsConnected())
-        {
-            // Create an outgoing network message to contain all the info we want to send
-            NetworkOutMessage msg = CreateMessage((byte)TestMessageID.PostAnchorData);
-            msg.Write(isEditor);
-
-            if (anchorData != null)
-            {
-                msg.Write(anchorData.Length);
-                msg.WriteArray(anchorData, (uint)anchorData.Length);
-            }
-            else
-            {
-                msg.Write(1);
-                msg.WriteArray(new byte[1], 1);
-            }
-
-            User targetUser = SharingSessionTracker.Instance.GetUserById(UserId);
-
-            if (targetUser == null)
-            {
-                Debug.Log("User no longer in session");
-                return;
-            }
-
-            Debug.Log("Sending anchor ");
-            serverConnection.SendTo(
-                targetUser,
-                ClientRole.Unspecified, msg,
-                MessagePriority.Medium,
-                MessageReliability.ReliableOrdered,
-                (MessageChannel)UserMessageChannels.Anchors);
         }
     }
 

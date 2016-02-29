@@ -60,9 +60,7 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
     /// <param name="e"></param>
     private void Instance_SessionJoined(object sender, SharingSessionTracker.SessionJoinedEventArgs e)
     {
-#if !UNITY_EDITOR
         GetRemoteHeadInfo(e.joiningUser.GetID());
-#endif
     }
 
     /// <summary>

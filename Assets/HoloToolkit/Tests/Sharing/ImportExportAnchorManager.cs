@@ -12,13 +12,6 @@ using HoloToolkit.Sharing;
 /// </summary>
 public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 {
-
-    // protocol
-    // 1 - request location name
-    // 2 - if name is "" create anchor and send
-    // 3 - if name is a location we know, load it
-    // 4 - if name is not a location we know request full data
-
     /// <summary>
     /// Enum to track the progress through establishing a shared coordinate system.
     /// </summary>
@@ -27,7 +20,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         Start,
         InitializingAnchorStore,
         AnchorStoreInitialized,
-        NameRequested,
+        RoomApiInitialized,
         DataRequested,
         DataReady,
         Importing,
@@ -39,6 +32,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     ImportExportState currentState = ImportExportState.Start;
+
     public bool AnchorEstablished
     {
         get
@@ -53,11 +47,6 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     WorldAnchorTransferBatch sharedAnchorInterface;
 
     /// <summary>
-    /// Keeps track of stored anchor name.
-    /// </summary>
-    string storedAnchorName = "";
-
-    /// <summary>
     /// Keeps track of stored anchor data blob.
     /// </summary>
     byte[] RawAnchorData = null;
@@ -66,21 +55,6 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// Keeps track of locally stored anchors.
     /// </summary>
     WorldAnchorStore anchorStore = null;
-
-    /// <summary>
-    /// Keeps track of the user ID associated with the editor (anchor repository).
-    /// </summary>
-    long EditorId { get; set; }
-
-    /// <summary>
-    /// The device which first asks for the anchor name will be sent an
-    /// empty string.  This is a signal to create the first anchor.  
-    /// Subsequent name requests will be defered until we get the anchor
-    /// data blob.  Ultimately this probably needs to be a list of Xtools 
-    /// user ids to send the anchor infromation to, but since all we can do is
-    /// broadcast, this should be enough for now.
-    /// </summary>
-    public bool DeferAnchorNameRequests { get; set; }
 
     /// <summary>
     /// Keeps track of the name of the anchor we are exporting.
@@ -92,47 +66,176 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     List<byte> exportingAnchorBytes = new List<byte>();
 
+    /// <summary>
+    /// Keeps track of if the sharing service is ready.  
+    /// We need the sharing service to be ready so we can 
+    /// upload and download data for sharing anchors.
+    /// </summary>
+    bool SharingServiceReady = false;
+
+    /// <summary>
+    /// Interface to the sharing service.
+    /// </summary>
     XtoolsServerManager xtoolsManager;
 
+    /// <summary>
+    /// The room manager API for the sharing service.
+    /// </summary>
+    RoomManager roomManager;
+
+    /// <summary>
+    /// Keeps track of the current room we are connected to.  Anchors
+    /// are kept in rooms.
+    /// </summary>
+    Room currentRoom;
+
+    /// <summary>
+    /// Sometimes we'll see a really small anchor blob get generated.
+    /// These tend to not work, so we have a minimum trustable size.
+    /// </summary>
     const uint minTrustworthySerializedAnchorDataSize = 100000;
+
+    /// <summary>
+    /// Keeps track of outstanding anchor download requests to the sharing service.
+    /// </summary>
+    AnchorDownloadRequest anchorDownloadRequest = null;
 
     void Start()
     {
-        xtoolsManager = XtoolsServerManager.Instance;
         Debug.Log("Import Export Manager starting");
-        xtoolsManager.MessageHandlers[XtoolsServerManager.TestMessageID.PostAnchorName] = this.OnPostAnchorName;
-        xtoolsManager.MessageHandlers[XtoolsServerManager.TestMessageID.PostAnchorData] = this.OnPostAnchorData;
 
-#if !UNITY_EDITOR
-        // When on device we need to get our local anchor store started up.
+        xtoolsManager = XtoolsServerManager.Instance;
+
+        // We need to get our local anchor store started up.
         currentState = ImportExportState.InitializingAnchorStore;
         WorldAnchorStore.GetAsync(AnchorStoreReady);
-#else
-        xtoolsManager.MessageHandlers[XtoolsServerManager.TestMessageID.RequestAnchorName] = this.OnRequestAnchorName;
-        xtoolsManager.MessageHandlers[XtoolsServerManager.TestMessageID.RequestAnchorData] = this.OnRequestAnchorData;
-        currentState = ImportExportState.Ready;
-        DeferAnchorNameRequests = false;
-#endif
+
+        // We will register for session joined to indicate wwhen the sharing service
+        // is ready for us to make room related requests.
+        SharingSessionTracker.Instance.SessionJoined += Instance_SessionJoined;
     }
 
+    /// <summary>
+    /// Called when the local anchor store is ready for business.
+    /// </summary>
+    /// <param name="store"></param>
     void AnchorStoreReady(WorldAnchorStore store)
     {
         anchorStore = store;
         currentState = ImportExportState.AnchorStoreInitialized;
     }
 
+    /// <summary>
+    /// Called when a user (including the local user) joins a session.
+    /// In this case we are using this event to signal that the sharing service is 
+    /// ready for us to make room related requests.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Instance_SessionJoined(object sender, SharingSessionTracker.SessionJoinedEventArgs e)
+    {
+        // We don't need to get this event anymore.
+        SharingSessionTracker.Instance.SessionJoined -= Instance_SessionJoined;
+        SharingServiceReady = true;
+    }
+
+    /// <summary>
+    /// Initializes the room api.  
+    /// </summary>
+    void InitRoomApi()
+    {
+        roomManager = NetworkStage.Instance.Manager.GetRoomManager();
+
+        // If we have a room, we'll join the first room we see.
+        // Otherwise we'll make a room.
+        if (roomManager.GetRoomCount() == 0)
+        {
+            Debug.Log("Creating room ");
+            currentRoom = roomManager.CreateRoom(new XString("DefaultRoom"), 0);
+        }
+        else
+        {
+            Debug.Log("Joining room ");
+            currentRoom = roomManager.GetRoom(0);
+            roomManager.JoinRoom(currentRoom);
+        }
+
+        Debug.Log("In room :"+roomManager.GetCurrentRoom().GetName().GetString());
+    }
+
+    /// <summary>
+    /// Kicks off the process of creating the shared space.
+    /// </summary>
+    void StartAnchorProcess()
+    {
+        // First, are there any anchors in this room?
+        int anchorCount = currentRoom.GetAnchorCount();
+
+        Debug.Log(anchorCount + " anchors");
+
+        // If there are anchors, we should attach to the first one.
+        if (anchorCount > 0)
+        {
+            // Extrac the name of the anchor.
+            XString storedAnchorString = currentRoom.GetAnchorName(0);
+            string storedAnchorName = storedAnchorString.GetString();
+
+            // Attempt to attach to the anchor in our local anchor store.    
+            if (AttachToCachedAnchor(storedAnchorName) == false)
+            {
+                Debug.Log("Starting room download");
+                // If we cannot find the anchor by name, we will need the full data
+                // blob.
+                MakeAnchorDataRequest();
+            }
+        }
+        else
+        {
+            // If there are no anchors in the room we should make the anchor.
+            // We should only do this if we are in the room alone.
+            // Otherwise another user should be making it.
+            // **** I'm a little sketchy about this ****
+            if (currentRoom.GetUserCount() == 1) 
+            {
+                currentState = ImportExportState.InitialAnchorRequired;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Kicks off getting the datablob required to import the shared anchor.
+    /// </summary>
+    void MakeAnchorDataRequest()
+    {
+        anchorDownloadRequest = roomManager.DownloadAnchor(currentRoom, currentRoom.GetAnchorName(0));
+        currentState = ImportExportState.DataRequested;
+    }
+
     // Update is called once per frame
     void Update()
     {
-#if !UNITY_EDITOR
         switch (currentState)
         {
+            // If the local anchor store is initialized.
             case ImportExportState.AnchorStoreInitialized:
-                // When the anchor store is initialized we can request the anchor name from
-                // the Unity editor.
-                if (xtoolsManager.SendRequestAnchorName())
+                if (SharingServiceReady)
                 {
-                    currentState = ImportExportState.NameRequested;
+                    InitRoomApi();
+                    currentState = ImportExportState.RoomApiInitialized;
+                    StartAnchorProcess();
+                }
+                break;
+            case ImportExportState.RoomApiInitialized:
+                StartAnchorProcess();
+                break;
+            case ImportExportState.DataRequested:
+                if (anchorDownloadRequest.IsDownloading() == false)
+                {
+                    int datasize = anchorDownloadRequest.GetDataSize();
+                    Debug.Log(datasize + " bytes ");
+                    RawAnchorData = new byte[datasize];
+                    anchorDownloadRequest.GetData(RawAnchorData, datasize);
+                    currentState = ImportExportState.DataReady;
                 }
                 break;
             case ImportExportState.DataReady:
@@ -152,163 +255,6 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
                 Export();
                 break;
         }
-#else
-        currentState = ImportExportState.Ready;
-#endif
-    }
-
-    /// <summary>
-    /// Function called when a remote client is asking for the anchor name.
-    /// </summary>
-    /// <param name="msg"></param>
-    void OnRequestAnchorName(NetworkInMessage msg)
-    {
-        // on device this is a noop.
-#if UNITY_EDITOR
-        Debug.Log("Anchor name requested");
-        if (DeferAnchorNameRequests)
-        {
-            Debug.Log("Will send anchor name once we get anchor data");
-            return;
-        }
-
-        if (RawAnchorData == null || RawAnchorData.Length < 300)
-        {
-            storedAnchorName = "";
-        }
-
-        // Parse the message
-        long userID = msg.ReadInt64();
-        xtoolsManager.SendPostAnchorName(storedAnchorName);
-        DeferAnchorNameRequests = string.IsNullOrEmpty(storedAnchorName);
-#endif
-    }
-
-    /// <summary>
-    /// Function called when a client is providing the anchor name.
-    /// </summary>
-    /// <param name="msg"></param>
-    void OnPostAnchorName(NetworkInMessage msg)
-    {
-        // Parse the message
-        long userID = msg.ReadInt64();
-        byte isEditor = msg.ReadByte();
-        string anchorName = msg.ReadString().GetString();
-
-        Debug.Log(string.Format(
-            "Got anchor {0} from User {1} who {2} editor",
-            anchorName,
-            userID,
-            isEditor == 0 ? "is not" : "is"));
-
-        if (!string.IsNullOrEmpty(storedAnchorName))
-        {
-            Debug.Log("Not expecting a new anchor");
-            return;
-        }
-        // We only want to get the anchor name from the unity editor instance.
-#if !UNITY_EDITOR
-        if (isEditor == 0)
-        {
-            Debug.Log("Ignoring non-editor name");
-            return;
-        }
-#endif
-        storedAnchorName = anchorName;
-
-#if !UNITY_EDITOR
-        if (string.IsNullOrEmpty(storedAnchorName))
-        {
-            Debug.Log("Anchor name empty, making a new anchor");
-            // need to make a new anchor
-            currentState = ImportExportState.InitialAnchorRequired;
-            EditorId = userID;
-        }
-        else
-        {
-            // Attempt to attach to the anchor in our local anchor store.    
-            if (AttachToCachedAnchor(storedAnchorName) == false)
-            {
-                // If we cannot find the anchor by name, we will need the full data
-                // blob.
-                xtoolsManager.SendRequestAnchorData();
-                currentState = ImportExportState.DataRequested;
-            }
-        }
-
-        // We will no longer care about anchor name updates.
-        xtoolsManager.MessageHandlers[XtoolsServerManager.TestMessageID.PostAnchorName] = null;
-#endif
-    }
-
-    /// <summary>
-    /// Called when a client is requesting the full anchor blob.
-    /// Ideally this would only send the blob to the client that 'cares'.
-    /// </summary>
-    /// <param name="msg"></param>
-    void OnRequestAnchorData(NetworkInMessage msg)
-    {
-        // on device this is a noop.
-#if UNITY_EDITOR
-        Debug.Log("Anchor data requested");
-        // Parse the message
-        long userID = msg.ReadInt64();
-        if (!DeferAnchorNameRequests)
-        {
-            xtoolsManager.SendPostAnchorData(userID,RawAnchorData);
-        }
-#endif
-    }
-
-    /// <summary>
-    /// Called when a remote client has sent the data blob required to 
-    /// deserialize an anchor.
-    /// </summary>
-    /// <param name="msg"></param>
-    void OnPostAnchorData(NetworkInMessage msg)
-    {
-        Debug.Log("Got anchor Data");
-        // Parse the message
-        long userID = msg.ReadInt64();
-        byte isEditor = msg.ReadByte();
-        // We only want to get the anchor data from the unity editor instance.
-        // (Unless this is the editor).
-#if !UNITY_EDITOR
-        if (isEditor == 0)
-        {
-            Debug.Log("Ignoring non-editor data");
-            return;
-        }
-#endif
-        if (RawAnchorData == null) // only process an anchor once.
-        {
-            uint dataLen = (uint)msg.ReadInt32();
-            if (dataLen > minTrustworthySerializedAnchorDataSize)
-            {
-                RawAnchorData = new byte[dataLen];
-                msg.ReadArray(RawAnchorData, dataLen);
-#if !UNITY_EDITOR
-                currentState = ImportExportState.DataReady;
-#else
-                if (DeferAnchorNameRequests)
-                {
-                    DeferAnchorNameRequests = false;
-                    xtoolsManager.SendPostAnchorName(storedAnchorName);
-                }
-#endif
-                // We will no longer care about new anchor data.
-                xtoolsManager.MessageHandlers[XtoolsServerManager.TestMessageID.PostAnchorData] = null;
-            }
-            else
-            {
-                Debug.Log("Got bad data");
-                currentState = ImportExportState.Failed;
-            }
-        }
-        else
-        {
-            Debug.Log("Ignoring already processed anchor");
-        }
 
     }
 
@@ -317,7 +263,9 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     void CreateAnchorLocally()
     {
+        // Default to 2m in front of user.
         transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2;
+
         WorldAnchor anchor = GetComponent<WorldAnchor>();
         if (anchor == null)
         {
@@ -328,7 +276,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         {
             currentState = ImportExportState.ReadyToExportInitialAnchor;
         }
-        else {
+        else
+        {
             anchor.OnTrackingChanged += Anchor_OnTrackingChanged;
         }
     }
@@ -363,7 +312,6 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         string[] ids = anchorStore.GetAllIds();
         for (int index = 0; index < ids.Length; index++)
         {
-            Debug.Log(ids[index]);
             if (ids[index] == AnchorName)
             {
                 Debug.Log("Using what we have");
@@ -399,9 +347,10 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         else
         {
             Debug.Log("Failed to find local anchor from cache.");
-            xtoolsManager.SendRequestAnchorData();
-            currentState = ImportExportState.DataRequested;
+            MakeAnchorDataRequest();
         }
+
+        self.OnTrackingChanged -= ImportExportAnchorManager_OnTrackingChanged;
     }
 
     /// <summary>
@@ -416,8 +365,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             Debug.Log("Import complete");
             string first = wat.GetAllIds()[0];
             WorldAnchor myFriend = wat.LockObject(first, gameObject);
-            storedAnchorName = first;
-            anchorStore.Save(storedAnchorName, myFriend);
+            anchorStore.Save(first, myFriend);
             currentState = ImportExportState.Ready;
         }
         else
@@ -480,12 +428,14 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > minTrustworthySerializedAnchorDataSize)
         {
             Debug.Log("Sending " + exportingAnchorName);
-            XtoolsServerManager.Instance.SendPostAnchorName(exportingAnchorName);
-            XtoolsServerManager.Instance.SendPostAnchorData(EditorId, exportingAnchorBytes.ToArray());
+            roomManager.UploadAnchor(
+                currentRoom,
+                new XString(exportingAnchorName),
+                exportingAnchorBytes.ToArray(),
+                exportingAnchorBytes.Count);
         }
         else
         {
-
             Debug.Log("This anchor didn't work, trying again");
             currentState = ImportExportState.InitialAnchorRequired;
         }
