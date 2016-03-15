@@ -264,15 +264,9 @@ In this folder you will see different scenes like BasicCursor, Cursor, CursorWit
 Sharing scene demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
 It also demonstrates how to share world anchors between clients to establish a shared space.
 
-Project Settings requirements:
-1. In Player Settings -> Windows Store -> Publishing Settings check:
-InternetClientServer
-PrivateNetworkClientServer
-SpatialPerception
-2. In Player Settings -> Windows Store -> Other Settings check:
-Virtual Reality Supported
-In Virtual Reality Devices click '+' and select HoloLens
-3. Player Settings -> Windows Store -> Resolution and Presentation check:
-Run In Background
-
+Before deploying this scene to your HoloLens:
+1. On a PC in Unity click the menu option HoloToolkit->Launch Sharing Service
+2. In Hierarchy panel, click on Sharing game object
+3. In the Inspector panel, in the Server Address field enter your PC IP or the computer Name
+4. Save the scene and deploy.
 ---
