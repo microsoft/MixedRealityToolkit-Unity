@@ -8,37 +8,43 @@ namespace HoloToolkit.Sharing
         public string SessionName = "Default";
 
         // local cached pointer to the SessionManager
-        private SessionManager sessionMgr;
+        private SessionManager sessionManager;
 
         void Start()
         {
             // Get the SessionManager to use later.  Note that if this processes takes the role of a secondary client,
             // then the SessionManager will always be null
-            if (NetworkStage.Instance != null && NetworkStage.Instance.Manager != null)
+            if (SharingStage.Instance != null && SharingStage.Instance.Manager != null)
             {
-                this.sessionMgr = NetworkStage.Instance.Manager.GetSessionManager();
+                this.sessionManager = SharingStage.Instance.Manager.GetSessionManager();
             }
         }
 
         void Update()
         {
+            // Get an instance of the SessionManager if one does not exist.
+            if (sessionManager == null && SharingStage.Instance != null && SharingStage.Instance.Manager != null)
+            {
+                this.sessionManager = SharingStage.Instance.Manager.GetSessionManager();
+            }
+
             // If we are a Primary Client and can join sessions...
-            if (this.sessionMgr != null && sessionMgr.GetSessionCount() > 0)
+            if (this.sessionManager != null && sessionManager.GetSessionCount() > 0)
             {
                 // Check to see if we aren't already in the desired session
-                Session currentSession = this.sessionMgr.GetCurrentSession();
+                Session currentSession = this.sessionManager.GetCurrentSession();
 
                 if (currentSession == null ||                                                       // We aren't in any session
                     currentSession.GetName().GetString() != this.SessionName ||                     // We're in the wrong session
                     currentSession.GetMachineSessionState() == MachineSessionState.DISCONNECTED)    // We aren't joined or joining the right session
                 {
-                    Debug.Log("Session conn " + sessionMgr.IsServerConnected() + " sessions: " + sessionMgr.GetSessionCount());
+                    Debug.Log("Session conn " + sessionManager.IsServerConnected() + " sessions: " + sessionManager.GetSessionCount());
                     Debug.Log("Looking for " + SessionName);
                     bool sessionFound = false;
 
-                    for (int i = 0; i < this.sessionMgr.GetSessionCount(); ++i)
+                    for (int i = 0; i < this.sessionManager.GetSessionCount(); ++i)
                     {
-                        Session s = this.sessionMgr.GetSession(i);
+                        Session s = this.sessionManager.GetSession(i);
                         Debug.Log(string.Format("session {0}", s.GetName().GetString()));
 
                         if (s.GetName().GetString() == this.SessionName)
@@ -48,14 +54,14 @@ namespace HoloToolkit.Sharing
                             break;
                         }
                     }
-                    if (sessionMgr.IsServerConnected() && !sessionFound)
+                    if (sessionManager.IsServerConnected() && !sessionFound)
                     {
                         Debug.Log("Didn't find session, making a new one");
-                        sessionMgr.CreateSession(new XString(SessionName));
+                        sessionManager.CreateSession(new XString(SessionName));
 
-                        for (int i = 0; i < this.sessionMgr.GetSessionCount(); ++i)
+                        for (int i = 0; i < this.sessionManager.GetSessionCount(); ++i)
                         {
-                            Session s = this.sessionMgr.GetSession(i);
+                            Session s = this.sessionManager.GetSession(i);
                             if (s.GetName().GetString() == this.SessionName)
                             {
                                 s.Join();
@@ -67,14 +73,7 @@ namespace HoloToolkit.Sharing
 
                     }
                 }
-            }
-            else
-            {
-                if (NetworkStage.Instance != null && NetworkStage.Instance.Manager != null)
-                {
-                    this.sessionMgr = NetworkStage.Instance.Manager.GetSessionManager();
-                }
-            }
+            }            
         }
     }
 }

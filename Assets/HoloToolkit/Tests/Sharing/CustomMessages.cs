@@ -2,32 +2,24 @@
 using System.Collections.Generic;
 using HoloToolkit.Unity;
 using HoloToolkit.Sharing;
-using System;
 
-public class XtoolsServerManager : Singleton<XtoolsServerManager>
+public class CustomMessages : Singleton<CustomMessages>
 {
-
     /// <summary>
-	/// Normally you'd define a list of all the message types used in your app at the global scope,
-	/// but since this is just a test class we define it here.  Note that the first message type has to start
-	/// with UserMessageIDStart so as not to conflict with XTools internal messages.  
-	/// </summary>
-	public enum TestMessageID : byte
+    /// Message enum containing our information bytes to share.
+    /// The first message type has to start with UserMessageIDStart 
+    /// so as not to conflict with HoloToolkit internal messages.  
+    /// </summary>
+    public enum TestMessageID : byte
     {
         HeadTransform = MessageID.UserMessageIDStart,
         Max
     }
 
-    /// <summary>
-	/// Helper object that we use to route incoming message callbacks to the member
-	/// functions of this class
-	/// </summary>
-	NetworkConnectionAdapter connectionAdapter;
-
-    /// <summary>
-    /// Cache the connection object for the session server
-    /// </summary>
-    NetworkConnection serverConnection;
+    public enum UserMessageChannels
+    {
+        Anchors = MessageChannel.UserMessageChannelStart,
+    }
 
     /// <summary>
     /// Cache the local user's ID to use when sending messages
@@ -47,35 +39,44 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
         }
     }
 
-    // Use this for initialization
+    /// <summary>
+	/// Helper object that we use to route incoming message callbacks to the member
+	/// functions of this class
+	/// </summary>
+	NetworkConnectionAdapter connectionAdapter;
+
+    /// <summary>
+    /// Cache the connection object for the sharing service
+    /// </summary>
+    NetworkConnection serverConnection;
+
     void Start()
     {
-        InitializeXTools();
+        InitializeMessageHandlers();
     }
 
-    void InitializeXTools()
+    void InitializeMessageHandlers()
     {
-        NetworkStage xtoolsStage = NetworkStage.Instance;
-        if (xtoolsStage != null)
+        SharingStage sharingStage = SharingStage.Instance;
+        if (sharingStage != null)
         {
+            serverConnection = sharingStage.Manager.GetServerConnection();
+            connectionAdapter = new NetworkConnectionAdapter();
+        }
 
-            this.serverConnection = xtoolsStage.Manager.GetServerConnection();
+        connectionAdapter.MessageReceivedCallback += OnMessageReceived;
 
-            this.connectionAdapter = new NetworkConnectionAdapter();
-            this.connectionAdapter.MessageReceivedCallback += OnMessageReceived;
+        // Cache the local user ID
+        this.localUserID = SharingStage.Instance.Manager.GetLocalUser().GetID();
 
-            // Cache the local user ID
-            this.localUserID = xtoolsStage.Manager.GetLocalUser().GetID();
-
-            for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
+        for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
+        {
+            if (MessageHandlers.ContainsKey((TestMessageID)index) == false)
             {
-                if (MessageHandlers.ContainsKey((TestMessageID)index) == false)
-                {
-                    MessageHandlers.Add((TestMessageID)index, null);
-                }
-
-                this.serverConnection.AddListener(index, this.connectionAdapter);
+                MessageHandlers.Add((TestMessageID)index, null);
             }
+
+            serverConnection.AddListener(index, connectionAdapter);
         }
     }
 
@@ -101,12 +102,12 @@ public class XtoolsServerManager : Singleton<XtoolsServerManager>
             // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
             this.serverConnection.Broadcast(
                 msg,
-                MessagePriority.Immediate,                   // Send immediately, do not buffer
-                MessageReliability.UnreliableSequenced,      // Do not retransmit, but don't deliver out of order
-                MessageChannel.Avatar);                      // Only order with respect to other messages in the Avatar channel
+                MessagePriority.Immediate,
+                MessageReliability.UnreliableSequenced,
+                MessageChannel.Avatar);
         }
     }
-
+    
     void OnDestroy()
     {
         if (this.serverConnection != null)

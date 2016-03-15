@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity
             cursorDefaultRotation = this.gameObject.transform.rotation;
         }
 
-        void Update()
+        void LateUpdate()
         {
             if (GazeManager.Instance == null || meshRenderer == null)
             {

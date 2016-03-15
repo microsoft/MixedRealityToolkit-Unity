@@ -257,8 +257,11 @@ Now hit Play. The PlaneFinding algorithm will run in a loop, visualing the plane
 
 NOTE: In the interest of simplicity, this test script calls the PlaneFinding APIs directly from the main Unity thread in Update(). In a real application, the PlaneFinding APIs **MUST** be called from a background thread in order to avoid stalling the rendering thread and causing a drop in framerate.
 
-### XTools
-XTools scene demonstrates how to use the XTools prefabs for networking and sharing custom messages with clients. 
+### Input
+In this folder you will see different scenes like BasicCursor, Cursor, CursorWithFeedback that show you a few different ways of building cursors for you applications.
+
+### Sharing
+Sharing scene demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
 It also demonstrates how to share world anchors between clients to establish a shared space.
 
 Project Settings requirements:
