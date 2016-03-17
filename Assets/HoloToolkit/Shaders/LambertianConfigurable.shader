@@ -1,7 +1,6 @@
 //Very fast shader that uses the Unity lighting model
 //Compiles down to only performing the operations you're actually using
 //Uses material property drawers rather than a custom editor for ease of maintainance
-//Does not currently support stereo instancing as it is not supported for surface shaders by Unity yet...
 
 Shader "HoloToolkit/Lambertian Configurable"
 {
@@ -56,13 +55,15 @@ Shader "HoloToolkit/Lambertian Configurable"
 		#pragma target 5.0
 		#pragma only_renderers d3d11
 
-		#pragma surface surf Lambert
+		#pragma surface surf Lambert vertex:vert
 
 		#pragma shader_feature _USECOLOR_ON
 		#pragma shader_feature _USEMAINTEX_ON
 		#pragma shader_feature _USEBUMPMAP_ON
 		#pragma shader_feature _USEEMISSIONTEX_ON
+		#pragma shader_feature _NEAR_PLANE_FADE_ON
 
+		#include "HoloToolkitCommon.cginc"
         #include "LambertianConfigurable.cginc"
 
 		ENDCG  

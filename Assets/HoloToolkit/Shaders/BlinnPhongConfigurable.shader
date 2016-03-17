@@ -1,8 +1,8 @@
-//Very fast vertex lit shader that uses the Unity lighting model
+//Very fast shader that uses the Unity lighting model
 //Compiles down to only performing the operations you're actually using
 //Uses material property drawers rather than a custom editor for ease of maintainance
 
-Shader "HoloToolkit/Vertex Lit Configurable" 
+Shader "HoloToolkit/BlinnPhong Configurable"
 {
 	Properties 
 	{
@@ -15,6 +15,12 @@ Shader "HoloToolkit/Vertex Lit Configurable"
 		[Toggle] _UseMainTex ("Enabled?", Float) = 1
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		[Space(20)]
+			
+		//uses UV scale, etc from main texture
+		[Header(Normalmap)]
+		[Toggle] _UseBumpMap("Enabled?", Float) = 0
+		[NoScaleOffset] _BumpMap ("Normalmap", 2D) = "bump" {}
+		[Space(20)]
 		
 		//uses UV scale, etc from main texture	
 		[Header(Emission (RGB))]
@@ -22,6 +28,13 @@ Shader "HoloToolkit/Vertex Lit Configurable"
 		[NoScaleOffset] _EmissionTex ("Emission (RGB)", 2D) = "white" {}
 		[Space(20)]
 
+        //specular
+        [Header(Specular)]
+        _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 1)
+        _Specular("Specular", Range(0.0, 1.0)) = 0.5
+        _Gloss("Gloss", Range(0.0, 10.0)) = 0.5
+        [Space(20)]
+		
 		[Header(Blend State)]
 		[Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend ("SrcBlend", Float) = 1 //"One"
 		[Enum(UnityEngine.Rendering.BlendMode)] _DstBlend ("DestBlend", Float) = 0 //"Zero"
@@ -33,42 +46,33 @@ Shader "HoloToolkit/Vertex Lit Configurable"
 		[Enum(Off,0,On,1)] _ZWrite("ZWrite", Float) = 1.0 //"On"
 		[Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask ("ColorWriteMask", Float) = 15 //"All"
 	}
-	
+
 	SubShader 
 	{
 		Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
-		LOD 100
 		Blend [_SrcBlend] [_DstBlend]
 		ZTest [_ZTest]
 		ZWrite [_ZWrite]
 		Cull [_Cull]
-		ColorMask [_ColorWriteMask]		
-		
-		Pass
-		{
-			Name "FORWARD"
-			Tags { "LightMode" = "ForwardBase" }
+		ColorMask [_ColorWriteMask]
+		LOD 300
 
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			
-			#pragma multi_compile_fwdbase
-			#pragma multi_compile_fog
-			
-			//we only target the hololens (and the unity editor) so take advantage of shader model 5
-			#pragma target 5.0
-			#pragma only_renderers d3d11
-			
-			#pragma shader_feature _USECOLOR_ON
-			#pragma shader_feature _USEMAINTEX_ON
-			#pragma shader_feature _USEEMISSIONTEX_ON
-			#pragma shader_feature _NEAR_PLANE_FADE_ON
+		CGPROGRAM		
+		//we only target the hololens (and the unity editor) so take advantage of shader model 5
+		#pragma target 5.0
+		#pragma only_renderers d3d11
 
-			#include "HoloToolkitCommon.cginc"
-            #include "VertexLitConfigurable.cginc"
+		#pragma surface surf BlinnPhong vertex:vert
 
-			ENDCG
-		}
+		#pragma shader_feature _USECOLOR_ON
+		#pragma shader_feature _USEMAINTEX_ON
+		#pragma shader_feature _USEBUMPMAP_ON
+		#pragma shader_feature _USEEMISSIONTEX_ON
+		#pragma shader_feature _NEAR_PLANE_FADE_ON	
+
+		#include "HoloToolkitCommon.cginc"	
+        #include "BlinnPhongConfigurable.cginc"
+
+		ENDCG  
 	}
 }

@@ -1,4 +1,6 @@
 #include "UnityCG.cginc"
+// Upgrade NOTE: excluded shader from DX11 and Xbox360; has structs without semantics (struct v2f members fade)
+#pragma exclude_renderers d3d11 xbox360
 
 #if _USEMAINTEX_ON
     UNITY_DECLARE_TEX2D(_MainTex);
@@ -24,6 +26,9 @@ struct v2f
         float2 texcoord : TEXCOORD0;
     #endif
     UNITY_FOG_COORDS(1)
+	#if _NEAR_PLANE_FADE_ON
+		float fade : TEXCOORD2;
+	#endif	
 };
 
 v2f vert(appdata_t v)
@@ -34,6 +39,10 @@ v2f vert(appdata_t v)
     #if _USEMAINTEX_ON
         o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
     #endif
+	
+	#if _NEAR_PLANE_FADE_ON
+		o.fade = ComputeNearPlaneFadeLinear(v.vertex);
+	#endif	
 
     UNITY_TRANSFER_FOG(o, o.vertex);
     return o;
@@ -52,7 +61,12 @@ float4 frag(v2f i) : SV_Target
     #if _USECOLOR_ON
         c *= _Color;
     #endif
-
+		
     UNITY_APPLY_FOG(i.fogCoord, c);
+	
+	#if _NEAR_PLANE_FADE_ON
+		c.rgb *= i.fade;
+	#endif
+	
     return c;
 }

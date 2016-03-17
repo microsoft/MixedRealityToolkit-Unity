@@ -1,4 +1,6 @@
 #include "HLSLSupport.cginc"
+// Upgrade NOTE: excluded shader from DX11 and Xbox360; has structs without semantics (struct v2f_surf members fade)
+#pragma exclude_renderers d3d11 xbox360
 #include "UnityCG.cginc"
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
@@ -41,6 +43,9 @@ struct v2f_surf
     #endif
     LIGHTING_COORDS(2, 3)
     UNITY_FOG_COORDS(4)
+	#if _NEAR_PLANE_FADE_ON
+		float fade : TEXCOORD5;
+	#endif		
 };
 
 inline float3 LightingLambertVS(float3 normal, float3 lightDir)
@@ -67,6 +72,10 @@ v2f_surf vert(appdata_t v)
         o.vlight = ShadeSH9(float4(worldN, 1.0));
         o.vlight += LightingLambertVS(worldN, _WorldSpaceLightPos0.xyz);
     #endif
+	
+	#if _NEAR_PLANE_FADE_ON
+		o.fade = ComputeNearPlaneFadeLinear(v.vertex);
+	#endif	
 
     TRANSFER_VERTEX_TO_FRAGMENT(o);
     UNITY_TRANSFER_FOG(o, o.pos);
@@ -109,6 +118,10 @@ float4 frag(v2f_surf IN) : SV_Target
     #ifdef _USEEMISSIONTEX_ON
         finalColor.rgb += UNITY_SAMPLE_TEX2D(_EmissionTex, uv_MainTex);
     #endif
+	
+	#if _NEAR_PLANE_FADE_ON
+		finalColor.rgb *= IN.fade;
+	#endif	
 
     UNITY_APPLY_FOG(IN.fogCoord, finalColor);
 

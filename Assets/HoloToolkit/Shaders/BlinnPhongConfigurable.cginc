@@ -14,14 +14,17 @@
     UNITY_DECLARE_TEX2D(_EmissionTex);
 #endif
 
+float _Specular;
+float _Gloss;
+
 struct Input
 {
     //will get compiled out if not touched
     float2 uv_MainTex;
-
+	
 	#if _NEAR_PLANE_FADE_ON
 		float fade;
-	#endif
+	#endif	
 };
 
 void vert(inout appdata_full v, out Input o)
@@ -51,9 +54,11 @@ void surf(Input IN, inout SurfaceOutput o)
 	
 	#if _NEAR_PLANE_FADE_ON
 		o.Albedo.rgb *= IN.fade;
-	#endif
+	#endif	
 	
-	o.Alpha = c.a;
+    o.Alpha = c.a;
+    o.Specular = _Specular;
+    o.Gloss = _Gloss;
 
     #if _USEBUMPMAP_ON
         o.Normal = UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.uv_MainTex));

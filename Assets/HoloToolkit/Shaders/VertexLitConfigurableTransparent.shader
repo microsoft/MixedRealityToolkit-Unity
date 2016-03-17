@@ -1,7 +1,6 @@
 //Very fast vertex lit shader that uses the Unity lighting model
 //Compiles down to only performing the operations you're actually using
 //Uses material property drawers rather than a custom editor for ease of maintainance
-//Supports stereo instancing
 
 Shader "HoloToolkit/Vertex Lit Configurable Transparent" 
 {
@@ -64,7 +63,9 @@ Shader "HoloToolkit/Vertex Lit Configurable Transparent"
 			#pragma shader_feature _USECOLOR_ON
 			#pragma shader_feature _USEMAINTEX_ON
 			#pragma shader_feature _USEEMISSIONTEX_ON
-			
+			#pragma shader_feature _NEAR_PLANE_FADE_ON
+
+			#include "HoloToolkitCommon.cginc"
             #include "VertexLitConfigurable.cginc"
 
 			ENDCG
