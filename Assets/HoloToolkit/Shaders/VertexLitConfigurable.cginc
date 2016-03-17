@@ -1,6 +1,4 @@
 #include "HLSLSupport.cginc"
-// Upgrade NOTE: excluded shader from DX11 and Xbox360; has structs without semantics (struct v2f_surf members fade)
-#pragma exclude_renderers d3d11 xbox360
 #include "UnityCG.cginc"
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
