@@ -2,9 +2,9 @@
 
 namespace HoloToolkit.Sharing
 {
-    public class NetworkStage : MonoBehaviour
+    public class SharingStage : MonoBehaviour
     {
-        public static NetworkStage Instance = null;
+        public static SharingStage Instance = null;
 
         /// <summary>
         /// Set whether this app should be a Primary or Secondary client.

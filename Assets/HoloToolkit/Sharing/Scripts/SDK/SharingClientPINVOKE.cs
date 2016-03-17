@@ -891,7 +891,7 @@ class SharingClientPINVOKE {
   public static extern bool SessionManager_IsServerConnected(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_SessionManager")]
-  public static extern void delete_SessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern void delete_SessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);  
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_ClientConfig")]
   public static extern global::System.IntPtr new_ClientConfig(int jarg1);
@@ -986,13 +986,6 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_AnchorDownloadRequest_GetRoom")]
   public static extern global::System.IntPtr AnchorDownloadRequest_GetRoom(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_AnchorDownloadRequest_IsDownloading")]
-  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
-  public static extern bool AnchorDownloadRequest_IsDownloading(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_AnchorDownloadRequest_CancelDownload")]
-  public static extern void AnchorDownloadRequest_CancelDownload(global::System.Runtime.InteropServices.HandleRef jarg1);
-
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_AnchorDownloadRequest_GetDataSize")]
   public static extern int AnchorDownloadRequest_GetDataSize(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -1081,7 +1074,8 @@ class SharingClientPINVOKE {
   public static extern bool RoomManager_LeaveRoom(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_RoomManager_DownloadAnchor")]
-  public static extern global::System.IntPtr RoomManager_DownloadAnchor(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool RoomManager_DownloadAnchor(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_RoomManager_UploadAnchor")]
   [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
@@ -1200,7 +1194,7 @@ class SharingClientPINVOKE {
   public static extern global::System.IntPtr SessionManagerListener_SWIGUpcast(global::System.IntPtr jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_RoomManagerListener_SWIGUpcast")]
-  public static extern global::System.IntPtr RoomManagerListener_SWIGUpcast(global::System.IntPtr jarg1);
+  public static extern global::System.IntPtr RoomManagerListener_SWIGUpcast(global::System.IntPtr jarg1);  
 }
 
 }

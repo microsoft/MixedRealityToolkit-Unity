@@ -38,6 +38,52 @@ public class XString : global::System.IDisposable {
     }
   }
 
+  public override string ToString() { 
+    return GetString(); 
+  }
+
+  public override bool Equals(object obj)   
+  {
+    XString s = obj as XString; 
+    if (ReferenceEquals(s, null)) {
+      return false;
+    }
+    else {
+      return IsEqual(s);
+    }
+  }
+
+  public override int GetHashCode()
+  {
+    return GetString().GetHashCode(); 
+  }
+
+  public static bool operator ==(XString lhs, XString rhs)
+  {
+    if (ReferenceEquals(lhs, rhs)) {
+      return true;
+    }
+    else if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null)) {
+      return false;
+    } else {
+      return lhs.IsEqual(rhs);
+    }
+   }
+  
+  public static bool operator !=(XString lhs, XString rhs)
+  {
+    return !(lhs == rhs);
+  }
+  
+  public static implicit operator XString(string s) {
+    return new XString(s);
+  } 
+
+  public static implicit operator string(XString s)
+  {
+    return s.GetString();
+  }
+
   public XString() : this(SharingClientPINVOKE.new_XString__SWIG_0(), true) {
   }
 

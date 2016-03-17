@@ -50,15 +50,6 @@ public class AnchorDownloadRequest : global::System.IDisposable {
     return ret; 
   }
 
-  public virtual bool IsDownloading() {
-    bool ret = SharingClientPINVOKE.AnchorDownloadRequest_IsDownloading(swigCPtr);
-    return ret;
-  }
-
-  public virtual void CancelDownload() {
-    SharingClientPINVOKE.AnchorDownloadRequest_CancelDownload(swigCPtr);
-  }
-
   public virtual int GetDataSize() {
     int ret = SharingClientPINVOKE.AnchorDownloadRequest_GetDataSize(swigCPtr);
     return ret;

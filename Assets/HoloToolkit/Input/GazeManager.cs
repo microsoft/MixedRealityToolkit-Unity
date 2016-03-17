@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
     public class GazeManager : Singleton<GazeManager>
     {
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]
-        public float MaxGazeDistance = 5.0f;
+        public float MaxGazeDistance = 15.0f;
 
         [Tooltip("Select the layers raycast should target.")]
         public LayerMask RaycastLayerMask = Physics.DefaultRaycastLayers;
@@ -36,6 +36,7 @@ namespace HoloToolkit.Unity
 
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
+        private float lastHitDistance = 15.0f;
 
         private void Update()
         {
@@ -66,12 +67,13 @@ namespace HoloToolkit.Unity
                 // If the raycast hits a hologram, set the position and normal to match the intersection point.
                 Position = hitInfo.point;
                 Normal = hitInfo.normal;
+                lastHitDistance = hitInfo.distance;
             }
             else
             {
-                // If the raycast does not hit a hologram, default the position to MaxGazeDistance in front of the user,
+                // If the raycast does not hit a hologram, default the position to last hit distance in front of the user,
                 // and the normal to face the user.
-                Position = gazeOrigin + (gazeDirection * MaxGazeDistance);
+                Position = gazeOrigin + (gazeDirection * lastHitDistance);
                 Normal = gazeDirection;
             }
         }

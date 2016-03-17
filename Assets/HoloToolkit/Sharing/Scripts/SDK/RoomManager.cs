@@ -79,10 +79,9 @@ public class RoomManager : global::System.IDisposable {
     return ret;
   }
 
-  public virtual AnchorDownloadRequest DownloadAnchor(Room room, XString anchorName) {
-    global::System.IntPtr cPtr = SharingClientPINVOKE.RoomManager_DownloadAnchor(swigCPtr, Room.getCPtr(room), XString.getCPtr(anchorName));
-    AnchorDownloadRequest ret = (cPtr == global::System.IntPtr.Zero) ? null : new AnchorDownloadRequest(cPtr, true);
-    return ret; 
+  public virtual bool DownloadAnchor(Room room, XString anchorName) {
+    bool ret = SharingClientPINVOKE.RoomManager_DownloadAnchor(swigCPtr, Room.getCPtr(room), XString.getCPtr(anchorName));
+    return ret;
   }
 
   public unsafe bool UploadAnchor(Room room, XString anchorName, byte[] data, int dataSize) {

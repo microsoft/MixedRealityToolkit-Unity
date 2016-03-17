@@ -29,6 +29,11 @@ public class SharingSessionTracker : Singleton<SharingSessionTracker>
     /// </summary>
     public event EventHandler<SessionLeftEventArgs> SessionLeft;
 
+    public List<long> UserIds
+    {
+        get { return userIds; }
+    }
+
     // Local cached pointer to the SessionManager
     private SessionManager sessionManager;
     List<long> userIds = new List<long>();
@@ -103,9 +108,9 @@ public class SharingSessionTracker : Singleton<SharingSessionTracker>
     void Update()
     {
         // Get an instance of the SessionManager if one does not exist.
-        if (sessionManager == null && NetworkStage.Instance != null && NetworkStage.Instance.Manager != null)
+        if (sessionManager == null && SharingStage.Instance != null && SharingStage.Instance.Manager != null)
         {
-            this.sessionManager = NetworkStage.Instance.Manager.GetSessionManager();
+            this.sessionManager = SharingStage.Instance.Manager.GetSessionManager();
         }
 
         // Only poll every second.

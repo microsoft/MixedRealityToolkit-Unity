@@ -14,7 +14,7 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
     public class RemoteHeadInfo
     {
         public long UserID;
-        public GameObject HeadObject;        
+        public GameObject HeadObject;
     }
 
     /// <summary>
@@ -24,8 +24,8 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
 
     void Start()
     {
-        XtoolsServerManager.Instance.MessageHandlers[XtoolsServerManager.TestMessageID.HeadTransform] = this.UpdateHeadTransform;
-        
+        CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = this.UpdateHeadTransform;
+
         SharingSessionTracker.Instance.SessionJoined += Instance_SessionJoined;
         SharingSessionTracker.Instance.SessionLeft += Instance_SessionLeft;
     }
@@ -35,10 +35,11 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
         // Grab the current head transform and broadcast it to all the other users in the session
         Transform headTransform = Camera.main.transform;
 
-        // Transform the head position and rotation into local space
+        // Transform the head position and rotation from world space into local space
         Vector3 headPosition = this.transform.InverseTransformPoint(headTransform.position);
         Quaternion headRotation = Quaternion.Inverse(this.transform.rotation) * headTransform.rotation;
-        XtoolsServerManager.Instance.SendHeadTransform(headPosition, headRotation);
+
+        CustomMessages.Instance.SendHeadTransform(headPosition, headRotation);
     }
 
 
@@ -94,20 +95,13 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
         // Parse the message
         long userID = msg.ReadInt64();
 
-        Vector3 headPos = Vector3.zero;
-        headPos.x = msg.ReadFloat();
-        headPos.y = msg.ReadFloat();
-        headPos.z = msg.ReadFloat();
+        Vector3 headPos = CustomMessages.Instance.ReadVector3(msg);
 
-        Quaternion headRot = Quaternion.identity;
-        headRot.x = msg.ReadFloat();
-        headRot.y = msg.ReadFloat();
-        headRot.z = msg.ReadFloat();
-        headRot.w = msg.ReadFloat();
+        Quaternion headRot = CustomMessages.Instance.ReadQuaternion(msg);
 
         RemoteHeadInfo headInfo = GetRemoteHeadInfo(userID);
         headInfo.HeadObject.transform.localPosition = headPos;
-        headInfo.HeadObject.transform.localRotation = headRot;        
+        headInfo.HeadObject.transform.localRotation = headRot;
     }
 
     /// <summary>
