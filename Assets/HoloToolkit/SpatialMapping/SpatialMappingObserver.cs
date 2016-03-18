@@ -103,9 +103,9 @@ namespace HoloToolkit.Unity
                     // If RequestMeshAsync succeeds, then we have successfully scheduled mesh creation.
                     surfaceWorkOutstanding = SurfaceObserver.RequestMeshAsync(surfaceData);
                 }
-                // If we don't have any other work to do,  and enough time has passed since the previous
+                // If we don't have any other work to do, and enough time has passed since the previous
                 // update request, request updates for the spatial mapping data.
-                else if ((Time.time - updateTime) >= TimeBetweenUpdates)
+                else if (surfaceWorkOutstanding == false && (Time.time - updateTime) >= TimeBetweenUpdates)
                 {
                     observer.Update();
                     updateTime = Time.time;
@@ -122,7 +122,9 @@ namespace HoloToolkit.Unity
             {
                 Debug.Log("Starting the observer.");
                 ObserverState = ObserverStates.Running;
-                updateTime = Time.time;
+
+                // We want the first update immediately.
+                updateTime = 0;
             }
         }
 
