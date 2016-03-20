@@ -443,12 +443,11 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnection_RemoveListener")]
   public static extern void NetworkConnection_RemoveListener(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnection_RegisterAsyncCallback")]
-  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
-  public static extern bool NetworkConnection_RegisterAsyncCallback(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnection_AddListenerAsync")]
+  public static extern void NetworkConnection_AddListenerAsync(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnection_UnregisterAsyncCallback")]
-  public static extern void NetworkConnection_UnregisterAsyncCallback(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnection_RemoveListenerAsync")]
+  public static extern void NetworkConnection_RemoveListenerAsync(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnection_CreateMessage")]
   public static extern global::System.IntPtr NetworkConnection_CreateMessage(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
@@ -483,6 +482,19 @@ class SharingClientPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_Element")]
   public static extern void delete_Element(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_BoolElement_Cast")]
+  public static extern global::System.IntPtr BoolElement_Cast(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_BoolElement_GetValue")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool BoolElement_GetValue(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_BoolElement_SetValue")]
+  public static extern void BoolElement_SetValue(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_BoolElement")]
+  public static extern void delete_BoolElement(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_IntElement_Cast")]
   public static extern global::System.IntPtr IntElement_Cast(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -601,6 +613,12 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_ObjectElementListener")]
   public static extern void delete_ObjectElementListener(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ObjectElementListener_OnBoolElementChanged")]
+  public static extern void ObjectElementListener_OnBoolElementChanged(global::System.Runtime.InteropServices.HandleRef jarg1, long jarg2, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ObjectElementListener_OnBoolElementChangedSwigExplicitObjectElementListener")]
+  public static extern void ObjectElementListener_OnBoolElementChangedSwigExplicitObjectElementListener(global::System.Runtime.InteropServices.HandleRef jarg1, long jarg2, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg3);
+
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ObjectElementListener_OnIntElementChanged")]
   public static extern void ObjectElementListener_OnIntElementChanged(global::System.Runtime.InteropServices.HandleRef jarg1, long jarg2, int jarg3);
 
@@ -647,10 +665,13 @@ class SharingClientPINVOKE {
   public static extern global::System.IntPtr new_ObjectElementListener();
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ObjectElementListener_director_connect")]
-  public static extern void ObjectElementListener_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, ObjectElementListener.SwigDelegateObjectElementListener_0 delegate0, ObjectElementListener.SwigDelegateObjectElementListener_1 delegate1, ObjectElementListener.SwigDelegateObjectElementListener_2 delegate2, ObjectElementListener.SwigDelegateObjectElementListener_3 delegate3, ObjectElementListener.SwigDelegateObjectElementListener_4 delegate4, ObjectElementListener.SwigDelegateObjectElementListener_5 delegate5, ObjectElementListener.SwigDelegateObjectElementListener_6 delegate6);
+  public static extern void ObjectElementListener_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, ObjectElementListener.SwigDelegateObjectElementListener_0 delegate0, ObjectElementListener.SwigDelegateObjectElementListener_1 delegate1, ObjectElementListener.SwigDelegateObjectElementListener_2 delegate2, ObjectElementListener.SwigDelegateObjectElementListener_3 delegate3, ObjectElementListener.SwigDelegateObjectElementListener_4 delegate4, ObjectElementListener.SwigDelegateObjectElementListener_5 delegate5, ObjectElementListener.SwigDelegateObjectElementListener_6 delegate6, ObjectElementListener.SwigDelegateObjectElementListener_7 delegate7);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ObjectElement_Cast")]
   public static extern global::System.IntPtr ObjectElement_Cast(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ObjectElement_CreateBoolElement")]
+  public static extern global::System.IntPtr ObjectElement_CreateBoolElement(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ObjectElement_CreateIntElement")]
   public static extern global::System.IntPtr ObjectElement_CreateIntElement(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
@@ -891,7 +912,7 @@ class SharingClientPINVOKE {
   public static extern bool SessionManager_IsServerConnected(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_SessionManager")]
-  public static extern void delete_SessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);  
+  public static extern void delete_SessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_ClientConfig")]
   public static extern global::System.IntPtr new_ClientConfig(int jarg1);
@@ -970,6 +991,13 @@ class SharingClientPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_Room_GetUserID")]
   public static extern int Room_GetUserID(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_Room_GetKeepOpen")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool Room_GetKeepOpen(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_Room_SetKeepOpen")]
+  public static extern void Room_SetKeepOpen(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_Room_GetAnchorCount")]
   public static extern int Room_GetAnchorCount(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -1063,7 +1091,7 @@ class SharingClientPINVOKE {
   public static extern global::System.IntPtr RoomManager_GetCurrentRoom(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_RoomManager_CreateRoom")]
-  public static extern global::System.IntPtr RoomManager_CreateRoom(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, long jarg3);
+  public static extern global::System.IntPtr RoomManager_CreateRoom(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, long jarg3, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_RoomManager_JoinRoom")]
   [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
@@ -1156,6 +1184,9 @@ class SharingClientPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnectionListener_SWIGUpcast")]
   public static extern global::System.IntPtr NetworkConnectionListener_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_BoolElement_SWIGUpcast")]
+  public static extern global::System.IntPtr BoolElement_SWIGUpcast(global::System.IntPtr jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_IntElement_SWIGUpcast")]
   public static extern global::System.IntPtr IntElement_SWIGUpcast(global::System.IntPtr jarg1);

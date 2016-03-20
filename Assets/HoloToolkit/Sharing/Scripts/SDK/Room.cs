@@ -59,6 +59,15 @@ public class Room : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool GetKeepOpen() {
+    bool ret = SharingClientPINVOKE.Room_GetKeepOpen(swigCPtr);
+    return ret;
+  }
+
+  public virtual void SetKeepOpen(bool keepOpen) {
+    SharingClientPINVOKE.Room_SetKeepOpen(swigCPtr, keepOpen);
+  }
+
   public virtual int GetAnchorCount() {
     int ret = SharingClientPINVOKE.Room_GetAnchorCount(swigCPtr);
     return ret;

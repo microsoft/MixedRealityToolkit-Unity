@@ -43,6 +43,12 @@ public class ObjectElement : Element {
     return ret; 
   }
 
+  public virtual BoolElement CreateBoolElement(XString name, bool value) {
+    global::System.IntPtr cPtr = SharingClientPINVOKE.ObjectElement_CreateBoolElement(swigCPtr, XString.getCPtr(name), value);
+    BoolElement ret = (cPtr == global::System.IntPtr.Zero) ? null : new BoolElement(cPtr, true);
+    return ret; 
+  }
+
   public virtual IntElement CreateIntElement(XString name, int value) {
     global::System.IntPtr cPtr = SharingClientPINVOKE.ObjectElement_CreateIntElement(swigCPtr, XString.getCPtr(name), value);
     IntElement ret = (cPtr == global::System.IntPtr.Zero) ? null : new IntElement(cPtr, true);

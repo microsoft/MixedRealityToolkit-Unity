@@ -63,8 +63,8 @@ public class RoomManager : global::System.IDisposable {
     return ret; 
   }
 
-  public virtual Room CreateRoom(XString roomName, long roomID) {
-    global::System.IntPtr cPtr = SharingClientPINVOKE.RoomManager_CreateRoom(swigCPtr, XString.getCPtr(roomName), roomID);
+  public virtual Room CreateRoom(XString roomName, long roomID, bool keepOpenWhenEmpty) {
+    global::System.IntPtr cPtr = SharingClientPINVOKE.RoomManager_CreateRoom(swigCPtr, XString.getCPtr(roomName), roomID, keepOpenWhenEmpty);
     Room ret = (cPtr == global::System.IntPtr.Zero) ? null : new Room(cPtr, true);
     return ret; 
   }

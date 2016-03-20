@@ -220,7 +220,9 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             if (LocalUserHasLowestUserId())
             {
                 Debug.Log("Creating room ");
-                currentRoom = roomManager.CreateRoom(new XString("DefaultRoom"), roomID);
+                // To keep anchors alive even if all users have left the session ...
+                // Pass in true instead of false in CreateRoom.
+                currentRoom = roomManager.CreateRoom(new XString("DefaultRoom"), roomID, false);
                 currentState = ImportExportState.InitialAnchorRequired;
             }
         }

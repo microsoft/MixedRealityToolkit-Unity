@@ -116,13 +116,12 @@ public class NetworkConnection : global::System.IDisposable {
     SharingClientPINVOKE.NetworkConnection_RemoveListener(swigCPtr, messageType, NetworkConnectionListener.getCPtr(oldListener));
   }
 
-  public virtual bool RegisterAsyncCallback(byte messageType, NetworkConnectionListener cb) {
-    bool ret = SharingClientPINVOKE.NetworkConnection_RegisterAsyncCallback(swigCPtr, messageType, NetworkConnectionListener.getCPtr(cb));
-    return ret;
+  public virtual void AddListenerAsync(byte messageType, NetworkConnectionListener newListener) {
+    SharingClientPINVOKE.NetworkConnection_AddListenerAsync(swigCPtr, messageType, NetworkConnectionListener.getCPtr(newListener));
   }
 
-  public virtual void UnregisterAsyncCallback(byte messageType) {
-    SharingClientPINVOKE.NetworkConnection_UnregisterAsyncCallback(swigCPtr, messageType);
+  public virtual void RemoveListenerAsync(byte messageType, NetworkConnectionListener oldListener) {
+    SharingClientPINVOKE.NetworkConnection_RemoveListenerAsync(swigCPtr, messageType, NetworkConnectionListener.getCPtr(oldListener));
   }
 
   public virtual NetworkOutMessage CreateMessage(byte messageType) {

@@ -10,6 +10,7 @@ namespace HoloToolkit.Sharing {
 
 public enum ElementType {
   UnknownType = 0,
+  BoolType,
   Int32Type,
   Int64Type,
   FloatType,
