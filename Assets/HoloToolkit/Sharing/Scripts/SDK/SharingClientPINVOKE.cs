@@ -914,6 +914,46 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_SessionManager")]
   public static extern void delete_SessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_UserPresenceManagerListener")]
+  public static extern void delete_UserPresenceManagerListener(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManagerListener_OnUserPresenceChanged")]
+  public static extern void UserPresenceManagerListener_OnUserPresenceChanged(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManagerListener_OnUserPresenceChangedSwigExplicitUserPresenceManagerListener")]
+  public static extern void UserPresenceManagerListener_OnUserPresenceChangedSwigExplicitUserPresenceManagerListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_UserPresenceManagerListener")]
+  public static extern global::System.IntPtr new_UserPresenceManagerListener();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManagerListener_director_connect")]
+  public static extern void UserPresenceManagerListener_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, UserPresenceManagerListener.SwigDelegateUserPresenceManagerListener_0 delegate0);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManager_AddListener")]
+  public static extern void UserPresenceManager_AddListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManager_RemoveListener")]
+  public static extern void UserPresenceManager_RemoveListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManager_GetMuteState")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool UserPresenceManager_GetMuteState(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManager_SetMuteState")]
+  public static extern void UserPresenceManager_SetMuteState(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManager_SetName")]
+  public static extern void UserPresenceManager_SetName(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManager_GetName")]
+  public static extern global::System.IntPtr UserPresenceManager_GetName(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManager_SetUser")]
+  public static extern void UserPresenceManager_SetUser(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_UserPresenceManager")]
+  public static extern void delete_UserPresenceManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_ClientConfig")]
   public static extern global::System.IntPtr new_ClientConfig(int jarg1);
 
@@ -1133,54 +1173,321 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_Settings")]
   public static extern void delete_Settings(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_Create")]
-  public static extern global::System.IntPtr XToolsManager_Create(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetSessionManager")]
-  public static extern global::System.IntPtr XToolsManager_GetSessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetUserPresenceManager")]
-  public static extern global::System.IntPtr XToolsManager_GetUserPresenceManager(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetAudioManager")]
-  public static extern global::System.IntPtr XToolsManager_GetAudioManager(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetPairingManager")]
-  public static extern global::System.IntPtr XToolsManager_GetPairingManager(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetRoomManager")]
-  public static extern global::System.IntPtr XToolsManager_GetRoomManager(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetRootSyncObject")]
-  public static extern global::System.IntPtr XToolsManager_GetRootSyncObject(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_RegisterSyncListener")]
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_IsReceiver")]
   [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
-  public static extern bool XToolsManager_RegisterSyncListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern bool PairMaker_IsReceiver(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_Update")]
-  public static extern void XToolsManager_Update(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_IsReceiverSwigExplicitPairMaker")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool PairMaker_IsReceiverSwigExplicitPairMaker(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetPairedConnection")]
-  public static extern global::System.IntPtr XToolsManager_GetPairedConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetAddressCount")]
+  public static extern int PairMaker_GetAddressCount(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetServerConnection")]
-  public static extern global::System.IntPtr XToolsManager_GetServerConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetAddress")]
+  public static extern global::System.IntPtr PairMaker_GetAddress(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetSettings")]
-  public static extern global::System.IntPtr XToolsManager_GetSettings(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetAddressSwigExplicitPairMaker")]
+  public static extern global::System.IntPtr PairMaker_GetAddressSwigExplicitPairMaker(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_SetServerConnectionInfo")]
-  public static extern void XToolsManager_SetServerConnectionInfo(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetPort")]
+  public static extern ushort PairMaker_GetPort(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_GetLocalUser")]
-  public static extern global::System.IntPtr XToolsManager_GetLocalUser(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetPortSwigExplicitPairMaker")]
+  public static extern ushort PairMaker_GetPortSwigExplicitPairMaker(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_XToolsManager_SetUserName")]
-  public static extern void XToolsManager_SetUserName(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_Update")]
+  public static extern void PairMaker_Update(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_XToolsManager")]
-  public static extern void delete_XToolsManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_UpdateSwigExplicitPairMaker")]
+  public static extern void PairMaker_UpdateSwigExplicitPairMaker(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_IsReadyToConnect")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool PairMaker_IsReadyToConnect(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_IsReadyToConnectSwigExplicitPairMaker")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool PairMaker_IsReadyToConnectSwigExplicitPairMaker(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetLocalKey")]
+  public static extern int PairMaker_GetLocalKey(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetLocalKeySwigExplicitPairMaker")]
+  public static extern int PairMaker_GetLocalKeySwigExplicitPairMaker(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetRemoteKey")]
+  public static extern int PairMaker_GetRemoteKey(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_GetRemoteKeySwigExplicitPairMaker")]
+  public static extern int PairMaker_GetRemoteKeySwigExplicitPairMaker(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_PairMaker")]
+  public static extern global::System.IntPtr new_PairMaker();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_PairMaker")]
+  public static extern void delete_PairMaker(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairMaker_director_connect")]
+  public static extern void PairMaker_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, PairMaker.SwigDelegatePairMaker_0 delegate0, PairMaker.SwigDelegatePairMaker_1 delegate1, PairMaker.SwigDelegatePairMaker_2 delegate2, PairMaker.SwigDelegatePairMaker_3 delegate3, PairMaker.SwigDelegatePairMaker_4 delegate4, PairMaker.SwigDelegatePairMaker_5 delegate5, PairMaker.SwigDelegatePairMaker_6 delegate6, PairMaker.SwigDelegatePairMaker_7 delegate7);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingListener_PairingConnectionSucceeded")]
+  public static extern void PairingListener_PairingConnectionSucceeded(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingListener_PairingConnectionSucceededSwigExplicitPairingListener")]
+  public static extern void PairingListener_PairingConnectionSucceededSwigExplicitPairingListener(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingListener_PairingConnectionFailed")]
+  public static extern void PairingListener_PairingConnectionFailed(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingListener_PairingConnectionFailedSwigExplicitPairingListener")]
+  public static extern void PairingListener_PairingConnectionFailedSwigExplicitPairingListener(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_PairingListener")]
+  public static extern global::System.IntPtr new_PairingListener();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_PairingListener")]
+  public static extern void delete_PairingListener(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingListener_director_connect")]
+  public static extern void PairingListener_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, PairingListener.SwigDelegatePairingListener_0 delegate0, PairingListener.SwigDelegatePairingListener_1 delegate1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_HasPairingInfo")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool PairingManager_HasPairingInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_ClearPairingInfo")]
+  public static extern void PairingManager_ClearPairingInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_BeginConnecting")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool PairingManager_BeginConnecting(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_CancelConnecting")]
+  public static extern void PairingManager_CancelConnecting(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_BeginPairing")]
+  public static extern int PairingManager_BeginPairing(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_CancelPairing")]
+  public static extern void PairingManager_CancelPairing(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_IsPairing")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool PairingManager_IsPairing(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingManager_IsConnected")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool PairingManager_IsConnected(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_PairingManager")]
+  public static extern void delete_PairingManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_Create")]
+  public static extern global::System.IntPtr SharingManager_Create(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetSessionManager")]
+  public static extern global::System.IntPtr SharingManager_GetSessionManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetUserPresenceManager")]
+  public static extern global::System.IntPtr SharingManager_GetUserPresenceManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetAudioManager")]
+  public static extern global::System.IntPtr SharingManager_GetAudioManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetPairingManager")]
+  public static extern global::System.IntPtr SharingManager_GetPairingManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetRoomManager")]
+  public static extern global::System.IntPtr SharingManager_GetRoomManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetRootSyncObject")]
+  public static extern global::System.IntPtr SharingManager_GetRootSyncObject(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_RegisterSyncListener")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool SharingManager_RegisterSyncListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_Update")]
+  public static extern void SharingManager_Update(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetPairedConnection")]
+  public static extern global::System.IntPtr SharingManager_GetPairedConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetServerConnection")]
+  public static extern global::System.IntPtr SharingManager_GetServerConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetSettings")]
+  public static extern global::System.IntPtr SharingManager_GetSettings(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_SetServerConnectionInfo")]
+  public static extern void SharingManager_SetServerConnectionInfo(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_GetLocalUser")]
+  public static extern global::System.IntPtr SharingManager_GetLocalUser(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SharingManager_SetUserName")]
+  public static extern void SharingManager_SetUserName(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_SharingManager")]
+  public static extern void delete_SharingManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_ImageTagLocation")]
+  public static extern void delete_ImageTagLocation(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocation_GetTagId")]
+  public static extern int ImageTagLocation_GetTagId(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocation_GetPixelX")]
+  public static extern float ImageTagLocation_GetPixelX(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocation_GetPixelY")]
+  public static extern float ImageTagLocation_GetPixelY(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocation_GetModelViewMatrix")]
+  public static extern float ImageTagLocation_GetModelViewMatrix(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3, float jarg4, float jarg5, float jarg6, float jarg7, float jarg8, float jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_ImageTagLocationListener")]
+  public static extern void delete_ImageTagLocationListener(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocationListener_OnTagLocated")]
+  public static extern void ImageTagLocationListener_OnTagLocated(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocationListener_OnTagLocatedSwigExplicitImageTagLocationListener")]
+  public static extern void ImageTagLocationListener_OnTagLocatedSwigExplicitImageTagLocationListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocationListener_OnTagLocatingCompleted")]
+  public static extern void ImageTagLocationListener_OnTagLocatingCompleted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocationListener_OnTagLocatingCompletedSwigExplicitImageTagLocationListener")]
+  public static extern void ImageTagLocationListener_OnTagLocatingCompletedSwigExplicitImageTagLocationListener(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_ImageTagLocationListener")]
+  public static extern global::System.IntPtr new_ImageTagLocationListener();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocationListener_director_connect")]
+  public static extern void ImageTagLocationListener_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, ImageTagLocationListener.SwigDelegateImageTagLocationListener_0 delegate0, ImageTagLocationListener.SwigDelegateImageTagLocationListener_1 delegate1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_TagImage_GetWidth")]
+  public static extern int TagImage_GetWidth(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_TagImage_GetHeight")]
+  public static extern int TagImage_GetHeight(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_TagImage_CopyImageData")]
+  public static extern void TagImage_CopyImageData(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2, int jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_TagImage")]
+  public static extern void delete_TagImage(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_ImageTagManager")]
+  public static extern void delete_ImageTagManager(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagManager_Update")]
+  public static extern void ImageTagManager_Update(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagManager_FindTags")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool ImageTagManager_FindTags(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2, int jarg3, int jarg4, int jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagManager_CreateTagImage")]
+  public static extern global::System.IntPtr ImageTagManager_CreateTagImage(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagManager_Create")]
+  public static extern global::System.IntPtr ImageTagManager_Create();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_DirectPairConnector__SWIG_0")]
+  public static extern global::System.IntPtr new_DirectPairConnector__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_DirectPairConnector__SWIG_1")]
+  public static extern global::System.IntPtr new_DirectPairConnector__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_DirectPairConnector__SWIG_2")]
+  public static extern global::System.IntPtr new_DirectPairConnector__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, ushort jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_IsReceiver")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool DirectPairConnector_IsReceiver(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_GetAddressCount")]
+  public static extern int DirectPairConnector_GetAddressCount(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_GetAddress")]
+  public static extern global::System.IntPtr DirectPairConnector_GetAddress(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_GetPort")]
+  public static extern ushort DirectPairConnector_GetPort(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_Update")]
+  public static extern void DirectPairConnector_Update(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_IsReadyToConnect")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool DirectPairConnector_IsReadyToConnect(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_SetRemoteAddress")]
+  public static extern void DirectPairConnector_SetRemoteAddress(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_SetRemotePort")]
+  public static extern void DirectPairConnector_SetRemotePort(global::System.Runtime.InteropServices.HandleRef jarg1, ushort jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_DirectPairConnector")]
+  public static extern void delete_DirectPairConnector(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_DirectPairReceiver__SWIG_0")]
+  public static extern global::System.IntPtr new_DirectPairReceiver__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_DirectPairReceiver__SWIG_1")]
+  public static extern global::System.IntPtr new_DirectPairReceiver__SWIG_1(ushort jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_IsReceiver")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool DirectPairReceiver_IsReceiver(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_GetAddressCount")]
+  public static extern int DirectPairReceiver_GetAddressCount(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_GetAddress")]
+  public static extern global::System.IntPtr DirectPairReceiver_GetAddress(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_GetPort")]
+  public static extern ushort DirectPairReceiver_GetPort(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_Update")]
+  public static extern void DirectPairReceiver_Update(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_IsReadyToConnect")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool DirectPairReceiver_IsReadyToConnect(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_SetIncomingPort")]
+  public static extern void DirectPairReceiver_SetIncomingPort(global::System.Runtime.InteropServices.HandleRef jarg1, ushort jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_DirectPairReceiver")]
+  public static extern void delete_DirectPairReceiver(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairReceiver_Create")]
+  public static extern global::System.IntPtr VisualPairReceiver_Create();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairReceiver_CreateTagImage")]
+  public static extern global::System.IntPtr VisualPairReceiver_CreateTagImage(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_VisualPairReceiver")]
+  public static extern void delete_VisualPairReceiver(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairConnector_Create")]
+  public static extern global::System.IntPtr VisualPairConnector_Create();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairConnector_ProcessImage")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool VisualPairConnector_ProcessImage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2, int jarg3, int jarg4, int jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairConnector_IsProcessingImage")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool VisualPairConnector_IsProcessingImage(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_VisualPairConnector")]
+  public static extern void delete_VisualPairConnector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnectionListener_SWIGUpcast")]
   public static extern global::System.IntPtr NetworkConnectionListener_SWIGUpcast(global::System.IntPtr jarg1);
@@ -1224,8 +1531,29 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_SessionManagerListener_SWIGUpcast")]
   public static extern global::System.IntPtr SessionManagerListener_SWIGUpcast(global::System.IntPtr jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_UserPresenceManagerListener_SWIGUpcast")]
+  public static extern global::System.IntPtr UserPresenceManagerListener_SWIGUpcast(global::System.IntPtr jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_RoomManagerListener_SWIGUpcast")]
-  public static extern global::System.IntPtr RoomManagerListener_SWIGUpcast(global::System.IntPtr jarg1);  
+  public static extern global::System.IntPtr RoomManagerListener_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_PairingListener_SWIGUpcast")]
+  public static extern global::System.IntPtr PairingListener_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ImageTagLocationListener_SWIGUpcast")]
+  public static extern global::System.IntPtr ImageTagLocationListener_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairConnector_SWIGUpcast")]
+  public static extern global::System.IntPtr DirectPairConnector_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DirectPairReceiver_SWIGUpcast")]
+  public static extern global::System.IntPtr DirectPairReceiver_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairReceiver_SWIGUpcast")]
+  public static extern global::System.IntPtr VisualPairReceiver_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairConnector_SWIGUpcast")]
+  public static extern global::System.IntPtr VisualPairConnector_SWIGUpcast(global::System.IntPtr jarg1);
 }
 
 }

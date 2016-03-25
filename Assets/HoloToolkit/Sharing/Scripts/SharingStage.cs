@@ -16,8 +16,8 @@ namespace HoloToolkit.Sharing
         public string ServerAddress = "localhost";
         public int ServerPort = 20602;
 
-        private XToolsManager xtoolsMgr;
-        public XToolsManager Manager { get { return this.xtoolsMgr; } }
+        private SharingManager sharingMgr;
+        public SharingManager Manager { get { return this.sharingMgr; } }
 
         /// <summary>
         /// Set whether this app should provide audio input / output features.
@@ -41,7 +41,7 @@ namespace HoloToolkit.Sharing
             config.SetServerAddress(this.ServerAddress);
             config.SetServerPort(this.ServerPort);
 
-            this.xtoolsMgr = XToolsManager.Create(config);
+            this.sharingMgr = SharingManager.Create(config);
         }
 
         protected void OnDestroy()
@@ -49,12 +49,12 @@ namespace HoloToolkit.Sharing
             Instance = null;
 
             // Force a disconnection so that we can stop and start Unity without connections hanging around
-            this.xtoolsMgr.GetPairedConnection().Disconnect();
-            this.xtoolsMgr.GetServerConnection().Disconnect();
+            this.sharingMgr.GetPairedConnection().Disconnect();
+            this.sharingMgr.GetServerConnection().Disconnect();
 
             // Release the XTools manager so that it cleans up the C++ copy
-            this.xtoolsMgr.Dispose();
-            this.xtoolsMgr = null;
+            this.sharingMgr.Dispose();
+            this.sharingMgr = null;
 
             // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects
             System.GC.Collect();
@@ -63,10 +63,10 @@ namespace HoloToolkit.Sharing
 
         private void LateUpdate()
         {
-            if (this.xtoolsMgr != null)
+            if (this.sharingMgr != null)
             {
                 // Update the XToolsManager to processes any network messages that have arrived
-                this.xtoolsMgr.Update();
+                this.sharingMgr.Update();
             }
         }
 
