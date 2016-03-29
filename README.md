@@ -106,8 +106,74 @@ or in your Visual Studio Package.appxmanifest capabilities.
 
 ---
 
+## SpatialMappingComponent
+A unified set of scripts adhering to best practices for providing physics or rendering support for Spatial Mapping.
+
+
+How to use:
+
+1. Enable the "SpatialPerception" capability in Player Settings -> Windows Store -> Publishing Settings -> Capabilities.
+2. Add a SpatialMappingCollider or SpatialMappingRenderer component onto a GameObject and spatial mapping will just start working
+
+If you want spatial mapping to work wherever the user travels, attach the components to the camera and the specified bounds will move with the user. If you want collisions to continue working even after walking away, you may want to leave a second SpatialMappingCollider around the playspace where collisions should continue. 
+
+If you want physics collisions and to render the spatial mapping mesh for an area, you should add both a SpatialMappingCollider and a SpatialMappingRenderer
+
+Though all of the defaults are usable out of the box with no customization, you can also customize the component to your scenario. Through script, additions such as PlaneFinding.cs can also be used with these components.
+
+These components by default implement caching of removed Spatial Mapping meshes such that removed meshes will still be present for at least 10 updates after they are actually removed. This number and the feature can be configured via script. This feature enables mesh a great distance from the user to not be removed as well as quick rehydration of mesh only removed as a user moved away and back to a single location.
+
+**IMPORTANT**: Please make sure to add the Spatial Perception capability in your app, in Unity under  
+Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
+or in your Visual Studio Package.appxmanifest capabilities.
+
+### SpatialMappingCollider.cs
+This component is for doing physics against the Spatial Mapping mesh.
+
+**Enable Collisions**: (Default: **yes**). Whether or not to create a collider for RigidBody physics
+
+**Physic Material**: (Default: **none**). Custom PhysicMaterial to define physical interactions (like bounciness) with the mesh.
+
+**Physics Layer**: (Default: **default**). The layer to apply to the meshes for Raycasting.
+
+**Freeze Mesh Updates**: (Default: **no**). When enabled, no further updates will be processed. Use this to delay initial starting of Spatial Mapping processing or to stop updates at a certain point.
+
+**Bounding Volume**: (Default: **Bounding Box**). The shape of the bounds to observe for new surfaces. The choices are Bounding Box with Extents or Sphere with Radius.
+
+**Extents**: (Default: **(10, 10, 10)**). The extents of the bounding box in meters. Only applicable with Bounding Box set for Bounding Volume.
+
+**Radius**: (Default: **10**). The radius of the bounding sphere in meters. Only applicable with Sphere set for Bounding Volume.
+
+**Level of Detail**: (Default: **Low**). The amount of detail in the resulting meshes. Possible values are Low, Medum, and High. Higher levels of detail will result in lower performance.
+
+**Time Between Updates**: (Default: **2.5**). The frequency in seconds for when updates to Spatial Mapping surfaces will be processed.
+
+### SpatialMappingRenderer.cs
+This component is for rendering the Spatial Mapping mesh directly.
+
+**Rendering Mode**: (Default: **Occlusion**). How to render the mesh. Occlusion will cause the mesh to occlude holograms behind it. Material will apply the specified material. None will cause the meshes to not render at all.
+
+**Rendering Material**: (Default: **Wireframe**). The material to render the Spatial Mapping mesh with. This is only relevant when Rendering Mode is set to Material. The default materials are kept in your Resources\HoloToolkit\ folder.
+
+**Freeze Mesh Updates**: (Default: **no**). When enabled, no further updates will be processed. Use this to delay initial starting of Spatial Mapping processing or to stop updates at a certain point.
+
+**Bounding Volume**: (Default: **Bounding Box**). The shape of the bounds to observe for new surfaces. The choices are Bounding Box with Extents or Sphere with Radius.
+
+**Extents**: (Default: **(10, 10, 10)**). The extents of the bounding box in meters. Only applicable with Bounding Box set for Bounding Volume.
+
+**Radius**: (Default: **10**). The radius of the bounding sphere in meters. Only applicable with Sphere set for Bounding Volume.
+
+**Level of Detail**: (Default: **Medium**). The amount of detail in the resulting meshes. Possible values are Low, Medum, and High. Higher levels of detail will result in lower performance.
+
+**Time Between Updates**: (Default: **2.5**). The frequency in seconds for when updates to Spatial Mapping surfaces will be processed.
+
+---
+
 ## SpatialMapping
-Any scripts that leverage SpatialMapping.
+Additional scripts that leverage SpatialMapping.
+
+We recommend using the SpatialMappingCollider and/or the SpatialMapppingRenderer for default Spatial Mapping requirements. If you need the ability to load the mesh from a file or the network, these scrips are more appropriate.
+
 PlaneFinding addon that can be used to find planar surfaces (ie: walls/floors/tables/etc) in the mesh data returned by Spatial Mapping.
 **IMPORTANT**: Please make sure to add the Spatial Perception capability in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
