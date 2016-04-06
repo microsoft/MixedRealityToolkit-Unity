@@ -311,6 +311,7 @@ public abstract class SMBaseAbstract : MonoBehaviour {
     /// <param name="elapsedBakeTimeSeconds">The time in seconds it took to request and populate the mesh</param>
     protected virtual void SurfaceObserver_OnDataReady(SurfaceData bakedData, bool outputWritten, float elapsedBakeTimeSeconds)
     {
+        // Passthrough
     }
 
     /// <summary>
@@ -343,7 +344,7 @@ public abstract class SMBaseAbstract : MonoBehaviour {
         UpdateSurfaceObserverPosition();
         UpdateManager.DoProcessingForFrame();
     }
-    
+
     /// <summary>
     /// Handler for calling SurfaceObserver.Update which will then handle the changes
     /// 

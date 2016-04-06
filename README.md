@@ -335,4 +335,8 @@ Before deploying this scene to your HoloLens:
 2. In Hierarchy panel, click on Sharing game object
 3. In the Inspector panel, in the Server Address field enter your PC IP or the computer Name
 4. Save the scene and deploy.
+
+### SpatialMappingComponent
+This scene shows an example of a static playspace which preserves physics around it (marked by a cube) while maintaining physics and wireframe rendering of Spatial Mapping around the camera. Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
+
 ---

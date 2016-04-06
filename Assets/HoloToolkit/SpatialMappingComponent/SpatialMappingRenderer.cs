@@ -16,7 +16,7 @@ public class SpatialMappingRenderer : SMBaseAbstract
     /// <summary>
     /// The current rendering setting
     /// </summary>
-	[SerializeField]
+    [SerializeField]
     private RenderingSetting _currentRenderingSetting = RenderingSetting.Occlusion;
     /// <summary>
     /// The current option for how rendering will be handled
@@ -50,11 +50,11 @@ public class SpatialMappingRenderer : SMBaseAbstract
     {
         base.Start();
 
-        OcclusionMaterial = Resources.Load("MsSpatialMappingComponent/Occlusion", typeof(Material)) as Material;
+        OcclusionMaterial = Resources.Load("HoloToolkit/Occlusion", typeof(Material)) as Material;
 
         if (RenderingMaterial == null)
         {
-            RenderingMaterial = Resources.Load("MsSpatialMappingComponent/Wireframe", typeof(Material)) as Material;
+            RenderingMaterial = Resources.Load("HoloToolkit/Wireframe", typeof(Material)) as Material;
         }
     }
 
