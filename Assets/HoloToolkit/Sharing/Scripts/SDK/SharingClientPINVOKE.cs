@@ -987,6 +987,13 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ClientConfig_SetIsAudioEndpoint")]
   public static extern void ClientConfig_SetIsAudioEndpoint(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg2);
 
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ClientConfig_GetProfilerEnabled")]
+  [return: global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]
+  public static extern bool ClientConfig_GetProfilerEnabled(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_ClientConfig_SetProfilerEnabled")]
+  public static extern void ClientConfig_SetProfilerEnabled(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.I1)]bool jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_ClientConfig")]
   public static extern void delete_ClientConfig(global::System.Runtime.InteropServices.HandleRef jarg1);
 
