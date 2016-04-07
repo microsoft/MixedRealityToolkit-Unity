@@ -317,11 +317,14 @@ A basic wireframe shader that can be used for rendering spatial mapping meshes. 
 This folder contains sample/test code that demonstrates how to use certain scripts.  
 
 ### SpatialMapping::PlaneFinding
-To use this sample code, start by creating a new Unity scene.  Create an empty GameObject and attach the PlaneFindingTest script to it. Then drag the FakeSpatialMappingMesh onto this GameObject to create a child object that renders the mesh.
-
-Now hit Play. The PlaneFinding algorithm will run in a loop, visualing the planes found via Unity editor gizmos. The PlaneFindingTest component exposes a couple of properties that let you manipulate the PlaneFinding API parameters in realtime and observe their impact on the algorithm.
+To use this sample code, load the PlaneFinding scene and hit Play. The PlaneFinding algorithm will run in a loop. Switch to the scene veiw to see a visualization of the planes found.
+The PlaneFindingTest component exposes a couple of properties that let you manipulate the PlaneFinding API parameters in realtime and observe their impact on the algorithm.
 
 NOTE: In the interest of simplicity, this test script calls the PlaneFinding APIs directly from the main Unity thread in Update(). In a real application, the PlaneFinding APIs **MUST** be called from a background thread in order to avoid stalling the rendering thread and causing a drop in framerate.
+
+### SpatialMapping::SpatialProcessing
+The SpatialProcessing scene tests the two processing scripts available in HoloToolkit: SufraceMeshesToPlanes and RemoveSurfaceVertices. If you already have a .room file saved, it will automatically load the file and run in Unity. If not, you can use the RemoteMapping prefab to send/save mesh files from the HoloLens. You can also run this test directly in the HoloLens.
+This scene will scan your area for 15 seconds and then convert all meshes to planes. If a floor plane is found, it will remove vertices from surface meshes that fall within the bounds of any active plane.
 
 ### Input
 In this folder you will see different scenes like BasicCursor, Cursor, CursorWithFeedback that show you a few different ways of building cursors for you applications.

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d16bb90a666ca9b4ea5a0bb389027331
+guid: eddbe51e6dc99b140927438b9a702d80
 timeCreated: 1456266478
 licenseType: Pro
 PluginImporter:
@@ -52,10 +52,10 @@ PluginImporter:
     WindowsStoreApps:
       enabled: 0
       settings:
-        CPU: X64
+        CPU: AnyCPU
         DontProcess: False
         PlaceholderPath: 
-        SDK: UWP
+        SDK: AnySDK
         ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
