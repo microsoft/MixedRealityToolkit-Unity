@@ -1,6 +1,4 @@
 # Feature-HoloToolkit-Refactor
-This is a staging branch used to refactor some of the HoloToolkit code to make it more modular.
-It is not advised to use it for development.
 
 ---
 
