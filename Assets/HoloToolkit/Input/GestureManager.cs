@@ -24,6 +24,14 @@ namespace HoloToolkit.Unity
         {
             get; set;
         }
+        
+        /// <summary>
+        /// Gets the currently focused object, or null if none.
+        /// </summary>
+        public GameObject FocusedObject
+        { 
+            get { return focusedObject; } 
+        }
 
         private GestureRecognizer gestureRecognizer;
         private GameObject focusedObject;
