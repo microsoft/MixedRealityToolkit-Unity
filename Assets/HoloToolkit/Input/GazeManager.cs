@@ -86,9 +86,9 @@ namespace HoloToolkit.Unity
             if(oldHitObject != currentHitObject) //The currently hit object has changed
             {
                 if (oldHitObject != null)
-                    oldHitObject.SendMessage("OnGazeEnter");
+                    oldHitObject.SendMessage("OnGazeLeave");
                 if (currentHitObject != null)
-                    currentHitObject.SendMessage("OnGazeLeave");
+                    currentHitObject.SendMessage("OnGazeEnter");
             }
         }
     }
