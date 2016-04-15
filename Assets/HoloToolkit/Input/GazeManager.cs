@@ -40,6 +40,7 @@ namespace HoloToolkit.Unity
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
         private float lastHitDistance = 15.0f;
+        private GameObject currentHitObject;
 
         private void Update()
         {
@@ -62,6 +63,7 @@ namespace HoloToolkit.Unity
                            MaxGazeDistance,
                            RaycastLayerMask);
 
+            GameObject oldHitObject = currentHitObject;
             // Update the HitInfo property so other classes can use this hit information.
             HitInfo = hitInfo;
             
@@ -71,6 +73,7 @@ namespace HoloToolkit.Unity
                 Position = hitInfo.point;
                 Normal = hitInfo.normal;
                 lastHitDistance = hitInfo.distance;
+                currentHitObject = hitInfo.collider.gameObject;
             }
             else
             {
@@ -78,6 +81,14 @@ namespace HoloToolkit.Unity
                 // and the normal to face the user.
                 Position = gazeOrigin + (gazeDirection * lastHitDistance);
                 Normal = gazeDirection;
+                currentHitObject = null;
+            }
+            if(oldHitObject != currentHitObject) //The currently hit object has changed
+            {
+                if (oldHitObject != null)
+                    oldHitObject.SendMessage("OnGazeEnter");
+                if (currentHitObject != null)
+                    currentHitObject.SendMessage("OnGazeLeave");
             }
         }
     }
