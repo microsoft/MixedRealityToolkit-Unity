@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
         private float lastHitDistance = 15.0f;
-        private GameObject currentHitObject;
+        private GameObject focusedObject;
 
         private void Update()
         {
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity
                            MaxGazeDistance,
                            RaycastLayerMask);
 
-            GameObject oldHitObject = currentHitObject;
+            GameObject oldFocusedObject = focusedObject;
             // Update the HitInfo property so other classes can use this hit information.
             HitInfo = hitInfo;
             
@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity
                 Position = hitInfo.point;
                 Normal = hitInfo.normal;
                 lastHitDistance = hitInfo.distance;
-                currentHitObject = hitInfo.collider.gameObject;
+                focusedObject = hitInfo.collider.gameObject;
             }
             else
             {
@@ -81,14 +81,18 @@ namespace HoloToolkit.Unity
                 // and the normal to face the user.
                 Position = gazeOrigin + (gazeDirection * lastHitDistance);
                 Normal = gazeDirection;
-                currentHitObject = null;
+                focusedObject = null;
             }
-            if(oldHitObject != currentHitObject) //The currently hit object has changed
+            if(oldFocusedObject != focusedObject) //The currently hit object has changed
             {
-                if (oldHitObject != null)
-                    oldHitObject.SendMessage("OnGazeLeave");
-                if (currentHitObject != null)
-                    currentHitObject.SendMessage("OnGazeEnter");
+                if (oldFocusedObject != null)
+                {
+                    oldFocusedObject.SendMessage("OnGazeLeave");
+                }
+                if (focusedObject != null)
+                {
+                    focusedObject.SendMessage("OnGazeEnter");
+                }
             }
         }
     }
