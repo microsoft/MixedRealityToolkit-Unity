@@ -4,7 +4,7 @@
 using System.Text;
 using UnityEngine;
 
-namespace UnityUtilities
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Extensions for the UnityEngine.LayerMask class.

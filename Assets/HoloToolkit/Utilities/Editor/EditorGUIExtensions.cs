@@ -6,7 +6,7 @@ using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityUtilities
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Extensions for the UnityEnditor.EditorGUI class.
