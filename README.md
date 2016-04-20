@@ -1,9 +1,3 @@
-# Feature-HoloToolkit-Refactor
-This is a staging branch used to refactor some of the HoloToolkit code to make it more modular.
-It is not advised to use it for development.
-
----
-
 # HoloToolkit-Unity
 This is effectively part of the existing HoloToolkit, but this is the repo that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate the development of holographic applications targeting Windows Holographic.
