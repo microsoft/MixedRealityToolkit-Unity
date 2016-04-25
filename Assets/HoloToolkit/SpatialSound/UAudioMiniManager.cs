@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// The UAudioMiniManager class organization and control of a GameObject's MiniAudioEvents.  
     /// </summary>
-    public class UAudioMiniManager : UAudioManagerBase<MiniAudioEvent>
+    public partial class UAudioMiniManager : UAudioManagerBase<MiniAudioEvent>
     {
         /// <summary>
         /// Plays all of the Audio Events in the manager

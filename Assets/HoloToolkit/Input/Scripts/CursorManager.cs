@@ -11,7 +11,7 @@ using HoloToolkit.Unity;
 /// 2. Places the appropriate Cursor at the hit position.
 /// 3. Matches the Cursor normal to the hit surface.
 /// </summary>
-public class CursorManager : Singleton<CursorManager>
+public partial class CursorManager : Singleton<CursorManager>
 {
     [Tooltip("Drag the Cursor object to show when it hits a hologram.")]
     public GameObject CursorOnHolograms;

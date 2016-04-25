@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
     /// GestureManager then sends a message to that game object.
     /// </summary>
     [RequireComponent(typeof(GazeManager))]
-    public class GestureManager : Singleton<GestureManager>
+    public partial class GestureManager : Singleton<GestureManager>
     {
         /// <summary>
         /// To select even when a hologram is not being gazed at,

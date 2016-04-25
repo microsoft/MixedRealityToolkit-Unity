@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
     /// Calling StartObserver() clears the stored mesh and enables real-time SpatialMapping updates.
     /// </summary>
     [RequireComponent(typeof(SpatialMappingObserver))]
-    public class SpatialMappingManager : Singleton<SpatialMappingManager>
+    public partial class SpatialMappingManager : Singleton<SpatialMappingManager>
     {
         [Tooltip("The physics layer for spatial mapping objects to be set to.")]
         public int PhysicsLayer = 31;

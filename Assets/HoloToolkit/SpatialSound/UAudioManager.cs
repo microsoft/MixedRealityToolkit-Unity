@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity
     /// Designers and coders can share the names of the AudioEvents to enable rapid iteration on the application's
     /// sound similar to how XAML is used for user interfaces.
     /// </summary>
-    public class UAudioManager : UAudioManagerBase<AudioEvent>
+    public partial class UAudioManager : UAudioManagerBase<AudioEvent>
     {
         [Tooltip("The maximum number of AudioEvents that can be played at once. Zero (0) indicates there is no limit.")]
         [SerializeField]

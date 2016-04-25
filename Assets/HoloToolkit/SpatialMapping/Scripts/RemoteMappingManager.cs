@@ -9,7 +9,7 @@ using UnityEngine.Windows.Speech;
 namespace HoloToolkit.Unity
 {
     [RequireComponent(typeof(RemoteMeshTarget))]
-    public class RemoteMappingManager : Singleton<RemoteMappingManager>
+    public partial class RemoteMappingManager : Singleton<RemoteMappingManager>
     { 
         /// <summary>
         /// Recieves meshes collected over the network.

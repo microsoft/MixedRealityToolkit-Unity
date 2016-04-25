@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     /// <typeparam name="TEvent">The type of AudioEvent being managed.</typeparam>
     /// <remarks>The TEvent type specified must derive from AudioEvent.</remarks>
-    public class UAudioManagerBase<TEvent> : MonoBehaviour where TEvent : AudioEvent, new()
+    public partial class UAudioManagerBase<TEvent> : MonoBehaviour where TEvent : AudioEvent, new()
     {
         [SerializeField]
         protected TEvent[] events = null;
