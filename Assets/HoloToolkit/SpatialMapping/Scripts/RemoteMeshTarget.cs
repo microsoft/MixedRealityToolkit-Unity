@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// RemoteMeshTarget will listen for meshes being sent from a remote system (HoloLens).
     /// It is intended to run in the Unity Editor with exactly one
-    /// Hololens device sending data.
+    /// HoloLens device sending data.
     /// </summary>
     public class RemoteMeshTarget : SpatialMappingSource
     {
@@ -36,7 +36,7 @@ namespace HoloToolkit.Unity
         /// Keeps client information when a connection happens.
         /// </summary>
         private TcpClient networkClient;
- 
+
         /// <summary>
         /// Tracks if a client is connected.
         /// </summary>
@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity
                     // Pass the data to the mesh serializer. 
                     List<Mesh> meshes = new List<Mesh>(SimpleMeshSerializer.Deserialize(dataBuffer));
 
-                    // For each mesh, create a gameobject to render it.
+                    // For each mesh, create a GameObject to render it.
                     for (int index = 0; index < meshes.Count; index++)
                     {
                         GameObject surface = AddSurfaceObject(meshes[index], string.Format("Beamed-{0}", surfaceObjects.Count), transform);
@@ -101,7 +101,7 @@ namespace HoloToolkit.Unity
                             surface.GetComponent<MeshRenderer>().enabled = false;
                         }
 
-                        if(SpatialMappingManager.Instance.CastShadows == false)
+                        if (SpatialMappingManager.Instance.CastShadows == false)
                         {
                             surface.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                         }

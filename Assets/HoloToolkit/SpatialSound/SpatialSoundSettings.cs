@@ -30,13 +30,13 @@ namespace HoloToolkit.Unity
         public const float MinimumGainDecibels = -96.0f;
         public const float MaximumGainDecibels = 12.0f;
         public const float MinimumUnityGainDistanceMeters = 0.05f;
-        public const float MaximumUnityGainDistanceMeters = float.MaxValue;       
+        public const float MaximumUnityGainDistanceMeters = float.MaxValue;
         public const float DefaultMinGain = MinimumGainDecibels;
         public const float DefaultMaxGain = MaximumGainDecibels;
         public const float DefaultUnityGainDistance = 1.0f;
 
         /// <summary>
-        /// The available Microsoft Spatial Sound Spatializer paramters.
+        /// The available Microsoft Spatial Sound Spatializer parameters.
         /// </summary>
         private enum SpatialSoundParameters
         {

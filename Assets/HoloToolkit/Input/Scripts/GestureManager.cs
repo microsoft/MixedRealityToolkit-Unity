@@ -24,13 +24,13 @@ namespace HoloToolkit.Unity
         {
             get; set;
         }
-        
+
         /// <summary>
         /// Gets the currently focused object, or null if none.
         /// </summary>
         public GameObject FocusedObject
-        { 
-            get { return focusedObject; } 
+        {
+            get { return focusedObject; }
         }
 
         private GestureRecognizer gestureRecognizer;
@@ -59,8 +59,8 @@ namespace HoloToolkit.Unity
         void LateUpdate()
         {
             GameObject oldFocusedObject = focusedObject;
-            
-            if (GazeManager.Instance.Hit && 
+
+            if (GazeManager.Instance.Hit &&
                 OverrideFocusedObject == null &&
                 GazeManager.Instance.HitInfo.collider != null)
             {

@@ -167,7 +167,7 @@ namespace HoloToolkit.Unity
                     PlaneType = PlaneTypes.Table;
                 }
             }
-            else if(Mathf.Abs(SurfaceNormal.y) <= (1 - UpNormalThreshold))
+            else if (Mathf.Abs(SurfaceNormal.y) <= (1 - UpNormalThreshold))
             {
                 // If the plane is vertical, then classify it as a wall.
                 PlaneType = PlaneTypes.Wall;
@@ -213,7 +213,7 @@ namespace HoloToolkit.Unity
                     }
                     break;
                 default:
-                    if(UnknownMaterial != null)
+                    if (UnknownMaterial != null)
                     {
                         renderer.material = UnknownMaterial;
                     }

@@ -515,7 +515,7 @@ public class MicrophoneController : MonoBehaviour
             // loop the playing of the recording so it will be realtime
             this.GetComponent<AudioSource>().loop = true;
 
-            // if you only need the data stream values check Mute, if you want to hear yourself ingame don't check Mute. 
+            // if you only need the data stream values check Mute, if you want to hear yourself in-game don't check Mute. 
             this.GetComponent<AudioSource>().mute = true;
 
             // full volume by default
@@ -561,7 +561,7 @@ public class MicrophoneController : MonoBehaviour
 
     // the Microphone object in Unity does not work correctly in WSA applications.  This
     // is probably because it is being initialized on an MTAThread and not on an STAThread.
-    // Just wraping the init function with a Dispatcher to make it STAThread for init doesn't
+    // Just wrapping the init function with a Dispatcher to make it STAThread for init doesn't
     // seem to be enough.
     //
     //  So this code calls into the AudioIO_DLL assembly which is based on NAudio.  It has

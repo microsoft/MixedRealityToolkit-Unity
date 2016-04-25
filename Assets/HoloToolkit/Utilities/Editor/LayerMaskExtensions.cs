@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity
 
         public static string GetDisplayString(this LayerMask layerMask)
         {
-            StringBuilder stringBuilder  = null;
+            StringBuilder stringBuilder = null;
             for (int layer = 0; layer < LayerMaskExtensions.LayerCount; ++layer)
             {
                 if ((layerMask & (1 << layer)) != 0)

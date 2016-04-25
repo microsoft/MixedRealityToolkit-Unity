@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// PlaneFinding is an expensive task that should not be run from Unity's main thread as it
-        /// will stall the thread and cause a framerate dip.  Instead, the PlaneFinding APIs should be
+        /// will stall the thread and cause a frame rate dip.  Instead, the PlaneFinding APIs should be
         /// exclusively called from background threads.  Unfortunately, Unity's built-in data types
         /// (such as MeshFilter) are not thread safe and cannot be accessed from background threads.
         /// The MeshData struct exists to work-around this limitation.  When you want to find planes
@@ -173,7 +173,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Validate that no other PlaneFinding API call is currently in progress. As a performance
         /// optimization to avoid unnecessarily thrashing the garbage collector, each call into the
-        /// PlaneFinding DLL reuses a couple of static data stuctures. As a result, we can't handle
+        /// PlaneFinding DLL reuses a couple of static data structures. As a result, we can't handle
         /// multiple concurrent calls into these APIs.
         /// </summary>
         private static void StartPlaneFinding()

@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Cleans up references to objecs that we have created.
+        /// Cleans up references to objects that we have created.
         /// </summary>
         protected void Cleanup()
         {

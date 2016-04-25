@@ -68,10 +68,10 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Updates the StableHeadPosition and StableHeadRotation based on GazeSample values.
-        /// Call this method with Raycasthit parameters to get stable values.
+        /// Call this method with RaycastHit parameters to get stable values.
         /// </summary>
-        /// <param name="position">Position value from a Raycasthit point.</param>
-        /// <param name="rotation">Roration value from a Raycasthit rotation.</param>
+        /// <param name="position">Position value from a RaycastHit point.</param>
+        /// <param name="rotation">Rotation value from a RaycastHit rotation.</param>
         public void UpdateHeadStability(Vector3 position, Quaternion rotation)
         {
             gazePosition = position;

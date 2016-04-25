@@ -230,7 +230,7 @@ namespace HoloToolkit.Unity
         /// <param name="start">The starting position.</param>
         /// <param name="target">The destination position.</param>
         /// <param name="deltaTime">Caller-provided Time.deltaTime.</param>
-        /// <param name="speed">The speed to to apply to the interpolation.</param>
+        /// <param name="speed">The speed to apply to the interpolation.</param>
         /// <returns>New interpolated position closer to target</returns>
         public static Vector3 NonLinearInterpolateTo(Vector3 start, Vector3 target, float deltaTime, float speed)
         {
@@ -432,7 +432,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating position, specfies the target position as specified
+        /// If animating position, specifies the target position as specified
         /// by SetTargetPosition. Otherwise returns the current position of
         /// the transform.
         /// </summary>
@@ -449,7 +449,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating rotation, specfies the target rotation as specified
+        /// If animating rotation, specifies the target rotation as specified
         /// by SetTargetRotation. Otherwise returns the current rotation of
         /// the transform.
         /// </summary>
@@ -466,7 +466,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating local rotation, specfies the target local rotation as
+        /// If animating local rotation, specifies the target local rotation as
         /// specified by SetTargetLocalRotation. Otherwise returns the current
         /// local rotation of the transform.
         /// </summary>
@@ -483,7 +483,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating local scale, specfies the target local scale as
+        /// If animating local scale, specifies the target local scale as
         /// specified by SetTargetLocalScale. Otherwise returns the current
         /// local scale of the transform.
         /// </summary>

@@ -102,8 +102,8 @@ namespace HoloToolkit.Unity
         /// <param name="eventName">The name associated with the AudioEvent.</param>
         /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
         /// <param name="secondarySource">The AudioSource component to use as the secondary source for the event.</param>
-        public void PlayEvent(string eventName, 
-                            AudioSource primarySource, 
+        public void PlayEvent(string eventName,
+                            AudioSource primarySource,
                             AudioSource secondarySource)
         {
             PlayEvent(eventName,

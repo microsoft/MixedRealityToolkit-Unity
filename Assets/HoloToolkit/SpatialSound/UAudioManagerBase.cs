@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity
             for (int i = 0; i < activeEvents.Count; i++)
             {
                 ActiveEvent currentEvent = this.activeEvents[i];
-                
+
                 // If we have a secondary source (for crossfades) adjust the volume based on the current fade time for each active event.
                 if (currentEvent.SecondarySource != null && currentEvent.SecondarySource.volume != currentEvent.altVolDest)
                 {
@@ -196,7 +196,7 @@ namespace HoloToolkit.Unity
             {
                 PlayOneOffContainer(activeEvent);
             }
-            
+
             StartCoroutine(RecordEventInstanceCoroutine(activeEvent));
         }
 
@@ -323,14 +323,14 @@ namespace HoloToolkit.Unity
         {
             audioContainer.currentClip = Random.Range(0, audioContainer.sounds.Length);
             UAudioClip tempClip = audioContainer.sounds[audioContainer.currentClip];
-            
+
             activeEvent.PrimarySource.volume = 0f;
             activeEvent.volDest = activeEvent.audioEvent.volumeCenter;
             activeEvent.altVolDest = 0f;
             activeEvent.currentFade = audioContainer.crossfadeTime;
-            
+
             float waitTime = (tempClip.sound.length / emitter.pitch) - activeEvent.audioEvent.container.crossfadeTime;
-            
+
             // Ignore clip delay since container is continuous.
             PlayClipAndGetTime(tempClip, emitter, activeEvent);
             activeEvent.activeTime = InfiniteLoop;
@@ -355,10 +355,10 @@ namespace HoloToolkit.Unity
             while (!activeEvent.cancelEvent)
             {
                 yield return new WaitForSeconds(waitTime);
-                
+
                 audioContainer.currentClip = Random.Range(0, audioContainer.sounds.Length);
                 UAudioClip tempClip = audioContainer.sounds[audioContainer.currentClip];
-                
+
                 // Play on primary source.
                 if (activeEvent.playingAlt)
                 {
@@ -393,14 +393,14 @@ namespace HoloToolkit.Unity
         private void PlayContinuousSequenceContainer(AudioContainer audioContainer, AudioSource emitter, ActiveEvent activeEvent)
         {
             UAudioClip tempClip = audioContainer.sounds[audioContainer.currentClip];
-            
+
             activeEvent.PrimarySource.volume = 0f;
             activeEvent.volDest = activeEvent.audioEvent.volumeCenter;
             activeEvent.altVolDest = 0f;
             activeEvent.currentFade = audioContainer.crossfadeTime;
-            
+
             float waitTime = (tempClip.sound.length / emitter.pitch) - activeEvent.audioEvent.container.crossfadeTime;
-            
+
             // Ignore clip delay since the container is continuous.
             PlayClipAndGetTime(tempClip, emitter, activeEvent);
             activeEvent.activeTime = InfiniteLoop;
@@ -593,7 +593,7 @@ namespace HoloToolkit.Unity
                 // Mark this event so it no longer counts against the instance limit.
                 activeEvent.isActiveTimeComplete = true;
 
-                // Ssince the activeTime estimate may not be enough time to complete the clip (due to pitch changes during playback, or a negative instanceBuffer value, for example)
+                // Since the activeTime estimate may not be enough time to complete the clip (due to pitch changes during playback, or a negative instanceBuffer value, for example)
                 // wait here until it is finished, so that we don't cut off the end.
                 if (activeEvent.IsPlaying)
                 {

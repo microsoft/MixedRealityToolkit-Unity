@@ -1,7 +1,7 @@
 //Very fast unlit shader
 //no lighting, lightmap support, etc.
 //Compiles down to only performing the operations you're actually using
-//Uses material property drawers rather than a custom editor for ease of maintainance
+//Uses material property drawers rather than a custom editor for ease of maintenance
 
 Shader "HoloToolkit/Unlit Configurable Transparent"
 {

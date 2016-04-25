@@ -1,6 +1,6 @@
 //Faster version of the Unity Standard Shader
 //Forces compilation for shader model 5.0
-//Sets several defines to make perf/quality tradeoffs that are more realistic for less beefy hardware
+//Sets several defines to make perf/quality trade-offs that are more realistic for less beefy hardware
 //Based on the shader sources from 5.4
 //Merging should be relatively easy as none of the .cginc files need be touched
 //Supports stereo instancing

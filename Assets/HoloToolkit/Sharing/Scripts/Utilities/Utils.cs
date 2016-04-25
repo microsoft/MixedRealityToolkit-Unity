@@ -116,7 +116,7 @@ namespace HoloToolkit.Sharing.Utilities
         /// </summary>
         /// <param name="t">root transform to start looking for renderers</param>
         /// <param name="mat">material to set everything to</param>
-        /// <param name="ignoreName">ignore gameobjects with this name</param>
+        /// <param name="ignoreName">ignore GameObjects with this name</param>
         public static void SetMaterialRecursiveForName(Transform t, Material mat, string nameToTest)
         {
             if (t.gameObject && t.gameObject.GetComponent<Renderer>() && t.gameObject.name == nameToTest)

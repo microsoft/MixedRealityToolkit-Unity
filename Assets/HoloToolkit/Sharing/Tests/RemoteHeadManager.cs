@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Broadcasts the head transform of the local user to other users in the session,
 /// and adds and updates the head transforms of remote users.  
-/// Head transforms are sent and received in the local coordinate space of the gameobject
+/// Head transforms are sent and received in the local coordinate space of the GameObject
 /// this component is on.  
 /// </summary>
 public class RemoteHeadManager : Singleton<RemoteHeadManager>

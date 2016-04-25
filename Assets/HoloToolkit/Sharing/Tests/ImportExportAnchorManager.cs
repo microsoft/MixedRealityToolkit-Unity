@@ -386,7 +386,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     /// <summary>
-    /// Attmpts to attach to  an anchor by anchorName in the local store..
+    /// Attempts to attach to  an anchor by anchorName in the local store..
     /// </summary>    
     /// <returns>True if it attached, false if it could not attach</returns>
     bool AttachToCachedAnchor(string AnchorName)
@@ -437,7 +437,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     /// <summary>
-    /// Called when a remote anchor has been deserialzied
+    /// Called when a remote anchor has been deserialized
     /// </summary>
     /// <param name="status"></param>
     /// <param name="wat"></param>
@@ -448,7 +448,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             Debug.Log("Import complete");
 
             string first = wat.GetAllIds()[0];
-            Debug.Log("Anchorname: " + first);
+            Debug.Log("Anchor name: " + first);
 
             WorldAnchor anchor = wat.LockObject(first, gameObject);
             anchorStore.Save(first, anchor);
