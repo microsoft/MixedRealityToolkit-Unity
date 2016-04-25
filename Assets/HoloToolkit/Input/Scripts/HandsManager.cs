@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// HandsDetected determines if the hand is currently detected or not.
     /// </summary>
-    public class HandsManager : Singleton<HandsManager>
+    public partial class HandsManager : Singleton<HandsManager>
     {
         /// <summary>
         /// HandDetected tracks the hand detected state.
