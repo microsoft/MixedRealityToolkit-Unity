@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.VR.WSA;
 
 namespace HoloToolkit.Unity
 {
@@ -37,6 +38,13 @@ namespace HoloToolkit.Unity
         /// </summary>
         public Vector3 Normal { get; private set; }
 
+        [Tooltip("Checking enables SetFocusPointForFrame to set the stabilization plane.")]
+        public bool SetStabilizationPlane = true;
+        [Tooltip("Lerp speed when moving focus point closer.")]
+        public float LerpStabilizationPlanePowerCloser = 4.0f;
+        [Tooltip("Lerp speed when moving focus point farther away.")]
+        public float LerpStabilizationPlanePowerFarther = 7.0f;
+
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
         private float lastHitDistance = 15.0f;
@@ -48,6 +56,8 @@ namespace HoloToolkit.Unity
             gazeDirection = Camera.main.transform.forward;
 
             UpdateRaycast();
+
+            UpdateStabilizationPlane();
         }
 
         /// <summary>
@@ -83,7 +93,9 @@ namespace HoloToolkit.Unity
                 Normal = gazeDirection;
                 focusedObject = null;
             }
-            if (oldFocusedObject != focusedObject) //The currently hit object has changed
+
+            // Check if the currently hit object has changed
+            if (oldFocusedObject != focusedObject)
             {
                 if (oldFocusedObject != null)
                 {
@@ -93,6 +105,28 @@ namespace HoloToolkit.Unity
                 {
                     focusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Updates the focus point for every frame.
+        /// </summary>
+        private void UpdateStabilizationPlane()
+        {
+            if (SetStabilizationPlane)
+            {
+                // Calculate the delta between between camera's position and current hit position.
+                float focusPointDistance = (gazeOrigin - Position).magnitude;
+                float lerpPower = focusPointDistance > lastHitDistance
+                    ? LerpStabilizationPlanePowerFarther
+                    : LerpStabilizationPlanePowerCloser;
+
+                // Smoothly move the focus point from previous hit position to new position.
+                lastHitDistance = Mathf.Lerp(lastHitDistance, focusPointDistance, lerpPower * Time.deltaTime);
+
+                Vector3 newFocusPointPosition = gazeOrigin + (gazeDirection * lastHitDistance);
+
+                HolographicSettings.SetFocusPointForFrame(newFocusPointPosition, -gazeDirection);
             }
         }
     }
