@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// The UAudioManager class is a singleton that provides organization and control of an application's AudioEvents.  
+    /// The UAudioManager class is a singleton that provides organization and control of an application's AudioEvents.
     /// Designers and coders can share the names of the AudioEvents to enable rapid iteration on the application's
     /// sound similar to how XAML is used for user interfaces.
     /// </summary>
@@ -294,7 +294,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Sets an AudioEvent's container loop frequency 
+        /// Sets an AudioEvent's container loop frequency
         /// </summary>
         /// <param name="eventName">The name associated with the AudioEvent.</param>
         /// <param name="newLoopTime">The new loop time in seconds.</param>

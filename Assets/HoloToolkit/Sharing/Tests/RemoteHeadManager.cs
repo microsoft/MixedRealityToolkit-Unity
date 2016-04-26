@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using HoloToolkit.Unity;
 using HoloToolkit.Sharing;
+using HoloToolkit.Unity;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Broadcasts the head transform of the local user to other users in the session,
-/// and adds and updates the head transforms of remote users.  
+/// and adds and updates the head transforms of remote users.
 /// Head transforms are sent and received in the local coordinate space of the GameObject
-/// this component is on.  
+/// this component is on.
 /// </summary>
 public class RemoteHeadManager : Singleton<RemoteHeadManager>
 {
@@ -44,7 +44,6 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
 
         CustomMessages.Instance.SendHeadTransform(headPosition, headRotation);
     }
-
 
     /// <summary>
     /// Called when a new user is leaving.

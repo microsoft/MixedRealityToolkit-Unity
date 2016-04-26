@@ -115,7 +115,7 @@ namespace HoloToolkit.Unity
         {
             if (SetStabilizationPlane)
             {
-                // Calculate the delta between between camera's position and current hit position.
+                // Calculate the delta between camera's position and current hit position.
                 float focusPointDistance = (gazeOrigin - Position).magnitude;
                 float lerpPower = focusPointDistance > lastHitDistance
                     ? LerpStabilizationPlanePowerFarther

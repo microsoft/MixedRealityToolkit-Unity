@@ -30,7 +30,6 @@ namespace HoloToolkit.Unity
             return new Vector3(value.x / scale.x, value.y / scale.y, value.z / scale.z);
         }
 
-
         public static Vector3 RotateAround(this Vector3 point, Vector3 pivot, Quaternion rotation)
         {
             return rotation * (point - pivot) + pivot;
@@ -40,7 +39,6 @@ namespace HoloToolkit.Unity
         {
             return RotateAround(point, pivot, Quaternion.Euler(eulerAngles));
         }
-
 
         public static Vector3 TransformPoint(this Vector3 point, Vector3 translation, Quaternion rotation, Vector3 lossyScale)
         {

@@ -1,16 +1,15 @@
-﻿///
+﻿//
 // Copyright (C) Microsoft. All rights reserved.
 //
 
-using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace HoloToolkit.Sharing.Utilities
 {
     public static class MathUtils
     {
-
         /// <summary>
         /// Get the horizontal FOV from the stereo camera
         /// </summary>
@@ -85,7 +84,6 @@ namespace HoloToolkit.Sharing.Utilities
             Vector3 vecInTo = (to == null) ? vecInWorld : to.InverseTransformVector(vecInWorld);
             return vecInTo;
         }
-
 
         /// <summary>
         /// Takes a ray in the coordinate space specified by the "from" transform and transforms it to be the correct ray in the coordinate space specified by the "to" transform
@@ -408,7 +406,6 @@ namespace HoloToolkit.Sharing.Utilities
             }
             return nearestPoint;
         }
-
 
         /// <summary>
         /// Find 3D point that minimizes distance to a set of 2 or more lines

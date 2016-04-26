@@ -7,7 +7,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// The AudioContainer class is sound container for an AudioEvent. It also specifies the rules of how to 
+    /// The AudioContainer class is sound container for an AudioEvent. It also specifies the rules of how to
     /// play back the contained AudioClips.
     /// </summary>
     [Serializable]

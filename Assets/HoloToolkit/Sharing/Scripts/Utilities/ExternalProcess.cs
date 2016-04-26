@@ -8,7 +8,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
-    
+
 namespace HoloToolkit.Sharing.Utilities
 {
     public class ExternalProcess : IDisposable
@@ -33,6 +33,7 @@ namespace HoloToolkit.Sharing.Utilities
         * They are related to "external processes" so they appear here.
         */
         private static string sAppDataPath;
+
         static public void Launch(string appName)
         {
             // Full or relative paths only. Currently unused.
@@ -132,7 +133,6 @@ namespace HoloToolkit.Sharing.Utilities
             Uri relativePath = uri1.MakeRelativeUri(uri2);
             return relativePath.OriginalString;
         }
-
 
         /*
         * The actual ExternalProcess class.

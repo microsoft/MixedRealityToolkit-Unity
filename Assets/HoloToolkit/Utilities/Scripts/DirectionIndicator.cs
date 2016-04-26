@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// DirectionIndicator creates an indicator around the cursor showing 
+    /// DirectionIndicator creates an indicator around the cursor showing
     /// what direction to turn to find this GameObject.
     /// </summary>
     public class DirectionIndicator : MonoBehaviour

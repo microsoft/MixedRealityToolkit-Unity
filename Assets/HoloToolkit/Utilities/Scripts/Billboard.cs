@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity
     }
 
     /// <summary>
-    /// The Billboard class implements the behaviors needed to keep a GameObject 
+    /// The Billboard class implements the behaviors needed to keep a GameObject
     /// oriented towards the user.
     /// </summary>
     public class Billboard : MonoBehaviour
@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity
             // Get a Vector that points from the Camera to the target.
             Vector3 directionToTarget = Camera.main.transform.position - gameObject.transform.position;
 
-            // If we are right next to the camera the rotation is undefined. 
+            // If we are right next to the camera the rotation is undefined.
             if (directionToTarget.sqrMagnitude < 0.001f)
             {
                 return;

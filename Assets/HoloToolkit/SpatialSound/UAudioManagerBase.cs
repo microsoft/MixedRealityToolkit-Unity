@@ -112,7 +112,6 @@ namespace HoloToolkit.Unity
                     {
                         currentEvent.SecondarySource.volume += (currentEvent.altVolDest - currentEvent.SecondarySource.volume) * Time.deltaTime / currentEvent.currentFade;
                     }
-
                 }
 
                 // Adjust the volume of the main source based on the current fade time for each active event.

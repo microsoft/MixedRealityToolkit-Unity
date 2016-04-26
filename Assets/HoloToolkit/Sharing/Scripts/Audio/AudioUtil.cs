@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
-public static class AudioUtil 
+public static class AudioUtil
 {
     //------------------------------------------------------------------------------------
     // byte - float array fast block copy

@@ -7,8 +7,8 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// The AudioSourcesReference class encapsulates a cache of references to audio source components on a given 
-    /// local audio emitter game object. Used primarily by UAudioManager, it improves performance by bypassing 
+    /// The AudioSourcesReference class encapsulates a cache of references to audio source components on a given
+    /// local audio emitter game object. Used primarily by UAudioManager, it improves performance by bypassing
     /// having to requery for list of attached components on each use.
     /// </summary>
     public class AudioSourcesReference : MonoBehaviour

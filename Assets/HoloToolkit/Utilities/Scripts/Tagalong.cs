@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 
 namespace HoloToolkit.Unity
 {
@@ -56,7 +55,7 @@ namespace HoloToolkit.Unity
             // Remember the default for distance.
             defaultTagalongDistance = TagalongDistance;
 
-            // If the specified minimum distance for the tagalong would be within the 
+            // If the specified minimum distance for the tagalong would be within the
             // camera's near clipping plane, adjust it to be 10% beyond the near
             // clipping plane.
             if (Camera.main.nearClipPlane > MinimumTagalongDistance)
@@ -223,7 +222,7 @@ namespace HoloToolkit.Unity
             Vector3 targetPoint = centermostEdge + (-vectorTowardCenter * (width * desiredOverlap));
 
             // Find a point on the frustum we care about. Start with a point
-            // in front of the camera and cast a ray from there to the frustum. 
+            // in front of the camera and cast a ray from there to the frustum.
             Vector3 centeredPoint = cameraPosition + cameraTransform.forward * TagalongDistance;
             Ray rayTemp = new Ray(centeredPoint, (invertAngle ? 1 : -1) * (isHorizontal ? cameraTransform.right : cameraTransform.up));
             float distToFrustum = 0.0f;

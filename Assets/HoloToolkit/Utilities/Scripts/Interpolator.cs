@@ -43,6 +43,7 @@ namespace HoloToolkit.Unity
 
         // Position data
         private Vector3 targetPosition;
+
         /// <summary>
         /// True if the transform's position is animating; false otherwise.
         /// </summary>
@@ -50,6 +51,7 @@ namespace HoloToolkit.Unity
 
         // Rotation data
         private Quaternion targetRotation;
+
         /// <summary>
         /// True if the transform's rotation is animating; false otherwise.
         /// </summary>
@@ -57,6 +59,7 @@ namespace HoloToolkit.Unity
 
         // Local Rotation data
         private Quaternion targetLocalRotation;
+
         /// <summary>
         /// True if the transform's local rotation is animating; false otherwise.
         /// </summary>
@@ -64,6 +67,7 @@ namespace HoloToolkit.Unity
 
         // Scale data
         private Vector3 targetLocalScale;
+
         /// <summary>
         /// True if the transform's scale is animating; false otherwise.
         /// </summary>
@@ -73,6 +77,7 @@ namespace HoloToolkit.Unity
         /// The event fired when an Interpolation is started.
         /// </summary>
         public event System.Action InterpolationStarted;
+
         /// <summary>
         /// The event fired when an Interpolation is completed.
         /// </summary>
@@ -82,6 +87,7 @@ namespace HoloToolkit.Unity
         /// The velocity of a transform whose position is being interpolated.
         /// </summary>
         public Vector3 PositionVelocity { get; private set; }
+
         private Vector3 oldPosition = Vector3.zero;
 
         /// <summary>
@@ -191,7 +197,6 @@ namespace HoloToolkit.Unity
                 transform.localRotation = target;
                 AnimatingLocalRotation = false;
             }
-
         }
 
         /// <summary>

@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using HoloToolkit.Unity;
-using HoloToolkit.Sharing;
+﻿using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace HoloToolkit.Sharing
 {
