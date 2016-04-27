@@ -113,7 +113,7 @@ namespace HoloToolkit.Unity
             {
                 makingPlanes = true;
                 // Processing the mesh can be expensive...
-                // We use Coroutine to split the work across multiple frames and avoid impacting the framerate too much.
+                // We use Coroutine to split the work across multiple frames and avoid impacting the frame rate too much.
                 StartCoroutine(MakePlanesRoutine());
             }
         }
@@ -133,7 +133,7 @@ namespace HoloToolkit.Unity
 
                 if (surfacePlane != null)
                 {
-                    if((planeTypes & surfacePlane.PlaneType) == surfacePlane.PlaneType)
+                    if ((planeTypes & surfacePlane.PlaneType) == surfacePlane.PlaneType)
                     {
                         typePlanes.Add(plane);
                     }
@@ -211,7 +211,7 @@ namespace HoloToolkit.Unity
             CeilingYPosition = 0.0f;
             float upNormalThreshold = 0.9f;
 
-            if(SurfacePlanePrefab != null && SurfacePlanePrefab.GetComponent<SurfacePlane>() != null)
+            if (SurfacePlanePrefab != null && SurfacePlanePrefab.GetComponent<SurfacePlane>() != null)
             {
                 upNormalThreshold = SurfacePlanePrefab.GetComponent<SurfacePlane>().UpNormalThreshold;
             }

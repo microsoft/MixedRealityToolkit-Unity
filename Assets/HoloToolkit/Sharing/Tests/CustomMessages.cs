@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections.Generic;
-using HoloToolkit.Unity;
 using HoloToolkit.Sharing;
+using HoloToolkit.Unity;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class CustomMessages : Singleton<CustomMessages>
 {
     /// <summary>
     /// Message enum containing our information bytes to share.
-    /// The first message type has to start with UserMessageIDStart 
-    /// so as not to conflict with HoloToolkit internal messages.  
+    /// The first message type has to start with UserMessageIDStart
+    /// so as not to conflict with HoloToolkit internal messages.
     /// </summary>
     public enum TestMessageID : byte
     {
@@ -43,10 +43,10 @@ public class CustomMessages : Singleton<CustomMessages>
     }
 
     /// <summary>
-	/// Helper object that we use to route incoming message callbacks to the member
-	/// functions of this class
-	/// </summary>
-	NetworkConnectionAdapter connectionAdapter;
+    /// Helper object that we use to route incoming message callbacks to the member
+    /// functions of this class
+    /// </summary>
+    NetworkConnectionAdapter connectionAdapter;
 
     /// <summary>
     /// Cache the connection object for the sharing service
@@ -102,7 +102,7 @@ public class CustomMessages : Singleton<CustomMessages>
 
             AppendTransform(msg, position, rotation);
 
-            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.  
+            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
             this.serverConnection.Broadcast(
                 msg,
                 MessagePriority.Immediate,
@@ -110,7 +110,7 @@ public class CustomMessages : Singleton<CustomMessages>
                 MessageChannel.Avatar);
         }
     }
-    
+
     void OnDestroy()
     {
         if (this.serverConnection != null)
@@ -134,6 +134,7 @@ public class CustomMessages : Singleton<CustomMessages>
     }
 
     #region HelperFunctionsForWriting
+
     void AppendTransform(NetworkOutMessage msg, Vector3 position, Quaternion rotation)
     {
         AppendVector3(msg, position);
@@ -154,9 +155,11 @@ public class CustomMessages : Singleton<CustomMessages>
         msg.Write(rotation.z);
         msg.Write(rotation.w);
     }
-    #endregion
 
-    #region HelperFunctionsForReading 
+    #endregion HelperFunctionsForWriting
+
+    #region HelperFunctionsForReading
+
     public Vector3 ReadVector3(NetworkInMessage msg)
     {
         return new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
@@ -166,5 +169,6 @@ public class CustomMessages : Singleton<CustomMessages>
     {
         return new Quaternion(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
     }
-    #endregion
+
+    #endregion HelperFunctionsForReading
 }

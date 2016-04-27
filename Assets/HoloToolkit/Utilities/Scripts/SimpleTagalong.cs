@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity
         {
             // Make sure the Tagalong object has a BoxCollider.
             tagalongCollider = GetComponent<BoxCollider>();
-            
+
             // Get the Interpolator component and set some default parameters for
             // it. These parameters can be adjusted in Unity's Inspector as well.
             interpolator = gameObject.GetComponent<Interpolator>();
@@ -145,7 +145,7 @@ namespace HoloToolkit.Unity
                 toPosition.x = ray.GetPoint(distanceOffset).x;
             }
 
-            // Similar logic follows below for for determining if and how the
+            // Similar logic follows below for determining if and how the
             // Tagalong would need to move up or down.
             bool moveDown = frustumPlanes[frustumTop].GetDistanceToPoint(fromPosition) < 0;
             bool moveUp = frustumPlanes[frustumBottom].GetDistanceToPoint(fromPosition) < 0;

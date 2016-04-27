@@ -27,7 +27,7 @@ namespace HoloToolkit.Sharing.Utilities
         /// <param name="maxA">upper bound for the original scale</param>
         /// <param name="minB">lower bound for new scale</param>
         /// <param name="maxB">upper bound for new scale</param>
-        /// <param name="value">the original scale value to convert to the new 
+        /// <param name="value">the original scale value to convert to the new
         /// scale.</param>
         /// <returns>"value" mapped to the space defined by minB and maxB.</returns>
         public static float Map(float minA, float maxA, float minB, float maxB, float value)
@@ -43,9 +43,9 @@ namespace HoloToolkit.Sharing.Utilities
         /// <param name="maxA">upper bound for the original scale</param>
         /// <param name="minB">lower bound for new scale</param>
         /// <param name="maxB">upper bound for new scale</param>
-        /// <param name="value">the original scale value to convert to the new 
+        /// <param name="value">the original scale value to convert to the new
         /// scale.</param>
-        /// <returns>"value" mapped to the space defined by minB and maxB, 
+        /// <returns>"value" mapped to the space defined by minB and maxB,
         /// constrained by minB and maxB.</returns>
         public static float MapAndClamp(float minA, float maxA, float minB, float maxB, float value)
         {
@@ -116,7 +116,7 @@ namespace HoloToolkit.Sharing.Utilities
         /// </summary>
         /// <param name="t">root transform to start looking for renderers</param>
         /// <param name="mat">material to set everything to</param>
-        /// <param name="ignoreName">ignore gameobjects with this name</param>
+        /// <param name="ignoreName">ignore GameObjects with this name</param>
         public static void SetMaterialRecursiveForName(Transform t, Material mat, string nameToTest)
         {
             if (t.gameObject && t.gameObject.GetComponent<Renderer>() && t.gameObject.name == nameToTest)
@@ -130,14 +130,13 @@ namespace HoloToolkit.Sharing.Utilities
             }
         }
 
-
         /// <summary>
         /// helper for detecting if running in editor
         /// </summary>
         /// <returns>true if running in editor, false if windows store app</returns>
         public static bool IsInEditor()
         {
-#if UNITY_METRO && !UNITY_EDITOR  
+#if UNITY_METRO && !UNITY_EDITOR
         return false;
 #else
             return true;

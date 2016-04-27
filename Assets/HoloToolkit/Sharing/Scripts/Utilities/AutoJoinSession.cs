@@ -73,10 +73,9 @@ namespace HoloToolkit.Sharing
                                 break;
                             }
                         }
-
                     }
                 }
-            }            
+            }
         }
     }
 }

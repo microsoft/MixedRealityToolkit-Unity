@@ -60,7 +60,6 @@ namespace HoloToolkit.Sharing
             System.GC.Collect();
         }
 
-
         private void LateUpdate()
         {
             if (this.sharingMgr != null)

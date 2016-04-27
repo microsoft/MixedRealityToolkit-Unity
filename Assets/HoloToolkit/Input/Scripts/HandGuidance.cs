@@ -13,19 +13,19 @@ namespace HoloToolkit.Unity
     {
         [Tooltip("The Cursor object the HandGuidanceIndicator will be positioned around.")]
         public GameObject Cursor;
-        
+
         [Tooltip("GameObject to display when your hand is about to lose tracking.")]
         public GameObject HandGuidanceIndicator;
         private GameObject handGuidanceIndicatorGameObject = null;
 
-        // Hand source loss risk to start showing a hand indicator.  
-        // As the source loss risk approaches 1, the hand is closer to being out of view. 
+        // Hand source loss risk to start showing a hand indicator.
+        // As the source loss risk approaches 1, the hand is closer to being out of view.
         [Range(0.0f, 1.0f)]
-        [Tooltip("When to start showing the Hand Guidance Indicator.  1 is out of view, 0 is centered in view.")]
+        [Tooltip("When to start showing the Hand Guidance Indicator. 1 is out of view, 0 is centered in view.")]
         public float HandGuidanceThreshold = 0.5f;
 
         private Quaternion defaultHandGuidanceRotation;
-        
+
         private uint? currentlyTrackedHand = null;
 
         void Awake()
@@ -97,12 +97,12 @@ namespace HoloToolkit.Unity
             // Bound this distance by this maxDistanceFromCenter field, in meters.
             const float maxDistanceFromCenter = 0.3f;
             float distanceFromCenter = (float)(hand.properties.sourceLossRisk * maxDistanceFromCenter);
-            
+
             // Subtract direction from origin so that the indicator is between the hand and the origin.
             position = Cursor.transform.position - hand.properties.sourceLossMitigationDirection * distanceFromCenter;
             rotation = Quaternion.LookRotation(Camera.main.transform.forward, hand.properties.sourceLossMitigationDirection);
         }
-        
+
         private void InteractionManager_SourceUpdated(InteractionSourceState hand)
         {
             // Only display hand indicators when we are in a holding state, since hands going out of view will affect any active gestures.

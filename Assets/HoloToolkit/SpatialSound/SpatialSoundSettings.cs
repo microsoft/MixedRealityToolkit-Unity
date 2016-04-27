@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
     }
 
     /// <summary>
-    /// The SpatialSoundSettings class provides a set of methods that simplify making modifications 
+    /// The SpatialSoundSettings class provides a set of methods that simplify making modifications
     /// to Microsoft Spatial Sound Spatializer parameters.
     /// </summary>
     public static class SpatialSoundSettings
@@ -25,18 +25,18 @@ namespace HoloToolkit.Unity
         public const SpatialSoundRoomSizes DefaultSpatialSoundRoom = SpatialSoundRoomSizes.Small;
 
         // Ranges and default values for the Microsoft Spatial Sound Spatializer parameters.
-        // See: <https://msdn.microsoft.com/en-us/library/windows/desktop/mt186602(v=vs.85).aspx> 
+        // See: <https://msdn.microsoft.com/en-us/library/windows/desktop/mt186602(v=vs.85).aspx>
         // for more details.
         public const float MinimumGainDecibels = -96.0f;
         public const float MaximumGainDecibels = 12.0f;
         public const float MinimumUnityGainDistanceMeters = 0.05f;
-        public const float MaximumUnityGainDistanceMeters = float.MaxValue;       
+        public const float MaximumUnityGainDistanceMeters = float.MaxValue;
         public const float DefaultMinGain = MinimumGainDecibels;
         public const float DefaultMaxGain = MaximumGainDecibels;
         public const float DefaultUnityGainDistance = 1.0f;
 
         /// <summary>
-        /// The available Microsoft Spatial Sound Spatializer paramters.
+        /// The available Microsoft Spatial Sound Spatializer parameters.
         /// </summary>
         private enum SpatialSoundParameters
         {

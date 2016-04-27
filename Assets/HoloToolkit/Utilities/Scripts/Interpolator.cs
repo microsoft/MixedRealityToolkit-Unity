@@ -43,6 +43,7 @@ namespace HoloToolkit.Unity
 
         // Position data
         private Vector3 targetPosition;
+
         /// <summary>
         /// True if the transform's position is animating; false otherwise.
         /// </summary>
@@ -50,6 +51,7 @@ namespace HoloToolkit.Unity
 
         // Rotation data
         private Quaternion targetRotation;
+
         /// <summary>
         /// True if the transform's rotation is animating; false otherwise.
         /// </summary>
@@ -57,6 +59,7 @@ namespace HoloToolkit.Unity
 
         // Local Rotation data
         private Quaternion targetLocalRotation;
+
         /// <summary>
         /// True if the transform's local rotation is animating; false otherwise.
         /// </summary>
@@ -64,6 +67,7 @@ namespace HoloToolkit.Unity
 
         // Scale data
         private Vector3 targetLocalScale;
+
         /// <summary>
         /// True if the transform's scale is animating; false otherwise.
         /// </summary>
@@ -73,6 +77,7 @@ namespace HoloToolkit.Unity
         /// The event fired when an Interpolation is started.
         /// </summary>
         public event System.Action InterpolationStarted;
+
         /// <summary>
         /// The event fired when an Interpolation is completed.
         /// </summary>
@@ -82,6 +87,7 @@ namespace HoloToolkit.Unity
         /// The velocity of a transform whose position is being interpolated.
         /// </summary>
         public Vector3 PositionVelocity { get; private set; }
+
         private Vector3 oldPosition = Vector3.zero;
 
         /// <summary>
@@ -191,7 +197,6 @@ namespace HoloToolkit.Unity
                 transform.localRotation = target;
                 AnimatingLocalRotation = false;
             }
-
         }
 
         /// <summary>
@@ -230,7 +235,7 @@ namespace HoloToolkit.Unity
         /// <param name="start">The starting position.</param>
         /// <param name="target">The destination position.</param>
         /// <param name="deltaTime">Caller-provided Time.deltaTime.</param>
-        /// <param name="speed">The speed to to apply to the interpolation.</param>
+        /// <param name="speed">The speed to apply to the interpolation.</param>
         /// <returns>New interpolated position closer to target</returns>
         public static Vector3 NonLinearInterpolateTo(Vector3 start, Vector3 target, float deltaTime, float speed)
         {
@@ -432,7 +437,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating position, specfies the target position as specified
+        /// If animating position, specifies the target position as specified
         /// by SetTargetPosition. Otherwise returns the current position of
         /// the transform.
         /// </summary>
@@ -449,7 +454,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating rotation, specfies the target rotation as specified
+        /// If animating rotation, specifies the target rotation as specified
         /// by SetTargetRotation. Otherwise returns the current rotation of
         /// the transform.
         /// </summary>
@@ -466,7 +471,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating local rotation, specfies the target local rotation as
+        /// If animating local rotation, specifies the target local rotation as
         /// specified by SetTargetLocalRotation. Otherwise returns the current
         /// local rotation of the transform.
         /// </summary>
@@ -483,7 +488,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// If animating local scale, specfies the target local scale as
+        /// If animating local scale, specifies the target local scale as
         /// specified by SetTargetLocalScale. Otherwise returns the current
         /// local scale of the transform.
         /// </summary>

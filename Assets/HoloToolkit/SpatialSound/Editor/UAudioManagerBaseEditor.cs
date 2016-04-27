@@ -133,17 +133,17 @@ namespace HoloToolkit.Unity
 
             // Volume settings
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("volumeCenter"));
-            
+
             // Pan Settings
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("panCenter"));
-            
+
             // Instancing
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("instanceLimit"));
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("instanceTimeBuffer"));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("instanceBehavior"));
-            
+
             // Container
             EditorGUILayout.Space();
         }
@@ -202,22 +202,22 @@ namespace HoloToolkit.Unity
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].sound"));
-                
+
                 if (EditorGUILayoutExtensions.Button("Remove"))
                 {
                     selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "]").DeleteCommand();
                     break;
                 }
-                
+
                 EditorGUILayout.EndHorizontal();
-                
+
                 if (!selectedEvent.IsContinuous())
                 {
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].delayCenter"));
                     EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].delayRandomization"));
                     EditorGUILayout.EndHorizontal();
-                    
+
                     //Disable looping next clips in a simultaneous container only.
                     if (allowLoopingClip)
                     {

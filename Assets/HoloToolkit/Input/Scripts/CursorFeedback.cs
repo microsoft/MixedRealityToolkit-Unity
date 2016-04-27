@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity
                 // so that feedback assets move and rotate with this parent.
                 instantiatedPrefab.transform.parent = FeedbackParent.transform;
 
-                // Set starting state of gameobject to be inactive.
+                // Set starting state of the prefab's GameObject to be inactive.
                 instantiatedPrefab.gameObject.SetActive(false);
             }
 

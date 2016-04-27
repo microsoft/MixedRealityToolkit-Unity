@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 
 [ExecuteInEditMode]
 public class NearPlaneFade : MonoBehaviour
@@ -20,10 +19,6 @@ public class NearPlaneFade : MonoBehaviour
     {
         fadeDistancePropertyID = Shader.PropertyToID("_NearPlaneFadeDistance");
         UpdateShaderParams();
-    }
-
-    void Update()
-    {
     }
 
     private void OnValidate()

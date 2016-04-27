@@ -42,16 +42,16 @@ public class SpatialMappingCollider : SMBaseAbstract
     /// <param name="elapsedBakeTimeSeconds">How long the baking took in seconds</param>
     protected override void SurfaceObserver_OnDataReady(SurfaceData bakedData, bool outputWritten, float elapsedBakeTimeSeconds)
     {
-		if (bakedData.outputMesh != null)
-		{
-			base.SurfaceObserver_OnDataReady(bakedData, outputWritten, elapsedBakeTimeSeconds);
-			bakedData.outputCollider.gameObject.layer = MeshLayer;
-			if (PhysicMaterial != null)
-			{
-				bakedData.outputCollider.material = PhysicMaterial;
-			}
-			bakedData.outputCollider.enabled = _enableCollisions;
-		}
+        if (bakedData.outputMesh != null)
+        {
+            base.SurfaceObserver_OnDataReady(bakedData, outputWritten, elapsedBakeTimeSeconds);
+            bakedData.outputCollider.gameObject.layer = MeshLayer;
+            if (PhysicMaterial != null)
+            {
+                bakedData.outputCollider.material = PhysicMaterial;
+            }
+            bakedData.outputCollider.enabled = _enableCollisions;
+        }
     }
 
     /// <summary>

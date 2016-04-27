@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 
 namespace HoloToolkit.Unity
 {
@@ -56,7 +55,7 @@ namespace HoloToolkit.Unity
             // Remember the default for distance.
             defaultTagalongDistance = TagalongDistance;
 
-            // If the specified minumum distance for the tagalong would be within the 
+            // If the specified minimum distance for the tagalong would be within the
             // camera's near clipping plane, adjust it to be 10% beyond the near
             // clipping plane.
             if (Camera.main.nearClipPlane > MinimumTagalongDistance)
@@ -131,7 +130,7 @@ namespace HoloToolkit.Unity
             bool tagalongIsRightOfCenter = verticalCenterPlane.GetDistanceToPoint(colliderBounds.center) > 0;
 
             // Based on left/right of center choose the appropriate directional
-            // vector and frustum plane for the rest of our horizontal caculations.
+            // vector and frustum plane for the rest of our horizontal calculations.
             Vector3 horizontalTowardCenter = tagalongIsRightOfCenter ? -transform.right : transform.right;
             Plane verticalFrustumPlane = tagalongIsRightOfCenter ? frustumPlanes[frustumRight] : frustumPlanes[frustumLeft];
 
@@ -199,7 +198,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Calculates a target position for the Tagalong in either the horizontal or vertical direction.
         /// </summary>
-        /// <param name="isHorizontal">If true, the calculate horizonally; vertically otherwise.</param>
+        /// <param name="isHorizontal">If true, the calculate horizontally; vertically otherwise.</param>
         /// <param name="centermostEdge">A point along the collider that is the closest to the center of the FOV.</param>
         /// <param name="vectorTowardCenter">A vector that points from the Tagalong toward the center of the FOV.</param>
         /// <param name="width">The actual width of the object's collider.</param>
@@ -223,14 +222,14 @@ namespace HoloToolkit.Unity
             Vector3 targetPoint = centermostEdge + (-vectorTowardCenter * (width * desiredOverlap));
 
             // Find a point on the frustum we care about. Start with a point
-            // in front of the camera and cast a ray from there to the frustum. 
+            // in front of the camera and cast a ray from there to the frustum.
             Vector3 centeredPoint = cameraPosition + cameraTransform.forward * TagalongDistance;
             Ray rayTemp = new Ray(centeredPoint, (invertAngle ? 1 : -1) * (isHorizontal ? cameraTransform.right : cameraTransform.up));
             float distToFrustum = 0.0f;
             frustumPlane.Raycast(rayTemp, out distToFrustum);
             Vector3 pointOnFrustum = rayTemp.GetPoint(distToFrustum);
 
-            // Adust the point found on the frustum plane to be the same
+            // Adjust the point found on the frustum plane to be the same
             // distance from the camera as targetPoint is, but still on the
             // frustum plane.
             rayTemp = new Ray(cameraPosition, pointOnFrustum - cameraPosition);

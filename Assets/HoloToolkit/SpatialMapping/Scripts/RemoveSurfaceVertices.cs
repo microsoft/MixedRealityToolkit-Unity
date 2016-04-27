@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity
                 removingVerts = true;
                 AddBoundingObjectsToQueue(boundingObjects);
 
-                // We use Coroutine to split the work across multiple frames and avoid impacting the framerate too much.
+                // We use Coroutine to split the work across multiple frames and avoid impacting the frame rate too much.
                 StartCoroutine(RemoveSurfaceVerticesWithinBoundsRoutine());
             }
             else
