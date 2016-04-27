@@ -2,6 +2,12 @@
 This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
 
+1. [Input](https://github.com/NeerajW/HoloToolkit-Unity#input)
+2. [Sharing](https://github.com/NeerajW/HoloToolkit-Unity#sharing)
+3. [Spatial Mapping](https://github.com/NeerajW/HoloToolkit-Unity#spatialmapping)
+4. [Spatial Sound](https://github.com/NeerajW/HoloToolkit-Unity#spatialsound)
+5. [Utilities](https://github.com/NeerajW/HoloToolkit-Unity#utilities)
+
 ---
 
 ## [CrossPlatform](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/CrossPlatform)
@@ -29,15 +35,16 @@ Scripts related to the input features.
 
 #### BasicCursor.cs
 1. Decides when to show the cursor.
-2. Positions the cursor at the gazed location
+2. Positions the cursor at the gazed hit location.
 3. Rotates the cursor to match hologram normals.
 
 #### CursorFeedback.cs
 CursorFeedback class takes GameObjects to give cursor feedback to users based on different states.
 
 #### CursorManager.cs
-CursorManager class takes Cursor GameObjects. One that is on Holograms and another off Holograms.
-1. Shows the appropriate Cursor when a Hologram is hit.
+CursorManager class takes Cursor GameObjects. One that is a Cursor on Holograms and another Cursor off Holograms.
+
+1. Shows the appropriate Cursor when a hologram is hit.
 2. Places the appropriate Cursor at the hit position.
 3. Matches the Cursor normal to the hit surface.
 
@@ -76,7 +83,8 @@ Stabilize the user's gaze to account for head jitter.
 #### GestureManager.cs
 GestureManager creates a gesture recognizer and signs up for a tap gesture. When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
 GestureManager then sends a message to that game object. 
-It also has an OverrideFocusedObject which lets you send gesture input to a specific object by overriding the gaze.
+
+It also has an **OverrideFocusedObject** which lets you send gesture input to a specific object by overriding the gaze.
 
 #### HandGuidance.cs
 Show a GameObject when a gesturing hand is about to lose tracking.
@@ -120,9 +128,15 @@ Shows the cursor on holograms hugging the test sphere in the scene and cursor of
 Shows the cursor hugging the test sphere in the scene and displays hand detected asset when hand is detected in ready state.
 
 ---
+[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+---
 
 ## [Sharing](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing)
 Sharing and networking components for rapid prototyping in Unity for building shared experiences.
+
+Ensure you have the following capabilities set:
+1. Enable the "SpatialPerception" capability in Player Settings -> Windows Store -> Publishing Settings -> Capabilities.
+2. For using Sharing components, you will also need to set the InternetClientServer, PrivateNetworkClientServer, and Microphone capabilities.
 
 ### [Editor](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing/Editor)
 Enables the HoloToolkit menu option in the Unity top tool bar.
@@ -138,13 +152,13 @@ Prefabs related to the sharing and networking features.
 1. Enables sharing and networking in your Unity application.
 2. Allows you to communicate between a Windows and non-Windows device.
 
-**_SharingStage.cs_** allows you to be a Primary Client (typical case).
-**_Server Address_** is the IP address of the machine running the HoloToolkit -> Launch Sharing Service.
-**_Server Port_** displays the port being used for communicating.
+**SharingStage.cs** allows you to be a Primary Client (typical case).
+**Server Address** is the IP address of the machine running the HoloToolkit -> Launch Sharing Service.
+**Server Port** displays the port being used for communicating.
 
-**_SharingSessionTracker.cs_** keeps track of the players joining and leaving a shared session.
+**SharingSessionTracker.cs** keeps track of the players joining and leaving a shared session.
 
-**_AutoJoinSession.cs_** creates a shared session with Session Name 'Default' which is customizable.
+**AutoJoinSession.cs** creates a shared session with Session Name 'Default' which is customizable.
 Joins a player to that session if once already exists.
 
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing/Scripts)
@@ -174,10 +188,12 @@ It also demonstrates how to share world anchors between clients to establish a s
 
 1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
 2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
-3. **_CustomMessages.cs_** shows how to communicate specific information across clients.
-4. **_ImportExportAnchorManager.cs_** shows how to create anchors and share them with other clients using the sharing service.
-5. **_RemoteHeadManager.cs_** draw cubes on remote heads of users joining the session.
+3. **CustomMessages.cs** shows how to communicate specific information across clients.
+4. **ImportExportAnchorManager.cs** shows how to create anchors and share them with other clients using the sharing service.
+5. **RemoteHeadManager.cs** draw cubes on remote heads of users joining the session.
 
+---
+[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [SpatialMapping](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping)
@@ -363,12 +379,16 @@ This scene shows an example of a static play space which preserves physics aroun
 Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
 
 ---
+[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+---
 
 ## [SpatialSound](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialSound)
 
 ---
+[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+---
 
-## Utilities
+## [Utilities](https://github.com/NeerajW/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities)
 Useful common concepts that you can leverage in your application.
 
 ### [Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Prefabs)
@@ -453,4 +473,6 @@ A basic occlusion shader that can be used to occlude objects behind spatial mapp
 #### Wireframe.shader
 A basic wireframe shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
 
+---
+[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
 ---
