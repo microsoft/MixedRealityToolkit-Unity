@@ -132,7 +132,7 @@ Shows the cursor on holograms hugging the test sphere in the scene and cursor of
 Shows the cursor hugging the test sphere in the scene and displays hand detected asset when hand is detected in ready state.
 
 ---
-[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [Sharing](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing)
