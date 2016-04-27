@@ -2,12 +2,14 @@
 This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
 
+HoloToolkit contains the following feature areas:
 1. [Input](https://github.com/NeerajW/HoloToolkit-Unity#input)
 2. [Sharing](https://github.com/NeerajW/HoloToolkit-Unity#sharing)
 3. [Spatial Mapping](https://github.com/NeerajW/HoloToolkit-Unity#spatialmapping)
 4. [Spatial Sound](https://github.com/NeerajW/HoloToolkit-Unity#spatialsound)
 5. [Utilities](https://github.com/NeerajW/HoloToolkit-Unity#utilities)
 
+To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/NeerajW/HoloToolkit-Unity/wiki) section.
 ---
 
 ## [CrossPlatform](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/CrossPlatform)
@@ -193,7 +195,7 @@ It also demonstrates how to share world anchors between clients to establish a s
 5. **RemoteHeadManager.cs** draw cubes on remote heads of users joining the session.
 
 ---
-[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [SpatialMapping](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping)
@@ -379,13 +381,13 @@ This scene shows an example of a static play space which preserves physics aroun
 Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
 
 ---
-[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [SpatialSound](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialSound)
 
 ---
-[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [Utilities](https://github.com/NeerajW/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities)
@@ -474,5 +476,5 @@ A basic occlusion shader that can be used to occlude objects behind spatial mapp
 A basic wireframe shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
 
 ---
-[Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
 ---
