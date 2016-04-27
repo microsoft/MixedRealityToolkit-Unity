@@ -3,6 +3,7 @@ This is effectively part of the existing HoloToolkit, but this is the repository
 The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
 
 HoloToolkit contains the following feature areas:
+
 1. [Input](https://github.com/NeerajW/HoloToolkit-Unity#input)
 2. [Sharing](https://github.com/NeerajW/HoloToolkit-Unity#sharing)
 3. [Spatial Mapping](https://github.com/NeerajW/HoloToolkit-Unity#spatialmapping)
@@ -10,6 +11,7 @@ HoloToolkit contains the following feature areas:
 5. [Utilities](https://github.com/NeerajW/HoloToolkit-Unity#utilities)
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/NeerajW/HoloToolkit-Unity/wiki) section.
+
 ---
 
 ## [CrossPlatform](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/CrossPlatform)
