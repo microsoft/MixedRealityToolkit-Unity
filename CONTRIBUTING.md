@@ -26,7 +26,9 @@ Note:  If you wish to work on something that already exists on our backlog, you 
 2. Start on a new topic branch off of master.
 3. Instructions for getting the project building and running the tests are in the README. 
 4. Make small and atomic commits that include tests.
-5. Make sure that all the tests continue to pass. 
+5. Make sure that all the tests continue to pass.
+6. Ensure you update the README with additional documentation as needed.
+7. Also update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
 
 # Rebase commits
 
