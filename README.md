@@ -4,13 +4,13 @@ The HoloToolkit is a collection of scripts and components intended to accelerate
 
 HoloToolkit contains the following feature areas:
 
-1. [Input](https://github.com/NeerajW/HoloToolkit-Unity#input)
-2. [Sharing](https://github.com/NeerajW/HoloToolkit-Unity#sharing)
-3. [Spatial Mapping](https://github.com/NeerajW/HoloToolkit-Unity#spatialmapping)
-4. [Spatial Sound](https://github.com/NeerajW/HoloToolkit-Unity#spatialsound)
-5. [Utilities](https://github.com/NeerajW/HoloToolkit-Unity#utilities)
+1. [Input](https://github.com/Microsoft/HoloToolkit-Unity#input)
+2. [Sharing](https://github.com/Microsoft/HoloToolkit-Unity#sharing)
+3. [Spatial Mapping](https://github.com/Microsoft/HoloToolkit-Unity#spatialmapping)
+4. [Spatial Sound](https://github.com/Microsoft/HoloToolkit-Unity#spatialsound)
+5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities)
 
-To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/NeerajW/HoloToolkit-Unity/wiki) section.
+To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
 
 ---
 
@@ -120,7 +120,7 @@ Tests related to the input features. To use the scene:
 2. Double click on the test scene you wish to explore.
 3. Either click "Play" in the unity editor or File -> Build Settings.
 4. Add Open Scenes, Platform -> Windows Store, SDK -> Universal 10, Build Type -> D3D, Check 'Unity C# Projects'.
-5. CLick 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
+5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
 #### BasicCursor.unity 
 Shows the basic cursor following the user's gaze and hugging the test sphere in the scene.
@@ -132,7 +132,7 @@ Shows the cursor on holograms hugging the test sphere in the scene and cursor of
 Shows the cursor hugging the test sphere in the scene and displays hand detected asset when hand is detected in ready state.
 
 ---
-##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [Sharing](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing)
@@ -184,7 +184,7 @@ Tests related to the sharing features. To use the scene:
 2. Double click on the test scene you wish to explore.
 3. Either click "Play" in the unity editor or File -> Build Settings.
 4. Add Open Scenes, Platform -> Windows Store, SDK -> Universal 10, Build Type -> D3D, Check 'Unity C# Projects'.
-5. CLick 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
+5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
 #### Sharing.unity 
 Sharing scene demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
@@ -197,7 +197,7 @@ It also demonstrates how to share world anchors between clients to establish a s
 5. **RemoteHeadManager.cs** draw cubes on remote heads of users joining the session.
 
 ---
-##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [SpatialMapping](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping)
@@ -233,7 +233,7 @@ Use this script for rendering Spatial Mapping.
 
 **Radius**: (Default: **10**). The radius of the bounding sphere in meters. Only applicable with Sphere set for Bounding Volume.
 
-**Level of Detail**: (Default: **Medium**). The amount of detail in the resulting meshes. Possible values are Low, Medum, and High. Higher levels of detail will result in lower performance.
+**Level of Detail**: (Default: **Medium**). The amount of detail in the resulting meshes. Possible values are Low, Medium, and High. Higher levels of detail will result in lower performance.
 
 **Time Between Updates**: (Default: **2.5**). The frequency in seconds for when updates to Spatial Mapping surfaces will be processed.
 
@@ -370,7 +370,7 @@ To use this sample code, load the PlaneFinding scene and hit Play. The PlaneFind
 The PlaneFindingTest component exposes a couple of properties that let you manipulate the PlaneFinding API parameters in real-time and observe their impact on the algorithm.
 
 NOTE: In the interest of simplicity, this test script calls the PlaneFinding APIs directly from the main Unity thread in Update(). 
-In a real application, the PlaneFinding APIs **MUST** be called from a background thread in order to avoid stalling the rendering thread and causing a drop in framerate.
+In a real application, the PlaneFinding APIs **MUST** be called from a background thread in order to avoid stalling the rendering thread and causing a drop in frame rate.
 
 #### SpatialProcessing.unity
 The SpatialProcessing scene tests the two processing scripts available in HoloToolkit: SufraceMeshesToPlanes and RemoveSurfaceVertices. 
@@ -379,20 +379,20 @@ If not, you can use the RemoteMapping prefab to send/save mesh files from the Ho
 This scene will scan your area for 15 seconds and then convert all meshes to planes. If a floor plane is found, it will remove vertices from surface meshes that fall within the bounds of any active plane.
 
 #### SpatialMappingComponent\Example.unity
-This scene shows an example of a static play space which preserves physics around it (marked by a cube) while maintaining physics and wireframe rendering of Spatial Mapping around the camera. 
+This scene shows an example of a static play space which preserves physics around it (marked by a cube) while maintaining physics and wire frame rendering of Spatial Mapping around the camera. 
 Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
 
 ---
-##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
 ## [SpatialSound](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialSound)
 
 ---
-##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
 ---
 
-## [Utilities](https://github.com/NeerajW/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities)
+## [Utilities](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities)
 Useful common concepts that you can leverage in your application.
 
 ### [Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Prefabs)
@@ -478,5 +478,5 @@ A basic occlusion shader that can be used to occlude objects behind spatial mapp
 A basic wireframe shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
 
 ---
-##### [Go back up to the table of contents.](https://github.com/NeerajW/HoloToolkit-Unity#holotoolkit-unity)
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
 ---
