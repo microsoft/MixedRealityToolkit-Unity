@@ -41,9 +41,9 @@ struct v2f_surf
     #endif
     LIGHTING_COORDS(2, 3)
     UNITY_FOG_COORDS(4)
-	#if _NEAR_PLANE_FADE_ON
-		float fade : TEXCOORD5;
-	#endif		
+    #if _NEAR_PLANE_FADE_ON
+        float fade : TEXCOORD5;
+    #endif
 };
 
 inline float3 LightingLambertVS(float3 normal, float3 lightDir)
@@ -70,10 +70,10 @@ v2f_surf vert(appdata_t v)
         o.vlight = ShadeSH9(float4(worldN, 1.0));
         o.vlight += LightingLambertVS(worldN, _WorldSpaceLightPos0.xyz);
     #endif
-	
-	#if _NEAR_PLANE_FADE_ON
-		o.fade = ComputeNearPlaneFadeLinear(v.vertex);
-	#endif	
+    
+    #if _NEAR_PLANE_FADE_ON
+        o.fade = ComputeNearPlaneFadeLinear(v.vertex);
+    #endif
 
     TRANSFER_VERTEX_TO_FRAGMENT(o);
     UNITY_TRANSFER_FOG(o, o.pos);
@@ -82,9 +82,9 @@ v2f_surf vert(appdata_t v)
 
 float4 frag(v2f_surf IN) : SV_Target
 {
-    #if _USEMAINTEX_ON || _USEEMISSIONTEX_ON	
+    #if _USEMAINTEX_ON || _USEEMISSIONTEX_ON
         float2 uv_MainTex = IN.pack0.xy;
-    #endif				
+    #endif
 
     float4 surfaceColor;
     #if _USEMAINTEX_ON
@@ -116,10 +116,10 @@ float4 frag(v2f_surf IN) : SV_Target
     #ifdef _USEEMISSIONTEX_ON
         finalColor.rgb += UNITY_SAMPLE_TEX2D(_EmissionTex, uv_MainTex);
     #endif
-	
-	#if _NEAR_PLANE_FADE_ON
-		finalColor.rgb *= IN.fade;
-	#endif	
+
+    #if _NEAR_PLANE_FADE_ON
+        finalColor.rgb *= IN.fade;
+    #endif
 
     UNITY_APPLY_FOG(IN.fogCoord, finalColor);
 

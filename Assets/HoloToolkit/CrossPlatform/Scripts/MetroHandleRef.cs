@@ -33,10 +33,10 @@ namespace System.Runtime.InteropServices
         {
             return value.Handle;
         }
-    
+
         public static IntPtr ToIntPtr(HandleRef value)
         {
-            return value.Handle; 
+            return value.Handle;
         }
     }
 }

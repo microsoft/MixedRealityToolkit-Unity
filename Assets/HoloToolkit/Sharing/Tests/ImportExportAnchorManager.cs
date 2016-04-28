@@ -1,21 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using HoloToolkit.Sharing;
+using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
-using HoloToolkit.Unity;
-using UnityEngine.VR.WSA.Sharing;
-using UnityEngine.VR.WSA.Persistence;
+using UnityEngine;
 using UnityEngine.VR.WSA;
-using HoloToolkit.Sharing;
+using UnityEngine.VR.WSA.Persistence;
+using UnityEngine.VR.WSA.Sharing;
 
 /// <summary>
 /// Manages creating anchors and sharing the anchors with other clients.
 /// </summary>
 public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 {
-
     /// <summary>
     /// Enum to track the progress through establishing a shared coordinate system.
     /// </summary>
@@ -84,8 +83,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     List<byte> exportingAnchorBytes = new List<byte>();
 
     /// <summary>
-    /// Keeps track of if the sharing service is ready.  
-    /// We need the sharing service to be ready so we can 
+    /// Keeps track of if the sharing service is ready.
+    /// We need the sharing service to be ready so we can
     /// upload and download data for sharing anchors.
     /// </summary>
     bool sharingServiceReady = false;
@@ -205,7 +204,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
     /// <summary>
     /// Called when a user (including the local user) joins a session.
-    /// In this case we are using this event to signal that the sharing service is 
+    /// In this case we are using this event to signal that the sharing service is
     /// ready for us to make room related requests.
     /// </summary>
     /// <param name="sender"></param>
@@ -225,7 +224,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     /// <summary>
-    /// Initializes the room api.  
+    /// Initializes the room api.
     /// </summary>
     void InitRoomApi()
     {
@@ -288,7 +287,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             XString storedAnchorString = currentRoom.GetAnchorName(0);
             string storedAnchorName = storedAnchorString.GetString();
 
-            // Attempt to attach to the anchor in our local anchor store.    
+            // Attempt to attach to the anchor in our local anchor store.
             if (AttachToCachedAnchor(storedAnchorName) == false)
             {
                 Debug.Log("Starting room download");
@@ -386,8 +385,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     /// <summary>
-    /// Attmpts to attach to  an anchor by anchorName in the local store..
-    /// </summary>    
+    /// Attempts to attach to  an anchor by anchorName in the local store..
+    /// </summary>
     /// <returns>True if it attached, false if it could not attach</returns>
     bool AttachToCachedAnchor(string AnchorName)
     {
@@ -437,7 +436,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     /// <summary>
-    /// Called when a remote anchor has been deserialzied
+    /// Called when a remote anchor has been deserialized
     /// </summary>
     /// <param name="status"></param>
     /// <param name="wat"></param>
@@ -448,7 +447,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             Debug.Log("Import complete");
 
             string first = wat.GetAllIds()[0];
-            Debug.Log("Anchorname: " + first);
+            Debug.Log("Anchor name: " + first);
 
             WorldAnchor anchor = wat.LockObject(first, gameObject);
             anchorStore.Save(first, anchor);

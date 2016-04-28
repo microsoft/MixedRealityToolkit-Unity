@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity
 {
     /// <summary>
     /// SimpleMeshSerializer converts a UnityEngine.Mesh object to and from an array of bytes.
-    /// This class saves minimal mesh data (vertices and triangle indicies) in the following format:
+    /// This class saves minimal mesh data (vertices and triangle indices) in the following format:
     ///    File header: vertex count (32 bit integer), triangle count (32 bit integer)
     ///    Vertex list: vertex.x, vertex.y, vertex.z (all 32 bit float)
     ///    Triangle index list: 32 bit integers
@@ -165,7 +165,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="reader">BinaryReader representing the data stream.</param>
         /// <param name="vertexCount">Count of vertices to read.</param>
-        /// <returns>Array of Vector3 structures represeting the mesh's vertices.</returns>
+        /// <returns>Array of Vector3 structures representing the mesh's vertices.</returns>
         private static Vector3[] ReadVertices(BinaryReader reader, int vertexCount)
         {
             SysDiag.Debug.Assert(reader != null);

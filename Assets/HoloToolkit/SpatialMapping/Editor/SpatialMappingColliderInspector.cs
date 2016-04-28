@@ -18,7 +18,7 @@ public class SpatialMappingColliderInspector : Editor
     {
         _collider = target as SpatialMappingCollider;
     }
-    
+
     public override void OnInspectorGUI()
     {
         _collider.EnableCollisions = EditorGUILayout.Toggle(new GUIContent("Enable Collisions", "Toggles whether colliders are enabled on mesh"), _collider.EnableCollisions);

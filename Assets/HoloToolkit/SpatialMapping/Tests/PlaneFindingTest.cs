@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using HoloToolkit.Unity;
 
 /// <summary>
-/// Attach this component to a GameObject that contains some meshes (ie: the FakeSpatialMappingMesh.fbx).
+/// Attach this component to a GameObject that contains some meshes (i.e.: the FakeSpatialMappingMesh.fbx).
 /// When running in the Unity editor, the planes are then visualized via editor gizmos.  You can then
 /// play with the API parameters in realtime to see how the impact the plane finding algorithm.
 /// </summary>
@@ -34,7 +34,7 @@ public class PlaneFindingTest : MonoBehaviour
         }
 
         // Now call FindPlanes().  NOTE: In a real application, this MUST be executed on a
-        // background thread (ie: via ThreadPool.QueueUserWorkItem) so that it doesn't stall the
+        // background thread (i.e.: via ThreadPool.QueueUserWorkItem) so that it doesn't stall the
         // rendering thread while running plane finding.  Maintaining a solid 60fps is crucial
         // to a good user experience.
         planes = (VisualizeSubPlanes) ?

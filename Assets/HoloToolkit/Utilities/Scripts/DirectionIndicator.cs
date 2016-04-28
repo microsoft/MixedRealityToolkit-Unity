@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// DirectionIndicator creates an indicator around the cursor showing 
+    /// DirectionIndicator creates an indicator around the cursor showing
     /// what direction to turn to find this GameObject.
     /// </summary>
     public class DirectionIndicator : MonoBehaviour
@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity
         [Tooltip("Color to shade the direction indicator.")]
         public Color DirectionIndicatorColor = Color.blue;
 
-        [Tooltip("Allowable percentage inside the fov to continue to show the direction indicator.")]
+        [Tooltip("Allowable percentage inside the holographic frame to continue to show a directional indicator.")]
         [Range(-0.3f, 0.3f)]
         public float TitleSafeFactor = 0.1f;
 
@@ -141,8 +141,6 @@ namespace HoloToolkit.Unity
             out Quaternion rotation)
         {
             // Find position:
-            
-
             // Save the cursor transform position in a variable.
             Vector3 origin = Cursor.transform.position;
 

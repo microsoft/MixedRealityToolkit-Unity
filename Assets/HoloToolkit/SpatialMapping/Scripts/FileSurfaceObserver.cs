@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
         /// <param name="fileName">The name, without path or extension, of the file to load.</param>
         public void Load(string fileName)
         {
-            if(string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName))
             {
                 Debug.Log("No mesh file specified.");
                 return;
@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity
                         renderer.enabled = false;
                     }
 
-                    if(SpatialMappingManager.Instance.CastShadows == false)
+                    if (SpatialMappingManager.Instance.CastShadows == false)
                     {
                         renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     }

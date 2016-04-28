@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
         public LayerMask RaycastLayerMask = Physics.DefaultRaycastLayers;
 
         /// <summary>
-        /// Physics.Raycast result is true if it hits a Hologram.
+        /// Physics.Raycast result is true if it hits a hologram.
         /// </summary>
         public bool Hit { get; private set; }
 
@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
         public RaycastHit HitInfo { get; private set; }
 
         /// <summary>
-        /// Position of the intersection of the user's gaze and the hologram's in the scene.
+        /// Position of the intersection of the user's gaze and the holograms in the scene.
         /// </summary>
         public Vector3 Position { get; private set; }
 
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity
             GameObject oldFocusedObject = focusedObject;
             // Update the HitInfo property so other classes can use this hit information.
             HitInfo = hitInfo;
-            
+
             if (Hit)
             {
                 // If the raycast hits a hologram, set the position and normal to match the intersection point.
@@ -115,7 +115,7 @@ namespace HoloToolkit.Unity
         {
             if (SetStabilizationPlane)
             {
-                // Calculate the delta between between camera's position and current hit position.
+                // Calculate the delta between camera's position and current hit position.
                 float focusPointDistance = (gazeOrigin - Position).magnitude;
                 float lerpPower = focusPointDistance > lastHitDistance
                     ? LerpStabilizationPlanePowerFarther

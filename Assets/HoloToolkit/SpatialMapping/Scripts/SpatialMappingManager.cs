@@ -81,7 +81,7 @@ namespace HoloToolkit.Unity
                 {
                     SetSpatialMappingSource(fileSurfaceObserver);
                 }
-                else if(remoteMeshTarget != null)
+                else if (remoteMeshTarget != null)
                 {
                     SetSpatialMappingSource(remoteMeshTarget);
                 }
@@ -133,7 +133,7 @@ namespace HoloToolkit.Unity
             }
             set
             {
-                if(value != surfaceMaterial)
+                if (value != surfaceMaterial)
                 {
                     surfaceMaterial = value;
                     SetSurfaceMaterial(surfaceMaterial);
@@ -286,7 +286,7 @@ namespace HoloToolkit.Unity
         private void SetShadowCasting(bool castShadows)
         {
             CastShadows = castShadows;
-            foreach(Renderer renderer in Source.GetMeshRenderers())
+            foreach (Renderer renderer in Source.GetMeshRenderers())
             {
                 if (renderer != null)
                 {

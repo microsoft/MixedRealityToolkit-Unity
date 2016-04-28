@@ -14,7 +14,7 @@ struct appdata_t
     float4 vertex : POSITION;
     #if _USEMAINTEX_ON
         float2 texcoord : TEXCOORD0;
-    #endif			
+    #endif
 };
 
 struct v2f
@@ -24,9 +24,9 @@ struct v2f
         float2 texcoord : TEXCOORD0;
     #endif
     UNITY_FOG_COORDS(1)
-	#if _NEAR_PLANE_FADE_ON
-		float fade : TEXCOORD2;
-	#endif	
+    #if _NEAR_PLANE_FADE_ON
+        float fade : TEXCOORD2;
+    #endif
 };
 
 v2f vert(appdata_t v)
@@ -37,10 +37,10 @@ v2f vert(appdata_t v)
     #if _USEMAINTEX_ON
         o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
     #endif
-	
-	#if _NEAR_PLANE_FADE_ON
-		o.fade = ComputeNearPlaneFadeLinear(v.vertex);
-	#endif	
+    
+    #if _NEAR_PLANE_FADE_ON
+        o.fade = ComputeNearPlaneFadeLinear(v.vertex);
+    #endif
 
     UNITY_TRANSFER_FOG(o, o.vertex);
     return o;
@@ -59,12 +59,12 @@ float4 frag(v2f i) : SV_Target
     #if _USECOLOR_ON
         c *= _Color;
     #endif
-		
+        
     UNITY_APPLY_FOG(i.fogCoord, c);
-	
-	#if _NEAR_PLANE_FADE_ON
-		c.rgb *= i.fade;
-	#endif
-	
+
+    #if _NEAR_PLANE_FADE_ON
+        c.rgb *= i.fade;
+    #endif
+
     return c;
 }

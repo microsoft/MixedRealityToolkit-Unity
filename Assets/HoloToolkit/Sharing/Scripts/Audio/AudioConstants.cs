@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft. All rights reserved.
 //
 
-public class AudioConstants 
+public class AudioConstants
 {
 #if !(UNITY_STANDALONE_WIN || (UNITY_EDITOR && UNITY_STANDALONE_WIN) || (UNITY_EDITOR && UNITY_METRO))
     /// <summary>
@@ -22,7 +22,7 @@ public class AudioConstants
     public const int HalfSecond = BaseFrequency / 2;
 
     /// <summary>
-    /// AudioSink.halfSecond data points is 1/4 of a second in samples and 
+    /// AudioSink.halfSecond data points is 1/4 of a second in samples and
     /// must be a multiple of 4!
     /// </summary>
     public const int QuarterSecond = (BaseFrequency / 16) * 4;
@@ -38,8 +38,8 @@ public class AudioConstants
     public const int AudioChannelsAfterHRTF = 2;
 
     /// <summary>
-    /// don't start to deliver any audio until this time has passed so we are sure to 
-    /// have some data in the buffer.  When we do begin to send data, we ignore old audio data 
+    /// don't start to deliver any audio until this time has passed so we are sure to
+    /// have some data in the buffer.  When we do begin to send data, we ignore old audio data
     /// </summary>
     public const int DeliveryLatency = BaseFrequency / 30;
 
@@ -54,7 +54,7 @@ public class AudioConstants
     public const int AudioBufferLatency = 10;
 
     /// <summary>
-    /// This is a standard packet size, we try to sync the incoming data and current playback positions to 
+    /// This is a standard packet size, we try to sync the incoming data and current playback positions to
     /// within this amount of time
     /// </summary>
     public const int StandardPacketSize = 960; // 20ms @ 48KHz

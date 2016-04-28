@@ -39,7 +39,7 @@ public class SpatialMappingRenderer : SMBaseAbstract
     public Material RenderingMaterial
     {
         get { return _renderingMaterial; }
-        set { _renderingMaterial = value;  ApplyRenderingSettingToCache(); }
+        set { _renderingMaterial = value; ApplyRenderingSettingToCache(); }
     }
     /// <summary>
     /// The material used to render the mesh if _currentRenderingSetting is RenderingSetting.Occlusion
@@ -141,9 +141,9 @@ public class SpatialMappingRenderer : SMBaseAbstract
             case RenderingSetting.Occlusion:
                 r.material = OcclusionMaterial;
                 break;
-			case RenderingSetting.None:
-				r.enabled = false;
-				break;
+            case RenderingSetting.None:
+                r.enabled = false;
+                break;
         }
     }
 }

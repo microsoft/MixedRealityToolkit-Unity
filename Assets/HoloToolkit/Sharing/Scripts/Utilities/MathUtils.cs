@@ -1,16 +1,15 @@
-﻿///
+﻿//
 // Copyright (C) Microsoft. All rights reserved.
 //
 
-using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace HoloToolkit.Sharing.Utilities
 {
     public static class MathUtils
     {
-
         /// <summary>
         /// Get the horizontal FOV from the stereo camera
         /// </summary>
@@ -85,7 +84,6 @@ namespace HoloToolkit.Sharing.Utilities
             Vector3 vecInTo = (to == null) ? vecInWorld : to.InverseTransformVector(vecInWorld);
             return vecInTo;
         }
-
 
         /// <summary>
         /// Takes a ray in the coordinate space specified by the "from" transform and transforms it to be the correct ray in the coordinate space specified by the "to" transform
@@ -266,7 +264,7 @@ namespace HoloToolkit.Sharing.Utilities
         }
 
         /// <summary>
-        /// Tests componentwise if a Vector2 is in a given range
+        /// Tests component-wise if a Vector2 is in a given range
         /// </summary>
         /// <param name="vec">The vector to test</param>
         /// <param name="lower">The lower bounds</param>
@@ -278,7 +276,7 @@ namespace HoloToolkit.Sharing.Utilities
         }
 
         /// <summary>
-        /// Tests componentwise if a Vector3 is in a given range
+        /// Tests component-wise if a Vector3 is in a given range
         /// </summary>
         /// <param name="vec">The vector to test</param>
         /// <param name="lower">The lower bounds</param>
@@ -290,11 +288,11 @@ namespace HoloToolkit.Sharing.Utilities
         }
 
         /// <summary>
-        /// elementwise addition of two Matrix4x4s - extension method
+        /// Element-wise addition of two Matrix4x4s - extension method
         /// </summary>
         /// <param name="a">matrix</param>
         /// <param name="b">matrix</param>
-        /// <returns>elementwise (a+b)</returns>
+        /// <returns>element-wise (a+b)</returns>
         public static Matrix4x4 Add(Matrix4x4 a, Matrix4x4 b)
         {
             Matrix4x4 result = new Matrix4x4();
@@ -306,11 +304,11 @@ namespace HoloToolkit.Sharing.Utilities
         }
 
         /// <summary>
-        /// elementwise subtraction of two Matrix4x4s - extension method
+        /// Element-wise subtraction of two Matrix4x4s - extension method
         /// </summary>
         /// <param name="a">matrix</param>
         /// <param name="b">matrix</param>
-        /// <returns>elementwise (a-b)</returns>
+        /// <returns>element-wise (a-b)</returns>
         public static Matrix4x4 Subtract(Matrix4x4 a, Matrix4x4 b)
         {
             Matrix4x4 result = new Matrix4x4();
@@ -408,7 +406,6 @@ namespace HoloToolkit.Sharing.Utilities
             }
             return nearestPoint;
         }
-
 
         /// <summary>
         /// Find 3D point that minimizes distance to a set of 2 or more lines

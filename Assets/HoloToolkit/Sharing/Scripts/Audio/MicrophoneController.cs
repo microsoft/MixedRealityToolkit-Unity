@@ -2,11 +2,11 @@
 // Copyright (C) Microsoft. All rights reserved.
 //
 
-using System;
-using UnityEngine;
 using HoloToolkit.Sharing;
 using HoloToolkit.Sharing.Utilities;
+using System;
 using System.Collections;
+using UnityEngine;
 
 #if UNITY_METRO && !UNITY_EDITOR
 using Windows.Media.Devices;
@@ -78,6 +78,7 @@ public class MicrophoneController : MonoBehaviour
 
     // the bytes are for sending over the network only!
     private byte[] dataStreamSendBytes;
+
     private float lastVolume = 0;
 
     // network connection information
@@ -103,7 +104,6 @@ public class MicrophoneController : MonoBehaviour
 
     private int clientId;
 
-
     public void MuteMicrophone()
     {
         this.muteMicrophone = true;
@@ -128,7 +128,7 @@ public class MicrophoneController : MonoBehaviour
 
     private IEnumerator Start()
     {
-        // get permission to use the microphone 
+        // get permission to use the microphone
         yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
 
         if (Application.HasUserAuthorization(UserAuthorization.Microphone))
@@ -318,7 +318,7 @@ public class MicrophoneController : MonoBehaviour
         sampleRatePacker.SetBits(ref pack, sampleRateType);	// SampleRate: 1 = 16000, 3 = 48000
         sampleTypePacker.SetBits(ref pack, 0);			// SampleType
         sampleCountPacker.SetBits(ref pack, dataCountFloats);  // SampleCount (data count is in bytes and the actual data is in floats, so div by 4)
-        codecTypePacker.SetBits(ref pack, 0);			// CodecType   
+        codecTypePacker.SetBits(ref pack, 0);			// CodecType
         mutePacker.SetBits(ref pack, this.muteMicrophone ? 1 : 0);
         sequenceNumberPacker.SetBits(ref pack, sequenceNumber++);
         sequenceNumber %= 32;
@@ -373,12 +373,12 @@ public class MicrophoneController : MonoBehaviour
 
 #if !UNITY_METRO || UNITY_EDITOR
 
-    // this code only runs on the desktop, not on the veil machine.
-    // 
+    // this code only runs on the desktop, not on the device.
+    //
     // the trick in Unity is to start a Microphone recording audio to an audio clip that
     // does not have a file backing it.  In this case, you can grab the audio bits from
-    // the audio clips memory buffer (which has a minimum size of 1 second).  
-    // write these bytes into our own circular buffer.  Divide the bytes into fixed sized 
+    // the audio clips memory buffer (which has a minimum size of 1 second).
+    // write these bytes into our own circular buffer.  Divide the bytes into fixed sized
     // packets (441 bytes for now which is 10 ms at 44100 hz) and send them over the network.
 
     private AudioUtil.HiresTimer sw = new AudioUtil.HiresTimer();
@@ -445,7 +445,7 @@ public class MicrophoneController : MonoBehaviour
             // loop the playing of the recording so it will be real time
             this.GetComponent<AudioSource>().loop = true;
 
-            // if you only need the data stream values check Mute, if you want to hear yourself in-game don't check Mute. 
+            // if you only need the data stream values check Mute, if you want to hear yourself in-game don't check Mute.
             this.GetComponent<AudioSource>().mute = true;
 
             // full volume by default
@@ -515,7 +515,7 @@ public class MicrophoneController : MonoBehaviour
             // loop the playing of the recording so it will be realtime
             this.GetComponent<AudioSource>().loop = true;
 
-            // if you only need the data stream values check Mute, if you want to hear yourself ingame don't check Mute. 
+            // if you only need the data stream values check Mute, if you want to hear yourself in-game don't check Mute.
             this.GetComponent<AudioSource>().mute = true;
 
             // full volume by default
@@ -561,12 +561,12 @@ public class MicrophoneController : MonoBehaviour
 
     // the Microphone object in Unity does not work correctly in WSA applications.  This
     // is probably because it is being initialized on an MTAThread and not on an STAThread.
-    // Just wraping the init function with a Dispatcher to make it STAThread for init doesn't
+    // Just wrapping the init function with a Dispatcher to make it STAThread for init doesn't
     // seem to be enough.
     //
     //  So this code calls into the AudioIO_DLL assembly which is based on NAudio.  It has
-    // been paired down to just the bare essentials of WASAPI interactions and should be readable 
-    // by someone who knows a bunch about audio in WSA apps.  It is not an easy interface so be careful 
+    // been paired down to just the bare essentials of WASAPI interactions and should be readable
+    // by someone who knows a bunch about audio in WSA apps.  It is not an easy interface so be careful
     // making changes in interfaces and init functions.  Most of the meaty stuff is wrapped in a Dispatch
     // call to make sure the critical calls are being done on STAThread COM model.
 
@@ -585,10 +585,10 @@ public class MicrophoneController : MonoBehaviour
     private void internalDestroy()
     {
     }
-    
+
     private void internalUpdate()
     {
-        // this calls down into the Microphone processing code and will bubble back up packets into the 
+        // this calls down into the Microphone processing code and will bubble back up packets into the
         // callback just below.
         this.microphoneControl.CheckAndSend();
     }

@@ -6,7 +6,8 @@ using System.Collections;
 using UnityEngine.VR.WSA;
 using System.Collections.Generic;
 
-public abstract class SMBaseAbstract : MonoBehaviour {
+public abstract class SMBaseAbstract : MonoBehaviour
+{
     /// <summary>
     /// Toggles whether to stop requesting changes to observed region.
     /// </summary>
@@ -181,7 +182,7 @@ public abstract class SMBaseAbstract : MonoBehaviour {
     /// The collection of meshes that may have been removed by the system but are being cached currently
     /// 
     /// These objects may have been removed from the system due to being too far away or due to tracking loss as well
-    /// actually not needing to exist. To disable this behavior, set [SurfaceObserver].NumUpdatesBeforeRemoval = 0 or manually clear this dicationary
+    /// actually not needing to exist. To disable this behavior, set [SurfaceObserver].NumUpdatesBeforeRemoval = 0 or manually clear this dictionary
     /// Surfaces in this collection will move back to the SpatialMeshObjects if they return to the scene before the number of update intervals has elapsed
     /// </summary>
     public Dictionary<SurfaceId, RemovedSurfaceHolder> RemovedMeshObjects = new Dictionary<SurfaceId, RemovedSurfaceHolder>();
@@ -227,7 +228,7 @@ public abstract class SMBaseAbstract : MonoBehaviour {
     }
 
     /// <summary>
-    /// Standard method called when the component is destoryed.
+    /// Standard method called when the component is destroyed.
     /// 
     /// When this component is destroyed, we clean up all of our tracked GameObjects
     /// </summary>
@@ -317,7 +318,7 @@ public abstract class SMBaseAbstract : MonoBehaviour {
     /// <summary>
     /// The Coroutine which actually updates the meshes and processes our removed mesh's list
     /// 
-    /// This Coroutine runs foreven and checks that the component is enabled and FreezeMeshUpdates has not been specified. If either are not true, we do nothing here and continue waiting.
+    /// This Coroutine runs forever and checks that the component is enabled and FreezeMeshUpdates has not been specified. If either are not true, we do nothing here and continue waiting.
     /// </summary>
     /// <returns>The WaitForSeconds to continue to wait</returns>
     protected IEnumerator UpdateLoop()

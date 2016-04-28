@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity
@@ -24,13 +23,13 @@ namespace HoloToolkit.Unity
         {
             get; set;
         }
-        
+
         /// <summary>
         /// Gets the currently focused object, or null if none.
         /// </summary>
         public GameObject FocusedObject
-        { 
-            get { return focusedObject; } 
+        {
+            get { return focusedObject; }
         }
 
         private GestureRecognizer gestureRecognizer;
@@ -59,8 +58,8 @@ namespace HoloToolkit.Unity
         void LateUpdate()
         {
             GameObject oldFocusedObject = focusedObject;
-            
-            if (GazeManager.Instance.Hit && 
+
+            if (GazeManager.Instance.Hit &&
                 OverrideFocusedObject == null &&
                 GazeManager.Instance.HitInfo.collider != null)
             {

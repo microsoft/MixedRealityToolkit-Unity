@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class FpsDisplay : MonoBehaviour
     {
-        [Tooltip("Refernce to Text UI control where the FPS should be displayed.")]
+        [Tooltip("Reference to Text UI control where the FPS should be displayed.")]
         public Text Text;
 
         private float _deltaTime;

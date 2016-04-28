@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
     {
         [Tooltip("The number of triangles to calculate per cubic meter.")]
         public float TrianglesPerCubicMeter = 500f;
-        
+
         [Tooltip("The extents of the observation volume.")]
         public Vector3 Extents = Vector3.one * 10.0f;
 
@@ -84,7 +84,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void Start()
         {
-            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);            
+            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace HoloToolkit.Unity
                 renderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
                 renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
 
-                if(SpatialMappingManager.Instance.CastShadows == false)
+                if (SpatialMappingManager.Instance.CastShadows == false)
                 {
                     renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
@@ -187,7 +187,7 @@ namespace HoloToolkit.Unity
 
             switch (changeType)
             {
-                // Adding and updating are nearly identical.  The only difference is if a new gameobject to contain 
+                // Adding and updating are nearly identical.  The only difference is if a new GameObject to contain
                 // the surface needs to be created.
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
@@ -246,7 +246,7 @@ namespace HoloToolkit.Unity
             // Stop the observer.
             StopObserving();
 
-            observer.Dispose(); 
+            observer.Dispose();
             observer = null;
 
             // Clear our surface mesh collection.

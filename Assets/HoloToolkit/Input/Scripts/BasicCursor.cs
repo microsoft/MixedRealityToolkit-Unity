@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
 
             if ((GazeManager.Instance.RaycastLayerMask & this.gameObject.layer) == 0)
             {
-                Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (eg: to Ignore Raycast) or uncheck the layer in GazeManager: " +
+                Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
                     LayerMask.LayerToName(this.gameObject.layer));
             }
 
