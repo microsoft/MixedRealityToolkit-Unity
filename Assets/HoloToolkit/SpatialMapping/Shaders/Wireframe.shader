@@ -1,28 +1,28 @@
 ///
 /// Basic wireframe shader that can be used for rendering spatial mapping meshes.
 ///
-Shader "HoloToolkit/Wireframe" 
+Shader "HoloToolkit/Wireframe"
 {
-    Properties 
-	{
-        _BaseColor ("Base color", Color) = (0.0, 0.0, 0.0, 1.0)
-        _WireColor ("Wire color", Color) = (1.0, 1.0, 1.0, 1.0)
-        _WireThickness ("Wire thickness", Range (0, 800)) = 100
+    Properties
+    {
+        _BaseColor("Base color", Color) = (0.0, 0.0, 0.0, 1.0)
+        _WireColor("Wire color", Color) = (1.0, 1.0, 1.0, 1.0)
+        _WireThickness("Wire thickness", Range(0, 800)) = 100
     }
-    SubShader 
-	{
-        Tags { "RenderType"="Opaque" }
+    SubShader
+    {
+        Tags { "RenderType" = "Opaque" }
 
-        Pass {
+        Pass
+        {
             Offset 50, 100
 
             CGPROGRAM
-
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
 
-            //we only target the hololens (and the unity editor) so take advantage of shader model 5
+            // We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
             #pragma target 5.0
             #pragma only_renderers d3d11
 
@@ -34,7 +34,7 @@ Shader "HoloToolkit/Wireframe"
 
             // Based on approach described in "Shader-Based Wireframe Drawing", http://cgg-journal.com/2008-2/06/index.html
 
-            struct v2g 
+            struct v2g
             {
                 float4 viewPos : SV_POSITION;
             };
@@ -46,9 +46,9 @@ Shader "HoloToolkit/Wireframe"
                 return o;
             }
 
-            // inverseW is to counter-act the effect of perspective-correct interpolation so that the lines look the same thickness
-            // regardless of their depth in the scene.
-            struct g2f 
+            // inverseW is to counteract the effect of perspective-correct interpolation so that the lines
+            // look the same thickness regardless of their depth in the scene.
+            struct g2f
             {
                 float4 viewPos : SV_POSITION;
                 float inverseW : TEXCOORD0;
@@ -56,7 +56,7 @@ Shader "HoloToolkit/Wireframe"
             };
 
             [maxvertexcount(3)]
-            void geom(triangle v2g i[3], inout TriangleStream<g2f> triStream) 
+            void geom(triangle v2g i[3], inout TriangleStream<g2f> triStream)
             {
                 // Calculate the vectors that define the triangle from the input points.
                 float2 point0 = i[0].viewPos.xy / i[0].viewPos.w;
@@ -108,7 +108,6 @@ Shader "HoloToolkit/Wireframe"
                 color.a = I;
                 return color;
             }
-
             ENDCG
         }
     }
