@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// The BoundedPlane associated with the SurfacePlane object.
         /// </summary>
-        private BoundedPlane plane;
+        private BoundedPlane plane = new BoundedPlane();
 
         /// <summary>
         /// Gets or Sets the BoundedPlane, which determines the orientation/size/position of the gameObject.
@@ -102,12 +102,6 @@ namespace HoloToolkit.Unity
                     gameObject.GetComponent<Renderer>().enabled = value;
                 }
             }
-        }
-
-        // Used for gameObject initialization.
-        private void Start()
-        {
-            plane = new BoundedPlane();
         }
 
         /// <summary>
