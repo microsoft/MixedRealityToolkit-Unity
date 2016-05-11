@@ -17,7 +17,6 @@ namespace HoloToolkit.Unity
 
     public partial class TapToPlace : MonoBehaviour
     {
-
         bool placing = false;
 
         // Called by GazeGestureManager when the user performs a Select gesture.
@@ -29,7 +28,6 @@ namespace HoloToolkit.Unity
             // If the user is in placing mode, display the spatial mapping mesh.
             if (placing)
             {
-
                 SpatialMappingManager.Instance.DrawVisualMeshes = true;
             }
             // If the user is not in placing mode, hide the spatial mapping mesh.
@@ -44,7 +42,6 @@ namespace HoloToolkit.Unity
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
-
             if (placing)
             {
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
