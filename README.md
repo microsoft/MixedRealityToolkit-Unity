@@ -364,7 +364,7 @@ Generates planes and classifies them by type (wall, ceiling, floor, table, unkno
 **UnknownMaterial** Material to use when rendering unknown plane types.
 
 #### TapToPlace.cs
-Simple script to add to a GameObject that allows users to select and place the GameObject along the spatial mapping mesh.
+Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
 Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
 
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
@@ -396,8 +396,8 @@ Additionally, you can tap to drop a cube in front of the camera with a Rigidbody
 
 #### TapToPlace.unity
 This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use.
-There is a cube in the scene with TapToPlace added on it.  Gaze at and select the cube.  It will move along the spatial mapping mesh based on user's gaze.  
-When select is performed again, it will place the cube.
+There is a cube in the scene with TapToPlace added on it.  Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze.  
+When tap is performed again, it will place the cube.
 
 
 ---

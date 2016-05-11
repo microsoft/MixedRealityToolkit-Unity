@@ -9,8 +9,8 @@ namespace HoloToolkit.Unity
     /// The TapToPlace class is a basic way to enable users to move objects 
     /// and place them on real world surfaces.
     /// Put this script on the object you want to be able to move. 
-    /// Users will be able to select objects, gaze elsewhere, and perform the
-    /// select gesture again to place.
+    /// Users will be able to tap objects, gaze elsewhere, and perform the
+    /// tap gesture again to place.
     /// This script is used in conjunction with GazeManager, GestureManager,
     /// and SpatialMappingManager.
     /// </summary>
@@ -19,30 +19,37 @@ namespace HoloToolkit.Unity
     {
         bool placing = false;
 
-        // Called by GazeGestureManager when the user performs a Select gesture.
+        // Called by GazeGestureManager when the user performs a tap gesture.
         void OnSelect()
         {
-            // On each Select gesture, toggle whether the user is in placing mode.
-            placing = !placing;
-
-            // If the user is in placing mode, display the spatial mapping mesh.
-            if (placing)
+            if (SpatialMappingManager.Instance != null)
             {
-                SpatialMappingManager.Instance.DrawVisualMeshes = true;
+                // On each tap gesture, toggle whether the user is in placing mode.
+                placing = !placing;
+
+                // If the user is in placing mode, display the spatial mapping mesh.
+                if (placing)
+                {
+                    SpatialMappingManager.Instance.DrawVisualMeshes = true;
+                }
+                // If the user is not in placing mode, hide the spatial mapping mesh.
+                else
+                {
+                    SpatialMappingManager.Instance.DrawVisualMeshes = false;
+                }
             }
-            // If the user is not in placing mode, hide the spatial mapping mesh.
             else
             {
-                SpatialMappingManager.Instance.DrawVisualMeshes = false;
+                Debug.Log("TapToPlace requires spatial mapping.  Try adding SpatialMapping prefab to project.");
             }
         }
 
         // Update is called once per frame.
         void Update()
         {
-            // If the user is in placing mode,
-            // update the placement to match the user's gaze.
-            if (placing)
+                // If the user is in placing mode,
+                // update the placement to match the user's gaze.
+                if (placing)
             {
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
                 var headPosition = Camera.main.transform.position;
