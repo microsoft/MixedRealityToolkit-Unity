@@ -363,6 +363,10 @@ Generates planes and classifies them by type (wall, ceiling, floor, table, unkno
 
 **UnknownMaterial** Material to use when rendering unknown plane types.
 
+#### TapToPlace.cs
+Simple script to add to a gameobject that allows users to select and place the gameobject along the spatial mapping mesh.
+Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
+
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
 
 #### Occlusion.shader
