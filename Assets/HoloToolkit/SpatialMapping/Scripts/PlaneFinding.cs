@@ -22,6 +22,18 @@ namespace HoloToolkit.Unity
         public Plane Plane;
         public OrientedBoundingBox Bounds;
         public float Area;
+
+        public BoundedPlane(Transform xform)
+        {
+            Plane = new Plane(xform.forward, xform.position);
+            Bounds = new OrientedBoundingBox()
+            {
+                Center = xform.position,
+                Extents = xform.localScale / 2,
+                Rotation = xform.rotation
+            };
+            Area = Bounds.Extents.x * Bounds.Extents.y;
+        }
     };
 
     public class PlaneFinding
