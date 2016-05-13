@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 
 #if WINDOWS_UWP
+using Windows.Foundation;
 using Windows.Media.SpeechSynthesis;
 using Windows.Storage.Streams;
 using System.Threading.Tasks;
@@ -20,61 +21,47 @@ namespace HoloToolkit.Unity
     /// the <see cref="AudioSource"/> you supply in the inspector. This allows you to position the voice 
     /// as desired in 3D space. One recommended approach is to place the AudioSource on an empty 
     /// GameObject that is a child of Main Camera and position it approximately 0.6 units above the 
-    /// camera. This orientation will sound similar to Cortanas speech in the OS.
+    /// camera. This orientation will sound similar to Cortana's speech in the OS.
     /// </remarks>
-    public class TextToSpeechManager : Singleton<TextToSpeechManager>
+    public class TextToSpeechManager : MonoBehaviour
     {
-        #region Region Name
+        // Inspector Variables
+        [Tooltip("The audio source where speech will be played.")]
         public AudioSource audioSource;
-        #endregion // Region Name
 
-        #region Member Variables
+        // Member Variables
         #if WINDOWS_UWP
         private SpeechSynthesizer synthesizer;
         #endif
-        #endregion // Member Variables
 
-        #region Internal Methods
-        private void StartSpeech()
-        {
-            try
-            {
-                if (audioSource == null) { throw new InvalidOperationException("An AudioSource is required and should be assigned to 'Audio Source' in the inspector."); }
-                #if WINDOWS_UWP
-                synthesizer = new SpeechSynthesizer();
-                #endif
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("Could not start Speech Synthesis");
-                Debug.LogException(ex);
-            }
-        }
-        #endregion // Internal Methods
+        // Internal Methods
 
-        #region Overrides / Event Handlers
-        // Use this for initialization
-        void Start()
-        {
-            // Start speech
-            StartSpeech();
-        }
-        #endregion // Overrides / Event Handlers
-
-
-        #region Public Methods
         /// <summary>
-        /// Speaks the specified text using text-to-speech.
+        /// Logs speech text that normally would have been played.
         /// </summary>
         /// <param name="text">
-        /// The text to speak.
+        /// The speech text.
         /// </param>
-        public void Speak(string text)
+        private void LogSpeech(string text)
+        {
+            Debug.LogFormat("Speech not supported in editor. \"{0}\"", text);
+        }
+
+        #if WINDOWS_UWP
+        /// <summary>
+        /// Executes a function that generates a speech stream and then converts and plays it in Unity.
+        /// </summary>
+        /// <param name="text">
+        /// A raw text version of what's being spoken for use in debug messages when speech isn't supported.
+        /// </param>
+        /// <param name="speakFunc">
+        /// The actual function that will be executed to generate speech.
+        /// </param>
+        private void PlaySpeech(string text, Func<IAsyncOperation<SpeechSynthesisStream>> speakFunc)
         {
             // Make sure there's something to speak
-            if (string.IsNullOrEmpty(text)) { return; }
+            if (speakFunc == null) throw new ArgumentNullException(nameof(speakFunc));
 
-            #if UNITY_UWP
             if (synthesizer != null)
             {
                 try
@@ -83,8 +70,8 @@ namespace HoloToolkit.Unity
                     // This is good since it frees up Unity to keep running anyway.
                     Task.Run(async () =>
                     {
-                        // Speak text to stream
-                        var speechStream = await synthesizer.SynthesizeTextToStreamAsync(text);
+                        // Speak and get stream
+                        var speechStream = await speakFunc();
 
                         // Get the size of the original stream
                         var size = speechStream.Size;
@@ -114,7 +101,7 @@ namespace HoloToolkit.Unity
 
                         // The remainder must be done back on Unity's main thread
                         UnityEngine.WSA.Application.InvokeOnAppThread(() =>
-                            {
+                        {
                             // Convert to an audio clip
                             var clip = wav.ToClip("Speech");
 
@@ -123,7 +110,7 @@ namespace HoloToolkit.Unity
 
                             // Play audio
                             audioSource.Play();
-                            }, false);
+                        }, false);
                     });
                 }
                 catch (Exception ex)
@@ -135,13 +122,70 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogErrorFormat("Speech not initialized. \"{0}\"", text);
             }
-
-        #else
-
-        Debug.LogFormat("Speech not supported in editor. \"{0}\"", text);
-            
-        #endif
         }
-        #endregion // Public Methods
+        #endif
+
+        private void StartSpeech()
+        {
+            try
+            {
+                if (audioSource == null) { throw new InvalidOperationException("An AudioSource is required and should be assigned to 'Audio Source' in the inspector."); }
+                #if WINDOWS_UWP
+                synthesizer = new SpeechSynthesizer();
+                #endif
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Could not start Speech Synthesis");
+                Debug.LogException(ex);
+            }
+        }
+
+        // MonoBehaviour Methods
+        void Start()
+        {
+            // Start speech
+            StartSpeech();
+        }
+
+        // Public Methods
+
+        /// <summary>
+        /// Speaks the specified SSML markup using text-to-speech.
+        /// </summary>
+        /// <param name="ssml">
+        /// The SSML markup to speak.
+        /// </param>
+        public void SpeakSsml(string ssml)
+        {
+            // Make sure there's something to speak
+            if (string.IsNullOrEmpty(ssml)) { return; }
+
+            // Pass to helper method
+            #if WINDOWS_UWP
+            PlaySpeech(ssml, () => synthesizer.SynthesizeSsmlToStreamAsync(ssml));
+            #else
+            LogSpeech(ssml);
+            #endif
+        }
+
+        /// <summary>
+        /// Speaks the specified text using text-to-speech.
+        /// </summary>
+        /// <param name="text">
+        /// The text to speak.
+        /// </param>
+        public void SpeakText(string text)
+        {
+            // Make sure there's something to speak
+            if (string.IsNullOrEmpty(text)) { return; }
+
+            // Pass to helper method
+            #if WINDOWS_UWP
+            PlaySpeech(text, ()=> synthesizer.SynthesizeTextToStreamAsync(text));
+            #else
+            LogSpeech(text);
+            #endif
+        }
     }
 }
