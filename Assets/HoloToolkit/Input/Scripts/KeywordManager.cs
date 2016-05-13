@@ -71,14 +71,7 @@ namespace HoloToolkit.Unity
 
         void Update()
         {
-            foreach (var kvp in KeywordsAndResponses)
-            {
-                if (Input.GetKeyDown(kvp.KeyCode))
-                {
-                    kvp.Response.Invoke();
-                    return;
-                }
-            }
+            ProcessKeyBindings();
         }
 
         void OnDestroy()
@@ -88,6 +81,18 @@ namespace HoloToolkit.Unity
                 StopKeywordRecognizer();
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
                 keywordRecognizer.Dispose();
+            }
+        }
+
+        private void ProcessKeyBindings()
+        {
+            foreach (var kvp in KeywordsAndResponses)
+            {
+                if (Input.GetKeyDown(kvp.KeyCode))
+                {
+                    kvp.Response.Invoke();
+                    return;
+                }
             }
         }
 
