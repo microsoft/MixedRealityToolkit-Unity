@@ -104,6 +104,16 @@ namespace HoloToolkit.Unity
             }
         }
 
+        private void Awake()
+        {
+            plane = new BoundedPlane(transform);
+        }
+
+        private void Start()
+        {
+            UpdateSurfacePlane();
+        }
+
         /// <summary>
         /// Updates the SurfacePlane object to have the same configuration of the BoundingPlane object.
         /// Determine what type of plane the SurfacePlane aligns to.
