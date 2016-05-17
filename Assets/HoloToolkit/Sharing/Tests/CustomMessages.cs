@@ -61,12 +61,21 @@ public class CustomMessages : Singleton<CustomMessages>
     void InitializeMessageHandlers()
     {
         SharingStage sharingStage = SharingStage.Instance;
-        if (sharingStage != null)
+        
+        if (sharingStage == null)
         {
-            serverConnection = sharingStage.Manager.GetServerConnection();
-            connectionAdapter = new NetworkConnectionAdapter();
+            Debug.Log("Cannot Initialize CustomMessages. No SharingStage instance found.");
+            return;
         }
-
+        
+        serverConnection = sharingStage.Manager.GetServerConnection();
+        if (serverConnection == null)
+        {
+            Debug.Log("Cannot initialize CustomMessages. Cannot get a server connection.");
+            return;
+        }
+        
+        connectionAdapter = new NetworkConnectionAdapter();
         connectionAdapter.MessageReceivedCallback += OnMessageReceived;
 
         // Cache the local user ID
