@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
             public float timestamp;
         };
 
-        private Queue<GazeSample> stabilitySamples = new Queue<GazeSample>();
+        private List<GazeSample> stabilitySamples = new List<GazeSample>();
 
         private Vector3 gazePosition;
         private Vector3 gazeDirection;
@@ -68,10 +68,10 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Updates the StableHeadPosition and StableHeadRotation based on GazeSample values.
-        /// Call this method with RaycastHit parameters to get stable values.
+        /// Call this method with Raycasthit parameters to get stable values.
         /// </summary>
-        /// <param name="position">Position value from a RaycastHit point.</param>
-        /// <param name="rotation">Rotation value from a RaycastHit rotation.</param>
+        /// <param name="position">Position value from a Raycasthit point.</param>
+        /// <param name="rotation">Roration value from a Raycasthit rotation.</param>
         public void UpdateHeadStability(Vector3 position, Quaternion rotation)
         {
             gazePosition = position;
@@ -105,10 +105,10 @@ namespace HoloToolkit.Unity
                 // Remove from front if we exceed stored samples.
                 if (stabilitySamples.Count >= StoredStabilitySamples)
                 {
-                    stabilitySamples.Dequeue();
+                    stabilitySamples.RemoveAt(0);
                 }
 
-                stabilitySamples.Enqueue(newStabilitySample);
+                stabilitySamples.Add(newStabilitySample);
             }
         }
 
@@ -136,15 +136,17 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            mostRecentSample = stabilitySamples.ElementAt(stabilitySamples.Count - 1);
+            mostRecentSample = stabilitySamples[(stabilitySamples.Count - 1)];
 
             // All but most recent.
             for (int i = 0; i < stabilitySamples.Count - 1; ++i)
             {
-                // Calculate difference between current sample and most recent sample.
-                positionDelta = Vector3.Magnitude(stabilitySamples.ElementAt(i).position - mostRecentSample.position);
+                GazeSample sample = stabilitySamples[i];
 
-                directionDelta = Vector3.Angle(stabilitySamples.ElementAt(i).direction, mostRecentSample.direction) * Mathf.Deg2Rad;
+                // Calculate difference between current sample and most recent sample.
+                positionDelta = Vector3.Magnitude(sample.position - mostRecentSample.position);
+
+                directionDelta = Vector3.Angle(sample.direction, mostRecentSample.direction) * Mathf.Deg2Rad;
 
                 // Initialize max and min on first sample.
                 if (i == 0)
