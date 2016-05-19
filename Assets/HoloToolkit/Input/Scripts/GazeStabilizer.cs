@@ -70,8 +70,8 @@ namespace HoloToolkit.Unity
         /// Updates the StableHeadPosition and StableHeadRotation based on GazeSample values.
         /// Call this method with Raycasthit parameters to get stable values.
         /// </summary>
-        /// <param name="position">Position value from a Raycasthit point.</param>
-        /// <param name="rotation">Roration value from a Raycasthit rotation.</param>
+        /// <param name="position">Position value from a RaycastHit point.</param>
+        /// <param name="rotation">Rotation value from a RaycastHit rotation.</param>
         public void UpdateHeadStability(Vector3 position, Quaternion rotation)
         {
             gazePosition = position;
@@ -138,7 +138,7 @@ namespace HoloToolkit.Unity
 
             mostRecentSample = stabilitySamples.Last.Value;
 
-            int i = 0;
+            bool first = true;
             foreach(GazeSample sample in stabilitySamples)
             {    
                 // Calculate difference between current sample and most recent sample.
@@ -147,12 +147,13 @@ namespace HoloToolkit.Unity
                 directionDelta = Vector3.Angle(sample.direction, mostRecentSample.direction) * Mathf.Deg2Rad;
 
                 // Initialize max and min on first sample.
-                if (i==0)
+                if (first)
                 {
                     positionDeltaMin = positionDelta;
                     positionDeltaMax = positionDelta;
                     directionDeltaMin = directionDelta;
                     directionDeltaMax = directionDelta;
+                    first = false;
                 }
                 else
                 {
@@ -165,9 +166,7 @@ namespace HoloToolkit.Unity
                 }
 
                 positionDeltaMean += positionDelta;
-                directionDeltaMean += directionDelta;
-
-                i++;
+                directionDeltaMean += directionDelta; 
             }
 
             positionDeltaMean = positionDeltaMean / (stabilitySamples.Count - 1);
