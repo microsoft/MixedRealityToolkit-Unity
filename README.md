@@ -447,6 +447,9 @@ Causes a hologram to maintain a fixed angular size, which is to say it occupies 
 #### Interpolator.cs
 A MonoBehaviour that interpolates a transform's position, rotation or scale.
 
+#### ManualCameraControl.cs
+A script to add to the main camera object so that when running in Play mode in Unity, the user can control the camera using keyboard and mouse.
+
 #### SimpleTagalong.cs
 A Tagalong that stays at a fixed distance from the camera and always seeks to have a part of itself in the view frustum of the camera.
 
@@ -488,6 +491,12 @@ Feature configurable vertex lit shader.  Use when a higher performance but lower
 
 #### VertexLitConfigurableTransparent.shader
 Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
+
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Tests)
+
+#### ManualCameraControl.unity
+
+This scene shows how to use ManualCameraControl.cs.  The script is on the main camera of the scene.  When preview mode in Unity is activated, the user can move around the scene using WASD and look around using ctrl + mouse. 
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
