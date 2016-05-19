@@ -138,6 +138,7 @@ namespace HoloToolkit.Unity
 
             mostRecentSample = stabilitySamples.Last.Value;
 
+            int i = 0;
             foreach(GazeSample sample in stabilitySamples)
             {    
                 // Calculate difference between current sample and most recent sample.
@@ -146,7 +147,7 @@ namespace HoloToolkit.Unity
                 directionDelta = Vector3.Angle(sample.direction, mostRecentSample.direction) * Mathf.Deg2Rad;
 
                 // Initialize max and min on first sample.
-                if (i == 0)
+                if (i==0)
                 {
                     positionDeltaMin = positionDelta;
                     positionDeltaMax = positionDelta;
@@ -165,6 +166,8 @@ namespace HoloToolkit.Unity
 
                 positionDeltaMean += positionDelta;
                 directionDeltaMean += directionDelta;
+
+                i++;
             }
 
             positionDeltaMean = positionDeltaMean / (stabilitySamples.Count - 1);
