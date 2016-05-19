@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
             public float timestamp;
         };
 
-        private List<GazeSample> stabilitySamples = new List<GazeSample>();
+        private LinkedList<GazeSample> stabilitySamples = new LinkedList<GazeSample>();
 
         private Vector3 gazePosition;
         private Vector3 gazeDirection;
@@ -102,13 +102,13 @@ namespace HoloToolkit.Unity
 
             if (stabilitySamples != null)
             {
-                // Remove from front if we exceed stored samples.
-                if (stabilitySamples.Count >= StoredStabilitySamples)
+                // Remove from front items if we exceed stored samples.
+                while (stabilitySamples.Count >= StoredStabilitySamples)
                 {
-                    stabilitySamples.RemoveAt(0);
+                    stabilitySamples.RemoveFirst();
                 }
 
-                stabilitySamples.Add(newStabilitySample);
+                stabilitySamples.AddLast(newStabilitySample);
             }
         }
 
@@ -136,13 +136,10 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            mostRecentSample = stabilitySamples[(stabilitySamples.Count - 1)];
+            mostRecentSample = stabilitySamples.Last.Value;
 
-            // All but most recent.
-            for (int i = 0; i < stabilitySamples.Count - 1; ++i)
-            {
-                GazeSample sample = stabilitySamples[i];
-
+            foreach(GazeSample sample in stabilitySamples)
+            {    
                 // Calculate difference between current sample and most recent sample.
                 positionDelta = Vector3.Magnitude(sample.position - mostRecentSample.position);
 
