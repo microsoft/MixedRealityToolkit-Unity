@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
             public float timestamp;
         };
 
-        private Queue<GazeSample> stabilitySamples = new Queue<GazeSample>();
+        private LinkedList<GazeSample> stabilitySamples = new LinkedList<GazeSample>();
 
         private Vector3 gazePosition;
         private Vector3 gazeDirection;
@@ -68,7 +68,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Updates the StableHeadPosition and StableHeadRotation based on GazeSample values.
-        /// Call this method with RaycastHit parameters to get stable values.
+        /// Call this method with Raycasthit parameters to get stable values.
         /// </summary>
         /// <param name="position">Position value from a RaycastHit point.</param>
         /// <param name="rotation">Rotation value from a RaycastHit rotation.</param>
@@ -102,13 +102,13 @@ namespace HoloToolkit.Unity
 
             if (stabilitySamples != null)
             {
-                // Remove from front if we exceed stored samples.
-                if (stabilitySamples.Count >= StoredStabilitySamples)
+                // Remove from front items if we exceed stored samples.
+                while (stabilitySamples.Count >= StoredStabilitySamples)
                 {
-                    stabilitySamples.Dequeue();
+                    stabilitySamples.RemoveFirst();
                 }
 
-                stabilitySamples.Enqueue(newStabilitySample);
+                stabilitySamples.AddLast(newStabilitySample);
             }
         }
 
@@ -136,23 +136,24 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            mostRecentSample = stabilitySamples.ElementAt(stabilitySamples.Count - 1);
+            mostRecentSample = stabilitySamples.Last.Value;
 
-            // All but most recent.
-            for (int i = 0; i < stabilitySamples.Count - 1; ++i)
-            {
+            bool first = true;
+            foreach(GazeSample sample in stabilitySamples)
+            {    
                 // Calculate difference between current sample and most recent sample.
-                positionDelta = Vector3.Magnitude(stabilitySamples.ElementAt(i).position - mostRecentSample.position);
+                positionDelta = Vector3.Magnitude(sample.position - mostRecentSample.position);
 
-                directionDelta = Vector3.Angle(stabilitySamples.ElementAt(i).direction, mostRecentSample.direction) * Mathf.Deg2Rad;
+                directionDelta = Vector3.Angle(sample.direction, mostRecentSample.direction) * Mathf.Deg2Rad;
 
                 // Initialize max and min on first sample.
-                if (i == 0)
+                if (first)
                 {
                     positionDeltaMin = positionDelta;
                     positionDeltaMax = positionDelta;
                     directionDeltaMin = directionDelta;
                     directionDeltaMax = directionDelta;
+                    first = false;
                 }
                 else
                 {
@@ -165,7 +166,7 @@ namespace HoloToolkit.Unity
                 }
 
                 positionDeltaMean += positionDelta;
-                directionDeltaMean += directionDelta;
+                directionDeltaMean += directionDelta; 
             }
 
             positionDeltaMean = positionDeltaMean / (stabilitySamples.Count - 1);
