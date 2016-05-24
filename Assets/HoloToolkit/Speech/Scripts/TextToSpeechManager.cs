@@ -34,6 +34,141 @@ namespace HoloToolkit.Unity
         private SpeechSynthesizer synthesizer;
         #endif
 
+        // Static Helper Methods
+
+        /// <summary>
+        /// Converts two bytes to one float in the range -1 to 1 
+        /// </summary>
+        /// <param name="firstByte">
+        /// The first byte.
+        /// </param>
+        /// <param name="secondByte">
+        /// The second byte.
+        /// </param>
+        /// <returns>
+        /// The converted float.
+        /// </returns>
+        static private float BytesToFloat(byte firstByte, byte secondByte)
+        {
+            // Convert two bytes to one short (little endian)
+            short s = (short)((secondByte << 8) | firstByte);
+
+            // Convert to range from -1 to (just below) 1
+            return s / 32768.0F;
+        }
+
+        /// <summary>
+        /// Converts an array of bytes to an integer.
+        /// </summary>
+        /// <param name="bytes">
+        /// The byte array.
+        /// </param>
+        /// <param name="offset">
+        /// An offset to read from.
+        /// </param>
+        /// <returns>
+        /// The converted int.
+        /// </returns>
+        static private int BytesToInt(byte[] bytes, int offset = 0)
+        {
+            int value = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                value |= ((int)bytes[offset + i]) << (i * 8);
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Dynamically creates an <see cref="AudioClip"/> that represents raw Unity audio data.
+        /// </summary>
+        /// <param name="name">
+        /// The name of the dynamically generated clip.
+        /// </param>
+        /// <param name="audioData">
+        /// Raw Unity audio data.
+        /// </param>
+        /// <param name="sampleCount">
+        /// The number of samples in the audio data.
+        /// </param>
+        /// <param name="frequency">
+        /// The frequency of the audio data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="AudioClip"/>.
+        /// </returns>
+        static private AudioClip ToClip(string name, float[] audioData, int sampleCount, int frequency)
+        {
+            // Create the audio clip
+            var clip = AudioClip.Create(name, sampleCount, 1, frequency, false);
+
+            // Set the data
+            clip.SetData(audioData, 0);
+
+            // Done
+            return clip;
+        }
+
+        /// <summary>
+        /// Converts raw WAV data into Unity formatted audio data.
+        /// </summary>
+        /// <param name="wavAudio">
+        /// The raw WAV data.
+        /// </param>
+        /// <param name="sampleCount">
+        /// The number of samples in the audio data.
+        /// </param>
+        /// <param name="frequency">
+        /// The frequency of the audio data.
+        /// </param>
+        /// <returns>
+        /// The Unity formatted audio data.
+        /// </returns>
+        static private float[] ToUnityAudio(byte[] wavAudio, out int sampleCount, out int frequency)
+        {
+            // Determine if mono or stereo
+            int channelCount = wavAudio[22];     // Speech audio data is always mono but read actual header value for processing
+
+            // Get the frequency
+            frequency = BytesToInt(wavAudio, 24);
+
+            // Get past all the other sub chunks to get to the data subchunk:
+            int pos = 12;   // First subchunk ID from 12 to 16
+
+            // Keep iterating until we find the data chunk (i.e. 64 61 74 61 ...... (i.e. 100 97 116 97 in decimal))
+            while (!(wavAudio[pos] == 100 && wavAudio[pos + 1] == 97 && wavAudio[pos + 2] == 116 && wavAudio[pos + 3] == 97))
+            {
+                pos += 4;
+                int chunkSize = wavAudio[pos] + wavAudio[pos + 1] * 256 + wavAudio[pos + 2] * 65536 + wavAudio[pos + 3] * 16777216;
+                pos += 4 + chunkSize;
+            }
+            pos += 8;
+
+            // Pos is now positioned to start of actual sound data.
+            sampleCount = (wavAudio.Length - pos) / 2;     // 2 bytes per sample (16 bit sound mono)
+            if (channelCount == 2) sampleCount /= 2;      // 4 bytes per sample (16 bit stereo)
+
+            // Allocate memory (supporting left channel only)
+            float[] unityData = new float[sampleCount];
+
+            // Write to double array/s:
+            int i = 0;
+            while (pos < wavAudio.Length)
+            {
+                unityData[i] = BytesToFloat(wavAudio[pos], wavAudio[pos + 1]);
+                pos += 2;
+                if (channelCount == 2)
+                {
+                    pos += 2;
+                }
+                i++;
+            }
+
+            // Done
+            return unityData;
+        }
+
+
         // Internal Methods
 
         /// <summary>
@@ -96,14 +231,16 @@ namespace HoloToolkit.Unity
                             }
                         }
 
-                        // Load buffer as a WAV file
-                        var wav = new Wav(buffer);
+                        // Convert raw WAV data into Unity audio data
+                        int sampleCount = 0;
+                        int frequency = 0;
+                        var unityData = ToUnityAudio(buffer, out sampleCount, out frequency);
 
                         // The remainder must be done back on Unity's main thread
                         UnityEngine.WSA.Application.InvokeOnAppThread(() =>
                         {
                             // Convert to an audio clip
-                            var clip = wav.ToClip("Speech");
+                            var clip = ToClip("Speech", unityData, sampleCount, frequency);
 
                             // Set the source on the audio clip
                             audioSource.clip = clip;
@@ -129,10 +266,16 @@ namespace HoloToolkit.Unity
         {
             try
             {
-                if (audioSource == null) { throw new InvalidOperationException("An AudioSource is required and should be assigned to 'Audio Source' in the inspector."); }
-                #if WINDOWS_UWP
-                synthesizer = new SpeechSynthesizer();
-                #endif
+                if (audioSource == null)
+                {
+                    Debug.LogError("An AudioSource is required and should be assigned to 'Audio Source' in the inspector.");
+                }
+                else
+                { 
+                    #if WINDOWS_UWP
+                    synthesizer = new SpeechSynthesizer();
+                    #endif
+                }
             }
             catch (Exception ex)
             {
