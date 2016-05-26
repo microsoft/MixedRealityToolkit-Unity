@@ -22,7 +22,7 @@ Note:  If you wish to work on something that already exists on our backlog, you 
 
 # Implementation
 
-1. [Fork the repository](https://github.com/Microsoft/HoloToolkit-Unity#fork-destination-box).
+1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 2. If your work needs more time, the consider branching off of master else just code in your fork.
 3. Instructions for getting the project building and running the tests are in the [README](https://github.com/Microsoft/HoloToolkit-Unity/blob/master/README.md). 
 4. Make small and frequent commits that include tests which could be a unity scene showing usage of your feature.
