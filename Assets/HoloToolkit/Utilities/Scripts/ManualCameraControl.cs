@@ -3,27 +3,32 @@
 using UnityEngine;
 
 /// <summary>
-/// Class for manually controlling the camera when HuP isn't running. Attach to same CameraRig object as the StereoCamera.cs script.
+/// Class for manually controlling the camera in the Unity editor. Attach to the MainCamera object.
 /// </summary>
 public class ManualCameraControl : MonoBehaviour
 {
+    /// <summary>
+    /// This enum is used to customize how/when users will look around in the Unity player
+    /// using the mouse.
+    /// </summary>
     public enum MouseButton
     {
-        Left,
-        Right,
-        Middle,
-        Control,
-        Shift,
-        Focused,
-        None
+        Left,       // Left mouse button
+        Right,      // Right mouse button
+        Middle,     // Middle or scroll wheel button
+        Control,    // Control on keyboard
+        Shift,      // Shift on keyboard
+        Focused,    // When Unity player has focus
+        None        // No mouse look functionality
     }
 
     public float ExtraMouseSensitivityScale = 3.0f;
     public float DefaultMouseSensitivity = 0.1f;
+    [Tooltip("Controls how mouse look control is activated.")]
     public MouseButton MouseLookButton = MouseButton.Control;
     public bool IsControllerLookInverted = true;
-    private bool isMouseJumping = false;
 
+    private bool isMouseJumping = false;
     private bool isGamepadLookEnabled = true;
     private bool isFlyKeypressEnabled = true;
     private Vector3 lastMousePosition = Vector3.zero;
@@ -36,31 +41,6 @@ public class ManualCameraControl : MonoBehaviour
     {
         // smoothing input curve, converts from [-1,1] to [-2,2]
         return Mathf.Sign(x) * (1.0f - Mathf.Cos(0.5f * Mathf.PI * Mathf.Clamp(x, -1.0f, 1.0f)));
-    }
-
-#if UNITY_EDITOR
-    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-    private static extern uint GetCurrentProcessId();
-
-    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-    private static extern bool ProcessIdToSessionId(uint dwProcessId, out uint pSessionId);
-
-    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-    private static extern uint WTSGetActiveConsoleSessionId();
-#endif
-
-    private void Awake()
-    {
-        // Workaround for Remote Desktop.  Without this, Game window mousing breaks in modes
-        // that use Unity's Cursor.lockState feature.
-        if (IsRunningUnderRemoteDesktop())
-        {
-            if (this.MouseLookButton >= MouseButton.Control && this.MouseLookButton <= MouseButton.Focused)
-            {
-                this.MouseLookButton = MouseButton.None;
-                Debug.Log("Running under Remote Desktop, so changed MouseLook method to None");
-            }
-        }
     }
 
     private void Update()
@@ -202,11 +182,13 @@ public class ManualCameraControl : MonoBehaviour
 
         if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
         {
+            Debug.Log("Cursor locked state");
             mousePositionDelta.x = Input.GetAxis("Mouse X");
             mousePositionDelta.y = Input.GetAxis("Mouse Y");
         }
         else
         {
+            Debug.Log("Cursor state is NOT locked");
             mousePositionDelta.x *= this.DefaultMouseSensitivity;
             mousePositionDelta.y *= this.DefaultMouseSensitivity;
         }
@@ -265,6 +247,11 @@ public class ManualCameraControl : MonoBehaviour
         this.appHasFocus = focusStatus;
     }
 
+    /// <summary>
+    /// Mouse jumping is where the mouse cursor appears outside the Unity game window, but
+    /// disappears when it enters the Unity game window.
+    /// </summary>
+    /// <param name="wantsJumping">Show the cursor</param>
     private void SetWantsMouseJumping(bool wantsJumping)
     {
         if (wantsJumping != this.isMouseJumping)
@@ -296,18 +283,4 @@ public class ManualCameraControl : MonoBehaviour
 #endif
         }
     }
-
-#if UNITY_EDITOR
-    private bool IsRunningUnderRemoteDesktop()
-    {
-        uint processId = GetCurrentProcessId();
-        uint sessionId;
-        return ProcessIdToSessionId(processId, out sessionId) && (sessionId != WTSGetActiveConsoleSessionId());
-    }
-#else
-        private bool IsRunningUnderRemoteDesktop()
-        {
-            return false;
-        }
-#endif
 }
