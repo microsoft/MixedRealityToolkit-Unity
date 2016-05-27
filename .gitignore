@@ -4,6 +4,7 @@
 Temp/
 Obj/
 Bin/
+Builds/
 UnityGenerated/
 Library/
 Assets/AssetStoreTools*
