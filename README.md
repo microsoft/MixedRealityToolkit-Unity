@@ -363,6 +363,10 @@ Generates planes and classifies them by type (wall, ceiling, floor, table, unkno
 
 **UnknownMaterial** Material to use when rendering unknown plane types.
 
+#### TapToPlace.cs
+Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
+Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
+
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
 
 #### Occlusion.shader
@@ -389,6 +393,12 @@ This scene will scan your area for 15 seconds and then convert all meshes to pla
 #### SpatialMappingComponent\Example.unity
 This scene shows an example of a static play space which preserves physics around it (marked by a cube) while maintaining physics and wire frame rendering of Spatial Mapping around the camera. 
 Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
+
+#### TapToPlace.unity
+This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use.
+There is a cube in the scene with TapToPlace added on it.  Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze.  
+When tap is performed again, it will place the cube.
+
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
@@ -437,6 +447,9 @@ Causes a hologram to maintain a fixed angular size, which is to say it occupies 
 #### Interpolator.cs
 A MonoBehaviour that interpolates a transform's position, rotation or scale.
 
+#### ManualCameraControl.cs
+A script to add to the main camera object so that when running in Play mode in Unity, the user can control the camera using keyboard and mouse.
+
 #### SimpleTagalong.cs
 A Tagalong that stays at a fixed distance from the camera and always seeks to have a part of itself in the view frustum of the camera.
 
@@ -478,6 +491,12 @@ Feature configurable vertex lit shader.  Use when a higher performance but lower
 
 #### VertexLitConfigurableTransparent.shader
 Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
+
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Tests)
+
+#### ManualCameraControl.unity
+
+This scene shows how to use ManualCameraControl.cs.  The script is on the main camera of the scene.  When preview mode in Unity is activated, the user can move around the scene using WASD and look around using ctrl + mouse. 
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
