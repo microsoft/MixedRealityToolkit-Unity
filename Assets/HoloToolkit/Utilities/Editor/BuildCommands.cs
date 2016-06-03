@@ -11,28 +11,55 @@ namespace HoloToolkit.Unity
     {
         public static readonly string BuildLocation = "Builds/HoloLens";
 
+        struct BuildSettings
+        {
+            public BuildTarget BuildTarget;
+            public WSASDK WSASDK;
+            public WSAUWPBuildType WSAUWPBuildType;
+
+            public static BuildSettings Current
+            {
+                get
+                {
+                    return new BuildSettings()
+                    {
+                        BuildTarget = EditorUserBuildSettings.activeBuildTarget,
+                        WSASDK = EditorUserBuildSettings.wsaSDK,
+                        WSAUWPBuildType = EditorUserBuildSettings.wsaUWPBuildType
+                    };
+                }
+            }
+
+            public void Apply()
+            {
+                EditorUserBuildSettings.wsaSDK = WSASDK;
+                EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType;
+                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget);
+            }
+        }
+
         /// <summary>
         /// Do a build configured for the HoloLens, returns the error from BuildPipeline.BuildPlayer
         /// </summary>
         public static string BuildForHololens()
         {
-            var scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path);
 
             // Cache the current settings
-            BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            WSASDK oldSDK = EditorUserBuildSettings.wsaSDK;
-            WSAUWPBuildType oldBuildType = EditorUserBuildSettings.wsaUWPBuildType;
+            BuildSettings oldBuildSettings = BuildSettings.Current;
 
-            // Set the sdk and build type
-            EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
-            EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+            // Define and apply the desired settings
+            BuildSettings newBuildSettings = oldBuildSettings;
+            newBuildSettings.BuildTarget = BuildTarget.WSAPlayer;
+            newBuildSettings.WSASDK = WSASDK.UWP;
+            newBuildSettings.WSAUWPBuildType = WSAUWPBuildType.D3D;
+            newBuildSettings.Apply();
 
-            string error = BuildPipeline.BuildPlayer(scenes.ToArray(), BuildLocation, BuildTarget.WSAPlayer, BuildOptions.None);
+            // Capture the active scenes, and build
+            var scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path);
+            string error = BuildPipeline.BuildPlayer(scenes.ToArray(), BuildLocation, newBuildSettings.BuildTarget, BuildOptions.None);
 
-            // Restore the sdk and build type
-            EditorUserBuildSettings.wsaSDK = oldSDK;
-            EditorUserBuildSettings.wsaUWPBuildType = oldBuildType;
-            EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTarget);
+            // Restore old build settings
+            oldBuildSettings.Apply();
 
             return error;
         }
