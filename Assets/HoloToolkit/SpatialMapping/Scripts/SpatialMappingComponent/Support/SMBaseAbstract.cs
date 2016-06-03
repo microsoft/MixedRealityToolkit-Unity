@@ -468,11 +468,11 @@ public abstract class SMBaseAbstract : MonoBehaviour
                 //the surface id returned from the system
                 surfaceId,
                 //the mesh filter that is populated with the spatial mapping data for this mesh
-                target.GetComponent<MeshFilter>() ?? target.AddComponent<MeshFilter>(),
+                (target.GetComponent<MeshFilter>() == null) ? target.AddComponent<MeshFilter>() : target.GetComponent<MeshFilter>(),
                 //the world anchor used to position the spatial mapping mesh in the world
-                target.GetComponent<WorldAnchor>() ?? target.AddComponent<WorldAnchor>(),
+                (target.GetComponent<WorldAnchor>() == null) ? target.AddComponent<WorldAnchor>() : target.GetComponent<WorldAnchor>(),
                 //the mesh collider that is populated with collider data for this mesh, if true is passed to bakeMeshes below
-                target.GetComponent<MeshCollider>() ?? target.AddComponent<MeshCollider>(),
+                (target.GetComponent<MeshCollider>() == null) ? target.AddComponent<MeshCollider>() : target.GetComponent<MeshCollider>(),
                 //triangles per cubic meter requested for this mesh
                 TrianglesPerCubicMeter,
                 //bakeMeshes - if true, the mesh collider is populated, if false, the mesh collider is empty.
