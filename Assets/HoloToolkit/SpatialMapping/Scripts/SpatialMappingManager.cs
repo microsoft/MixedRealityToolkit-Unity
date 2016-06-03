@@ -240,7 +240,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Instructs the SurfacesurfaceObserver to stop updating the SpatialMapping mesh.
+        /// Instructs the SurfaceObserver to stop updating the SpatialMapping mesh.
         /// </summary>
         public void StopObserver()
         {
