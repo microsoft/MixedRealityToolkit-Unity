@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity
 
             if (string.IsNullOrEmpty(error))
             {
-                bool openSln = EditorUtility.DisplayDialog("Successful Build!", "Would you like to open the solution?", "Open", "Cancel");
+                bool openSln = EditorUtility.DisplayDialog("Successful Build!", "Would you like to open the solution?", "Yes, Open", "No");
                 if (openSln)
                     OpenSolution();
             }
@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                bool buildNow = EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build?", "Build", "Cancel");
+                bool buildNow = EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build?", "Yes, Build", "No");
                 if (buildNow)
                     BuildHoloLens();
             }
