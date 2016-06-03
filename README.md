@@ -168,9 +168,6 @@ Joins a player to that session if once already exists.
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing/Scripts)
 Scripts related to the sharing and networking features.
 
-#### Audio
-Contains scripts related to sharing audio across a session. Also controls for microphone and speakers.
-
 #### SDK
 Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.
 
