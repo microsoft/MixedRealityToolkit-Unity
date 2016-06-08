@@ -1,10 +1,11 @@
 # Contributing
 
-HoloToolkit welcomes contributions from the community.
+HoloToolkit welcomes contributions from the community. 
+If you have any questions, please reach out on the [HoloLens forums](forums.hololens.com). 
 
 # Process
 
-1. Make a proposal (either new, or for one of the elements in our backlog)
+1. [Make a proposal](https://github.com/Microsoft/HoloToolkit-Unity/issues) (either new, or for one of the elements in our backlog)
 2. Implement the proposal and its tests.
 3. Rebase commits to tell a compelling story.
 4. Start a pull request & address comments.
@@ -27,8 +28,9 @@ Note:  If you wish to work on something that already exists on our backlog, you 
 3. Instructions for getting the project building and running the tests are in the [README](https://github.com/Microsoft/HoloToolkit-Unity/blob/master/README.md). 
 4. Make small and frequent commits that include tests which could be a unity scene showing usage of your feature.
 5. Make sure that all the tests continue to pass.
-6. Ensure you update the [README](https://github.com/Microsoft/HoloToolkit-Unity/blob/master/README.md) with additional documentation as needed.
-7. Also update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
+6. Ensure the code is [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
+7. Ensure you update the [README](https://github.com/Microsoft/HoloToolkit-Unity/blob/master/README.md) with additional documentation as needed.
+8. Also update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
 
 # Rebase commits
 
