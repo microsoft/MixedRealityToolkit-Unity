@@ -262,7 +262,8 @@ namespace HoloToolkit.Unity
         }
         #endif
 
-        private void StartSpeech()
+        // MonoBehaviour Methods
+        void Start()
         {
             try
             {
@@ -282,13 +283,6 @@ namespace HoloToolkit.Unity
                 Debug.LogError("Could not start Speech Synthesis");
                 Debug.LogException(ex);
             }
-        }
-
-        // MonoBehaviour Methods
-        void Start()
-        {
-            // Start speech
-            StartSpeech();
         }
 
         // Public Methods
