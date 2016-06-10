@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity
                 // If the raycast does not hit a hologram, default the position to last hit distance in front of the user,
                 // and the normal to face the user.
                 Position = gazeOrigin + (gazeDirection * lastHitDistance);
-                Normal = gazeDirection;
+                Normal = -gazeDirection;
                 focusedObject = null;
             }
 

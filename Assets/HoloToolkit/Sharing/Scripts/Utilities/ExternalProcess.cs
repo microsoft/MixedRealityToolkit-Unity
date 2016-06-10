@@ -122,7 +122,6 @@ namespace HoloToolkit.Sharing.Utilities
         {
             // TBD- doesn't really belong in ExternalProcess.
 
-            // Launching standalone from BuildWalla does not like backslashes or double-quotes. Why?
             path1 = path1.Replace('\\', '/');
             path2 = path2.Replace('\\', '/');
             path1 = path1.Replace("\"", "");
