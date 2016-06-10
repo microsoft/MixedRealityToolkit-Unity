@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
             Vector3 directionToTarget = Camera.main.transform.position - gameObject.transform.position;
 
             // If we are right next to the camera the rotation is undefined.
-            if (directionToTarget.sqrMagnitude < 0.001f)
+            if (directionToTarget.sqrMagnitude < Mathf.Epsilon)
             {
                 return;
             }
