@@ -40,6 +40,7 @@ namespace HoloToolkit.Sharing
             config.SetLogWriter(this.logWriter);
             config.SetServerAddress(this.ServerAddress);
             config.SetServerPort(this.ServerPort);
+            config.SetProfilerEnabled(false);
 
             this.sharingMgr = SharingManager.Create(config);
         }
@@ -59,7 +60,6 @@ namespace HoloToolkit.Sharing
             // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects
             System.GC.Collect();
         }
-
 
         private void LateUpdate()
         {

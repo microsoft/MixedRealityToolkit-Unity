@@ -86,6 +86,15 @@ public class ClientConfig : global::System.IDisposable {
     SharingClientPINVOKE.ClientConfig_SetIsAudioEndpoint(swigCPtr, isAudioEndpoint);
   }
 
+  public bool GetProfilerEnabled() {
+    bool ret = SharingClientPINVOKE.ClientConfig_GetProfilerEnabled(swigCPtr);
+    return ret;
+  }
+
+  public void SetProfilerEnabled(bool enabled) {
+    SharingClientPINVOKE.ClientConfig_SetProfilerEnabled(swigCPtr, enabled);
+  }
+
 }
 
 }
