@@ -8,7 +8,7 @@ HoloToolkit contains the following feature areas:
 2. [Sharing](https://github.com/Microsoft/HoloToolkit-Unity#sharing)
 3. [Spatial Mapping](https://github.com/Microsoft/HoloToolkit-Unity#spatialmapping)
 4. [Spatial Sound](https://github.com/Microsoft/HoloToolkit-Unity#spatialsound)
-5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities)
+5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities-1)
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
 
@@ -167,9 +167,6 @@ Joins a player to that session if once already exists.
 
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing/Scripts)
 Scripts related to the sharing and networking features.
-
-#### Audio
-Contains scripts related to sharing audio across a session. Also controls for microphone and speakers.
 
 #### SDK
 Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.
@@ -363,6 +360,10 @@ Generates planes and classifies them by type (wall, ceiling, floor, table, unkno
 
 **UnknownMaterial** Material to use when rendering unknown plane types.
 
+#### TapToPlace.cs
+Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
+Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
+
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
 
 #### Occlusion.shader
@@ -389,6 +390,12 @@ This scene will scan your area for 15 seconds and then convert all meshes to pla
 #### SpatialMappingComponent\Example.unity
 This scene shows an example of a static play space which preserves physics around it (marked by a cube) while maintaining physics and wire frame rendering of Spatial Mapping around the camera. 
 Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
+
+#### TapToPlace.unity
+This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use.
+There is a cube in the scene with TapToPlace added on it.  Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze.  
+When tap is performed again, it will place the cube.
+
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
@@ -437,6 +444,9 @@ Causes a hologram to maintain a fixed angular size, which is to say it occupies 
 #### Interpolator.cs
 A MonoBehaviour that interpolates a transform's position, rotation or scale.
 
+#### ManualCameraControl.cs
+A script to add to the main camera object so that when running in Play mode in Unity, the user can control the camera using keyboard and mouse.
+
 #### SimpleTagalong.cs
 A Tagalong that stays at a fixed distance from the camera and always seeks to have a part of itself in the view frustum of the camera.
 
@@ -446,6 +456,8 @@ A base class to make a MonoBehaviour follow the singleton design pattern.
 #### Tagalong.cs
 A Tagalong that extends SimpleTagalong that allows for specifying the minimum and target percentage of the object to keep in the view frustum of the camera and that keeps the Tagalong object in front of other holograms including the Spatial Mapping Mesh.
 
+#### TextToSpeechManager.cs
+Provides dynamic Text to Speech. Speech is generated using the UWP SpeechSynthesizer and then played through a Unity AudioSource. Both plain text and SSML are supported.   
 
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Shaders)
 
@@ -478,6 +490,16 @@ Feature configurable vertex lit shader.  Use when a higher performance but lower
 
 #### VertexLitConfigurableTransparent.shader
 Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
+
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Tests)
+
+#### ManualCameraControl.unity
+
+This scene shows how to use ManualCameraControl.cs.  The script is on the main camera of the scene.  When preview mode in Unity is activated, the user can move around the scene using WASD and look around using ctrl + mouse. 
+
+#### TextToSpeechManager.unity 
+
+This scene demonstrates how to use TextToSpeechManager.cs.  The script is placed on 3 cubes in the scene. Whenever a cube is activated with an air tap, a text to speech voice will emanate from the cube. The user can also ask "What time is it?" to hear the current time from a voice that stays with the user as they move.
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
