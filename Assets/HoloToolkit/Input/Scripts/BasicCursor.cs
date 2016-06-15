@@ -19,14 +19,17 @@ namespace HoloToolkit.Unity
 
         private MeshRenderer meshRenderer;
 
-        void Awake()
+        void Start()
         {
             if (GazeManager.Instance == null)
             {
-                Debug.Log("Must have a GazeManager somewhere in the scene.");
+                Debug.LogError("Must have a GazeManager somewhere in the scene.");
                 return;
             }
+        }
 
+        void Awake()
+        {
             if ((GazeManager.Instance.RaycastLayerMask & this.gameObject.layer) == 0)
             {
                 Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
@@ -37,7 +40,7 @@ namespace HoloToolkit.Unity
 
             if (meshRenderer == null)
             {
-                Debug.Log("This script requires that your cursor asset has a MeshRenderer component on it.");
+                Debug.LogError("This script requires that your cursor asset has a MeshRenderer component on it.");
                 return;
             }
 

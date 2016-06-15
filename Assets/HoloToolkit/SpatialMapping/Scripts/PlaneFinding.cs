@@ -22,6 +22,21 @@ namespace HoloToolkit.Unity
         public Plane Plane;
         public OrientedBoundingBox Bounds;
         public float Area;
+
+        /// <summary>
+        /// Builds the bounded plane to match the obb defined by xform
+        /// </summary>
+        public BoundedPlane(Transform xform)
+        {
+            Plane = new Plane(xform.forward, xform.position);
+            Bounds = new OrientedBoundingBox()
+            {
+                Center = xform.position,
+                Extents = xform.localScale / 2,
+                Rotation = xform.rotation
+            };
+            Area = Bounds.Extents.x * Bounds.Extents.y;
+        }
     };
 
     public class PlaneFinding
