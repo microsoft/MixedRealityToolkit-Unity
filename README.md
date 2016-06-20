@@ -8,7 +8,7 @@ HoloToolkit contains the following feature areas:
 2. [Sharing](https://github.com/Microsoft/HoloToolkit-Unity#sharing)
 3. [Spatial Mapping](https://github.com/Microsoft/HoloToolkit-Unity#spatialmapping)
 4. [Spatial Sound](https://github.com/Microsoft/HoloToolkit-Unity#spatialsound)
-5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities)
+5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities-1)
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
 
@@ -167,9 +167,6 @@ Joins a player to that session if once already exists.
 
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Sharing/Scripts)
 Scripts related to the sharing and networking features.
-
-#### Audio
-Contains scripts related to sharing audio across a session. Also controls for microphone and speakers.
 
 #### SDK
 Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.

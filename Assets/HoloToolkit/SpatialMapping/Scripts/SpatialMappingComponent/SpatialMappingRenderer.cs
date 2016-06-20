@@ -50,11 +50,11 @@ public class SpatialMappingRenderer : SMBaseAbstract
     {
         base.Start();
 
-        OcclusionMaterial = Resources.Load("HoloToolkit/Occlusion", typeof(Material)) as Material;
+        OcclusionMaterial = Resources.Load("HoloToolkit/SpatialMapping/Materials/Occlusion", typeof(Material)) as Material;
 
         if (RenderingMaterial == null)
         {
-            RenderingMaterial = Resources.Load("HoloToolkit/Wireframe", typeof(Material)) as Material;
+            RenderingMaterial = Resources.Load("HoloToolkit/SpatialMapping/Materials/Wireframe", typeof(Material)) as Material;
         }
     }
 
