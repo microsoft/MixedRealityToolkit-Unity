@@ -129,5 +129,17 @@ namespace HoloToolkit.Unity
                 HolographicSettings.SetFocusPointForFrame(newFocusPointPosition, -gazeDirection);
             }
         }
+
+        /// <summary>
+        /// Sends message to the object currently focused on.
+        /// </summary>
+        /// <param name="message">Message to send</param>
+        public void SendMessageToFocusedObject(string message)
+        {
+            if (focusedObject != null)
+            {
+                focusedObject.SendMessage(message, SendMessageOptions.DontRequireReceiver);
+            }
+        }
     }
 }
