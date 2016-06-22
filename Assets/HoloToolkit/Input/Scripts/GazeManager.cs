@@ -38,6 +38,11 @@ namespace HoloToolkit.Unity
         /// </summary>
         public Vector3 Normal { get; private set; }
 
+        /// <summary>
+        /// Object currently being focused on.
+        /// </summary>
+        public GameObject FocusedObject { get; private set; }
+
         [Tooltip("Checking enables SetFocusPointForFrame to set the stabilization plane.")]
         public bool SetStabilizationPlane = true;
         [Tooltip("Lerp speed when moving focus point closer.")]
@@ -48,7 +53,6 @@ namespace HoloToolkit.Unity
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
         private float lastHitDistance = 15.0f;
-        private GameObject focusedObject;
 
         private void Update()
         {
@@ -73,7 +77,7 @@ namespace HoloToolkit.Unity
                            MaxGazeDistance,
                            RaycastLayerMask);
 
-            GameObject oldFocusedObject = focusedObject;
+            GameObject oldFocusedObject = FocusedObject;
             // Update the HitInfo property so other classes can use this hit information.
             HitInfo = hitInfo;
 
@@ -83,7 +87,7 @@ namespace HoloToolkit.Unity
                 Position = hitInfo.point;
                 Normal = hitInfo.normal;
                 lastHitDistance = hitInfo.distance;
-                focusedObject = hitInfo.collider.gameObject;
+                FocusedObject = hitInfo.collider.gameObject;
             }
             else
             {
@@ -91,19 +95,19 @@ namespace HoloToolkit.Unity
                 // and the normal to face the user.
                 Position = gazeOrigin + (gazeDirection * lastHitDistance);
                 Normal = -gazeDirection;
-                focusedObject = null;
+                FocusedObject = null;
             }
 
             // Check if the currently hit object has changed
-            if (oldFocusedObject != focusedObject)
+            if (oldFocusedObject != FocusedObject)
             {
                 if (oldFocusedObject != null)
                 {
                     oldFocusedObject.SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
                 }
-                if (focusedObject != null)
+                if (FocusedObject != null)
                 {
-                    focusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
+                    FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
                 }
             }
         }
@@ -136,9 +140,9 @@ namespace HoloToolkit.Unity
         /// <param name="message">Message to send</param>
         public void SendMessageToFocusedObject(string message)
         {
-            if (focusedObject != null)
+            if (FocusedObject != null)
             {
-                focusedObject.SendMessage(message, SendMessageOptions.DontRequireReceiver);
+                FocusedObject.SendMessage(message, SendMessageOptions.DontRequireReceiver);
             }
         }
     }
