@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using HoloToolkit.Unity;
+﻿using HoloToolkit.Unity;
+using UnityEngine;
 
 public class FocusedObjectMessageSender : MonoBehaviour
 {
