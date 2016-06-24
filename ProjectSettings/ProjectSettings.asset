@@ -51,7 +51,7 @@ PlayerSettings:
   forceSingleInstance: 0
   resizableWindow: 0
   useMacAppStoreValidation: 0
-  gpuSkinning: 0
+  gpuSkinning: 1
   graphicsJobs: 0
   xboxPIXTextureCapture: 0
   xboxEnableAvatar: 0
@@ -70,7 +70,7 @@ PlayerSettings:
   n3dsDisableStereoscopicView: 0
   n3dsEnableSharedListOpt: 1
   n3dsEnableVSync: 0
-  uiUse16BitDepthBuffer: 0
+  uiUse16BitDepthBuffer: 1
   ignoreAlphaClear: 0
   xboxOneResolution: 0
   ps3SplashScreen: {fileID: 0}
@@ -121,6 +121,8 @@ PlayerSettings:
     m_Bits: 238
   iPhoneSdkVersion: 988
   iPhoneTargetOSVersion: 22
+  tvOSSdkVersion: 0
+  tvOSTargetOSVersion: 900
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
@@ -344,10 +346,10 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 801f358e46bed201
+  metroCertificateNotAfter: 8023f703f0ecd201
   metroApplicationDescription: HoloToolkit-Unity
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: HoloToolkit-Unity
   metroCommandLineArgsFile: 
   metroTileShowName: 0
   metroMediumTileShowName: 0
@@ -478,6 +480,7 @@ PlayerSettings:
   - Build_ServiceEnabled::Build_ServiceEnabled
   - Collab_ServiceEnabled::Collab_ServiceEnabled
   - ErrorHub_ServiceEnabled::ErrorHub_ServiceEnabled
+  - Game_Performance_ServiceEnabled::Game_Performance_ServiceEnabled
   - Hub_ServiceEnabled::Hub_ServiceEnabled
   - Purchasing_ServiceEnabled::Purchasing_ServiceEnabled
   - UNet_ServiceEnabled::UNet_ServiceEnabled
@@ -486,6 +489,7 @@ PlayerSettings:
   Build_ServiceEnabled::Build_ServiceEnabled: False
   Collab_ServiceEnabled::Collab_ServiceEnabled: False
   ErrorHub_ServiceEnabled::ErrorHub_ServiceEnabled: False
+  Game_Performance_ServiceEnabled::Game_Performance_ServiceEnabled: False
   Hub_ServiceEnabled::Hub_ServiceEnabled: False
   Purchasing_ServiceEnabled::Purchasing_ServiceEnabled: False
   UNet_ServiceEnabled::UNet_ServiceEnabled: False
