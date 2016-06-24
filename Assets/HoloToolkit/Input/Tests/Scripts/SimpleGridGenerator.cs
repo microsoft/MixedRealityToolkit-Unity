@@ -3,13 +3,22 @@ using UnityEngine;
 
 public class SimpleGridGenerator : MonoBehaviour
 {
-    public const int DefaultRows = 3;
-    public const int DefaultColumns = 3;
+    private const int DefaultRows = 3;
+    private const int DefaultColumns = 3;
 
+    [Tooltip("Number of rows in the grid.")]
     public int Rows = DefaultRows;
+
+    [Tooltip("Number of columns in the grid.")]
     public int Columns = DefaultColumns;
+
+    [Tooltip("Distance between objects in the grid.")]
     public float ObjectSpacing = 1.0f;
+
+    [Tooltip("Array of object prefabs to instantiate on the grid.")]
     public List<GameObject> ObjectPrefabs;
+
+    [Tooltip("Indicates whether to generate grid on component start.")]
     public bool GenerateOnStart = true;
 
     private void Start()

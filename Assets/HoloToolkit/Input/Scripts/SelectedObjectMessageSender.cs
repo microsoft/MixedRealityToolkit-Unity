@@ -4,7 +4,8 @@ using UnityEngine;
 /// <summary>
 /// SelectedObjectMessageSender class sends a Unity message to currently selected object.
 /// Object selection is controlled via OnSelectObject and OnClearSelection events.
-/// Object selection and messages can be triggered using keyword responses registered in KeywordManager.
+/// Object selection and messages are triggered using voice commands, so keyword responses
+/// need to be registered in KeywordManager.
 /// </summary>
 public class SelectedObjectMessageSender : MonoBehaviour
 {

@@ -3,7 +3,8 @@ using UnityEngine;
 
 /// <summary>
 /// FocusedObjectMessageSender class sends Unity message to object currently focused on by GazeManager.
-/// Focused object messages can be triggered using keyword responses registered in KeywordManager.
+/// Focused object messages can be triggered using voice commands, so keyword responses
+/// need to be registered in KeywordManager.
 /// </summary>
 public class FocusedObjectMessageSender : MonoBehaviour
 {
