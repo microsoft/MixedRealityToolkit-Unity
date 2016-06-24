@@ -44,18 +44,21 @@ public class SpatialMappingRenderer : SMBaseAbstract
     /// <summary>
     /// The material used to render the mesh if _currentRenderingSetting is RenderingSetting.Occlusion
     /// </summary>
-    private Material OcclusionMaterial = null;
+    [SerializeField]
+    private Material _occlusionMaterial = null;
+
+    /// <summary>
+    /// The material used to render the mesh if _currentRenderingSetting is RenderingSetting.Occlusion
+    /// </summary>
+    public Material OcclusionMaterial
+    {
+        get { return _occlusionMaterial; }
+        set { _occlusionMaterial = value; ApplyRenderingSettingToCache(); }
+    }
 
     protected override void Start()
     {
         base.Start();
-
-        OcclusionMaterial = Resources.Load("HoloToolkit/SpatialMapping/Materials/Occlusion", typeof(Material)) as Material;
-
-        if (RenderingMaterial == null)
-        {
-            RenderingMaterial = Resources.Load("HoloToolkit/SpatialMapping/Materials/Wireframe", typeof(Material)) as Material;
-        }
     }
 
     /// <summary>
@@ -106,6 +109,7 @@ public class SpatialMappingRenderer : SMBaseAbstract
                 ApplyRenderingSetting(go.GetComponent<MeshRenderer>());
             }
         }
+
         foreach (RemovedSurfaceHolder rsh in RemovedMeshObjects.Values)
         {
             rsh.SetRendererEnabled(CurrentRenderingSetting != RenderingSetting.None);

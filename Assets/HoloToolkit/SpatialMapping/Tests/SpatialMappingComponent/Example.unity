@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44692534, g: 0.4967872, b: 0.57508564, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -118,6 +118,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
@@ -130,6 +131,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -287,15 +289,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FreezeMeshUpdates: 0
-  UseSphereBounds: 1
-  Extents: {x: 10, y: 10, z: 10}
-  SphereRadius: 5
+  UseSphereBounds: 0
+  Extents: {x: 5, y: 5, z: 5}
+  SphereRadius: 10
   _levelOfDetailSet: 1
   _levelOfDetail: 1
   TimeBetweenUpdates: 2.5
   NumUpdatesBeforeRemoval: 10
   _currentRenderingSetting: 1
   _renderingMaterial: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
+  _occlusionMaterial: {fileID: 2100000, guid: df172103f5fba4a4d8636aeca60cb0d7, type: 2}
 --- !u!114 &1783506192
 MonoBehaviour:
   m_ObjectHideFlags: 0
