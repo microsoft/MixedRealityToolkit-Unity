@@ -24,8 +24,12 @@ public class SpatialMappingRendererInspector : Editor
         _smRenderer.CurrentRenderingSetting = (SpatialMappingRenderer.RenderingSetting)EditorGUILayout.Popup(new GUIContent("Render Mode"), (int)_smRenderer.CurrentRenderingSetting, renderingSettingChoices);
         switch (_smRenderer.CurrentRenderingSetting)
         {
+            case SpatialMappingRenderer.RenderingSetting.Occlusion:
+                Material occlusionMaterial = _smRenderer.OcclusionMaterial;
+                _smRenderer.OcclusionMaterial = (Material)EditorGUILayout.ObjectField(new GUIContent("Occlusion Material", "Material used for surface occlusion"), (UnityEngine.Object)occlusionMaterial, typeof(Material), false);
+                break;
             case SpatialMappingRenderer.RenderingSetting.Material:
-                Material defaultMaterial = _smRenderer.RenderingMaterial == null ? Resources.Load("HoloToolkit/Wireframe", typeof(Material)) as Material : _smRenderer.RenderingMaterial;
+                Material defaultMaterial = _smRenderer.RenderingMaterial;
                 _smRenderer.RenderingMaterial = (Material)EditorGUILayout.ObjectField(new GUIContent("Render Material", "Material used to render the mesh"), (UnityEngine.Object)defaultMaterial, typeof(Material), false);
                 break;
         }
