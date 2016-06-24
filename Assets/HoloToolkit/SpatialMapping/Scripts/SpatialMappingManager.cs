@@ -312,10 +312,13 @@ namespace HoloToolkit.Unity
             List<MeshRenderer> renderers = Source.GetMeshRenderers();
             for (int index = 0; index < renderers.Count; index++)
             {
-                renderers[index].enabled = Enable;
-                if (Enable)
+                if (renderers[index] != null)
                 {
-                    renderers[index].sharedMaterial = SurfaceMaterial;
+                    renderers[index].enabled = Enable;
+                    if (Enable)
+                    {
+                        renderers[index].sharedMaterial = SurfaceMaterial;
+                    }
                 }
             }
         }
