@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
             {
                 // If the transform and the camera are both in the same
                 // position (that is, the distance between them is zero),
-                // disable this Behaviour so we don't get a DivdeByZero
+                // disable this Behaviour so we don't get a DivideByZero
                 // error later on.
                 enabled = false;
 #if UNITY_EDITOR

@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity
 
         [Tooltip("Allowable percentage inside the holographic frame to continue to show a directional indicator.")]
         [Range(-0.3f, 0.3f)]
-        public float TitleSafeFactor = 0.1f;
+        public float VisibilitySafeFactor = 0.1f;
 
         [Tooltip("Multiplier to decrease the distance from the cursor center an object is rendered to keep it in view.")]
         [Range(0.1f, 1.0f)]
@@ -54,6 +54,7 @@ namespace HoloToolkit.Unity
 
             if (DirectionIndicatorObject == null)
             {
+                Debug.LogError("Direction Indicator failed to instantiate.");
                 return;
             }
         }
@@ -130,8 +131,8 @@ namespace HoloToolkit.Unity
         {
             // This will return true if the target's mesh is within the Main Camera's view frustums.
             Vector3 targetViewportPosition = Camera.main.WorldToViewportPoint(gameObject.transform.position);
-            return (targetViewportPosition.x > TitleSafeFactor && targetViewportPosition.x < 1 - TitleSafeFactor &&
-                targetViewportPosition.y > TitleSafeFactor && targetViewportPosition.y < 1 - TitleSafeFactor &&
+            return (targetViewportPosition.x > VisibilitySafeFactor && targetViewportPosition.x < 1 - VisibilitySafeFactor &&
+                targetViewportPosition.y > VisibilitySafeFactor && targetViewportPosition.y < 1 - VisibilitySafeFactor &&
                 targetViewportPosition.z > 0);
         }
 
