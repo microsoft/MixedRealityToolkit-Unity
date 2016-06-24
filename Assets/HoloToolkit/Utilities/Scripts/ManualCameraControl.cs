@@ -25,7 +25,7 @@ public class ManualCameraControl : MonoBehaviour
     public float ExtraMouseSensitivityScale = 3.0f;
     public float DefaultMouseSensitivity = 0.1f;
     [Tooltip("Controls how mouse look control is activated.")]
-    public MouseButton MouseLookButton = MouseButton.Control;
+    public MouseButton MouseLookButton = MouseButton.Shift;
     public bool IsControllerLookInverted = true;
 
     private bool isMouseJumping = false;
