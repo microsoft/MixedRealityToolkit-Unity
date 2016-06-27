@@ -37,6 +37,14 @@ Torus shaped CursorOnHolograms when user is gazing at holograms and point light 
 #### CursorWithFeedback.prefab
 Torus shaped cursor that follows the user's gaze and HandDetectedFeedback asset to give feedback to user when their hand is detected in the ready state.
 
+#### FocusedObjectKeywordManager.prefab
+Keyword manager pre-wired to send messages to object being currently focused via FocusedObjectMessageSender component.
+You can simply drop this into your scene and be able to send arbitrary messages to currently focused object.
+
+#### SelectedObjectKeywordManager.prefab
+Keyword manager pre-wired to send messages to object being currently selected via SelectedObjectMessageSender comoponent.
+You can simply drop this into your scene and be able to send arbitrary messages to currently selected object.
+
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Input/Scripts)
 Scripts related to the input features.
 
@@ -117,6 +125,28 @@ or in your Visual Studio Package.appxmanifest capabilities.
 
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
+#### FocusedObjectMessageSender.cs
+Sends Unity message to currently focused object.
+FocusedObjectMessageSender.SendMessageToFocusedObject needs to be registered as a response in KeywordManager
+to enable arbitrary messages to be sent to currently focused object.
+
+#### SelectedObjectMessageSender.cs
+Sends Unity message to currently selected object.
+SelectedObjectMessageSender.SendMessageToSelectedObject needs to be registered as a response in KeywordManager
+to enable arbitrary messages to be sent to currently selected object.
+
+#### FocusedObjectMessageReceiver.cs
+Example on how to handle messages send by FocusedObjectMessageSender.
+In this particular implementation, focused object color it toggled on gaze enter/exit events.
+
+#### SelectedObjectMessageReceiver.cs
+Example on how to handle messages send by SelectedObjectMessageSender.
+In this particular implementation, selected object color it toggled on selecting object and clearing selected object.
+
+#### SimpleGridGenerator.cs
+A grid of dynamic objects to illustrate sending messages to prefab instances created at runtime as opposed
+to only static objects that already exist in the scene.
+
 ### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Input/Tests)
 Tests related to the input features. To use the scene:
 1. Navigate to the Tests folder.
@@ -133,6 +163,16 @@ Shows the cursor on holograms hugging the test sphere in the scene and cursor of
 
 #### CursorWithFeedback.unity 
 Shows the cursor hugging the test sphere in the scene and displays hand detected asset when hand is detected in ready state.
+
+#### FocusedObjectKeywords.unity
+Example on how to send keyword messages to currently focused dynamically instantiated object.
+Gazing on an object and saying "Make Smaller" and "Make Bigger" will adjust object size.
+
+#### SelectedObjectKeywords.unity
+Example on how to send keyword messages to currently selected dynamically instantiated object.
+Gazing on an object and saying "Select Object" will persistently select that object for interaction with voice commands,
+after which the user can also adjust object size with "Make Smaller" and "Make Bigger" voice commands and finally clear
+currently selected object by saying "Clear Selection".
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
