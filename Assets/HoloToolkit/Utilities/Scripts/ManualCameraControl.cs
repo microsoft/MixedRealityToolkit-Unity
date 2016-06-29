@@ -28,6 +28,15 @@ public class ManualCameraControl : MonoBehaviour
     public MouseButton MouseLookButton = MouseButton.Shift;
     public bool IsControllerLookInverted = true;
 
+    public enum ControlMode
+    {
+        Fly,
+        Walk,
+    }
+    public ControlMode controlMode = ControlMode.Fly;
+    public float controlSlowSpeed = 0.1f;
+    public float controlFastSpeed = 1.0f;
+
     private bool isMouseJumping = false;
     private bool isGamepadLookEnabled = true;
     private bool isFlyKeypressEnabled = true;
@@ -86,7 +95,15 @@ public class ManualCameraControl : MonoBehaviour
     {
         Vector3 deltaPosition = Vector3.zero;
         deltaPosition += GetKeyDir("left", "right") * this.transform.right;
-        deltaPosition += GetKeyDir("down", "up") * this.transform.forward;
+        if (controlMode == ControlMode.Fly)
+        {
+            deltaPosition += GetKeyDir("down", "up") * this.transform.forward;
+        }
+        else
+        {
+            deltaPosition += GetKeyDir("down", "up") * new Vector3(this.transform.forward.x, 0, this.transform.forward.z).normalized;
+            deltaPosition += GetKeyDir("page down", "page up") * Vector3.up;
+        }
 
         // Support fly up/down keypresses if the current project maps it. This isn't a standard
         // Unity InputManager mapping, so it has to gracefully fail if unavailable.
@@ -105,7 +122,7 @@ public class ManualCameraControl : MonoBehaviour
         deltaPosition += InputCurve(Input.GetAxis(MoveHorizontal)) * this.transform.right;
         deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * this.transform.forward;
 
-        float accel = Input.GetKey(KeyCode.LeftShift) ? 1.0f : 0.1f;
+        float accel = Input.GetKey(KeyCode.LeftShift) ? controlFastSpeed : controlSlowSpeed;
         return accel * deltaPosition;
     }
 
