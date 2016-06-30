@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Key to press in the editor to select the currently gazed hologram
         /// </summary>
-        public KeyCode editorSelectKey = KeyCode.Space;
+        public KeyCode EditorSelectKey = KeyCode.Space;
 
         /// <summary>
         /// To select even when a hologram is not being gazed at,
@@ -52,17 +52,17 @@ namespace HoloToolkit.Unity
             gestureRecognizer.StartCapturingGestures();
         }
 
-        private void SendMessageToFocusedObject()
+        private void OnTap()
         {
             if (focusedObject != null)
             {
-                focusedObject.SendMessage("OnSelect");                
+                focusedObject.SendMessage("OnSelect");
             }
         }
 
         private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
-            SendMessageToFocusedObject();
+            OnTap();
         }
 
         void LateUpdate()
@@ -92,9 +92,9 @@ namespace HoloToolkit.Unity
             }
 
 #if UNITY_EDITOR
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(editorSelectKey))
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
             {
-                SendMessageToFocusedObject();
+                OnTap();
             }
 #endif
         }
