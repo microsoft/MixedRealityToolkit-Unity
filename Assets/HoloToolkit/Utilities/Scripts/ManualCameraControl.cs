@@ -30,12 +30,15 @@ public class ManualCameraControl : MonoBehaviour
 
     public enum ControlMode
     {
+        // Move in the main camera forward direction
         Fly,
+        // Move on a X/Z plane
         Walk,
     }
-    public ControlMode controlMode = ControlMode.Fly;
-    public float controlSlowSpeed = 0.1f;
-    public float controlFastSpeed = 1.0f;
+
+    public ControlMode CurrentControlMode = ControlMode.Fly;
+    public float ControlSlowSpeed = 0.1f;
+    public float ControlFastSpeed = 1.0f;
 
     private bool isMouseJumping = false;
     private bool isGamepadLookEnabled = true;
@@ -95,7 +98,7 @@ public class ManualCameraControl : MonoBehaviour
     {
         Vector3 deltaPosition = Vector3.zero;
         deltaPosition += GetKeyDir("left", "right") * this.transform.right;
-        if (controlMode == ControlMode.Fly)
+        if (CurrentControlMode == ControlMode.Fly)
         {
             deltaPosition += GetKeyDir("down", "up") * this.transform.forward;
         }
@@ -122,7 +125,7 @@ public class ManualCameraControl : MonoBehaviour
         deltaPosition += InputCurve(Input.GetAxis(MoveHorizontal)) * this.transform.right;
         deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * this.transform.forward;
 
-        float accel = Input.GetKey(KeyCode.LeftShift) ? controlFastSpeed : controlSlowSpeed;
+        float accel = Input.GetKey(KeyCode.LeftShift) ? ControlFastSpeed : ControlSlowSpeed;
         return accel * deltaPosition;
     }
 
