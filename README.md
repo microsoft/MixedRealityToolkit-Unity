@@ -9,6 +9,7 @@ HoloToolkit contains the following feature areas:
 3. [Spatial Mapping](https://github.com/Microsoft/HoloToolkit-Unity#spatialmapping)
 4. [Spatial Sound](https://github.com/Microsoft/HoloToolkit-Unity#spatialsound)
 5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities-1)
+6. [Build](https://github.com/Microsoft/HoloToolkit-Unity#build)
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
 
@@ -575,6 +576,27 @@ This scene shows how to use ManualCameraControl.cs.  The script is on the main c
 #### TextToSpeechManager.unity 
 
 This scene demonstrates how to use TextToSpeechManager.cs.  The script is placed on 3 cubes in the scene. Whenever a cube is activated with an air tap, a text to speech voice will emanate from the cube. The user can also ask "What time is it?" to hear the current time from a voice that stays with the user as they move.
+
+---
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
+---
+
+## [Build](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Build)
+Build and deploy automation window for building your VS solution, APPX, installing, launching, and getting the log file (and other related functionality). Requires that the device has been paired with the Editor PC & that the device is connected locally and/or the HTTPS requirement has been disabled in the device portal's security tab.
+
+### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Build/Scripts)
+
+#### BuildDeployPortal.cs
+Interface function with the device (REST API utility functions)
+
+#### BuildDeployTools.cs
+Supports building the APPX from the SLN
+
+#### BuildSLNUtilities.cs
+Supports building the project SLN
+
+#### BuildDeployWindow.cs
+Editor UI for the window and event functions
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
