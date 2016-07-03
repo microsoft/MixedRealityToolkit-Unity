@@ -1,3 +1,6 @@
+This document describes how to prepare the HoloToolkit sourcecode for use
+in your project.
+
 # Preparing the HoloToolkit-Unity Code
 
 `git clone https://github.com/Microsoft/HoloToolkit-Unity.git`
