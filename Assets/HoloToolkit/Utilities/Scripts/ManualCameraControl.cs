@@ -39,8 +39,8 @@ public class ManualCameraControl : MonoBehaviour
 
     //changed the input axes strings to variables exposing them to the editor for non-standard 
     //unity input configuration
-    public string Horizontal = "Horizontal";
-    public string Vertical = "Vertical";
+    public string MoveHorizontal = "Horizontal";
+    public string MoveVertical = "Vertical";
     public string MouseX = "Mouse X";
     public string MouseY = "Mouse Y";
     // the right stick will need to have settings in the Project Settings->Input setup for a controller
@@ -96,8 +96,8 @@ public class ManualCameraControl : MonoBehaviour
             }
         }
 
-        deltaPosition += InputCurve(Input.GetAxis(Horizontal)) * this.transform.right;
-        deltaPosition += InputCurve(Input.GetAxis(Vertical)) * this.transform.forward;
+        deltaPosition += InputCurve(Input.GetAxis(MoveHorizontal)) * this.transform.right;
+        deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * this.transform.forward;
 
         float accel = Input.GetKey(KeyCode.LeftShift) ? 1.0f : 0.1f;
         return accel * deltaPosition;
