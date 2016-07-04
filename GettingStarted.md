@@ -18,6 +18,10 @@ you exported above]
 
 You should now have a `HoloToolkit` menu item.
 
+Since HoloToolkit uses "unsafe" code you need to tell Unity to compile 
+with the unsafe flag. To do this add a file `Assets/smcs.rsp` with the 
+contents `-unsafe`.
+
 # Preparing a Scene for Holographic Content
 
 Add the `Main Camera.prefab` and remove the default camera (this 
