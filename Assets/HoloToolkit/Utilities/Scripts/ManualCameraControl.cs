@@ -37,6 +37,14 @@ public class ManualCameraControl : MonoBehaviour
     private bool appHasFocus = true;
     private bool wasLooking = false;
 
+    //exposing variables to editor to all for non-standard unity input configuration
+    public string horizontal = "Horizontal";
+    public string vertical = "Vertical";
+    public string mouseX = "MouseX";
+    public string mouseY = "MouseY";
+    public string lookHorizontal = "LookHorizontal";
+    public string lookVertical = "LookVertical";
+
     private static float InputCurve(float x)
     {
         // smoothing input curve, converts from [-1,1] to [-2,2]
@@ -86,8 +94,8 @@ public class ManualCameraControl : MonoBehaviour
             }
         }
 
-        deltaPosition += InputCurve(Input.GetAxis("Horizontal")) * this.transform.right;
-        deltaPosition += InputCurve(Input.GetAxis("Vertical")) * this.transform.forward;
+        deltaPosition += InputCurve(Input.GetAxis(horizonta)) * this.transform.right;
+        deltaPosition += InputCurve(Input.GetAxis(vertical)) * this.transform.forward;
 
         float accel = Input.GetKey(KeyCode.LeftShift) ? 1.0f : 0.1f;
         return accel * deltaPosition;
@@ -104,8 +112,8 @@ public class ManualCameraControl : MonoBehaviour
             try
             {
                 // Get the axes information from the right stick of X360 controller
-                rot.x += InputCurve(Input.GetAxis("LookVertical")) * inversionFactor;
-                rot.y += InputCurve(Input.GetAxis("LookHorizontal"));
+                rot.x += InputCurve(Input.GetAxis(lookHorizontal)) * inversionFactor;
+                rot.y += InputCurve(Input.GetAxis(lookVertical));
             }
             catch (System.Exception)
             {
@@ -183,8 +191,8 @@ public class ManualCameraControl : MonoBehaviour
         if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
         {
             Debug.Log("Cursor locked state");
-            mousePositionDelta.x = Input.GetAxis("Mouse X");
-            mousePositionDelta.y = Input.GetAxis("Mouse Y");
+            mousePositionDelta.x = Input.GetAxis(mouseX);
+            mousePositionDelta.y = Input.GetAxis(mouseY);
         }
         else
         {
