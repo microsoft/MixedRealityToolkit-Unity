@@ -37,13 +37,15 @@ public class ManualCameraControl : MonoBehaviour
     private bool appHasFocus = true;
     private bool wasLooking = false;
 
-    //exposing variables to editor to all for non-standard unity input configuration
-    public string horizontal = "Horizontal";
-    public string vertical = "Vertical";
-    public string mouseX = "Mouse X";
-    public string mouseY = "Mouse Y";
-    public string lookHorizontal = "LookHorizontal";
-    public string lookVertical = "LookVertical";
+    //changed the input axes strings to variables exposing them to the editor for non-standard 
+    //unity input configuration
+    public string Horizontal = "Horizontal";
+    public string Vertical = "Vertical";
+    public string MouseX = "Mouse X";
+    public string MouseY = "Mouse Y";
+    // the right stick will need to have settings in the Project Settings->Input setup for a controller
+    public string LookHorizontal = "LookHorizontal";
+    public string LookVertical = "LookVertical";
 
     private static float InputCurve(float x)
     {
@@ -94,8 +96,8 @@ public class ManualCameraControl : MonoBehaviour
             }
         }
 
-        deltaPosition += InputCurve(Input.GetAxis(horizontal)) * this.transform.right;
-        deltaPosition += InputCurve(Input.GetAxis(vertical)) * this.transform.forward;
+        deltaPosition += InputCurve(Input.GetAxis(Horizontal)) * this.transform.right;
+        deltaPosition += InputCurve(Input.GetAxis(Vertical)) * this.transform.forward;
 
         float accel = Input.GetKey(KeyCode.LeftShift) ? 1.0f : 0.1f;
         return accel * deltaPosition;
@@ -112,8 +114,8 @@ public class ManualCameraControl : MonoBehaviour
             try
             {
                 // Get the axes information from the right stick of X360 controller
-                rot.x += InputCurve(Input.GetAxis(lookVertical)) * inversionFactor;
-                rot.y += InputCurve(Input.GetAxis(lookHorizontal));
+                rot.x += InputCurve(Input.GetAxis(LookVertical)) * inversionFactor;
+                rot.y += InputCurve(Input.GetAxis(LookHorizontal));
             }
             catch (System.Exception)
             {
@@ -191,8 +193,8 @@ public class ManualCameraControl : MonoBehaviour
         if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
         {
             Debug.Log("Cursor locked state");
-            mousePositionDelta.x = Input.GetAxis(mouseX);
-            mousePositionDelta.y = Input.GetAxis(mouseY);
+            mousePositionDelta.x = Input.GetAxis(MouseX);
+            mousePositionDelta.y = Input.GetAxis(MouseY);
         }
         else
         {
