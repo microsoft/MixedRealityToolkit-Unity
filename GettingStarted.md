@@ -3,7 +3,12 @@ in your project.
 
 # Preparing the HoloToolkit-Unity Code
 
-`git clone https://github.com/Microsoft/HoloToolkit-Unity.git`
+We'll build the HoloToolkit from source since it's a reasonable assumption 
+that you want the latest and greatest if you are reading this document. To
+do this you need to clone the GitHUb repository at 
+https://github.com/Microsoft/HoloToolkit-Unity.git. If you've never cloned a
+repo before then you should consider using the GitHub desktop client, see 
+https://desktop.github.com/
 
 Open in Unity
 
@@ -17,10 +22,6 @@ Open or create your project in Unity
 you exported above]
 
 You should now have a `HoloToolkit` menu item.
-
-Since HoloToolkit uses "unsafe" code you need to tell Unity to compile 
-with the unsafe flag. To do this add a file `Assets/smcs.rsp` with the 
-contents `-unsafe`.
 
 # Preparing a Scene for Holographic Content
 
