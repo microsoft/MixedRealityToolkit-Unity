@@ -37,13 +37,21 @@ public class ManualCameraControl : MonoBehaviour
     private bool appHasFocus = true;
     private bool wasLooking = false;
 
+    //Input axes  to coordinate with the Input Manager (Project Settings -> Input)
     [Tooltip("Horizontal movement Axis ")]
+    public string MoveHorizontal = "Horizontal"; //Horizontal movement string for keyboard and left stick of game controller
     [Tooltip("Vertical movement Axis ")]
+    public string MoveVertical = "Vertical";  //Vertical movement string for keyboard and left stick of game controller 
     [Tooltip("Mouse Movement X-axis")] 
+    public string MouseX = "Mouse X"; // Mouse movement string for the x-axis
     [Tooltip("Mouse Movement Y-axis")]
+    public string MouseY = "Mouse Y"; // Mouse movement string for the y-axis
     
+    // the right stick has no default settings in the Input Manager and will need to be setup for a game controller to look
     [Tooltip("Look Horizontal Axis - Right Stick On Controller")]
+    public string LookHorizontal = "LookHorizontal";  //Look horizontal string for right stick of game controller
     [Tooltip("Look Vertical Axis - Right Stick On Controller ")]
+    public string LookVertical = "LookVertical"; //Look vertical string for right stick of game controller
 
     private static float InputCurve(float x)
     {
