@@ -37,15 +37,13 @@ public class ManualCameraControl : MonoBehaviour
     private bool appHasFocus = true;
     private bool wasLooking = false;
 
-    //changed the input axes strings to variables exposing them to the editor for non-standard 
-    //unity input configuration
-    public string MoveHorizontal = "Horizontal";
-    public string MoveVertical = "Vertical";
-    public string MouseX = "Mouse X";
-    public string MouseY = "Mouse Y";
-    // the right stick will need to have settings in the Project Settings->Input setup for a controller
-    public string LookHorizontal = "LookHorizontal";
-    public string LookVertical = "LookVertical";
+    [Tooltip("Horizontal movement Axis ")]
+    [Tooltip("Vertical movement Axis ")]
+    [Tooltip("Mouse Movement X-axis")] 
+    [Tooltip("Mouse Movement Y-axis")]
+    
+    [Tooltip("Look Horizontal Axis - Right Stick On Controller")]
+    [Tooltip("Look Vertical Axis - Right Stick On Controller ")]
 
     private static float InputCurve(float x)
     {
