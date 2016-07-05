@@ -37,6 +37,22 @@ public class ManualCameraControl : MonoBehaviour
     private bool appHasFocus = true;
     private bool wasLooking = false;
 
+    //Input axes  to coordinate with the Input Manager (Project Settings -> Input)
+    [Tooltip("Horizontal movement Axis ")]
+    public string MoveHorizontal = "Horizontal"; //Horizontal movement string for keyboard and left stick of game controller
+    [Tooltip("Vertical movement Axis ")]
+    public string MoveVertical = "Vertical";  //Vertical movement string for keyboard and left stick of game controller 
+    [Tooltip("Mouse Movement X-axis")] 
+    public string MouseX = "Mouse X"; // Mouse movement string for the x-axis
+    [Tooltip("Mouse Movement Y-axis")]
+    public string MouseY = "Mouse Y"; // Mouse movement string for the y-axis
+    
+    // the right stick has no default settings in the Input Manager and will need to be setup for a game controller to look
+    [Tooltip("Look Horizontal Axis - Right Stick On Controller")]
+    public string LookHorizontal = "LookHorizontal";  //Look horizontal string for right stick of game controller
+    [Tooltip("Look Vertical Axis - Right Stick On Controller ")]
+    public string LookVertical = "LookVertical"; //Look vertical string for right stick of game controller
+
     private static float InputCurve(float x)
     {
         // smoothing input curve, converts from [-1,1] to [-2,2]
@@ -86,8 +102,8 @@ public class ManualCameraControl : MonoBehaviour
             }
         }
 
-        deltaPosition += InputCurve(Input.GetAxis("Horizontal")) * this.transform.right;
-        deltaPosition += InputCurve(Input.GetAxis("Vertical")) * this.transform.forward;
+        deltaPosition += InputCurve(Input.GetAxis(MoveHorizontal)) * this.transform.right;
+        deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * this.transform.forward;
 
         float accel = Input.GetKey(KeyCode.LeftShift) ? 1.0f : 0.1f;
         return accel * deltaPosition;
@@ -104,8 +120,8 @@ public class ManualCameraControl : MonoBehaviour
             try
             {
                 // Get the axes information from the right stick of X360 controller
-                rot.x += InputCurve(Input.GetAxis("LookVertical")) * inversionFactor;
-                rot.y += InputCurve(Input.GetAxis("LookHorizontal"));
+                rot.x += InputCurve(Input.GetAxis(LookVertical)) * inversionFactor;
+                rot.y += InputCurve(Input.GetAxis(LookHorizontal));
             }
             catch (System.Exception)
             {
@@ -183,8 +199,8 @@ public class ManualCameraControl : MonoBehaviour
         if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
         {
             Debug.Log("Cursor locked state");
-            mousePositionDelta.x = Input.GetAxis("Mouse X");
-            mousePositionDelta.y = Input.GetAxis("Mouse Y");
+            mousePositionDelta.x = Input.GetAxis(MouseX);
+            mousePositionDelta.y = Input.GetAxis(MouseY);
         }
         else
         {
