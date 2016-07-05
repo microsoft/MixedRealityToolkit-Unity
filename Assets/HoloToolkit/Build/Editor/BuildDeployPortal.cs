@@ -18,9 +18,9 @@ namespace HoloToolkit.Unity
     public class BuildDeployPortal
     {
         // Consts
-        public const float kTimeOut = 6.0f;
-        public const int kTimeoutMS = (int)(kTimeOut * 1000.0f);
-        public const float kMaxWaitTime = 20.0f;
+        public const float TimeOut = 6.0f;
+        public const int TimeoutMS = (int)(TimeOut * 1000.0f);
+        public const float MaxWaitTime = 20.0f;
 
         public static readonly string kAPI_ProcessQuery = @"http://{0}/api/resourcemanager/processes";
         public static readonly string kAPI_PackagesQuery = @"http://{0}/api/appx/packagemanager/packages";
@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity
             public string Password;
         }
         [Serializable]
-        public class AppDesc
+        public class AppDetails
         {
             public string Name;
             public string PackageFamilyName;
@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity
         [Serializable]
         public class AppList
         {
-            public AppDesc[] InstalledPackages;
+            public AppDetails[] InstalledPackages;
         }
         [Serializable]
         public class ProcessDesc
@@ -103,8 +103,8 @@ namespace HoloToolkit.Unity
             protected override WebRequest GetWebRequest(Uri uri)
             {
                 WebRequest lWebRequest = base.GetWebRequest(uri);
-                lWebRequest.Timeout = BuildDeployPortal.kTimeoutMS;
-                ((HttpWebRequest)lWebRequest).ReadWriteTimeout = BuildDeployPortal.kTimeoutMS;
+                lWebRequest.Timeout = BuildDeployPortal.TimeoutMS;
+                ((HttpWebRequest)lWebRequest).ReadWriteTimeout = BuildDeployPortal.TimeoutMS;
                 return lWebRequest;
             }
         }
@@ -113,7 +113,7 @@ namespace HoloToolkit.Unity
         public static bool IsAppInstalled(string baseAppName, ConnectInfo connectInfo)
         {
             // Look at the device for a matching app name (if not there, then not installed)
-            return (QueryAppDesc(baseAppName, connectInfo) != null);
+            return (QueryAppDetails(baseAppName, connectInfo) != null);
         }
 
         public static bool IsAppRunning(string baseAppName, ConnectInfo connectInfo)
@@ -159,7 +159,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public static AppDesc QueryAppDesc(string baseAppName, ConnectInfo connectInfo)
+        public static AppDetails QueryAppDetails(string baseAppName, ConnectInfo connectInfo)
         {
             using (var client = new TimeoutWebClient())
             {
@@ -232,7 +232,7 @@ namespace HoloToolkit.Unity
                 WWW www = new WWW(query, form.data, headers);
                 DateTime queryStartTime = DateTime.Now;
                 while (!www.isDone &&
-                       ((DateTime.Now - queryStartTime).TotalSeconds < kTimeOut))
+                       ((DateTime.Now - queryStartTime).TotalSeconds < TimeOut))
                 {
                     System.Threading.Thread.Sleep(10);
                 }
@@ -249,7 +249,7 @@ namespace HoloToolkit.Unity
                 // Wait for done (if requested)
                 DateTime waitStartTime = DateTime.Now;
                 while (waitForDone &&
-                    ((DateTime.Now - waitStartTime).TotalSeconds < kMaxWaitTime))
+                    ((DateTime.Now - waitStartTime).TotalSeconds < MaxWaitTime))
                 {
                     AppInstallStatus status = GetInstallStatus(connectInfo);
                     if (status == AppInstallStatus.InstallSuccess)
@@ -281,8 +281,8 @@ namespace HoloToolkit.Unity
             try
             {
                 // Find the app description
-                AppDesc appDesc = QueryAppDesc(appName, connectInfo);
-                if (appDesc == null)
+                AppDetails appDetails = QueryAppDetails(appName, connectInfo);
+                if (appDetails == null)
                 {
                     Debug.LogError(string.Format("Application '{0}' not found", appName));
                     return false;
@@ -290,11 +290,11 @@ namespace HoloToolkit.Unity
 
                 // Setup the command
                 string query = string.Format(kAPI_InstallQuery, connectInfo.IP);
-                query += "?package=" + WWW.EscapeURL(appDesc.PackageFullName);
+                query += "?package=" + WWW.EscapeURL(appDetails.PackageFullName);
 
                 // Use HttpWebRequest for a delete query
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(query);
-                request.Timeout = kTimeoutMS;
+                request.Timeout = TimeoutMS;
                 request.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
                 request.Method = "DELETE";
                 using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
@@ -319,8 +319,8 @@ namespace HoloToolkit.Unity
             form.AddField("user", "user");        // Unity needs some data in the form
 
             // Find the app description
-            AppDesc appDesc = QueryAppDesc(appName, connectInfo);
-            if (appDesc == null)
+            AppDetails appDetails = QueryAppDetails(appName, connectInfo);
+            if (appDetails == null)
             {
                 Debug.LogError("Appliation not found");
                 return false;
@@ -328,8 +328,8 @@ namespace HoloToolkit.Unity
 
             // Setup the command
             string query = string.Format(kAPI_AppQuery, connectInfo.IP);
-            query += "?appid=" + WWW.EscapeURL(EncodeTo64(appDesc.PackageRelativeId));
-            query += "&package=" + WWW.EscapeURL(EncodeTo64(appDesc.PackageFamilyName));
+            query += "?appid=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageRelativeId));
+            query += "&package=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageFamilyName));
 
             // Credentials
             Dictionary<string, string> headers = form.headers;
@@ -339,7 +339,7 @@ namespace HoloToolkit.Unity
             WWW www = new WWW(query, form.data, headers);
             DateTime queryStartTime = DateTime.Now;
             while (!www.isDone &&
-                   ((DateTime.Now - queryStartTime).TotalSeconds < kTimeOut))
+                   ((DateTime.Now - queryStartTime).TotalSeconds < TimeOut))
             {
                 System.Threading.Thread.Sleep(10);
             }
@@ -359,8 +359,8 @@ namespace HoloToolkit.Unity
             try
             {
                 // Find the app description
-                AppDesc appDesc = QueryAppDesc(appName, connectInfo);
-                if (appDesc == null)
+                AppDetails appDetails = QueryAppDetails(appName, connectInfo);
+                if (appDetails == null)
                 {
                     Debug.LogError("Appliation not found");
                     return false;
@@ -368,11 +368,11 @@ namespace HoloToolkit.Unity
 
                 // Setup the command
                 string query = string.Format(kAPI_AppQuery, connectInfo.IP);
-                query += "?package=" + WWW.EscapeURL(EncodeTo64(appDesc.PackageFullName));
+                query += "?package=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageFullName));
 
                 // And send it across
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(query);
-                request.Timeout = kTimeoutMS;
+                request.Timeout = TimeoutMS;
                 request.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
                 request.Method = "DELETE";
                 using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
@@ -404,7 +404,7 @@ namespace HoloToolkit.Unity
                     string query = string.Format(kAPI_FileQuery, connectInfo.IP);
                     query += "?knownfolderid=LocalAppData";
                     query += "&filename=UnityPlayer.log";
-                    query += "&packagefullname=" + QueryAppDesc(appName, connectInfo).PackageFullName;
+                    query += "&packagefullname=" + QueryAppDetails(appName, connectInfo).PackageFullName;
                     query += "&path=%5C%5CTempState";
                     client.DownloadFile(query, logFile);
 

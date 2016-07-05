@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
     public class BuildDeployTools
     {
         // Consts
-        public static readonly string kDefaultMSBuildVersion = "14.0";
+        public static readonly string DefaultMSBuildVersion = "14.0";
 
         // Functions
         public static bool BuildSLN(string buildDirectory, bool showConfDlg = true)
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity
             string vs = CalcMSBuildPath(msBuildVersion);
             if (!File.Exists(vs))
             {
-                Debug.LogError("MSBuild.exe is missing or invalid (path=" + vs + "). Note that the default version is " + kDefaultMSBuildVersion);
+                Debug.LogError("MSBuild.exe is missing or invalid (path=" + vs + "). Note that the default version is " + DefaultMSBuildVersion);
                 return false;
             }
 

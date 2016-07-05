@@ -28,9 +28,9 @@ namespace HoloToolkit.Unity
         public const string EditorPrefs_DeviceUser = "BuildDeployWindow_DeviceUser";
         public const string EditorPrefs_DevicePwd = "BuildDeployWindow_DevicePwd";
         public const string EditorPrefs_FullReinstall = "BuildDeployWindow_FullReinstall";
-        private const float kGUISectionOffset = 10.0f;
-        private const string kGUIHorizSpacer = "     ";
-        private const float kUpdateBuildsPeriod = 1.0f;
+        private const float GUISectionOffset = 10.0f;
+        private const string GUIHorizSpacer = "     ";
+        private const float UpdateBuildsPeriod = 1.0f;
 
         // Properties
         private string BuildDirectory_FullPath { get { return Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildDirectory)); } }
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity
         private float timeLastUpdatedBuilds = 0.0f;
 
         private string buildDirectory = "WindowsStoreApp";
-        private string msBuildVer = BuildDeployTools.kDefaultMSBuildVersion;
+        private string msBuildVer = BuildDeployTools.DefaultMSBuildVersion;
         private string buildConfig = "Debug";
         private bool forceRebuildAppx = false;
         private string targetIPs = "127.0.0.1";
@@ -92,7 +92,7 @@ namespace HoloToolkit.Unity
 
         private void OnGUI()
         {
-            GUILayout.Space(kGUISectionOffset);
+            GUILayout.Space(GUISectionOffset);
 
             // Setup
             int buttonWidth_Quarter = Screen.width / 4;
@@ -109,7 +109,7 @@ namespace HoloToolkit.Unity
                 EditorGUILayout.EndHorizontal();
 
                 // Build directory (and save setting, if it's changed)
-                string newBuildDirectory = EditorGUILayout.TextField(kGUIHorizSpacer + "Build directory", buildDirectory);
+                string newBuildDirectory = EditorGUILayout.TextField(GUIHorizSpacer + "Build directory", buildDirectory);
                 if (newBuildDirectory != buildDirectory)
                 {
                     EditorPrefs.SetString(EditorPrefs_CustomIP, newBuildDirectory);
@@ -154,7 +154,7 @@ namespace HoloToolkit.Unity
                     GUILayout.Label("APPX");
 
                     // MSBuild Ver (and save setting, if it's changed)
-                    string newMSBuildVer = EditorGUILayout.TextField(kGUIHorizSpacer + "MSBuild Version", msBuildVer);
+                    string newMSBuildVer = EditorGUILayout.TextField(GUIHorizSpacer + "MSBuild Version", msBuildVer);
                     if (newMSBuildVer != msBuildVer)
                     {
                         EditorPrefs.SetString(EditorPrefs_MSBuildVer, newMSBuildVer);
@@ -162,7 +162,7 @@ namespace HoloToolkit.Unity
                     }
 
                     // Build config (and save setting, if it's changed)
-                    string newBuildConfig = EditorGUILayout.TextField(kGUIHorizSpacer + "Build Configuration", buildConfig);
+                    string newBuildConfig = EditorGUILayout.TextField(GUIHorizSpacer + "Build Configuration", buildConfig);
                     if (newBuildConfig != buildConfig)
                     {
                         EditorPrefs.SetString(EditorPrefs_BuildConfig, newBuildConfig);
@@ -196,14 +196,14 @@ namespace HoloToolkit.Unity
                 GUILayout.EndVertical();
             GUILayout.EndVertical();
 
-            GUILayout.Space(kGUISectionOffset);
+            GUILayout.Space(GUISectionOffset);
 
             // Deploy section
             GUILayout.BeginVertical();
                 GUILayout.Label("Deploy");
 
                 // Target IPs (and save setting, if it's changed)
-                string newTargetIPs = EditorGUILayout.TextField(new GUIContent(kGUIHorizSpacer + "IP Address(es)", "IP(s) of target devices (e.g. 127.0.0.1;10.11.12.13)"), targetIPs);
+                string newTargetIPs = EditorGUILayout.TextField(new GUIContent(GUIHorizSpacer + "IP Address(es)", "IP(s) of target devices (e.g. 127.0.0.1;10.11.12.13)"), targetIPs);
                 if (newTargetIPs != targetIPs)
                 {
                     EditorPrefs.SetString(EditorPrefs_CustomIP, newTargetIPs);
@@ -211,9 +211,9 @@ namespace HoloToolkit.Unity
                 }
 
                 // Username/Password (and save seeings, if changed)
-                string newUsername = EditorGUILayout.TextField(kGUIHorizSpacer + "Username", deviceUser);
-                string newPassword = EditorGUILayout.TextField(kGUIHorizSpacer + "Password", devicePassword);
-                bool newFullReinstall = EditorGUILayout.Toggle(new GUIContent(kGUIHorizSpacer + "Uninstall first", "Uninstall application before installing"), fullReinstall);
+                string newUsername = EditorGUILayout.TextField(GUIHorizSpacer + "Username", deviceUser);
+                string newPassword = EditorGUILayout.PasswordField(GUIHorizSpacer + "Password", devicePassword);
+                bool newFullReinstall = EditorGUILayout.Toggle(new GUIContent(GUIHorizSpacer + "Uninstall first", "Uninstall application before installing"), fullReinstall);
                 if ((newUsername != deviceUser) ||
                     (newPassword != devicePassword) ||
                     (newFullReinstall != fullReinstall))
@@ -229,7 +229,7 @@ namespace HoloToolkit.Unity
                 // Build list (with install buttons)
                 if (this.builds.Count == 0)
                 {
-                    GUILayout.Label(kGUIHorizSpacer + "*** No builds found in build directory", EditorStyles.boldLabel);
+                    GUILayout.Label(GUIHorizSpacer + "*** No builds found in build directory", EditorStyles.boldLabel);
                 }
                 else
                 {
@@ -241,7 +241,7 @@ namespace HoloToolkit.Unity
                         string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
 
                         EditorGUILayout.BeginHorizontal();
-                        GUILayout.Space(kGUISectionOffset + 15);
+                        GUILayout.Space(GUISectionOffset + 15);
                         if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
                         {
                             string[] IPlist = ParseIPList(targetIPs);
@@ -258,7 +258,7 @@ namespace HoloToolkit.Unity
                 }
             GUILayout.EndVertical();
 
-            GUILayout.Space(kGUISectionOffset);
+            GUILayout.Space(GUISectionOffset);
 
             // Utilities section
             GUILayout.BeginVertical();
@@ -468,7 +468,7 @@ namespace HoloToolkit.Unity
 
         void Update()
         {
-            if ((Time.realtimeSinceStartup - timeLastUpdatedBuilds) > kUpdateBuildsPeriod)
+            if ((Time.realtimeSinceStartup - timeLastUpdatedBuilds) > UpdateBuildsPeriod)
             {
                 UpdateBuilds();
             }
