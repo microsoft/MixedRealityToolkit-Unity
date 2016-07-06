@@ -20,6 +20,7 @@ namespace HoloToolkit.Unity
     public class BuildDeployWindow : EditorWindow
     {
         // Constants
+        public const bool LocalIPsOnly = true;
         public const string EditorPrefs_BuildDir = "BuildDeployWindow_BuildDir";
         public const string EditorPrefs_BuildConfig = "BuildDeployWindow_BuildConfig";
         public const string EditorPrefs_ForceRebuild = "BuildDeployWindow_ForceBuild";
@@ -80,10 +81,13 @@ namespace HoloToolkit.Unity
             msBuildVer = GetEditorPref(EditorPrefs_MSBuildVer, msBuildVer);
             buildConfig = GetEditorPref(EditorPrefs_BuildConfig, buildConfig);
             forceRebuildAppx = (GetEditorPref(EditorPrefs_ForceRebuild, forceRebuildAppx ? "true" : "false") == "true");
-            targetIPs = GetEditorPref(EditorPrefs_CustomIP, targetIPs);
             deviceUser = GetEditorPref(EditorPrefs_DeviceUser, deviceUser);
             devicePassword = GetEditorPref(EditorPrefs_DevicePwd, devicePassword);
             fullReinstall = GetEditorPref(EditorPrefs_FullReinstall, fullReinstall);
+            if (!LocalIPsOnly)
+            {
+                targetIPs = GetEditorPref(EditorPrefs_CustomIP, targetIPs);
+            }
 
             this.minSize = new Vector2(600, 200);
 
@@ -124,8 +128,16 @@ namespace HoloToolkit.Unity
                     if (GUILayout.Button("Open SLN", GUILayout.Width(buttonWidth_Quarter)))
                     {
                         // Open SLN
-                        FileInfo slnFile = new FileInfo(Path.Combine(buildDirectory, PlayerSettings.productName + ".sln"));
-                        System.Diagnostics.Process.Start(slnFile.FullName);
+                        string slnFilename = Path.Combine(buildDirectory, PlayerSettings.productName + ".sln");
+                        if (File.Exists(slnFilename))
+                        {
+                            FileInfo slnFile = new FileInfo(slnFilename);
+                            System.Diagnostics.Process.Start(slnFile.FullName);
+                        }
+                        else
+                        {
+                            Debug.LogError("Solution file does not exist (" + slnFilename + ")");
+                        }
                     }
                     GUI.enabled = ShouldBuildSLNBeEnabled;
                     if (GUILayout.Button("Build Visual Studio SLN", GUILayout.Width(buttonWidth_Half)))
@@ -203,11 +215,14 @@ namespace HoloToolkit.Unity
                 GUILayout.Label("Deploy");
 
                 // Target IPs (and save setting, if it's changed)
-                string newTargetIPs = EditorGUILayout.TextField(new GUIContent(GUIHorizSpacer + "IP Address(es)", "IP(s) of target devices (e.g. 127.0.0.1;10.11.12.13)"), targetIPs);
-                if (newTargetIPs != targetIPs)
+                if (!LocalIPsOnly)
                 {
-                    EditorPrefs.SetString(EditorPrefs_CustomIP, newTargetIPs);
-                    targetIPs = newTargetIPs;
+                    string newTargetIPs = EditorGUILayout.TextField(new GUIContent(GUIHorizSpacer + "IP Address(es)", "IP(s) of target devices (e.g. 127.0.0.1;10.11.12.13)"), targetIPs);
+                    if (newTargetIPs != targetIPs)
+                    {
+                        EditorPrefs.SetString(EditorPrefs_CustomIP, newTargetIPs);
+                        targetIPs = newTargetIPs;
+                    }
                 }
 
                 // Username/Password (and save seeings, if changed)
