@@ -134,9 +134,10 @@ namespace HoloToolkit.Unity
                             FileInfo slnFile = new FileInfo(slnFilename);
                             System.Diagnostics.Process.Start(slnFile.FullName);
                         }
-                        else
+                        else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
                         {
-                            Debug.LogError("Solution file does not exist (" + slnFilename + ")");
+                            // Build SLN
+                            EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(buildDirectory); };
                         }
                     }
                     GUI.enabled = ShouldBuildSLNBeEnabled;
