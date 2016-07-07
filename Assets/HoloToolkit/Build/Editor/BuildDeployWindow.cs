@@ -20,7 +20,6 @@ namespace HoloToolkit.Unity
     public class BuildDeployWindow : EditorWindow
     {
         // Constants
-        public const bool LocalIPsOnly = true;
         public const string EditorPrefs_BuildDir = "BuildDeployWindow_BuildDir";
         public const string EditorPrefs_BuildConfig = "BuildDeployWindow_BuildConfig";
         public const string EditorPrefs_ForceRebuild = "BuildDeployWindow_ForceBuild";
@@ -42,6 +41,7 @@ namespace HoloToolkit.Unity
         private bool ShouldLaunchAppBeEnabled { get { return !string.IsNullOrEmpty(targetIPs) && !string.IsNullOrEmpty(buildDirectory); } }
         private bool ShouldWebPortalBeEnabled { get { return !string.IsNullOrEmpty(targetIPs) && !string.IsNullOrEmpty(buildDirectory); } }
         private bool ShouldLogViewBeEnabled { get { return !string.IsNullOrEmpty(targetIPs) && !string.IsNullOrEmpty(buildDirectory); } }
+        private bool LocalIPsOnly {  get { return true; } }
 
         // Privates
         private List<string> builds = new List<string>();
