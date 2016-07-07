@@ -60,8 +60,6 @@ namespace HoloToolkit.Unity
             gazeDirection = Camera.main.transform.forward;
 
             UpdateRaycast();
-
-            UpdateStabilizationPlane();
         }
 
         /// <summary>
@@ -109,28 +107,6 @@ namespace HoloToolkit.Unity
                 {
                     FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Updates the focus point for every frame.
-        /// </summary>
-        private void UpdateStabilizationPlane()
-        {
-            if (SetStabilizationPlane)
-            {
-                // Calculate the delta between camera's position and current hit position.
-                float focusPointDistance = (gazeOrigin - Position).magnitude;
-                float lerpPower = focusPointDistance > lastHitDistance
-                    ? LerpStabilizationPlanePowerFarther
-                    : LerpStabilizationPlanePowerCloser;
-
-                // Smoothly move the focus point from previous hit position to new position.
-                lastHitDistance = Mathf.Lerp(lastHitDistance, focusPointDistance, lerpPower * Time.deltaTime);
-
-                Vector3 newFocusPointPosition = gazeOrigin + (gazeDirection * lastHitDistance);
-
-                HolographicSettings.SetFocusPointForFrame(newFocusPointPosition, -gazeDirection);
             }
         }
     }

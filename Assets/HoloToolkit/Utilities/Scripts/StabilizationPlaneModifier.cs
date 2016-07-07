@@ -21,6 +21,9 @@ namespace HoloToolkit.Unity
         [Tooltip("Used to temporarily override the location of the stabilization plane.")]
         public Transform TargetOverride;
 
+        [Tooltip("Keeps track of position-based velocity for the target object.")]
+        public bool TrackVelocity = false;
+
         [Tooltip("Use the GazeManager class to set the plane to the gazed upon hologram.")]
         public bool UseGazeManager = true;
 
@@ -34,6 +37,10 @@ namespace HoloToolkit.Unity
         private Vector3 planePosition;
 
         private float currentPlaneDistance = 4.0f;
+
+        private Vector3 previousPosition;
+
+        private const float FOCUS_POINT_FRAMERATE = 60.0f;
 
         /// <summary>
         /// Updates the focus point for every frame after all objects have finished moving.
@@ -68,8 +75,14 @@ namespace HoloToolkit.Unity
         {
             planePosition = TargetOverride.position;
 
+            Vector3 velocity = Vector3.zero;
+            if (TrackVelocity)
+            {
+                velocity = UpdateVelocity();
+            }
+            
             // Place the plane at the desired depth in front of the camera and billboard it to the camera.
-            HolographicSettings.SetFocusPointForFrame(TargetOverride.position, -Camera.main.transform.forward, Vector3.zero);
+            HolographicSettings.SetFocusPointForFrame(TargetOverride.position, -Camera.main.transform.forward, velocity);
         }
 
         private void ConfigureGazeManagerPlane()
@@ -101,6 +114,13 @@ namespace HoloToolkit.Unity
 
             planePosition = Camera.main.transform.position + (Camera.main.transform.forward * currentPlaneDistance);
             HolographicSettings.SetFocusPointForFrame(planePosition, -Camera.main.transform.forward, Vector3.zero);
+        }
+
+        private Vector3 UpdateVelocity()
+        {
+            Vector3 velocity = (TargetOverride.position - previousPosition) * FOCUS_POINT_FRAMERATE;
+            previousPosition = TargetOverride.position;
+            return velocity;
         }
 
         private void OnDrawGizmos()
