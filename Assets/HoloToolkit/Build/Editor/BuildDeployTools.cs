@@ -90,8 +90,9 @@ namespace HoloToolkit.Unity
             // this breaks the build in VS RTM
             var nugetPInfo = new System.Diagnostics.ProcessStartInfo();
             nugetPInfo.FileName = nugetPath;
+            nugetPInfo.WorkingDirectory = buildDirectory;
             nugetPInfo.UseShellExecute = false;
-            nugetPInfo.Arguments = string.Format("Restore {0} -NonInteractive", solutionProjectPath);
+            nugetPInfo.Arguments = @"restore " + PlayerSettings.productName + "/project.json";
             using (var nugetP = new System.Diagnostics.Process())
             {
                 Debug.Log(nugetPath + " " + nugetPInfo.Arguments);
