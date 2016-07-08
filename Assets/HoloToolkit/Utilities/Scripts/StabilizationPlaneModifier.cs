@@ -33,13 +33,25 @@ namespace HoloToolkit.Unity
         [Tooltip("Visualize the plane at runtime.")]
         public bool DrawGizmos = false;
 
-        // Used for rendering plane gizmo.
+        /// <summary>
+        /// Position of the plane in world space.
+        /// </summary>
         private Vector3 planePosition;
 
+        /// <summary>
+        /// Current distance of the plane from the user's head. Only used when not using the target override
+        /// or the GazeManager to set the plane's position. 
+        /// </summary>
         private float currentPlaneDistance = 4.0f;
 
+        /// <summary>
+        /// Tracks the previous position of the target override object. Used if velocity is being tracked.
+        /// </summary>
         private Vector3 previousPosition;
 
+        /// <summary>
+        /// The framerate that the stabilization plane expects for velocity updates.
+        /// </summary>
         private const float FOCUS_POINT_FRAMERATE = 60.0f;
 
         /// <summary>
@@ -71,6 +83,9 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Configures the stabilization plane to update its position based on an object in the scene.        
+        /// </summary>
         private void ConfigureTransformOverridePlane()
         {
             planePosition = TargetOverride.position;
@@ -85,11 +100,13 @@ namespace HoloToolkit.Unity
             HolographicSettings.SetFocusPointForFrame(TargetOverride.position, -Camera.main.transform.forward, velocity);
         }
 
+        /// <summary>
+        /// Configures the stabilization plane to update its position based on what your gaze intersects in the scene.
+        /// </summary>
         private void ConfigureGazeManagerPlane()
         {
             Vector3 gazeOrigin = Camera.main.transform.position;
             Vector3 gazeDirection = Camera.main.transform.forward;
-            float lastHitDistance = GazeManager.Instance.HitInfo.distance;
 
             // Calculate the delta between camera's position and current hit position.
             float focusPointDistance = (gazeOrigin - GazeManager.Instance.Position).magnitude;
@@ -104,6 +121,9 @@ namespace HoloToolkit.Unity
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
         }
 
+        /// <summary>
+        /// Configures the stabilization plane to update based on a fixed distance away from you.
+        /// </summary>
         private void ConfigureFixedDistancePlane()
         {
             float lerpPower = DefaultPlaneDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
@@ -116,6 +136,9 @@ namespace HoloToolkit.Unity
             HolographicSettings.SetFocusPointForFrame(planePosition, -Camera.main.transform.forward, Vector3.zero);
         }
 
+        /// <summary>
+        /// Tracks the velocity of the target object to be used as a hint for the plane stabilization.
+        /// </summary>
         private Vector3 UpdateVelocity()
         {
             Vector3 velocity = (TargetOverride.position - previousPosition) * FOCUS_POINT_FRAMERATE;
@@ -123,6 +146,9 @@ namespace HoloToolkit.Unity
             return velocity;
         }
 
+        /// <summary>
+        /// When in editor, draws a magenta quad that visually represents the stabilization plane.
+        /// </summary>
         private void OnDrawGizmos()
         {
             if (UnityEngine.Application.isPlaying)
