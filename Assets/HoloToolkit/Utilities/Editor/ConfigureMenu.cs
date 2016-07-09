@@ -82,7 +82,10 @@ namespace HoloToolkit.Unity
                 "Yes", "No");
 
             if (canReload)
-                EditorApplication.OpenProject(Application.dataPath + "/..");
+            {
+                string projectPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+                EditorApplication.OpenProject(projectPath);
+            }
         }
 
         /// <summary>
