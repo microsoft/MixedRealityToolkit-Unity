@@ -18,8 +18,23 @@ namespace HoloToolkit.Unity
         [Tooltip("Lerp speed when moving focus point farther away.")]
         public float LerpStabilizationPlanePowerFarther = 7.0f;
 
-        [Tooltip("Used to temporarily override the location of the stabilization plane.")]
-        public Transform TargetOverride;
+        [SerializeField, Tooltip("Used to temporarily override the location of the stabilization plane.")]
+        private Transform targetOverride;
+        public Transform TargetOverride
+        {
+            get
+            {
+                return targetOverride;
+            }
+            set
+            {
+                if (targetOverride != value)
+                {
+                    targetOverride = value;
+                    targetOverridePreviousPosition = targetOverride.position;
+                }
+            }
+        }
 
         [SerializeField, Tooltip("Keeps track of position-based velocity for the target object.")]
         private bool trackVelocity = false;
@@ -96,6 +111,7 @@ namespace HoloToolkit.Unity
         private void OnValidate()
         {
             TrackVelocity = trackVelocity;
+            TargetOverride = targetOverride;
         }
 
         /// <summary>

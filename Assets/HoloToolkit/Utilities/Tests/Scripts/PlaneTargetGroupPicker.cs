@@ -16,7 +16,7 @@ public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
 
     private PlaneTargetGroup currentGroup;
 
-    private Coroutine coroutine;
+    private Coroutine displayForSecondsCoroutine;
 
     public void PickNewTarget()
     {
@@ -58,11 +58,11 @@ public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
             DisplayText.text += "\r\nvelocity";
         }
 
-        if (coroutine != null)
+        if (displayForSecondsCoroutine != null)
         {
-            StopCoroutine(coroutine);
+            StopCoroutine(displayForSecondsCoroutine);
         }
-        coroutine = StartCoroutine(DisplayForSeconds(TextDisplayTime));
+        displayForSecondsCoroutine = StartCoroutine(DisplayForSeconds(TextDisplayTime));
     }
 
     private IEnumerator DisplayForSeconds(float displayTime)

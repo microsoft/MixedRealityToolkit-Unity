@@ -126,6 +126,11 @@ namespace HoloToolkit.Unity
                     gameObject.AddComponent<StabilizationPlaneModifier>();
                 }
             }
+
+            if (StabilizationPlaneModifier.Instance)
+            {
+                StabilizationPlaneModifier.Instance.SetStabilizationPlane = SetStabilizationPlane;
+            }
         }
     }
 }
