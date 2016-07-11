@@ -16,6 +16,8 @@ public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
 
     private PlaneTargetGroup currentGroup;
 
+    private Coroutine coroutine;
+
     public void PickNewTarget()
     {
         PlaneTargetGroup newGroup = null;
@@ -43,6 +45,7 @@ public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
             }
             currentGroup = newGroup;
             StabilizationPlaneModifier.Instance.TargetOverride = currentGroup.CurrentTarget.transform;
+            StabilizationPlaneModifier.Instance.TrackVelocity = currentGroup.UseVelocity;
             UpdateText();
         }
     }
@@ -50,11 +53,16 @@ public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
     private void UpdateText()
     {
         DisplayText.text = StabilizationPlaneModifier.Instance.TargetOverride.name;
-        if (currentGroup.UseVelocity)
+        if (StabilizationPlaneModifier.Instance.TrackVelocity)
         {
             DisplayText.text += "\r\nvelocity";
         }
-        StartCoroutine(DisplayForSeconds(TextDisplayTime));
+
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(DisplayForSeconds(TextDisplayTime));
     }
 
     private IEnumerator DisplayForSeconds(float displayTime)

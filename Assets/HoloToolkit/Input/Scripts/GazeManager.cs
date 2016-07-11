@@ -53,7 +53,6 @@ namespace HoloToolkit.Unity
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
         private float lastHitDistance = 15.0f;
-        private bool stabilizationExists;
 
         private void Update()
         {
@@ -120,16 +119,11 @@ namespace HoloToolkit.Unity
             // We want to use the stabilization logic.
             if (SetStabilizationPlane)
             {
-                // And it doesn't exist.
-                if (!stabilizationExists)
+                // Check if it exists in the scene.
+                if (StabilizationPlaneModifier.Instance == null)
                 {
-                    // Check if it exists in the scene.
-                    if (StabilizationPlaneModifier.Instance == null)
-                    {
-                        // If not, add it to us.
-                        gameObject.AddComponent<StabilizationPlaneModifier>();
-                    }
-                    stabilizationExists = true;
+                    // If not, add it to us.
+                    gameObject.AddComponent<StabilizationPlaneModifier>();
                 }
             }
         }

@@ -21,8 +21,23 @@ namespace HoloToolkit.Unity
         [Tooltip("Used to temporarily override the location of the stabilization plane.")]
         public Transform TargetOverride;
 
-        [Tooltip("Keeps track of position-based velocity for the target object.")]
-        public bool TrackVelocity = false;
+        [SerializeField, Tooltip("Keeps track of position-based velocity for the target object.")]
+        private bool trackVelocity = false;
+        public bool TrackVelocity
+        {
+            get
+            {
+                return trackVelocity;
+            }
+            set
+            {
+                trackVelocity = value;
+                if (TargetOverride)
+                {
+                    targetOverridePreviousPosition = TargetOverride.position;
+                }
+            }
+        }
 
         [Tooltip("Use the GazeManager class to set the plane to the gazed upon hologram.")]
         public bool UseGazeManager = true;
@@ -47,12 +62,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Tracks the previous position of the target override object. Used if velocity is being tracked.
         /// </summary>
-        private Vector3 previousPosition;
-
-        /// <summary>
-        /// The framerate that the stabilization plane expects for velocity updates.
-        /// </summary>
-        private const float FOCUS_POINT_FRAMERATE = 60.0f;
+        private Vector3 targetOverridePreviousPosition;
 
         /// <summary>
         /// Updates the focus point for every frame after all objects have finished moving.
@@ -83,6 +93,11 @@ namespace HoloToolkit.Unity
             }
         }
 
+        private void OnValidate()
+        {
+            TrackVelocity = trackVelocity;
+        }
+
         /// <summary>
         /// Configures the stabilization plane to update its position based on an object in the scene.        
         /// </summary>
@@ -97,7 +112,7 @@ namespace HoloToolkit.Unity
             }
             
             // Place the plane at the desired depth in front of the camera and billboard it to the camera.
-            HolographicSettings.SetFocusPointForFrame(TargetOverride.position, -Camera.main.transform.forward, velocity);
+            HolographicSettings.SetFocusPointForFrame(planePosition, -Camera.main.transform.forward, velocity);
         }
 
         /// <summary>
@@ -141,8 +156,9 @@ namespace HoloToolkit.Unity
         /// </summary>
         private Vector3 UpdateVelocity()
         {
-            Vector3 velocity = (TargetOverride.position - previousPosition) * FOCUS_POINT_FRAMERATE;
-            previousPosition = TargetOverride.position;
+            // Roughly calculate the velocity based on previous position, current position, and frame time.
+            Vector3 velocity = (TargetOverride.position - targetOverridePreviousPosition) / Time.deltaTime;
+            targetOverridePreviousPosition = TargetOverride.position;
             return velocity;
         }
 
