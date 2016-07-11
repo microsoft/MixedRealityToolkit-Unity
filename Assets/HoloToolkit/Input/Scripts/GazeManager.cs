@@ -53,6 +53,7 @@ namespace HoloToolkit.Unity
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
         private float lastHitDistance = 15.0f;
+        private bool stabilizationExists;
 
         private void Update()
         {
@@ -60,6 +61,7 @@ namespace HoloToolkit.Unity
             gazeDirection = Camera.main.transform.forward;
 
             UpdateRaycast();
+            UpdateStabilizationPlane();
         }
 
         /// <summary>
@@ -106,6 +108,28 @@ namespace HoloToolkit.Unity
                 if (FocusedObject != null)
                 {
                     FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the stabilization plane modifier if it's enabled and if it doesn't exist yet.
+        /// </summary>
+        private void UpdateStabilizationPlane()
+        {
+            // We want to use the stabilization logic.
+            if (SetStabilizationPlane)
+            {
+                // And it doesn't exist.
+                if (!stabilizationExists)
+                {
+                    // Check if it exists in the scene.
+                    if (StabilizationPlaneModifier.Instance == null)
+                    {
+                        // If not, add it to us.
+                        gameObject.AddComponent<StabilizationPlaneModifier>();
+                    }
+                    stabilizationExists = true;
                 }
             }
         }
