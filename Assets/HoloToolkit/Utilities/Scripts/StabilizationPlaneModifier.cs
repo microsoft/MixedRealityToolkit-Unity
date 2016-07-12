@@ -31,7 +31,10 @@ namespace HoloToolkit.Unity
                 if (targetOverride != value)
                 {
                     targetOverride = value;
-                    targetOverridePreviousPosition = targetOverride.position;
+                    if (targetOverride)
+                    {
+                        targetOverridePreviousPosition = targetOverride.position;
+                    }
                 }
             }
         }
