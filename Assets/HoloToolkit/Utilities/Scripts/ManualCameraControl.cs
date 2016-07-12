@@ -222,13 +222,11 @@ public class ManualCameraControl : MonoBehaviour
 
         if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
         {
-            //Debug.Log("Cursor locked state");
             mousePositionDelta.x = Input.GetAxis(MouseX);
             mousePositionDelta.y = Input.GetAxis(MouseY);
         }
         else
         {
-            //Debug.Log("Cursor state is NOT locked");
             mousePositionDelta.x *= this.DefaultMouseSensitivity;
             mousePositionDelta.y *= this.DefaultMouseSensitivity;
         }
