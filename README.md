@@ -415,7 +415,7 @@ Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
 
 #### Occlusion.shader
-A basic occlusion shader that can be used to occlude objects behind spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
+A basic occlusion shader that can be used to occlude objects behind spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data. If you want to create an occlusion 'window', a better shader to use is WindowOcclusion.shader.
 
 #### Wireframe.shader
 A basic wire frame shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
@@ -568,6 +568,9 @@ Feature configurable vertex lit shader.  Use when a higher performance but lower
 
 #### VertexLitConfigurableTransparent.shader
 Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
+
+#### WindowOcclusion.shader
+A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
 ### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Tests)
 
