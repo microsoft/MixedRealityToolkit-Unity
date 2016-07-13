@@ -579,6 +579,10 @@ This scene shows how to use ManualCameraControl.cs.  The script is on the main c
 
 This scene demonstrates how to use TextToSpeechManager.cs.  The script is placed on 3 cubes in the scene. Whenever a cube is activated with an air tap, a text to speech voice will emanate from the cube. The user can also ask "What time is it?" to hear the current time from a voice that stays with the user as they move.
 
+#### WindowOcclusion.unity 
+
+This scene demonstrates how to use WindowOcclusion.shader.  It positions a virtual 'window' directly in front of you when the scene starts. A cube in the back is only visible when viewed through the window because quads around the window use the WindowOcclusion shader.
+
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
 ---
