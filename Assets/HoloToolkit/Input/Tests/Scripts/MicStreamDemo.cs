@@ -12,8 +12,6 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using System.Text;
 
-// TODO auto sample-rate setting in the plugin
-
 namespace HoloToolkit.Unity
 {
 	[RequireComponent(typeof(AudioSource))]
@@ -22,7 +20,7 @@ namespace HoloToolkit.Unity
 		/// <summary>
 		/// Which type of microphone/quality to access
 		/// </summary>
-		public MicStream.StreamCategory streamtype = MicStream.StreamCategory.COMMUNICATIONS;
+		public MicStream.StreamCategory streamType = MicStream.StreamCategory.COMMUNICATIONS;
 
 		/// <summary>
 		/// can boost volume here as desired. 1 is default but probably too quiet. can change during operation. 
@@ -58,7 +56,7 @@ namespace HoloToolkit.Unity
 
 		private void Awake()
 		{
-			CheckForErrorOnCall(MicStream.MicInitializeCustomRate((int)streamtype, AudioSettings.outputSampleRate));
+			CheckForErrorOnCall(MicStream.MicInitializeCustomRate((int)streamType, AudioSettings.outputSampleRate));
 			CheckForErrorOnCall(MicStream.MicSetGain(inputGain));
 
 			this.gameObject.GetComponent<AudioSource>().volume = 0; // how to not hear yourself while recording
