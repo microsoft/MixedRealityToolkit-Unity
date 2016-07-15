@@ -39,7 +39,14 @@ public class TextToSpeechManagerTest : MonoBehaviour
             // This voice will appear to emanate from the object.
             if (tts != null)
             {
-                tts.SpeakText("This voice should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.");
+                if (obj.name.EndsWith("HTML"))
+                {
+                    tts.SpeakHtml("<p>This voice should sound like it's coming from the object you clicked. Unlike the text on the other two boxes the source text is HTML formatted. But you shouldn't notice any difference in the speech.</p>");
+                }
+                else
+                {
+                    tts.SpeakText("This voice should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.");
+                }
             }
         }
     }

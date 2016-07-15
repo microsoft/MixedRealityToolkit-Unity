@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 #if WINDOWS_UWP
@@ -323,6 +325,55 @@ namespace HoloToolkit.Unity
             #else
             LogSpeech(text);
             #endif
+        }
+
+        /// <summary>
+        /// RE for stripping HTML
+        /// </summary>
+        //static Regex _htmlRegex = new Regex("<.*?>", RegexOptions.SingleLine);
+        private static readonly Regex _stripTagsRegex = new Regex(@"</?\w+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>", RegexOptions.Singleline);
+
+        /// <summary>
+        /// Remove HTML from string..
+        /// </summary>
+        private static string StripTags(string source)
+        {
+            StringBuilder sb = new StringBuilder(source);
+            // Strip whitespace
+            sb.Replace("\r", " ");
+            sb.Replace("\n", " ");
+            sb.Replace("\t", String.Empty);
+
+            string[] Encoded = { "&nbsp;", "&amp;", "&quot;", "&lt;", "&gt;", "&copy;" };
+            string[] Real = { " ", "&", "\"", "<", ">", "Copyright" };
+            for (int idx = 0; idx < Encoded.Length; idx++)
+            {
+                sb.Replace(Encoded[idx], Real[idx]);
+            }
+
+            // Insert newlines to case pauses in the reading
+            sb.Replace("<h1", "\n\n<h1");
+            sb.Replace("</h1", "\n\n</h1");
+            sb.Replace("<h2", "\n\n<h2");
+            sb.Replace("</h2", "\n\n</h2");
+            sb.Replace("<h3", "\n\n<h3");
+            sb.Replace("</h3", "\n\n</h3");
+            sb.Replace("<h4", "\n\n<h4");
+            sb.Replace("</h4", "\n\n</h4");
+            sb.Replace("<h5", "\n\n<h5");
+            sb.Replace("</h5", "\n\n</h5");
+            sb.Replace("<h6", "\n\n<h6");
+            sb.Replace("</h6", "\n\n</h6");
+            sb.Replace("<br", "\n<br");
+            sb.Replace("<p ", "\n<p ");
+
+            var result = sb.ToString();
+            return _stripTagsRegex.Replace(result, string.Empty);
+        }
+
+        public void SpeakHtml(string html)
+        {
+            SpeakText(StripTags(html));
         }
     }
 }
