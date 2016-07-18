@@ -170,7 +170,7 @@ namespace HoloToolkit.Unity
                 AppList appList = JsonUtility.FromJson<AppList>(appListJSON);
                 for (int i = 0; i < appList.InstalledPackages.Length; ++i)
                 {
-                    string appName = appList.InstalledPackages[i].PackageFullName;
+                    string appName = appList.InstalledPackages[i].Name;
                     if (appName.Contains(baseAppName))
                     {
                         return appList.InstalledPackages[i];
