@@ -37,6 +37,7 @@ public class ManualCameraControl : MonoBehaviour
     }
 
     public ControlMode CurrentControlMode = ControlMode.Fly;
+    public KeyCode FastControlKey = KeyCode.RightControl;
     public float ControlSlowSpeed = 0.1f;
     public float ControlFastSpeed = 1.0f;
 
@@ -97,16 +98,6 @@ public class ManualCameraControl : MonoBehaviour
     private Vector3 GetCameraControlTranslation()
     {
         Vector3 deltaPosition = Vector3.zero;
-        deltaPosition += GetKeyDir("left", "right") * this.transform.right;
-        if (CurrentControlMode == ControlMode.Fly)
-        {
-            deltaPosition += GetKeyDir("down", "up") * this.transform.forward;
-        }
-        else
-        {
-            deltaPosition += GetKeyDir("down", "up") * new Vector3(this.transform.forward.x, 0, this.transform.forward.z).normalized;
-            deltaPosition += GetKeyDir("page down", "page up") * Vector3.up;
-        }
 
         // Support fly up/down keypresses if the current project maps it. This isn't a standard
         // Unity InputManager mapping, so it has to gracefully fail if unavailable.
@@ -121,11 +112,24 @@ public class ManualCameraControl : MonoBehaviour
                 this.isFlyKeypressEnabled = false;
             }
         }
+        else
+        {
+            // use page up/down in this case
+            deltaPosition += GetKeyDir("page down", "page up") * Vector3.up;
+        }
 
         deltaPosition += InputCurve(Input.GetAxis(MoveHorizontal)) * this.transform.right;
-        deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * this.transform.forward;
 
-        float accel = Input.GetKey(KeyCode.LeftShift) ? ControlFastSpeed : ControlSlowSpeed;
+        if (CurrentControlMode == ControlMode.Walk)
+        {
+            deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * new Vector3(this.transform.forward.x, 0, this.transform.forward.z).normalized;
+        }
+        else
+        {
+            deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * this.transform.forward;
+        }
+
+        float accel = Input.GetKey(FastControlKey) ? ControlFastSpeed : ControlSlowSpeed;
         return accel * deltaPosition;
     }
 
@@ -218,13 +222,11 @@ public class ManualCameraControl : MonoBehaviour
 
         if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
         {
-            Debug.Log("Cursor locked state");
             mousePositionDelta.x = Input.GetAxis(MouseX);
             mousePositionDelta.y = Input.GetAxis(MouseY);
         }
         else
         {
-            Debug.Log("Cursor state is NOT locked");
             mousePositionDelta.x *= this.DefaultMouseSensitivity;
             mousePositionDelta.y *= this.DefaultMouseSensitivity;
         }
