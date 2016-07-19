@@ -216,14 +216,16 @@ PlaneFinding addon that can be used to find planar surfaces (ie: walls/floors/ta
 
 ####[SpatialMappingComponent](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Scripts/SpatialMappingComponent)
 A unified set of scripts adhering to best practices for providing physics or rendering support for Spatial Mapping.
-Add a SpatialMappingCollider or SpatialMappingRenderer component onto a GameObject and spatial mapping will just start working
+Add a SpatialMappingCollider or SpatialMappingRenderer component onto a GameObject and spatial mapping will just start working.
 
 #### SpatialMappingRenderer.cs
 Use this script for rendering Spatial Mapping.
 
 **Rendering Mode**: (Default: **Occlusion**). How to render the mesh. Occlusion will cause the mesh to occlude holograms behind it. Material will apply the specified material. None will cause the meshes to not render at all.
 
-**Rendering Material**: (Default: **Wireframe**). The material to render the Spatial Mapping mesh with. This is only relevant when Rendering Mode is set to Material. The default materials are kept in your Resources\HoloToolkit\ folder.
+**Occlusion Material**: (Set this to: **Occlusion**). The material to use for occluding holograms with the spatial mapping mesh. The Occlusion material is located in the HoloToolkit\SpatialMapping\Materials folder.
+
+**Rendering Material**: (Set this to: **Wireframe**). The material to render the Spatial Mapping mesh with. This is only relevant when Rendering Mode is set to Material. The Wireframe material can be found in HoloToolkit\SpatialMapping\Materials folder.
 
 **Freeze Mesh Updates**: (Default: **no**). When enabled, no further updates will be processed. Use this to delay initial starting of Spatial Mapping processing or to stop updates at a certain point.
 
