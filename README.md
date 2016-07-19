@@ -9,8 +9,11 @@ HoloToolkit contains the following feature areas:
 3. [Spatial Mapping](https://github.com/Microsoft/HoloToolkit-Unity#spatialmapping)
 4. [Spatial Sound](https://github.com/Microsoft/HoloToolkit-Unity#spatialsound)
 5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities-1)
+6. [Build](https://github.com/Microsoft/HoloToolkit-Unity#build)
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
+
+To learn how to add the HoloToolkit to your project see the [Getting Started](GettingStarted.md) guide.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -36,6 +39,14 @@ Torus shaped CursorOnHolograms when user is gazing at holograms and point light 
 
 #### CursorWithFeedback.prefab
 Torus shaped cursor that follows the user's gaze and HandDetectedFeedback asset to give feedback to user when their hand is detected in the ready state.
+
+#### FocusedObjectKeywordManager.prefab
+Keyword manager pre-wired to send messages to object being currently focused via FocusedObjectMessageSender component.
+You can simply drop this into your scene and be able to send arbitrary messages to currently focused object.
+
+#### SelectedObjectKeywordManager.prefab
+Keyword manager pre-wired to send messages to object being currently selected via SelectedObjectMessageSender comoponent.
+You can simply drop this into your scene and be able to send arbitrary messages to currently selected object.
 
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Input/Scripts)
 Scripts related to the input features.
@@ -117,6 +128,28 @@ or in your Visual Studio Package.appxmanifest capabilities.
 
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
+#### FocusedObjectMessageSender.cs
+Sends Unity message to currently focused object.
+FocusedObjectMessageSender.SendMessageToFocusedObject needs to be registered as a response in KeywordManager
+to enable arbitrary messages to be sent to currently focused object.
+
+#### SelectedObjectMessageSender.cs
+Sends Unity message to currently selected object.
+SelectedObjectMessageSender.SendMessageToSelectedObject needs to be registered as a response in KeywordManager
+to enable arbitrary messages to be sent to currently selected object.
+
+#### FocusedObjectMessageReceiver.cs
+Example on how to handle messages send by FocusedObjectMessageSender.
+In this particular implementation, focused object color it toggled on gaze enter/exit events.
+
+#### SelectedObjectMessageReceiver.cs
+Example on how to handle messages send by SelectedObjectMessageSender.
+In this particular implementation, selected object color it toggled on selecting object and clearing selected object.
+
+#### SimpleGridGenerator.cs
+A grid of dynamic objects to illustrate sending messages to prefab instances created at runtime as opposed
+to only static objects that already exist in the scene.
+
 ### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Input/Tests)
 Tests related to the input features. To use the scene:
 1. Navigate to the Tests folder.
@@ -133,6 +166,16 @@ Shows the cursor on holograms hugging the test sphere in the scene and cursor of
 
 #### CursorWithFeedback.unity 
 Shows the cursor hugging the test sphere in the scene and displays hand detected asset when hand is detected in ready state.
+
+#### FocusedObjectKeywords.unity
+Example on how to send keyword messages to currently focused dynamically instantiated object.
+Gazing on an object and saying "Make Smaller" and "Make Bigger" will adjust object size.
+
+#### SelectedObjectKeywords.unity
+Example on how to send keyword messages to currently selected dynamically instantiated object.
+Gazing on an object and saying "Select Object" will persistently select that object for interaction with voice commands,
+after which the user can also adjust object size with "Make Smaller" and "Make Bigger" voice commands and finally clear
+currently selected object by saying "Clear Selection".
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
@@ -372,7 +415,7 @@ Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
 
 #### Occlusion.shader
-A basic occlusion shader that can be used to occlude objects behind spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
+A basic occlusion shader that can be used to occlude objects behind spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data. If you want to create an occlusion 'window', a better shader to use is WindowOcclusion.shader.
 
 #### Wireframe.shader
 A basic wire frame shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
@@ -526,6 +569,9 @@ Feature configurable vertex lit shader.  Use when a higher performance but lower
 #### VertexLitConfigurableTransparent.shader
 Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
 
+#### WindowOcclusion.shader
+A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
+
 ### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Tests)
 
 #### ManualCameraControl.unity
@@ -535,6 +581,31 @@ This scene shows how to use ManualCameraControl.cs.  The script is on the main c
 #### TextToSpeechManager.unity 
 
 This scene demonstrates how to use TextToSpeechManager.cs.  The script is placed on 3 cubes in the scene. Whenever a cube is activated with an air tap, a text to speech voice will emanate from the cube. The user can also ask "What time is it?" to hear the current time from a voice that stays with the user as they move.
+
+#### WindowOcclusion.unity 
+
+This scene demonstrates how to use WindowOcclusion.shader.  It positions a virtual 'window' directly in front of you when the scene starts. A cube in the back is only visible when viewed through the window because quads around the window use the WindowOcclusion shader.
+
+---
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
+---
+
+## [Build](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Build)
+Build and deploy automation window for building your VS solution, APPX, installing, launching, and getting the log file (and other related functionality). Requires that the device has been paired with the Editor PC & that the device is connected locally and/or the HTTPS requirement has been disabled in the device portal's security tab.
+
+### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Build/Scripts)
+
+#### BuildDeployPortal.cs
+Interface function with the device (REST API utility functions)
+
+#### BuildDeployTools.cs
+Supports building the APPX from the SLN
+
+#### BuildSLNUtilities.cs
+Supports building the project SLN
+
+#### BuildDeployWindow.cs
+Editor UI for the window and event functions
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)

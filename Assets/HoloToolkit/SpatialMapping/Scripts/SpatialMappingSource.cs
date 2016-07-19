@@ -63,6 +63,24 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// When we aren't using a surface object any more we need to clean
+        /// up the cached objects we made for the surface.
+        /// </summary>
+        /// <param name="surfaceObject">The surface we aren't using anymore.</param>
+        protected void RemoveSurfaceObject(GameObject surfaceObject)
+        {
+            surfaceObjects.Remove(surfaceObject);
+
+            MeshFilter filter = surfaceObject.GetComponent<MeshFilter>();
+
+            surfaceObjectMeshFilters.Remove(filter);
+
+            MeshRenderer surfaceMeshRenderer = surfaceObject.GetComponent<MeshRenderer>();
+            surfaceObjectRenderers.Remove(surfaceMeshRenderer);
+            Destroy(surfaceObject);
+        }
+
+        /// <summary>
         /// Cleans up references to objects that we have created.
         /// </summary>
         protected void Cleanup()
