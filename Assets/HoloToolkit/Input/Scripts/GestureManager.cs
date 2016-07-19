@@ -15,6 +15,11 @@ namespace HoloToolkit.Unity
     public partial class GestureManager : Singleton<GestureManager>
     {
         /// <summary>
+        /// Key to press in the editor to select the currently gazed hologram
+        /// </summary>
+        public KeyCode EditorSelectKey = KeyCode.Space;
+
+        /// <summary>
         /// To select even when a hologram is not being gazed at,
         /// set the override focused object.
         /// If its null, then the gazed at object will be selected.
@@ -47,12 +52,17 @@ namespace HoloToolkit.Unity
             gestureRecognizer.StartCapturingGestures();
         }
 
-        private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
+        private void OnTap()
         {
             if (focusedObject != null)
             {
                 focusedObject.SendMessage("OnSelect");
             }
+        }
+
+        private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
+        {
+            OnTap();
         }
 
         void LateUpdate()
@@ -80,6 +90,13 @@ namespace HoloToolkit.Unity
                 gestureRecognizer.CancelGestures();
                 gestureRecognizer.StartCapturingGestures();
             }
+
+#if UNITY_EDITOR
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
+            {
+                OnTap();
+            }
+#endif
         }
 
         void OnDestroy()
