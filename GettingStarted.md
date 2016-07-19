@@ -14,7 +14,7 @@ https://desktop.github.com/
 
 Open the folder you just cloned in Unity
 
-Now inside of Unity export the package
+Now, inside of Unity ensure you have the Assets folder selected in the project view, and export the package
 
 `Assets -> Export Package…`
 
