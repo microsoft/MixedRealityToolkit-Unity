@@ -1,4 +1,6 @@
 # HoloToolkit-Examples
+This folder will host samples/examples that might use the HoloToolkit to help solve interesting scenarios.
+The reason these are examples is because they are specific scenarios which can be difficult to make a into a generic prefab.
 
 #### When considering an example:
 
