@@ -9,8 +9,11 @@ HoloToolkit contains the following feature areas:
 3. [Spatial Mapping](https://github.com/Microsoft/HoloToolkit-Unity#spatialmapping)
 4. [Spatial Sound](https://github.com/Microsoft/HoloToolkit-Unity#spatialsound)
 5. [Utilities](https://github.com/Microsoft/HoloToolkit-Unity#utilities-1)
+6. [Build](https://github.com/Microsoft/HoloToolkit-Unity#build)
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
+
+To learn how to add the HoloToolkit to your project see the [Getting Started](GettingStarted.md) guide.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -412,7 +415,7 @@ Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
 
 #### Occlusion.shader
-A basic occlusion shader that can be used to occlude objects behind spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
+A basic occlusion shader that can be used to occlude objects behind spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data. If you want to create an occlusion 'window', a better shader to use is WindowOcclusion.shader.
 
 #### Wireframe.shader
 A basic wire frame shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
@@ -566,6 +569,9 @@ Feature configurable vertex lit shader.  Use when a higher performance but lower
 #### VertexLitConfigurableTransparent.shader
 Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
 
+#### WindowOcclusion.shader
+A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
+
 ### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Utilities/Tests)
 
 #### ManualCameraControl.unity
@@ -575,6 +581,31 @@ This scene shows how to use ManualCameraControl.cs.  The script is on the main c
 #### TextToSpeechManager.unity 
 
 This scene demonstrates how to use TextToSpeechManager.cs.  The script is placed on 3 cubes in the scene. Whenever a cube is activated with an air tap, a text to speech voice will emanate from the cube. The user can also ask "What time is it?" to hear the current time from a voice that stays with the user as they move.
+
+#### WindowOcclusion.unity 
+
+This scene demonstrates how to use WindowOcclusion.shader.  It positions a virtual 'window' directly in front of you when the scene starts. A cube in the back is only visible when viewed through the window because quads around the window use the WindowOcclusion shader.
+
+---
+##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
+---
+
+## [Build](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Build)
+Build and deploy automation window for building your VS solution, APPX, installing, launching, and getting the log file (and other related functionality). Requires that the device has been paired with the Editor PC & that the device is connected locally and/or the HTTPS requirement has been disabled in the device portal's security tab.
+
+### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/Build/Scripts)
+
+#### BuildDeployPortal.cs
+Interface function with the device (REST API utility functions)
+
+#### BuildDeployTools.cs
+Supports building the APPX from the SLN
+
+#### BuildSLNUtilities.cs
+Supports building the project SLN
+
+#### BuildDeployWindow.cs
+Editor UI for the window and event functions
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)

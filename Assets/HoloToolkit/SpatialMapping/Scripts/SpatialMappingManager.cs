@@ -21,6 +21,9 @@ namespace HoloToolkit.Unity
         [Tooltip("The material to use for rendering spatial mapping data.")]
         public Material surfaceMaterial;
 
+        [Tooltip("Determines if the surface observer should be automatically started.")]
+        public bool autoStartObserver = true;
+
         [Tooltip("Determines if spatial mapping data will be rendered.")]
         public bool drawVisualMeshes = false;
 
@@ -65,28 +68,10 @@ namespace HoloToolkit.Unity
         {
             remoteMeshTarget = FindObjectOfType<RemoteMeshTarget>();
 
-#if !UNITY_EDITOR
-            StartObserver();
-#endif
-
-#if UNITY_EDITOR
-            fileSurfaceObserver = GetComponent<FileSurfaceObserver>();
-
-            if (fileSurfaceObserver != null)
+            if (autoStartObserver)
             {
-                // In the Unity editor, try loading a saved mesh.
-                fileSurfaceObserver.Load(fileSurfaceObserver.MeshFileName);
-
-                if (fileSurfaceObserver.GetMeshFilters().Count > 0)
-                {
-                    SetSpatialMappingSource(fileSurfaceObserver);
-                }
-                else if (remoteMeshTarget != null)
-                {
-                    SetSpatialMappingSource(remoteMeshTarget);
-                }
+                StartObserver();
             }
-#endif
         }
 
         // Called every frame.
@@ -232,11 +217,30 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StartObserver()
         {
+#if !UNITY_EDITOR
             if (!IsObserverRunning())
             {
                 surfaceObserver.StartObserving();
                 StartTime = Time.time;
             }
+#elif UNITY_EDITOR
+            fileSurfaceObserver = GetComponent<FileSurfaceObserver>();
+
+            if (fileSurfaceObserver != null)
+            {
+                // In the Unity editor, try loading a saved mesh.
+                fileSurfaceObserver.Load(fileSurfaceObserver.MeshFileName);
+
+                if (fileSurfaceObserver.GetMeshFilters().Count > 0)
+                {
+                    SetSpatialMappingSource(fileSurfaceObserver);
+                }
+                else if (remoteMeshTarget != null)
+                {
+                    SetSpatialMappingSource(remoteMeshTarget);
+                }
+            }
+#endif
         }
 
         /// <summary>
@@ -244,10 +248,12 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopObserver()
         {
+#if !UNITY_EDITOR
             if (IsObserverRunning())
             {
                 surfaceObserver.StopObserving();
             }
+#endif
         }
 
         /// <summary>

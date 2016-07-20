@@ -60,7 +60,6 @@ namespace HoloToolkit.Unity
             gazeDirection = Camera.main.transform.forward;
 
             UpdateRaycast();
-
             UpdateStabilizationPlane();
         }
 
@@ -113,24 +112,24 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Updates the focus point for every frame.
+        /// Adds the stabilization plane modifier if it's enabled and if it doesn't exist yet.
         /// </summary>
         private void UpdateStabilizationPlane()
         {
+            // We want to use the stabilization logic.
             if (SetStabilizationPlane)
             {
-                // Calculate the delta between camera's position and current hit position.
-                float focusPointDistance = (gazeOrigin - Position).magnitude;
-                float lerpPower = focusPointDistance > lastHitDistance
-                    ? LerpStabilizationPlanePowerFarther
-                    : LerpStabilizationPlanePowerCloser;
+                // Check if it exists in the scene.
+                if (StabilizationPlaneModifier.Instance == null)
+                {
+                    // If not, add it to us.
+                    gameObject.AddComponent<StabilizationPlaneModifier>();
+                }
+            }
 
-                // Smoothly move the focus point from previous hit position to new position.
-                lastHitDistance = Mathf.Lerp(lastHitDistance, focusPointDistance, lerpPower * Time.deltaTime);
-
-                Vector3 newFocusPointPosition = gazeOrigin + (gazeDirection * lastHitDistance);
-
-                HolographicSettings.SetFocusPointForFrame(newFocusPointPosition, -gazeDirection);
+            if (StabilizationPlaneModifier.Instance)
+            {
+                StabilizationPlaneModifier.Instance.SetStabilizationPlane = SetStabilizationPlane;
             }
         }
     }
