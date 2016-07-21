@@ -25,26 +25,26 @@ namespace HoloToolkit.Unity
         private const float UpdateBuildsPeriod = 1.0f;
 
         // Properties
-        private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
-        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
+        private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrWhiteSpace(BuildDeployPrefs.BuildDirectory); } }
+        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrWhiteSpace(BuildDeployPrefs.BuildDirectory); } }
         private bool ShouldBuildAppxBeEnabled
         {
             get { return 
-                    !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) && 
-                    !string.IsNullOrEmpty(BuildDeployPrefs.MsBuildVersion) && 
-                    !string.IsNullOrEmpty(BuildDeployPrefs.BuildConfig); }
+                    !string.IsNullOrWhiteSpace(BuildDeployPrefs.BuildDirectory) && 
+                    !string.IsNullOrWhiteSpace(BuildDeployPrefs.MsBuildVersion) && 
+                    !string.IsNullOrWhiteSpace(BuildDeployPrefs.BuildConfig); }
         }
         private bool ShouldLaunchAppBeEnabled
         {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get { return !string.IsNullOrWhiteSpace(BuildDeployPrefs.TargetIPs) && !string.IsNullOrWhiteSpace(BuildDeployPrefs.BuildDirectory); }
         }
         private bool ShouldWebPortalBeEnabled
         {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get { return !string.IsNullOrWhiteSpace(BuildDeployPrefs.TargetIPs) && !string.IsNullOrWhiteSpace(BuildDeployPrefs.BuildDirectory); }
         }
         private bool ShouldLogViewBeEnabled
         {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get { return !string.IsNullOrWhiteSpace(BuildDeployPrefs.TargetIPs) && !string.IsNullOrWhiteSpace(BuildDeployPrefs.BuildDirectory); }
         }
         private bool LocalIPsOnly { get { return true; } }
 
@@ -420,7 +420,7 @@ namespace HoloToolkit.Unity
         private void InstallAppOnDevicesList(string buildPath, bool uninstallBeforeInstall, string[] targetList)
         {
             string packageFamilyName = CalcPackageFamilyName();
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrWhiteSpace(packageFamilyName))
             {
                 return;
             }
@@ -475,7 +475,7 @@ namespace HoloToolkit.Unity
         private void UninstallAppOnDevicesList(string[] targetList)
         {
             string packageFamilyName = CalcPackageFamilyName();
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrWhiteSpace(packageFamilyName))
             {
                 return;
             }
@@ -593,7 +593,7 @@ namespace HoloToolkit.Unity
         void LaunchAppOnIPs(string targetIPs)
         {
             string packageFamilyName = CalcPackageFamilyName();
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrWhiteSpace(packageFamilyName))
             {
                 return;
             }
@@ -611,7 +611,7 @@ namespace HoloToolkit.Unity
         void KillAppOnIPs(string targetIPs)
         {
             string packageFamilyName = CalcPackageFamilyName();
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrWhiteSpace(packageFamilyName))
             {
                 return;
             }
@@ -629,7 +629,7 @@ namespace HoloToolkit.Unity
         public void OpenLogFileForIPs(string IPs)
         {
             string packageFamilyName = CalcPackageFamilyName();
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrWhiteSpace(packageFamilyName))
             {
                 return;
             }
