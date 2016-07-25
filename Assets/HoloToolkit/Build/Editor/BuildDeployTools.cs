@@ -90,8 +90,9 @@ namespace HoloToolkit.Unity
             // this breaks the build in VS RTM
             var nugetPInfo = new System.Diagnostics.ProcessStartInfo();
             nugetPInfo.FileName = nugetPath;
+            nugetPInfo.WorkingDirectory = buildDirectory;
             nugetPInfo.UseShellExecute = false;
-            nugetPInfo.Arguments = string.Format("Restore {0} -NonInteractive", solutionProjectPath);
+            nugetPInfo.Arguments = @"restore " + PlayerSettings.productName + "/project.json";
             using (var nugetP = new System.Diagnostics.Process())
             {
                 Debug.Log(nugetPath + " " + nugetPInfo.Arguments);
@@ -105,7 +106,7 @@ namespace HoloToolkit.Unity
             pinfo.FileName = vs;
             pinfo.UseShellExecute = false;
             string buildType = forceRebuildAppx ? "Rebuild" : "Build";
-            pinfo.Arguments = string.Format("{0} /t:{2} /p:Configuration={1} /p:Platform=x86", solutionProjectPath, buildConfig, buildType);
+            pinfo.Arguments = string.Format("\"{0}\" /t:{2} /p:Configuration={1} /p:Platform=x86", solutionProjectPath, buildConfig, buildType);
             var p = new System.Diagnostics.Process();
 
             Debug.Log(vs + " " + pinfo.Arguments);

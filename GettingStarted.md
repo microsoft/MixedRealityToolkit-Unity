@@ -10,7 +10,11 @@ https://github.com/Microsoft/HoloToolkit-Unity.git. If you've never cloned a
 repo before then you should consider using the GitHub desktop client, see 
 https://desktop.github.com/
 
-Open in Unity
+# Preparing to use the HoloToolkit-Unity package
+
+Open the folder you just cloned in Unity
+
+Now, inside of Unity ensure you have the Assets folder selected in the project view, and export the package
 
 `Assets -> Export Package…`
 
@@ -25,10 +29,13 @@ You should now have a `HoloToolkit` menu item.
 
 # Preparing a Scene for Holographic Content
 
-Add the `Main Camera.prefab` and remove the default camera (this 
-creates a camera customized for holographic development)
+Remove the default camera in the project (the next step creates a camera
+ customized for holographic development)
 
-You will probably want to add `ManualCameraControl.cs` to the 
+Add the `Main Camera.prefab` (found under HoloToolkit/Utilities/Prefabs) 
+
+You will probably want to add `ManualCameraControl.cs` (found under
+ HoloToolkit/Utilities/Scripts) to the 
 `Main Camera`. This allows the user to manually control
  the camera when in the Unity player.
 
@@ -38,9 +45,11 @@ You will probably want to add `ManualCameraControl.cs` to the
 
 # Building Your Project for HoloLens
 
-`HoloToolkit -> Builds -> Build for HoloLens`
+`HoloToolkit -> Build Window -> Build Visual Studio SLN`
 
-Now open in Visual Studio and deploy to the emulator or device/
+`Open SLN`
+
+Deploy to the emulator or device/
 
 
 
