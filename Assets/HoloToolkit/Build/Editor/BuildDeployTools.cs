@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
             {
                 // These properties should all match what the Standalone.proj file specifies
                 OutputDirectory = buildDirectory,
-                Scenes = EditorBuildSettings.scenes.Select(scene => scene.path),
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
                 BuildTarget = BuildTarget.WSAPlayer,
                 WSASdk = WSASDK.UWP,
                 WSAUWPBuildType = WSAUWPBuildType.D3D,
