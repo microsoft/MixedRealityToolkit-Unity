@@ -59,8 +59,8 @@ namespace HoloToolkit.Unity
         }
         public static bool FullReinstall
         {
-            get { return GetEditorPref(EditorPrefs_DevicePwd, true); }
-            set { EditorPrefs.SetBool(EditorPrefs_DevicePwd, value); }
+            get { return GetEditorPref(EditorPrefs_FullReinstall, true); }
+            set { EditorPrefs.SetBool(EditorPrefs_FullReinstall, value); }
         }
 
         private static string GetEditorPref(string key, string defaultValue)
