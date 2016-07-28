@@ -19,4 +19,4 @@ Last but not least, every line and geometry can be deleted by saying "remove" or
 
 If you want find more details, please contact me: [http://changwei.tech](http://changwei.tech)
 
-<iframe height=498 width=510 src="http://player.youku.com/embed/XMTY2MTU1ODA5Ng==" frameborder=0 allowfullscreen></iframe>
+for demo video, please click here: [http://player.youku.com/embed/XMTY2MTU1ODA5Ng==](http://player.youku.com/embed/XMTY2MTU1ODA5Ng==)
