@@ -43,33 +43,32 @@ namespace HoloToolkit.Unity
         private void Update()
         {
             // Get a Vector that points from the Camera to the target.
-            Vector3 directionToTarget = Camera.main.transform.position - gameObject.transform.position;
-
-            // If we are right next to the camera the rotation is undefined.
-            if (directionToTarget.sqrMagnitude < Mathf.Epsilon)
-            {
-                return;
-            }
+            Vector3 forward;
+            Vector3 up;
 
             // Adjust for the pivot axis.
             switch (PivotAxis)
             {
                 case PivotAxis.X:
-                    directionToTarget.x = gameObject.transform.position.x;
+                    forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.right).normalized;
+                    up = Vector3.Cross(forward, Vector3.right);
                     break;
 
                 case PivotAxis.Y:
-                    directionToTarget.y = gameObject.transform.position.y;
+                    up = Vector3.up;
+                    forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, up);
                     break;
 
                 case PivotAxis.Free:
                 default:
-                    // No changes needed.
+                    forward = Camera.main.transform.forward;
+                    up = Camera.main.transform.up;
                     break;
             }
 
-            // Calculate and apply the rotation required to reorient the object and apply the default rotation to the result.
-            gameObject.transform.rotation = Quaternion.LookRotation(-directionToTarget) * DefaultRotation;
+
+            // Calculate and apply the rotation required to reorient the object
+            gameObject.transform.rotation = Quaternion.LookRotation(forward, up);
         }
     }
 }
