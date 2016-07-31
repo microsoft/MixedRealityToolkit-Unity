@@ -600,7 +600,10 @@ namespace HoloToolkit.Unity
                 }
 
                 // Send message notifying user that sound is complete
-                activeEvent.AudioEmitter.SendMessage(activeEvent.MessageToSend);
+                if (!string.IsNullOrEmpty(activeEvent.MessageToSend))
+                {
+                    activeEvent.AudioEmitter.SendMessage(activeEvent.MessageToSend);
+                }
 
             }
             // Otherwise, continue at next frame.
