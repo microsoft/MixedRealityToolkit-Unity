@@ -10,6 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Net;
 using System;
+using System.Xml;
 
 namespace HoloToolkit.Unity
 {
@@ -24,7 +25,6 @@ namespace HoloToolkit.Unity
         private const float UpdateBuildsPeriod = 1.0f;
 
         // Properties
-
         private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
         private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
         private bool ShouldBuildAppxBeEnabled
@@ -71,6 +71,7 @@ namespace HoloToolkit.Unity
         private void Setup()
         {
             this.titleContent = new GUIContent("Build Window");
+
             this.minSize = new Vector2(600, 200);
 
             UpdateBuilds();
@@ -175,7 +176,6 @@ namespace HoloToolkit.Unity
                 // Force rebuild
                 float labelWidth = EditorGUIUtility.labelWidth;
                 EditorGUIUtility.labelWidth = 50;
-
                 bool curForceRebuildAppx = BuildDeployPrefs.ForceRebuild;
                 bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
                 if (newForceRebuildAppx != curForceRebuildAppx)
@@ -256,10 +256,11 @@ namespace HoloToolkit.Unity
                     GUILayout.Space(GUISectionOffset + 15);
                     if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
                     {
+                        string thisBuildLocation = fullBuildLocation;
                         string[] IPlist = ParseIPList(curTargetIps);
                         EditorApplication.delayCall += () =>
                         {
-                            InstallAppOnDevicesList(fullBuildLocation, appName, curFullReinstall, IPlist);
+                            InstallAppOnDevicesList(thisBuildLocation, curFullReinstall, IPlist);
                         };
                     }
                     GUILayout.Space(5);
@@ -297,12 +298,12 @@ namespace HoloToolkit.Unity
                 {
                     // If already running, kill it (button is a toggle)
                     if (IsAppRunning_FirstIPCheck(appName, curTargetIps))
-                    {
-                        KillAppOnIPs(appName, curTargetIps);
+                    { 
+                        KillAppOnIPs(curTargetIps);
                     }
                     else
                     {
-                        LaunchAppOnIPs(appName, curTargetIps);
+                        LaunchAppOnIPs(curTargetIps);
                     }
                 }
                 GUI.enabled = true;
@@ -315,7 +316,7 @@ namespace HoloToolkit.Unity
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
                 {
-                    OpenLogFileForIPs(curTargetIps, appName);
+                    OpenLogFileForIPs(curTargetIps);
                 }
                 GUI.enabled = true;
             }
@@ -330,7 +331,7 @@ namespace HoloToolkit.Unity
                     string[] IPlist = ParseIPList(curTargetIps);
                     EditorApplication.delayCall += () =>
                     {
-                        UninstallAppOnDevicesList(appName, IPlist);
+                        UninstallAppOnDevicesList(IPlist);
                     };
                 }
                 GUI.enabled = true;
@@ -360,7 +361,7 @@ namespace HoloToolkit.Unity
             // Next, Install
             string fullBuildLocation = CalcMostRecentBuild();
             string[] IPlist = ParseIPList(BuildDeployPrefs.TargetIPs);
-            InstallAppOnDevicesList(fullBuildLocation, appName, BuildDeployPrefs.FullReinstall, IPlist);
+            InstallAppOnDevicesList(fullBuildLocation, BuildDeployPrefs.FullReinstall, IPlist);
         }
 
         private string CalcMostRecentBuild()
@@ -379,28 +380,71 @@ namespace HoloToolkit.Unity
             return mostRecentBuild;
         }
 
-        private void InstallAppOnDevicesList(string buildPath, string appName, bool uninstallBeforeInstall, string[] targetList)
+        private string CalcPackageFamilyName()
         {
-            string[] IPlist = ParseIPList(BuildDeployPrefs.TargetIPs);
-            for (int i = 0; i < IPlist.Length; i++)
+            // Find the manifest
+            string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+            if (manifests.Length == 0)
+            {
+                Debug.LogError("Unable to find manifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
+                return "";
+            }
+            string manifest = manifests[0];
+
+            // Parse it
+            using (XmlTextReader reader = new XmlTextReader(manifest))
+            {
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    { 
+                    case XmlNodeType.Element:
+                        if (reader.Name.Equals("identity", StringComparison.OrdinalIgnoreCase))
+                        {
+                            while (reader.MoveToNextAttribute())
+                            {
+                                if (reader.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    return reader.Value;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            Debug.LogError("Unable to find PackageFamilyName in manifest file (" + manifest + ")");
+            return "";
+        }
+
+        private void InstallAppOnDevicesList(string buildPath, bool uninstallBeforeInstall, string[] targetList)
+        {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
+            for (int i = 0; i < targetList.Length; i++)
             {
                 try
                 {
                     bool completedUninstall = false;
-                    string IP = FinalizeIP(IPlist[i]);
+                    string IP = FinalizeIP(targetList[i]);
                     if (BuildDeployPrefs.FullReinstall &&
-                        BuildDeployPortal.IsAppInstalled(appName, new BuildDeployPortal.ConnectInfo(IP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)))
+                        BuildDeployPortal.IsAppInstalled(packageFamilyName, new BuildDeployPortal.ConnectInfo(IP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)))
                     {
-                        EditorUtility.DisplayProgressBar("Installing on devices", "Uninstall (" + IP + ")", (float)i / (float)IPlist.Length);
-                        if (!UninstallApp(appName, IP))
+                        EditorUtility.DisplayProgressBar("Installing on devices", "Uninstall (" + IP + ")", (float)i / (float)targetList.Length);
+                        if (!UninstallApp(packageFamilyName, IP))
                         {
                             Debug.LogError("Uninstall failed - skipping install (" + IP + ")");
                             continue;
                         }
                         completedUninstall = true;
                     }
-                    EditorUtility.DisplayProgressBar("Installing on devices", "Install (" + IP + ")", (float)(i + (completedUninstall ? 0.5f : 0.0f)) / (float)IPlist.Length);
-                    InstallApp(buildPath, appName, IP);
+                    EditorUtility.DisplayProgressBar("Installing on devices", "Install (" + IP + ")", (float)(i + (completedUninstall ? 0.5f : 0.0f)) / (float)targetList.Length);
+                    InstallApp(buildPath, packageFamilyName, IP);
                 }
                 catch (Exception ex)
                 {
@@ -414,6 +458,7 @@ namespace HoloToolkit.Unity
         {
             // Get the appx path
             FileInfo[] files = (new DirectoryInfo(buildPath)).GetFiles("*.appx");
+            files = (files.Length == 0) ? (new DirectoryInfo(buildPath)).GetFiles("*.appxbundle") : files;
             if (files.Length == 0)
             {
                 Debug.LogError("No APPX found in folder build folder (" + buildPath + ")");
@@ -428,16 +473,21 @@ namespace HoloToolkit.Unity
             return BuildDeployPortal.InstallApp(files[0].FullName, connectInfo);
         }
 
-        private void UninstallAppOnDevicesList(string appName, string[] targetList)
+        private void UninstallAppOnDevicesList(string[] targetList)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             try
             {
-                string[] IPlist = ParseIPList(BuildDeployPrefs.TargetIPs);
-                for (int i = 0; i < IPlist.Length; i++)
+                for (int i = 0; i < targetList.Length; i++)
                 {
-                    string IP = FinalizeIP(IPlist[i]);
-                    EditorUtility.DisplayProgressBar("Uninstalling application", "Uninstall (" + IP + ")", (float)i / (float)IPlist.Length);
-                    UninstallApp(appName, IP);
+                    string IP = FinalizeIP(targetList[i]);
+                    EditorUtility.DisplayProgressBar("Uninstalling application", "Uninstall (" + IP + ")", (float)i / (float)targetList.Length);
+                    UninstallApp(packageFamilyName, IP);
                 }
             }
             catch (Exception ex)
@@ -447,14 +497,14 @@ namespace HoloToolkit.Unity
             EditorUtility.ClearProgressBar();
         }
 
-        private bool UninstallApp(string appName, string targetDevice)
+        private bool UninstallApp(string packageFamilyName, string targetDevice)
         {
             // Connection info
             var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
 
             // Kick off the install
             Debug.Log("Uninstall build: " + targetDevice);
-            return BuildDeployPortal.UninstallApp(appName, connectInfo);
+            return BuildDeployPortal.UninstallApp(packageFamilyName, connectInfo);
         }
 
         private void UpdateBuilds()
@@ -473,11 +523,10 @@ namespace HoloToolkit.Unity
                         appPackageDirectories.AddRange(Directory.GetDirectories(appPackageDirectory));
                     }
                 }
-                IEnumerable<string> selectedDirectories = 
+                IEnumerable<string> selectedDirectories =
                     from string directory in appPackageDirectories
                     orderby Directory.GetLastWriteTime(directory) descending
                     select Path.GetFullPath(directory);
-
                 this.builds.AddRange(selectedDirectories);
             }
             catch (DirectoryNotFoundException)
@@ -542,39 +591,56 @@ namespace HoloToolkit.Unity
             return false;
         }
 
-        void LaunchAppOnIPs(string appName, string targetIPs)
+        void LaunchAppOnIPs(string targetIPs)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             string[] IPlist = ParseIPList(targetIPs);
             for (int i = 0; i < IPlist.Length; i++)
             {
                 string targetIP = FinalizeIP(IPlist[i]);
                 Debug.Log("Launch app on: " + targetIP);
                 BuildDeployPortal.LaunchApp(
-                    appName, new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                    packageFamilyName, new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
 
-        void KillAppOnIPs(string appName, string targetIPs)
+        void KillAppOnIPs(string targetIPs)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             string[] IPlist = ParseIPList(targetIPs);
             for (int i = 0; i < IPlist.Length; i++)
             {
                 string targetIP = FinalizeIP(IPlist[i]);
                 Debug.Log("Kill app on: " + targetIP);
                 BuildDeployPortal.KillApp(
-                    appName, new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                    packageFamilyName, new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
 
-        public void OpenLogFileForIPs(string IPs, string appName)
+        public void OpenLogFileForIPs(string IPs)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             string[] ipList = ParseIPList(IPs);
             for (int i = 0; i < ipList.Length; i++)
             {
                 // Use the Device Portal REST API
                 BuildDeployPortal.DeviceLogFile_View(
-                    appName, 
-                    new BuildDeployPortal.ConnectInfo(FinalizeIP(ipList[i]), BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                    packageFamilyName, new BuildDeployPortal.ConnectInfo(FinalizeIP(ipList[i]), BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
     }

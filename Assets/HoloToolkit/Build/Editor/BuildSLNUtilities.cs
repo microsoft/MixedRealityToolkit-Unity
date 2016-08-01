@@ -283,7 +283,7 @@ namespace HoloToolkit.Unity
             BuildInfo buildInfo = new BuildInfo()
             {
                 // Use scenes from the editor build settings.
-                Scenes = EditorBuildSettings.scenes.Select(scene => scene.path),
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
             };
 
             ParseBuildCommandLine(ref buildInfo);
