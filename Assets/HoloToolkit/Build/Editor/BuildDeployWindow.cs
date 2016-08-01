@@ -10,6 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Net;
 using System;
+using System.Xml;
 
 namespace HoloToolkit.Unity
 {
@@ -19,42 +20,37 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployWindow : EditorWindow
     {
-        // Constants
-        public const string EditorPrefs_BuildDir = "BuildDeployWindow_BuildDir";
-        public const string EditorPrefs_BuildConfig = "BuildDeployWindow_BuildConfig";
-        public const string EditorPrefs_ForceRebuild = "BuildDeployWindow_ForceBuild";
-        public const string EditorPrefs_MSBuildVer = "BuildDeployWindow_MSBuildVer";
-        public const string EditorPrefs_CustomIP = "BuildDeployWindow_DestIPs";
-        public const string EditorPrefs_DeviceUser = "BuildDeployWindow_DeviceUser";
-        public const string EditorPrefs_DevicePwd = "BuildDeployWindow_DevicePwd";
-        public const string EditorPrefs_FullReinstall = "BuildDeployWindow_FullReinstall";
         private const float GUISectionOffset = 10.0f;
         private const string GUIHorizSpacer = "     ";
         private const float UpdateBuildsPeriod = 1.0f;
 
         // Properties
-        private string BuildDirectory_FullPath { get { return Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildDirectory)); } }
-        private FileInfo SLNFile { get { return new FileInfo(Path.Combine(buildDirectory, PlayerSettings.productName + ".sln")); } }
-        private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(buildDirectory); } }
-        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(buildDirectory); } }
-        private bool ShouldBuildAppxBeEnabled { get { return !string.IsNullOrEmpty(buildDirectory) && !string.IsNullOrEmpty(msBuildVer) && !string.IsNullOrEmpty(buildConfig); } }
-        private bool ShouldLaunchAppBeEnabled { get { return !string.IsNullOrEmpty(targetIPs) && !string.IsNullOrEmpty(buildDirectory); } }
-        private bool ShouldWebPortalBeEnabled { get { return !string.IsNullOrEmpty(targetIPs) && !string.IsNullOrEmpty(buildDirectory); } }
-        private bool ShouldLogViewBeEnabled { get { return !string.IsNullOrEmpty(targetIPs) && !string.IsNullOrEmpty(buildDirectory); } }
-        private bool LocalIPsOnly {  get { return true; } }
+        private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
+        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
+        private bool ShouldBuildAppxBeEnabled
+        {
+            get { return 
+                    !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) && 
+                    !string.IsNullOrEmpty(BuildDeployPrefs.MsBuildVersion) && 
+                    !string.IsNullOrEmpty(BuildDeployPrefs.BuildConfig); }
+        }
+        private bool ShouldLaunchAppBeEnabled
+        {
+            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+        }
+        private bool ShouldWebPortalBeEnabled
+        {
+            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+        }
+        private bool ShouldLogViewBeEnabled
+        {
+            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+        }
+        private bool LocalIPsOnly { get { return true; } }
 
         // Privates
         private List<string> builds = new List<string>();
         private float timeLastUpdatedBuilds = 0.0f;
-
-        private string buildDirectory = "WindowsStoreApp";
-        private string msBuildVer = BuildDeployTools.DefaultMSBuildVersion;
-        private string buildConfig = "Debug";
-        private bool forceRebuildAppx = false;
-        private string targetIPs = "127.0.0.1";
-        private string deviceUser = "";
-        private string devicePassword = "";
-        private bool fullReinstall = true;
 
         // Functions
         [MenuItem("HoloToolkit/Build Window", false, 101)]
@@ -76,19 +72,6 @@ namespace HoloToolkit.Unity
         {
             this.titleContent = new GUIContent("Build Window");
 
-            // Query menu defaults
-            buildDirectory = GetEditorPref(EditorPrefs_BuildDir, buildDirectory);
-            msBuildVer = GetEditorPref(EditorPrefs_MSBuildVer, msBuildVer);
-            buildConfig = GetEditorPref(EditorPrefs_BuildConfig, buildConfig);
-            forceRebuildAppx = (GetEditorPref(EditorPrefs_ForceRebuild, forceRebuildAppx ? "true" : "false") == "true");
-            deviceUser = GetEditorPref(EditorPrefs_DeviceUser, deviceUser);
-            devicePassword = GetEditorPref(EditorPrefs_DevicePwd, devicePassword);
-            fullReinstall = GetEditorPref(EditorPrefs_FullReinstall, fullReinstall);
-            if (!LocalIPsOnly)
-            {
-                targetIPs = GetEditorPref(EditorPrefs_CustomIP, targetIPs);
-            }
-
             this.minSize = new Vector2(600, 200);
 
             UpdateBuilds();
@@ -106,260 +89,279 @@ namespace HoloToolkit.Unity
 
             // Build section
             GUILayout.BeginVertical();
-                GUILayout.Label("SLN");
+            GUILayout.Label("SLN");
 
-                EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
+
+            // Build directory (and save setting, if it's changed)
+            string curBuildDirectory = BuildDeployPrefs.BuildDirectory;
+            string newBuildDirectory = EditorGUILayout.TextField(GUIHorizSpacer + "Build directory", curBuildDirectory);
+            if (newBuildDirectory != curBuildDirectory)
+            {
+                BuildDeployPrefs.BuildDirectory = newBuildDirectory;
+                curBuildDirectory = newBuildDirectory;
+            }
+
+            // Build SLN button
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 GUILayout.FlexibleSpace();
-                EditorGUILayout.EndHorizontal();
-
-                // Build directory (and save setting, if it's changed)
-                string newBuildDirectory = EditorGUILayout.TextField(GUIHorizSpacer + "Build directory", buildDirectory);
-                if (newBuildDirectory != buildDirectory)
+                GUI.enabled = ShouldOpenSLNBeEnabled;
+                if (GUILayout.Button("Open SLN", GUILayout.Width(buttonWidth_Quarter)))
                 {
-                    EditorPrefs.SetString(EditorPrefs_CustomIP, newBuildDirectory);
-                    buildDirectory = newBuildDirectory;
-                }
-
-                // Build SLN button
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    GUILayout.FlexibleSpace();
-                    GUI.enabled = ShouldOpenSLNBeEnabled;
-                    if (GUILayout.Button("Open SLN", GUILayout.Width(buttonWidth_Quarter)))
+                    // Open SLN
+                    string slnFilename = Path.Combine(curBuildDirectory, PlayerSettings.productName + ".sln");
+                    if (File.Exists(slnFilename))
                     {
-                        // Open SLN
-                        string slnFilename = Path.Combine(buildDirectory, PlayerSettings.productName + ".sln");
-                        if (File.Exists(slnFilename))
-                        {
-                            FileInfo slnFile = new FileInfo(slnFilename);
-                            System.Diagnostics.Process.Start(slnFile.FullName);
-                        }
-                        else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
-                        {
-                            // Build SLN
-                            EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(buildDirectory); };
-                        }
+                        FileInfo slnFile = new FileInfo(slnFilename);
+                        System.Diagnostics.Process.Start(slnFile.FullName);
                     }
-                    GUI.enabled = ShouldBuildSLNBeEnabled;
-                    if (GUILayout.Button("Build Visual Studio SLN", GUILayout.Width(buttonWidth_Half)))
+                    else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
                     {
                         // Build SLN
-                        EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(buildDirectory); };
+                        EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(curBuildDirectory); };
                     }
-                    GUI.enabled = true;
                 }
-
-                // Build & Run button...
-                using (new EditorGUILayout.HorizontalScope())
+                GUI.enabled = ShouldBuildSLNBeEnabled;
+                if (GUILayout.Button("Build Visual Studio SLN", GUILayout.Width(buttonWidth_Half)))
                 {
-                    GUILayout.FlexibleSpace();
-                    GUI.enabled = ShouldBuildSLNBeEnabled;
-                    if (GUILayout.Button("Build SLN, Build APPX, then Install", GUILayout.Width(buttonWidth_Half)))
-                    {
-                        // Build SLN
-                        EditorApplication.delayCall += () => { BuildAndRun(appName); };
-                    }
-                    GUI.enabled = true;
+                    // Build SLN
+                    EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(curBuildDirectory); };
                 }
+                GUI.enabled = true;
+            }
 
-                // Appx sub-section
-                GUILayout.BeginVertical();
-                    GUILayout.Label("APPX");
+            // Build & Run button...
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                GUI.enabled = ShouldBuildSLNBeEnabled;
+                if (GUILayout.Button("Build SLN, Build APPX, then Install", GUILayout.Width(buttonWidth_Half)))
+                {
+                    // Build SLN
+                    EditorApplication.delayCall += () => { BuildAndRun(appName); };
+                }
+                GUI.enabled = true;
+            }
 
-                    // MSBuild Ver (and save setting, if it's changed)
-                    string newMSBuildVer = EditorGUILayout.TextField(GUIHorizSpacer + "MSBuild Version", msBuildVer);
-                    if (newMSBuildVer != msBuildVer)
-                    {
-                        EditorPrefs.SetString(EditorPrefs_MSBuildVer, newMSBuildVer);
-                        msBuildVer = newMSBuildVer;
-                    }
+            // Appx sub-section
+            GUILayout.BeginVertical();
+            GUILayout.Label("APPX");
 
-                    // Build config (and save setting, if it's changed)
-                    string newBuildConfig = EditorGUILayout.TextField(GUIHorizSpacer + "Build Configuration", buildConfig);
-                    if (newBuildConfig != buildConfig)
-                    {
-                        EditorPrefs.SetString(EditorPrefs_BuildConfig, newBuildConfig);
-                        buildConfig = newBuildConfig;
-                    }
+            // MSBuild Ver (and save setting, if it's changed)
+            string curMSBuildVer = BuildDeployPrefs.MsBuildVersion;
+            string newMSBuildVer = EditorGUILayout.TextField(GUIHorizSpacer + "MSBuild Version", curMSBuildVer);
+            if (newMSBuildVer != curMSBuildVer)
+            {
+                BuildDeployPrefs.MsBuildVersion = newMSBuildVer;
+                curMSBuildVer = newMSBuildVer;
+            }
 
-                    // Build APPX button
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        GUILayout.FlexibleSpace();
+            // Build config (and save setting, if it's changed)
+            string curBuildConfig = BuildDeployPrefs.BuildConfig;
+            string newBuildConfig = EditorGUILayout.TextField(GUIHorizSpacer + "Build Configuration", curBuildConfig);
+            if (newBuildConfig != curBuildConfig)
+            {
+                BuildDeployPrefs.BuildConfig = newBuildConfig;
+                curBuildConfig = newBuildConfig;
+            }
 
-                        // Force rebuild
-                        float labelWidth = EditorGUIUtility.labelWidth;
-                        EditorGUIUtility.labelWidth = 50;
-                        bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", forceRebuildAppx);
-                        if (newForceRebuildAppx != forceRebuildAppx)
-                        {
-                            EditorPrefs.SetString(EditorPrefs_ForceRebuild, newForceRebuildAppx ? "true" : "false");
-                            forceRebuildAppx = newForceRebuildAppx;
-                        }
-                        EditorGUIUtility.labelWidth = labelWidth;
+            // Build APPX button
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
 
-                        // Build APPX
-                        GUI.enabled = ShouldBuildAppxBeEnabled;
-                        if (GUILayout.Button("Build APPX from SLN", GUILayout.Width(buttonWidth_Half)))
-                        {
-                            BuildDeployTools.BuildAppxFromSolution(appName, msBuildVer, forceRebuildAppx, buildConfig, buildDirectory);
-                        }
-                        GUI.enabled = true;
-                    }
-                GUILayout.EndVertical();
+                // Force rebuild
+                float labelWidth = EditorGUIUtility.labelWidth;
+                EditorGUIUtility.labelWidth = 50;
+                bool curForceRebuildAppx = BuildDeployPrefs.ForceRebuild;
+                bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
+                if (newForceRebuildAppx != curForceRebuildAppx)
+                {
+                    BuildDeployPrefs.ForceRebuild = newForceRebuildAppx;
+                    curForceRebuildAppx = newForceRebuildAppx;
+                }
+                EditorGUIUtility.labelWidth = labelWidth;
+
+                // Build APPX
+                GUI.enabled = ShouldBuildAppxBeEnabled;
+                if (GUILayout.Button("Build APPX from SLN", GUILayout.Width(buttonWidth_Half)))
+                {
+                    BuildDeployTools.BuildAppxFromSolution(appName, curMSBuildVer, curForceRebuildAppx, curBuildConfig, curBuildDirectory);
+                }
+                GUI.enabled = true;
+            }
+            GUILayout.EndVertical();
             GUILayout.EndVertical();
 
             GUILayout.Space(GUISectionOffset);
 
             // Deploy section
             GUILayout.BeginVertical();
-                GUILayout.Label("Deploy");
+            GUILayout.Label("Deploy");
 
-                // Target IPs (and save setting, if it's changed)
-                if (!LocalIPsOnly)
+            // Target IPs (and save setting, if it's changed)
+            string curTargetIps = BuildDeployPrefs.TargetIPs;
+            if (!LocalIPsOnly)
+            {
+                string newTargetIPs = EditorGUILayout.TextField(
+                    new GUIContent(GUIHorizSpacer + "IP Address(es)", "IP(s) of target devices (e.g. 127.0.0.1;10.11.12.13)"),
+                    curTargetIps);
+
+                if (newTargetIPs != curTargetIps)
                 {
-                    string newTargetIPs = EditorGUILayout.TextField(new GUIContent(GUIHorizSpacer + "IP Address(es)", "IP(s) of target devices (e.g. 127.0.0.1;10.11.12.13)"), targetIPs);
-                    if (newTargetIPs != targetIPs)
+                    BuildDeployPrefs.TargetIPs = newTargetIPs;
+                    curTargetIps = newTargetIPs;
+                }
+            }
+
+            // Username/Password (and save seeings, if changed)
+            string curUsername = BuildDeployPrefs.DeviceUser;
+            string newUsername = EditorGUILayout.TextField(GUIHorizSpacer + "Username", curUsername);
+            string curPassword = BuildDeployPrefs.DevicePassword;
+            string newPassword = EditorGUILayout.PasswordField(GUIHorizSpacer + "Password", curPassword);
+            bool curFullReinstall = BuildDeployPrefs.FullReinstall;
+            bool newFullReinstall = EditorGUILayout.Toggle(
+                new GUIContent(GUIHorizSpacer + "Uninstall first", "Uninstall application before installing"), curFullReinstall);
+            if ((newUsername != curUsername) ||
+                (newPassword != curPassword) ||
+                (newFullReinstall != curFullReinstall))
+            {
+                BuildDeployPrefs.DeviceUser = newUsername;
+                BuildDeployPrefs.DevicePassword = newPassword;
+                BuildDeployPrefs.FullReinstall = newFullReinstall;
+
+                curUsername = newUsername;
+                curPassword = newPassword;
+                curFullReinstall = newFullReinstall;
+            }
+
+            // Build list (with install buttons)
+            if (this.builds.Count == 0)
+            {
+                GUILayout.Label(GUIHorizSpacer + "*** No builds found in build directory", EditorStyles.boldLabel);
+            }
+            else
+            {
+                foreach (var fullBuildLocation in this.builds)
+                {
+                    int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\");
+
+                    var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
+                    string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
+
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Space(GUISectionOffset + 15);
+                    if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
                     {
-                        EditorPrefs.SetString(EditorPrefs_CustomIP, newTargetIPs);
-                        targetIPs = newTargetIPs;
-                    }
-                }
-
-                // Username/Password (and save seeings, if changed)
-                string newUsername = EditorGUILayout.TextField(GUIHorizSpacer + "Username", deviceUser);
-                string newPassword = EditorGUILayout.PasswordField(GUIHorizSpacer + "Password", devicePassword);
-                bool newFullReinstall = EditorGUILayout.Toggle(new GUIContent(GUIHorizSpacer + "Uninstall first", "Uninstall application before installing"), fullReinstall);
-                if ((newUsername != deviceUser) ||
-                    (newPassword != devicePassword) ||
-                    (newFullReinstall != fullReinstall))
-                {
-                    EditorPrefs.SetString(EditorPrefs_DeviceUser, newUsername);
-                    deviceUser = newUsername;
-                    EditorPrefs.SetString(EditorPrefs_DevicePwd, newPassword);
-                    devicePassword = newPassword;
-                    EditorPrefs.SetBool(EditorPrefs_FullReinstall, newFullReinstall);
-                    fullReinstall = newFullReinstall;
-                }
-
-                // Build list (with install buttons)
-                if (this.builds.Count == 0)
-                {
-                    GUILayout.Label(GUIHorizSpacer + "*** No builds found in build directory", EditorStyles.boldLabel);
-                }
-                else
-                {
-                    foreach (var fullBuildLocation in this.builds)
-                    {
-                        int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\");
-
-                        var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
-                        string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
-
-                        EditorGUILayout.BeginHorizontal();
-                        GUILayout.Space(GUISectionOffset + 15);
-                        if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
+                        string thisBuildLocation = fullBuildLocation;
+                        string[] IPlist = ParseIPList(curTargetIps);
+                        EditorApplication.delayCall += () =>
                         {
-                            string[] IPlist = ParseIPList(targetIPs);
-                            EditorApplication.delayCall += () =>
-                            {
-                                InstallAppOnDevicesList(fullBuildLocation, appName, fullReinstall, IPlist);
-                            };
-                        }
-                        GUILayout.Space(5);
-                        GUILayout.Label(packageName + " (" + directoryDate + ")");
-                        EditorGUILayout.EndHorizontal();
+                            InstallAppOnDevicesList(thisBuildLocation, curFullReinstall, IPlist);
+                        };
                     }
-                    EditorGUILayout.Separator();
+                    GUILayout.Space(5);
+                    GUILayout.Label(packageName + " (" + directoryDate + ")");
+                    EditorGUILayout.EndHorizontal();
                 }
+                EditorGUILayout.Separator();
+            }
             GUILayout.EndVertical();
 
             GUILayout.Space(GUISectionOffset);
 
             // Utilities section
             GUILayout.BeginVertical();
-                GUILayout.Label("Utilities");
+            GUILayout.Label("Utilities");
 
-                // Open web portal
-                using (new EditorGUILayout.HorizontalScope())
+            // Open web portal
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUI.enabled = ShouldWebPortalBeEnabled;
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Open Device Portal", GUILayout.Width(buttonWidth_Full)))
                 {
-                    GUI.enabled = ShouldWebPortalBeEnabled;
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("Open Device Portal", GUILayout.Width(buttonWidth_Full)))
-                    {
-                        OpenWebPortalForIPs(this.targetIPs);
-                    }
-                    GUI.enabled = true;
+                    OpenWebPortalForIPs(curTargetIps);
                 }
+                GUI.enabled = true;
+            }
 
-                // Launch app..
-                using (new EditorGUILayout.HorizontalScope())
+            // Launch app..
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUI.enabled = ShouldLaunchAppBeEnabled;
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Launch Application", GUILayout.Width(buttonWidth_Full)))
                 {
-                    GUI.enabled = ShouldLaunchAppBeEnabled;
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("Launch Application", GUILayout.Width(buttonWidth_Full)))
-                    {
-                        // If already running, kill it (button is a toggle)
-                        if (IsAppRunning_FirstIPCheck(appName, this.targetIPs))
-                        { 
-                            KillAppOnIPs(appName, targetIPs);
-                        }
-                        else
-                        {
-                            LaunchAppOnIPs(appName, this.targetIPs);
-                        }
+                    // If already running, kill it (button is a toggle)
+                    if (IsAppRunning_FirstIPCheck(appName, curTargetIps))
+                    { 
+                        KillAppOnIPs(curTargetIps);
                     }
-                    GUI.enabled = true;
+                    else
+                    {
+                        LaunchAppOnIPs(curTargetIps);
+                    }
                 }
+                GUI.enabled = true;
+            }
 
-                // Log file
-                using (new EditorGUILayout.HorizontalScope())
+            // Log file
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUI.enabled = ShouldLogViewBeEnabled;
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
                 {
-                    GUI.enabled = ShouldLogViewBeEnabled;
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
-                    {
-                        OpenLogFileForIPs(this.targetIPs, appName);
-                    }
-                    GUI.enabled = true;
+                    OpenLogFileForIPs(curTargetIps);
                 }
+                GUI.enabled = true;
+            }
 
-                // Uninstall...
-                using (new EditorGUILayout.HorizontalScope())
+            // Uninstall...
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUI.enabled = ShouldLogViewBeEnabled;
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Uninstall Application", GUILayout.Width(buttonWidth_Full)))
                 {
-                    GUI.enabled = ShouldLogViewBeEnabled;
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("Uninstall Application", GUILayout.Width(buttonWidth_Full)))
+                    string[] IPlist = ParseIPList(curTargetIps);
+                    EditorApplication.delayCall += () =>
                     {
-                        string[] IPlist = ParseIPList(targetIPs);
-                        EditorApplication.delayCall += () =>
-                        {
-                            UninstallAppOnDevicesList(appName, IPlist);
-                        };
-                    }
-                    GUI.enabled = true;
+                        UninstallAppOnDevicesList(IPlist);
+                    };
                 }
+                GUI.enabled = true;
+            }
             GUILayout.EndVertical();
         }
 
         void BuildAndRun(string appName)
         {
             // First build SLN
-            if (!BuildDeployTools.BuildSLN(buildDirectory, false))
+            if (!BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory, false))
             {
                 return;
             }
 
             // Next, APPX
-            if (!BuildDeployTools.BuildAppxFromSolution(appName, msBuildVer, forceRebuildAppx, buildConfig, buildDirectory))
+            if (!BuildDeployTools.BuildAppxFromSolution(
+                appName, 
+                BuildDeployPrefs.MsBuildVersion, 
+                BuildDeployPrefs.ForceRebuild, 
+                BuildDeployPrefs.BuildConfig, 
+                BuildDeployPrefs.BuildDirectory))
             {
                 return;
             }
 
             // Next, Install
             string fullBuildLocation = CalcMostRecentBuild();
-            string[] IPlist = ParseIPList(targetIPs);
-            InstallAppOnDevicesList(fullBuildLocation, appName, fullReinstall, IPlist);
+            string[] IPlist = ParseIPList(BuildDeployPrefs.TargetIPs);
+            InstallAppOnDevicesList(fullBuildLocation, BuildDeployPrefs.FullReinstall, IPlist);
         }
 
         private string CalcMostRecentBuild()
@@ -378,28 +380,71 @@ namespace HoloToolkit.Unity
             return mostRecentBuild;
         }
 
-        private void InstallAppOnDevicesList(string buildPath, string appName, bool uninstallBeforeInstall, string[] targetList)
+        private string CalcPackageFamilyName()
         {
-            string[] IPlist = ParseIPList(targetIPs);
-            for (int i = 0; i < IPlist.Length; i++)
+            // Find the manifest
+            string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+            if (manifests.Length == 0)
+            {
+                Debug.LogError("Unable to find manifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
+                return "";
+            }
+            string manifest = manifests[0];
+
+            // Parse it
+            using (XmlTextReader reader = new XmlTextReader(manifest))
+            {
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    { 
+                    case XmlNodeType.Element:
+                        if (reader.Name.Equals("identity", StringComparison.OrdinalIgnoreCase))
+                        {
+                            while (reader.MoveToNextAttribute())
+                            {
+                                if (reader.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    return reader.Value;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            Debug.LogError("Unable to find PackageFamilyName in manifest file (" + manifest + ")");
+            return "";
+        }
+
+        private void InstallAppOnDevicesList(string buildPath, bool uninstallBeforeInstall, string[] targetList)
+        {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
+            for (int i = 0; i < targetList.Length; i++)
             {
                 try
                 {
                     bool completedUninstall = false;
-                    string IP = FinalizeIP(IPlist[i]);
-                    if (fullReinstall &&
-                        BuildDeployPortal.IsAppInstalled(appName, new BuildDeployPortal.ConnectInfo(IP, deviceUser, devicePassword)))
+                    string IP = FinalizeIP(targetList[i]);
+                    if (BuildDeployPrefs.FullReinstall &&
+                        BuildDeployPortal.IsAppInstalled(packageFamilyName, new BuildDeployPortal.ConnectInfo(IP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)))
                     {
-                        EditorUtility.DisplayProgressBar("Installing on devices", "Uninstall (" + IP + ")", (float)i / (float)IPlist.Length);
-                        if (!UninstallApp(appName, IP))
+                        EditorUtility.DisplayProgressBar("Installing on devices", "Uninstall (" + IP + ")", (float)i / (float)targetList.Length);
+                        if (!UninstallApp(packageFamilyName, IP))
                         {
                             Debug.LogError("Uninstall failed - skipping install (" + IP + ")");
                             continue;
                         }
                         completedUninstall = true;
                     }
-                    EditorUtility.DisplayProgressBar("Installing on devices", "Install (" + IP + ")", (float)(i + (completedUninstall ? 0.5f : 0.0f)) / (float)IPlist.Length);
-                    InstallApp(buildPath, appName, IP);
+                    EditorUtility.DisplayProgressBar("Installing on devices", "Install (" + IP + ")", (float)(i + (completedUninstall ? 0.5f : 0.0f)) / (float)targetList.Length);
+                    InstallApp(buildPath, packageFamilyName, IP);
                 }
                 catch (Exception ex)
                 {
@@ -413,6 +458,7 @@ namespace HoloToolkit.Unity
         {
             // Get the appx path
             FileInfo[] files = (new DirectoryInfo(buildPath)).GetFiles("*.appx");
+            files = (files.Length == 0) ? (new DirectoryInfo(buildPath)).GetFiles("*.appxbundle") : files;
             if (files.Length == 0)
             {
                 Debug.LogError("No APPX found in folder build folder (" + buildPath + ")");
@@ -420,23 +466,28 @@ namespace HoloToolkit.Unity
             }
 
             // Connection info
-            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, deviceUser, devicePassword);
+            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
 
             // Kick off the install
             Debug.Log("Installing build on: " + targetDevice);
             return BuildDeployPortal.InstallApp(files[0].FullName, connectInfo);
         }
 
-        private void UninstallAppOnDevicesList(string appName, string[] targetList)
+        private void UninstallAppOnDevicesList(string[] targetList)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             try
             {
-                string[] IPlist = ParseIPList(targetIPs);
-                for (int i = 0; i < IPlist.Length; i++)
+                for (int i = 0; i < targetList.Length; i++)
                 {
-                    string IP = FinalizeIP(IPlist[i]);
-                    EditorUtility.DisplayProgressBar("Uninstalling application", "Uninstall (" + IP + ")", (float)i / (float)IPlist.Length);
-                    UninstallApp(appName, IP);
+                    string IP = FinalizeIP(targetList[i]);
+                    EditorUtility.DisplayProgressBar("Uninstalling application", "Uninstall (" + IP + ")", (float)i / (float)targetList.Length);
+                    UninstallApp(packageFamilyName, IP);
                 }
             }
             catch (Exception ex)
@@ -446,14 +497,14 @@ namespace HoloToolkit.Unity
             EditorUtility.ClearProgressBar();
         }
 
-        private bool UninstallApp(string appName, string targetDevice)
+        private bool UninstallApp(string packageFamilyName, string targetDevice)
         {
             // Connection info
-            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, deviceUser, devicePassword);
+            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
 
             // Kick off the install
             Debug.Log("Uninstall build: " + targetDevice);
-            return BuildDeployPortal.UninstallApp(appName, connectInfo);
+            return BuildDeployPortal.UninstallApp(packageFamilyName, connectInfo);
         }
 
         private void UpdateBuilds()
@@ -463,7 +514,7 @@ namespace HoloToolkit.Unity
             try
             {
                 List<string> appPackageDirectories = new List<string>();
-                string[] buildList = Directory.GetDirectories(BuildDirectory_FullPath);
+                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory);
                 foreach (string appBuild in buildList)
                 {
                     string appPackageDirectory = appBuild + @"\AppPackages";
@@ -472,7 +523,10 @@ namespace HoloToolkit.Unity
                         appPackageDirectories.AddRange(Directory.GetDirectories(appPackageDirectory));
                     }
                 }
-                IEnumerable<string> selectedDirectories = from string directory in appPackageDirectories orderby Directory.GetLastWriteTime(directory) descending select Path.GetFullPath(directory);
+                IEnumerable<string> selectedDirectories =
+                    from string directory in appPackageDirectories
+                    orderby Directory.GetLastWriteTime(directory) descending
+                    select Path.GetFullPath(directory);
                 this.builds.AddRange(selectedDirectories);
             }
             catch (DirectoryNotFoundException)
@@ -487,32 +541,6 @@ namespace HoloToolkit.Unity
             if ((Time.realtimeSinceStartup - timeLastUpdatedBuilds) > UpdateBuildsPeriod)
             {
                 UpdateBuilds();
-            }
-        }
-
-        private static string GetEditorPref(string key, string defaultValue)
-        {
-            if (EditorPrefs.HasKey(key))
-            {
-                return EditorPrefs.GetString(key);
-            }
-            else
-            {
-                EditorPrefs.SetString(key, defaultValue);
-                return defaultValue;
-            }
-        }
-
-        private static bool GetEditorPref(string key, bool defaultValue)
-        {
-            if (EditorPrefs.HasKey(key))
-            {
-                return EditorPrefs.GetBool(key);
-            }
-            else
-            {
-                EditorPrefs.SetBool(key, defaultValue);
-                return defaultValue;
             }
         }
 
@@ -557,40 +585,62 @@ namespace HoloToolkit.Unity
             if (IPlist.Length > 0)
             {
                 string targetIP = FinalizeIP(IPlist[0]);
-                return BuildDeployPortal.IsAppRunning(appName, new BuildDeployPortal.ConnectInfo(targetIP, deviceUser, devicePassword));
+                return BuildDeployPortal.IsAppRunning(
+                    appName, new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
             return false;
         }
 
-        void LaunchAppOnIPs(string appName, string targetIPs)
+        void LaunchAppOnIPs(string targetIPs)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             string[] IPlist = ParseIPList(targetIPs);
             for (int i = 0; i < IPlist.Length; i++)
             {
                 string targetIP = FinalizeIP(IPlist[i]);
                 Debug.Log("Launch app on: " + targetIP);
-                BuildDeployPortal.LaunchApp(appName, new BuildDeployPortal.ConnectInfo(targetIP, deviceUser, devicePassword));
+                BuildDeployPortal.LaunchApp(
+                    packageFamilyName, new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
 
-        void KillAppOnIPs(string appName, string targetIPs)
+        void KillAppOnIPs(string targetIPs)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             string[] IPlist = ParseIPList(targetIPs);
             for (int i = 0; i < IPlist.Length; i++)
             {
                 string targetIP = FinalizeIP(IPlist[i]);
                 Debug.Log("Kill app on: " + targetIP);
-                BuildDeployPortal.KillApp(appName, new BuildDeployPortal.ConnectInfo(targetIP, deviceUser, devicePassword));
+                BuildDeployPortal.KillApp(
+                    packageFamilyName, new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
 
-        public void OpenLogFileForIPs(string IPs, string appName)
+        public void OpenLogFileForIPs(string IPs)
         {
+            string packageFamilyName = CalcPackageFamilyName();
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
+
             string[] ipList = ParseIPList(IPs);
             for (int i = 0; i < ipList.Length; i++)
             {
                 // Use the Device Portal REST API
-                BuildDeployPortal.DeviceLogFile_View(appName, new BuildDeployPortal.ConnectInfo(FinalizeIP(ipList[i]), deviceUser, devicePassword));
+                BuildDeployPortal.DeviceLogFile_View(
+                    packageFamilyName, new BuildDeployPortal.ConnectInfo(FinalizeIP(ipList[i]), BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
     }

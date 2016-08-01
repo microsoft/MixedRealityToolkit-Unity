@@ -110,13 +110,13 @@ namespace HoloToolkit.Unity
         }
 
         // Functions
-        public static bool IsAppInstalled(string baseAppName, ConnectInfo connectInfo)
+        public static bool IsAppInstalled(string packageFamilyName, ConnectInfo connectInfo)
         {
             // Look at the device for a matching app name (if not there, then not installed)
-            return (QueryAppDetails(baseAppName, connectInfo) != null);
+            return (QueryAppDetails(packageFamilyName, connectInfo) != null);
         }
 
-        public static bool IsAppRunning(string baseAppName, ConnectInfo connectInfo)
+        public static bool IsAppRunning(string appName, ConnectInfo connectInfo)
         {
             using (var client = new TimeoutWebClient())
             {
@@ -128,7 +128,7 @@ namespace HoloToolkit.Unity
                 for (int i = 0; i < procList.Processes.Length; ++i)
                 {
                     string procName = procList.Processes[i].ImageName;
-                    if (procName.Contains(baseAppName))
+                    if (procName.Contains(appName))
                     {
                         return true;
                     }
@@ -159,7 +159,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public static AppDetails QueryAppDetails(string baseAppName, ConnectInfo connectInfo)
+        public static AppDetails QueryAppDetails(string packageFamilyName, ConnectInfo connectInfo)
         {
             using (var client = new TimeoutWebClient())
             {
@@ -170,8 +170,8 @@ namespace HoloToolkit.Unity
                 AppList appList = JsonUtility.FromJson<AppList>(appListJSON);
                 for (int i = 0; i < appList.InstalledPackages.Length; ++i)
                 {
-                    string appName = appList.InstalledPackages[i].PackageFullName;
-                    if (appName.Contains(baseAppName))
+                    string thisAppName = appList.InstalledPackages[i].PackageFamilyName;
+                    if (thisAppName.Equals(packageFamilyName, StringComparison.OrdinalIgnoreCase))
                     {
                         return appList.InstalledPackages[i];
                     }
@@ -276,15 +276,15 @@ namespace HoloToolkit.Unity
             return true;
         }
 
-        public static bool UninstallApp(string appName, ConnectInfo connectInfo)
+        public static bool UninstallApp(string packageFamilyName, ConnectInfo connectInfo)
         {
             try
             {
                 // Find the app description
-                AppDetails appDetails = QueryAppDetails(appName, connectInfo);
+                AppDetails appDetails = QueryAppDetails(packageFamilyName, connectInfo);
                 if (appDetails == null)
                 {
-                    Debug.LogError(string.Format("Application '{0}' not found", appName));
+                    Debug.LogError(string.Format("Application '{0}' not found", packageFamilyName));
                     return false;
                 }
 
@@ -312,14 +312,10 @@ namespace HoloToolkit.Unity
             return true;
         }
 
-        public static bool LaunchApp(string appName, ConnectInfo connectInfo)
+        public static bool LaunchApp(string packageFamilyName, ConnectInfo connectInfo)
         {
-            // Post it using the REST API
-            WWWForm form = new WWWForm();
-            form.AddField("user", "user");        // Unity needs some data in the form
-
             // Find the app description
-            AppDetails appDetails = QueryAppDetails(appName, connectInfo);
+            AppDetails appDetails = QueryAppDetails(packageFamilyName, connectInfo);
             if (appDetails == null)
             {
                 Debug.LogError("Appliation not found");
@@ -331,35 +327,28 @@ namespace HoloToolkit.Unity
             query += "?appid=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageRelativeId));
             query += "&package=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageFamilyName));
 
-            // Credentials
-            Dictionary<string, string> headers = form.headers;
-            headers["Authorization"] = "Basic " + EncodeTo64(connectInfo.User + ":" + connectInfo.Password);
+            // Use HttpWebRequest
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(query);
+            request.Timeout = TimeoutMS;
+            request.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
+            request.Method = "POST";
 
             // Query
-            WWW www = new WWW(query, form.data, headers);
-            DateTime queryStartTime = DateTime.Now;
-            while (!www.isDone &&
-                   ((DateTime.Now - queryStartTime).TotalSeconds < TimeOut))
+            using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
             {
-                System.Threading.Thread.Sleep(10);
-            }
-
-            // Error
-            if (!string.IsNullOrEmpty(www.error))
-            {
-                Debug.LogError(www.error);
-                return false;
+                Debug.Log("Response = " + httpResponse.StatusDescription);
+                httpResponse.Close();
             }
 
             return true;
         }
 
-        public static bool KillApp(string appName, ConnectInfo connectInfo)
+        public static bool KillApp(string packageFamilyName, ConnectInfo connectInfo)
         {
             try
             {
                 // Find the app description
-                AppDetails appDetails = QueryAppDetails(appName, connectInfo);
+                AppDetails appDetails = QueryAppDetails(packageFamilyName, connectInfo);
                 if (appDetails == null)
                 {
                     Debug.LogError("Appliation not found");
@@ -390,7 +379,7 @@ namespace HoloToolkit.Unity
             return true;
         }
 
-        public static bool DeviceLogFile_View(string appName, ConnectInfo connectInfo)
+        public static bool DeviceLogFile_View(string packageFamilyName, ConnectInfo connectInfo)
         {
             using (var client = new TimeoutWebClient())
             {
@@ -400,11 +389,19 @@ namespace HoloToolkit.Unity
                     // Setup
                     string logFile = Application.temporaryCachePath + @"/deviceLog.txt";
 
+                    // Get the app details...
+                    AppDetails appDetails = QueryAppDetails(packageFamilyName, connectInfo);
+                    if (appDetails == null)
+                    {
+                        Debug.LogError("Application not found on target device (" + packageFamilyName + ")");
+                        return false;
+                    }
+
                     // Download the file
                     string query = string.Format(kAPI_FileQuery, connectInfo.IP);
                     query += "?knownfolderid=LocalAppData";
                     query += "&filename=UnityPlayer.log";
-                    query += "&packagefullname=" + QueryAppDetails(appName, connectInfo).PackageFullName;
+                    query += "&packagefullname=" + appDetails.PackageFullName;
                     query += "&path=%5C%5CTempState";
                     client.DownloadFile(query, logFile);
 
