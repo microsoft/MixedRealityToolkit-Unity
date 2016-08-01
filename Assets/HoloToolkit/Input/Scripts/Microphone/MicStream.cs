@@ -15,11 +15,12 @@ namespace HoloToolkit.Unity
         // chooses from one of three possible microphone modes on HoloLens
         // There is an example of how to use this script in HoloToolkit\Input\Tests\Scripts\MicStreamDemo.cs
 
-        // Streams: SPEECH is optimized for voice transmission, COMMUNICATIONS is higher quality voice, MEDIA is a "room capture"
+        // Streams: LOW_QUALITY_VOICE is optimized for speech analysis, COMMUNICATIONS is higher quality voice and is probably preferred
+        //          ROOM_CAPTURE tries to get the sounds of the room more than the voice of the suer
         // can only be set on initialization
-        public enum StreamCategory { SPEECH, COMMUNICATIONS, MEDIA }
+        public enum StreamCategory { LOW_QUALITY_VOICE, HIGH_QUALITY_VOICE, ROOM_CAPTURE }
 
-        public enum ErrorCodes { ALREADY_RUNNING = -10, NO_AUDIO_DEVICE, NO_INPUT_DEVICE, ALREADY_RECORDING, GRAPH_NOT_EXIST, CHANNEL_COUNT_MISMATCH, FILE_CREATION_PERMISSION_ERROR, NOT_ENOUGH_DATA };
+        public enum ErrorCodes { ALREADY_RUNNING = -10, NO_AUDIO_DEVICE, NO_INPUT_DEVICE, ALREADY_RECORDING, GRAPH_NOT_EXIST, CHANNEL_COUNT_MISMATCH, FILE_CREATION_PERMISSION_ERROR, NOT_ENOUGH_DATA, NEED_ENABLED_MIC_CAPABILITY };
 
         const int MAX_PATH = 260; // 260 is maximum path length in windows, to be returned when we MicStopRecording
 
@@ -50,7 +51,7 @@ namespace HoloToolkit.Unity
         /// <param name="previewOnDevice">If true, the audio from the microphone will be played through your speakers.</param>
         /// <param name="micsignal">Optional (can be null): This callback will be called when data is ready for MicGetFrame</param>
         /// <returns>error code or 0</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicStartStream(bool keepData, bool previewOnDevice, LiveMicCallback micsignal);
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace HoloToolkit.Unity
         /// Shuts down the connection to the microphone. Data will not longer be received from the microphone.
         /// </summary>
         /// <returns>error code or 0</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicStopStream();
 
         /// <summary>
@@ -77,14 +78,14 @@ namespace HoloToolkit.Unity
         /// <param name="filename">The file will be saved to this name. Specify only the wav file's name with extensions, aka "myfile.wav", not full path</param>
         /// <param name="previewOnDevice">If true, will play micstream in speakers</param>
         /// <returns></returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicStartRecording(string filename, bool previewOnDevice);
 
         /// <summary>
         /// Finishes writing the file recording started with MicStartRecording.
         /// </summary>
         /// <param name="sb">returns the full path to the recorded audio file</param>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern void MicStopRecording(StringBuilder sb);
 
         /// <summary>
@@ -102,21 +103,22 @@ namespace HoloToolkit.Unity
         /// Cleans up data associated with microphone recording. Counterpart to MicInitialize*
         /// </summary>
         /// <returns>error code or 0</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicDestroy();
 
         /// <summary>
         /// Pauses streaming of microphone data to MicGetFrame (and/or file specified with MicStartRecording)
         /// </summary>
         /// <returns>error code or 0</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
+
         public static extern int MicPause();
 
         /// <summary>
         /// Unpauses streaming of microphone data to MicGetFrame (and/or file specified with MicStartRecording)
         /// </summary>
         /// <returns>error code or 0</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicResume();
 
         /// <summary>
@@ -124,22 +126,22 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="g">gain factor</param>
         /// <returns>error code or 0</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicSetGain(float g);
 
         /// <summary>
         /// Queries the default microphone audio frame sample size. Useful if doing default initializations with callbacks to know how much data it wants to hand you.
         /// </summary>
         /// <returns>the number of samles in the default audio buffer</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         private static extern int MicGetDefaultBufferSize();
 
         /// <summary>
         /// Queries the number of channels supported by the microphone.  Useful if doing default initializations with callbacks to know how much data it wants to hand you.
         /// </summary>
         /// <returns>the number of channels</returns>
-        [DllImport("MicStreamSelector")]
-        private static extern int MicGetDefaultNumChannels(); 
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
+        private static extern int MicGetDefaultNumChannels();
 
         /// <summary>
         /// Read from the microphone buffer. Usually called once per frame.
@@ -148,7 +150,7 @@ namespace HoloToolkit.Unity
         /// <param name="length">the length of the buffer</param>
         /// <param name="numchannels">the number of audio channels to store in the buffer</param>
         /// <returns>error code (or 0 if no error)</returns>
-        [DllImport("MicStreamSelector")]
+        [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicGetFrame(float[] buffer, int length, int numchannels);
 
         /// <summary>
@@ -161,27 +163,31 @@ namespace HoloToolkit.Unity
             switch (returnCode)
             {
                 case (int)ErrorCodes.ALREADY_RECORDING:
-                    Debug.LogError("Tried to start recording when you were already doing so. You need to stop your previous recording before you can start again.");
+                    Debug.LogError("WARNING: Tried to start recording when you were already doing so. You need to stop your previous recording before you can start again.");
                     return false;
                 case (int)ErrorCodes.ALREADY_RUNNING:
-                    Debug.LogError("Tried to initialize microphone more than once");
+                    Debug.LogError("WARNING: Tried to initialize microphone more than once");
                     return false;
                 case (int)ErrorCodes.GRAPH_NOT_EXIST:
-                    Debug.LogError("Tried to do microphone things without a properly initialized microphone. \n Do you have a mic plugged into a functional audio system and did you call MicInitialize() before anything else ??");
+                    Debug.LogError("ERROR: Tried to do microphone things without a properly initialized microphone. \n Do you have a mic plugged into a functional audio system and did you call MicInitialize() before anything else ??");
                     return false;
                 case (int)ErrorCodes.NO_AUDIO_DEVICE:
-                    Debug.LogError("Tried to start microphone, but you don't appear to have a functional audio device. check your OS audio settings.");
+                    Debug.LogError("ERROR: Tried to start microphone, but you don't appear to have a functional audio device. check your OS audio settings.");
                     return false;
                 case (int)ErrorCodes.NO_INPUT_DEVICE:
-                    Debug.LogError("Tried to start microphone, but you don't have one plugged in, do you?");
+                    Debug.LogError("ERROR: Tried to start microphone, but you don't have one plugged in, do you?");
                     return false;
                 case (int)ErrorCodes.CHANNEL_COUNT_MISMATCH:
-                    Debug.LogError("Microphone had a channel count mismatch internally on device. Try setting different mono/stereo options in OS mic settings.");
+                    Debug.LogError("ERROR: Microphone had a channel count mismatch internally on device. Try setting different mono/stereo options in OS mic settings.");
                     return false;
                 case (int)ErrorCodes.FILE_CREATION_PERMISSION_ERROR:
-                    Debug.LogError("Didn't have access to create file in Music library. Make sure permissions to write to Music library are set granted.");
+                    Debug.LogError("ERROR: Didn't have access to create file in Music library. Make sure permissions to write to Music library are set granted.");
                     return false;
                 case (int)ErrorCodes.NOT_ENOUGH_DATA:
+                    // usually not an error, means the device hasn't produced enough data yet because it just started running
+                    return false;
+                case (int)ErrorCodes.NEED_ENABLED_MIC_CAPABILITY:
+                    Debug.LogError("ERROR: Seems like you forgot to enable the microphone capabilities in your Unity permissions");
                     return false;
             }
             return true;
