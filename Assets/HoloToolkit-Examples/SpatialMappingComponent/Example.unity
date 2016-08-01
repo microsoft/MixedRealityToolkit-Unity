@@ -178,21 +178,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 387044609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53755a21bd4f3454981c6de4efdfec5d, type: 3}
+  m_Script: {fileID: 247442469, guid: f7b54ff4a43d4fcf81b4538b678e0bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FreezeMeshUpdates: 0
-  UseSphereBounds: 0
-  Extents: {x: 5, y: 5, z: 5}
-  SphereRadius: 10
-  _levelOfDetailSet: 1
-  _levelOfDetail: 2
-  TimeBetweenUpdates: 2.5
-  NumUpdatesBeforeRemoval: 10
-  MeshLayer:
+  m_SurfaceParent: {fileID: 387044609}
+  m_FreezeUpdates: 0
+  m_Volume: 1
+  m_SphereRadiusMeters: 2
+  m_BoxExtentsMeters: {x: 5, y: 5, z: 5}
+  m_LOD: 2
+  m_NumUpdatesBeforeRemoval: 10
+  m_SecondsBetweenUpdates: 2.5
+  m_Layer:
     serializedVersion: 2
-    m_Bits: 0
-  PhysicMaterial: {fileID: 0}
+    m_Bits: 1
+  m_Material: {fileID: 0}
+  m_EnableCollisions: 1
 --- !u!1 &428511244
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,20 +286,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1783506190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ca2f6b8dee51ea4bb59100b8f16fc1f, type: 3}
+  m_Script: {fileID: -594688902, guid: f7b54ff4a43d4fcf81b4538b678e0bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FreezeMeshUpdates: 0
-  UseSphereBounds: 0
-  Extents: {x: 5, y: 5, z: 5}
-  SphereRadius: 10
-  _levelOfDetailSet: 1
-  _levelOfDetail: 1
-  TimeBetweenUpdates: 2.5
-  NumUpdatesBeforeRemoval: 10
-  _currentRenderingSetting: 1
-  _renderingMaterial: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
-  _occlusionMaterial: {fileID: 2100000, guid: df172103f5fba4a4d8636aeca60cb0d7, type: 2}
+  m_SurfaceParent: {fileID: 0}
+  m_FreezeUpdates: 0
+  m_Volume: 1
+  m_SphereRadiusMeters: 2
+  m_BoxExtentsMeters: {x: 5, y: 5, z: 5}
+  m_LOD: 1
+  m_NumUpdatesBeforeRemoval: 10
+  m_SecondsBetweenUpdates: 2.5
+  m_CurrentRenderSetting: 2
+  m_CustomMaterial: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  m_OcclusionMaterial: {fileID: 15302, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!114 &1783506192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,21 +308,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1783506190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53755a21bd4f3454981c6de4efdfec5d, type: 3}
+  m_Script: {fileID: 247442469, guid: f7b54ff4a43d4fcf81b4538b678e0bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FreezeMeshUpdates: 0
-  UseSphereBounds: 1
-  Extents: {x: 10, y: 10, z: 10}
-  SphereRadius: 5
-  _levelOfDetailSet: 1
-  _levelOfDetail: 2
-  TimeBetweenUpdates: 2.5
-  NumUpdatesBeforeRemoval: 10
-  MeshLayer:
+  m_SurfaceParent: {fileID: 0}
+  m_FreezeUpdates: 0
+  m_Volume: 0
+  m_SphereRadiusMeters: 5
+  m_BoxExtentsMeters: {x: 4, y: 4, z: 4}
+  m_LOD: 2
+  m_NumUpdatesBeforeRemoval: 10
+  m_SecondsBetweenUpdates: 2.5
+  m_Layer:
     serializedVersion: 2
-    m_Bits: 0
-  PhysicMaterial: {fileID: 0}
+    m_Bits: 1
+  m_Material: {fileID: 0}
+  m_EnableCollisions: 1
 --- !u!81 &1783506193
 AudioListener:
   m_ObjectHideFlags: 0

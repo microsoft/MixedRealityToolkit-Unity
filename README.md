@@ -257,63 +257,6 @@ PlaneFinding addon that can be used to find planar surfaces (ie: walls/floors/ta
 
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Scripts)
 
-####[SpatialMappingComponent](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Scripts/SpatialMappingComponent)
-A unified set of scripts adhering to best practices for providing physics or rendering support for Spatial Mapping.
-Add a SpatialMappingCollider or SpatialMappingRenderer component onto a GameObject and spatial mapping will just start working.
-
-#### SpatialMappingRenderer.cs
-Use this script for rendering Spatial Mapping.
-
-**Rendering Mode**: (Default: **Occlusion**). How to render the mesh. Occlusion will cause the mesh to occlude holograms behind it. Material will apply the specified material. None will cause the meshes to not render at all.
-
-**Occlusion Material**: (Set this to: **Occlusion**). The material to use for occluding holograms with the spatial mapping mesh. The Occlusion material is located in the HoloToolkit\SpatialMapping\Materials folder.
-
-**Rendering Material**: (Set this to: **Wireframe**). The material to render the Spatial Mapping mesh with. This is only relevant when Rendering Mode is set to Material. The Wireframe material can be found in HoloToolkit\SpatialMapping\Materials folder.
-
-**Freeze Mesh Updates**: (Default: **no**). When enabled, no further updates will be processed. Use this to delay initial starting of Spatial Mapping processing or to stop updates at a certain point.
-
-**Bounding Volume**: (Default: **Bounding Box**). The shape of the bounds to observe for new surfaces. The choices are Bounding Box with Extents or Sphere with Radius.
-
-**Extents**: (Default: **(10, 10, 10)**). The extents of the bounding box in meters. Only applicable with Bounding Box set for Bounding Volume.
-
-**Radius**: (Default: **10**). The radius of the bounding sphere in meters. Only applicable with Sphere set for Bounding Volume.
-
-**Level of Detail**: (Default: **Medium**). The amount of detail in the resulting meshes. Possible values are Low, Medium, and High. Higher levels of detail will result in lower performance.
-
-**Time Between Updates**: (Default: **2.5**). The frequency in seconds for when updates to Spatial Mapping surfaces will be processed.
-
-#### SpatialMappingCollider.cs
-Use this script for performing physics collisions with the Spatial Mapping mesh.
-
-**Enable Collisions**: (Default: **yes**). Whether or not to create a collider for RigidBody physics
-
-**Physic Material**: (Default: **none**). Custom PhysicMaterial to define physical interactions (like bounciness) with the mesh.
-
-**Physics Layer**: (Default: **default**). The layer to apply to the meshes for Raycasting.
-
-**Freeze Mesh Updates**: (Default: **no**). When enabled, no further updates will be processed. Use this to delay initial starting of Spatial Mapping processing or to stop updates at a certain point.
-
-**Bounding Volume**: (Default: **Bounding Box**). The shape of the bounds to observe for new surfaces. The choices are Bounding Box with Extents or Sphere with Radius.
-
-**Extents**: (Default: **(10, 10, 10)**). The extents of the bounding box in meters. Only applicable with Bounding Box set for Bounding Volume.
-
-**Radius**: (Default: **10**). The radius of the bounding sphere in meters. Only applicable with Sphere set for Bounding Volume.
-
-**Level of Detail**: (Default: **Low**). The amount of detail in the resulting meshes. Possible values are Low, Medium, and High. Higher levels of detail will result in lower performance.
-
-**Time Between Updates**: (Default: **2.5**). The frequency in seconds for when updates to Spatial Mapping surfaces will be processed.
-
-#### Design Considerations
-
-1. If you want spatial mapping to work wherever the user travels, attach the components to the camera and the specified bounds will move with the user. 
-2. If you want collisions to continue working even after walking away, you may want to leave a second SpatialMappingCollider around the play space where collisions should continue. 
-3. If you want physics collisions and to render the Spatial Mapping mesh for an area, you should add both a SpatialMappingCollider and a SpatialMappingRenderer
-
-Though all of the defaults are usable out of the box with no customization, you can also customize the component to your scenario. Through script, additions such as PlaneFinding.cs can also be used with these components.
-
-These components by default implement caching of removed Spatial Mapping meshes such that removed meshes will still be present for at least 10 updates after they are actually removed. 
-This number and the feature can be configured via script. This feature enables mesh a great distance from the user to not be removed as well as quick re-hydration of mesh only removed as a user moved away and back to a single location.
-
 The following scripts give you the ability to load the spatial mapping mesh from a file or the network into your Unity scene for debugging in the editor.
 
 #### FileSurfaceObserver.cs
@@ -434,10 +377,6 @@ The SpatialProcessing scene tests the two processing scripts available in HoloTo
 If you already have a .room file saved, it will automatically load the file and run in Unity. 
 If not, you can use the RemoteMapping prefab to send/save mesh files from the HoloLens. You can also run this test directly in the HoloLens.
 This scene will scan your area for 15 seconds and then convert all meshes to planes. If a floor plane is found, it will remove vertices from surface meshes that fall within the bounds of any active plane.
-
-#### SpatialMappingComponent\Example.unity
-This scene shows an example of a static play space which preserves physics around it (marked by a cube) while maintaining physics and wire frame rendering of Spatial Mapping around the camera. 
-Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
 
 #### TapToPlace.unity
 This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use.
