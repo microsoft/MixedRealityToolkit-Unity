@@ -8,11 +8,10 @@ using System.Collections.Generic;
 /// <summary>
 /// manager all geometries in the scene
 /// </summary>
-public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
+public class PloygonManager : Singleton<PloygonManager>, IGeometry, IPloygonClosable
 {
     // save all geometries
     public Stack<Ploygon> Ploygons = new Stack<Ploygon>();
-
     public Ploygon CurrentPloygon;
 
     /// <summary>
@@ -24,14 +23,12 @@ public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
     public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
     {
         var hitPoint = GazeManager.Instance.HitInfo.point;
-
         var point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
         var newPoint = new Point
         {
             Position = hitPoint,
             Root = point
         };
-
         if (CurrentPloygon.IsFinished)
         {
             CurrentPloygon = new Ploygon()
@@ -42,14 +39,10 @@ public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
             };
 
             CurrentPloygon.Points.Add(newPoint.Position);
-
             newPoint.Root.transform.parent = CurrentPloygon.Root.transform;
-
         }
         else
         {
-            // newPoint.Root.transform.parent = CurrentPloygon.Root.transform;
-
             CurrentPloygon.Points.Add(newPoint.Position);
             newPoint.Root.transform.parent = CurrentPloygon.Root.transform;
             if (CurrentPloygon.Points.Count > 1)
@@ -58,7 +51,6 @@ public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
                 var centerPos = (CurrentPloygon.Points[index] + CurrentPloygon.Points[index - 1]) * 0.5f;
                 var direction = CurrentPloygon.Points[index] - CurrentPloygon.Points[index - 1];
                 var distance = Vector3.Distance(CurrentPloygon.Points[index], CurrentPloygon.Points[index - 1]);
-
                 var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
                 line.transform.localScale = new Vector3(distance, 0.005f, 0.005f);
                 line.transform.Rotate(Vector3.down, 90f);
@@ -68,7 +60,6 @@ public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
         }
 
     }
-
 
     /// <summary>
     /// finish current geometry
@@ -80,13 +71,11 @@ public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
         if (CurrentPloygon != null)
         {
             CurrentPloygon.IsFinished = true;
-
             var area = CalculatePloygonArea(CurrentPloygon);
             var index = CurrentPloygon.Points.Count - 1;
             var centerPos = (CurrentPloygon.Points[index] + CurrentPloygon.Points[0]) * 0.5f;
             var direction = CurrentPloygon.Points[index] - CurrentPloygon.Points[0];
             var distance = Vector3.Distance(CurrentPloygon.Points[index], CurrentPloygon.Points[0]);
-
             var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
             line.transform.localScale = new Vector3(distance, 0.005f, 0.005f);
             line.transform.Rotate(Vector3.down, 90f);
@@ -98,7 +87,6 @@ public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
                 vect += point;
             }
             var centerPoint = vect / (index + 1);
-
             var direction1 = CurrentPloygon.Points[1] - CurrentPloygon.Points[0];
             var directionF = Vector3.Cross(direction, direction1);
             var tip = (GameObject)Instantiate(TextPrefab, centerPoint, Quaternion.LookRotation(directionF));//anchor.x + anchor.y + anchor.z < 0 ? -1 * anchor : anchor));
@@ -106,7 +94,6 @@ public class PloygonManager : Singleton<PloygonManager>, IGeometry, IClosable
             // unit is ㎡
             tip.GetComponent<TextMesh>().text = area + "㎡";
             tip.transform.parent = CurrentPloygon.Root.transform;
-
             Ploygons.Push(CurrentPloygon);
         }
     }
@@ -204,7 +191,6 @@ public class Ploygon
     public float Area { get; set; }
 
     public List<Vector3> Points { get; set; }
-
 
     public GameObject Root { get; set; }
 

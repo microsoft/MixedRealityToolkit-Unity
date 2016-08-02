@@ -6,8 +6,6 @@ using System.Collections;
 /// </summary>
 public interface IGeometry
 {
-
-
     void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab);
 
     void Delete();

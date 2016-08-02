@@ -13,11 +13,6 @@ public class LineTest : MonoBehaviour
     public GameObject line;
     public GameObject text;
     private bool created = false;
-    // Use this for initialization
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()

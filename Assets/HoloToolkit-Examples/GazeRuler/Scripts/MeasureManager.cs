@@ -10,7 +10,6 @@ using System;
 /// </summary>
 public class MeasureManager : Singleton<MeasureManager>
 {
-
     private IGeometry manager;
     public GeometryMode mode;
 
@@ -34,8 +33,6 @@ public class MeasureManager : Singleton<MeasureManager>
         }
     }
 
-
-
     // place spatial point
     public void OnSelect()
     {
@@ -57,10 +54,8 @@ public class MeasureManager : Singleton<MeasureManager>
     // if current mode is geometry mode, try to finish geometry
     public void OnPloygonClose()
     {
-
-        IClosable client = PloygonManager.Instance;
+        IPloygonClosable client = PloygonManager.Instance;
         client.ClosePloygon(LinePrefab, TextPrefab);
-
     }
 
     // change measure mode
@@ -73,7 +68,6 @@ public class MeasureManager : Singleton<MeasureManager>
             {
                 mode = GeometryMode.Ploygon;
                 manager = PloygonManager.Instance;
-
             }
             else
             {
@@ -81,42 +75,28 @@ public class MeasureManager : Singleton<MeasureManager>
                 manager = LineManager.Instance;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.Log(ex.Message);
         }
-
         ModeTipObject.SetActive(true);
-        
-
     }
 }
 
+public class Point
+{
+    public Vector3 Position { get; set; }
+
+    public GameObject Root { get; set; }
+    public bool IsStart { get; set; }
+}
 
 
-
-
-
-
-
-
-
-
-
-    public class Point
-    {
-        public Vector3 Position { get; set; }
-
-        public GameObject Root { get; set; }
-        public bool IsStart { get; set; }
-    }
-
-
-    public enum GeometryMode
-    {
-        Line,
-        Triangle,
-        Rectangle,
-        Cube,
-        Ploygon
-    }
+public enum GeometryMode
+{
+    Line,
+    Triangle,
+    Rectangle,
+    Cube,
+    Ploygon
+}

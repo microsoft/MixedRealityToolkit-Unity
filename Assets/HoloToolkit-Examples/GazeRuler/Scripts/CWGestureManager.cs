@@ -72,7 +72,9 @@ public class CWGestureManager : Singleton<CWGestureManager>
             focusedObject.SendMessage("OnSelect");
         }
         else
+        {
             MeasureManager.Instance.OnSelect();
+        }
     }
 
     private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)

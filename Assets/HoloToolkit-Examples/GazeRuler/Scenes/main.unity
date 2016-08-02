@@ -248,10 +248,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 1387377071}
   - 114: {fileID: 1387377075}
-  - 114: {fileID: 1387377074}
   - 114: {fileID: 1387377073}
   - 114: {fileID: 1387377072}
   - 114: {fileID: 1387377076}
+  - 114: {fileID: 1387377074}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1387377070}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94c1fd2ccb6e3e5449429462b44a8229, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a4b9e1b93f381742bb4231304d46fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   EditorSelectKey: 32
@@ -677,9 +677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af2f9810f5de964682873805b3c3b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationOffset: {x: 0, y: 0, z: 0}
-  forceToWorldUp: 0
-  forceCameraUp: 0
 --- !u!1 &2124281811
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 
@@ -12,9 +10,9 @@ public class LineManager : Singleton<LineManager>, IGeometry
     // save all lines in scene
     private Stack<Line> Lines = new Stack<Line>();
 
-
     private Point lastPoint;
 
+    private const float defaultLineScale = 0.005f;
 
     // place point and lines
     public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
@@ -36,19 +34,21 @@ public class LineManager : Singleton<LineManager>, IGeometry
             Debug.Log("A: " + distanceA + ",B: " + distanceB);
             Vector3 direction;
             if (distanceB > distanceA || (distanceA > distanceB && distanceA - distanceB < 0.1))
+            {
                 direction = hitPoint - lastPoint.Position;
+            }
             else
+            {
                 direction = lastPoint.Position - hitPoint;
+            }
 
             var distance = Vector3.Distance(lastPoint.Position, hitPoint);
             var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
-            line.transform.localScale = new Vector3(distance, 0.005f, 0.005f);
+            line.transform.localScale = new Vector3(distance, defaultLineScale, defaultLineScale);
             line.transform.Rotate(Vector3.down, 90f);
 
             var normalV = Vector3.Cross(direction, directionFromCamera);
             var normalF = Vector3.Cross(direction, normalV) * -1;
-
-
             var tip = (GameObject)Instantiate(TextPrefab, centerPos, Quaternion.LookRotation(normalF));
 
             //unit is meter
@@ -60,7 +60,6 @@ public class LineManager : Singleton<LineManager>, IGeometry
             line.transform.parent = root.transform;
             point.transform.parent = root.transform;
             tip.transform.parent = root.transform;
-
 
             Lines.Push(new Line
             {
@@ -129,6 +128,7 @@ public class LineManager : Singleton<LineManager>, IGeometry
 public struct Line
 {
     public Vector3 Start { get; set; }
+
     public Vector3 End { get; set; }
 
     public GameObject Root { get; set; }
