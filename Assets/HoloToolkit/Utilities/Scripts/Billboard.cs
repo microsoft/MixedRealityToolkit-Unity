@@ -50,13 +50,14 @@ namespace HoloToolkit.Unity
             switch (PivotAxis)
             {
                 case PivotAxis.X:
-                    forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.right).normalized;
-                    up = Vector3.Cross(forward, Vector3.right);
+                    Vector3 right = transform.right;
+                    forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, right).normalized;
+                    up = Vector3.Cross(forward, right);
                     break;
 
                 case PivotAxis.Y:
-                    up = Vector3.up;
-                    forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, up);
+                    up = transform.up;
+                    forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, up).normalized;
                     break;
 
                 case PivotAxis.Free:
@@ -68,7 +69,7 @@ namespace HoloToolkit.Unity
 
 
             // Calculate and apply the rotation required to reorient the object
-            gameObject.transform.rotation = Quaternion.LookRotation(forward, up);
+            transform.rotation = Quaternion.LookRotation(forward, up);
         }
     }
 }
