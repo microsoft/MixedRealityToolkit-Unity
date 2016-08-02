@@ -46,20 +46,24 @@ namespace HoloToolkit.Unity
             Vector3 forward;
             Vector3 up;
 
-            // Adjust for the pivot axis.
+            // Adjust for the pivot axis. We need a forward and an up for use with Quaternion.LookRotation
             switch (PivotAxis)
             {
+                // If we're fixing one axis, then we're projecting the camera's forward vector onto
+                // the plane defined by the fixed axis and using that as the new forward.
                 case PivotAxis.X:
-                    Vector3 right = transform.right;
+                    Vector3 right = transform.right; // Fixed right
                     forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, right).normalized;
-                    up = Vector3.Cross(forward, right);
+                    up = Vector3.Cross(forward, right); // Compute the up vector
                     break;
 
                 case PivotAxis.Y:
-                    up = transform.up;
+                    up = transform.up; // Fixed up
                     forward = Vector3.ProjectOnPlane(Camera.main.transform.forward, up).normalized;
                     break;
 
+                // If the axes are free then we're simply aligning the forward and up vectors
+                // of the object with those of the camera. 
                 case PivotAxis.Free:
                 default:
                     forward = Camera.main.transform.forward;
