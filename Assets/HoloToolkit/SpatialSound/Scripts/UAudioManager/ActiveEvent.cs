@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity
             private set;
         }
 
-        public string MessageToSend
+        public string MessageOnAudioEnd
         {
             get;
             private set;
@@ -77,13 +77,13 @@ namespace HoloToolkit.Unity
         public float activeTime = 0;
         public bool cancelEvent = false;
 
-        public ActiveEvent(AudioEvent audioEvent, GameObject emitter, AudioSource primarySource, AudioSource secondarySource, string messageToSend = null)
+        public ActiveEvent(AudioEvent audioEvent, GameObject emitter, AudioSource primarySource, AudioSource secondarySource, string messageOnAudioEnd = null)
         {
             this.audioEvent = audioEvent;
             AudioEmitter = emitter;
             PrimarySource = primarySource;
             SecondarySource = secondarySource;
-            MessageToSend = messageToSend;
+            MessageOnAudioEnd = messageOnAudioEnd;
             SetSourceProperties();
         }
 
