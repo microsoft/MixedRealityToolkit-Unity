@@ -11,6 +11,12 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(RemoteMeshTarget))]
     public partial class RemoteMappingManager : Singleton<RemoteMappingManager>
     {
+        [Tooltip("Key to press in editor to enable spatial mapping over the network.")]
+        public KeyCode RemoteMappingKey = KeyCode.N;
+
+        [Tooltip("Keyword for sending meshes from HoloLens to Unity over the network.")]
+        public string SendMeshesKeyword = "send meshes";
+
         /// <summary>
         /// Receives meshes collected over the network.
         /// </summary>
@@ -31,7 +37,7 @@ namespace HoloToolkit.Unity
         {
             // Create our keyword collection.
             keywordCollection = new Dictionary<string, System.Action>();
-            keywordCollection.Add("send meshes", () => SendMeshes());
+            keywordCollection.Add(SendMeshesKeyword, () => SendMeshes());
 
             // Tell the KeywordRecognizer about our keywords.
             keywordRecognizer = new KeywordRecognizer(keywordCollection.Keys.ToArray());
@@ -55,8 +61,8 @@ namespace HoloToolkit.Unity
         private void Update()
         {
 #if UNITY_EDITOR
-            // N - To use the 'network' sourced mesh.  
-            if (Input.GetKeyUp(KeyCode.N))
+            // Use the 'network' sourced mesh.  
+            if (Input.GetKeyUp(RemoteMappingKey))
             {
                 SpatialMappingManager.Instance.SetSpatialMappingSource(remoteMeshTarget);
             }

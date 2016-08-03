@@ -11,6 +11,12 @@ namespace HoloToolkit.Unity
         [Tooltip("The file name to use when saving and loading meshes.")]
         public string MeshFileName = "roombackup";
 
+        [Tooltip("Key to press in editor to load a spatial mapping mesh from a .room file.")]
+        public KeyCode LoadFileKey = KeyCode.L;
+
+        [Tooltip("Key to press in editor to save a spatial mapping mesh to file.")]
+        public KeyCode SaveFileKey = KeyCode.S;
+
         /// <summary>
         /// Loads the SpatialMapping mesh from the specified file.
         /// </summary>
@@ -58,6 +64,26 @@ namespace HoloToolkit.Unity
             {
                 Debug.Log("Failed to load " + fileName);
             }
+        }
+
+        // Called every frame.
+        private void Update()
+        {
+            // Keyboard commands for saving and loading a remotely generated mesh file.
+#if UNITY_EDITOR
+            // S - saves the active mesh
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                MeshSaver.Save(MeshFileName, SpatialMappingManager.Instance.GetMeshes());
+            }
+
+            // L - loads the previously saved mesh into editor and sets it to be the spatial mapping source.
+            if (Input.GetKeyUp(KeyCode.L))
+            {
+                SpatialMappingManager.Instance.SetSpatialMappingSource(this);
+                Load(MeshFileName);
+            }
+#endif
         }
     }
 }
