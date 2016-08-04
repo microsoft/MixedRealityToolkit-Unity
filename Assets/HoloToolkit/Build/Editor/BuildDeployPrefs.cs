@@ -1,4 +1,8 @@
-﻿
+﻿//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+//
+
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -59,8 +63,8 @@ namespace HoloToolkit.Unity
         }
         public static bool FullReinstall
         {
-            get { return GetEditorPref(EditorPrefs_DevicePwd, true); }
-            set { EditorPrefs.SetBool(EditorPrefs_DevicePwd, value); }
+            get { return GetEditorPref(EditorPrefs_FullReinstall, true); }
+            set { EditorPrefs.SetBool(EditorPrefs_FullReinstall, value); }
         }
 
         private static string GetEditorPref(string key, string defaultValue)

@@ -32,7 +32,8 @@ Shader "HoloToolkit/Wireframe"
             float4 _WireColor;
             float _WireThickness;
 
-            // Based on approach described in "Shader-Based Wireframe Drawing", http://cgg-journal.com/2008-2/06/index.html
+            // Based on approach described in Shader-Based Wireframe Drawing (2008)
+            // http://orbit.dtu.dk/en/publications/id(13e2122d-bec7-48de-beca-03ce6ea1c3f1).html
 
             struct v2g
             {
