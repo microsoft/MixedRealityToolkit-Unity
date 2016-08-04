@@ -118,15 +118,15 @@ namespace HoloToolkit.Unity
             Stream stream = null;
 
 #if !UNITY_EDITOR
-            Task task = new Task(
+            Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {
                                 StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
                                 StorageFile file = await folder.GetFileAsync(fileName);
                                 stream = await file.OpenStreamForReadAsync();
                             });
-            task.Start();
             task.Wait();
+            task.Result.Wait();
 #else
             stream = new FileStream(Path.Combine(folderName, fileName), FileMode.Open, FileAccess.Read);
 #endif
@@ -145,15 +145,15 @@ namespace HoloToolkit.Unity
             Stream stream = null;
 
 #if !UNITY_EDITOR
-            Task task = new Task(
+            Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {
                                 StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
                                 StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
                                 stream = await file.OpenStreamForWriteAsync();
                             });
-            task.Start();
             task.Wait();
+            task.Result.Wait();
 #else
             stream = new FileStream(Path.Combine(folderName, fileName), FileMode.Create, FileAccess.Write);
 #endif
