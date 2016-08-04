@@ -7,12 +7,10 @@ using System.Collections;
 public class LineTest : MonoBehaviour
 {
 
-
     public GameObject start;
     public GameObject end;
     public GameObject line;
     public GameObject text;
-    private bool created = false;
 
     // Update is called once per frame
     void Update()
@@ -28,7 +26,6 @@ public class LineTest : MonoBehaviour
         text.transform.position = midPoint + new Vector3(0, 0.6f, 0);
         text.transform.rotation = Quaternion.LookRotation(direction.x + direction.y + direction.z < 0 ? direction * -1 : direction);
         text.transform.Rotate(Vector3.up, -90f);
-
 
         Debug.Log(Vector3.Angle(direction, Vector3.forward));
     }
