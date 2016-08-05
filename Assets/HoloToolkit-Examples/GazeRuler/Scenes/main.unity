@@ -519,7 +519,7 @@ GameObject:
   - 4: {fileID: 1614711997}
   - 114: {fileID: 1614711998}
   m_Layer: 0
-  m_Name: Ploygon Manager
+  m_Name: Polygon Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
