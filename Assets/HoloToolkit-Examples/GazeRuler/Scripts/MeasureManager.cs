@@ -4,7 +4,6 @@ using HoloToolkit.Unity;
 using System.Collections.Generic;
 using System;
 
-
 /// <summary>
 /// manager all measure tools here
 /// </summary>
@@ -25,7 +24,7 @@ public class MeasureManager : Singleton<MeasureManager>
         switch (mode)
         {
             case GeometryMode.Ploygon:
-                manager = PloygonManager.Instance;
+                manager = PolygonManager.Instance;
                 break;
             default:
                 manager = LineManager.Instance;
@@ -54,7 +53,7 @@ public class MeasureManager : Singleton<MeasureManager>
     // if current mode is geometry mode, try to finish geometry
     public void OnPloygonClose()
     {
-        IPloygonClosable client = PloygonManager.Instance;
+        IPolygonClosable client = PolygonManager.Instance;
         client.ClosePloygon(LinePrefab, TextPrefab);
     }
 
@@ -67,7 +66,7 @@ public class MeasureManager : Singleton<MeasureManager>
             if (mode == GeometryMode.Line)
             {
                 mode = GeometryMode.Ploygon;
-                manager = PloygonManager.Instance;
+                manager = PolygonManager.Instance;
             }
             else
             {

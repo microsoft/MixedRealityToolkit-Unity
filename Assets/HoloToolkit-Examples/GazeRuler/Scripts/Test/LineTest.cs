@@ -18,7 +18,6 @@ public class LineTest : MonoBehaviour
         var distance = Vector3.Distance(start.transform.position, end.transform.position);
         var midPoint = (start.transform.position + end.transform.position) * 0.5f;
         var direction = end.transform.position - start.transform.position;
-        var cameraDir = Camera.main.transform.position - midPoint;
         line.transform.position = midPoint;
         line.transform.localScale = new Vector3(distance, 1.0f, 1.0f);
         line.transform.rotation = Quaternion.LookRotation(direction);
