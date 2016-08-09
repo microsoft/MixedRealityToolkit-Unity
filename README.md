@@ -4,12 +4,12 @@ The HoloToolkit is a collection of scripts and components intended to accelerate
 
 HoloToolkit contains the following feature areas:
 
-1. [Input](Input.md)
-2. [Sharing](Sharing.md)
-3. [Spatial Mapping](SpatialMapping.md)
-4. [Spatial Sound](SpatialSound.md)
-5. [Utilities](Utilities.md)
-6. [Build](Build.md)
+1. [Input](Assets/HoloToolkit/Input/README.md)
+2. [Sharing](Assets/HoloToolkit/Sharing/README.md)
+3. [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)
+4. [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md)
+5. [Utilities](Assets/HoloToolkit/Utilities/README.md)
+6. [Build](Assets/HoloToolkit/Build/README.md)
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
 
