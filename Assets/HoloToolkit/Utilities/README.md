@@ -1,7 +1,7 @@
-## [Utilities](Assets/HoloToolkit/Utilities)
+## [Utilities]()
 Useful common concepts that you can leverage in your application.
 
-### [Prefabs](Assets/HoloToolkit/Utilities/Prefabs)
+### [Prefabs](Prefabs)
 Common useful prefabs not particularly related to a particular HoloLens feature.
 
 #### Main Camera.prefab
@@ -11,7 +11,7 @@ Unity camera that has been customized for Holographic development.
 3. Color set to R:0, G:0, B:0, A:0 as black renders transparent in HoloLens.
 4. Set the recommended near clipping plane.
 
-### [Scripts](Assets/HoloToolkit/Utilities/Scripts)
+### [Scripts](Scripts)
 
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
@@ -50,7 +50,7 @@ A Tagalong that extends SimpleTagalong that allows for specifying the minimum an
 #### TextToSpeechManager.cs
 Provides dynamic Text to Speech. Speech is generated using the UWP SpeechSynthesizer and then played through a Unity AudioSource. Both plain text and SSML are supported.   
 
-### [Shaders](Assets/HoloToolkit/Utilities/Shaders)
+### [Shaders](Shaders)
 
 #### LambertianConfigurable.cginc
 Code shared between LambertianConfigurable.shader and LambertianConfigurableTransparent.shader.
@@ -85,7 +85,7 @@ Feature configurable vertex lit transparent shader.  Use when a higher performan
 #### WindowOcclusion.shader
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
-### [Tests](Assets/HoloToolkit/Utilities/Tests)
+### [Tests](Tests)
 
 #### ManualCameraControl.unity
 
@@ -100,5 +100,5 @@ This scene demonstrates how to use TextToSpeechManager.cs.  The script is placed
 This scene demonstrates how to use WindowOcclusion.shader.  It positions a virtual 'window' directly in front of you when the scene starts. A cube in the back is only visible when viewed through the window because quads around the window use the WindowOcclusion shader.
 
 ---
-##### [Go back up to the table of contents.](README.md)
+##### [Go back up to the table of contents.](../../../README.md)
 ---

@@ -1,7 +1,7 @@
-## [Build](Assets/HoloToolkit/Build)
+## [Build]()
 Build and deploy automation window for building your VS solution, APPX, installing, launching, and getting the log file (and other related functionality). Requires that the device has been paired with the Editor PC & that the device is connected locally and/or the HTTPS requirement has been disabled in the device portal's security tab.
 
-### [Editor](Assets/HoloToolkit/Build/Editor)
+### [Editor](Editor)
 
 #### BuildDeployPortal.cs
 Interface function with the device (REST API utility functions)
@@ -16,5 +16,5 @@ Supports building the project SLN
 Editor UI for the window and event functions
 
 ---
-##### [Go back up to the table of contents.](README.md)
+##### [Go back up to the table of contents.](../../../README.md)
 ---

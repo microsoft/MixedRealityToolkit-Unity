@@ -1,18 +1,18 @@
-## [Sharing](Assets/HoloToolkit/Sharing)
+## [Sharing]()
 Sharing and networking components for rapid prototyping in Unity for building shared experiences.
 
 Ensure you have the following capabilities set:
 1. Enable the "SpatialPerception" capability in Player Settings -> Windows Store -> Publishing Settings -> Capabilities.
 2. For using Sharing components, you will also need to set the InternetClientServer, PrivateNetworkClientServer, and Microphone capabilities.
 
-### [Editor](Assets/HoloToolkit/Sharing/Editor)
+### [Editor](Editor)
 Enables the HoloToolkit menu option in the Unity top tool bar.
 
-### [Plugins](Assets/HoloToolkit/Sharing/Plugins)
+### [Plugins](Plugins)
 Contains compiled architecture specific binaries for SharingClient.dll which are required by the Unity application for accessing sharing APIs.
 Binaries are compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing).
 
-### [Prefabs](Assets/HoloToolkit/Sharing/Prefabs)
+### [Prefabs](Prefabs)
 Prefabs related to the sharing and networking features.
 
 #### Sharing.prefab
@@ -28,7 +28,7 @@ Prefabs related to the sharing and networking features.
 **AutoJoinSession.cs** creates a shared session with Session Name 'Default' which is customizable.
 Joins a player to that session if once already exists.
 
-### [Scripts](Assets/HoloToolkit/Sharing/Scripts)
+### [Scripts](Scripts)
 Scripts related to the sharing and networking features.
 
 #### SDK
@@ -38,7 +38,7 @@ Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.c
 Utility scripts for the Sharing.prefab.
 Also scripts for logging, launching processes, math utilities.
 
-### [Tests](Assets/HoloToolkit/Sharing/Tests)
+### [Tests](Tests)
 Tests related to the sharing features. To use the scene:
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
@@ -57,5 +57,5 @@ It also demonstrates how to share world anchors between clients to establish a s
 5. **RemoteHeadManager.cs** draw cubes on remote heads of users joining the session.
 
 ---
-##### [Go back up to the table of contents.](README.md)
+##### [Go back up to the table of contents.](../../../README.md)
 ---

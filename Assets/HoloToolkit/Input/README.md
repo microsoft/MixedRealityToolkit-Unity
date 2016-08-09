@@ -1,7 +1,7 @@
-## [Input](Assets/HoloToolkit/Input)
+## [Input]()
 Scripts that leverage the HoloLens input features namely Gaze, Gesture and Voice.
 
-### [Prefabs](Assets/HoloToolkit/Input/Prefabs)
+### [Prefabs](Prefabs)
 Prefabs related to the input features.
 
 #### BasicCursor.prefab
@@ -21,7 +21,7 @@ You can simply drop this into your scene and be able to send arbitrary messages 
 Keyword manager pre-wired to send messages to object being currently selected via SelectedObjectMessageSender comoponent.
 You can simply drop this into your scene and be able to send arbitrary messages to currently selected object.
 
-### [Scripts](Assets/HoloToolkit/Input/Scripts)
+### [Scripts](Scripts)
 Scripts related to the input features.
 
 #### BasicCursor.cs
@@ -123,7 +123,7 @@ In this particular implementation, selected object color it toggled on selecting
 A grid of dynamic objects to illustrate sending messages to prefab instances created at runtime as opposed
 to only static objects that already exist in the scene.
 
-### [Tests](Assets/HoloToolkit/Input/Tests)
+### [Tests](Tests)
 Tests related to the input features. To use the scene:
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
@@ -151,5 +151,5 @@ after which the user can also adjust object size with "Make Smaller" and "Make B
 currently selected object by saying "Clear Selection".
 
 ---
-##### [Go back up to the table of contents.](README.md)
+##### [Go back up to the table of contents.](../../../README.md)
 ---

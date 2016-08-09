@@ -1,6 +1,6 @@
-## [SpatialSound](Assets/HoloToolkit/SpatialSound)
+## [SpatialSound]()
 
-### [Scripts](Assets/HoloToolkit/SpatialSound/Scripts)
+### [Scripts](Scripts)
 Scripts related to the audio features.
 
 **IMPORTANT**: Please make sure to set the MS HRTF Spatializer in your audio settings, in Unity under  
@@ -31,5 +31,5 @@ Edit -> Project Settings -> Audio -> Spatializer. You can confirm this setting b
 **Unity Gain Distance** The distance, in meters, at which the sound is neither boosted nor attenuated.
 
 ---
-##### [Go back up to the table of contents.](README.md)
+##### [Go back up to the table of contents.](../../../README.md)
 ---
