@@ -256,10 +256,11 @@ namespace HoloToolkit.Unity
                     GUILayout.Space(GUISectionOffset + 15);
                     if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
                     {
+                        string thisBuildLocation = fullBuildLocation;
                         string[] IPlist = ParseIPList(curTargetIps);
                         EditorApplication.delayCall += () =>
                         {
-                            InstallAppOnDevicesList(fullBuildLocation, curFullReinstall, IPlist);
+                            InstallAppOnDevicesList(thisBuildLocation, curFullReinstall, IPlist);
                         };
                     }
                     GUILayout.Space(5);
