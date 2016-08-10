@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// <summary>
 /// manager all geometries in the scene
 /// </summary>
-public class PloygonManager : Singleton<PloygonManager>, IGeometry, IPloygonClosable
+public class PolygonManager : Singleton<PolygonManager>, IGeometry, IPolygonClosable
 {
     // save all geometries
     public Stack<Ploygon> Ploygons = new Stack<Ploygon>();

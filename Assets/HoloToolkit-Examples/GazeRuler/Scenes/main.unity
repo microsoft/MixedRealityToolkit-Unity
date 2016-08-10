@@ -132,12 +132,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1439459768}
   - {fileID: 1614711997}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &106253988
 Prefab:
   m_ObjectHideFlags: 0
@@ -159,7 +159,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013243965410, guid: 90749889d87976143a9e21072d2434b4, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.7069895
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4000013243965410, guid: 90749889d87976143a9e21072d2434b4, type: 2}
       propertyPath: m_LocalRotation.y
@@ -171,11 +171,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013243965410, guid: 90749889d87976143a9e21072d2434b4, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.707224
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4000013243965410, guid: 90749889d87976143a9e21072d2434b4, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013243965410, guid: 90749889d87976143a9e21072d2434b4, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90749889d87976143a9e21072d2434b4, type: 2}
@@ -230,7 +234,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 402774, guid: b84b73491ac53a34095000876132a211, type: 2}
       propertyPath: m_LocalScale.y
-      value: 0.5446155
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 402774, guid: b84b73491ac53a34095000876132a211, type: 2}
       propertyPath: m_LocalScale.x
@@ -268,11 +272,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 614058336}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1387377072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,10 +446,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 55036826}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1439459769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,7 +523,7 @@ GameObject:
   - 4: {fileID: 1614711997}
   - 114: {fileID: 1614711998}
   m_Layer: 0
-  m_Name: Ploygon Manager
+  m_Name: Polygon Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -534,10 +538,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 55036826}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1614711998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,7 +678,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107812362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4af2f9810f5de964682873805b3c3b50, type: 3}
+  m_Script: {fileID: 11500000, guid: 1bb8b242cb424e04fac273bdb43b2506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2124281811
@@ -710,6 +714,7 @@ Light:
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
+    m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
@@ -735,7 +740,7 @@ Transform:
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
