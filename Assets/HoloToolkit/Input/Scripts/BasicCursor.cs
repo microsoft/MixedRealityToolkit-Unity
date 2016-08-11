@@ -62,7 +62,7 @@ namespace HoloToolkit.Unity
             meshRenderer.enabled = GazeManager.Instance.Hit;
 
             // Place the cursor at the calculated position.
-            this.gameObject.transform.position = GazeManager.Instance.Position + GazeManager.Instance.Normal * DistanceFromCollision;
+            this.gameObject.transform.position = GazeManager.Instance.Position + Vector3.Normalize(GazeManager.Instance.Hit - GazeManager.Instance.Position) * DistanceFromCollision;
 
             // Reorient the cursor to match the hit object normal.
             this.gameObject.transform.up = GazeManager.Instance.Normal;
