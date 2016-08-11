@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEditor;
+using UnityEngine;
+using System.IO;
 
 namespace HoloToolkit.Sharing
 {
@@ -10,19 +12,46 @@ namespace HoloToolkit.Sharing
         [MenuItem("HoloToolkit/Launch Sharing Service", false)]
         public static void LaunchSessionServer()
         {
-            Utilities.ExternalProcess.FindAndLaunch(@"External\HoloToolkit\Sharing\Server\SharingService.exe", @"-local");
+            string filePathName = @"External\HoloToolkit\Sharing\Server\SharingService.exe";
+
+            if (!File.Exists(filePathName))
+            {
+                Debug.LogError("Sharing service does not exist at location: " + filePathName);
+                Debug.LogError("Manually copy SharingService.exe to this path from HoloToolkit-Unity\\External.");
+                return;
+            }
+
+            Utilities.ExternalProcess.FindAndLaunch(filePathName, @"-local");
         }
 
         [MenuItem("HoloToolkit/Launch Session Manager", false)]
         public static void LaunchSessionUI()
         {
-            Utilities.ExternalProcess.FindAndLaunch(@"External\HoloToolkit\Sharing\Tools\SessionManager\x86\SessionManager.UI.exe");
+            string filePathName = @"External\HoloToolkit\Sharing\Tools\SessionManager\x86\SessionManager.UI.exe";
+
+            if (!File.Exists(filePathName))
+            {
+                Debug.LogError("Session Manager UI does not exist at location: " + filePathName);
+                Debug.LogError("Manually copy SessionManager.UI.exe to this path from HoloToolkit-Unity\\External.");
+                return;
+            }
+
+            Utilities.ExternalProcess.FindAndLaunch(filePathName);
         }
 
         [MenuItem("HoloToolkit/Launch Profiler", false)]
         public static void LaunchProfilerX()
         {
-            Utilities.ExternalProcess.FindAndLaunch(@"External\HoloToolkit\Sharing\Tools\Profiler\x86\ProfilerX.exe");
+            string filePathName = @"External\HoloToolkit\Sharing\Tools\Profiler\x86\ProfilerX.exe";
+
+            if (!File.Exists(filePathName))
+            {
+                Debug.LogError("Profiler does not exist at location: " + filePathName);
+                Debug.LogError("Manually copy ProfilerX.exe to this path from HoloToolkit-Unity\\External.");
+                return;
+            }
+
+            Utilities.ExternalProcess.FindAndLaunch(filePathName);
         }
     }
 }

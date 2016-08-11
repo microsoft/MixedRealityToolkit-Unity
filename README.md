@@ -253,104 +253,31 @@ Scripts that leverage SpatialMapping related features.
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
 
+### [Plugins](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Plugins)
+
 PlaneFinding addon that can be used to find planar surfaces (ie: walls/floors/tables/etc) in the mesh data returned by Spatial Mapping.
+
+### [Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Prefabs)
+
+The following prefabs make it easy to quickly access and visualize spatial mapping data in the HoloLens or in the Unity Editor.
+
+#### RemoteMapping.prefab
+Use with SpatialMapping prefab, it allows you to send meshes from the HoloLens to Unity and save/load the meshes for use later.
+
+#### SpatialMapping.prefab
+Base prefab which allows you to visualize and access spatial mapping data on the HoloLens. It can also save/load room models that were captured from the Windows Device Portal.
+
+#### SurfacePlane.prefab
+Helper prefab which should be referenced by the SurfaceMeshesToPlanes component for classifying planes as floor, ceiling, wall, etc during processing.
 
 ### [Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Scripts)
 
-####[SpatialMappingComponent](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Scripts/SpatialMappingComponent)
-A unified set of scripts adhering to best practices for providing physics or rendering support for Spatial Mapping.
-Add a SpatialMappingCollider or SpatialMappingRenderer component onto a GameObject and spatial mapping will just start working.
+The following scripts give you the ability to access spatial mapping data on the HoloLens and load spatial mapping data in the Unity Editor.
 
-#### SpatialMappingRenderer.cs
-Use this script for rendering Spatial Mapping.
+#### ObjectSurfaceObserver.cs
+A SpatialMappingSource that loads spatial mapping data saved from the Windows Device Portal.
 
-**Rendering Mode**: (Default: **Occlusion**). How to render the mesh. Occlusion will cause the mesh to occlude holograms behind it. Material will apply the specified material. None will cause the meshes to not render at all.
-
-**Occlusion Material**: (Set this to: **Occlusion**). The material to use for occluding holograms with the spatial mapping mesh. The Occlusion material is located in the HoloToolkit\SpatialMapping\Materials folder.
-
-**Rendering Material**: (Set this to: **Wireframe**). The material to render the Spatial Mapping mesh with. This is only relevant when Rendering Mode is set to Material. The Wireframe material can be found in HoloToolkit\SpatialMapping\Materials folder.
-
-**Freeze Mesh Updates**: (Default: **no**). When enabled, no further updates will be processed. Use this to delay initial starting of Spatial Mapping processing or to stop updates at a certain point.
-
-**Bounding Volume**: (Default: **Bounding Box**). The shape of the bounds to observe for new surfaces. The choices are Bounding Box with Extents or Sphere with Radius.
-
-**Extents**: (Default: **(10, 10, 10)**). The extents of the bounding box in meters. Only applicable with Bounding Box set for Bounding Volume.
-
-**Radius**: (Default: **10**). The radius of the bounding sphere in meters. Only applicable with Sphere set for Bounding Volume.
-
-**Level of Detail**: (Default: **Medium**). The amount of detail in the resulting meshes. Possible values are Low, Medium, and High. Higher levels of detail will result in lower performance.
-
-**Time Between Updates**: (Default: **2.5**). The frequency in seconds for when updates to Spatial Mapping surfaces will be processed.
-
-#### SpatialMappingCollider.cs
-Use this script for performing physics collisions with the Spatial Mapping mesh.
-
-**Enable Collisions**: (Default: **yes**). Whether or not to create a collider for RigidBody physics
-
-**Physic Material**: (Default: **none**). Custom PhysicMaterial to define physical interactions (like bounciness) with the mesh.
-
-**Physics Layer**: (Default: **default**). The layer to apply to the meshes for Raycasting.
-
-**Freeze Mesh Updates**: (Default: **no**). When enabled, no further updates will be processed. Use this to delay initial starting of Spatial Mapping processing or to stop updates at a certain point.
-
-**Bounding Volume**: (Default: **Bounding Box**). The shape of the bounds to observe for new surfaces. The choices are Bounding Box with Extents or Sphere with Radius.
-
-**Extents**: (Default: **(10, 10, 10)**). The extents of the bounding box in meters. Only applicable with Bounding Box set for Bounding Volume.
-
-**Radius**: (Default: **10**). The radius of the bounding sphere in meters. Only applicable with Sphere set for Bounding Volume.
-
-**Level of Detail**: (Default: **Low**). The amount of detail in the resulting meshes. Possible values are Low, Medium, and High. Higher levels of detail will result in lower performance.
-
-**Time Between Updates**: (Default: **2.5**). The frequency in seconds for when updates to Spatial Mapping surfaces will be processed.
-
-#### Design Considerations
-
-1. If you want spatial mapping to work wherever the user travels, attach the components to the camera and the specified bounds will move with the user. 
-2. If you want collisions to continue working even after walking away, you may want to leave a second SpatialMappingCollider around the play space where collisions should continue. 
-3. If you want physics collisions and to render the Spatial Mapping mesh for an area, you should add both a SpatialMappingCollider and a SpatialMappingRenderer
-
-Though all of the defaults are usable out of the box with no customization, you can also customize the component to your scenario. Through script, additions such as PlaneFinding.cs can also be used with these components.
-
-These components by default implement caching of removed Spatial Mapping meshes such that removed meshes will still be present for at least 10 updates after they are actually removed. 
-This number and the feature can be configured via script. This feature enables mesh a great distance from the user to not be removed as well as quick re-hydration of mesh only removed as a user moved away and back to a single location.
-
-The following scripts give you the ability to load the spatial mapping mesh from a file or the network into your Unity scene for debugging in the editor.
-
-#### FileSurfaceObserver.cs
-A SpatialMappingSource that loads spatial mapping data from a file in Unity.
-
-**MeshFileName** Name of file to use when saving or loading surface mesh data.
-
-#### MeshSaver.cs
-Static class that can read and write mesh data to the file specified in FileSurfaceObserver.cs.
-
-#### PlaneFinding.cs
-Unity script that wraps the native PlaneFinding DLL. Used by SurfaceMeshesToPlanes.cs.
-
-#### RemoteMappingManager.cs
-Allows sending meshes remotely from HoloLens to Unity.
-
-#### RemoteMeshSource.cs
-Networking component that runs on the HoloLens and can send meshes to Unity.
-
-**ServerIP** The IPv4 address of the machine running the Unity editor.
-
-**ConnectionPort** The network port of the Unity machine that will receive spatial mapping data from the HoloLens.
-
-#### RemoteMeshTarget.cs
-SpatialMappingSource object that runs in the Unity editor and receive spatial mapping data from the HoloLens.
-
-**ServerIP** The IPv4 address of the machine running the Unity editor.
-
-**ConnectionPort** The network port of the Unity machine that will receive mesh data from the HoloLens.
-
-#### RemoveSurfaceVertices.cs
-A spatial processing component that will remove any spatial mapping vertices that fall within the specified bounding volumes.
-
-**BoundsExpansion** The amount, if any, to expand each bounding volume by.
-
-#### SimpleMeshSerializer.cs
-Static class that converts a Unity mesh to an array of bytes. Used by MeshSaver.cs to serialize and deserialize mesh data.
+**RoomModel** The room model to use when loading meshes in Unity.
 
 #### SpatialMappingManager.cs
 Manages interactions between the application and all spatial mapping data sources (file, observer, network).
@@ -375,6 +302,62 @@ Adds and updates spatial mapping data for all surfaces discovered by the Surface
 #### SpatialMappingSource.cs
 Generates and retrieves meshes based on spatial mapping data coming from the current source object (file, observer, network). 
 SpatialMappingManager.cs manages switching between source types and interacting with this class.
+
+#### TapToPlace.cs
+Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
+Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
+
+### [Scripts\RemoteMapping](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Scripts/RemoteMapping)
+
+The following scripts allow you to send spatial mapping data from the HoloLens to the Unity Editor and to save/load the meshes for use later.
+
+#### FileSurfaceObserver.cs
+A SpatialMappingSource that loads spatial mapping data saved during a remote mapping session.
+
+**MeshFileName** Name of file to use when saving mesh data from the network or loading surface mesh data into Unity.
+
+**SaveFileKey** Key to press when running in the Unity Editor to save meshes that came from the network.
+
+**LoadFileKey** Key to press when running in the Unity Editor to load meshes that were save from the network.
+
+#### MeshSaver.cs
+Static class that can read and write mesh data sent during a remote mapping session to the file specified in FileSurfaceObserver.cs.
+
+#### RemoteMappingManager.cs
+Allows sending meshes remotely from HoloLens to Unity.
+
+**RemoteMappingKey** The key to press when running in the Unity editor to enable spatial mapping over the network.
+
+**SendMeshesKeyword** The phrase to speak when you are ready to send meshes over the network from HoloLens to Unity.
+
+#### RemoteMeshSource.cs
+Networking component that runs on the HoloLens and can send meshes to Unity.
+
+**ServerIP** The IPv4 address of the machine running the Unity editor.
+
+**ConnectionPort** The network port of the Unity machine that will receive spatial mapping data from the HoloLens.
+
+#### RemoteMeshTarget.cs
+SpatialMappingSource object that runs in the Unity editor and receive spatial mapping data from the HoloLens.
+
+**ServerIP** The IPv4 address of the machine running the Unity editor.
+
+**ConnectionPort** The network port of the Unity machine that will receive mesh data from the HoloLens.
+
+#### SimpleMeshSerializer.cs
+Static class that converts a Unity mesh to an array of bytes. Used by MeshSaver.cs to serialize and deserialize mesh data sent during a remote mapping session.
+
+### [Scripts\SpatialProcessing](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Scripts)
+
+The following scripts allow you to process the raw spatial mapping data in order to find planes, remove vertices, etc.
+
+#### PlaneFinding.cs
+Unity script that wraps the native PlaneFinding DLL. Used by SurfaceMeshesToPlanes.cs.
+
+#### RemoveSurfaceVertices.cs
+A spatial processing component that will remove any spatial mapping vertices that fall within the specified bounding volumes.
+
+**BoundsExpansion** The amount, if any, to expand each bounding volume by.
 
 #### SurfaceMeshesToPlanes.cs
 A spatial processing component that can find and create planes based on spatial mapping meshes. Uses PlaneFinding.cs and requires the PlaneFinding plug-in.
@@ -408,10 +391,6 @@ Generates planes and classifies them by type (wall, ceiling, floor, table, unkno
 
 **UnknownMaterial** Material to use when rendering unknown plane types.
 
-#### TapToPlace.cs
-Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
-Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
-
 ### [Shaders](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit/SpatialMapping/Shaders)
 
 #### Occlusion.shader
@@ -429,21 +408,19 @@ The PlaneFindingTest component exposes a couple of properties that let you manip
 NOTE: In the interest of simplicity, this test script calls the PlaneFinding APIs directly from the main Unity thread in Update(). 
 In a real application, the PlaneFinding APIs **MUST** be called from a background thread in order to avoid stalling the rendering thread and causing a drop in frame rate.
 
+#### RemoteMapping.unity
+The RemoteMapping scene uses the SpatialMapping and RemoteMapping prefabs to send spatial mapping data between the HoloLens and the app running in the Unity editor.
+To run this test, you must first open port 11000 on your firewall and then set the IPv4 address of your PC in the 'RemoteMeshTarget' and 'RemoteMeshSource' components.
+You can then build and deploy to the HoloLens. Once you see the wireframe mesh appear in your HoloLens, press the 'play' button in Unity to run the app in Editor. Ensure that the 'Game view' has focus, and then press the 'N' key (RemoteMappingKey) to switch to using the network as the spatial mapping source in the Editor.
+Once you are confident that you have a good mesh, say the 'Send Meshes' (SendMeshesKeyword) to send the meshes from the HoloLens to the Unity Editor.
+Press the 'S' key (SaveFileKey) to save the mesh to your PC. Press the 'play' button to stop the app from running in the Unity editor. Now, press 'play' one more time to restart the app. This time, press the 'L' key (LoadFileKey) to load the mesh that you previously saved into the Editor.
+
 #### SpatialProcessing.unity
 The SpatialProcessing scene tests the two processing scripts available in HoloToolkit: SufraceMeshesToPlanes and RemoveSurfaceVertices. 
-If you already have a .room file saved, it will automatically load the file and run in Unity. 
-If not, you can use the RemoteMapping prefab to send/save mesh files from the HoloLens. You can also run this test directly in the HoloLens.
-This scene will scan your area for 15 seconds and then convert all meshes to planes. If a floor plane is found, it will remove vertices from surface meshes that fall within the bounds of any active plane.
-
-#### SpatialMappingComponent\Example.unity
-This scene shows an example of a static play space which preserves physics around it (marked by a cube) while maintaining physics and wire frame rendering of Spatial Mapping around the camera. 
-Additionally, you can tap to drop a cube in front of the camera with a Rigidbody component to interact with physics.
+If running in the Editor, the ObjectSurfaceObserver will load the SRMesh.obj file set in the SpatialMapping object of the scene. If you don't already have a file, you can capture one from the '3D View' page of the Windows Device Portal.  If running on the HoloLens, real-world surfaces will be scanned. After 15 seconds, the meshes will be converted to planes. If a floor plane is found, the test will remove vertices from surface meshes that fall within the bounds of any active plane.
 
 #### TapToPlace.unity
-This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use.
-There is a cube in the scene with TapToPlace added on it.  Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze.  
-When tap is performed again, it will place the cube.
-
+This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use. There is a cube in the scene with TapToPlace added on it. Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze. While the cube is in 'placement' mode, the spatial mapping mesh will be visible. When tap is performed again, the cube will be placed on the mesh and the mesh will no longer be visible.
 
 ---
 ##### [Go back up to the table of contents.](https://github.com/Microsoft/HoloToolkit-Unity#holotoolkit-unity)
