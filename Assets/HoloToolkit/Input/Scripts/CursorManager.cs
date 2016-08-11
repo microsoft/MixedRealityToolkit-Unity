@@ -53,7 +53,7 @@ public partial class CursorManager : Singleton<CursorManager>
         }
 
         // Place the cursor at the calculated position.
-        this.gameObject.transform.position = GazeManager.Instance.Position + GazeManager.Instance.Normal * DistanceFromCollision;
+        this.gameObject.transform.position = GazeManager.Instance.Position - Vector3.Normalize(GazeManager.Instance.Position - Camera.main.transform.position) * DistanceFromCollision;
 
         // Orient the cursor to match the surface being gazed at.
         gameObject.transform.up = GazeManager.Instance.Normal;
