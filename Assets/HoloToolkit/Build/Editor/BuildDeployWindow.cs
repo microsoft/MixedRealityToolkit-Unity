@@ -1,5 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// Copyright (c) @jevertt
+// Copyright (c) Rafael Rivera
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
@@ -71,10 +72,15 @@ namespace HoloToolkit.Unity
         private void Setup()
         {
             this.titleContent = new GUIContent("Build Window");
-
             this.minSize = new Vector2(600, 200);
 
+            UpdateXdeStatus();
             UpdateBuilds();
+        }
+
+        private void UpdateXdeStatus()
+        {
+            XdeGuestLocator.FindGuestAddressAsync();
         }
 
         private void OnGUI()
@@ -215,6 +221,46 @@ namespace HoloToolkit.Unity
                     BuildDeployPrefs.TargetIPs = newTargetIPs;
                     curTargetIps = newTargetIPs;
                 }
+            }
+            else
+            {
+                var isLocatorSearching = XdeGuestLocator.IsSearching;
+                var doesLocatorHaveData = XdeGuestLocator.HasData;
+                var xdeGuestIpAddress = XdeGuestLocator.GuestIpAddress;
+
+                // Queue up a repaint if we're still busy, or we'll get stuck
+                // in a disabled state.
+
+                if (isLocatorSearching)
+                    Repaint();
+
+                var addressesToPresent = new List<string>();
+                addressesToPresent.Add("127.0.0.1");
+
+                if (!isLocatorSearching && doesLocatorHaveData)
+                    addressesToPresent.Add(xdeGuestIpAddress.ToString());
+
+                var previouslySavedAddress = addressesToPresent.IndexOf(curTargetIps);
+                if (previouslySavedAddress == -1)
+                    previouslySavedAddress = 0;
+
+                EditorGUILayout.BeginHorizontal();
+                GUI.enabled = !isLocatorSearching;
+
+                var selectedAddressIndex = EditorGUILayout.Popup(GUIHorizSpacer + "IP Address", previouslySavedAddress, addressesToPresent.ToArray());
+
+                if (GUILayout.Button(isLocatorSearching ? "Searching" : "Refresh", GUILayout.Width(buttonWidth_Quarter)))
+                {
+                    UpdateXdeStatus();
+                }
+
+                GUI.enabled = true;
+                EditorGUILayout.EndHorizontal();
+
+                var selectedAddress = addressesToPresent[selectedAddressIndex];
+
+                if (curTargetIps != selectedAddress && !isLocatorSearching)
+                    BuildDeployPrefs.TargetIPs = selectedAddress;
             }
 
             // Username/Password (and save seeings, if changed)
