@@ -40,6 +40,7 @@ namespace HoloToolkit.Sharing
             config.SetLogWriter(this.logWriter);
             config.SetServerAddress(this.ServerAddress);
             config.SetServerPort(this.ServerPort);
+            config.SetProfilerEnabled(false);
 
             this.sharingMgr = SharingManager.Create(config);
         }

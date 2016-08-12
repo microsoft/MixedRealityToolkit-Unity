@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity
         protected const int frustumBottom = 2;
         protected const int frustumTop = 3;
 
-        virtual protected void Start()
+        protected virtual void Start()
         {
             // Make sure the Tagalong object has a BoxCollider.
             tagalongCollider = GetComponent<BoxCollider>();

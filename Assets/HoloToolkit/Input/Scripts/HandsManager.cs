@@ -7,7 +7,7 @@ using UnityEngine.VR.WSA.Input;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// HandsDetected determines if the hand is currently detected or not.
+    /// HandsManager determines if the hand is currently detected or not.
     /// </summary>
     public partial class HandsManager : Singleton<HandsManager>
     {
@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity
             get { return trackedHands.Count > 0; }
         }
 
-        private List<uint> trackedHands = new List<uint>();
+        private HashSet<uint> trackedHands = new HashSet<uint>();
 
         void Awake()
         {

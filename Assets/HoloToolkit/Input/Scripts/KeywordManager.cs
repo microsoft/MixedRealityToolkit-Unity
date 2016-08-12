@@ -26,6 +26,8 @@ namespace HoloToolkit.Unity
         {
             [Tooltip("The keyword to recognize.")]
             public string Keyword;
+            [Tooltip("The KeyCode to recognize.")]
+            public KeyCode KeyCode;
             [Tooltip("The UnityEvent to be invoked when the keyword is recognized.")]
             public UnityEvent Response;
         }
@@ -67,6 +69,11 @@ namespace HoloToolkit.Unity
             }
         }
 
+        void Update()
+        {
+            ProcessKeyBindings();
+        }
+
         void OnDestroy()
         {
             if (keywordRecognizer != null)
@@ -74,6 +81,18 @@ namespace HoloToolkit.Unity
                 StopKeywordRecognizer();
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
                 keywordRecognizer.Dispose();
+            }
+        }
+
+        private void ProcessKeyBindings()
+        {
+            foreach (var kvp in KeywordsAndResponses)
+            {
+                if (Input.GetKeyDown(kvp.KeyCode))
+                {
+                    kvp.Response.Invoke();
+                    return;
+                }
             }
         }
 

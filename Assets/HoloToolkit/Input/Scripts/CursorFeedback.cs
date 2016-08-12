@@ -24,6 +24,10 @@ namespace HoloToolkit.Unity
             {
                 handDetectedGameObject = InstantiatePrefab(HandDetectedAsset);
             }
+            else
+            {
+                Debug.LogError("Missing a required game object asset.  Check HandDetectedAsset is not null in editor.");
+            }
         }
 
         private GameObject InstantiatePrefab(GameObject inputPrefab)
@@ -39,6 +43,10 @@ namespace HoloToolkit.Unity
 
                 // Set starting state of the prefab's GameObject to be inactive.
                 instantiatedPrefab.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("Missing a required game object asset.  Check FeedbackParent is not null in editor.");
             }
 
             return instantiatedPrefab;

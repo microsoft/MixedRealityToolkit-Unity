@@ -214,8 +214,8 @@ namespace HoloToolkit.Unity
                     // Always process surface removal events.
                     if (surfaces.TryGetValue(id.handle, out surface))
                     {
+                        RemoveSurfaceObject(surface);
                         surfaces.Remove(id.handle);
-                        Destroy(surface);
                     }
                     break;
             }
