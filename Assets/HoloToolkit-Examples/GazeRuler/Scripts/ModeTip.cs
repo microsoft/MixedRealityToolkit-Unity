@@ -8,10 +8,9 @@ public class ModeTip : Singleton<ModeTip>
 {
     private const string LineMode = "Line Mode";
     private const string PloygonMode = "Geometry Mode";
+    private TextMesh text;
+    private int fadeTime = 100;
 
-    TextMesh text;
-    int fadeTime = 100;
-    
     void Start()
     {
         text = GetComponent<TextMesh>();
@@ -31,8 +30,8 @@ public class ModeTip : Singleton<ModeTip>
     {
         if (gameObject.activeInHierarchy)
         {
-            Debug.Log("pos: " + gameObject.transform.position);
-
+            // if you want log the position of mode tip text, just uncomment it.
+            // Debug.Log("pos: " + gameObject.transform.position);
             switch (MeasureManager.Instance.mode)
             {
                 case GeometryMode.Line:
