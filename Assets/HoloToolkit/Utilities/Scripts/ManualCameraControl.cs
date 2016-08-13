@@ -25,8 +25,21 @@ public class ManualCameraControl : MonoBehaviour
     public float ExtraMouseSensitivityScale = 3.0f;
     public float DefaultMouseSensitivity = 0.1f;
     [Tooltip("Controls how mouse look control is activated.")]
-    public MouseButton MouseLookButton = MouseButton.Control;
+    public MouseButton MouseLookButton = MouseButton.Shift;
     public bool IsControllerLookInverted = true;
+
+    public enum ControlMode
+    {
+        // Move in the main camera forward direction
+        Fly,
+        // Move on a X/Z plane
+        Walk,
+    }
+
+    public ControlMode CurrentControlMode = ControlMode.Fly;
+    public KeyCode FastControlKey = KeyCode.RightControl;
+    public float ControlSlowSpeed = 0.1f;
+    public float ControlFastSpeed = 1.0f;
 
     private bool isMouseJumping = false;
     private bool isGamepadLookEnabled = true;
@@ -36,6 +49,22 @@ public class ManualCameraControl : MonoBehaviour
     private Quaternion lastTrackerToUnityRotation = Quaternion.identity;
     private bool appHasFocus = true;
     private bool wasLooking = false;
+
+    //Input axes  to coordinate with the Input Manager (Project Settings -> Input)
+    [Tooltip("Horizontal movement Axis ")]
+    public string MoveHorizontal = "Horizontal"; //Horizontal movement string for keyboard and left stick of game controller
+    [Tooltip("Vertical movement Axis ")]
+    public string MoveVertical = "Vertical";  //Vertical movement string for keyboard and left stick of game controller 
+    [Tooltip("Mouse Movement X-axis")] 
+    public string MouseX = "Mouse X"; // Mouse movement string for the x-axis
+    [Tooltip("Mouse Movement Y-axis")]
+    public string MouseY = "Mouse Y"; // Mouse movement string for the y-axis
+    
+    // the right stick has no default settings in the Input Manager and will need to be setup for a game controller to look
+    [Tooltip("Look Horizontal Axis - Right Stick On Controller")]
+    public string LookHorizontal = "LookHorizontal";  //Look horizontal string for right stick of game controller
+    [Tooltip("Look Vertical Axis - Right Stick On Controller ")]
+    public string LookVertical = "LookVertical"; //Look vertical string for right stick of game controller
 
     private static float InputCurve(float x)
     {
@@ -69,8 +98,6 @@ public class ManualCameraControl : MonoBehaviour
     private Vector3 GetCameraControlTranslation()
     {
         Vector3 deltaPosition = Vector3.zero;
-        deltaPosition += GetKeyDir("left", "right") * this.transform.right;
-        deltaPosition += GetKeyDir("down", "up") * this.transform.forward;
 
         // Support fly up/down keypresses if the current project maps it. This isn't a standard
         // Unity InputManager mapping, so it has to gracefully fail if unavailable.
@@ -85,11 +112,24 @@ public class ManualCameraControl : MonoBehaviour
                 this.isFlyKeypressEnabled = false;
             }
         }
+        else
+        {
+            // use page up/down in this case
+            deltaPosition += GetKeyDir("page down", "page up") * Vector3.up;
+        }
 
-        deltaPosition += InputCurve(Input.GetAxis("Horizontal")) * this.transform.right;
-        deltaPosition += InputCurve(Input.GetAxis("Vertical")) * this.transform.forward;
+        deltaPosition += InputCurve(Input.GetAxis(MoveHorizontal)) * this.transform.right;
 
-        float accel = Input.GetKey(KeyCode.LeftShift) ? 1.0f : 0.1f;
+        if (CurrentControlMode == ControlMode.Walk)
+        {
+            deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * new Vector3(this.transform.forward.x, 0, this.transform.forward.z).normalized;
+        }
+        else
+        {
+            deltaPosition += InputCurve(Input.GetAxis(MoveVertical)) * this.transform.forward;
+        }
+
+        float accel = Input.GetKey(FastControlKey) ? ControlFastSpeed : ControlSlowSpeed;
         return accel * deltaPosition;
     }
 
@@ -104,8 +144,8 @@ public class ManualCameraControl : MonoBehaviour
             try
             {
                 // Get the axes information from the right stick of X360 controller
-                rot.x += InputCurve(Input.GetAxis("LookVertical")) * inversionFactor;
-                rot.y += InputCurve(Input.GetAxis("LookHorizontal"));
+                rot.x += InputCurve(Input.GetAxis(LookVertical)) * inversionFactor;
+                rot.y += InputCurve(Input.GetAxis(LookHorizontal));
             }
             catch (System.Exception)
             {
@@ -182,13 +222,11 @@ public class ManualCameraControl : MonoBehaviour
 
         if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
         {
-            Debug.Log("Cursor locked state");
-            mousePositionDelta.x = Input.GetAxis("Mouse X");
-            mousePositionDelta.y = Input.GetAxis("Mouse Y");
+            mousePositionDelta.x = Input.GetAxis(MouseX);
+            mousePositionDelta.y = Input.GetAxis(MouseY);
         }
         else
         {
-            Debug.Log("Cursor state is NOT locked");
             mousePositionDelta.x *= this.DefaultMouseSensitivity;
             mousePositionDelta.y *= this.DefaultMouseSensitivity;
         }

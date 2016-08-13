@@ -21,6 +21,9 @@ namespace HoloToolkit.Unity
         [Tooltip("The material to use for rendering spatial mapping data.")]
         public Material surfaceMaterial;
 
+        [Tooltip("Determines if the surface observer should be automatically started.")]
+        public bool autoStartObserver = true;
+
         [Tooltip("Determines if spatial mapping data will be rendered.")]
         public bool drawVisualMeshes = false;
 
@@ -31,16 +34,6 @@ namespace HoloToolkit.Unity
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
         /// </summary>
         private SpatialMappingObserver surfaceObserver;
-
-        /// <summary>
-        /// Used for loading or saving spatial mapping data to disk.
-        /// </summary>
-        private FileSurfaceObserver fileSurfaceObserver;
-
-        /// <summary>
-        /// Used for sending meshes over the network and saving them to disk.
-        /// </summary>
-        private RemoteMeshTarget remoteMeshTarget;
 
         /// <summary>
         /// Time when StartObserver() was called.
@@ -63,55 +56,10 @@ namespace HoloToolkit.Unity
         // Use for initialization.
         private void Start()
         {
-            remoteMeshTarget = FindObjectOfType<RemoteMeshTarget>();
-
-#if !UNITY_EDITOR
-            StartObserver();
-#endif
-
-#if UNITY_EDITOR
-            fileSurfaceObserver = GetComponent<FileSurfaceObserver>();
-
-            if (fileSurfaceObserver != null)
+            if (autoStartObserver)
             {
-                // In the Unity editor, try loading a saved mesh.
-                fileSurfaceObserver.Load(fileSurfaceObserver.MeshFileName);
-
-                if (fileSurfaceObserver.GetMeshFilters().Count > 0)
-                {
-                    SetSpatialMappingSource(fileSurfaceObserver);
-                }
-                else if (remoteMeshTarget != null)
-                {
-                    SetSpatialMappingSource(remoteMeshTarget);
-                }
+                StartObserver();
             }
-#endif
-        }
-
-        // Called every frame.
-        private void Update()
-        {
-            // There are a few keyboard commands we will add when in the editor.
-#if UNITY_EDITOR
-            // F - to use the 'file' sourced mesh.
-            if (Input.GetKeyUp(KeyCode.F))
-            {
-                SpatialMappingManager.Instance.SetSpatialMappingSource(fileSurfaceObserver);
-            }
-
-            // S - saves the active mesh
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                MeshSaver.Save(fileSurfaceObserver.MeshFileName, SpatialMappingManager.Instance.GetMeshes());
-            }
-
-            // L - loads the previously saved mesh into the file source.
-            if (Input.GetKeyUp(KeyCode.L))
-            {
-                fileSurfaceObserver.Load(fileSurfaceObserver.MeshFileName);
-            }
-#endif
         }
 
         /// <summary>
@@ -232,11 +180,13 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StartObserver()
         {
+#if !UNITY_EDITOR
             if (!IsObserverRunning())
             {
                 surfaceObserver.StartObserving();
                 StartTime = Time.time;
             }
+#endif
         }
 
         /// <summary>
@@ -244,10 +194,12 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopObserver()
         {
+#if !UNITY_EDITOR
             if (IsObserverRunning())
             {
                 surfaceObserver.StopObserving();
             }
+#endif
         }
 
         /// <summary>
@@ -312,10 +264,13 @@ namespace HoloToolkit.Unity
             List<MeshRenderer> renderers = Source.GetMeshRenderers();
             for (int index = 0; index < renderers.Count; index++)
             {
-                renderers[index].enabled = Enable;
-                if (Enable)
+                if (renderers[index] != null)
                 {
-                    renderers[index].sharedMaterial = SurfaceMaterial;
+                    renderers[index].enabled = Enable;
+                    if (Enable)
+                    {
+                        renderers[index].sharedMaterial = SurfaceMaterial;
+                    }
                 }
             }
         }
