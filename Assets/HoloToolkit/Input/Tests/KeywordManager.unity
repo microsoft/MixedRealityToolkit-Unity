@@ -325,11 +325,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114000012563305450, guid: 86195468488ce7941a7abcbfaffe9455,
-        type: 2}
-      propertyPath: m_FontData.m_VerticalOverflow
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: keywordManager
+      value: 
+      objectReference: {fileID: 1073894171}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 86195468488ce7941a7abcbfaffe9455, type: 2}
   m_IsPrefabParent: 0

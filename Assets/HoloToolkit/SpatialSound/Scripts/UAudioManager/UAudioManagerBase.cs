@@ -598,6 +598,7 @@ namespace HoloToolkit.Unity
                 {
                     yield return null;
                 }
+
             }
             // Otherwise, continue at next frame.
             else
@@ -618,6 +619,13 @@ namespace HoloToolkit.Unity
         private void RemoveEventInstance(ActiveEvent activeEvent)
         {
             activeEvents.Remove(activeEvent);
+
+            // Send message notifying user that sound is complete
+            if (!string.IsNullOrEmpty(activeEvent.MessageOnAudioEnd))
+            {
+                activeEvent.AudioEmitter.SendMessage(activeEvent.MessageOnAudioEnd);
+            }
+
             activeEvent.Dispose();
         }
 

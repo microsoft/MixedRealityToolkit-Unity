@@ -61,6 +61,12 @@ namespace HoloToolkit.Unity
             private set;
         }
 
+        public string MessageOnAudioEnd
+        {
+            get;
+            private set;
+        }
+
         public AudioEvent audioEvent = null;
         public bool isStoppable = true;
         public float volDest = 1;
@@ -71,12 +77,13 @@ namespace HoloToolkit.Unity
         public float activeTime = 0;
         public bool cancelEvent = false;
 
-        public ActiveEvent(AudioEvent audioEvent, GameObject emitter, AudioSource primarySource, AudioSource secondarySource)
+        public ActiveEvent(AudioEvent audioEvent, GameObject emitter, AudioSource primarySource, AudioSource secondarySource, string messageOnAudioEnd = null)
         {
             this.audioEvent = audioEvent;
             AudioEmitter = emitter;
             PrimarySource = primarySource;
             SecondarySource = secondarySource;
+            MessageOnAudioEnd = messageOnAudioEnd;
             SetSourceProperties();
         }
 
