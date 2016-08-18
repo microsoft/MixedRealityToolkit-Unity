@@ -125,6 +125,7 @@ to only static objects that already exist in the scene.
 
 ### [Tests](Tests)
 Tests related to the input features. To use the scene:
+
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
 3. Either click "Play" in the unity editor or File -> Build Settings.
@@ -149,6 +150,17 @@ Example on how to send keyword messages to currently selected dynamically instan
 Gazing on an object and saying "Select Object" will persistently select that object for interaction with voice commands,
 after which the user can also adjust object size with "Make Smaller" and "Make Bigger" voice commands and finally clear
 currently selected object by saying "Clear Selection".
+
+#### KeywordManager.unity
+Shows how to use the KeywordManager.cs script to add keywords to your scene.
+
+1. Select whether you want the recognizer to start automatically or when you manually start it.
+2. Specify the number of keywords you want.
+3. Type the word or phrase you'd like to register as the keyword and, if you want, set a key code to use in the Editor. You can also use an attached microphone with the Editor.
+4. Press the + to add a response. Then, drag a GameObject with the script you want to call into the "None (Object)" field.
+5. Select the script and method to call or variable to set from the "No Function" dropdown. Add any parameters, if necessary, into the field below the dropdown.
+
+When you start the scene, your keywords will automatically be registered on a KeywordRecognizer, and the recognizer will be started (or not) based on your Recognizer Start setting.
 
 ---
 ##### [Go back up to the table of contents.](../../../README.md)
