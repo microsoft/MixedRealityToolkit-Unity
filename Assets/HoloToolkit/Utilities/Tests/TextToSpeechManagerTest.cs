@@ -27,9 +27,13 @@ public class TextToSpeechManagerTest : MonoBehaviour
         foreach(GameObject agent in agents)
         {
             if (agent.GetComponent<TextToSpeechManager>().IsSpeaking())
+            {
                 agent.GetComponent<Renderer>().material.color = Color.green;
+            }
             else
+            {
                 agent.GetComponent<Renderer>().material.color = Color.red;
+            }
         }
     }
 
