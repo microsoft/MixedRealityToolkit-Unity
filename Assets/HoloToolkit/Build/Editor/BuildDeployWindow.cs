@@ -224,32 +224,42 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                var isLocatorSearching = XdeGuestLocator.IsSearching;
-                var doesLocatorHaveData = XdeGuestLocator.HasData;
+                var locatorIsSearching = XdeGuestLocator.IsSearching;
+                var locatorHasData = XdeGuestLocator.HasData;
                 var xdeGuestIpAddress = XdeGuestLocator.GuestIpAddress;
 
                 // Queue up a repaint if we're still busy, or we'll get stuck
                 // in a disabled state.
 
-                if (isLocatorSearching)
+                if (locatorIsSearching)
+                {
                     Repaint();
+                }
 
                 var addressesToPresent = new List<string>();
                 addressesToPresent.Add("127.0.0.1");
 
-                if (!isLocatorSearching && doesLocatorHaveData)
+                if (!locatorIsSearching && locatorHasData)
+                {
                     addressesToPresent.Add(xdeGuestIpAddress.ToString());
+                }
 
                 var previouslySavedAddress = addressesToPresent.IndexOf(curTargetIps);
                 if (previouslySavedAddress == -1)
+                {
                     previouslySavedAddress = 0;
+                }
 
                 EditorGUILayout.BeginHorizontal();
-                GUI.enabled = !isLocatorSearching;
+
+                if (locatorIsSearching && !locatorHasData)
+                {
+                    GUI.enabled = false;
+                }
 
                 var selectedAddressIndex = EditorGUILayout.Popup(GUIHorizSpacer + "IP Address", previouslySavedAddress, addressesToPresent.ToArray());
 
-                if (GUILayout.Button(isLocatorSearching ? "Searching" : "Refresh", GUILayout.Width(buttonWidth_Quarter)))
+                if (GUILayout.Button(locatorIsSearching ? "Searching" : "Refresh", GUILayout.Width(buttonWidth_Quarter)))
                 {
                     UpdateXdeStatus();
                 }
@@ -259,8 +269,10 @@ namespace HoloToolkit.Unity
 
                 var selectedAddress = addressesToPresent[selectedAddressIndex];
 
-                if (curTargetIps != selectedAddress && !isLocatorSearching)
+                if (curTargetIps != selectedAddress && !locatorIsSearching)
+                {
                     BuildDeployPrefs.TargetIPs = selectedAddress;
+                }
             }
 
             // Username/Password (and save seeings, if changed)
