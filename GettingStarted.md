@@ -14,7 +14,7 @@ https://desktop.github.com/
 
 Open the folder you just cloned in Unity
 
-Now, inside of Unity ensure you have the Assets folder selected in the project view, and export the package
+Now, inside of Unity ensure you have the Assets folder selected in the project view, and export the package. **IMPORTANT:** Make sure you select the root Assets folder in the Project. It contains important .rsp files like csc, gmcs and smcs.
 
 `Assets -> Export Package…`
 
