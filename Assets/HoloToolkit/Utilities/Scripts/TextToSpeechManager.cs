@@ -248,7 +248,7 @@ namespace HoloToolkit.Unity
                             // Play audio
                             audioSource.Play();
 
-                            // reset start time and duration of speach
+                            // reset start time and duration of speech
                             speakStart = Time.unscaledTime;
                             speakDuration = clip.length;
                         }, false);
