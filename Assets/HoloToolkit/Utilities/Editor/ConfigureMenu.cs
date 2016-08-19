@@ -38,6 +38,7 @@ namespace HoloToolkit.Unity
             Camera.main.clearFlags = CameraClearFlags.SolidColor;
             Camera.main.backgroundColor = Color.black;
             Camera.main.nearClipPlane = 0.85f;
+            Camera.main.fieldOfView = 16.0f;
         }
 
         /// <summary>
