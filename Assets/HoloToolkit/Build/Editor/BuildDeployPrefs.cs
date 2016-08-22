@@ -16,6 +16,7 @@ namespace HoloToolkit.Unity
         private const string EditorPrefs_BuildDir = "BuildDeployWindow_BuildDir";
         private const string EditorPrefs_BuildConfig = "BuildDeployWindow_BuildConfig";
         private const string EditorPrefs_ForceRebuild = "BuildDeployWindow_ForceBuild";
+        private const string EditorPrefs_IncrementBuildVersion = "BuildDeployWindow_IncrementBuildVersion";
         private const string EditorPrefs_MSBuildVer = "BuildDeployWindow_MSBuildVer";
         private const string EditorPrefs_TargetIPs = "BuildDeployWindow_DestIPs";
         private const string EditorPrefs_DeviceUser = "BuildDeployWindow_DeviceUser";
@@ -45,6 +46,11 @@ namespace HoloToolkit.Unity
         {
             get { return GetEditorPref(EditorPrefs_ForceRebuild, false); }
             set { EditorPrefs.SetBool(EditorPrefs_ForceRebuild, value); }
+        }
+        public static bool IncrementBuildVersion
+        {
+            get { return GetEditorPref(EditorPrefs_IncrementBuildVersion, true); }
+            set { EditorPrefs.SetBool(EditorPrefs_IncrementBuildVersion, value); }
         }
         public static string TargetIPs
         {
