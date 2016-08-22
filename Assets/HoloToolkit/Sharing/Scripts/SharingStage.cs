@@ -32,6 +32,9 @@ namespace HoloToolkit.Sharing
 
         public bool AutoDiscoverServer = false;
 
+        [Tooltip("Determines how often the discovery service should ping the network in search of a server.")]
+        public float PingIntervalSec = 2;
+
         /// <summary>
         /// Pipes XTools console output to Unity's output window for debugging
         /// </summary>
@@ -44,13 +47,10 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Provides callbacks when server is discovered or lost.
         /// </summary>
-        private DiscoveryClientAdapter listener;
-        /// <summary>
-        /// Determines how often the discovery service should ping the network in search of a server.
-        /// </summary>
-        public float PingIntervalSec = 2;
-        private float PingIntervalCurrent = 0;
-        private bool IsTryingToFindServer = false;
+        private DiscoveryClientAdapter discoveryClientAdapter;
+    
+        private float pingIntervalCurrent = 0;
+        private bool isTryingToFindServer = false;
 
         private void Awake()
         {
@@ -74,14 +74,14 @@ namespace HoloToolkit.Sharing
 
             if (this.discoveryClient != null)
             {
-                discoveryClient.RemoveListener(listener);
+                discoveryClient.RemoveListener(discoveryClientAdapter);
                 discoveryClient.Dispose();
                 discoveryClient = null;
 
-                if (listener != null)
+                if (discoveryClientAdapter != null)
                 {
-                    listener.Dispose();
-                    listener = null;
+                    discoveryClientAdapter.Dispose();
+                    discoveryClientAdapter = null;
                 }
             }
 
@@ -101,7 +101,7 @@ namespace HoloToolkit.Sharing
 
         private void LateUpdate()
         {
-            if (this.IsTryingToFindServer)
+            if (this.isTryingToFindServer)
             {
                 AutoDiscoverUpdate();
             }
@@ -156,23 +156,23 @@ namespace HoloToolkit.Sharing
 
         private void AutoDiscoverInit()
         {
-            listener = new DiscoveryClientAdapter();
-            listener.DiscoveredEvent += OnSystemDiscovered;
+            discoveryClientAdapter = new DiscoveryClientAdapter();
+            discoveryClientAdapter.DiscoveredEvent += OnSystemDiscovered;
 
             discoveryClient = DiscoveryClient.Create();
-            discoveryClient.AddListener(listener);
+            discoveryClient.AddListener(discoveryClientAdapter);
 
             //Start Finding Server
-            IsTryingToFindServer = true;
+            isTryingToFindServer = true;
         }
 
         private void AutoDiscoverUpdate()
         {
             //Searching Enabled-> Update DiscoveryClient to check results, Wait Interval then Ping network.
-            PingIntervalCurrent += Time.deltaTime;
-            if (PingIntervalCurrent > PingIntervalSec)
+            pingIntervalCurrent += Time.deltaTime;
+            if (pingIntervalCurrent > PingIntervalSec)
             {
-                PingIntervalCurrent = 0;
+                pingIntervalCurrent = 0;
                 discoveryClient.Ping();
             }
             discoveryClient.Update();
@@ -183,7 +183,7 @@ namespace HoloToolkit.Sharing
             if (obj.GetRole() == SystemRole.SessionDiscoveryServerRole)
             {
                 //Found a server. Stop pinging the network and connect
-                IsTryingToFindServer = false;
+                isTryingToFindServer = false;
                 this.ServerAddress = obj.GetAddress();
                 Debug.Log("System Discovered at: " + this.ServerAddress);
                 Connect();
