@@ -38,14 +38,17 @@ A MonoBehaviour that interpolates a transform's position, rotation or scale.
 #### ManualCameraControl.cs
 A script to add to the main camera object so that when running in Play mode in Unity, the user can control the camera using keyboard and mouse.
 
+#### SphereBasedTagalong.cs
+A simple Tagalong that stays inside a sphere at a fixed distance from the camera. Very cheap implementation with smoothing capability.
+
 #### SimpleTagalong.cs
 A Tagalong that stays at a fixed distance from the camera and always seeks to have a part of itself in the view frustum of the camera.
 
-#### Singleton.cs
-A base class to make a MonoBehaviour follow the singleton design pattern.
-
 #### Tagalong.cs
 A Tagalong that extends SimpleTagalong that allows for specifying the minimum and target percentage of the object to keep in the view frustum of the camera and that keeps the Tagalong object in front of other holograms including the Spatial Mapping Mesh.
+
+#### Singleton.cs
+A base class to make a MonoBehaviour follow the singleton design pattern.
 
 #### TextToSpeechManager.cs
 Provides dynamic Text to Speech. Speech is generated using the UWP SpeechSynthesizer and then played through a Unity AudioSource. Both plain text and SSML are supported.   
