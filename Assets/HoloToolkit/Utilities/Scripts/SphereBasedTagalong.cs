@@ -11,16 +11,16 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class SphereBasedTagalong : MonoBehaviour
     {
-        /// [Tooltip("Sphere radius.")]
+        [Tooltip("Sphere radius.")]
         public float SphereRadius = 1.0f;
 
-        /// [Tooltip("How fast the object will move to the target position.")]
+        [Tooltip("How fast the object will move to the target position.")]
         public float MoveSpeed = 2.0f;
 
-        /// [Tooltip("Display the sphere in red wireframe for debugging purposes.")]
+        [Tooltip("Display the sphere in red wireframe for debugging purposes.")]
         public bool DebugDisplaySphere = false;
 
-        /// [Tooltip("Display a small green cube where the target position is.")]
+        [Tooltip("Display a small green cube where the target position is.")]
         public bool DebugDisplayTargetPosition = false;
 
         private Vector3 targetPosition;
