@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.Xml.Linq;
 
 namespace HoloToolkit.Unity
 {
@@ -70,7 +71,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public static bool BuildAppxFromSolution(string productName, string msBuildVersion, bool forceRebuildAppx, string buildConfig, string buildDirectory)
+        public static bool BuildAppxFromSolution(string productName, string msBuildVersion, bool forceRebuildAppx, string buildConfig, string buildDirectory, bool incrementVersion)
         {
             // Get and validate the msBuild path...
             string vs = CalcMSBuildPath(msBuildVersion);
@@ -99,6 +100,13 @@ namespace HoloToolkit.Unity
                 nugetP.StartInfo = nugetPInfo;
                 nugetP.Start();
                 nugetP.WaitForExit();
+            }
+
+            // Ensure that the generated .appx version increments by modifying
+            // Package.appxmanifest
+            if (incrementVersion)
+            {
+                IncrementPackageVersion();
             }
 
             // Now do the actual build
@@ -134,6 +142,46 @@ namespace HoloToolkit.Unity
                 BuildDeployWindow.OpenWindow();
                 return true;
             }
+        }
+
+        private static void IncrementPackageVersion()
+        {
+            // Find the manifest, assume the one we want is the first one
+            string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+            if (manifests.Length == 0)
+            {
+                Debug.LogError("Unable to find Package.appxmanifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
+                return;
+            }
+            string manifest = manifests[0];
+
+            XElement rootNode = XElement.Load(manifest);
+            XNamespace ns = rootNode.GetDefaultNamespace();
+            var identityNode = rootNode.Element(ns + "Identity");
+            if (identityNode == null)
+            {
+                Debug.LogError("Package.appxmanifest for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ") is missing an <Identity /> node");
+                return;
+            }
+
+            // We use XName.Get instead of string -> XName implicit conversion because
+            // when we pass in the string "Version", the program doesn't find the attribute.
+            // Best guess as to why this happens is that implicit string conversion doesn't set the namespace to empty
+            var versionAttr = identityNode.Attribute(XName.Get("Version"));
+            if (versionAttr == null)
+            {
+                Debug.LogError("Package.appxmanifest for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ") is missing a version attribute in the <Identity /> node.");
+                return;
+            }
+
+            // Assume package version always has a '.'.
+            // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
+            // Package versions are always of the form Major.Minor.Build.Revision
+            var version = new Version(versionAttr.Value);
+            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
+
+            versionAttr.Value = newVersion.ToString();
+            rootNode.Save(manifest);
         }
     }
 }
