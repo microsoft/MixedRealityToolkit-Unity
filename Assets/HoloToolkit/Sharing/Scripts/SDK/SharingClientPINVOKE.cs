@@ -1496,6 +1496,66 @@ class SharingClientPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_VisualPairConnector")]
   public static extern void delete_VisualPairConnector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_DiscoveredSystem")]
+  public static extern global::System.IntPtr new_DiscoveredSystem(string jarg1, string jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveredSystem_GetName")]
+  public static extern string DiscoveredSystem_GetName(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveredSystem_GetAddress")]
+  public static extern string DiscoveredSystem_GetAddress(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveredSystem_GetRole")]
+  public static extern int DiscoveredSystem_GetRole(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_DiscoveredSystem")]
+  public static extern void delete_DiscoveredSystem(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_DiscoveryClientListener")]
+  public static extern void delete_DiscoveryClientListener(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClientListener_OnRemoteSystemDiscovered")]
+  public static extern void DiscoveryClientListener_OnRemoteSystemDiscovered(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClientListener_OnRemoteSystemDiscoveredSwigExplicitDiscoveryClientListener")]
+  public static extern void DiscoveryClientListener_OnRemoteSystemDiscoveredSwigExplicitDiscoveryClientListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClientListener_OnRemoteSystemLost")]
+  public static extern void DiscoveryClientListener_OnRemoteSystemLost(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClientListener_OnRemoteSystemLostSwigExplicitDiscoveryClientListener")]
+  public static extern void DiscoveryClientListener_OnRemoteSystemLostSwigExplicitDiscoveryClientListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_new_DiscoveryClientListener")]
+  public static extern global::System.IntPtr new_DiscoveryClientListener();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClientListener_director_connect")]
+  public static extern void DiscoveryClientListener_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, DiscoveryClientListener.SwigDelegateDiscoveryClientListener_0 delegate0, DiscoveryClientListener.SwigDelegateDiscoveryClientListener_1 delegate1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClient_Create")]
+  public static extern global::System.IntPtr DiscoveryClient_Create();
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClient_Ping")]
+  public static extern void DiscoveryClient_Ping(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClient_GetDiscoveredCount")]
+  public static extern uint DiscoveryClient_GetDiscoveredCount(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClient_GetDiscoveredSystem")]
+  public static extern global::System.IntPtr DiscoveryClient_GetDiscoveredSystem(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClient_Update")]
+  public static extern void DiscoveryClient_Update(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClient_AddListener")]
+  public static extern void DiscoveryClient_AddListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClient_RemoveListener")]
+  public static extern void DiscoveryClient_RemoveListener(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_delete_DiscoveryClient")]
+  public static extern void delete_DiscoveryClient(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_NetworkConnectionListener_SWIGUpcast")]
   public static extern global::System.IntPtr NetworkConnectionListener_SWIGUpcast(global::System.IntPtr jarg1);
 
@@ -1561,6 +1621,9 @@ class SharingClientPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_VisualPairConnector_SWIGUpcast")]
   public static extern global::System.IntPtr VisualPairConnector_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("SharingClient", EntryPoint="CSharp_DiscoveryClientListener_SWIGUpcast")]
+  public static extern global::System.IntPtr DiscoveryClientListener_SWIGUpcast(global::System.IntPtr jarg1);
 }
 
 }
