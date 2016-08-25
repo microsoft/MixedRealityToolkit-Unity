@@ -179,8 +179,9 @@ namespace HoloToolkit.Unity
             {
                 GUILayout.FlexibleSpace();
 
+                float previousLabelWidth = EditorGUIUtility.labelWidth;
+
                 // Force rebuild
-                float labelWidth = EditorGUIUtility.labelWidth;
                 EditorGUIUtility.labelWidth = 50;
                 bool curForceRebuildAppx = BuildDeployPrefs.ForceRebuild;
                 bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
@@ -189,13 +190,24 @@ namespace HoloToolkit.Unity
                     BuildDeployPrefs.ForceRebuild = newForceRebuildAppx;
                     curForceRebuildAppx = newForceRebuildAppx;
                 }
-                EditorGUIUtility.labelWidth = labelWidth;
+
+                // Increment version
+                EditorGUIUtility.labelWidth = 110;
+                bool curIncrementVersion = BuildDeployPrefs.IncrementBuildVersion;
+                bool newIncrementVersion = EditorGUILayout.Toggle("Increment version", curIncrementVersion);
+                if (newIncrementVersion != curIncrementVersion) {
+                    BuildDeployPrefs.IncrementBuildVersion = newIncrementVersion;
+                    curIncrementVersion = newIncrementVersion;
+                }
+
+                // Restore previous label width
+                EditorGUIUtility.labelWidth = previousLabelWidth;
 
                 // Build APPX
                 GUI.enabled = ShouldBuildAppxBeEnabled;
                 if (GUILayout.Button("Build APPX from SLN", GUILayout.Width(buttonWidth_Half)))
                 {
-                    BuildDeployTools.BuildAppxFromSolution(appName, curMSBuildVer, curForceRebuildAppx, curBuildConfig, curBuildDirectory);
+                    BuildDeployTools.BuildAppxFromSolution(appName, curMSBuildVer, curForceRebuildAppx, curBuildConfig, curBuildDirectory, curIncrementVersion);
                 }
                 GUI.enabled = true;
             }
@@ -411,7 +423,8 @@ namespace HoloToolkit.Unity
                 BuildDeployPrefs.MsBuildVersion, 
                 BuildDeployPrefs.ForceRebuild, 
                 BuildDeployPrefs.BuildConfig, 
-                BuildDeployPrefs.BuildDirectory))
+                BuildDeployPrefs.BuildDirectory,
+                BuildDeployPrefs.IncrementBuildVersion))
             {
                 return;
             }
