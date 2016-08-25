@@ -31,12 +31,17 @@ namespace HoloToolkit.Unity
     {
         [Tooltip("The number of triangles to calculate per cubic meter.")]
         public float TrianglesPerCubicMeter = 500f;
-
+        
         [Tooltip("The extents of the observation volume.")]
         public Vector3 Extents = Vector3.one * 10.0f;
 
         [Tooltip("How long to wait (in sec) between Spatial Mapping updates.")]
         public float TimeBetweenUpdates = 3.5f;
+
+        /// <summary>
+        /// Event for hooking when surfaces are changed.
+        /// </summary>
+        public event SurfaceObserver.SurfaceChangedDelegate SurfaceChanged;
 
         /// <summary>
         /// Our Surface Observer object for generating/updating Spatial Mapping data.
@@ -49,6 +54,18 @@ namespace HoloToolkit.Unity
         /// Value: GameObject containing a Mesh, a MeshRenderer and a Material
         /// </summary>
         private Dictionary<int, GameObject> surfaces = new Dictionary<int, GameObject>();
+
+        /// <summary>
+        /// A dictionary of surfaces which need to be cleaned up and readded for reuse.
+        /// Key: ID of the surface currently updating
+        /// Value: A struct encapsulating Visual and Collider mesh to be cleaned up
+        /// </summary>
+        private Dictionary<int, GameObject> pendingCleanup = new Dictionary<int, GameObject>();
+
+        /// <summary>
+        /// A queue of clean surface GameObjects ready to be reused.
+        /// </summary>
+        private Queue<GameObject> availableSurfaces = new Queue<GameObject>();
 
         /// <summary>
         /// A queue of SurfaceData objects. SurfaceData objects are sent to the
@@ -73,18 +90,28 @@ namespace HoloToolkit.Unity
         /// </summary>
         public ObserverStates ObserverState { get; private set; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             observer = new SurfaceObserver();
             ObserverState = ObserverStates.Stopped;
+            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
         }
 
         /// <summary>
-        /// Called when the GaemObject is initialized.
+        /// Called when the GameObject is initialized.
         /// </summary>
         private void Start()
         {
-            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
+        }
+
+        /// <summary>
+        /// Can be called to override the default origin for the observed volume
+        /// </summary>
+        public void SetObserverOrigin(Vector3 origin)
+        {
+            observer.SetVolumeAsAxisAlignedBox(origin, Extents);
         }
 
         /// <summary>
@@ -151,6 +178,14 @@ namespace HoloToolkit.Unity
         /// <param name="elapsedCookTimeSeconds">Seconds between mesh cook request and propagation of this event.</param>
         private void SurfaceObserver_OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
         {
+            //We have new visuals, so we can disable and clenaup the older surface
+            GameObject surfaceToCleanup;
+            if (pendingCleanup.TryGetValue(cookedData.id.handle, out surfaceToCleanup))
+            {
+                CleanupSurface(surfaceToCleanup);
+                pendingCleanup.Remove(cookedData.id.handle);
+            }
+
             GameObject surface;
             if (surfaces.TryGetValue(cookedData.id.handle, out surface))
             {
@@ -166,6 +201,52 @@ namespace HoloToolkit.Unity
             }
 
             surfaceWorkOutstanding = false;
+        }
+
+        private void CleanupSurface(GameObject surface)
+        {
+            // Destroy the meshes, and add the surface back for reuse
+            CleanupMeshes(surface.GetComponent<MeshFilter>().sharedMesh, surface.GetComponent<MeshCollider>().sharedMesh);
+            availableSurfaces.Enqueue(surface);
+            surface.name = "Unused Surface";
+            surface.SetActive(false);
+        }
+
+        private void CleanupMeshes(Mesh visualMesh, Mesh colliderMesh)
+        {
+            if (colliderMesh != null && colliderMesh != visualMesh)
+            {
+                Destroy(colliderMesh);
+            }
+
+            if (visualMesh != null)
+            {
+                Destroy(visualMesh);
+            }
+        }
+
+        private GameObject GetSurfaceObject(int surfaceID, Transform parentObject)
+        {
+            //If we have surfaces ready for reuse, use those first
+            if (availableSurfaces.Count > 1)
+            {
+                GameObject existingSurface = availableSurfaces.Dequeue();
+                existingSurface.SetActive(true);
+                existingSurface.name = string.Format("Surface-{0}", surfaceID);
+
+                UpdateSurfaceObject(existingSurface, surfaceID);
+
+                return existingSurface;
+            }
+
+            // If we are adding a new surface, construct a GameObject
+            // to represent its state and attach some Mesh-related
+            // components to it.
+            GameObject toReturn = AddSurfaceObject(null, string.Format("Surface-{0}", surfaceID), transform, surfaceID);
+
+            toReturn.AddComponent<WorldAnchor>();
+
+            return toReturn;
         }
 
         /// <summary>
@@ -187,24 +268,25 @@ namespace HoloToolkit.Unity
 
             switch (changeType)
             {
-                // Adding and updating are nearly identical.  The only difference is if a new GameObject to contain
+                // Adding and updating are nearly identical.  The only difference is if a new gameobject to contain 
                 // the surface needs to be created.
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
                     // Check to see if the surface is known to the observer.
-                    if (!surfaces.TryGetValue(id.handle, out surface))
+                    // If so, we want to add it for cleanup after we get new meshes
+                    // We do this because Unity doesn't properly cleanup baked collision data
+                    if (surfaces.TryGetValue(id.handle, out surface))
                     {
-                        // If we are adding a new surface, construct a GameObject
-                        // to represent its state and attach some Mesh-related
-                        // components to it.
-                        surface = AddSurfaceObject(null, string.Format("Surface-{0}", id.handle), transform);
-
-                        surface.AddComponent<WorldAnchor>();
-
-                        // Add the surface to our dictionary of known surfaces so
-                        // we can interact with it later.
-                        surfaces.Add(id.handle, surface);
+                        pendingCleanup.Add(id.handle, surface);
+                        surfaces.Remove(id.handle);
                     }
+
+                    // Get an available surface object ready to be used
+                    surface = GetSurfaceObject(id.handle, transform);
+
+                    // Add the surface to our dictionary of known surfaces so
+                    // we can interact with it later.
+                    surfaces.Add(id.handle, surface);
 
                     // Add the request to create the mesh for this surface to our work queue.
                     QueueSurfaceDataRequest(id, surface);
@@ -212,12 +294,20 @@ namespace HoloToolkit.Unity
 
                 case SurfaceChange.Removed:
                     // Always process surface removal events.
+                    // This code can be made more thread safe
                     if (surfaces.TryGetValue(id.handle, out surface))
                     {
-                        RemoveSurfaceObject(surface);
                         surfaces.Remove(id.handle);
+                        CleanupSurface(surface);
+                        RemoveSurfaceObject(surface, false);
                     }
                     break;
+            }
+
+            // Event
+            if (SurfaceChanged != null)
+            {
+                SurfaceChanged(id, changeType, bounds, updateTime);
             }
         }
 

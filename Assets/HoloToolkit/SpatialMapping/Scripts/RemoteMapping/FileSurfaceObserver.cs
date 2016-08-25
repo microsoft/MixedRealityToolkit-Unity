@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity
 
                 foreach (Mesh mesh in storedMeshes)
                 {
-                    GameObject surface = AddSurfaceObject(mesh, "storedmesh-" + surfaceObjects.Count, transform);
+                    GameObject surface = AddSurfaceObject(mesh, "storedmesh-" + SurfaceObjects.Count, transform);
                     Renderer renderer = surface.GetComponent<MeshRenderer>();
 
                     if (SpatialMappingManager.Instance.DrawVisualMeshes == false)

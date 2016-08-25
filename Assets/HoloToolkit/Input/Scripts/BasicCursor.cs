@@ -12,6 +12,13 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BasicCursor : MonoBehaviour
     {
+        public struct RaycastResult
+        {
+            public bool Hit;
+            public Vector3 Position;
+            public Vector3 Normal;
+        }
+
         [Tooltip("Distance, in meters, to offset the cursor from the collision point.")]
         public float DistanceFromCollision = 0.01f;
 
@@ -19,16 +26,9 @@ namespace HoloToolkit.Unity
 
         private MeshRenderer meshRenderer;
 
-        void Start()
-        {
-            if (GazeManager.Instance == null)
-            {
-                Debug.LogError("Must have a GazeManager somewhere in the scene.");
-                return;
-            }
-        }
+        private bool hasLoggedGazeManagerError;
 
-        void Awake()
+        protected virtual void Awake()
         {
             if ((GazeManager.Instance.RaycastLayerMask & this.gameObject.layer) == 0)
             {
@@ -51,21 +51,42 @@ namespace HoloToolkit.Unity
             cursorDefaultRotation = this.gameObject.transform.rotation;
         }
 
-        void LateUpdate()
+        protected virtual RaycastResult CalculateRayIntersect()
         {
-            if (GazeManager.Instance == null || meshRenderer == null)
+            RaycastResult result = new RaycastResult();
+            if (GazeManager.Instance == null)
+            {
+                if (!hasLoggedGazeManagerError)
+                {
+                    Debug.LogError("Must have a GazeManager somewhere in the scene.");
+                    hasLoggedGazeManagerError = true;
+                }
+                return result;
+            }
+            result.Hit = GazeManager.Instance.Hit;
+            result.Position = GazeManager.Instance.Position;
+            result.Normal = GazeManager.Instance.Normal;
+            return result;
+        }
+
+        protected virtual void LateUpdate()
+        {
+            if (meshRenderer == null)
             {
                 return;
             }
 
+            // Calculate the raycast result
+            RaycastResult rayResult = CalculateRayIntersect();
+
             // Show or hide the Cursor based on if the user's gaze hit a hologram.
-            meshRenderer.enabled = GazeManager.Instance.Hit;
+            meshRenderer.enabled = rayResult.Hit;
 
             // Place the cursor at the calculated position.
-            this.gameObject.transform.position = GazeManager.Instance.Position + GazeManager.Instance.Normal * DistanceFromCollision;
+            this.gameObject.transform.position = rayResult.Position + rayResult.Normal * DistanceFromCollision;
 
             // Reorient the cursor to match the hit object normal.
-            this.gameObject.transform.up = GazeManager.Instance.Normal;
+            this.gameObject.transform.up = rayResult.Normal;
             this.gameObject.transform.rotation *= cursorDefaultRotation;
         }
     }
