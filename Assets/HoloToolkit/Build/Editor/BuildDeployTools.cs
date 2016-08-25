@@ -177,7 +177,6 @@ namespace HoloToolkit.Unity
             // Assume package version always has a '.'.
             // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
             // Package versions are always of the form Major.Minor.Build.Revision
-            var curVersionStr = versionAttr.Value;
             var version = new Version(versionAttr.Value);
             var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
 
