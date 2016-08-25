@@ -164,7 +164,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            // We use XName.Get instead of strint -> XName implicit conversion because
+            // We use XName.Get instead of string -> XName implicit conversion because
             // when we pass in the string "Version", the program doesn't find the attribute.
             // Best guess as to why this happens is that implicit string conversion doesn't set the namespace to empty
             var versionAttr = identityNode.Attribute(XName.Get("Version"));
@@ -178,11 +178,10 @@ namespace HoloToolkit.Unity
             // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
             // Package versions are always of the form Major.Minor.Build.Revision
             var curVersionStr = versionAttr.Value;
-            var curVersion = int.Parse(curVersionStr.Split('.').Last());
-            var newVersionStr = curVersionStr.Substring(0, curVersionStr.LastIndexOf('.') + 1) +
-                            (curVersion + 1).ToString();
+            var version = new Version(versionAttr.Value);
+            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
 
-            versionAttr.Value = newVersionStr;
+            versionAttr.Value = newVersion.ToString();
             rootNode.Save(manifest);
         }
     }
