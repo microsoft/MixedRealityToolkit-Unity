@@ -82,8 +82,11 @@ namespace HoloToolkit.Unity
                     // Remove existing world anchor when moving an object.
                     DestroyImmediate(gameObject.GetComponent<WorldAnchor>());
 
-                    // Delete existing world anchor from anchor store when moving an object.                    
-                    anchorStore.Delete(SavedAnchorFriendlyName);
+                    // Delete existing world anchor from anchor store when moving an object.
+                    if (anchorStore != null)
+                    {
+                        anchorStore.Delete(SavedAnchorFriendlyName);
+                    }
                 }
                 // If the user is not in placing mode, hide the spatial mapping mesh.
                 else
