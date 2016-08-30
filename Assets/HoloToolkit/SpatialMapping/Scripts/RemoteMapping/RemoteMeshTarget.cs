@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity
                     // For each mesh, create a GameObject to render it.
                     for (int index = 0; index < meshes.Count; index++)
                     {
-                        GameObject surface = AddSurfaceObject(meshes[index], string.Format("Beamed-{0}", surfaceObjects.Count), transform);
+                        GameObject surface = AddSurfaceObject(meshes[index], string.Format("Beamed-{0}", SurfaceObjects.Count), transform);
                         surface.transform.parent = SpatialMappingManager.Instance.transform;
 
                         if (SpatialMappingManager.Instance.DrawVisualMeshes == false)

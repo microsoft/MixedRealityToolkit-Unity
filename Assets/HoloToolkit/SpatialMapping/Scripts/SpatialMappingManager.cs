@@ -4,6 +4,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace HoloToolkit.Unity
 {
     /// <summary>
@@ -221,6 +225,15 @@ namespace HoloToolkit.Unity
             }
 
             return meshes;
+        }
+
+        /// <summary>
+        /// Gets all the surface objects associated with the Spatial Mapping mesh.
+        /// </summary>
+        /// <returns>Collection of SurfaceObjects.</returns>
+        public List<SpatialMappingSource.SurfaceObject> GetSurfaceObjects()
+        {
+            return Source.SurfaceObjects;
         }
 
         /// <summary>
