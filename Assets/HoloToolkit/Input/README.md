@@ -72,10 +72,24 @@ Stabilize the user's gaze to account for head jitter.
 **StabilityVarianceWeight** Stability variance weight multiplier factor.
 
 #### GestureManager.cs
-GestureManager creates a gesture recognizer and signs up for a tap gesture. When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
-GestureManager then sends a message to that game object. 
+GestureManager provides access to several different input gestures, including Tap and Manipulation. 
 
-It also has an **OverrideFocusedObject** which lets you send gesture input to a specific object by overriding the gaze.
+When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
+GestureManager then sends a message to that game object.  It also has an **OverrideFocusedObject** which lets you send gesture input to a specific object by overriding the gaze.
+
+Using Manipulation requires subscribing to the ManipulationStarted events and then querying information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition.  See GestureManipulator for an example.
+
+#### GestureManipulator.cs
+A component for moving an object via the GestureManager manipulation gesture.
+
+When an active GestureManipulator component is attached to a GameObject it will subscribe 
+to GestureManager's manipulation gestures, and move the GameObject when a ManipulationGesture occurs. 
+If the GestureManipulator is disabled it will not respond to any manipulation gestures. 
+ 
+This means that if multiple GestureManipulators are active in a given scene when a manipulation 
+gesture is performed, all the relevant GameObjects will be moved.  If the desired behavior is that only 
+a single object be moved at a time, it is recommended that objects which should not be moved disable 
+their GestureManipulators, then re-enable them when necessary (e.g. the object is focused). 
 
 #### HandGuidance.cs
 Show a GameObject when a gesturing hand is about to lose tracking.
