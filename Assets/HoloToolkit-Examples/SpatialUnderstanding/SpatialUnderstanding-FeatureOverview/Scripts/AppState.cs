@@ -105,7 +105,6 @@ public class AppState : Singleton<AppState>
                         {
                             return "playspace stats query failed";
                         }
-                        SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
 
                         // The stats tell us if we could potentially finish
                         if (DoesScanMeetMinBarForCompletion)
