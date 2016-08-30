@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity
 
                 foreach (MeshFilter filter in roomFilters)
                 {
-                    GameObject surface = AddSurfaceObject(filter.sharedMesh, "roomMesh-" + surfaceObjects.Count, transform);
+                    GameObject surface = AddSurfaceObject(filter.sharedMesh, "roomMesh-" + SurfaceObjects.Count, transform);
                     Renderer renderer = surface.GetComponent<MeshRenderer>();
 
                     if (SpatialMappingManager.Instance.DrawVisualMeshes == false)
