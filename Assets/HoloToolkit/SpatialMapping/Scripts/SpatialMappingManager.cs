@@ -4,6 +4,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace HoloToolkit.Unity
 {
     /// <summary>
@@ -36,16 +40,6 @@ namespace HoloToolkit.Unity
         private SpatialMappingObserver surfaceObserver;
 
         /// <summary>
-        /// Used for loading or saving spatial mapping data to disk.
-        /// </summary>
-        private FileSurfaceObserver fileSurfaceObserver;
-
-        /// <summary>
-        /// Used for sending meshes over the network and saving them to disk.
-        /// </summary>
-        private RemoteMeshTarget remoteMeshTarget;
-
-        /// <summary>
         /// Time when StartObserver() was called.
         /// </summary>
         [HideInInspector]
@@ -66,37 +60,10 @@ namespace HoloToolkit.Unity
         // Use for initialization.
         private void Start()
         {
-            remoteMeshTarget = FindObjectOfType<RemoteMeshTarget>();
-
             if (autoStartObserver)
             {
                 StartObserver();
             }
-        }
-
-        // Called every frame.
-        private void Update()
-        {
-            // There are a few keyboard commands we will add when in the editor.
-#if UNITY_EDITOR
-            // F - to use the 'file' sourced mesh.
-            if (Input.GetKeyUp(KeyCode.F))
-            {
-                SpatialMappingManager.Instance.SetSpatialMappingSource(fileSurfaceObserver);
-            }
-
-            // S - saves the active mesh
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                MeshSaver.Save(fileSurfaceObserver.MeshFileName, SpatialMappingManager.Instance.GetMeshes());
-            }
-
-            // L - loads the previously saved mesh into the file source.
-            if (Input.GetKeyUp(KeyCode.L))
-            {
-                fileSurfaceObserver.Load(fileSurfaceObserver.MeshFileName);
-            }
-#endif
         }
 
         /// <summary>
@@ -223,23 +190,6 @@ namespace HoloToolkit.Unity
                 surfaceObserver.StartObserving();
                 StartTime = Time.time;
             }
-#elif UNITY_EDITOR
-            fileSurfaceObserver = GetComponent<FileSurfaceObserver>();
-
-            if (fileSurfaceObserver != null)
-            {
-                // In the Unity editor, try loading a saved mesh.
-                fileSurfaceObserver.Load(fileSurfaceObserver.MeshFileName);
-
-                if (fileSurfaceObserver.GetMeshFilters().Count > 0)
-                {
-                    SetSpatialMappingSource(fileSurfaceObserver);
-                }
-                else if (remoteMeshTarget != null)
-                {
-                    SetSpatialMappingSource(remoteMeshTarget);
-                }
-            }
 #endif
         }
 
@@ -275,6 +225,15 @@ namespace HoloToolkit.Unity
             }
 
             return meshes;
+        }
+
+        /// <summary>
+        /// Gets all the surface objects associated with the Spatial Mapping mesh.
+        /// </summary>
+        /// <returns>Collection of SurfaceObjects.</returns>
+        public List<SpatialMappingSource.SurfaceObject> GetSurfaceObjects()
+        {
+            return Source.SurfaceObjects;
         }
 
         /// <summary>
