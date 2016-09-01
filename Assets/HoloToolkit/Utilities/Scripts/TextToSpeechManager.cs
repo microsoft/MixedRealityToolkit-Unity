@@ -247,6 +247,10 @@ namespace HoloToolkit.Unity
 
                             // Play audio
                             audioSource.Play();
+
+                            // reset start time and duration of speech
+                            speakStart = Time.unscaledTime;
+                            speakDuration = clip.length;
                         }, false);
                     });
                 }
@@ -323,6 +327,16 @@ namespace HoloToolkit.Unity
             #else
             LogSpeech(text);
             #endif
+        }
+
+        /// <summary>
+        /// Returns whether or not text is currently being spoken
+        /// </summary>
+        private float speakStart = 0;
+        private float speakDuration = 0;
+        public bool IsSpeaking()
+        {
+            return (Time.unscaledTime - speakStart) < speakDuration;
         }
     }
 }
