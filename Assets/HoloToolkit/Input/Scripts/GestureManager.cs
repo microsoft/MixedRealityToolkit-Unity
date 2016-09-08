@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity
         /// If its null, then the gazed at object will be selected.
         /// </summary>
         public GameObject OverrideFocusedObject { get; set; }
-        
+
         /// <summary>
         /// Gets the currently focused object, or null if none.
         /// </summary>
@@ -156,7 +156,7 @@ namespace HoloToolkit.Unity
         {
             if (FocusedObject != null)
             {
-                FocusedObject.SendMessage("OnSelect");
+                FocusedObject.SendMessage("OnSelect", SendMessageOptions.DontRequireReceiver);
             }
         }
 
@@ -204,7 +204,7 @@ namespace HoloToolkit.Unity
 
         void LateUpdate()
         {
-            GameObject oldFocusedObject = FocusedObject;
+            GameObject newFocusedObject;
 
             if (GazeManager.Instance.Hit &&
                 OverrideFocusedObject == null &&
@@ -212,15 +212,15 @@ namespace HoloToolkit.Unity
             {
                 // If gaze hits a hologram, set the focused object to that game object.
                 // Also if the caller has not decided to override the focused object.
-                FocusedObject = GazeManager.Instance.HitInfo.collider.gameObject;
+                newFocusedObject = GazeManager.Instance.HitInfo.collider.gameObject;
             }
             else
             {
                 // If our gaze doesn't hit a hologram, set the focused object to null or override focused object.
-                FocusedObject = OverrideFocusedObject;
+                newFocusedObject = OverrideFocusedObject;
             }
 
-            if (FocusedObject != oldFocusedObject)
+            if (FocusedObject != newFocusedObject)
             {
                 // If the currently focused object doesn't match the old focused object, cancel the current gesture.
                 // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
@@ -234,6 +234,7 @@ namespace HoloToolkit.Unity
                 OnTap();
             }
 #endif
+            FocusedObject = newFocusedObject;
         }
 
         void OnDestroy()
