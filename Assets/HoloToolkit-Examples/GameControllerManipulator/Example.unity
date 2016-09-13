@@ -195,7 +195,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 402900807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59402dcb4c47d624c83d2a2c3d0e9710, type: 3}
+  m_Script: {fileID: 11500000, guid: a4d43a912ea5ac9408a3e9d407d36b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MoveXAxisName: ControllerLeftStickX
