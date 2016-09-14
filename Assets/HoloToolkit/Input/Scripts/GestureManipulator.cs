@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity
 
         private void BeginManipulation()
         {
-            if (GestureManager.Instance != null && GestureManager.Instance.ManipulationInProgress)
+            if ((GestureManager.Instance != null) && GestureManager.Instance.ManipulationInProgress && (GestureManager.Instance.FocusedObject == gameObject))
             {
                 Manipulating = true;
 
