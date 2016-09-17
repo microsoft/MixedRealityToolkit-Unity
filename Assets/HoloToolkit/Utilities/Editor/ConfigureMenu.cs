@@ -14,9 +14,11 @@ namespace HoloToolkit.Unity
     /// Configuration options derived from here: 
     /// https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens
     /// </summary>
+   
     public static class AutoConfigureMenu
     {
-        [MenuItem("HoloToolkit/Configure/Show Help", priority = 1)]
+       
+        [MenuItem("HoloToolkit/Configure/Show Help", priority = 2)]
         public static void ShowHelp()
         {
             Application.OpenURL("https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens");
@@ -186,6 +188,26 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogException(e);
             }
+        }
+
+        private static void ApplyCommonCapabilities()
+        {
+            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true);
+            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true);
+            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.WebCam, true);
+        }
+
+        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capabilities/Recommended", priority = 1)]
+        private static void ApplyRecomenndedCapabilities()
+        {
+            ApplyCommonCapabilities();
+        }
+
+        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capabilities/Recommended with Internet", priority = 1)]
+        private static void ApplyRecomenndedCapabilitiesWithInternet()
+        {
+            ApplyCommonCapabilities();
+            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
         }
     }
 }
