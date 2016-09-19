@@ -116,9 +116,7 @@ namespace HoloToolkit.Unity
             gestureRecognizer.StartCapturingGestures();
             manipulationRecognizer.StartCapturingGestures();
         }
-
-
-
+        
         private void InteractionManager_SourcePressed(InteractionSourceState state)
         {
             if (!HandPressed)
@@ -225,6 +223,7 @@ namespace HoloToolkit.Unity
                 // If the currently focused object doesn't match the old focused object, cancel the current gesture.
                 // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
                 gestureRecognizer.CancelGestures();
+                FocusedObject = newFocusedObject;
                 gestureRecognizer.StartCapturingGestures();
             }
 
@@ -234,7 +233,6 @@ namespace HoloToolkit.Unity
                 OnTap();
             }
 #endif
-            FocusedObject = newFocusedObject;
         }
 
         void OnDestroy()
