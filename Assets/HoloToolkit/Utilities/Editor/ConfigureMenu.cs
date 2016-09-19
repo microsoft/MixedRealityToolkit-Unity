@@ -198,13 +198,13 @@ namespace HoloToolkit.Unity
         }
 
         [MenuItem("HoloToolkit/Configure/Apply HoloLens Capabilities/Recommended", priority = 1)]
-        private static void ApplyRecomenndedCapabilities()
+        private static void ApplyRecommendedCapabilities()
         {
             ApplyCommonCapabilities();
         }
 
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capabilities/Recommended with Internet", priority = 1)]
-        private static void ApplyRecomenndedCapabilitiesWithInternet()
+        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capabilities/Recommended with Internet Access", priority = 1)]
+        private static void ApplyRecommendedCapabilitiesWithInternetAccess()
         {
             ApplyCommonCapabilities();
             PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
