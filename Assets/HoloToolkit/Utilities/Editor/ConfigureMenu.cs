@@ -14,10 +14,11 @@ namespace HoloToolkit.Unity
     /// Configuration options derived from here: 
     /// https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens
     /// </summary>
-   
-    public static class AutoConfigureMenu
+
+    
+    public class AutoConfigureMenu : UnityEditor.EditorWindow
     {
-       
+
         [MenuItem("HoloToolkit/Configure/Show Help", priority = 2)]
         public static void ShowHelp()
         {
@@ -190,24 +191,56 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private static void ApplyCommonCapabilities()
+        [MenuItem("HoloToolkit/Configure/HoloLens Recommended Capabilities ", priority = 1)]
+        static void HoloLensRecommendedCapabilities()
         {
-            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true);
-            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true);
-            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.WebCam, true);
+            AutoConfigureMenu window = (AutoConfigureMenu)EditorWindow.GetWindow(typeof(AutoConfigureMenu), true, "HoloLens Recommended Capabilities");
+            window.Show();
         }
 
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capabilities/Recommended", priority = 1)]
-        private static void ApplyRecommendedCapabilities()
+        void OnGUI()
         {
-            ApplyCommonCapabilities();
+            capability(PlayerSettings.WSACapability.Microphone, @"  Microphone
+Required for access to the HoloLens microphone. 
+This includes behaviors like DictationRecognizer,
+GrammarRecognizer, and KeywordRecognizer. 
+This capability is NOT required for the 'Select' 
+keyword.Recommendation: Only enable if your 
+application needs access to the microphone 
+beyond the 'Select' keyword.The microphone is 
+considered a privacy sensitive resource.");
+
+            capability(PlayerSettings.WSACapability.SpatialPerception, @"   SpatialPerception
+Required for access to the HoloLens world mapping
+capabilities. These include behaviors like 
+SurfaceObserver, SpatialMappingManager and 
+SpatialAnchor. Recommendation: Enabled unless 
+your application doesn't use spatial mapping or 
+spatial collisions in any way.");
+
+            capability(PlayerSettings.WSACapability.WebCam, @"  WebCam
+Required for access to the HoloLens RGB camera 
+(also known as the locatable camera). This 
+includes APIs like PhotoCapture and VideoCapture.
+This capability is NOT required for mixed reality
+streaming or for capture photos or videos from the
+start menu. Recommendation: Only enable if your 
+application needs access to capture raw photos or 
+videos from the RGB camera. The RGB camera is 
+considered a privacy sensitive resource.");
+
+            capability(PlayerSettings.WSACapability.InternetClient, @"  InternetClient
+Required if your application needs to access the 
+Internet. Recommendation: Leave unchecked
+unless your application needs to access online
+services.");
         }
 
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capabilities/Recommended with Internet Access", priority = 1)]
-        private static void ApplyRecommendedCapabilitiesWithInternetAccess()
+        void capability(PlayerSettings.WSACapability mCap,string tooltip)
         {
-            ApplyCommonCapabilities();
-            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
+            PlayerSettings.WSA.SetCapability(mCap, GUILayout.Toggle(PlayerSettings.WSA.GetCapability(mCap), new GUIContent(" " + mCap.ToString(), tooltip)));
         }
+
+
     }
 }
