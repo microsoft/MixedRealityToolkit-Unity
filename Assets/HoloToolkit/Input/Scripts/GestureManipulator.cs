@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -47,7 +46,7 @@ namespace HoloToolkit.Unity
 
         private void OnDisable()
         {
-            if (GestureManager.Instance)
+            if (GestureManager.Instance != null)
             {
                 GestureManager.Instance.ManipulationStarted -= BeginManipulation;
                 GestureManager.Instance.ManipulationCompleted -= EndManipulation;
@@ -79,7 +78,7 @@ namespace HoloToolkit.Unity
 
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Manipulating)
             {

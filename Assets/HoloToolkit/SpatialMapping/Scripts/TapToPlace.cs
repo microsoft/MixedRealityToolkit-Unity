@@ -26,25 +26,35 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Keeps track of anchors stored on local device.
         /// </summary>
-        WorldAnchorStore anchorStore = null;
+        private WorldAnchorStore anchorStore;
 
         /// <summary>
         /// Locally saved wold anchor.
         /// </summary>
-        WorldAnchor savedAnchor;
+        private WorldAnchor savedAnchor;
 
-        bool placing = false;
+        private bool placing;
 
-        void Start()
+        private void Start()
         {
             WorldAnchorStore.GetAsync(AnchorStoreReady);
+        }
+
+        private void OnEnable()
+        {
+            GestureManager.Instance.OnTap += OnTap;
+        }
+
+        private void OnDisable()
+        {
+            GestureManager.Instance.OnTap -= OnTap;
         }
 
         /// <summary>
         /// Called when the local anchor store is ready.
         /// </summary>
         /// <param name="store"></param>
-        void AnchorStoreReady(WorldAnchorStore store)
+        private void AnchorStoreReady(WorldAnchorStore store)
         {
             anchorStore = store;
 
@@ -65,7 +75,7 @@ namespace HoloToolkit.Unity
         }
 
         // Called by GazeGestureManager when the user performs a tap gesture.
-        void OnSelect()
+        private void OnTap(GameObject go)
         {
             if (SpatialMappingManager.Instance != null)
             {
@@ -149,15 +159,15 @@ namespace HoloToolkit.Unity
             }
         }
 
-        void Update()
+        private void Update()
         {
-                // If the user is in placing mode,
-                // update the placement to match the user's gaze.
-                if (placing)
+            // If the user is in placing mode,
+            // update the placement to match the user's gaze.
+            if (placing)
             {
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
-                var headPosition = Camera.main.transform.position;
-                var gazeDirection = Camera.main.transform.forward;
+                Vector3 headPosition = Camera.main.transform.position;
+                Vector3 gazeDirection = Camera.main.transform.forward;
 
                 RaycastHit hitInfo;
                 if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
@@ -169,13 +179,13 @@ namespace HoloToolkit.Unity
                     // to how the object is placed.  For example, consider
                     // placing based on the bottom of the object's
                     // collider so it sits properly on surfaces.
-                    this.transform.position = hitInfo.point;
+                    transform.position = hitInfo.point;
 
                     // Rotate this object to face the user.
                     Quaternion toQuat = Camera.main.transform.localRotation;
                     toQuat.x = 0;
                     toQuat.z = 0;
-                    this.transform.rotation = toQuat;
+                    transform.rotation = toQuat;
                 }
             }
         }
