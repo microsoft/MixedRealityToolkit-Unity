@@ -54,10 +54,12 @@ namespace HoloToolkit.Unity
     {
         // Inspector Variables
         [Tooltip("The audio source where speech will be played.")]
-        public AudioSource audioSource;
+        [SerializeField]
+        private AudioSource audioSource;
 
         [Tooltip("The voice that will be used to generate speech.")]
-        public TextToSpeechVoice voice;
+        [SerializeField]
+        private TextToSpeechVoice voice;
 
         // Member Variables
         #if WINDOWS_UWP
@@ -379,5 +381,15 @@ namespace HoloToolkit.Unity
             LogSpeech(text);
             #endif
         }
+
+        /// <summary>
+        /// Gets or sets the audio source where speech will be played.
+        /// </summary>
+        public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
+
+        /// <summary>
+        /// Gets or sets the voice that will be used to generate speech.
+        /// </summary>
+        public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
     }
 }

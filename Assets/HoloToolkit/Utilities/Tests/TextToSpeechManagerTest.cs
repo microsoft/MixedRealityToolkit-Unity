@@ -13,15 +13,6 @@ public class TextToSpeechManagerTest : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        #if WINDOWS_UWP
-        // var synthesizer = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
-        var voices = Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices;
-        foreach (var voice in voices)
-        {
-            Debug.Log("voice = " + voice.DisplayName);
-        }
-        #endif
-
         // Set up a GestureRecognizer to detect Select gestures.
         gestureRecognizer = new GestureRecognizer();
         gestureRecognizer.TappedEvent += GestureRecognizer_TappedEvent;
@@ -48,7 +39,7 @@ public class TextToSpeechManagerTest : MonoBehaviour
             if (tts != null)
             {
                 // Get the name
-                var voiceName = Enum.GetName(typeof(TextToSpeechVoice), tts.voice);
+                var voiceName = Enum.GetName(typeof(TextToSpeechVoice), tts.Voice);
 
                 // Create message
                 var msg = string.Format("This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.", voiceName);
