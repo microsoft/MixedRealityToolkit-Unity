@@ -437,6 +437,7 @@ namespace HoloToolkit.Unity
 
         private string CalcMostRecentBuild()
         {
+            UpdateBuilds();
             DateTime mostRecent = DateTime.MinValue;
             string mostRecentBuild = "";
             foreach (var fullBuildLocation in this.builds)

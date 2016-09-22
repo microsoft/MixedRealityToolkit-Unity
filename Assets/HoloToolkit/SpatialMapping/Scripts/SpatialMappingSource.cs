@@ -10,19 +10,21 @@ namespace HoloToolkit.Unity
     public class SpatialMappingSource : MonoBehaviour
     {
         /// <summary>
+        /// Surface object
+        /// </summary>
+        public struct SurfaceObject
+        {
+            public int ID;
+            public int UpdateID;
+            public GameObject Object;
+            public MeshRenderer Renderer;
+            public MeshFilter Filter;
+        }
+
+        /// <summary>
         /// Collection of surface objects that have been created for this spatial mapping source.
         /// </summary>
-        protected List<GameObject> surfaceObjects = new List<GameObject>();
-
-        /// <summary>
-        /// Collection of mesh renderers that have been created for this spatial mapping source.
-        /// </summary>
-        protected List<MeshRenderer> surfaceObjectRenderers = new List<MeshRenderer>();
-
-        /// <summary>
-        /// Collection of mesh filters that have been created for this spatial mapping source.
-        /// </summary>
-        protected List<MeshFilter> surfaceObjectMeshFilters = new List<MeshFilter>();
+        public List<SurfaceObject> SurfaceObjects { get; private set; }
 
         /// <summary>
         /// When a mesh is created we will need to create a game object with a minimum 
@@ -36,48 +38,96 @@ namespace HoloToolkit.Unity
         };
 
         /// <summary>
+        /// Material to use for rendering the mesh
+        /// </summary>
+        protected virtual Material RenderMaterial { get { return SpatialMappingManager.Instance.SurfaceMaterial; } }
+
+        protected virtual void Awake()
+        {
+            SurfaceObjects = new List<SurfaceObject>();
+        }
+
+        /// <summary>
         /// Creates a new surface game object.
         /// </summary>
         /// <param name="mesh">The mesh to attach. Can be null.</param>
         /// <param name="objectName">What to name this object.</param>
         /// <param name="parentObject">What to parent this object to.</param>
-        /// <param name="material">What material to use to draw this object.</param>
+        /// <param name="meshID">Optional user specified ID for the mesh.</param>
         /// <returns>The newly created game object.</returns>
-        protected GameObject AddSurfaceObject(Mesh mesh, string objectName, Transform parentObject)
+        protected GameObject AddSurfaceObject(Mesh mesh, string objectName, Transform parentObject, int meshID = 0)
         {
-            GameObject surface = new GameObject(objectName, componentsRequiredForSurfaceMesh);
-            surface.transform.SetParent(parentObject);
-            surfaceObjects.Add(surface);
+            SurfaceObject surfaceObject = new SurfaceObject();
+            surfaceObject.ID = meshID;
+            surfaceObject.UpdateID = 0;
 
-            MeshFilter surfaceMeshFilter = surface.GetComponent<MeshFilter>();
-            surfaceMeshFilter.sharedMesh = mesh;
-            surfaceObjectMeshFilters.Add(surfaceMeshFilter);
+            surfaceObject.Object = new GameObject(objectName, componentsRequiredForSurfaceMesh);
+            surfaceObject.Object.transform.SetParent(parentObject);
+            surfaceObject.Object.layer = SpatialMappingManager.Instance.PhysicsLayer;
 
+            surfaceObject.Filter = surfaceObject.Object.GetComponent<MeshFilter>();
+            surfaceObject.Filter.sharedMesh = mesh;
 
-            MeshRenderer surfaceMeshRenderer = surface.GetComponent<MeshRenderer>();
-            surfaceMeshRenderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
-            surfaceObjectRenderers.Add(surfaceMeshRenderer);
+            surfaceObject.Renderer = surfaceObject.Object.GetComponent<MeshRenderer>();
+            surfaceObject.Renderer.sharedMaterial = RenderMaterial;
 
-            surface.layer = SpatialMappingManager.Instance.PhysicsLayer;
-            return surface;
+            SurfaceObjects.Add(surfaceObject);
+
+            return surfaceObject.Object;
         }
 
         /// <summary>
-        /// When we aren't using a surface object any more we need to clean
-        /// up the cached objects we made for the surface.
+        /// Updates an existing surface object.
         /// </summary>
-        /// <param name="surfaceObject">The surface we aren't using anymore.</param>
-        protected void RemoveSurfaceObject(GameObject surfaceObject)
+        /// <param name="gameObject">Game object reference to the surfaceObject.</param>
+        /// <param name="meshID">User specified ID for the mesh.</param>
+        /// <returns>True if successful</returns>
+        protected void UpdateSurfaceObject(GameObject gameObject, int meshID)
         {
-            surfaceObjects.Remove(surfaceObject);
+            // If it's in the list, update it
+            for (int i = 0; i < SurfaceObjects.Count; ++i)
+            {
+                if (SurfaceObjects[i].Object == gameObject)
+                {
+                    SurfaceObject thisSurfaceObject = SurfaceObjects[i];
+                    thisSurfaceObject.ID = meshID;
+                    SurfaceObjects[i] = thisSurfaceObject;
+                    return;
+                }
+            }
 
-            MeshFilter filter = surfaceObject.GetComponent<MeshFilter>();
+            // Not in the list, add it
+            SurfaceObject surfaceObject = new SurfaceObject();
+            surfaceObject.ID = meshID;
+            surfaceObject.UpdateID = 0;
 
-            surfaceObjectMeshFilters.Remove(filter);
+            surfaceObject.Object = gameObject;
+            surfaceObject.Filter = surfaceObject.Object.GetComponent<MeshFilter>();
+            surfaceObject.Renderer = surfaceObject.Object.GetComponent<MeshRenderer>();
 
-            MeshRenderer surfaceMeshRenderer = surfaceObject.GetComponent<MeshRenderer>();
-            surfaceObjectRenderers.Remove(surfaceMeshRenderer);
-            Destroy(surfaceObject);
+            SurfaceObjects.Add(surfaceObject);
+        }
+
+        /// <summary>
+        /// Removes and optionally destroys the specified surfaceObject that we've created
+        /// </summary>
+        /// <param name="surface">The surface game object</param>
+        /// <param name="removeAndDestroy">If true, the surface will be removed and destroyed. If false, it will only be removed.</param>
+        protected void RemoveSurfaceObject(GameObject surface, bool removeAndDestroy = true)
+        {
+            // Remove it from our list
+            for (int index = 0; index < SurfaceObjects.Count; index++)
+            {
+                if (SurfaceObjects[index].Object == surface)
+                {
+                    if (removeAndDestroy)
+                    {
+                        Destroy(SurfaceObjects[index].Object);
+                    }
+                    SurfaceObjects.RemoveAt(index);
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -85,18 +135,11 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected void Cleanup()
         {
-            // For renderers and filters, clearing the lists is sufficient, 
-            // since renderers and filters are attached to the surface objects
-            // that we will call destroy on.
-            surfaceObjectRenderers.Clear();
-            surfaceObjectMeshFilters.Clear();
-
-            for (int index = 0; index < surfaceObjects.Count; index++)
+            for (int index = 0; index < SurfaceObjects.Count; index++)
             {
-                Destroy(surfaceObjects[index]);
+                Destroy(SurfaceObjects[index].Object);
             }
-
-            surfaceObjects.Clear();
+            SurfaceObjects.Clear();
         }
 
         /// <summary>
@@ -107,11 +150,13 @@ namespace HoloToolkit.Unity
         {
             List<MeshFilter> meshFilters = new List<MeshFilter>();
 
-            foreach (MeshFilter filter in surfaceObjectMeshFilters)
+            for (int index = 0; index < SurfaceObjects.Count; index++)
             {
-                if (filter != null && filter.sharedMesh != null && filter.sharedMesh.vertexCount > 2)
+                if (SurfaceObjects[index].Filter != null &&
+                    SurfaceObjects[index].Filter.sharedMesh != null &&
+                    SurfaceObjects[index].Filter.sharedMesh.vertexCount > 2)
                 {
-                    meshFilters.Add(filter);
+                    meshFilters.Add(SurfaceObjects[index].Filter);
                 }
             }
 
@@ -124,7 +169,17 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         virtual public List<MeshRenderer> GetMeshRenderers()
         {
-            return surfaceObjectRenderers;
+            List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+
+            for (int index = 0; index < SurfaceObjects.Count; index++)
+            {
+                if (SurfaceObjects[index].Renderer != null)
+                {
+                    meshRenderers.Add(SurfaceObjects[index].Renderer);
+                }
+            }
+
+            return meshRenderers;
         }
     }
 }
