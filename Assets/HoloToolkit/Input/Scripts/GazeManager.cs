@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.VR.WSA;
 
 namespace HoloToolkit.Unity
 {
@@ -11,6 +10,20 @@ namespace HoloToolkit.Unity
     /// </summary>
     public partial class GazeManager : Singleton<GazeManager>
     {
+        /// <summary>
+        /// Occurs when gaze enters a GameObjects collider.
+        /// </summary>
+        /// <param name="g"></param>
+        public delegate void OnGazeEnterEvent(GameObject g);
+        public event OnGazeEnterEvent OnGazeEnter;
+
+        /// <summary>
+        /// Occurs when gaze exits a GameObjects collider.
+        /// </summary>
+        /// <param name="g"></param>
+        public delegate void OnGazeExitEvent(GameObject g);
+        public event OnGazeEnterEvent OnGazeExit;
+
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]
         public float MaxGazeDistance = 15.0f;
 
@@ -100,13 +113,13 @@ namespace HoloToolkit.Unity
             // Check if the currently hit object has changed
             if (oldFocusedObject != FocusedObject)
             {
-                if (oldFocusedObject != null)
+                if (oldFocusedObject != null && OnGazeExit != null)
                 {
-                    oldFocusedObject.SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
+                    OnGazeExit(oldFocusedObject);
                 }
-                if (FocusedObject != null)
+                if (FocusedObject != null && OnGazeEnter != null)
                 {
-                    FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
+                    OnGazeEnter(FocusedObject);
                 }
             }
         }
@@ -127,7 +140,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            if (StabilizationPlaneModifier.Instance)
+            if (StabilizationPlaneModifier.Instance != null)
             {
                 StabilizationPlaneModifier.Instance.SetStabilizationPlane = SetStabilizationPlane;
             }
