@@ -12,8 +12,9 @@ namespace HoloToolkit.Unity
     /// Tap and Manipulation.
     /// </summary>
     /// <remarks>
+    /// Using the Gesture Manager requires a GameObject component to subscribe to the OnTap event.
     /// When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
-    /// GestureManager then sends a message to that game object.
+    /// See TODO: "Link to HTK documentation" for examples of usage.
     /// 
     /// Using Manipulation requires subscribing the the ManipulationStarted events and then querying
     /// information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition
@@ -91,12 +92,16 @@ namespace HoloToolkit.Unity
         }
 
         private GestureRecognizer gestureRecognizer;
-        // We use a separate manipulation recognizer here because the tap gesture recognizer cancels
-        // capturing gestures whenever the GazeManager focus changes, which is not the behavior
-        // we want for manipulation
+
+        /// <summary>
+        /// We use a separate manipulation recognizer here because the tap gesture recognizer cancels
+        /// capturing gestures whenever the GazeManager focus changes, which is not the behavior
+        /// we want for manipulation.
+        /// </summary>
         private GestureRecognizer manipulationRecognizer;
 
         private bool HandPressed { get { return pressedHands.Count > 0; } }
+
         private HashSet<uint> pressedHands = new HashSet<uint>();
 
         private InteractionSourceState currentHandState;
@@ -286,7 +291,7 @@ namespace HoloToolkit.Unity
         private void ThrowDeprecatedWarning()
         {
             // For more information see: TODO:Link to HoloToolkit Documentation.
-            Debug.LogWarning( "Using SendMessage is not recommended in the HoloToolkit and has been replaced by the OnTap delegate event." );
+            Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by the OnTap delegate event.");
         }
     }
 }
