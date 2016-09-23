@@ -44,8 +44,8 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Occurs when a user calls the TappedEvent from the gesture recognizer.
         /// </summary>
-        /// <param name="g">Selected GameObject User has tapped.</param>
-        public delegate void OnTapEvent(GameObject g);
+        /// <param name="tappedObject">Selected GameObject User has tapped.</param>
+        public delegate void OnTapEvent(GameObject tappedObject);
         public event OnTapEvent OnTap;
 
         /// <summary>
@@ -162,10 +162,10 @@ namespace HoloToolkit.Unity
 
         private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
-            SendOnTap();
+            ProcessTap();
         }
 
-        private void SendOnTap()
+        private void ProcessTap()
         {
             if (FocusedObject != null)
             {
@@ -251,7 +251,7 @@ namespace HoloToolkit.Unity
 #if UNITY_EDITOR
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
             {
-                SendOnTap();
+                ProcessTap();
             }
 #endif
         }

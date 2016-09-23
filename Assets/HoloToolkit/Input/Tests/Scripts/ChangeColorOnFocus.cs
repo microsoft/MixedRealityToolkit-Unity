@@ -23,10 +23,10 @@ public class ChangeColorOnFocus : Interactable
         originalColor = materialInstance.color;
     }
 
-    protected override void OnGazeEnter(GameObject go)
+    protected override void OnGazeEnter(GameObject focusedObject)
     {
         // Check to make sure we're the game object our gaze has entered
-        if (go == gameObject)
+        if (focusedObject == gameObject)
         {
             materialInstance.color = focusedColor;
         }

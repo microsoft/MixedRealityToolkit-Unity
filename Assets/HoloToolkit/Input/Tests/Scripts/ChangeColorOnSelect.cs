@@ -24,10 +24,10 @@ public class ChangeColorOnSelect : Interactable
         originalColor = materialInstance.color;
     }
 
-    protected override void OnTap(GameObject go)
+    protected override void OnTap(GameObject tappedGameObject)
     {
         // Check to make sure this is the game object we've tapped
-        if (go == gameObject)
+        if (tappedGameObject == gameObject)
         {
             materialInstance.color = selectedColor;
         }

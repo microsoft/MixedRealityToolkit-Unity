@@ -29,10 +29,10 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Called when a user has tapped any gameObject.
         /// </summary>
-        /// <param name="go">GameObject user has tapped.</param>
-        protected virtual void OnTap(GameObject go)
+        /// <param name="tappedGameObject">GameObject user has tapped.</param>
+        protected virtual void OnTap(GameObject tappedGameObject)
         {
-            if (go == gameObject)
+            if (tappedGameObject == gameObject)
             {
                 // Do something if our gameObject has been tapped
             }
@@ -45,10 +45,10 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Called when a user's gaze enters any gameObject.
         /// </summary>
-        /// <param name="go">The GameObject that the users gaze has entered.</param>
-        protected virtual void OnGazeEnter(GameObject go)
+        /// <param name="focusedObject">The GameObject that the users gaze has entered.</param>
+        protected virtual void OnGazeEnter(GameObject focusedObject)
         {
-            if (go == gameObject)
+            if (focusedObject == gameObject)
             {
                 // Do something if our gaze has entered this gameObject
             }
@@ -61,10 +61,10 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Called when a user's gaze exits any gameObject.
         /// </summary>
-        /// <param name="go">The GameObject that the users gaze has left.</param>
-        protected virtual void OnGazeExit(GameObject go)
+        /// <param name="focusedObject">The GameObject that the users gaze has left.</param>
+        protected virtual void OnGazeExit(GameObject focusedObject)
         {
-            if(go == gameObject)
+            if(focusedObject == gameObject)
             {
                 // Do something if our gaze has left this gameObject
             }
@@ -80,7 +80,7 @@ namespace HoloToolkit.Unity
         /// <param name="keyword">Spoke Keyword.</param>
         protected virtual void KeywordRecognized(string keyword)
         {
-            if (keyword.Equals("string"))
+            if (keyword.Equals("replace with your keyword"))
             {
                 // Do Something if our spoken keyword matches our string.
             }
