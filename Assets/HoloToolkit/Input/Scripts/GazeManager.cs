@@ -113,13 +113,25 @@ namespace HoloToolkit.Unity
             // Check if the currently hit object has changed
             if (oldFocusedObject != FocusedObject)
             {
-                if (oldFocusedObject != null && OnGazeExit != null)
+                if (oldFocusedObject != null)
                 {
-                    OnGazeExit(oldFocusedObject);
+                    if (OnGazeExit != null)
+                    {
+                        OnGazeExit(oldFocusedObject);
+                    }
+
+                    // Obsolete! Please subscribe to OnGazeExit event.
+                    oldFocusedObject.SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
                 }
-                if (FocusedObject != null && OnGazeEnter != null)
+                if (FocusedObject != null)
                 {
-                    OnGazeEnter(FocusedObject);
+                    if (OnGazeEnter != null)
+                    {
+                        OnGazeEnter(FocusedObject);
+                    }
+
+                    // Obsolete! Please subscribe to OnGazeEnter event.
+                    FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
                 }
             }
         }

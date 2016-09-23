@@ -162,9 +162,15 @@ namespace HoloToolkit.Unity
 
         private void SendOnTap()
         {
-            if (FocusedObject != null && OnTap != null)
+            if (FocusedObject != null)
             {
-                OnTap(FocusedObject);
+                if (OnTap != null)
+                {
+                    OnTap(FocusedObject);
+                }
+
+                // Obsolete!  Please subscribe to OnTap event.
+                FocusedObject.SendMessage("OnSelect", SendMessageOptions.DontRequireReceiver);
             }
         }
 
@@ -260,6 +266,27 @@ namespace HoloToolkit.Unity
             InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
             InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
             InteractionManager.SourceLost -= InteractionManager_SourceLost;
+        }
+
+        private void OnSelect()
+        {
+            ThrowDeprecatedWarning();
+        }
+
+        private void OnGazeLeave()
+        {
+            ThrowDeprecatedWarning();
+        }
+
+        private void OnGazeEnter()
+        {
+            ThrowDeprecatedWarning();
+        }
+
+        private void ThrowDeprecatedWarning()
+        {
+            // For more information see: TODO:Link to HoloToolkit Documentation.
+            Debug.LogWarning( "Using SendMessage is not recommended in the HoloToolkit and has been replaced by the OnTap delegate event." );
         }
     }
 }
