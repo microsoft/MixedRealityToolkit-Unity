@@ -2,18 +2,24 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.VR.WSA;
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
     /// GazeManager determines the location of the user's gaze, hit position and normals.
     /// </summary>
+    [RequireComponent(typeof(GazeStabilizer))]
     public partial class GazeManager : Singleton<GazeManager>
     {
+        /// <summary>
+        /// Maximum gaze distance, in meters, for calculating a hit from a GameOjects Collider.
+        /// </summary>
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]
         public float MaxGazeDistance = 15.0f;
 
+        /// <summary>
+        /// Select the layers raycast should target.
+        /// </summary>
         [Tooltip("Select the layers raycast should target.")]
         public LayerMask RaycastLayerMask = Physics.DefaultRaycastLayers;
 
@@ -23,8 +29,7 @@ namespace HoloToolkit.Unity
         public bool Hit { get; private set; }
 
         /// <summary>
-        /// HitInfo property gives access
-        /// to RaycastHit public members.
+        /// HitInfo property gives access to RaycastHit public members.
         /// </summary>
         public RaycastHit HitInfo { get; private set; }
 
@@ -43,21 +48,46 @@ namespace HoloToolkit.Unity
         /// </summary>
         public GameObject FocusedObject { get; private set; }
 
+        /// <summary>
+        /// Checking enables SetFocusPointForFrame to set the stabilization plane.
+        /// </summary>
         [Tooltip("Checking enables SetFocusPointForFrame to set the stabilization plane.")]
         public bool SetStabilizationPlane = true;
+
+        /// <summary>
+        /// Lerp speed when moving focus point closer.
+        /// </summary>
         [Tooltip("Lerp speed when moving focus point closer.")]
         public float LerpStabilizationPlanePowerCloser = 4.0f;
+
+        /// <summary>
+        /// Lerp speed when moving focus point farther away.
+        /// </summary>
         [Tooltip("Lerp speed when moving focus point farther away.")]
         public float LerpStabilizationPlanePowerFarther = 7.0f;
 
+        /// <summary>
+        /// Helper class that stabilizes gaze using gravity wells
+        /// </summary>
+        public GazeStabilizer GazeStabilization;
+
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
+        private Quaternion gazeRotation;
         private float lastHitDistance = 15.0f;
+
+        private void Awake()
+        {
+            GazeStabilization = gameObject.GetComponent<GazeStabilizer>();
+        }
 
         private void Update()
         {
             gazeOrigin = Camera.main.transform.position;
             gazeDirection = Camera.main.transform.forward;
+            gazeRotation = Camera.main.transform.rotation;
+
+            GazeStabilization.UpdateHeadStability(gazeOrigin, gazeRotation);
 
             UpdateRaycast();
             UpdateStabilizationPlane();
@@ -70,13 +100,10 @@ namespace HoloToolkit.Unity
         {
             // Get the raycast hit information from Unity's physics system.
             RaycastHit hitInfo;
-            Hit = Physics.Raycast(gazeOrigin,
-                           gazeDirection,
-                           out hitInfo,
-                           MaxGazeDistance,
-                           RaycastLayerMask);
+            Hit = Physics.Raycast(GazeStabilization.StableHeadRay, out hitInfo, MaxGazeDistance, RaycastLayerMask);
 
             GameObject oldFocusedObject = FocusedObject;
+
             // Update the HitInfo property so other classes can use this hit information.
             HitInfo = hitInfo;
 
@@ -127,7 +154,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            if (StabilizationPlaneModifier.Instance)
+            if (StabilizationPlaneModifier.Instance != null)
             {
                 StabilizationPlaneModifier.Instance.SetStabilizationPlane = SetStabilizationPlane;
             }
