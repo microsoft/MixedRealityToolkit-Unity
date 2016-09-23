@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Base class Interactable GameObjects can inherit from
+    /// Base class Interactable GameObjects can inherit from.
     /// </summary>
     public class Interactable : MonoBehaviour
     {
@@ -27,58 +27,62 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Called when a user has tapped any gameObject
+        /// Called when a user has tapped any gameObject.
         /// </summary>
-        /// <param name="go"></param>
+        /// <param name="go">GameObject user has tapped.</param>
         protected virtual void OnTap(GameObject go)
         {
             if (go == gameObject)
             {
-                //Do something if our gameObject has been tapped
+                // Do something if our gameObject has been tapped
             }
             else
             {
-                //Do something if we've tapped any object except for our own
+                // Do something if we've tapped any object except for our own
             }
         }
 
         /// <summary>
-        /// Called when a user's gaze enters any gameObject
+        /// Called when a user's gaze enters any gameObject.
         /// </summary>
-        /// <param name="go"></param>
+        /// <param name="go">The GameObject that the users gaze has entered.</param>
         protected virtual void OnGazeEnter(GameObject go)
         {
-            if( go == gameObject )
+            if (go == gameObject)
             {
-                //Do something if our gaze has entered this gameObject
+                // Do something if our gaze has entered this gameObject
             }
             else
             {
-                //Do something if our gaze has entered another gameObject
+                // Do something if our gaze has entered another gameObject
             }
         }
 
         /// <summary>
-        /// Called when a user's gaze exits any gameObject
+        /// Called when a user's gaze exits any gameObject.
         /// </summary>
-        /// <param name="go"></param>
+        /// <param name="go">The GameObject that the users gaze has left.</param>
         protected virtual void OnGazeExit(GameObject go)
         {
-            if( go == gameObject )
+            if(go == gameObject)
             {
-                //Do something if our gaze has left this gameObject
+                // Do something if our gaze has left this gameObject
             }
             else
             {
-                //Do something if our gaze has left another gameObject
+                // Do something if our gaze has left another gameObject
             }
         }
 
+        /// <summary>
+        /// Called when the Keyword Manager recognizes a spoken keyword.
+        /// </summary>
+        /// <param name="keyword">Spoke Keyword.</param>
         protected virtual void KeywordRecognized(string keyword)
         {
-            if ( keyword.Equals( "String" ) )
+            if (keyword.Equals("string"))
             {
-                //Do Something if our spoken keyword matches our string.
+                // Do Something if our spoken keyword matches our string.
             }
         }
     }

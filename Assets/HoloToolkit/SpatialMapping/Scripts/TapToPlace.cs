@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Called when the local anchor store is ready.
         /// </summary>
-        /// <param name="store"></param>
+        /// <param name="store">Anchor Store.</param>
         private void AnchorStoreReady(WorldAnchorStore store)
         {
             anchorStore = store;
@@ -63,14 +63,14 @@ namespace HoloToolkit.Unity
             if (savedAnchor == null)
             {
                 // Either world anchor was not saved / does not exist or has a different name.
-                Debug.Log(gameObject.name + " : "+ "World anchor could not be loaded for this game object. Creating a new anchor.");
+                Debug.LogFormat("{0} : World anchor could not be loaded for this game object. Creating a new anchor.", gameObject.name);
 
                 // Create anchor since one does not exist.
                 CreateAnchor();
             }
             else
             {
-                Debug.Log(gameObject.name + " : " + "World anchor loaded from anchor store and updated for this game object.");
+                Debug.LogFormat("{0} : World anchor loaded from anchor store and updated for this game object.", gameObject.name);
             }
         }
 
@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity
                 {
                     SpatialMappingManager.Instance.DrawVisualMeshes = true;
 
-                    Debug.Log(gameObject.name + " : " + "Removing existing world anchor if any.");
+                    Debug.LogFormat("{0} : Removing existing world anchor if any.", gameObject.name);
 
                     // Remove existing world anchor when moving an object.
                     DestroyImmediate(gameObject.GetComponent<WorldAnchor>());
@@ -136,11 +136,11 @@ namespace HoloToolkit.Unity
             // Save the anchor to persist holograms across sessions.
             if (anchorStore.Save(SavedAnchorFriendlyName, anchor))
             {
-                Debug.Log(gameObject.name + " : " + "World anchor saved successfully.");
+                Debug.LogFormat("{0} : World anchor saved successfully.", gameObject.name);
             }
             else
             {
-                Debug.LogError(gameObject.name + " : " + "World anchor save failed.");
+                Debug.LogErrorFormat("{0} : World anchor save failed.", gameObject.name);
             }
         }
 
@@ -148,14 +148,14 @@ namespace HoloToolkit.Unity
         {
             if (located)
             {
-                Debug.Log(gameObject.name + " : " + "World anchor located successfully.");
+                Debug.LogFormat("{0} : World anchor located successfully.", gameObject.name);
 
                 SaveAnchor(self);
                 self.OnTrackingChanged -= Anchor_OnTrackingChanged;
             }
             else
             {
-                Debug.LogError(gameObject.name + " : " + "World anchor failed to locate.");
+                Debug.LogErrorFormat("{0} : World anchor failed to be located.", gameObject.name);
             }
         }
 

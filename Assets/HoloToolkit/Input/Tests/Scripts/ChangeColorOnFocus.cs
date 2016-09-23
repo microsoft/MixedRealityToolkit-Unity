@@ -25,7 +25,7 @@ public class ChangeColorOnFocus : Interactable
 
     protected override void OnGazeEnter(GameObject go)
     {
-        //Check to make sure we're the game object our gaze has entered
+        // Check to make sure we're the game object our gaze has entered
         if (go == gameObject)
         {
             materialInstance.color = focusedColor;
@@ -34,7 +34,7 @@ public class ChangeColorOnFocus : Interactable
 
     protected override void OnGazeExit(GameObject go)
     {
-        //Check to make sure we're the game object our gaze has left
+        // Check to make sure we're the game object our gaze has left
         if (go == gameObject)
         {
             materialInstance.color = originalColor;

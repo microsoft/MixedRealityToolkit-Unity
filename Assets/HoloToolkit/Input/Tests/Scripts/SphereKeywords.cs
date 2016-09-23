@@ -8,17 +8,17 @@ public class SphereKeywords : Interactable
 {
     protected override void KeywordRecognized(string keyword)
     {
-        switch(keyword.ToLower())
+        if (keyword.Equals("red"))
         {
-            case "red":
-                GetComponent<Renderer>().material.color = Color.red;
-                break;
-            case "blue":
-                GetComponent<Renderer>().material.color = Color.blue;
-                break;
-            case "green":
-                GetComponent<Renderer>().material.color = Color.green;
-                break;
+            GetComponent<Renderer>().material.color = Color.red;
+        }
+        else if (keyword.Equals("blue"))
+        {
+            GetComponent<Renderer>().material.color = Color.blue;
+        }
+        else if (keyword.Equals("green"))
+        {
+            GetComponent<Renderer>().material.color = Color.green;
         }
     }
 }
