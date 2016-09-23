@@ -13,14 +13,14 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Occurs when gaze enters a GameObjects collider.
         /// </summary>
-        /// <param name="g"></param>
+        /// <param name="g">The GameObject you gaze has entered.</param>
         public delegate void OnGazeEnterEvent(GameObject g);
         public event OnGazeEnterEvent OnGazeEnter;
 
         /// <summary>
         /// Occurs when gaze exits a GameObjects collider.
         /// </summary>
-        /// <param name="g"></param>
+        /// <param name="g">The GameObject you gaze has left.</param>
         public delegate void OnGazeExitEvent(GameObject g);
         public event OnGazeEnterEvent OnGazeExit;
 

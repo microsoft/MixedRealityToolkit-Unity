@@ -16,44 +16,60 @@ namespace HoloToolkit.Unity
     /// IMPORTANT: Please make sure to add the microphone capability in your app, in Unity under
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
+    /// 
+    /// Please, also make sure to also set your keyword responses in the Inspector window under Keywords and Responses Array.
     /// </summary>
     public partial class KeywordManager : Singleton<KeywordManager>
     {
         /// <summary>
-        /// Occurs when a registered keyword is spoken
+        /// Occurs when a registered keyword is spoken.
         /// </summary>
-        /// <param name="keyword">keyword</param>
+        /// <param name="keyword">Keyword spoken.</param>
         public delegate void OnKeywordRecognizedEvent(string keyword);
         public event OnKeywordRecognizedEvent OnKeywordRecognized;
 
-        [ System.Serializable]
+        [System.Serializable]
         public struct KeywordAndResponse
         {
             [Tooltip("The keyword to recognize.")]
             public string Keyword;
+
             [Tooltip("The KeyCode to recognize.")]
             public KeyCode KeyCode;
         }
 
-        // This enumeration gives the manager two different ways to handle the recognizer. Both will
-        // set up the recognizer and add all keywords. The first causes the recognizer to start
-        // immediately. The second allows the recognizer to be manually started at a later time.
+        /// <summary>
+        /// This enumeration gives the manager two different ways to handle the recognizer. Both will
+        /// set up the recognizer and add all keywords. The first causes the recognizer to start
+        /// immediately. The second allows the recognizer to be manually started at a later time.
+        /// </summary>
         public enum RecognizerStartBehavior { AutoStart, ManualStart }
 
+        /// <summary>
+        /// An enumeration to set whether the recognizer should start on or off.
+        /// </summary>
         [Tooltip("An enumeration to set whether the recognizer should start on or off.")]
         public RecognizerStartBehavior RecognizerStart;
 
-        [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
+        /// <summary>
+        /// An array of string keywords and their corresponding key codes to be set in the Inspector.
+        /// </summary>
+        [Tooltip("An array of string keywords and their corresponding key codes.")]
         public KeywordAndResponse[] KeywordsAndResponses;
 
         private KeywordRecognizer keywordRecognizer;
+
+        /// <summary>
+        /// Intentionally left uninitialized in code.
+        /// Keywords should be set in the Inspector window under Keywords and Responses Array.
+        /// </summary>
         private List<string> responses = null;
 
         private void Start()
         {
             if (KeywordsAndResponses.Length == 0)
             {
-                Debug.LogError( "Must have at least one keyword specified in the Inspector on " + gameObject.name + "." );
+                Debug.LogFormat("Must have at least one keyword specified in the Inspector on {0}.", gameObject.name);
                 return;
             }
 
@@ -109,7 +125,7 @@ namespace HoloToolkit.Unity
         {
             if (OnKeywordRecognized != null && responses.Contains(args.text))
             {
-                OnKeywordRecognized(args.text.ToLower());
+                OnKeywordRecognized(args.text);
             }
         }
 
