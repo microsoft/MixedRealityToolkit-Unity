@@ -6,19 +6,26 @@ using UnityEngine;
 
 public class SphereKeywords : Interactable
 {
+    private Material materialInstance;
+
+    private void Start()
+    {
+        materialInstance = GetComponent<Renderer>().material;
+    }
+
     protected override void KeywordRecognized(string keyword)
     {
         if (keyword.Equals("red"))
         {
-            GetComponent<Renderer>().material.color = Color.red;
+            materialInstance.color = Color.red;
         }
         else if (keyword.Equals("blue"))
         {
-            GetComponent<Renderer>().material.color = Color.blue;
+            materialInstance.color = Color.blue;
         }
         else if (keyword.Equals("green"))
         {
-            GetComponent<Renderer>().material.color = Color.green;
+            materialInstance.color = Color.green;
         }
     }
 }
