@@ -24,6 +24,24 @@ namespace HoloToolkit.Unity
         public LayerMask RaycastLayerMask = Physics.DefaultRaycastLayers;
 
         /// <summary>
+        /// Checking enables SetFocusPointForFrame to set the stabilization plane.
+        /// </summary>
+        [Tooltip( "Checking enables SetFocusPointForFrame to set the stabilization plane." )]
+        public bool SetStabilizationPlane = true;
+
+        /// <summary>
+        /// Lerp speed when moving focus point closer.
+        /// </summary>
+        [Tooltip( "Lerp speed when moving focus point closer." )]
+        public float LerpStabilizationPlanePowerCloser = 4.0f;
+
+        /// <summary>
+        /// Lerp speed when moving focus point farther away.
+        /// </summary>
+        [Tooltip( "Lerp speed when moving focus point farther away." )]
+        public float LerpStabilizationPlanePowerFarther = 7.0f;
+
+        /// <summary>
         /// Physics.Raycast result is true if it hits a hologram.
         /// </summary>
         public bool Hit { get; private set; }
@@ -49,27 +67,9 @@ namespace HoloToolkit.Unity
         public GameObject FocusedObject { get; private set; }
 
         /// <summary>
-        /// Checking enables SetFocusPointForFrame to set the stabilization plane.
-        /// </summary>
-        [Tooltip("Checking enables SetFocusPointForFrame to set the stabilization plane.")]
-        public bool SetStabilizationPlane = true;
-
-        /// <summary>
-        /// Lerp speed when moving focus point closer.
-        /// </summary>
-        [Tooltip("Lerp speed when moving focus point closer.")]
-        public float LerpStabilizationPlanePowerCloser = 4.0f;
-
-        /// <summary>
-        /// Lerp speed when moving focus point farther away.
-        /// </summary>
-        [Tooltip("Lerp speed when moving focus point farther away.")]
-        public float LerpStabilizationPlanePowerFarther = 7.0f;
-
-        /// <summary>
         /// Helper class that stabilizes gaze using gravity wells
         /// </summary>
-        public GazeStabilizer GazeStabilization;
+        public GazeStabilizer GazeStabilization { get; private set; }
 
         private Vector3 gazeOrigin;
         private Vector3 gazeDirection;
