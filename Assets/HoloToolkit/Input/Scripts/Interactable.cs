@@ -10,6 +10,10 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class Interactable : MonoBehaviour
     {
+        protected bool TriggerKeywordOnGazeOnly;
+
+        protected bool IsFocused;
+
         protected virtual void OnEnable()
         {
             GestureManager.Instance.OnTap += OnTap;
@@ -50,6 +54,7 @@ namespace HoloToolkit.Unity
         {
             if (focusedObject == gameObject)
             {
+                IsFocused = true;
                 // Do something if our gaze has entered this gameObject
             }
             else
@@ -66,6 +71,7 @@ namespace HoloToolkit.Unity
         {
             if(focusedObject == gameObject)
             {
+                IsFocused = false;
                 // Do something if our gaze has left this gameObject
             }
             else
@@ -80,6 +86,11 @@ namespace HoloToolkit.Unity
         /// <param name="keyword">Spoke Keyword.</param>
         protected virtual void KeywordRecognized(string keyword)
         {
+            if (TriggerKeywordOnGazeOnly && !IsFocused)
+            {
+                return;
+            }
+
             if (keyword.Equals("replace with your keyword"))
             {
                 // Do Something if our spoken keyword matches our string.
