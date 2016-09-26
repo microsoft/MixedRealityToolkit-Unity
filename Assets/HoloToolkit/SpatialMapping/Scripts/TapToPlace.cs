@@ -26,42 +26,64 @@ namespace HoloToolkit.Unity
         /// </summary>
         WorldAnchorManager anchorManager;
 
+        /// <summary>
+        /// Controls spatial mapping.  In this script we access spatialMappingManager
+        /// to control rendering and to access the physics layer mask.
+        /// </summary>
+        SpatialMappingManager spatialMappingManager;
+
+        /// <summary>
+        /// Keeps track of if the user is moving the object or not.
+        /// </summary>
         bool placing = false;
 
         void Start()
         {
+            // Make sure we have all the components in the scene we need.
             anchorManager = WorldAnchorManager.Instance;
-            anchorManager.AttachAnchor(this.gameObject, SavedAnchorFriendlyName);
+            if (anchorManager == null)
+            {
+                Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
+            }
+
+            spatialMappingManager = SpatialMappingManager.Instance;
+            if (spatialMappingManager == null)
+            {
+                Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
+            }
+
+            if (anchorManager != null && spatialMappingManager != null)
+            {
+                anchorManager.AttachAnchor(this.gameObject, SavedAnchorFriendlyName);
+            }
+            else
+            {
+                // If we don't have what we need to proceed, we may as well remove ourselves.
+                Destroy(this);
+            }
         }
 
         // Called by GazeGestureManager when the user performs a tap gesture.
         void OnSelect()
         {
-            if (SpatialMappingManager.Instance != null)
+            // On each tap gesture, toggle whether the user is in placing mode.
+            placing = !placing;
+
+            // If the user is in placing mode, display the spatial mapping mesh.
+            if (placing)
             {
-                // On each tap gesture, toggle whether the user is in placing mode.
-                placing = !placing;
+                spatialMappingManager.DrawVisualMeshes = true;
 
-                // If the user is in placing mode, display the spatial mapping mesh.
-                if (placing)
-                {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = true;
+                Debug.Log(gameObject.name + " : Removing existing world anchor if any.");
 
-                    Debug.Log(gameObject.name + " : Removing existing world anchor if any.");
-
-                    anchorManager.RemoveAnchor(gameObject);
-                }
-                // If the user is not in placing mode, hide the spatial mapping mesh.
-                else
-                {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = false;
-                    // Add world anchor when object placement is done.
-                    anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-                }
+                anchorManager.RemoveAnchor(gameObject);
             }
+            // If the user is not in placing mode, hide the spatial mapping mesh.
             else
             {
-                Debug.Log("TapToPlace requires spatial mapping.  Try adding SpatialMapping prefab to project.");
+                spatialMappingManager.DrawVisualMeshes = false;
+                // Add world anchor when object placement is done.
+                anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
             }
         }
 
@@ -77,7 +99,7 @@ namespace HoloToolkit.Unity
 
                 RaycastHit hitInfo;
                 if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
-                    30.0f, SpatialMappingManager.Instance.LayerMask))
+                    30.0f, spatialMappingManager.LayerMask))
                 {
                     // Move this object to where the raycast
                     // hit the Spatial Mapping mesh.

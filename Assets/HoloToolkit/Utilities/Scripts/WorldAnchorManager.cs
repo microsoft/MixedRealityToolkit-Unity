@@ -23,8 +23,8 @@ namespace HoloToolkit.Unity
         /// </summary>
         private struct AnchorAttachmentInfo
         {
-            public GameObject gameObjectToAnchor { get; set; }
-            public string anchorName { get; set; }
+            public GameObject GameObjectToAnchor { get; set; }
+            public string AnchorName { get; set; }
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace HoloToolkit.Unity
         /// The WorldAnchorStore for the current application.  
         /// Can be null when the application starts.
         /// </summary>
-        public WorldAnchorStore anchorStore { get; set; }
+        public WorldAnchorStore AnchorStore { get; private set; }
 
         /// <summary>
         /// Callback function that contains the WorldAnchorStore object.
@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity
         /// <param name="Store">The WorldAnchorStore to cache.</param>
         void AnchorStoreReady(WorldAnchorStore Store)
         {
-            anchorStore = Store;
+            AnchorStore = Store;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         void Awake()
         {
-            anchorStore = null;
+            AnchorStore = null;
             WorldAnchorStore.GetAsync(AnchorStoreReady);
         }
 
@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         void Update()
         {
-            if (anchorStore != null && anchorOperations.Count > 0)
+            if (AnchorStore != null && anchorOperations.Count > 0)
             {
                 DoAnchorOperation(anchorOperations.Dequeue());
             }
@@ -73,8 +73,8 @@ namespace HoloToolkit.Unity
         /// a new anchor will be saved under the specified name.
         /// </summary>
         /// <param name="gameObjectToAnchor">The Gameobject to attach the anchor to.</param>
-        /// <param name="AnchorName">Name of the anchor.</param>
-        public void AttachAnchor(GameObject gameObjectToAnchor, string AnchorName)
+        /// <param name="anchorName">Name of the anchor.</param>
+        public void AttachAnchor(GameObject gameObjectToAnchor, string anchorName)
         {
             if (gameObjectToAnchor == null)
             {
@@ -82,7 +82,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            if (string.IsNullOrEmpty(AnchorName))
+            if (string.IsNullOrEmpty(anchorName))
             {
                 Debug.LogError("Must supply an AnchorName.");
                 return;
@@ -91,8 +91,8 @@ namespace HoloToolkit.Unity
             anchorOperations.Enqueue(
                 new AnchorAttachmentInfo()
                 {
-                    gameObjectToAnchor = gameObjectToAnchor,
-                    anchorName = AnchorName
+                    GameObjectToAnchor = gameObjectToAnchor,
+                    AnchorName = anchorName
                 }
                 );
         }
@@ -105,7 +105,7 @@ namespace HoloToolkit.Unity
         public void RemoveAnchor(GameObject gameObjectToUnanchor)
         {
             // This case is unexpected, but just in case.
-            if (anchorStore == null)
+            if (AnchorStore == null)
             {
                 Debug.LogError("remove anchor called before anchor store is ready.");
             }
@@ -114,7 +114,7 @@ namespace HoloToolkit.Unity
 
             if (anchor != null)
             {
-                anchorStore.Delete(anchor.name);
+                AnchorStore.Delete(anchor.name);
                 DestroyImmediate(anchor);
             }
         }
@@ -125,8 +125,8 @@ namespace HoloToolkit.Unity
         /// <param name="anchorAttachmentInfo">Parameters for attaching the anchor.</param>
         void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
         {
-            string AnchorName = anchorAttachmentInfo.anchorName;
-            GameObject gameObjectToAnchor = anchorAttachmentInfo.gameObjectToAnchor;
+            string AnchorName = anchorAttachmentInfo.AnchorName;
+            GameObject gameObjectToAnchor = anchorAttachmentInfo.GameObjectToAnchor;
 
             if (gameObjectToAnchor == null)
             {
@@ -135,7 +135,7 @@ namespace HoloToolkit.Unity
             }
 
             // Try to load a previously saved world anchor.
-            WorldAnchor savedAnchor = anchorStore.Load(AnchorName, gameObjectToAnchor);
+            WorldAnchor savedAnchor = AnchorStore.Load(AnchorName, gameObjectToAnchor);
             if (savedAnchor == null)
             {
                 // Either world anchor was not saved / does not exist or has a different name.
@@ -203,7 +203,7 @@ namespace HoloToolkit.Unity
         private void SaveAnchor(WorldAnchor anchor)
         {
             // Save the anchor to persist holograms across sessions.
-            if (anchorStore.Save(anchor.name, anchor))
+            if (AnchorStore.Save(anchor.name, anchor))
             {
                 Debug.Log(gameObject.name + " : World anchor saved successfully.");
             }
