@@ -273,17 +273,17 @@ namespace HoloToolkit.Unity
             InteractionManager.SourceLost -= InteractionManager_SourceLost;
         }
 
-        private void OnSelect()
+        public void OnSelect()
         {
             ThrowDeprecatedWarning();
         }
 
-        private void OnGazeLeave()
+        public void OnGazeLeave()
         {
             ThrowDeprecatedWarning();
         }
 
-        private void OnGazeEnter()
+        public void OnGazeEnter()
         {
             ThrowDeprecatedWarning();
         }
