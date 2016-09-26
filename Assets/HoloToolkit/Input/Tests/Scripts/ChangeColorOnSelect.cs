@@ -36,4 +36,14 @@ public class ChangeColorOnSelect : Interactable
             materialInstance.color = originalColor;
         }
     }
+
+    public void OnSelectObject()
+    {
+        materialInstance.color = selectedColor;
+    }
+
+    public void OnClearSelection()
+    {
+        materialInstance.color = originalColor;
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-public class ScaleFocusedObject : MonoBehaviour
+public class ScaleObjectMessageReceiver : MonoBehaviour
 {
     private const float DefaultSizeFactor = 2.0f;
 
