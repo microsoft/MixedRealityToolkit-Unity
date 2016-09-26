@@ -87,7 +87,8 @@ namespace HoloToolkit.Unity
         {
             if (UseBuiltInGazeStabilization)
             {
-                GazeStabilization = gameObject.AddComponent<GazeStabilizer>();
+                GazeStabilization = gameObject.GetComponent<GazeStabilizer>() ??
+                                    gameObject.AddComponent<GazeStabilizer>();
             }
         }
 
