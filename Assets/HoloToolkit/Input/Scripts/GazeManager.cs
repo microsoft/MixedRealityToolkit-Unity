@@ -8,7 +8,6 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// GazeManager determines the location of the user's gaze, hit position and normals.
     /// </summary>
-    [RequireComponent(typeof(GazeStabilizer))]
     public partial class GazeManager : Singleton<GazeManager>
     {
         /// <summary>
@@ -87,7 +86,10 @@ namespace HoloToolkit.Unity
             gazeDirection = Camera.main.transform.forward;
             gazeRotation = Camera.main.transform.rotation;
 
-            GazeStabilization.UpdateHeadStability(gazeOrigin, gazeRotation);
+            if (GazeStabilization != null)
+            {
+                GazeStabilization.UpdateHeadStability(gazeOrigin, gazeRotation);
+            }
 
             UpdateRaycast();
             UpdateStabilizationPlane();
@@ -100,7 +102,15 @@ namespace HoloToolkit.Unity
         {
             // Get the raycast hit information from Unity's physics system.
             RaycastHit hitInfo;
-            Hit = Physics.Raycast(GazeStabilization.StableHeadRay, out hitInfo, MaxGazeDistance, RaycastLayerMask);
+
+            if (GazeStabilization != null)
+            {
+                Hit = Physics.Raycast(GazeStabilization.StableHeadRay, out hitInfo, MaxGazeDistance, RaycastLayerMask);
+            }
+            else
+            {
+                Hit = Physics.Raycast(gazeOrigin, gazeDirection, out hitInfo, MaxGazeDistance, RaycastLayerMask);
+            }
 
             GameObject oldFocusedObject = FocusedObject;
 
