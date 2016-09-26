@@ -2,13 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// KeywordManager allows you to specify keywords in the Unity
+    /// KeywordManager allows you to specify keywords and methods in the Unity
     /// Inspector, instead of registering them explicitly in code.
     /// This also includes a setting to either automatically start the
     /// keyword recognizer or allow your code to start it.
@@ -16,83 +18,63 @@ namespace HoloToolkit.Unity
     /// IMPORTANT: Please make sure to add the microphone capability in your app, in Unity under
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
-    /// 
-    /// Please, also make sure to also set your keyword responses in the Inspector window under Keywords and Responses Array.
     /// </summary>
-    public partial class KeywordManager : Singleton<KeywordManager>
+    public partial class KeywordManager : MonoBehaviour
     {
-        /// <summary>
-        /// Occurs when a registered keyword is spoken.
-        /// </summary>
-        /// <param name="keyword">Keyword spoken.</param>
-        public delegate void OnKeywordRecognizedEvent(string keyword);
-        public event OnKeywordRecognizedEvent OnKeywordRecognized;
-
         [System.Serializable]
         public struct KeywordAndResponse
         {
             [Tooltip("The keyword to recognize.")]
             public string Keyword;
-
             [Tooltip("The KeyCode to recognize.")]
             public KeyCode KeyCode;
+            [Tooltip("The UnityEvent to be invoked when the keyword is recognized.")]
+            public UnityEvent Response;
         }
 
-        /// <summary>
-        /// This enumeration gives the manager two different ways to handle the recognizer. Both will
-        /// set up the recognizer and add all keywords. The first causes the recognizer to start
-        /// immediately. The second allows the recognizer to be manually started at a later time.
-        /// </summary>
-        public enum RecognizerStartBehavior { AutoStart, ManualStart }
+        // This enumeration gives the manager two different ways to handle the recognizer. Both will
+        // set up the recognizer and add all keywords. The first causes the recognizer to start
+        // immediately. The second allows the recognizer to be manually started at a later time.
+        public enum RecognizerStartBehavior { AutoStart, ManualStart };
 
-        /// <summary>
-        /// An enumeration to set whether the recognizer should start on or off.
-        /// </summary>
         [Tooltip("An enumeration to set whether the recognizer should start on or off.")]
         public RecognizerStartBehavior RecognizerStart;
 
-        /// <summary>
-        /// An array of string keywords and their corresponding key codes to be set in the Inspector.
-        /// </summary>
-        [Tooltip("An array of string keywords and their corresponding key codes.")]
+        [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
         public KeywordAndResponse[] KeywordsAndResponses;
 
         private KeywordRecognizer keywordRecognizer;
+        private Dictionary<string, UnityEvent> responses;
 
-        /// <summary>
-        /// Intentionally left uninitialized in code.
-        /// Keywords should be set in the Inspector window under Keywords and Responses Array.
-        /// </summary>
-        private List<string> responses = null;
-
-        private void Start()
+        void Start()
         {
-            if (KeywordsAndResponses.Length == 0)
+            if (KeywordsAndResponses.Length > 0)
             {
-                Debug.LogFormat("Must have at least one keyword specified in the Inspector on {0}.", gameObject.name);
-                return;
+                // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
+                // This helps easily link the keyword recognized to the UnityEvent to be invoked.
+                responses = KeywordsAndResponses.ToDictionary(keywordAndResponse => keywordAndResponse.Keyword,
+                                                              keywordAndResponse => keywordAndResponse.Response);
+
+                keywordRecognizer = new KeywordRecognizer(responses.Keys.ToArray());
+                keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+
+                if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+                {
+                    keywordRecognizer.Start();
+                }
             }
-
-            for (int i = 0; i < KeywordsAndResponses.Length; i++)
+            else
             {
-                responses.Add(KeywordsAndResponses[i].Keyword);
-            }
-
-            keywordRecognizer = new KeywordRecognizer(responses.ToArray());
-            keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
-
-            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
-            {
-                keywordRecognizer.Start();
+                Debug.LogError("Must have at least one keyword specified in the Inspector on " + gameObject.name + ".");
             }
         }
 
-        private void Update()
+        void Update()
         {
             ProcessKeyBindings();
         }
 
-        private void OnDestroy()
+        void OnDestroy()
         {
             if (keywordRecognizer != null)
             {
@@ -102,30 +84,26 @@ namespace HoloToolkit.Unity
             }
         }
 
-        /// <summary>
-        /// Listens for key presses and calls the corrisponding keyword event
-        /// </summary>
         private void ProcessKeyBindings()
         {
-            for (int i = 0; i < KeywordsAndResponses.Length; i++)
+            foreach (var kvp in KeywordsAndResponses)
             {
-                if (Input.GetKeyDown(KeywordsAndResponses[i].KeyCode) && OnKeywordRecognized != null)
+                if (Input.GetKeyDown(kvp.KeyCode))
                 {
-                    OnKeywordRecognized(KeywordsAndResponses[i].Keyword);
+                    kvp.Response.Invoke();
                     return;
                 }
             }
         }
 
-        /// <summary>
-        /// Throws the OnKeywordRecognized event if the keyword is registered in the responses list.
-        /// </summary>
-        /// <param name="args">The recognized keyword.</param>
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
-            if (OnKeywordRecognized != null && responses.Contains(args.text))
+            UnityEvent keywordResponse;
+
+            // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
+            if (responses.TryGetValue(args.text, out keywordResponse))
             {
-                OnKeywordRecognized(args.text);
+                keywordResponse.Invoke();
             }
         }
 

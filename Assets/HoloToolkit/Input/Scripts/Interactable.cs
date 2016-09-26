@@ -10,16 +10,11 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class Interactable : MonoBehaviour
     {
-        protected bool TriggerKeywordOnGazeOnly;
-
-        protected bool IsFocused;
-
         protected virtual void OnEnable()
         {
             GestureManager.Instance.OnTap += OnTap;
             GazeManager.Instance.OnGazeExit += OnGazeExit;
             GazeManager.Instance.OnGazeEnter += OnGazeEnter;
-            KeywordManager.Instance.OnKeywordRecognized += KeywordRecognized;
         }
 
         protected virtual void OnDisable()
@@ -27,7 +22,6 @@ namespace HoloToolkit.Unity
             GestureManager.Instance.OnTap -= OnTap;
             GazeManager.Instance.OnGazeExit -= OnGazeExit;
             GazeManager.Instance.OnGazeEnter -= OnGazeEnter;
-            KeywordManager.Instance.OnKeywordRecognized -= KeywordRecognized;
         }
 
         /// <summary>
@@ -54,7 +48,6 @@ namespace HoloToolkit.Unity
         {
             if (focusedObject == gameObject)
             {
-                IsFocused = true;
                 // Do something if our gaze has entered this gameObject
             }
             else
@@ -71,29 +64,11 @@ namespace HoloToolkit.Unity
         {
             if(focusedObject == gameObject)
             {
-                IsFocused = false;
                 // Do something if our gaze has left this gameObject
             }
             else
             {
                 // Do something if our gaze has left another gameObject
-            }
-        }
-
-        /// <summary>
-        /// Called when the Keyword Manager recognizes a spoken keyword.
-        /// </summary>
-        /// <param name="keyword">Spoke Keyword.</param>
-        protected virtual void KeywordRecognized(string keyword)
-        {
-            if (TriggerKeywordOnGazeOnly && !IsFocused)
-            {
-                return;
-            }
-
-            if (keyword.Equals("replace with your keyword"))
-            {
-                // Do Something if our spoken keyword matches our string.
             }
         }
     }

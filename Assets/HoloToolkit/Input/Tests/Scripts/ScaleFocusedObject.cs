@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using HoloToolkit.Unity;
 
-public class ScaleFocusedObject : Interactable
+public class ScaleFocusedObject : MonoBehaviour
 {
     private const float DefaultSizeFactor = 2.0f;
 
@@ -13,18 +12,6 @@ public class ScaleFocusedObject : Interactable
         if (SizeFactor <= 0.0f)
         {
             SizeFactor = DefaultSizeFactor;
-        }
-    }
-
-    protected override void KeywordRecognized(string keyword)
-    {
-        if (keyword.Equals("make bigger"))
-        {
-            OnMakeBigger();
-        }
-        if (keyword.Equals("make smaller"))
-        {
-            OnMakeSmaller();
         }
     }
 
