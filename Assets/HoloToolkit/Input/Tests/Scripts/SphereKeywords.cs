@@ -14,17 +14,17 @@ public class SphereKeywords : MonoBehaviour
 
     public void ChangeColor(string color)
     {
-        if (color.Equals("red"))
+        switch(color.ToLower())
         {
-            materialInstance.color = Color.red;
-        }
-        else if (color.Equals("blue"))
-        {
-            materialInstance.color = Color.blue;
-        }
-        else if (color.Equals("green"))
-        {
-            materialInstance.color = Color.green;
+            case "red":
+                materialInstance.color = Color.red;
+                break;
+            case "blue":
+                materialInstance.color = Color.blue;
+                break;
+            case "green":
+                materialInstance.color = Color.green;
+                break;
         }
     }
 }
