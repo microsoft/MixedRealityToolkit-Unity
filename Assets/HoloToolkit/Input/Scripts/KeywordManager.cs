@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity
 
             for (int i = 0; i < KeywordsAndResponses.Length; i++)
             {
-                responses.Add( KeywordsAndResponses[i].Keyword);
+                responses.Add(KeywordsAndResponses[i].Keyword);
             }
 
             keywordRecognizer = new KeywordRecognizer(responses.ToArray());
