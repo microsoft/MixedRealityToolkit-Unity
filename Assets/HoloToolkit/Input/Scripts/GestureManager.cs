@@ -291,7 +291,7 @@ namespace HoloToolkit.Unity
         private void ThrowDeprecatedWarning()
         {
             // For more information see: TODO:Link to HoloToolkit Documentation.
-            Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by the OnTap delegate event.");
+            Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by delegate events. See Documentation");
         }
     }
 }
