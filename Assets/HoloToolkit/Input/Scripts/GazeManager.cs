@@ -41,6 +41,14 @@ namespace HoloToolkit.Unity
         public float LerpStabilizationPlanePowerFarther = 7.0f;
 
         /// <summary>
+        /// Use built in gaze stabilization that utilizes gavity wells.
+        /// Change to false if you wish to use your own gabilization calculation
+        /// and extend this class.
+        /// </summary>
+        [Tooltip("Use built in gaze stabilization that utilizes gavity wells.")]
+        public bool UseBuiltInGazeStabilization = true;
+
+        /// <summary>
         /// Physics.Raycast result is true if it hits a hologram.
         /// </summary>
         public bool Hit { get; private set; }
@@ -77,7 +85,10 @@ namespace HoloToolkit.Unity
 
         private void Awake()
         {
-            GazeStabilization = gameObject.GetComponent<GazeStabilizer>();
+            if (UseBuiltInGazeStabilization)
+            {
+                GazeStabilization = gameObject.AddComponent<GazeStabilizer>();
+            }
         }
 
         private void Update()
