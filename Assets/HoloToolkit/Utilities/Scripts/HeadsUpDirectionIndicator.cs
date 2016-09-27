@@ -2,6 +2,11 @@
 
 namespace HoloToolkit.Unity
 {
+    // The easiest way to use this script is to drop in the HeadsUpDirectionIndicator prefab
+    // from the HoloToolKit. If you're having issues with the prefab or can't find it,
+    // you can simply create a UI->Image object and attach this script on the Image child
+    // of the Canvas. In that case you'll need to pick your own sprite. After that you simply
+    // need to specify the "targetObject" and then you should be set.
     public class HeadsUpDirectionIndicator : MonoBehaviour
     {
         public GameObject targetObject;
