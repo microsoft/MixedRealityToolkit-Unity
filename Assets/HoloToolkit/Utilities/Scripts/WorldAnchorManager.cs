@@ -42,7 +42,7 @@ namespace HoloToolkit.Unity
         /// Callback function that contains the WorldAnchorStore object.
         /// </summary>
         /// <param name="Store">The WorldAnchorStore to cache.</param>
-        void AnchorStoreReady(WorldAnchorStore Store)
+        private void AnchorStoreReady(WorldAnchorStore Store)
         {
             AnchorStore = Store;
         }
@@ -50,7 +50,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// When the app starts grab the anchor store immediately.
         /// </summary>
-        void Awake()
+        private void Awake()
         {
             AnchorStore = null;
             WorldAnchorStore.GetAsync(AnchorStoreReady);
@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Each frame see if there is work to do and if we can do a unit, do it.
         /// </summary>
-        void Update()
+        private void Update()
         {
             if (AnchorStore != null && anchorOperations.Count > 0)
             {
@@ -123,7 +123,7 @@ namespace HoloToolkit.Unity
         /// Function that actually adds the anchor to the game object.
         /// </summary>
         /// <param name="anchorAttachmentInfo">Parameters for attaching the anchor.</param>
-        void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
+        private void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
         {
             string AnchorName = anchorAttachmentInfo.AnchorName;
             GameObject gameObjectToAnchor = anchorAttachmentInfo.GameObjectToAnchor;
@@ -156,7 +156,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="gameObjectToAnchor">The GameObject to attach the anchor to.</param>
         /// <param name="anchorName">The name to give to the anchor.</param>
-        void CreateAnchor(GameObject gameObjectToAnchor, string anchorName)
+        private void CreateAnchor(GameObject gameObjectToAnchor, string anchorName)
         {
             WorldAnchor anchor = gameObjectToAnchor.AddComponent<WorldAnchor>();
             anchor.name = anchorName;

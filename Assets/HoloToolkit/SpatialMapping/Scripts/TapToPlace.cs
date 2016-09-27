@@ -24,20 +24,20 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Manages persisted anchors.
         /// </summary>
-        WorldAnchorManager anchorManager;
+        private WorldAnchorManager anchorManager;
 
         /// <summary>
         /// Controls spatial mapping.  In this script we access spatialMappingManager
         /// to control rendering and to access the physics layer mask.
         /// </summary>
-        SpatialMappingManager spatialMappingManager;
+        private SpatialMappingManager spatialMappingManager;
 
         /// <summary>
         /// Keeps track of if the user is moving the object or not.
         /// </summary>
-        bool placing = false;
+        private bool placing;
 
-        void Start()
+        private void Start()
         {
             // Make sure we have all the components in the scene we need.
             anchorManager = WorldAnchorManager.Instance;
@@ -64,7 +64,7 @@ namespace HoloToolkit.Unity
         }
 
         // Called by GazeGestureManager when the user performs a tap gesture.
-        void OnSelect()
+        public void OnSelect()
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             placing = !placing;
@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        void Update()
+        private void Update()
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
