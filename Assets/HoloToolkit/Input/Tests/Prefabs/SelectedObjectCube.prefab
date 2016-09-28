@@ -22,7 +22,7 @@ GameObject:
   - 33: {fileID: 33000011551866674}
   - 65: {fileID: 65000011534621724}
   - 23: {fileID: 23000013956659194}
-  - 114: {fileID: 114000010019474902}
+  - 114: {fileID: 114000014241659740}
   - 114: {fileID: 114000012234923108}
   m_Layer: 0
   m_Name: SelectedObjectCube
@@ -40,10 +40,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23000013956659194
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -66,6 +66,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -91,18 +92,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114000010019474902
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013526826180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c493b99fe2f6c4b4cb9cdae0da1e203d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SizeFactor: 2
 --- !u!114 &114000012234923108
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -114,4 +103,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 848db558b53398148bd3d06240acff0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedColor: {r: 1, g: 0, b: 0, a: 1}
+  selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &114000014241659740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013526826180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4643ff92fbdf8584bb0c84ad22ef5b00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SizeFactor: 2

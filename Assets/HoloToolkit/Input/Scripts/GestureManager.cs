@@ -12,8 +12,9 @@ namespace HoloToolkit.Unity
     /// Tap and Manipulation.
     /// </summary>
     /// <remarks>
+    /// Using the Gesture Manager requires a GameObject component to subscribe to the OnTap event.
     /// When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
-    /// GestureManager then sends a message to that game object.
+    /// See TODO: "Link to HTK documentation" for examples of usage.
     /// 
     /// Using Manipulation requires subscribing the the ManipulationStarted events and then querying
     /// information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition
@@ -22,20 +23,33 @@ namespace HoloToolkit.Unity
     public partial class GestureManager : Singleton<GestureManager>
     {
         /// <summary>
-        /// Occurs when a manipulation gesture has started
+        /// Occurs when a manipulation gesture has started.
         /// </summary>
-        public System.Action ManipulationStarted;
+        /// <param name="sourceKind">The Interaction Source Kind that started the event.</param>
+        public delegate void OnManipulationStarted(InteractionSourceKind sourceKind);
+        public event OnManipulationStarted ManipulationStarted;
 
         /// <summary>
-        /// Occurs when a manipulation gesture ended as a result of user input
+        /// Occurs when a manipulation gesture ended as a result of user input.
         /// </summary>
-        public System.Action ManipulationCompleted;
+        /// <param name="sourceKind">The Interaction Source Kind that completed the event.</param>
+        public delegate void OnManipulationCompleted(InteractionSourceKind sourceKind);
+        public event OnManipulationCompleted ManipulationCompleted;
 
         /// <summary>
         /// Occurs when a manipulated gesture ended as a result of some other condition.
         /// (e.g. the hand being used for the gesture is no longer visible).
         /// </summary>
-        public System.Action ManipulationCanceled;
+        /// <param name="sourceKind">The Interaction Source Kind that cancelled the event.</param>
+        public delegate void OnManipulationCanceled(InteractionSourceKind sourceKind);
+        public event OnManipulationCanceled ManipulationCanceled;
+
+        /// <summary>
+        /// Occurs when a user calls the TappedEvent from the gesture recognizer.
+        /// </summary>
+        /// <param name="tappedObject">Selected GameObject User has tapped.</param>
+        public delegate void OnTapEvent(GameObject tappedObject);
+        public event OnTapEvent OnTap;
 
         /// <summary>
         /// Key to press in the editor to select the currently gazed hologram
@@ -74,24 +88,28 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                Vector3 handPosition = Vector3.zero;
+                Vector3 handPosition;
                 currentHandState.properties.location.TryGetPosition(out handPosition);
                 return handPosition;
             }
         }
 
         private GestureRecognizer gestureRecognizer;
-        // We use a separate manipulation recognizer here because the tap gesture recognizer cancels
-        // capturing gestures whenever the GazeManager focus changes, which is not the behavior
-        // we want for manipulation
+
+        /// <summary>
+        /// We use a separate manipulation recognizer here because the tap gesture recognizer cancels
+        /// capturing gestures whenever the GazeManager focus changes, which is not the behavior
+        /// we want for manipulation.
+        /// </summary>
         private GestureRecognizer manipulationRecognizer;
 
         private bool HandPressed { get { return pressedHands.Count > 0; } }
+
         private HashSet<uint> pressedHands = new HashSet<uint>();
 
         private InteractionSourceState currentHandState;
 
-        void Start()
+        private void Start()
         {
             InteractionManager.SourcePressed += InteractionManager_SourcePressed;
             InteractionManager.SourceReleased += InteractionManager_SourceReleased;
@@ -147,13 +165,19 @@ namespace HoloToolkit.Unity
 
         private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
-            OnTap();
+            ProcessTap();
         }
 
-        private void OnTap()
+        private void ProcessTap()
         {
             if (FocusedObject != null)
             {
+                if (OnTap != null)
+                {
+                    OnTap(FocusedObject);
+                }
+
+                // Obsolete!  Please subscribe to OnTap event.
                 FocusedObject.SendMessage("OnSelect", SendMessageOptions.DontRequireReceiver);
             }
         }
@@ -166,7 +190,7 @@ namespace HoloToolkit.Unity
                 OnManipulation(true, cumulativeDelta);
                 if (ManipulationStarted != null)
                 {
-                    ManipulationStarted();
+                    ManipulationStarted(source);
                 }
             }
         }
@@ -181,7 +205,7 @@ namespace HoloToolkit.Unity
             OnManipulation(false, cumulativeDelta);
             if (ManipulationCompleted != null)
             {
-                ManipulationCompleted();
+                ManipulationCompleted(source);
             }
         }
 
@@ -190,7 +214,7 @@ namespace HoloToolkit.Unity
             OnManipulation(false, cumulativeDelta);
             if (ManipulationCanceled != null)
             {
-                ManipulationCanceled();
+                ManipulationCanceled(source);
             }
         }
 
@@ -200,7 +224,7 @@ namespace HoloToolkit.Unity
             ManipulationOffset = offset;
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             GameObject newFocusedObject;
 
@@ -230,12 +254,12 @@ namespace HoloToolkit.Unity
 #if UNITY_EDITOR
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
             {
-                OnTap();
+                ProcessTap();
             }
 #endif
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             gestureRecognizer.StopCapturingGestures();
             gestureRecognizer.TappedEvent -= GestureRecognizer_TappedEvent;
@@ -250,6 +274,27 @@ namespace HoloToolkit.Unity
             InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
             InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
             InteractionManager.SourceLost -= InteractionManager_SourceLost;
+        }
+
+        public void OnSelect()
+        {
+            ThrowObsoleteWarning();
+        }
+
+        public void OnGazeLeave()
+        {
+            ThrowObsoleteWarning();
+        }
+
+        public void OnGazeEnter()
+        {
+            ThrowObsoleteWarning();
+        }
+
+        private void ThrowObsoleteWarning()
+        {
+            // For more information see: TODO:Link to HoloToolkit Documentation.
+            Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by delegate events. See Documentation");
         }
     }
 }

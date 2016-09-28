@@ -11,6 +11,20 @@ namespace HoloToolkit.Unity
     public partial class GazeManager : Singleton<GazeManager>
     {
         /// <summary>
+        /// Occurs when gaze enters a GameObjects collider.
+        /// </summary>
+        /// <param name="focusedObject">The GameObject you gaze has entered.</param>
+        public delegate void OnGazeEnterEvent(GameObject focusedObject);
+        public event OnGazeEnterEvent OnGazeEnter;
+
+        /// <summary>
+        /// Occurs when gaze exits a GameObjects collider.
+        /// </summary>
+        /// <param name="focusedObject">The GameObject you gaze has left.</param>
+        public delegate void OnGazeExitEvent(GameObject focusedObject);
+        public event OnGazeExitEvent OnGazeExit;
+
+        /// <summary>
         /// Maximum gaze distance, in meters, for calculating a hit from a GameOjects Collider.
         /// </summary>
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]
@@ -21,24 +35,6 @@ namespace HoloToolkit.Unity
         /// </summary>
         [Tooltip("Select the layers raycast should target.")]
         public LayerMask RaycastLayerMask = Physics.DefaultRaycastLayers;
-
-        /// <summary>
-        /// Checking enables SetFocusPointForFrame to set the stabilization plane.
-        /// </summary>
-        [Tooltip( "Checking enables SetFocusPointForFrame to set the stabilization plane." )]
-        public bool SetStabilizationPlane = true;
-
-        /// <summary>
-        /// Lerp speed when moving focus point closer.
-        /// </summary>
-        [Tooltip( "Lerp speed when moving focus point closer." )]
-        public float LerpStabilizationPlanePowerCloser = 4.0f;
-
-        /// <summary>
-        /// Lerp speed when moving focus point farther away.
-        /// </summary>
-        [Tooltip( "Lerp speed when moving focus point farther away." )]
-        public float LerpStabilizationPlanePowerFarther = 7.0f;
 
         /// <summary>
         /// Use built in gaze stabilization that utilizes gavity wells.
@@ -72,6 +68,23 @@ namespace HoloToolkit.Unity
         /// Object currently being focused on.
         /// </summary>
         public GameObject FocusedObject { get; private set; }
+
+        /// <summary>
+        /// Checking enables SetFocusPointForFrame to set the stabilization plane.
+        /// </summary>
+        [Tooltip("Checking enables SetFocusPointForFrame to set the stabilization plane.")]
+        public bool SetStabilizationPlane = true;
+        /// <summary>
+        /// Lerp speed when moving focus point closer.
+        /// </summary>
+        [Tooltip("Lerp speed when moving focus point closer.")]
+        public float LerpStabilizationPlanePowerCloser = 4.0f;
+
+        /// <summary>
+        /// Lerp speed when moving focus point farther away.
+        /// </summary>
+        [Tooltip("Lerp speed when moving focus point farther away.")]
+        public float LerpStabilizationPlanePowerFarther = 7.0f;
 
         /// <summary>
         /// Helper class that stabilizes gaze using gravity wells
@@ -151,10 +164,22 @@ namespace HoloToolkit.Unity
             {
                 if (oldFocusedObject != null)
                 {
+                    if (OnGazeExit != null)
+                    {
+                        OnGazeExit(oldFocusedObject);
+                    }
+
+                    // Obsolete! Please subscribe to OnGazeExit event.
                     oldFocusedObject.SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
                 }
                 if (FocusedObject != null)
                 {
+                    if (OnGazeEnter != null)
+                    {
+                        OnGazeEnter(FocusedObject);
+                    }
+
+                    // Obsolete! Please subscribe to OnGazeEnter event.
                     FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
                 }
             }

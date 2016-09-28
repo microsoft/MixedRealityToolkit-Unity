@@ -5,18 +5,25 @@ using UnityEngine;
 
 public class SphereKeywords : MonoBehaviour
 {
+    private Material materialInstance;
+
+    private void Start()
+    {
+        materialInstance = GetComponent<Renderer>().material;
+    }
+
     public void ChangeColor(string color)
     {
         switch(color.ToLower())
         {
             case "red":
-                GetComponent<Renderer>().material.color = Color.red;
+                materialInstance.color = Color.red;
                 break;
             case "blue":
-                GetComponent<Renderer>().material.color = Color.blue;
+                materialInstance.color = Color.blue;
                 break;
             case "green":
-                GetComponent<Renderer>().material.color = Color.green;
+                materialInstance.color = Color.green;
                 break;
         }
     }
