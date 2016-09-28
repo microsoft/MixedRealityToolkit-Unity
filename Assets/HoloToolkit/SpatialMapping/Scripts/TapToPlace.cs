@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.VR.WSA;
-using UnityEngine.VR.WSA.Persistence;
 
 namespace HoloToolkit.Unity
 {
@@ -24,20 +22,45 @@ namespace HoloToolkit.Unity
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
         /// <summary>
-        /// Keeps track of anchors stored on local device.
+        /// Manages persisted anchors.
         /// </summary>
-        private WorldAnchorStore anchorStore;
+        private WorldAnchorManager anchorManager;
 
         /// <summary>
-        /// Locally saved wold anchor.
+        /// Controls spatial mapping.  In this script we access spatialMappingManager
+        /// to control rendering and to access the physics layer mask.
         /// </summary>
-        private WorldAnchor savedAnchor;
+        private SpatialMappingManager spatialMappingManager;
 
+        /// <summary>
+        /// Keeps track of if the user is moving the object or not.
+        /// </summary>
         private bool placing;
 
         private void Start()
         {
-            WorldAnchorStore.GetAsync(AnchorStoreReady);
+            // Make sure we have all the components in the scene we need.
+            anchorManager = WorldAnchorManager.Instance;
+            if (anchorManager == null)
+            {
+                Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
+            }
+
+            spatialMappingManager = SpatialMappingManager.Instance;
+            if (spatialMappingManager == null)
+            {
+                Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
+            }
+
+            if (anchorManager != null && spatialMappingManager != null)
+            {
+                anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+            }
+            else
+            {
+                // If we don't have what we need to proceed, we may as well remove ourselves.
+                Destroy(this);
+            }
         }
 
         private void OnEnable()
@@ -50,34 +73,11 @@ namespace HoloToolkit.Unity
             GestureManager.Instance.OnTap -= OnTap;
         }
 
-        /// <summary>
-        /// Called when the local anchor store is ready.
-        /// </summary>
-        /// <param name="store">Anchor Store.</param>
-        private void AnchorStoreReady(WorldAnchorStore store)
-        {
-            anchorStore = store;
-
-            // Try to load a previously saved world anchor.
-            savedAnchor = anchorStore.Load(SavedAnchorFriendlyName, gameObject);
-            if (savedAnchor == null)
-            {
-                // Either world anchor was not saved / does not exist or has a different name.
-                Debug.LogFormat("{0} : World anchor could not be loaded for this game object. Creating a new anchor.", gameObject.name);
-
-                // Create anchor since one does not exist.
-                CreateAnchor();
-            }
-            else
-            {
-                Debug.LogFormat("{0} : World anchor loaded from anchor store and updated for this game object.", gameObject.name);
-            }
-        }
-
         // Called by GazeGestureManager when the user performs a tap gesture.
-        private void OnTap(GameObject go)
+        private void OnTap(GameObject tappedObject)
         {
-            if (SpatialMappingManager.Instance != null)
+            // If we've tapped our GameObject, do something.
+            if (tappedObject == gameObject)
             {
                 // On each tap gesture, toggle whether the user is in placing mode.
                 placing = !placing;
@@ -85,77 +85,19 @@ namespace HoloToolkit.Unity
                 // If the user is in placing mode, display the spatial mapping mesh.
                 if (placing)
                 {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = true;
+                    spatialMappingManager.DrawVisualMeshes = true;
 
                     Debug.LogFormat("{0} : Removing existing world anchor if any.", gameObject.name);
 
-                    // Remove existing world anchor when moving an object.
-                    DestroyImmediate(gameObject.GetComponent<WorldAnchor>());
-
-                    // Delete existing world anchor from anchor store when moving an object.
-                    if (anchorStore != null)
-                    {
-                        anchorStore.Delete(SavedAnchorFriendlyName);
-                    }
+                    anchorManager.RemoveAnchor(gameObject);
                 }
                 // If the user is not in placing mode, hide the spatial mapping mesh.
                 else
                 {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = false;
-
+                    spatialMappingManager.DrawVisualMeshes = false;
                     // Add world anchor when object placement is done.
-                    CreateAnchor();
+                    anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
                 }
-            }
-            else
-            {
-                Debug.Log("TapToPlace requires spatial mapping.  Try adding SpatialMapping prefab to project.");
-            }
-        }
-
-        private void CreateAnchor()
-        {
-            // NOTE: It's good practice to ensure your parent hierarchy or root game object does not already have a World Anchor.
-            // You can handle this in a way that works best for your application.
-            // For example: gameObject.transform.root.GetComponent<WorldAnchor>();
-
-            // Add the world anchor component when done moving an object.
-            WorldAnchor anchor = gameObject.AddComponent<WorldAnchor>();
-            if (anchor.isLocated)
-            {
-                SaveAnchor(anchor);
-            }
-            else
-            {
-                anchor.OnTrackingChanged += Anchor_OnTrackingChanged;
-            }
-        }
-
-        private void SaveAnchor(WorldAnchor anchor)
-        {
-            // Save the anchor to persist holograms across sessions.
-            if (anchorStore.Save(SavedAnchorFriendlyName, anchor))
-            {
-                Debug.LogFormat("{0} : World anchor saved successfully.", gameObject.name);
-            }
-            else
-            {
-                Debug.LogErrorFormat("{0} : World anchor save failed.", gameObject.name);
-            }
-        }
-
-        private void Anchor_OnTrackingChanged(WorldAnchor self, bool located)
-        {
-            if (located)
-            {
-                Debug.LogFormat("{0} : World anchor located successfully.", gameObject.name);
-
-                SaveAnchor(self);
-                self.OnTrackingChanged -= Anchor_OnTrackingChanged;
-            }
-            else
-            {
-                Debug.LogErrorFormat("{0} : World anchor failed to be located.", gameObject.name);
             }
         }
 
@@ -171,7 +113,7 @@ namespace HoloToolkit.Unity
 
                 RaycastHit hitInfo;
                 if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
-                    30.0f, SpatialMappingManager.Instance.LayerMask))
+                    30.0f, spatialMappingManager.LayerMask))
                 {
                     // Move this object to where the raycast
                     // hit the Spatial Mapping mesh.
