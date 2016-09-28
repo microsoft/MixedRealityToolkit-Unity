@@ -23,22 +23,25 @@ namespace HoloToolkit.Unity
     public partial class GestureManager : Singleton<GestureManager>
     {
         /// <summary>
-        /// Occurs when a manipulation gesture has started
+        /// Occurs when a manipulation gesture has started.
         /// </summary>
-        public delegate void OnManipulationStarted();
+        /// <param name="sourceKind">The Interaction Source Kind that started the event.</param>
+        public delegate void OnManipulationStarted(InteractionSourceKind sourceKind);
         public event OnManipulationStarted ManipulationStarted;
 
         /// <summary>
-        /// Occurs when a manipulation gesture ended as a result of user input
+        /// Occurs when a manipulation gesture ended as a result of user input.
         /// </summary>
-        public delegate void OnManipulationCompleted();
+        /// <param name="sourceKind">The Interaction Source Kind that completed the event.</param>
+        public delegate void OnManipulationCompleted(InteractionSourceKind sourceKind);
         public event OnManipulationCompleted ManipulationCompleted;
 
         /// <summary>
         /// Occurs when a manipulated gesture ended as a result of some other condition.
         /// (e.g. the hand being used for the gesture is no longer visible).
         /// </summary>
-        public delegate void OnManipulationCanceled();
+        /// <param name="sourceKind">The Interaction Source Kind that cancelled the event.</param>
+        public delegate void OnManipulationCanceled(InteractionSourceKind sourceKind);
         public event OnManipulationCanceled ManipulationCanceled;
 
         /// <summary>
@@ -187,7 +190,7 @@ namespace HoloToolkit.Unity
                 OnManipulation(true, cumulativeDelta);
                 if (ManipulationStarted != null)
                 {
-                    ManipulationStarted();
+                    ManipulationStarted(source);
                 }
             }
         }
@@ -202,7 +205,7 @@ namespace HoloToolkit.Unity
             OnManipulation(false, cumulativeDelta);
             if (ManipulationCompleted != null)
             {
-                ManipulationCompleted();
+                ManipulationCompleted(source);
             }
         }
 
@@ -211,7 +214,7 @@ namespace HoloToolkit.Unity
             OnManipulation(false, cumulativeDelta);
             if (ManipulationCanceled != null)
             {
-                ManipulationCanceled();
+                ManipulationCanceled(source);
             }
         }
 
