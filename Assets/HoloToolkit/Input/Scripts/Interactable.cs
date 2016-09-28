@@ -6,7 +6,9 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Base class Interactable GameObjects can inherit from.
+    /// Use this class for easy access to OnTap, OnGazeEnder, and OnGazeExit events.
+    /// Be sure to override each of these methods with your own implimentation.
+    /// Examples of code in comments below.
     /// </summary>
     public class Interactable : MonoBehaviour
     {
@@ -30,14 +32,14 @@ namespace HoloToolkit.Unity
         /// <param name="tappedGameObject">GameObject user has tapped.</param>
         protected virtual void OnTap(GameObject tappedGameObject)
         {
-            if (tappedGameObject == gameObject)
-            {
-                // Do something if our gameObject has been tapped
-            }
-            else
-            {
-                // Do something if we've tapped any object except for our own
-            }
+            //if (tappedGameObject == gameObject)
+            //{
+            //    // Do something if our gameObject has been tapped
+            //}
+            //else
+            //{
+            //    // Do something if we've tapped any object except for our own
+            //}
         }
 
         /// <summary>
@@ -46,14 +48,14 @@ namespace HoloToolkit.Unity
         /// <param name="focusedObject">The GameObject that the users gaze has entered.</param>
         protected virtual void OnGazeEnter(GameObject focusedObject)
         {
-            if (focusedObject == gameObject)
-            {
-                // Do something if our gaze has entered this gameObject
-            }
-            else
-            {
-                // Do something if our gaze has entered another gameObject
-            }
+            //if (focusedObject == gameObject)
+            //{
+            //    // Do something if our gaze has entered this gameObject
+            //}
+            //else
+            //{
+            //    // Do something if our gaze has entered another gameObject
+            //}
         }
 
         /// <summary>
@@ -62,14 +64,14 @@ namespace HoloToolkit.Unity
         /// <param name="focusedObject">The GameObject that the users gaze has left.</param>
         protected virtual void OnGazeExit(GameObject focusedObject)
         {
-            if(focusedObject == gameObject)
-            {
-                // Do something if our gaze has left this gameObject
-            }
-            else
-            {
-                // Do something if our gaze has left another gameObject
-            }
+            //if(focusedObject == gameObject)
+            //{
+            //    // Do something if our gaze has left this gameObject
+            //}
+            //else
+            //{
+            //    // Do something if our gaze has left another gameObject
+            //}
         }
     }
 }
