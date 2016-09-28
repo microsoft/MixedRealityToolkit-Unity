@@ -164,6 +164,12 @@ namespace HoloToolkit.Unity
             {
                 if (oldFocusedObject != null)
                 {
+                    IInteractable oldInteractable = oldFocusedObject.GetComponent<IInteractable>();
+                    if (oldInteractable != null)
+                    {
+                        oldInteractable.OnGazeExit();
+                    }
+
                     if (OnGazeExit != null)
                     {
                         OnGazeExit(oldFocusedObject);
@@ -174,6 +180,12 @@ namespace HoloToolkit.Unity
                 }
                 if (FocusedObject != null)
                 {
+                    IInteractable newInteractable = FocusedObject.GetComponent<IInteractable>();
+                    if (newInteractable != null)
+                    {
+                        newInteractable.OnGazeEnter();
+                    }
+
                     if (OnGazeEnter != null)
                     {
                         OnGazeEnter(FocusedObject);

@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity
     /// Examples of code usage in each method below in comments.
     /// </summary>
     [RequireComponent(typeof(Collider))]
-    public class Interactable : MonoBehaviour
+    public class InteractableViaEvents : MonoBehaviour
     {
         protected virtual void OnEnable()
         {

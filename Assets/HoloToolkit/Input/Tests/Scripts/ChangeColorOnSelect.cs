@@ -8,9 +8,9 @@ using HoloToolkit.Unity;
 /// Controls object appearance by changing its color when selected
 /// and returning it to its original color when a different object is selected
 /// </summary>
-public class ChangeColorOnSelect : Interactable
+public class ChangeColorOnSelect : MonoBehaviour, IInteractable
 {
-    [Tooltip( "Object color changes to this when focused." )]
+    [Tooltip("Object color changes to this when focused.")]
     [SerializeField]
     private Color selectedColor = Color.red;
 
@@ -24,18 +24,27 @@ public class ChangeColorOnSelect : Interactable
         originalColor = materialInstance.color;
     }
 
-    protected override void OnTap(GameObject tappedGameObject)
+    private void OnEnable()
     {
-        // Check to make sure this is the game object we've tapped
-        if (tappedGameObject == gameObject)
-        {
-            materialInstance.color = selectedColor;
-        }
-        else
+        GestureManager.Instance.OnTap += CheckOnTap;
+    }
+
+    private void CheckOnTap(GameObject tappedObject)
+    {
+        if (tappedObject != gameObject)
         {
             materialInstance.color = originalColor;
         }
     }
+
+    public void OnTap()
+    {
+        materialInstance.color = selectedColor;
+    }
+
+    public void OnGazeEnter() { }
+
+    public void OnGazeExit() { }
 
     public void OnSelectObject()
     {

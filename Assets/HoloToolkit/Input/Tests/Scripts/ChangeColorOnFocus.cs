@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Controls object appearance by changing its color when focused.
 /// </summary>
-public class ChangeColorOnFocus : Interactable
+public class ChangeColorOnFocus : MonoBehaviour, IInteractable
 {
     [Tooltip("Object color changes to this when focused.")]
     [SerializeField]
@@ -23,21 +23,15 @@ public class ChangeColorOnFocus : Interactable
         originalColor = materialInstance.color;
     }
 
-    protected override void OnGazeEnter(GameObject focusedObject)
+    public void OnTap () { }
+
+    public void OnGazeEnter()
     {
-        // Check to make sure we're the game object our gaze has entered
-        if (focusedObject == gameObject)
-        {
-            materialInstance.color = focusedColor;
-        }
+        materialInstance.color = focusedColor;
     }
 
-    protected override void OnGazeExit(GameObject go)
+    public void OnGazeExit()
     {
-        // Check to make sure we're the game object our gaze has left
-        if (go == gameObject)
-        {
-            materialInstance.color = originalColor;
-        }
+        materialInstance.color = originalColor;
     }
 }

@@ -134,7 +134,7 @@ namespace HoloToolkit.Unity
             gestureRecognizer.StartCapturingGestures();
             manipulationRecognizer.StartCapturingGestures();
         }
-        
+
         private void InteractionManager_SourcePressed(InteractionSourceState state)
         {
             if (!HandPressed)
@@ -172,6 +172,12 @@ namespace HoloToolkit.Unity
         {
             if (FocusedObject != null)
             {
+                IInteractable focusedInteractable = FocusedObject.GetComponent<IInteractable>();
+                if (focusedInteractable != null)
+                {
+                    focusedInteractable.OnTap();
+                }
+
                 if (OnTap != null)
                 {
                     OnTap(FocusedObject);
@@ -294,7 +300,7 @@ namespace HoloToolkit.Unity
         private void ThrowObsoleteWarning()
         {
             // For more information see: TODO:Link to HoloToolkit Documentation.
-            Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by delegate events. See Documentation");
+            Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by either Interface or delegate events. See Documentation");
         }
     }
 }
