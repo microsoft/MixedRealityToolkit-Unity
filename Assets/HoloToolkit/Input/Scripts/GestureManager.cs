@@ -275,20 +275,20 @@ namespace HoloToolkit.Unity
 
         public void OnSelect()
         {
-            ThrowDeprecatedWarning();
+            ThrowObsoleteWarning();
         }
 
         public void OnGazeLeave()
         {
-            ThrowDeprecatedWarning();
+            ThrowObsoleteWarning();
         }
 
         public void OnGazeEnter()
         {
-            ThrowDeprecatedWarning();
+            ThrowObsoleteWarning();
         }
 
-        private void ThrowDeprecatedWarning()
+        private void ThrowObsoleteWarning()
         {
             // For more information see: TODO:Link to HoloToolkit Documentation.
             Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by delegate events. See Documentation");

@@ -20,10 +20,10 @@ public class GestureResponder : MonoBehaviour
     }
 
     // Responds to the gesture manager's "TappedEvent"
-    private void OnTap(GameObject go)
+    private void OnTap(GameObject tappedGameObject)
     {
         // Check to make sure we've tapped on the object this script is attached to
-        if (go == gameObject)
+        if (tappedGameObject == gameObject)
         {
             PlaneTargetGroupPicker.Instance.PickNewTarget();
         }
