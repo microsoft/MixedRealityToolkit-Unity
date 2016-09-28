@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Use this class for easy access to OnTap, OnGazeEnder, and OnGazeExit events.
     /// Be sure to override each of these methods with your own implimentation.
-    /// Examples of code in comments below.
+    /// Examples of code usage in each method below in comments.
     /// </summary>
     public class Interactable : MonoBehaviour
     {
@@ -27,50 +27,56 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Called when a user has tapped any gameObject.
+        /// Called when a user has tapped any GameObject.
         /// </summary>
         /// <param name="tappedGameObject">GameObject user has tapped.</param>
         protected virtual void OnTap(GameObject tappedGameObject)
         {
+            // Do something if ANY GameObject has been tapped.
+
             //if (tappedGameObject == gameObject)
             //{
-            //    // Do something if our gameObject has been tapped
+            //    // Do something if this GameObject has been tapped.
             //}
             //else
             //{
-            //    // Do something if we've tapped any object except for our own
+            //    // Do something if we've tapped any object except for this one.
             //}
         }
 
         /// <summary>
-        /// Called when a user's gaze enters any gameObject.
+        /// Called when a user's gaze enters any GameObject.
         /// </summary>
         /// <param name="focusedObject">The GameObject that the users gaze has entered.</param>
         protected virtual void OnGazeEnter(GameObject focusedObject)
         {
+            // Do something if ANY GameObject has gained focus.
+
             //if (focusedObject == gameObject)
             //{
-            //    // Do something if our gaze has entered this gameObject
+            //    // Do something if our gaze has entered this GameObject.
             //}
             //else
             //{
-            //    // Do something if our gaze has entered another gameObject
+            //    // Do something if our gaze has entered another GameObject other than this one.
             //}
         }
 
         /// <summary>
-        /// Called when a user's gaze exits any gameObject.
+        /// Called when a user's gaze exits any GameObject.
         /// </summary>
         /// <param name="focusedObject">The GameObject that the users gaze has left.</param>
         protected virtual void OnGazeExit(GameObject focusedObject)
         {
+            // Do something if ANY GameObject has lost focus.
+
             //if(focusedObject == gameObject)
             //{
-            //    // Do something if our gaze has left this gameObject
+            //    // Do something if our gaze has left this GameObject.
             //}
             //else
             //{
-            //    // Do something if our gaze has left another gameObject
+            //    // Do something if our gaze has left another GameObject other than this one.
             //}
         }
     }
