@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Used to keep our processing from exceeding our frame budget.
         /// </summary>
-        private const float MaxFrameTime = 5.0f;
+        private const float maxFrameTime = 5.0f;
 
         private bool drawProcessedMesh = true;
         // Properties
@@ -54,13 +54,13 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Indicates if the previous import is still being processed.
         /// </summary>
-        public bool isImportActive { get; private set; }
+        public bool IsImportActive { get; private set; }
 
         /// <summary>
         /// The material to use if rendering.
         /// </summary>
         protected override Material RenderMaterial { get { return MeshMaterial; } }
-        
+
         /// <summary>
         /// To prevent us from importing too often, we keep track of the last import.
         /// </summary>
@@ -81,7 +81,7 @@ namespace HoloToolkit.Unity
         /// A data structure to manage collecting triangles as we 
         /// subdivide the spatial understanding mesh into smaller sub meshes.
         /// </summary>
-        class MeshData
+        private class MeshData
         {
             /// <summary>
             /// Lists of verts/triangles that describe the mesh geometry.
@@ -162,12 +162,12 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public IEnumerator Import_UnderstandingMesh()
         {
-            if (!spatialUnderstanding.AllowSpatialUnderstanding || isImportActive)
+            if (!spatialUnderstanding.AllowSpatialUnderstanding || IsImportActive)
             {
                 yield break;
             }
 
-            isImportActive = true;
+            IsImportActive = true;
 
             SpatialUnderstandingDll dll = spatialUnderstanding.UnderstandingDLL;
 
@@ -177,7 +177,9 @@ namespace HoloToolkit.Unity
 
 
             // Pull the mesh - first get the size, then allocate and pull the data
-            int vertCount, idxCount;
+            int vertCount;
+            int idxCount;
+
             if ((SpatialUnderstandingDll.Imports.GeneratePlayspace_ExtractMesh_Setup(out vertCount, out idxCount) > 0) &&
                 (vertCount > 0) &&
                 (idxCount > 0))
@@ -188,10 +190,9 @@ namespace HoloToolkit.Unity
                 IntPtr vertNorm = dll.PinObject(meshNormals);
                 meshIndices = new Int32[idxCount];
                 IntPtr indices = dll.PinObject(meshIndices);
-                
+
                 SpatialUnderstandingDll.Imports.GeneratePlayspace_ExtractMesh_Extract(vertCount, vertPos, vertNorm, idxCount, indices);
             }
-
 
             // Wait a frame
             yield return null;
@@ -236,7 +237,7 @@ namespace HoloToolkit.Unity
 
                     // Limit our run time so that we don't cause too many frame drops.
                     // Only checking every 10 iterations or so to prevent losing too much time to checking the clock.
-                    if (index % 30 == 0 && (DateTime.Now - startTime).TotalMilliseconds > MaxFrameTime)
+                    if (index % 30 == 0 && (DateTime.Now - startTime).TotalMilliseconds > maxFrameTime)
                     {
                         //  Debug.LogFormat("{0} of {1} processed", index, meshIndices.Length);
                         yield return null;
@@ -252,7 +253,7 @@ namespace HoloToolkit.Unity
                 yield return null;
 
                 startTime = DateTime.Now;
-                
+
                 // now we have all of our triangles assigned to the correct mesh, we can make all of the meshes.
                 foreach (MeshData meshdata in meshSectors.Values)
                 {
@@ -262,7 +263,7 @@ namespace HoloToolkit.Unity
                     AddSurfaceObject(meshdata.MeshObject, string.Format("SurfaceUnderstanding Mesh-{0}", transform.childCount), transform).AddComponent<WorldAnchor>();
 
                     // Limit our run time so that we don't cause too many frame drops.
-                    if ((DateTime.Now - startTime).TotalMilliseconds > MaxFrameTime)
+                    if ((DateTime.Now - startTime).TotalMilliseconds > maxFrameTime)
                     {
                         yield return null;
                         startTime = DateTime.Now;
@@ -277,7 +278,7 @@ namespace HoloToolkit.Unity
             dll.UnpinAllObjects();
 
             // Done
-            isImportActive = false;
+            IsImportActive = false;
 
             // Mark the timestamp
             timeLastImportedMesh = DateTime.Now;
@@ -297,7 +298,7 @@ namespace HoloToolkit.Unity
             return new Vector3(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y), Mathf.FloorToInt(vector.z));
         }
 
-        
+
 
         /// <summary>
         /// Updates the mesh import process. This function will kick off the import 
@@ -307,7 +308,7 @@ namespace HoloToolkit.Unity
         private void Update_MeshImport(float deltaTime)
         {
             // Only update every so often
-            if (isImportActive || (ImportMeshPeriod <= 0.0f) ||
+            if (IsImportActive || (ImportMeshPeriod <= 0.0f) ||
                 ((DateTime.Now - timeLastImportedMesh).TotalSeconds < ImportMeshPeriod) ||
                 (spatialUnderstanding.ScanState != SpatialUnderstanding.ScanStates.Scanning))
             {

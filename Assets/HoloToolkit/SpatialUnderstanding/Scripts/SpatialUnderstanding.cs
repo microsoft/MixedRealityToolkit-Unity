@@ -219,7 +219,8 @@ namespace HoloToolkit.Unity
 
             // If it's done, finish up
             if ((ScanState == ScanStates.Finishing) &&
-                (scanDone) && !UnderstandingCustomMesh.isImportActive &&
+                (scanDone) && 
+                (!UnderstandingCustomMesh.IsImportActive) &&
                 (UnderstandingCustomMesh != null))
             {
                 // Final mesh import
