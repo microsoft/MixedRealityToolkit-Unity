@@ -112,6 +112,8 @@ namespace HoloToolkit.Unity
 
         private InteractionSourceState currentHandState;
 
+        private Dictionary<GameObject, IInteractable> interactableCache = new Dictionary<GameObject, IInteractable>();
+
         private void Start()
         {
             InteractionManager.SourcePressed += InteractionManager_SourcePressed;
@@ -175,7 +177,14 @@ namespace HoloToolkit.Unity
         {
             if (FocusedObject != null)
             {
-                IInteractable focusedInteractable = FocusedObject.GetComponent<IInteractable>();
+                IInteractable focusedInteractable;
+
+                if (!interactableCache.TryGetValue(FocusedObject, out focusedInteractable))
+                {
+                    focusedInteractable = FocusedObject.GetComponent<IInteractable>();
+                    interactableCache.Add(FocusedObject, focusedInteractable);
+                }
+
                 if (focusedInteractable != null)
                 {
                     focusedInteractable.OnTap();

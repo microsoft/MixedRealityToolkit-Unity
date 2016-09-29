@@ -97,7 +97,7 @@ namespace HoloToolkit.Unity
         private Quaternion gazeRotation;
         private float lastHitDistance = 15.0f;
 
-        private Dictionary<GameObject, IInteractable> tapCache = new Dictionary<GameObject, IInteractable>();
+        private Dictionary<GameObject, IInteractable> interactableCache = new Dictionary<GameObject, IInteractable>();
 
         private void Awake()
         {
@@ -169,10 +169,10 @@ namespace HoloToolkit.Unity
                 {
                     IInteractable oldInteractable;
 
-                    if (!tapCache.TryGetValue(oldFocusedObject, out oldInteractable))
+                    if (!interactableCache.TryGetValue(oldFocusedObject, out oldInteractable))
                     {
                         oldInteractable = oldFocusedObject.GetComponent<IInteractable>();
-                        tapCache.Add(oldFocusedObject, oldInteractable);
+                        interactableCache.Add(oldFocusedObject, oldInteractable);
                     }
 
                     if (oldInteractable != null)
@@ -194,10 +194,10 @@ namespace HoloToolkit.Unity
                 {
                     IInteractable newInteractable;
 
-                    if (!tapCache.TryGetValue(FocusedObject, out newInteractable))
+                    if (!interactableCache.TryGetValue(FocusedObject, out newInteractable))
                     {
                         newInteractable = FocusedObject.GetComponent<IInteractable>();
-                        tapCache.Add(FocusedObject, newInteractable);
+                        interactableCache.Add(FocusedObject, newInteractable);
                     }
 
                     if (newInteractable != null)
