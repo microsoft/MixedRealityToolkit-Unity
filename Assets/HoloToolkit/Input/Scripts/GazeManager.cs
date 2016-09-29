@@ -11,21 +11,21 @@ namespace HoloToolkit.Unity
     public partial class GazeManager : Singleton<GazeManager>
     {
         /// <summary>
-        /// Occurs when gaze enters a GameObjects collider.
+        /// Occurs when gaze enters a GameObject's collider.
         /// </summary>
-        /// <param name="focusedObject">The GameObject you gaze has entered.</param>
+        /// <param name="focusedObject">The GameObject your gaze has entered.</param>
         public delegate void OnGazeEnterEvent(GameObject focusedObject);
         public event OnGazeEnterEvent OnGazeEnter;
 
         /// <summary>
-        /// Occurs when gaze exits a GameObjects collider.
+        /// Occurs when gaze exits a GameObject's collider.
         /// </summary>
-        /// <param name="focusedObject">The GameObject you gaze has left.</param>
+        /// <param name="focusedObject">The GameObject your gaze has left.</param>
         public delegate void OnGazeExitEvent(GameObject focusedObject);
         public event OnGazeExitEvent OnGazeExit;
 
         /// <summary>
-        /// Maximum gaze distance, in meters, for calculating a hit from a GameOjects Collider.
+        /// Maximum gaze distance, in meters, for calculating a hit from a GameObject's collider.
         /// </summary>
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]
         public float MaxGazeDistance = 15.0f;
