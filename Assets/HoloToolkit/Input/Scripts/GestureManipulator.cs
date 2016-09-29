@@ -31,27 +31,34 @@ namespace HoloToolkit.Unity
 
         private bool Manipulating { get; set; }
 
-        private void OnEnable()
+        private GestureManager gestureManager;
+
+        private void Start ()
         {
-            if (GestureManager.Instance != null)
-            {
-                GestureManager.Instance.ManipulationStarted += BeginManipulation;
-                GestureManager.Instance.ManipulationCompleted += EndManipulation;
-                GestureManager.Instance.ManipulationCanceled += EndManipulation;
-            }
-            else
+            gestureManager = GestureManager.Instance;
+            if (gestureManager == null)
             {
                 Debug.LogError(string.Format("GestureManipulator enabled on {0} could not find GestureManager instance, manipulation will not function", name));
             }
         }
 
+        private void OnEnable()
+        {
+            if (gestureManager != null)
+            {
+                gestureManager.ManipulationStarted += BeginManipulation;
+                gestureManager.ManipulationCompleted += EndManipulation;
+                gestureManager.ManipulationCanceled += EndManipulation;
+            }
+        }
+
         private void OnDisable()
         {
-            if (GestureManager.Instance != null)
+            if (gestureManager != null)
             {
-                GestureManager.Instance.ManipulationStarted -= BeginManipulation;
-                GestureManager.Instance.ManipulationCompleted -= EndManipulation;
-                GestureManager.Instance.ManipulationCanceled -= EndManipulation;
+                gestureManager.ManipulationStarted -= BeginManipulation;
+                gestureManager.ManipulationCompleted -= EndManipulation;
+                gestureManager.ManipulationCanceled -= EndManipulation;
             }
 
             Manipulating = false;
@@ -59,7 +66,7 @@ namespace HoloToolkit.Unity
 
         private void BeginManipulation(InteractionSourceKind source)
         {
-            if (GestureManager.Instance != null && GestureManager.Instance.ManipulationInProgress)
+            if (gestureManager != null && gestureManager.ManipulationInProgress)
             {
                 Manipulating = true;
 
