@@ -6,9 +6,6 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine.VR.WSA;
-#if WINDOWS_UWP
-using System.Runtime.CompilerServices;
-#endif
 
 namespace HoloToolkit.Unity
 {
@@ -137,9 +134,6 @@ namespace HoloToolkit.Unity
             /// Adds the specified point to our mesh. 
             /// </summary>
             /// <param name="point">the point to add.</param>
-#if WINDOWS_UWP
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
             private void AddPoint(Vector3 point)
             {
                 int index = Verts.IndexOf(point);
@@ -290,9 +284,6 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="vector">The vector to floor.</param>
         /// <returns>A floored vector</returns>
-#if WINDOWS_UWP
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
         private Vector3 VectorToSector(Vector3 vector)
         {
             return new Vector3(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y), Mathf.FloorToInt(vector.z));
