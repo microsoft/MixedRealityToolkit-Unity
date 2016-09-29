@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity
 
         private bool hasLoggedGazeManagerError;
 
-        private GazeManager gazeManagerReference;
+        private GazeManager gaseManager;
 
         protected virtual void Awake()
         {
@@ -49,9 +49,9 @@ namespace HoloToolkit.Unity
 
         private bool GetGazeManagerReference()
         {
-            gazeManagerReference = GazeManager.Instance;
+            gaseManager = GazeManager.Instance;
 
-            if (gazeManagerReference == null)
+            if (gaseManager == null)
             {
                 return false;
             }
@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            if (gazeManagerReference == null)
+            if (gaseManager == null)
             {
                 if (!GetGazeManagerReference())
                 {
