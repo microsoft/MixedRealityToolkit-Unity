@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -25,33 +24,42 @@ namespace HoloToolkit.Unity
         public Vector3 handPositionScale = new Vector3(2.0f, 2.0f, 4.0f);  // Default tuning values, expected to be modified per application
 
         private Vector3 initialHandPosition;
+
         private Vector3 initialObjectPosition;
 
         private Interpolator targetInterpolator;
 
+        private GestureManager gestureManager;
+
         private bool Manipulating { get; set; }
+
+        private void Start()
+        {
+            gestureManager = GestureManager.Instance;
+
+            if (gestureManager == null)
+            {
+                Debug.LogError(string.Format("GestureManipulator on {0} could not find GestureManager instance, manipulation will not function", name));
+            }
+        }
 
         private void OnEnable()
         {
-            if (GestureManager.Instance != null)
+            if (gestureManager != null)
             {
-                GestureManager.Instance.ManipulationStarted += BeginManipulation;
-                GestureManager.Instance.ManipulationCompleted += EndManipulation;
-                GestureManager.Instance.ManipulationCanceled += EndManipulation;
-            }
-            else
-            {
-                Debug.LogError(string.Format("GestureManipulator enabled on {0} could not find GestureManager instance, manipulation will not function", name));
+                gestureManager.ManipulationStarted += BeginManipulation;
+                gestureManager.ManipulationCompleted += EndManipulation;
+                gestureManager.ManipulationCanceled += EndManipulation;
             }
         }
 
         private void OnDisable()
         {
-            if (GestureManager.Instance)
+            if (gestureManager != null)
             {
-                GestureManager.Instance.ManipulationStarted -= BeginManipulation;
-                GestureManager.Instance.ManipulationCompleted -= EndManipulation;
-                GestureManager.Instance.ManipulationCanceled -= EndManipulation;
+                gestureManager.ManipulationStarted -= BeginManipulation;
+                gestureManager.ManipulationCompleted -= EndManipulation;
+                gestureManager.ManipulationCanceled -= EndManipulation;
             }
 
             Manipulating = false;
@@ -59,7 +67,7 @@ namespace HoloToolkit.Unity
 
         private void BeginManipulation()
         {
-            if (GestureManager.Instance != null && GestureManager.Instance.ManipulationInProgress)
+            if (gestureManager != null && gestureManager.ManipulationInProgress)
             {
                 Manipulating = true;
 
@@ -67,7 +75,7 @@ namespace HoloToolkit.Unity
 
                 // In order to ensure that any manipulated objects move with the user, we do all our math relative to the camera,
                 // so when we save the initial hand position and object position we first transform them into the camera's coordinate space
-                initialHandPosition = Camera.main.transform.InverseTransformPoint(GestureManager.Instance.ManipulationHandPosition);
+                initialHandPosition = Camera.main.transform.InverseTransformPoint(gestureManager.ManipulationHandPosition);
                 initialObjectPosition = Camera.main.transform.InverseTransformPoint(transform.position);
             }
         }
@@ -79,12 +87,12 @@ namespace HoloToolkit.Unity
 
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Manipulating)
             {
                 // First step is to figure out the delta between the initial hand position and the current hand position
-                Vector3 localHandPosition = Camera.main.transform.InverseTransformPoint(GestureManager.Instance.ManipulationHandPosition);
+                Vector3 localHandPosition = Camera.main.transform.InverseTransformPoint(gestureManager.ManipulationHandPosition);
                 Vector3 initialHandToCurrentHand = localHandPosition - initialHandPosition;
 
                 // When performing a manipulation gesture, the hand generally only translates a relatively small amount.
