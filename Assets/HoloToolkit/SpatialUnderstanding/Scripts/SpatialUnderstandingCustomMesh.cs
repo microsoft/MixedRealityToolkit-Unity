@@ -149,7 +149,16 @@ namespace HoloToolkit.Unity
             }
         }
 
-        // Functions
+        private void Start()
+        {
+            spatialUnderstanding = SpatialUnderstanding.Instance;
+        }
+
+        private void Update()
+        {
+            Update_MeshImport(Time.deltaTime);
+        }
+
         /// <summary>
         /// Imports the custom mesh from the dll. This a a coroutine which will take multiple frames to complete.
         /// </summary>
@@ -312,16 +321,6 @@ namespace HoloToolkit.Unity
         private void OnDestroy()
         {
             Cleanup();
-        }
-
-        private void Start()
-        {
-            spatialUnderstanding = SpatialUnderstanding.Instance;
-        }
-
-        private void Update()
-        {
-            Update_MeshImport(Time.deltaTime);
         }
     }
 
