@@ -26,9 +26,13 @@ namespace HoloToolkit.Unity
 
         private MeshRenderer meshRenderer;
 
-        private bool hasLoggedGazeManagerError;
-
         private GazeManager gazeManager;
+
+        /// <summary>
+        /// The number of frames to wait until we get our GazeManager reference before
+        /// throwing an error about it being missing in the scene.
+        /// </summary>
+        private int framesBeforeError = 10;
 
         protected virtual void Awake()
         {
@@ -53,6 +57,16 @@ namespace HoloToolkit.Unity
 
             if (gazeManager == null)
             {
+                if (framesBeforeError > 0)
+                {
+                    framesBeforeError--;
+                }
+
+                if (framesBeforeError == 0)
+                {
+                    Debug.LogError("Must have a GazeManager somewhere in the scene.");
+                }
+
                 return false;
             }
 
@@ -68,15 +82,6 @@ namespace HoloToolkit.Unity
         protected virtual RaycastResult CalculateRayIntersect()
         {
             RaycastResult result = new RaycastResult();
-            if (GazeManager.Instance == null)
-            {
-                if (!hasLoggedGazeManagerError)
-                {
-                    Debug.LogError("Must have a GazeManager somewhere in the scene.");
-                    hasLoggedGazeManagerError = true;
-                }
-                return result;
-            }
             result.Hit = GazeManager.Instance.Hit;
             result.Position = GazeManager.Instance.Position;
             result.Normal = GazeManager.Instance.Normal;
