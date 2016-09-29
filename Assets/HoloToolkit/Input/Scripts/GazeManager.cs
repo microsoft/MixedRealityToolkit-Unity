@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -96,6 +97,8 @@ namespace HoloToolkit.Unity
         private Quaternion gazeRotation;
         private float lastHitDistance = 15.0f;
 
+        private Dictionary<GameObject, IInteractable> tapCache = new Dictionary<GameObject, IInteractable>();
+
         private void Awake()
         {
             if (UseBuiltInGazeStabilization)
@@ -164,7 +167,14 @@ namespace HoloToolkit.Unity
             {
                 if (oldFocusedObject != null)
                 {
-                    IInteractable oldInteractable = oldFocusedObject.GetComponent<IInteractable>();
+                    IInteractable oldInteractable;
+
+                    if (!tapCache.TryGetValue(oldFocusedObject, out oldInteractable))
+                    {
+                        oldInteractable = oldFocusedObject.GetComponent<IInteractable>();
+                        tapCache.Add(oldFocusedObject, oldInteractable);
+                    }
+
                     if (oldInteractable != null)
                     {
                         oldInteractable.OnGazeExit();
@@ -182,7 +192,14 @@ namespace HoloToolkit.Unity
                 }
                 if (FocusedObject != null)
                 {
-                    IInteractable newInteractable = FocusedObject.GetComponent<IInteractable>();
+                    IInteractable newInteractable;
+
+                    if (!tapCache.TryGetValue(FocusedObject, out newInteractable))
+                    {
+                        newInteractable = FocusedObject.GetComponent<IInteractable>();
+                        tapCache.Add(FocusedObject, newInteractable);
+                    }
+
                     if (newInteractable != null)
                     {
                         newInteractable.OnGazeEnter();
