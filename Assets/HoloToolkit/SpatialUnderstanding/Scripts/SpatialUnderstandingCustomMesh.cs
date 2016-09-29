@@ -83,8 +83,8 @@ namespace HoloToolkit.Unity
             /// <summary>
             /// Lists of verts/triangles that describe the mesh geometry.
             /// </summary>
-            private List<Vector3> Verts = new List<Vector3>();
-            private List<int> Tris = new List<int>();
+            private List<Vector3> verts = new List<Vector3>();
+            private List<int> tris = new List<int>();
 
             /// <summary>
             /// The mesh object based on the triangles passed in.
@@ -101,8 +101,8 @@ namespace HoloToolkit.Unity
             /// </summary>
             public void Reset()
             {
-                Verts.Clear();
-                Tris.Clear();
+                verts.Clear();
+                tris.Clear();
             }
 
             /// <summary>
@@ -111,8 +111,8 @@ namespace HoloToolkit.Unity
             public void Commit()
             {
                 MeshObject.Clear();
-                MeshObject.SetVertices(Verts);
-                MeshObject.SetTriangles(Tris.ToArray(), 0);
+                MeshObject.SetVertices(verts);
+                MeshObject.SetTriangles(tris.ToArray(), 0);
                 MeshObject.RecalculateBounds();
                 MeshObject.RecalculateNormals();
             }
@@ -136,15 +136,15 @@ namespace HoloToolkit.Unity
             /// <param name="point">the point to add.</param>
             private void AddPoint(Vector3 point)
             {
-                int index = Verts.IndexOf(point);
+                int index = verts.IndexOf(point);
                 if (index >= 0)
                 {
-                    Tris.Add(index);
+                    tris.Add(index);
                 }
                 else
                 {
-                    Tris.Add(Verts.Count);
-                    Verts.Add(point);
+                    tris.Add(verts.Count);
+                    verts.Add(point);
                 }
             }
         }
