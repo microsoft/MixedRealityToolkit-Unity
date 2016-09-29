@@ -93,7 +93,9 @@ namespace HoloToolkit.Unity
             if (gazeManagerReference == null)
             {
                 if (!GetGazeManagerReference())
+                {
                     return;
+                }
             }
 
             // Calculate the raycast result
