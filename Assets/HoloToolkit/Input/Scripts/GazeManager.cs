@@ -177,6 +177,8 @@ namespace HoloToolkit.Unity
 
                     // Obsolete! Please subscribe to OnGazeExit event.
                     oldFocusedObject.SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
+                    SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
+                    // End Obsolete
                 }
                 if (FocusedObject != null)
                 {
@@ -193,6 +195,8 @@ namespace HoloToolkit.Unity
 
                     // Obsolete! Please subscribe to OnGazeEnter event.
                     FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
+                    SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
+                    // End Obsolete
                 }
             }
         }

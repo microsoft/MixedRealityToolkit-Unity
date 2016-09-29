@@ -188,6 +188,8 @@ namespace HoloToolkit.Unity
 
                 // Obsolete!  Please subscribe to OnTap event.
                 FocusedObject.SendMessage("OnSelect", SendMessageOptions.DontRequireReceiver);
+                SendMessage("OnSelect", SendMessageOptions.DontRequireReceiver);
+                // End Obsolete
             }
         }
 
