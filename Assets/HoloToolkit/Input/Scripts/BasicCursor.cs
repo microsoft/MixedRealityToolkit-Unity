@@ -28,15 +28,15 @@ namespace HoloToolkit.Unity
 
         private bool hasLoggedGazeManagerError;
 
-        protected virtual void Awake()
+        protected virtual void Start()
         {
-            if ((GazeManager.Instance.RaycastLayerMask & this.gameObject.layer) == 0)
+            if ((GazeManager.Instance.RaycastLayerMask & (1 << gameObject.layer)) != 0)
             {
                 Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
-                    LayerMask.LayerToName(this.gameObject.layer));
+                    LayerMask.LayerToName(gameObject.layer));
             }
 
-            meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
+            meshRenderer = gameObject.GetComponent<MeshRenderer>();
 
             if (meshRenderer == null)
             {
@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity
             meshRenderer.enabled = false;
 
             // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
-            cursorDefaultRotation = this.gameObject.transform.rotation;
+            cursorDefaultRotation = gameObject.transform.rotation;
         }
 
         protected virtual RaycastResult CalculateRayIntersect()
@@ -83,11 +83,11 @@ namespace HoloToolkit.Unity
             meshRenderer.enabled = rayResult.Hit;
 
             // Place the cursor at the calculated position.
-            this.gameObject.transform.position = rayResult.Position + rayResult.Normal * DistanceFromCollision;
+            gameObject.transform.position = rayResult.Position + rayResult.Normal * DistanceFromCollision;
 
             // Reorient the cursor to match the hit object normal.
-            this.gameObject.transform.up = rayResult.Normal;
-            this.gameObject.transform.rotation *= cursorDefaultRotation;
+            gameObject.transform.up = rayResult.Normal;
+            gameObject.transform.rotation *= cursorDefaultRotation;
         }
     }
 }
