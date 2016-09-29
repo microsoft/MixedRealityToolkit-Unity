@@ -28,14 +28,10 @@ namespace HoloToolkit.Unity
 
         private bool hasLoggedGazeManagerError;
 
-        protected virtual void Start()
-        {
-            if ((GazeManager.Instance.RaycastLayerMask & (1 << gameObject.layer)) != 0)
-            {
-                Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
-                    LayerMask.LayerToName(gameObject.layer));
-            }
+        private GazeManager gazeManagerReference;
 
+        protected virtual void Awake()
+        {
             meshRenderer = gameObject.GetComponent<MeshRenderer>();
 
             if (meshRenderer == null)
@@ -49,6 +45,24 @@ namespace HoloToolkit.Unity
 
             // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
             cursorDefaultRotation = gameObject.transform.rotation;
+        }
+
+        private bool GetGazeManagerReference()
+        {
+            gazeManagerReference = GazeManager.Instance;
+
+            if (gazeManagerReference == null)
+            {
+                return false;
+            }
+
+            if ((GazeManager.Instance.RaycastLayerMask & (1 << gameObject.layer)) != 0)
+            {
+                Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
+                    LayerMask.LayerToName(gameObject.layer));
+            }
+
+            return true;
         }
 
         protected virtual RaycastResult CalculateRayIntersect()
@@ -74,6 +88,12 @@ namespace HoloToolkit.Unity
             if (meshRenderer == null)
             {
                 return;
+            }
+
+            if (gazeManagerReference == null)
+            {
+                if (!GetGazeManagerReference())
+                    return;
             }
 
             // Calculate the raycast result
