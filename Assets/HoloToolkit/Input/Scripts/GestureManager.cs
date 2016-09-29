@@ -114,6 +114,8 @@ namespace HoloToolkit.Unity
 
         private Dictionary<GameObject, IInteractable> interactableCache = new Dictionary<GameObject, IInteractable>();
 
+        IInteractable focusedInteractable;
+
         private void Start()
         {
             InteractionManager.SourcePressed += InteractionManager_SourcePressed;
@@ -177,14 +179,6 @@ namespace HoloToolkit.Unity
         {
             if (FocusedObject != null)
             {
-                IInteractable focusedInteractable;
-
-                if (!interactableCache.TryGetValue(FocusedObject, out focusedInteractable))
-                {
-                    focusedInteractable = FocusedObject.GetComponent<IInteractable>();
-                    interactableCache.Add(FocusedObject, focusedInteractable);
-                }
-
                 if (focusedInteractable != null)
                 {
                     focusedInteractable.OnTap();
@@ -269,6 +263,15 @@ namespace HoloToolkit.Unity
                 gestureRecognizer.CancelGestures();
                 FocusedObject = newFocusedObject;
                 gestureRecognizer.StartCapturingGestures();
+
+                if (FocusedObject != null)
+                {
+                    if (!interactableCache.TryGetValue(FocusedObject, out focusedInteractable))
+                    {
+                        focusedInteractable = FocusedObject.GetComponent<IInteractable>();
+                        interactableCache.Add(FocusedObject, focusedInteractable);
+                    }
+                }
             }
 
 #if UNITY_EDITOR

@@ -98,6 +98,7 @@ namespace HoloToolkit.Unity
         private float lastHitDistance = 15.0f;
 
         private Dictionary<GameObject, IInteractable> interactableCache = new Dictionary<GameObject, IInteractable>();
+        private IInteractable focusedInteractable;
 
         private void Awake()
         {
@@ -167,17 +168,9 @@ namespace HoloToolkit.Unity
             {
                 if (oldFocusedObject != null)
                 {
-                    IInteractable oldInteractable;
-
-                    if (!interactableCache.TryGetValue(oldFocusedObject, out oldInteractable))
+                    if (focusedInteractable != null)
                     {
-                        oldInteractable = oldFocusedObject.GetComponent<IInteractable>();
-                        interactableCache.Add(oldFocusedObject, oldInteractable);
-                    }
-
-                    if (oldInteractable != null)
-                    {
-                        oldInteractable.OnGazeExit();
+                        focusedInteractable.OnGazeExit();
                     }
 
                     if (OnGazeExit != null)
@@ -192,17 +185,15 @@ namespace HoloToolkit.Unity
                 }
                 if (FocusedObject != null)
                 {
-                    IInteractable newInteractable;
-
-                    if (!interactableCache.TryGetValue(FocusedObject, out newInteractable))
+                    if (!interactableCache.TryGetValue(FocusedObject, out focusedInteractable))
                     {
-                        newInteractable = FocusedObject.GetComponent<IInteractable>();
-                        interactableCache.Add(FocusedObject, newInteractable);
+                        focusedInteractable = FocusedObject.GetComponent<IInteractable>();
+                        interactableCache.Add(FocusedObject, focusedInteractable);
                     }
 
-                    if (newInteractable != null)
+                    if (focusedInteractable != null)
                     {
-                        newInteractable.OnGazeEnter();
+                        focusedInteractable.OnGazeEnter();
                     }
 
                     if (OnGazeEnter != null)
