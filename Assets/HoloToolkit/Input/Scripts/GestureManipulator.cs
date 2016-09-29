@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity
 
                 // In order to ensure that any manipulated objects move with the user, we do all our math relative to the camera,
                 // so when we save the initial hand position and object position we first transform them into the camera's coordinate space
-                initialHandPosition = Camera.main.transform.InverseTransformPoint(GestureManager.Instance.ManipulationHandPosition);
+                initialHandPosition = Camera.main.transform.InverseTransformPoint(gestureManager.ManipulationHandPosition);
                 initialObjectPosition = Camera.main.transform.InverseTransformPoint(transform.position);
             }
         }
@@ -91,7 +91,7 @@ namespace HoloToolkit.Unity
             if (Manipulating)
             {
                 // First step is to figure out the delta between the initial hand position and the current hand position
-                Vector3 localHandPosition = Camera.main.transform.InverseTransformPoint(GestureManager.Instance.ManipulationHandPosition);
+                Vector3 localHandPosition = Camera.main.transform.InverseTransformPoint(gestureManager.ManipulationHandPosition);
                 Vector3 initialHandToCurrentHand = localHandPosition - initialHandPosition;
 
                 // When performing a manipulation gesture, the hand generally only translates a relatively small amount.
