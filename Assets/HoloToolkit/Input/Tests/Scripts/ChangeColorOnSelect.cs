@@ -29,6 +29,11 @@ public class ChangeColorOnSelect : MonoBehaviour, IInteractable
         GestureManager.Instance.OnTap += CheckOnTap;
     }
 
+    private void OnDisable ()
+    {
+        GestureManager.Instance.OnTap -= CheckOnTap;
+    }
+
     private void CheckOnTap(GameObject tappedObject)
     {
         if (tappedObject != gameObject)
