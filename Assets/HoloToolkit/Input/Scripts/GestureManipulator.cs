@@ -86,7 +86,6 @@ namespace HoloToolkit.Unity
             Manipulating = false;
         }
 
-
         // Update is called once per frame
         private void Update()
         {
