@@ -25,13 +25,14 @@ namespace HoloToolkit.Unity
         public Vector3 handPositionScale = new Vector3(2.0f, 2.0f, 4.0f);  // Default tuning values, expected to be modified per application
 
         private Vector3 initialHandPosition;
+
         private Vector3 initialObjectPosition;
 
         private Interpolator targetInterpolator;
 
-        private bool Manipulating { get; set; }
-
         private GestureManager gestureManager;
+
+        private bool Manipulating { get; set; }
 
         private void Start ()
         {
@@ -64,7 +65,7 @@ namespace HoloToolkit.Unity
             Manipulating = false;
         }
 
-        private void BeginManipulation(InteractionSourceKind source)
+        private void BeginManipulation(InteractionSourceKind sourceKind)
         {
             if (gestureManager != null && gestureManager.ManipulationInProgress)
             {
@@ -79,11 +80,10 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void EndManipulation(InteractionSourceKind source)
+        private void EndManipulation(InteractionSourceKind sourceKind)
         {
             Manipulating = false;
         }
-
 
         // Update is called once per frame
         private void Update()
