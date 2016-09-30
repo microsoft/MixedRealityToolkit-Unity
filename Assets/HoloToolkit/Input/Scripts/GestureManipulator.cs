@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity
 {
@@ -65,7 +66,7 @@ namespace HoloToolkit.Unity
             Manipulating = false;
         }
 
-        private void BeginManipulation()
+        private void BeginManipulation(InteractionSourceKind sourceKind)
         {
             if (gestureManager != null && gestureManager.ManipulationInProgress)
             {
@@ -80,7 +81,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void EndManipulation()
+        private void EndManipulation(InteractionSourceKind sourceKind)
         {
             Manipulating = false;
         }
