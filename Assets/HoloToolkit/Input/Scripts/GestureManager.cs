@@ -56,7 +56,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that started the event.</param>
         public delegate void OnPressDelegate(InteractionSourceKind sourceKind);
-        public event OnPressDelegate OnPressed;
+        public event OnPressDelegate OnPress;
 
         /// <summary>
         /// Occurs when a Focused Object that is currently being pressed, is released.
@@ -233,12 +233,14 @@ namespace HoloToolkit.Unity
             {
                 hasRecognitionStarted = true;
 
-                if (OnPressed != null)
+                if (OnPress != null)
                 {
-                    OnPressed(sourceKind);
+                    OnPress(sourceKind);
                 }
 
+                // Obsolete!  Please subscribe to OnPressed event.
                 FocusedObject.SendMessage("OnPressed", SendMessageOptions.DontRequireReceiver);
+                // End Obsolete
             }
         }
 
@@ -251,7 +253,9 @@ namespace HoloToolkit.Unity
                     OnRelease(sourceKind);
                 }
 
+                // Obsolete!  Please subscribe to OnReleased event.
                 FocusedObject.SendMessage("OnReleased", SendMessageOptions.DontRequireReceiver);
+                // End Obsolete
             }
 
             hasRecognitionStarted = false;
@@ -382,6 +386,16 @@ namespace HoloToolkit.Unity
         }
 
         public void OnGazeEnter()
+        {
+            ThrowObsoleteWarning();
+        }
+
+        public void OnPressed()
+        {
+            ThrowObsoleteWarning();
+        }
+
+        public void OnReleased()
         {
             ThrowObsoleteWarning();
         }
