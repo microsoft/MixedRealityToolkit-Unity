@@ -28,12 +28,6 @@ namespace HoloToolkit.Unity
 
         private GazeManager gazeManager;
 
-        /// <summary>
-        /// The number of frames to wait until we get our GazeManager reference before
-        /// throwing an error about it being missing in the scene.
-        /// </summary>
-        private int framesBeforeError = 10;
-
         protected virtual void Awake()
         {
             meshRenderer = gameObject.GetComponent<MeshRenderer>();
@@ -51,23 +45,13 @@ namespace HoloToolkit.Unity
             cursorDefaultRotation = gameObject.transform.rotation;
         }
 
-        private bool GetGazeManagerReference()
+        protected virtual void Start()
         {
             gazeManager = GazeManager.Instance;
 
             if (gazeManager == null)
             {
-                if (framesBeforeError > 0)
-                {
-                    framesBeforeError--;
-                }
-
-                if (framesBeforeError == 0)
-                {
-                    Debug.LogError("Must have a GazeManager somewhere in the scene.");
-                }
-
-                return false;
+                Debug.LogError("Must have a GazeManager somewhere in the scene.");
             }
 
             if ((GazeManager.Instance.RaycastLayerMask & (1 << gameObject.layer)) != 0)
@@ -75,8 +59,6 @@ namespace HoloToolkit.Unity
                 Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
                     LayerMask.LayerToName(gameObject.layer));
             }
-
-            return true;
         }
 
         protected virtual RaycastResult CalculateRayIntersect()
@@ -90,17 +72,9 @@ namespace HoloToolkit.Unity
 
         protected virtual void LateUpdate()
         {
-            if (meshRenderer == null)
+            if (meshRenderer == null || gazeManager == null)
             {
                 return;
-            }
-
-            if (gazeManager == null)
-            {
-                if (!GetGazeManagerReference())
-                {
-                    return;
-                }
             }
 
             // Calculate the raycast result
