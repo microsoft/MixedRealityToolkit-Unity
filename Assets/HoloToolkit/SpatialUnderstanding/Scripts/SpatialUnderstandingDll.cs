@@ -49,12 +49,12 @@ namespace HoloToolkit.Unity
                 if (meshFilter != null)
                 {
                     Transform = meshFilter.transform.localToWorldMatrix;
-                    Verts = new Vector3[meshFilter.sharedMesh.vertices.Length];
-                    Array.Copy(meshFilter.sharedMesh.vertices, Verts, Verts.Length);
-                    Normals = new Vector3[meshFilter.sharedMesh.normals.Length];
-                    Array.Copy(meshFilter.sharedMesh.normals, Normals, Normals.Length);
-                    Indices = new Int32[meshFilter.sharedMesh.triangles.Length];
-                    Array.Copy(meshFilter.sharedMesh.triangles, Indices, Indices.Length);
+
+                    // Note that we are assuming that Unity's getters for vertices/normals/triangles make
+                    // copies of the array.  As of unity 5.4 this assumption is correct.
+                    Verts = meshFilter.sharedMesh.vertices;
+                    Normals = meshFilter.sharedMesh.normals;
+                    Indices = meshFilter.sharedMesh.triangles;
                 }
             }
         }
