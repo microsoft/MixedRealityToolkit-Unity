@@ -25,23 +25,23 @@ namespace HoloToolkit.Unity
         /// Occurs when a manipulation gesture has started.
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that started the event.</param>
-        public delegate void OnManipulationStarted(InteractionSourceKind sourceKind);
-        public event OnManipulationStarted ManipulationStarted;
+        public delegate void ManipulationStartedDelegate(InteractionSourceKind sourceKind);
+        public event ManipulationStartedDelegate OnManipulationStarted;
 
         /// <summary>
         /// Occurs when a manipulation gesture ended as a result of user input.
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that completed the event.</param>
-        public delegate void OnManipulationCompleted(InteractionSourceKind sourceKind);
-        public event OnManipulationCompleted ManipulationCompleted;
+        public delegate void ManipulationCompletedDelegate(InteractionSourceKind sourceKind);
+        public event ManipulationCompletedDelegate OnManipulationCompleted;
 
         /// <summary>
         /// Occurs when a manipulated gesture ended as a result of some other condition.
         /// (e.g. the hand being used for the gesture is no longer visible).
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that cancelled the event.</param>
-        public delegate void OnManipulationCanceled(InteractionSourceKind sourceKind);
-        public event OnManipulationCanceled ManipulationCanceled;
+        public delegate void ManipulationCanceledDelegate(InteractionSourceKind sourceKind);
+        public event ManipulationCanceledDelegate OnManipulationCanceled;
 
         /// <summary>
         /// Key to press in the editor to select the currently gazed hologram
@@ -206,9 +206,9 @@ namespace HoloToolkit.Unity
             if (!ManipulationInProgress)
             {
                 OnManipulation(true, cumulativeDelta);
-                if (ManipulationStarted != null)
+                if (OnManipulationStarted != null)
                 {
-                    ManipulationStarted(source);
+                    OnManipulationStarted(source);
                 }
             }
         }
@@ -221,18 +221,18 @@ namespace HoloToolkit.Unity
         private void ManipulationRecognizer_ManipulationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
             OnManipulation(false, cumulativeDelta);
-            if (ManipulationCompleted != null)
+            if (OnManipulationCompleted != null)
             {
-                ManipulationCompleted(source);
+                OnManipulationCompleted(source);
             }
         }
 
         private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
             OnManipulation(false, cumulativeDelta);
-            if (ManipulationCanceled != null)
+            if (OnManipulationCanceled != null)
             {
-                ManipulationCanceled(source);
+                OnManipulationCanceled(source);
             }
         }
 
