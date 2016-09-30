@@ -47,9 +47,9 @@ namespace HoloToolkit.Unity
         {
             if (gestureManager != null)
             {
-                gestureManager.ManipulationStarted += BeginManipulation;
-                gestureManager.ManipulationCompleted += EndManipulation;
-                gestureManager.ManipulationCanceled += EndManipulation;
+                gestureManager.OnManipulationStarted += BeginManipulation;
+                gestureManager.OnManipulationCompleted += EndManipulation;
+                gestureManager.OnManipulationCanceled += EndManipulation;
             }
         }
 
@@ -57,9 +57,9 @@ namespace HoloToolkit.Unity
         {
             if (gestureManager != null)
             {
-                gestureManager.ManipulationStarted -= BeginManipulation;
-                gestureManager.ManipulationCompleted -= EndManipulation;
-                gestureManager.ManipulationCanceled -= EndManipulation;
+                gestureManager.OnManipulationStarted -= BeginManipulation;
+                gestureManager.OnManipulationCompleted -= EndManipulation;
+                gestureManager.OnManipulationCanceled -= EndManipulation;
             }
 
             Manipulating = false;

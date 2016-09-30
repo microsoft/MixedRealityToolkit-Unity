@@ -26,44 +26,44 @@ namespace HoloToolkit.Unity
         /// Occurs when a manipulation gesture has started.
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that started the event.</param>
-        public delegate void OnManipulationStarted(InteractionSourceKind sourceKind);
-        public event OnManipulationStarted ManipulationStarted;
+        public delegate void ManipulationStartedDelegate(InteractionSourceKind sourceKind);
+        public event ManipulationStartedDelegate OnManipulationStarted;
 
         /// <summary>
         /// Occurs when a manipulation gesture ended as a result of user input.
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that completed the event.</param>
-        public delegate void OnManipulationCompleted(InteractionSourceKind sourceKind);
-        public event OnManipulationCompleted ManipulationCompleted;
+        public delegate void ManipulationCompletedDelegate(InteractionSourceKind sourceKind);
+        public event ManipulationCompletedDelegate OnManipulationCompleted;
 
         /// <summary>
         /// Occurs when a manipulated gesture ended as a result of some other condition.
         /// (e.g. the hand being used for the gesture is no longer visible).
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that cancelled the event.</param>
-        public delegate void OnManipulationCanceled(InteractionSourceKind sourceKind);
-        public event OnManipulationCanceled ManipulationCanceled;
+        public delegate void ManipulationCanceledDelegate(InteractionSourceKind sourceKind);
+        public event ManipulationCanceledDelegate OnManipulationCanceled;
 
         /// <summary>
         /// Occurs when a user calls the TappedEvent from the gesture recognizer.
         /// </summary>
         /// <param name="tappedObject">Selected GameObject User has tapped.</param>
-        public delegate void OnTapEvent(GameObject tappedObject);
-        public event OnTapEvent OnTap;
+        public delegate void TapDelegate(GameObject tappedObject);
+        public event TapDelegate OnTap;
 
         /// <summary>
         /// Occurs when a Focused Object is pressed.
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that started the event.</param>
-        public delegate void OnPressDelegate(InteractionSourceKind sourceKind);
-        public event OnPressDelegate OnPress;
+        public delegate void PressDelegate(InteractionSourceKind sourceKind);
+        public event PressDelegate OnPress;
 
         /// <summary>
         /// Occurs when a Focused Object that is currently being pressed, is released.
         /// </summary>
         /// <param name="sourceKind">The Interaction Source Kind that completed the event.</param>
-        public delegate void OnReseaseDelegate(InteractionSourceKind sourceKind);
-        public event OnReseaseDelegate OnRelease;
+        public delegate void ReseaseDelegate(InteractionSourceKind sourceKind);
+        public event ReseaseDelegate OnRelease;
 
         /// <summary>
         /// Key to press in the editor to select the currently gazed hologram
@@ -267,9 +267,9 @@ namespace HoloToolkit.Unity
             if (!ManipulationInProgress)
             {
                 OnManipulation(true, cumulativeDelta);
-                if (ManipulationStarted != null)
+                if (OnManipulationStarted != null)
                 {
-                    ManipulationStarted(source);
+                    OnManipulationStarted(source);
                 }
             }
         }
@@ -282,18 +282,18 @@ namespace HoloToolkit.Unity
         private void ManipulationRecognizer_ManipulationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
             OnManipulation(false, cumulativeDelta);
-            if (ManipulationCompleted != null)
+            if (OnManipulationCompleted != null)
             {
-                ManipulationCompleted(source);
+                OnManipulationCompleted(source);
             }
         }
 
         private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
             OnManipulation(false, cumulativeDelta);
-            if (ManipulationCanceled != null)
+            if (OnManipulationCanceled != null)
             {
-                ManipulationCanceled(source);
+                OnManipulationCanceled(source);
             }
         }
 
