@@ -51,7 +51,6 @@ namespace HoloToolkit.Unity
         public delegate void OnTapEvent(GameObject tappedObject);
         public event OnTapEvent OnTap;
 
-
         /// <summary>
         /// Occurs when a Focused Object is pressed.
         /// </summary>
