@@ -8,6 +8,10 @@ namespace HoloToolkit.Unity
     // of the Canvas. In that case you'll need to pick your own sprite. You'll also need to
     // choose an appropriate "pivot" point on the RectTransform. After that you simply
     // need to specify the "targetObject" and then you should be set.
+    // 
+    // This script takes for granted that your UI is rendering in Camera space and that the
+    // up vector is aligned with the "pointing" direction of your image.
+    [RequireComponent(typeof(RectTransform))]
     public class HeadsUpDirectionIndicator : MonoBehaviour
     {
         public GameObject targetObject;
@@ -26,23 +30,26 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            Vector3 position = Vector3.zero;
             float marginFactor = (100.0f - marginPercent) / 100.0f;
             int indicatorFieldWidth = (int)(marginFactor * (float)Screen.width);
             int indicatorFieldHeight = (int)(marginFactor * (float)Screen.height);
 
             var targetPosition = targetObject.GetComponent<Transform>().position;
-            position = GetIndicatorPositionInView(targetPosition, Camera.main, indicatorFieldWidth, indicatorFieldHeight);
+            var position = GetIndicatorPositionInView(targetPosition, Camera.main, indicatorFieldWidth, indicatorFieldHeight);
 
             var alignment = position;
             alignment.z = 0.0f;
 
+            // With camera space UI we can use the canvas space position
             this.GetComponent<RectTransform>().anchoredPosition = position;
+
+            // but the orientation is in world space. So here we first apply the screen space
+            // rotation and then rotate it into alignment with the camera.
             this.GetComponent<RectTransform>().rotation = Camera.main.transform.rotation * Quaternion.FromToRotation(Vector3.up, alignment.normalized);
         }
 
         // Provides the GUI space position of the indicator
-        private Vector3 GetIndicatorPositionInView(Vector3 targetPosition, Camera camera, int viewportWidth, int viewportHeight)
+        private Vector3 GetIndicatorPositionInView(Vector3 targetPosition, Camera camera, int indicatorAreaWidth, int indicatorAreaHeight)
         {
             var screenPoint = camera.WorldToScreenPoint(targetPosition);
 
@@ -51,58 +58,63 @@ namespace HoloToolkit.Unity
             screenPoint.x = screenPoint.x - Screen.width / 2;
             screenPoint.y = screenPoint.y - Screen.height / 2;
 
-            bool pointOutsideView = screenPoint.x < -viewportWidth / 2 || screenPoint.y < -viewportHeight / 2 || screenPoint.x > viewportWidth / 2 || screenPoint.y > viewportHeight / 2;
+            bool pointNotInsideIndicatorField = screenPoint.x < -indicatorAreaWidth / 2 || screenPoint.y < -indicatorAreaHeight / 2 || screenPoint.x > indicatorAreaWidth / 2 || screenPoint.y > indicatorAreaHeight / 2;
 
             // negative z means the point is behind the camera and the coordinates flip.
             if (screenPoint.z < 0.0f)
             {
                 screenPoint = -screenPoint;
-                pointOutsideView = true;
+                pointNotInsideIndicatorField = true;
             }
 
-
-            if (!pointOutsideView)
+            // If the point is outside the display region...
+            if (pointNotInsideIndicatorField)
             {
-                return screenPoint;
-            }
+                // ...then we need to do some geometry calculations to lock it to the edge.
 
-            // used to determine which edge of the screen the indicator vector
-            // would exit through.
-            float hRatio = screenPoint.x / (float)viewportWidth;
-            float vRatio = screenPoint.y / (float)viewportHeight;
+                // used to determine which edge of the screen the indicator vector
+                // would exit through.
+                float hRatio = screenPoint.x / (float)indicatorAreaWidth;
+                float vRatio = screenPoint.y / (float)indicatorAreaHeight;
 
-            if (Mathf.Abs(hRatio) > Mathf.Abs(vRatio))
-            {
-                // in this case, the vector collides with the sides first.
-                float slope = screenPoint.y / screenPoint.x;
-                if (screenPoint.x > 0.0)
+                if (Mathf.Abs(hRatio) > Mathf.Abs(vRatio))
                 {
-                    screenPoint.x = viewportWidth / 2;
+                    // in this case, the vector collides with the sides first.
+                    float slope = screenPoint.y / screenPoint.x;
+                    if (screenPoint.x > 0.0)
+                    {
+                        screenPoint.x = indicatorAreaWidth / 2;
+                    }
+                    else
+                    {
+                        screenPoint.x = -indicatorAreaWidth / 2;
+                    }
+
+                    screenPoint.y = slope * screenPoint.x;
                 }
                 else
                 {
-                    screenPoint.x = -viewportWidth / 2;
+                    // in this case, the vector collides with the top or bottom first.
+                    float invSlope = screenPoint.x / screenPoint.y;
+                    if (screenPoint.y > 0.0f)
+                    {
+                        screenPoint.y = indicatorAreaHeight / 2;
+                    }
+                    else
+                    {
+                        screenPoint.y = -indicatorAreaHeight / 2;
+                    }
+
+                    screenPoint.x = invSlope * screenPoint.y;
                 }
 
-                screenPoint.y = slope * screenPoint.x;
+                return screenPoint;
             }
             else
             {
-                // in this case, the vector collides with the top or bottom first.
-                float invSlope = screenPoint.x / screenPoint.y;
-                if (screenPoint.y > 0.0f)
-                {
-                    screenPoint.y = viewportHeight / 2;
-                }
-                else
-                {
-                    screenPoint.y = -viewportHeight / 2;
-                }
-
-                screenPoint.x = invSlope * screenPoint.y;
+                // the point is inside the indicator display region and we should use the point unaltered.
+                return screenPoint;
             }
-
-            return screenPoint;
         }
     }
 }
