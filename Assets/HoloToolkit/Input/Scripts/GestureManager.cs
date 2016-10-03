@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity
 
         private InteractionSourceState currentHandState;
 
-        void Start()
+        private void Start()
         {
             InteractionManager.SourcePressed += InteractionManager_SourcePressed;
             InteractionManager.SourceReleased += InteractionManager_SourceReleased;
@@ -242,7 +242,7 @@ namespace HoloToolkit.Unity
             ManipulationOffset = offset;
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             // set the next focus object to see if focus has changed, but don't replace the current focused object
             // until all the inputs are handled, like Unity Editor input for OnTap().
@@ -264,8 +264,17 @@ namespace HoloToolkit.Unity
 
             bool focusedChanged = FocusedObject != newFocusedObject;
 
+            if (focusedChanged)
+            {
+                // If the currently focused object doesn't match the new focused object, cancel the current gesture.
+                // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
+                gestureRecognizer.CancelGestures();
+                FocusedObject = newFocusedObject;
+                gestureRecognizer.StartCapturingGestures();
+            }
+
 #if UNITY_EDITOR
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
+            if ((Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey)) && !focusedChanged)
             {
                 OnTap();
                 OnRecognitionStarted();
@@ -276,17 +285,9 @@ namespace HoloToolkit.Unity
                 OnRecognitionEndeded();
             }
 #endif
-            if (focusedChanged)
-            {
-                // If the currently focused object doesn't match the new focused object, cancel the current gesture.
-                // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
-                gestureRecognizer.CancelGestures();
-                FocusedObject = newFocusedObject;
-                gestureRecognizer.StartCapturingGestures();
-            }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             gestureRecognizer.StopCapturingGestures();
             gestureRecognizer.TappedEvent -= GestureRecognizer_TappedEvent;
