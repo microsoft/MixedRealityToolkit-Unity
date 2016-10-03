@@ -5,11 +5,15 @@ namespace HoloToolkit.Unity
     // The easiest way to use this script is to drop in the HeadsUpDirectionIndicator prefab
     // from the HoloToolKit. If you're having issues with the prefab or can't find it,
     // you can simply create a UI->Image object and attach this script on the Image child
-    // of the Canvas. In that case you'll need to pick your own sprite. After that you simply
+    // of the Canvas. In that case you'll need to pick your own sprite. You'll also need to
+    // choose an appropriate "pivot" point on the RectTransform. After that you simply
     // need to specify the "targetObject" and then you should be set.
     public class HeadsUpDirectionIndicator : MonoBehaviour
     {
         public GameObject targetObject;
+
+        [Range(0.0f, 100.0f)]
+        public float marginPercent;
 
         void Start() { }
 
@@ -23,40 +27,44 @@ namespace HoloToolkit.Unity
             }
 
             Vector3 position = Vector3.zero;
+            float marginFactor = (100.0f - marginPercent) / 100.0f;
+            int indicatorFieldWidth = (int)(marginFactor * (float)Screen.width);
+            int indicatorFieldHeight = (int)(marginFactor * (float)Screen.height);
 
             var targetPosition = targetObject.GetComponent<Transform>().position;
-
-            if (this.PointInInfiniteFrustum(targetPosition))
-            {
-                position = GetIndicatorPositionInView(targetPosition, Camera.main, Screen.width, Screen.height);
-            }
-            else
-            {
-                position = GetIndicatorPositionNotInView(targetPosition, Camera.main, Screen.width, Screen.height);
-            }
+            position = GetIndicatorPositionInView(targetPosition, Camera.main, indicatorFieldWidth, indicatorFieldHeight);
 
             var alignment = position;
             alignment.z = 0.0f;
 
             this.GetComponent<RectTransform>().anchoredPosition = position;
-            this.GetComponent<RectTransform>().up = alignment.normalized;
+            this.GetComponent<RectTransform>().rotation = Camera.main.transform.rotation * Quaternion.FromToRotation(Vector3.up, alignment.normalized);
         }
 
-        // Provides the GUI space position of the indicator assuming it should be point off-screen.
-        private Vector3 GetIndicatorPositionNotInView(Vector3 targetPosition, Camera camera, int viewportWidth, int viewportHeight)
+        // Provides the GUI space position of the indicator
+        private Vector3 GetIndicatorPositionInView(Vector3 targetPosition, Camera camera, int viewportWidth, int viewportHeight)
         {
             var screenPoint = camera.WorldToScreenPoint(targetPosition);
+
+            // screen space maps 0,0 to the lower left corner but canvase coordinates
+            // map 0,0 to the center of the view.
+            screenPoint.x = screenPoint.x - Screen.width / 2;
+            screenPoint.y = screenPoint.y - Screen.height / 2;
+
+            bool pointOutsideView = screenPoint.x < -viewportWidth / 2 || screenPoint.y < -viewportHeight / 2 || screenPoint.x > viewportWidth / 2 || screenPoint.y > viewportHeight / 2;
 
             // negative z means the point is behind the camera and the coordinates flip.
             if (screenPoint.z < 0.0f)
             {
                 screenPoint = -screenPoint;
+                pointOutsideView = true;
             }
 
-            // screen space maps 0,0 to the lower left corner but canvase coordinates
-            // map 0,0 to the center of the view.
-            screenPoint.x = screenPoint.x - viewportWidth / 2;
-            screenPoint.y = screenPoint.y - viewportHeight / 2;
+
+            if (!pointOutsideView)
+            {
+                return screenPoint;
+            }
 
             // used to determine which edge of the screen the indicator vector
             // would exit through.
@@ -80,7 +88,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                // in this case, the vector collides with the top or bottom first;
+                // in this case, the vector collides with the top or bottom first.
                 float invSlope = screenPoint.x / screenPoint.y;
                 if (screenPoint.y > 0.0f)
                 {
@@ -95,36 +103,6 @@ namespace HoloToolkit.Unity
             }
 
             return screenPoint;
-        }
-
-        // Provides the GUI space position of the indicator assuming it should point to a position on-screen.
-        private Vector3 GetIndicatorPositionInView(Vector3 targetPosition, Camera camera, int viewportWidth, int viewportHeight)
-        {
-            var screenPoint = camera.WorldToScreenPoint(targetPosition);
-
-            // screen space maps 0,0 to the lower left corner but canvase coordinates
-            // map 0,0 to the center of the view.
-            screenPoint.x = screenPoint.x - viewportWidth / 2;
-            screenPoint.y = screenPoint.y - viewportHeight / 2;
-
-            return screenPoint;
-        }
-
-        private bool PointInInfiniteFrustum(Vector3 point)
-        {
-            var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-
-            // Don't test against the far plane, which is the last in the array.
-            for (int i = 0; i < 5; ++i)
-            {
-                var plane = frustumPlanes[i];
-                if (!plane.GetSide(point))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
