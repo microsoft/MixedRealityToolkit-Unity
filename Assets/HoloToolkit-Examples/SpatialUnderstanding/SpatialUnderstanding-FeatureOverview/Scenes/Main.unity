@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44692582, g: 0.4967878, b: 0.5750859, a: 1}
+  m_IndirectSpecularColor: {r: 0.44692558, g: 0.49678743, b: 0.57508624, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -638,6 +638,7 @@ MonoBehaviour:
   SetStabilizationPlane: 1
   LerpStabilizationPlanePowerCloser: 4
   LerpStabilizationPlanePowerFarther: 7
+  UseBuiltInGazeStabilization: 1
 --- !u!114 &418325384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,6 +756,26 @@ Prefab:
     - target: {fileID: 4000012071801678, guid: d41fa7615c3c85b40bcc95fc4367b607, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013027790266, guid: d41fa7615c3c85b40bcc95fc4367b607,
+        type: 2}
+      propertyPath: MaxFrameTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013027790266, guid: d41fa7615c3c85b40bcc95fc4367b607,
+        type: 2}
+      propertyPath: ImportMeshPeriod
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012099205058, guid: d41fa7615c3c85b40bcc95fc4367b607,
+        type: 2}
+      propertyPath: UpdatePeriod_DuringScanning
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012099205058, guid: d41fa7615c3c85b40bcc95fc4367b607,
+        type: 2}
+      propertyPath: UpdatePeriod_AfterScanning
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d41fa7615c3c85b40bcc95fc4367b607, type: 2}
