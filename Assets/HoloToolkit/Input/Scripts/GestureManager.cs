@@ -22,6 +22,8 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(GazeManager))]
     public partial class GestureManager : Singleton<GestureManager>
     {
+        private bool ErrorMsgSent = false;
+
         /// <summary>
         /// Occurs when a manipulation gesture has started.
         /// </summary>
@@ -403,8 +405,12 @@ namespace HoloToolkit.Unity
 
         private void ThrowObsoleteWarning()
         {
-            // For more information see: TODO:Link to HoloToolkit Documentation.
-            Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by either Interface or delegate events. See Documentation");
+            if (!ErrorMsgSent)
+            {
+                ErrorMsgSent = true;
+                // For more information see: TODO:Link to HoloToolkit Documentation.
+                Debug.LogWarning("Using SendMessage is not recommended in the HoloToolkit and has been replaced by either Interface or delegate events. See Documentation");
+            }
         }
     }
 }
