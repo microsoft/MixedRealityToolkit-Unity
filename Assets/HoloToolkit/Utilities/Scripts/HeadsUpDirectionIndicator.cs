@@ -14,23 +14,25 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(RectTransform))]
     public class HeadsUpDirectionIndicator : MonoBehaviour
     {
+        [Tooltip("The object the direction indicator will point to.")]
         public GameObject targetObject;
 
+        [Tooltip("Determines what percentage of the visible field should be margin.")]
         [Range(0.0f, 100.0f)]
-        public float marginPercent;
+        public float IndicatorMarginPercent;
 
         void Start() { }
 
-        // Update is called once per frame
+        // Update the direction indicator's position and orientation every frame.
         void Update()
         {
             if (gameObject == null)
             {
-                // no target
+                // no target, bail out
                 return;
             }
 
-            float marginFactor = (100.0f - marginPercent) / 100.0f;
+            float marginFactor = (100.0f - IndicatorMarginPercent) / 100.0f;
             int indicatorFieldWidth = (int)(marginFactor * (float)Screen.width);
             int indicatorFieldHeight = (int)(marginFactor * (float)Screen.height);
 
