@@ -325,7 +325,16 @@ namespace HoloToolkit.Unity
 
             bool focusedChanged = FocusedObject != newFocusedObject;
 
-            if (focusedChanged && FocusedObject != null)
+            if (focusedChanged)
+            {
+                // If the currently focused object doesn't match the new focused object, cancel the current gesture.
+                // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
+                gestureRecognizer.CancelGestures();
+                FocusedObject = newFocusedObject;
+                gestureRecognizer.StartCapturingGestures();
+            }
+
+            if (FocusedObject != null)
             {
                 if (!interactableCache.TryGetValue(FocusedObject, out focusedInteractable))
                 {
@@ -346,14 +355,6 @@ namespace HoloToolkit.Unity
                 OnRecognitionEndeded(InteractionSourceKind.Other);
             }
 #endif
-            if (focusedChanged)
-            {
-                // If the currently focused object doesn't match the new focused object, cancel the current gesture.
-                // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
-                gestureRecognizer.CancelGestures();
-                FocusedObject = newFocusedObject;
-                gestureRecognizer.StartCapturingGestures();
-            }
         }
 
         private void OnDestroy()
