@@ -28,13 +28,15 @@ namespace HoloToolkit.Unity
             startingDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             startingScale = transform.localScale;
 
-            if (OverrideSizeRatio == 0)
+            if (startingDistance > 0.0f)
             {
-                // set to a linear scale ratio
-                OverrideSizeRatio = 1 / startingDistance;
+                if (OverrideSizeRatio == 0)
+                {
+                    // set to a linear scale ratio
+                    OverrideSizeRatio = 1 / startingDistance;
+                }
             }
-
-            if (startingDistance <= 0.0f)
+            else
             {
                 // If the transform and the camera are both in the same
                 // position (that is, the distance between them is zero),
