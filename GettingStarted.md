@@ -51,7 +51,10 @@ You will probably want to add `ManualCameraControl.cs` (found under
 
 Deploy to the emulator or device.
 
-**NOTE**: Make sure to build/run your project in x86 and not in ARM so you can properly get the DLLs required
+# Deploying your HoloLens app using Visual Studio
+ 1. Select **x86** in your build configuration
+ 2. Select emulator or the device that you're using
+ 3. Run the app
 
 
 
