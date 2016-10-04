@@ -21,6 +21,15 @@ namespace HoloToolkit.Sharing
 
         public ObjectElement RootObjectElement { get; private set; }
 
+        public ObjectElementAdapter()
+        {
+            RootObjectElement = new ObjectElement(new System.IntPtr(), true);
+
+            RootObjectElement.AddListener(this);
+
+            System.GC.Collect();
+        }
+
         public ObjectElementAdapter(ObjectElement rootObjElement)
         {
             RootObjectElement = rootObjElement;
