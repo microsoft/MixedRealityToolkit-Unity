@@ -12,20 +12,29 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class FixedAngularSize : MonoBehaviour
     {
+        /// <summary>
+        /// Off sets the scale ratio so that text does not scale down so much. (Set to zero for linear scaling)
+        /// </summary>
+        public float OverrideSizeRatio = 0;
         // The ratio between the transform's local scale and its starting
         // distance from the camera.
-        private Vector3 defaultSizeRatios;
+        private float startingDistance;
+        private Vector3 startingScale;
 
         void Start()
         {
             // Calculate the XYZ ratios for the transform's localScale over its
             // initial distance from the camera.
-            float startingDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
-            if (startingDistance > 0.0f)
+            startingDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
+            startingScale = transform.localScale;
+
+            if (OverrideSizeRatio == 0)
             {
-                defaultSizeRatios = transform.localScale / startingDistance;
+                // set to a linear scale ratio
+                OverrideSizeRatio = 1 / startingDistance;
             }
-            else
+
+            if (startingDistance < 0.0f)
             {
                 // If the transform and the camera are both in the same
                 // position (that is, the distance between them is zero),
@@ -38,10 +47,25 @@ namespace HoloToolkit.Unity
             }
         }
 
+        public void SetSizeRatio(float ratio)
+        {
+            if (ratio == 0)
+            {
+                OverrideSizeRatio = 1 / startingDistance;
+            }
+            else
+            {
+                OverrideSizeRatio = ratio;
+            }
+        }
+
         void Update()
         {
             float distanceToHologram = Vector3.Distance(Camera.main.transform.position, transform.position);
-            transform.localScale = defaultSizeRatios * distanceToHologram;
+            // create an offset ratio based on the starting position. This value creates a new angle that pivots
+            // on the starting position that is more or less drastic than the normal scale ratio.
+            float CurvedRatio = 1 - startingDistance * OverrideSizeRatio;
+            transform.localScale = startingScale * (distanceToHologram * OverrideSizeRatio + CurvedRatio);
         }
     }
 }
