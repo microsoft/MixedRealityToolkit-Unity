@@ -123,12 +123,31 @@ namespace HoloToolkit.Unity
             UnderstandingCustomMesh = GetComponent<SpatialUnderstandingCustomMesh>();
         }
 
-        void Start()
+        private void Start()
         {
             // Initialize the DLL
             if (AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDll.Imports.SpatialUnderstanding_Init();
+            }
+        }
+
+        private void Update()
+        {
+            if (!AllowSpatialUnderstanding)
+            {
+                return;
+            }
+
+            // Only update every few frames, and only if we aren't pulling in a mesh 
+            // already.
+            timeSinceLastUpdate += Time.deltaTime;
+            if ((!UnderstandingCustomMesh.IsImportActive) &&
+                (Time.frameCount % 3 == 0))
+            {
+                // Real-Time scan
+                Update_Scan(timeSinceLastUpdate);
+                timeSinceLastUpdate = 0;
             }
         }
 
@@ -230,25 +249,6 @@ namespace HoloToolkit.Unity
 
                 // Mark it
                 ScanState = ScanStates.Done;
-            }
-        }
-
-        void Update()
-        {
-            if (!AllowSpatialUnderstanding)
-            {
-                return;
-            }
-
-            // Only update every few frames, and only if we aren't pulling in a mesh 
-            // already.
-            timeSinceLastUpdate += Time.deltaTime;
-            if ((!UnderstandingCustomMesh.IsImportActive) && 
-                (Time.frameCount % 3 == 0))
-            {
-                // Real-Time scan
-                Update_Scan(timeSinceLastUpdate);
-                timeSinceLastUpdate = 0;
             }
         }
     }

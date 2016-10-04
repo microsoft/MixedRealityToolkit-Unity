@@ -299,8 +299,6 @@ namespace HoloToolkit.Unity
             return new Vector3(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y), Mathf.FloorToInt(vector.z));
         }
 
-
-
         /// <summary>
         /// Updates the mesh import process. This function will kick off the import 
         /// coroutine at the requested internal.
