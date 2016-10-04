@@ -281,7 +281,10 @@ namespace HoloToolkit.Unity
 
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
             {
-                OnTap();
+                if (focusedChanged)
+                {
+                    OnTap();
+                }
                 OnRecognitionStarted();
             }
 #endif
