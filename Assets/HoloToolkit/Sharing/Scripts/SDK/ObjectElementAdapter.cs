@@ -20,7 +20,7 @@ namespace HoloToolkit.Sharing
         public event System.Action<Element> ElementDeletedEvent;
 
         /// <summary>
-        /// The Object Elemet we're listening to.
+        /// The Object Elemet we're currently listening to.
         /// </summary>
         public ObjectElement ObjectElementRoot { get; private set; }
 
@@ -165,6 +165,13 @@ namespace HoloToolkit.Sharing
                 ElementDeletedEvent(element);
             }
             Profile.EndRange();
+        }
+
+        public override void Dispose()
+        {
+            ObjectElementRoot.RemoveListener(this);
+            ObjectElementRoot = null;
+            base.Dispose();
         }
     }
 }
