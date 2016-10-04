@@ -284,8 +284,8 @@ namespace HoloToolkit.Unity
                 if (focusedChanged)
                 {
                     OnTap();
+                    OnRecognitionStarted();
                 }
-                OnRecognitionStarted();
             }
 #endif
         }
