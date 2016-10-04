@@ -19,26 +19,41 @@ namespace HoloToolkit.Sharing
         public event System.Action<Element> ElementAddedEvent;
         public event System.Action<Element> ElementDeletedEvent;
 
-        public ObjectElement RootObjectElement { get; private set; }
+        /// <summary>
+        /// The Object Elemet we're listening to.
+        /// </summary>
+        public ObjectElement ObjectElementRoot { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ObjectElementAdapter"/> that creates a new Object Element and starts to listen to it.
+        /// </summary>
         public ObjectElementAdapter()
         {
-            RootObjectElement = new ObjectElement(new System.IntPtr(), true);
+            ObjectElementRoot = new ObjectElement(new System.IntPtr(), true);
 
-            RootObjectElement.AddListener(this);
+            ObjectElementRoot.AddListener(this);
 
             System.GC.Collect();
         }
 
-        public ObjectElementAdapter(ObjectElement rootObjElement)
+        /// <summary>
+        /// Initializes a new instance of <see cref="ObjectElementAdapter"/> that allows a user to pass in a Object Element to listen to.
+        /// </summary>
+        /// <param name="objectElementRoot">Object Element we want to listen to.</param>
+        public ObjectElementAdapter(ObjectElement objectElementRoot)
         {
-            RootObjectElement = rootObjElement;
+            ObjectElementRoot = objectElementRoot;
 
-            RootObjectElement.AddListener(this);
+            ObjectElementRoot.AddListener(this);
 
             System.GC.Collect();
         }
 
+        /// <summary>
+        /// Throws the <see cref="IntChangedEvent"/>.
+        /// </summary>
+        /// <param name="elementID">The Elements id.</param>
+        /// <param name="newValue">The new int value.</param>
         public override void OnIntElementChanged(long elementID, int newValue)
         {
             Profile.BeginRange("OnIntElementChanged");
@@ -49,6 +64,11 @@ namespace HoloToolkit.Sharing
             Profile.EndRange();
         }
 
+        /// <summary>
+        /// Throws the <see cref="DoubleChangedEvent"/>.
+        /// </summary>
+        /// <param name="elementID">The Elements id.</param>
+        /// <param name="newValue">The new double value.</param>
         public override void OnDoubleElementChanged(long elementID, double newValue)
         {
             Profile.BeginRange("OnDoubleElementChanged");
@@ -59,6 +79,11 @@ namespace HoloToolkit.Sharing
             Profile.EndRange();
         }
 
+        /// <summary>
+        /// Throws the <see cref="FloatChangedEvent"/>.
+        /// </summary>
+        /// <param name="elementID">The Elements id.</param>
+        /// <param name="newValue">The new float value.</param>
         public override void OnFloatElementChanged(long elementID, float newValue)
         {
             Profile.BeginRange("OnFloatElementChanged");
@@ -69,6 +94,11 @@ namespace HoloToolkit.Sharing
             Profile.EndRange();
         }
 
+        /// <summary>
+        /// Throws the <see cref="LongChangedEvent"/>.
+        /// </summary>
+        /// <param name="elementID">The Elements id.</param>
+        /// <param name="newValue">The new long value.</param>
         public override void OnLongElementChanged(long elementID, long newValue)
         {
             Profile.BeginRange("OnLongElementChanged");
@@ -79,6 +109,11 @@ namespace HoloToolkit.Sharing
             Profile.EndRange();
         }
 
+        /// <summary>
+        /// Throws the <see cref="StringChangedEvent"/>.
+        /// </summary>
+        /// <param name="elementID">The Elements id.</param>
+        /// <param name="newValue">The new string value.</param>
         public override void OnStringElementChanged(long elementID, XString newValue)
         {
             Profile.BeginRange("OnStringElementChanged");
@@ -89,6 +124,11 @@ namespace HoloToolkit.Sharing
             Profile.EndRange();
         }
 
+        /// <summary>
+        /// Throws the <see cref="BoolChangedEvent"/>.
+        /// </summary>
+        /// <param name="elementID">The Elements id.</param>
+        /// <param name="newValue">The new bool value</param>
         public override void OnBoolElementChanged(long elementID, bool newValue)
         {
             Profile.BeginRange("OnBoolElementChanged");
@@ -99,6 +139,10 @@ namespace HoloToolkit.Sharing
             Profile.EndRange();
         }
 
+        /// <summary>
+        /// Throws the <see cref="ElementAddedEvent"/>.
+        /// </summary>
+        /// <param name="element">The new Element.</param>
         public override void OnElementAdded(Element element)
         {
             Profile.BeginRange("OnElementAdded");
@@ -109,6 +153,10 @@ namespace HoloToolkit.Sharing
             Profile.EndRange();
         }
 
+        /// <summary>
+        /// Throws the <see cref="ElementDeletedEvent"/>.
+        /// </summary>
+        /// <param name="element">The deleted Element.</param>
         public override void OnElementDeleted(Element element)
         {
             Profile.BeginRange("OnElementDeleted");
