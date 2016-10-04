@@ -20,34 +20,9 @@ namespace HoloToolkit.Sharing
         public event System.Action<Element> ElementDeletedEvent;
 
         /// <summary>
-        /// The Object Elemet we're currently listening to.
+        /// Initializes a new instance of <see cref="ObjectElementAdapter"/>.
         /// </summary>
-        public ObjectElement ObjectElementRoot { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObjectElementAdapter"/> that creates a new Object Element and starts to listen to it.
-        /// </summary>
-        public ObjectElementAdapter()
-        {
-            ObjectElementRoot = new ObjectElement(new System.IntPtr(), true);
-
-            ObjectElementRoot.AddListener(this);
-
-            System.GC.Collect();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObjectElementAdapter"/> that allows a user to pass in a Object Element to listen to.
-        /// </summary>
-        /// <param name="objectElementRoot">Object Element we want to listen to.</param>
-        public ObjectElementAdapter(ObjectElement objectElementRoot)
-        {
-            ObjectElementRoot = objectElementRoot;
-
-            ObjectElementRoot.AddListener(this);
-
-            System.GC.Collect();
-        }
+        public ObjectElementAdapter() { }
 
         /// <summary>
         /// Throws the <see cref="IntChangedEvent"/>.
@@ -165,13 +140,6 @@ namespace HoloToolkit.Sharing
                 ElementDeletedEvent(element);
             }
             Profile.EndRange();
-        }
-
-        public override void Dispose()
-        {
-            ObjectElementRoot.RemoveListener(this);
-            ObjectElementRoot = null;
-            base.Dispose();
         }
     }
 }
