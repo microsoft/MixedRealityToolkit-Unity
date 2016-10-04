@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity
                 OverrideSizeRatio = 1 / startingDistance;
             }
 
-            if (startingDistance < 0.0f)
+            if (startingDistance <= 0.0f)
             {
                 // If the transform and the camera are both in the same
                 // position (that is, the distance between them is zero),
