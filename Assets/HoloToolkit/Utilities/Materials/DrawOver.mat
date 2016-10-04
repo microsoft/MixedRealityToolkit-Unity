@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: OnTop
+  m_Name: DrawOver
   m_Shader: {fileID: 4800000, guid: bef47768a2a74c740a4944d53d9eec47, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1

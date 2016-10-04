@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 0}
-  marginPercent: 20
+  indicatorMarginPercent: 20
 --- !u!114 &114000013914114820
 MonoBehaviour:
   m_ObjectHideFlags: 1
