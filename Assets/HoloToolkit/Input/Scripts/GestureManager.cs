@@ -80,8 +80,11 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                Vector3 handPosition = Vector3.zero;
-                currentHandState.properties.location.TryGetPosition(out handPosition);
+                Vector3 handPosition;
+                if (!currentHandState.properties.location.TryGetPosition(out handPosition))
+                {
+                    handPosition = Vector3.zero;
+                }
                 return handPosition;
             }
         }
