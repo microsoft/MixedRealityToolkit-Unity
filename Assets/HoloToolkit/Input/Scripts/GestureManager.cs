@@ -76,11 +76,13 @@ namespace HoloToolkit.Unity
 
         #endregion
 
+#if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// Key to press that will select the currently focused object.
         /// </summary>
         [SerializeField]
         private KeyCode keyboardSelectKey = KeyCode.Space;
+#endif
 
         private GestureRecognizer gestureRecognizer;
 
@@ -152,8 +154,7 @@ namespace HoloToolkit.Unity
         /// <param name="headRay"></param>
         private void GestureRecogniser_RecognitionEndedEvent(InteractionSourceKind source, Ray headRay)
         {
-            CalcFocusedObject();
-            OnRecognitionEndeded();
+            OnRecognitionEndeded(CalcFocusedObject());
         }
 
         #endregion
@@ -261,11 +262,17 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Throws OnReleased. Only used for determining UI states.
         /// </summary>
-        private void OnRecognitionEndeded()
+        private void OnRecognitionEndeded(bool changedFocus)
         {
-            if (lastFocusedObject != null && hasRecognitionStarted)
+            GameObject focusedObject = FocusedObject;
+            if (changedFocus)
             {
-                lastFocusedObject.SendMessage("OnReleased", SendMessageOptions.DontRequireReceiver);
+                focusedObject = lastFocusedObject;
+            }
+
+            if (focusedObject != null && hasRecognitionStarted)
+            {
+                focusedObject.SendMessage("OnReleased", SendMessageOptions.DontRequireReceiver);
             }
 
             hasRecognitionStarted = false;
@@ -329,7 +336,7 @@ namespace HoloToolkit.Unity
             // If we're already pressing a button, our keyboard select key, or if the focus has changed then throw recognition Ended.
             if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetKeyUp(keyboardSelectKey) || focusedChanged)
             {
-                OnRecognitionEndeded();
+                OnRecognitionEndeded(focusedChanged);
             }
 
             // If we're currently pressing both mouse buttons, or our keyboard select key.

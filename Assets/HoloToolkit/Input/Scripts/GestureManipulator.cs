@@ -45,26 +45,25 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogError(string.Format("GestureManipulator on {0} could not find GestureManager instance, manipulation will not function", name));
             }
+
+            if (handsManager == null)
+            {
+                Debug.LogError(string.Format("GestureManipulator on {0} could not find HandsManager instance, manipulation will not function", name));
+            }
         }
 
         private void OnEnable()
         {
-            if (gestureManager != null)
-            {
-                gestureManager.OnManipulationStarted += BeginManipulation;
-                gestureManager.OnManipulationCompleted += EndManipulation;
-                gestureManager.OnManipulationCanceled += EndManipulation;
-            }
+            gestureManager.OnManipulationStarted += BeginManipulation;
+            gestureManager.OnManipulationCompleted += EndManipulation;
+            gestureManager.OnManipulationCanceled += EndManipulation;
         }
 
         private void OnDisable()
         {
-            if (gestureManager != null)
-            {
-                gestureManager.OnManipulationStarted -= BeginManipulation;
-                gestureManager.OnManipulationCompleted -= EndManipulation;
-                gestureManager.OnManipulationCanceled -= EndManipulation;
-            }
+            gestureManager.OnManipulationStarted -= BeginManipulation;
+            gestureManager.OnManipulationCompleted -= EndManipulation;
+            gestureManager.OnManipulationCanceled -= EndManipulation;
 
             Manipulating = false;
         }
