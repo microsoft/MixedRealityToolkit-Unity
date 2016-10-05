@@ -377,7 +377,7 @@ namespace HoloToolkit.Unity
             // If we're currently pressing a button/key.
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
             {
-                // If our focus changes then throw a new Tap and start recognition.
+                // If our focus has changed since the last frame then throw a new Tap and start recognition.
                 if (focusedChanged)
                 {
                     OnTap();
