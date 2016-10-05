@@ -104,6 +104,8 @@ namespace HoloToolkit.Unity
 
         private InteractionSourceState currentHandState;
 
+        private GameObject lastFocusedObject;
+
         private void Start()
         {
             InteractionManager.SourcePressed += InteractionManager_SourcePressed;
@@ -209,6 +211,7 @@ namespace HoloToolkit.Unity
         /// <param name="headRay">The Ray from the users forward direction.</param>
         private void GestureRecognizer_RecognitionStartedEvent(InteractionSourceKind source, Ray headRay)
         {
+            CalcFocusedObject();
             OnRecognitionStarted();
         }
 
@@ -219,6 +222,7 @@ namespace HoloToolkit.Unity
         /// <param name="headRay"></param>
         private void GestureRecogniser_RecognitionEndedEvent(InteractionSourceKind source, Ray headRay)
         {
+            CalcFocusedObject();
             OnRecognitionEndeded();
         }
 
@@ -250,9 +254,9 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void OnRecognitionEndeded()
         {
-            if (FocusedObject != null && hasRecognitionStarted)
+            if (lastFocusedObject != null && hasRecognitionStarted)
             {
-                FocusedObject.SendMessage("OnReleased", SendMessageOptions.DontRequireReceiver);
+                lastFocusedObject.SendMessage("OnReleased", SendMessageOptions.DontRequireReceiver);
             }
 
             hasRecognitionStarted = false;
@@ -329,7 +333,7 @@ namespace HoloToolkit.Unity
             ManipulationOffset = offset;
         }
 
-        private void LateUpdate()
+        private bool CalcFocusedObject()
         {
             // set the next focus object to see if focus has changed, but don't replace the current focused object
             // until all the inputs are handled, like Unity Editor input for OnTap().
@@ -358,12 +362,22 @@ namespace HoloToolkit.Unity
                 // This is to prevent applying gestures from one hologram to another.
                 gestureRecognizer.CancelGestures();
 
+                // Set our last Focused object.
+                lastFocusedObject = FocusedObject;
+
                 // Set our current Focused Object.
                 FocusedObject = newFocusedObject;
 
                 // Start looking for new gestures.
                 gestureRecognizer.StartCapturingGestures();
             }
+
+            return focusedChanged;
+        }
+
+        private void LateUpdate()
+        {
+            bool focusedChanged = CalcFocusedObject();
 
 #if UNITY_EDITOR || UNITY_STANDALONE
             // Process Editor/Companion app input.
