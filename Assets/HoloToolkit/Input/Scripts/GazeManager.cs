@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -11,7 +12,21 @@ namespace HoloToolkit.Unity
     public partial class GazeManager : Singleton<GazeManager>
     {
         /// <summary>
-        /// Maximum gaze distance, in meters, for calculating a hit from a GameOjects Collider.
+        /// Occurs when gaze enters a GameObject's collider.
+        /// </summary>
+        /// <param name="focusedObject">The GameObject your gaze has entered.</param>
+        public delegate void OnGazeEnterEvent(GameObject focusedObject);
+        public event OnGazeEnterEvent OnGazeEnter;
+
+        /// <summary>
+        /// Occurs when gaze exits a GameObject's collider.
+        /// </summary>
+        /// <param name="focusedObject">The GameObject your gaze has left.</param>
+        public delegate void OnGazeExitEvent(GameObject focusedObject);
+        public event OnGazeExitEvent OnGazeExit;
+
+        /// <summary>
+        /// Maximum gaze distance, in meters, for calculating a hit from a GameObject's collider.
         /// </summary>
         [Tooltip("Maximum gaze distance, in meters, for calculating a hit.")]
         public float MaxGazeDistance = 15.0f;
@@ -21,24 +36,6 @@ namespace HoloToolkit.Unity
         /// </summary>
         [Tooltip("Select the layers raycast should target.")]
         public LayerMask RaycastLayerMask = Physics.DefaultRaycastLayers;
-
-        /// <summary>
-        /// Checking enables SetFocusPointForFrame to set the stabilization plane.
-        /// </summary>
-        [Tooltip( "Checking enables SetFocusPointForFrame to set the stabilization plane." )]
-        public bool SetStabilizationPlane = true;
-
-        /// <summary>
-        /// Lerp speed when moving focus point closer.
-        /// </summary>
-        [Tooltip( "Lerp speed when moving focus point closer." )]
-        public float LerpStabilizationPlanePowerCloser = 4.0f;
-
-        /// <summary>
-        /// Lerp speed when moving focus point farther away.
-        /// </summary>
-        [Tooltip( "Lerp speed when moving focus point farther away." )]
-        public float LerpStabilizationPlanePowerFarther = 7.0f;
 
         /// <summary>
         /// Use built in gaze stabilization that utilizes gavity wells.
@@ -74,6 +71,23 @@ namespace HoloToolkit.Unity
         public GameObject FocusedObject { get; private set; }
 
         /// <summary>
+        /// Checking enables SetFocusPointForFrame to set the stabilization plane.
+        /// </summary>
+        [Tooltip("Checking enables SetFocusPointForFrame to set the stabilization plane.")]
+        public bool SetStabilizationPlane = true;
+        /// <summary>
+        /// Lerp speed when moving focus point closer.
+        /// </summary>
+        [Tooltip("Lerp speed when moving focus point closer.")]
+        public float LerpStabilizationPlanePowerCloser = 4.0f;
+
+        /// <summary>
+        /// Lerp speed when moving focus point farther away.
+        /// </summary>
+        [Tooltip("Lerp speed when moving focus point farther away.")]
+        public float LerpStabilizationPlanePowerFarther = 7.0f;
+
+        /// <summary>
         /// Helper class that stabilizes gaze using gravity wells
         /// </summary>
         public GazeStabilizer GazeStabilization { get; private set; }
@@ -82,6 +96,9 @@ namespace HoloToolkit.Unity
         private Vector3 gazeDirection;
         private Quaternion gazeRotation;
         private float lastHitDistance = 15.0f;
+
+        private Dictionary<GameObject, IInteractable> interactableCache = new Dictionary<GameObject, IInteractable>();
+        private IInteractable focusedInteractable;
 
         private void Awake()
         {
@@ -151,11 +168,43 @@ namespace HoloToolkit.Unity
             {
                 if (oldFocusedObject != null)
                 {
+                    if (focusedInteractable != null)
+                    {
+                        focusedInteractable.OnGazeExit();
+                    }
+
+                    if (OnGazeExit != null)
+                    {
+                        OnGazeExit(oldFocusedObject);
+                    }
+
+                    // Obsolete! Please subscribe to OnGazeExit event.
                     oldFocusedObject.SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
+                    SendMessage("OnGazeLeave", SendMessageOptions.DontRequireReceiver);
+                    // End Obsolete
                 }
                 if (FocusedObject != null)
                 {
+                    if (!interactableCache.TryGetValue(FocusedObject, out focusedInteractable))
+                    {
+                        focusedInteractable = FocusedObject.GetComponent<IInteractable>();
+                        interactableCache.Add(FocusedObject, focusedInteractable);
+                    }
+
+                    if (focusedInteractable != null)
+                    {
+                        focusedInteractable.OnGazeEnter();
+                    }
+
+                    if (OnGazeEnter != null)
+                    {
+                        OnGazeEnter(FocusedObject);
+                    }
+
+                    // Obsolete! Please subscribe to OnGazeEnter event.
                     FocusedObject.SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
+                    SendMessage("OnGazeEnter", SendMessageOptions.DontRequireReceiver);
+                    // End Obsolete
                 }
             }
         }
