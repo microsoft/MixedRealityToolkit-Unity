@@ -90,6 +90,7 @@ namespace HoloToolkit.Unity
         }
 
         private GestureRecognizer gestureRecognizer;
+
         // We use a separate manipulation recognizer here because the tap gesture recognizer cancels
         // capturing gestures whenever the GazeManager focus changes, which is not the behavior
         // we want for manipulation
@@ -98,6 +99,7 @@ namespace HoloToolkit.Unity
         private bool hasRecognitionStarted = false;
 
         private bool HandPressed { get { return pressedHands.Count > 0; } }
+
         private HashSet<uint> pressedHands = new HashSet<uint>();
 
         private InteractionSourceState currentHandState;
@@ -133,49 +135,96 @@ namespace HoloToolkit.Unity
             manipulationRecognizer.StartCapturingGestures();
         }
 
+        /// <summary>
+        /// Thrown when the Interaction Source is pressed.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourcePressed(InteractionSourceState state)
         {
-            if (!HandPressed)
+            if (state.source.kind == InteractionSourceKind.Hand)
             {
-                currentHandState = state;
-            }
+                if (!HandPressed)
+                {
+                    currentHandState = state;
+                }
 
-            pressedHands.Add(state.source.id);
+                pressedHands.Add(state.source.id);
+            }
         }
 
+        /// <summary>
+        /// Thrown when the Interaction Source is updated.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceUpdated(InteractionSourceState state)
         {
-            if (HandPressed && state.source.id == currentHandState.source.id)
+            if (state.source.kind == InteractionSourceKind.Hand)
             {
-                currentHandState = state;
+                if (HandPressed && state.source.id == currentHandState.source.id)
+                {
+                    currentHandState = state;
+                }
             }
         }
 
+        /// <summary>
+        /// Thrown when the Interaction Source is released.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceReleased(InteractionSourceState state)
         {
-            pressedHands.Remove(state.source.id);
+            if (state.source.kind == InteractionSourceKind.Hand)
+            {
+                pressedHands.Remove(state.source.id);
+            }
         }
 
+        /// <summary>
+        /// Thrown when the Interaction Source is no longer availible.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceLost(InteractionSourceState state)
         {
-            pressedHands.Remove(state.source.id);
+            if (state.source.kind == InteractionSourceKind.Hand)
+            {
+                pressedHands.Remove(state.source.id);
+            }
         }
 
+        /// <summary>
+        /// Throws <see cref="OnTap"/>.
+        /// </summary>
+        /// <param name="source">Interaction Source.</param>
+        /// <param name="tapCount">TODO: Need clarification on what this is </param>
+        /// <param name="headRay">The Ray from the users forward direction.</param>
         private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
             OnTap();
         }
 
+        /// <summary>
+        /// Throws <see cref="OnRecognitionStarted"/>. Only used for UI states.
+        /// </summary>
+        /// <param name="source">Input Source.</param>
+        /// <param name="headRay">The Ray from the users forward direction.</param>
         private void GestureRecognizer_RecognitionStartedEvent(InteractionSourceKind source, Ray headRay)
         {
             OnRecognitionStarted();
         }
 
+        /// <summary>
+        /// Throws <see cref="OnRecognitionEndeded"/>. Only used for UI states.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="headRay"></param>
         private void GestureRecogniser_RecognitionEndedEvent(InteractionSourceKind source, Ray headRay)
         {
             OnRecognitionEndeded();
         }
 
+        /// <summary>
+        /// Throws OnSelect.
+        /// </summary>
         private void OnTap()
         {
             if (FocusedObject != null)
@@ -184,6 +233,9 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Throws OnPressed.  Only used for determining UI states.
+        /// </summary>
         private void OnRecognitionStarted()
         {
             if (FocusedObject != null)
@@ -193,6 +245,9 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Throws OnReleased. Only used for determining UI states.
+        /// </summary>
         private void OnRecognitionEndeded()
         {
             if (FocusedObject != null && hasRecognitionStarted)
@@ -203,12 +258,18 @@ namespace HoloToolkit.Unity
             hasRecognitionStarted = false;
         }
 
+        /// <summary>
+        /// Thrown when the gesture manager recognizes that a manipulation has begun.
+        /// </summary>
+        /// <param name="source">Input Source Kind.</param>
+        /// <param name="cumulativeDelta">Cumlulative Data.</param>
+        /// <param name="headRay">The Ray from the users forward direction.</param>
         private void ManipulationRecognizer_ManipulationStartedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
             // Don't start another manipulation gesture if one is already underway
             if (!ManipulationInProgress)
             {
-                OnManipulation(true, cumulativeDelta);
+                OnManipulation(inProgress: true, offset: cumulativeDelta);
                 if (OnManipulationStarted != null)
                 {
                     OnManipulationStarted(source);
@@ -216,29 +277,52 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Thrown when the gesture manager recognizes that a manipulation has been updated.
+        /// </summary>
+        /// <param name="source">Input Source Kind.</param>
+        /// <param name="cumulativeDelta">Cumlulative Data.</param>
+        /// <param name="headRay">The Ray from the users forward direction.</param>
         private void ManipulationRecognizer_ManipulationUpdatedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
-            OnManipulation(true, cumulativeDelta);
+            OnManipulation(inProgress: true, offset: cumulativeDelta);
         }
 
+        /// <summary>
+        /// Thrown when the gesture manager recognizes that a manipulation has completed.
+        /// </summary>
+        /// <param name="source">Input Source Kind.</param>
+        /// <param name="cumulativeDelta">Cumlulative Data.</param>
+        /// <param name="headRay">The Ray from the users forward direction.</param>
         private void ManipulationRecognizer_ManipulationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
-            OnManipulation(false, cumulativeDelta);
+            OnManipulation(inProgress: false, offset: cumulativeDelta);
             if (OnManipulationCompleted != null)
             {
                 OnManipulationCompleted(source);
             }
         }
 
+        /// <summary>
+        /// Thrown when the gesture manager recognizes that a manipulation has been canceled.
+        /// </summary>
+        /// <param name="source">Input Source Kind.</param>
+        /// <param name="cumulativeDelta">Cumlulative Data.</param>
+        /// <param name="headRay">The Ray from the users forward direction.</param>
         private void ManipulationRecognizer_ManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
-            OnManipulation(false, cumulativeDelta);
+            OnManipulation(inProgress: false, offset: cumulativeDelta);
             if (OnManipulationCanceled != null)
             {
                 OnManipulationCanceled(source);
             }
         }
 
+        /// <summary>
+        /// Processes Manipulation Data.
+        /// </summary>
+        /// <param name="inProgress">Is this manipulation in progress?</param>
+        /// <param name="offset">The Offset of our manipulation to calulate delta positions.</param>
         private void OnManipulation(bool inProgress, Vector3 offset)
         {
             ManipulationInProgress = inProgress;
@@ -265,25 +349,35 @@ namespace HoloToolkit.Unity
                 newFocusedObject = OverrideFocusedObject;
             }
 
+            // Checks to see if our focus has changed.
             bool focusedChanged = FocusedObject != newFocusedObject;
 
             if (focusedChanged)
             {
                 // If the currently focused object doesn't match the new focused object, cancel the current gesture.
-                // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
+                // This is to prevent applying gestures from one hologram to another.
                 gestureRecognizer.CancelGestures();
+
+                // Set our current Focused Object.
                 FocusedObject = newFocusedObject;
+
+                // Start looking for new gestures.
                 gestureRecognizer.StartCapturingGestures();
             }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
+            // Process Editor/Companion app input.
+
+            // If we're already pressing a button/key or our focus has changed then throw recognition Ended.
             if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(EditorSelectKey) || focusedChanged)
             {
                 OnRecognitionEndeded();
             }
 
+            // If we're currently pressing a button/key.
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
             {
+                // If our focus changes then throw a new Tap and start recognition.
                 if (focusedChanged)
                 {
                     OnTap();
