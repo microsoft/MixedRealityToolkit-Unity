@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using UnityEngine.VR.WSA.Input;
-using System.Collections.Generic;
 
 namespace HoloToolkit.Unity
 {
@@ -23,6 +22,8 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(GazeManager))]
     public partial class GestureManager : Singleton<GestureManager>
     {
+        #region Delegate Events
+
         /// <summary>
         /// Occurs when a manipulation gesture has started.
         /// </summary>
@@ -45,11 +46,9 @@ namespace HoloToolkit.Unity
         public delegate void ManipulationCanceledDelegate(InteractionSourceKind sourceKind);
         public event ManipulationCanceledDelegate OnManipulationCanceled;
 
-        /// <summary>
-        /// Key to press that will select the currently focused object.
-        /// </summary>
-        [SerializeField]
-        private KeyCode keyboardSelectKey = KeyCode.Space;
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// To select even when a hologram is not being gazed at,
@@ -75,47 +74,28 @@ namespace HoloToolkit.Unity
         /// </summary>
         public Vector3 ManipulationOffset { get; private set; }
 
+        #endregion
+
         /// <summary>
-        /// The world space position of the hand being used for the current manipulation gesture.  Not valid
-        /// if a manipulation gesture is not in progress.
+        /// Key to press that will select the currently focused object.
         /// </summary>
-        public Vector3 ManipulationHandPosition
-        {
-            get
-            {
-                Vector3 handPosition;
-                if (!currentHandState.properties.location.TryGetPosition(out handPosition))
-                {
-                    handPosition = Vector3.zero;
-                }
-                return handPosition;
-            }
-        }
+        [SerializeField]
+        private KeyCode keyboardSelectKey = KeyCode.Space;
 
         private GestureRecognizer gestureRecognizer;
 
-        // We use a separate manipulation recognizer here because the tap gesture recognizer cancels
-        // capturing gestures whenever the GazeManager focus changes, which is not the behavior
-        // we want for manipulation
+        /// <summary> We use a separate manipulation recognizer here because the tap gesture recognizer cancels
+        /// capturing gestures whenever the GazeManager focus changes, which is not the behavior
+        /// we want for manipulation
+        /// </summary>
         private GestureRecognizer manipulationRecognizer;
 
-        private bool hasRecognitionStarted = false;
-
-        private bool HandPressed { get { return pressedHands.Count > 0; } }
-
-        private HashSet<uint> pressedHands = new HashSet<uint>();
-
-        private InteractionSourceState currentHandState;
+        private bool hasRecognitionStarted;
 
         private GameObject lastFocusedObject;
 
         private void Start()
         {
-            InteractionManager.SourcePressed += InteractionManager_SourcePressed;
-            InteractionManager.SourceReleased += InteractionManager_SourceReleased;
-            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
-            InteractionManager.SourceLost += InteractionManager_SourceLost;
-
             // Create a new GestureRecognizer. Sign up for tapped events.
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap);
@@ -140,61 +120,7 @@ namespace HoloToolkit.Unity
             manipulationRecognizer.StartCapturingGestures();
         }
 
-        /// <summary>
-        /// Thrown when the Interaction Source is pressed.
-        /// </summary>
-        /// <param name="state">The current state of the Interaction source.</param>
-        private void InteractionManager_SourcePressed(InteractionSourceState state)
-        {
-            if (state.source.kind == InteractionSourceKind.Hand)
-            {
-                if (!HandPressed)
-                {
-                    currentHandState = state;
-                }
-
-                pressedHands.Add(state.source.id);
-            }
-        }
-
-        /// <summary>
-        /// Thrown when the Interaction Source is updated.
-        /// </summary>
-        /// <param name="state">The current state of the Interaction source.</param>
-        private void InteractionManager_SourceUpdated(InteractionSourceState state)
-        {
-            if (state.source.kind == InteractionSourceKind.Hand)
-            {
-                if (HandPressed && state.source.id == currentHandState.source.id)
-                {
-                    currentHandState = state;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Thrown when the Interaction Source is released.
-        /// </summary>
-        /// <param name="state">The current state of the Interaction source.</param>
-        private void InteractionManager_SourceReleased(InteractionSourceState state)
-        {
-            if (state.source.kind == InteractionSourceKind.Hand)
-            {
-                pressedHands.Remove(state.source.id);
-            }
-        }
-
-        /// <summary>
-        /// Thrown when the Interaction Source is no longer availible.
-        /// </summary>
-        /// <param name="state">The current state of the Interaction source.</param>
-        private void InteractionManager_SourceLost(InteractionSourceState state)
-        {
-            if (state.source.kind == InteractionSourceKind.Hand)
-            {
-                pressedHands.Remove(state.source.id);
-            }
-        }
+        #region Gesture Management
 
         /// <summary>
         /// Throws <see cref="OnTap"/>.
@@ -230,41 +156,9 @@ namespace HoloToolkit.Unity
             OnRecognitionEndeded();
         }
 
-        /// <summary>
-        /// Throws OnSelect.
-        /// </summary>
-        private void OnTap()
-        {
-            if (FocusedObject != null)
-            {
-                FocusedObject.SendMessage("OnSelect", SendMessageOptions.DontRequireReceiver);
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Throws OnPressed.  Only used for determining UI states.
-        /// </summary>
-        private void OnRecognitionStarted()
-        {
-            if (FocusedObject != null)
-            {
-                hasRecognitionStarted = true;
-                FocusedObject.SendMessage("OnPressed", SendMessageOptions.DontRequireReceiver);
-            }
-        }
-
-        /// <summary>
-        /// Throws OnReleased. Only used for determining UI states.
-        /// </summary>
-        private void OnRecognitionEndeded()
-        {
-            if (lastFocusedObject != null && hasRecognitionStarted)
-            {
-                lastFocusedObject.SendMessage("OnReleased", SendMessageOptions.DontRequireReceiver);
-            }
-
-            hasRecognitionStarted = false;
-        }
+        #region Manipulation Management
 
         /// <summary>
         /// Thrown when the gesture manager recognizes that a manipulation has begun.
@@ -337,6 +231,48 @@ namespace HoloToolkit.Unity
             ManipulationOffset = offset;
         }
 
+        #endregion
+
+        #region Event Management
+
+        /// <summary>
+        /// Throws OnSelect.
+        /// </summary>
+        private void OnTap()
+        {
+            if (FocusedObject != null)
+            {
+                FocusedObject.SendMessage("OnSelect", SendMessageOptions.DontRequireReceiver);
+            }
+        }
+
+        /// <summary>
+        /// Throws OnPressed.  Only used for determining UI states.
+        /// </summary>
+        private void OnRecognitionStarted()
+        {
+            if (FocusedObject != null)
+            {
+                hasRecognitionStarted = true;
+                FocusedObject.SendMessage("OnPressed", SendMessageOptions.DontRequireReceiver);
+            }
+        }
+
+        /// <summary>
+        /// Throws OnReleased. Only used for determining UI states.
+        /// </summary>
+        private void OnRecognitionEndeded()
+        {
+            if (lastFocusedObject != null && hasRecognitionStarted)
+            {
+                lastFocusedObject.SendMessage("OnReleased", SendMessageOptions.DontRequireReceiver);
+            }
+
+            hasRecognitionStarted = false;
+        }
+
+        #endregion
+
         /// <summary>
         /// Calculates the current object in Focus.
         /// </summary>
@@ -390,13 +326,13 @@ namespace HoloToolkit.Unity
 #if UNITY_EDITOR || UNITY_STANDALONE
             // Process Editor/Companion app input.  Tap by pressing both right and left mouse buttons.  Release Tap is on any mouse button up.
 
-            // If we're already pressing a button, our editor key, or if the focus has changed then throw recognition Ended.
+            // If we're already pressing a button, our keyboard select key, or if the focus has changed then throw recognition Ended.
             if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetKeyUp(keyboardSelectKey) || focusedChanged)
             {
                 OnRecognitionEndeded();
             }
 
-            // If we're currently pressing both mouse buttons button or our selected editor key.
+            // If we're currently pressing both mouse buttons, or our keyboard select key.
             if ((Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1)) || Input.GetKeyDown(keyboardSelectKey))
             {
                 // If our focus has changed or we're not currenly manipulating our object in focus since the last frame,
@@ -422,11 +358,6 @@ namespace HoloToolkit.Unity
             manipulationRecognizer.ManipulationUpdatedEvent -= ManipulationRecognizer_ManipulationUpdatedEvent;
             manipulationRecognizer.ManipulationCompletedEvent -= ManipulationRecognizer_ManipulationCompletedEvent;
             manipulationRecognizer.ManipulationCanceledEvent -= ManipulationRecognizer_ManipulationCanceledEvent;
-
-            InteractionManager.SourcePressed -= InteractionManager_SourcePressed;
-            InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
-            InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
-            InteractionManager.SourceLost -= InteractionManager_SourceLost;
         }
     }
 }
