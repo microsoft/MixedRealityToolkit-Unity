@@ -8,15 +8,17 @@ using System.Collections.Generic;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// GestureManager provides access to several different input gestures, including
-    /// Tap and Manipulation.
+    /// GestureManager provides access to several different input gestures, including Tap and Manipulation.
     /// </summary>
     /// <remarks>
-    /// When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
+    /// When a tap gesture is detected, GestureManager uses GazeManager to find the currently focused object.
     /// GestureManager then sends a message to that game object.
     /// 
     /// Using Manipulation requires subscribing the the ManipulationStarted events and then querying
-    /// information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition
+    /// information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition.
+    /// 
+    /// Editor and Companion App Input can also be used by assigning a keyboard select key and
+    /// using both left and right mouse buttons to select the currently focused object. 
     /// </remarks>
     [RequireComponent(typeof(GazeManager))]
     public partial class GestureManager : Singleton<GestureManager>
@@ -44,9 +46,10 @@ namespace HoloToolkit.Unity
         public event ManipulationCanceledDelegate OnManipulationCanceled;
 
         /// <summary>
-        /// Key to press in the editor to select the currently gazed hologram
+        /// Key to press that will select the currently focused object.
         /// </summary>
-        public KeyCode EditorSelectKey = KeyCode.Space;
+        [SerializeField]
+        private KeyCode keyboardSelectKey = KeyCode.Space;
 
         /// <summary>
         /// To select even when a hologram is not being gazed at,
@@ -385,16 +388,16 @@ namespace HoloToolkit.Unity
             bool focusedChanged = CalcFocusedObject();
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-            // Process Editor/Companion app input.
+            // Process Editor/Companion app input.  Tap by pressing both right and left mouse buttons.  Release Tap is on any mouse button up.
 
-            // If we're already pressing a button/key or our focus has changed then throw recognition Ended.
-            if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(EditorSelectKey) || focusedChanged)
+            // If we're already pressing a button, our editor key, or if the focus has changed then throw recognition Ended.
+            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetKeyUp(keyboardSelectKey) || focusedChanged)
             {
                 OnRecognitionEndeded();
             }
 
-            // If we're currently pressing a button/key.
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
+            // If we're currently pressing both mouse buttons button or our selected editor key.
+            if ((Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1)) || Input.GetKeyDown(keyboardSelectKey))
             {
                 // If our focus has changed or we're not currenly manipulating our object in focus since the last frame,
                 // then throw a new Tap and start recognition.
