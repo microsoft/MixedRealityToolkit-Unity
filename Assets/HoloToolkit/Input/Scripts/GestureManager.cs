@@ -96,7 +96,7 @@ namespace HoloToolkit.Unity
 
         private GameObject lastFocusedObject;
 
-        private void Start()
+        private void Awake()
         {
             // Create a new GestureRecognizer. Sign up for tapped events.
             gestureRecognizer = new GestureRecognizer();
