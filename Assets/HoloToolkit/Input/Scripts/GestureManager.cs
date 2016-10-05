@@ -345,16 +345,28 @@ namespace HoloToolkit.Unity
                 }
             }
 
-#if UNITY_EDITOR
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
+            if (focusedChanged)
             {
-                ProcessTap();
-                OnRecognitionStarted(InteractionSourceKind.Other);
+                // If the currently focused object doesn't match the new focused object, cancel the current gesture.
+                // Start looking for new gestures.  This is to prevent applying gestures from one hologram to another.
+                gestureRecognizer.CancelGestures();
+                FocusedObject = newFocusedObject;
+                gestureRecognizer.StartCapturingGestures();
             }
 
+#if UNITY_EDITOR
             if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(EditorSelectKey) || focusedChanged)
             {
                 OnRecognitionEndeded(InteractionSourceKind.Other);
+            }
+
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(EditorSelectKey))
+            {
+                if (focusedChanged)
+                {
+                    ProcessTap();
+                    OnRecognitionStarted(InteractionSourceKind.Other);
+                }
             }
 #endif
         }
