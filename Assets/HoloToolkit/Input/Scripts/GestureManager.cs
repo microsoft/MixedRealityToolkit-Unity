@@ -201,6 +201,7 @@ namespace HoloToolkit.Unity
         /// <param name="headRay">The Ray from the users forward direction.</param>
         private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
+            CalcFocusedObject();
             OnTap();
         }
 
@@ -333,6 +334,10 @@ namespace HoloToolkit.Unity
             ManipulationOffset = offset;
         }
 
+        /// <summary>
+        /// Calculates the current object in Focus.
+        /// </summary>
+        /// <returns>True if we've changed our focus to a new object, else false.</returns>
         private bool CalcFocusedObject()
         {
             // set the next focus object to see if focus has changed, but don't replace the current focused object
