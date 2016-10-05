@@ -39,7 +39,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// The world space position of the hand being used for the current manipulation gesture.
-        /// Not valid if a manipulation gesture is not in progress.
+        /// Valid only if a manipulation gesture is in progress.
         /// </summary>
         public Vector3 ManipulationHandPosition
         {
