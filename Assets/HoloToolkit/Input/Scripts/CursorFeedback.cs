@@ -40,6 +40,7 @@ namespace HoloToolkit.Unity
                 // Assign parent to be the FeedbackParent
                 // so that feedback assets move and rotate with this parent.
                 instantiatedPrefab.transform.parent = FeedbackParent.transform;
+                instantiatedPrefab.transform.localRotation = Quaternion.identity;
 
                 // Set starting state of the prefab's GameObject to be inactive.
                 instantiatedPrefab.gameObject.SetActive(false);
