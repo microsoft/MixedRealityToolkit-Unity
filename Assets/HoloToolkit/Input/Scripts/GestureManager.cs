@@ -452,11 +452,6 @@ namespace HoloToolkit.Unity
 
         private void OnDestroy()
         {
-            InteractionManager.SourcePressed -= InteractionManager_SourcePressed;
-            InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
-            InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
-            InteractionManager.SourceLost -= InteractionManager_SourceLost;
-
             gestureRecognizer.StopCapturingGestures();
             gestureRecognizer.TappedEvent -= GestureRecognizer_TappedEvent;
             gestureRecognizer.RecognitionStartedEvent -= GestureRecognizer_RecognitionStartedEvent;
@@ -467,6 +462,12 @@ namespace HoloToolkit.Unity
             manipulationRecognizer.ManipulationUpdatedEvent -= ManipulationRecognizer_ManipulationUpdatedEvent;
             manipulationRecognizer.ManipulationCompletedEvent -= ManipulationRecognizer_ManipulationCompletedEvent;
             manipulationRecognizer.ManipulationCanceledEvent -= ManipulationRecognizer_ManipulationCanceledEvent;
+
+            InteractionManager.SourceDetected -= InteractionManager_SourceDetected;
+            InteractionManager.SourcePressed -= InteractionManager_SourcePressed;
+            InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
+            InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
+            InteractionManager.SourceLost -= InteractionManager_SourceLost;
         }
     }
 }
