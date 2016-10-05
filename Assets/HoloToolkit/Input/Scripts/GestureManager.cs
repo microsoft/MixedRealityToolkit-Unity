@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA.Input;
 
@@ -74,6 +75,32 @@ namespace HoloToolkit.Unity
         /// </summary>
         public Vector3 ManipulationOffset { get; private set; }
 
+        /// <summary>
+        /// The world space position of manipulation source being used for the current manipulation gesture.
+        /// Valid only if a manipulation gesture is in progress.
+        /// </summary>
+        public Vector3 ManipulationPosition
+        {
+            get
+            {
+                Vector3 position;
+                if (!currentInteractionSourceState.properties.location.TryGetPosition(out position))
+                {
+                    position = Vector3.zero;
+                }
+                return position;
+            }
+        }
+
+        /// <summary>
+        /// InteractionSourceDetected tracks the interaction detected state.
+        /// Returns true if the list of tracked interactions is not empty.
+        /// </summary>
+        public bool InteractionSourceDetected
+        {
+            get { return trackedInteractionState.Count > 0; }
+        }
+
         #endregion
 
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -92,12 +119,25 @@ namespace HoloToolkit.Unity
         /// </summary>
         private GestureRecognizer manipulationRecognizer;
 
+        private InteractionSourceState currentInteractionSourceState;
+
+        private HashSet<uint> trackedInteractionState = new HashSet<uint>();
+
+        private HashSet<uint> pressedInteractionState = new HashSet<uint>();
+
         private bool hasRecognitionStarted;
 
         private GameObject lastFocusedObject;
 
         private void Awake()
         {
+
+            InteractionManager.SourceDetected += InteractionManager_SourceDetected;
+            InteractionManager.SourcePressed += InteractionManager_SourcePressed;
+            InteractionManager.SourceReleased += InteractionManager_SourceReleased;
+            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
+            InteractionManager.SourceLost += InteractionManager_SourceLost;
+
             // Create a new GestureRecognizer. Sign up for tapped events.
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap);
@@ -121,6 +161,63 @@ namespace HoloToolkit.Unity
             gestureRecognizer.StartCapturingGestures();
             manipulationRecognizer.StartCapturingGestures();
         }
+
+        #region Interaction Management
+
+        /// <summary>
+        /// Thrown when we detect an interaction source.
+        /// </summary>
+        /// <param name="state"></param>
+        private void InteractionManager_SourceDetected(InteractionSourceState state)
+        {
+            trackedInteractionState.Add(state.source.id);
+        }
+
+        /// <summary>
+        /// Thrown when the interaction source is pressed.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
+        private void InteractionManager_SourcePressed(InteractionSourceState state)
+        {
+            if (!InteractionSourceDetected)
+            {
+                currentInteractionSourceState = state;
+            }
+
+            pressedInteractionState.Add(state.source.id);
+        }
+
+        /// <summary>
+        /// Thrown when the interaction source is updated.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
+        private void InteractionManager_SourceUpdated(InteractionSourceState state)
+        {
+            if (InteractionSourceDetected && state.source.id == currentInteractionSourceState.source.id)
+            {
+                currentInteractionSourceState = state;
+            }
+        }
+
+        /// <summary>
+        /// Thrown when the interaction source is released.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
+        private void InteractionManager_SourceReleased(InteractionSourceState state)
+        {
+            pressedInteractionState.Remove(state.source.id);
+        }
+
+        /// <summary>
+        /// Thrown when the interaction source is no longer availible.
+        /// </summary>
+        /// <param name="state">The current state of the Interaction source.</param>
+        private void InteractionManager_SourceLost(InteractionSourceState state)
+        {
+            trackedInteractionState.Remove(state.source.id);
+        }
+
+        #endregion
 
         #region Gesture Management
 
@@ -355,6 +452,11 @@ namespace HoloToolkit.Unity
 
         private void OnDestroy()
         {
+            InteractionManager.SourcePressed -= InteractionManager_SourcePressed;
+            InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
+            InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
+            InteractionManager.SourceLost -= InteractionManager_SourceLost;
+
             gestureRecognizer.StopCapturingGestures();
             gestureRecognizer.TappedEvent -= GestureRecognizer_TappedEvent;
             gestureRecognizer.RecognitionStartedEvent -= GestureRecognizer_RecognitionStartedEvent;
