@@ -13,10 +13,11 @@ namespace HoloToolkit.Unity
     public class FixedAngularSize : MonoBehaviour
     {
         [Tooltip("Off sets the scale ratio so that text does not scale down too much. (Set to zero for linear scaling)")]
-        public float SizeRatio = 0;
+        public float OverrideSizeRatio = 0;
 
         // The ratio between the transform's local scale and its starting
         // distance from the camera.
+        private Vector3 defaultSizeRatios;
         private float startingDistance;
         private Vector3 startingScale;
 
@@ -27,7 +28,7 @@ namespace HoloToolkit.Unity
             startingDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             startingScale = transform.localScale;
 
-            SetSizeRatio(SizeRatio);
+            SetSizeRatio(OverrideSizeRatio);
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace HoloToolkit.Unity
                 if (startingDistance > 0.0f)
                 {
                     // set to a linear scale ratio
-                    SizeRatio = 1 / startingDistance;
+                    OverrideSizeRatio = 1 / startingDistance;
                 }
                 else
                 {
@@ -57,7 +58,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                SizeRatio = ratio;
+                OverrideSizeRatio = ratio;
             }
         }
 
@@ -66,8 +67,8 @@ namespace HoloToolkit.Unity
             float distanceToHologram = Vector3.Distance(Camera.main.transform.position, transform.position);
             // create an offset ratio based on the starting position. This value creates a new angle that pivots
             // on the starting position that is more or less drastic than the normal scale ratio.
-            float curvedRatio = 1 - startingDistance * SizeRatio;
-            transform.localScale = startingScale * (distanceToHologram * SizeRatio + curvedRatio);
+            float curvedRatio = 1 - startingDistance * OverrideSizeRatio;
+            transform.localScale = startingScale * (distanceToHologram * OverrideSizeRatio + curvedRatio);
         }
     }
 }
