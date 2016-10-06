@@ -6,6 +6,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine.VR.WSA;
+using System.Linq;
 
 namespace HoloToolkit.Unity
 {
@@ -112,10 +113,13 @@ namespace HoloToolkit.Unity
             public void Commit()
             {
                 MeshObject.Clear();
-                MeshObject.SetVertices(verts);
-                MeshObject.SetTriangles(tris.ToArray(), 0);
-                MeshObject.RecalculateBounds();
-                MeshObject.RecalculateNormals();
+                if (verts.Count > 2)
+                {
+                    MeshObject.SetVertices(verts);
+                    MeshObject.SetTriangles(tris.ToArray(), 0);
+                    MeshObject.RecalculateBounds();
+                    MeshObject.RecalculateNormals();
+                }
             }
 
             /// <summary>
@@ -153,13 +157,17 @@ namespace HoloToolkit.Unity
         private void Start()
         {
             spatialUnderstanding = SpatialUnderstanding.Instance;
+            if (GetComponent<WorldAnchor>() == null)
+            {
+                gameObject.AddComponent<WorldAnchor>();
+            }
         }
 
         private void Update()
         {
             Update_MeshImport(Time.deltaTime);
         }
-
+        
         /// <summary>
         /// Imports the custom mesh from the dll. This a a coroutine which will take multiple frames to complete.
         /// </summary>
@@ -207,6 +215,7 @@ namespace HoloToolkit.Unity
                 (meshIndices != null) &&
                 (meshIndices.Length > 0))
             {
+
                 // first get all our mesh data containers ready for meshes.
                 foreach (MeshData meshdata in meshSectors.Values)
                 {
@@ -249,30 +258,46 @@ namespace HoloToolkit.Unity
                     }
                 }
 
-                yield return null;
-
-                // Clear our old surface objects.
-                Cleanup();
-
-                yield return null;
-
                 startTime = DateTime.Now;
 
-                // now we have all of our triangles assigned to the correct mesh, we can make all of the meshes.
-                foreach (MeshData meshdata in meshSectors.Values)
+                // Now we have all of our triangles assigned to the correct mesh, we can make all of the meshes.
+                // Each sector will have its own mesh.
+                for (int meshSectorsIndex = 0; meshSectorsIndex < meshSectors.Values.Count;meshSectorsIndex++)
                 {
-                    // Tell the meshdata class to generate its mesh.
-                    meshdata.Commit();
-                    // And create a surface object using the mesh.
-                    AddSurfaceObject(meshdata.MeshObject, string.Format("SurfaceUnderstanding Mesh-{0}", transform.childCount), transform).AddComponent<WorldAnchor>();
+                    // Make a object to contain the mesh, mesh renderer, etc or reuse one from before.
+                    // It shouldn't matter if we switch which one of these has which mesh from call to call.
+                    // (Actually there is potential that a sector won't render for a few frames, but this should
+                    // be rare).
+                    if (SurfaceObjects.Count <= meshSectorsIndex)
+                    {
+                        AddSurfaceObject(null, string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex), transform);
+                    }
 
-                    // Limit our run time so that we don't cause too many frame drops.
+                    // Get the next MeshData.
+                    MeshData meshData = meshSectors.Values.ElementAt(meshSectorsIndex);
+                    
+                    // Construct the mesh.
+                    meshData.Commit();
+
+                    // Assign the mesh to the surface object.
+                    SurfaceObjects[meshSectorsIndex].Filter.sharedMesh = meshData.MeshObject;
+
+                    // Make sure we don't build too many meshes in a single frame.
                     if ((DateTime.Now - startTime).TotalMilliseconds > MaxFrameTime)
                     {
                         yield return null;
                         startTime = DateTime.Now;
                     }
                 }
+
+                // The current flow of the code shouldn't allow for there to be more Surfaces than sectors.
+                // In the future someone might want to destroy meshSectors where there is no longer any 
+                // geometry.
+                if (SurfaceObjects.Count > meshSectors.Values.Count)
+                {
+                    Debug.Log("More surfaces than mesh sectors. This is unexpected");
+                }
+                
             }
 
             // Wait a frame
