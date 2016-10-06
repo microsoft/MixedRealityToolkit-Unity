@@ -17,7 +17,6 @@ public class TextToSpeechManagerTest : MonoBehaviour
         gestureRecognizer = new GestureRecognizer();
         gestureRecognizer.TappedEvent += GestureRecognizer_TappedEvent;
         gestureRecognizer.StartCapturingGestures();
-
     }
 
     private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
@@ -39,7 +38,14 @@ public class TextToSpeechManagerTest : MonoBehaviour
             // This voice will appear to emanate from the object.
             if (tts != null)
             {
-                tts.SpeakText("This voice should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.");
+                // Get the name
+                var voiceName = Enum.GetName(typeof(TextToSpeechVoice), tts.Voice);
+
+                // Create message
+                var msg = string.Format("This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.", voiceName);
+
+                // Speak message
+                tts.SpeakText(msg);
             }
         }
     }

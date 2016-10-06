@@ -7,11 +7,38 @@ using UnityEngine;
 using Windows.Foundation;
 using Windows.Media.SpeechSynthesis;
 using Windows.Storage.Streams;
+using System.Linq;
 using System.Threading.Tasks;
 #endif
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// The well-know voices that can be used by <see cref="TextToSpeechManager"/>.
+    /// </summary>
+    public enum TextToSpeechVoice
+    {
+        /// <summary>
+        /// The default system voice.
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// Microsoft David Mobile
+        /// </summary>
+        David,
+
+        /// <summary>
+        /// Microsoft Mark Mobile
+        /// </summary>
+        Mark,
+
+        /// <summary>
+        /// Microsoft Zira Mobile
+        /// </summary>
+        Zira,
+    }
+
     /// <summary>
     /// Enables text to speech using the Windows 10 <see cref="SpeechSynthesizer"/> class.
     /// </summary>
@@ -27,11 +54,17 @@ namespace HoloToolkit.Unity
     {
         // Inspector Variables
         [Tooltip("The audio source where speech will be played.")]
-        public AudioSource audioSource;
+        [SerializeField]
+        private AudioSource audioSource;
+
+        [Tooltip("The voice that will be used to generate speech.")]
+        [SerializeField]
+        private TextToSpeechVoice voice;
 
         // Member Variables
         #if WINDOWS_UWP
         private SpeechSynthesizer synthesizer;
+        private VoiceInformation voiceInfo;
         #endif
 
         // Static Helper Methods
@@ -205,6 +238,30 @@ namespace HoloToolkit.Unity
                     // This is good since it frees up Unity to keep running anyway.
                     Task.Run(async () =>
                     {
+                        // Change voice?
+                        if (voice != TextToSpeechVoice.Default)
+                        {
+                            // Get name
+                            var voiceName = Enum.GetName(typeof(TextToSpeechVoice), voice);
+
+                            // See if it's never been found or is changing
+                            if ((voiceInfo == null) || (!voiceInfo.DisplayName.Contains(voiceName)))
+                            {
+                                // Search for voice info
+                                voiceInfo = SpeechSynthesizer.AllVoices.Where(v => v.DisplayName.Contains(voiceName)).FirstOrDefault();
+
+                                // If found, select
+                                if (voiceInfo != null)
+                                {
+                                    synthesizer.Voice = voiceInfo;
+                                }
+                                else
+                                {
+                                    Debug.LogErrorFormat("TTS voice {0} could not be found.", voiceName);
+                                }
+                            }
+                        }
+
                         // Speak and get stream
                         var speechStream = await speakFunc();
 
@@ -324,5 +381,15 @@ namespace HoloToolkit.Unity
             LogSpeech(text);
             #endif
         }
+
+        /// <summary>
+        /// Gets or sets the audio source where speech will be played.
+        /// </summary>
+        public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
+
+        /// <summary>
+        /// Gets or sets the voice that will be used to generate speech.
+        /// </summary>
+        public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
     }
 }

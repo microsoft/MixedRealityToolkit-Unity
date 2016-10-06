@@ -55,6 +55,11 @@ public class CustomMessages : Singleton<CustomMessages>
 
     void Start()
     {
+        SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
+    }
+
+    private void SharingManagerConnected(object sender, System.EventArgs e)
+    {
         InitializeMessageHandlers();
     }
 
