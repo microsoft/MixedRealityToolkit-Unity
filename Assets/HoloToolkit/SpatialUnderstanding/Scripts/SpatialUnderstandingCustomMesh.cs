@@ -297,7 +297,6 @@ namespace HoloToolkit.Unity
                 {
                     Debug.Log("More surfaces than mesh sectors. This is unexpected");
                 }
-                
             }
 
             // Wait a frame
