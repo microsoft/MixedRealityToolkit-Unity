@@ -51,20 +51,20 @@ namespace HoloToolkit.Unity
         private float stickDistance = 0;
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            GameObject go;
+            GameObject objectToManipulate;
 
             if (!MoveGazeTarget)
             {
-                go = gameObject;
+                objectToManipulate = gameObject;
             }
             else
             {
-                go = lastAffectedObject ?? GazeManager.Instance.FocusedObject;
+                objectToManipulate = lastAffectedObject ?? GazeManager.Instance.FocusedObject;
             }
 
-            if (go == null)
+            if (objectToManipulate == null)
             {
                 return;
             }
@@ -81,9 +81,9 @@ namespace HoloToolkit.Unity
 
             if (enableRotate)
             {
-                rz = RotateAroundAxis(go, RotateAroundZAxisName, cameraTransform.forward, RotateAroundZAxisSpeed);
-                ry = RotateAroundAxis(go, RotateAroundYAxisName, cameraTransform.up, RotateAroundYAxisSpeed);
-                rx = RotateAroundAxis(go, RotateAroundXAxisName, cameraTransform.right, RotateAroundXAxisSpeed);
+                rz = RotateAroundAxis(objectToManipulate, RotateAroundZAxisName, cameraTransform.forward, RotateAroundZAxisSpeed);
+                ry = RotateAroundAxis(objectToManipulate, RotateAroundYAxisName, cameraTransform.up, RotateAroundYAxisSpeed);
+                rx = RotateAroundAxis(objectToManipulate, RotateAroundXAxisName, cameraTransform.right, RotateAroundXAxisSpeed);
             }
 
             //Move
@@ -99,14 +99,14 @@ namespace HoloToolkit.Unity
             if (!(enableRotate && usingSameAxisForRotateAndMove))
             {
                 x = Input.GetAxis(MoveXAxisName) * MoveXAxisSpeed * 60 * Time.deltaTime;
-                go.transform.RotateAround(cameraTransform.position, cameraTransform.up, x);
+                objectToManipulate.transform.RotateAround(cameraTransform.position, cameraTransform.up, x);
 
                 y = Input.GetAxis(MoveYAxisName) * MoveYAxisSpeed * 60 * Time.deltaTime;
-                go.transform.RotateAround(cameraTransform.position, cameraTransform.right, y);
+                objectToManipulate.transform.RotateAround(cameraTransform.position, cameraTransform.right, y);
             }
 
             var z = Input.GetAxis(MoveZAxisName) * MoveZAxisSpeed * 60 * Time.deltaTime;
-            go.transform.position += cameraTransform.forward*z*-0.03f;
+            objectToManipulate.transform.position += cameraTransform.forward*z*-0.03f;
 
             var stickInFrontOfMe = Input.GetButton(MoveWithGazeButtonName);
 
@@ -114,10 +114,10 @@ namespace HoloToolkit.Unity
             {
                 if (stickDistance == 0)
                 {
-                    stickDistance = (go.transform.position - cameraTransform.position).magnitude;
+                    stickDistance = (objectToManipulate.transform.position - cameraTransform.position).magnitude;
                 }
 
-                go.transform.position = cameraTransform.position + cameraTransform.forward * stickDistance;
+                objectToManipulate.transform.position = cameraTransform.position + cameraTransform.forward * stickDistance;
             }
             else
             {
@@ -127,7 +127,7 @@ namespace HoloToolkit.Unity
 
             if (stickInFrontOfMe || x != 0 || y != 0 || z != 0 || rz != 0 || ry != 0 || rx != 0)
             {
-                lastAffectedObject = go;
+                lastAffectedObject = objectToManipulate;
             }
 #if !UNITY_EDITOR
             else
@@ -140,12 +140,12 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Rotates the specified GameObject as dictated by joystick values and multipliers
         /// </summary>
-        /// <param name="go">the gameObject to rotate</param>
+        /// <param name="objectToRotate">the gameObject to rotate</param>
         /// <param name="joyAxisName">the name of the joystick axis</param>
         /// <param name="vectorToRotateAround">vector to rotate around</param>
         /// <param name="speed">rotation speed</param>
         /// <returns>the amount of rotation applied</returns>
-        private float RotateAroundAxis(GameObject go, string joyAxisName, Vector3 vectorToRotateAround, float speed)
+        private float RotateAroundAxis(GameObject objectToRotate, string joyAxisName, Vector3 vectorToRotateAround, float speed)
         {
             if (string.IsNullOrEmpty(joyAxisName))
             {
@@ -153,7 +153,7 @@ namespace HoloToolkit.Unity
             }
 
             var result = Input.GetAxis(joyAxisName) * speed * 60 * Time.deltaTime;
-            go.transform.rotation = Quaternion.Euler(vectorToRotateAround * result) * go.transform.rotation;
+            objectToRotate.transform.rotation = Quaternion.Euler(vectorToRotateAround * result) * objectToRotate.transform.rotation;
             return result;
         }
     }
