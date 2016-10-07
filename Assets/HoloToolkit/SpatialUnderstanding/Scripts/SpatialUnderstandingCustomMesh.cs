@@ -157,10 +157,10 @@ namespace HoloToolkit.Unity
         private void Start()
         {
             spatialUnderstanding = SpatialUnderstanding.Instance;
-            if (GetComponent<WorldAnchor>() == null)
-            {
-                gameObject.AddComponent<WorldAnchor>();
-            }
+            //if (GetComponent<WorldAnchor>() == null)
+            //{
+            //    gameObject.AddComponent<WorldAnchor>();
+            //}
         }
 
         private void Update()
@@ -270,7 +270,7 @@ namespace HoloToolkit.Unity
                     // be rare).
                     if (SurfaceObjects.Count <= meshSectorsIndex)
                     {
-                        AddSurfaceObject(null, string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex), transform);
+                        AddSurfaceObject(null, string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex), transform).AddComponent<WorldAnchor>()
                     }
 
                     // Get the next MeshData.
