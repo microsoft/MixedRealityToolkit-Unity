@@ -270,7 +270,7 @@ namespace HoloToolkit.Unity
                     // be rare).
                     if (SurfaceObjects.Count <= meshSectorsIndex)
                     {
-                        AddSurfaceObject(null, string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex), transform).AddComponent<WorldAnchor>()
+                        AddSurfaceObject(null, string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex), transform).AddComponent<WorldAnchor>();
                     }
 
                     // Get the next MeshData.
