@@ -46,24 +46,30 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
     }
 
     /// <summary>
-    /// Called when a new user is leaving.
+    /// Called when an existing user leaves the session.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void Instance_SessionLeft(object sender, SharingSessionTracker.SessionLeftEventArgs e)
     {
-        RemoveRemoteHead(this.remoteHeads[e.exitingUserId].HeadObject);
-        this.remoteHeads.Remove(e.exitingUserId);
+        if (e.exitingUserId != SharingStage.Instance.Manager.GetLocalUser().GetID())
+        {
+            RemoveRemoteHead(this.remoteHeads[e.exitingUserId].HeadObject);
+            this.remoteHeads.Remove(e.exitingUserId);
+        }
     }
 
     /// <summary>
-    /// Called when a user is joining.
+    /// Called when a remote user is joins the session.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void Instance_SessionJoined(object sender, SharingSessionTracker.SessionJoinedEventArgs e)
     {
-        GetRemoteHeadInfo(e.joiningUser.GetID());
+        if (e.joiningUser.GetID() != SharingStage.Instance.Manager.GetLocalUser().GetID())
+        {
+            GetRemoteHeadInfo(e.joiningUser.GetID());
+        }
     }
 
     /// <summary>

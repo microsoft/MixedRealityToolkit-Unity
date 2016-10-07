@@ -26,17 +26,11 @@ namespace HoloToolkit.Unity
 
         private MeshRenderer meshRenderer;
 
-        private bool hasLoggedGazeManagerError;
+        private GazeManager gazeManager;
 
         protected virtual void Awake()
         {
-            if ((GazeManager.Instance.RaycastLayerMask & this.gameObject.layer) == 0)
-            {
-                Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
-                    LayerMask.LayerToName(this.gameObject.layer));
-            }
-
-            meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
+            meshRenderer = gameObject.GetComponent<MeshRenderer>();
 
             if (meshRenderer == null)
             {
@@ -48,21 +42,28 @@ namespace HoloToolkit.Unity
             meshRenderer.enabled = false;
 
             // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
-            cursorDefaultRotation = this.gameObject.transform.rotation;
+            cursorDefaultRotation = gameObject.transform.rotation;
+        }
+
+        protected virtual void Start()
+        {
+            gazeManager = GazeManager.Instance;
+
+            if (gazeManager == null)
+            {
+                Debug.LogError("Must have a GazeManager somewhere in the scene.");
+            }
+
+            if ((GazeManager.Instance.RaycastLayerMask & (1 << gameObject.layer)) != 0)
+            {
+                Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
+                    LayerMask.LayerToName(gameObject.layer));
+            }
         }
 
         protected virtual RaycastResult CalculateRayIntersect()
         {
             RaycastResult result = new RaycastResult();
-            if (GazeManager.Instance == null)
-            {
-                if (!hasLoggedGazeManagerError)
-                {
-                    Debug.LogError("Must have a GazeManager somewhere in the scene.");
-                    hasLoggedGazeManagerError = true;
-                }
-                return result;
-            }
             result.Hit = GazeManager.Instance.Hit;
             result.Position = GazeManager.Instance.Position;
             result.Normal = GazeManager.Instance.Normal;
@@ -71,7 +72,7 @@ namespace HoloToolkit.Unity
 
         protected virtual void LateUpdate()
         {
-            if (meshRenderer == null)
+            if (meshRenderer == null || gazeManager == null)
             {
                 return;
             }
@@ -83,11 +84,11 @@ namespace HoloToolkit.Unity
             meshRenderer.enabled = rayResult.Hit;
 
             // Place the cursor at the calculated position.
-            this.gameObject.transform.position = rayResult.Position + rayResult.Normal * DistanceFromCollision;
+            gameObject.transform.position = rayResult.Position + rayResult.Normal * DistanceFromCollision;
 
             // Reorient the cursor to match the hit object normal.
-            this.gameObject.transform.up = rayResult.Normal;
-            this.gameObject.transform.rotation *= cursorDefaultRotation;
+            gameObject.transform.up = rayResult.Normal;
+            gameObject.transform.rotation *= cursorDefaultRotation;
         }
     }
 }

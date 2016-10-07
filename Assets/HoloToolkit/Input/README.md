@@ -72,10 +72,24 @@ Stabilize the user's gaze to account for head jitter.
 **StabilityVarianceWeight** Stability variance weight multiplier factor.
 
 #### GestureManager.cs
-GestureManager creates a gesture recognizer and signs up for a tap gesture. When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
-GestureManager then sends a message to that game object. 
+GestureManager provides access to several different input gestures, including Tap and Manipulation. 
 
-It also has an **OverrideFocusedObject** which lets you send gesture input to a specific object by overriding the gaze.
+When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
+GestureManager then sends a message to that game object.  It also has an **OverrideFocusedObject** which lets you send gesture input to a specific object by overriding the gaze.
+
+Using Manipulation requires subscribing to the ManipulationStarted events and then querying information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition.  See GestureManipulator for an example.
+
+#### GestureManipulator.cs
+A component for moving an object via the GestureManager manipulation gesture.
+
+When an active GestureManipulator component is attached to a GameObject it will subscribe 
+to GestureManager's manipulation gestures, and move the GameObject when a ManipulationGesture occurs. 
+If the GestureManipulator is disabled it will not respond to any manipulation gestures. 
+ 
+This means that if multiple GestureManipulators are active in a given scene when a manipulation 
+gesture is performed, all the relevant GameObjects will be moved.  If the desired behavior is that only 
+a single object be moved at a time, it is recommended that objects which should not be moved disable 
+their GestureManipulators, then re-enable them when necessary (e.g. the object is focused). 
 
 #### HandGuidance.cs
 Show a GameObject when a gesturing hand is about to lose tracking.
@@ -94,6 +108,19 @@ Keeps track of when the user's hand has been detected in the ready position.
 #### KeywordManager.cs
 Allows you to specify keywords and methods in the Unity Inspector, instead of registering them explicitly in code.  
 **IMPORTANT**: Please make sure to add the microphone capability in your app, in Unity under  
+Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
+or in your Visual Studio Package.appxmanifest capabilities.
+
+**_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
+
+**RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+
+#### Microphone/MicStream.cs
+Lets you access beam-formed microphone streams from the HoloLens to optimize voice and/or room captures, which is impossible to do with Unity's Microphone object. Takes the data and inserts it into Unity's AudioSource object for easy handling. Also lets you record indeterminate-length audio files from the Microphone to your device's Music Library, also using beam-forming.
+
+Check out Assets/HoloToolkit/Input/Tests/Scripts/MicStreamDemo.cs for an example of implementing these features, which is used in the demo scene at Assets/HoloToolkit/Input/Tests/MicrophoneStream.unity.
+
+**IMPORTANT**: Please make sure to add the Microphone and Music Library capabilities in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
 
@@ -161,6 +188,9 @@ Shows how to use the KeywordManager.cs script to add keywords to your scene.
 5. Select the script and method to call or variable to set from the "No Function" dropdown. Add any parameters, if necessary, into the field below the dropdown.
 
 When you start the scene, your keywords will automatically be registered on a KeywordRecognizer, and the recognizer will be started (or not) based on your Recognizer Start setting.
+
+#### MicrophoneStream.unity
+Example usage of MicStream.cs to select and record beam-formed audio from the hololens. In editor, the script lets you choose if you want to beam-form capture on voice or on the room. When running, press 'Q' to start the stream you selected, 'W' will stop the stream, 'A' starts recording a wav file, and 'S' stops the recording, saves it to your Music library, and prints the full path of the audio clip.
 
 ---
 ##### [Go back up to the table of contents.](../../../README.md)
