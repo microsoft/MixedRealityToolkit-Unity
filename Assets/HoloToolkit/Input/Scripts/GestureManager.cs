@@ -138,12 +138,9 @@ namespace HoloToolkit.Unity
             InteractionManager.SourceLost += InteractionManager_SourceLost;
 
             // Create a new GestureRecognizer. Sign up for tapped events.
+            // Will regester Taps for both Hand and Clicker.
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap);
-
-            manipulationRecognizer = new GestureRecognizer();
-            manipulationRecognizer.SetRecognizableGestures(GestureSettings.ManipulationTranslate);
-
             gestureRecognizer.TappedEvent += GestureRecognizer_TappedEvent;
 
             // We need to send pressed and released events to UI so they can provide visual feedback
@@ -151,13 +148,23 @@ namespace HoloToolkit.Unity
             gestureRecognizer.RecognitionStartedEvent += GestureRecognizer_RecognitionStartedEvent;
             gestureRecognizer.RecognitionEndedEvent += GestureRecogniser_RecognitionEndedEvent;
 
+            // Start looking for gestures.
+            gestureRecognizer.StartCapturingGestures();
+
+            // Create a new GestureRecognizer. 
+            // Sign up for manipulation events.
+            manipulationRecognizer = new GestureRecognizer();
+
+            // ManipulationTranslate only recognizes hand gesture translations, but not Clicker translations.
+            manipulationRecognizer.SetRecognizableGestures(GestureSettings.ManipulationTranslate);
+
+            // Subscribe to our manipulation events.
             manipulationRecognizer.ManipulationStartedEvent += ManipulationRecognizer_ManipulationStartedEvent;
             manipulationRecognizer.ManipulationUpdatedEvent += ManipulationRecognizer_ManipulationUpdatedEvent;
             manipulationRecognizer.ManipulationCompletedEvent += ManipulationRecognizer_ManipulationCompletedEvent;
             manipulationRecognizer.ManipulationCanceledEvent += ManipulationRecognizer_ManipulationCanceledEvent;
 
-            // Start looking for gestures.
-            gestureRecognizer.StartCapturingGestures();
+            // Start looking for manipulation gestures.
             manipulationRecognizer.StartCapturingGestures();
         }
 
@@ -178,12 +185,27 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourcePressed(InteractionSourceState state)
         {
-            if (!InteractionSourceDetected)
+            // Make sure we're using a tracked interaction source.
+            if (trackedInteractionSource.Contains(state.source.id))
             {
+                // Cache our value for later.
                 currentInteractionSourceState = state;
-            }
 
-            pressedInteractionSource.Add(state.source.id);
+                // Add it to the list of pressed states.
+                pressedInteractionSource.Add(state.source.id);
+
+                // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
+                // Don't start another manipulation gesture if one is already underway.
+                if (!ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                {
+                    OnManipulation(inProgress: true, offset: ManipulationPosition);
+
+                    if (OnManipulationStarted != null)
+                    {
+                        OnManipulationStarted(state.source.kind);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -192,9 +214,18 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceUpdated(InteractionSourceState state)
         {
-            if (InteractionSourceDetected && state.source.id == currentInteractionSourceState.source.id)
+            // Check the current interaction source matches our cached value.
+            if (state.source.id == currentInteractionSourceState.source.id)
             {
                 currentInteractionSourceState = state;
+
+                // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
+                // if we currently in a manipulation, update our data.
+                if (ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                {
+                    Vector3 cumulativeDelta = ManipulationOffset - ManipulationPosition;
+                    OnManipulation(inProgress: true, offset: cumulativeDelta);
+                }
             }
         }
 
@@ -204,7 +235,24 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceReleased(InteractionSourceState state)
         {
-            pressedInteractionSource.Remove(state.source.id);
+            // Check the current interaction source matches our cached value.
+            if (state.source.id == currentInteractionSourceState.source.id)
+            {
+                pressedInteractionSource.Remove(state.source.id);
+
+                // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
+                // if we currently in a manipulation stop.
+                if (ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                {
+                    Vector3 cumulativeDelta = ManipulationOffset - ManipulationPosition;
+                    OnManipulation(inProgress: false, offset: cumulativeDelta);
+
+                    if (OnManipulationCompleted != null)
+                    {
+                        OnManipulationCompleted(state.source.kind);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -213,6 +261,26 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceLost(InteractionSourceState state)
         {
+            // Check the current interaction source matches our cached value.
+            if (state.source.id == currentInteractionSourceState.source.id)
+            {
+                pressedInteractionSource.Remove(state.source.id);
+
+                // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
+                // if we currently in a manipulation stop.
+                if (ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                {
+                    Vector3 cumulativeDelta = ManipulationOffset - ManipulationPosition;
+                    OnManipulation(inProgress: false, offset: cumulativeDelta);
+
+                    if (OnManipulationCanceled != null)
+                    {
+                        OnManipulationCanceled(state.source.kind);
+                    }
+                }
+            }
+
+            // Remove our traced interaction state.
             if (trackedInteractionSource.Contains(state.source.id))
             {
                 trackedInteractionSource.Remove(state.source.id);
