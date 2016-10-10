@@ -98,7 +98,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public bool InteractionSourceDetected
         {
-            get { return trackedInteractionState.Count > 0; }
+            get { return trackedInteractionSource.Count > 0; }
         }
 
         #endregion
@@ -107,8 +107,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Key to press that will select the currently focused object.
         /// </summary>
-        [SerializeField]
-        private KeyCode keyboardSelectKey = KeyCode.Space;
+        public KeyCode keyboardSelectKey = KeyCode.Space;
 #endif
 
         private GestureRecognizer gestureRecognizer;
@@ -121,9 +120,9 @@ namespace HoloToolkit.Unity
 
         private InteractionSourceState currentInteractionSourceState;
 
-        private HashSet<uint> trackedInteractionState = new HashSet<uint>();
+        private HashSet<uint> trackedInteractionSource = new HashSet<uint>();
 
-        private HashSet<uint> pressedInteractionState = new HashSet<uint>();
+        private HashSet<uint> pressedInteractionSource = new HashSet<uint>();
 
         private bool hasRecognitionStarted;
 
@@ -170,7 +169,7 @@ namespace HoloToolkit.Unity
         /// <param name="state"></param>
         private void InteractionManager_SourceDetected(InteractionSourceState state)
         {
-            trackedInteractionState.Add(state.source.id);
+            trackedInteractionSource.Add(state.source.id);
         }
 
         /// <summary>
@@ -184,7 +183,7 @@ namespace HoloToolkit.Unity
                 currentInteractionSourceState = state;
             }
 
-            pressedInteractionState.Add(state.source.id);
+            pressedInteractionSource.Add(state.source.id);
         }
 
         /// <summary>
@@ -205,7 +204,7 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceReleased(InteractionSourceState state)
         {
-            pressedInteractionState.Remove(state.source.id);
+            pressedInteractionSource.Remove(state.source.id);
         }
 
         /// <summary>
@@ -214,7 +213,7 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceLost(InteractionSourceState state)
         {
-            trackedInteractionState.Remove(state.source.id);
+            trackedInteractionSource.Remove(state.source.id);
         }
 
         #endregion
@@ -441,7 +440,7 @@ namespace HoloToolkit.Unity
             {
                 // If our focus has changed or we're not currenly manipulating our object in focus since the last frame,
                 // then throw a new Tap and start recognition.
-                if ((focusedChanged || !ManipulationInProgress) && FocusedObject != null)
+                if (focusedChanged || !ManipulationInProgress)
                 {
                     OnRecognitionStarted();
                     OnTap();

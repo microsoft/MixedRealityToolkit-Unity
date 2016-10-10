@@ -103,8 +103,11 @@ namespace HoloToolkit.Unity
         {
             if (state.source.kind == InteractionSourceKind.Hand)
             {
+                // If we don't have any hands detected.
                 if (!HandDetected)
                 {
+                    // Update our current hand state with the Interaction Source State
+                    // so we have something to add to our pressHands hash.
                     currentHandState = state;
                 }
 
