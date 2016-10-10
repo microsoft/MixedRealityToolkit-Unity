@@ -130,7 +130,6 @@ namespace HoloToolkit.Unity
 
         private void Awake()
         {
-
             InteractionManager.SourceDetected += InteractionManager_SourceDetected;
             InteractionManager.SourcePressed += InteractionManager_SourcePressed;
             InteractionManager.SourceReleased += InteractionManager_SourceReleased;
