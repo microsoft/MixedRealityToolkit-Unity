@@ -432,14 +432,14 @@ namespace HoloToolkit.Unity
 #if UNITY_EDITOR || UNITY_STANDALONE
             // Process Editor/Companion app input.  Tap by pressing both right and left mouse buttons.  Release Tap is on any mouse button up.
 
-            // If we're already pressing a button, our keyboard select key, or if the focus has changed then throw recognition Ended.
-            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetKeyUp(keyboardSelectKey) || focusedChanged)
+            // If we're stop pressing our mouse button, our keyboard select key, or if the focus has changed then throw recognition Ended.
+            if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(keyboardSelectKey) || focusedChanged)
             {
                 OnRecognitionEndeded(focusedChanged);
             }
 
-            // If we're currently pressing both mouse buttons, or our keyboard select key.
-            if ((Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1)) || Input.GetKeyDown(keyboardSelectKey))
+            // If we're currently pressing our mouse button, or our keyboard select key.
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(keyboardSelectKey))
             {
                 // If our focus has changed or we're not currenly manipulating our object in focus since the last frame,
                 // then throw a new Tap and start recognition.
