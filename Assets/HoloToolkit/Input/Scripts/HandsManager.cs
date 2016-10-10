@@ -103,11 +103,8 @@ namespace HoloToolkit.Unity
         {
             if (state.source.kind == InteractionSourceKind.Hand)
             {
-                // If we don't have any hands detected.
-                if (!HandDetected)
+                if (trackedHands.Contains(state.source.id))
                 {
-                    // Update our current hand state with the Interaction Source State
-                    // so we have something to add to our pressHands hash.
                     currentHandState = state;
                 }
 
@@ -150,11 +147,14 @@ namespace HoloToolkit.Unity
         {
             if (state.source.kind == InteractionSourceKind.Hand)
             {
-                trackedHands.Remove(state.source.id);
-
-                if (HandInView != null)
+                if (trackedHands.Contains(state.source.id))
                 {
-                    HandInView(HandDetected);
+                    trackedHands.Remove(state.source.id);
+
+                    if (HandInView != null)
+                    {
+                        HandInView(HandDetected);
+                    }
                 }
             }
         }
