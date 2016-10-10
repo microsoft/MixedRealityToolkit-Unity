@@ -106,9 +106,12 @@ namespace HoloToolkit.Unity
                 if (trackedHands.Contains(state.source.id))
                 {
                     currentHandState = state;
-                }
 
-                pressedHands.Add(state.source.id);
+                    if(pressedHands.Contains(state.source.id))
+                    {
+                        pressedHands.Add(state.source.id);
+                    }
+                }
             }
         }
 
@@ -120,7 +123,7 @@ namespace HoloToolkit.Unity
         {
             if (state.source.kind == InteractionSourceKind.Hand)
             {
-                if (HandDetected && state.source.id == currentHandState.source.id)
+                if (state.source.id == currentHandState.source.id)
                 {
                     currentHandState = state;
                 }
@@ -135,7 +138,10 @@ namespace HoloToolkit.Unity
         {
             if (state.source.kind == InteractionSourceKind.Hand)
             {
-                pressedHands.Remove(state.source.id);
+                if (pressedHands.Contains(state.source.id))
+                {
+                    pressedHands.Remove(state.source.id);
+                }
             }
         }
 
@@ -145,6 +151,8 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceLost(InteractionSourceState state)
         {
+            InteractionManager_SourceReleased(state);
+
             if (state.source.kind == InteractionSourceKind.Hand)
             {
                 if (trackedHands.Contains(state.source.id))

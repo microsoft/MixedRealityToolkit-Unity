@@ -192,7 +192,10 @@ namespace HoloToolkit.Unity
                 currentInteractionSourceState = state;
 
                 // Add it to the list of pressed states.
-                pressedInteractionSource.Add(state.source.id);
+                if (pressedInteractionSource.Contains(state.source.id))
+                {
+                    pressedInteractionSource.Add(state.source.id);
+                }
 
                 // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
                 // Don't start another manipulation gesture if one is already underway.
