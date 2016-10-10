@@ -213,7 +213,10 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceLost(InteractionSourceState state)
         {
-            trackedInteractionSource.Remove(state.source.id);
+            if (trackedInteractionSource.Contains(state.source.id))
+            {
+                trackedInteractionSource.Remove(state.source.id);
+            }
         }
 
         #endregion
