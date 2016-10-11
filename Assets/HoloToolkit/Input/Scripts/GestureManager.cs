@@ -109,6 +109,21 @@ namespace HoloToolkit.Unity
         /// Key to press that will select the currently focused object.
         /// </summary>
         public KeyCode keyboardSelectKey = KeyCode.Space;
+
+        /// <summary>
+        /// Enumerated Mouse Buttons.
+        /// </summary>
+        public enum MouseButton
+        {
+            Left = 0,
+            Right = 1,
+            Middle = 2
+        }
+
+        /// <summary>
+        /// Mouse button to press that will select the current focused object.
+        /// </summary>
+        public MouseButton MouseSelectButton = MouseButton.Right;
 #endif
 
         private GestureRecognizer gestureRecognizer;
@@ -504,13 +519,13 @@ namespace HoloToolkit.Unity
             // Process Editor/Companion app input.  Tap by pressing both right and left mouse buttons.  Release Tap is on any mouse button up.
 
             // If we're stop pressing our mouse button, our keyboard select key, or if the focus has changed then throw recognition Ended.
-            if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(keyboardSelectKey) || focusedChanged)
+            if (Input.GetMouseButtonUp((int)MouseSelectButton) || Input.GetKeyUp(keyboardSelectKey) || focusedChanged)
             {
                 OnRecognitionEndeded(focusedChanged);
             }
 
             // If we're currently pressing our mouse button, or our keyboard select key.
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(keyboardSelectKey))
+            if (Input.GetMouseButtonDown((int)MouseSelectButton) || Input.GetKeyDown(keyboardSelectKey))
             {
                 // If our focus has changed or we're not currenly manipulating our object in focus since the last frame,
                 // then throw a new Tap and start recognition.
