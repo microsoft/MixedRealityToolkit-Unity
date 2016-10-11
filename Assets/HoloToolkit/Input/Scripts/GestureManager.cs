@@ -18,7 +18,8 @@ namespace HoloToolkit.Unity
     /// information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition.
     /// 
     /// Editor and Companion App Input can also be used by assigning a keyboard select key and
-    /// using both left and right mouse buttons to select the currently focused object. 
+    /// using the right mouse button to select the currently focused object.  Using Gestures with 
+    /// mouse is currently not supported.
     /// </remarks>
     [RequireComponent(typeof(GazeManager))]
     public partial class GestureManager : Singleton<GestureManager>
