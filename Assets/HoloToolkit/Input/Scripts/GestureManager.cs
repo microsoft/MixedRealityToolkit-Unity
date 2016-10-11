@@ -70,15 +70,15 @@ namespace HoloToolkit.Unity
         public bool ManipulationInProgress { get; private set; }
 
         /// <summary>
-        /// The offset of the hand from its position at the beginning of 
-        /// the currently active manipulation gesture, in world space.  Not valid if
-        /// a manipulation gesture is not in progress
+        /// The offset of the input source from its position at the beginning of 
+        /// the currently active manipulation gesture, in world space.
+        /// Valid if a manipulation gesture is in progress.
         /// </summary>
         public Vector3 ManipulationOffset { get; private set; }
 
         /// <summary>
         /// The world space position of manipulation source being used for the current manipulation gesture.
-        /// Valid only if a manipulation gesture is in progress.
+        /// Valid if a manipulation gesture is in progress.
         /// </summary>
         public Vector3 ManipulationPosition
         {
@@ -414,7 +414,9 @@ namespace HoloToolkit.Unity
         private void OnManipulation(bool inProgress, Vector3 offset)
         {
             ManipulationInProgress = inProgress;
-            ManipulationOffset = offset;
+
+            // If we're doing a manipulation set the offset, else reset it to zero.
+            ManipulationOffset = inProgress ? offset : Vector3.zero;
         }
 
         #endregion
