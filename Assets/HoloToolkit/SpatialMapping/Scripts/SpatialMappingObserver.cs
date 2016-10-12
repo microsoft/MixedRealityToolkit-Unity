@@ -225,6 +225,11 @@ namespace HoloToolkit.Unity
             }
         }
 
+        public void SaveSpatialMeshes()
+        {
+            MeshSaver.TransformPointsAndSave("SpatialMeshes", GetMeshFilters());
+        }
+
         private GameObject GetSurfaceObject(int surfaceID, Transform parentObject)
         {
             //If we have surfaces ready for reuse, use those first
