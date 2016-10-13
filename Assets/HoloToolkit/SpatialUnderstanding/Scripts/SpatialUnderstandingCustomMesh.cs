@@ -208,7 +208,6 @@ namespace HoloToolkit.Unity
             Vector3[] meshNormals = null;
             Int32[] meshIndices = null;
 
-
             // Pull the mesh - first get the size, then allocate and pull the data
             int vertCount;
             int idxCount;
@@ -236,7 +235,6 @@ namespace HoloToolkit.Unity
                 (meshIndices != null) &&
                 (meshIndices.Length > 0))
             {
-
                 // first get all our mesh data containers ready for meshes.
                 foreach (MeshData meshdata in meshSectors.Values)
                 {
