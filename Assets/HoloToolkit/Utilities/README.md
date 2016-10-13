@@ -11,6 +11,15 @@ Unity camera that has been customized for Holographic development.
 3. Color set to R:0, G:0, B:0, A:0 as black renders transparent in HoloLens.
 4. Set the recommended near clipping plane.
 
+#### HeadsUpDirectionIndicator.prefab
+Drop in direction indicator, that always stays in the user's view. You must set the "TargetObject" property to the object you wish to track.
+
+This is the easiest way to leverage the functionalty in HeadsUpdirectionIndicator.cs.
+
+### [Materials](Materials)
+#### DrawOver.mat
+A material that always draws on top regardless of its depth in the scene.
+
 ### [Scripts](Scripts)
 
 #### Billboard.cs
@@ -31,6 +40,13 @@ You must provide GameObjects for the **_Cursor_** and **_DirectionIndicatorObjec
 
 #### FixedAngularSize.cs
 Causes a hologram to maintain a fixed angular size, which is to say it occupies the same pixels in the view regardless of its distance from the camera.
+
+#### HeadsUpDirectionIndicator.cs
+Provides a simple directional indicator that always appears in the user's view.
+
+**_TargetObject_** The object the direction indicator will point toward.
+
+**indicatorMarginPercent** Determines what percentage of the visible field should be margin.
 
 #### Interpolator.cs
 A MonoBehaviour that interpolates a transform's position, rotation or scale.
@@ -75,6 +91,9 @@ Feature configurable unlit shader.  Use when no lighting is desired.
 
 #### UnlitConfigurableTransparent.shader
 Feature configurable unlit transparent shader.  Use when transparency and no lighting are desired.
+
+#### UnlitNoDepth
+Draws unlit textured geometry without testing the depth buffer. Use when you want something to always appear on top.
 
 #### VertexLitConfigurable.cginc
 Code shared between VertexLitConfigurable.shader and VertexLitConfigurableTransparent.shader.
