@@ -181,5 +181,10 @@ namespace HoloToolkit.Unity
 
             return meshRenderers;
         }
+
+        public void SaveSpatialMeshes(string fileName)
+        {
+            MeshSaver.Save(fileName, GetMeshFilters());
+        }
     }
 }

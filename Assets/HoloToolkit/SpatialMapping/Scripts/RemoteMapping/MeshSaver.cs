@@ -40,50 +40,39 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Transform all the points within the mesh filter into world space and return a
-        /// new mesh with the transformed vertices.
-        /// </summary>
-        /// <param name="meshFilter">Mesh filter to transform.</param>
-        /// <returns>Mesh with vertices transformed to world space.</returns>
-        public static Mesh TransformPoints(MeshFilter meshFilter)
-        {
-            Mesh sharedMesh = meshFilter.sharedMesh;
-            Transform meshTransform = meshFilter.transform;
-
-            Mesh result = new Mesh();
-
-            // Transform all vertices into world space.
-            Vector3[] transformedVertices = new Vector3[sharedMesh.vertexCount];
-            for (int v = 0, vLength = transformedVertices.Length; v < vLength; ++v)
-            {
-                transformedVertices[v] = meshTransform.TransformPoint(sharedMesh.vertices[v]);
-            }
-            result.vertices = transformedVertices;
-
-            // Copy over all the sub mesh indices into the new mesh.
-            for (int s = 0, sLength = sharedMesh.subMeshCount; s < sLength; ++s)
-            {
-                result.SetIndices(sharedMesh.GetIndices(s), MeshTopology.Triangles, s);
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Transforms all the mesh vertices into world position before saving to file.
         /// </summary>
         /// <param name="fileName">Name to give the saved mesh file. Exclude path and extension.</param>
         /// <param name="meshes">The collection of Mesh objects to save.</param>
         /// <returns>Fully qualified name of the saved mesh file.</returns>
         /// <remarks>Determines the save path to use and automatically applies the file extension.</remarks>
-        public static string TransformPointsAndSave(string fileName, IEnumerable<MeshFilter> meshFilters)
+        public static string Save(string fileName, IEnumerable<MeshFilter> meshFilters)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("Must specify a valid fileName.");
+            }
+
             if (meshFilters == null)
             {
                 throw new ArgumentNullException("Value of meshFilters cannot be null.");
             }
 
-            return MeshSaver.Save(fileName, meshFilters.Select<MeshFilter, Mesh>(TransformPoints));
+            // Create the mesh file.
+            String folderName = MeshFolderName;
+            Debug.Log(String.Format("Saving mesh file: {0}", Path.Combine(folderName, fileName + fileExtension)));
+
+            using (Stream stream = OpenFileForWrite(folderName, fileName + fileExtension))
+            {
+                // Serialize and write the meshes to the file.
+                byte[] data = SimpleMeshSerializer.Serialize(meshFilters);
+                stream.Write(data, 0, data.Length);
+                stream.Flush();
+            }
+
+            Debug.Log("Mesh file saved.");
+
+            return Path.Combine(folderName, fileName + fileExtension);
         }
 
         /// <summary>
