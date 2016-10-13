@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity
 
         private bool Manipulating { get; set; }
 
-        private void Start()
+        private void Awake()
         {
             gestureManager = GestureManager.Instance;
 
