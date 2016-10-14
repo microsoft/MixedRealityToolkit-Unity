@@ -6,6 +6,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine.VR.WSA;
+using System.Linq;
 
 namespace HoloToolkit.Unity
 {
@@ -112,10 +113,13 @@ namespace HoloToolkit.Unity
             public void Commit()
             {
                 MeshObject.Clear();
-                MeshObject.SetVertices(verts);
-                MeshObject.SetTriangles(tris.ToArray(), 0);
-                MeshObject.RecalculateBounds();
-                MeshObject.RecalculateNormals();
+                if (verts.Count > 2)
+                {
+                    MeshObject.SetVertices(verts);
+                    MeshObject.SetTriangles(tris.ToArray(), 0);
+                    MeshObject.RecalculateNormals();
+                    MeshObject.RecalculateBounds();
+                }
             }
 
             /// <summary>
@@ -124,28 +128,27 @@ namespace HoloToolkit.Unity
             /// <param name="point1">First point on the triangle.</param>
             /// <param name="point2">Second point on the triangle.</param>
             /// <param name="point3">Third point on the triangle.</param>
-            public void AddTriangle(Vector3 point1, Vector3 point2, Vector3 point3)
+            public void AddTriangle(Vector3 point1, Vector3 point2, Vector3 point3) 
             {
-                AddPoint(point1);
-                AddPoint(point2);
-                AddPoint(point3);
-            }
-
-            /// <summary>
-            /// Adds the specified point to our mesh. 
-            /// </summary>
-            /// <param name="point">the point to add.</param>
-            private void AddPoint(Vector3 point)
-            {
-                int index = verts.IndexOf(point);
-                if (index >= 0)
+                // Currently spatial understanding in the native layer voxellizes the space 
+                // into ~2000 voxels per cubic meter.  Even in a degerate case we 
+                // will use far fewer than 65000 vertices, this check should not fail
+                // unless the spatial understanding native layer is updated to have more
+                // voxels per cubic meter. 
+                if (verts.Count < 65000)
                 {
-                    tris.Add(index);
+                    tris.Add(verts.Count);
+                    verts.Add(point1);
+
+                    tris.Add(verts.Count);
+                    verts.Add(point2);
+
+                    tris.Add(verts.Count);
+                    verts.Add(point3);
                 }
                 else
                 {
-                    tris.Add(verts.Count);
-                    verts.Add(point);
+                    Debug.LogError("Mesh would have more vertices than Unity supports");
                 }
             }
         }
@@ -153,11 +156,37 @@ namespace HoloToolkit.Unity
         private void Start()
         {
             spatialUnderstanding = SpatialUnderstanding.Instance;
+            if (gameObject.GetComponent<WorldAnchor>() == null)
+            {
+                gameObject.AddComponent<WorldAnchor>();
+            }
         }
 
         private void Update()
         {
             Update_MeshImport(Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Adds a triangle with the specified points to the specified sector. 
+        /// </summary>
+        /// <param name="sector">The sector to add the triangle to.</param>
+        /// <param name="point1">First point of the triangle.</param>
+        /// <param name="point2">Second point of the triangle.</param>
+        /// <param name="point3">Third point of the triangle.</param>
+        private void AddTriangleToSector(Vector3 sector, Vector3 point1, Vector3 point2, Vector3 point3)
+        {
+            // Grab the mesh container we are using for this sector.
+            MeshData nextSectorData;
+            if (!meshSectors.TryGetValue(sector, out nextSectorData))
+            {
+                // Or make it if this is a new sector.
+                nextSectorData = new MeshData();
+                meshSectors.Add(sector, nextSectorData);
+            }
+
+            // Add the vertices to the sector's mesh container.
+            nextSectorData.AddTriangle(point1, point2, point3);
         }
 
         /// <summary>
@@ -178,7 +207,6 @@ namespace HoloToolkit.Unity
             Vector3[] meshVertices = null;
             Vector3[] meshNormals = null;
             Int32[] meshIndices = null;
-
 
             // Pull the mesh - first get the size, then allocate and pull the data
             int vertCount;
@@ -222,22 +250,27 @@ namespace HoloToolkit.Unity
                     Vector3 secondVertex = meshVertices[meshIndices[index + 1]];
                     Vector3 thirdVertex = meshVertices[meshIndices[index + 2]];
 
-                    // Use the first vertex to decide which sector to put the triangle into.
-                    // Ultimately all of the triangles end up in a mesh, so the resulting render should
-                    // be identical.
-                    Vector3 triangleSector = VectorToSector(firstVertex);
+                    // The triangle may belong to multiple sectors.  We will copy the whole triangle
+                    // to all of the sectors it belongs to.  This will fill in seams on sector edges
+                    // although it could cause some amount of visible z-fighting if rendering a wireframe.
+                    Vector3 firstSector = VectorToSector(firstVertex);
 
-                    // Grab the mesh container we are using for this sector.
-                    MeshData nextSectorData;
-                    if (!meshSectors.TryGetValue(triangleSector, out nextSectorData))
+                    AddTriangleToSector(firstSector, firstVertex, secondVertex, thirdVertex);
+
+                    // If the second sector doesn't match the first, copy the triangle to the second sector.
+                    Vector3 secondSector = VectorToSector(secondVertex);
+                    if(secondSector != firstSector)
                     {
-                        // Or make it if this is a new sector.
-                        nextSectorData = new MeshData();
-                        meshSectors.Add(triangleSector, nextSectorData);
+                        AddTriangleToSector(secondSector, firstVertex, secondVertex, thirdVertex);
                     }
 
-                    // Add the vertices to the sector's mesh container.
-                    nextSectorData.AddTriangle(firstVertex, secondVertex, thirdVertex);
+                    // If the third sector matches neither the first nor second sector, copy the triangle to the
+                    // third sector.
+                    Vector3 thirdSector = VectorToSector(thirdVertex);
+                    if (thirdSector != firstSector && thirdSector != secondSector)
+                    {
+                        AddTriangleToSector(thirdSector, firstVertex, secondVertex, thirdVertex);
+                    }
 
                     // Limit our run time so that we don't cause too many frame drops.
                     // Only checking every 10 iterations or so to prevent losing too much time to checking the clock.
@@ -249,29 +282,44 @@ namespace HoloToolkit.Unity
                     }
                 }
 
-                yield return null;
-
-                // Clear our old surface objects.
-                Cleanup();
-
-                yield return null;
-
                 startTime = DateTime.Now;
 
-                // now we have all of our triangles assigned to the correct mesh, we can make all of the meshes.
-                foreach (MeshData meshdata in meshSectors.Values)
+                // Now we have all of our triangles assigned to the correct mesh, we can make all of the meshes.
+                // Each sector will have its own mesh.
+                for (int meshSectorsIndex = 0; meshSectorsIndex < meshSectors.Values.Count;meshSectorsIndex++)
                 {
-                    // Tell the meshdata class to generate its mesh.
-                    meshdata.Commit();
-                    // And create a surface object using the mesh.
-                    AddSurfaceObject(meshdata.MeshObject, string.Format("SurfaceUnderstanding Mesh-{0}", transform.childCount), transform).AddComponent<WorldAnchor>();
+                    // Make a object to contain the mesh, mesh renderer, etc or reuse one from before.
+                    // It shouldn't matter if we switch which one of these has which mesh from call to call.
+                    // (Actually there is potential that a sector won't render for a few frames, but this should
+                    // be rare).
+                    if (SurfaceObjects.Count <= meshSectorsIndex)
+                    {
+                        AddSurfaceObject(null, string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex), transform);
+                    }
 
-                    // Limit our run time so that we don't cause too many frame drops.
+                    // Get the next MeshData.
+                    MeshData meshData = meshSectors.Values.ElementAt(meshSectorsIndex);
+                    
+                    // Construct the mesh.
+                    meshData.Commit();
+
+                    // Assign the mesh to the surface object.
+                    SurfaceObjects[meshSectorsIndex].Filter.sharedMesh = meshData.MeshObject;
+
+                    // Make sure we don't build too many meshes in a single frame.
                     if ((DateTime.Now - startTime).TotalMilliseconds > MaxFrameTime)
                     {
                         yield return null;
                         startTime = DateTime.Now;
                     }
+                }
+
+                // The current flow of the code shouldn't allow for there to be more Surfaces than sectors.
+                // In the future someone might want to destroy meshSectors where there is no longer any 
+                // geometry.
+                if (SurfaceObjects.Count > meshSectors.Values.Count)
+                {
+                    Debug.Log("More surfaces than mesh sectors. This is unexpected");
                 }
             }
 
