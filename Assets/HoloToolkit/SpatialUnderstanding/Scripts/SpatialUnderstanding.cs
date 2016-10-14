@@ -49,8 +49,9 @@ namespace HoloToolkit.Unity
             {
 #if UNITY_METRO && !UNITY_EDITOR
                 return true;
-#endif
+#else
                 return false;
+#endif
             }
         }
         /// <summary>
