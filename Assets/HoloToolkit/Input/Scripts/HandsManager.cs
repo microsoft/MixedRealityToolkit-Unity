@@ -7,7 +7,7 @@ using UnityEngine.VR.WSA.Input;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// HandsDetected determines if the hand is currently detected or not.
+    /// HandsManager determines if the hand is currently detected or not.
     /// </summary>
     public partial class HandsManager : Singleton<HandsManager>
     {
@@ -20,9 +20,16 @@ namespace HoloToolkit.Unity
             get { return trackedHands.Count > 0; }
         }
 
-        private List<uint> trackedHands = new List<uint>();
+        /// <summary>
+        /// Occurs when users hand is detected or lost.
+        /// </summary>
+        /// <param name="handDetected">True if a hand is Detected, else false.</param>
+        public delegate void HandInViewDelegate(bool handDetected);
+        public event HandInViewDelegate HandInView;
 
-        void Awake()
+        private HashSet<uint> trackedHands = new HashSet<uint>();
+
+        private void Awake()
         {
             InteractionManager.SourceDetected += InteractionManager_SourceDetected;
             InteractionManager.SourceLost += InteractionManager_SourceLost;
@@ -37,6 +44,11 @@ namespace HoloToolkit.Unity
             }
 
             trackedHands.Add(state.source.id);
+
+            if (HandInView != null)
+            {
+                HandInView(HandDetected);
+            }
         }
 
         private void InteractionManager_SourceLost(InteractionSourceState state)
@@ -50,10 +62,15 @@ namespace HoloToolkit.Unity
             if (trackedHands.Contains(state.source.id))
             {
                 trackedHands.Remove(state.source.id);
+
+                if (HandInView != null)
+                {
+                    HandInView(HandDetected);
+                }
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             InteractionManager.SourceDetected -= InteractionManager_SourceDetected;
             InteractionManager.SourceLost -= InteractionManager_SourceLost;

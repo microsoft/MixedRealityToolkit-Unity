@@ -40,12 +40,6 @@ namespace HoloToolkit.Unity
                 Debug.LogError("Please include a GameObject for the Cursor to display the indicator around.");
             }
 
-            // Register for hand and finger events to know where your hand
-            // is being tracked and what state it is in.
-            InteractionManager.SourceLost += InteractionManager_SourceLost;
-            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
-            InteractionManager.SourceReleased += InteractionManager_SourceReleased;
-
             if (HandGuidanceIndicator != null)
             {
                 // Cache the initial rotation of the HandGuidanceIndicator so future rotations 
@@ -56,6 +50,12 @@ namespace HoloToolkit.Unity
             // Create an object in the scene for the guidance indicator and default it to not be visible.
             handGuidanceIndicatorGameObject = Instantiate(HandGuidanceIndicator);
             handGuidanceIndicatorGameObject.SetActive(false);
+
+            // Register for hand and finger events to know where your hand
+            // is being tracked and what state it is in.
+            InteractionManager.SourceLost += InteractionManager_SourceLost;
+            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
+            InteractionManager.SourceReleased += InteractionManager_SourceReleased;
         }
 
         private void ShowHandGuidanceIndicator(InteractionSourceState hand)
