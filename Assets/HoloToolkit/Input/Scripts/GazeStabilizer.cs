@@ -44,9 +44,9 @@ namespace HoloToolkit.Unity
 
         public struct GazeSample
         {
-            public Vector3 position;
-            public Vector3 direction;
-            public float timestamp;
+            public Vector3 Position;
+            public Vector3 Direction;
+            public float Timestamp;
         };
 
         private LinkedList<GazeSample> stabilitySamples = new LinkedList<GazeSample>();
@@ -96,9 +96,9 @@ namespace HoloToolkit.Unity
         {
             // Record and save sample data.
             GazeSample newStabilitySample;
-            newStabilitySample.position = positionSample;
-            newStabilitySample.direction = directionSample;
-            newStabilitySample.timestamp = Time.time;
+            newStabilitySample.Position = positionSample;
+            newStabilitySample.Direction = directionSample;
+            newStabilitySample.Timestamp = Time.time;
 
             if (stabilitySamples != null)
             {
@@ -114,19 +114,6 @@ namespace HoloToolkit.Unity
 
         private void UpdateInstability(out float positionInstability, out float directionInstability)
         {
-            GazeSample mostRecentSample;
-
-            float positionDeltaMin = 0.0f;
-            float positionDeltaMax = 0.0f;
-            float positionDeltaMean = 0.0f;
-
-            float directionDeltaMin = 0.0f;
-            float directionDeltaMax = 0.0f;
-            float directionDeltaMean = 0.0f;
-
-            float positionDelta = 0.0f;
-            float directionDelta = 0.0f;
-
             positionInstability = 0.0f;
             directionInstability = 0.0f;
 
@@ -136,37 +123,39 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            mostRecentSample = stabilitySamples.Last.Value;
+            GazeSample mostRecentSample = stabilitySamples.Last.Value;
 
-            bool first = true;
-            foreach(GazeSample sample in stabilitySamples)
-            {    
+            float positionDeltaMin = float.MaxValue;
+            float positionDeltaMax = float.MinValue;
+            float positionDeltaMean = 0.0f;
+
+            float directionDeltaMin = float.MaxValue;
+            float directionDeltaMax = float.MinValue;
+            float directionDeltaMean = 0.0f;
+
+            float positionDelta = 0.0f;
+            float directionDelta = 0.0f;
+
+            foreach (GazeSample sample in stabilitySamples)
+            {
+                if (sample.Timestamp == mostRecentSample.Timestamp)
+                {
+                    continue;
+                }
+
                 // Calculate difference between current sample and most recent sample.
-                positionDelta = Vector3.Magnitude(sample.position - mostRecentSample.position);
+                positionDelta = Vector3.Magnitude(sample.Position - mostRecentSample.Position);
+                directionDelta = Vector3.Angle(sample.Direction, mostRecentSample.Direction) * Mathf.Deg2Rad;
 
-                directionDelta = Vector3.Angle(sample.direction, mostRecentSample.direction) * Mathf.Deg2Rad;
+                // Update maximum, minimum and mean differences from most recent sample.
+                positionDeltaMin = Mathf.Min(positionDelta, positionDeltaMin);
+                positionDeltaMax = Mathf.Max(positionDelta, positionDeltaMax);
 
-                // Initialize max and min on first sample.
-                if (first)
-                {
-                    positionDeltaMin = positionDelta;
-                    positionDeltaMax = positionDelta;
-                    directionDeltaMin = directionDelta;
-                    directionDeltaMax = directionDelta;
-                    first = false;
-                }
-                else
-                {
-                    // Update maximum, minimum and mean differences from most recent sample.
-                    positionDeltaMin = Mathf.Min(positionDelta, positionDeltaMin);
-                    positionDeltaMax = Mathf.Max(positionDelta, positionDeltaMax);
-
-                    directionDeltaMin = Mathf.Min(directionDelta, directionDeltaMin);
-                    directionDeltaMax = Mathf.Max(directionDelta, directionDeltaMax);
-                }
+                directionDeltaMin = Mathf.Min(directionDelta, directionDeltaMin);
+                directionDeltaMax = Mathf.Max(directionDelta, directionDeltaMax);
 
                 positionDeltaMean += positionDelta;
-                directionDeltaMean += directionDelta; 
+                directionDeltaMean += directionDelta;
             }
 
             positionDeltaMean = positionDeltaMean / (stabilitySamples.Count - 1);
