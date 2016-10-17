@@ -4,6 +4,9 @@ Useful common concepts that you can leverage in your application.
 ### [Prefabs](Prefabs)
 Common useful prefabs not particularly related to a particular HoloLens feature.
 
+#### FPSDisplay.prefab
+Simple Tagalong billboard displaying application's frames per second.
+
 #### Main Camera.prefab
 Unity camera that has been customized for Holographic development.
 1. Camera.Transform set to 0,0,0
