@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity
         /// How many standard deviations the latest sample was away.
         /// </summary>
         public float StandardDeviationsAwayOfLatestSample;
-        
+
         /// <summary>
         /// The average position.
         /// </summary>
@@ -90,13 +90,13 @@ namespace HoloToolkit.Unity
             Average = Vector3.zero;
             if (samples != null)
             {
-               for(int index=0;index<samples.Length;index++)
+                for (int index = 0; index < samples.Length; index++)
                 {
                     samples[index] = Vector3.zero;
                 }
             }
         }
-    
+
         /// <summary>
         /// Adds a new sample to the sample list and updates the stats.
         /// </summary>
