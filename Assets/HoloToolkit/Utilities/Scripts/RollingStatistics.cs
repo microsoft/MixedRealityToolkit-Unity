@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -69,7 +67,7 @@ namespace HoloToolkit.Unity
         /// Initialize the rolling stats.
         /// </summary>
         /// <param name="sampleCount"></param>
-        public virtual void Init(int sampleCount)
+        public void Init(int sampleCount)
         {
             maxSamples = sampleCount;
             samples = new Vector3[sampleCount];
