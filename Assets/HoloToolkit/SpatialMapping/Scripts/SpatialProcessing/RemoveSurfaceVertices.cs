@@ -143,7 +143,7 @@ namespace HoloToolkit.Unity
                     // If the renderer's bounds aren't contained inside of the current
                     // bounds from the bounds queue there is no reason to process
                     // If any of the above conditions are met, then we should go to the next meshfilter. 
-                    if ( mesh == null || renderer != null || !renderer.bounds.Intersects(bounds))
+                    if (mesh == null || renderer == null || !renderer.bounds.Intersects(bounds))
                     {
                         // We don't need to do anything to this mesh, move to the next one.
                         continue;
