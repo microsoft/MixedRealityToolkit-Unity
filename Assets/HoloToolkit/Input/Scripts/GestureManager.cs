@@ -186,7 +186,7 @@ namespace HoloToolkit.Unity
         #region Interaction Management
 
         /// <summary>
-        /// Thrown when we detect an interaction source.
+        /// Raised when we detect an interaction source.
         /// </summary>
         /// <param name="state"></param>
         private void InteractionManager_SourceDetected(InteractionSourceState state)
@@ -195,7 +195,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Thrown when the interaction source is pressed.
+        /// Raised when the interaction source is pressed.
         /// </summary>
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourcePressed(InteractionSourceState state)
@@ -207,7 +207,7 @@ namespace HoloToolkit.Unity
                 currentInteractionSourceState = state;
 
                 // Add it to the list of pressed states.
-                if (pressedInteractionSource.Contains(state.source.id))
+                if (!pressedInteractionSource.Contains(state.source.id))
                 {
                     pressedInteractionSource.Add(state.source.id);
                 }
@@ -227,7 +227,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Thrown when the interaction source is updated.
+        /// Raised when the interaction source is updated.
         /// </summary>
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceUpdated(InteractionSourceState state)
@@ -248,7 +248,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Thrown when the interaction source is released.
+        /// Raised when the interaction source is released.
         /// </summary>
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceReleased(InteractionSourceState state)
@@ -274,7 +274,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Thrown when the interaction source is no longer availible.
+        /// Raised when the interaction source is no longer availible.
         /// </summary>
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceLost(InteractionSourceState state)
@@ -347,7 +347,7 @@ namespace HoloToolkit.Unity
         #region Manipulation Management
 
         /// <summary>
-        /// Thrown when the gesture manager recognizes that a manipulation has begun.
+        /// Raised when the gesture manager recognizes that a manipulation has begun.
         /// </summary>
         /// <param name="source">Input Source Kind.</param>
         /// <param name="cumulativeDelta">Cumlulative Data.</param>
@@ -366,7 +366,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Thrown when the gesture manager recognizes that a manipulation has been updated.
+        /// Raised when the gesture manager recognizes that a manipulation has been updated.
         /// </summary>
         /// <param name="source">Input Source Kind.</param>
         /// <param name="cumulativeDelta">Cumlulative Data.</param>
@@ -377,7 +377,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Thrown when the gesture manager recognizes that a manipulation has completed.
+        /// Raised when the gesture manager recognizes that a manipulation has completed.
         /// </summary>
         /// <param name="source">Input Source Kind.</param>
         /// <param name="cumulativeDelta">Cumlulative Data.</param>
@@ -392,7 +392,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Thrown when the gesture manager recognizes that a manipulation has been canceled.
+        /// Raised when the gesture manager recognizes that a manipulation has been canceled.
         /// </summary>
         /// <param name="source">Input Source Kind.</param>
         /// <param name="cumulativeDelta">Cumlulative Data.</param>
