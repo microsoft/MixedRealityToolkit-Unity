@@ -18,8 +18,9 @@ namespace HoloToolkit.Unity
     /// information about the manipulation gesture via ManipulationOffset and ManipulationHandPosition.
     /// 
     /// Editor and Companion App Input can also be used by assigning a keyboard select key and
-    /// using the right mouse button to select the currently focused object.  Using Gestures with 
-    /// mouse is currently not supported.
+    /// using the right mouse button to select the currently focused object.
+    /// 
+    /// Using Gestures with mouse is currently not supported.
     /// </remarks>
     [RequireComponent(typeof(GazeManager))]
     public partial class GestureManager : Singleton<GestureManager>
@@ -218,14 +219,13 @@ namespace HoloToolkit.Unity
                     pressedInteractionSource.Add(state.source.id);
                 }
 
-                // If we're not currently processing a manipulation then start.
+                // Don't start another manipulation gesture if one is already underway.
                 if (!ManipulationInProgress)
                 {
                     // Cache our current source state for use later.
                     currentInteractionSourceState = state;
 
                     // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
-                    // Don't start another manipulation gesture if one is already underway.
                     if (state.source.kind == InteractionSourceKind.Controller)
                     {
                         OnManipulation(inProgress: true, offset: ManipulationPosition);
@@ -249,6 +249,8 @@ namespace HoloToolkit.Unity
             // Check the current interaction source matches our cached value.
             if (ManipulationInProgress && state.source.id == currentInteractionSourceState.source.id)
             {
+                currentInteractionSourceState = state;
+
                 // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
                 if (state.source.kind == InteractionSourceKind.Controller)
                 {

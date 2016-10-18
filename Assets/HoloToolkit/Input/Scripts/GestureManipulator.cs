@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity
     public class GestureManipulator : MonoBehaviour
     {
         [Tooltip("How much to scale each axis of movement (camera relative) when manipulating the object")]
-        public Vector3 positionScale = new Vector3(2.0f, 2.0f, 4.0f);  // Default tuning values, expected to be modified per application
+        public Vector3 PositionScale = new Vector3(2.0f, 2.0f, 4.0f);  // Default tuning values, expected to be modified per application
 
         private Vector3 initialManipulationPosition;
 
@@ -95,7 +95,7 @@ namespace HoloToolkit.Unity
                 // the source is lost and the gesture completes.  To improve the usability of the gesture we scale each
                 // axis of movement by some amount (camera relative).  This value can be changed in the editor or
                 // at runtime based on the needs of individual movement scenarios.
-                Vector3 scaledLocalPositionDelta = Vector3.Scale(initialToCurrentPosition, positionScale);
+                Vector3 scaledLocalPositionDelta = Vector3.Scale(initialToCurrentPosition, PositionScale);
 
                 // Once we've figured out how much the object should move relative to the camera we apply that to the initial
                 // camera relative position.  This ensures that the object remains in the appropriate location relative to the camera
