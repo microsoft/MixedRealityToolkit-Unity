@@ -107,7 +107,7 @@ namespace HoloToolkit.Unity
                 {
                     currentHandState = state;
 
-                    if(pressedHands.Contains(state.source.id))
+                    if(!pressedHands.Contains(state.source.id))
                     {
                         pressedHands.Add(state.source.id);
                     }
