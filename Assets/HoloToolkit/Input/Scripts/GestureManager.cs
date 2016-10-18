@@ -308,7 +308,7 @@ namespace HoloToolkit.Unity
                 pressedInteractionSource.Remove(state.source.id);
             }
 
-            // Remove our traced interaction state.
+            // Remove our tracked interaction state.
             if (trackedInteractionSource.Contains(state.source.id))
             {
                 trackedInteractionSource.Remove(state.source.id);
