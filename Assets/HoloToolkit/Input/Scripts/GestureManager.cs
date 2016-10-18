@@ -203,24 +203,28 @@ namespace HoloToolkit.Unity
             // Make sure we're using a tracked interaction source.
             if (trackedInteractionSource.Contains(state.source.id))
             {
-                // Cache our value for later.
-                currentInteractionSourceState = state;
-
                 // Add it to the list of pressed states.
                 if (!pressedInteractionSource.Contains(state.source.id))
                 {
                     pressedInteractionSource.Add(state.source.id);
                 }
 
-                // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
-                // Don't start another manipulation gesture if one is already underway.
-                if (!ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                // If we're not currently processing a manipulation then start.
+                if (!ManipulationInProgress)
                 {
-                    OnManipulation(inProgress: true, offset: ManipulationPosition);
+                    // Cache our current source state for use later.
+                    currentInteractionSourceState = state;
 
-                    if (OnManipulationStarted != null)
+                    // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
+                    // Don't start another manipulation gesture if one is already underway.
+                    if (state.source.kind == InteractionSourceKind.Controller)
                     {
-                        OnManipulationStarted(state.source.kind);
+                        OnManipulation(inProgress: true, offset: ManipulationPosition);
+
+                        if (OnManipulationStarted != null)
+                        {
+                            OnManipulationStarted(state.source.kind);
+                        }
                     }
                 }
             }
@@ -232,14 +236,12 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceUpdated(InteractionSourceState state)
         {
+            // if we currently in a manipulation, update our data.
             // Check the current interaction source matches our cached value.
-            if (state.source.id == currentInteractionSourceState.source.id)
+            if (ManipulationInProgress && state.source.id == currentInteractionSourceState.source.id)
             {
-                currentInteractionSourceState = state;
-
                 // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
-                // if we currently in a manipulation, update our data.
-                if (ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                if (state.source.kind == InteractionSourceKind.Controller)
                 {
                     Vector3 cumulativeDelta = ManipulationOffset - ManipulationPosition;
                     OnManipulation(inProgress: true, offset: cumulativeDelta);
@@ -253,14 +255,12 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceReleased(InteractionSourceState state)
         {
+            // if we currently in a manipulation then stop.
             // Check the current interaction source matches our cached value.
-            if (state.source.id == currentInteractionSourceState.source.id)
+            if (ManipulationInProgress && state.source.id == currentInteractionSourceState.source.id)
             {
-                pressedInteractionSource.Remove(state.source.id);
-
                 // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
-                // if we currently in a manipulation stop.
-                if (ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                if (state.source.kind == InteractionSourceKind.Controller)
                 {
                     Vector3 cumulativeDelta = ManipulationOffset - ManipulationPosition;
                     OnManipulation(inProgress: false, offset: cumulativeDelta);
@@ -271,6 +271,12 @@ namespace HoloToolkit.Unity
                     }
                 }
             }
+
+            // Removed our pressed state.
+            if (pressedInteractionSource.Contains(state.source.id))
+            {
+                pressedInteractionSource.Remove(state.source.id);
+            }
         }
 
         /// <summary>
@@ -279,14 +285,12 @@ namespace HoloToolkit.Unity
         /// <param name="state">The current state of the Interaction source.</param>
         private void InteractionManager_SourceLost(InteractionSourceState state)
         {
+            // If we currently in a manipulation then stop.
             // Check the current interaction source matches our cached value.
-            if (state.source.id == currentInteractionSourceState.source.id)
+            if (ManipulationInProgress && state.source.id == currentInteractionSourceState.source.id)
             {
-                pressedInteractionSource.Remove(state.source.id);
-
                 // Gesture Support for Controllers: (i.e. Clicker, Xbox Controller, etc.)
-                // if we currently in a manipulation stop.
-                if (ManipulationInProgress && (state.source.kind == InteractionSourceKind.Controller))
+                if (state.source.kind == InteractionSourceKind.Controller)
                 {
                     Vector3 cumulativeDelta = ManipulationOffset - ManipulationPosition;
                     OnManipulation(inProgress: false, offset: cumulativeDelta);
@@ -296,6 +300,12 @@ namespace HoloToolkit.Unity
                         OnManipulationCanceled(state.source.kind);
                     }
                 }
+            }
+
+            // Removed our pressed state.
+            if (pressedInteractionSource.Contains(state.source.id))
+            {
+                pressedInteractionSource.Remove(state.source.id);
             }
 
             // Remove our traced interaction state.
