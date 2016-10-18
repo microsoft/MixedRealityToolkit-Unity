@@ -91,6 +91,7 @@ namespace HoloToolkit.Unity
                 {
                     SurfaceObject thisSurfaceObject = SurfaceObjects[i];
                     thisSurfaceObject.ID = meshID;
+                    thisSurfaceObject.UpdateID++;
                     SurfaceObjects[i] = thisSurfaceObject;
                     return;
                 }
