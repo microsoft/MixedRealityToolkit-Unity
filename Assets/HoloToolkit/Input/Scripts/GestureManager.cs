@@ -102,6 +102,15 @@ namespace HoloToolkit.Unity
             get { return trackedInteractionSource.Count > 0; }
         }
 
+        /// <summary>
+        /// InteractionSourcePressed track the interaction pressed state.
+        /// Returns true if the list of pressed interactions is not empty.
+        /// </summary>
+        public bool InteractionSourcePressed
+        {
+            get { return pressedInteractionSource.Count > 0; }
+        }
+
         #endregion
 
 #if UNITY_EDITOR || UNITY_STANDALONE
