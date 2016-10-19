@@ -44,6 +44,11 @@ namespace HoloToolkit.Unity
         public event SurfaceObserver.SurfaceChangedDelegate SurfaceChanged;
 
         /// <summary>
+        /// Event for hooking when the data for a surface is ready.
+        /// </summary>
+        public event SurfaceObserver.SurfaceDataReadyDelegate DataReady;
+
+        /// <summary>
         /// Our Surface Observer object for generating/updating Spatial Mapping data.
         /// </summary>
         private SurfaceObserver observer;
@@ -201,6 +206,11 @@ namespace HoloToolkit.Unity
             }
 
             surfaceWorkOutstanding = false;
+            SurfaceObserver.SurfaceDataReadyDelegate dataReady = DataReady;
+            if (dataReady != null)
+            {
+                dataReady(cookedData, outputWritten, elapsedCookTimeSeconds);
+            }
         }
 
         private void CleanupSurface(GameObject surface)
