@@ -95,20 +95,18 @@ namespace HoloToolkit.Unity
         /// </summary>
         public ObserverStates ObserverState { get; private set; }
 
+        /// <summary>
+        /// Represents the center of the playspace.
+        /// </summary>
+        private Vector3 observerOrigin;
+
         protected override void Awake()
         {
             base.Awake();
 
             observer = new SurfaceObserver();
             ObserverState = ObserverStates.Stopped;
-            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
-        }
-
-        /// <summary>
-        /// Called when the GameObject is initialized.
-        /// </summary>
-        private void Start()
-        {
+            observerOrigin = Vector3.zero;
         }
 
         /// <summary>
@@ -116,7 +114,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void SetObserverOrigin(Vector3 origin)
         {
-            observer.SetVolumeAsAxisAlignedBox(origin, Extents);
+            observerOrigin = origin;
         }
 
         /// <summary>
@@ -141,6 +139,7 @@ namespace HoloToolkit.Unity
                 // update request, request updates for the spatial mapping data.
                 else if (surfaceWorkOutstanding == false && (Time.time - updateTime) >= TimeBetweenUpdates)
                 {
+                    observer.SetVolumeAsAxisAlignedBox(observerOrigin, Extents);
                     observer.Update(SurfaceObserver_OnSurfaceChanged);
                     updateTime = Time.time;
                 }
@@ -155,6 +154,20 @@ namespace HoloToolkit.Unity
             if (ObserverState != ObserverStates.Running)
             {
                 Debug.Log("Starting the observer.");
+                // on device, this isn't necessary, but sometimes in the emulator the observer 
+                // won't realize that it hasn't already sent you the surfaces, and since the surfaces
+                // don't really get updated in the emulator you'll end up getting no surfaces at all.
+                if (surfaces.Count == 0)
+                {
+                    if (observer != null)
+                    {
+                        observer.Dispose();
+                        observer = null;
+                    }
+
+                    observer = new SurfaceObserver();
+                }
+
                 ObserverState = ObserverStates.Running;
 
                 // We want the first update immediately.
