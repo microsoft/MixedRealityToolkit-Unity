@@ -128,6 +128,10 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
         //Wait for a notification that the sharing manager has been initialized (connected to sever)
         SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
+
+        // We will register for session joined to indicate when the sharing service
+        // is ready for us to make room related requests.
+        SharingSessionTracker.Instance.SessionJoined += Instance_SessionJoined;
     }
 
     void OnDestroy()
@@ -153,10 +157,6 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         roomManagerCallbacks.AnchorsDownloadedEvent += RoomManagerCallbacks_AnchorsDownloaded;
         roomManagerCallbacks.AnchorUploadedEvent += RoomManagerCallbacks_AnchorUploaded;
         roomManager.AddListener(roomManagerCallbacks);
-
-        // We will register for session joined to indicate when the sharing service
-        // is ready for us to make room related requests.
-        SharingSessionTracker.Instance.SessionJoined += Instance_SessionJoined;
     }
 
     /// <summary>
