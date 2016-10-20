@@ -116,12 +116,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     RoomManagerAdapter roomManagerCallbacks;
 
-    void Start()
+    void Awake()
     {
-        Debug.Log("Import Export Manager starting");
-
-        currentState = ImportExportState.Ready;
-
         // We need to get our local anchor store started up.
         currentState = ImportExportState.AnchorStore_Initializing;
         WorldAnchorStore.GetAsync(AnchorStoreReady);
@@ -132,6 +128,13 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         // We will register for session joined to indicate when the sharing service
         // is ready for us to make room related requests.
         SharingSessionTracker.Instance.SessionJoined += Instance_SessionJoined;
+    }
+
+    void Start()
+    {
+        Debug.Log("Import Export Manager starting");
+
+        //currentState = ImportExportState.Ready;
     }
 
     void OnDestroy()

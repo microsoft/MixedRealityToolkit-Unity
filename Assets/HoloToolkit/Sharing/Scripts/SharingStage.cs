@@ -62,7 +62,15 @@ namespace HoloToolkit.Sharing
             {
                 AutoDiscoverInit();
             }
-            else
+            //else
+            //{
+            //    Connect(); //call this from start, when init is done
+            //}
+        }
+
+        private void Start()
+        {
+            if (!AutoDiscoverServer)
             {
                 Connect();
             }
@@ -134,7 +142,11 @@ namespace HoloToolkit.Sharing
             this.sharingMgr = SharingManager.Create(config);
 
             //delay sending notification so everything is initialized properly
-            Invoke("SendConnectedNotification", 1);
+            //Invoke("SendConnectedNotification", 1);
+
+            //since Create seems like a blocking call, we should be able to call SendConnectedNotification
+            //from Start() when all events are set up within Awake()
+            SendConnectedNotification();
         }
 
         private void SendConnectedNotification()
