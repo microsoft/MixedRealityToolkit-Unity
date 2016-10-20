@@ -48,7 +48,11 @@ namespace HoloToolkit.Sharing
         /// </summary>
         private DiscoveryClientAdapter discoveryClientAdapter;
 
+        /// <summary>
+        /// Provides callbacks for when we connect to a server.
+        /// </summary>
         private NetworkConnectionAdapter networkConnectionAdapter = null;
+
         private NetworkConnection networkConnection = null;
     
         private float pingIntervalCurrent = 0;
@@ -56,7 +60,6 @@ namespace HoloToolkit.Sharing
 
         private void Awake()
         {
-            Debug.Log("SharingStage Awake");
             this.logWriter = new ConsoleLogWriter();
 
             if (AutoDiscoverServer)
@@ -151,13 +154,12 @@ namespace HoloToolkit.Sharing
             config.SetProfilerEnabled(false);
 
             this.sharingMgr = SharingManager.Create(config);
+
+            //set up callbacks so that we know when we've connected successfully
             this.networkConnection = sharingMgr.GetServerConnection();
             this.networkConnectionAdapter = new NetworkConnectionAdapter();
-            
             networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
             networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
-
-            Debug.Log("SharingManager.Create returned " + sharingMgr.ToString());
 
             //delay sending notification so everything is initialized properly
             //Invoke("SendConnectedNotification", 1);
@@ -165,7 +167,6 @@ namespace HoloToolkit.Sharing
 
         private void NetworkConnectionAdapter_ConnectedCallback(NetworkConnection obj)
         {
-            Debug.Log("Got ConnectedCallback, calling SendConnectedNotification");
             SendConnectedNotification();
         }
 
