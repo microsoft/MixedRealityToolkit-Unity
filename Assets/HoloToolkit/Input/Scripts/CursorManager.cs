@@ -5,8 +5,8 @@ using HoloToolkit.Unity;
 using UnityEngine;
 
 /// <summary>
-/// CursorManager class takes Cursor GameObjects.
-/// One that is on Holograms and another off Holograms.
+/// CursorManager class uses two GameObjects to render the Cursor.
+/// One is used when on Holograms and the other when off Holograms.
 /// 1. Shows the appropriate Cursor when a Hologram is hit.
 /// 2. Places the appropriate Cursor at the hit position.
 /// 3. Matches the Cursor normal to the hit surface.
@@ -22,38 +22,40 @@ public partial class CursorManager : Singleton<CursorManager>
     [Tooltip("Distance, in meters, to offset the cursor from the collision point.")]
     public float DistanceFromCollision = 0.01f;
 
-    void Awake()
+    private void Awake()
     {
-        if (CursorOnHolograms == null || CursorOffHolograms == null)
-        {
-            return;
-        }
-
         // Hide the Cursors to begin with.
-        CursorOnHolograms.SetActive(false);
-        CursorOffHolograms.SetActive(false);
-    }
-
-    void LateUpdate()
-    {
-        if (GazeManager.Instance == null || CursorOnHolograms == null || CursorOffHolograms == null)
+        if (CursorOnHolograms != null)
         {
-            return;
+            CursorOnHolograms.SetActive(false);
         }
-
-        if (GazeManager.Instance.Hit)
+        if (CursorOffHolograms != null)
         {
-            CursorOnHolograms.SetActive(true);
             CursorOffHolograms.SetActive(false);
         }
-        else
+
+        // Make sure there is a GazeManager in the scene
+        if (GazeManager.Instance == null)
         {
-            CursorOffHolograms.SetActive(true);
-            CursorOnHolograms.SetActive(false);
+            Debug.LogWarning("CursorManager requires a GazeManager in your scene.");
+            enabled = false;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        // Enable/Disable the cursor based whether gaze hit a hologram
+        if (CursorOnHolograms != null)
+        {
+            CursorOnHolograms.SetActive(GazeManager.Instance.Hit);
+        }
+        if (CursorOffHolograms != null)
+        {
+            CursorOffHolograms.SetActive(!GazeManager.Instance.Hit);
         }
 
         // Place the cursor at the calculated position.
-        this.gameObject.transform.position = GazeManager.Instance.Position + GazeManager.Instance.Normal * DistanceFromCollision;
+        gameObject.transform.position = GazeManager.Instance.Position + GazeManager.Instance.Normal * DistanceFromCollision;
 
         // Orient the cursor to match the surface being gazed at.
         gameObject.transform.up = GazeManager.Instance.Normal;
