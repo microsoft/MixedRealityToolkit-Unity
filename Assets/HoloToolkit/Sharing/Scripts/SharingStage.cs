@@ -47,19 +47,24 @@ namespace HoloToolkit.Sharing
         /// Provides callbacks when server is discovered or lost.
         /// </summary>
         private DiscoveryClientAdapter discoveryClientAdapter;
+
+        private NetworkConnectionAdapter networkConnectionAdapter = null;
+        private NetworkConnection networkConnection = null;
     
         private float pingIntervalCurrent = 0;
         private bool isTryingToFindServer = false;
 
         private void Awake()
         {
-
+            Debug.Log("SharingStage Awake");
             this.logWriter = new ConsoleLogWriter();
 
             if (AutoDiscoverServer)
             {
                 AutoDiscoverInit();
             }
+
+            networkConnectionAdapter = new NetworkConnectionAdapter();
         }
 
         private void Start()
@@ -83,6 +88,19 @@ namespace HoloToolkit.Sharing
                 {
                     discoveryClientAdapter.Dispose();
                     discoveryClientAdapter = null;
+                }
+            }
+
+            if (this.networkConnection != null)
+            {
+                networkConnection.RemoveListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+                networkConnection.Dispose();
+                networkConnection = null;
+
+                if (networkConnectionAdapter != null)
+                {
+                    networkConnectionAdapter.Dispose();
+                    networkConnectionAdapter = null;
                 }
             }
 
@@ -133,9 +151,22 @@ namespace HoloToolkit.Sharing
             config.SetProfilerEnabled(false);
 
             this.sharingMgr = SharingManager.Create(config);
+            this.networkConnection = sharingMgr.GetServerConnection();
+            this.networkConnectionAdapter = new NetworkConnectionAdapter();
+            
+            networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
+            networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+
+            Debug.Log("SharingManager.Create returned " + sharingMgr.ToString());
 
             //delay sending notification so everything is initialized properly
-            Invoke("SendConnectedNotification", 1);
+            //Invoke("SendConnectedNotification", 1);
+        }
+
+        private void NetworkConnectionAdapter_ConnectedCallback(NetworkConnection obj)
+        {
+            Debug.Log("Got ConnectedCallback, calling SendConnectedNotification");
+            SendConnectedNotification();
         }
 
         private void SendConnectedNotification()

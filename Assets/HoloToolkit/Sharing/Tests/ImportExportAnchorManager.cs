@@ -118,6 +118,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
     void Awake()
     {
+        Debug.Log("ImportExportAnchorManager Awake");
         // We need to get our local anchor store started up.
         currentState = ImportExportState.AnchorStore_Initializing;
         WorldAnchorStore.GetAsync(AnchorStoreReady);
@@ -154,6 +155,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     private void SharingManagerConnected(object sender, EventArgs e)
     {
         // Setup the room manager callbacks.
+        Debug.Log("SharingManagerConnected called");
         roomManager = SharingStage.Instance.Manager.GetRoomManager();
         roomManagerCallbacks = new RoomManagerAdapter();
 
