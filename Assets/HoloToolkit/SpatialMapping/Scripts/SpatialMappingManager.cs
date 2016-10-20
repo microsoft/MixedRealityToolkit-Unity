@@ -184,13 +184,15 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StartObserver()
         {
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
+            // Allow observering if a device is present (Holographic Remoting)
+            if(!UnityEngine.VR.VRDevice.isPresent) return;
+#endif
             if (!IsObserverRunning())
             {
                 surfaceObserver.StartObserving();
                 StartTime = Time.time;
             }
-#endif
         }
 
         /// <summary>
@@ -198,12 +200,14 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopObserver()
         {
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
+            // Allow observering if a device is present (Holographic Remoting)
+            if(!UnityEngine.VR.VRDevice.isPresent) return;
+#endif
             if (IsObserverRunning())
             {
                 surfaceObserver.StopObserving();
-            }
-#endif
+            } 
         }
 
         /// <summary>
