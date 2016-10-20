@@ -1,16 +1,15 @@
-﻿using System;
+﻿using HoloToolkit.Unity;
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Sharing
 {
-    public class SharingStage : MonoBehaviour
+    public class SharingStage : Singleton<SharingStage>
     {
         /// <summary>
         /// SharingManagerConnected event notifies when the sharing manager is created and connected.
         /// </summary>
         public event EventHandler SharingManagerConnected;
-
-        public static SharingStage Instance = null;
 
         /// <summary>
         /// Set whether this app should be a Primary or Secondary client.
@@ -54,7 +53,6 @@ namespace HoloToolkit.Sharing
 
         private void Awake()
         {
-            Instance = this;
 
             this.logWriter = new ConsoleLogWriter();
 
@@ -62,10 +60,6 @@ namespace HoloToolkit.Sharing
             {
                 AutoDiscoverInit();
             }
-            //else
-            //{
-            //    Connect(); //call this from start, when init is done
-            //}
         }
 
         private void Start()
@@ -78,7 +72,6 @@ namespace HoloToolkit.Sharing
 
         protected void OnDestroy()
         {
-            Instance = null;
 
             if (this.discoveryClient != null)
             {
@@ -142,11 +135,7 @@ namespace HoloToolkit.Sharing
             this.sharingMgr = SharingManager.Create(config);
 
             //delay sending notification so everything is initialized properly
-            //Invoke("SendConnectedNotification", 1);
-
-            //since Create seems like a blocking call, we should be able to call SendConnectedNotification
-            //from Start() when all events are set up within Awake()
-            SendConnectedNotification();
+            Invoke("SendConnectedNotification", 1);
         }
 
         private void SendConnectedNotification()
