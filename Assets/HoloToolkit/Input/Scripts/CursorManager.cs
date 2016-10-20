@@ -24,32 +24,38 @@ public partial class CursorManager : Singleton<CursorManager>
 
     void Awake()
     {
-        if (CursorOnHolograms == null || CursorOffHolograms == null)
+        // Hide the Cursors to begin with.
+        if (CursorOnHolograms != null)
         {
-            return;
+            CursorOnHolograms.SetActive(false);
+        }
+        if (CursorOffHolograms != null)
+        {
+            CursorOffHolograms.SetActive(false);
         }
 
-        // Hide the Cursors to begin with.
-        CursorOnHolograms.SetActive(false);
-        CursorOffHolograms.SetActive(false);
+        // Make sure there is a GazeManager in the scene
+        if (FindObjectOfType<GazeManager>() == null)
+        {
+            Debug.LogWarning("CursorManager requires a GazeManager in your scene.");
+        }
     }
 
     void LateUpdate()
     {
-        if (GazeManager.Instance == null || CursorOnHolograms == null || CursorOffHolograms == null)
+        if (GazeManager.Instance == null)
         {
             return;
         }
 
-        if (GazeManager.Instance.Hit)
+        // Enable/Disable the cursor based whether gaze hit a hologram
+        if (CursorOnHolograms != null)
         {
-            CursorOnHolograms.SetActive(true);
-            CursorOffHolograms.SetActive(false);
+            CursorOnHolograms.SetActive(GazeManager.Instance.Hit);
         }
-        else
+        if (CursorOffHolograms != null)
         {
-            CursorOffHolograms.SetActive(true);
-            CursorOnHolograms.SetActive(false);
+            CursorOffHolograms.SetActive(!GazeManager.Instance.Hit);
         }
 
         // Place the cursor at the calculated position.
