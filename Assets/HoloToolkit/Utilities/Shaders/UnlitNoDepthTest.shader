@@ -1,4 +1,4 @@
-﻿Shader "Unlit/OnTop"
+﻿Shader "Unlit/NoDepth"
 {
 	Properties
 	{
