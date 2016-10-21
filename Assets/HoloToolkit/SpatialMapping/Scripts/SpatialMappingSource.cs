@@ -182,6 +182,10 @@ namespace HoloToolkit.Unity
             return meshRenderers;
         }
 
+        /// <summary>
+        /// Saves all the currently created spatial source meshes in world space.
+        /// </summary>
+        /// <param name="fileName">Name to give the mesh file. Exclude path and extension.</param>
         public void SaveSpatialMeshes(string fileName)
         {
             MeshSaver.Save(fileName, GetMeshFilters());
