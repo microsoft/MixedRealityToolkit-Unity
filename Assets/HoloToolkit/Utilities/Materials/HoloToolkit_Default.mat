@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Brush
+  m_Name: HoloToolkit_Default
   m_Shader: {fileID: 4800000, guid: 0118fa4f1c88b4640b193eca2c181644, type: 3}
   m_ShaderKeywords: _EMISSION _USECOLOR_ON
   m_LightmapFlags: 1
@@ -96,7 +96,7 @@ Material:
       second: 0
     - first:
         name: _Gloss
-      second: 0.5
+      second: 0.68
     - first:
         name: _GlossMapScale
       second: 1
@@ -123,7 +123,7 @@ Material:
       second: 0
     - first:
         name: _Specular
-      second: 0.5
+      second: 0.128
     - first:
         name: _SpecularHighlights
       second: 1
@@ -154,7 +154,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.18014708, g: 0.3287018, b: 0.875, a: 1}
+      second: {r: 0.8897059, g: 0.8897059, b: 0.8897059, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
