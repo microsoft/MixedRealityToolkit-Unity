@@ -9,7 +9,7 @@ namespace HoloToolkit.Sharing
 {
     public static class SharingMenu
     {
-        [MenuItem("HoloToolkit/Launch Sharing Service", false)]
+        [MenuItem("HoloToolkit/Sharing Service/Launch Sharing Service", false, 100)]
         public static void LaunchSessionServer()
         {
             string filePathName = @"External\HoloToolkit\Sharing\Server\SharingService.exe";
@@ -24,7 +24,7 @@ namespace HoloToolkit.Sharing
             Utilities.ExternalProcess.FindAndLaunch(filePathName, @"-local");
         }
 
-        [MenuItem("HoloToolkit/Launch Session Manager", false)]
+        [MenuItem("HoloToolkit/Sharing Service/Launch Session Manager", false, 101)]
         public static void LaunchSessionUI()
         {
             string filePathName = @"External\HoloToolkit\Sharing\Tools\SessionManager\x86\SessionManager.UI.exe";
@@ -39,7 +39,7 @@ namespace HoloToolkit.Sharing
             Utilities.ExternalProcess.FindAndLaunch(filePathName);
         }
 
-        [MenuItem("HoloToolkit/Launch Profiler", false)]
+        [MenuItem("HoloToolkit/Sharing Service/Launch Profiler", false, 103)]
         public static void LaunchProfilerX()
         {
             string filePathName = @"External\HoloToolkit\Sharing\Tools\Profiler\x86\ProfilerX.exe";
