@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: DrawOver
-  m_Shader: {fileID: 4800000, guid: bef47768a2a74c740a4944d53d9eec47, type: 3}
+  m_Shader: {fileID: 4800000, guid: e1fd48673918ae242b03ad1ae08a38bd, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -54,7 +54,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 1c9179474f6b31744936e69a01d2837e, type: 3}
+        m_Texture: {fileID: 2800000, guid: b7e7ac1cdf109fd4a921ab2ba712a48b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:

@@ -6,7 +6,7 @@
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags { "Queue" = "Transparent"  }
 		LOD 100
 
 		Pass
@@ -46,7 +46,6 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
-				// apply fog
 				return col;
 			}
 			ENDCG
