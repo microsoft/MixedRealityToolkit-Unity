@@ -60,6 +60,25 @@ namespace HoloToolkit.Unity
         [Range(SpatialSoundSettings.MinimumGainDecibels, SpatialSoundSettings.MaximumGainDecibels)]
         public float maxGain = SpatialSoundSettings.DefaultMaxGain;
 
+        [Tooltip("The volume attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
+        public AnimationCurve attenuationCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f); // By default simple attenuation
+
+        [Tooltip("The spatial attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
+        public AnimationCurve spatialCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 1f); // by default Full 3D sound
+
+        [Tooltip("The spread attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
+        public AnimationCurve spreadCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 0f); // by default no spread
+
+        [Tooltip("The lowpass attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
+        public AnimationCurve lowPassCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 0f); // by default no lowpass
+
+        [Tooltip("The reverb attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
+        public AnimationCurve reverbCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 0f); // by default no reverb
+
+        [Tooltip("The maximum attenuation distance for simple 3D sounds. Only used when positioning is set to 3D")]
+        [Range(1f, 500f)]
+        public float maxDistanceAttenuation3D = 100f;
+
         [Tooltip("The distance, in meters at which the gain is 0 decibels.  Only used when positioning is set to SpatialSound.")]
         [Range(SpatialSoundSettings.MinimumUnityGainDistanceMeters, SpatialSoundSettings.MaximumUnityGainDistanceMeters)]
         public float unityGainDistance = SpatialSoundSettings.DefaultUnityGainDistance;
