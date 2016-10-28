@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
+using HoloToolkit.Unity.InputModule;
 
 /// <summary>
 /// mananger all lines in the scene
@@ -18,8 +19,7 @@ public class LineManager : Singleton<LineManager>, IGeometry
     public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
     {
 
-        var hitPoint = GazeManager.Instance.HitInfo.point;
-
+        var hitPoint = GazeManager.Instance.HitPosition;
 
         var point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
         if (lastPoint != null && lastPoint.IsStart)

@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity;
 using System;
+using HoloToolkit.Unity.InputModule;
 using UnityEngine.VR.WSA.Input;
 
-public class AppState : Singleton<AppState>
+public class AppState : Singleton<AppState>, ISourceStateHandler, IInputHandler
 {
     // Consts
     public float kMinAreaForStats = 5.0f;
@@ -20,7 +20,7 @@ public class AppState : Singleton<AppState>
     public TextMesh DebugSubDisplay;
     public Transform Parent_Scene;
     public SpatialMappingObserver MappingObserver;
-    public Cursor AppCursor;
+    public SpatialUnderstandingCursor AppCursor;
 
     // Properties
     public string SpaceQueryDescription
@@ -130,7 +130,7 @@ public class AppState : Singleton<AppState>
         {
             if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning)
             {
-                if (HandsManager.Instance.HandDetected)
+                if (trackedHandsCount > 0)
                 {
                     return DoesScanMeetMinBarForCompletion ? Color.green : Color.red;
                 }
@@ -186,6 +186,7 @@ public class AppState : Singleton<AppState>
     // Privates
     private string spaceQueryDescription;
     private string objectPlacementDescription;
+    private uint trackedHandsCount = 0;
 
     // Functions
     private void Start()
@@ -198,21 +199,12 @@ public class AppState : Singleton<AppState>
 
     private void OnEnable()
     {
-        InteractionManager.SourcePressed += OnAirTap;
+        InputManager.Instance.AddGlobalListener(gameObject);
     }
 
     private void OnDisable()
     {
-        InteractionManager.SourcePressed -= OnAirTap;
-    }
-
-    private void OnAirTap(InteractionSourceState state)
-    {
-        if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-            !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
-        {
-            SpatialUnderstanding.Instance.RequestFinishScan();
-        }
+        InputManager.Instance.RemoveGlobalListener(gameObject);
     }
 
     private void Update_DebugDisplay(float deltaTime)
@@ -251,5 +243,41 @@ public class AppState : Singleton<AppState>
         // Updates
         Update_DebugDisplay(Time.deltaTime);
         Update_KeyboardInput(Time.deltaTime);
+    }
+
+    public void OnSourceDetected(SourceStateEventData eventData)
+    {
+        // If the source has positional info and there is currently no visible source
+        if ((eventData.InputSource.SupportedInputInfo & SupportedInputInfo.Position) != 0)
+        {
+            trackedHandsCount++;
+        }
+    }
+
+    public void OnSourceLost(SourceStateEventData eventData)
+    {
+        if ((eventData.InputSource.SupportedInputInfo & SupportedInputInfo.Position) != 0)
+        {
+            trackedHandsCount--;
+        }
+    }
+
+    public void OnInputUp(InputEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnInputDown(InputEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnInputClicked(InputEventData eventData)
+    {
+        if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
+            !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
+        {
+            SpatialUnderstanding.Instance.RequestFinishScan();
+        }
     }
 }

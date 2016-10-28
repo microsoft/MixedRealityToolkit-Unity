@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 
@@ -111,6 +112,10 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Called by Unity when this script is loaded or a value is changed in the inspector.
+        /// Only called in editor, ensures that the property values always match the corresponding member variables.
+        /// </summary>
         private void OnValidate()
         {
             TrackVelocity = trackVelocity;
@@ -143,7 +148,7 @@ namespace HoloToolkit.Unity
             Vector3 gazeDirection = Camera.main.transform.forward;
 
             // Calculate the delta between camera's position and current hit position.
-            float focusPointDistance = (gazeOrigin - GazeManager.Instance.Position).magnitude;
+            float focusPointDistance = (gazeOrigin - GazeManager.Instance.HitPosition).magnitude;
             float lerpPower = focusPointDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
                                                                         : LerpStabilizationPlanePowerCloser;
 

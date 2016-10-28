@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.VR.WSA.Input;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Show a hand guidance indicator when the user's hand is close to leaving the camera's view.
@@ -28,8 +28,9 @@ namespace HoloToolkit.Unity
 
         private uint? currentlyTrackedHand = null;
 
-        void Awake()
+        public override void Awake()
         {
+            base.Awake();
             if (HandGuidanceIndicator == null)
             {
                 Debug.LogError("Please include a GameObject for the Hand Guidance Indicator.");
@@ -156,8 +157,10 @@ namespace HoloToolkit.Unity
             }
         }
 
-        void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
+
             InteractionManager.SourceLost -= InteractionManager_SourceLost;
             InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
             InteractionManager.SourceReleased -= InteractionManager_SourceReleased;

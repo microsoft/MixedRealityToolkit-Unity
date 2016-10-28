@@ -132,8 +132,10 @@ public class SpatialProcessingTest : Singleton<SpatialProcessingTest>
     /// <summary>
     /// Called when the GameObject is unloaded.
     /// </summary>
-    private void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (SurfaceMeshesToPlanes.Instance != null)
         {
             SurfaceMeshesToPlanes.Instance.MakePlanesComplete -= SurfaceMeshesToPlanes_MakePlanesComplete;
