@@ -435,8 +435,8 @@ MonoBehaviour:
   SensitivityScale: 3
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: 4c65667454726967676572
-  InputManagerVerticalAxisName: 526967687454726967676572
+  InputManagerHorizontalAxisName: LeftTrigger
+  InputManagerVerticalAxisName: RightTrigger
   Axis0Destination: 2
   Axis1Destination: 3
   Axis2Destination: 6
@@ -454,8 +454,8 @@ MonoBehaviour:
   SensitivityScale: 3
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: 5269676874537469636b486f72697a6f6e74616c
-  InputManagerVerticalAxisName: 5269676874537469636b566572746963616c
+  InputManagerHorizontalAxisName: RightStickHorizontal
+  InputManagerVerticalAxisName: RightStickVertical
   Axis0Destination: 0
   Axis1Destination: 4
   Axis2Destination: 6
@@ -511,8 +511,8 @@ MonoBehaviour:
   SensitivityScale: 3
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: 486f72697a6f6e74616c
-  InputManagerVerticalAxisName: 566572746963616c
+  InputManagerHorizontalAxisName: Horizontal
+  InputManagerVerticalAxisName: Vertical
   Axis0Destination: 0
   Axis1Destination: 4
   Axis2Destination: 6
@@ -573,8 +573,8 @@ MonoBehaviour:
   SensitivityScale: 3
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: 4c656674537469636b486f72697a6f6e74616c
-  InputManagerVerticalAxisName: 4c656674537469636b566572746963616c
+  InputManagerHorizontalAxisName: LeftStickHorizontal
+  InputManagerVerticalAxisName: LeftStickVertical
   Axis0Destination: 2
   Axis1Destination: 0
   Axis2Destination: 6

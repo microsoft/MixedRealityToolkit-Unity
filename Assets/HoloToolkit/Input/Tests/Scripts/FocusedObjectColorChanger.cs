@@ -6,7 +6,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// FocusedObjectMessageReceiver class shows how to handle focus events.
     /// This particular implementatoin controls object appearance by changing its color when focused.
     /// </summary>
-    public class FocusedObjectMessageReceiver : MonoBehaviour, IFocusable
+    public class FocusedObjectColorChanger : MonoBehaviour, IFocusable
     {
         [Tooltip("Object color changes to this when focused.")] public Color FocusedColor = Color.red;
 

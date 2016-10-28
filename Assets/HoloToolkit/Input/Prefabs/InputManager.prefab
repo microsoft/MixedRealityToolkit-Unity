@@ -118,7 +118,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011656901714}
   - 114: {fileID: 114000012009196210}
-  - 114: {fileID: 114000014241050520}
   - 114: {fileID: 114000012434513746}
   m_Layer: 0
   m_Name: InputManager
@@ -670,16 +669,8 @@ MonoBehaviour:
   RightHandSecondaryAxisControl: {fileID: 114000013944478910}
   RightFingerUpButtonControl: {fileID: 114000011211768160}
   RightFingerDownButtonControl: {fileID: 114000014256863992}
-  ActiveHandColor:
-    r: 0.3254902
-    g: 0.3764706
-    b: 0.92941177
-    a: 1
-  DroppedHandColor:
-    r: 0.342
-    g: 0.342
-    b: 0.342
-    a: 0.241
+  ActiveHandColor: {r: 0.3254902, g: 0.3764706, b: 0.92941177, a: 1}
+  DroppedHandColor: {r: 0.342, g: 0.342, b: 0.342, a: 0.241}
   VisualizeHands: 1
   LeftHandVisualizer: {fileID: 1000010559312462}
   RightHandVisualizer: {fileID: 1000010652855520}
@@ -700,7 +691,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxGazeCollisionDistance: 10
   RaycastLayerMasks:
-  - {}
+  - serializedVersion: 2
+    m_Bits: 4294967291
   Stabilizer: {fileID: 0}
   GazeTransform: {fileID: 0}
 --- !u!114 &114000012391649198
@@ -806,18 +798,6 @@ MonoBehaviour:
   Axis0Destination: 4
   Axis1Destination: 6
   Axis2Destination: 6
---- !u!114 &114000014241050520
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011070707148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81e3e700505863408cacaa0346cb1a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StoredStabilitySamples: 5
 --- !u!114 &114000014256863992
 MonoBehaviour:
   m_ObjectHideFlags: 1

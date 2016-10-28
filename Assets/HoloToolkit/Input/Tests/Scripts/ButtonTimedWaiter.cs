@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class ButtonTimedWaiter : MonoBehaviour, IInputHandler
+    public class ButtonTimedWaiter : MonoBehaviour
     {
         [SerializeField]
         private Button button = null;
@@ -51,18 +51,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             textMesh.text = "Wait";
 
             yield break;
-        }
-
-        public void OnInputUp(InputEventData eventData)
-        {
-        }
-
-        public void OnInputDown(InputEventData eventData)
-        {
-        }
-
-        public void OnInputClicked(InputEventData eventData)
-        {
         }
     }
 }
