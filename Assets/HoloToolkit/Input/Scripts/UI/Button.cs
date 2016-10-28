@@ -1,0 +1,239 @@
+﻿//
+// Copyright (C) Microsoft. All rights reserved.
+// TODO This needs to be validated for HoloToolkit integration
+//
+
+using UnityEngine;
+
+namespace HoloToolkit.Unity.InputModule
+{
+    /// <summary>
+    /// Add a Button to any object to make it gaze interactable and 
+    /// receive pressed and released events.
+    /// </summary>
+    public class Button : MonoBehaviour, IInputHandler, IFocusable
+    {
+        public Transform ToolTip;
+        public Renderer ToolTipRenderer;
+
+        private float toolTipTimer = 0.0f;
+        public float ToolTipFadeTime = 0.25f;
+        public float ToolTipDelayTime = 0.5f;
+
+        [SerializeField]
+        protected Animator ButtonAnimator = null;
+
+        private static int focusedButtonId;
+        private static int selectedButtonId;
+        private static int deHydrateButtonId;
+        private static int stayFocusedButtonId;
+
+        public delegate void ActivateDelegate(Button source);
+        public event ActivateDelegate Activated;
+
+        public bool EnableActivation = true;
+
+        private bool focused;
+        public bool Focused
+        {
+            get { return focused; }
+            set
+            {
+                if (focused != value)
+                {
+                    focused = value;
+                    UpdateButtonAnimation();
+                }
+            }
+        }
+
+        private bool stayFocused;
+        public bool StayFocused
+        {
+            get { return stayFocused; }
+            set
+            {
+                if (stayFocused != value)
+                {
+                    stayFocused = value;
+                    UpdateButtonAnimation();
+                }
+            }
+        }
+
+        private bool selected;
+        public bool Selected
+        {
+            get { return selected; }
+            set
+            {
+                if (selected != value)
+                {
+                    selected = value;
+                    UpdateButtonAnimation();
+                }
+            }
+        }
+
+        protected virtual void Awake()
+        {
+            if (focusedButtonId == 0)
+            {
+                focusedButtonId = Animator.StringToHash("Focused");
+            }
+
+            if (selectedButtonId == 0)
+            {
+                selectedButtonId = Animator.StringToHash("Selected");
+            }
+
+            if (deHydrateButtonId == 0)
+            {
+                deHydrateButtonId = Animator.StringToHash("Dehydrate");
+            }
+
+            if (stayFocusedButtonId == 0)
+            {
+                stayFocusedButtonId = Animator.StringToHash("StayFocused");
+            }
+        }
+
+        protected virtual void OnEnable()
+        {
+
+            // Set the initial alpha
+            if (ToolTipRenderer != null)
+            {
+                Color tipColor = ToolTipRenderer.material.color;
+                tipColor.a = 0.0f;
+                ToolTipRenderer.material.color = tipColor;
+                toolTipTimer = 0.0f;
+            }
+
+            UpdateVisuals();
+            UpdateButtonAnimation();
+        }
+
+        private void Update()
+        {
+            if (ToolTipRenderer != null && (Focused && toolTipTimer < ToolTipFadeTime) || (!Focused && toolTipTimer > 0.0f))
+            {
+                // Calculate the new time delta
+                toolTipTimer = toolTipTimer + (Focused ? Time.deltaTime : -Time.deltaTime);
+
+                // Stop the timer if it exceeds the limit.  Clamp doesn't work here since time can be outside the normal range in some situations
+                if (Focused && toolTipTimer > ToolTipFadeTime)
+                {
+                    toolTipTimer = ToolTipFadeTime;
+                }
+                else if (!Focused && toolTipTimer < 0.0f)
+                {
+                    toolTipTimer = 0.0f;
+                }
+
+                // Update the new opacity
+                if (ToolTipRenderer != null)
+                {
+                    Color tipColor = ToolTipRenderer.material.color;
+                    tipColor.a = Mathf.Clamp(toolTipTimer, 0, ToolTipFadeTime) / ToolTipFadeTime;
+                    ToolTipRenderer.material.color = tipColor;
+                }
+            }
+        }
+
+        public void DehydrateButton()
+        {
+            if (ButtonAnimator != null && ButtonAnimator.isInitialized)
+            {
+                var animatorHashes = ButtonAnimator.parameters;
+                for (int i = 0; i < animatorHashes.Length; i++)
+                {
+                    if (animatorHashes[i].nameHash == deHydrateButtonId)
+                    {
+                        ButtonAnimator.SetTrigger(deHydrateButtonId);
+                    }
+                }
+            }
+        }
+
+        // Child classes can override to update button visuals
+        protected virtual void UpdateVisuals()
+        {
+        }
+
+        private void UpdateButtonAnimation()
+        {
+            if (ButtonAnimator != null && ButtonAnimator.gameObject.activeInHierarchy)
+            {
+                var animatorHashes = ButtonAnimator.parameters;
+                for (int i = 0; i < animatorHashes.Length; i++)
+                {
+                    if (animatorHashes[i].nameHash == focusedButtonId)
+                    {
+                        ButtonAnimator.SetBool(focusedButtonId, Focused);
+                    }
+
+                    if (animatorHashes[i].nameHash == selectedButtonId)
+                    {
+                        ButtonAnimator.SetBool(selectedButtonId, Selected);
+                    }
+
+                    if (animatorHashes[i].nameHash == stayFocusedButtonId)
+                    {
+                        ButtonAnimator.SetBool(stayFocusedButtonId, StayFocused);
+                    }
+                }
+            }
+        }
+
+        private bool OnSpeechCallback(string keyword)
+        {
+            OnInputUp(null);
+            return true;
+        }
+
+        public void OnInputUp(InputEventData eventData)
+        {
+
+        }
+
+        public void OnInputDown(InputEventData eventData)
+        {
+        }
+
+        public void OnInputClicked(InputEventData eventData)
+        {
+            if (!EnableActivation)
+            {
+                return;
+            }
+
+            Selected = !Selected;
+
+            if (Activated != null)
+            {
+                Activated(this);
+            }
+        }
+
+        public void OnFocusEnter()
+        {
+            Focused = true;
+
+            // The first time the button is focused and the timer hasn't started, start the timer in a delayed mode
+            if (Focused && toolTipTimer == 0.0f)
+            {
+                toolTipTimer = -ToolTipDelayTime;
+            }
+
+            UpdateVisuals();
+        }
+
+        public void OnFocusExit()
+        {
+            Focused = false;
+
+            UpdateVisuals();
+        }
+    }
+}

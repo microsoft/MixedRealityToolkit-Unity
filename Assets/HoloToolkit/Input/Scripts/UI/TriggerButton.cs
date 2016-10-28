@@ -1,0 +1,53 @@
+﻿//
+// Copyright (C) Microsoft. All rights reserved.
+// TODO This needs to be validated for HoloToolkit integration
+//
+
+using System;
+using UnityEngine;
+
+namespace HoloToolkit.Unity.InputModule
+{
+    /// <summary>
+    /// Very simple class that implements basic logic for a trigger button.
+    /// </summary>
+    public class TriggerButton : MonoBehaviour, IInputHandler
+    {
+        /// <summary>
+        /// Indicates whether the button is clickable or not.
+        /// </summary>
+        [Tooltip("Indicates whether the button is clickable or not.")]
+        public bool IsEnabled = true;
+
+        public event Action ButtonPressed;
+
+        /// <summary>
+        /// Press the button programatically.
+        /// </summary>
+        public void Press()
+        {
+            if (IsEnabled)
+            {
+                ButtonPressed.RaiseEvent();
+            }
+        }
+
+        public void OnInputUp(InputEventData eventData)
+        {
+            // Nothing to do
+        }
+
+        public void OnInputDown(InputEventData eventData)
+        {
+            // Nothing to do
+        }
+
+        public void OnInputClicked(InputEventData eventData)
+        {
+            if (IsEnabled)
+            {
+                ButtonPressed.RaiseEvent();
+            }
+        }
+    }
+}

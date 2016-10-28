@@ -1,0 +1,642 @@
+fileFormatVersion: 2
+guid: 68471bd594667db46a10efbee4e188d5
+timeCreated: 1465259754
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: group1
+    100004: group1 1
+    100006: group1 2
+    100008: group1 3
+    100010: group5
+    100012: group5 1
+    100014: group5 2
+    100016: group5 3
+    100018: group6
+    100020: group7
+    100022: group8
+    100024: group9
+    100026: joint1
+    100028: joint1 1
+    100030: joint1 2
+    100032: joint1 3
+    100034: joint2
+    100036: joint2 1
+    100038: joint2 2
+    100040: joint2 3
+    100042: polySurface4
+    100044: polySurface4 1
+    100046: polySurface4 2
+    100048: polySurface4 3
+    100050: group10
+    100052: group7 1
+    100054: group7 2
+    100056: group7 3
+    100058: pCylinder1
+    100060: pCylinder1 1
+    100062: pCylinder1 2
+    100064: pCylinder1 3
+    400000: //RootNode
+    400002: group1
+    400004: group1 1
+    400006: group1 2
+    400008: group1 3
+    400010: group5
+    400012: group5 1
+    400014: group5 2
+    400016: group5 3
+    400018: group6
+    400020: group7
+    400022: group8
+    400024: group9
+    400026: joint1
+    400028: joint1 1
+    400030: joint1 2
+    400032: joint1 3
+    400034: joint2
+    400036: joint2 1
+    400038: joint2 2
+    400040: joint2 3
+    400042: polySurface4
+    400044: polySurface4 1
+    400046: polySurface4 2
+    400048: polySurface4 3
+    400050: group10
+    400052: group7 1
+    400054: group7 2
+    400056: group7 3
+    400058: pCylinder1
+    400060: pCylinder1 1
+    400062: pCylinder1 2
+    400064: pCylinder1 3
+    2300000: polySurface4 1
+    2300002: polySurface4 2
+    2300004: polySurface4 3
+    2300006: polySurface4
+    2300008: pCylinder1
+    2300010: pCylinder1 1
+    2300012: pCylinder1 2
+    2300014: pCylinder1 3
+    3300000: polySurface4 1
+    3300002: polySurface4 2
+    3300004: polySurface4 3
+    3300006: polySurface4
+    3300008: pCylinder1
+    3300010: pCylinder1 1
+    3300012: pCylinder1 2
+    3300014: pCylinder1 3
+    4300000: polySurface4
+    4300002: polySurface4
+    4300004: polySurface4
+    4300006: polySurface4
+    4300008: pCylinder1
+    4300010: pCylinder1
+    4300012: pCylinder1
+    4300014: pCylinder1
+    7400000: Default to Map
+    7400002: Map to Unit
+    7400004: Unit to Default
+    7400006: CornersAppear
+    7400008: Pure Default
+    7400010: PureHiddenArrows
+    9500000: //RootNode
+    13700000: polySurface4
+    13700002: polySurface4 1
+    13700004: polySurface4 2
+    13700006: polySurface4 3
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default to Map
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 15
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: group6
+        weight: 1
+      - path: group6/group5 1
+        weight: 1
+      - path: group6/group5 1/group1 1
+        weight: 1
+      - path: group6/group5 1/group1 1/polySurface4 1
+        weight: 1
+      - path: group6/group7 1
+        weight: 1
+      - path: group6/group7 1/pCylinder1 1
+        weight: 1
+      - path: group6/joint1 1
+        weight: 1
+      - path: group6/joint1 1/joint2 1
+        weight: 1
+      - path: group8
+        weight: 1
+      - path: group8/group5 2
+        weight: 1
+      - path: group8/group5 2/group1 2
+        weight: 1
+      - path: group8/group5 2/group1 2/polySurface4 2
+        weight: 1
+      - path: group8/group7 2
+        weight: 1
+      - path: group8/group7 2/pCylinder1 2
+        weight: 1
+      - path: group8/joint1 2
+        weight: 1
+      - path: group8/joint1 2/joint2 2
+        weight: 1
+      - path: group9
+        weight: 1
+      - path: group9/group5 3
+        weight: 1
+      - path: group9/group5 3/group1 3
+        weight: 1
+      - path: group9/group5 3/group1 3/polySurface4 3
+        weight: 1
+      - path: group9/group7 3
+        weight: 1
+      - path: group9/group7 3/pCylinder1 3
+        weight: 1
+      - path: group9/joint1 3
+        weight: 1
+      - path: group9/joint1 3/joint2 3
+        weight: 1
+      - path: group10
+        weight: 1
+      - path: group10/group5
+        weight: 1
+      - path: group10/group5/group1
+        weight: 1
+      - path: group10/group5/group1/polySurface4
+        weight: 1
+      - path: group10/group7
+        weight: 1
+      - path: group10/group7/pCylinder1
+        weight: 1
+      - path: group10/joint1
+        weight: 1
+      - path: group10/joint1/joint2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Map to Unit
+      takeName: Take 001
+      firstFrame: 15
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: group6
+        weight: 1
+      - path: group6/group5 1
+        weight: 1
+      - path: group6/group5 1/group1 1
+        weight: 1
+      - path: group6/group5 1/group1 1/polySurface4 1
+        weight: 1
+      - path: group6/group7 1
+        weight: 1
+      - path: group6/group7 1/pCylinder1 1
+        weight: 1
+      - path: group6/joint1 1
+        weight: 1
+      - path: group6/joint1 1/joint2 1
+        weight: 1
+      - path: group8
+        weight: 1
+      - path: group8/group5 2
+        weight: 1
+      - path: group8/group5 2/group1 2
+        weight: 1
+      - path: group8/group5 2/group1 2/polySurface4 2
+        weight: 1
+      - path: group8/group7 2
+        weight: 1
+      - path: group8/group7 2/pCylinder1 2
+        weight: 1
+      - path: group8/joint1 2
+        weight: 1
+      - path: group8/joint1 2/joint2 2
+        weight: 1
+      - path: group9
+        weight: 1
+      - path: group9/group5 3
+        weight: 1
+      - path: group9/group5 3/group1 3
+        weight: 1
+      - path: group9/group5 3/group1 3/polySurface4 3
+        weight: 1
+      - path: group9/group7 3
+        weight: 1
+      - path: group9/group7 3/pCylinder1 3
+        weight: 1
+      - path: group9/joint1 3
+        weight: 1
+      - path: group9/joint1 3/joint2 3
+        weight: 1
+      - path: group10
+        weight: 1
+      - path: group10/group5
+        weight: 1
+      - path: group10/group5/group1
+        weight: 1
+      - path: group10/group5/group1/polySurface4
+        weight: 1
+      - path: group10/group7
+        weight: 1
+      - path: group10/group7/pCylinder1
+        weight: 1
+      - path: group10/joint1
+        weight: 1
+      - path: group10/joint1/joint2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Unit to Default
+      takeName: Take 001
+      firstFrame: 30
+      lastFrame: 45
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: group6
+        weight: 1
+      - path: group6/group5 1
+        weight: 1
+      - path: group6/group5 1/group1 1
+        weight: 1
+      - path: group6/group5 1/group1 1/polySurface4 1
+        weight: 1
+      - path: group6/group7 1
+        weight: 1
+      - path: group6/group7 1/pCylinder1 1
+        weight: 1
+      - path: group6/joint1 1
+        weight: 1
+      - path: group6/joint1 1/joint2 1
+        weight: 1
+      - path: group8
+        weight: 1
+      - path: group8/group5 2
+        weight: 1
+      - path: group8/group5 2/group1 2
+        weight: 1
+      - path: group8/group5 2/group1 2/polySurface4 2
+        weight: 1
+      - path: group8/group7 2
+        weight: 1
+      - path: group8/group7 2/pCylinder1 2
+        weight: 1
+      - path: group8/joint1 2
+        weight: 1
+      - path: group8/joint1 2/joint2 2
+        weight: 1
+      - path: group9
+        weight: 1
+      - path: group9/group5 3
+        weight: 1
+      - path: group9/group5 3/group1 3
+        weight: 1
+      - path: group9/group5 3/group1 3/polySurface4 3
+        weight: 1
+      - path: group9/group7 3
+        weight: 1
+      - path: group9/group7 3/pCylinder1 3
+        weight: 1
+      - path: group9/joint1 3
+        weight: 1
+      - path: group9/joint1 3/joint2 3
+        weight: 1
+      - path: group10
+        weight: 1
+      - path: group10/group5
+        weight: 1
+      - path: group10/group5/group1
+        weight: 1
+      - path: group10/group5/group1/polySurface4
+        weight: 1
+      - path: group10/group7
+        weight: 1
+      - path: group10/group7/pCylinder1
+        weight: 1
+      - path: group10/joint1
+        weight: 1
+      - path: group10/joint1/joint2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: CornersAppear
+      takeName: Take 001
+      firstFrame: -15
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 1
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: group6
+        weight: 1
+      - path: group6/group5 1
+        weight: 1
+      - path: group6/group5 1/group1 1
+        weight: 1
+      - path: group6/group5 1/group1 1/polySurface4 1
+        weight: 1
+      - path: group6/group7 1
+        weight: 1
+      - path: group6/group7 1/pCylinder1 1
+        weight: 1
+      - path: group6/joint1 1
+        weight: 1
+      - path: group6/joint1 1/joint2 1
+        weight: 1
+      - path: group8
+        weight: 1
+      - path: group8/group5 2
+        weight: 1
+      - path: group8/group5 2/group1 2
+        weight: 1
+      - path: group8/group5 2/group1 2/polySurface4 2
+        weight: 1
+      - path: group8/group7 2
+        weight: 1
+      - path: group8/group7 2/pCylinder1 2
+        weight: 1
+      - path: group8/joint1 2
+        weight: 1
+      - path: group8/joint1 2/joint2 2
+        weight: 1
+      - path: group9
+        weight: 1
+      - path: group9/group5 3
+        weight: 1
+      - path: group9/group5 3/group1 3
+        weight: 1
+      - path: group9/group5 3/group1 3/polySurface4 3
+        weight: 1
+      - path: group9/group7 3
+        weight: 1
+      - path: group9/group7 3/pCylinder1 3
+        weight: 1
+      - path: group9/joint1 3
+        weight: 1
+      - path: group9/joint1 3/joint2 3
+        weight: 1
+      - path: group10
+        weight: 1
+      - path: group10/group5
+        weight: 1
+      - path: group10/group5/group1
+        weight: 1
+      - path: group10/group5/group1/polySurface4
+        weight: 1
+      - path: group10/group7
+        weight: 1
+      - path: group10/group7/pCylinder1
+        weight: 1
+      - path: group10/joint1
+        weight: 1
+      - path: group10/joint1/joint2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Pure Default
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: group6
+        weight: 1
+      - path: group6/group5 1
+        weight: 1
+      - path: group6/group5 1/group1 1
+        weight: 1
+      - path: group6/group5 1/group1 1/polySurface4 1
+        weight: 1
+      - path: group6/group7 1
+        weight: 1
+      - path: group6/group7 1/pCylinder1 1
+        weight: 1
+      - path: group6/joint1 1
+        weight: 1
+      - path: group6/joint1 1/joint2 1
+        weight: 1
+      - path: group8
+        weight: 1
+      - path: group8/group5 2
+        weight: 1
+      - path: group8/group5 2/group1 2
+        weight: 1
+      - path: group8/group5 2/group1 2/polySurface4 2
+        weight: 1
+      - path: group8/group7 2
+        weight: 1
+      - path: group8/group7 2/pCylinder1 2
+        weight: 1
+      - path: group8/joint1 2
+        weight: 1
+      - path: group8/joint1 2/joint2 2
+        weight: 1
+      - path: group9
+        weight: 1
+      - path: group9/group5 3
+        weight: 1
+      - path: group9/group5 3/group1 3
+        weight: 1
+      - path: group9/group5 3/group1 3/polySurface4 3
+        weight: 1
+      - path: group9/group7 3
+        weight: 1
+      - path: group9/group7 3/pCylinder1 3
+        weight: 1
+      - path: group9/joint1 3
+        weight: 1
+      - path: group9/joint1 3/joint2 3
+        weight: 1
+      - path: group10
+        weight: 1
+      - path: group10/group5
+        weight: 1
+      - path: group10/group5/group1
+        weight: 1
+      - path: group10/group5/group1/polySurface4
+        weight: 1
+      - path: group10/group7
+        weight: 1
+      - path: group10/group7/pCylinder1
+        weight: 1
+      - path: group10/joint1
+        weight: 1
+      - path: group10/joint1/joint2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
