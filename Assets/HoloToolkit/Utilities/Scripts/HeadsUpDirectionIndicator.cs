@@ -13,47 +13,14 @@ namespace HoloToolKit.Unity
     // object according to that assumption.
     public class HeadsUpDirectionIndicator : MonoBehaviour
     {
-        // an implementation of a rect class that holds it coordinates as integers.
-        private struct Rect
+        enum FrustumPlanes
         {
-            public Rect(int left, int right, int top, int bottom)
-            {
-                this.left = left;
-                this.right = right;
-                this.top = top;
-                this.bottom = bottom;
-            }
-
-            public Rect(float left, float right, float top, float bottom)
-            {
-                this.left = (int)left;
-                this.right = (int)right;
-                this.top = (int)top;
-                this.bottom = (int)bottom;
-            }
-
-            public int left, right, top, bottom;
-
-            public int Width
-            {
-                get
-                {
-                    return right - left;
-                }
-            }
-
-            public int Height
-            {
-                get
-                {
-                    return top - bottom;
-                }
-            }
-
-            public override string ToString()
-            {
-                return string.Format(@"Left {0}\n Right {1}\n Top{2}\n Bottom{3}", left, right, top, bottom);
-            }
+            Left = 0,
+            Right,
+            Bottom,
+            Top,
+            Near,
+            Far
         }
 
         [Tooltip("The object the direction indicator will point to.")]
@@ -97,103 +64,160 @@ namespace HoloToolKit.Unity
             {
                 float marginFactor = indicatorMarginPercent / 100.0f;
 
-                Rect indicatorArea = new Rect(
-                    0.5f * marginFactor * Screen.width,
-                    (1.0f - 0.5f * marginFactor) * Screen.width,
-                    (1.0f - 0.5f * marginFactor) * Screen.height,
-                    0.5f * marginFactor * Screen.height);
+                var indicatorVolume = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+                for (int i = 0; i < 4; ++i)
+                {
+                    var angle = Mathf.Acos(Vector3.Dot(indicatorVolume[i].normal.normalized, Camera.main.transform.forward));
+                    float angleStep = marginFactor * (0.5f * Mathf.PI - angle);
+                    var normal = Vector3.RotateTowards(indicatorVolume[i].normal, Camera.main.transform.forward, -angleStep, 0.0f);
+                    indicatorVolume[i] = new Plane(normal.normalized, indicatorVolume[i].distance);
+                }
 
-                Rect screenArea = new Rect(
-                    0,
-                    Screen.width,
-                    Screen.height,
-                    0);
-
-                UpdatePointerTransform(Camera.main, targetObject.transform.position, indicatorArea, screenArea);
+                UpdatePointerTransform(Camera.main, indicatorVolume, targetObject.transform.position);
             }
         }
 
-        private void UpdatePointerTransform(Camera camera, Vector3 targetPosition, Rect indicatorArea, Rect screenArea)
+        private FrustumPlanes GetExitPlane(Vector3 targetPosition, Camera camera)
         {
-            Vector3 screenPoint = camera.WorldToScreenPoint(targetPosition);
+            var aspect = camera.aspect;
+            var fovy = 0.5f * camera.fieldOfView;
+            var near = camera.nearClipPlane;
+            var far = camera.farClipPlane;
 
-            bool pointNotInsideIndicatorField = screenPoint.x < indicatorArea.left
-                || screenPoint.y < indicatorArea.bottom
-                || screenPoint.x > indicatorArea.right
-                || screenPoint.y > indicatorArea.top;
+            float tanFovy = Mathf.Tan(Mathf.Deg2Rad * fovy);
+            float tanFovx = aspect * tanFovy;
 
-            // negative z means the point is behind the camera and the coordinates flip.
-            if (screenPoint.z < 0.0f)
+            Vector3 nearTop = near * tanFovy * camera.transform.up;
+            Vector3 nearRight = near * tanFovx * camera.transform.right;
+            Vector3 nearBottom = -nearTop;
+            Vector3 nearLeft = -nearRight;
+
+            Vector3 farTop = far * tanFovy * camera.transform.up;
+            Vector3 farRight = far * tanFovx * camera.transform.right;
+            Vector3 farLeft = -farRight;
+            Vector3 nearBase = near * camera.transform.forward;
+            Vector3 farBase = far * camera.transform.forward;
+
+            Vector3 nearUpperLeft = nearBase + nearTop + nearLeft;
+            Vector3 nearLowerRight = nearBase + nearBottom + nearRight;
+            Vector3 farUpperLeft = farBase + farTop + farLeft;
+
+            Debug.DrawLine(nearUpperLeft, nearLowerRight);
+            Debug.DrawLine(nearLowerRight, farUpperLeft);
+            Debug.DrawLine(farUpperLeft, nearUpperLeft);
+
+            Plane d = new Plane(nearUpperLeft, nearLowerRight, farUpperLeft);
+
+            Vector3 nearUpperRight = nearBase + nearTop + nearRight;
+            Vector3 nearLowerLeft = nearBase + nearBottom + nearLeft;
+            Vector3 farUpperRight = farBase + farTop + farRight;
+
+            Debug.DrawLine(nearUpperRight, nearLowerLeft);
+            Debug.DrawLine(nearLowerLeft, farUpperRight);
+            Debug.DrawLine(farUpperRight, nearUpperRight);
+
+            Plane e = new Plane(nearUpperRight, nearLowerLeft, farUpperRight);
+
+            float dDistance = d.GetDistanceToPoint(targetPosition);
+            float eDistance = e.GetDistanceToPoint(targetPosition);
+
+            if (dDistance > 0.0f)
             {
-                screenPoint = -screenPoint;
-                pointNotInsideIndicatorField = true;
+                if (eDistance > 0.0f)
+                {
+                    return FrustumPlanes.Left;
+                }
+                else
+                {
+                    return FrustumPlanes.Bottom;
+                }
+            }
+            else
+            {
+                if (eDistance > 0.0f)
+                {
+                    return FrustumPlanes.Top;
+                }
+                else
+                {
+                    return FrustumPlanes.Right;
+                }
+            }
+        }
+
+        private bool TryGetIndicatorPosition(Vector3 targetPosition, Camera camera, Plane frustumWall, out Ray r)
+        {
+            Vector3 cameraToTarget = targetPosition - camera.transform.position;
+            Vector3 normal = Vector3.Cross(cameraToTarget.normalized, camera.transform.forward);
+
+            if (normal == Vector3.zero)
+            {
+                normal = -Vector3.right;
             }
 
-            // transform the point into Cartesian space because it makes the position calculations easier.
-            screenPoint.x = screenPoint.x - screenArea.Width / 2;
-            screenPoint.y = screenPoint.y - screenArea.Height / 2;
+            Plane q = new Plane(normal, targetPosition);
+            return TryIntersectPlanes(frustumWall, q, out r);
+        }
 
+        private bool TryIntersectPlanes(Plane p, Plane q, out Ray intersection)
+        {
+            Vector3 rNormal = Vector3.Cross(p.normal, q.normal);
+            float det = rNormal.sqrMagnitude;
+
+            if (det != 0.0f)
+            {
+                Vector3 rPoint = ((Vector3.Cross(rNormal, q.normal) * p.distance) +
+                    (Vector3.Cross(p.normal, rNormal) * q.distance)) / det;
+                intersection = new Ray(rPoint, rNormal);
+                return true;
+            }
+            else
+            {
+                intersection = new Ray();
+                return false;
+            }
+        }
+
+        private void UpdatePointerTransform(Camera camera, Plane []planes, Vector3 targetPosition)
+        {
+            Vector3 indicatorPosition = camera.transform.position + depth * (targetPosition - camera.transform.position).normalized;
+
+            bool pointNotInsideIndicatorField = false;
+            for (int i = 0; i < 5; ++i)
+            {
+                var dot = Vector3.Dot(planes[i].normal, (targetPosition - camera.transform.position).normalized);
+                if (dot <= 0.0f)
+                {
+                    pointNotInsideIndicatorField = true;
+                }
+            }
+            
             // if the target object appears outside the indicator area...
             if (pointNotInsideIndicatorField)
             {
                 // ...then we need to do some geometry calculations to lock it to the edge.
-                if (screenPoint.x == 0.0f && screenPoint.y == 0.0f)
-                {
-                    Debug.Log("Zero");
-                }
 
                 // used to determine which edge of the screen the indicator vector
                 // would exit through.
-                float hRatio = screenPoint.x / (float)indicatorArea.Width;
-                float vRatio = screenPoint.y / (float)indicatorArea.Height;
+                var exitPlane = GetExitPlane(targetPosition, camera);
+                Debug.Log(exitPlane);
 
-                if (Mathf.Abs(hRatio) > Mathf.Abs(vRatio))
+                Ray r;
+                if (TryGetIndicatorPosition(targetPosition, camera, planes[(int)exitPlane], out r))
                 {
-                    // in this case, the vector collides with the sides first.
-                    float slope = screenPoint.y / screenPoint.x;
-                    if (screenPoint.x > 0.0f)
-                    {
-                        screenPoint.x = indicatorArea.Width / 2;
-                    }
-                    else
-                    {
-                        screenPoint.x = -indicatorArea.Width / 2;
-                    }
-
-                    screenPoint.y = slope * screenPoint.x;
-                }
-                else
-                {
-                    // in this case, the vector collides with the top or bottom first.
-                    float invSlope = screenPoint.x / screenPoint.y;
-                    if (screenPoint.y > 0.0f)
-                    {
-                        screenPoint.y = indicatorArea.Height / 2;
-                    }
-                    else
-                    {
-                        screenPoint.y = -indicatorArea.Height / 2;
-                    }
-
-                    screenPoint.x = invSlope * screenPoint.y;
+                    indicatorPosition = camera.transform.position + depth * r.direction.normalized;
                 }
             }
 
-            // store the direction in Cartesian space so we can use it as a local space transformation
-            Vector3 pointerDirection = screenPoint.normalized;
-            pointerDirection.z = 0.0f;
+            this.transform.position = indicatorPosition;
 
-            // transform the point back to screen space to get the indicator on-screen position.
-            screenPoint.x = screenPoint.x + screenArea.Width / 2;
-            screenPoint.y = screenPoint.y + screenArea.Height / 2;
-            screenPoint.z = depth; // lock the z to the depth specified by the user
+            Vector3 proj = indicatorPosition - camera.transform.position;
+            proj = Vector3.Dot(proj, camera.transform.forward) * camera.transform.forward;
+            Vector3 indicatorFieldCenter = camera.transform.position + proj;
+            Vector3 pointerDirection = (indicatorPosition - indicatorFieldCenter).normalized;
 
-            // determine the world space position of the pointer
-            Vector3 pointInView = camera.ScreenToWorldPoint(screenPoint);
-            this.transform.position = pointInView;
-
-            // allign this object's up vector with the pointerDirection and then apply the same rotation as the camera so the pointer faces the viewer
-            this.transform.rotation = camera.transform.rotation * Quaternion.FromToRotation(Vector3.up, pointerDirection);
+            // allign this object's up vector with the pointerDirection
+            this.transform.rotation = Quaternion.LookRotation(camera.transform.forward, pointerDirection);
         }
     }
 }
