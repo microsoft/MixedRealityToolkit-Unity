@@ -1,7 +1,5 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-// TODO This needs to be validated for HoloToolkit integration
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -23,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Global listeners listen to all events and ignore the fact that other components might have consumed them.
         /// </summary>
-        private List<GameObject> globalListeners = new List<GameObject>();
+        private readonly List<GameObject> globalListeners = new List<GameObject>();
 
         private bool isRegisteredToGazeChanges;
         private int disabledRefCount;
@@ -31,7 +29,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Should the Unity UI events be fired?
         /// </summary>
-        public bool ShouldSendUnityUIEvents { get { return GazeManager.Instance.UnityUIPointerEvent != null && EventSystem.current != null; } }
+        public bool ShouldSendUnityUiEvents { get { return GazeManager.Instance.UnityUIPointerEvent != null && EventSystem.current != null; } }
 
         /// <summary>
         /// Push a game object into the modal input stack. Any input handlers
@@ -304,7 +302,7 @@ namespace HoloToolkit.Unity.InputModule
             if (previousObject != null)
             {
                 ExecuteEvents.ExecuteHierarchy<IFocusable>(previousObject, null, (inputHandler, eventData) => { inputHandler.OnFocusExit(); });
-                if (ShouldSendUnityUIEvents)
+                if (ShouldSendUnityUiEvents)
                 {
                     ExecuteEvents.ExecuteHierarchy(previousObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerExitHandler);
                 }
@@ -313,7 +311,7 @@ namespace HoloToolkit.Unity.InputModule
             if (newObject != null)
             {
                 ExecuteEvents.ExecuteHierarchy<IFocusable>(newObject, null, (inputHandler, eventData) => { inputHandler.OnFocusEnter(); });
-                if (ShouldSendUnityUIEvents)
+                if (ShouldSendUnityUiEvents)
                 {
                     ExecuteEvents.ExecuteHierarchy(newObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerEnterHandler);
                 }
@@ -332,7 +330,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputEvent, eventHandler);
 
             // UI events
-            if (ShouldSendUnityUIEvents)
+            if (ShouldSendUnityUiEvents)
             {
                 PointerEventData unityUIPointerEvent = GazeManager.Instance.UnityUIPointerEvent;
                 HandleEvent(unityUIPointerEvent, ExecuteEvents.pointerClickHandler);
@@ -351,7 +349,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputEvent, eventHandler);
 
             // UI events
-            if (ShouldSendUnityUIEvents)
+            if (ShouldSendUnityUiEvents)
             {
                 PointerEventData unityUIPointerEvent = GazeManager.Instance.UnityUIPointerEvent;
                 HandleEvent(unityUIPointerEvent, ExecuteEvents.pointerUpHandler);
@@ -370,7 +368,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputEvent, eventHandler);
 
             // UI events
-            if (ShouldSendUnityUIEvents)
+            if (ShouldSendUnityUiEvents)
             {
                 PointerEventData unityUIPointerEvent = GazeManager.Instance.UnityUIPointerEvent;
 
