@@ -12,7 +12,11 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GesturesInput : BaseInputSource
     {
+        [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
+        public bool UseRailsNavigation = false;
+
         private GestureRecognizer gestureRecognizer;
+        private GestureRecognizer navigationGestureRecognizer;
 
         public override SupportedInputEvents SupportedEvents
         {
@@ -20,7 +24,8 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return SupportedInputEvents.SourceClicked |
                         SupportedInputEvents.Hold |
-                        SupportedInputEvents.Manipulation;
+                        SupportedInputEvents.Manipulation |
+                        SupportedInputEvents.Navigation;
             }
         }
 
@@ -42,8 +47,33 @@ namespace HoloToolkit.Unity.InputModule
             gestureRecognizer.ManipulationUpdatedEvent += OnManipulationUpdatedEvent;
             gestureRecognizer.ManipulationCompletedEvent += OnManipulationCompletedEvent;
             gestureRecognizer.ManipulationCanceledEvent += OnManipulationCanceledEvent;
-            
+
+            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap | 
+                                                      GestureSettings.ManipulationTranslate |
+                                                      GestureSettings.Hold);
             gestureRecognizer.StartCapturingGestures();
+
+            // We need a separate gesture recognizer for navigation, since it isn't compatible with manipulation
+            navigationGestureRecognizer = new GestureRecognizer();
+
+            navigationGestureRecognizer.NavigationStartedEvent += OnNavigationStartedEvent;
+            navigationGestureRecognizer.NavigationUpdatedEvent += OnNavigationUpdatedEvent;
+            navigationGestureRecognizer.NavigationCompletedEvent += OnNavigationCompletedEvent;
+            navigationGestureRecognizer.NavigationCanceledEvent += OnNavigationCanceledEvent;
+
+            if (UseRailsNavigation)
+            {
+                navigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationRailsX |
+                                                                    GestureSettings.NavigationRailsY |
+                                                                    GestureSettings.NavigationRailsZ);
+            }
+            else
+            {
+                navigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationX |
+                                                                    GestureSettings.NavigationY |
+                                                                    GestureSettings.NavigationZ);
+            }
+            navigationGestureRecognizer.StartCapturingGestures();
         }
 
         protected override void OnDestroy()
@@ -106,6 +136,26 @@ namespace HoloToolkit.Unity.InputModule
         private void OnManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
             RaiseManipulationCanceledEvent(0, cumulativeDelta);
+        }
+
+        private void OnNavigationStartedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            RaiseNavigationStartedEvent(0, cumulativeDelta);
+        }
+
+        private void OnNavigationUpdatedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            RaiseNavigationUpdatedEvent(0, cumulativeDelta);
+        }
+
+        private void OnNavigationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            RaiseNavigationCompletedEvent(0, cumulativeDelta);
+        }
+
+        private void OnNavigationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            RaiseNavigationCanceledEvent(0, cumulativeDelta);
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)

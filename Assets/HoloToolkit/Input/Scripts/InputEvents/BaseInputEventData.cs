@@ -15,9 +15,20 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public IInputSource InputSource { get; private set; }
 
-        public BaseInputEventData(EventSystem eventSystem, IInputSource inputSource) : base(eventSystem)
+        /// <summary>
+        /// The id of the source the event is from, for instance the hand id.
+        /// </summary>
+        public uint SourceId { get; private set; }
+
+        public BaseInputEventData(EventSystem eventSystem) : base(eventSystem)
         {
+        }
+
+        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId)
+        {
+            Reset();
             InputSource = inputSource;
+            SourceId = sourceId;
         }
     }
 }

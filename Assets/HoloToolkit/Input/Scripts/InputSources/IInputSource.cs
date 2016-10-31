@@ -22,6 +22,11 @@ namespace HoloToolkit.Unity.InputModule
     public delegate void ManipulationCompletedEventDelegate(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta);
     public delegate void ManipulationCanceledEventDelegate(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta);
 
+    public delegate void NavigationStartedEventDelegate(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta);
+    public delegate void NavigationUpdatedEventDelegate(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta);
+    public delegate void NavigationCompletedEventDelegate(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta);
+    public delegate void NavigationCanceledEventDelegate(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta);
+
     /// <summary>
     /// Flags used to indicate which input events are supported by an input source.
     /// </summary>
@@ -31,7 +36,8 @@ namespace HoloToolkit.Unity.InputModule
         SourceUpAndDown = 1,
         SourceClicked = 2,
         Hold = 4,
-        Manipulation = 8
+        Manipulation = 8,
+        Navigation = 16
     }
 
     /// <summary>
@@ -112,6 +118,26 @@ namespace HoloToolkit.Unity.InputModule
         /// Event triggered when a manipulation gesture is canceled.
         /// </summary>
         event ManipulationCanceledEventDelegate ManipulationCanceled;
+
+        /// <summary>
+        /// Event triggered when a navigation gesture starts.
+        /// </summary>
+        event NavigationStartedEventDelegate NavigationStarted;
+
+        /// <summary>
+        /// Event triggered when a navigation gesture is updated.
+        /// </summary>
+        event NavigationUpdatedEventDelegate NavigationUpdated;
+
+        /// <summary>
+        /// Event triggered when a navigation gesture is completed.
+        /// </summary>
+        event NavigationCompletedEventDelegate NavigationCompleted;
+
+        /// <summary>
+        /// Event triggered when a navigation gesture is canceled.
+        /// </summary>
+        event NavigationCanceledEventDelegate NavigationCanceled;
 
         /// <summary>
         /// Events supported by the input source.

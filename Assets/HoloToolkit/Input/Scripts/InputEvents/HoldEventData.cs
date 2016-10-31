@@ -10,14 +10,13 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class HoldEventData : BaseInputEventData
     {
-        /// <summary>
-        /// Source id of the input doing the hold.
-        /// </summary>
-        public uint SourceId { get; private set; }
-
-        public HoldEventData(EventSystem eventSystem, IInputSource inputSource, uint sourceId) : base(eventSystem, inputSource)
+        public HoldEventData(EventSystem eventSystem) : base(eventSystem)
         {
-            SourceId = sourceId;
+        }
+
+        public void Initialize(IInputSource inputSource, uint sourceId)
+        {
+            BaseInitialize(inputSource, sourceId);
         }
     }
 }

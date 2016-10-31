@@ -23,6 +23,11 @@ namespace HoloToolkit.Unity.InputModule
         public event ManipulationCompletedEventDelegate ManipulationCompleted;
         public event ManipulationCanceledEventDelegate ManipulationCanceled;
 
+        public event NavigationStartedEventDelegate NavigationStarted;
+        public event NavigationUpdatedEventDelegate NavigationUpdated;
+        public event NavigationCompletedEventDelegate NavigationCompleted;
+        public event NavigationCanceledEventDelegate NavigationCanceled;
+
         public abstract SupportedInputEvents SupportedEvents { get; }
         public abstract SupportedInputInfo SupportedInputInfo { get; }
 
@@ -122,7 +127,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected void RaiseSourceDetectedEvent(uint sourceId)
         {
-            if (SourceLost != null)
+            if (SourceDetected != null)
             {
                 SourceDetected(this, sourceId);
             }
@@ -130,7 +135,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected void RaiseSourceLostEvent(uint sourceId)
         {
-            if (SourceDetected != null)
+            if (SourceLost != null)
             {
                 SourceLost(this, sourceId);
             }
@@ -189,6 +194,38 @@ namespace HoloToolkit.Unity.InputModule
             if (ManipulationCanceled != null)
             {
                 ManipulationCanceled(this, sourceId, cumulativeDelta);
+            }
+        }
+
+        protected void RaiseNavigationStartedEvent(uint sourceId, Vector3 cumulativeDelta)
+        {
+            if (NavigationStarted != null)
+            {
+                NavigationStarted(this, sourceId, cumulativeDelta);
+            }
+        }
+
+        protected void RaiseNavigationUpdatedEvent(uint sourceId, Vector3 cumulativeDelta)
+        {
+            if (NavigationUpdated != null)
+            {
+                NavigationUpdated(this, sourceId, cumulativeDelta);
+            }
+        }
+
+        protected void RaiseNavigationCompletedEvent(uint sourceId, Vector3 cumulativeDelta)
+        {
+            if (NavigationCompleted != null)
+            {
+                NavigationCompleted(this, sourceId, cumulativeDelta);
+            }
+        }
+
+        protected void RaiseNavigationCanceledEvent(uint sourceId, Vector3 cumulativeDelta)
+        {
+            if (NavigationCanceled != null)
+            {
+                NavigationCanceled(this, sourceId, cumulativeDelta);
             }
         }
 

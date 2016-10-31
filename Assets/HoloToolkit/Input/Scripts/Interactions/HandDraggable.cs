@@ -52,7 +52,8 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 draggingPosition;
         private Quaternion draggingRotation;
 
-        private InputEventData currentInputData = null;
+        private IInputSource currentInputSource = null;
+        private uint currentInputSourceId;
 
         private void Start()
         {
@@ -109,7 +110,7 @@ namespace HoloToolkit.Unity.InputModule
 
             Vector3 gazeHitPosition = GazeManager.Instance.HitInfo.point;
             Vector3 handPosition;
-            currentInputData.InputSource.TryGetPosition(currentInputData.SourceId, out handPosition);
+            currentInputSource.TryGetPosition(currentInputSourceId, out handPosition);
 
             Vector3 pivotPosition = GetHandPivotPosition();
             handRefDistance = Vector3.Magnitude(handPosition - pivotPosition);
@@ -171,7 +172,7 @@ namespace HoloToolkit.Unity.InputModule
         private void UpdateDragging()
         {
             Vector3 newHandPosition;
-            currentInputData.InputSource.TryGetPosition(currentInputData.SourceId, out newHandPosition);
+            currentInputSource.TryGetPosition(currentInputSourceId, out newHandPosition);
 
             Vector3 pivotPosition = GetHandPivotPosition();
 
@@ -224,7 +225,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.PopModalInputHandler();
 
             isDragging = false;
-            currentInputData = null;
+            currentInputSource = null;
             StoppedDragging.RaiseEvent();
         }
 
@@ -260,8 +261,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnInputUp(InputEventData eventData)
         {
-            if (currentInputData != null &&
-                eventData.SourceId == currentInputData.SourceId)
+            if (currentInputSource != null &&
+                eventData.SourceId == currentInputSourceId)
             {
                 StopDragging();
             }
@@ -281,7 +282,8 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            currentInputData = eventData;
+            currentInputSource = eventData.InputSource;
+            currentInputSourceId = eventData.SourceId;
             StartDragging();
         }
 
@@ -297,8 +299,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if (currentInputData != null &&
-                eventData.SourceId == currentInputData.SourceId)
+            if (currentInputSource != null && eventData.SourceId == currentInputSourceId)
             {
                 StopDragging();
             }

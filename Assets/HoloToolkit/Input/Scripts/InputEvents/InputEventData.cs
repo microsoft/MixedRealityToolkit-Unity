@@ -10,15 +10,13 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class InputEventData : BaseInputEventData
     {
-        /// <summary>
-        /// The id of the source the event is from, for instance the hand id in a 
-        /// tap event. 
-        /// </summary>
-        public uint SourceId { get; private set; }
-
-        public InputEventData(EventSystem eventSystem, IInputSource inputSource, uint sourceId) : base(eventSystem, inputSource)
+        public InputEventData(EventSystem eventSystem) : base(eventSystem)
         {
-            SourceId = sourceId;
+        }
+
+        public void Initialize(IInputSource inputSource, uint sourceId)
+        {
+            BaseInitialize(inputSource, sourceId);
         }
     }
 }

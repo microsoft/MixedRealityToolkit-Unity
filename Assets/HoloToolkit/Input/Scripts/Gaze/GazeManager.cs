@@ -318,13 +318,13 @@ namespace HoloToolkit.Unity.InputModule
 
             // Return the minimum distance hit within the first layer that has hits.
             // In other words, sort all hit objects first by layerMask, then by distance.
-            foreach (int layerMask in RaycastLayerMasks)
+            for (int layerMaskIdx = 0; layerMaskIdx < RaycastLayerMasks.Length; layerMaskIdx++)
             {
                 RaycastHit? minHit = null;
 
                 foreach (RaycastHit h in hits)
                 {
-                    if (IsLayerInLayerMask(h.transform.gameObject.layer, layerMask) &&
+                    if (IsLayerInLayerMask(h.transform.gameObject.layer, RaycastLayerMasks[layerMaskIdx]) &&
                         (minHit == null || h.distance < minHit.Value.distance))
                     {
                         minHit = h;

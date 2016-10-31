@@ -26,6 +26,12 @@ namespace HoloToolkit.Unity.InputModule
         private bool isRegisteredToGazeChanges;
         private int disabledRefCount;
 
+        private InputEventData inputEventData;
+        private SourceStateEventData sourceStateEventData;
+        private ManipulationEventData manipulationEventData;
+        private NavigationEventData navigationEventData;
+        private HoldEventData holdEventData;
+
         /// <summary>
         /// Should the Unity UI events be fired?
         /// </summary>
@@ -161,6 +167,10 @@ namespace HoloToolkit.Unity.InputModule
             inputSource.SourceClicked += InputSource_SourceClicked;
             inputSource.SourceDetected += InputSource_SourceDetected;
             inputSource.SourceLost += InputSource_SourceLost;
+            inputSource.NavigationCanceled += InputSource_NavigationCanceled;
+            inputSource.NavigationCompleted += InputSource_NavigationCompleted;
+            inputSource.NavigationStarted += InputSource_NavigationStarted;
+            inputSource.NavigationUpdated += InputSource_NavigationUpdated;
         }
 
         /// <summary>
@@ -182,16 +192,31 @@ namespace HoloToolkit.Unity.InputModule
             inputSource.SourceClicked -= InputSource_SourceClicked;
             inputSource.SourceDetected -= InputSource_SourceDetected;
             inputSource.SourceLost -= InputSource_SourceLost;
+            inputSource.NavigationCanceled -= InputSource_NavigationCanceled;
+            inputSource.NavigationCompleted -= InputSource_NavigationCompleted;
+            inputSource.NavigationStarted -= InputSource_NavigationStarted;
+            inputSource.NavigationUpdated -= InputSource_NavigationUpdated;
         }
 
         private void Start()
         {
+            InitializeEventDatas();
+
             if (GazeManager.Instance == null)
             {
                 Debug.LogError("InputManager requires an active GazeManager in the scene");
             }
 
             RegisterGazeManager();
+        }
+
+        private void InitializeEventDatas()
+        {
+            inputEventData = new InputEventData(EventSystem.current);
+            sourceStateEventData = new SourceStateEventData(EventSystem.current);
+            manipulationEventData = new ManipulationEventData(EventSystem.current);
+            navigationEventData = new NavigationEventData(EventSystem.current);
+            holdEventData = new HoldEventData(EventSystem.current);
         }
 
         protected override void OnDestroy()
@@ -321,13 +346,13 @@ namespace HoloToolkit.Unity.InputModule
         private void InputSource_SourceClicked(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            InputEventData inputEvent = new InputEventData(EventSystem.current, inputSource, sourceId);
+            inputEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputClicked(inputEvent); };
+            ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputClicked(inputEventData); };
             
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(inputEventData, eventHandler);
 
             // UI events
             if (ShouldSendUnityUiEvents)
@@ -340,13 +365,13 @@ namespace HoloToolkit.Unity.InputModule
         private void InputSource_SourceUp(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            InputEventData inputEvent = new InputEventData(EventSystem.current, inputSource, sourceId);
+            inputEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputUp(inputEvent); };
+            ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputUp(inputEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(inputEventData, eventHandler);
 
             // UI events
             if (ShouldSendUnityUiEvents)
@@ -359,136 +384,184 @@ namespace HoloToolkit.Unity.InputModule
         private void InputSource_SourceDown(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            InputEventData inputEvent = new InputEventData(EventSystem.current, inputSource, sourceId);
+            inputEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputDown(inputEvent); };
+            ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputDown(inputEventData); };
             
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(inputEventData, eventHandler);
 
             // UI events
             if (ShouldSendUnityUiEvents)
             {
-                PointerEventData unityUIPointerEvent = GazeManager.Instance.UnityUIPointerEvent;
+                PointerEventData unityUiPointerEvent = GazeManager.Instance.UnityUIPointerEvent;
 
-                unityUIPointerEvent.eligibleForClick = true;
-                unityUIPointerEvent.delta = Vector2.zero;
-                unityUIPointerEvent.dragging = false;
-                unityUIPointerEvent.useDragThreshold = true;
-                unityUIPointerEvent.pressPosition = unityUIPointerEvent.position;
-                unityUIPointerEvent.pointerPressRaycast = unityUIPointerEvent.pointerCurrentRaycast;
+                unityUiPointerEvent.eligibleForClick = true;
+                unityUiPointerEvent.delta = Vector2.zero;
+                unityUiPointerEvent.dragging = false;
+                unityUiPointerEvent.useDragThreshold = true;
+                unityUiPointerEvent.pressPosition = unityUiPointerEvent.position;
+                unityUiPointerEvent.pointerPressRaycast = unityUiPointerEvent.pointerCurrentRaycast;
 
-                HandleEvent(unityUIPointerEvent, ExecuteEvents.pointerDownHandler);
+                HandleEvent(unityUiPointerEvent, ExecuteEvents.pointerDownHandler);
             }
         }
 
         private void InputSource_SourceDetected(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            SourceStateEventData inputEvent = new SourceStateEventData(EventSystem.current, inputSource, sourceId);
+            sourceStateEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<ISourceStateHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnSourceDetected(inputEvent); };
+            ExecuteEvents.EventFunction<ISourceStateHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnSourceDetected(sourceStateEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(sourceStateEventData, eventHandler);
         }
 
         private void InputSource_SourceLost(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            SourceStateEventData inputEvent = new SourceStateEventData(EventSystem.current, inputSource, sourceId);
+            sourceStateEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<ISourceStateHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnSourceLost(inputEvent); };
+            ExecuteEvents.EventFunction<ISourceStateHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnSourceLost(sourceStateEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(sourceStateEventData, eventHandler);
         }
 
         private void InputSource_ManipulationUpdated(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
         {
             // Create input event
-            ManipulationEventData inputEvent = new ManipulationEventData(EventSystem.current, inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationUpdated(inputEvent); };
+            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationUpdated(manipulationEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(manipulationEventData, eventHandler);
         }
 
         private void InputSource_ManipulationStarted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
         {
             // Create input event
-            ManipulationEventData inputEvent = new ManipulationEventData(EventSystem.current, inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationStarted(inputEvent); };
+            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationStarted(manipulationEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(manipulationEventData, eventHandler);
         }
 
         private void InputSource_ManipulationCompleted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
         {
             // Create input event
-            ManipulationEventData inputEvent = new ManipulationEventData(EventSystem.current, inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationCompleted(inputEvent); };
+            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationCompleted(manipulationEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(manipulationEventData, eventHandler);
         }
 
         private void InputSource_ManipulationCanceled(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
         {
             // Create input event
-            ManipulationEventData inputEvent = new ManipulationEventData(EventSystem.current, inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationCanceled(inputEvent); };
+            ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationCanceled(manipulationEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(manipulationEventData, eventHandler);
         }
 
         private void InputSource_HoldStarted(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            HoldEventData inputEvent = new HoldEventData(EventSystem.current, inputSource, sourceId);
+            holdEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldStarted(inputEvent); };
+            ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldStarted(holdEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(holdEventData, eventHandler);
         }
 
         private void InputSource_HoldCompleted(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            HoldEventData inputEvent = new HoldEventData(EventSystem.current, inputSource, sourceId);
+            holdEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldCompleted(inputEvent); };
+            ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldCompleted(holdEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(holdEventData, eventHandler);
         }
 
         private void InputSource_HoldCanceled(IInputSource inputSource, uint sourceId)
         {
             // Create input event
-            HoldEventData inputEvent = new HoldEventData(EventSystem.current, inputSource, sourceId);
+            holdEventData.Initialize(inputSource, sourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldCanceled(inputEvent); };
+            ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldCanceled(holdEventData); };
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEvent, eventHandler);
+            HandleEvent(holdEventData, eventHandler);
+        }
+
+        private void InputSource_NavigationUpdated(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        {
+            // Create input event
+            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+
+            // Handler for execute events
+            ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationUpdated(navigationEventData); };
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(navigationEventData, eventHandler);
+        }
+
+        private void InputSource_NavigationStarted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        {
+            // Create input event
+            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+
+            // Handler for execute events
+            ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationStarted(navigationEventData); };
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(navigationEventData, eventHandler);
+        }
+
+        private void InputSource_NavigationCompleted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        {
+            // Create input event
+            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+
+            // Handler for execute events
+            ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationCompleted(navigationEventData); };
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(navigationEventData, eventHandler);
+        }
+
+        private void InputSource_NavigationCanceled(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        {
+            // Create input event
+            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+
+            // Handler for execute events
+            ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationCanceled(navigationEventData); };
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(navigationEventData, eventHandler);
         }
     }
 }
