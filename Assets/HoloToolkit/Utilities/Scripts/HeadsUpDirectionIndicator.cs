@@ -42,8 +42,7 @@ namespace HoloToolKit.Unity
         [Range(0.0f, 100.0f)]
         public float indicatorMarginPercent;
 
-        public bool debugDrawAdjustedFrustum;
-
+        [Tooltip("Debug draw the planes used to calculate the pointer lock location.")]
         public bool debugDrawPointerOrientationPlanes;
 
         private GameObject pointer;
