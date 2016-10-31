@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity
         private List<TimerIdPair> activeTimers;
         private int nextTimerId;
 
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 

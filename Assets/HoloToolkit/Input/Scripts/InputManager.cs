@@ -196,7 +196,7 @@ namespace HoloToolkit.Unity.InputModule
             RegisterGazeManager();
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             UnregisterGazeManager();
         }

@@ -89,7 +89,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public PointerEventData UnityUIPointerEvent { get; private set; }
 
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 

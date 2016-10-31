@@ -50,7 +50,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// When the app starts grab the anchor store immediately.
         /// </summary>
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 

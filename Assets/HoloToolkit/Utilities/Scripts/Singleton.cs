@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Base awake method that sets the singleton's unique instance.
         /// </summary>
-        public virtual void Awake()
+        protected virtual void Awake()
         {
             if (instance != null)
             {
@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public virtual void OnDestroy()
+        protected virtual void OnDestroy()
         {
             if (instance == this)
             {

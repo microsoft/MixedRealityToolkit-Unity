@@ -130,7 +130,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
     }
 
-    public override void OnDestroy()
+    protected override void OnDestroy()
     {
         base.OnDestroy();
 

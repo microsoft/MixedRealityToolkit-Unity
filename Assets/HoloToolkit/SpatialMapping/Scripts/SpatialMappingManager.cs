@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity
         public SpatialMappingSource Source { get; private set; }
 
         // Called when the GameObject is first created.
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 

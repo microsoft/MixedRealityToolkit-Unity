@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private uint? currentlyTrackedHand = null;
 
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
             if (HandGuidanceIndicator == null)
@@ -157,7 +157,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             base.OnDestroy();
 

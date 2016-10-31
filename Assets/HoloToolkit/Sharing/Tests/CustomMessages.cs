@@ -125,7 +125,7 @@ public class CustomMessages : Singleton<CustomMessages>
         }
     }
 
-    public override void OnDestroy()
+    protected override void OnDestroy()
     {
         base.OnDestroy();
 

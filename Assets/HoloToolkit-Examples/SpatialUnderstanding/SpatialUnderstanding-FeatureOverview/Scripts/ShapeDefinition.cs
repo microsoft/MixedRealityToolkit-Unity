@@ -25,7 +25,7 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
         }
     }
 
-    public override void OnDestroy()
+    protected override void OnDestroy()
     {
         base.OnDestroy();
 

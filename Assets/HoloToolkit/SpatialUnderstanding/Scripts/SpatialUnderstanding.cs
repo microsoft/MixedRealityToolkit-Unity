@@ -116,7 +116,7 @@ namespace HoloToolkit.Unity
         private float timeSinceLastUpdate = 0.0f;
 
         // Functions
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -154,7 +154,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             base.OnDestroy();
 

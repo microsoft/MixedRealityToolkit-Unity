@@ -132,7 +132,7 @@ public class SpatialProcessingTest : Singleton<SpatialProcessingTest>
     /// <summary>
     /// Called when the GameObject is unloaded.
     /// </summary>
-    public override void OnDestroy()
+    protected override void OnDestroy()
     {
         base.OnDestroy();
 

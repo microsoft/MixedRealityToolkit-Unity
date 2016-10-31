@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Distance, in meters, to offset the cursor from the collision point.")]
         public float DistanceFromCollision = 0.01f;
 
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
