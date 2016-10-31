@@ -119,12 +119,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 1351697970}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000010825686122, guid: 7c2b06e2ef486ea4388aa01ecea25877,
+  TargetObject: {fileID: 1351697970}
+  Depth: 15
+  Pivot: {x: 0, y: 0, z: 0}
+  PointerPrefab: {fileID: 1000010825686122, guid: 7c2b06e2ef486ea4388aa01ecea25877,
     type: 2}
-  indicatorMarginPercent: 10
+  IndicatorMarginPercent: 10
+  DebugDrawPointerOrientationPlanes: 0
 --- !u!4 &97162360
 Transform:
   m_ObjectHideFlags: 0
@@ -192,6 +193,27 @@ Prefab:
       propertyPath: indicatorMarginPercent
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 457032870}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: PointerPrefab
+      value: 
+      objectReference: {fileID: 1000013959014570, guid: 6145c0073e089ec44ade2d6ee028ae9b,
+        type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: Depth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: IndicatorMarginPercent
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a9dde1117a8aa342bebd157c4b9822e, type: 2}
   m_IsPrefabParent: 0
@@ -224,12 +246,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 1925824997}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000010930187558, guid: 9075012fa1c725249a5ed34609083045,
+  TargetObject: {fileID: 1925824997}
+  Depth: 15
+  Pivot: {x: 0, y: 0, z: 0}
+  PointerPrefab: {fileID: 1000010930187558, guid: 9075012fa1c725249a5ed34609083045,
     type: 2}
-  indicatorMarginPercent: 10
+  IndicatorMarginPercent: 10
+  DebugDrawPointerOrientationPlanes: 0
 --- !u!4 &320989763
 Transform:
   m_ObjectHideFlags: 0
@@ -431,12 +454,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 457032870}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000013959014570, guid: 6145c0073e089ec44ade2d6ee028ae9b,
+  TargetObject: {fileID: 457032870}
+  Depth: 15
+  Pivot: {x: 0, y: 0, z: 0}
+  PointerPrefab: {fileID: 1000013959014570, guid: 6145c0073e089ec44ade2d6ee028ae9b,
     type: 2}
-  indicatorMarginPercent: 10
+  IndicatorMarginPercent: 10
+  DebugDrawPointerOrientationPlanes: 0
 --- !u!4 &392578196
 Transform:
   m_ObjectHideFlags: 0
@@ -567,12 +591,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 341901127}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000013129676886, guid: 706a18f27be7d2048a12ab4d2c07259b,
+  TargetObject: {fileID: 341901127}
+  Depth: 15
+  Pivot: {x: 0, y: 0, z: 0}
+  PointerPrefab: {fileID: 1000013129676886, guid: 706a18f27be7d2048a12ab4d2c07259b,
     type: 2}
-  indicatorMarginPercent: 10
+  IndicatorMarginPercent: 10
+  DebugDrawPointerOrientationPlanes: 0
 --- !u!4 &421857011
 Transform:
   m_ObjectHideFlags: 0
@@ -695,12 +720,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 345425434}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000011548036238, guid: 96947d9baddfc9b44bb7a3e3c574b410,
+  TargetObject: {fileID: 345425434}
+  Depth: 15
+  Pivot: {x: 0, y: 0, z: 0}
+  PointerPrefab: {fileID: 1000011548036238, guid: 96947d9baddfc9b44bb7a3e3c574b410,
     type: 2}
-  indicatorMarginPercent: 10
+  IndicatorMarginPercent: 10
+  DebugDrawPointerOrientationPlanes: 0
 --- !u!4 &605292328
 Transform:
   m_ObjectHideFlags: 0
@@ -773,6 +799,27 @@ Prefab:
       value: 
       objectReference: {fileID: 1000010991577574, guid: 989ddf22e1c7f94428b698c0e67249c5,
         type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 1463958126}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: PointerPrefab
+      value: 
+      objectReference: {fileID: 1000010991577574, guid: 989ddf22e1c7f94428b698c0e67249c5,
+        type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: Depth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: IndicatorMarginPercent
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a9dde1117a8aa342bebd157c4b9822e, type: 2}
   m_IsPrefabParent: 0
@@ -834,6 +881,27 @@ Prefab:
       value: 
       objectReference: {fileID: 1000010930187558, guid: 9075012fa1c725249a5ed34609083045,
         type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 1925824997}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: PointerPrefab
+      value: 
+      objectReference: {fileID: 1000010930187558, guid: 9075012fa1c725249a5ed34609083045,
+        type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: Depth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: IndicatorMarginPercent
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a9dde1117a8aa342bebd157c4b9822e, type: 2}
   m_IsPrefabParent: 0
@@ -958,6 +1026,27 @@ Prefab:
       value: 
       objectReference: {fileID: 1000010825686122, guid: 7c2b06e2ef486ea4388aa01ecea25877,
         type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 1351697970}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: PointerPrefab
+      value: 
+      objectReference: {fileID: 1000010825686122, guid: 7c2b06e2ef486ea4388aa01ecea25877,
+        type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: Depth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: IndicatorMarginPercent
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a9dde1117a8aa342bebd157c4b9822e, type: 2}
   m_IsPrefabParent: 0
@@ -1177,6 +1266,27 @@ Prefab:
       value: 
       objectReference: {fileID: 1000013129676886, guid: 706a18f27be7d2048a12ab4d2c07259b,
         type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 341901127}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: PointerPrefab
+      value: 
+      objectReference: {fileID: 1000013129676886, guid: 706a18f27be7d2048a12ab4d2c07259b,
+        type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: Depth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: IndicatorMarginPercent
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a9dde1117a8aa342bebd157c4b9822e, type: 2}
   m_IsPrefabParent: 0
@@ -1288,12 +1398,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 1463958126}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000010991577574, guid: 989ddf22e1c7f94428b698c0e67249c5,
+  TargetObject: {fileID: 1463958126}
+  Depth: 15
+  Pivot: {x: 0, y: 0, z: 0}
+  PointerPrefab: {fileID: 1000010991577574, guid: 989ddf22e1c7f94428b698c0e67249c5,
     type: 2}
-  indicatorMarginPercent: 10
+  IndicatorMarginPercent: 10
+  DebugDrawPointerOrientationPlanes: 0
 --- !u!4 &1541362711
 Transform:
   m_ObjectHideFlags: 0
@@ -1337,12 +1448,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 1318751023}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000013082263154, guid: 04ff94c4c85a6954e9c349a36229de86,
+  TargetObject: {fileID: 1318751023}
+  Depth: 15
+  Pivot: {x: 0, y: 0, z: 0}
+  PointerPrefab: {fileID: 1000013082263154, guid: 04ff94c4c85a6954e9c349a36229de86,
     type: 2}
-  indicatorMarginPercent: 10
+  IndicatorMarginPercent: 10
+  DebugDrawPointerOrientationPlanes: 0
 --- !u!4 &1650355938
 Transform:
   m_ObjectHideFlags: 0
@@ -1415,6 +1527,27 @@ Prefab:
       value: 
       objectReference: {fileID: 1000013082263154, guid: 04ff94c4c85a6954e9c349a36229de86,
         type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 1318751023}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: PointerPrefab
+      value: 
+      objectReference: {fileID: 1000013082263154, guid: 04ff94c4c85a6954e9c349a36229de86,
+        type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: Depth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: IndicatorMarginPercent
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a9dde1117a8aa342bebd157c4b9822e, type: 2}
   m_IsPrefabParent: 0
@@ -1555,6 +1688,27 @@ Prefab:
       value: 
       objectReference: {fileID: 1000011548036238, guid: 96947d9baddfc9b44bb7a3e3c574b410,
         type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: TargetObject
+      value: 
+      objectReference: {fileID: 345425434}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: PointerPrefab
+      value: 
+      objectReference: {fileID: 1000011548036238, guid: 96947d9baddfc9b44bb7a3e3c574b410,
+        type: 2}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: Depth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013180349920, guid: 3a9dde1117a8aa342bebd157c4b9822e,
+        type: 2}
+      propertyPath: IndicatorMarginPercent
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a9dde1117a8aa342bebd157c4b9822e, type: 2}
   m_IsPrefabParent: 0

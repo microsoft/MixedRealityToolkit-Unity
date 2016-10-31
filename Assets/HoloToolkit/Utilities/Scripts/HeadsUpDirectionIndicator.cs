@@ -27,43 +27,43 @@ namespace HoloToolKit.Unity
         }
 
         [Tooltip("The object the direction indicator will point to.")]
-        public GameObject targetObject;
+        public GameObject TargetObject;
 
         [Tooltip("The camera depth at which the indicator rests.")]
-        public float depth;
+        public float Depth;
 
         [Tooltip("The point around which the indicator pivots. Should be placed at the model's 'tip'.")]
-        public Vector3 pivot;
+        public Vector3 Pivot;
 
         [Tooltip("The object used to 'point' at the target.")]
-        public GameObject pointerPrefab;
+        public GameObject PointerPrefab;
 
         [Tooltip("Determines what percentage of the visible field should be margin.")]
         [Range(0.0f, 100.0f)]
-        public float indicatorMarginPercent;
+        public float IndicatorMarginPercent;
 
         [Tooltip("Debug draw the planes used to calculate the pointer lock location.")]
-        public bool debugDrawPointerOrientationPlanes;
+        public bool DebugDrawPointerOrientationPlanes;
 
         private GameObject pointer;
 
         private void Start()
         {
-            depth = Mathf.Clamp(depth, Camera.main.nearClipPlane, Camera.main.farClipPlane);
+            Depth = Mathf.Clamp(Depth, Camera.main.nearClipPlane, Camera.main.farClipPlane);
 
-            pointer = GameObject.Instantiate(pointerPrefab);
+            pointer = GameObject.Instantiate(PointerPrefab);
 
             // We create the effect of pivoting rotations by parenting the pointer and
             // offsetting its position.
             pointer.transform.parent = transform;
-            pointer.transform.position = -pivot;
+            pointer.transform.position = -Pivot;
         }
 
         // Update the direction indicator's position and orientation every frame.
         private void Update()
         {
             // No object to track?
-            if (targetObject == null)
+            if (TargetObject == null)
             {
                 // bail out early.
                 return;
@@ -73,7 +73,7 @@ namespace HoloToolKit.Unity
                 // The top, bottom and side frustum planes are used to restrict the movement
                 // of the pointer.
 
-                float marginFactor = indicatorMarginPercent / 100.0f;
+                float marginFactor = IndicatorMarginPercent / 100.0f;
 
                 // Here we adjust the Camera's frustum planes to place the cursor in a smaller
                 // volume, thus creating the effect of a "margin"
@@ -97,7 +97,7 @@ namespace HoloToolKit.Unity
                     indicatorVolume[i] = new Plane(normal.normalized, indicatorVolume[i].distance);
                 }
 
-                UpdatePointerTransform(Camera.main, indicatorVolume, targetObject.transform.position);
+                UpdatePointerTransform(Camera.main, indicatorVolume, TargetObject.transform.position);
             }
         }
 
@@ -148,7 +148,7 @@ namespace HoloToolKit.Unity
 
             Plane e = new Plane(nearUpperRight, nearLowerLeft, farUpperRight);
 
-            if (debugDrawPointerOrientationPlanes)
+            if (DebugDrawPointerOrientationPlanes)
             {
                 // Debug draw a tringale coplanar with 'd'
                 Debug.DrawLine(nearUpperLeft, nearLowerRight);
@@ -258,7 +258,7 @@ namespace HoloToolKit.Unity
         private void UpdatePointerTransform(Camera camera, Plane []planes, Vector3 targetPosition)
         {
             // Start by assuming the pointer should be placed at the target position.
-            Vector3 indicatorPosition = camera.transform.position + depth * (targetPosition - camera.transform.position).normalized;
+            Vector3 indicatorPosition = camera.transform.position + Depth * (targetPosition - camera.transform.position).normalized;
 
             // Test the target position with the frustum planes except the "far" plane since
             // far away objects should be considered in view.
@@ -285,7 +285,7 @@ namespace HoloToolKit.Unity
                 Ray r;
                 if (TryGetIndicatorPosition(targetPosition, camera, planes[(int)exitPlane], out r))
                 {
-                    indicatorPosition = camera.transform.position + depth * r.direction.normalized;
+                    indicatorPosition = camera.transform.position + Depth * r.direction.normalized;
                 }
             }
 
