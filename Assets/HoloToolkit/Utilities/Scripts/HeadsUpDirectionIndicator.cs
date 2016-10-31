@@ -77,14 +77,14 @@ namespace HoloToolKit.Unity
 
                 // Here we adjust the Camera's frustum planes to place the cursor in a smaller
                 // volume, thus creating the effect of a "margin"
-                var indicatorVolume = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+                Plane[] indicatorVolume = GeometryUtility.CalculateFrustumPlanes(Camera.main);
                 for (int i = 0; i < 4; ++i)
                 {
                     // We can make the frustum smaller by rotating the walls "in" toward the
                     // camera's forward vector.
 
                     // First find the angle between the Camera's forward and the plane's normal
-                    var angle = Mathf.Acos(Vector3.Dot(indicatorVolume[i].normal.normalized, Camera.main.transform.forward));
+                    float angle = Mathf.Acos(Vector3.Dot(indicatorVolume[i].normal.normalized, Camera.main.transform.forward));
 
                     // Then we calculate how much we should rotate the plane in based on the
                     // user's setting. 90 degrees is our maximum as at that point we no longer
@@ -93,7 +93,7 @@ namespace HoloToolKit.Unity
 
                     // Because the frustum plane normal's face in must actually rotate away from the forward to vector
                     // to narrow the frustum.
-                    var normal = Vector3.RotateTowards(indicatorVolume[i].normal, Camera.main.transform.forward, -angleStep, 0.0f);
+                    Vector3 normal = Vector3.RotateTowards(indicatorVolume[i].normal, Camera.main.transform.forward, -angleStep, 0.0f);
                     indicatorVolume[i] = new Plane(normal.normalized, indicatorVolume[i].distance);
                 }
 
@@ -111,10 +111,10 @@ namespace HoloToolKit.Unity
 
             // Calculate a set of vectors that can be used to build the frustum corners in world
             // space.
-            var aspect = camera.aspect;
-            var fovy = 0.5f * camera.fieldOfView;
-            var near = camera.nearClipPlane;
-            var far = camera.farClipPlane;
+            float aspect = camera.aspect;
+            float fovy = 0.5f * camera.fieldOfView;
+            float near = camera.nearClipPlane;
+            float far = camera.farClipPlane;
 
             float tanFovy = Mathf.Tan(Mathf.Deg2Rad * fovy);
             float tanFovx = aspect * tanFovy;
@@ -265,7 +265,7 @@ namespace HoloToolKit.Unity
             bool pointNotInsideIndicatorField = false;
             for (int i = 0; i < 5; ++i)
             {
-                var dot = Vector3.Dot(planes[i].normal, (targetPosition - camera.transform.position).normalized);
+                float dot = Vector3.Dot(planes[i].normal, (targetPosition - camera.transform.position).normalized);
                 if (dot <= 0.0f)
                 {
                     pointNotInsideIndicatorField = true;
@@ -280,7 +280,7 @@ namespace HoloToolKit.Unity
 
                 // used to determine which edge of the screen the indicator vector
                 // would exit through.
-                var exitPlane = GetExitPlane(targetPosition, camera);
+                FrustumPlanes exitPlane = GetExitPlane(targetPosition, camera);
 
                 Ray r;
                 if (TryGetIndicatorPosition(targetPosition, camera, planes[(int)exitPlane], out r))
