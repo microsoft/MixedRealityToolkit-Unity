@@ -21,7 +21,7 @@ GameObject:
   - 4: {fileID: 4000013175961358}
   - 114: {fileID: 114000010697249598}
   m_Layer: 0
-  m_Name: HandsInput
+  m_Name: RawInteractionSources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -729,6 +729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d40781677294a0e4caffa3460012ae41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseRailsNavigation: 0
 --- !u!114 &114000013582617810
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -29,11 +29,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public override SupportedInputInfo SupportedInputInfo
-        {
-            get { return SupportedInputInfo.None; }
-        }
-
         private void Awake()
         {
             gestureRecognizer = new GestureRecognizer();
@@ -168,6 +163,11 @@ namespace HoloToolkit.Unity.InputModule
         {
             orientation = Quaternion.identity;
             return false;
+        }
+
+        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        {
+            return SupportedInputInfo.None;
         }
     }
 }

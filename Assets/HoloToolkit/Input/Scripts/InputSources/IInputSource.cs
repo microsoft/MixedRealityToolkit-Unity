@@ -145,9 +145,16 @@ namespace HoloToolkit.Unity.InputModule
         SupportedInputEvents SupportedEvents { get; }
 
         /// <summary>
-        /// Input info that that the input source can provide.
+        /// Returns the input info that that the input source can provide.
         /// </summary>
-        SupportedInputInfo SupportedInputInfo { get; }
+        SupportedInputInfo GetSupportedInputInfo(uint sourceId);
+
+        /// <summary>
+        /// Returns whether the input source supports the specified input info type.
+        /// </summary>
+        /// <param name="sourceId">ID of the source.</param>
+        /// <param name="inputInfo">Input info type that we want to get information about.</param>
+        bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo);
 
         /// <summary>
         /// Returns the position of the input source, if available.

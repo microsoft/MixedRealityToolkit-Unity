@@ -82,8 +82,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            // If the source has positional info and there is currently no visible source
-            if ((eventData.InputSource.SupportedInputInfo & SupportedInputInfo.Position) != 0)
+            // If the source has positional info
+            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
             {
                 trackedHandsCount++;
             }
@@ -91,7 +91,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if ((eventData.InputSource.SupportedInputInfo & SupportedInputInfo.Position) != 0)
+            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
             {
                 trackedHandsCount--;
             }

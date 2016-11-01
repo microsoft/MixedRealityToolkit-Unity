@@ -89,9 +89,9 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public override SupportedInputInfo SupportedInputInfo
+        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
-            get { return SupportedInputInfo.Position; }
+            return SupportedInputInfo.Position;
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)

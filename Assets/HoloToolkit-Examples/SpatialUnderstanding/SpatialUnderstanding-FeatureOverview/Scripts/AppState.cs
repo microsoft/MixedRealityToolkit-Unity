@@ -5,7 +5,6 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using System;
 using HoloToolkit.Unity.InputModule;
-using UnityEngine.VR.WSA.Input;
 
 public class AppState : Singleton<AppState>, ISourceStateHandler, IInputHandler
 {
@@ -248,7 +247,7 @@ public class AppState : Singleton<AppState>, ISourceStateHandler, IInputHandler
     public void OnSourceDetected(SourceStateEventData eventData)
     {
         // If the source has positional info and there is currently no visible source
-        if ((eventData.InputSource.SupportedInputInfo & SupportedInputInfo.Position) != 0)
+        if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
         {
             trackedHandsCount++;
         }
@@ -256,7 +255,7 @@ public class AppState : Singleton<AppState>, ISourceStateHandler, IInputHandler
 
     public void OnSourceLost(SourceStateEventData eventData)
     {
-        if ((eventData.InputSource.SupportedInputInfo & SupportedInputInfo.Position) != 0)
+        if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
         {
             trackedHandsCount--;
         }

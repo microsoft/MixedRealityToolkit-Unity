@@ -29,8 +29,7 @@ namespace HoloToolkit.Unity.InputModule
         public event NavigationCanceledEventDelegate NavigationCanceled;
 
         public abstract SupportedInputEvents SupportedEvents { get; }
-        public abstract SupportedInputInfo SupportedInputInfo { get; }
-
+        
         private bool isRegistered = false;
 
         protected virtual void Start()
@@ -93,6 +92,13 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.UnregisterInputSource(this);
                 isRegistered = false;
             }
+        }
+
+        public abstract SupportedInputInfo GetSupportedInputInfo(uint sourceId);
+
+        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
+        {
+            return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;
         }
 
         public abstract bool TryGetPosition(uint sourceId, out Vector3 position);
