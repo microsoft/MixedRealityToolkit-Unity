@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf540edf943b014c9b1cb13622dd844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 0}
-  depth: 15
-  pivot: {x: 0, y: 0.5, z: 0}
-  pointerPrefab: {fileID: 1000013959014570, guid: 6145c0073e089ec44ade2d6ee028ae9b,
-    type: 2}
-  indicatorMarginPercent: 10
+  TargetObject: {fileID: 0}
+  Depth: 0
+  Pivot: {x: 0, y: 0.5, z: 0}
+  PointerPrefab: {fileID: 0}
+  IndicatorMarginPercent: 0
+  DebugDrawPointerOrientationPlanes: 0
