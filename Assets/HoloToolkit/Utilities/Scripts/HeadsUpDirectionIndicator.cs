@@ -150,6 +150,7 @@ namespace HoloToolKit.Unity
 
             if (DebugDrawPointerOrientationPlanes)
             {
+#if UNITY_EDITOR
                 // Debug draw a tringale coplanar with 'd'
                 Debug.DrawLine(nearUpperLeft, nearLowerRight);
                 Debug.DrawLine(nearLowerRight, farUpperLeft);
@@ -159,6 +160,7 @@ namespace HoloToolKit.Unity
                 Debug.DrawLine(nearUpperRight, nearLowerLeft);
                 Debug.DrawLine(nearLowerLeft, farUpperRight);
                 Debug.DrawLine(farUpperRight, nearUpperRight);
+#endif
             }
 
             // We're not actually interested in the "distance" to the planes. But the sign
