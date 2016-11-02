@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿//
+// Copyright (C) Microsoft. All rights reserved.
+// TODO This needs to be validated for HoloToolkit integration
+//
 
 using System;
 using UnityEngine;
@@ -9,17 +11,119 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public class Cursor : MonoBehaviour, IInputHandler, ISourceStateHandler
+    public abstract class Cursor : MonoBehaviour, ICursor
     {
-        public float MinCursorDistance = 1.0f;
-        public float DefaultCursorDistance = 2.0f;
-        public Interpolator Interpolator;
-        public string DefaultCursorStateTrigger;
+        /// <summary>
+        /// Enum for current cursor state
+        /// </summary>
+        public enum CursorStateEnum
+        {
+            /// <summary>
+            /// Useful for releasing external override.
+            /// See <c>CursorStateEnum.Contextual</c>
+            /// </summary>
+            None = -1,
+            /// <summary>
+            /// Not IsHandVisible
+            /// </summary>
+            Observe,
+            /// <summary>
+            /// IsHandVisible AND not IsInputSourceDown AND TargetedObject is NULL
+            /// </summary>
+            Interact,
+            /// <summary>
+            /// IsHandVisible AND not IsInputSourceDown AND TargetedObject exists
+            /// </summary>
+            Hover,
+            /// <summary>
+            /// IsHandVisible AND IsInputSourceDown
+            /// </summary>
+            Select,
+            /// <summary>
+            /// Available for use by classes that extend Cursor.
+            /// No logic for setting Release state exists in the base Cursor class.
+            /// </summary>
+            Release,
+            /// <summary>
+            /// Allows for external override
+            /// </summary>
+            Contextual
+        }
 
+
+        public CursorStateEnum CursorState { get { return cursorState; } }
+        private CursorStateEnum cursorState = CursorStateEnum.None;
+
+        /// <summary>
+        /// Minimum distance for cursor if nothing is hit
+        /// </summary>
+        [Header("Cusor Distance")]
+        [Tooltip("The minimum distance the cursor can be with nothing hit")]
+        public float MinCursorDistance = 1.0f;
+
+        /// <summary>
+        /// Maximum distance for cursor if nothing is hit
+        /// </summary>
+        [Tooltip("The maximum distance the cursor can be with nothing hit")]
+        public float DefaultCursorDistance = 2.0f;
+
+        /// <summary>
+        /// Surface distance to place the cursor off of the surface at
+        /// </summary>
+        [Tooltip("The distance from the hit surface to place the cursor")]
+        public float SurfaceCursorDistance = 0.02f;
+
+        [Header("Motion")]
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp
+        /// </summary>
+        public float PositionLerpTime = 0.01f;
+
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp
+        /// </summary>
+        public float ScaleLerpTime = 0.01f;
+
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp
+        /// </summary>
+        public float RotationLerpTime = 0.01f;
+
+        /// <summary>
+        /// Blend value for surface normal to user facing lerp
+        /// </summary>
+        [Range(0, 1)]
+        public float LookRotationBlend = 0.5f;
+
+        [Header("Tranform References")]
         /// <summary>
         /// Visual that is displayed when cursor is active normally
         /// </summary>
         public Transform PrimaryCursorVisual;
+
+        /// <summary>
+        /// Get position accessor for modifiers;
+        /// </summary>
+        public Vector3 GetPosition()
+        {
+            return transform.position;
+        }
+        
+        /// <summary>
+        /// Get rotation accessor for modifiers;
+        /// </summary>
+        public Quaternion GetRotation()
+        {
+            return transform.rotation;
+        }
+
+        /// <summary>
+        /// Get scale accessor for modifiers;
+        /// </summary>
+        public Vector3 GetScale()
+        {
+            return transform.localScale;
+        }
 
         /// <summary>
         /// Indicates if hand is current in the view
@@ -32,20 +136,22 @@ namespace HoloToolkit.Unity.InputModule
         protected bool IsInputSourceDown;
 
         protected GameObject TargetedObject;
-        protected CursorModifier TargetedCursorModifier;
+        protected ICursorModifier TargetedCursorModifier;
+
         private bool isRegisteredToGazeManager = false;
         private bool isInputRegistered = false;
 
-        [SerializeField]
-        protected Animator CursorAnimation = null;
-
-        private Vector3 lastCursorForward = Vector3.zero;
-        private const float LastCursorForwardInterpolationSpeed = 10.0f;
-
-        private bool skipInterpolation;
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
+
         private GazeManager gazeManager;
+
+        /// <summary>
+        /// Position, scale and rotational goals for cursor
+        /// </summary>
+        private Vector3 targetPosition;
+        private Vector3 targetScale;
+        private Quaternion targetRotation;
 
         /// <summary>
         /// Indicates if the cursor should be visible
@@ -55,46 +161,43 @@ namespace HoloToolkit.Unity.InputModule
             set
             {
                 isVisible = value;
-                UpdateVisualState();
+                SetVisiblity(isVisible);
             }
         }
 
+#region MonoBehaviour Functions
+
         private void Awake()
         {
-            if (Interpolator == null)
-            {
-                Interpolator = GetComponent<Interpolator>();
-            }
-
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
+            SetVisiblity(isVisible);
         }
 
         private void Start()
         {
             gazeManager = GazeManager.Instance;
+
             RegisterGazeManager();
             RegisterInput();
         }
 
         private void Update()
         {
+            UpdateCursorState();
             UpdateCursorTransform();
-            UpdateCursorAnimation();
         }
 
-        protected virtual void OnEnable()
-        {
-            RegisterGazeManager();
-            RegisterInput();
-            skipInterpolation = true;
-            UpdateVisualState();
-        }
+        /// <summary>
+        /// Override for enable functions
+        /// </summary>
+        protected virtual void OnEnable(){}
 
-        private void OnDisable()
+        /// <summary>
+        /// Override for disable functions
+        /// </summary>
+        protected virtual void OnDisable()
         {
-            UnregisterInput();
-            UnregisterGazeManager();
             TargetedObject = null;
             TargetedCursorModifier = null;
             visibleHandsCount = 0;
@@ -105,6 +208,8 @@ namespace HoloToolkit.Unity.InputModule
             UnregisterInput();
             UnregisterGazeManager();
         }
+
+#endregion
 
         /// <summary>
         /// Register to events from the gaze manager, if not already registered.
@@ -135,12 +240,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void RegisterInput()
         {
-            if (isInputRegistered)
-            {
-                return;
-            }
-
-            if (InputManager.Instance == null)
+            if (isInputRegistered || InputManager.Instance == null)
             {
                 return;
             }
@@ -173,60 +273,27 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="previousObject">Object that was previously being focused.</param>
         /// <param name="newObject">New object being focused.</param>
-        private void OnFocusedObjectChanged(GameObject previousObject, GameObject newObject)
+        protected virtual void OnFocusedObjectChanged(GameObject previousObject, GameObject newObject)
         {
             TargetedObject = newObject;
             if (newObject != null)
             {
-                TargetedCursorModifier = newObject.GetComponent<CursorModifier>();
-
-                // Trigger the cursor state change coming from a change of focus
-                if (TargetedCursorModifier == null)
-                {
-                    TriggerCursorState(DefaultCursorStateTrigger);
-                }
-                else
-                {
-                    TriggerCursorState(TargetedCursorModifier.CursorTriggerName);
-                }
+                OnActiveModifier(newObject.GetComponent<CursorModifier>());
             }
         }
 
         /// <summary>
-        /// Disables input, putting the cursor in a wait state.
+        /// Override function when a new modifier is found or no modifier is valid
         /// </summary>
-        public void DisableInput()
+        /// <param name="modifier"></param>
+        protected virtual void OnActiveModifier(CursorModifier modifier)
         {
-            if (CursorAnimation != null)
+            if (modifier != null)
             {
-                CursorAnimation.SetTrigger("StartWaiting");
+                modifier.RegisterCursor(this);
             }
 
-            TargetedCursorModifier = null;
-            UpdateVisualState();
-        }
-
-        /// <summary>
-        /// Enables input, putting the cursor back into its regular state.
-        /// </summary>
-        public void EnableInput()
-        {
-            if (CursorAnimation != null)
-            {
-                CursorAnimation.SetTrigger("DoneWaiting");
-            }
-        }
-
-        /// <summary>
-        /// Triggers a cursor state change by using its underlying mecanim.
-        /// </summary>
-        /// <param name="animationTrigger">Animation trigger to use to trigger a cursor change.</param>
-        public void TriggerCursorState(string animationTrigger)
-        {
-            if (CursorAnimation != null && !string.IsNullOrEmpty(animationTrigger))
-            {
-                CursorAnimation.SetTrigger(animationTrigger);
-            }
+            TargetedCursorModifier = modifier;
         }
 
         /// <summary>
@@ -237,19 +304,19 @@ namespace HoloToolkit.Unity.InputModule
             // Get the necessary info from the gaze source
             RaycastHit hitResult = gazeManager.HitInfo;
             GameObject newTargetedObject = gazeManager.HitObject;
-            Vector3 cursorSourcePosition = gazeManager.GazeOrigin;
-            Vector3 cursorSourceForward = gazeManager.GazeNormal;
 
-            Vector3 targetPosition;
-            Vector3 targetForward;
-            Vector3 cursorScaleOffset = Vector3.one;
+            // Get the forward vector looking back at camera
+            Vector3 lookForward = -gazeManager.GazeNormal;
+
+            // Normalize scale on before update
+            targetScale = Vector3.one;
 
             // If no game object is hit, put the cursor at the default distance
             if (TargetedObject == null)
             {
                 this.TargetedObject = null;
-                targetPosition = cursorSourcePosition + cursorSourceForward * DefaultCursorDistance;
-                targetForward = -cursorSourceForward;
+                targetPosition = gazeManager.GazeOrigin + gazeManager.GazeNormal * DefaultCursorDistance;
+                targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else
             {
@@ -258,152 +325,157 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (TargetedCursorModifier != null)
                 {
-                    Transform targetTransform = TargetedCursorModifier.HostTransform;
-
-                    // Set the cursor position
-                    if (TargetedCursorModifier.SnapCursor)
-                    {
-                        // Snap if the targeted object has a cursor modifier that supports snapping
-                        targetPosition = targetTransform.position +
-                                         targetTransform.TransformVector(TargetedCursorModifier.CursorOffset);
-                    }
-                    // Else, consider the modifiers on the cursor modifier, but don't snap
-                    else
-                    {
-                        targetPosition = hitResult.point + targetTransform.TransformVector(TargetedCursorModifier.CursorOffset);
-                    }
-
-                    // Set the cursor forward
-                    if (TargetedCursorModifier.UseGazeBasedNormal)
-                    {
-                        targetForward = -cursorSourceForward;
-                    }
-                    else
-                    {
-                        targetForward = targetTransform.rotation * TargetedCursorModifier.CursorNormal;
-                    }
-
-                    // Set cursor scale
-                    cursorScaleOffset = TargetedCursorModifier.CursorScaleOffset;
+                    TargetedCursorModifier.GetModifierTranslation(out targetPosition, out targetRotation, out targetScale);
                 }
                 else
                 {
                     // If no modifier is on the target, just use the hit result to set cursor position
-                    targetPosition = hitResult.point;
-                    targetForward = hitResult.normal;
+                    targetPosition = hitResult.point + (lookForward * SurfaceCursorDistance);
+                    targetRotation = Quaternion.LookRotation(Vector3.Lerp(hitResult.normal, lookForward, LookRotationBlend), Vector3.up);
                 }
             }
 
-            // Further blend the cursor normal so it doesn't cause any jarring pops
-            lastCursorForward = Vector3.Lerp(lastCursorForward, targetForward,
-                Time.deltaTime * LastCursorForwardInterpolationSpeed);
-            Quaternion targetRotation = GetCursorRotation(lastCursorForward);
-
-            if (Interpolator != null)
-            {
-                Interpolator.SetTargetPosition(targetPosition);
-                Interpolator.SetTargetLocalScale(cursorScaleOffset);
-
-
-                Interpolator.SetTargetRotation(targetRotation);
-            }
-            else
-            {
-                transform.position = targetPosition;
-                transform.rotation = targetRotation;
-                transform.localScale = cursorScaleOffset;
-            }
-
-            UpdateVisualState();
-
-            if (skipInterpolation && Interpolator != null)
-            {
-                Interpolator.SnapToTarget();
-                skipInterpolation = false;
-            }
-        }
-
-        private Quaternion GetCursorRotation(Vector3 forward)
-        {
-            Quaternion existingRotation = transform.rotation;
-            Quaternion deltaRotation = Quaternion.FromToRotation(existingRotation * Vector3.forward, forward);
-
-            return deltaRotation * existingRotation;
+            // Use the lerp times to blend the position to the target position
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / PositionLerpTime);
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime / ScaleLerpTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime / RotationLerpTime);
         }
 
         /// <summary>
         /// Updates the visual representation of the cursor.
         /// </summary>
-        private void UpdateVisualState()
-        {
-            bool hasCursorModifier = TargetedCursorModifier != null;
-            bool cursorVisible = isVisible && (!hasCursorModifier || !TargetedCursorModifier.HideCursorOnFocus);
-
+        public void SetVisiblity(bool visible)
+        { 
             if (PrimaryCursorVisual != null)
             {
-                PrimaryCursorVisual.gameObject.SetActive(cursorVisible);
+                PrimaryCursorVisual.gameObject.SetActive(visible);
             }
-
-            UpdateCursorAnimation();
         }
 
         /// <summary>
-        /// Updates the cursor animation state.
+        /// Disable input and set to contextual to override input
         /// </summary>
-        protected virtual void UpdateCursorAnimation()
+        public virtual void DisableInput()
         {
-            if (CursorAnimation == null)
-            {
-                return;
-            }
+            // Reset visible hands on disable
+            visibleHandsCount = 0;
+            IsHandVisible = false;
 
-            CursorAnimation.SetBool("IsRing", IsHandVisible);
+            OnCursorStateChange(CursorStateEnum.Contextual);
         }
 
-        public void OnInputUp(InputEventData eventData)
+        /// <summary>
+        /// Enable input and set to none to reset cursor
+        /// </summary>
+        public virtual void EnableInput()
+        {
+            OnCursorStateChange(CursorStateEnum.None);
+        }
+
+        /// <summary>
+        /// Function for consuming the OnInputUp events
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnInputUp(InputEventData eventData)
         {
             if (IsInputSourceDown == false)
             {
                 return;
             }
             IsInputSourceDown = false;
-            if (CursorAnimation != null)
-            {
-                CursorAnimation.SetTrigger("AirTapUp");
-            }
-            UpdateVisualState();
         }
 
-        public void OnInputDown(InputEventData eventData)
+        /// <summary>
+        /// Function for receiving OnInputDown events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnInputDown(InputEventData eventData)
         {
             IsInputSourceDown = true;
-            if (CursorAnimation != null)
-            {
-                CursorAnimation.SetTrigger("AirTapDown");
-            }
-            UpdateVisualState();
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        /// <summary>
+        /// Function for receiving OnInputClicked events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnInputClicked(InputEventData eventData)
         {
-            // Nothing to do
+            // Open input socket for other cool stuff...
         }
 
-        public void OnSourceDetected(SourceStateEventData eventData)
+
+        /// <summary>
+        /// Input source detected callback for the cursor
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
             visibleHandsCount++;
             IsHandVisible = true;
-            UpdateVisualState();
         }
 
-        public void OnSourceLost(SourceStateEventData eventData)
+
+        /// <summary>
+        /// Input source lost callback for the cursor
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnSourceLost(SourceStateEventData eventData)
         {
             visibleHandsCount--;
             if (visibleHandsCount == 0)
             {
                 IsHandVisible = false;
             }
-            UpdateVisualState();
+        }
+
+        /// <summary>
+        /// Internal update to check for cursor state changes
+        /// </summary>
+        private void UpdateCursorState()
+        {
+            CursorStateEnum newState = CheckCursorState();
+            if (cursorState != newState)
+            {
+                OnCursorStateChange(newState);
+            }
+        }
+
+        /// <summary>
+        /// Virtual function for checking state changess.
+        /// </summary>
+        public virtual CursorStateEnum CheckCursorState()
+        {
+            if (cursorState != CursorStateEnum.Contextual)
+            {
+                if (IsInputSourceDown)
+                {
+                    return CursorStateEnum.Select;
+                }
+                else if(cursorState == CursorStateEnum.Select)
+                {
+                    return CursorStateEnum.Release;
+                }
+
+                if (IsHandVisible)
+                {
+                    if (TargetedObject != null)
+                    {
+                        return CursorStateEnum.Hover;
+                    }
+                    return CursorStateEnum.Interact;
+                }
+                return CursorStateEnum.Observe;
+            }
+            return CursorStateEnum.Contextual;
+        }
+
+        /// <summary>
+        /// Change the cursor state to the new state.  Override in cursor implementations.
+        /// </summary>
+        /// <param name="state"></param>
+        public virtual void OnCursorStateChange(CursorStateEnum state)
+        {
+            cursorState = state;
         }
     }
 }

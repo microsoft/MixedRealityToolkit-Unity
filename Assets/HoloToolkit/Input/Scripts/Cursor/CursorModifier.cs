@@ -5,7 +5,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Component that can be added to any collider to modify how a cursor reacts when on that collider.
     /// </summary>
-    public class CursorModifier : MonoBehaviour
+    public class CursorModifier : MonoBehaviour, ICursorModifier
     {
         private void Awake()
         {
@@ -39,5 +39,91 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("Cursor animation event to trigger when this object is gazed. Leave empty for none.")]
         public string CursorTriggerName;
+
+        private ICursor currentCursor;
+
+        public void RegisterCursor(ICursor cursor)
+        {
+            currentCursor = cursor;
+        }
+
+        /// <summary>
+        /// Return whether or not hide the cursor
+        /// </summary>
+        /// <returns></returns>
+        public bool GetCursorVisibility()
+        {
+            return HideCursorOnFocus;
+        }
+
+        /// <summary>
+        /// Get the modifier position
+        /// </summary>
+        /// <param name="position"></param>
+        public Vector3 GetPosition()
+        {
+            Vector3 position;
+
+            // Set the cursor position
+            if (SnapCursor)
+            {
+                // Snap if the targeted object has a cursor modifier that supports snapping
+                position = HostTransform.position +
+                                 HostTransform.TransformVector(CursorOffset);
+            }
+            // Else, consider the modifiers on the cursor modifier, but don't snap
+            else
+            {
+               position = GazeManager.Instance.HitPosition + HostTransform.TransformVector(CursorOffset);
+            }
+
+            return position;
+        }
+
+        /// <summary>
+        /// Get modifier rotation
+        /// </summary>
+        /// <param name="rotation"></param>
+        public Quaternion GetRotation()
+        {
+            Quaternion rotation;
+
+            Vector3 forward = UseGazeBasedNormal ? -GazeManager.Instance.GazeNormal : HostTransform.rotation * CursorNormal;
+
+            // Set the cursor forward
+            if (forward.magnitude > 0)
+            {
+                rotation = Quaternion.LookRotation(forward, Vector3.up);
+            }
+            else
+            {
+                rotation = currentCursor.GetRotation();
+            }
+
+            return rotation;
+        }
+
+        /// <summary>
+        /// Get modifier scale
+        /// </summary>
+        /// <param name="scale"></param>
+        public Vector3 GetScale()
+        {
+            // Set cursor scale
+            return CursorScaleOffset;
+        }
+
+        /// <summary>
+        /// Get modifier translation comprising position, rotation and scale
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="scale"></param>
+        public void GetModifierTranslation(out Vector3 position, out Quaternion rotation, out Vector3 scale)
+        {
+            position = GetPosition();
+            rotation = GetRotation();
+            scale = GetScale();
+        }
     }
 }
