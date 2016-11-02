@@ -1,9 +1,6 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-// TODO This needs to be validated for HoloToolkit integration
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -54,7 +51,6 @@ namespace HoloToolkit.Unity.InputModule
             Contextual
         }
 
-
         public CursorStateEnum CursorState { get { return cursorState; } }
         private CursorStateEnum cursorState = CursorStateEnum.None;
 
@@ -77,10 +73,10 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The distance from the hit surface to place the cursor")]
         public float SurfaceCursorDistance = 0.02f;
 
-        [Header("Motion")]
         /// <summary>
         /// Blend value for surface normal to user facing lerp
         /// </summary>
+        [Header("Motion")]
         public float PositionLerpTime = 0.01f;
 
         /// <summary>
@@ -99,34 +95,25 @@ namespace HoloToolkit.Unity.InputModule
         [Range(0, 1)]
         public float LookRotationBlend = 0.5f;
 
-        [Header("Tranform References")]
         /// <summary>
         /// Visual that is displayed when cursor is active normally
         /// </summary>
+        [Header("Tranform References")]
         public Transform PrimaryCursorVisual;
 
-        /// <summary>
-        /// Get position accessor for modifiers;
-        /// </summary>
-        public Vector3 GetPosition()
+        public Vector3 Position
         {
-            return transform.position;
+            get { return transform.position; }
         }
         
-        /// <summary>
-        /// Get rotation accessor for modifiers;
-        /// </summary>
-        public Quaternion GetRotation()
+        public Quaternion Rotation
         {
-            return transform.rotation;
+            get { return transform.rotation; }
         }
 
-        /// <summary>
-        /// Get scale accessor for modifiers;
-        /// </summary>
-        public Vector3 GetScale()
+        public Vector3 LocalScale
         {
-            return transform.localScale;
+            get { return transform.localScale; }
         }
 
         /// <summary>
@@ -251,6 +238,19 @@ namespace HoloToolkit.Unity.InputModule
 
             // Register the cursor as a global listener, so that it can always get input events it cares about
             InputManager.Instance.AddGlobalListener(gameObject);
+
+            // Setup the cursor to be able to respond to input being globally enabled / disabled
+            if (InputManager.Instance.IsInputEnabled)
+            {
+                OnInputEnabled();
+            }
+            else
+            {
+                OnInputDisabled();
+            }
+
+            InputManager.Instance.InputEnabled += OnInputEnabled;
+            InputManager.Instance.InputDisabled += OnInputDisabled;
             isInputRegistered = true;
         }
 
@@ -267,6 +267,8 @@ namespace HoloToolkit.Unity.InputModule
             if (InputManager.Instance != null)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.Instance.InputEnabled -= OnInputEnabled;
+                InputManager.Instance.InputDisabled -= OnInputDisabled;
                 isInputRegistered = false;
             }
         }
@@ -292,11 +294,6 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="modifier"></param>
         protected virtual void OnActiveModifier(CursorModifier modifier)
         {
-            if (modifier != null)
-            {
-                modifier.RegisterCursor(this);
-            }
-
             TargetedCursorModifier = modifier;
         }
 
@@ -329,7 +326,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (TargetedCursorModifier != null)
                 {
-                    TargetedCursorModifier.GetModifierTranslation(out targetPosition, out targetRotation, out targetScale);
+                    TargetedCursorModifier.GetModifiedTransform(this, out targetPosition, out targetRotation, out targetScale);
                 }
                 else
                 {
@@ -359,7 +356,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Disable input and set to contextual to override input
         /// </summary>
-        public virtual void DisableInput()
+        public virtual void OnInputDisabled()
         {
             // Reset visible hands on disable
             visibleHandsCount = 0;
@@ -371,7 +368,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Enable input and set to none to reset cursor
         /// </summary>
-        public virtual void EnableInput()
+        public virtual void OnInputEnabled()
         {
             OnCursorStateChange(CursorStateEnum.None);
         }

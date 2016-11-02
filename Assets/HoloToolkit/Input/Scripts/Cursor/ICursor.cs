@@ -1,23 +1,34 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-// TODO This needs to be validated for HoloToolkit integration
-//
-using UnityEngine.EventSystems;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Cursor Interface for handling input events and enable or disable inputs and setting visiblity.
+    /// Cursor Interface for handling input events, enable or disable inputs, and setting visiblity.
     /// </summary>
     public interface ICursor : IInputHandler, ISourceStateHandler
     {
-        void SetVisiblity(bool visible);
-        void DisableInput();
-        void EnableInput();
+        /// <summary>
+        /// Position of the cursor.
+        /// </summary>
+        Vector3 Position { get; }
 
-        Vector3 GetPosition();
-        Quaternion GetRotation();
-        Vector3 GetScale();
+        /// <summary>
+        /// Rotation of the cursor.
+        /// </summary>
+        Quaternion Rotation { get; }
+
+        /// <summary>
+        /// Local scale of the cursor.
+        /// </summary>
+        Vector3 LocalScale { get; }
+
+        /// <summary>
+        /// Sets the visibility of the cursor.
+        /// </summary>
+        /// <param name="visible">True if cursor should be visible, false if not.</param>
+        void SetVisiblity(bool visible);
     }
 }

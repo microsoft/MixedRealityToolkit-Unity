@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -10,23 +11,22 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
-        public event SourceUpEventDelegate SourceUp;
-        public event SourceDownEventDelegate SourceDown;
-        public event SourceClickedEventDelegate SourceClicked;
-        public event SourceDetectedEventDelegate SourceDetected;
-        public event SourceLostEventDelegate SourceLost;
-        public event HoldStartedEventDelegate HoldStarted;
-        public event HoldCompletedEventDelegate HoldCompleted;
-        public event HoldCanceledEventDelegate HoldCanceled;
-        public event ManipulationStartedEventDelegate ManipulationStarted;
-        public event ManipulationUpdatedEventDelegate ManipulationUpdated;
-        public event ManipulationCompletedEventDelegate ManipulationCompleted;
-        public event ManipulationCanceledEventDelegate ManipulationCanceled;
-
-        public event NavigationStartedEventDelegate NavigationStarted;
-        public event NavigationUpdatedEventDelegate NavigationUpdated;
-        public event NavigationCompletedEventDelegate NavigationCompleted;
-        public event NavigationCanceledEventDelegate NavigationCanceled;
+        public event Action<IInputSource, uint> SourceUp;
+        public event Action<IInputSource, uint> SourceDown;
+        public event Action<IInputSource, uint> SourceClicked;
+        public event Action<IInputSource, uint> SourceDetected;
+        public event Action<IInputSource, uint> SourceLost;
+        public event Action<IInputSource, uint> HoldStarted;
+        public event Action<IInputSource, uint> HoldCompleted;
+        public event Action<IInputSource, uint> HoldCanceled;
+        public event Action<IInputSource, uint, Vector3> ManipulationStarted;
+        public event Action<IInputSource, uint, Vector3> ManipulationUpdated;
+        public event Action<IInputSource, uint, Vector3> ManipulationCompleted;
+        public event Action<IInputSource, uint, Vector3> ManipulationCanceled;
+        public event Action<IInputSource, uint, Vector3> NavigationStarted;
+        public event Action<IInputSource, uint, Vector3> NavigationUpdated;
+        public event Action<IInputSource, uint, Vector3> NavigationCompleted;
+        public event Action<IInputSource, uint, Vector3> NavigationCanceled;
 
         public abstract SupportedInputEvents SupportedEvents { get; }
         
