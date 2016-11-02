@@ -118,6 +118,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011656901714}
   - 114: {fileID: 114000012009196210}
+  - 114: {fileID: 114000011980027866}
   - 114: {fileID: 114000012434513746}
   m_Layer: 0
   m_Name: InputManager
@@ -678,6 +679,18 @@ MonoBehaviour:
   HandDownTexture: {fileID: 2800000, guid: d84aac8e3bc8fe344b50dab1e7382ad7, type: 3}
   LeftHandInView: 0
   RightHandInView: 0
+--- !u!114 &114000011980027866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011070707148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81e3e700505863408cacaa0346cb1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StoredStabilitySamples: 60
 --- !u!114 &114000012009196210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -693,7 +706,7 @@ MonoBehaviour:
   RaycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291
-  Stabilizer: {fileID: 0}
+  Stabilizer: {fileID: 114000011980027866}
   GazeTransform: {fileID: 0}
 --- !u!114 &114000012391649198
 MonoBehaviour:
@@ -717,7 +730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b160d197a8ca1894796ae263bafec0ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveCursor: {fileID: 0}
 --- !u!114 &114000012864906760
 MonoBehaviour:
   m_ObjectHideFlags: 1

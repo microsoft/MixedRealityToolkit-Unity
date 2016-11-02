@@ -1,7 +1,5 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-// TODO This needs to be validated for HoloToolkit integration
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
 using UnityEngine;
@@ -9,7 +7,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Animated cursor is cursor driven using an animator to inject state information
+    /// Animated cursor is a cursor driven using an animator to inject state information
     /// and animate accordingly
     /// </summary>
     public class AnimatedCursor : Cursor
@@ -38,44 +36,48 @@ namespace HoloToolkit.Unity.InputModule
             public float AnimFloatValue;
         }
 
-        [Header("Animated Cursor State Data")]
         /// <summary>
         /// Serialized set of cursor state data
         /// </summary>
+        [Header("Animated Cursor State Data")]
+        [Tooltip("Cursor state data to use for its various states")]
         [SerializeField]
         public AnimCursorDatum[] CursorStateData;
 
         /// <summary>
         /// Enabled state Data when enabling
         /// </summary>
+        [Tooltip("Cursor State Data to use when enabling the cursor")]
         public AnimCursorDatum EnableStateData;
 
         /// <summary>
         /// Disabled state Data when disabled
         /// </summary>
+        [Tooltip("Cursor State Data to use when the cursor is disabled")]
         public AnimCursorDatum DisableStateData;
 
         /// <summary>
-        /// Link the the curaor animator
+        /// Link the the cursor animator
         /// </summary>
         [SerializeField]
+        [Tooltip("Animator for the cursor")]
         protected Animator CursorAnimator = null;
 
         /// <summary>
         /// Change anim stage when enabled
         /// </summary>
-        public override void EnableInput()
+        public override void OnInputEnabled()
         {
-            base.EnableInput();
+            base.OnInputEnabled();
             SetCursorState(EnableStateData);
         }
 
         /// <summary>
         /// Change anim stage when disabled
         /// </summary>
-        public override void DisableInput()
+        public override void OnInputDisabled()
         {
-            base.DisableInput();
+            base.OnInputDisabled();
             SetCursorState(DisableStateData);
         }
 

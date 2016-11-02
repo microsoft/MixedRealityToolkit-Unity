@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class InputManager : Singleton<InputManager>
     {
-        public Cursor ActiveCursor;
+        public event Action InputEnabled;
+        public event Action InputDisabled;
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -31,6 +33,14 @@ namespace HoloToolkit.Unity.InputModule
         private ManipulationEventData manipulationEventData;
         private NavigationEventData navigationEventData;
         private HoldEventData holdEventData;
+
+        /// <summary>
+        /// Indicates if input is currently enabled or not.
+        /// </summary>
+        public bool IsInputEnabled
+        {
+            get { return disabledRefCount <= 0; }
+        }
 
         /// <summary>
         /// Should the Unity UI events be fired?
@@ -117,9 +127,9 @@ namespace HoloToolkit.Unity.InputModule
         {
             ++disabledRefCount;
 
-            if (ActiveCursor != null)
+            if (disabledRefCount == 1)
             {
-                ActiveCursor.DisableInput();
+                InputDisabled.RaiseEvent();
             }
         }
 
@@ -132,20 +142,24 @@ namespace HoloToolkit.Unity.InputModule
             --disabledRefCount;
             Debug.Assert(disabledRefCount >= 0, "Tried to pop more input disable than the amount pushed.");
 
-            if (ActiveCursor != null && disabledRefCount == 0)
+            if (disabledRefCount == 0)
             {
-                ActiveCursor.EnableInput();
+                InputEnabled.RaiseEvent();
             }
         }
 
         /// <summary>
-        /// Clear the input disable stack, which will immediately
-        /// re enable input.
+        /// Clear the input disable stack, which will immediately re-enable input.
         /// </summary>
         public void ClearInputDisableStack()
         {
+            bool wasInputDisabled = disabledRefCount > 0;
             disabledRefCount = 0;
-            ActiveCursor.EnableInput();
+
+            if (wasInputDisabled)
+            {
+                InputEnabled.RaiseEvent();
+            }
         }
 
         /// <summary>
@@ -196,6 +210,11 @@ namespace HoloToolkit.Unity.InputModule
             inputSource.NavigationCompleted -= InputSource_NavigationCompleted;
             inputSource.NavigationStarted -= InputSource_NavigationStarted;
             inputSource.NavigationUpdated -= InputSource_NavigationUpdated;
+        }
+
+        public void RegisterCursor(ICursor cursor)
+        {
+            
         }
 
         private void Start()

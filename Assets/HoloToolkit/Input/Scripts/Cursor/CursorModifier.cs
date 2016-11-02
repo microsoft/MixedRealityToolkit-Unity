@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -40,13 +43,6 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Cursor animation event to trigger when this object is gazed. Leave empty for none.")]
         public string CursorTriggerName;
 
-        private ICursor currentCursor;
-
-        public void RegisterCursor(ICursor cursor)
-        {
-            currentCursor = cursor;
-        }
-
         /// <summary>
         /// Return whether or not hide the cursor
         /// </summary>
@@ -56,74 +52,54 @@ namespace HoloToolkit.Unity.InputModule
             return HideCursorOnFocus;
         }
 
-        /// <summary>
-        /// Get the modifier position
-        /// </summary>
-        /// <param name="position"></param>
-        public Vector3 GetPosition()
+        public Vector3 GetModifiedPosition(ICursor cursor)
         {
             Vector3 position;
 
-            // Set the cursor position
             if (SnapCursor)
             {
                 // Snap if the targeted object has a cursor modifier that supports snapping
                 position = HostTransform.position +
-                                 HostTransform.TransformVector(CursorOffset);
+                           HostTransform.TransformVector(CursorOffset);
             }
-            // Else, consider the modifiers on the cursor modifier, but don't snap
             else
             {
-               position = GazeManager.Instance.HitPosition + HostTransform.TransformVector(CursorOffset);
+                // Else, consider the modifiers on the cursor modifier, but don't snap
+                position = GazeManager.Instance.HitPosition + HostTransform.TransformVector(CursorOffset);
             }
 
             return position;
         }
 
-        /// <summary>
-        /// Get modifier rotation
-        /// </summary>
-        /// <param name="rotation"></param>
-        public Quaternion GetRotation()
+        public Quaternion GetModifiedRotation(ICursor cursor)
         {
             Quaternion rotation;
 
             Vector3 forward = UseGazeBasedNormal ? -GazeManager.Instance.GazeNormal : HostTransform.rotation * CursorNormal;
 
-            // Set the cursor forward
+            // Determine the cursor forward
             if (forward.magnitude > 0)
             {
                 rotation = Quaternion.LookRotation(forward, Vector3.up);
             }
             else
             {
-                rotation = currentCursor.GetRotation();
+                rotation = cursor.Rotation;
             }
 
             return rotation;
         }
 
-        /// <summary>
-        /// Get modifier scale
-        /// </summary>
-        /// <param name="scale"></param>
-        public Vector3 GetScale()
+        public Vector3 GetModifiedScale(ICursor cursor)
         {
-            // Set cursor scale
             return CursorScaleOffset;
         }
 
-        /// <summary>
-        /// Get modifier translation comprising position, rotation and scale
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        /// <param name="scale"></param>
-        public void GetModifierTranslation(out Vector3 position, out Quaternion rotation, out Vector3 scale)
+        public void GetModifiedTransform(ICursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale)
         {
-            position = GetPosition();
-            rotation = GetRotation();
-            scale = GetScale();
+            position = GetModifiedPosition(cursor);
+            rotation = GetModifiedRotation(cursor);
+            scale = GetModifiedScale(cursor);
         }
     }
 }
