@@ -133,6 +133,11 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
     void OnDestroy()
     {
+        if (SharingStage.Instance != null)
+        {
+            SharingStage.Instance.SharingManagerConnected -= SharingManagerConnected;
+        }
+
         if (roomManagerCallbacks != null)
         {
             roomManagerCallbacks.AnchorsDownloadedEvent -= RoomManagerCallbacks_AnchorsDownloaded;
