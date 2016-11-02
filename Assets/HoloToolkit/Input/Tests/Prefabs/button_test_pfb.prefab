@@ -22,6 +22,7 @@ GameObject:
   - 33: {fileID: 33000012913663468}
   - 23: {fileID: 23000011480523916}
   - 95: {fileID: 95000013881968268}
+  - 65: {fileID: 65000010646057672}
   m_Layer: 0
   m_Name: Button_Visual
   m_TagString: Untagged
@@ -38,7 +39,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011024438968}
   - 114: {fileID: 114000011771025640}
-  - 65: {fileID: 65000011130265584}
   m_Layer: 0
   m_Name: button_test_pfb
   m_TagString: Untagged
@@ -55,11 +55,11 @@ Transform:
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_Children:
   - {fileID: 4000014213108822}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4000014213108822
 Transform:
   m_ObjectHideFlags: 1
@@ -69,10 +69,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011024438968}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23000011480523916
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -109,17 +109,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010345607974}
   m_Mesh: {fileID: 4300000, guid: 07280da9da392aa4c9dbcb563adc57f9, type: 3}
---- !u!65 &65000011130265584
+--- !u!65 &65000010646057672
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013030286928}
+  m_GameObject: {fileID: 1000010345607974}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.045, y: 0.045, z: 0.007661055}
+  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.007661055}
   m_Center: {x: -0.0000000027939677, y: 0.0000000027939677, z: 3.4924597e-10}
 --- !u!95 &95000013881968268
 Animator:
@@ -155,4 +155,3 @@ MonoBehaviour:
   ToolTipDelayTime: 0.5
   ButtonAnimator: {fileID: 95000013881968268}
   EnableActivation: 1
-  keywordActivation: 

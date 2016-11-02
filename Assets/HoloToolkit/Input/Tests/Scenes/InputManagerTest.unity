@@ -324,6 +324,30 @@ Transform:
   - {fileID: 1662841314}
   m_Father: {fileID: 115626666}
   m_RootOrder: 2
+--- !u!1 &142199465 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000010345607974, guid: b3364a8b0a2a96a43b662045118b0a9e,
+    type: 2}
+  m_PrefabInternal: {fileID: 652027336}
+--- !u!114 &142199470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 142199465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HostTransform: {fileID: 0}
+  CursorOffset: {x: 0, y: 0, z: 0}
+  CursorNormal: {x: 0, y: 0, z: 0}
+  CursorScaleOffset: {x: 6, y: 6, z: 6}
+  SnapCursor: 0
+  UseGazeBasedNormal: 0
+  HideCursorOnFocus: 0
+  CursorTriggerName: 
 --- !u!1 &142212807
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,25 +837,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000013030286928, guid: b3364a8b0a2a96a43b662045118b0a9e,
     type: 2}
   m_PrefabInternal: {fileID: 1550965883}
---- !u!114 &208920926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 208920925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
-  CursorOffset: {x: 0, y: 0, z: 0}
-  CursorNormal: {x: 0, y: 0, z: -1}
-  CursorScaleOffset: {x: 4, y: 4, z: 4}
-  SnapCursor: 0
-  UseGazeBasedNormal: 0
-  HideCursorOnFocus: 0
-  CursorTriggerName: 
 --- !u!114 &208920927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3708,25 +3713,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000013030286928, guid: b3364a8b0a2a96a43b662045118b0a9e,
     type: 2}
   m_PrefabInternal: {fileID: 652027336}
---- !u!114 &1403079736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1403079735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
-  CursorOffset: {x: 0, y: 0, z: 0}
-  CursorNormal: {x: 0, y: 0, z: -1}
-  CursorScaleOffset: {x: 6, y: 6, z: 6}
-  SnapCursor: 0
-  UseGazeBasedNormal: 0
-  HideCursorOnFocus: 0
-  CursorTriggerName: 
 --- !u!114 &1403079737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3921,6 +3907,30 @@ MonoBehaviour:
   ObjectToScale: {fileID: 718516056}
   ScaleIncrement: 0.01
   ButtonAction: 2
+--- !u!1 &1520964007 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000010345607974, guid: b3364a8b0a2a96a43b662045118b0a9e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1550965883}
+--- !u!114 &1520964012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1520964007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HostTransform: {fileID: 0}
+  CursorOffset: {x: 0, y: 0, z: 0}
+  CursorNormal: {x: 0, y: 0, z: 0}
+  CursorScaleOffset: {x: 4, y: 4, z: 4}
+  SnapCursor: 0
+  UseGazeBasedNormal: 0
+  HideCursorOnFocus: 0
+  CursorTriggerName: 
 --- !u!1 &1527663681
 GameObject:
   m_ObjectHideFlags: 0
@@ -4662,13 +4672,11 @@ Prefab:
       propertyPath: m_Name
       value: WaitButton
       objectReference: {fileID: 0}
-    - target: {fileID: 65000011130265584, guid: b3364a8b0a2a96a43b662045118b0a9e,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Size.y
       value: 0.045
       objectReference: {fileID: 0}
-    - target: {fileID: 65000011130265584, guid: b3364a8b0a2a96a43b662045118b0a9e,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Size.x
       value: 0.045
       objectReference: {fileID: 0}
