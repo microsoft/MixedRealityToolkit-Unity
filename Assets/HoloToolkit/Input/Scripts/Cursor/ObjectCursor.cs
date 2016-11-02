@@ -9,42 +9,40 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Object that represents a cursor comprised of sprites and colors for each state
+    /// Object cursor simply links the active objects to the correct cursor state.
     /// </summary>
-    public class SpriteCursor : Cursor
+    public class ObjectCursor : Cursor
     {
         [Serializable]
-        public struct SpriteCursorDatum
+        public struct ObjectCursorDatum
         {
             public string Name;
             public CursorStateEnum CursorState;
-            public Sprite CursorSprite;
-            public Color CursorColor;
+            public GameObject CursorObject;
         }
 
         [SerializeField]
-        public SpriteCursorDatum[] CursorStateData;
+        public ObjectCursorDatum[] CursorStateData;
 
         /// <summary>
         /// Sprite renderer to change.  If null find one in children
         /// </summary>
-        public SpriteRenderer TargetRenderer;
+        public Transform ParentTransform;
 
         /// <summary>
         /// On enable look for a sprite renderer on children
         /// </summary>
         protected override void OnEnable()
         {
-            if(TargetRenderer == null)
+            if(ParentTransform == null)
             {
-                TargetRenderer = GetComponentInChildren<SpriteRenderer>();
+                ParentTransform = transform;
             }
-
             base.OnEnable();
         }
 
         /// <summary>
-        /// Override OnCursorState change to set the correct sprite
+        /// Override OnCursorState change to set the correct animation
         /// state for the cursor
         /// </summary>
         /// <param name="state"></param>
@@ -54,30 +52,21 @@ namespace HoloToolkit.Unity.InputModule
 
             if (state != CursorStateEnum.Contextual)
             {
+                // Hide all children first
+                for(int i = 0; i < ParentTransform.childCount; i++)
+                {
+                    ParentTransform.GetChild(i).gameObject.SetActive(false);
+                }
+
+                // Set active any that match the current state
                 for (int i = 0; i < CursorStateData.Length; i++)
                 {
                     if (CursorStateData[i].CursorState == state)
                     {
-                        SetCursorState(CursorStateData[i]);
+                        CursorStateData[i].CursorObject.SetActive(true);
                     }
                 }
             }
         }
-
-        /// <summary>
-        /// Based on the type of state info pass it through to the sprite renderer
-        /// </summary>
-        /// <param name="stateDatum"></param>
-        private void SetCursorState(SpriteCursorDatum stateDatum)
-        {
-            // Return if we do not have an animator
-            if (TargetRenderer != null)
-            {
-                TargetRenderer.sprite = stateDatum.CursorSprite;
-                TargetRenderer.color = stateDatum.CursorColor;
-            }
-        }
-
     }
-
 }
