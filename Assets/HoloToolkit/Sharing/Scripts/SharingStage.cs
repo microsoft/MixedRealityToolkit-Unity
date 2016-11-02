@@ -160,9 +160,6 @@ namespace HoloToolkit.Sharing
             this.networkConnectionAdapter = new NetworkConnectionAdapter();
             networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
             networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
-
-            //delay sending notification so everything is initialized properly
-            //Invoke("SendConnectedNotification", 1);
         }
 
         private void NetworkConnectionAdapter_ConnectedCallback(NetworkConnection obj)
