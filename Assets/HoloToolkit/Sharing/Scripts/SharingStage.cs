@@ -80,7 +80,6 @@ namespace HoloToolkit.Sharing
 
         protected void OnDestroy()
         {
-
             if (this.discoveryClient != null)
             {
                 discoveryClient.RemoveListener(discoveryClientAdapter);
