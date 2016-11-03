@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Cursor Interface for handling input events, enable or disable inputs, and setting visiblity.
+    /// Cursor Interface for handling input events and setting visiblity.
     /// </summary>
     public interface ICursor : IInputHandler, ISourceStateHandler
     {
