@@ -11,22 +11,22 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
-        public event Action<IInputSource, uint> SourceUp;
-        public event Action<IInputSource, uint> SourceDown;
-        public event Action<IInputSource, uint> SourceClicked;
-        public event Action<IInputSource, uint> SourceDetected;
-        public event Action<IInputSource, uint> SourceLost;
-        public event Action<IInputSource, uint> HoldStarted;
-        public event Action<IInputSource, uint> HoldCompleted;
-        public event Action<IInputSource, uint> HoldCanceled;
-        public event Action<IInputSource, uint, Vector3> ManipulationStarted;
-        public event Action<IInputSource, uint, Vector3> ManipulationUpdated;
-        public event Action<IInputSource, uint, Vector3> ManipulationCompleted;
-        public event Action<IInputSource, uint, Vector3> ManipulationCanceled;
-        public event Action<IInputSource, uint, Vector3> NavigationStarted;
-        public event Action<IInputSource, uint, Vector3> NavigationUpdated;
-        public event Action<IInputSource, uint, Vector3> NavigationCompleted;
-        public event Action<IInputSource, uint, Vector3> NavigationCanceled;
+        public event EventHandler<InputSourceEventArgs> SourceUp;
+        public event EventHandler<InputSourceEventArgs> SourceDown;
+        public event EventHandler<SourceClickEventArgs> SourceClicked;
+        public event EventHandler<InputSourceEventArgs> SourceDetected;
+        public event EventHandler<InputSourceEventArgs> SourceLost;
+        public event EventHandler<HoldEventArgs> HoldStarted;
+        public event EventHandler<HoldEventArgs> HoldCompleted;
+        public event EventHandler<HoldEventArgs> HoldCanceled;
+        public event EventHandler<ManipulationEventArgs> ManipulationStarted;
+        public event EventHandler<ManipulationEventArgs> ManipulationUpdated;
+        public event EventHandler<ManipulationEventArgs> ManipulationCompleted;
+        public event EventHandler<ManipulationEventArgs> ManipulationCanceled;
+        public event EventHandler<NavigationEventArgs> NavigationStarted;
+        public event EventHandler<NavigationEventArgs> NavigationUpdated;
+        public event EventHandler<NavigationEventArgs> NavigationCompleted;
+        public event EventHandler<NavigationEventArgs> NavigationCanceled;
 
         public abstract SupportedInputEvents SupportedEvents { get; }
         
@@ -107,131 +107,147 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Events wrappers
 
-        protected void RaiseSourceUpEvent(uint sourceId)
+        protected void RaiseSourceUpEvent(InputSourceEventArgs e)
         {
-            if (SourceUp != null)
+            EventHandler<InputSourceEventArgs> handler = SourceUp;
+            if (handler != null)
             {
-                SourceUp(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseSourceDownEvent(uint sourceId)
+        protected void RaiseSourceDownEvent(InputSourceEventArgs e)
         {
-            if (SourceDown != null)
+            EventHandler<InputSourceEventArgs> handler = SourceDown;
+            if (handler != null)
             {
-                SourceDown(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseSourceClickedEvent(uint sourceId)
+        protected void RaiseSourceClickedEvent(SourceClickEventArgs e)
         {
-            if (SourceClicked != null)
+            EventHandler<SourceClickEventArgs> handler = SourceClicked;
+            if (handler != null)
             {
-                SourceClicked(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseSourceDetectedEvent(uint sourceId)
+        protected void RaiseSourceDetectedEvent(InputSourceEventArgs e)
         {
-            if (SourceDetected != null)
+            EventHandler<InputSourceEventArgs> handler = SourceDetected;
+            if (handler != null)
             {
-                SourceDetected(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseSourceLostEvent(uint sourceId)
+        protected void RaiseSourceLostEvent(InputSourceEventArgs e)
         {
-            if (SourceLost != null)
+            EventHandler<InputSourceEventArgs> handler = SourceLost;
+            if (handler != null)
             {
-                SourceLost(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseHoldStartedEvent(uint sourceId)
+        protected void RaiseHoldStartedEvent(HoldEventArgs e)
         {
-            if (HoldStarted != null)
+            EventHandler<HoldEventArgs> handler = HoldStarted;
+            if (handler != null)
             {
-                HoldStarted(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseHoldCanceledEvent(uint sourceId)
+        protected void RaiseHoldCanceledEvent(HoldEventArgs e)
         {
-            if (HoldCanceled != null)
+            EventHandler<HoldEventArgs> handler = HoldCanceled;
+            if (handler != null)
             {
-                HoldCanceled(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseHoldCompletedEvent(uint sourceId)
+        protected void RaiseHoldCompletedEvent(HoldEventArgs e)
         {
-            if (HoldCompleted != null)
+            EventHandler<HoldEventArgs> handler = HoldCompleted;
+            if (handler != null)
             {
-                HoldCompleted(this, sourceId);
+                handler(this, e);
             }
         }
 
-        protected void RaiseManipulationStartedEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseManipulationStartedEvent(ManipulationEventArgs e)
         {
-            if (ManipulationStarted != null)
+            EventHandler<ManipulationEventArgs> handler = ManipulationStarted;
+            if (handler != null)
             {
-                ManipulationStarted(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 
-        protected void RaiseManipulationUpdatedEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseManipulationUpdatedEvent(ManipulationEventArgs e)
         {
-            if (ManipulationUpdated != null)
+            EventHandler<ManipulationEventArgs> handler = ManipulationUpdated;
+            if (handler != null)
             {
-                ManipulationUpdated(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 
-        protected void RaiseManipulationCompletedEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseManipulationCompletedEvent(ManipulationEventArgs e)
         {
-            if (ManipulationCompleted != null)
+            EventHandler<ManipulationEventArgs> handler = ManipulationCompleted;
+            if (handler != null)
             {
-                ManipulationCompleted(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 
-        protected void RaiseManipulationCanceledEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseManipulationCanceledEvent(ManipulationEventArgs e)
         {
-            if (ManipulationCanceled != null)
+            EventHandler<ManipulationEventArgs> handler = ManipulationCanceled;
+            if (handler != null)
             {
-                ManipulationCanceled(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 
-        protected void RaiseNavigationStartedEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseNavigationStartedEvent(NavigationEventArgs e)
         {
-            if (NavigationStarted != null)
+            EventHandler<NavigationEventArgs> handler = NavigationStarted;
+            if (handler != null)
             {
-                NavigationStarted(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 
-        protected void RaiseNavigationUpdatedEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseNavigationUpdatedEvent(NavigationEventArgs e)
         {
-            if (NavigationUpdated != null)
+            EventHandler<NavigationEventArgs> handler = NavigationUpdated;
+            if (handler != null)
             {
-                NavigationUpdated(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 
-        protected void RaiseNavigationCompletedEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseNavigationCompletedEvent(NavigationEventArgs e)
         {
-            if (NavigationCompleted != null)
+            EventHandler<NavigationEventArgs> handler = NavigationCompleted;
+            if (handler != null)
             {
-                NavigationCompleted(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 
-        protected void RaiseNavigationCanceledEvent(uint sourceId, Vector3 cumulativeDelta)
+        protected void RaiseNavigationCanceledEvent(NavigationEventArgs e)
         {
-            if (NavigationCanceled != null)
+            EventHandler<NavigationEventArgs> handler = NavigationCanceled;
+            if (handler != null)
             {
-                NavigationCanceled(this, sourceId, cumulativeDelta);
+                handler(this, e);
             }
         }
 

@@ -39,84 +39,84 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Event triggered when the input source goes up. This is the equivalent of the pointer up event of a mouse.
         /// </summary>
-        event Action<IInputSource, uint> SourceUp;
+        event EventHandler<InputSourceEventArgs> SourceUp;
 
         /// <summary>
         /// Event triggered when the input source goes down. This is the equivalent of the pointer down event of a mouse.
         /// </summary>
-        event Action<IInputSource, uint> SourceDown;
+        event EventHandler<InputSourceEventArgs> SourceDown;
 
         /// <summary>
         /// Event triggered when the input source clicks. This is the equivalent of the pointer clicked event of a mouse.
         /// </summary>
-        event Action<IInputSource, uint> SourceClicked;
+        event EventHandler<SourceClickEventArgs> SourceClicked;
 
         /// <summary>
         /// Event triggered when the input source is detected. This can happen for input sources that are context-specific.
         /// For example, a "hand" input source is detected when the user's hand is visible.
         /// </summary>
-        event Action<IInputSource, uint> SourceDetected;
+        event EventHandler<InputSourceEventArgs> SourceDetected;
 
         /// <summary>
         /// Event triggered when the input source is lost. This can happen for input sources that are context-specific.
         /// For example, a "hand" input source is lost when the user's hand is no longer visible.
         /// </summary>
-        event Action<IInputSource, uint> SourceLost;
+        event EventHandler<InputSourceEventArgs> SourceLost;
 
         /// <summary>
         /// Event triggered when a hold gesture starts.
         /// </summary>
-        event Action<IInputSource, uint> HoldStarted;
+        event EventHandler<HoldEventArgs> HoldStarted;
 
         /// <summary>
         /// Event triggered when a hold gesture is completed.
         /// </summary>
-        event Action<IInputSource, uint> HoldCompleted;
+        event EventHandler<HoldEventArgs> HoldCompleted;
 
         /// <summary>
         /// Event triggered when a hold gesture is canceled.
         /// </summary>
-        event Action<IInputSource, uint> HoldCanceled;
+        event EventHandler<HoldEventArgs> HoldCanceled;
 
         /// <summary>
         /// Event triggered when a manipulation gesture starts.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> ManipulationStarted;
+        event EventHandler<ManipulationEventArgs> ManipulationStarted;
 
         /// <summary>
         /// Event triggered when a manipulation gesture is updated.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> ManipulationUpdated;
+        event EventHandler<ManipulationEventArgs> ManipulationUpdated;
 
         /// <summary>
         /// Event triggered when a manipulation gesture is completed.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> ManipulationCompleted;
+        event EventHandler<ManipulationEventArgs> ManipulationCompleted;
 
         /// <summary>
         /// Event triggered when a manipulation gesture is canceled.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> ManipulationCanceled;
+        event EventHandler<ManipulationEventArgs> ManipulationCanceled;
 
         /// <summary>
         /// Event triggered when a navigation gesture starts.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> NavigationStarted;
+        event EventHandler<NavigationEventArgs> NavigationStarted;
 
         /// <summary>
         /// Event triggered when a navigation gesture is updated.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> NavigationUpdated;
+        event EventHandler<NavigationEventArgs> NavigationUpdated;
 
         /// <summary>
         /// Event triggered when a navigation gesture is completed.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> NavigationCompleted;
+        event EventHandler<NavigationEventArgs> NavigationCompleted;
 
         /// <summary>
         /// Event triggered when a navigation gesture is canceled.
         /// </summary>
-        event Action<IInputSource, uint, Vector3> NavigationCanceled;
+        event EventHandler<NavigationEventArgs> NavigationCanceled;
 
         /// <summary>
         /// Events supported by the input source.

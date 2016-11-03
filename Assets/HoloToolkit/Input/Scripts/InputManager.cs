@@ -362,10 +362,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InputSource_SourceClicked(IInputSource inputSource, uint sourceId)
+        private void InputSource_SourceClicked(object sender, SourceClickEventArgs e)
         {
             // Create input event
-            inputEventData.Initialize(inputSource, sourceId);
+            inputEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputClicked(inputEventData); };
@@ -381,10 +381,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InputSource_SourceUp(IInputSource inputSource, uint sourceId)
+        private void InputSource_SourceUp(object sender, InputSourceEventArgs e)
         {
             // Create input event
-            inputEventData.Initialize(inputSource, sourceId);
+            inputEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputUp(inputEventData); };
@@ -400,10 +400,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InputSource_SourceDown(IInputSource inputSource, uint sourceId)
+        private void InputSource_SourceDown(object sender, InputSourceEventArgs e)
         {
             // Create input event
-            inputEventData.Initialize(inputSource, sourceId);
+            inputEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputDown(inputEventData); };
@@ -427,10 +427,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InputSource_SourceDetected(IInputSource inputSource, uint sourceId)
+        private void InputSource_SourceDetected(object sender, InputSourceEventArgs e)
         {
             // Create input event
-            sourceStateEventData.Initialize(inputSource, sourceId);
+            sourceStateEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<ISourceStateHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnSourceDetected(sourceStateEventData); };
@@ -439,10 +439,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(sourceStateEventData, eventHandler);
         }
 
-        private void InputSource_SourceLost(IInputSource inputSource, uint sourceId)
+        private void InputSource_SourceLost(object sender, InputSourceEventArgs e)
         {
             // Create input event
-            sourceStateEventData.Initialize(inputSource, sourceId);
+            sourceStateEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<ISourceStateHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnSourceLost(sourceStateEventData); };
@@ -451,10 +451,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(sourceStateEventData, eventHandler);
         }
 
-        private void InputSource_ManipulationUpdated(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_ManipulationUpdated(object sender, ManipulationEventArgs e)
         {
             // Create input event
-            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(e.InputSource, e.SourceId, e.CumulativeDelta);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationUpdated(manipulationEventData); };
@@ -463,10 +463,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(manipulationEventData, eventHandler);
         }
 
-        private void InputSource_ManipulationStarted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_ManipulationStarted(object sender, ManipulationEventArgs e)
         {
             // Create input event
-            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(e.InputSource, e.SourceId, e.CumulativeDelta);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationStarted(manipulationEventData); };
@@ -475,10 +475,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(manipulationEventData, eventHandler);
         }
 
-        private void InputSource_ManipulationCompleted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_ManipulationCompleted(object sender, ManipulationEventArgs e)
         {
             // Create input event
-            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(e.InputSource, e.SourceId, e.CumulativeDelta);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationCompleted(manipulationEventData); };
@@ -487,10 +487,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(manipulationEventData, eventHandler);
         }
 
-        private void InputSource_ManipulationCanceled(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_ManipulationCanceled(object sender, ManipulationEventArgs e)
         {
             // Create input event
-            manipulationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            manipulationEventData.Initialize(e.InputSource, e.SourceId, e.CumulativeDelta);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IManipulationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnManipulationCanceled(manipulationEventData); };
@@ -499,10 +499,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(manipulationEventData, eventHandler);
         }
 
-        private void InputSource_HoldStarted(IInputSource inputSource, uint sourceId)
+        private void InputSource_HoldStarted(object sender, HoldEventArgs e)
         {
             // Create input event
-            holdEventData.Initialize(inputSource, sourceId);
+            holdEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldStarted(holdEventData); };
@@ -511,10 +511,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(holdEventData, eventHandler);
         }
 
-        private void InputSource_HoldCompleted(IInputSource inputSource, uint sourceId)
+        private void InputSource_HoldCompleted(object sender, HoldEventArgs e)
         {
             // Create input event
-            holdEventData.Initialize(inputSource, sourceId);
+            holdEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldCompleted(holdEventData); };
@@ -523,10 +523,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(holdEventData, eventHandler);
         }
 
-        private void InputSource_HoldCanceled(IInputSource inputSource, uint sourceId)
+        private void InputSource_HoldCanceled(object sender, HoldEventArgs e)
         {
             // Create input event
-            holdEventData.Initialize(inputSource, sourceId);
+            holdEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<IHoldHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnHoldCanceled(holdEventData); };
@@ -535,10 +535,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(holdEventData, eventHandler);
         }
 
-        private void InputSource_NavigationUpdated(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_NavigationUpdated(object sender, NavigationEventArgs e)
         {
             // Create input event
-            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            navigationEventData.Initialize(e.InputSource, e.SourceId, e.NormalizedOffset);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationUpdated(navigationEventData); };
@@ -547,10 +547,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(navigationEventData, eventHandler);
         }
 
-        private void InputSource_NavigationStarted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_NavigationStarted(object sender, NavigationEventArgs e)
         {
             // Create input event
-            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            navigationEventData.Initialize(e.InputSource, e.SourceId, e.NormalizedOffset);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationStarted(navigationEventData); };
@@ -559,10 +559,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(navigationEventData, eventHandler);
         }
 
-        private void InputSource_NavigationCompleted(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_NavigationCompleted(object sender, NavigationEventArgs e)
         {
             // Create input event
-            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            navigationEventData.Initialize(e.InputSource, e.SourceId, e.NormalizedOffset);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationCompleted(navigationEventData); };
@@ -571,10 +571,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(navigationEventData, eventHandler);
         }
 
-        private void InputSource_NavigationCanceled(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta)
+        private void InputSource_NavigationCanceled(object sender, NavigationEventArgs e)
         {
             // Create input event
-            navigationEventData.Initialize(inputSource, sourceId, cumulativeDelta);
+            navigationEventData.Initialize(e.InputSource, e.SourceId, e.NormalizedOffset);
 
             // Handler for execute events
             ExecuteEvents.EventFunction<INavigationHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnNavigationCanceled(navigationEventData); };

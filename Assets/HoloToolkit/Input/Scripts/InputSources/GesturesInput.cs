@@ -95,62 +95,74 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnTappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
-            RaiseSourceClickedEvent(0);
+            SourceClickEventArgs args = new SourceClickEventArgs(this, 0, tapCount);
+            RaiseSourceClickedEvent(args);
         }
 
         private void OnHoldStartedEvent(InteractionSourceKind source, Ray headray)
         {
-            RaiseHoldStartedEvent(0);
+            HoldEventArgs args = new HoldEventArgs(this, 0);
+            RaiseHoldStartedEvent(args);
         }
 
         private void OnHoldCanceledEvent(InteractionSourceKind source, Ray headray)
         {
-            RaiseHoldCanceledEvent(0);
+            HoldEventArgs args = new HoldEventArgs(this, 0);
+            RaiseHoldCanceledEvent(args);
         }
 
         private void OnHoldCompletedEvent(InteractionSourceKind source, Ray headray)
         {
-            RaiseHoldCompletedEvent(0);
+            HoldEventArgs args = new HoldEventArgs(this, 0);
+            RaiseHoldCompletedEvent(args);
         }
 
         private void OnManipulationStartedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            RaiseManipulationStartedEvent(0, cumulativeDelta);
+            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
+            RaiseManipulationStartedEvent(args);
         }
 
         private void OnManipulationUpdatedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            RaiseManipulationUpdatedEvent(0, cumulativeDelta);
+            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
+            RaiseManipulationUpdatedEvent(args);
         }
 
         private void OnManipulationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            RaiseManipulationCompletedEvent(0, cumulativeDelta);
+            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
+            RaiseManipulationCompletedEvent(args);
         }
 
         private void OnManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            RaiseManipulationCanceledEvent(0, cumulativeDelta);
+            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
+            RaiseManipulationCanceledEvent(args);
         }
 
-        private void OnNavigationStartedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        private void OnNavigationStartedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            RaiseNavigationStartedEvent(0, cumulativeDelta);
+            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
+            RaiseNavigationStartedEvent(args);
         }
 
-        private void OnNavigationUpdatedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        private void OnNavigationUpdatedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            RaiseNavigationUpdatedEvent(0, cumulativeDelta);
+            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
+            RaiseNavigationUpdatedEvent(args);
         }
 
-        private void OnNavigationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        private void OnNavigationCompletedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            RaiseNavigationCompletedEvent(0, cumulativeDelta);
+            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
+            RaiseNavigationCompletedEvent(args);
         }
 
-        private void OnNavigationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        private void OnNavigationCanceledEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            RaiseNavigationCanceledEvent(0, cumulativeDelta);
+            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
+            RaiseNavigationCanceledEvent(args);
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
