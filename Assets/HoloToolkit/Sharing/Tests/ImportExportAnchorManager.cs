@@ -18,7 +18,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <summary>
     /// Enum to track the progress through establishing a shared coordinate system.
     /// </summary>
-    enum ImportExportState
+    private enum ImportExportState
     {
         // Overall states
         Start,
@@ -39,7 +39,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         Importing
     }
 
-    ImportExportState currentState = ImportExportState.Start;
+    private ImportExportState currentState = ImportExportState.Start;
 
     public string StateName
     {
