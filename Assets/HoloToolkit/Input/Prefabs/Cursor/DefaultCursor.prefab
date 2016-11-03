@@ -611,33 +611,40 @@ MonoBehaviour:
     AnimBoolValue: 0
     AnimIntValue: 0
     AnimFloatValue: 0
-  - Name: Interact
+  - Name: ObserveHover
     CursorState: 1
     AnimInputType: 0
     AnimParameterName: CursorState
     AnimBoolValue: 0
     AnimIntValue: 1
     AnimFloatValue: 0
-  - Name: Hover
+  - Name: Interact
     CursorState: 2
     AnimInputType: 0
     AnimParameterName: CursorState
     AnimBoolValue: 0
     AnimIntValue: 2
     AnimFloatValue: 0
-  - Name: Select
+  - Name: InteractHover
     CursorState: 3
     AnimInputType: 0
     AnimParameterName: CursorState
     AnimBoolValue: 0
     AnimIntValue: 3
     AnimFloatValue: 0
-  - Name: Release
+  - Name: Select
     CursorState: 4
     AnimInputType: 0
     AnimParameterName: CursorState
     AnimBoolValue: 0
     AnimIntValue: 4
+    AnimFloatValue: 0
+  - Name: Release
+    CursorState: 5
+    AnimInputType: 0
+    AnimParameterName: CursorState
+    AnimBoolValue: 0
+    AnimIntValue: 5
     AnimFloatValue: 0
   EnableStateData:
     Name: 

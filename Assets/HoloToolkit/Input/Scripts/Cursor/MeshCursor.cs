@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿//
+// Copyright (C) Microsoft. All rights reserved.
+// TODO This needs to be validated for HoloToolkit integration
+//
 
 using System;
 using UnityEngine;
@@ -7,26 +9,27 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Object that represents a cursor comprised of sprites and colors for each state
+    /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public class SpriteCursor : Cursor
+    public class MeshCursor : Cursor
     {
         [Serializable]
-        public struct SpriteCursorDatum
+        public struct MeshCursorDatum
         {
             public string Name;
             public CursorStateEnum CursorState;
-            public Sprite CursorSprite;
-            public Color CursorColor;
+            public Mesh CursorMesh;
+            public Vector3 LocalScale;
+            public Vector3 LocalOffset;
         }
 
         [SerializeField]
-        public SpriteCursorDatum[] CursorStateData;
+        public MeshCursorDatum[] CursorStateData;
 
         /// <summary>
         /// Sprite renderer to change.  If null find one in children
         /// </summary>
-        public SpriteRenderer TargetRenderer;
+        public MeshRenderer TargetRenderer;
 
         /// <summary>
         /// On enable look for a sprite renderer on children
@@ -35,14 +38,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             if(TargetRenderer == null)
             {
-                TargetRenderer = GetComponentInChildren<SpriteRenderer>();
+                TargetRenderer = GetComponentInChildren<MeshRenderer>();
             }
 
             base.OnEnable();
         }
 
         /// <summary>
-        /// Override OnCursorState change to set the correct sprite
+        /// Override OnCursorState change to set the correct animation
         /// state for the cursor
         /// </summary>
         /// <param name="state"></param>
@@ -63,16 +66,29 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Based on the type of state info pass it through to the sprite renderer
+        /// Based on the type of state info pass it through to the mesh renderer
         /// </summary>
         /// <param name="stateDatum"></param>
-        private void SetCursorState(SpriteCursorDatum stateDatum)
+        private void SetCursorState(MeshCursorDatum stateDatum)
         {
             // Return if we do not have an animator
             if (TargetRenderer != null)
             {
-                TargetRenderer.sprite = stateDatum.CursorSprite;
-                TargetRenderer.color = stateDatum.CursorColor;
+                MeshFilter mf = TargetRenderer.gameObject.GetComponent<MeshFilter>();
+                if(mf != null && stateDatum.CursorMesh != null)
+                {
+                    mf.mesh = stateDatum.CursorMesh;
+                }
+
+                if (stateDatum.LocalOffset != null)
+                {
+                    TargetRenderer.transform.localPosition = stateDatum.LocalOffset;
+                }
+
+                if (stateDatum.LocalScale != null)
+                {
+                    TargetRenderer.transform.localScale = stateDatum.LocalScale;
+                }
             }
         }
 

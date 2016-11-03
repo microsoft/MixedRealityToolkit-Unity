@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000013535415816}
-  - 114: {fileID: 114000014146313642}
+  - 114: {fileID: 114000013851064060}
   m_Layer: 2
   m_Name: Cursor
   m_TagString: Untagged
@@ -94,10 +94,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012100030190}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.15, y: 1.15, z: 2.5}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000013535415816}
   m_RootOrder: 0
@@ -200,7 +200,7 @@ Light:
   m_BounceIntensity: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114000014146313642
+--- !u!114 &114000013851064060
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -208,9 +208,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012943254746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37be0deba90cea9489f9a6e0acdc84df, type: 3}
+  m_Script: {fileID: 11500000, guid: afa1ae235bc6cfa43addd1435e2fd822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CursorOnHolograms: {fileID: 1000012100030190}
-  CursorOffHolograms: {fileID: 1000013615056792}
-  DistanceFromCollision: 0.01
+  MinCursorDistance: 1
+  DefaultCursorDistance: 2
+  SurfaceCursorDistance: 0.02
+  PositionLerpTime: 0.01
+  ScaleLerpTime: 0.01
+  RotationLerpTime: 0.01
+  LookRotationBlend: 0.5
+  PrimaryCursorVisual: {fileID: 0}
+  CursorStateData:
+  - Name: On Hologram
+    CursorState: 1
+    CursorObject: {fileID: 1000012100030190}
+  - Name: On Hologram
+    CursorState: 3
+    CursorObject: {fileID: 1000012100030190}
+  - Name: Off Hologram
+    CursorState: 0
+    CursorObject: {fileID: 1000013615056792}
+  - Name: Off Hologram
+    CursorState: 2
+    CursorObject: {fileID: 1000013615056792}
+  ParentTransform: {fileID: 0}

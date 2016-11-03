@@ -23,7 +23,11 @@ namespace HoloToolkit.Unity.InputModule
             /// <summary>
             /// Not IsHandVisible
             /// </summary>
-            Observe,
+            Observe, 
+            /// <summary>
+            /// Not IsHandVisible AND not IsInputSourceDown AND TargetedObject exists
+            /// </summary>
+            ObserveHover, 
             /// <summary>
             /// IsHandVisible AND not IsInputSourceDown AND TargetedObject is NULL
             /// </summary>
@@ -31,7 +35,7 @@ namespace HoloToolkit.Unity.InputModule
             /// <summary>
             /// IsHandVisible AND not IsInputSourceDown AND TargetedObject exists
             /// </summary>
-            Hover,
+            InteractHover,
             /// <summary>
             /// IsHandVisible AND IsInputSourceDown
             /// </summary>
@@ -296,7 +300,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Update the cursor's transform
         /// </summary>
-        private void UpdateCursorTransform()
+        protected virtual void UpdateCursorTransform()
         {
             // Get the necessary info from the gaze source
             RaycastHit hitResult = gazeManager.HitInfo;
@@ -455,13 +459,9 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (IsHandVisible)
                 {
-                    if (TargetedObject != null)
-                    {
-                        return CursorStateEnum.Hover;
-                    }
-                    return CursorStateEnum.Interact;
+                    return TargetedObject != null ? CursorStateEnum.InteractHover : CursorStateEnum.Interact;
                 }
-                return CursorStateEnum.Observe;
+                return TargetedObject != null ? CursorStateEnum.ObserveHover : CursorStateEnum.Observe;
             }
             return CursorStateEnum.Contextual;
         }
