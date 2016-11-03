@@ -194,16 +194,7 @@ public class AppState : Singleton<AppState>, ISourceStateHandler, IInputHandler
         Vector3 sceneOrigin = Camera.main.transform.position;
         Parent_Scene.transform.position = sceneOrigin;
         MappingObserver.SetObserverOrigin(sceneOrigin);
-    }
-
-    private void OnEnable()
-    {
         InputManager.Instance.AddGlobalListener(gameObject);
-    }
-
-    private void OnDisable()
-    {
-        InputManager.Instance.RemoveGlobalListener(gameObject);
     }
 
     private void Update_DebugDisplay(float deltaTime)

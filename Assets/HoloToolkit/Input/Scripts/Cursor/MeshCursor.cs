@@ -1,7 +1,5 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-// TODO This needs to be validated for HoloToolkit integration
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
 using UnityEngine;
@@ -80,18 +78,9 @@ namespace HoloToolkit.Unity.InputModule
                     mf.mesh = stateDatum.CursorMesh;
                 }
 
-                if (stateDatum.LocalOffset != null)
-                {
-                    TargetRenderer.transform.localPosition = stateDatum.LocalOffset;
-                }
-
-                if (stateDatum.LocalScale != null)
-                {
-                    TargetRenderer.transform.localScale = stateDatum.LocalScale;
-                }
+                TargetRenderer.transform.localPosition = stateDatum.LocalOffset;
+                TargetRenderer.transform.localScale = stateDatum.LocalScale;
             }
         }
-
     }
-
 }

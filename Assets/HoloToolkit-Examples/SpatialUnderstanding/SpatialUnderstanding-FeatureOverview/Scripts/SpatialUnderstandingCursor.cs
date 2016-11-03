@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 using Button = UnityEngine.UI.Button;
 
-public class SpatialUnderstandingCursor : BasicCursor
+public class SpatialUnderstandingCursor : SpatialUnderstandingBasicCursor
 {
     // Consts
     public const float RayCastLength = 10.0f;
