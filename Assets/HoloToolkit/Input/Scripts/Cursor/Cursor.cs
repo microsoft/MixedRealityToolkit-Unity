@@ -300,7 +300,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Update the cursor's transform
         /// </summary>
-        private void UpdateCursorTransform()
+        protected virtual void UpdateCursorTransform()
         {
             // Get the necessary info from the gaze source
             RaycastHit hitResult = gazeManager.HitInfo;
