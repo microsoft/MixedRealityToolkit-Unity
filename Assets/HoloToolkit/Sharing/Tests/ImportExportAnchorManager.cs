@@ -41,7 +41,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
     ImportExportState currentState = ImportExportState.Start;
 
-    private string StateName
+    public string StateName
     {
         get
         {
@@ -49,7 +49,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         }
     }
 
-    private bool AnchorEstablished
+    public bool AnchorEstablished
     {
         get
         {
@@ -505,7 +505,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// Called by the WorldAnchorTransferBatch as anchor data is available.
     /// </summary>
     /// <param name="data"></param>
-    private void WriteBuffer(byte[] data)
+    public void WriteBuffer(byte[] data)
     {
         exportingAnchorBytes.AddRange(data);
     }
@@ -514,7 +514,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// Called by the WorldAnchorTransferBatch when anchor exporting is complete.
     /// </summary>
     /// <param name="status"></param>
-    private void ExportComplete(SerializationCompletionReason status)
+    public void ExportComplete(SerializationCompletionReason status)
     {
         if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > minTrustworthySerializedAnchorDataSize)
         {
