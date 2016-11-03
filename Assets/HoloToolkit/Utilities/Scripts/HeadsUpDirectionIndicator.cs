@@ -148,9 +148,9 @@ namespace HoloToolKit.Unity
 
             Plane e = new Plane(nearUpperRight, nearLowerLeft, farUpperRight);
 
+#if UNITY_EDITOR
             if (DebugDrawPointerOrientationPlanes)
             {
-#if UNITY_EDITOR
                 // Debug draw a tringale coplanar with 'd'
                 Debug.DrawLine(nearUpperLeft, nearLowerRight);
                 Debug.DrawLine(nearLowerRight, farUpperLeft);
@@ -160,8 +160,8 @@ namespace HoloToolKit.Unity
                 Debug.DrawLine(nearUpperRight, nearLowerLeft);
                 Debug.DrawLine(nearLowerLeft, farUpperRight);
                 Debug.DrawLine(farUpperRight, nearUpperRight);
-#endif
             }
+#endif
 
             // We're not actually interested in the "distance" to the planes. But the sign
             // of the distance tells us which quadrant the target position is in.
