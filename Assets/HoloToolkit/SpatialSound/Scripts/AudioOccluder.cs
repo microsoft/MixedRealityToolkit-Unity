@@ -18,11 +18,11 @@ namespace HoloToolkit.Unity
 
         [Tooltip("Frequency above which sound will not be heard.")]
         [Range(10.0f, 22000.0f)]
-        public Single CutoffFrequency = 5000.0f;
+        public float CutoffFrequency = 5000.0f;
         
-        [Toolip("Percentage of the audio source volume that will be heard after applying occlusion.")]
+        [Tooltip("Percentage of the audio source volume that will be heard after applying occlusion.")]
         [Range(0.0f, 1.0f)]
-        public Single VolumePassThrough = 1.0f;
+        public float VolumePassThrough = 1.0f;
 
         // Update is not used, but is kept so that this component can be enabled/disabled.
         private void Update() 
