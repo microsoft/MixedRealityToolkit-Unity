@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity
         public float MaxDistance = 20.0f;
 
         [Tooltip("Maximum number of objects that will be considered when looking for influencers.")]
-        [Range(0, 25)]
+        [Range(1, 25)]
         [SerializeField]
         private int MaxObjects = 10;
 
