@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using HoloToolkit.Unity;
@@ -92,6 +95,21 @@ public class UNetAnchorManager : NetworkBehaviour
     private string exportingAnchorName;
 
     /// <summary>
+    /// Tracks if we have a shared anchor established
+    /// </summary>
+    public bool AnchorEstablished { get; set; }
+
+    /// <summary>
+    /// Tracks if an import is in flight.
+    /// </summary>
+    public bool ImportInProgress { get; private set; }
+
+    /// <summary>
+    /// Tracks if a download is in flight.
+    /// </summary>
+    public bool DownloadingAnchor { get; private set; }
+
+    /// <summary>
     /// Ensures that the scene has what we need to continue.
     /// </summary>
     /// <returns>True if we can proceed, false otherwise.</returns>
@@ -142,6 +160,7 @@ public class UNetAnchorManager : NetworkBehaviour
         {
             Debug.Log("importing");
             gotOne = false;
+            ImportInProgress = true;
             WorldAnchorTransferBatch.ImportAsync(anchorData, ImportComplete);
         }
 
@@ -180,6 +199,7 @@ public class UNetAnchorManager : NetworkBehaviour
     /// </summary>
     public void WaitForAnchor()
     {
+        DownloadingAnchor = true;
         networkTransmitter.RequestAndGetData();
     }
 
@@ -198,6 +218,7 @@ public class UNetAnchorManager : NetworkBehaviour
             {
                 Debug.Log("Using what we have");
                 WorldAnchor wa = anchorStore.Load(ids[index], objectToAnchor);
+                AnchorEstablished = true;
                 return true;
             }
         }
@@ -215,6 +236,7 @@ public class UNetAnchorManager : NetworkBehaviour
         Debug.Log("Anchor data arrived.");
         anchorData = data;
         Debug.Log(data.Length);
+        DownloadingAnchor = false;
         gotOne = true;
     }
 
@@ -228,7 +250,7 @@ public class UNetAnchorManager : NetworkBehaviour
         if (status == SerializationCompletionReason.Succeeded && wat.GetAllIds().Length > 0)
         {
             Debug.Log("Import complete");
-
+            
             string first = wat.GetAllIds()[0];
             Debug.Log("Anchor name: " + first);
 
@@ -240,6 +262,8 @@ public class UNetAnchorManager : NetworkBehaviour
 
             WorldAnchor anchor = wat.LockObject(first, objectToAnchor);
             WorldAnchorManager.Instance.AnchorStore.Save(first, anchor);
+            ImportInProgress = false;
+            AnchorEstablished = true;
         }
         else
         {
@@ -272,6 +296,7 @@ public class UNetAnchorManager : NetworkBehaviour
             createdAnchor = true;
             Debug.Log("Anchor ready");
             GenericNetworkTransmitter.Instance.ConfigureAsServer();
+            AnchorEstablished = true;
         }
         else
         {

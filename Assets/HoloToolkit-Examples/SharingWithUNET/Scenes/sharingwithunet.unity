@@ -284,7 +284,6 @@ GameObject:
   - 114: {fileID: 987084764}
   - 114: {fileID: 987084768}
   - 114: {fileID: 987084769}
-  - 114: {fileID: 987084767}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -337,28 +336,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
---- !u!114 &987084767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 987084763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567e2a1ea65534040ac33441ec4bc34b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BroadcastPort: 47777
-  m_BroadcastKey: 2222
-  m_BroadcastVersion: 1
-  m_BroadcastSubVersion: 1
-  m_BroadcastInterval: 1000
-  m_UseNetworkManager: 1
-  m_BroadcastData: HELLO
-  m_ShowGUI: 0
-  m_OffsetX: 0
-  m_OffsetY: 0
-  BroadcastInterval: 1000
 --- !u!114 &987084768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +359,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SendConnectionPort: 11000
-  RcvConnectionPort: 12000
 --- !u!1001 &1203127917
 Prefab:
   m_ObjectHideFlags: 0
@@ -435,6 +411,7 @@ GameObject:
   - 4: {fileID: 1499115225}
   - 23: {fileID: 1499115227}
   - 102: {fileID: 1499115226}
+  - 114: {fileID: 1499115228}
   m_Layer: 0
   m_Name: Shared Anchor Pos Text
   m_TagString: Untagged
@@ -505,6 +482,18 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!114 &1499115228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1499115224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9442738af6418d14c8eb4e89fcdec2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkDiscoveryObject: {fileID: 1898807462}
 --- !u!1 &1898807460
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,6 +503,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1898807463}
   - 114: {fileID: 1898807461}
+  - 114: {fileID: 1898807462}
   m_Layer: 0
   m_Name: UNETSharingStage
   m_TagString: Untagged
@@ -591,6 +581,28 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+--- !u!114 &1898807462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1898807460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567e2a1ea65534040ac33441ec4bc34b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BroadcastPort: 47777
+  m_BroadcastKey: 2222
+  m_BroadcastVersion: 1
+  m_BroadcastSubVersion: 1
+  m_BroadcastInterval: 1000
+  m_UseNetworkManager: 1
+  m_BroadcastData: HELLO
+  m_ShowGUI: 0
+  m_OffsetX: 0
+  m_OffsetY: 0
+  BroadcastInterval: 1000
 --- !u!4 &1898807463
 Transform:
   m_ObjectHideFlags: 0
