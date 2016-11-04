@@ -6,13 +6,21 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Class that implements IAudioInfluencer to provide an occlusion effect.
+    /// </summary>
     public class AudioOccluder : MonoBehaviour, IAudioInfluencer
     {
+        /// <summary>
+        /// Frequency above the nominal range of human hearing. Applying this frequency to the filter will have no perceived impact on the audio source.
+        /// </summary>
         private readonly float NeutralFrequency = 22000f;
 
+        [Tooltip("Frequency above which sound will not be heard.")]
         [Range(10.0f, 22000.0f)]
         public Single CutoffFrequency = 5000.0f;
         
+        [Toolip("Percentage of the audio source volume that will be heard after applying occlusion.")]
         [Range(0.0f, 1.0f)]
         public Single VolumePassThrough = 1.0f;
 
@@ -21,7 +29,7 @@ namespace HoloToolkit.Unity
         { }
 
         /// <summary>
-        /// Applies an audio effect.
+        /// Applies the audio effect.
         /// </summary>
         /// <param name="emitter">The GameObject on which the effect is to be applied.</param>
         /// <param name="audioSource">The AudioSource that will be impacted by the effect.</param>
@@ -54,7 +62,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Removes a previously applied audio effect.
+        /// Removes the previously applied audio effect.
         /// </summary>
         /// <param name="emitter">The GameObject from which the effect is to be removed.</param>
         /// <param name="audioSource">The AudioSource that will be impacted by the effect.</param>
@@ -69,7 +77,7 @@ namespace HoloToolkit.Unity
             lowPass.cutoffFrequency = NeutralFrequency;
             lowPass.enabled = false;
 
-            // Volume attenuation is reset in the emitter
+            // Note: Volume attenuation is reset in the emitter.
         }
     }
 }

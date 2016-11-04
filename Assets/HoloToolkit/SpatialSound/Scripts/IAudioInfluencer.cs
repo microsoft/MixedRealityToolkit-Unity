@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Interface that is implemented by any class that wishes to influence how an audio source sounds.
+    /// </summary>
     public interface IAudioInfluencer
     {
         /// <summary>

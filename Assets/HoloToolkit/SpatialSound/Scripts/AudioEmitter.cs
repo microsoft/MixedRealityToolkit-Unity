@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Class which supports IAudioInfluencers being used with audio sources.
+    /// </summary>
     [RequireComponent(typeof(AudioSource))]    
     public class AudioEmitter : MonoBehaviour 
     {
@@ -26,12 +29,28 @@ namespace HoloToolkit.Unity
         // Time of last audio processing update.
         private DateTime lastUpdate = DateTime.MinValue;
 
+        /// <summary>
+        /// The source of the audio.
+        /// </summary>
         private AudioSource audioSource;
+
+        /// <summary>
+        /// The initial volume level of the audio source.
+        /// </summary>
         private float initialAudioSourceVolume;
 
+        /// <summary>
+        /// The hits returned by Physics.RaycastAll
+        /// </summary>
         private RaycastHit[] hits;
 
-	    private void Awake() 
+        /// <summary>
+        ///  The collection of previously applied audio influencers.
+        /// </summary>
+        private List<IAudioInfluencer> previousInfluencers = new List<IAudioInfluencer>();
+
+
+        private void Awake() 
         {           
             audioSource = gameObject.GetComponent<AudioSource>();
             initialAudioSourceVolume = audioSource.volume;
@@ -40,22 +59,24 @@ namespace HoloToolkit.Unity
             hits = new RaycastHit[MaxObjects];
         }
 	
-        List<IAudioInfluencer> previousInfluencers = new List<IAudioInfluencer>();
 	    private void Update() 
         {
-            // Audio influences do not need to be updated every frame.
             DateTime now = DateTime.Now;
 
+            // Audio influences are not updated every frame.
             if ((UpdateInterval * 1000.0f) <= (now - lastUpdate).Milliseconds)
             {
                 audioSource.volume = initialAudioSourceVolume;
 
+                // Get the audio influencers that should apply to the audio source.
                 List<IAudioInfluencer> influencers = GetInfluencers();
                 foreach (IAudioInfluencer influencer in influencers)
                 {
+                    // Apply the influencer's effect.
                     influencer.ApplyEffect(gameObject, audioSource);
                 }
 
+                // Find and remove the audio influencers that are to be removed from the audio source.
                 List<IAudioInfluencer> influencersToRemove = new List<IAudioInfluencer>();
                 foreach (IAudioInfluencer prev in previousInfluencers)
                 {
@@ -71,6 +92,10 @@ namespace HoloToolkit.Unity
             }
 	    }
 
+        /// <summary>
+        /// Removes the effects applied by specified audio influencers.
+        /// </summary>
+        /// <param name="influencers">Collection of IAudioInfluencer objects.</param>
         private void RemoveInfluencers(List<IAudioInfluencer> influencers)
         {
             foreach (IAudioInfluencer influencer in influencers)
@@ -79,12 +104,16 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// Finds the IAudioInfluencer objects that are to be applied to the audio source.
+        /// </summary>
+        /// <returns>Collection of IAudioInfluencer objects.</returns>
         private List<IAudioInfluencer> GetInfluencers()
         {
             List<IAudioInfluencer> influencers = new List<IAudioInfluencer>();
 
             // For influencers that take effect only when between the emitter and the user, perform a raycast
-            // from the user in our directiond.
+            // from the user toward the object.
             Vector3 direction = (gameObject.transform.position - Camera.main.transform.position).normalized;
             float distance = Vector3.Distance(Camera.main.transform.position, gameObject.transform.position);
 
