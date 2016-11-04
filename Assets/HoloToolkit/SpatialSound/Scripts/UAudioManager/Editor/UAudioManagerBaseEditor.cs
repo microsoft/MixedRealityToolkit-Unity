@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
         private string[] eventNames;
         private int selectedEventIndex = 0;
         private readonly string[] posTypes = { "2D", "3D", "Spatial Sound" };
+        private Rect editorCurveSize = new Rect(0f, 0f, 1f, 1f);
 
         protected void SetUpEditor()
         {
@@ -124,8 +125,10 @@ namespace HoloToolkit.Unity
                 EditorGUILayout.Space();
             }
             else if (selectedEvent.spatialization == SpatialPositioningType.ThreeD)
-            {  
-                Rect editorSize = new Rect(0f, 0f, 1f, 1f);
+            {
+                //Quick this : needs an update or the serialized object is not saving the threeD value
+                this.serializedObject.Update();
+
                 float curveHeight = 30f;
                 float curveWidth = 300f;
 
@@ -133,15 +136,15 @@ namespace HoloToolkit.Unity
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("maxDistanceAttenuation3D"));
 
                 //volume attenuation
-                selectedEventProperty.FindPropertyRelative("attenuationCurve").animationCurveValue = EditorGUILayout.CurveField("Attenuation", selectedEventProperty.FindPropertyRelative("attenuationCurve").animationCurveValue, Color.red, editorSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("attenuationCurve").animationCurveValue = EditorGUILayout.CurveField("Attenuation", selectedEventProperty.FindPropertyRelative("attenuationCurve").animationCurveValue, Color.red, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //Spatial green
-                selectedEventProperty.FindPropertyRelative("spatialCurve").animationCurveValue = EditorGUILayout.CurveField("Spatial", selectedEventProperty.FindPropertyRelative("spatialCurve").animationCurveValue, Color.green, editorSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("spatialCurve").animationCurveValue = EditorGUILayout.CurveField("Spatial", selectedEventProperty.FindPropertyRelative("spatialCurve").animationCurveValue, Color.green, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //spread lightblue
-                selectedEventProperty.FindPropertyRelative("spreadCurve").animationCurveValue = EditorGUILayout.CurveField("Spread", selectedEventProperty.FindPropertyRelative("spreadCurve").animationCurveValue, Color.blue, editorSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("spreadCurve").animationCurveValue = EditorGUILayout.CurveField("Spread", selectedEventProperty.FindPropertyRelative("spreadCurve").animationCurveValue, Color.blue, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //lowpass purple
-                selectedEventProperty.FindPropertyRelative("lowPassCurve").animationCurveValue = EditorGUILayout.CurveField("LowPass", selectedEventProperty.FindPropertyRelative("lowPassCurve").animationCurveValue, Color.magenta, editorSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("lowPassCurve").animationCurveValue = EditorGUILayout.CurveField("LowPass", selectedEventProperty.FindPropertyRelative("lowPassCurve").animationCurveValue, Color.magenta, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //Yellow reverb
-                selectedEventProperty.FindPropertyRelative("reverbCurve").animationCurveValue = EditorGUILayout.CurveField("Reverb", selectedEventProperty.FindPropertyRelative("reverbCurve").animationCurveValue, Color.yellow, editorSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("reverbCurve").animationCurveValue = EditorGUILayout.CurveField("Reverb", selectedEventProperty.FindPropertyRelative("reverbCurve").animationCurveValue, Color.yellow, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
 
                 EditorGUILayout.Space();
             } 
@@ -153,6 +156,7 @@ namespace HoloToolkit.Unity
             if (!selectedEvent.IsContinuous())
             {
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("fadeInTime"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("fadeOutTime"));
             }
 
             // Pitch Settings
@@ -162,8 +166,10 @@ namespace HoloToolkit.Unity
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("volumeCenter"));
 
             // Pan Settings
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("panCenter"));
-
+            if (selectedEvent.spatialization == SpatialPositioningType.TwoD)
+            {
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("panCenter"));
+            }
             // Instancing
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("instanceLimit"));
