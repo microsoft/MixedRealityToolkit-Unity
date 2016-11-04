@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     public class PopupMenu : MonoBehaviour, IInputHandler
     {
         [SerializeField]
-        private Button cancelButton = null;
+        private TestButton cancelButton = null;
 
         [SerializeField]
         private Animator rootAnimator = null;
@@ -125,7 +125,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        private void OnCancelPressed(Button source)
+        private void OnCancelPressed(TestButton source)
         {
             if (cancelledCallback != null)
             {

@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     public class ButtonObjectScaler : MonoBehaviour
     {
         [SerializeField]
-        private Button button = null;
+        private TestButton button = null;
 
         [SerializeField]
         private GameObject ObjectToScale = null;
@@ -41,7 +41,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             button.Activated -= OnButtonPressed;
         }
 
-        private void OnButtonPressed(Button source)
+        private void OnButtonPressed(TestButton source)
         {
             if (ObjectToScale)
             {

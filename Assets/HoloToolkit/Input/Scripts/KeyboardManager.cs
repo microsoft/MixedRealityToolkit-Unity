@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// TODO - Review this code before uploading to the HoloToolkit
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
 using System;

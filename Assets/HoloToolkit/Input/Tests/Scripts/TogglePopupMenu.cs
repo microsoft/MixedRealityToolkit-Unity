@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private PopupMenu popupMenu = null;
 
         [SerializeField]
-        private Button button = null;
+        private TestButton button = null;
 
         private void Awake()
         {
@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        private void ShowPopup(Button source)
+        private void ShowPopup(TestButton source)
         {
             if (popupMenu != null)
             {

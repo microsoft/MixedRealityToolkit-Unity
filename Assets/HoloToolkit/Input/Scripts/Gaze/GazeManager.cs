@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -119,8 +122,8 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            var newGazeOrigin = GazeTransform.position;
-            var newGazeNormal = GazeTransform.forward;
+            Vector3 newGazeOrigin = GazeTransform.position;
+            Vector3 newGazeNormal = GazeTransform.forward;
 
             // Update gaze info from stabilizer
             if (Stabilizer != null)
@@ -322,12 +325,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 RaycastHit? minHit = null;
 
-                foreach (RaycastHit h in hits)
+                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
                 {
-                    if (IsLayerInLayerMask(h.transform.gameObject.layer, RaycastLayerMasks[layerMaskIdx]) &&
-                        (minHit == null || h.distance < minHit.Value.distance))
+                    RaycastHit hit = hits[hitIdx];
+                    if (IsLayerInLayerMask(hit.transform.gameObject.layer, RaycastLayerMasks[layerMaskIdx]) &&
+                        (minHit == null || hit.distance < minHit.Value.distance))
                     {
-                        minHit = h;
+                        minHit = hit;
                     }
                 }
 
