@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using UnityEngine.Networking;
 
 /// <summary>
@@ -15,7 +18,7 @@ public class NetworkDiscoveryWithAnchors : NetworkDiscovery
     /// This flag gets set when we recieve a broadcast.
     /// if this flag is set then we should not create a server.
     /// </summary>
-    private bool receivedBroadcast = false;
+    public bool receivedBroadcast { get; private set; }
 
     /// <summary>
     /// Controls how often a broadcast should be sent to clients
