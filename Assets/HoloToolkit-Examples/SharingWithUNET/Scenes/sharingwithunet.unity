@@ -493,7 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9442738af6418d14c8eb4e89fcdec2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkDiscoveryObject: {fileID: 1898807462}
+  NetworkDiscoveryObject: {fileID: 1898807462}
 --- !u!1 &1898807460
 GameObject:
   m_ObjectHideFlags: 0
