@@ -119,8 +119,14 @@ namespace HoloToolkit.Unity
         [HideInInspector]
         public float panRandomization = 0.0f;
 
+
         [Tooltip("Time, in seconds, for the audio to fade from 0 to the selected volume.  Does not apply to continuous containers in which the Crossfade TGime property is used.")]
+        [Range(0f, 20f)]
         public float fadeInTime = 0.0f;
+
+        [Tooltip("Time, in seconds, for the audio to fade out from the selected volume to 0.  Does not apply to continuous containers in which the Crossfade TGime property is used.")]
+        [Range(0f, 20f)]
+        public float fadeOutTime = 0.0f;
 
         [Tooltip("The maximum number of instances that should be allowed at a time for this event. Any new instances will be suppressed.")]
         public int instanceLimit = 0;
