@@ -98,7 +98,7 @@ namespace HoloToolKit.Unity
                     // Because the frustum plane normal's face in must actually rotate away from the forward to vector
                     // to narrow the frustum.
                     Vector3 normal = Vector3.RotateTowards(indicatorVolume[i].normal, Camera.main.transform.forward, -angleStep, 0.0f);
-                    indicatorVolume[i] = new Plane(normal.normalized, indicatorVolume[i].distance);
+                    indicatorVolume[i].normal = normal.normalized;
                 }
 
                 UpdatePointerTransform(Camera.main, indicatorVolume, TargetObject.transform.position);
