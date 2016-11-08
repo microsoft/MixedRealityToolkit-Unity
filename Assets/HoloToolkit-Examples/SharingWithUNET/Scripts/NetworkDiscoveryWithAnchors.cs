@@ -77,7 +77,6 @@ public class NetworkDiscoveryWithAnchors : NetworkDiscovery
         // once and decides that they are the server.  
         // An alternative would be to create UI for managing who hosts.
         float InvokeWaitTime = 3 * BroadcastInterval + Random.value * 3 * BroadcastInterval;
-        Debug.Log(InvokeWaitTime);
         Invoke("MaybeInitAsServer", InvokeWaitTime * 0.001f);
     }
 
