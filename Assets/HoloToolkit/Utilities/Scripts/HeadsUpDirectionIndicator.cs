@@ -39,7 +39,7 @@ namespace HoloToolKit.Unity
         public GameObject PointerPrefab;
 
         [Tooltip("Determines what percentage of the visible field should be margin.")]
-        [Range(0.0f, 100.0f)]
+        [Range(0.0f, 1.0f)]
         public float IndicatorMarginPercent;
 
         [Tooltip("Debug draw the planes used to calculate the pointer lock location.")]
@@ -73,8 +73,6 @@ namespace HoloToolKit.Unity
                 // The top, bottom and side frustum planes are used to restrict the movement
                 // of the pointer.
 
-                float marginFactor = IndicatorMarginPercent / 100.0f;
-
                 // Here we adjust the Camera's frustum planes to place the cursor in a smaller
                 // volume, thus creating the effect of a "margin"
                 Plane[] indicatorVolume = GeometryUtility.CalculateFrustumPlanes(Camera.main);
@@ -89,7 +87,7 @@ namespace HoloToolKit.Unity
                     // Then we calculate how much we should rotate the plane in based on the
                     // user's setting. 90 degrees is our maximum as at that point we no longer
                     // have a valid frustum.
-                    float angleStep = marginFactor * (0.5f * Mathf.PI - angle);
+                    float angleStep = IndicatorMarginPercent * (0.5f * Mathf.PI - angle);
 
                     // Because the frustum plane normal's face in must actually rotate away from the forward to vector
                     // to narrow the frustum.
