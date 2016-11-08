@@ -47,6 +47,14 @@ namespace HoloToolKit.Unity
 
         private GameObject pointer;
 
+        private static int frustumLastUpdated = -1;
+
+        private static Plane[] indicatorVolume;
+        private static Vector3 cameraForward;
+        private static Vector3 cameraPosition;
+        private static Vector3 cameraRight;
+        private static Vector3 cameraUp;
+
         private void Start()
         {
             Depth = Mathf.Clamp(Depth, Camera.main.nearClipPlane, Camera.main.farClipPlane);
@@ -76,33 +84,29 @@ namespace HoloToolKit.Unity
             }
             else
             {
-                // The top, bottom and side frustum planes are used to restrict the movement
-                // of the pointer.
-
-                // Here we adjust the Camera's frustum planes to place the cursor in a smaller
-                // volume, thus creating the effect of a "margin"
-                Plane[] indicatorVolume = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-                for (int i = 0; i < 4; ++i)
+                int currentFrameCount = UnityEngine.Time.frameCount;
+                if (currentFrameCount != frustumLastUpdated)
                 {
-                    // We can make the frustum smaller by rotating the walls "in" toward the
-                    // camera's forward vector.
+                    // Collect the updated camera information for the current frame
+                    CacheCameraTransform(Camera.main);
 
-                    // First find the angle between the Camera's forward and the plane's normal
-                    float angle = Mathf.Acos(Vector3.Dot(indicatorVolume[i].normal.normalized, Camera.main.transform.forward));
+                    // Use the updated camera information to create the new bounding volume
+                    UpdateIndicatorVolume(Camera.main);
 
-                    // Then we calculate how much we should rotate the plane in based on the
-                    // user's setting. 90 degrees is our maximum as at that point we no longer
-                    // have a valid frustum.
-                    float angleStep = IndicatorMarginPercent * (0.5f * Mathf.PI - angle);
-
-                    // Because the frustum plane normal's face in must actually rotate away from the forward to vector
-                    // to narrow the frustum.
-                    Vector3 normal = Vector3.RotateTowards(indicatorVolume[i].normal, Camera.main.transform.forward, -angleStep, 0.0f);
-                    indicatorVolume[i].normal = normal.normalized;
+                    frustumLastUpdated = currentFrameCount;
                 }
 
                 UpdatePointerTransform(Camera.main, indicatorVolume, TargetObject.transform.position);
             }
+        }
+
+        private void CacheCameraTransform(Camera camera)
+        {
+            // Cache the camera transform information for the current frame
+            cameraForward = camera.transform.forward;
+            cameraPosition = camera.transform.position;
+            cameraRight = camera.transform.right;
+            cameraUp = camera.transform.up;
         }
 
         // Assuming the target object is outside the view which of the four "wall" planes should
@@ -125,18 +129,18 @@ namespace HoloToolKit.Unity
 
             // Calculate the edges of the frustum as world space offsets from the middle of the
             // frustum in world space.
-            Vector3 nearTop = near * tanFovy * camera.transform.up;
-            Vector3 nearRight = near * tanFovx * camera.transform.right;
+            Vector3 nearTop = near * tanFovy * cameraUp;
+            Vector3 nearRight = near * tanFovx * cameraRight;
             Vector3 nearBottom = -nearTop;
             Vector3 nearLeft = -nearRight;
-            Vector3 farTop = far * tanFovy * camera.transform.up;
-            Vector3 farRight = far * tanFovx * camera.transform.right;
+            Vector3 farTop = far * tanFovy * cameraUp;
+            Vector3 farRight = far * tanFovx * cameraRight;
             Vector3 farLeft = -farRight;
 
             // Caclulate the center point of the near plane and the far plane as offsets from the
             // camera in world space.
-            Vector3 nearBase = near * camera.transform.forward;
-            Vector3 farBase = far * camera.transform.forward;
+            Vector3 nearBase = near * cameraForward;
+            Vector3 farBase = far * cameraForward;
 
             // Calculate the frustum corners needed to create 'd'
             Vector3 nearUpperLeft = nearBase + nearTop + nearLeft;
@@ -215,7 +219,7 @@ namespace HoloToolKit.Unity
         // given a frustum wall we wish to snap the pointer to, this function returns a ray
         // along which the pointer should be placed to appear at the appropiate point along
         // the edge of the indicator field.
-        private bool TryGetIndicatorPosition(Vector3 targetPosition, Camera camera, Plane frustumWall, out Ray r)
+        private bool TryGetIndicatorPosition(Vector3 targetPosition, Plane frustumWall, out Ray r)
         {
             // Think of the pointer as pointing the shortest rotation a user must make to see a
             // target. The shortest rotation can be obtained by finding the great circle defined
@@ -223,8 +227,8 @@ namespace HoloToolKit.Unity
             // vector of the great circle points the direction of the shortest rotation. This
             // great circle and thus any of it's tangent vectors are coplanar with the plane
             // defined by these same three points.
-            Vector3 cameraToTarget = targetPosition - camera.transform.position;
-            Vector3 normal = Vector3.Cross(cameraToTarget.normalized, camera.transform.forward);
+            Vector3 cameraToTarget = targetPosition - cameraPosition;
+            Vector3 normal = Vector3.Cross(cameraToTarget.normalized, cameraForward);
 
             // In the case that the three points are colinear we cannot form a plane but we'll
             // assume the target is directly behind us and we'll use a prechosen plane.
@@ -264,14 +268,14 @@ namespace HoloToolKit.Unity
         private void UpdatePointerTransform(Camera camera, Plane[] planes, Vector3 targetPosition)
         {
             // Start by assuming the pointer should be placed at the target position.
-            Vector3 indicatorPosition = camera.transform.position + Depth * (targetPosition - camera.transform.position).normalized;
+            Vector3 indicatorPosition = cameraPosition + Depth * (targetPosition - cameraPosition).normalized;
 
             // Test the target position with the frustum planes except the "far" plane since
             // far away objects should be considered in view.
             bool pointNotInsideIndicatorField = false;
             for (int i = 0; i < 5; ++i)
             {
-                float dot = Vector3.Dot(planes[i].normal, (targetPosition - camera.transform.position).normalized);
+                float dot = Vector3.Dot(planes[i].normal, (targetPosition - cameraPosition).normalized);
                 if (dot <= 0.0f)
                 {
                     pointNotInsideIndicatorField = true;
@@ -289,9 +293,9 @@ namespace HoloToolKit.Unity
                 FrustumPlanes exitPlane = GetExitPlane(targetPosition, camera);
 
                 Ray r;
-                if (TryGetIndicatorPosition(targetPosition, camera, planes[(int)exitPlane], out r))
+                if (TryGetIndicatorPosition(targetPosition, planes[(int)exitPlane], out r))
                 {
-                    indicatorPosition = camera.transform.position + Depth * r.direction.normalized;
+                    indicatorPosition = cameraPosition + Depth * r.direction.normalized;
                 }
             }
 
@@ -304,14 +308,41 @@ namespace HoloToolKit.Unity
             // center position of the view that is on the same plane as the pointer position.
             // We do this by projecting the vector from the pointer to the camera onto the
             // the camera's forward vector.
-            Vector3 indicatorFieldOffset = indicatorPosition - camera.transform.position;
-            indicatorFieldOffset = Vector3.Dot(indicatorFieldOffset, camera.transform.forward) * camera.transform.forward;
+            Vector3 indicatorFieldOffset = indicatorPosition - cameraPosition;
+            indicatorFieldOffset = Vector3.Dot(indicatorFieldOffset, cameraForward) * cameraForward;
 
-            Vector3 indicatorFieldCenter = camera.transform.position + indicatorFieldOffset;
+            Vector3 indicatorFieldCenter = cameraPosition + indicatorFieldOffset;
             Vector3 pointerDirection = (indicatorPosition - indicatorFieldCenter).normalized;
 
             // allign this object's up vector with the pointerDirection
-            this.transform.rotation = Quaternion.LookRotation(camera.transform.forward, pointerDirection);
+            this.transform.rotation = Quaternion.LookRotation(cameraForward, pointerDirection);
+        }
+
+        // Here we adjust the Camera's frustum planes to place the cursor in a smaller
+        // volume, thus creating the effect of a "margin"
+        private void UpdateIndicatorVolume(Camera camera)
+        {
+            // The top, bottom and side frustum planes are used to restrict the movement
+            // of the pointer. These reside at indices 0-3;
+            indicatorVolume = GeometryUtility.CalculateFrustumPlanes(camera);
+            for (int i = 0; i < 4; ++i)
+            {
+                // We can make the frustum smaller by rotating the walls "in" toward the
+                // camera's forward vector.
+
+                // First find the angle between the Camera's forward and the plane's normal
+                float angle = Mathf.Acos(Vector3.Dot(indicatorVolume[i].normal.normalized, cameraForward));
+
+                // Then we calculate how much we should rotate the plane in based on the
+                // user's setting. 90 degrees is our maximum as at that point we no longer
+                // have a valid frustum.
+                float angleStep = IndicatorMarginPercent * (0.5f * Mathf.PI - angle);
+
+                // Because the frustum plane normal's face in must actually rotate away from the forward to vector
+                // to narrow the frustum.
+                Vector3 normal = Vector3.RotateTowards(indicatorVolume[i].normal, cameraForward, -angleStep, 0.0f);
+                indicatorVolume[i].normal = normal.normalized;
+            }
         }
     }
 }
