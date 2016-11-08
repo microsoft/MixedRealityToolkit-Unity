@@ -213,7 +213,7 @@ public class UNetAnchorManager : NetworkBehaviour
             if (ids[index] == AnchorName)
             {
                 Debug.Log("Using what we have");
-                WorldAnchor wa = anchorStore.Load(ids[index], objectToAnchor);
+                anchorStore.Load(ids[index], objectToAnchor);
                 AnchorEstablished = true;
                 return true;
             }

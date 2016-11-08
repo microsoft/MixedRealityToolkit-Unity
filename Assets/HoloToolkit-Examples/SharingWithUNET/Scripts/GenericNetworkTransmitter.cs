@@ -204,7 +204,12 @@ public class GenericNetworkTransmitter : Singleton<GenericNetworkTransmitter>
     }
 
 #else
-    public void ConfigureAsServer() {}
+    public void ConfigureAsServer()
+    {
+        Debug.Log("This script is not intended to be run from the Unity Editor");
+        // In order to avoid compiler warnings in the Unity Editor we have to access a few of our fields.
+        Debug.Log(string.Format("serverIP = {0} waitingForConnection = {1} mostRecentDataBuffer = {2}", serverIP, waitingForConnection, mostRecentDataBuffer == null ? "No there" : "there"));
+    }
     private void ConnectListener() {}
 #endif
 }
