@@ -83,18 +83,25 @@ namespace HoloToolkit.Unity
         /// </summary>
         private Vector3 targetOverridePreviousPosition;
 
+        private GazeManager gazeManager;
+
+        private void Start()
+        {
+            gazeManager = GazeManager.Instance;
+        }
+
         /// <summary>
         /// Updates the focus point for every frame after all objects have finished moving.
         /// </summary>
         private void LateUpdate()
         {
-            if (SetStabilizationPlane && Camera.main != null)
+            if (SetStabilizationPlane)
             {
                 if (TargetOverride != null)
                 {
                     ConfigureTransformOverridePlane();
                 }
-                else if (UseGazeManager && GazeManager.Instance != null)
+                else if (UseGazeManager)
                 {
                     ConfigureGazeManagerPlane();
                 }
@@ -135,8 +142,8 @@ namespace HoloToolkit.Unity
                 velocity = UpdateVelocity();
             }
             
-            // Place the plane at the desired depth in front of the camera and billboard it to the camera.
-            HolographicSettings.SetFocusPointForFrame(planePosition, -Camera.main.transform.forward, velocity);
+            // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
+            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeManager.GazeNormal, velocity);
         }
 
         /// <summary>
@@ -144,11 +151,11 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void ConfigureGazeManagerPlane()
         {
-            Vector3 gazeOrigin = Camera.main.transform.position;
-            Vector3 gazeDirection = Camera.main.transform.forward;
+            Vector3 gazeOrigin = GazeManager.Instance.GazeOrigin;
+            Vector3 gazeDirection = GazeManager.Instance.GazeNormal;
 
-            // Calculate the delta between camera's position and current hit position.
-            float focusPointDistance = (gazeOrigin - GazeManager.Instance.HitPosition).magnitude;
+            // Calculate the delta between gaze origin's position and current hit position.
+            float focusPointDistance = (gazeManager.GazeOrigin - GazeManager.Instance.HitPosition).magnitude;
             float lerpPower = focusPointDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
                                                                         : LerpStabilizationPlanePowerCloser;
 
@@ -171,8 +178,8 @@ namespace HoloToolkit.Unity
             // Smoothly move the focus point from previous hit position to new position.
             currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, DefaultPlaneDistance, lerpPower * Time.deltaTime);
 
-            planePosition = Camera.main.transform.position + (Camera.main.transform.forward * currentPlaneDistance);
-            HolographicSettings.SetFocusPointForFrame(planePosition, -Camera.main.transform.forward, Vector3.zero);
+            planePosition = gazeManager.GazeOrigin + (gazeManager.GazeNormal * currentPlaneDistance);
+            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeManager.GazeNormal, Vector3.zero);
         }
 
         /// <summary>
@@ -193,7 +200,7 @@ namespace HoloToolkit.Unity
         {
             if (UnityEngine.Application.isPlaying)
             {
-                Vector3 focalPlaneNormal = -Camera.main.transform.forward;
+                Vector3 focalPlaneNormal = -gazeManager.GazeNormal;
                 Vector3 planeUp = Vector3.Cross(Vector3.Cross(focalPlaneNormal, Vector3.up), focalPlaneNormal);
                 Gizmos.matrix = Matrix4x4.TRS(planePosition, Quaternion.LookRotation(focalPlaneNormal, planeUp), new Vector3(4.0f, 3.0f, 0.01f));
 

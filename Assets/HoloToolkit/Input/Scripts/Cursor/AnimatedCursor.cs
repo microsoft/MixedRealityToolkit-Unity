@@ -13,7 +13,8 @@ namespace HoloToolkit.Unity.InputModule
     public class AnimatedCursor : Cursor
     {
         /// <summary>
-        /// Data struct for cursor state information for the Animated Cursor
+        /// Data struct for cursor state information for the Animated Cursor, which leverages the Unity animation system..
+        /// This defines a modification to an Unity animation parameter, based on cursor state.
         /// </summary>
         [Serializable]
         public struct AnimCursorDatum
@@ -21,6 +22,9 @@ namespace HoloToolkit.Unity.InputModule
             public string Name;
             public CursorStateEnum CursorState;
 
+            /// <summary>
+            /// Types that an animation parameter can have in the Unity animation system.
+            /// </summary>
             public enum AnimInputTypeEnum
             {
                 Int,
@@ -29,10 +33,19 @@ namespace HoloToolkit.Unity.InputModule
                 Float
             }
 
+            [Tooltip("Type of the animation parameter to modify.")]
             public AnimInputTypeEnum AnimInputType;
+
+            [Tooltip("Name of the animation parameter to modify.")]
             public string AnimParameterName;
+
+            [Tooltip("If the animation parameter type is a bool, value to set. Ignored otherwise.")]
             public bool AnimBoolValue;
+
+            [Tooltip("If the animation parameter type is an int, value to set. Ignored otherwise.")]
             public int AnimIntValue;
+
+            [Tooltip("If the animation parameter type is a float, value to set. Ignored otherwise.")]
             public float AnimFloatValue;
         }
 

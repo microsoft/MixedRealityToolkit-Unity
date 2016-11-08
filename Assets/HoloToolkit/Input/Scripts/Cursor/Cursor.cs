@@ -129,9 +129,6 @@ namespace HoloToolkit.Unity.InputModule
         protected GameObject TargetedObject;
         protected ICursorModifier TargetedCursorModifier;
 
-        private bool isRegisteredToGazeManager = false;
-        private bool isInputRegistered = false;
-
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
 
@@ -168,9 +165,7 @@ namespace HoloToolkit.Unity.InputModule
         private void Start()
         {
             gazeManager = GazeManager.Instance;
-
-            RegisterGazeManager();
-            RegisterInput();
+            RegisterManagers();
         }
 
         private void Update()
@@ -196,45 +191,18 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnDestroy()
         {
-            UnregisterInput();
-            UnregisterGazeManager();
+            UnregisterManagers();
         }
 
 #endregion
 
         /// <summary>
-        /// Register to events from the gaze manager, if not already registered.
+        /// Register to events from the managers the cursor needs.
         /// </summary>
-        private void RegisterGazeManager()
+        protected virtual void RegisterManagers()
         {
-            if (!isRegisteredToGazeManager && gazeManager != null)
-            {
-                gazeManager.FocusedObjectChanged += OnFocusedObjectChanged;
-                isRegisteredToGazeManager = true;
-            }
-        }
-
-        /// <summary>
-        /// Unregister from events from the gaze manager.
-        /// </summary>
-        private void UnregisterGazeManager()
-        {
-            if (isRegisteredToGazeManager && gazeManager != null)
-            {
-                gazeManager.FocusedObjectChanged -= OnFocusedObjectChanged;
-                isRegisteredToGazeManager = false;
-            }
-        }
-
-        /// <summary>
-        /// Register to input events that can impact cursor state.
-        /// </summary>
-        private void RegisterInput()
-        {
-            if (isInputRegistered || InputManager.Instance == null)
-            {
-                return;
-            }
+            // Register to gaze events
+            gazeManager.FocusedObjectChanged += OnFocusedObjectChanged;
 
             // Register the cursor as a global listener, so that it can always get input events it cares about
             InputManager.Instance.AddGlobalListener(gameObject);
@@ -251,17 +219,16 @@ namespace HoloToolkit.Unity.InputModule
 
             InputManager.Instance.InputEnabled += OnInputEnabled;
             InputManager.Instance.InputDisabled += OnInputDisabled;
-            isInputRegistered = true;
         }
 
         /// <summary>
-        /// Unregister from input events.
+        /// Unregister from events from the managers the cursor needs.
         /// </summary>
-        private void UnregisterInput()
+        protected virtual void UnregisterManagers()
         {
-            if (!isInputRegistered)
+            if (gazeManager != null)
             {
-                return;
+                gazeManager.FocusedObjectChanged -= OnFocusedObjectChanged;
             }
 
             if (InputManager.Instance != null)
@@ -269,7 +236,6 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.RemoveGlobalListener(gameObject);
                 InputManager.Instance.InputEnabled -= OnInputEnabled;
                 InputManager.Instance.InputDisabled -= OnInputDisabled;
-                isInputRegistered = false;
             }
         }
 

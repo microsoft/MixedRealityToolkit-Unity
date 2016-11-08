@@ -6,18 +6,11 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Component that can be added to any collider to modify how a cursor reacts when on that collider.
+    /// Component that can be added to any game object with a collider to modify 
+    /// how a cursor reacts when on that collider.
     /// </summary>
     public class CursorModifier : MonoBehaviour, ICursorModifier
     {
-        private void Awake()
-        {
-            if (HostTransform == null)
-            {
-                HostTransform = transform;
-            }
-        }
-
         [Tooltip("Transform for which this cursor modifier applies its various properties.")]
         public Transform HostTransform;
 
@@ -42,6 +35,14 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("Cursor animation event to trigger when this object is gazed. Leave empty for none.")]
         public string CursorTriggerName;
+
+        private void Awake()
+        {
+            if (HostTransform == null)
+            {
+                HostTransform = transform;
+            }
+        }
 
         /// <summary>
         /// Return whether or not hide the cursor

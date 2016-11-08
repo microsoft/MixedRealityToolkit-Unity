@@ -232,17 +232,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RecognizerStart: 0
   KeywordsAndResponses:
-  - Keyword: 72656d6f7665
+  - Keyword: remove
     KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 55036825}
-          m_MethodName: 44656c6574654c696e65
+          m_MethodName: DeleteLine
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 556e697479456e67696e652e4f626a6563742c20556e697479456e67696e65
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -250,17 +250,17 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-  - Keyword: 72656d6f766520616c6c
+  - Keyword: remove all
     KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 55036825}
-          m_MethodName: 436c656172416c6c
+          m_MethodName: ClearAll
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 556e697479456e67696e652e4f626a6563742c20556e697479456e67696e65
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -268,17 +268,17 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-  - Keyword: 636c6f7365
+  - Keyword: close
     KeyCode: 99
     Response:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 55036825}
-          m_MethodName: 4f6e506f6c79676f6e436c6f7365
+          m_MethodName: OnPolygonClose
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 556e697479456e67696e652e4f626a6563742c20556e697479456e67696e65
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -286,17 +286,17 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-  - Keyword: 6368616e6765206d6f6465
+  - Keyword: change mode
     KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 55036825}
-          m_MethodName: 4f6e4d6f64654368616e6765
+          m_MethodName: OnModeChange
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 556e697479456e67696e652e4f626a6563742c20556e697479456e67696e65
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 

@@ -212,11 +212,6 @@ namespace HoloToolkit.Unity.InputModule
             inputSource.NavigationUpdated -= InputSource_NavigationUpdated;
         }
 
-        public void RegisterCursor(ICursor cursor)
-        {
-            
-        }
-
         private void Start()
         {
             InitializeEventDatas();

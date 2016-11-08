@@ -123,10 +123,10 @@ Interface that a game object can implement to react to simple pointer-like input
 Interface that a game object can implement to react to manipulation gestures.
 
 ##### INavigationHandler.cs
-Interface that a game object can implement to react to source state changes, such as when an input source is detected or lost.
+Interface that a game object can implement to react to navigation gestures.
 
 ##### ISourceStateHandler.cs
-Interface that a game object can implement to react to navigation gestures.
+Interface that a game object can implement to react to source state changes, such as when an input source is detected or lost.
 
 ##### InputEventData.cs
 Event data for an event that represents an input interaction such as a tap / click.
@@ -164,7 +164,7 @@ Input source for fake hands information, which can be used to simulate hands inp
 Input source for gestures information from the WSA APIs, which gives access to various system supported gestures.
 
 ##### IInputSource.cs
-Interface for an input source. Defines
+Interface for an input source. An input source is any input mechanism that can be used as the source of user interactions.
 
 ##### RawInteractionSourcesInput.cs
 Input source for raw interactions sources information, which gives finer details about current source state and position than the standard GestureRecognizer.

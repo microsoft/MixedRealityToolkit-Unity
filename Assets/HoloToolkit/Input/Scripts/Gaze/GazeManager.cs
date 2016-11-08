@@ -122,51 +122,10 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            Vector3 newGazeOrigin = GazeTransform.position;
-            Vector3 newGazeNormal = GazeTransform.forward;
-
-            // Update gaze info from stabilizer
-            if (Stabilizer != null)
-            {
-                Stabilizer.UpdateStability(newGazeOrigin, GazeTransform.rotation);
-                newGazeOrigin = Stabilizer.StablePosition;
-                newGazeNormal = Stabilizer.StableRay.direction;
-            }
-
-            GazeOrigin = newGazeOrigin;
-            GazeNormal = newGazeNormal;
+            UpdateGazeInfo();
 
             // Perform raycast to determine gazed object
-            GameObject previousFocusObject = HitObject;
-
-            // If there is only one priority, don't prioritize
-            if (RaycastLayerMasks.Length == 1)
-            {
-                IsGazingAtObject = Physics.Raycast(GazeOrigin, GazeNormal, out hitInfo, MaxGazeCollisionDistance, RaycastLayerMasks[0]);
-            }
-            else
-            {
-                // Raycast across all layers and prioritize
-                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(new Ray(GazeOrigin, GazeNormal), MaxGazeCollisionDistance, -1));
-
-                IsGazingAtObject = hit.HasValue;
-                if (IsGazingAtObject)
-                {
-                    hitInfo = hit.Value;
-                }
-            }
-            
-            if (IsGazingAtObject)
-            {
-                HitObject = HitInfo.collider.gameObject;
-                HitPosition = HitInfo.point;
-                lastHitDistance = HitInfo.distance;
-            }
-            else
-            {
-                HitObject = null;
-                HitPosition = GazeOrigin + (GazeNormal * lastHitDistance);
-            }
+            GameObject previousFocusObject = RaycastPhysics();
 
             // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
             if (EventSystem.current != null)
@@ -180,6 +139,66 @@ namespace HoloToolkit.Unity.InputModule
             {
                 FocusedObjectChanged(previousFocusObject, HitObject);
             }
+        }
+
+        /// <summary>
+        /// Updates the current gaze information, so that the gaze origin and normal are accurate.
+        /// </summary>
+        private void UpdateGazeInfo()
+        {
+            Vector3 newGazeOrigin = GazeTransform.position;
+            Vector3 newGazeNormal = GazeTransform.forward;
+
+            // Update gaze info from stabilizer
+            if (Stabilizer != null)
+            {
+                Stabilizer.UpdateStability(newGazeOrigin, GazeTransform.rotation);
+                newGazeOrigin = Stabilizer.StablePosition;
+                newGazeNormal = Stabilizer.StableRay.direction;
+            }
+
+            GazeOrigin = newGazeOrigin;
+            GazeNormal = newGazeNormal;
+        }
+
+        /// <summary>
+        /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
+        /// </summary>
+        private GameObject RaycastPhysics()
+        {
+            GameObject previousFocusObject = HitObject;
+
+            // If there is only one priority, don't prioritize
+            if (RaycastLayerMasks.Length == 1)
+            {
+                IsGazingAtObject = Physics.Raycast(GazeOrigin, GazeNormal, out hitInfo, MaxGazeCollisionDistance,
+                    RaycastLayerMasks[0]);
+            }
+            else
+            {
+                // Raycast across all layers and prioritize
+                RaycastHit? hit =
+                    PrioritizeHits(Physics.RaycastAll(new Ray(GazeOrigin, GazeNormal), MaxGazeCollisionDistance, -1));
+
+                IsGazingAtObject = hit.HasValue;
+                if (IsGazingAtObject)
+                {
+                    hitInfo = hit.Value;
+                }
+            }
+
+            if (IsGazingAtObject)
+            {
+                HitObject = HitInfo.collider.gameObject;
+                HitPosition = HitInfo.point;
+                lastHitDistance = HitInfo.distance;
+            }
+            else
+            {
+                HitObject = null;
+                HitPosition = GazeOrigin + (GazeNormal * lastHitDistance);
+            }
+            return previousFocusObject;
         }
 
         /// <summary>

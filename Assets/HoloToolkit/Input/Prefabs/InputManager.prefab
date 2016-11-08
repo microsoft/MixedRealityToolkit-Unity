@@ -120,6 +120,7 @@ GameObject:
   - 114: {fileID: 114000012009196210}
   - 114: {fileID: 114000011980027866}
   - 114: {fileID: 114000012434513746}
+  - 114: {fileID: 114000013868099214}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -792,6 +793,25 @@ MonoBehaviour:
   Axis0Destination: 3
   Axis1Destination: 0
   Axis2Destination: 6
+--- !u!114 &114000013868099214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011070707148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37870ab7a81bfb74b9fa277cf45b06d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SetStabilizationPlane: 1
+  LerpStabilizationPlanePowerCloser: 4
+  LerpStabilizationPlanePowerFarther: 7
+  targetOverride: {fileID: 0}
+  trackVelocity: 0
+  UseGazeManager: 1
+  DefaultPlaneDistance: 2
+  DrawGizmos: 0
 --- !u!114 &114000013944478910
 MonoBehaviour:
   m_ObjectHideFlags: 1
