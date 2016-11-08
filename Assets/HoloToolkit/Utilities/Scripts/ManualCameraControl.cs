@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class ManualCameraControl : MonoBehaviour
 {
+    #if UNITY_EDITOR || UNITY_STANDALONE
     /// <summary>
     /// This enum is used to customize how/when users will look around in the Unity player
     /// using the mouse.
@@ -321,4 +322,5 @@ public class ManualCameraControl : MonoBehaviour
 #endif
         }
     }
+#endif
 }

@@ -28,10 +28,6 @@ public class UNetAnchorManager : NetworkBehaviour
             if (_Instance == null)
             {
                 _Instance = FindObjectOfType<UNetAnchorManager>();
-                if (_Instance == null)
-                {
-                    Debug.Log("No UNetAnchorManager in scene, but a script expects one.");
-                }
             }
             return _Instance;
         }
