@@ -51,6 +51,12 @@ namespace HoloToolKit.Unity
         {
             Depth = Mathf.Clamp(Depth, Camera.main.nearClipPlane, Camera.main.farClipPlane);
 
+            if (PointerPrefab == null)
+            {
+                this.gameObject.SetActive(false);
+                return;
+            }
+
             pointer = GameObject.Instantiate(PointerPrefab);
 
             // We create the effect of pivoting rotations by parenting the pointer and
@@ -63,7 +69,7 @@ namespace HoloToolKit.Unity
         private void Update()
         {
             // No object to track?
-            if (TargetObject == null)
+            if (TargetObject == null || pointer == null)
             {
                 // bail out early.
                 return;
