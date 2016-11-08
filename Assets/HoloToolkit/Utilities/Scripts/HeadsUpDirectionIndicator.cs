@@ -261,7 +261,7 @@ namespace HoloToolKit.Unity
         // Modify the pointer location and orientation to point along the shortest rotation,
         // toward tergetPosition, keeping the pointer confined inside the frustum defined by
         // planes.
-        private void UpdatePointerTransform(Camera camera, Plane []planes, Vector3 targetPosition)
+        private void UpdatePointerTransform(Camera camera, Plane[] planes, Vector3 targetPosition)
         {
             // Start by assuming the pointer should be placed at the target position.
             Vector3 indicatorPosition = camera.transform.position + Depth * (targetPosition - camera.transform.position).normalized;
