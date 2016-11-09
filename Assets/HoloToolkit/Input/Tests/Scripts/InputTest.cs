@@ -17,6 +17,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
                              IManipulationHandler,
                              INavigationHandler
     {
+        [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance." )]
+        public bool LogGesturesUpdateEvents = false;
+
         public void OnInputUp(InputEventData eventData)
         {
             Debug.LogFormat("OnInputUp\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
@@ -79,12 +82,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnManipulationUpdated(ManipulationEventData eventData)
         {
-            Debug.LogFormat("OnManipulationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
-                eventData.InputSource,
-                eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+            if (LogGesturesUpdateEvents)
+            {
+                Debug.LogFormat("OnManipulationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+                    eventData.InputSource,
+                    eventData.SourceId,
+                    eventData.CumulativeDelta.x,
+                    eventData.CumulativeDelta.y,
+                    eventData.CumulativeDelta.z);
+            }
         }
 
         public void OnManipulationCompleted(ManipulationEventData eventData)
@@ -119,12 +125,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnNavigationUpdated(NavigationEventData eventData)
         {
-            Debug.LogFormat("OnNavigationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
-                eventData.InputSource,
-                eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+            if (LogGesturesUpdateEvents)
+            {
+                Debug.LogFormat("OnNavigationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+                    eventData.InputSource,
+                    eventData.SourceId,
+                    eventData.CumulativeDelta.x,
+                    eventData.CumulativeDelta.y,
+                    eventData.CumulativeDelta.z);
+            }
         }
 
         public void OnNavigationCompleted(NavigationEventData eventData)
