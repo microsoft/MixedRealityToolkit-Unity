@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-#if UNITY_EDITOR || Unity_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE
 using System.Net;
 using System.Net.Sockets;
 #endif
