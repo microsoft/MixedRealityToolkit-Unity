@@ -4,6 +4,7 @@
 using UnityEngine;
 
 #if !UNITY_EDITOR && UNITY_METRO
+using System.Collections.Generic;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.Networking;
