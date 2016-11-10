@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
 using System.Threading.Tasks;
 using Windows.Storage;
 #endif
@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
         {
             get
             {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
                 return ApplicationData.Current.RoamingFolder.Path;
 #else
                 return Application.persistentDataPath;
@@ -117,7 +117,7 @@ namespace HoloToolkit.Unity
         {
             Stream stream = null;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
             Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {
@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity
         {
             Stream stream = null;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
             Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {
