@@ -58,10 +58,10 @@ namespace HoloToolkit.Unity
             }
         }
 
-        [Tooltip("Use the GazeManager class to set the plane to the gazed upon hologram.")]
+        [Tooltip("Use the GazeManager class to set the plane to the gazed upon hologram. If disabled, the plane will always be at a constant distance.")]
         public bool UseGazeManager = true;
 
-        [Tooltip("Default distance to set plane if plane is gaze-locked.")]
+        [Tooltip("Default distance to set plane if plane is gaze-locked or if no object is hit.")]
         public float DefaultPlaneDistance = 2.0f;
 
         [Tooltip("Visualize the plane at runtime.")]
@@ -109,13 +109,6 @@ namespace HoloToolkit.Unity
                 {
                     ConfigureFixedDistancePlane();
                 }
-
-#if UNITY_EDITOR
-                if (DrawGizmos)
-                {
-                    OnDrawGizmos();
-                }
-#endif
             }
         }
 
@@ -154,8 +147,17 @@ namespace HoloToolkit.Unity
             Vector3 gazeOrigin = GazeManager.Instance.GazeOrigin;
             Vector3 gazeDirection = GazeManager.Instance.GazeNormal;
 
-            // Calculate the delta between gaze origin's position and current hit position.
-            float focusPointDistance = (gazeManager.GazeOrigin - GazeManager.Instance.HitPosition).magnitude;
+            // Calculate the delta between gaze origin's position and current hit position. If no object is hit, use default distance.
+            float focusPointDistance;
+            if (gazeManager.IsGazingAtObject)
+            {
+                focusPointDistance = (gazeManager.GazeOrigin - GazeManager.Instance.HitPosition).magnitude;
+            }
+            else
+            {
+                focusPointDistance = DefaultPlaneDistance;
+            }
+            
             float lerpPower = focusPointDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
                                                                         : LerpStabilizationPlanePowerCloser;
 
@@ -198,7 +200,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void OnDrawGizmos()
         {
-            if (UnityEngine.Application.isPlaying)
+            if (UnityEngine.Application.isPlaying && DrawGizmos)
             {
                 Vector3 focalPlaneNormal = -gazeManager.GazeNormal;
                 Vector3 planeUp = Vector3.Cross(Vector3.Cross(focalPlaneNormal, Vector3.up), focalPlaneNormal);

@@ -2854,6 +2854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogGesturesUpdateEvents: 0
 --- !u!1 &1054035063
 GameObject:
   m_ObjectHideFlags: 0
@@ -3509,6 +3510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogGesturesUpdateEvents: 0
 --- !u!114 &1282283562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3881,6 +3883,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
       propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013868099214, guid: 3eddd1c29199313478dd3f912bfab2ab,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -5406,6 +5413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogGesturesUpdateEvents: 0
 --- !u!114 &1950385220
 MonoBehaviour:
   m_ObjectHideFlags: 0
