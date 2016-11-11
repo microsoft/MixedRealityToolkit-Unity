@@ -51,8 +51,10 @@ namespace HoloToolkit.Unity
         public SpatialMappingSource Source { get; private set; }
 
         // Called when the GameObject is first created.
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             surfaceObserver = gameObject.GetComponent<SpatialMappingObserver>();
             Source = surfaceObserver;
         }
@@ -208,6 +210,14 @@ namespace HoloToolkit.Unity
             {
                 surfaceObserver.StopObserving();
             } 
+        }
+
+        /// <summary>
+        /// Instructs the SurfaceObserver to stop and cleanup all meshes.
+        /// </summary>
+        public void CleanupObserver()
+        {
+            surfaceObserver.CleanupObserver();
         }
 
         /// <summary>

@@ -125,8 +125,10 @@ public class CustomMessages : Singleton<CustomMessages>
         }
     }
 
-    void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (this.serverConnection != null)
         {
             for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)

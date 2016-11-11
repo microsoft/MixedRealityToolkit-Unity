@@ -3,14 +3,15 @@ using System.Collections;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using System;
+using HoloToolkit.Unity.InputModule;
 
 /// <summary>
 /// manager all measure tools here
 /// </summary>
-public class MeasureManager : Singleton<MeasureManager>
+public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputHandler
 {
     private IGeometry manager;
-    public GeometryMode mode;
+    public GeometryMode Mode;
 
     // set up prefabs
     public GameObject LinePrefab;
@@ -20,10 +21,12 @@ public class MeasureManager : Singleton<MeasureManager>
 
     void Start()
     {
+        InputManager.Instance.PushFallbackInputHandler(gameObject);
+
         // inti measure mode
-        switch (mode)
+        switch (Mode)
         {
-            case GeometryMode.Ploygon:
+            case GeometryMode.Polygon:
                 manager = PolygonManager.Instance;
                 break;
             default:
@@ -51,7 +54,7 @@ public class MeasureManager : Singleton<MeasureManager>
     }
 
     // if current mode is geometry mode, try to finish geometry
-    public void OnPloygonClose()
+    public void OnPolygonClose()
     {
         IPolygonClosable client = PolygonManager.Instance;
         client.ClosePloygon(LinePrefab, TextPrefab);
@@ -63,14 +66,14 @@ public class MeasureManager : Singleton<MeasureManager>
         try
         {
             manager.Reset();
-            if (mode == GeometryMode.Line)
+            if (Mode == GeometryMode.Line)
             {
-                mode = GeometryMode.Ploygon;
+                Mode = GeometryMode.Polygon;
                 manager = PolygonManager.Instance;
             }
             else
             {
-                mode = GeometryMode.Line;
+                Mode = GeometryMode.Line;
                 manager = LineManager.Instance;
             }
         }
@@ -79,6 +82,36 @@ public class MeasureManager : Singleton<MeasureManager>
             Debug.Log(ex.Message);
         }
         ModeTipObject.SetActive(true);
+    }
+
+    public void OnHoldStarted(HoldEventData eventData)
+    {
+        OnPolygonClose();
+    }
+
+    public void OnHoldCompleted(HoldEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnHoldCanceled(HoldEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnInputUp(InputEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnInputDown(InputEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnInputClicked(InputEventData eventData)
+    {
+        OnSelect();
     }
 }
 
@@ -97,5 +130,5 @@ public enum GeometryMode
     Triangle,
     Rectangle,
     Cube,
-    Ploygon
+    Polygon
 }

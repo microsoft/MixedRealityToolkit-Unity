@@ -38,9 +38,6 @@ Causes a hologram to maintain a fixed angular size, which is to say it occupies 
 #### Interpolator.cs
 A MonoBehaviour that interpolates a transform's position, rotation or scale.
 
-#### ManualCameraControl.cs
-A script to add to the main camera object so that when running in Play mode in Unity, the user can control the camera using keyboard and mouse.
-
 #### SphereBasedTagalong.cs
 A simple Tagalong that stays inside a sphere at a fixed distance from the camera. Very cheap implementation with smoothing capability.
 
@@ -92,10 +89,6 @@ Feature configurable vertex lit transparent shader.  Use when a higher performan
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
 ### [Tests](Tests)
-
-#### ManualCameraControl.unity
-
-This scene shows how to use ManualCameraControl.cs.  The script is on the main camera of the scene.  When preview mode in Unity is activated, the user can move around the scene using WASD and look around using ctrl + mouse. 
 
 #### TextToSpeechManager.unity 
 

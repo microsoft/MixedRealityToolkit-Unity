@@ -3,21 +3,24 @@
 
 using UnityEngine;
 
-public class SphereKeywords : MonoBehaviour
+namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public void ChangeColor(string color)
+    public class SphereKeywords : MonoBehaviour
     {
-        switch(color.ToLower())
+        public void ChangeColor(string color)
         {
-            case "red":
-                GetComponent<Renderer>().material.color = Color.red;
-                break;
-            case "blue":
-                GetComponent<Renderer>().material.color = Color.blue;
-                break;
-            case "green":
-                GetComponent<Renderer>().material.color = Color.green;
-                break;
+            switch (color.ToLower())
+            {
+                case "red":
+                    GetComponent<Renderer>().material.color = Color.red;
+                    break;
+                case "blue":
+                    GetComponent<Renderer>().material.color = Color.blue;
+                    break;
+                case "green":
+                    GetComponent<Renderer>().material.color = Color.green;
+                    break;
+            }
         }
     }
 }

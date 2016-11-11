@@ -1,10 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
+using HoloToolkit.Unity.InputModule;
 
-public class GestureResponder : MonoBehaviour
+public class GestureResponder : MonoBehaviour, IInputHandler
 {
-    // Responds to the gesture manager's "TappedEvent"
-    public void OnSelect()
+    private void Start()
+    {
+        InputManager.Instance.PushFallbackInputHandler(gameObject);
+    }
+
+    public void OnInputUp(InputEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnInputDown(InputEventData eventData)
+    {
+        // Nothing to do
+    }
+
+    public void OnInputClicked(InputEventData eventData)
     {
         PlaneTargetGroupPicker.Instance.PickNewTarget();
     }

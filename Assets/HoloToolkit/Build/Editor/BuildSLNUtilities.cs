@@ -14,6 +14,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Class containing various utility methods to build a WSA solution from a Unity project.
+    /// </summary>
     public static class BuildSLNUtilities
     {
         public class CopyDirectoryInfo
@@ -117,6 +120,16 @@ namespace HoloToolkit.Unity
         public const string BuildSymbolDebug = "DEBUG";
         public const string BuildSymbolRelease = "RELEASE";
         public const string BuildSymbolMaster = "MASTER";
+
+        /// <summary>
+        /// Event triggered when a build starts.
+        /// </summary>
+        public static event Action<BuildInfo> BuildStarted;
+
+        /// <summary>
+        /// Event triggered when a build completes.
+        /// </summary>
+        public static event Action<BuildInfo, string> BuildCompleted;
 
         public static void PerformBuild(BuildInfo buildInfo)
         {
@@ -461,6 +474,10 @@ namespace HoloToolkit.Unity
 
         private static void OnPreProcessBuild(BuildInfo buildInfo)
         {
+            // Raise the global event for listeners
+            BuildStarted.RaiseEvent(buildInfo);
+
+            // Call the pre-build action, if any
             if (buildInfo.PreBuildAction != null)
             {
                 buildInfo.PreBuildAction(buildInfo);
@@ -482,6 +499,10 @@ namespace HoloToolkit.Unity
                 }
             }
 
+            // Raise the global event for listeners
+            BuildCompleted.RaiseEvent(buildInfo, buildError);
+
+            // Call the post-build action, if any
             if (buildInfo.PostBuildAction != null)
             {
                 buildInfo.PostBuildAction(buildInfo, buildError);

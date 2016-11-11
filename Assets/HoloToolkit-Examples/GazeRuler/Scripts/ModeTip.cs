@@ -14,7 +14,7 @@ public class ModeTip : Singleton<ModeTip>
     void Start()
     {
         text = GetComponent<TextMesh>();
-        switch (MeasureManager.Instance.mode)
+        switch (MeasureManager.Instance.Mode)
         {
             case GeometryMode.Line:
                 text.text = LineMode;
@@ -32,7 +32,7 @@ public class ModeTip : Singleton<ModeTip>
         {
             // if you want log the position of mode tip text, just uncomment it.
             // Debug.Log("pos: " + gameObject.transform.position);
-            switch (MeasureManager.Instance.mode)
+            switch (MeasureManager.Instance.Mode)
             {
                 case GeometryMode.Line:
                     if (!text.text.Contains(LineMode))

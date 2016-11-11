@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Allows the user to place and rotate GameObjects using a game controller.
+    /// TODO This should be converted to an input source.
     /// </summary>
     /// <remarks>Make sure to enable the HumanInterfaceDevice capability before using.</remarks>
     public class GameControllerManipulator : MonoBehaviour
@@ -61,7 +62,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                objectToManipulate = lastAffectedObject ?? GazeManager.Instance.FocusedObject;
+                objectToManipulate = lastAffectedObject ?? GazeManager.Instance.HitObject;
             }
 
             if (objectToManipulate == null)
