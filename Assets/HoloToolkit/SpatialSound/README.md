@@ -6,7 +6,16 @@ Scripts related to the audio features.
 **IMPORTANT**: Please make sure to set the MS HRTF Spatializer in your audio settings, in Unity under  
 Edit -> Project Settings -> Audio -> Spatializer. You can confirm this setting by adding an AudioSource component to an object and making sure the "Spatialize" checkbox is present.
 
-#### UAudioManager.cs
+#### AudioEmitter.cs
+A class that encapsulates an AudioSource and supports applying audio influences, for example occlusion.
+
+#### AudioOccluder.cs
+Class implementing a simple form of audio occlusion using a low pass filter and volume attenuation.
+
+#### IAudioInfluencer.cs
+Interface defining the methods required of an audio influencer.
+
+#### UAudioManager\UAudioManager.cs
 1. Allows sound designers to set up audio events with playback behaviors.
 2. Plays audio events via singleton API.
 
