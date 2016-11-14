@@ -233,7 +233,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     {
         sharingServiceReady = true;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         InitRoomApi();
 #endif
     }
