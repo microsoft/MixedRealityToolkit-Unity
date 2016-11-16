@@ -11,7 +11,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
     /// Controls player behavior (local and remote).
     /// </summary>
     [NetworkSettings(sendInterval = 0.033f)]
-    public class PlayerController : NetworkBehaviour, IInputHandler
+    public class PlayerController : NetworkBehaviour, IInputClickHandler
     {
         /// <summary>
         /// The game object that represents the 'bullet' for 
@@ -129,16 +129,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
 
             // Clean up the bullet in 8 seconds.
             Destroy(nextBullet, 8.0f);
-        }
-
-        public void OnInputUp(InputEventData eventData)
-        {
-            // Nothing to do
-        }
-
-        public void OnInputDown(InputEventData eventData)
-        {
-            // Nothing to do
         }
 
         public void OnInputClicked(InputEventData eventData)
