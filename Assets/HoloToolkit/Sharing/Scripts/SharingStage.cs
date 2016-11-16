@@ -1,16 +1,15 @@
 ﻿using System;
+using HoloToolkit.Unity;
 using UnityEngine;
 
 namespace HoloToolkit.Sharing
 {
-    public class SharingStage : MonoBehaviour
+    public class SharingStage : Singleton<SharingStage>
     {
         /// <summary>
         /// SharingManagerConnected event notifies when the sharing manager is created and connected.
         /// </summary>
         public event EventHandler SharingManagerConnected;
-
-        public static SharingStage Instance = null;
 
         /// <summary>
         /// Set whether this app should be a Primary or Secondary client.
@@ -23,14 +22,14 @@ namespace HoloToolkit.Sharing
         public int ServerPort = 20602;
 
         private SharingManager sharingMgr;
-        public SharingManager Manager { get { return this.sharingMgr; } }
+        public SharingManager Manager { get { return sharingMgr; } }
 
         /// <summary>
         /// Set whether this app should provide audio input / output features.
         /// </summary>
         public bool IsAudioEndpoint = true;
 
-        public bool AutoDiscoverServer = false;
+        public bool AutoDiscoverServer;
 
         [Tooltip("Determines how often the discovery service should ping the network in search of a server.")]
         public float PingIntervalSec = 2;
@@ -48,31 +47,42 @@ namespace HoloToolkit.Sharing
         /// Provides callbacks when server is discovered or lost.
         /// </summary>
         private DiscoveryClientAdapter discoveryClientAdapter;
+
+        /// <summary>
+        /// Provides callbacks for when we connect to a server.
+        /// </summary>
+        private NetworkConnectionAdapter networkConnectionAdapter;
+
+        private NetworkConnection networkConnection;
     
-        private float pingIntervalCurrent = 0;
-        private bool isTryingToFindServer = false;
+        private float pingIntervalCurrent;
+        private bool isTryingToFindServer;
 
-        private void Awake()
+        protected override void Awake()
         {
-            Instance = this;
+            base.Awake();
 
-            this.logWriter = new ConsoleLogWriter();
+            logWriter = new ConsoleLogWriter();
 
             if (AutoDiscoverServer)
             {
                 AutoDiscoverInit();
             }
-            else
+
+            networkConnectionAdapter = new NetworkConnectionAdapter();
+        }
+
+        private void Start()
+        {
+            if (!AutoDiscoverServer)
             {
                 Connect();
             }
         }
 
-        protected void OnDestroy()
+        protected override void OnDestroy()
         {
-            Instance = null;
-
-            if (this.discoveryClient != null)
+            if (discoveryClient != null)
             {
                 discoveryClient.RemoveListener(discoveryClientAdapter);
                 discoveryClient.Dispose();
@@ -85,30 +95,46 @@ namespace HoloToolkit.Sharing
                 }
             }
 
-            if (this.sharingMgr != null)
+            if (networkConnection != null)
+            {
+                networkConnection.RemoveListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+                networkConnection.Dispose();
+                networkConnection = null;
+
+                if (networkConnectionAdapter != null)
+                {
+                    networkConnectionAdapter.Dispose();
+                    networkConnectionAdapter = null;
+                }
+            }
+
+            if (sharingMgr != null)
             {
                 // Force a disconnection so that we can stop and start Unity without connections hanging around
-                this.sharingMgr.GetPairedConnection().Disconnect();
-                this.sharingMgr.GetServerConnection().Disconnect();
+                sharingMgr.GetPairedConnection().Disconnect();
+                sharingMgr.GetServerConnection().Disconnect();
 
                 // Release the XTools manager so that it cleans up the C++ copy
-                this.sharingMgr.Dispose();
-                this.sharingMgr = null;
+                sharingMgr.Dispose();
+                sharingMgr = null;
             }
+
             // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects
-            System.GC.Collect();
+            GC.Collect();
+
+            base.OnDestroy();
         }
 
         private void LateUpdate()
         {
-            if (this.isTryingToFindServer)
+            if (isTryingToFindServer)
             {
                 AutoDiscoverUpdate();
             }
-            if (this.sharingMgr != null)
+            if (sharingMgr != null)
             {
                 // Update the XToolsManager to processes any network messages that have arrived
-                this.sharingMgr.Update();
+                sharingMgr.Update();
             }
         }
 
@@ -124,17 +150,25 @@ namespace HoloToolkit.Sharing
 
         private void Connect()
         {
-            ClientConfig config = new ClientConfig(this.ClientRole);
-            config.SetIsAudioEndpoint(this.IsAudioEndpoint);
-            config.SetLogWriter(this.logWriter);
-            config.SetServerAddress(this.ServerAddress);
-            config.SetServerPort(this.ServerPort);
+            ClientConfig config = new ClientConfig(ClientRole);
+            config.SetIsAudioEndpoint(IsAudioEndpoint);
+            config.SetLogWriter(logWriter);
+            config.SetServerAddress(ServerAddress);
+            config.SetServerPort(ServerPort);
             config.SetProfilerEnabled(false);
 
-            this.sharingMgr = SharingManager.Create(config);
+            sharingMgr = SharingManager.Create(config);
 
-            //delay sending notification so everything is initialized properly
-            Invoke("SendConnectedNotification", 1);
+            //set up callbacks so that we know when we've connected successfully
+            networkConnection = sharingMgr.GetServerConnection();
+            networkConnectionAdapter = new NetworkConnectionAdapter();
+            networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
+            networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+        }
+
+        private void NetworkConnectionAdapter_ConnectedCallback(NetworkConnection obj)
+        {
+            SendConnectedNotification();
         }
 
         private void SendConnectedNotification()
@@ -184,10 +218,10 @@ namespace HoloToolkit.Sharing
             {
                 //Found a server. Stop pinging the network and connect
                 isTryingToFindServer = false;
-                this.ServerAddress = obj.GetAddress();
-                Debug.Log("System Discovered at: " + this.ServerAddress);
+                ServerAddress = obj.GetAddress();
+                Debug.Log("System Discovered at: " + ServerAddress);
                 Connect();
-                Debug.Log(string.Format("Connected to: {0}:{1}", this.ServerAddress, this.ServerPort));
+                Debug.Log(string.Format("Connected to: {0}:{1}", ServerAddress, ServerPort));
             }
         }
 
