@@ -363,7 +363,7 @@ namespace HoloToolkit.Unity.InputModule
             inputEventData.Initialize(e.InputSource, e.SourceId);
 
             // Handler for execute events
-            ExecuteEvents.EventFunction<IInputHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputClicked(inputEventData); };
+            ExecuteEvents.EventFunction<IInputClickHandler> eventHandler = (inputHandler, eventData) => { inputHandler.OnInputClicked(inputEventData); };
             
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, eventHandler);

@@ -287,11 +287,6 @@ namespace HoloToolkit.Unity.InputModule
             StartDragging();
         }
 
-        public void OnInputClicked(InputEventData eventData)
-        {
-            // Nothing to do
-        }
-
         public void OnSourceDetected(SourceStateEventData eventData)
         {
             // Nothing to do

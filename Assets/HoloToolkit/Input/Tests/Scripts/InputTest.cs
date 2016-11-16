@@ -10,7 +10,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
     public class InputTest : MonoBehaviour, 
-                             IInputHandler, 
+                             IInputHandler,
+                             IInputClickHandler,
                              IFocusable, 
                              ISourceStateHandler,
                              IHoldHandler,

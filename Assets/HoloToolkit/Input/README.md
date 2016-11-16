@@ -12,7 +12,8 @@ Game objects that want to consume input events can implement one or many **input
 
 - **IFocusable** for focus enter and exit. The focus can be triggered by the user's gaze or any other gaze source.
 - **IHoldHandle** for the Windows hold gesture.
-- **IInputHandler** for source up, down and clicked. The source can be a hand that tapped, a clicker that was pressed, etc.
+- **IInputHandler** for source up and down. The source can be a hand that tapped, a clicker that was pressed, etc.
+- **IInputClickHandler** for source clicked. The source can be a hand that tapped, a clicker that was pressed, etc.
 - **IManipulationHandler** for the Windows manipulation gesture.
 - **INavigationnHandler** for the Windows navigation gesture.
 - **ISourceStateHandler** for the source detected and source lost events.

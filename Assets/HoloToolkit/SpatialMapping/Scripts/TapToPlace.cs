@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
     /// TapToPlace also adds a WorldAnchor component to enable persistence.
     /// </summary>
 
-    public class TapToPlace : MonoBehaviour, IInputHandler
+    public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
@@ -93,16 +93,6 @@ namespace HoloToolkit.Unity
                     this.transform.rotation = toQuat;
                 }
             }
-        }
-
-        public void OnInputUp(InputEventData eventData)
-        {
-            // Nothing to do
-        }
-
-        public void OnInputDown(InputEventData eventData)
-        {
-            // Nothing to do
         }
 
         public void OnInputClicked(InputEventData eventData)
