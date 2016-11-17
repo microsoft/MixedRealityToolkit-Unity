@@ -6,7 +6,7 @@ using HoloToolkit.Unity;
 using System;
 using HoloToolkit.Unity.InputModule;
 
-public class AppState : Singleton<AppState>, ISourceStateHandler, IInputHandler
+public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
 {
     // Consts
     public float kMinAreaForStats = 5.0f;
@@ -250,16 +250,6 @@ public class AppState : Singleton<AppState>, ISourceStateHandler, IInputHandler
         {
             trackedHandsCount--;
         }
-    }
-
-    public void OnInputUp(InputEventData eventData)
-    {
-        // Nothing to do
-    }
-
-    public void OnInputDown(InputEventData eventData)
-    {
-        // Nothing to do
     }
 
     public void OnInputClicked(InputEventData eventData)

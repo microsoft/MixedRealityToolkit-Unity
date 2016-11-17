@@ -1,11 +1,10 @@
 ﻿using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 
 namespace Lighthouse
 {
-    public class GazeableColorPicker : MonoBehaviour, IFocusable, IInputHandler
+    public class GazeableColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
     {
         public Renderer rendererComponent;
 
@@ -45,16 +44,6 @@ namespace Lighthouse
         public void OnFocusExit()
         {
             gazing = false;
-        }
-
-        public void OnInputUp(InputEventData eventData)
-        {
-            // Nothing to do
-        }
-
-        public void OnInputDown(InputEventData eventData)
-        {
-            // Nothing to do
         }
 
         public void OnInputClicked(InputEventData eventData)

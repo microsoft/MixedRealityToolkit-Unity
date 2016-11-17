@@ -8,7 +8,7 @@ using HoloToolkit.Unity.InputModule;
 /// <summary>
 /// manager all measure tools here
 /// </summary>
-public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputHandler
+public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputClickHandler
 {
     private IGeometry manager;
     public GeometryMode Mode;
@@ -95,16 +95,6 @@ public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputHan
     }
 
     public void OnHoldCanceled(HoldEventData eventData)
-    {
-        // Nothing to do
-    }
-
-    public void OnInputUp(InputEventData eventData)
-    {
-        // Nothing to do
-    }
-
-    public void OnInputDown(InputEventData eventData)
     {
         // Nothing to do
     }

@@ -4,18 +4,9 @@ using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.Tests
 {
-    public class TextToSpeechOnTap : MonoBehaviour, IInputHandler
+    public class TextToSpeechOnTap : MonoBehaviour, IInputClickHandler
     {
         public TextToSpeechManager TextToSpeech;
-        public void OnInputUp(InputEventData eventData)
-        {
-            // Nothing to do
-        }
-
-        public void OnInputDown(InputEventData eventData)
-        {
-            // Nothing to do
-        }
 
         public void OnInputClicked(InputEventData eventData)
         {
