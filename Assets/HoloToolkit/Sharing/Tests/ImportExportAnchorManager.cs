@@ -18,7 +18,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <summary>
     /// Enum to track the progress through establishing a shared coordinate system.
     /// </summary>
-    private enum ImportExportState
+    enum ImportExportState
     {
         // Overall states
         Start,
@@ -39,7 +39,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         Importing
     }
 
-    private ImportExportState currentState = ImportExportState.Start;
+    ImportExportState currentState = ImportExportState.Start;
 
     public string StateName
     {
@@ -60,63 +60,63 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <summary>
     /// WorldAnchorTransferBatch is the primary object in serializing/deserializing anchors.
     /// </summary>
-    private WorldAnchorTransferBatch sharedAnchorInterface;
+    WorldAnchorTransferBatch sharedAnchorInterface;
 
     /// <summary>
     /// Keeps track of stored anchor data blob.
     /// </summary>
-    private byte[] rawAnchorData = null;
+    byte[] rawAnchorData = null;
 
     /// <summary>
     /// Keeps track of locally stored anchors.
     /// </summary>
-    private WorldAnchorStore anchorStore = null;
+    WorldAnchorStore anchorStore = null;
 
     /// <summary>
     /// Keeps track of the name of the anchor we are exporting.
     /// </summary>
-    private string exportingAnchorName { get; set; }
+    string exportingAnchorName { get; set; }
 
     /// <summary>
     /// The datablob of the anchor.
     /// </summary>
-    private List<byte> exportingAnchorBytes = new List<byte>();
+    List<byte> exportingAnchorBytes = new List<byte>();
 
     /// <summary>
     /// Keeps track of if the sharing service is ready.
     /// We need the sharing service to be ready so we can
     /// upload and download data for sharing anchors.
     /// </summary>
-    private bool sharingServiceReady = false;
+    bool sharingServiceReady = false;
 
     /// <summary>
     /// The room manager API for the sharing service.
     /// </summary>
-    private RoomManager roomManager;
+    RoomManager roomManager;
 
     /// <summary>
     /// Keeps track of the current room we are connected to.  Anchors
     /// are kept in rooms.
     /// </summary>
-    private Room currentRoom;
+    Room currentRoom;
 
     /// <summary>
     /// Sometimes we'll see a really small anchor blob get generated.
     /// These tend to not work, so we have a minimum trustable size.
     /// </summary>
-    private const uint minTrustworthySerializedAnchorDataSize = 100000;
+    const uint minTrustworthySerializedAnchorDataSize = 100000;
 
     /// <summary>
     /// Some room ID for indicating which room we are in.
     /// </summary>
-    private const long roomID = 8675309;
+    const long roomID = 8675309;
 
     /// <summary>
     /// Provides updates when anchor data is uploaded/downloaded.
     /// </summary>
-    private RoomManagerAdapter roomManagerCallbacks;
+    RoomManagerAdapter roomManagerCallbacks;
 
-    private void Start()
+    void Start()
     {
         Debug.Log("Import Export Manager starting");
 
@@ -132,6 +132,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
     protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (roomManagerCallbacks != null)
         {
             roomManagerCallbacks.AnchorsDownloadedEvent -= RoomManagerCallbacks_AnchorsDownloaded;
@@ -142,8 +144,6 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
                 roomManager.RemoveListener(roomManagerCallbacks);
             }
         }
-
-        base.OnDestroy();
     }
 
     private void SharingManagerConnected(object sender, EventArgs e)
@@ -204,7 +204,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// Called when the local anchor store is ready.
     /// </summary>
     /// <param name="store"></param>
-    private void AnchorStoreReady(WorldAnchorStore store)
+    void AnchorStoreReady(WorldAnchorStore store)
     {
         anchorStore = store;
         currentState = ImportExportState.AnchorStore_Initialized;
@@ -226,19 +226,15 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         Invoke("MarkSharingServiceReady", 5);
     }
 
-    private void MarkSharingServiceReady()
+    void MarkSharingServiceReady()
     {
         sharingServiceReady = true;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-        InitRoomApi();
-#endif
     }
 
     /// <summary>
     /// Initializes the room api.
     /// </summary>
-    private void InitRoomApi()
+    void InitRoomApi()
     {
         // If we have a room, we'll join the first room we see.
         // If we are the user with the lowest user ID, we will create the room.
@@ -268,11 +264,12 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         }
     }
 
-    private bool LocalUserHasLowestUserId()
+    bool LocalUserHasLowestUserId()
     {
-        for (int i = 0; i < SharingSessionTracker.Instance.UserIds.Count; i++)
+        long localUserId = CustomMessages.Instance.localUserID;
+        foreach (long userid in SharingSessionTracker.Instance.UserIds)
         {
-            if (SharingSessionTracker.Instance.UserIds[i] < CustomMessages.Instance.localUserID)
+            if (userid < localUserId)
             {
                 return false;
             }
@@ -284,7 +281,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <summary>
     /// Kicks off the process of creating the shared space.
     /// </summary>
-    private void StartAnchorProcess()
+    void StartAnchorProcess()
     {
         // First, are there any anchors in this room?
         int anchorCount = currentRoom.GetAnchorCount();
@@ -311,7 +308,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <summary>
     /// Kicks off getting the datablob required to import the shared anchor.
     /// </summary>
-    private void MakeAnchorDataRequest()
+    void MakeAnchorDataRequest()
     {
         if (roomManager.DownloadAnchor(currentRoom, currentRoom.GetAnchorName(0)))
         {
@@ -324,7 +321,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         }
     }
 
-    private void Update()
+    void Update()
     {
         switch (currentState)
         {
@@ -358,7 +355,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <summary>
     /// Starts establishing a new anchor.
     /// </summary>
-    private void CreateAnchorLocally()
+    void CreateAnchorLocally()
     {
         WorldAnchor anchor = GetComponent<WorldAnchor>();
         if (anchor == null)
@@ -399,7 +396,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// Attempts to attach to  an anchor by anchorName in the local store..
     /// </summary>
     /// <returns>True if it attached, false if it could not attach</returns>
-    private bool AttachToCachedAnchor(string AnchorName)
+    bool AttachToCachedAnchor(string AnchorName)
     {
         Debug.Log("Looking for " + AnchorName);
         string[] ids = anchorStore.GetAllIds();
@@ -451,7 +448,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     /// <param name="status"></param>
     /// <param name="wat"></param>
-    private void ImportComplete(SerializationCompletionReason status, WorldAnchorTransferBatch wat)
+    void ImportComplete(SerializationCompletionReason status, WorldAnchorTransferBatch wat)
     {
         if (status == SerializationCompletionReason.Succeeded && wat.GetAllIds().Length > 0)
         {
@@ -474,7 +471,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <summary>
     /// Exports the currently created anchor.
     /// </summary>
-    private void Export()
+    void Export()
     {
         WorldAnchor anchor = GetComponent<WorldAnchor>();
 
