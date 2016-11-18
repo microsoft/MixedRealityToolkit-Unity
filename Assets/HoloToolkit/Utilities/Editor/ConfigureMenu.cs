@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
     public class AutoConfigureMenu : UnityEditor.EditorWindow
     {
 
-        [MenuItem("HoloToolkit/Configure/Show Help", priority = 2)]
+        [MenuItem("HoloToolkit/Configure/Show Help", false, 3)]
         public static void ShowHelp()
         {
             Application.OpenURL("https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens");
@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Applies recommended scene settings to the current scenes
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Scene Settings", priority = 0)]
+        [MenuItem("HoloToolkit/Configure/Apply HoloLens Scene Settings", false, 1)]
         public static void ApplySceneSettings()
         {
             if (Camera.main == null)
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Applies recommended project settings to the current project
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Project Settings", priority = 0)]
+        [MenuItem("HoloToolkit/Configure/Apply HoloLens Project Settings", false, 1)]
         public static void ApplyProjectSettings()
         {
             // Build settings
@@ -191,7 +191,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capability Settings", priority = 1)]
+        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capability Settings", false, 2)]
         static void ApplyHoloLensCapabilitySettings()
         {
             AutoConfigureMenu window = (AutoConfigureMenu)EditorWindow.GetWindow(typeof(AutoConfigureMenu), true, "Apply HoloLens Capability Settings");
