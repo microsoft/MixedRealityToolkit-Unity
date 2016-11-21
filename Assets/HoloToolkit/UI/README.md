@@ -32,7 +32,7 @@ UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please r
 1. Assign font texture to 3DTextSegoeUI.mat material. 
 ![Assigning font texture](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions02.png)
 
-2. On 3DTextSegoeUI.mat material, select the shader Custom/3DTextShader.shader. This material will make text object occluded by the object in front of them.
+2. On 3DTextSegoeUI.mat material, select the shader Custom/3DTextShader.shader. 
 ![Assigning shader](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions03.png)
 
 3. Assign Segoe UI font and 3DTextSegoeUI material to the text components in the prefabs.
