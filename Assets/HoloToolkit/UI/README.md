@@ -38,7 +38,7 @@ UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please r
 3. Assign Segoe UI font and 3DTextSegoeUI material to the text components in the prefabs.
 ![Assigning font file and material](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions04.png)
 
-4. Follow the same steps for the sample text layout prefabs in HoloToolkit-Examples\Text
+4. Follow the same steps for the sample text layout prefabs in [HoloToolkit-Examples\Text](../..//HoloToolkit-Examples/Text)
 ![Sample layout prefabs](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions05.png)
 
 **Working with Fonts in Unity**
