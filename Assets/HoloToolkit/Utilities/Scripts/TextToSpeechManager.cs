@@ -383,6 +383,17 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Stops text-to-speech playback.
+        /// </summary>
+        public void StopSpeaking()
+        {
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the audio source where speech will be played.
         /// </summary>
         public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
