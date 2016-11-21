@@ -63,7 +63,10 @@ namespace HoloToolkit.Sharing
 
         void OnDestroy()
         {
-            if (this.sharingMgr != null)
+            // SharingStage's OnDestroy() might execute first in the script order. Therefore we should check if
+            // SharingStage.Instance still exists. Without the instance check, the execution of GetPairingManager
+            // on a disposed sharing manager will crash the Unity Editor and application.
+            if (SharingStage.Instance != null && this.sharingMgr != null)
             {
                 PairingManager pairingMgr = sharingMgr.GetPairingManager();
                 pairingMgr.CancelPairing();	// Safe to call, even if no pairing is in progress.  Will not cause a disconnect

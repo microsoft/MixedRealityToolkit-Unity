@@ -1,8 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -14,57 +11,43 @@ namespace HoloToolkit.Unity
     public class GazeStabilizer : MonoBehaviour
     {
         [Tooltip("Number of samples that you want to iterate on.")]
-        [Range(1, 120)]
+        [Range(40, 120)]
         public int StoredStabilitySamples = 60;
-
-        [Tooltip("Position based distance away from gravity well.")]
-        public float PositionDropOffRadius = 0.02f;
-
-        [Tooltip("Direction based distance away from gravity well.")]
-        public float DirectionDropOffRadius = 0.1f;
-
-        [Tooltip("Position lerp interpolation factor.")]
-        [Range(0.25f, 0.85f)]
-        public float PositionStrength = 0.66f;
-
-        [Tooltip("Direction lerp interpolation factor.")]
-        [Range(0.25f, 0.85f)]
-        public float DirectionStrength = 0.83f;
-
-        [Tooltip("Stability average weight multiplier factor.")]
-        public float StabilityAverageDistanceWeight = 2.0f;
-
-        [Tooltip("Stability variance weight multiplier factor.")]
-        public float StabilityVarianceWeight = 1.0f;
 
         // Access the below public properties from the client class to consume stable values.
         public Vector3 StableHeadPosition { get; private set; }
         public Quaternion StableHeadRotation { get; private set; }
         public Ray StableHeadRay { get; private set; }
 
-        public struct GazeSample
+        /// <summary>
+        /// These classes do the work of calculating standard deviation and averages for the gaze
+        /// position and direction.
+        /// </summary>
+        private VectorRollingStatistics positionRollingStats = new VectorRollingStatistics();
+        private VectorRollingStatistics directionRollingStats = new VectorRollingStatistics();
+
+        /// <summary>
+        /// These are the tunable parameters.
+        /// </summary>
+        // If the standard deviation is above these values we reset and stop stabalizing
+        private const float positionStandardDeviationReset = 0.2f;
+        private const float directionStandardDeviationReset = 0.1f;
+
+        // We must have at least this many samples with a standard deviation below the above constants to stabalize
+        private const int minimumSamplesRequiredToStabalize = 30;
+
+        // When not stabalizing this is the 'lerp' applied to the position and direction of the gaze to smooth it over time.
+        private const float unstabalizedLerpFactor = 0.3f;
+
+        // When stabalizing we will use the standard deviation of the position and direction to create the lerp value.  
+        // By default this value will be low and the cursor will be too sluggish, so we 'boost' it by this value.
+        private const float stabalizedLerpBoost = 10.0f;
+
+        private void Awake()
         {
-            public Vector3 position;
-            public Vector3 direction;
-            public float timestamp;
-        };
-
-        private LinkedList<GazeSample> stabilitySamples = new LinkedList<GazeSample>();
-
-        private Vector3 gazePosition;
-        private Vector3 gazeDirection;
-
-        // Most recent calculated instability values.
-        private float gazePositionInstability;
-        private float gazeDirectionInstability;
-
-        private bool gravityPointExists = false;
-        private Vector3 gravityWellPosition;
-        private Vector3 gravityWellDirection;
-
-        // Transforms instability value into a modified drop off distance, modify with caution.
-        private const float positionDestabilizationFactor = 0.02f;
-        private const float directionDestabilizationFactor = 0.3f;
+            directionRollingStats.Init(StoredStabilitySamples);
+            positionRollingStats.Init(StoredStabilitySamples);
+        }
 
         /// <summary>
         /// Updates the StableHeadPosition and StableHeadRotation based on GazeSample values.
@@ -74,149 +57,30 @@ namespace HoloToolkit.Unity
         /// <param name="rotation">Rotation value from a RaycastHit rotation.</param>
         public void UpdateHeadStability(Vector3 position, Quaternion rotation)
         {
-            gazePosition = position;
-            gazeDirection = rotation * Vector3.forward;
+            Vector3 gazePosition = position;
+            Vector3 gazeDirection = rotation * Vector3.forward;
 
-            AddGazeSample(gazePosition, gazeDirection);
+            positionRollingStats.AddSample(gazePosition);
+            directionRollingStats.AddSample(gazeDirection);
 
-            UpdateInstability(out gazePositionInstability, out gazeDirectionInstability);
-
-            // If we don't have a gravity point, just use the gaze position.
-            if (!gravityPointExists)
+            float lerpPower = unstabalizedLerpFactor;
+            if (positionRollingStats.ActualSampleCount > minimumSamplesRequiredToStabalize && // we have enough samples and...
+                (positionRollingStats.CurrentStandardDeviation > positionStandardDeviationReset || // the standard deviation of positions is high or...
+                 directionRollingStats.CurrentStandardDeviation > directionStandardDeviationReset)) // the standard deviation of directions is high
+            { 
+                // We've detected that the user's gaze is no longer fixed, so stop stabalizing so that gaze is responsive.
+                //Debug.LogFormat("Reset {0} {1} {2} {3}", positionRollingStats.standardDeviation, positionRollingStats.standardDeviationsAway, directionRollignStats.standardDeviation, directionRollignStats.standardDeviationsAway);
+                positionRollingStats.Reset();
+                directionRollingStats.Reset();
+            }
+            else if (positionRollingStats.ActualSampleCount > minimumSamplesRequiredToStabalize)
             {
-                gravityWellPosition = gazePosition;
-                gravityWellDirection = gazeDirection;
-                gravityPointExists = true;
+                // We've detected that the user's gaze is fairly fixed, so start stabalizing.  The more fixed the gaze the less the cursor will move.
+                lerpPower = stabalizedLerpBoost * (positionRollingStats.CurrentStandardDeviation + directionRollingStats.CurrentStandardDeviation);
             }
 
-            UpdateGravityWellPositionDirection();
-        }
-
-        private void AddGazeSample(Vector3 positionSample, Vector3 directionSample)
-        {
-            // Record and save sample data.
-            GazeSample newStabilitySample;
-            newStabilitySample.position = positionSample;
-            newStabilitySample.direction = directionSample;
-            newStabilitySample.timestamp = Time.time;
-
-            if (stabilitySamples != null)
-            {
-                // Remove from front items if we exceed stored samples.
-                while (stabilitySamples.Count >= StoredStabilitySamples)
-                {
-                    stabilitySamples.RemoveFirst();
-                }
-
-                stabilitySamples.AddLast(newStabilitySample);
-            }
-        }
-
-        private void UpdateInstability(out float positionInstability, out float directionInstability)
-        {
-            GazeSample mostRecentSample;
-
-            float positionDeltaMin = 0.0f;
-            float positionDeltaMax = 0.0f;
-            float positionDeltaMean = 0.0f;
-
-            float directionDeltaMin = 0.0f;
-            float directionDeltaMax = 0.0f;
-            float directionDeltaMean = 0.0f;
-
-            float positionDelta = 0.0f;
-            float directionDelta = 0.0f;
-
-            positionInstability = 0.0f;
-            directionInstability = 0.0f;
-
-            // If we have zero or one sample, there is no instability to report.
-            if (stabilitySamples.Count < 2)
-            {
-                return;
-            }
-
-            mostRecentSample = stabilitySamples.Last.Value;
-
-            bool first = true;
-            foreach(GazeSample sample in stabilitySamples)
-            {    
-                // Calculate difference between current sample and most recent sample.
-                positionDelta = Vector3.Magnitude(sample.position - mostRecentSample.position);
-
-                directionDelta = Vector3.Angle(sample.direction, mostRecentSample.direction) * Mathf.Deg2Rad;
-
-                // Initialize max and min on first sample.
-                if (first)
-                {
-                    positionDeltaMin = positionDelta;
-                    positionDeltaMax = positionDelta;
-                    directionDeltaMin = directionDelta;
-                    directionDeltaMax = directionDelta;
-                    first = false;
-                }
-                else
-                {
-                    // Update maximum, minimum and mean differences from most recent sample.
-                    positionDeltaMin = Mathf.Min(positionDelta, positionDeltaMin);
-                    positionDeltaMax = Mathf.Max(positionDelta, positionDeltaMax);
-
-                    directionDeltaMin = Mathf.Min(directionDelta, directionDeltaMin);
-                    directionDeltaMax = Mathf.Max(directionDelta, directionDeltaMax);
-                }
-
-                positionDeltaMean += positionDelta;
-                directionDeltaMean += directionDelta; 
-            }
-
-            positionDeltaMean = positionDeltaMean / (stabilitySamples.Count - 1);
-            directionDeltaMean = directionDeltaMean / (stabilitySamples.Count - 1);
-
-            // Calculate stability value for Gaze position and direction.  Note that stability values will be significantly different for position and
-            // direction since the position value is based on values in meters while the direction stability is based on data in radians.
-            positionInstability = StabilityVarianceWeight * (positionDeltaMax - positionDeltaMin) + StabilityAverageDistanceWeight * positionDeltaMean;
-            directionInstability = StabilityVarianceWeight * (directionDeltaMax - directionDeltaMin) + StabilityAverageDistanceWeight * directionDeltaMean;
-        }
-
-        private void UpdateGravityWellPositionDirection()
-        {
-            float stabilityModifiedPositionDropOffDistance;
-            float stabilityModifiedDirectionDropOffDistance;
-            float normalizedGazeToGravityWellPosition;
-            float normalizedGazeToGravityWellDirection;
-
-            // Modify effective size of well based on gaze stability.
-            stabilityModifiedPositionDropOffDistance = Mathf.Max(0.0f, PositionDropOffRadius - (gazePositionInstability * positionDestabilizationFactor));
-            stabilityModifiedDirectionDropOffDistance = Mathf.Max(0.0f, DirectionDropOffRadius - (gazeDirectionInstability * directionDestabilizationFactor));
-
-            // Determine how far away from the well the gaze is, if that distance is zero push the normalized value above 1.0 to
-            // force a gravity well position update.
-            normalizedGazeToGravityWellPosition = 2.0f;
-            if (stabilityModifiedPositionDropOffDistance > 0.0f)
-            {
-                normalizedGazeToGravityWellPosition = Vector3.Magnitude(gravityWellPosition - gazePosition) / stabilityModifiedPositionDropOffDistance;
-            }
-
-            normalizedGazeToGravityWellDirection = 2.0f;
-            if (stabilityModifiedDirectionDropOffDistance > 0.0f)
-            {
-                normalizedGazeToGravityWellDirection = Mathf.Acos(Vector3.Dot(gravityWellDirection, gazeDirection)) / stabilityModifiedDirectionDropOffDistance;
-            }
-
-            // Move gravity well with Gaze if necessary.
-            if (normalizedGazeToGravityWellPosition > 1.0f)
-            {
-                gravityWellPosition = gazePosition - Vector3.Normalize(gazePosition - gravityWellPosition) * stabilityModifiedPositionDropOffDistance;
-            }
-
-            if (normalizedGazeToGravityWellDirection > 1.0f)
-            {
-                gravityWellDirection = Vector3.Normalize(gazeDirection - Vector3.Normalize(gazeDirection - gravityWellDirection) * stabilityModifiedDirectionDropOffDistance);
-            }
-
-            // Adjust direction and position towards gravity well based on configurable strengths.
-            StableHeadPosition = Vector3.Lerp(gazePosition, gravityWellPosition, PositionStrength);
-            StableHeadRotation = Quaternion.LookRotation(Vector3.Lerp(gazeDirection, gravityWellDirection, DirectionStrength));
+            StableHeadPosition = Vector3.Lerp(StableHeadPosition, gazePosition, lerpPower);
+            StableHeadRotation = Quaternion.LookRotation(Vector3.Lerp(StableHeadRotation * Vector3.forward, gazeDirection, lerpPower));
             StableHeadRay = new Ray(StableHeadPosition, StableHeadRotation * Vector3.forward);
         }
     }
