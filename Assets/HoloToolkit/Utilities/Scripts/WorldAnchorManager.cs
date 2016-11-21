@@ -25,8 +25,12 @@ namespace HoloToolkit.Unity
         {
             public GameObject GameObjectToAnchor { get; set; }
             public string AnchorName { get; set; }
+            public AnchorOperation Operation { get; set; }
         }
-
+        public enum AnchorOperation{
+            CREATE,
+            DELETE
+        }
         /// <summary>
         /// The queue mentioned above.
         /// </summary>
@@ -92,7 +96,8 @@ namespace HoloToolkit.Unity
                 new AnchorAttachmentInfo()
                 {
                     GameObjectToAnchor = gameObjectToAnchor,
-                    AnchorName = anchorName
+                    AnchorName = anchorName,
+                    Operation = AnchorOperation.CREATE
                 }
                 );
         }
@@ -105,18 +110,21 @@ namespace HoloToolkit.Unity
         public void RemoveAnchor(GameObject gameObjectToUnanchor)
         {
             // This case is unexpected, but just in case.
-            if (AnchorStore == null)
+            if (gameObjectToUnanchor == null)
             {
-                Debug.LogError("remove anchor called before anchor store is ready.");
+                Debug.LogError("Must pass in a valid gameObject");
+                return;
             }
 
-            WorldAnchor anchor = gameObjectToUnanchor.GetComponent<WorldAnchor>();
+            anchorOperations.Enqueue(
+                new AnchorAttachmentInfo()
+                {
+                    GameObjectToAnchor = gameObjectToUnanchor,
+                    AnchorName = string.Empty,
+                    Operation = AnchorOperation.DELETE
+                }
+                );
 
-            if (anchor != null)
-            {
-                AnchorStore.Delete(anchor.name);
-                DestroyImmediate(anchor);
-            }
         }
 
         /// <summary>
@@ -125,30 +133,53 @@ namespace HoloToolkit.Unity
         /// <param name="anchorAttachmentInfo">Parameters for attaching the anchor.</param>
         private void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
         {
-            string AnchorName = anchorAttachmentInfo.AnchorName;
-            GameObject gameObjectToAnchor = anchorAttachmentInfo.GameObjectToAnchor;
-
-            if (gameObjectToAnchor == null)
+            switch (anchorAttachmentInfo.Operation)
             {
-                Debug.Log("GameObject must have been destroyed before we got a chance to anchor it.");
-                return;
+                case AnchorOperation.CREATE:
+                    string AnchorName = anchorAttachmentInfo.AnchorName;
+                    GameObject gameObjectToAnchor = anchorAttachmentInfo.GameObjectToAnchor;
+
+                    if (gameObjectToAnchor == null)
+                    {
+                        Debug.Log("GameObject must have been destroyed before we got a chance to anchor it.");
+                        return;
+                    }
+
+                    // Try to load a previously saved world anchor.
+                    WorldAnchor savedAnchor = AnchorStore.Load(AnchorName, gameObjectToAnchor);
+                    if (savedAnchor == null)
+                    {
+                        // Either world anchor was not saved / does not exist or has a different name.
+                        Debug.Log(gameObjectToAnchor.name + " : World anchor could not be loaded for this game object. Creating a new anchor.");
+
+                        // Create anchor since one does not exist.
+                        CreateAnchor(gameObjectToAnchor, AnchorName);
+                    }
+                    else
+                    {
+                        savedAnchor.name = AnchorName;
+                        Debug.Log(gameObjectToAnchor.name + " : World anchor loaded from anchor store and updated for this game object.");
+                    }
+                    break;
+                case AnchorOperation.DELETE:
+                    if (AnchorStore == null)
+                    {
+                        Debug.LogError("remove anchor called before anchor store is ready.");
+                    }
+                    var gameObjectToUnanchor = anchorAttachmentInfo.GameObjectToAnchor;
+                    WorldAnchor anchor = gameObjectToUnanchor.GetComponent<WorldAnchor>();
+
+                    if (anchor != null)
+                    {
+                        AnchorStore.Delete(anchor.name);
+                        DestroyImmediate(anchor);
+                    } else
+                    {
+                        Debug.LogError("cannot get anchor while deleting");
+                    }
+                    break;
             }
 
-            // Try to load a previously saved world anchor.
-            WorldAnchor savedAnchor = AnchorStore.Load(AnchorName, gameObjectToAnchor);
-            if (savedAnchor == null)
-            {
-                // Either world anchor was not saved / does not exist or has a different name.
-                Debug.Log(gameObjectToAnchor.name + " : World anchor could not be loaded for this game object. Creating a new anchor.");
-
-                // Create anchor since one does not exist.
-                CreateAnchor(gameObjectToAnchor, AnchorName);
-            }
-            else
-            {
-                savedAnchor.name = AnchorName;
-                Debug.Log(gameObjectToAnchor.name + " : World anchor loaded from anchor store and updated for this game object.");
-            }
         }
 
         /// <summary>
