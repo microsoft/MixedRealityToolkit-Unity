@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         private Queue<Bounds> boundingObjectsQueue;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// How much time (in sec), while running in the Unity Editor, to allow RemoveSurfaceVertices to consume before returning control to the main program.
         /// </summary>

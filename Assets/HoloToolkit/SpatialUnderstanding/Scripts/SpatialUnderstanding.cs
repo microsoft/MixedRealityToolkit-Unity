@@ -156,13 +156,13 @@ namespace HoloToolkit.Unity
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-
             // Term the DLL
             if (AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDll.Imports.SpatialUnderstanding_Term();
             }
+
+            base.OnDestroy();
         }
 
         /// <summary>
