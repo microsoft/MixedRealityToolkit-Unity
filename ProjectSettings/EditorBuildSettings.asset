@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 0
+    path: Assets/HoloToolkit/Input/Tests/Scenes/InputManagerTest.unity
+  - enabled: 0
+    path: Assets/HoloToolkit/Input/Tests/Scenes/BasicCursor.unity
+  - enabled: 1
+    path: Assets/HoloToolkit/Input/Tests/Scenes/Cursor.unity

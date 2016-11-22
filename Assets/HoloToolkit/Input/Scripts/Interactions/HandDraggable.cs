@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// and then repositioning the object based on that.
     /// </summary>
     public class HandDraggable : MonoBehaviour,
-                                 IFocusable,
+                                 IFocusHandler,
                                  IInputHandler,
                                  ISourceStateHandler
     {
@@ -227,6 +227,14 @@ namespace HoloToolkit.Unity.InputModule
             isDragging = false;
             currentInputSource = null;
             StoppedDragging.RaiseEvent();
+        }
+
+        public void OnFocusChanged(FocusEventData eventData)
+        {
+            if (eventData.NewObject == gameObject)
+                OnFocusEnter();
+            if (eventData.PreviousObject == gameObject)
+                OnFocusExit();
         }
 
         public void OnFocusEnter()

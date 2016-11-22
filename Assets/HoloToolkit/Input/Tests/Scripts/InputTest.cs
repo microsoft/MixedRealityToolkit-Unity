@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     public class InputTest : MonoBehaviour, 
                              IInputHandler,
                              IInputClickHandler,
-                             IFocusable, 
+                             IFocusHandler, 
                              ISourceStateHandler,
                              IHoldHandler,
                              IManipulationHandler,
@@ -36,14 +36,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
         }
 
-        public void OnFocusEnter()
+        public void OnFocusChanged(FocusEventData eventData)
         {
-            Debug.Log("OnFocusEnter");
-        }
-
-        public void OnFocusExit()
-        {
-            Debug.Log("OnFocusExit");
+            Debug.LogFormat("OnFocusChanged\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
         }
 
         public void OnSourceDetected(SourceStateEventData eventData)

@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public abstract class Cursor : MonoBehaviour, ICursor
+    public abstract class Cursor : MonoBehaviour, ICursor, IFocusHandler
     {
         /// <summary>
         /// Enum for current cursor state
@@ -201,9 +201,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void RegisterManagers()
         {
-            // Register to gaze events
-            gazeManager.FocusedObjectChanged += OnFocusedObjectChanged;
-
             // Register the cursor as a global listener, so that it can always get input events it cares about
             InputManager.Instance.AddGlobalListener(gameObject);
 
@@ -226,11 +223,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            if (gazeManager != null)
-            {
-                gazeManager.FocusedObjectChanged -= OnFocusedObjectChanged;
-            }
-
             if (InputManager.Instance != null)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
@@ -245,8 +237,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="previousObject">Object that was previously being focused.</param>
         /// <param name="newObject">New object being focused.</param>
-        protected virtual void OnFocusedObjectChanged(GameObject previousObject, GameObject newObject)
+        public virtual void OnFocusChanged(FocusEventData eventData)
         {
+            GameObject newObject = eventData.NewObject;
             TargetedObject = newObject;
             if (newObject != null)
             {

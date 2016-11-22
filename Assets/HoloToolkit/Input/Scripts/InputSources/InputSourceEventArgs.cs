@@ -30,6 +30,29 @@ namespace HoloToolkit.Unity.InputModule
     }
 
     /// <summary>
+    /// Event args for a focus changed event.
+    /// </summary>
+    public class FocusChangedEventArgs : InputSourceEventArgs
+    {
+        /// <summary>
+        /// The game object that lost the focus.
+        /// </summary>
+        public GameObject PreviousObject { get; private set; }
+
+        /// <summary>
+        /// The game object that gained the focus.
+        /// </summary>
+        public GameObject NewObject { get; private set; }
+
+        public FocusChangedEventArgs(IInputSource inputSource, uint sourceId, GameObject previousObject, GameObject newObject)
+            : base(inputSource, sourceId)
+        {
+            PreviousObject = previousObject;
+            NewObject = newObject;
+        }
+    }
+
+    /// <summary>
     /// Event args for a click event.
     /// </summary>
     public class SourceClickEventArgs : InputSourceEventArgs
