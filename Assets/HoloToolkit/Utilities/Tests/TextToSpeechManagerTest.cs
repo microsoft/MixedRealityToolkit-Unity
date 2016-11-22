@@ -9,13 +9,10 @@ public class TextToSpeechManagerTest : MonoBehaviour
 {
     private GestureRecognizer gestureRecognizer;
     public TextToSpeechManager textToSpeechManager;
-    private bool isSpeaking;
 
     // Use this for initialization
     void Start ()
     {
-        isSpeaking = false;
-
         // Set up a GestureRecognizer to detect Select gestures.
         gestureRecognizer = new GestureRecognizer();
         gestureRecognizer.TappedEvent += GestureRecognizer_TappedEvent;
@@ -39,7 +36,7 @@ public class TextToSpeechManagerTest : MonoBehaviour
 
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.
-            if (tts != null && !isSpeaking)
+            if (tts != null && !tts.IsSpeaking())
             {
                 // Get the name
                 var voiceName = Enum.GetName(typeof(TextToSpeechVoice), tts.Voice);
@@ -47,14 +44,11 @@ public class TextToSpeechManagerTest : MonoBehaviour
                 // Create message
                 var msg = string.Format("This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.", voiceName);
 
-                isSpeaking = true;
-
                 // Speak message
                 tts.SpeakText(msg);
             }
-            else if (isSpeaking)
+            else if (tts.IsSpeaking())
             {
-                isSpeaking = false;
                 tts.StopSpeaking();
             }
         }

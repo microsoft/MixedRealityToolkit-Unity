@@ -383,6 +383,22 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Returns whether or not the AudioSource is actively playing.
+        /// </summary>
+        /// <returns>
+        /// True, if the AudioSource is playing. False, if the AudioSource is not playing or is null.
+        /// </returns>
+        public bool IsSpeaking()
+        {
+            if (audioSource != null)
+            {
+                return audioSource.isPlaying;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Stops text-to-speech playback.
         /// </summary>
         public void StopSpeaking()
