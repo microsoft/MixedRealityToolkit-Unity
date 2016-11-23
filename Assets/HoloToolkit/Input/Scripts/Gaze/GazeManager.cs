@@ -13,8 +13,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GazeManager : BaseSingletonInputSource<GazeManager>
     {
-        //public delegate void FocusedChangedDelegate(GameObject previousObject, GameObject newObject);
-
         /// <summary>
         /// Indicates whether the user is currently gazing at an object.
         /// </summary>
@@ -79,12 +77,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         [Tooltip("Transform that should be used to represent the gaze position and orientation. Defaults to Camera.Main")]
         public Transform GazeTransform;
-
-        /// <summary>
-        /// Dispatched when focus shifts to a new object, or focus on current object
-        /// is lost.
-        /// </summary>
-        //public event FocusedChangedDelegate FocusedObjectChanged;
 
         private float lastHitDistance = 2.0f;
 

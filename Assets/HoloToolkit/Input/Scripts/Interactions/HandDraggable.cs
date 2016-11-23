@@ -232,9 +232,13 @@ namespace HoloToolkit.Unity.InputModule
         public void OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.NewObject == gameObject)
+            {
                 OnFocusEnter();
+            }
             if (eventData.PreviousObject == gameObject)
+            {
                 OnFocusExit();
+            }
         }
 
         public void OnFocusEnter()

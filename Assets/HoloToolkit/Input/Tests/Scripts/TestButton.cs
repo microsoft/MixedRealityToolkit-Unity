@@ -203,9 +203,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.NewObject == gameObject)
+            {
                 OnFocusEnter();
+            }
             if (eventData.PreviousObject == gameObject)
+            {
                 OnFocusExit();
+            }
         }
 
         public void OnFocusEnter()

@@ -22,9 +22,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.NewObject == gameObject)
+            {
                 material.color = FocusedColor;
+            }
             if (eventData.PreviousObject == gameObject)
+            {
                 material.color = originalColor;
+            }
         }
     }
 }

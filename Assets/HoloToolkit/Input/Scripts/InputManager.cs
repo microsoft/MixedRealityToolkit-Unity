@@ -25,7 +25,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private readonly List<GameObject> globalListeners = new List<GameObject>();
 
-        //private bool isRegisteredToGazeChanges;
         private int disabledRefCount;
 
         private FocusEventData focusEventData;
@@ -229,18 +228,6 @@ namespace HoloToolkit.Unity.InputModule
             navigationEventData = new NavigationEventData(EventSystem.current);
             holdEventData = new HoldEventData(EventSystem.current);
         }
-
-        //protected override void OnDestroy()
-        //{
-        //}
-
-        //private void OnEnable()
-        //{
-        //}
-
-        //private void OnDisable()
-        //{
-        //}
 
         private void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
             where T : IEventSystemHandler
