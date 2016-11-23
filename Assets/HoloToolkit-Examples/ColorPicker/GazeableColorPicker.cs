@@ -39,9 +39,13 @@ namespace Lighthouse
         public void OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.NewObject == gameObject)
+            {
                 gazing = true;
+            }
             if (eventData.PreviousObject == gameObject)
+            {
                 gazing = false;
+            }
         }
 
         public void OnInputClicked(InputEventData eventData)
