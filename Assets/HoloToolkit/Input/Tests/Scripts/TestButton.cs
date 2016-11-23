@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public float ToolTipDelayTime = 0.5f;
 
         [SerializeField]
-        protected Animator ButtonAnimator = null;
+        protected Animator ButtonAnimator;
 
         private static int focusedButtonId;
         private static int selectedButtonId;
@@ -31,6 +31,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public event ActivateDelegate Activated;
 
         public bool EnableActivation = true;
+
+        private AnimatorControllerParameter[] animatorHashes;
 
         private bool focused;
         public bool Focused
@@ -144,7 +146,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (ButtonAnimator != null && ButtonAnimator.isInitialized)
             {
-                var animatorHashes = ButtonAnimator.parameters;
+                if (animatorHashes == null)
+                {
+                    animatorHashes = ButtonAnimator.parameters;
+                }
+
                 for (int i = 0; i < animatorHashes.Length; i++)
                 {
                     if (animatorHashes[i].nameHash == deHydrateButtonId)
@@ -164,7 +170,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (ButtonAnimator != null && ButtonAnimator.gameObject.activeInHierarchy)
             {
-                var animatorHashes = ButtonAnimator.parameters;
+                if (animatorHashes == null)
+                {
+                    animatorHashes = ButtonAnimator.parameters;
+                }
+
                 for (int i = 0; i < animatorHashes.Length; i++)
                 {
                     if (animatorHashes[i].nameHash == focusedButtonId)

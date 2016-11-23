@@ -159,11 +159,11 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-
             InteractionManager.SourceLost -= InteractionManager_SourceLost;
             InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
             InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
+
+            base.OnDestroy();
         }
     }
 }

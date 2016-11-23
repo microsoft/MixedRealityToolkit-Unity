@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
 using System.Net;
 using System.Net.Sockets;
 #endif
@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity
         [Tooltip("The connection port on the machine to use.")]
         public int ConnectionPort = 11000;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// Listens for network connections over TCP.
         /// </summary> 

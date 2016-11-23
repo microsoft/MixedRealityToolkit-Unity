@@ -134,11 +134,11 @@ public class SpatialProcessingTest : Singleton<SpatialProcessingTest>
     /// </summary>
     protected override void OnDestroy()
     {
-        base.OnDestroy();
-
         if (SurfaceMeshesToPlanes.Instance != null)
         {
             SurfaceMeshesToPlanes.Instance.MakePlanesComplete -= SurfaceMeshesToPlanes_MakePlanesComplete;
         }
+
+        base.OnDestroy();
     }
 }
