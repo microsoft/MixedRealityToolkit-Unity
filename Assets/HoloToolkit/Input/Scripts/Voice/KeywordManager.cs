@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
     /// </summary>
-    public partial class KeywordManager : MonoBehaviour
+    public partial class KeywordManager : BaseInputSource
     {
         [System.Serializable]
         public struct KeywordAndResponse
@@ -45,6 +45,14 @@ namespace HoloToolkit.Unity.InputModule
 
         private KeywordRecognizer keywordRecognizer;
         private Dictionary<string, UnityEvent> responses;
+
+        public override SupportedInputEvents SupportedEvents
+        {
+            get
+            {
+                return SupportedInputEvents.SourceUpAndDown;
+            }
+        }
 
         void Start()
         {
@@ -96,7 +104,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
+        private void KeywordRecognizer_OnPhraseRecognized(UnityEngine.Windows.Speech.PhraseRecognizedEventArgs args)
         {
             UnityEvent keywordResponse;
 
@@ -129,6 +137,23 @@ namespace HoloToolkit.Unity.InputModule
             {
                 keywordRecognizer.Stop();
             }
+        }
+
+        public override bool TryGetPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        {
+            orientation = Quaternion.identity;
+            return false;
+        }
+
+        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        {
+            return SupportedInputInfo.None;
         }
     }
 }

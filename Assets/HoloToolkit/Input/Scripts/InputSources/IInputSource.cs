@@ -119,6 +119,11 @@ namespace HoloToolkit.Unity.InputModule
         event EventHandler<NavigationEventArgs> NavigationCanceled;
 
         /// <summary>
+        /// Event triggered when a speech phrase is recognized.
+        /// </summary>
+        event EventHandler<PhraseRecognizedEventArgs> PhraseRecognized;
+
+        /// <summary>
         /// Events supported by the input source.
         /// </summary>
         SupportedInputEvents SupportedEvents { get; }
