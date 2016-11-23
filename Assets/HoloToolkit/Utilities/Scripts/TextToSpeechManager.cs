@@ -403,7 +403,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopSpeaking()
         {
-            if (audioSource != null && audioSource.isPlaying)
+            if (IsSpeaking())
             {
                 audioSource.Stop();
             }
