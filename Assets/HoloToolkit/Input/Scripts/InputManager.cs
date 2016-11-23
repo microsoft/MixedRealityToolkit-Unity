@@ -303,6 +303,19 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             focusedObject = e.NewObject;
             HandleEvent(focusEventData, OnFocusChangedEventHandler);
+
+            // UI events
+            if (ShouldSendUnityUiEvents)
+            {
+                if (e.PreviousObject != null)
+                {
+                    ExecuteEvents.ExecuteHierarchy(e.PreviousObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerExitHandler);
+                }
+                if (e.NewObject != null)
+                {
+                    ExecuteEvents.ExecuteHierarchy(e.NewObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerEnterHandler);
+                }
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IInputClickHandler> OnInputClickedEventHandler =
