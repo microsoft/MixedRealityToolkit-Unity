@@ -6,6 +6,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Windows.Speech;
+using UnityEngine.VR.WSA.Input;
+using System;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -22,14 +24,12 @@ namespace HoloToolkit.Unity.InputModule
     public partial class KeywordManager : BaseInputSource
     {
         [System.Serializable]
-        public struct KeywordAndResponse
+        public struct KeywordAndKeyCode
         {
             [Tooltip("The keyword to recognize.")]
             public string Keyword;
             [Tooltip("The KeyCode to recognize.")]
             public KeyCode KeyCode;
-            [Tooltip("The UnityEvent to be invoked when the keyword is recognized.")]
-            public UnityEvent Response;
         }
 
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
@@ -40,11 +40,10 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("An enumeration to set whether the recognizer should start on or off.")]
         public RecognizerStartBehavior RecognizerStart;
 
-        [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
-        public KeywordAndResponse[] KeywordsAndResponses;
+        [Tooltip("An array of string keywords and keys, to be set in the Inspector.")]
+        public KeywordAndKeyCode[] KeywordsAndKeys;
 
         private KeywordRecognizer keywordRecognizer;
-        private Dictionary<string, UnityEvent> responses;
 
         public override SupportedInputEvents SupportedEvents
         {
@@ -56,14 +55,10 @@ namespace HoloToolkit.Unity.InputModule
 
         void Start()
         {
-            if (KeywordsAndResponses.Length > 0)
+            if (KeywordsAndKeys.Length > 0)
             {
-                // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
-                // This helps easily link the keyword recognized to the UnityEvent to be invoked.
-                responses = KeywordsAndResponses.ToDictionary(keywordAndResponse => keywordAndResponse.Keyword,
-                                                              keywordAndResponse => keywordAndResponse.Response);
-
-                keywordRecognizer = new KeywordRecognizer(responses.Keys.ToArray());
+                string[] keywords = KeywordsAndKeys.Select(keywordAndKey => keywordAndKey.Keyword).ToArray();
+                keywordRecognizer = new KeywordRecognizer(keywords);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                 if (RecognizerStart == RecognizerStartBehavior.AutoStart)
@@ -94,11 +89,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private void ProcessKeyBindings()
         {
-            foreach (var kvp in KeywordsAndResponses)
+            foreach (var kvp in KeywordsAndKeys)
             {
                 if (Input.GetKeyDown(kvp.KeyCode))
                 {
-                    kvp.Response.Invoke();
+                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, kvp.Keyword);
                     return;
                 }
             }
@@ -106,13 +101,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void KeywordRecognizer_OnPhraseRecognized(UnityEngine.Windows.Speech.PhraseRecognizedEventArgs args)
         {
-            UnityEvent keywordResponse;
-
-            // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
-            if (responses.TryGetValue(args.text, out keywordResponse))
-            {
-                keywordResponse.Invoke();
-            }
+            PhraseRecognizedEventArgs raiseArgs = new PhraseRecognizedEventArgs(this, 0, args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
+            RaisePhraseRecognizedEvent(raiseArgs);
         }
 
         /// <summary>
@@ -137,6 +127,15 @@ namespace HoloToolkit.Unity.InputModule
             {
                 keywordRecognizer.Stop();
             }
+        }
+
+        private void OnPhraseRecognized(UnityEngine.Windows.Speech.ConfidenceLevel confidence,
+            TimeSpan phraseDuration, DateTime phraseStartTime,
+            UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings,
+            string text)
+        {
+            PhraseRecognizedEventArgs raiseArgs = new PhraseRecognizedEventArgs(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            RaisePhraseRecognizedEvent(raiseArgs);
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
