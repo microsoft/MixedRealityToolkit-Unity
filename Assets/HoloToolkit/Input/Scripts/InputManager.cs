@@ -26,6 +26,7 @@ namespace HoloToolkit.Unity.InputModule
         private readonly List<GameObject> globalListeners = new List<GameObject>();
 
         private int disabledRefCount;
+        private GameObject focusedObject;
 
         private FocusEventData focusEventData;
         private InputEventData inputEventData;
@@ -251,7 +252,6 @@ namespace HoloToolkit.Unity.InputModule
 
                 // If there is a focused object in the hierarchy of the modal handler, start the event
                 // bubble there
-                GameObject focusedObject = GazeManager.Instance.HitObject;
                 if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
                 {
 
@@ -271,9 +271,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // If event was not handled by modal, pass it on to the current focused object
-            if (GazeManager.Instance.HitObject != null)
+            if (focusedObject != null)
             {
-                bool eventHandled = ExecuteEvents.ExecuteHierarchy(GazeManager.Instance.HitObject, eventData, eventHandler);
+                bool eventHandled = ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler);
                 if (eventHandled)
                 {
                     return;
@@ -301,6 +301,7 @@ namespace HoloToolkit.Unity.InputModule
             focusEventData.Initialize(e.InputSource, e.SourceId, e.PreviousObject, e.NewObject);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
+            focusedObject = e.NewObject;
             HandleEvent(focusEventData, OnFocusChangedEventHandler);
         }
 
