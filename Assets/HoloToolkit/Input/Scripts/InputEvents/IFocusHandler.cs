@@ -8,9 +8,8 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Interface to implement to react to focus enter/exit.
     /// </summary>
-    public interface IFocusable : IEventSystemHandler
+    public interface IFocusHandler : IEventSystemHandler
     {
-        void OnFocusEnter();
-        void OnFocusExit();
+        void OnFocusChanged(FocusEventData eventData);
     }
 }

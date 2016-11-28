@@ -16,7 +16,8 @@ namespace HoloToolkit.Unity.InputModule
         SourceClicked = 2,
         Hold = 4,
         Manipulation = 8,
-        Navigation = 16
+        Navigation = 16,
+        Focus = 32
     }
 
     /// <summary>
@@ -36,6 +37,11 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IInputSource
     {
+        /// <summary>
+        /// Event triggered when the object with focus changes.
+        /// </summary>
+        event EventHandler<FocusChangedEventArgs> FocusChanged;
+
         /// <summary>
         /// Event triggered when the input source goes up. This is the equivalent of the pointer up event of a mouse.
         /// </summary>

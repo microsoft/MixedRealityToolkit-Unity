@@ -25,9 +25,10 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private readonly List<GameObject> globalListeners = new List<GameObject>();
 
-        private bool isRegisteredToGazeChanges;
         private int disabledRefCount;
+        private GameObject focusedObject;
 
+        private FocusEventData focusEventData;
         private InputEventData inputEventData;
         private SourceStateEventData sourceStateEventData;
         private ManipulationEventData manipulationEventData;
@@ -169,6 +170,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="inputSource">The input source to register</param>
         public void RegisterInputSource(IInputSource inputSource)
         {
+            inputSource.FocusChanged += InputSource_FocusChanged;
             inputSource.HoldCanceled += InputSource_HoldCanceled;
             inputSource.HoldCompleted += InputSource_HoldCompleted;
             inputSource.HoldStarted += InputSource_HoldStarted;
@@ -194,6 +196,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="inputSource">The input source to unregister</param>
         public void UnregisterInputSource(IInputSource inputSource)
         {
+            inputSource.FocusChanged -= InputSource_FocusChanged;
             inputSource.HoldCanceled -= InputSource_HoldCanceled;
             inputSource.HoldCompleted -= InputSource_HoldCompleted;
             inputSource.HoldStarted -= InputSource_HoldStarted;
@@ -215,37 +218,16 @@ namespace HoloToolkit.Unity.InputModule
         private void Start()
         {
             InitializeEventDatas();
-
-            if (GazeManager.Instance == null)
-            {
-                Debug.LogError("InputManager requires an active GazeManager in the scene");
-            }
-
-            RegisterGazeManager();
         }
 
         private void InitializeEventDatas()
         {
+            focusEventData = new FocusEventData(EventSystem.current);
             inputEventData = new InputEventData(EventSystem.current);
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
             navigationEventData = new NavigationEventData(EventSystem.current);
             holdEventData = new HoldEventData(EventSystem.current);
-        }
-
-        protected override void OnDestroy()
-        {
-            UnregisterGazeManager();
-        }
-
-        private void OnEnable()
-        {
-            RegisterGazeManager();
-        }
-
-        private void OnDisable()
-        {
-            UnregisterGazeManager();
         }
 
         private void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
@@ -270,7 +252,6 @@ namespace HoloToolkit.Unity.InputModule
 
                 // If there is a focused object in the hierarchy of the modal handler, start the event
                 // bubble there
-                GameObject focusedObject = GazeManager.Instance.HitObject;
                 if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
                 {
 
@@ -290,9 +271,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // If event was not handled by modal, pass it on to the current focused object
-            if (GazeManager.Instance.HitObject != null)
+            if (focusedObject != null)
             {
-                bool eventHandled = ExecuteEvents.ExecuteHierarchy(GazeManager.Instance.HitObject, eventData, eventHandler);
+                bool eventHandled = ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler);
                 if (eventHandled)
                 {
                     return;
@@ -307,64 +288,32 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        /// <summary>
-        /// Register to gaze manager events.
-        /// </summary>
-        private void RegisterGazeManager()
-        {
-            if (!isRegisteredToGazeChanges && GazeManager.Instance != null)
+        private static readonly ExecuteEvents.EventFunction<IFocusHandler> OnFocusChangedEventHandler =
+            delegate (IFocusHandler handler, BaseEventData eventData)
             {
-                GazeManager.Instance.FocusedObjectChanged += GazeManager_FocusedChanged;
-                isRegisteredToGazeChanges = true;
-            }
-        }
-
-        /// <summary>
-        /// Unregister from gaze manager events.
-        /// </summary>
-        private void UnregisterGazeManager()
-        {
-            if (isRegisteredToGazeChanges && GazeManager.Instance != null)
-            {
-                GazeManager.Instance.FocusedObjectChanged -= GazeManager_FocusedChanged;
-                isRegisteredToGazeChanges = false;
-            }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IFocusable> OnFocusEnterEventHadler =
-            delegate (IFocusable handler, BaseEventData eventData)
-            {
-                handler.OnFocusEnter();
+                FocusEventData casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                handler.OnFocusChanged(casted);
             };
 
-        private static readonly ExecuteEvents.EventFunction<IFocusable> OnFocusExitEventHandler =
-            delegate (IFocusable handler, BaseEventData eventData)
-            {
-                handler.OnFocusExit();
-            };
-
-        private void GazeManager_FocusedChanged(GameObject previousObject, GameObject newObject)
+        private void InputSource_FocusChanged(object sender, FocusChangedEventArgs e)
         {
-            if (disabledRefCount > 0)
-            {
-                return;
-            }
+            // Create input event
+            focusEventData.Initialize(e.InputSource, e.SourceId, e.PreviousObject, e.NewObject);
 
-            if (previousObject != null)
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            focusedObject = e.NewObject;
+            HandleEvent(focusEventData, OnFocusChangedEventHandler);
+
+            // UI events
+            if (ShouldSendUnityUiEvents)
             {
-                ExecuteEvents.ExecuteHierarchy(previousObject, null, OnFocusEnterEventHadler);
-                if (ShouldSendUnityUiEvents)
+                if (e.PreviousObject != null)
                 {
-                    ExecuteEvents.ExecuteHierarchy(previousObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerExitHandler);
+                    ExecuteEvents.ExecuteHierarchy(e.PreviousObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerExitHandler);
                 }
-            }
-
-            if (newObject != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(newObject, null, OnFocusExitEventHandler);
-                if (ShouldSendUnityUiEvents)
+                if (e.NewObject != null)
                 {
-                    ExecuteEvents.ExecuteHierarchy(newObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerEnterHandler);
+                    ExecuteEvents.ExecuteHierarchy(e.NewObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerEnterHandler);
                 }
             }
         }

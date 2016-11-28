@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// receive pressed and released events.
     /// This class is an example of how an animated button can be created using the input module and Unity.
     /// </summary>
-    public class TestButton : MonoBehaviour, IInputClickHandler, IFocusable
+    public class TestButton : MonoBehaviour, IInputClickHandler, IFocusHandler
     {
         public Transform ToolTip;
         public Renderer ToolTipRenderer;
@@ -207,6 +207,18 @@ namespace HoloToolkit.Unity.InputModule.Tests
             if (Activated != null)
             {
                 Activated(this);
+            }
+        }
+
+        public void OnFocusChanged(FocusEventData eventData)
+        {
+            if (eventData.NewObject == gameObject)
+            {
+                OnFocusEnter();
+            }
+            if (eventData.PreviousObject == gameObject)
+            {
+                OnFocusExit();
             }
         }
 

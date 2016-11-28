@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class OnFocusEvent : MonoBehaviour, IFocusable
+    public class OnFocusEvent : MonoBehaviour, IFocusHandler
     {
         public UnityEvent FocusEnterEvent;
         public UnityEvent FocusLostEvent;
@@ -12,6 +12,18 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private void Start()
         {
             // dummy Start function so we can use this.enabled
+        }
+
+        public void OnFocusChanged(FocusEventData eventData)
+        {
+            if (eventData.NewObject == gameObject)
+            {
+                OnFocusEnter();
+            }
+            if (eventData.PreviousObject == gameObject)
+            {
+                OnFocusExit();
+            }
         }
 
         public void OnFocusEnter()

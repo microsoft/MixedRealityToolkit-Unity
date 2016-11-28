@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace Lighthouse
 {
-    public class GazeableColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
+    public class GazeableColorPicker : MonoBehaviour, IFocusHandler, IInputClickHandler
     {
         public Renderer rendererComponent;
 
@@ -36,14 +36,16 @@ namespace Lighthouse
             cb.Invoke(col);
         }
 
-        public void OnFocusEnter()
+        public void OnFocusChanged(FocusEventData eventData)
         {
-            gazing = true;
-        }
-
-        public void OnFocusExit()
-        {
-            gazing = false;
+            if (eventData.NewObject == gameObject)
+            {
+                gazing = true;
+            }
+            if (eventData.PreviousObject == gameObject)
+            {
+                gazing = false;
+            }
         }
 
         public void OnInputClicked(InputEventData eventData)

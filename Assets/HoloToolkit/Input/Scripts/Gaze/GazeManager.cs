@@ -4,16 +4,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
-    public class GazeManager : Singleton<GazeManager>
+    public class GazeManager : BaseSingletonInputSource<GazeManager>
     {
-        public delegate void FocusedChangedDelegate(GameObject previousObject, GameObject newObject);
-
         /// <summary>
         /// Indicates whether the user is currently gazing at an object.
         /// </summary>
@@ -79,12 +78,6 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Transform that should be used to represent the gaze position and orientation. Defaults to Camera.Main")]
         public Transform GazeTransform;
 
-        /// <summary>
-        /// Dispatched when focus shifts to a new object, or focus on current object
-        /// is lost.
-        /// </summary>
-        public event FocusedChangedDelegate FocusedObjectChanged;
-
         private float lastHitDistance = 2.0f;
 
         /// <summary>
@@ -96,6 +89,14 @@ namespace HoloToolkit.Unity.InputModule
         /// Cached results of racast results.
         /// </summary>
         private List<RaycastResult> raycastResultList = new List<RaycastResult>();
+
+        public override SupportedInputEvents SupportedEvents
+        {
+            get
+            {
+                return SupportedInputEvents.Focus;
+            }
+        }
 
         protected override void Awake()
         {
@@ -140,9 +141,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Dispatch changed event if focus is different
-            if (previousFocusObject != HitObject && FocusedObjectChanged != null)
+            if (previousFocusObject != HitObject)
             {
-                FocusedObjectChanged(previousFocusObject, HitObject);
+                OnFocusChangedEvent(previousFocusObject, HitObject);
             }
         }
 
@@ -279,6 +280,29 @@ namespace HoloToolkit.Unity.InputModule
                     lastHitDistance = HitInfo.distance;
                 }
             }
+        }
+
+        public override bool TryGetPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        {
+            orientation = Quaternion.identity;
+            return false;
+        }
+
+        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        {
+            return SupportedInputInfo.None;
+        }
+
+        private void OnFocusChangedEvent(GameObject previousObject, GameObject newObject)
+        {
+            FocusChangedEventArgs args = new FocusChangedEventArgs(this, 0, previousObject, newObject);
+            RaiseFocusChangedEvent(args);
         }
 
         #region Helpers

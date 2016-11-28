@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
+        public event EventHandler<FocusChangedEventArgs> FocusChanged;
         public event EventHandler<InputSourceEventArgs> SourceUp;
         public event EventHandler<InputSourceEventArgs> SourceDown;
         public event EventHandler<SourceClickEventArgs> SourceClicked;
@@ -106,6 +107,15 @@ namespace HoloToolkit.Unity.InputModule
         public abstract bool TryGetOrientation(uint sourceId, out Quaternion orientation);
 
         #region Events wrappers
+
+        protected void RaiseFocusChangedEvent(FocusChangedEventArgs e)
+        {
+            EventHandler<FocusChangedEventArgs> handler = FocusChanged;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
 
         protected void RaiseSourceUpEvent(InputSourceEventArgs e)
         {
