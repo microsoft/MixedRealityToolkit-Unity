@@ -20,7 +20,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Enum to track the progress through establishing a shared coordinate system.
         /// </summary>
-        enum ImportExportState
+        private enum ImportExportState
         {
             // Overall states
             Start,
@@ -147,7 +147,7 @@ namespace HoloToolkit.Sharing
         /// Sometimes we'll see a really small anchor blob get generated.
         /// These tend to not work, so we have a minimum trustable size.
         /// </summary>
-        const uint minTrustworthySerializedAnchorDataSize = 100000;
+        private const uint minTrustworthySerializedAnchorDataSize = 100000;
 
         /// <summary>
         /// Some room ID for indicating which room we are in.
@@ -157,18 +157,19 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Provides updates when anchor data is uploaded/downloaded.
         /// </summary>
-        RoomManagerAdapter roomManagerCallbacks;
+        private RoomManagerAdapter roomManagerCallbacks;
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
             Debug.Log("Import Export Manager starting");
-
-            currentState = ImportExportState.Ready;
-
             // We need to get our local anchor store started up.
             currentState = ImportExportState.AnchorStore_Initializing;
             WorldAnchorStore.GetAsync(AnchorStoreReady);
+        }
 
+    private void Start()
+    {
             // We will register for session joined and left to indicate when the sharing service
             // is ready for us to make room related requests.
             sharingStage = SharingStage.Instance;
@@ -263,7 +264,7 @@ namespace HoloToolkit.Sharing
         /// Called when the local anchor store is ready.
         /// </summary>
         /// <param name="store"></param>
-        void AnchorStoreReady(WorldAnchorStore store)
+        private void AnchorStoreReady(WorldAnchorStore store)
         {
             anchorStore = store;
             currentState = ImportExportState.AnchorStore_Initialized;
@@ -303,12 +304,13 @@ namespace HoloToolkit.Sharing
             }
         }
 
-        /// <summary>
-        /// Can be called if session management is handled externally
-        /// </summary>
-        public void MarkSharingServiceReady()
+        private void MarkSharingServiceReady()
         {
             sharingServiceReady = true;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+            InitRoomApi();
+#endif
         }
 
         /// <summary>
@@ -444,7 +446,7 @@ namespace HoloToolkit.Sharing
             }
         }
 
-        void Update()
+        private void Update()
         {
             switch (currentState)
             {
@@ -519,13 +521,13 @@ namespace HoloToolkit.Sharing
         /// Attempts to attach to  an anchor by anchorName in the local store..
         /// </summary>
         /// <returns>True if it attached, false if it could not attach</returns>
-        private bool AttachToCachedAnchor(string AnchorName)
+        private bool AttachToCachedAnchor(string anchorName)
         {
-            Debug.Log("Looking for " + AnchorName);
+            Debug.Log("Looking for " + anchorName);
             string[] ids = anchorStore.GetAllIds();
             for (int index = 0; index < ids.Length; index++)
             {
-                if (ids[index] == AnchorName)
+                if (ids[index] == anchorName)
                 {
                     Debug.Log("Using what we have");
                     WorldAnchor wa = anchorStore.Load(ids[index], gameObject);

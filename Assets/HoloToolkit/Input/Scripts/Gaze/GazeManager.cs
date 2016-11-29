@@ -92,6 +92,11 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public PointerEventData UnityUIPointerEvent { get; private set; }
 
+        /// <summary>
+        /// Cached results of racast results.
+        /// </summary>
+        private List<RaycastResult> raycastResultList = new List<RaycastResult>();
+
         protected override void Awake()
         {
             base.Awake();
@@ -171,14 +176,12 @@ namespace HoloToolkit.Unity.InputModule
             // If there is only one priority, don't prioritize
             if (RaycastLayerMasks.Length == 1)
             {
-                IsGazingAtObject = Physics.Raycast(GazeOrigin, GazeNormal, out hitInfo, MaxGazeCollisionDistance,
-                    RaycastLayerMasks[0]);
+                IsGazingAtObject = Physics.Raycast(GazeOrigin, GazeNormal, out hitInfo, MaxGazeCollisionDistance, RaycastLayerMasks[0]);
             }
             else
             {
                 // Raycast across all layers and prioritize
-                RaycastHit? hit =
-                    PrioritizeHits(Physics.RaycastAll(new Ray(GazeOrigin, GazeNormal), MaxGazeCollisionDistance, -1));
+                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(new Ray(GazeOrigin, GazeNormal), MaxGazeCollisionDistance, -1));
 
                 IsGazingAtObject = hit.HasValue;
                 if (IsGazingAtObject)
@@ -217,7 +220,7 @@ namespace HoloToolkit.Unity.InputModule
             UnityUIPointerEvent.position = cursorScreenPos;
 
             // Graphics raycast
-            List<RaycastResult> raycastResultList = new List<RaycastResult>();
+            raycastResultList.Clear();
             EventSystem.current.RaycastAll(UnityUIPointerEvent, raycastResultList);
             RaycastResult uiRaycastResult = FindFirstRaycastInLayermasks(raycastResultList, RaycastLayerMasks);
             UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
