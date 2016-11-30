@@ -53,8 +53,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             if (KeywordsAndKeys.Length > 0)
             {
                 string[] keywords = KeywordsAndKeys.Select(keywordAndKey => keywordAndKey.Keyword).ToArray();
@@ -77,7 +79,7 @@ namespace HoloToolkit.Unity.InputModule
             ProcessKeyBindings();
         }
 
-        void OnDestroy()
+        protected override void OnDestroy()
         {
             if (keywordRecognizer != null)
             {
@@ -85,6 +87,8 @@ namespace HoloToolkit.Unity.InputModule
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
                 keywordRecognizer.Dispose();
             }
+
+            base.OnDestroy();
         }
 
         private void ProcessKeyBindings()
