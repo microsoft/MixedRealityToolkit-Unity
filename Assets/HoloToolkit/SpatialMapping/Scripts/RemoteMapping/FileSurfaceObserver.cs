@@ -70,7 +70,7 @@ namespace HoloToolkit.Unity
         private void Update()
         {
             // Keyboard commands for saving and loading a remotely generated mesh file.
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
             // S - saves the active mesh
             if (Input.GetKeyUp(KeyCode.S))
             {

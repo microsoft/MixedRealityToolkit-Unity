@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity
             public string BusName = "";
         }
 
-        [MenuItem("Addons/UAudioTools/Profiler")]
+        [MenuItem("HoloToolkit/UAudioTools/Profiler", false, 200)]
         static void ShowEditor()
         {
             UAudioProfiler profilerWindow = GetWindow<UAudioProfiler>();
