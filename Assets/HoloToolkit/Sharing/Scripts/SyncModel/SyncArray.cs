@@ -18,17 +18,32 @@ namespace HoloToolkit.Sharing.SyncModel
     /// <typeparam name="T">Type of SyncObject in the array.</typeparam>
     public class SyncArray<T> : SyncObject, IEnumerable<T> where T : SyncObject, new()
     {
-        public event Action<T> ObjectAdded;         // Called when a new object has been added to the array
-        public event Action<T> ObjectRemoved;       // Called when an existing object has been removed from the array
+        /// <summary>
+        /// Called when a new object has been added to the array.
+        /// </summary>
+        public event Action<T> ObjectAdded;
 
-        private Dictionary<string, T> dataArray;    // Maps the unique id to object
-        protected Type ArrayType;
+        /// <summary>
+        /// Called when an existing object has been removed from the array
+        /// </summary>
+        public event Action<T> ObjectRemoved;
+
+        /// <summary>
+        /// // Maps the unique id to object
+        /// </summary>
+        private readonly Dictionary<string, T> dataArray;
+
+        /// <summary>
+        /// Type of objects in the array.
+        /// This is cached so that we don't have to call typeof(T) more than once.
+        /// </summary>
+        protected Type arrayType;
 
         public SyncArray(string field)
             : base(field)
         {
             this.dataArray = new Dictionary<string, T>();
-            this.ArrayType = typeof(T);
+            this.arrayType = typeof(T);
         }
 
         public SyncArray()
@@ -44,7 +59,7 @@ namespace HoloToolkit.Sharing.SyncModel
         protected virtual T CreateObject(ObjectElement objectElement)
         {
             Type objectType = SyncSettings.Instance.GetDataModelType(objectElement.GetObjectType()).AsType();
-            if (!objectType.IsSubclassOf(ArrayType) && objectType != ArrayType)
+            if (!objectType.IsSubclassOf(arrayType) && objectType != arrayType)
             {
                 throw new InvalidCastException(string.Format("Object of incorrect type added to SyncArray: Expected {0}, got {1} ", objectType, objectElement.GetObjectType().GetString()));
             }
