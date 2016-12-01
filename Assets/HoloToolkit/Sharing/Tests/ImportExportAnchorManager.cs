@@ -168,8 +168,8 @@ namespace HoloToolkit.Sharing
             WorldAnchorStore.GetAsync(AnchorStoreReady);
         }
 
-    private void Start()
-    {
+        private void Start()
+        {
             // We will register for session joined and left to indicate when the sharing service
             // is ready for us to make room related requests.
             sharingStage = SharingStage.Instance;

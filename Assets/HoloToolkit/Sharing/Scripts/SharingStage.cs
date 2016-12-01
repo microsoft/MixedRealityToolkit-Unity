@@ -134,16 +134,17 @@ namespace HoloToolkit.Sharing
             }
         }
 
-        private NetworkConnection connection;
+        private NetworkConnectionAdapter networkConnectionAdapter;
+        private NetworkConnection networkConnection;
         public NetworkConnection Connection
         {
             get
             {
-                if (connection == null)
+                if (networkConnection == null)
                 {
-                    connection = sharingMgr.GetServerConnection();
+                    networkConnection = sharingMgr.GetServerConnection();
                 }
-                return connection;
+                return networkConnection;
             }
         }
 
@@ -201,10 +202,17 @@ namespace HoloToolkit.Sharing
                 this.SessionsTracker = null;
             }
 
-            if (connection != null)
+            if (networkConnection != null)
             {
-                connection.Dispose();
-                connection = null;
+                networkConnection.RemoveListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+                networkConnection.Dispose();
+                networkConnection = null;
+
+                if (networkConnectionAdapter != null)
+                {
+                    networkConnectionAdapter.Dispose();
+                    networkConnectionAdapter = null;
+                }
             }
 
             if (sharingMgr != null)
@@ -246,6 +254,12 @@ namespace HoloToolkit.Sharing
 
             sharingMgr = SharingManager.Create(config);
 
+            //set up callbacks so that we know when we've connected successfully
+            networkConnection = sharingMgr.GetServerConnection();
+            networkConnectionAdapter = new NetworkConnectionAdapter();
+            networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
+            networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+
             SyncStateListener = new SyncStateListener();
             sharingMgr.RegisterSyncListener(SyncStateListener);
 
@@ -258,6 +272,11 @@ namespace HoloToolkit.Sharing
             {
                 sharingMgr.SetUserName(userName);
             }
+        }
+
+        private void NetworkConnectionAdapter_ConnectedCallback(NetworkConnection obj)
+        {
+            SendConnectedNotification();
         }
 
         private void SendConnectedNotification()
