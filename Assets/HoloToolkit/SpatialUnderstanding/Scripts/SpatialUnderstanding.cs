@@ -116,8 +116,10 @@ namespace HoloToolkit.Unity
         private float timeSinceLastUpdate = 0.0f;
 
         // Functions
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             // Cache references to required component
             UnderstandingDLL = new SpatialUnderstandingDll();
             UnderstandingSourceMesh = GetComponent<SpatialUnderstandingSourceMesh>();
@@ -152,13 +154,15 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             // Term the DLL
             if (AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDll.Imports.SpatialUnderstanding_Term();
             }
+
+            base.OnDestroy();
         }
 
         /// <summary>

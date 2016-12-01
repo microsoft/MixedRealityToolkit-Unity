@@ -243,7 +243,18 @@ namespace HoloToolkit.Unity
                 // Report
                 if (www.isDone)
                 {
-                    Debug.Log(JsonUtility.FromJson<Response>(www.text).Reason);
+                    if (!string.IsNullOrEmpty(www.error))
+                    {
+                        Debug.LogError(www.error);
+                    }
+                    else if (!string.IsNullOrEmpty(www.text))
+                    {
+                        Debug.Log(JsonUtility.FromJson<Response>(www.text).Reason);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Completed with null response string");
+                    }
                 }
 
                 // Wait for done (if requested)
