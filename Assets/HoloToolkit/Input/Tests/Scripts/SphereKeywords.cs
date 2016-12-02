@@ -8,9 +8,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
-        public void OnPhraseRecognized(PhraseRecognizedEventData eventData)
+        public void ChangeColor(string color)
         {
-            switch (eventData.Text.ToLower())
+            switch (color.ToLower())
             {
                 case "red":
                     GetComponent<Renderer>().material.color = Color.red;
@@ -22,6 +22,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     GetComponent<Renderer>().material.color = Color.green;
                     break;
             }
+        }
+
+        public void OnPhraseRecognized(PhraseRecognizedEventData eventData)
+        {
+            ChangeColor(eventData.RecognizedText);
         }
     }
 }

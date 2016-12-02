@@ -3,14 +3,13 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Describes an input event that involves keyword recognition.
+    /// Event args for a phrase recognized event.
     /// </summary>
-    public class PhraseRecognizedEventData : InputEventData
+    public class PhraseRecognizedEventArgs : InputSourceEventArgs
     {
         /// <summary>
         /// A measure of correct recognition certainty.
@@ -37,13 +36,8 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public string RecognizedText { get; private set; }
 
-        public PhraseRecognizedEventData(EventSystem eventSystem) : base(eventSystem)
+        public PhraseRecognizedEventArgs(IInputSource inputSource, uint sourceId, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string recognizedText) : base(inputSource, sourceId)
         {
-        }
-
-        public void Initialize(IInputSource inputSource, uint sourceId, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string recognizedText)
-        {
-            BaseInitialize(inputSource, sourceId);
             Confidence = confidence;
             PhraseDuration = phraseDuration;
             PhraseStartTime = phraseStartTime;

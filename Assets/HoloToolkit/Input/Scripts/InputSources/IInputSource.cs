@@ -16,7 +16,8 @@ namespace HoloToolkit.Unity.InputModule
         SourceClicked = 2,
         Hold = 4,
         Manipulation = 8,
-        Navigation = 16
+        Navigation = 16,
+        SpeechKeyword = 32
     }
 
     /// <summary>

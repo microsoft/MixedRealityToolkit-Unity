@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnPhraseRecognized(PhraseRecognizedEventData eventData)
         {
-            switch (eventData.Text.ToLower())
+            switch (eventData.RecognizedText.ToLower())
             {
                 case "reset all":
                     foreach (Renderer renderer in GetComponentsInChildren<Renderer>())

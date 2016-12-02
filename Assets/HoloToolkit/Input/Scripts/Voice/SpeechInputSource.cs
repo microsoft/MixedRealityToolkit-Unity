@@ -1,16 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// KeywordManager allows you to specify keywords and methods in the Unity
+    /// SpeechInputSource allows you to specify keywords and methods in the Unity
     /// Inspector, instead of registering them explicitly in code.
     /// This also includes a setting to either automatically start the
     /// keyword recognizer or allow your code to start it.
@@ -19,17 +18,15 @@ namespace HoloToolkit.Unity.InputModule
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
     /// </summary>
-    public partial class KeywordManager : MonoBehaviour
+    public partial class SpeechInputSource : BaseInputSource
     {
         [System.Serializable]
-        public struct KeywordAndResponse
+        public struct KeywordAndKeyCode
         {
             [Tooltip("The keyword to recognize.")]
             public string Keyword;
             [Tooltip("The KeyCode to recognize.")]
             public KeyCode KeyCode;
-            [Tooltip("The UnityEvent to be invoked when the keyword is recognized.")]
-            public UnityEvent Response;
         }
 
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
@@ -40,22 +37,27 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("An enumeration to set whether the recognizer should start on or off.")]
         public RecognizerStartBehavior RecognizerStart;
 
-        [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
-        public KeywordAndResponse[] KeywordsAndResponses;
+        [Tooltip("An array of string keywords and keys, to be set in the Inspector.")]
+        public KeywordAndKeyCode[] KeywordsAndKeys;
 
         private KeywordRecognizer keywordRecognizer;
-        private Dictionary<string, UnityEvent> responses;
 
-        void Start()
+        public override SupportedInputEvents SupportedEvents
         {
-            if (KeywordsAndResponses.Length > 0)
+            get
             {
-                // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
-                // This helps easily link the keyword recognized to the UnityEvent to be invoked.
-                responses = KeywordsAndResponses.ToDictionary(keywordAndResponse => keywordAndResponse.Keyword,
-                                                              keywordAndResponse => keywordAndResponse.Response);
+                return SupportedInputEvents.SpeechKeyword;
+            }
+        }
 
-                keywordRecognizer = new KeywordRecognizer(responses.Keys.ToArray());
+        protected override void Start()
+        {
+            base.Start();
+
+            if (KeywordsAndKeys.Length > 0)
+            {
+                string[] keywords = KeywordsAndKeys.Select(keywordAndKey => keywordAndKey.Keyword).ToArray();
+                keywordRecognizer = new KeywordRecognizer(keywords);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                 if (RecognizerStart == RecognizerStartBehavior.AutoStart)
@@ -74,7 +76,7 @@ namespace HoloToolkit.Unity.InputModule
             ProcessKeyBindings();
         }
 
-        void OnDestroy()
+        protected override void OnDestroy()
         {
             if (keywordRecognizer != null)
             {
@@ -82,15 +84,17 @@ namespace HoloToolkit.Unity.InputModule
                 keywordRecognizer.OnPhraseRecognized -= KeywordRecognizer_OnPhraseRecognized;
                 keywordRecognizer.Dispose();
             }
+
+            base.OnDestroy();
         }
 
         private void ProcessKeyBindings()
         {
-            foreach (var kvp in KeywordsAndResponses)
+            foreach (var kvp in KeywordsAndKeys)
             {
                 if (Input.GetKeyDown(kvp.KeyCode))
                 {
-                    kvp.Response.Invoke();
+                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, kvp.Keyword);
                     return;
                 }
             }
@@ -98,13 +102,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void KeywordRecognizer_OnPhraseRecognized(UnityEngine.Windows.Speech.PhraseRecognizedEventArgs args)
         {
-            UnityEvent keywordResponse;
-
-            // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
-            if (responses.TryGetValue(args.text, out keywordResponse))
-            {
-                keywordResponse.Invoke();
-            }
+            OnPhraseRecognized(args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
         }
 
         /// <summary>
@@ -129,6 +127,29 @@ namespace HoloToolkit.Unity.InputModule
             {
                 keywordRecognizer.Stop();
             }
+        }
+
+        private void OnPhraseRecognized(UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text)
+        {
+            PhraseRecognizedEventArgs raiseArgs = new PhraseRecognizedEventArgs(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            RaisePhraseRecognizedEvent(raiseArgs);
+        }
+
+        public override bool TryGetPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        {
+            orientation = Quaternion.identity;
+            return false;
+        }
+
+        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        {
+            return SupportedInputInfo.None;
         }
     }
 }

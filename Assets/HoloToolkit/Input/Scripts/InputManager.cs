@@ -668,7 +668,7 @@ namespace HoloToolkit.Unity.InputModule
         private void InputSource_PhraseRecognized(object sender, PhraseRecognizedEventArgs e)
         {
             // Create input event
-            phraseRecognizedEventData.Initialize(e.InputSource, e.SourceId, e.Confidence, e.PhraseDuration, e.PhraseStartTime, e.SemanticMeanings, e.Text);
+            phraseRecognizedEventData.Initialize(e.InputSource, e.SourceId, e.Confidence, e.PhraseDuration, e.PhraseStartTime, e.SemanticMeanings, e.RecognizedText);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(phraseRecognizedEventData, OnPhraseRecognizedEventHandler);

@@ -6,23 +6,23 @@ using UnityEngine.UI;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class DisplayKeywords : MonoBehaviour
+    public class DisplaySpeechKeywords : MonoBehaviour
     {
-        public KeywordManager keywordManager;
+        public SpeechInputSource speechInputSource;
         public Text textPanel;
 
         void Start()
         {
-            if (keywordManager == null || textPanel == null)
+            if (speechInputSource == null || textPanel == null)
             {
-                Debug.Log("Please check the variables in the Inspector on DisplayKeywords.cs on" + name + ".");
+                Debug.Log("Please check the variables in the Inspector on DisplaySpeechKeywords.cs on" + name + ".");
                 return;
             }
 
             textPanel.text = "Try saying:\n";
-            foreach (KeywordManager.KeywordAndResponse k in keywordManager.KeywordsAndResponses)
+            foreach (SpeechInputSource.KeywordAndKeyCode item in speechInputSource.KeywordsAndKeys)
             {
-                textPanel.text += k.Keyword + "\n";
+                textPanel.text += item.Keyword + "\n";
             }
         }
     }
