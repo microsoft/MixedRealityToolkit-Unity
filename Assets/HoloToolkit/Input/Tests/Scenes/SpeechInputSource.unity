@@ -627,17 +627,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1668072417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58bad4bea4d136b4b9f6534fae733f97, type: 3}
+  m_Script: {fileID: 11500000, guid: e52fda210ea70534fb8fbaf48658e55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keywordManager: {fileID: 0}
-  textPanel: {fileID: 1668072419}
---- !u!114 &1668072419 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000012563305450, guid: 86195468488ce7941a7abcbfaffe9455,
-    type: 2}
-  m_PrefabInternal: {fileID: 1632212275}
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  speechInputSource: {fileID: 0}
+  textPanel: {fileID: 0}
 --- !u!1 &1724572002
 GameObject:
   m_ObjectHideFlags: 0
