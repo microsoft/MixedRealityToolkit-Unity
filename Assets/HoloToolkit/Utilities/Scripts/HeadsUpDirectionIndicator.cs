@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using UnityEngine;
 
-namespace HoloToolKit.Unity
+namespace HoloToolkit.Unity
 {
     // The easiest way to use this script is to drop in the HeadsUpDirectionIndicator prefab
     // from the HoloToolKit. If you're having issues with the prefab or can't find it,
