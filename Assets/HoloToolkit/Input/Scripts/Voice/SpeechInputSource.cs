@@ -71,7 +71,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        void Update()
+        protected virtual void Update()
         {
             ProcessKeyBindings();
         }
