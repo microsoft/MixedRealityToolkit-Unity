@@ -335,7 +335,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private static readonly ExecuteEvents.EventFunction<IFocusable> OnFocusEnterEventHadler =
+        private static readonly ExecuteEvents.EventFunction<IFocusable> OnFocusEnterEventHandler =
             delegate (IFocusable handler, BaseEventData eventData)
             {
                 handler.OnFocusEnter();
@@ -356,7 +356,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (previousObject != null)
             {
-                ExecuteEvents.ExecuteHierarchy(previousObject, null, OnFocusEnterEventHadler);
+                ExecuteEvents.ExecuteHierarchy(previousObject, null, OnFocusExitEventHandler);
                 if (ShouldSendUnityUiEvents)
                 {
                     ExecuteEvents.ExecuteHierarchy(previousObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerExitHandler);
@@ -365,7 +365,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (newObject != null)
             {
-                ExecuteEvents.ExecuteHierarchy(newObject, null, OnFocusExitEventHandler);
+                ExecuteEvents.ExecuteHierarchy(newObject, null, OnFocusEnterEventHandler);
                 if (ShouldSendUnityUiEvents)
                 {
                     ExecuteEvents.ExecuteHierarchy(newObject, GazeManager.Instance.UnityUIPointerEvent, ExecuteEvents.pointerEnterHandler);

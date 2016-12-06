@@ -71,7 +71,10 @@ namespace HoloToolkit.Unity.InputModule
 
         void Update()
         {
-            ProcessKeyBindings();
+            if (keywordRecognizer.IsRunning)
+            {
+                ProcessKeyBindings();
+            }
         }
 
         void OnDestroy()
