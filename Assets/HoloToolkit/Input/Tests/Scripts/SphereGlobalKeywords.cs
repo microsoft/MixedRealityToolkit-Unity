@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereGlobalKeywords : MonoBehaviour, ISpeechHandler
     {
-        public void Start()
+        private void Start()
         {
             InputManager.Instance.AddGlobalListener(gameObject);
         }
