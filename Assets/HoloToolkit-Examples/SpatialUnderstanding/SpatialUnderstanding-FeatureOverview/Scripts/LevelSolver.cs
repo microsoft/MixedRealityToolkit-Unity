@@ -459,7 +459,7 @@ public class LevelSolver : LineDrawer
             return IsSolverInitialized;
         }
 
-        if (SpatialUnderstandingDllObjectPlacement.Solver_Init() > 1)
+        if (SpatialUnderstandingDllObjectPlacement.Solver_Init() == 1)
         {
             IsSolverInitialized = true;
         }
