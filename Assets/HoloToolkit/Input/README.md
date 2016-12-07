@@ -17,6 +17,7 @@ Game objects that want to consume input events can implement one or many **input
 - **IManipulationHandler** for the Windows manipulation gesture.
 - **INavigationnHandler** for the Windows navigation gesture.
 - **ISourceStateHandler** for the source detected and source lost events.
+- **ISpeechHandler** for voice commands.
 
 The **input manager** listens to the various events coming from the input sources, and also takes into account the gaze. Currently, that gaze is always coming from the GazeManager class, but this could be extended to support multiple gaze sources if the need arises.
 
@@ -189,15 +190,29 @@ or in your Visual Studio Package.appxmanifest capabilities.
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 #### Voice
-##### KeywordManager.cs
-Allows you to specify keywords and methods in the Unity Inspector, instead of registering them explicitly in code.  
-**IMPORTANT**: Please make sure to add the microphone capability in your app, in Unity under  
+
+**IMPORTANT**: Please make sure to add the Microphone and Music Library capabilities in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
+
+##### KeywordManager.cs
+Allows you to specify keywords and methods in the Unity Inspector, instead of registering them explicitly in code.  
 
 **_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
 
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+
+##### SpeechInputSource.cs
+Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.
+
+Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/HoloToolkit/Input/Tests/Scripts/SphereGlobalKeywords.cs for an example of implementing these features, which is used in the demo scene at Assets/HoloToolkit/Input/Tests/SpeechInputSource.unity.
+
+**_KeywordsAndKeys_** Set the size as the number of keywords you'd like to listen for, then specify the keywords to complete the array.
+
+**RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+
+##### ISpeechHandler.cs
+Interface that a game object can implement to react to speech keywords.
 
 ### [Test Prefabs](TestPrefabs)
 
@@ -275,6 +290,19 @@ Example on how to send keyword messages to currently selected dynamically instan
 Gazing on an object and saying "Select Object" will persistently select that object for interaction with voice commands,
 after which the user can also adjust object size with "Make Smaller" and "Make Bigger" voice commands and finally clear
 currently selected object by saying "Clear Selection".
+
+#### SpeechInputSource.unity
+
+Shows how to use the SpeechInputSource.cs script to add keywords to your scene.
+
+1. Select whether you want the recognizer to start automatically or when you manually start it.
+2. Specify the number of keywords you want.
+3. Type the word or phrase you'd like to register as the keyword and, if you want, set a key code to use in the Editor. You can also use an attached microphone with the Editor.
+4. Attach a script that implements ISpeechHandler.cs to the object in the scene that will require the gaze focus to execute the command. You should register this script with the InputManager.cs as a global listener to handle keywords that don't require a focused object.
+
+When you start the scene, your keywords will automatically be registered on a KeywordRecognizer, and the recognizer will be started (or not) based on your Recognizer Start setting.
+
+#### 
 
 ---
 ##### [Go back up to the table of contents.](../../../README.md)
