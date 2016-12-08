@@ -5,7 +5,7 @@ using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Lighthouse
+namespace HoloToolkit.Examples.ColorPicker
 {
     public class GazeableColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
     {
