@@ -1,11 +1,12 @@
 This document describes how to prepare the HoloToolkit sourcecode for use
 in your project.
 
+# Download a HoloToolkit-Unity Asset Package
+You can download archived or daily builds of the HoloToolkit-Unity Asset Packages from the [HoloToolkit Archive](https://riverar.github.io/HoloToolkit-Unity-Builds) archive Rafael Rivera has so kindly put together for us.
+
 # Preparing the HoloToolkit-Unity Code
 
-We'll build the HoloToolkit from source since it's a reasonable assumption 
-that you want the latest and greatest if you are reading this document. To
-do this you need to clone the GitHUb repository at 
+If you'd like to build the HoloToolkit from the source, you'll need to clone the GitHUb repository at 
 https://github.com/Microsoft/HoloToolkit-Unity.git. If you've never cloned a
 repo before then you should consider using the GitHub desktop client, see 
 https://desktop.github.com/.
@@ -23,7 +24,7 @@ Now, inside of Unity ensure you have the Assets folder selected in the project v
 Open or create your project in Unity.
 
 `Assets -> Import Package -> Custom Package…` [Navigate to the package 
-you exported above]. **NOTE**: The HoloToolkit-Examples folder (and all its content and subfolders) is optional when you import the custom package. You can uncheck it in the **Import Unity Package** window that shows all the contents of the package before performing the import.   
+you have either downloaded or exported above]. **NOTE**: The HoloToolkit-Examples folder (and all its content and subfolders) is optional when you import the custom package. You can uncheck it in the **Import Unity Package** window that shows all the contents of the package before performing the import.   
 
 You should now have a `HoloToolkit` menu item.
 
