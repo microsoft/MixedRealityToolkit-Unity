@@ -13,7 +13,6 @@ HoloToolkit contains the following feature areas:
 5. [Utilities](Assets/HoloToolkit/Utilities/README.md)
 6. [Build](Assets/HoloToolkit/Build/README.md)
 
-
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
 
 To learn how to add the HoloToolkit to your project see the [Getting Started](GettingStarted.md) guide.
