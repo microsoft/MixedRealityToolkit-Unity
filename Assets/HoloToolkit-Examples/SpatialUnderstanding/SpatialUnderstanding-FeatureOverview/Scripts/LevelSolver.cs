@@ -461,7 +461,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 return IsSolverInitialized;
             }
 
-            if (SpatialUnderstandingDllObjectPlacement.Solver_Init() > 1)
+            if (SpatialUnderstandingDllObjectPlacement.Solver_Init() == 1)
             {
                 IsSolverInitialized = true;
             }
