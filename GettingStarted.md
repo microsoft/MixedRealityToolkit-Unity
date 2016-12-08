@@ -2,7 +2,7 @@ This document describes how to prepare the HoloToolkit sourcecode for use
 in your project.
 
 # Download a HoloToolkit-Unity Asset Package
-You can download archived or daily builds of the HoloToolkit-Unity Asset Packages from the [HoloToolkit Archive](https://riverar.github.io/HoloToolkit-Unity-Builds) archive Rafael Rivera has so kindly put together for us.
+You can download archived or daily builds of the HoloToolkit-Unity Asset Packages from the [HoloToolkit Archive](https://riverar.github.io/HoloToolkit-Unity-Builds) Rafael Rivera has so kindly put together for us.
 
 # Preparing the HoloToolkit-Unity Code
 
