@@ -1,5 +1,9 @@
 ## [Input]()
-Scripts that leverage the HoloLens input features namely Gaze, Gesture and Voice.
+Input System Diagrams:
+![alt text](https://cloud.githubusercontent.com/assets/8505814/19321359/98bbeca0-9069-11e6-9e17-e9845c8846f0.png)
+![alt text](https://cloud.githubusercontent.com/assets/19958303/19947429/46c9b308-a105-11e6-9ef2-725cf5f27953.PNG)
+
+##Scripts that leverage HoloLens input features namely Gaze, Gesture and Voice.
 
 This contains a fully-featured **input module**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a **cursor** similar to the HoloLens shell cursor that fully leverages the Unity's animation system.
 
