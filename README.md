@@ -2,9 +2,11 @@
 This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
 
-**Current Unity Editor Project Version: 5.5.0f3**
+##Current Unity Editor Project Version: 5.5.0f3##
 
-HoloToolkit contains the following feature areas:
+To download the latest or archived versions check out the [HoloToolkit Archive](https://riverar.github.io/HoloToolkit-Unity-Builds)
+
+**HoloToolkit contains the following feature areas:**
 
 1. [Input](Assets/HoloToolkit/Input/README.md)
 2. [Sharing](Assets/HoloToolkit/Sharing/README.md)
@@ -12,6 +14,7 @@ HoloToolkit contains the following feature areas:
 4. [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md)
 5. [Utilities](Assets/HoloToolkit/Utilities/README.md)
 6. [Build](Assets/HoloToolkit/Build/README.md)
+
 
 To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
 
