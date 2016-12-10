@@ -13,13 +13,6 @@ A drop in direction indicator that stays in the users view at all times.
 #### HeadsUpDirectionIndicatorPointer.prefab
 A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.k
 
-#### Main Camera.prefab
-Unity camera that has been customized for Holographic development.
-1. Camera.Transform set to 0,0,0
-2. 'Clear Flags' changed to 'Solid Color'
-3. Color set to R:0, G:0, B:0, A:0 as black renders transparent in HoloLens.
-4. Set the recommended near clipping plane.
-
 ### [Scripts](Scripts)
 
 #### Billboard.cs
