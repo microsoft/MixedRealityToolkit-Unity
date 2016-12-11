@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
@@ -126,14 +126,12 @@ namespace HoloToolkit.Unity
                 string settingsPath = "ProjectSettings/ProjectSettings.asset";
                 string settings = File.ReadAllText(settingsPath);
 
-                // Set VR for WSA to 1
-                string matchPattern = @"(Metro::VR::enable:) (\d+)";
-                string replacePattern = @"$1 1";
-                settings = Regex.Replace(settings, matchPattern, replacePattern, RegexOptions.Singleline);
-
-                // This is a bit more complex, we're looking for the WSA list of enabled VR devices, then
-                // ensuring that the HoloLens is in that list
-                bool foundDevices = false;
+				// We're looking for the list of VR devices for the current build target, then
+				// ensuring that the HoloLens is in that list
+				bool foundBuildTargetVRSettings = false;
+				bool foundBuildTargetMetro = false;
+				bool foundBuildTargetEnabled = false;
+				bool foundDevices = false;
                 bool foundHoloLens = false;
 
                 var builder = new StringBuilder(); // Used to build the final output
@@ -142,10 +140,63 @@ namespace HoloToolkit.Unity
                 {
                     string line = lines[i];
 
-                    // Look for the enabled Devices list
-                    if (!foundDevices)
+					// Look for the build target VR settings
+					if (!foundBuildTargetVRSettings)
+					{
+						if (line.Contains("m_BuildTargetVRSettings:"))
+						{
+							// If no targets are enabled at all, just create the known entries and skip the rest of the tests
+							if (line.Contains("[]"))
+							{
+								// Remove the empty array symbols
+								line = line.Replace(" []", "\n");
+
+								// Generate the new lines
+								line += "  - m_BuildTarget: Metro\n";
+								line += "    m_Enabled: 1\n";
+								line += "    m_Devices:\n";
+								line += "    - HoloLens";
+
+								// Mark all fields as found so we don't search anymore
+								foundBuildTargetVRSettings = true;
+								foundBuildTargetMetro = true;
+								foundBuildTargetEnabled = true;
+								foundDevices = true;
+								foundHoloLens = true;
+							}
+							else
+							{
+								// The target VR settngs were found but the others
+								// still need to be searched for.
+								foundBuildTargetVRSettings = true;
+							}
+						}
+
+					}
+
+					// Look for the build target for Metro
+					else if (!foundBuildTargetMetro)
+					{
+						if (line.Contains("m_BuildTarget: Metro"))
+						{
+							foundBuildTargetMetro = true;
+						}
+
+					}
+
+					else if (!foundBuildTargetEnabled)
+					{
+						if (line.Contains("m_Enabled"))
+						{
+							line = "    m_Enabled: 1";
+							foundBuildTargetEnabled = true;
+						}
+					}
+
+					// Look for the enabled Devices list
+					else if (!foundDevices)
                     {
-                        if (line.Contains("Metro::VR::enabledDevices:"))
+                        if (line.Contains("m_Devices:"))
                         {
                             // Clear the empty array symbols if any
                             line = line.Replace(" []", "");
@@ -161,7 +212,7 @@ namespace HoloToolkit.Unity
                         if (!line.Contains("-"))
                         {
                             // add the hololens element, and mark it found
-                            builder.Append("  - HoloLens\n");
+                            builder.Append("    - HoloLens\n");
                             foundHoloLens = true;
                         }
 
