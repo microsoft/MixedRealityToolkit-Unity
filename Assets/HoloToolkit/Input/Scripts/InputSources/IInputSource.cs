@@ -122,7 +122,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Event triggered when a speech phrase is recognized.
         /// </summary>
-        event EventHandler<PhraseRecognizedEventArgs> PhraseRecognized;
+        event EventHandler<SpeechKeywordRecognizedEventArgs> SpeechKeywordRecognized;
 
         /// <summary>
         /// Events supported by the input source.

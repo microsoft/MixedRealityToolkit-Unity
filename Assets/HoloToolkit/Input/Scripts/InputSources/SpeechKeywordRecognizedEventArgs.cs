@@ -3,18 +3,19 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Event args for a phrase recognized event.
+    /// Event args for a speech kwyword recognized event.
     /// </summary>
-    public class PhraseRecognizedEventArgs : InputSourceEventArgs
+    public class SpeechKeywordRecognizedEventArgs : InputSourceEventArgs
     {
         /// <summary>
         /// A measure of correct recognition certainty.
         /// </summary>
-        public UnityEngine.Windows.Speech.ConfidenceLevel Confidence { get; private set; }
+        public ConfidenceLevel Confidence { get; private set; }
 
         /// <summary>
         /// The time it took for the phrase to be uttered.
@@ -29,14 +30,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// A semantic meaning of recognized phrase.
         /// </summary>
-        public UnityEngine.Windows.Speech.SemanticMeaning[] SemanticMeanings { get; private set; }
+        public SemanticMeaning[] SemanticMeanings { get; private set; }
 
         /// <summary>
         /// The text that was recognized.
         /// </summary>
         public string RecognizedText { get; private set; }
 
-        public PhraseRecognizedEventArgs(IInputSource inputSource, uint sourceId, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string recognizedText) : base(inputSource, sourceId)
+        public SpeechKeywordRecognizedEventArgs(IInputSource inputSource, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText) : base(inputSource, sourceId)
         {
             Confidence = confidence;
             PhraseDuration = phraseDuration;

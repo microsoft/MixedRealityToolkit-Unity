@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void KeywordRecognizer_OnPhraseRecognized(UnityEngine.Windows.Speech.PhraseRecognizedEventArgs args)
+        private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
             UnityEvent keywordResponse;
 

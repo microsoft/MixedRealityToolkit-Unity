@@ -191,7 +191,7 @@ or in your Visual Studio Package.appxmanifest capabilities.
 
 #### Voice
 
-**IMPORTANT**: Please make sure to add the Microphone and Music Library capabilities in your app, in Unity under  
+**IMPORTANT**: Please make sure to add the Microphone capabilities in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
 

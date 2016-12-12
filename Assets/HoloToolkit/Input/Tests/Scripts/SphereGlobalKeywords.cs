@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             InputManager.Instance.AddGlobalListener(gameObject);
         }
 
-        public void OnPhraseRecognized(PhraseRecognizedEventData eventData)
+        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             switch (eventData.RecognizedText.ToLower())
             {

@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void KeywordRecognizer_OnPhraseRecognized(UnityEngine.Windows.Speech.PhraseRecognizedEventArgs args)
+        private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
             OnPhraseRecognized(args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
         }
@@ -129,10 +129,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void OnPhraseRecognized(UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text)
+        private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
-            PhraseRecognizedEventArgs raiseArgs = new PhraseRecognizedEventArgs(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
-            RaisePhraseRecognizedEvent(raiseArgs);
+            SpeechKeywordRecognizedEventArgs raiseArgs = new SpeechKeywordRecognizedEventArgs(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            RaiseSpeechKeywordRecognizedEvent(raiseArgs);
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)

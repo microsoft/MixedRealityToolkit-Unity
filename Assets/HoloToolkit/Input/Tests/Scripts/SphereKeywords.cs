@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnPhraseRecognized(PhraseRecognizedEventData eventData)
+        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             ChangeColor(eventData.RecognizedText);
         }

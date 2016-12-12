@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity.InputModule
         public event EventHandler<NavigationEventArgs> NavigationUpdated;
         public event EventHandler<NavigationEventArgs> NavigationCompleted;
         public event EventHandler<NavigationEventArgs> NavigationCanceled;
-        public event EventHandler<PhraseRecognizedEventArgs> PhraseRecognized;
+        public event EventHandler<SpeechKeywordRecognizedEventArgs> SpeechKeywordRecognized;
 
         public abstract SupportedInputEvents SupportedEvents { get; }
         
@@ -252,9 +252,9 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected void RaisePhraseRecognizedEvent(PhraseRecognizedEventArgs e)
+        protected void RaiseSpeechKeywordRecognizedEvent(SpeechKeywordRecognizedEventArgs e)
         {
-            EventHandler<PhraseRecognizedEventArgs> handler = PhraseRecognized;
+            EventHandler<SpeechKeywordRecognizedEventArgs> handler = SpeechKeywordRecognized;
             if (handler != null)
             {
                 handler(this, e);
