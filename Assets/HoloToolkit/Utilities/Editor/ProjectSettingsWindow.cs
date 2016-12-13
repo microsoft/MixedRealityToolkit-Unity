@@ -12,10 +12,10 @@ namespace HoloToolkit.Unity
 	/// <summary>
 	/// Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Project Settings.
 	/// </summary>
-	public class ProjectSettingsWindow : AutoConfigureWindow
+	public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
 	{
 		// Nested Types
-		private enum ProjectSetting
+		public enum ProjectSetting
 		{
 			ActiveBuildToWsa,
 			WsaSdkToUwp,
@@ -24,69 +24,7 @@ namespace HoloToolkit.Unity
 			WsaEnableVR
 		}
 
-		// Member Variables
-		private Dictionary<ProjectSetting, bool> settings = new Dictionary<ProjectSetting, bool>();
-		private Dictionary<ProjectSetting, string> names = new Dictionary<ProjectSetting, string>();
-		private Dictionary<ProjectSetting, string> descriptions = new Dictionary<ProjectSetting, string>();
-
 		// Private Methods
-		private void ApplySettings()
-		{
-			// See the blow notes for why text asset serialization is required
-			if (EditorSettings.serializationMode != SerializationMode.ForceText)
-			{
-				// NOTE: PlayerSettings.virtualRealitySupported would be ideal, except that it only reports/affects whatever platform tab
-				// is currently selected in the Player settings window. As we don't have code control over what view is selected there
-				// this property is fairly useless from script.
-
-				// NOTE: There is no current way to change the default quality setting from script
-
-				string title = "Updates require text serialization of assets";
-				string message = "Unity doesn't provide apis for updating the default quality or enabling VR support.\n\n" +
-					"Is it ok if we force text serialization of assets so that we can modify the properties directly?";
-
-				bool forceText = EditorUtility.DisplayDialog(title, message, "Yes", "No");
-				if (!forceText)
-					return;
-
-				EditorSettings.serializationMode = SerializationMode.ForceText;
-			}
-
-			// Apply individual settings
-			if (settings[ProjectSetting.ActiveBuildToWsa])
-			{
-				EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.WSAPlayer);
-			}
-			if (settings[ProjectSetting.WsaSdkToUwp])
-			{
-				EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
-			}
-			if (settings[ProjectSetting.WsaUwpBuildToD3D])
-			{
-				EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
-			}
-			if (settings[ProjectSetting.WsaFastestQuality])
-			{
-				SetFastestDefaultQuality();
-			}
-			if (settings[ProjectSetting.WsaEnableVR])
-			{
-				EnableVirtualReality();
-			}
-
-			// Since we went behind Unity's back to tweak some settings we 
-			// need to reload the project to have them take effect
-			bool canReload = EditorUtility.DisplayDialog(
-				"Project reload required!",
-				"Some changes require a project reload to take effect.\n\nReload now?",
-				"Yes", "No");
-
-			if (canReload)
-			{
-				string projectPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-				EditorApplication.OpenProject(projectPath);
-			}
-		}
 
 		/// <summary>
 		/// Enables virtual reality for WSA and ensures HoloLens is in the supported SDKs.
@@ -215,33 +153,6 @@ namespace HoloToolkit.Unity
 			}
 		}
 
-
-		private void LoadDefaults()
-		{
-			for (int i=(int)ProjectSetting.ActiveBuildToWsa; i <= (int)ProjectSetting.WsaEnableVR; i++)
-			{
-				settings[(ProjectSetting)i] = true;
-			}
-		}
-
-		private void LoadStrings()
-		{
-			names[ProjectSetting.ActiveBuildToWsa] = "Target Windows Store";
-			descriptions[ProjectSetting.ActiveBuildToWsa] = "Required\n\nSwitches the currently active target to produce a Windows Store app.\n\nSince HoloLens only supports Windows Store apps, this option should remain checked unless you plan to manually switch the target later before you build.";
-
-			names[ProjectSetting.WsaSdkToUwp] = "Target UWP";
-			descriptions[ProjectSetting.WsaSdkToUwp] = "Required\n\nSpecifies that the Windows Store app will target the Universal Windows Platform.\n\nSince HoloLens only supports UWP, this option should remain checked unless you plan to manually switch the target later before you build.";
-
-			names[ProjectSetting.WsaUwpBuildToD3D] = "Build for Direct3D";
-			descriptions[ProjectSetting.WsaUwpBuildToD3D] = "Recommended\n\nProduces an app that targets Direct3D instead of Xaml.\n\nPure Direct3D apps run faster than applications that include Xaml. This option should remain checked unless you plan to overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
-
-			names[ProjectSetting.WsaFastestQuality] = "Set Quality to Fastest";
-			descriptions[ProjectSetting.WsaFastestQuality] = "Recommended\n\nChanges the quality settings for Windows Store apps to the 'Fastest' setting.\n\n'Fastest' is the recommended quality setting for HoloLens apps, but this option can be unchecked if you have already optimized your project for the HoloLens.";
-
-			names[ProjectSetting.WsaEnableVR] = "Enable VR";
-			descriptions[ProjectSetting.WsaEnableVR] = "Required\n\nEnables VR for Windows Store apps and adds the HoloLens as a target VR device.\n\nThe application will not compile for HoloLens and tools like Holographic Remoting will not function without this enabled. Therefore this option should remain checked unless you plan to manually perform these steps later.";
-		}
-
 		/// <summary>
 		/// Modifies the WSA default quality setting to the fastest
 		/// </summary>
@@ -265,30 +176,89 @@ namespace HoloToolkit.Unity
 			}
 		}
 
-		private void SettingToggle(ProjectSetting setting)
+		// Overrides
+		protected override void ApplySettings()
 		{
-			// Draw and update setting flag
-			settings[setting] = GUILayout.Toggle(settings[setting], new GUIContent(names[setting]));
-
-			// If this control is the one under the mouse, update the status message
-			if ((Event.current.type == EventType.Repaint) && (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition)))
+			// See the blow notes for why text asset serialization is required
+			if (EditorSettings.serializationMode != SerializationMode.ForceText)
 			{
-				StatusMessage = descriptions[setting];
-				Repaint();
+				// NOTE: PlayerSettings.virtualRealitySupported would be ideal, except that it only reports/affects whatever platform tab
+				// is currently selected in the Player settings window. As we don't have code control over what view is selected there
+				// this property is fairly useless from script.
+
+				// NOTE: There is no current way to change the default quality setting from script
+
+				string title = "Updates require text serialization of assets";
+				string message = "Unity doesn't provide apis for updating the default quality or enabling VR support.\n\n" +
+					"Is it ok if we force text serialization of assets so that we can modify the properties directly?";
+
+				bool forceText = EditorUtility.DisplayDialog(title, message, "Yes", "No");
+				if (!forceText)
+					return;
+
+				EditorSettings.serializationMode = SerializationMode.ForceText;
+			}
+
+			// Apply individual settings
+			if (Values[ProjectSetting.ActiveBuildToWsa])
+			{
+				EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.WSAPlayer);
+			}
+			if (Values[ProjectSetting.WsaSdkToUwp])
+			{
+				EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
+			}
+			if (Values[ProjectSetting.WsaUwpBuildToD3D])
+			{
+				EditorUserBuildSettings.wsaUWPBuildType = WSAUWPBuildType.D3D;
+			}
+			if (Values[ProjectSetting.WsaFastestQuality])
+			{
+				SetFastestDefaultQuality();
+			}
+			if (Values[ProjectSetting.WsaEnableVR])
+			{
+				EnableVirtualReality();
+			}
+
+			// Since we went behind Unity's back to tweak some settings we 
+			// need to reload the project to have them take effect
+			bool canReload = EditorUtility.DisplayDialog(
+				"Project reload required!",
+				"Some changes require a project reload to take effect.\n\nReload now?",
+				"Yes", "No");
+
+			if (canReload)
+			{
+				string projectPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+				EditorApplication.OpenProject(projectPath);
 			}
 		}
 
-		// Overrides
-		protected override void OnApply()
+		protected override void LoadSettings()
 		{
-			// Apply custom first
-			ApplySettings();
+			for (int i = (int)ProjectSetting.ActiveBuildToWsa; i <= (int)ProjectSetting.WsaEnableVR; i++)
+			{
+				Values[(ProjectSetting)i] = true;
+			}
+		}
 
-			// Pass to base
-			base.OnApply();
+		protected override void LoadStrings()
+		{
+			Names[ProjectSetting.ActiveBuildToWsa] = "Target Windows Store";
+			Descriptions[ProjectSetting.ActiveBuildToWsa] = "Required\n\nSwitches the currently active target to produce a Windows Store app.\n\nSince HoloLens only supports Windows Store apps, this option should remain checked unless you plan to manually switch the target later before you build.";
 
-			// Close
-			Close();
+			Names[ProjectSetting.WsaSdkToUwp] = "Target UWP";
+			Descriptions[ProjectSetting.WsaSdkToUwp] = "Required\n\nSpecifies that the Windows Store app will target the Universal Windows Platform.\n\nSince HoloLens only supports UWP, this option should remain checked unless you plan to manually switch the target later before you build.";
+
+			Names[ProjectSetting.WsaUwpBuildToD3D] = "Build for Direct3D";
+			Descriptions[ProjectSetting.WsaUwpBuildToD3D] = "Recommended\n\nProduces an app that targets Direct3D instead of Xaml.\n\nPure Direct3D apps run faster than applications that include Xaml. This option should remain checked unless you plan to overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
+
+			Names[ProjectSetting.WsaFastestQuality] = "Set Quality to Fastest";
+			Descriptions[ProjectSetting.WsaFastestQuality] = "Recommended\n\nChanges the quality settings for Windows Store apps to the 'Fastest' setting.\n\n'Fastest' is the recommended quality setting for HoloLens apps, but this option can be unchecked if you have already optimized your project for the HoloLens.";
+
+			Names[ProjectSetting.WsaEnableVR] = "Enable VR";
+			Descriptions[ProjectSetting.WsaEnableVR] = "Required\n\nEnables VR for Windows Store apps and adds the HoloLens as a target VR device.\n\nThe application will not compile for HoloLens and tools like Holographic Remoting will not function without this enabled. Therefore this option should remain checked unless you plan to manually perform these steps later.";
 		}
 
 		protected override void OnEnable()
@@ -299,29 +269,6 @@ namespace HoloToolkit.Unity
 			// Set size
 			this.minSize = new Vector2(350, 260);
 			this.maxSize = this.minSize;
-
-			// Load defaults
-			LoadDefaults();
-			LoadStrings();
-		}
-
-		protected override void OnGUI()
-		{
-			// Start Settings Section
-			GUILayout.BeginVertical(EditorStyles.helpBox);
-
-			// Individual Settings
-			SettingToggle(ProjectSetting.ActiveBuildToWsa);
-			SettingToggle(ProjectSetting.WsaSdkToUwp);
-			SettingToggle(ProjectSetting.WsaUwpBuildToD3D);
-			SettingToggle(ProjectSetting.WsaFastestQuality);
-			SettingToggle(ProjectSetting.WsaEnableVR);
-
-			// End Settings Section
-			GUILayout.EndVertical();
-
-			// Pass to base to render base controls
-			base.OnGUI();
 		}
 	}
 }
