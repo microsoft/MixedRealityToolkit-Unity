@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+	/// <summary>
+	/// Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Capability Settings.
+	/// </summary>
 	public class CapabilitySettingsWindow : AutoConfigureWindow
 	{
 		// Member Variables
@@ -51,19 +54,6 @@ namespace HoloToolkit.Unity
 		}
 
 		// Overrides
-		protected override void Awake()
-		{
-			// Pass to base first
-			base.Awake();
-
-			// Set size
-			this.minSize = new Vector2(350, 310);
-			this.maxSize = this.minSize;
-
-			// Load current values
-			LoadSettings();
-		}
-
 		protected override void OnApply()
 		{
 			// Apply custom first
@@ -77,6 +67,19 @@ namespace HoloToolkit.Unity
 
 			// Close
 			Close();
+		}
+
+		protected override void OnEnable()
+		{
+			// Pass to base first
+			base.OnEnable();
+
+			// Set size
+			this.minSize = new Vector2(350, 310);
+			this.maxSize = this.minSize;
+
+			// Load current values
+			LoadSettings();
 		}
 
 		protected override void OnGUI()

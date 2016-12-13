@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity
 		// Member Variables
 		private string statusMessage = string.Empty;
 		private Vector2 scrollPosition = Vector2.zero;
+		private GUIStyle wrapStyle;
 
 		// Virtual methods
 		/// <summary>
@@ -17,11 +18,16 @@ namespace HoloToolkit.Unity
 		/// </summary>
 		protected virtual void OnApply() {}
 
+		protected virtual void OnEnable() { }
+
 		// Behavior Overrides
 		/// <summary>
 		/// Called when the window is created.
 		/// </summary>
-		protected virtual void Awake() { }
+		protected virtual void Awake()
+		{
+			 wrapStyle = new GUIStyle() { wordWrap = true };
+		}
 
 		/// <summary>
 		/// Renders the GUI
@@ -31,7 +37,7 @@ namespace HoloToolkit.Unity
 			// Status box area
 			GUILayout.BeginVertical(EditorStyles.helpBox);
 			scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-			GUILayout.Label(statusMessage);
+			GUILayout.Label(statusMessage, wrapStyle);
 			GUILayout.EndScrollView();
 			GUILayout.EndVertical();
 
