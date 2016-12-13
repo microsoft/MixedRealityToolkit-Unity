@@ -31,23 +31,14 @@ namespace HoloToolkit.Unity
         [MenuItem("HoloToolkit/Configure/Apply HoloLens Scene Settings", false, 1)]
         public static void ApplySceneSettings()
         {
-            if (Camera.main == null)
-            {
-                Debug.LogWarning(@"Could not apply settings - no camera tagged with ""MainCamera""");
-                return;
-            }
+			SceneSettingsWindow window = (SceneSettingsWindow)EditorWindow.GetWindow(typeof(SceneSettingsWindow), true, "Apply HoloLens Scene Settings");
+			window.Show();
+		}
 
-            Camera.main.transform.position = Vector3.zero;
-            Camera.main.clearFlags = CameraClearFlags.SolidColor;
-            Camera.main.backgroundColor = Color.clear;
-            Camera.main.nearClipPlane = 0.85f;
-            Camera.main.fieldOfView = 16.0f;
-        }
-
-        /// <summary>
-        /// Applies recommended project settings to the current project
-        /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Project Settings", false, 1)]
+		/// <summary>
+		/// Applies recommended project settings to the current project
+		/// </summary>
+		[MenuItem("HoloToolkit/Configure/Apply HoloLens Project Settings", false, 1)]
         public static void ApplyProjectSettings()
         {
 			ProjectSettingsWindow window = (ProjectSettingsWindow)EditorWindow.GetWindow(typeof(ProjectSettingsWindow), true, "Apply HoloLens Project Settings");
