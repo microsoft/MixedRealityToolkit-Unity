@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 
@@ -54,9 +53,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Start();
 
-            if (KeywordsAndKeys.Length > 0)
+            int keywordCount = KeywordsAndKeys.Length;
+            if (keywordCount > 0)
             {
-                string[] keywords = KeywordsAndKeys.Select(keywordAndKey => keywordAndKey.Keyword).ToArray();
+                string[] keywords = new string[keywordCount];
+                for (int index = keywordCount; --index >= 0;)
+                {
+                    keywords[index] = KeywordsAndKeys[index].Keyword;
+                }
                 keywordRecognizer = new KeywordRecognizer(keywords);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
@@ -90,12 +94,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private void ProcessKeyBindings()
         {
-            foreach (var kvp in KeywordsAndKeys)
+            for (int index = KeywordsAndKeys.Length; --index >= 0;)
             {
-                if (Input.GetKeyDown(kvp.KeyCode))
+                if (Input.GetKeyDown(KeywordsAndKeys[index].KeyCode))
                 {
-                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, kvp.Keyword);
-                    return;
+                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, KeywordsAndKeys[index].Keyword);
                 }
             }
         }
