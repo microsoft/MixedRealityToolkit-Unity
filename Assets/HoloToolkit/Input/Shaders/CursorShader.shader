@@ -53,6 +53,7 @@ Shader "HoloToolkit/Cursor"
 				float4 vertex   : POSITION;
 				float4 color    : COLOR;
 				float2 texcoord : TEXCOORD0;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct v2f
@@ -60,12 +61,15 @@ Shader "HoloToolkit/Cursor"
 				float4 vertex   : SV_POSITION;
 				fixed4 color    : COLOR;
 				half2 texcoord  : TEXCOORD0;
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 			
 			fixed4 _Color;
 
 			v2f vert(appdata_t IN)
 			{
+				UNITY_SETUP_INSTANCE_ID(IN);
+
 				v2f OUT;
 				OUT.vertex = mul(UNITY_MATRIX_MVP, IN.vertex);
 				OUT.texcoord = IN.texcoord;
@@ -73,6 +77,8 @@ Shader "HoloToolkit/Cursor"
 				OUT.vertex.xy += (_ScreenParams.zw-1.0)*float2(-1,1);
 #endif
 				OUT.color = IN.color * _Color;
+
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 				return OUT;
 			}
 
