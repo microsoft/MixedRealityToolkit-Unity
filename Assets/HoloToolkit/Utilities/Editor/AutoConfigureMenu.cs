@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity
     /// </summary>
 
     
-    public class AutoConfigureMenu : UnityEditor.EditorWindow
+    public class AutoConfigureMenu : MonoBehaviour
     {
 
         [MenuItem("HoloToolkit/Configure/Show Help", false, 3)]
@@ -245,63 +245,8 @@ namespace HoloToolkit.Unity
         [MenuItem("HoloToolkit/Configure/Apply HoloLens Capability Settings", false, 2)]
         static void ApplyHoloLensCapabilitySettings()
         {
-            AutoConfigureMenu window = (AutoConfigureMenu)EditorWindow.GetWindow(typeof(AutoConfigureMenu), true, "Apply HoloLens Capability Settings");
+			CapabilitySettingsWindow window = (CapabilitySettingsWindow)EditorWindow.GetWindow(typeof(CapabilitySettingsWindow), true, "Apply HoloLens Capability Settings");
             window.Show();
         }
-
-        void OnGUI()
-        {
-            capabilityToggle(PlayerSettings.WSACapability.Microphone, @"Microphone
-
-Required for access to the HoloLens microphone.
-This includes behaviors like DictationRecognizer,
-GrammarRecognizer, and KeywordRecognizer.
-This capability is NOT required for the 'Select' keyword.
-
-Recommendation: Only enable if your application 
-needs access to the microphone beyond the
-'Select' keyword. The microphone is considered a 
-privacy sensitive resource.");
-
-            capabilityToggle(PlayerSettings.WSACapability.SpatialPerception, @"SpatialPerception
-
-Required for access to the HoloLens world mapping
-capabilities. These include behaviors like
-SurfaceObserver, SpatialMappingManager and 
-SpatialAnchor. 
-
-Recommendation: Enabled, unless your application
-doesn't use spatial mapping or spatial collisions
-in any way. ");
-
-            capabilityToggle(PlayerSettings.WSACapability.WebCam, @"WebCam
-
-Required for access to the HoloLens RGB camera 
-(also known as the locatable camera). This 
-includes APIs like PhotoCapture and VideoCapture.
-This capability is NOT required for mixed reality 
-streaming or for capturing photos or videos using
-the start menu. 
-
-Recommendation: Only enable if your application 
-needs to programmatically capture photos or 
-videos from the RGB camera. The RGB camera is
-considered a privacy sensitive resource.");
-
-            capabilityToggle(PlayerSettings.WSACapability.InternetClient, @"Internet Client
-
-Required if your application needs to access 
-the Internet. 
-
-Recommendation: Leave unchecked unless your 
-application uses online services.");
-        }
-
-        void capabilityToggle(PlayerSettings.WSACapability mCap,string tooltip)
-        {
-            PlayerSettings.WSA.SetCapability(mCap, GUILayout.Toggle(PlayerSettings.WSA.GetCapability(mCap), new GUIContent(" " + mCap.ToString(), tooltip)));
-        }
-
-
     }
 }
