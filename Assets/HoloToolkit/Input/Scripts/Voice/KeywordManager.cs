@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -50,17 +51,24 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (KeywordsAndResponses.Length > 0)
             {
-                // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
-                // This helps easily link the keyword recognized to the UnityEvent to be invoked.
-                responses = KeywordsAndResponses.ToDictionary(keywordAndResponse => keywordAndResponse.Keyword,
-                                                              keywordAndResponse => keywordAndResponse.Response);
-
-                keywordRecognizer = new KeywordRecognizer(responses.Keys.ToArray());
-                keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
-
-                if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+                try
                 {
-                    keywordRecognizer.Start();
+                    // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
+                    // This helps easily link the keyword recognized to the UnityEvent to be invoked.
+                    responses = KeywordsAndResponses.ToDictionary(keywordAndResponse => keywordAndResponse.Keyword,
+                                                                  keywordAndResponse => keywordAndResponse.Response);
+
+                    keywordRecognizer = new KeywordRecognizer(responses.Keys.ToArray());
+                    keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+
+                    if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+                    {
+                        keywordRecognizer.Start();
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    Debug.LogError("Duplicate keywords specified in the Inspector on " + gameObject.name + ".");
                 }
             }
             else
@@ -71,10 +79,7 @@ namespace HoloToolkit.Unity.InputModule
 
         void Update()
         {
-            if (keywordRecognizer.IsRunning)
-            {
-                ProcessKeyBindings();
-            }
+            ProcessKeyBindings();
         }
 
         void OnDestroy()
@@ -104,7 +109,7 @@ namespace HoloToolkit.Unity.InputModule
             UnityEvent keywordResponse;
 
             // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
-            if (responses.TryGetValue(args.text, out keywordResponse))
+            if (responses != null && responses.TryGetValue(args.text, out keywordResponse))
             {
                 keywordResponse.Invoke();
             }
