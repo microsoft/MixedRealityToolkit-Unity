@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// <param name="animator">Animator that triggered OnStateEnter.</param>
         /// <param name="stateInfo">Animator state info.</param>
         /// <param name="layerIndex">Layer index.</param>
-        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             animator.transform.gameObject.SetActive(false);
         }
