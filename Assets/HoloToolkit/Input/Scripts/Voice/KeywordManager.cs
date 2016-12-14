@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Windows.Speech;
@@ -45,20 +44,26 @@ namespace HoloToolkit.Unity.InputModule
         public KeywordAndResponse[] KeywordsAndResponses;
 
         private KeywordRecognizer keywordRecognizer;
-        private Dictionary<string, UnityEvent> responses;
+        private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
         void Start()
         {
-            if (KeywordsAndResponses.Length > 0)
+            int keywordCount = KeywordsAndResponses.Length;
+            if (keywordCount > 0)
             {
                 try
                 {
+                    string[] keywords = new string[keywordCount];
                     // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
                     // This helps easily link the keyword recognized to the UnityEvent to be invoked.
-                    responses = KeywordsAndResponses.ToDictionary(keywordAndResponse => keywordAndResponse.Keyword,
-                                                                  keywordAndResponse => keywordAndResponse.Response);
+                    for (int index = keywordCount; --index >= 0;)
+                    {
+                        KeywordAndResponse keywordAndResponse = KeywordsAndResponses[index];
+                        responses[keywordAndResponse.Keyword] = keywordAndResponse.Response;
+                        keywords[index] = keywordAndResponse.Keyword;
+                    }
 
-                    keywordRecognizer = new KeywordRecognizer(responses.Keys.ToArray());
+                    keywordRecognizer = new KeywordRecognizer(keywords);
                     keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                     if (RecognizerStart == RecognizerStartBehavior.AutoStart)
@@ -109,7 +114,7 @@ namespace HoloToolkit.Unity.InputModule
             UnityEvent keywordResponse;
 
             // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
-            if (responses != null && responses.TryGetValue(args.text, out keywordResponse))
+            if (responses.TryGetValue(args.text, out keywordResponse))
             {
                 keywordResponse.Invoke();
             }
