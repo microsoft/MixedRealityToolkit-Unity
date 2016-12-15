@@ -56,7 +56,7 @@ namespace HoloToolkit.Unity.InputModule
                     string[] keywords = new string[keywordCount];
                     // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
                     // This helps easily link the keyword recognized to the UnityEvent to be invoked.
-                    for (int index = keywordCount; --index >= 0;)
+                    for (int index = 0; index < keywordCount; index++)
                     {
                         KeywordAndResponse keywordAndResponse = KeywordsAndResponses[index];
                         responses[keywordAndResponse.Keyword] = keywordAndResponse.Response;
