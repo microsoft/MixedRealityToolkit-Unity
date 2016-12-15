@@ -13,10 +13,13 @@ namespace HoloToolkit.Unity.InputModule
             SerializedProperty keywordsAndKeys = serializedObject.FindProperty("Keywords");
 
             serializedObject.Update();
+            // the RecognizerStart field
             EditorGUILayout.PropertyField(recognizerStart);
+            // the Keywords field
             ShowList(keywordsAndKeys);
             serializedObject.ApplyModifiedProperties();
 
+            // error and warning messages
             if (keywordsAndKeys.arraySize == 0)
             {
                 EditorGUILayout.HelpBox("No keywords have been assigned!", MessageType.Warning);
@@ -29,23 +32,26 @@ namespace HoloToolkit.Unity.InputModule
 
         private static void ShowList(SerializedProperty list)
         {
-            // property name 
+            // property name with expansion widget
             EditorGUILayout.PropertyField(list);
 
-            EditorGUI.indentLevel++;
             if (list.isExpanded)
             {
+                EditorGUI.indentLevel++;
+
                 // header row
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Keyword");
                 EditorGUILayout.LabelField("Key Shortcut");
                 EditorGUILayout.EndHorizontal();
 
-                // 
+                // keyword rows
                 for (int index = 0; index < list.arraySize; index++)
                 {
                     EditorGUILayout.BeginHorizontal();
+                    // the element
                     EditorGUILayout.PropertyField(list.GetArrayElementAtIndex(index));
+                    // the remove element button
                     if (GUILayout.Button(removeButtonContent, EditorStyles.miniButton, miniButtonWidth))
                     {
                         list.DeleteArrayElementAtIndex(index);
@@ -53,16 +59,18 @@ namespace HoloToolkit.Unity.InputModule
                     EditorGUILayout.EndHorizontal();
                 }
 
-                // row for add button
+                // add button row
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
+                // the add element button
                 if (GUILayout.Button(addButtonContent, EditorStyles.miniButton, miniButtonWidth))
                 {
                     list.InsertArrayElementAtIndex(list.arraySize);
                 }
                 EditorGUILayout.EndHorizontal();
+
+                EditorGUI.indentLevel--;
             }
-            EditorGUI.indentLevel--;
         }
     }
 }
