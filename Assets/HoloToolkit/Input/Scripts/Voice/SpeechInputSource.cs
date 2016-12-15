@@ -33,11 +33,11 @@ namespace HoloToolkit.Unity.InputModule
         // immediately. The second allows the recognizer to be manually started at a later time.
         public enum RecognizerStartBehavior { AutoStart, ManualStart };
 
-        [Tooltip("An enumeration to set whether the recognizer should start on or off.")]
+        [Tooltip("Whether the recognizer should be activated on start.")]
         public RecognizerStartBehavior RecognizerStart;
 
-        [Tooltip("An array of string keywords and keys, to be set in the Inspector.")]
-        public KeywordAndKeyCode[] KeywordsAndKeys;
+        [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
+        public KeywordAndKeyCode[] Keywords;
 
         private KeywordRecognizer keywordRecognizer;
 
@@ -53,13 +53,13 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Start();
 
-            int keywordCount = KeywordsAndKeys.Length;
+            int keywordCount = Keywords.Length;
             if (keywordCount > 0)
             {
                 string[] keywords = new string[keywordCount];
                 for (int index = keywordCount; --index >= 0;)
                 {
-                    keywords[index] = KeywordsAndKeys[index].Keyword;
+                    keywords[index] = Keywords[index].Keyword;
                 }
                 keywordRecognizer = new KeywordRecognizer(keywords);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
@@ -117,11 +117,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private void ProcessKeyBindings()
         {
-            for (int index = KeywordsAndKeys.Length; --index >= 0;)
+            for (int index = Keywords.Length; --index >= 0;)
             {
-                if (Input.GetKeyDown(KeywordsAndKeys[index].KeyCode))
+                if (Input.GetKeyDown(Keywords[index].KeyCode))
                 {
-                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, KeywordsAndKeys[index].Keyword);
+                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }
             }
         }

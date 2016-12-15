@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
 
             textPanel.text = "Try saying:\n";
-            foreach (SpeechInputSource.KeywordAndKeyCode item in speechInputSource.KeywordsAndKeys)
+            foreach (SpeechInputSource.KeywordAndKeyCode item in speechInputSource.Keywords)
             {
                 textPanel.text += item.Keyword + "\n";
             }
