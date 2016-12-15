@@ -10,18 +10,22 @@ namespace HoloToolkit.Unity.InputModule.Tests
     {
         public void ChangeColor(string color)
         {
+            Material material = GetComponent<Renderer>().material;
+
             switch (color.ToLower())
             {
                 case "red":
-                    GetComponent<Renderer>().material.color = Color.red;
+                    material.color = Color.red;
                     break;
                 case "blue":
-                    GetComponent<Renderer>().material.color = Color.blue;
+                    material.color = Color.blue;
                     break;
                 case "green":
-                    GetComponent<Renderer>().material.color = Color.green;
+                    material.color = Color.green;
                     break;
             }
+
+            Resources.UnloadAsset(material);
         }
 
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)

@@ -19,8 +19,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
             {
                 case "reset all":
                     foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
-                    { 
-                        renderer.material.color = Color.gray;
+                    {
+                        Material material = renderer.material;
+                        material.color = Color.gray;
+                        Resources.UnloadAsset(material);
                     }
                     break;
             }
