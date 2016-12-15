@@ -57,7 +57,7 @@ namespace HoloToolkit.Unity.InputModule
             if (keywordCount > 0)
             {
                 string[] keywords = new string[keywordCount];
-                for (int index = keywordCount; --index >= 0;)
+                for (int index = 0; index < keywordCount; index++)
                 {
                     keywords[index] = Keywords[index].Keyword;
                 }
