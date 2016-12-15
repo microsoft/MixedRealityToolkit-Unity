@@ -222,14 +222,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RecognizerStart: 0
-  KeywordsAndKeys:
-  - Keyword: red
+  Keywords:
+  - Keyword: Red
     KeyCode: 114
-  - Keyword: green
+  - Keyword: Green
     KeyCode: 103
-  - Keyword: blue
+  - Keyword: Blue
     KeyCode: 98
-  - Keyword: reset all
+  - Keyword: Reset All
     KeyCode: 8
 --- !u!1 &1071413362
 GameObject:
