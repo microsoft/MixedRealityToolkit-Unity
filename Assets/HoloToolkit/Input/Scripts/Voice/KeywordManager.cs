@@ -87,6 +87,22 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        void OnDisable()
+        {
+            if (keywordRecognizer != null)
+            {
+                StopKeywordRecognizer();
+            }
+        }
+
+        void OnEnable()
+        {
+            if (keywordRecognizer != null && RecognizerStart == RecognizerStartBehavior.AutoStart)
+            {
+                StartKeywordRecognizer();
+            }
+        }
+
         private void ProcessKeyBindings()
         {
             foreach (var kvp in KeywordsAndResponses)

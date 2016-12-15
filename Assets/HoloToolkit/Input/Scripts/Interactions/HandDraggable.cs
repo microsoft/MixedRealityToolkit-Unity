@@ -11,10 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>
-    public class HandDraggable : MonoBehaviour,
-                                 IFocusable,
-                                 IInputHandler,
-                                 ISourceStateHandler
+    public class HandDraggable : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler
     {
         /// <summary>
         /// Event triggered when dragging starts.
@@ -192,7 +189,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (IsOrientTowardsUser)
             {
-                draggingRotation = Quaternion.LookRotation(pivotPosition - HostTransform.position);
+                draggingRotation = Quaternion.LookRotation(HostTransform.position - pivotPosition);
             }
             else
             {
