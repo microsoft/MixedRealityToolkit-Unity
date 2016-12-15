@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public SpeechInputSource speechInputSource;
         public TextMesh textMesh;
 
-        void Start()
+        private void Start()
         {
             if (speechInputSource == null || textMesh == null)
             {
