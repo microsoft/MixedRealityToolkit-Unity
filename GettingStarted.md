@@ -35,12 +35,7 @@ You should now have a `HoloToolkit` menu item.
 Remove the default camera in the project (the next step creates a camera
  customized for holographic development).
 
-Add the `Main Camera.prefab` (found under HoloToolkit/Utilities/Prefabs).
-
-You will probably want to add `ManualCameraControl.cs` (found under
- HoloToolkit/Utilities/Scripts) to the 
-`Main Camera`. This allows the user to manually control
- the camera when in the Unity player.
+Add the `HoloLensCamera.prefab` (found under HoloToolkit/Input/Prefabs).
 
 `HoloToolkit -> Configure -> Apply HoloLens Scene Settings`
 
