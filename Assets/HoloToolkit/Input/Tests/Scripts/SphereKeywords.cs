@@ -3,29 +3,33 @@
 
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
+        MeshFilter meshFilter;
+
+        protected virtual void Start()
+        {
+            meshFilter = GetComponent<MeshFilter>();
+        }
+
         public void ChangeColor(string color)
         {
-            Material material = GetComponent<Renderer>().material;
-
             switch (color.ToLower())
             {
                 case "red":
-                    material.color = Color.red;
+                    meshFilter.ChangeColor(Color.red);
                     break;
                 case "blue":
-                    material.color = Color.blue;
+                    meshFilter.ChangeColor(Color.blue);
                     break;
                 case "green":
-                    material.color = Color.green;
+                    meshFilter.ChangeColor(Color.green);
                     break;
             }
-
-            Resources.UnloadAsset(material);
         }
 
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)

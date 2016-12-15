@@ -18,11 +18,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             switch (eventData.RecognizedText.ToLower())
             {
                 case "reset all":
-                    foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+                    foreach (MeshFilter meshFilter in GetComponentsInChildren<MeshFilter>())
                     {
-                        Material material = renderer.material;
-                        material.color = Color.gray;
-                        Resources.UnloadAsset(material);
+                        meshFilter.ChangeColor(Color.white);
                     }
                     break;
             }
