@@ -9,20 +9,20 @@ namespace HoloToolkit.Unity.InputModule.Tests
     public class DisplaySpeechKeywords : MonoBehaviour
     {
         public SpeechInputSource speechInputSource;
-        public Text textPanel;
+        public TextMesh textMesh;
 
         void Start()
         {
-            if (speechInputSource == null || textPanel == null)
+            if (speechInputSource == null || textMesh == null)
             {
                 Debug.Log("Please check the variables in the Inspector on DisplaySpeechKeywords.cs on" + name + ".");
                 return;
             }
 
-            textPanel.text = "Try saying:\n";
+            textMesh.text = "Try saying:\n";
             foreach (SpeechInputSource.KeywordAndKeyCode item in speechInputSource.Keywords)
             {
-                textPanel.text += item.Keyword + "\n";
+                textMesh.text += " " + item.Keyword + "\n";
             }
         }
     }
