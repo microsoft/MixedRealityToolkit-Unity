@@ -57,6 +57,10 @@ Adds and updates spatial mapping data for all surfaces discovered by the Surface
 Generates and retrieves meshes based on spatial mapping data coming from the current source object (file, observer, network). 
 SpatialMappingManager.cs manages switching between source types and interacting with this class.
 
+#### TapToPlace.cs
+Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
+Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
+
 ### [Scripts\RemoteMapping](Scripts/RemoteMapping)
 
 The following scripts allow you to send spatial mapping data from the HoloLens to the Unity Editor and to save/load the meshes for use later.
@@ -171,12 +175,6 @@ If running in the Editor, the ObjectSurfaceObserver will load the SRMesh.obj fil
 
 #### TapToPlace.unity
 This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use. There is a cube in the scene with TapToPlace added on it. Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze. While the cube is in 'placement' mode, the spatial mapping mesh will be visible. When tap is performed again, the cube will be placed on the mesh and the mesh will no longer be visible.
-
-### [Tests Scripts](Tests/Scripts)
-
-#### TapToPlace.cs
-Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
-Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
 
 ---
 ##### [Go back up to the table of contents.](../../../README.md)
