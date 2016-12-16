@@ -10,14 +10,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
         private new Renderer renderer;
-        private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+        private MaterialPropertyBlock propertyBlock;
 
         protected virtual void Awake()
         {
             renderer = GetComponent<Renderer>();
-        }
+            propertyBlock = new MaterialPropertyBlock();
+    }
 
-        public void ChangeColor(string color)
+    public void ChangeColor(string color)
         {
             switch (color.ToLower())
             {

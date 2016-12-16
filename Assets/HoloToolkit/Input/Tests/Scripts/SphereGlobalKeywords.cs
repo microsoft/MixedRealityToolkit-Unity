@@ -8,10 +8,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereGlobalKeywords : MonoBehaviour, ISpeechHandler
     {
-        private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+        private MaterialPropertyBlock propertyBlock;
 
         private void Start()
         {
+            propertyBlock = new MaterialPropertyBlock();
             InputManager.Instance.AddGlobalListener(gameObject);
         }
 
