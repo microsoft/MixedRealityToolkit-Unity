@@ -8,7 +8,7 @@ Shader "HoloToolkit/BlinnPhong Configurable"
     {
         [Header(Main Color)]
         [Toggle] _UseColor("Enabled?", Float) = 0
-        _Color("Main Color", Color) = (1,1,1,1)
+		[PerRendererData] _Color("Main Color", Color) = (1,1,1,1)
         [Space(20)]
 
         [Header(Base(RGB))]

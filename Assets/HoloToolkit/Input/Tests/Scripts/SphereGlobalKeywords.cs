@@ -8,6 +8,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereGlobalKeywords : MonoBehaviour, ISpeechHandler
     {
+        private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+
         private void Start()
         {
             InputManager.Instance.AddGlobalListener(gameObject);
@@ -18,12 +20,19 @@ namespace HoloToolkit.Unity.InputModule.Tests
             switch (eventData.RecognizedText.ToLower())
             {
                 case "reset all":
-                    foreach (MeshFilter meshFilter in GetComponentsInChildren<MeshFilter>())
+                    foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
                     {
-                        meshFilter.ChangeColor(Color.white);
+                        ChangeColor(renderer, Color.white);
                     }
                     break;
             }
+        }
+
+        private void ChangeColor(Renderer renderer, Color color)
+        {
+            renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_Color", color);
+            renderer.SetPropertyBlock(propertyBlock);
         }
     }
 }

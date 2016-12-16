@@ -9,11 +9,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
-        MeshFilter meshFilter;
+        private new Renderer renderer;
+        private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
-            meshFilter = GetComponent<MeshFilter>();
+            renderer = GetComponent<Renderer>();
         }
 
         public void ChangeColor(string color)
@@ -21,13 +22,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
             switch (color.ToLower())
             {
                 case "red":
-                    meshFilter.ChangeColor(Color.red);
+                    ChangeColor(Color.red);
                     break;
                 case "blue":
-                    meshFilter.ChangeColor(Color.blue);
+                    ChangeColor(Color.blue);
                     break;
                 case "green":
-                    meshFilter.ChangeColor(Color.green);
+                    ChangeColor(Color.green);
                     break;
             }
         }
@@ -35,6 +36,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             ChangeColor(eventData.RecognizedText);
+        }
+
+        private void ChangeColor(Color color)
+        {
+            renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_Color", color);
+            renderer.SetPropertyBlock(propertyBlock);
         }
     }
 }
