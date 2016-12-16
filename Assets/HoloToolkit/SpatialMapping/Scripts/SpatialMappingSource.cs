@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        protected Type[] componentsRequiredForSurfaceMesh =
+        protected readonly Type[] componentsRequiredForSurfaceMesh =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),
@@ -147,7 +147,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Gets all mesh filters that have a valid mesh.
         /// </summary>
         /// <returns>A list of filters, each with a mesh containing at least one triangle.</returns>
-        virtual public List<MeshFilter> GetMeshFilters()
+        public virtual List<MeshFilter> GetMeshFilters()
         {
             List<MeshFilter> meshFilters = new List<MeshFilter>();
 
@@ -168,7 +168,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Gets all mesh renderers that have been created.
         /// </summary>
         /// <returns></returns>
-        virtual public List<MeshRenderer> GetMeshRenderers()
+        public virtual List<MeshRenderer> GetMeshRenderers()
         {
             List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
 
