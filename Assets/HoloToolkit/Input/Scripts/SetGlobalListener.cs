@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     /// <summary>
-    /// Register on the InputManger this game object as a global listerner.
+    /// Register this game object on the InputManager as a global listener.
     /// </summary>
     public class SetGlobalListener : MonoBehaviour
     {
