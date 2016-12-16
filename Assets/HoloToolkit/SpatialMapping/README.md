@@ -149,7 +149,7 @@ A basic occlusion shader that can be used to occlude objects behind spatial mapp
 #### Wireframe.shader
 A basic wire frame shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
 
-### [Tests/Scenes](Tests)
+### [Tests Scenes](Tests/Scenes)
 
 #### PlaneFinding.unity
 To use this sample code, load the PlaneFinding scene and hit Play. The PlaneFinding algorithm will run in a loop. Switch to the scene view to see a visualization of the planes found.
@@ -172,7 +172,7 @@ If running in the Editor, the ObjectSurfaceObserver will load the SRMesh.obj fil
 #### TapToPlace.unity
 This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use. There is a cube in the scene with TapToPlace added on it. Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze. While the cube is in 'placement' mode, the spatial mapping mesh will be visible. When tap is performed again, the cube will be placed on the mesh and the mesh will no longer be visible.
 
-### [Tests/Scripts](Tests)
+### [Tests Scripts](Tests/Scripts)
 
 #### TapToPlace.cs
 Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
