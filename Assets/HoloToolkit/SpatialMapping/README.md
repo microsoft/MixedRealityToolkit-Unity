@@ -153,6 +153,9 @@ A basic occlusion shader that can be used to occlude objects behind spatial mapp
 #### Wireframe.shader
 A basic wire frame shader that can be used for rendering spatial mapping meshes. Use SpatialMappingManager.SetSurfaceMaterial() to use this material with the spatial mapping data.
 
+#### SpatialMappingTap.shader
+Draws a ring originating from a location in space. Useful for showing where a user tapped. Requires a component to drive it's radius and set the tap location in world space.
+
 ### [Tests/Scenes](Tests)
 
 #### PlaneFinding.unity
