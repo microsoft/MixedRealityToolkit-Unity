@@ -65,6 +65,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4499402611245876}
   - component: {fileID: 114176238876834528}
+  - component: {fileID: 114631064191303012}
   m_Layer: 0
   m_Name: DefaultCursor_wPulse
   m_TagString: Untagged
@@ -663,6 +664,17 @@ MonoBehaviour:
     AnimIntValue: 0
     AnimFloatValue: 0
   CursorAnimator: {fileID: 95281376014582774}
+--- !u!114 &114631064191303012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1114217927960816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f63ce1af01cf6f40aabe17748e0163f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!137 &137399521485715028
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
