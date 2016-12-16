@@ -13,7 +13,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private void Start()
         {
             propertyBlock = new MaterialPropertyBlock();
-            InputManager.Instance.AddGlobalListener(gameObject);
         }
 
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
