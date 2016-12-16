@@ -237,13 +237,13 @@ namespace HoloToolkit.Unity.SpatialMapping
             if (surfaces.TryGetValue(cookedData.id.handle, out surface))
             {
                 // Set the draw material for the renderer.
-                MeshRenderer renderer = surface.GetComponent<MeshRenderer>();
-                renderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
-                renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+                MeshRenderer meshRenderer = surface.GetComponent<MeshRenderer>();
+                meshRenderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
+                meshRenderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
 
                 if (SpatialMappingManager.Instance.CastShadows == false)
                 {
-                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                    meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
             }
 

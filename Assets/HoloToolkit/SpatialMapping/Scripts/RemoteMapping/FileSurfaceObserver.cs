@@ -39,25 +39,25 @@ namespace HoloToolkit.Unity.SpatialMapping
                 foreach (Mesh mesh in storedMeshes)
                 {
                     GameObject surface = AddSurfaceObject(mesh, "storedmesh-" + SurfaceObjects.Count, transform);
-                    Renderer renderer = surface.GetComponent<MeshRenderer>();
+                    Renderer meshRenderer = surface.GetComponent<MeshRenderer>();
 
                     if (SpatialMappingManager.Instance.DrawVisualMeshes == false)
                     {
-                        renderer.enabled = false;
+                        meshRenderer.enabled = false;
                     }
 
                     if (SpatialMappingManager.Instance.CastShadows == false)
                     {
-                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                        meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     }
 
                     // Reset the surface mesh collider to fit the updated mesh. 
                     // Unity tribal knowledge indicates that to change the mesh assigned to a
                     // mesh collider, the mesh must first be set to null.  Presumably there
                     // is a side effect in the setter when setting the shared mesh to null.
-                    MeshCollider collider = surface.GetComponent<MeshCollider>();
-                    collider.sharedMesh = null;
-                    collider.sharedMesh = surface.GetComponent<MeshFilter>().mesh;
+                    MeshCollider meshCollider = surface.GetComponent<MeshCollider>();
+                    meshCollider.sharedMesh = null;
+                    meshCollider.sharedMesh = surface.GetComponent<MeshFilter>().mesh;
                 }
             }
             catch
