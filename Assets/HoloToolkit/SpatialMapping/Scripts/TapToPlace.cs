@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
@@ -22,6 +23,12 @@ namespace HoloToolkit.Unity
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
+        [Tooltip("Place parent on tap instead of current game object.")]
+        public bool PlaceParentOnTap = false;
+
+        [Tooltip("Specify the parent game object to be moved on tap, if the immediate parent is not desired.")]
+        public GameObject ParentGameObjectToPlace;
+
         /// <summary>
         /// Manages persisted anchors.
         /// </summary>
@@ -38,7 +45,13 @@ namespace HoloToolkit.Unity
         /// </summary>
         private bool placing;
 
-        private void Start()
+        /// <summary>
+        /// Keeps track of which object we are placing. By default this is equal to
+        /// the current gameObject, but can be changed to a parent gameObject.
+        /// </summary>
+        private GameObject objectToPlace;
+
+        public virtual void Start()
         {
             // Make sure we have all the components in the scene we need.
             anchorManager = WorldAnchorManager.Instance;
@@ -62,9 +75,24 @@ namespace HoloToolkit.Unity
                 // If we don't have what we need to proceed, we may as well remove ourselves.
                 Destroy(this);
             }
+
+            if (PlaceParentOnTap && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+            {
+                Debug.LogError("The specified parent object is not a parent of this object.");
+            }
+
+            DetermineParent();
         }
 
-        private void Update()
+        private void DetermineParent()
+        {
+            if (ParentGameObjectToPlace != null)
+                objectToPlace = ParentGameObjectToPlace;
+            else
+                objectToPlace = gameObject.transform.parent.gameObject;
+        }
+
+        public virtual void Update()
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
@@ -78,24 +106,30 @@ namespace HoloToolkit.Unity
                 if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
                     30.0f, spatialMappingManager.LayerMask))
                 {
+                    // Place the parent object as well but keep the focus on the current game object
+                    if (PlaceParentOnTap)
+                    {
+                        ParentGameObjectToPlace.transform.position = hitInfo.point - gameObject.transform.localPosition;
+                    }
+
                     // Move this object to where the raycast
                     // hit the Spatial Mapping mesh.
                     // Here is where you might consider adding intelligence
                     // to how the object is placed.  For example, consider
                     // placing based on the bottom of the object's
                     // collider so it sits properly on surfaces.
-                    this.transform.position = hitInfo.point;
+                    gameObject.transform.position = hitInfo.point;
 
                     // Rotate this object to face the user.
                     Quaternion toQuat = Camera.main.transform.localRotation;
                     toQuat.x = 0;
                     toQuat.z = 0;
-                    this.transform.rotation = toQuat;
+                    gameObject.transform.rotation = toQuat;
                 }
             }
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public virtual void OnInputClicked(InputEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             placing = !placing;
