@@ -15,24 +15,15 @@ namespace HoloToolkit.Unity.SpatialMapping
     [RequireComponent(typeof(SpatialMappingObserver))]
     public partial class SpatialMappingManager : Singleton<SpatialMappingManager>
     {
-        [Tooltip("The physics layer for spatial mapping objects to be set to.")]
         public int PhysicsLayer = 31;
-
-        [Tooltip("The material to use for rendering spatial mapping data.")]
-        [SerializeField]
+        
         private Material surfaceMaterial;
 
-        [Tooltip("Determines if the surface observer should be automatically started.")]
-        [SerializeField]
-        private bool autoStartObserver = true;
+        public bool autoStartObserver = true;
 
-        [Tooltip("Determines if spatial mapping data will be rendered.")]
-        [SerializeField]
-        private bool drawVisualMeshes = false;
-
-        [Tooltip("Determines if spatial mapping data will cast shadows.")]
-        [SerializeField]
-        private bool castShadows = false;
+        private bool drawVisualMeshes;
+        
+        private bool castShadows;
 
         /// <summary>
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
@@ -90,7 +81,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                 if (value != surfaceMaterial)
                 {
                     surfaceMaterial = value;
-                    SetSurfaceMaterial(surfaceMaterial);
+                    if (Application.isPlaying)
+                    {
+                        SetSurfaceMaterial(surfaceMaterial);
+                    }
                 }
             }
         }
@@ -109,7 +103,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                 if (value != drawVisualMeshes)
                 {
                     drawVisualMeshes = value;
-                    UpdateRendering(drawVisualMeshes);
+                    if (Application.isPlaying)
+                    {
+                        UpdateRendering(drawVisualMeshes);
+                    }
                 }
             }
         }
@@ -128,7 +125,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                 if (value != castShadows)
                 {
                     castShadows = value;
-                    SetShadowCasting(castShadows);
+                    if (Application.isPlaying)
+                    {
+                        SetShadowCasting(castShadows);
+                    }
                 }
             }
         }
