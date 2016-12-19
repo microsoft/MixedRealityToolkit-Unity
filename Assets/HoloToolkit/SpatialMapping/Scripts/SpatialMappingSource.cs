@@ -79,15 +79,15 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Updates an existing surface object.
         /// </summary>
-        /// <param name="gameObject">Game object reference to the surfaceObject.</param>
+        /// <param name="surfaceGameObject">Game object reference to the surfaceObject.</param>
         /// <param name="meshID">User specified ID for the mesh.</param>
         /// <returns>True if successful</returns>
-        protected void UpdateSurfaceObject(GameObject gameObject, int meshID)
+        protected void UpdateSurfaceObject(GameObject surfaceGameObject, int meshID)
         {
             // If it's in the list, update it
             for (int i = 0; i < SurfaceObjects.Count; ++i)
             {
-                if (SurfaceObjects[i].Object == gameObject)
+                if (SurfaceObjects[i].Object == surfaceGameObject)
                 {
                     SurfaceObject thisSurfaceObject = SurfaceObjects[i];
                     thisSurfaceObject.ID = meshID;
@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             surfaceObject.ID = meshID;
             surfaceObject.UpdateID = 0;
 
-            surfaceObject.Object = gameObject;
+            surfaceObject.Object = surfaceGameObject;
             surfaceObject.Filter = surfaceObject.Object.GetComponent<MeshFilter>();
             surfaceObject.Renderer = surfaceObject.Object.GetComponent<MeshRenderer>();
 
