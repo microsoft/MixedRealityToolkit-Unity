@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Keeps track of if the user is moving the object or not.
-        /// Setting this true will place the object immediately.
+        /// Setting this to true will enable the user to move and place the object in the scene.
         /// </summary>
         public bool IsBeingPlaced;
 
