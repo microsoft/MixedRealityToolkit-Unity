@@ -30,6 +30,11 @@ namespace HoloToolkit.Unity
         public GameObject ParentGameObjectToPlace;
 
         /// <summary>
+        /// Keeps track of if the user is moving the object or not.
+        /// </summary>
+        public bool IsBeingDragged;
+
+        /// <summary>
         /// Manages persisted anchors.
         /// </summary>
         private WorldAnchorManager anchorManager;
@@ -39,11 +44,6 @@ namespace HoloToolkit.Unity
         /// to control rendering and to access the physics layer mask.
         /// </summary>
         private SpatialMappingManager spatialMappingManager;
-
-        /// <summary>
-        /// Keeps track of if the user is moving the object or not.
-        /// </summary>
-        private bool placing;
 
         /// <summary>
         /// Keeps track of which object we are placing. By default this is equal to
@@ -87,27 +87,11 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void DetermineParent()
-        {
-            if (ParentGameObjectToPlace == null)
-            {
-                if (gameObject.transform.parent == null)
-                {
-                    Debug.LogError("The selected GameObject has no parent.");
-                    PlaceParentOnTap = false;
-                }
-                else
-                {
-                    ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
-                }
-            }
-        }
-
         public virtual void Update()
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
-            if (placing)
+            if (IsBeingDragged)
             {
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
                 var headPosition = Camera.main.transform.position;
@@ -143,10 +127,10 @@ namespace HoloToolkit.Unity
         public virtual void OnInputClicked(InputEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
-            placing = !placing;
+            IsBeingDragged = !IsBeingDragged;
 
             // If the user is in placing mode, display the spatial mapping mesh.
-            if (placing)
+            if (IsBeingDragged)
             {
                 spatialMappingManager.DrawVisualMeshes = true;
 
@@ -160,6 +144,22 @@ namespace HoloToolkit.Unity
                 spatialMappingManager.DrawVisualMeshes = false;
                 // Add world anchor when object placement is done.
                 anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+            }
+        }
+
+        private void DetermineParent()
+        {
+            if (ParentGameObjectToPlace == null)
+            {
+                if (gameObject.transform.parent == null)
+                {
+                    Debug.LogError("The selected GameObject has no parent.");
+                    PlaceParentOnTap = false;
+                }
+                else
+                {
+                    ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
+                }
             }
         }
     }
