@@ -114,8 +114,7 @@ namespace HoloToolkit.Unity
                 var gazeDirection = Camera.main.transform.forward;
 
                 RaycastHit hitInfo;
-                if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
-                    30.0f, spatialMappingManager.LayerMask))
+                if (Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, spatialMappingManager.LayerMask))
                 {
                     // Place the parent object as well but keep the focus on the current game object
                     if (PlaceParentOnTap)
