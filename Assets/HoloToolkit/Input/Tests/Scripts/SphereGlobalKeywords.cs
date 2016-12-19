@@ -8,10 +8,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereGlobalKeywords : MonoBehaviour, ISpeechHandler
     {
-        private void Start()
-        {
-        }
-
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             switch (eventData.RecognizedText.ToLower())
