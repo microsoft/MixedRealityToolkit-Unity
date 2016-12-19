@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
@@ -36,6 +38,36 @@ namespace HoloToolkit.Unity
             GUILayout.Space(EditorGUIExtensions.Indent);
             GUILayout.Label(text, style, options);
             EditorGUILayout.EndHorizontal();
+        }
+
+        public static T ObjectField<T>(string label, T value, bool allowSceneObjects)
+        {
+            object objValue = value;
+
+            Type valueType = objValue.GetType();
+            if (valueType == typeof(Material))
+            {
+                objValue = EditorGUILayout.ObjectField(label, (Material)objValue, typeof(Material), allowSceneObjects);
+            }
+            else if (valueType == typeof(SceneAsset))
+            {
+                objValue = EditorGUILayout.ObjectField(label, (SceneAsset)objValue, typeof(SceneAsset), allowSceneObjects);
+            }
+            else if (objValue is UnityEngine.Object)
+            {
+                objValue = EditorGUILayout.ObjectField(label, (UnityEngine.Object)objValue, valueType, allowSceneObjects);
+            }
+            else
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        "Unimplemented value type: {0}.",
+                        valueType),
+                    "value");
+            }
+
+            return (T)objValue;
         }
     }
 }
