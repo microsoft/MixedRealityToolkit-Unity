@@ -40,22 +40,22 @@ namespace HoloToolkit.Unity
             EditorGUILayout.EndHorizontal();
         }
 
-        public static T ObjectField<T>(string label, T value, bool allowSceneObjects)
+        public static T ObjectField<T>(GUIContent guiContent, T value, bool allowSceneObjects, GUILayoutOption[] guiLayoutOptions = null)
         {
             object objValue = value;
 
             Type valueType = objValue.GetType();
             if (valueType == typeof(Material))
             {
-                objValue = EditorGUILayout.ObjectField(label, (Material)objValue, typeof(Material), allowSceneObjects);
+                objValue = EditorGUILayout.ObjectField(guiContent, (Material)objValue, typeof(Material), allowSceneObjects, guiLayoutOptions);
             }
             else if (valueType == typeof(SceneAsset))
             {
-                objValue = EditorGUILayout.ObjectField(label, (SceneAsset)objValue, typeof(SceneAsset), allowSceneObjects);
+                objValue = EditorGUILayout.ObjectField(guiContent, (SceneAsset)objValue, typeof(SceneAsset), allowSceneObjects, guiLayoutOptions);
             }
             else if (objValue is UnityEngine.Object)
             {
-                objValue = EditorGUILayout.ObjectField(label, (UnityEngine.Object)objValue, valueType, allowSceneObjects);
+                objValue = EditorGUILayout.ObjectField(guiContent, (UnityEngine.Object)objValue, valueType, allowSceneObjects, guiLayoutOptions);
             }
             else
             {
