@@ -94,8 +94,8 @@ namespace HoloToolkit.Unity
             if (IsBeingDragged)
             {
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
-                var headPosition = Camera.main.transform.position;
-                var gazeDirection = Camera.main.transform.forward;
+                Vector3 headPosition = Camera.main.transform.position;
+                Vector3 gazeDirection = Camera.main.transform.forward;
 
                 RaycastHit hitInfo;
                 if (Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, spatialMappingManager.LayerMask))
