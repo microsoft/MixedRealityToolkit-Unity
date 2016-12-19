@@ -163,6 +163,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &406605503 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1790047496912036, guid: 0103c1fda9d957243bae18d7b9473e80,
+    type: 2}
+  m_PrefabInternal: {fileID: 2135800311}
 --- !u!1001 &688479417
 Prefab:
   m_ObjectHideFlags: 0
@@ -421,6 +426,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1790047496912036, guid: 0103c1fda9d957243bae18d7b9473e80, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0103c1fda9d957243bae18d7b9473e80, type: 2}
   m_IsPrefabParent: 0
@@ -468,6 +477,16 @@ Prefab:
       propertyPath: surfaceMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 75737e67271928f49a52005076d84d01, type: 2}
+    - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
+        type: 2}
+      propertyPath: drawVisualMeshes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012149591842, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
+        type: 2}
+      propertyPath: RoomModel
+      value: 
+      objectReference: {fileID: 406605503}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
   m_IsPrefabParent: 0

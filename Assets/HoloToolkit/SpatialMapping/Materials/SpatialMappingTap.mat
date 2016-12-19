@@ -105,10 +105,10 @@ Material:
       second: 0.02
     - first:
         name: _PulseWidth
-      second: 0.99
+      second: 1.74
     - first:
         name: _Radius
-      second: 4.55
+      second: 0
     - first:
         name: _SmoothnessTextureChannel
       second: 0
@@ -126,7 +126,7 @@ Material:
       second: 1
     - first:
         name: _WireframeFill
-      second: 0.13
+      second: 0
     - first:
         name: _WireframeThick
       second: 0

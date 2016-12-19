@@ -3,8 +3,8 @@ Shader "Spatial Mapping/Spatial Mapping Tap"
 	Properties
 	{
 		// Main knobs
-		_Center ("Center", Vector) = (0, 0, 0, -1) // world space position
-		_Radius ("Radius", Range(0, 10)) = 1 // grows the pulse
+		_Center ("Center", Vector) = (0, 0, 0, 1) // world space position
+		_Radius ("Radius", Float) = -1 // grows the pulse.  Starts at -1 to ensure no wires show.
 
 		// Pulse knobs
 		_PulseColor ("Pulse Color", Color) = (.145, .447, .922)
