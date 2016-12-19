@@ -76,23 +76,30 @@ namespace HoloToolkit.Unity
                 Destroy(this);
             }
 
-            if (PlaceParentOnTap && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+            if (PlaceParentOnTap)
             {
-                Debug.LogError("The specified parent object is not a parent of this object.");
-            }
+                if  (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+                {
+                    Debug.LogError("The specified parent object is not a parent of this object.");
+                }
 
-            DetermineParent();
+                DetermineParent();
+            }
         }
 
         private void DetermineParent()
         {
-            if (ParentGameObjectToPlace != null)
+            if (ParentGameObjectToPlace == null)
             {
-                objectToPlace = ParentGameObjectToPlace;
-            }
-            else
-            {
-                objectToPlace = gameObject.transform.parent.gameObject;
+                if (gameObject.transform.parent == null)
+                {
+                    Debug.LogError("The selected GameObject has no parent.");
+                    PlaceParentOnTap = false;
+                }
+                else
+                {
+                    ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
+                }
             }
         }
 
@@ -113,7 +120,8 @@ namespace HoloToolkit.Unity
                     // Place the parent object as well but keep the focus on the current game object
                     if (PlaceParentOnTap)
                     {
-                        ParentGameObjectToPlace.transform.position = hitInfo.point - gameObject.transform.localPosition;
+                        Vector3 relativePositionToParent = gameObject.transform.position - ParentGameObjectToPlace.transform.position;
+                        ParentGameObjectToPlace.transform.position = hitInfo.point - relativePositionToParent;
                     }
 
                     // Move this object to where the raycast
