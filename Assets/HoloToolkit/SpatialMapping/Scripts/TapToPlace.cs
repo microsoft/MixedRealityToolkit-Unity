@@ -87,9 +87,13 @@ namespace HoloToolkit.Unity
         private void DetermineParent()
         {
             if (ParentGameObjectToPlace != null)
+            {
                 objectToPlace = ParentGameObjectToPlace;
+            }
             else
+            {
                 objectToPlace = gameObject.transform.parent.gameObject;
+            }
         }
 
         public virtual void Update()
@@ -108,7 +112,9 @@ namespace HoloToolkit.Unity
                 {
                     // Place the parent object as well but keep the focus on the current game object
                     if (PlaceParentOnTap)
+                    {
                         ParentGameObjectToPlace.transform.position = hitInfo.point - gameObject.transform.localPosition;
+                    }
 
                     // Move this object to where the raycast
                     // hit the Spatial Mapping mesh.
