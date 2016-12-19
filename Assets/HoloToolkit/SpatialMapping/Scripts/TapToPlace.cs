@@ -31,8 +31,9 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Keeps track of if the user is moving the object or not.
+        /// Setting this true will place the object immediately.
         /// </summary>
-        public bool IsBeingDragged;
+        public bool IsBeingPlaced;
 
         /// <summary>
         /// Manages persisted anchors.
@@ -91,8 +92,9 @@ namespace HoloToolkit.Unity
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
-            if (IsBeingDragged)
+            if (IsBeingPlaced)
             {
+                if (gameObject.GetComponent<TapToPlace>().IsBeingPlaced) { }
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
                 Vector3 headPosition = Camera.main.transform.position;
                 Vector3 gazeDirection = Camera.main.transform.forward;
@@ -127,10 +129,10 @@ namespace HoloToolkit.Unity
         public virtual void OnInputClicked(InputEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
-            IsBeingDragged = !IsBeingDragged;
+            IsBeingPlaced = !IsBeingPlaced;
 
             // If the user is in placing mode, display the spatial mapping mesh.
-            if (IsBeingDragged)
+            if (IsBeingPlaced)
             {
                 spatialMappingManager.DrawVisualMeshes = true;
 
