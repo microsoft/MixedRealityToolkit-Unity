@@ -49,6 +49,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         public event SurfaceObserver.SurfaceDataReadyDelegate DataReady;
 
         /// <summary>
+        /// Indicates the current state of the Surface Observer.
+        /// </summary>
+        public ObserverStates ObserverState { get; private set; }
+
+        /// <summary>
         /// Our Surface Observer object for generating/updating Spatial Mapping data.
         /// </summary>
         private SurfaceObserver observer;
@@ -89,11 +94,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Used to track when the Observer was last updated.
         /// </summary>
         private float updateTime;
-
-        /// <summary>
-        /// Indicates the current state of the Surface Observer.
-        /// </summary>
-        public ObserverStates ObserverState { get; private set; }
 
         protected override void Awake()
         {
@@ -371,11 +371,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         private void QueueSurfaceDataRequest(SurfaceId id, GameObject surface)
         {
             SurfaceData surfaceData = new SurfaceData(id,
-                                                        surface.GetComponent<MeshFilter>(),
-                                                        surface.GetComponent<WorldAnchor>(),
-                                                        surface.GetComponent<MeshCollider>(),
-                                                        TrianglesPerCubicMeter,
-                                                        true);
+                                                      surface.GetComponent<MeshFilter>(),
+                                                      surface.GetComponent<WorldAnchor>(),
+                                                      surface.GetComponent<MeshCollider>(),
+                                                      TrianglesPerCubicMeter,
+                                                      true);
 
             surfaceWorkQueue.Enqueue(surfaceData);
         }

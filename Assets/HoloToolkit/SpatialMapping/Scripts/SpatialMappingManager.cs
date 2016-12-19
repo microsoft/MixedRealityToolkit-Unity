@@ -4,10 +4,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
@@ -23,16 +19,20 @@ namespace HoloToolkit.Unity.SpatialMapping
         public int PhysicsLayer = 31;
 
         [Tooltip("The material to use for rendering spatial mapping data.")]
-        public Material surfaceMaterial;
+        [SerializeField]
+        private Material surfaceMaterial;
 
         [Tooltip("Determines if the surface observer should be automatically started.")]
-        public bool autoStartObserver = true;
+        [SerializeField]
+        private bool autoStartObserver = true;
 
         [Tooltip("Determines if spatial mapping data will be rendered.")]
-        public bool drawVisualMeshes = false;
+        [SerializeField]
+        private bool drawVisualMeshes = false;
 
         [Tooltip("Determines if spatial mapping data will cast shadows.")]
-        public bool castShadows = false;
+        [SerializeField]
+        private bool castShadows = false;
 
         /// <summary>
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
