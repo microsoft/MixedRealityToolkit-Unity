@@ -52,9 +52,10 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (spatialMappingManager.SurfaceMaterial.HasProperty("_UseWireframe"))
             {
-                bool useWireframe = spatialMappingManager.SurfaceMaterial.GetInt("_UseWireframe") == 1;
+                bool useWireframe = EditorGUILayout.Toggle(new GUIContent("Use Wireframe"), spatialMappingManager.SurfaceMaterial.GetInt("_UseWireframe") == 1);
                 if (useWireframe)
                 {
+                    spatialMappingManager.SurfaceMaterial.SetInt("_UseWireframe", 1);
                     if (spatialMappingManager.SurfaceMaterial.HasProperty("_WireframeColor"))
                     {
                         spatialMappingManager.SurfaceMaterial.SetColor(
@@ -70,12 +71,18 @@ namespace HoloToolkit.Unity.SpatialMapping
                     {
                         spatialMappingManager.SurfaceMaterial.SetFloat(
                             "_WireframeFill",
-                            EditorGUILayout.FloatField(
+                            EditorGUILayout.Slider(
                                 new GUIContent("Wireframe thickness", "Thickness of wireframe lines on spatial map"),
-                                spatialMappingManager.SurfaceMaterial.GetFloat("_WireframeFill")
+                                spatialMappingManager.SurfaceMaterial.GetFloat("_WireframeFill"),
+                                0.0f,
+                                1.0f
                             )
                         );
                     }
+                }
+                else
+                {
+                    spatialMappingManager.SurfaceMaterial.SetInt("_UseWireframe", 0);
                 }
             }
         }
