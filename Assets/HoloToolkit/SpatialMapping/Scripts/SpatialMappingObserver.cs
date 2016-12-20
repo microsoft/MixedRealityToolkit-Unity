@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// Spatial Mapping Observer states.
@@ -49,6 +49,11 @@ namespace HoloToolkit.Unity
         public event SurfaceObserver.SurfaceDataReadyDelegate DataReady;
 
         /// <summary>
+        /// Indicates the current state of the Surface Observer.
+        /// </summary>
+        public ObserverStates ObserverState { get; private set; }
+
+        /// <summary>
         /// Our Surface Observer object for generating/updating Spatial Mapping data.
         /// </summary>
         private SurfaceObserver observer;
@@ -89,11 +94,6 @@ namespace HoloToolkit.Unity
         /// Used to track when the Observer was last updated.
         /// </summary>
         private float updateTime;
-
-        /// <summary>
-        /// Indicates the current state of the Surface Observer.
-        /// </summary>
-        public ObserverStates ObserverState { get; private set; }
 
         protected override void Awake()
         {
@@ -237,13 +237,13 @@ namespace HoloToolkit.Unity
             if (surfaces.TryGetValue(cookedData.id.handle, out surface))
             {
                 // Set the draw material for the renderer.
-                MeshRenderer renderer = surface.GetComponent<MeshRenderer>();
-                renderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
-                renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+                MeshRenderer meshRenderer = surface.GetComponent<MeshRenderer>();
+                meshRenderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
+                meshRenderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
 
                 if (SpatialMappingManager.Instance.CastShadows == false)
                 {
-                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                    meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
             }
 
@@ -371,11 +371,11 @@ namespace HoloToolkit.Unity
         private void QueueSurfaceDataRequest(SurfaceId id, GameObject surface)
         {
             SurfaceData surfaceData = new SurfaceData(id,
-                                                        surface.GetComponent<MeshFilter>(),
-                                                        surface.GetComponent<WorldAnchor>(),
-                                                        surface.GetComponent<MeshCollider>(),
-                                                        TrianglesPerCubicMeter,
-                                                        true);
+                                                      surface.GetComponent<MeshFilter>(),
+                                                      surface.GetComponent<WorldAnchor>(),
+                                                      surface.GetComponent<MeshCollider>(),
+                                                      TrianglesPerCubicMeter,
+                                                      true);
 
             surfaceWorkQueue.Enqueue(surfaceData);
         }
