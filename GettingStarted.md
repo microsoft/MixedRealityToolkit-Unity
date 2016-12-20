@@ -34,19 +34,17 @@ You should now have a `HoloToolkit` menu item.
 
 `HoloToolkit -> Configure -> Apply HoloLens Scene Settings`
 
-`HoloToolkit -> Configure -> Apply HoloLens Project Settings`
-
 # 3. Preparing a Scene for Holographic Content
 Create a new Scene: `File -> New Scene`
 
-Remove the default camera and dirctional light objects in the scene (the next step creates a camera
+Remove the default `Main Camera` and `Directional Light` objects in the scene (the next step creates a camera
  customized for holographic development).
 
 Add the `HoloLensCamera.prefab` (found under HoloToolkit/Input/Prefabs).
 
 Add the `DefaultCursor.prefab` (found under HoloToolkit/Input/Prefabs/Cursor).
 
-Create an empty object in your scene and make sure it's transform is zeroed on the origin.
+Create an empty object in your scene and make sure its transform is zeroed on the origin.
 Rename it 'Managers'.
 
 Add the `InputManager.prefab` (found under HoloToolkit/Input/Prefabs) as a child to your new 'Managers' Object.
