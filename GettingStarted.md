@@ -32,16 +32,28 @@ you have either downloaded or exported above]. **NOTE**: The HoloToolkit-Example
 
 You should now have a `HoloToolkit` menu item.
 
-# 3. Preparing a Scene for Holographic Content
+`HoloToolkit -> Configure -> Apply HoloLens Scene Settings`
 
-Remove the default camera in the project (the next step creates a camera
+`HoloToolkit -> Configure -> Apply HoloLens Project Settings`
+
+# 3. Preparing a Scene for Holographic Content
+Create a new Scene: `File -> New Scene`
+
+Remove the default camera and dirctional light objects in the scene (the next step creates a camera
  customized for holographic development).
 
 Add the `HoloLensCamera.prefab` (found under HoloToolkit/Input/Prefabs).
 
-`HoloToolkit -> Configure -> Apply HoloLens Scene Settings`
+Add the `DefaultCursor.prefab` (found under HoloToolkit/Input/Prefabs/Cursor).
 
-`HoloToolkit -> Configure -> Apply HoloLens Project Settings`
+Create an empty object in your scene and make sure it's transform is zeroed on the origin.
+Rename it 'Managers'.
+
+Add the `InputManager.prefab` (found under HoloToolkit/Input/Prefabs) as a child to your new 'Managers' Object.
+
+Add an `Event System` to your scene by right click on 'Managers' object in your scene Hierarchy: `UI -> Event System`.
+
+Optionally, if you wish to enable spatial mapping in your scene, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.
 
 # 4. Building Your Project for HoloLens
 
