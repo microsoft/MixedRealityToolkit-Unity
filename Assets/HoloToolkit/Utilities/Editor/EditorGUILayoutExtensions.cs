@@ -9,7 +9,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Extensions for the UnityEnditor.EditorGUILayout class.
+    /// Extensions for the UnityEditor.EditorGUILayout class.
     /// </summary>
     public static class EditorGUILayoutExtensions
     {
