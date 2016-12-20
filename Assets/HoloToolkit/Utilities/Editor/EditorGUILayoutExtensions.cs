@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity
             EditorGUILayout.EndHorizontal();
         }
 
-        public static T ObjectField<T>(GUIContent guiContent, T value, bool allowSceneObjects, GUILayoutOption[] guiLayoutOptions = null)
+        public static T ObjectField<T>(GUIContent guiContent, T value, bool allowSceneObjects = false, GUILayoutOption[] guiLayoutOptions = null)
         {
             object objValue = value;
 
