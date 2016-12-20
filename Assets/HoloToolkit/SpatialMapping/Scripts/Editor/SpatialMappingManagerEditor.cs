@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.SpatialMapping
     public partial class SpatialMappingManagerEditor : Editor
     {
         private SerializedProperty castShadowsProperty;
+        private SerializedProperty pulseMaximumProperty;
         private SerializedProperty drawVisualMeshProperty;
         private SerializedProperty surfaceMaterialProperty;
         private SerializedProperty autoStartObserverProperty;
@@ -15,6 +16,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         private void OnEnable()
         {
             castShadowsProperty = serializedObject.FindProperty("castShadows");
+            pulseMaximumProperty = serializedObject.FindProperty("PulseMaximum");
             drawVisualMeshProperty = serializedObject.FindProperty("drawVisualMeshes");
             surfaceMaterialProperty = serializedObject.FindProperty("surfaceMaterial");
             autoStartObserverProperty = serializedObject.FindProperty("AutoStartObserver");
@@ -56,6 +58,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                                 100.0f
                             )
                         );
+
+                        EditorGUILayout.PropertyField(
+                            pulseMaximumProperty,
+                            new GUIContent("Pulse Maximum", "The Maximum radius from the tap, that the pulse will expand from"));
                     }
 
                     if (spatialMappingManager.SurfaceMaterial.HasProperty("_PulseColor"))
@@ -80,6 +86,8 @@ namespace HoloToolkit.Unity.SpatialMapping
                                 2.0f
                             )
                         );
+
+                        spatialMappingManager.SurfaceMaterial.SetFloat("_Radius", -spatialMappingManager.SurfaceMaterial.GetFloat("_PulseWidth"));
                     }
 
                     if (spatialMappingManager.SurfaceMaterial.HasProperty("_UseWireframe"))

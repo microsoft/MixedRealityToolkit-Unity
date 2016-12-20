@@ -59,10 +59,10 @@ namespace HoloToolkit.Unity.SpatialMapping
             {
                 float pulseRadius = RenderMaterial.GetFloat("_Radius");
                 float pulseSpeed = RenderMaterial.GetFloat("_Speed");
-                pulseRadius += pulseSpeed;
-                if (pulseRadius == 10f)
+                pulseRadius += pulseSpeed * Time.deltaTime;
+                if (pulseRadius >= SpatialMappingManager.Instance.PulseMaximum)
                 {
-                    RenderMaterial.SetInt("_Radius", -1);
+                    pulseRadius = -RenderMaterial.GetFloat("_PulseWidth");
                     pulse = false;
                 }
                 RenderMaterial.SetFloat("_Radius", pulseRadius);
@@ -75,9 +75,10 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="eventData"></param>
         public void OnInputClicked(InputEventData eventData)
         {
-            if (SpatialMappingManager.Instance.DrawVisualMeshes && !pulse && RenderMaterial.HasProperty("_Center"))
+            Debug.LogFormat("Spatial Mapping Source Tapped::{0}", transform.name);
+            if (SpatialMappingManager.Instance.DrawVisualMeshes && RenderMaterial.HasProperty("_Center"))
             {
-                RenderMaterial.SetInt("_Radius", -1);
+                RenderMaterial.SetFloat("_Radius", -RenderMaterial.GetFloat("_PulseWidth"));
                 RenderMaterial.SetVector("_Center", GazeManager.Instance.HitPosition);
                 pulse = true;
             }

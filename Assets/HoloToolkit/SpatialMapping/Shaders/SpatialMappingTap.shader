@@ -4,12 +4,12 @@ Shader "Spatial Mapping/Spatial Mapping Tap"
 	{
 		// Main knobs
 		[HideInInspector]_Center ("Center", Vector) = (0, 0, 0, 1) // world space position
-		[HideInInspector]_Radius ("Radius", Float)  = -1 // grows the pulse.  Starts at -1 to ensure no wires show when pulse is not active.
+		[HideInInspector]_Radius ("Radius", Float)  = -1 // grows the pulse.  Should start at the nagative number of _PulseWidth to prevent rendering when inactive.
 		[HideInInspector]_Speed  ("Speed", Range(0.01, 100)) = 1  // The speed that the pulse will travel across the mesh.
 
 		// Pulse knobs
 		_PulseColor ("Pulse Color", Color) = (.145, .447, .922)
-		_PulseWidth ("Pulse Width", Float) = 1
+		[HideInInspector]_PulseWidth ("Pulse Width", Float) = 1
 
 		// Wireframe knobs
 		[MaterialToggle] _UseWireframe ("Use Wireframe", Int) = 1

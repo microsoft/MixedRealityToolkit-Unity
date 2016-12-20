@@ -112,6 +112,13 @@ namespace HoloToolkit.Unity.SpatialMapping
         public bool AutoStartObserver = true;
 
         /// <summary>
+        /// The Maximum radius from the tap, that the pulse will expand from.
+        /// </summary>
+        [SerializeField]
+        [Range(0.01f, 100f)]
+        public float PulseMaximum = 10f;
+
+        /// <summary>
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
         /// </summary>
         private SpatialMappingObserver surfaceObserver;

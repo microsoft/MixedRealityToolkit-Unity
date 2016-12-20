@@ -57,6 +57,7 @@ MonoBehaviour:
   drawVisualMeshes: 1
   castShadows: 0
   AutoStartObserver: 1
+  PulseMaximum: 10
 --- !u!114 &114000012149591842
 MonoBehaviour:
   m_ObjectHideFlags: 1

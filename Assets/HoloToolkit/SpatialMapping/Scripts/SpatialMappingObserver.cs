@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 
@@ -308,8 +307,8 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="id">The identifier assigned to the surface which has changed.</param>
         /// <param name="changeType">The type of change that occurred on the surface.</param>
         /// <param name="bounds">The bounds of the surface.</param>
-        /// <param name="updateTime">The date and time at which the change occurred.</param>
-        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updateTime)
+        /// <param name="updatedTime">The date and time at which the change occurred.</param>
+        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updatedTime)
         {
             // Verify that the client of the Surface Observer is expecting updates.
             if (ObserverState != ObserverStates.Running)
@@ -360,7 +359,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             // Event
             if (SurfaceChanged != null)
             {
-                SurfaceChanged(id, changeType, bounds, updateTime);
+                SurfaceChanged(id, changeType, bounds, updatedTime);
             }
         }
 

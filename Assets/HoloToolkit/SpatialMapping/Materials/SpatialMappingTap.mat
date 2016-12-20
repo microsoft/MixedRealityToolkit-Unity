@@ -105,10 +105,10 @@ Material:
       second: 0.02
     - first:
         name: _PulseWidth
-      second: 1.74
+      second: 0.5
     - first:
         name: _Radius
-      second: -1
+      second: -0.5
     - first:
         name: _SmoothnessTextureChannel
       second: 0
