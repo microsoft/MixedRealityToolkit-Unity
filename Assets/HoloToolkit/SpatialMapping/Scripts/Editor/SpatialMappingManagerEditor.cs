@@ -45,6 +45,19 @@ namespace HoloToolkit.Unity.SpatialMapping
                         castShadowsProperty,
                         new GUIContent("Cast Shadows", "Determines if spatial mapping renderer will cast shadows."));
 
+                    if (spatialMappingManager.SurfaceMaterial.HasProperty("_Speed"))
+                    {
+                        spatialMappingManager.SurfaceMaterial.SetFloat(
+                            "_Speed",
+                            EditorGUILayout.Slider(
+                                new GUIContent("Pulse Speed", "Speed of Pulse when flowing over spatial map"),
+                                spatialMappingManager.SurfaceMaterial.GetFloat("_Speed"),
+                                0.001f,
+                                100.0f
+                            )
+                        );
+                    }
+
                     if (spatialMappingManager.SurfaceMaterial.HasProperty("_PulseColor"))
                     {
                         spatialMappingManager.SurfaceMaterial.SetColor(

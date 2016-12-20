@@ -116,6 +116,9 @@ Material:
         name: _SpecularHighlights
       second: 1
     - first:
+        name: _Speed
+      second: 1
+    - first:
         name: _SrcBlend
       second: 1
     - first:
