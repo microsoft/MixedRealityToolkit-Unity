@@ -16,7 +16,8 @@ namespace HoloToolkit.Unity.InputModule
         SourceClicked = 2,
         Hold = 4,
         Manipulation = 8,
-        Navigation = 16
+        Navigation = 16,
+        SpeechKeyword = 32
     }
 
     /// <summary>
@@ -117,6 +118,11 @@ namespace HoloToolkit.Unity.InputModule
         /// Event triggered when a navigation gesture is canceled.
         /// </summary>
         event EventHandler<NavigationEventArgs> NavigationCanceled;
+
+        /// <summary>
+        /// Event triggered when a speech phrase is recognized.
+        /// </summary>
+        event EventHandler<SpeechKeywordRecognizedEventArgs> SpeechKeywordRecognized;
 
         /// <summary>
         /// Events supported by the input source.

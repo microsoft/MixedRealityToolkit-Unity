@@ -58,7 +58,10 @@ Generates and retrieves meshes based on spatial mapping data coming from the cur
 SpatialMappingManager.cs manages switching between source types and interacting with this class.
 
 #### TapToPlace.cs
-Simple script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh.
+Simple extendable script to add to a GameObject that allows users to tap and place the GameObject along the spatial mapping mesh. 
+
+TapToPlace also allows the user to specify a parent GameObject to move along with the selected GameObject.
+
 Requires GazeManager, GestureManager, and SpatialMappingManager in the scene.
 
 ### [Scripts\RemoteMapping](Scripts/RemoteMapping)
