@@ -5,6 +5,7 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using System;
 using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity.SpatialMapping;
 
 public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
 {
