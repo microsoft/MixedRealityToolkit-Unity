@@ -3,11 +3,12 @@
 
 using System;
 using System.Collections.Generic;
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.SpatialMapping
 {
-    public class SpatialMappingSource : MonoBehaviour
+    public class SpatialMappingSource : MonoBehaviour, IInputClickHandler
     {
         /// <summary>
         /// Surface object
@@ -42,9 +43,44 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         protected virtual Material RenderMaterial { get { return SpatialMappingManager.Instance.SurfaceMaterial; } }
 
+        /// <summary>
+        /// Used to pulse the material for a ripple effect.
+        /// </summary>
+        private bool pulse;
+
         protected virtual void Awake()
         {
             SurfaceObjects = new List<SurfaceObject>();
+        }
+
+        private void LateUpdate()
+        {
+            if (pulse)
+            {
+                float pulseRadius = RenderMaterial.GetFloat("_Radius");
+                float pulseSpeed = RenderMaterial.GetFloat("_Speed");
+                pulseRadius += pulseSpeed;
+                if (pulseRadius == 10f)
+                {
+                    RenderMaterial.SetInt("_Radius", -1);
+                    pulse = false;
+                }
+                RenderMaterial.SetFloat("_Radius", pulseRadius);
+            }
+        }
+
+        /// <summary>
+        /// Sends Click Position to our material to create our ripple effect.
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnInputClicked(InputEventData eventData)
+        {
+            if (SpatialMappingManager.Instance.DrawVisualMeshes && !pulse && RenderMaterial.HasProperty("_Center"))
+            {
+                RenderMaterial.SetInt("_Radius", -1);
+                RenderMaterial.SetVector("_Center", GazeManager.Instance.HitPosition);
+                pulse = true;
+            }
         }
 
         /// <summary>

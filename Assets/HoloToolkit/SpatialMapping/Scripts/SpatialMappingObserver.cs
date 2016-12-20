@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity.SpatialMapping
     /// The SpatialMappingObserver class encapsulates the SurfaceObserver into an easy to use
     /// object that handles managing the observed surfaces and the rendering of surface geometry.
     /// </summary>
-    public class SpatialMappingObserver : SpatialMappingSource, IInputClickHandler
+    public class SpatialMappingObserver : SpatialMappingSource
     {
         [Tooltip("The number of triangles to calculate per cubic meter.")]
         public float TrianglesPerCubicMeter = 500f;
@@ -96,11 +96,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private float updateTime;
 
-        /// <summary>
-        /// Used to pulse the material for a ripple effect.
-        /// </summary>
-        private bool pulse;
-
         protected override void Awake()
         {
             base.Awake();
@@ -133,35 +128,6 @@ namespace HoloToolkit.Unity.SpatialMapping
                     observer.Update(SurfaceObserver_OnSurfaceChanged);
                     updateTime = Time.time;
                 }
-            }
-        }
-
-        private void LateUpdate()
-        {
-            if (pulse)
-            {
-                float pulseRadius = RenderMaterial.GetFloat("_Radius");
-                pulseRadius += 0.01f;
-                if (pulseRadius == 10f)
-                {
-                    RenderMaterial.SetInt("_Radius", -1);
-                    pulse = false;
-                }
-                RenderMaterial.SetFloat("_Radius", pulseRadius);
-            }
-        }
-
-        /// <summary>
-        /// Sends Click Position to our material to create our ripple effect.
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnInputClicked(InputEventData eventData)
-        {
-            if (RenderMaterial.HasProperty("_Center"))
-            {
-                RenderMaterial.SetInt("_Radius", -1);
-                RenderMaterial.SetVector("_Center", GazeManager.Instance.HitPosition);
-                pulse = true;
             }
         }
 
