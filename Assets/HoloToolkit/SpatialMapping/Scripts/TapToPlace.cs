@@ -50,7 +50,7 @@ namespace HoloToolkit.Unity
         /// Keeps track of the relative position between the parent object to be moved and
         /// the current gameobject this script is attached to.
         /// </summary>
-        private Vector3 ParentPositionRelativeToChild;
+        private Vector3 parentPositionRelativeToChild;
 
         public virtual void Start()
         {
@@ -86,7 +86,7 @@ namespace HoloToolkit.Unity
 
                 DetermineParent();
 
-                ParentPositionRelativeToChild = gameObject.transform.position - ParentGameObjectToPlace.transform.position;
+                parentPositionRelativeToChild = gameObject.transform.position - ParentGameObjectToPlace.transform.position;
             }
         }
 
@@ -118,7 +118,7 @@ namespace HoloToolkit.Unity
                     if (PlaceParentOnTap)
                     {
                         // Place the parent object as well but keep the focus on the current game object
-                        ParentGameObjectToPlace.transform.position = hitInfo.point - ParentPositionRelativeToChild;
+                        ParentGameObjectToPlace.transform.position = hitInfo.point - parentPositionRelativeToChild;
                         ParentGameObjectToPlace.transform.rotation = toQuat;
                     }
                     else
