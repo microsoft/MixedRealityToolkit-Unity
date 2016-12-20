@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class SphereKeywords : MonoBehaviour
+    public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
         public void ChangeColor(string color)
         {
@@ -21,6 +22,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     GetComponent<Renderer>().material.color = Color.green;
                     break;
             }
+        }
+
+        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
+        {
+            ChangeColor(eventData.RecognizedText);
         }
     }
 }
