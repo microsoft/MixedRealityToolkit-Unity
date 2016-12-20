@@ -96,7 +96,6 @@ namespace HoloToolkit.Unity.SpatialMapping
             // update the placement to match the user's gaze.
             if (IsBeingPlaced)
             {
-                if (gameObject.GetComponent<TapToPlace>().IsBeingPlaced) { }
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
                 Vector3 headPosition = Camera.main.transform.position;
                 Vector3 gazeDirection = Camera.main.transform.forward;
