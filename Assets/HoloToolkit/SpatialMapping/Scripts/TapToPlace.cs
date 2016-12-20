@@ -47,10 +47,10 @@ namespace HoloToolkit.Unity
         private SpatialMappingManager spatialMappingManager;
 
         /// <summary>
-        /// Keeps track of which object we are placing. By default this is equal to
-        /// the current gameObject, but can be changed to a parent gameObject.
+        /// Keeps track of the relative position between the parent object to be moved and
+        /// the current gameobject this script is attached to.
         /// </summary>
-        private GameObject objectToPlace;
+        private Vector3 ParentPositionRelativeToChild;
 
         public virtual void Start()
         {
@@ -85,6 +85,8 @@ namespace HoloToolkit.Unity
                 }
 
                 DetermineParent();
+
+                ParentPositionRelativeToChild = gameObject.transform.position - ParentGameObjectToPlace.transform.position;
             }
         }
 
@@ -102,12 +104,10 @@ namespace HoloToolkit.Unity
                 RaycastHit hitInfo;
                 if (Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, spatialMappingManager.LayerMask))
                 {
-                    // Place the parent object as well but keep the focus on the current game object
-                    if (PlaceParentOnTap)
-                    {
-                        Vector3 relativePositionToParent = gameObject.transform.position - ParentGameObjectToPlace.transform.position;
-                        ParentGameObjectToPlace.transform.position = hitInfo.point - relativePositionToParent;
-                    }
+                    // Rotate this object to face the user.
+                    Quaternion toQuat = Camera.main.transform.localRotation;
+                    toQuat.x = 0;
+                    toQuat.z = 0;
 
                     // Move this object to where the raycast
                     // hit the Spatial Mapping mesh.
@@ -115,13 +115,17 @@ namespace HoloToolkit.Unity
                     // to how the object is placed.  For example, consider
                     // placing based on the bottom of the object's
                     // collider so it sits properly on surfaces.
-                    gameObject.transform.position = hitInfo.point;
-
-                    // Rotate this object to face the user.
-                    Quaternion toQuat = Camera.main.transform.localRotation;
-                    toQuat.x = 0;
-                    toQuat.z = 0;
-                    gameObject.transform.rotation = toQuat;
+                    if (PlaceParentOnTap)
+                    {
+                        // Place the parent object as well but keep the focus on the current game object
+                        ParentGameObjectToPlace.transform.position = hitInfo.point - ParentPositionRelativeToChild;
+                        ParentGameObjectToPlace.transform.rotation = toQuat;
+                    }
+                    else
+                    {
+                        gameObject.transform.position = hitInfo.point;
+                        gameObject.transform.rotation = toQuat;
+                    }
                 }
             }
         }
@@ -160,6 +164,7 @@ namespace HoloToolkit.Unity
                 }
                 else
                 {
+                    Debug.LogError("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
                     ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
                 }
             }
