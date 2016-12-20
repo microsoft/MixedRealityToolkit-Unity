@@ -6,27 +6,46 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class SphereKeywords : MonoBehaviour, ISpeechHandler
+    public class SphereKeywords : MonoBehaviour
     {
         public void ChangeColor(string color)
         {
-            switch (color.ToLower())
+            switch(color.ToLower())
             {
                 case "red":
-                    GetComponent<Renderer>().material.color = Color.red;
-                    break;
-                case "blue":
-                    GetComponent<Renderer>().material.color = Color.blue;
+                    ChangeColor(Color.red);
                     break;
                 case "green":
-                    GetComponent<Renderer>().material.color = Color.green;
+                    ChangeColor(Color.green);
+                    break;
+                case "blue":
+                    ChangeColor(Color.blue);
                     break;
             }
         }
 
-        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
+        public void ResetAll()
         {
-            ChangeColor(eventData.RecognizedText);
+            ChangeChildrenColor(Color.white);
+        }
+
+        private void ChangeColor(Color color)
+        {
+            Renderer renderer = GetComponent<Renderer>();
+            ChangeColor(renderer, color);
+        }
+
+        private void ChangeChildrenColor(Color color)
+        {
+            foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+            {
+                ChangeColor(renderer, color);
+            }
+        }
+
+        private static void ChangeColor(Renderer renderer, Color color)
+        {
+            renderer.material.color = color;
         }
     }
 }
