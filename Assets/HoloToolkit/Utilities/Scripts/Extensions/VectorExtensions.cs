@@ -50,8 +50,8 @@ namespace HoloToolkit.Unity
             var scaleInv = new Vector3(1 / lossyScale.x, 1 / lossyScale.y, 1 / lossyScale.z);
             return Vector3.Scale(scaleInv, (Quaternion.Inverse(rotation) * (point - translation)));
         }
-		
-		public static Vector3 Average(ICollection<Vector3> vectors)
+
+        public static Vector3 Average(ICollection<Vector3> vectors)
         {
             if (vectors.Count == 0)
             {
