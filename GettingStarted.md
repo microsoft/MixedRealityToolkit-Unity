@@ -8,7 +8,7 @@ Once downloaded you can skip down to step 4.
 
 # 2. Preparing the HoloToolkit-Unity Code
 
-If you'd like to build the HoloToolkit from the source, you'll need to clone the GitHUb repository at 
+If you'd like to build the HoloToolkit from the source, you'll need to clone the GitHub repository at 
 https://github.com/Microsoft/HoloToolkit-Unity.git. If you've never cloned a
 repo before then you should consider using the GitHub desktop client, see 
 https://desktop.github.com/.
