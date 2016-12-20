@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
 
             if (objValue == null)
             {
-                // We want to return null so we can dispay our blank field.
+                // We want to return null so we can display our blank field.
                 return (T)objValue;
             }
 
