@@ -7,31 +7,44 @@ namespace HoloToolkit.Unity.SpatialMapping
     [CustomEditor(typeof(SpatialMappingManager))]
     public partial class SpatialMappingManagerEditor : Editor
     {
+        private SerializedProperty castShadowsProperty;
+        private SerializedProperty drawVisualMeshProperty;
+        private SerializedProperty surfaceMaterialProperty;
+        private SerializedProperty autoStartObserverProperty;
+
+        private void OnEnable()
+        {
+            castShadowsProperty = serializedObject.FindProperty("castShadows");
+            drawVisualMeshProperty = serializedObject.FindProperty("drawVisualMeshes");
+            surfaceMaterialProperty = serializedObject.FindProperty("surfaceMaterial");
+            autoStartObserverProperty = serializedObject.FindProperty("AutoStartObserver");
+        }
+
         public override void OnInspectorGUI()
         {
             SpatialMappingManager spatialMappingManager = target as SpatialMappingManager;
             Debug.Assert(spatialMappingManager != null, "spatialMappingManager != null");
 
-            spatialMappingManager.autoStartObserver = EditorGUILayout.Toggle(
-                new GUIContent("Auto Start", "Determines if the surface observer should be automatically started."),
-                spatialMappingManager.autoStartObserver);
+            EditorGUILayout.PropertyField(
+                autoStartObserverProperty,
+                new GUIContent("Auto Start", "Determines if the surface observer should be automatically started."));
 
-            spatialMappingManager.DrawVisualMeshes = EditorGUILayout.Toggle(
-                new GUIContent("Draw Visual Meshes", "Determines if spatial mapping data will be rendered."),
-                spatialMappingManager.DrawVisualMeshes);
+            EditorGUILayout.PropertyField(
+                drawVisualMeshProperty,
+                new GUIContent("Draw Visual Meshes", "Determines if spatial mapping data will be rendered."));
 
             if (spatialMappingManager.DrawVisualMeshes)
             {
-                spatialMappingManager.CastShadows = EditorGUILayout.Toggle(
-                    new GUIContent("Cast Shadows", "Determines if spatial mapping data will cast shadows."),
-                    spatialMappingManager.CastShadows);
-
-                spatialMappingManager.SurfaceMaterial = EditorGUILayoutExtensions.ObjectField(
-                    new GUIContent("Surface Material", "The material to use for rendering spatial mapping data."),
-                    spatialMappingManager.SurfaceMaterial);
+                EditorGUILayout.PropertyField(
+                    surfaceMaterialProperty,
+                    new GUIContent("Surface Material", "The material to use for rendering spatial mapping data."));
 
                 if (spatialMappingManager.SurfaceMaterial != null)
                 {
+                    EditorGUILayout.PropertyField(
+                        castShadowsProperty,
+                        new GUIContent("Cast Shadows", "Determines if spatial mapping renderer will cast shadows."));
+
                     if (spatialMappingManager.SurfaceMaterial.HasProperty("_PulseColor"))
                     {
                         spatialMappingManager.SurfaceMaterial.SetColor(
@@ -96,8 +109,9 @@ namespace HoloToolkit.Unity.SpatialMapping
                 {
                     spatialMappingManager.CastShadows = false;
                 }
-
             }
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

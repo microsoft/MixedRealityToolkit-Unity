@@ -51,6 +51,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        [SerializeField]
         private Material surfaceMaterial;
 
         /// <summary>
@@ -71,6 +72,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        [SerializeField]
         private bool drawVisualMeshes;
 
         /// <summary>
@@ -91,6 +93,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        [SerializeField]
         private bool castShadows;
 
         /// <summary>
@@ -105,7 +108,8 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Auto Starts the Observer in Start()
         /// </summary>
-        public bool autoStartObserver = true;
+        [SerializeField]
+        public bool AutoStartObserver = true;
 
         /// <summary>
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
@@ -124,7 +128,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         // Use for initialization.
         private void Start()
         {
-            if (autoStartObserver)
+            if (AutoStartObserver)
             {
                 StartObserver();
             }

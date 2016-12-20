@@ -16,12 +16,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000013298573622}
-  - 114: {fileID: 114000012698980792}
-  - 114: {fileID: 114000011154029958}
-  - 114: {fileID: 114000012149591842}
+  - component: {fileID: 4000013298573622}
+  - component: {fileID: 114000012698980792}
+  - component: {fileID: 114000011154029958}
+  - component: {fileID: 114000012149591842}
   m_Layer: 0
   m_Name: SpatialMapping
   m_TagString: Untagged
@@ -53,11 +53,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d587b71ba3b55e44f9654cec8898c32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PhysicsLayer: 31
-  surfaceMaterial: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
-  autoStartObserver: 1
+  surfaceMaterial: {fileID: 2100000, guid: 75737e67271928f49a52005076d84d01, type: 2}
   drawVisualMeshes: 1
   castShadows: 0
+  AutoStartObserver: 1
 --- !u!114 &114000012149591842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -69,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d883c0118351e4890753200e0ac916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomModel: {fileID: 0}
+  RoomModel: {fileID: 0}
 --- !u!114 &114000012698980792
 MonoBehaviour:
   m_ObjectHideFlags: 1
