@@ -15,31 +15,101 @@ namespace HoloToolkit.Unity.SpatialMapping
     [RequireComponent(typeof(SpatialMappingObserver))]
     public partial class SpatialMappingManager : Singleton<SpatialMappingManager>
     {
-        public int PhysicsLayer = 31;
-        
-        private Material surfaceMaterial;
-
-        public bool autoStartObserver = true;
-
-        private bool drawVisualMeshes;
-        
-        private bool castShadows;
-
-        /// <summary>
-        /// Used for gathering real-time Spatial Mapping data on the HoloLens.
-        /// </summary>
-        private SpatialMappingObserver surfaceObserver;
-
         /// <summary>
         /// Time when StartObserver() was called.
         /// </summary>
-        [HideInInspector]
         public float StartTime { get; private set; }
 
         /// <summary>
         /// The current source of spatial mapping data.
         /// </summary>
         public SpatialMappingSource Source { get; private set; }
+
+        /// <summary>
+        /// Returns the layer as a bit mask.
+        /// </summary>
+        public int LayerMask
+        {
+            get { return (1 << PhysicsLayer); }
+        }
+
+        /// <summary>
+        /// The material to use when rendering surfaces.
+        /// </summary>
+        public Material SurfaceMaterial
+        {
+            get { return surfaceMaterial; }
+            set
+            {
+                if (value != surfaceMaterial)
+                {
+                    surfaceMaterial = value;
+                    if (Application.isPlaying)
+                    {
+                        SetSurfaceMaterial(surfaceMaterial);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Specifies whether or not the SpatialMapping meshes are to be rendered.
+        /// </summary>
+        public bool DrawVisualMeshes
+        {
+            get { return drawVisualMeshes; }
+            set
+            {
+                if (value != drawVisualMeshes)
+                {
+                    drawVisualMeshes = value;
+                    if (Application.isPlaying)
+                    {
+                        UpdateRendering(drawVisualMeshes);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Specifies whether or not the SpatialMapping meshes can cast shadows.
+        /// </summary>
+        public bool CastShadows
+        {
+            get { return castShadows; }
+            set
+            {
+                if (value != castShadows)
+                {
+                    castShadows = value;
+                    if (Application.isPlaying)
+                    {
+                        SetShadowCasting(castShadows);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// The Physics layer assigned to handle Spatial Mapping.
+        /// </summary>
+        public int PhysicsLayer = 31;
+
+        /// <summary>
+        /// Auto Starts the Observer in Start()
+        /// </summary>
+        public bool autoStartObserver = true;
+
+        /// <summary>
+        /// Used for gathering real-time Spatial Mapping data on the HoloLens.
+        /// </summary>
+        private SpatialMappingObserver surfaceObserver;
+
+        private Material surfaceMaterial;
+
+        private bool castShadows;
+
+        private bool drawVisualMeshes;
 
         // Called when the GameObject is first created.
         protected override void Awake()
@@ -60,80 +130,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         }
 
         /// <summary>
-        /// Returns the layer as a bit mask.
-        /// </summary>
-        public int LayerMask
-        {
-            get { return (1 << PhysicsLayer); }
-        }
-
-        /// <summary>
-        /// The material to use when rendering surfaces.
-        /// </summary>
-        public Material SurfaceMaterial
-        {
-            get
-            {
-                return surfaceMaterial;
-            }
-            set
-            {
-                if (value != surfaceMaterial)
-                {
-                    surfaceMaterial = value;
-                    if (Application.isPlaying)
-                    {
-                        SetSurfaceMaterial(surfaceMaterial);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Specifies whether or not the SpatialMapping meshes are to be rendered.
-        /// </summary>
-        public bool DrawVisualMeshes
-        {
-            get
-            {
-                return drawVisualMeshes;
-            }
-            set
-            {
-                if (value != drawVisualMeshes)
-                {
-                    drawVisualMeshes = value;
-                    if (Application.isPlaying)
-                    {
-                        UpdateRendering(drawVisualMeshes);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Specifies whether or not the SpatialMapping meshes can cast shadows.
-        /// </summary>
-        public bool CastShadows
-        {
-            get
-            {
-                return castShadows;
-            }
-            set
-            {
-                if (value != castShadows)
-                {
-                    castShadows = value;
-                    if (Application.isPlaying)
-                    {
-                        SetShadowCasting(castShadows);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Sets the source of surface information.
         /// </summary>
         /// <param name="mappingSource">The source to switch to. Null means return to the live stream if possible.</param>
@@ -141,14 +137,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             UpdateRendering(false);
 
-            if (mappingSource == null)
-            {
-                Source = surfaceObserver;
-            }
-            else
-            {
-                Source = mappingSource;
-            }
+            Source = mappingSource ?? surfaceObserver;
 
             UpdateRendering(DrawVisualMeshes);
         }
