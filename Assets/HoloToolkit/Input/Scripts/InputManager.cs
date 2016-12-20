@@ -33,6 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         private ManipulationEventData manipulationEventData;
         private NavigationEventData navigationEventData;
         private HoldEventData holdEventData;
+        private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -185,6 +186,7 @@ namespace HoloToolkit.Unity.InputModule
             inputSource.NavigationCompleted += InputSource_NavigationCompleted;
             inputSource.NavigationStarted += InputSource_NavigationStarted;
             inputSource.NavigationUpdated += InputSource_NavigationUpdated;
+            inputSource.SpeechKeywordRecognized += InputSource_SpeechKeywordRecognized;
         }
 
         /// <summary>
@@ -210,6 +212,7 @@ namespace HoloToolkit.Unity.InputModule
             inputSource.NavigationCompleted -= InputSource_NavigationCompleted;
             inputSource.NavigationStarted -= InputSource_NavigationStarted;
             inputSource.NavigationUpdated -= InputSource_NavigationUpdated;
+            inputSource.SpeechKeywordRecognized -= InputSource_SpeechKeywordRecognized;
         }
 
         private void Start()
@@ -231,6 +234,7 @@ namespace HoloToolkit.Unity.InputModule
             manipulationEventData = new ManipulationEventData(EventSystem.current);
             navigationEventData = new NavigationEventData(EventSystem.current);
             holdEventData = new HoldEventData(EventSystem.current);
+            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
         }
 
         protected override void OnDestroy()
@@ -652,6 +656,22 @@ namespace HoloToolkit.Unity.InputModule
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
+            delegate (ISpeechHandler handler, BaseEventData eventData)
+            {
+                SpeechKeywordRecognizedEventData casted = ExecuteEvents.ValidateEventData<SpeechKeywordRecognizedEventData>(eventData);
+                handler.OnSpeechKeywordRecognized(casted);
+            };
+
+        private void InputSource_SpeechKeywordRecognized(object sender, SpeechKeywordRecognizedEventArgs e)
+        {
+            // Create input event
+            speechKeywordRecognizedEventData.Initialize(e.InputSource, e.SourceId, e.Confidence, e.PhraseDuration, e.PhraseStartTime, e.SemanticMeanings, e.RecognizedText);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
         }
     }
 }

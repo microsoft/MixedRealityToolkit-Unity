@@ -2,20 +2,21 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.Rendering;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     public class ObjectSurfaceObserver : SpatialMappingSource
     {
         [Tooltip("The room model to use when loading meshes in Unity.")]
-        public GameObject roomModel;
+        public GameObject RoomModel;
 
         // Use this for initialization.
         private void Start()
         {
 #if UNITY_EDITOR
             // When in the Unity editor, try loading saved meshes from a model.
-            Load(roomModel);
+            Load(RoomModel);
 
             if (GetMeshFilters().Count > 0)
             {
@@ -36,7 +37,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            GameObject roomObject = GameObject.Instantiate(roomModel);
+            GameObject roomObject = Instantiate(roomModel);
             Cleanup();
 
             try
@@ -46,25 +47,25 @@ namespace HoloToolkit.Unity
                 foreach (MeshFilter filter in roomFilters)
                 {
                     GameObject surface = AddSurfaceObject(filter.sharedMesh, "roomMesh-" + SurfaceObjects.Count, transform);
-                    Renderer renderer = surface.GetComponent<MeshRenderer>();
+                    Renderer meshRenderer = surface.GetComponent<MeshRenderer>();
 
                     if (SpatialMappingManager.Instance.DrawVisualMeshes == false)
                     {
-                        renderer.enabled = false;
+                        meshRenderer.enabled = false;
                     }
 
                     if (SpatialMappingManager.Instance.CastShadows == false)
                     {
-                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                        meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
                     }
 
                     // Reset the surface mesh collider to fit the updated mesh. 
                     // Unity tribal knowledge indicates that to change the mesh assigned to a
                     // mesh collider, the mesh must first be set to null.  Presumably there
                     // is a side effect in the setter when setting the shared mesh to null.
-                    MeshCollider collider = surface.GetComponent<MeshCollider>();
-                    collider.sharedMesh = null;
-                    collider.sharedMesh = surface.GetComponent<MeshFilter>().sharedMesh;
+                    MeshCollider meshCollider = surface.GetComponent<MeshCollider>();
+                    meshCollider.sharedMesh = null;
+                    meshCollider.sharedMesh = surface.GetComponent<MeshFilter>().sharedMesh;
                 }
             }
             catch
@@ -73,9 +74,9 @@ namespace HoloToolkit.Unity
             }
             finally
             {
-                if (roomModel != null && roomObject != null)
+                if (roomObject != null)
                 {
-                    GameObject.DestroyImmediate(roomObject);
+                    DestroyImmediate(roomObject);
                 }
             }
         }

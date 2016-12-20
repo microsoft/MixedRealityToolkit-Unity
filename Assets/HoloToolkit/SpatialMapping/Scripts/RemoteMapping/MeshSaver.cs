@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 #endif
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// MeshSaver is a static class containing methods used for saving and loading meshes.
