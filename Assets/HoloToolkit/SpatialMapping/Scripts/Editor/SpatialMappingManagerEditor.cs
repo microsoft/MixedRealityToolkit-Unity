@@ -12,15 +12,6 @@ namespace HoloToolkit.Unity.SpatialMapping
             SpatialMappingManager spatialMappingManager = target as SpatialMappingManager;
             Debug.Assert(spatialMappingManager != null, "spatialMappingManager != null");
 
-            spatialMappingManager.PhysicsLayer = EditorGUILayout.IntField(
-                new GUIContent("Physics Layer", "The physics layer for spatial mapping objects to be set to."),
-                spatialMappingManager.PhysicsLayer);
-
-            EditorGUILayout.MaskField(
-                new GUIContent("Physics Layer Mask", "Read only value of the Physics Layer returned as a Layer Mask."),
-                spatialMappingManager.LayerMask,
-                LayerMaskExtensions.LayerMaskNames);
-
             spatialMappingManager.SurfaceMaterial = EditorGUILayoutExtensions.ObjectField(
                 new GUIContent("Surface Material", "The material to use for rendering spatial mapping data."),
                 spatialMappingManager.SurfaceMaterial);

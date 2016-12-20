@@ -51,6 +51,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        private Material surfaceMaterial;
 
         /// <summary>
         /// Specifies whether or not the SpatialMapping meshes are to be rendered.
@@ -70,6 +71,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        private bool drawVisualMeshes;
 
         /// <summary>
         /// Specifies whether or not the SpatialMapping meshes can cast shadows.
@@ -89,11 +91,16 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        private bool castShadows;
 
         /// <summary>
         /// The Physics layer assigned to handle Spatial Mapping.
         /// </summary>
-        public int PhysicsLayer = 31;
+        public int PhysicsLayer
+        {
+            get { return physicsLayer; }
+        }
+        private int physicsLayer = 31;
 
         /// <summary>
         /// Auto Starts the Observer in Start()
@@ -104,12 +111,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
         /// </summary>
         private SpatialMappingObserver surfaceObserver;
-
-        private Material surfaceMaterial;
-
-        private bool castShadows;
-
-        private bool drawVisualMeshes;
 
         // Called when the GameObject is first created.
         protected override void Awake()
