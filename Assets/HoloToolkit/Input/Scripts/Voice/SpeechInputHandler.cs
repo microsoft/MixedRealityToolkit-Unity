@@ -20,14 +20,14 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
-        public KeywordAndResponse[] KeywordsAndResponses;
+        public KeywordAndResponse[] keywords;
 
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
         // Use this for initialization
         protected virtual void Start()
         {
-            int keywordCount = KeywordsAndResponses.Length;
+            int keywordCount = keywords.Length;
             if (keywordCount > 0)
             {
                 try
@@ -36,7 +36,7 @@ namespace HoloToolkit.Unity.InputModule
                     // This helps easily link the keyword recognized to the UnityEvent to be invoked.
                     for (int index = 0; index < keywordCount; index++)
                     {
-                        KeywordAndResponse keywordAndResponse = KeywordsAndResponses[index];
+                        KeywordAndResponse keywordAndResponse = keywords[index];
                         responses[keywordAndResponse.Keyword.ToLower()] = keywordAndResponse.Response;
                     }
                 }

@@ -323,58 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7d6513c2cdf97f409654a2a4114d9b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeywordsAndResponses:
-  - Keyword: Red
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1071413364}
-          m_MethodName: ChangeColor
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Red
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  - Keyword: Green
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1071413364}
-          m_MethodName: ChangeColor
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Green
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  - Keyword: Blue
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1071413364}
-          m_MethodName: ChangeColor
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Blue
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
+  keywords: []
 --- !u!1 &1073894170
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,24 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7d6513c2cdf97f409654a2a4114d9b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeywordsAndResponses:
-  - Keyword: Reset All
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1117903548}
-          m_MethodName: ResetAll
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
+  keywords: []
 --- !u!1 &1525392731
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,58 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7d6513c2cdf97f409654a2a4114d9b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeywordsAndResponses:
-  - Keyword: Red
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1525392733}
-          m_MethodName: ChangeColor
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Red
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  - Keyword: Green
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1525392733}
-          m_MethodName: ChangeColor
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Green
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  - Keyword: Blue
-    Response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1525392733}
-          m_MethodName: ChangeColor
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Blue
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
+  keywords: []
 --- !u!1 &1590076548
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,7 +939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7d6513c2cdf97f409654a2a4114d9b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeywordsAndResponses:
+  keywords:
   - Keyword: Red
     Response:
       m_PersistentCalls:
