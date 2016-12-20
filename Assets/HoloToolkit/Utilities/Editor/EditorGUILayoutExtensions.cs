@@ -44,6 +44,12 @@ namespace HoloToolkit.Unity
         {
             object objValue = value;
 
+            if (objValue == null)
+            {
+                // We want to return null so we can dispay our blank field.
+                return (T)objValue;
+            }
+
             Type valueType = objValue.GetType();
             if (valueType == typeof(Material))
             {
