@@ -37,8 +37,7 @@ You should now have a `HoloToolkit` menu item.
 # 3. Preparing a Scene for Holographic Content
 Create a new Scene: `File -> New Scene`
 
-Remove the default `Main Camera` and `Directional Light` objects in the scene (the next step creates a camera
- customized for holographic development).
+Remove the default `Main Camera` and `Directional Light` objects in the scene.
 
 Add the `HoloLensCamera.prefab` (found under HoloToolkit/Input/Prefabs).
 
