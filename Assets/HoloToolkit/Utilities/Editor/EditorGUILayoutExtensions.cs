@@ -40,9 +40,15 @@ namespace HoloToolkit.Unity
             EditorGUILayout.EndHorizontal();
         }
 
-        public static T ObjectField<T>(GUIContent guiContent, T value, bool allowSceneObjects, GUILayoutOption[] guiLayoutOptions = null)
+        public static T ObjectField<T>(GUIContent guiContent, T value, bool allowSceneObjects = false, GUILayoutOption[] guiLayoutOptions = null)
         {
             object objValue = value;
+
+            if (objValue == null)
+            {
+                // We want to return null so we can display our blank field.
+                return (T)objValue;
+            }
 
             Type valueType = objValue.GetType();
             if (valueType == typeof(Material))
