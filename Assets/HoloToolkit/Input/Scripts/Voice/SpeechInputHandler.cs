@@ -13,41 +13,36 @@ namespace HoloToolkit.Unity.InputModule
         [System.Serializable]
         public struct KeywordAndResponse
         {
-            [Tooltip("The keyword to recognize.")]
+            [Tooltip("The keyword to handle.")]
             public string Keyword;
-            [Tooltip("The UnityEvent to be invoked when the keyword is recognized.")]
+            [Tooltip("The handler to be invoked.")]
             public UnityEvent Response;
         }
 
-        [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
+        [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndResponse[] keywords;
 
+        [NonSerialized]
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
         // Use this for initialization
         protected virtual void Start()
         {
+            // Convert the struct array into a dictionary, with the keywords and the methods as the values.
+            // This helps easily link the keyword recognized to the UnityEvent to be invoked.
             int keywordCount = keywords.Length;
-            if (keywordCount > 0)
+            for (int index = 0; index < keywordCount; index++)
             {
-                try
+                KeywordAndResponse keywordAndResponse = keywords[index];
+                string keyword = keywordAndResponse.Keyword.ToLower();
+                if (responses.ContainsKey(keyword))
                 {
-                    // Convert the struct array into a dictionary, with the keywords and the keys and the methods as the values.
-                    // This helps easily link the keyword recognized to the UnityEvent to be invoked.
-                    for (int index = 0; index < keywordCount; index++)
-                    {
-                        KeywordAndResponse keywordAndResponse = keywords[index];
-                        responses[keywordAndResponse.Keyword.ToLower()] = keywordAndResponse.Response;
-                    }
+                    Debug.LogError("Duplicate keyword '" + keyword + "' specified in '" + gameObject.name + "'.");
                 }
-                catch (ArgumentException)
+                else
                 {
-                    Debug.LogError("Duplicate keywords specified in the Inspector on " + gameObject.name + ".");
+                    responses.Add(keyword, keywordAndResponse.Response);
                 }
-            }
-            else
-            {
-                Debug.LogError("Must have at least one keyword specified in the Inspector on " + gameObject.name + ".");
             }
         }
 
