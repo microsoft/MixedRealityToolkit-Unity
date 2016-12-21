@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 cachedChildMaterials = new Material[childRenderers.Length];
                 for (int i = 0; i < childRenderers.Length; i++)
                 {
-                    cachedChildMaterials[i] = childRenderers[i].sharedMaterial;
+                    cachedChildMaterials[i] = childRenderers[i].material;
                 }
             }
         }
@@ -32,6 +32,14 @@ namespace HoloToolkit.Unity.InputModule.Tests
                         cachedChildMaterial.SetColor("_Color", Color.gray);
                     }
                     break;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            for (int i = 0; i < cachedChildMaterials.Length; i++)
+            {
+                DestroyImmediate(cachedChildMaterials[i]);
             }
         }
     }

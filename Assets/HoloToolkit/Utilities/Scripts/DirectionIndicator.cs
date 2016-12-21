@@ -34,6 +34,9 @@ namespace HoloToolkit.Unity
         // Cache the MeshRenderer for the on-cursor indicator since it will be enabled and disabled frequently.
         private Renderer directionIndicatorRenderer;
 
+        // Cache the Material to prevent material leak.
+        private Material indicatorMaterial;
+
         // Check if the cursor direction indicator is visible.
         private bool isDirectionIndicatorVisible;
 
@@ -60,6 +63,7 @@ namespace HoloToolkit.Unity
 
         public void OnDestroy()
         {
+            DestroyImmediate(indicatorMaterial);
             Destroy(DirectionIndicatorObject);
         }
 
@@ -90,7 +94,7 @@ namespace HoloToolkit.Unity
                 Destroy(rigidBody);
             }
 
-            Material indicatorMaterial = directionIndicatorRenderer.sharedMaterial;
+            indicatorMaterial = directionIndicatorRenderer.material;
             indicatorMaterial.color = DirectionIndicatorColor;
             indicatorMaterial.SetColor("_TintColor", DirectionIndicatorColor);
 

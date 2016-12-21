@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void Awake()
         {
-            cachedMaterial = GetComponent<Renderer>().sharedMaterial;
+            cachedMaterial = GetComponent<Renderer>().material;
         }
 
         public void ChangeColor(string color)
@@ -34,6 +34,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             ChangeColor(eventData.RecognizedText);
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedMaterial);
         }
     }
 }

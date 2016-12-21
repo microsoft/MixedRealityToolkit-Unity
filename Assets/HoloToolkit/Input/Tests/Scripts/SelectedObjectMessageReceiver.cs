@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void Awake()
         {
-            cachedMaterial = GetComponent<Renderer>().sharedMaterial;
+            cachedMaterial = GetComponent<Renderer>().material;
             originalColor = cachedMaterial.GetColor("_Color");
         }
 
@@ -29,6 +29,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnClearSelection()
         {
             cachedMaterial.SetColor("_Color", originalColor);
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedMaterial);
         }
     }
 }

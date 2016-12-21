@@ -126,7 +126,7 @@ namespace HoloToolkit.Sharing.Utilities
         {
             if (t.gameObject && t.gameObject.GetComponent<Renderer>() && t.gameObject.name == nameToTest)
             {
-                t.gameObject.GetComponent<Renderer>().sharedMaterial = mat;
+                t.gameObject.GetComponent<Renderer>().material = mat;
             }
 
             for (int ii = 0; ii < t.childCount; ++ii)

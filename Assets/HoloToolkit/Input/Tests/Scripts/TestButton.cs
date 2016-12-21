@@ -105,7 +105,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             // Set the initial alpha
             if (ToolTipRenderer != null)
             {
-                cachedToolTipMaterial = ToolTipRenderer.sharedMaterial;
+                cachedToolTipMaterial = ToolTipRenderer.material;
 
                 Color tipColor = cachedToolTipMaterial.GetColor("_Color");
                 tipColor.a = 0.0f;
@@ -230,6 +230,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Focused = false;
 
             UpdateVisuals();
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedToolTipMaterial);
         }
     }
 }
