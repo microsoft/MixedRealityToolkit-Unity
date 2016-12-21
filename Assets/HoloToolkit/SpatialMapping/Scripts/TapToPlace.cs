@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
         [Tooltip("Place parent on tap instead of current game object.")]
-        public bool PlaceParentOnTap = false;
+        public bool PlaceParentOnTap;
 
         [Tooltip("Specify the parent game object to be moved on tap, if the immediate parent is not desired.")]
         public GameObject ParentGameObjectToPlace;
@@ -38,13 +37,13 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Manages persisted anchors.
         /// </summary>
-        private WorldAnchorManager anchorManager;
+        protected WorldAnchorManager anchorManager;
 
         /// <summary>
         /// Controls spatial mapping.  In this script we access spatialMappingManager
         /// to control rendering and to access the physics layer mask.
         /// </summary>
-        private SpatialMappingManager spatialMappingManager;
+        protected SpatialMappingManager spatialMappingManager;
 
         public virtual void Start()
         {
@@ -63,7 +62,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (anchorManager != null && spatialMappingManager != null)
             {
-                anchorManager.AttachAnchor(this.gameObject, SavedAnchorFriendlyName);
+                anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
             }
             else
             {
