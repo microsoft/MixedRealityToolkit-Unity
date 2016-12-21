@@ -31,7 +31,9 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Keeps track of if the user is moving the object or not.
         /// Setting this to true will enable the user to move and place the object in the scene.
+        /// Useful when you want to place an object immediately.
         /// </summary>
+        [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
         public bool IsBeingPlaced;
 
         /// <summary>
