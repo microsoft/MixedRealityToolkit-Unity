@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4000013298573622}
   - component: {fileID: 114000012698980792}
   - component: {fileID: 114000011154029958}
-  - component: {fileID: 114000012149591842}
   m_Layer: 0
   m_Name: SpatialMapping
   m_TagString: Untagged
@@ -35,7 +34,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010302963436}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -58,18 +57,6 @@ MonoBehaviour:
   castShadows: 0
   AutoStartObserver: 1
   PulseMaximum: 10
---- !u!114 &114000012149591842
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010302963436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13d883c0118351e4890753200e0ac916, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RoomModel: {fileID: 0}
 --- !u!114 &114000012698980792
 MonoBehaviour:
   m_ObjectHideFlags: 1
