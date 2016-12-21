@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                SpeechInputHandler handler = this.target as SpeechInputHandler;
+                SpeechInputHandler handler = target as SpeechInputHandler;
                 string duplicateKeyword = handler.keywords.GroupBy(keyword => keyword.Keyword.ToLower()).Where(group => group.Count() > 1).Select(group => group.Key).FirstOrDefault();
                 if (duplicateKeyword != null)
                 {
@@ -51,8 +51,7 @@ namespace HoloToolkit.Unity.InputModule
             EditorGUI.indentLevel++;
 
             // remove the keywords already assigned from the registered list
-            GameObject selectedObject = Selection.activeGameObject;
-            SpeechInputHandler handler = this.target as SpeechInputHandler;
+            SpeechInputHandler handler = target as SpeechInputHandler;
             string[] availableKeywords = registeredKeywords.Except(handler.keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
 
             // keyword rows
