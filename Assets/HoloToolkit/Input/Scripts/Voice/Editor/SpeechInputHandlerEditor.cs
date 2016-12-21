@@ -31,6 +31,15 @@ namespace HoloToolkit.Unity.InputModule
             {
                 EditorGUILayout.HelpBox("No keywords have been assigned!", MessageType.Warning);
             }
+            else
+            {
+                SpeechInputHandler handler = this.target as SpeechInputHandler;
+                string duplicateKeyword = handler.keywords.GroupBy(keyword => keyword.Keyword.ToLower()).Where(group => group.Count() > 1).Select(group => group.Key).FirstOrDefault();
+                if (duplicateKeyword != null)
+                {
+                    EditorGUILayout.HelpBox("Keyword '" + duplicateKeyword + "' is assigned more than once!", MessageType.Warning);
+                }
+            }
         }
 
         private static GUIContent removeButtonContent = new GUIContent("-", "Remove keyword");
@@ -41,6 +50,11 @@ namespace HoloToolkit.Unity.InputModule
         {
             EditorGUI.indentLevel++;
 
+            // remove the keywords already assigned from the registered list
+            GameObject selectedObject = Selection.activeGameObject;
+            SpeechInputHandler handler = this.target as SpeechInputHandler;
+            string[] availableKeywords = registeredKeywords.Except(handler.keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
+
             // keyword rows
             for (int index = 0; index < list.arraySize; index++)
             {
@@ -50,20 +64,22 @@ namespace HoloToolkit.Unity.InputModule
                 bool elementExpanded = EditorGUILayout.PropertyField(elementProperty);
                 GUILayout.FlexibleSpace();
                 // the remove element button
-                if (GUILayout.Button(removeButtonContent, EditorStyles.miniButton, miniButtonWidth))
+                bool elementRemoved = GUILayout.Button(removeButtonContent, EditorStyles.miniButton, miniButtonWidth);
+                if (elementRemoved)
                 {
                     list.DeleteArrayElementAtIndex(index);
                 }
                 EditorGUILayout.EndHorizontal();
 
-                if (elementExpanded)
+                if (!elementRemoved && elementExpanded)
                 {
                     SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("Keyword");
-                    int previousSelection = ArrayUtility.IndexOf(registeredKeywords, keywordProperty.stringValue);
-                    int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, registeredKeywords);
+                    string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
+                    int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
+                    int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
                     if (currentSelection != previousSelection)
                     {
-                        keywordProperty.stringValue = registeredKeywords[currentSelection];
+                        keywordProperty.stringValue = keywords[currentSelection];
                     }
 
                     SerializedProperty responseProperty = elementProperty.FindPropertyRelative("Response");
