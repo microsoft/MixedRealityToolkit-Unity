@@ -112,12 +112,12 @@ namespace HoloToolkit.Sharing.Utilities
         }
 
         /// <summary>
-        /// Change material for every object in hierarchy which has a name equal to nameToTest.
-        ///  http://answers.unity3d.com/questions/548420/material-memory-leak.html
+        /// Change material for every object in hierarchy which has a name equal to nameToTest.  WARNING! 
+        /// <see cref="http://answers.unity3d.com/questions/548420/material-memory-leak.html">See Community Answer</see>
         /// This function automatically instantiates the materials and makes them unique to this renderer.
         /// It is your responsibility to destroy the materials when the game object is being destroyed.
         /// Resources.UnloadUnusedAssets also destroys the materials but it is usually only called when loading a new level.
-        /// https://docs.unity3d.com/ScriptReference/Renderer-material.html
+        /// <see cref="https://docs.unity3d.com/ScriptReference/Renderer-material.html">See Unity Documentation</see>
         /// </summary>
         /// <param name="t">root transform to start looking for renderers</param>
         /// <param name="mat">material to set everything to</param>
