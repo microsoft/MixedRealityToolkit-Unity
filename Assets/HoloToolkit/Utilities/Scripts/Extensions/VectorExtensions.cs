@@ -53,33 +53,116 @@ namespace HoloToolkit.Unity
             return Vector3.Scale(scaleInv, (Quaternion.Inverse(rotation) * (point - translation)));
         }
 
-        public static Vector3 Average(ICollection<Vector3> vectors)
+        public static Vector2 Average(IEnumerable<Vector2> vectors)
         {
-            if (vectors.Count == 0)
+            float x = 0f;
+            float y = 0f;
+            int count = 0;
+            foreach (var pos in vectors)
+            {
+                x += pos.x;
+                y += pos.y;
+                count++;
+            }
+            return new Vector2(x / count, y / count);
+        }
+
+        public static Vector3 Average(IEnumerable<Vector3> vectors)
+        {
+            float x = 0f;
+            float y = 0f;
+            float z = 0f;
+            int count = 0;
+            foreach (var pos in vectors)
+            {
+                x += pos.x;
+                y += pos.y;
+                z += pos.z;
+                count++;
+            }
+            return new Vector3(x / count, y / count, z / count);
+        }
+
+        public static Vector2 Average(ICollection<Vector2> vectors)
+        {
+            int count = vectors.Count;
+            if (count == 0)
             {
                 return Vector3.zero;
             }
 
-            var x = 0f;
-            var y = 0f;
-            var z = 0f;
+            float x = 0f;
+            float y = 0f;
+            foreach (var pos in vectors)
+            {
+                x += pos.x;
+                y += pos.y;
+            }
+            return new Vector2(x / count, y / count);
+        }
+
+        public static Vector3 Average(ICollection<Vector3> vectors)
+        {
+            int count = vectors.Count;
+            if (count == 0)
+            {
+                return Vector3.zero;
+            }
+
+            float x = 0f;
+            float y = 0f;
+            float z = 0f;
             foreach (var pos in vectors)
             {
                 x += pos.x;
                 y += pos.y;
                 z += pos.z;
             }
-            return new Vector3(x / vectors.Count, y / vectors.Count, z / vectors.Count);
+            return new Vector3(x / count, y / count, z / count);
         }
 
-        public static Vector3 Median(ICollection<Vector3> vectors)
+        public static Vector2 Median(IEnumerable<Vector2> vectors)
         {
-            if (vectors.Count == 0)
+            int count = vectors.Count();
+            if (count == 0)
+            {
+                return Vector2.zero;
+            }
+
+            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+        }
+
+        public static Vector3 Median(IEnumerable<Vector3> vectors)
+        {
+            int count = vectors.Count();
+            if (count == 0)
             {
                 return Vector3.zero;
             }
 
-            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(vectors.Count / 2);
+            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+        }
+
+        public static Vector2 Median(ICollection<Vector2> vectors)
+        {
+            int count = vectors.Count;
+            if (count == 0)
+            {
+                return Vector2.zero;
+            }
+
+            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+        }
+
+        public static Vector3 Median(ICollection<Vector3> vectors)
+        {
+            int count = vectors.Count;
+            if (count == 0)
+            {
+                return Vector3.zero;
+            }
+
+            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
     }
 }
