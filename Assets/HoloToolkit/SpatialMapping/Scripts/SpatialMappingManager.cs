@@ -44,10 +44,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 if (value != surfaceMaterial)
                 {
                     surfaceMaterial = value;
-                    if (Application.isPlaying) // Prevents null references when assigning material in inspector window.
-                    {
-                        SetSurfaceMaterial(surfaceMaterial);
-                    }
+                    SetSurfaceMaterial(surfaceMaterial);
                 }
             }
         }
@@ -65,10 +62,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 if (value != drawVisualMeshes)
                 {
                     drawVisualMeshes = value;
-                    if (Application.isPlaying) // Prevents null references when assigning material in inspector window.
-                    {
-                        UpdateRendering(drawVisualMeshes);
-                    }
+                    UpdateRendering(drawVisualMeshes);
                 }
             }
         }
@@ -86,10 +80,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 if (value != castShadows)
                 {
                     castShadows = value;
-                    if (Application.isPlaying) // Prevents null references when assigning material in inspector window.
-                    {
-                        SetShadowCasting(castShadows);
-                    }
+                    SetShadowCasting(castShadows);
                 }
             }
         }
