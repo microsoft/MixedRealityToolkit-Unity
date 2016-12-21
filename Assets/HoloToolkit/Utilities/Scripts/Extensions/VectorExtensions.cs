@@ -88,7 +88,7 @@ namespace HoloToolkit.Unity
             int count = vectors.Count;
             if (count == 0)
             {
-                return Vector3.zero;
+                return Vector2.zero;
             }
 
             float x = 0f;
