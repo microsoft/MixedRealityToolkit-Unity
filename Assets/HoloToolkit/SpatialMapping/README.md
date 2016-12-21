@@ -22,7 +22,8 @@ Use with SpatialMapping prefab, it allows you to send meshes from the HoloLens t
 Base prefab which allows you to visualize and access spatial mapping data on the HoloLens.
 
 You can assign surface materials, and tweak their values as well:
-[https://cloud.githubusercontent.com/assets/13334553/21393202/6b5c0d7e-c761-11e6-829f-ed607f4e5660.png]
+
+![image](https://cloud.githubusercontent.com/assets/13334553/21393202/6b5c0d7e-c761-11e6-829f-ed607f4e5660.png)
 
 To save/load room models that were captured from the Windows Device Portal you will need to attach the Object Surface Observer component.
 
