@@ -1,25 +1,32 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
+    [RequireComponent(typeof(Renderer))]
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
+        private Material cachedMaterial;
+
+        private void Awake()
+        {
+            cachedMaterial = GetComponent<Renderer>().sharedMaterial;
+        }
+
         public void ChangeColor(string color)
         {
             switch (color.ToLower())
             {
                 case "red":
-                    GetComponent<Renderer>().material.color = Color.red;
+                    cachedMaterial.SetColor("_Color", Color.red);
                     break;
                 case "blue":
-                    GetComponent<Renderer>().material.color = Color.blue;
+                    cachedMaterial.SetColor("_Color", Color.blue);
                     break;
                 case "green":
-                    GetComponent<Renderer>().material.color = Color.green;
+                    cachedMaterial.SetColor("_Color", Color.green);
                     break;
             }
         }

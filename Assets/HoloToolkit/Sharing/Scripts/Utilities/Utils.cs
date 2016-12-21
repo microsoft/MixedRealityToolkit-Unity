@@ -112,22 +112,29 @@ namespace HoloToolkit.Sharing.Utilities
         }
 
         /// <summary>
-        /// Change material for every object in hierarchy which has a name equal to nameToTest
+        /// Change material for every object in hierarchy which has a name equal to nameToTest.
+        ///  http://answers.unity3d.com/questions/548420/material-memory-leak.html
+        /// This function automatically instantiates the materials and makes them unique to this renderer.
+        /// It is your responsibility to destroy the materials when the game object is being destroyed.
+        /// Resources.UnloadUnusedAssets also destroys the materials but it is usually only called when loading a new level.
+        /// https://docs.unity3d.com/ScriptReference/Renderer-material.html
         /// </summary>
         /// <param name="t">root transform to start looking for renderers</param>
         /// <param name="mat">material to set everything to</param>
-        /// <param name="ignoreName">ignore GameObjects with this name</param>
+        /// <param name="nameToTest">ignore GameObjects with this name</param>
         public static void SetMaterialRecursiveForName(Transform t, Material mat, string nameToTest)
         {
             if (t.gameObject && t.gameObject.GetComponent<Renderer>() && t.gameObject.name == nameToTest)
             {
-                t.gameObject.GetComponent<Renderer>().material = mat;
+                t.gameObject.GetComponent<Renderer>().sharedMaterial = mat;
             }
 
             for (int ii = 0; ii < t.childCount; ++ii)
             {
                 SetMaterialRecursiveForName(t.GetChild(ii), mat, nameToTest);
             }
+
+            Resources.UnloadUnusedAssets();
         }
 
         /// <summary>
