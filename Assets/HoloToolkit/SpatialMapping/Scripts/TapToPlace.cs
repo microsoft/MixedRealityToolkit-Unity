@@ -46,12 +46,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private SpatialMappingManager spatialMappingManager;
 
-        /// <summary>
-        /// Keeps track of the relative position between the parent object to be moved and
-        /// the current gameobject this script is attached to.
-        /// </summary>
-        private Vector3 parentPositionRelativeToChild;
-
         public virtual void Start()
         {
             // Make sure we have all the components in the scene we need.
@@ -79,14 +73,12 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (PlaceParentOnTap)
             {
-                if  (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+                if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
                 {
                     Debug.LogError("The specified parent object is not a parent of this object.");
                 }
 
                 DetermineParent();
-
-                parentPositionRelativeToChild = gameObject.transform.position - ParentGameObjectToPlace.transform.position;
             }
         }
 
@@ -117,7 +109,8 @@ namespace HoloToolkit.Unity.SpatialMapping
                     if (PlaceParentOnTap)
                     {
                         // Place the parent object as well but keep the focus on the current game object
-                        ParentGameObjectToPlace.transform.position = hitInfo.point - parentPositionRelativeToChild;
+                        Vector3 currentMovement = hitInfo.point - gameObject.transform.position;
+                        ParentGameObjectToPlace.transform.position += currentMovement;
                         ParentGameObjectToPlace.transform.rotation = toQuat;
                     }
                     else
