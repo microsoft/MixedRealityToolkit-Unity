@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity
             return Vector3.Scale(scaleInv, (Quaternion.Inverse(rotation) * (point - translation)));
         }
 
-        public static Vector2 Average(IEnumerable<Vector2> vectors)
+        public static Vector2 Average(this IEnumerable<Vector2> vectors)
         {
             float x = 0f;
             float y = 0f;
@@ -67,7 +67,7 @@ namespace HoloToolkit.Unity
             return new Vector2(x / count, y / count);
         }
 
-        public static Vector3 Average(IEnumerable<Vector3> vectors)
+        public static Vector3 Average(this IEnumerable<Vector3> vectors)
         {
             float x = 0f;
             float y = 0f;
@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity
             return new Vector3(x / count, y / count, z / count);
         }
 
-        public static Vector2 Average(ICollection<Vector2> vectors)
+        public static Vector2 Average(this ICollection<Vector2> vectors)
         {
             int count = vectors.Count;
             if (count == 0)
@@ -101,7 +101,7 @@ namespace HoloToolkit.Unity
             return new Vector2(x / count, y / count);
         }
 
-        public static Vector3 Average(ICollection<Vector3> vectors)
+        public static Vector3 Average(this ICollection<Vector3> vectors)
         {
             int count = vectors.Count;
             if (count == 0)
@@ -121,7 +121,7 @@ namespace HoloToolkit.Unity
             return new Vector3(x / count, y / count, z / count);
         }
 
-        public static Vector2 Median(IEnumerable<Vector2> vectors)
+        public static Vector2 Median(this IEnumerable<Vector2> vectors)
         {
             int count = vectors.Count();
             if (count == 0)
@@ -132,7 +132,7 @@ namespace HoloToolkit.Unity
             return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
-        public static Vector3 Median(IEnumerable<Vector3> vectors)
+        public static Vector3 Median(this IEnumerable<Vector3> vectors)
         {
             int count = vectors.Count();
             if (count == 0)
@@ -143,7 +143,7 @@ namespace HoloToolkit.Unity
             return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
-        public static Vector2 Median(ICollection<Vector2> vectors)
+        public static Vector2 Median(this ICollection<Vector2> vectors)
         {
             int count = vectors.Count;
             if (count == 0)
@@ -154,7 +154,7 @@ namespace HoloToolkit.Unity
             return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
-        public static Vector3 Median(ICollection<Vector3> vectors)
+        public static Vector3 Median(this ICollection<Vector3> vectors)
         {
             int count = vectors.Count;
             if (count == 0)
