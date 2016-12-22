@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity
             return stringBuilder.ToString();
         }
 
-        private static void GetFullPath(StringBuilder stringBuilder, Transform transform, string delimiter = ".", string prefix = "/")
+        private static void GetFullPath(StringBuilder stringBuilder, Transform transform, string delimiter, string prefix)
         {
             if (transform.parent == null)
             {
