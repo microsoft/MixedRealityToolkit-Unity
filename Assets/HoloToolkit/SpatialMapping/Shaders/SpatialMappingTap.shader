@@ -55,10 +55,12 @@ Shader "Spatial Mapping/Spatial Mapping Tap"
 			{
 				half4 viewPos : SV_POSITION;
 				half  pulse : COLOR;
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			v2g vert(appdata_base v)
 			{
+				UNITY_SETUP_INSTANCE_ID(v);
 				v2g o;
 
 				o.viewPos = mul(UNITY_MATRIX_MVP, v.vertex);
@@ -69,6 +71,7 @@ Shader "Spatial Mapping/Spatial Mapping Tap"
 
 				o.pulse = pulse;
 
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				return o;
 			}
 
@@ -77,6 +80,7 @@ Shader "Spatial Mapping/Spatial Mapping Tap"
 				float4 viewPos : SV_POSITION;
 				half3  bary    : COLOR;
 				half   pulse   : COLOR1;
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			[maxvertexcount(3)]
@@ -97,6 +101,7 @@ Shader "Spatial Mapping/Spatial Mapping Tap"
 					o.viewPos = i[idx].viewPos;
 					o.bary = barys[idx];
 					o.pulse = i[idx].pulse;
+					UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(i[idx], o)
 					triStream.Append(o);
 				}
 			}
