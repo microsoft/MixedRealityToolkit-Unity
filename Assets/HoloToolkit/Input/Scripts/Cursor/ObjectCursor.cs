@@ -51,21 +51,19 @@ namespace HoloToolkit.Unity.InputModule
 
             if (state != CursorStateEnum.Contextual)
             {
-                // Hide all children first
-                for(int i = 0; i < ParentTransform.childCount; i++)
+                var newActive = CursorStateData.FirstOrDefault(p => p.CursorState == state);
+                if (newActive.Name == null)
                 {
-                    ParentTransform.GetChild(i).gameObject.SetActive(false);
+                    return;
                 }
 
-                // Set active any that match the current state
-                for (int i = 0; i < CursorStateData.Length; i++)
+                var oldActive = CursorStateData.FirstOrDefault(p => p.CursorObject.activeSelf);
+                if (oldActive.Name != null)
                 {
-                    if (CursorStateData[i].CursorState == state)
-                    {
-                        CursorStateData[i].CursorObject.SetActive(true);
-                    }
+                    oldActive.CursorObject.SetActive(false);
                 }
-            }
+
+                newActive.CursorObject.SetActive(true);
         }
     }
 }
