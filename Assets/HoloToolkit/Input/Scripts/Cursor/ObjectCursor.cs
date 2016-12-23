@@ -37,6 +37,12 @@ namespace HoloToolkit.Unity.InputModule
             {
                 ParentTransform = transform;
             }
+
+            for (int i = 0; i < ParentTransform.childCount; i++)
+            {
+                ParentTransform.GetChild(i).gameObject.SetActive(false);
+            }
+
             base.OnEnable();
         }
 
