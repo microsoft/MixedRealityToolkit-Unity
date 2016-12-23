@@ -51,13 +51,13 @@ namespace HoloToolkit.Unity.InputModule
 
             if (state != CursorStateEnum.Contextual)
             {
-                var newActive = CursorStateData.FirstOrDefault(p => p.CursorState == state);
+                ObjectCursorDatum newActive = CursorStateData.FirstOrDefault(p => p.CursorState == state);
                 if (newActive.Name == null)
                 {
                     return;
                 }
 
-                var oldActive = CursorStateData.FirstOrDefault(p => p.CursorObject.activeSelf);
+                ObjectCursorDatum oldActive = CursorStateData.FirstOrDefault(p => p.CursorObject.activeSelf);
                 if (oldActive.Name != null)
                 {
                     oldActive.CursorObject.SetActive(false);
