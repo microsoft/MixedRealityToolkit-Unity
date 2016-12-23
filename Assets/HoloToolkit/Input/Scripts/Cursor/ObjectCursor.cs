@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -34,7 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected override void OnEnable()
         {
-            if (ParentTransform == null)
+            if(ParentTransform == null)
             {
                 ParentTransform = transform;
             }
@@ -51,16 +50,30 @@ namespace HoloToolkit.Unity.InputModule
             base.OnCursorStateChange(state);
             if (state != CursorStateEnum.Contextual)
             {
-                ObjectCursorDatum newActive = CursorStateData.FirstOrDefault(p => p.CursorState == state);
+                var newActive = new ObjectCursorDatum();
+                for(int i = 0; i < CursorStateData.Length; i++)
+                {
+                    ObjectCursorDatum c = CursorStateData[i];
+                    if (c.CursorState == state)
+                    {
+                        newActive = c;
+                        break;
+                    }
+                }
+
                 if (newActive.Name == null)
                 {
                     return;
                 }
 
-                ObjectCursorDatum oldActive = CursorStateData.FirstOrDefault(p => p.CursorObject.activeSelf);
-                if (oldActive.Name != null)
+                for(int i = 0; i < CursorStateData.Length; i++)
                 {
-                    oldActive.CursorObject.SetActive(false);
+                    ObjectCursorDatum c = CursorStateData[i];
+                    if (c.CursorObject.activeSelf)
+                    {
+                        c.CursorObject.SetActive(false);
+                        break;
+                    }
                 }
 
                 newActive.CursorObject.SetActive(true);
