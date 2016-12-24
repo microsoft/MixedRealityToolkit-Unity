@@ -195,7 +195,6 @@ public class UI : LineDrawer
         {
             bool isEnabled = (i == (int)ActivePanel);
 
-            ButtonPanels[i].Button.enabled = isEnabled;
             ButtonPanels[i].ButtonImage.color = isEnabled ? colorButtonActive : colorButtonInactive;
             ButtonPanels[i].Background.enabled = isEnabled;
             ButtonPanels[i].Background.color = isEnabled ? colorPanelActive : colorPanelInactive;
