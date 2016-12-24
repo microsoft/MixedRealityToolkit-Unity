@@ -1,4 +1,4 @@
-Shader "Spatial Mapping/Spatial Mapping Tap"
+Shader "HoloToolkit/Spatial Mapping Tap"
 {
 	Properties
 	{
