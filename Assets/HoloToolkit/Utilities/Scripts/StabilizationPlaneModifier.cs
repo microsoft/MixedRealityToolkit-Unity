@@ -14,8 +14,13 @@ namespace HoloToolkit.Unity
     {
         [Tooltip("Checking enables SetFocusPointForFrame to set the stabilization plane.")]
         public bool SetStabilizationPlane = true;
+
+        [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
+        public bool UseUnscaledTime = true;
+
         [Tooltip("Lerp speed when moving focus point closer.")]
         public float LerpStabilizationPlanePowerCloser = 4.0f;
+
         [Tooltip("Lerp speed when moving focus point farther away.")]
         public float LerpStabilizationPlanePowerFarther = 7.0f;
 
@@ -97,17 +102,21 @@ namespace HoloToolkit.Unity
         {
             if (SetStabilizationPlane)
             {
+                var deltaTime = UseUnscaledTime
+                    ? Time.unscaledDeltaTime
+                    : Time.deltaTime;
+
                 if (TargetOverride != null)
                 {
-                    ConfigureTransformOverridePlane();
+                    ConfigureTransformOverridePlane(deltaTime);
                 }
                 else if (UseGazeManager)
                 {
-                    ConfigureGazeManagerPlane();
+                    ConfigureGazeManagerPlane(deltaTime);
                 }
                 else
                 {
-                    ConfigureFixedDistancePlane();
+                    ConfigureFixedDistancePlane(deltaTime);
                 }
             }
         }
@@ -125,14 +134,14 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Configures the stabilization plane to update its position based on an object in the scene.        
         /// </summary>
-        private void ConfigureTransformOverridePlane()
+        private void ConfigureTransformOverridePlane(float deltaTime)
         {
             planePosition = TargetOverride.position;
 
             Vector3 velocity = Vector3.zero;
             if (TrackVelocity)
             {
-                velocity = UpdateVelocity();
+                velocity = UpdateVelocity(deltaTime);
             }
             
             // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
@@ -142,7 +151,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Configures the stabilization plane to update its position based on what your gaze intersects in the scene.
         /// </summary>
-        private void ConfigureGazeManagerPlane()
+        private void ConfigureGazeManagerPlane(float deltaTime)
         {
             Vector3 gazeOrigin = GazeManager.Instance.GazeOrigin;
             Vector3 gazeDirection = GazeManager.Instance.GazeNormal;
@@ -162,7 +171,7 @@ namespace HoloToolkit.Unity
                                                                         : LerpStabilizationPlanePowerCloser;
 
             // Smoothly move the focus point from previous hit position to new position.
-            currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, focusPointDistance, lerpPower * Time.deltaTime);
+            currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, focusPointDistance, lerpPower * deltaTime);
 
             planePosition = gazeOrigin + (gazeDirection * currentPlaneDistance);
 
@@ -172,13 +181,13 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Configures the stabilization plane to update based on a fixed distance away from you.
         /// </summary>
-        private void ConfigureFixedDistancePlane()
+        private void ConfigureFixedDistancePlane(float deltaTime)
         {
             float lerpPower = DefaultPlaneDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
                                                                           : LerpStabilizationPlanePowerCloser;
 
             // Smoothly move the focus point from previous hit position to new position.
-            currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, DefaultPlaneDistance, lerpPower * Time.deltaTime);
+            currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, DefaultPlaneDistance, lerpPower * deltaTime);
 
             planePosition = gazeManager.GazeOrigin + (gazeManager.GazeNormal * currentPlaneDistance);
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeManager.GazeNormal, Vector3.zero);
@@ -187,10 +196,10 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Tracks the velocity of the target object to be used as a hint for the plane stabilization.
         /// </summary>
-        private Vector3 UpdateVelocity()
+        private Vector3 UpdateVelocity(float deltaTime)
         {
             // Roughly calculate the velocity based on previous position, current position, and frame time.
-            Vector3 velocity = (TargetOverride.position - targetOverridePreviousPosition) / Time.deltaTime;
+            Vector3 velocity = (TargetOverride.position - targetOverridePreviousPosition) / deltaTime;
             targetOverridePreviousPosition = TargetOverride.position;
             return velocity;
         }

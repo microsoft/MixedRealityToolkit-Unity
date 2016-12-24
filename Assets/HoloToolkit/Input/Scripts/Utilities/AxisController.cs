@@ -55,6 +55,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public float SensitivityScale = 3.0f;
 
+        [Tooltip("Use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
+        public bool UseUnscaledTime = true;
+
         public AxisType axisType = AxisType.Mouse;
         public ButtonController.ButtonType buttonType = ButtonController.ButtonType.None;
 
@@ -82,19 +85,19 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool AxisTypeIsKeyboard
         {
-            get{ return AxisType.KeyboardArrows <= axisType && axisType <= AxisType.KeyBoardHomeEndPgUpPgDown; }
+            get { return AxisType.KeyboardArrows <= axisType && axisType <= AxisType.KeyBoardHomeEndPgUpPgDown; }
         }
         public bool AxisTypeIsInputManagerAxis
         {
-            get{ return  axisType == AxisType.InputManagerAxis; }
+            get { return axisType == AxisType.InputManagerAxis; }
         }
         public bool AxisTypeIsMouse
         {
-            get{ return axisType == AxisType.Mouse; }
+            get { return axisType == AxisType.Mouse; }
         }
         public bool AxisTypeIsMouseScroll
         {
-            get{ return axisType == AxisType.MouseScroll; }
+            get { return axisType == AxisType.MouseScroll; }
         }
 
         public void EnableAndCheck(bool value)
@@ -136,9 +139,9 @@ namespace HoloToolkit.Unity.InputModule
             UnityEngine.Cursor.lockState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
 #endif
-    }
+        }
 
-    private static float InputCurve(float x)
+        private static float InputCurve(float x)
         {
             // smoothing input curve, converts from [-1,1] to [-2,2]
             return (Mathf.Sign(x) * (1.0f - Mathf.Cos(.5f * Mathf.PI * Mathf.Clamp(x, -1.0f, 1.0f))));
@@ -379,52 +382,56 @@ namespace HoloToolkit.Unity.InputModule
 
         private Vector3 KeyboardLookTick()
         {
+            var deltaTime = UseUnscaledTime
+                ? Time.unscaledDeltaTime
+                : Time.deltaTime;
+
             Vector3 rot = Vector3.zero;
             if (axisType == AxisType.KeyboardArrows)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.LeftArrow, KeyCode.RightArrow));
-                rot.y += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.DownArrow, KeyCode.UpArrow));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.LeftArrow, KeyCode.RightArrow));
+                rot.y += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.DownArrow, KeyCode.UpArrow));
             }
             else if (axisType == AxisType.KeyboardWASD)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.A, KeyCode.D));
-                rot.y += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.S, KeyCode.W));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.A, KeyCode.D));
+                rot.y += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.S, KeyCode.W));
             }
             else if (axisType == AxisType.KeyboardQE)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Q, KeyCode.E));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Q, KeyCode.E));
             }
             else if (axisType == AxisType.KeyboardIJKL)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.J, KeyCode.L));
-                rot.y += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.K, KeyCode.I));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.J, KeyCode.L));
+                rot.y += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.K, KeyCode.I));
             }
             else if (axisType == AxisType.KeyboardUO)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.U, KeyCode.O));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.U, KeyCode.O));
             }
             else if (axisType == AxisType.Keyboard8426)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad4, KeyCode.Keypad6));
-                rot.y += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad2, KeyCode.Keypad8));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad4, KeyCode.Keypad6));
+                rot.y += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad2, KeyCode.Keypad8));
             }
             else if (axisType == AxisType.Keyboard7193)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad1, KeyCode.Keypad7));
-                rot.y += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad3, KeyCode.Keypad9));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad1, KeyCode.Keypad7));
+                rot.y += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Keypad3, KeyCode.Keypad9));
             }
             else if (axisType == AxisType.KeyboardPeriodComma)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Comma, KeyCode.Period));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.Comma, KeyCode.Period));
             }
             else if (axisType == AxisType.KeyboardBrackets)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.LeftBracket, KeyCode.RightBracket));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.LeftBracket, KeyCode.RightBracket));
             }
             else if (axisType == AxisType.KeyBoardHomeEndPgUpPgDown)
             {
-                rot.x += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.End, KeyCode.Home));
-                rot.y += InputCurve(Time.deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.PageDown, KeyCode.PageUp));
+                rot.x += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.End, KeyCode.Home));
+                rot.y += InputCurve(deltaTime * KeyboardSensitivity * GetKeyDir(KeyCode.PageDown, KeyCode.PageUp));
             }
             return rot;
         }
