@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         protected SpatialMappingManager spatialMappingManager;
 
-        public virtual void Start()
+        private virtual void Start()
         {
             // Make sure we have all the components in the scene we need.
             anchorManager = WorldAnchorManager.Instance;
@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
         }
 
-        public virtual void Update()
+        private virtual void Update()
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
@@ -123,7 +123,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
         }
 
-        public virtual void OnInputClicked(InputEventData eventData)
+        protected virtual void OnInputClicked(InputEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
