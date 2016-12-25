@@ -15,12 +15,15 @@ namespace HoloToolkit.Unity.SpatialMapping
         private void Start()
         {
 #if UNITY_EDITOR
-            // When in the Unity editor, try loading saved meshes from a model.
-            Load(RoomModel);
-
-            if (GetMeshFilters().Count > 0)
+            if (!UnityEngine.VR.VRDevice.isPresent)
             {
-                SpatialMappingManager.Instance.SetSpatialMappingSource(this);
+                // When in the Unity editor and not remoting, try loading saved meshes from a model.
+                Load(RoomModel);
+
+                if (GetMeshFilters().Count > 0)
+                {
+                    SpatialMappingManager.Instance.SetSpatialMappingSource(this);
+                }
             }
 #endif
         }

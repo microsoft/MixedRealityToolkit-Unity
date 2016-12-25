@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
         /// Result of a topology query. Typically results return an array 
         /// of these structures.
         /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct TopologyResult
         {
             public Vector3 position;
@@ -39,7 +39,6 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-#if UNITY_METRO && !UNITY_EDITOR
         // Queries (topology)
         [DllImport("SpatialUnderstanding")]
         public static extern int QueryTopology_FindPositionsOnWalls(
@@ -47,20 +46,8 @@ namespace HoloToolkit.Unity
             [In] float minWidthOfWallSpace,
             [In] float minHeightAboveFloor,
             [In] float minFacingClearance,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData);     // TopologyResult
-#else
-        public static int QueryTopology_FindPositionsOnWalls(
-            [In] float minHeightOfWallSpace,
-            [In] float minWidthOfWallSpace,
-            [In] float minHeightAboveFloor,
-            [In] float minFacingClearance,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData)
-        {
-            return 0;
-        }
-#endif
+            [In] int locationCount,             // Pass in the space allocated in locationData
+            [In, Out] IntPtr locationData);     // TopologyResult
 
         /// <summary>
         /// Finds only large spaces on walls meeting the criteria specified by the parameters.
@@ -72,44 +59,23 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-#if UNITY_METRO && !UNITY_EDITOR
         [DllImport("SpatialUnderstanding")]
         public static extern int QueryTopology_FindLargePositionsOnWalls(
             [In] float minHeightOfWallSpace,
             [In] float minWidthOfWallSpace,
             [In] float minHeightAboveFloor,
             [In] float minFacingClearance,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData);     // TopologyResult
-#else
-        public static int QueryTopology_FindLargePositionsOnWalls(
-            [In] float minHeightOfWallSpace,
-            [In] float minWidthOfWallSpace,
-            [In] float minHeightAboveFloor,
-            [In] float minFacingClearance,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData)
-        {
-            return 0;
-        }
-#endif
+            [In] int locationCount,             // Pass in the space allocated in locationData
+            [In, Out] IntPtr locationData);     // TopologyResult
 
         /// <summary>
         /// Finds the largest wall
         /// </summary>
         /// <param name="wall">Pointer to a TopologyResult structure, to be filled with the found wall</param>
         /// <returns>Zero if fails, one if success</returns>
-#if UNITY_METRO && !UNITY_EDITOR
         [DllImport("SpatialUnderstanding")]
         public static extern int QueryTopology_FindLargestWall(
-            [Out] IntPtr wall);             // TopologyResult
-#else
-        public static int QueryTopology_FindLargestWall(
-            [Out] IntPtr wall)
-        {
-            return 0;
-        }
-#endif
+            [In, Out] IntPtr wall);             // TopologyResult
 
         /// <summary>
         /// Finds spaces on the floor meeting the criteria specified by the parameters.
@@ -119,23 +85,12 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-#if UNITY_METRO && !UNITY_EDITOR
         [DllImport("SpatialUnderstanding")]
         public static extern int QueryTopology_FindPositionsOnFloor(
             [In] float minLengthOfFloorSpace,
             [In] float minWidthOfFloorSpace,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData);     // TopologyResult
-#else
-        public static int QueryTopology_FindPositionsOnFloor(
-            [In] float minLengthOfFloorSpace,
-            [In] float minWidthOfFloorSpace,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData)
-        {
-            return 0;
-        }
-#endif
+            [In] int locationCount,             // Pass in the space allocated in locationData
+            [In, Out] IntPtr locationData);     // TopologyResult
 
         /// <summary>
         /// Finds the largest spaces on the floor
@@ -143,19 +98,10 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-#if UNITY_METRO && !UNITY_EDITOR
         [DllImport("SpatialUnderstanding")]
         public static extern int QueryTopology_FindLargestPositionsOnFloor(
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData);     // TopologyResult
-#else
-        public static int QueryTopology_FindLargestPositionsOnFloor(
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData)
-        {
-            return 0;
-        }
-#endif
+            [In] int locationCount,             // Pass in the space allocated in locationData
+            [In, Out] IntPtr locationData);     // TopologyResult
 
         /// <summary>
         /// Finds good spaces for sitting or placing objects on surfaces.
@@ -166,25 +112,13 @@ namespace HoloToolkit.Unity
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-#if UNITY_METRO && !UNITY_EDITOR
         [DllImport("SpatialUnderstanding")]
         public static extern int QueryTopology_FindPositionsSittable(
             [In] float minHeight,
             [In] float maxHeight,
             [In] float minFacingClearance,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData);     // TopologyResult
-#else
-        public static int QueryTopology_FindPositionsSittable(
-            [In] float minHeight,
-            [In] float maxHeight,
-            [In] float minFacingClearance,
-            [In] int locationCount,         // Pass in the space allocated in locationData
-            [Out] IntPtr locationData)
-        {
-            return 0;
-        }
-#endif
+            [In] int locationCount,             // Pass in the space allocated in locationData
+            [In, Out] IntPtr locationData);     // TopologyResult
     }
 
 }

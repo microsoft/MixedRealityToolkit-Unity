@@ -147,9 +147,13 @@ public class LevelSolver : LineDrawer
         // Tell user we are processing
         AppState.Instance.ObjectPlacementDescription = placementName + " (processing)";
 
-#if UNITY_WSA && !UNITY_EDITOR
         // Kick off a thread to do process the queries
-        System.Threading.Tasks.Task.Run(() =>
+#if UNITY_EDITOR || !UNITY_WSA
+        new System.Threading.Thread
+#else
+        System.Threading.Tasks.Task.Run
+#endif
+        (() =>
             {
                 // Go through the queries in the list
                 for (int i = 0; i < placementList.Count; ++i)
@@ -171,8 +175,11 @@ public class LevelSolver : LineDrawer
                 // Done
                 queryStatus.State = QueryStates.Finished;
             }
-        );
+        )
+#if UNITY_EDITOR || !UNITY_WSA
+        .Start()
 #endif
+        ;
 
         return true;
     }
