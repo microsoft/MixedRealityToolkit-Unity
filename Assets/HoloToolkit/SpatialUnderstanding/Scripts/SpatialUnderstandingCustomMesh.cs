@@ -29,6 +29,10 @@ namespace HoloToolkit.Unity
         /// </summary>
         [Tooltip("Max time per frame in milliseconds to spend processing the mesh")]
         public float MaxFrameTime = 5.0f;
+        private float MaxFrameTimeInSeconds
+        {
+            get { return (MaxFrameTime * 1000); }
+        }
 
         private bool drawProcessedMesh = true;
         // Properties
@@ -64,7 +68,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// To prevent us from importing too often, we keep track of the last import.
         /// </summary>
-        private DateTime timeLastImportedMesh = DateTime.Now;
+        private float timeLastImportedMesh = 0;
 
         /// <summary>
         /// For a cached SpatialUnderstanding.Instance.
@@ -165,7 +169,7 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            Update_MeshImport(Time.deltaTime);
+            Update_MeshImport();
         }
 
         /// <summary>
@@ -242,7 +246,7 @@ namespace HoloToolkit.Unity
                     meshdata.Reset();
                 }
 
-                DateTime startTime = DateTime.Now;
+                var startTime = Time.realtimeSinceStartup;
                 // first we need to split the playspace up into segments so we don't always 
                 // draw everything.  We can break things up in to cubic meters.  
                 for (int index = 0; index < meshIndices.Length; index += 3)
@@ -274,16 +278,16 @@ namespace HoloToolkit.Unity
                     }
 
                     // Limit our run time so that we don't cause too many frame drops.
-                    // Only checking every 10 iterations or so to prevent losing too much time to checking the clock.
-                    if (index % 30 == 0 && (DateTime.Now - startTime).TotalMilliseconds > MaxFrameTime)
+                    // Only checking every few iterations or so to prevent losing too much time to checking the clock.
+                    if ((index % 30 == 0) && ((Time.realtimeSinceStartup - startTime) > MaxFrameTimeInSeconds))
                     {
                         //  Debug.LogFormat("{0} of {1} processed", index, meshIndices.Length);
                         yield return null;
-                        startTime = DateTime.Now;
+                        startTime = Time.realtimeSinceStartup;
                     }
                 }
 
-                startTime = DateTime.Now;
+                startTime = Time.realtimeSinceStartup;
 
                 // Now we have all of our triangles assigned to the correct mesh, we can make all of the meshes.
                 // Each sector will have its own mesh.
@@ -295,7 +299,13 @@ namespace HoloToolkit.Unity
                     // be rare).
                     if (SurfaceObjects.Count <= meshSectorsIndex)
                     {
-                        AddSurfaceObject(null, string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex), transform);
+                        AddSurfaceObject(CreateSurfaceObject(
+                            mesh: null,
+                            objectName: string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex),
+                            parentObject: transform,
+                            meshID: meshSectorsIndex,
+                            drawVisualMeshesOverride: DrawProcessedMesh
+                            ));
                     }
 
                     // Get the next MeshData.
@@ -308,10 +318,10 @@ namespace HoloToolkit.Unity
                     SurfaceObjects[meshSectorsIndex].Filter.sharedMesh = meshData.MeshObject;
 
                     // Make sure we don't build too many meshes in a single frame.
-                    if ((DateTime.Now - startTime).TotalMilliseconds > MaxFrameTime)
+                    if ((Time.realtimeSinceStartup - startTime) > MaxFrameTimeInSeconds)
                     {
                         yield return null;
-                        startTime = DateTime.Now;
+                        startTime = Time.realtimeSinceStartup;
                     }
                 }
 
@@ -334,7 +344,7 @@ namespace HoloToolkit.Unity
             IsImportActive = false;
 
             // Mark the timestamp
-            timeLastImportedMesh = DateTime.Now;
+            timeLastImportedMesh = Time.time;
         }
 
         /// <summary>
@@ -352,12 +362,11 @@ namespace HoloToolkit.Unity
         /// Updates the mesh import process. This function will kick off the import 
         /// coroutine at the requested internal.
         /// </summary>
-        /// <param name="deltaTime"></param>
-        private void Update_MeshImport(float deltaTime)
+        private void Update_MeshImport()
         {
             // Only update every so often
             if (IsImportActive || (ImportMeshPeriod <= 0.0f) ||
-                ((DateTime.Now - timeLastImportedMesh).TotalSeconds < ImportMeshPeriod) ||
+                ((Time.time - timeLastImportedMesh) < ImportMeshPeriod) ||
                 (spatialUnderstanding.ScanState != SpatialUnderstanding.ScanStates.Scanning))
             {
                 return;

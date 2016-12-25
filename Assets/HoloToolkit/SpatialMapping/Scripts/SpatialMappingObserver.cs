@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA;
@@ -39,16 +40,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         public float TimeBetweenUpdates = 3.5f;
 
         /// <summary>
-        /// Event for hooking when surfaces are changed.
-        /// </summary>
-        public event SurfaceObserver.SurfaceChangedDelegate SurfaceChanged;
-
-        /// <summary>
-        /// Event for hooking when the data for a surface is ready.
-        /// </summary>
-        public event SurfaceObserver.SurfaceDataReadyDelegate DataReady;
-
-        /// <summary>
         /// Indicates the current state of the Surface Observer.
         /// </summary>
         public ObserverStates ObserverState { get; private set; }
@@ -59,36 +50,16 @@ namespace HoloToolkit.Unity.SpatialMapping
         private SurfaceObserver observer;
 
         /// <summary>
-        /// A dictionary of surfaces that our Surface Observer knows about.
-        /// Key: surface id
-        /// Value: GameObject containing a Mesh, a MeshRenderer and a Material
+        /// A queue of surfaces that need their meshes created (or updated).
         /// </summary>
-        private Dictionary<int, GameObject> surfaces = new Dictionary<int, GameObject>();
-
-        /// <summary>
-        /// A dictionary of surfaces which need to be cleaned up and readded for reuse.
-        /// Key: ID of the surface currently updating
-        /// Value: A struct encapsulating Visual and Collider mesh to be cleaned up
-        /// </summary>
-        private Dictionary<int, GameObject> pendingCleanup = new Dictionary<int, GameObject>();
-
-        /// <summary>
-        /// A queue of clean surface GameObjects ready to be reused.
-        /// </summary>
-        private Queue<GameObject> availableSurfaces = new Queue<GameObject>();
-
-        /// <summary>
-        /// A queue of SurfaceData objects. SurfaceData objects are sent to the
-        /// SurfaceObserver to generate meshes of the environment.
-        /// </summary>
-        private Queue<SurfaceData> surfaceWorkQueue = new Queue<SurfaceData>();
+        private readonly Queue<SurfaceId> surfaceWorkQueue = new Queue<SurfaceId>();
 
         /// <summary>
         /// To prevent too many meshes from being generated at the same time, we will
         /// only request one mesh to be created at a time.  This variable will track
         /// if a mesh creation request is in flight.
         /// </summary>
-        private bool surfaceWorkOutstanding = false;
+        private SurfaceObject? outstandingMeshRequest = null;
 
         /// <summary>
         /// Used to track when the Observer was last updated.
@@ -107,22 +78,47 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private void Update()
         {
-            // Only do processing if the observer is running.
-            if (ObserverState == ObserverStates.Running)
+            if ((ObserverState == ObserverStates.Running) && (outstandingMeshRequest == null))
             {
-                // If we don't have mesh creation in flight, but we could schedule mesh creation, do so.
-                if (surfaceWorkOutstanding == false && surfaceWorkQueue.Count > 0)
+                if (surfaceWorkQueue.Count > 0)
                 {
-                    // Pop the SurfaceData off the queue.  A more sophisticated algorithm could prioritize
+                    // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
                     // the queue based on distance to the user or some other metric.
-                    SurfaceData surfaceData = surfaceWorkQueue.Dequeue();
+                    var surfaceID = surfaceWorkQueue.Dequeue();
 
-                    // If RequestMeshAsync succeeds, then we have successfully scheduled mesh creation.
-                    surfaceWorkOutstanding = observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady);
+                    // TODO: consider pooling objects for reuse
+                    var newSurface = CreateSurfaceObject(
+                        mesh: null,
+                        objectName: ("Surface-" + surfaceID.handle),
+                        parentObject: transform,
+                        meshID: surfaceID.handle,
+                        drawVisualMeshesOverride: false
+                        );
+
+                    var worldAnchor = newSurface.Object.AddComponent<WorldAnchor>();
+
+                    var surfaceData = new SurfaceData(
+                        surfaceID,
+                        newSurface.Filter,
+                        worldAnchor,
+                        newSurface.Collider,
+                        TrianglesPerCubicMeter,
+                        _bakeCollider: true
+                        );
+
+                    if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
+                    {
+                        outstandingMeshRequest = newSurface;
+                    }
+                    else
+                    {
+                        Debug.LogError(string.Format("Mesh request for failed. Is {0} a valid Surface ID?", surfaceID.handle));
+
+                        Debug.Assert(outstandingMeshRequest == null);
+                        Destroy(newSurface.Object);
+                    }
                 }
-                // If we don't have any other work to do, and enough time has passed since the previous
-                // update request, request updates for the spatial mapping data.
-                else if (surfaceWorkOutstanding == false && (Time.time - updateTime) >= TimeBetweenUpdates)
+                else if ((Time.time - updateTime) >= TimeBetweenUpdates)
                 {
                     observer.Update(SurfaceObserver_OnSurfaceChanged);
                     updateTime = Time.time;
@@ -161,44 +157,31 @@ namespace HoloToolkit.Unity.SpatialMapping
             {
                 Debug.Log("Stopping the observer.");
                 ObserverState = ObserverStates.Stopped;
+
+                surfaceWorkQueue.Clear();
+                updateTime = 0;
             }
         }
-
 
         /// <summary>
         /// Cleans up all memory and objects associated with the observer.
         /// </summary>
         public void CleanupObserver()
         {
+            StopObserving();
+
             if (observer != null)
             {
-                StopObserving();
-
-                // Clear out all memory allocated the observer
                 observer.Dispose();
                 observer = null;
-
-                foreach (KeyValuePair<int, GameObject> surfaceRef in surfaces)
-                {
-                    CleanupSurface(surfaceRef.Value);
-                }
-
-                // Get all valid mesh filters for observed surfaces and destroy them
-                List<MeshFilter> meshFilters = GetMeshFilters();
-                for (int i = 0; i < meshFilters.Count; i++)
-                {
-                    Destroy(meshFilters[i].sharedMesh);
-                }
-                meshFilters.Clear();
-
-                // Cleanup all available surfaces
-                foreach (GameObject availableSurface in availableSurfaces)
-                {
-                    Destroy(availableSurface);
-                }
-                availableSurfaces.Clear();
-                surfaces.Clear();
             }
+
+            if (outstandingMeshRequest != null)
+            {
+                ClearOutstandingMeshRequest();
+            }
+
+            Cleanup();
         }
 
         /// <summary>
@@ -225,80 +208,51 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="elapsedCookTimeSeconds">Seconds between mesh cook request and propagation of this event.</param>
         private void SurfaceObserver_OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
         {
-            //We have new visuals, so we can disable and cleanup the older surface
-            GameObject surfaceToCleanup;
-            if (pendingCleanup.TryGetValue(cookedData.id.handle, out surfaceToCleanup))
+            if (outstandingMeshRequest == null)
             {
-                CleanupSurface(surfaceToCleanup);
-                pendingCleanup.Remove(cookedData.id.handle);
+                Debug.LogError(string.Format("Got OnDataReady for surface {0} while no request was outstanding.",
+                    cookedData.id.handle
+                    ));
+
+                return;
             }
 
-            GameObject surface;
-            if (surfaces.TryGetValue(cookedData.id.handle, out surface))
+            if (false
+                || (outstandingMeshRequest.Value.ID != cookedData.id.handle)
+                || (outstandingMeshRequest.Value.Filter != cookedData.outputMesh)
+                || (outstandingMeshRequest.Value.Collider != cookedData.outputCollider)
+                )
             {
-                // Set the draw material for the renderer.
-                MeshRenderer meshRenderer = surface.GetComponent<MeshRenderer>();
-                meshRenderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
-                meshRenderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+                Debug.LogError(string.Format("Got mismatched OnDataReady for surface {0} while request for surface {1} was outstanding.",
+                    cookedData.id.handle,
+                    outstandingMeshRequest.Value.ID
+                    ));
 
-                if (SpatialMappingManager.Instance.CastShadows == false)
-                {
-                    meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                }
+                ClearOutstandingMeshRequest();
+                return;
             }
 
-            surfaceWorkOutstanding = false;
-            SurfaceObserver.SurfaceDataReadyDelegate dataReady = DataReady;
-            if (dataReady != null)
+            if (ObserverState != ObserverStates.Running)
             {
-                dataReady(cookedData, outputWritten, elapsedCookTimeSeconds);
-            }
-        }
+                Debug.Log(string.Format("Got OnDataReady for surface {0}, but observer was no longer running.",
+                    cookedData.id.handle
+                    ));
 
-        private void CleanupSurface(GameObject surface)
-        {
-            // Destroy the meshes, and add the surface back for reuse
-            CleanupMeshes(surface.GetComponent<MeshFilter>().sharedMesh, surface.GetComponent<MeshCollider>().sharedMesh);
-            availableSurfaces.Enqueue(surface);
-            surface.name = "Unused Surface";
-            surface.SetActive(false);
-        }
-
-        private void CleanupMeshes(Mesh visualMesh, Mesh colliderMesh)
-        {
-            if (colliderMesh != null && colliderMesh != visualMesh)
-            {
-                Destroy(colliderMesh);
+                ClearOutstandingMeshRequest();
+                return;
             }
 
-            if (visualMesh != null)
+            if (!outputWritten)
             {
-                Destroy(visualMesh);
-            }
-        }
-
-        private GameObject GetSurfaceObject(int surfaceID, Transform parentObject)
-        {
-            //If we have surfaces ready for reuse, use those first
-            if (availableSurfaces.Count > 1)
-            {
-                GameObject existingSurface = availableSurfaces.Dequeue();
-                existingSurface.SetActive(true);
-                existingSurface.name = string.Format("Surface-{0}", surfaceID);
-
-                UpdateSurfaceObject(existingSurface, surfaceID);
-
-                return existingSurface;
+                ClearOutstandingMeshRequest();
+                return;
             }
 
-            // If we are adding a new surface, construct a GameObject
-            // to represent its state and attach some Mesh-related
-            // components to it.
-            GameObject toReturn = AddSurfaceObject(null, string.Format("Surface-{0}", surfaceID), transform, surfaceID);
+            outstandingMeshRequest.Value.Renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
 
-            toReturn.AddComponent<WorldAnchor>();
-
-            return toReturn;
+            // TODO: figure out if we need to do something special because Unity supposedly doesn't properly cleanup baked collision data...
+            UpdateOrAddSurfaceObject(outstandingMeshRequest.Value);
+            ClearOutstandingMeshRequest(destroy: false);
         }
 
         /// <summary>
@@ -308,7 +262,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="changeType">The type of change that occurred on the surface.</param>
         /// <param name="bounds">The bounds of the surface.</param>
         /// <param name="updateTime">The date and time at which the change occurred.</param>
-        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updateTime)
+        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, DateTime updateTime)
         {
             // Verify that the client of the Surface Observer is expecting updates.
             if (ObserverState != ObserverStates.Running)
@@ -316,68 +270,22 @@ namespace HoloToolkit.Unity.SpatialMapping
                 return;
             }
 
-            GameObject surface;
-
             switch (changeType)
             {
-                // Adding and updating are nearly identical.  The only difference is if a new gameobject to contain 
-                // the surface needs to be created.
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
-                    // Check to see if the surface is known to the observer.
-                    // If so, we want to add it for cleanup after we get new meshes
-                    // We do this because Unity doesn't properly cleanup baked collision data
-                    if (surfaces.TryGetValue(id.handle, out surface))
-                    {
-                        pendingCleanup.Add(id.handle, surface);
-                        surfaces.Remove(id.handle);
-                    }
-
-                    // Get an available surface object ready to be used
-                    surface = GetSurfaceObject(id.handle, transform);
-
-                    // Add the surface to our dictionary of known surfaces so
-                    // we can interact with it later.
-                    surfaces.Add(id.handle, surface);
-
-                    // Add the request to create the mesh for this surface to our work queue.
-                    QueueSurfaceDataRequest(id, surface);
+                    surfaceWorkQueue.Enqueue(id);
                     break;
 
                 case SurfaceChange.Removed:
-                    // Always process surface removal events.
-                    // This code can be made more thread safe
-                    if (surfaces.TryGetValue(id.handle, out surface))
-                    {
-                        surfaces.Remove(id.handle);
-                        CleanupSurface(surface);
-                        RemoveSurfaceObject(surface, false);
-                    }
+                    // TODO: figure out if we need to do something special because Unity supposedly doesn't properly cleanup baked collision data...
+                    RemoveSurfaceIfFound(id.handle);
+                    break;
+
+                default:
+                    Debug.LogError(string.Format("Unexpected {0} value: {1}.", changeType.GetType(), changeType));
                     break;
             }
-
-            // Event
-            if (SurfaceChanged != null)
-            {
-                SurfaceChanged(id, changeType, bounds, updateTime);
-            }
-        }
-
-        /// <summary>
-        /// Calls GetMeshAsync to update the SurfaceData and re-activate the surface object when ready.
-        /// </summary>
-        /// <param name="id">Identifier of the SurfaceData object to update.</param>
-        /// <param name="surface">The SurfaceData object to update.</param>
-        private void QueueSurfaceDataRequest(SurfaceId id, GameObject surface)
-        {
-            SurfaceData surfaceData = new SurfaceData(id,
-                                                      surface.GetComponent<MeshFilter>(),
-                                                      surface.GetComponent<WorldAnchor>(),
-                                                      surface.GetComponent<MeshCollider>(),
-                                                      TrianglesPerCubicMeter,
-                                                      true);
-
-            surfaceWorkQueue.Enqueue(surfaceData);
         }
 
         /// <summary>
@@ -385,9 +293,20 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private void OnDestroy()
         {
-            // Stop the observer and clean it up.
-            StopObserving();
             CleanupObserver();
+        }
+
+        private void ClearOutstandingMeshRequest(bool destroy = true)
+        {
+            Debug.Assert(outstandingMeshRequest != null);
+
+            if (destroy)
+            {
+                // TODO: figure out if we need to do something special because Unity supposedly doesn't properly cleanup baked collision data...
+                Destroy(outstandingMeshRequest.Value.Object);
+            }
+
+            outstandingMeshRequest = null;
         }
     }
 }
