@@ -56,32 +56,39 @@ namespace HoloToolkit.Unity.InputModule
             base.OnCursorStateChange(state);
             if (state != CursorStateEnum.Contextual)
             {
+
+                // First, try to find a cursor for the current state
                 var newActive = new ObjectCursorDatum();
-                for(int i = 0; i < CursorStateData.Length; i++)
+                for(int cursorIndex = 0; cursorIndex < CursorStateData.Length; cursorIndex++)
                 {
-                    ObjectCursorDatum c = CursorStateData[i];
-                    if (c.CursorState == state)
+                    ObjectCursorDatum cursor = CursorStateData[cursorIndex];
+                    if (cursor.CursorState == state)
                     {
-                        newActive = c;
+                        newActive = cursor;
                         break;
                     }
                 }
 
+                // If no cursor for current state is found, let the last active cursor be
+                // (any cursor is better than an invisible cursor)
                 if (newActive.Name == null)
                 {
                     return;
                 }
 
-                for(int i = 0; i < CursorStateData.Length; i++)
+                // If we come here, there is a cursor for the new state, 
+                // so de-activate a possible earlier active cursor
+                for(int cursorIndex = 0; cursorIndex < CursorStateData.Length; cursorIndex++)
                 {
-                    ObjectCursorDatum c = CursorStateData[i];
-                    if (c.CursorObject.activeSelf)
+                    ObjectCursorDatum cursor = CursorStateData[cursorIndex];
+                    if (cursor.CursorObject.activeSelf)
                     {
-                        c.CursorObject.SetActive(false);
+                        cursor.CursorObject.SetActive(false);
                         break;
                     }
                 }
 
+                // ... and set the cursor for the new state active.
                 newActive.CursorObject.SetActive(true);
             }
         }
