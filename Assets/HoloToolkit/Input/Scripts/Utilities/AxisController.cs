@@ -382,7 +382,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private Vector3 KeyboardLookTick()
         {
-            var deltaTime = UseUnscaledTime
+            float deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
 

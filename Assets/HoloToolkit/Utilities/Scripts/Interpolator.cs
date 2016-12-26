@@ -264,7 +264,7 @@ namespace HoloToolkit.Unity
 
         public void Update()
         {
-            var deltaTime = UseUnscaledTime
+            float deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
 

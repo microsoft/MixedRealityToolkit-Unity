@@ -183,7 +183,7 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.SourceStateChanged = false;
             if (sourceData.SourceStateUpdateTimer >= 0)
             {
-                var deltaTime = UseUnscaledTime
+                float deltaTime = UseUnscaledTime
                     ? Time.unscaledDeltaTime
                     : Time.deltaTime;
 

@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity
             {
                 targetPosition = optimalPosition + offsetDir.normalized * SphereRadius;
 
-                var deltaTime = UseUnscaledTime
+                float deltaTime = UseUnscaledTime
                     ? Time.unscaledDeltaTime
                     : Time.deltaTime;
 

@@ -169,7 +169,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             UpdateHandVisualization();
 
-            var deltaTime = UseUnscaledTime
+            float deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
 

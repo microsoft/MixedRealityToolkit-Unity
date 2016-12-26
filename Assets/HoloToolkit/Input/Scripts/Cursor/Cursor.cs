@@ -305,7 +305,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            var deltaTime = UseUnscaledTime
+            float deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
 

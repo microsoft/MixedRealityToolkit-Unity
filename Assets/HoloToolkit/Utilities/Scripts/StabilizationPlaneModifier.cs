@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity
         {
             if (SetStabilizationPlane)
             {
-                var deltaTime = UseUnscaledTime
+                float deltaTime = UseUnscaledTime
                     ? Time.unscaledDeltaTime
                     : Time.deltaTime;
 
