@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private class EditorHandData
         {
-            public EditorHandData(IInputSource inputSource, uint handId)
+            public EditorHandData(uint handId)
             {
                 HandId = handId;
                 HandPosition = Vector3.zero;
@@ -29,7 +29,6 @@ namespace HoloToolkit.Unity.InputModule
                 IsFingerDownPending = false;
                 FingerStateChanged = false;
                 FingerStateUpdateTimer = -1;
-                InputSourceArgs = new InputSourceEventArgs(inputSource, handId);
             }
 
             public readonly uint HandId;
@@ -40,7 +39,6 @@ namespace HoloToolkit.Unity.InputModule
             public bool FingerStateChanged;
             public float FingerStateUpdateTimer;
 			public float FingerDownStartTime;
-            public readonly InputSourceEventArgs InputSourceArgs;
         }
 
         private ManualHandControl manualHandControl;
@@ -185,8 +183,13 @@ namespace HoloToolkit.Unity.InputModule
             manualHandControl = GetComponent<ManualHandControl>();
             for (uint i = 0; i < editorHandsData.Length; i++)
             {
-                editorHandsData[i] = new EditorHandData(this, i);
+                editorHandsData[i] = new EditorHandData(i);
             }
+        }
+
+        private void Start()
+        {
+            inputManager = InputManager.Instance;
         }
 
 #if UNITY_EDITOR
@@ -231,7 +234,7 @@ namespace HoloToolkit.Unity.InputModule
             EditorHandData handData;
             if (!handIdToData.TryGetValue(sourceId, out handData))
             {
-                handData = new EditorHandData(this, sourceId);
+                handData = new EditorHandData(sourceId);
                 handIdToData.Add(handData.HandId, handData);
                 newHands.Add(handData.HandId);
 
@@ -298,18 +301,17 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (editorHandData.IsFingerDown)
                 {
-                    RaiseSourceDownEvent(editorHandData.InputSourceArgs);
+                    inputManager.RaiseSourceDown(this, editorHandData.HandId);
                 }
                 else
                 {
-                    RaiseSourceUpEvent(editorHandData.InputSourceArgs);
+                    inputManager.RaiseSourceUp(this, editorHandData.HandId);
 
                     // Also send click event when using this hands replacement input
 					if (Time.time - editorHandData.FingerDownStartTime < MaxClickDuration)
 					{
                         // We currently only support single taps in editor
-                        SourceClickEventArgs args = new SourceClickEventArgs(this, editorHandData.HandId, 1);
-						RaiseSourceClickedEvent(args);
+                        inputManager.RaiseSourceClicked(this, editorHandData.HandId, 1);
 					}
                 }
             }
@@ -323,8 +325,7 @@ namespace HoloToolkit.Unity.InputModule
             // Send event for new hands that were added
             foreach (uint newHand in newHands)
             {
-                InputSourceEventArgs args = new InputSourceEventArgs(this, newHand);
-                RaiseSourceDetectedEvent(args);
+                inputManager.RaiseSourceDetected(this, newHand);
             }
 
             // Send event for hands that are no longer visible and remove them from our dictionary
@@ -333,8 +334,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (!currentHands.Contains(existingHand))
                 {
                     pendingHandIdDeletes.Add(existingHand);
-                    InputSourceEventArgs args = new InputSourceEventArgs(this, existingHand);
-                    RaiseSourceLostEvent(args);
+                    inputManager.RaiseSourceLost(this, existingHand);
                 }
             }
 

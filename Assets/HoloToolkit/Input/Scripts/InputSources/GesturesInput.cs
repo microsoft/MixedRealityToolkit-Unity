@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
@@ -17,6 +18,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private GestureRecognizer gestureRecognizer;
         private GestureRecognizer navigationGestureRecognizer;
+
+        private SourceClickedEventData sourceClickedEventData;
+        private HoldEventData holdEventData;
+        private ManipulationEventData manipulationEventData;
+        private NavigationEventData navigationEventData;
 
         public override SupportedInputEvents SupportedEvents
         {
@@ -71,7 +77,17 @@ namespace HoloToolkit.Unity.InputModule
             navigationGestureRecognizer.StartCapturingGestures();
         }
 
-        protected override void OnDestroy()
+        protected override void Start()
+        {
+            base.Start();
+
+            sourceClickedEventData = new SourceClickedEventData(EventSystem.current);
+            holdEventData = new HoldEventData(EventSystem.current);
+            manipulationEventData = new ManipulationEventData(EventSystem.current);
+            navigationEventData = new NavigationEventData(EventSystem.current);
+        }
+
+        protected virtual void OnDestroy()
         {
             if (gestureRecognizer != null)
             {
@@ -89,80 +105,66 @@ namespace HoloToolkit.Unity.InputModule
 
                 gestureRecognizer.Dispose();
             }
-
-            base.OnDestroy();
         }
 
         private void OnTappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
-            SourceClickEventArgs args = new SourceClickEventArgs(this, 0, tapCount);
-            RaiseSourceClickedEvent(args);
+            inputManager.RaiseSourceClicked(this, 0, tapCount);
         }
 
         private void OnHoldStartedEvent(InteractionSourceKind source, Ray headray)
         {
-            HoldEventArgs args = new HoldEventArgs(this, 0);
-            RaiseHoldStartedEvent(args);
+            inputManager.RaiseHoldStarted(this, 0);
         }
 
         private void OnHoldCanceledEvent(InteractionSourceKind source, Ray headray)
         {
-            HoldEventArgs args = new HoldEventArgs(this, 0);
-            RaiseHoldCanceledEvent(args);
+            inputManager.RaiseHoldCanceled(this, 0);
         }
 
         private void OnHoldCompletedEvent(InteractionSourceKind source, Ray headray)
         {
-            HoldEventArgs args = new HoldEventArgs(this, 0);
-            RaiseHoldCompletedEvent(args);
+            inputManager.RaiseHoldCompleted(this, 0);
         }
 
         private void OnManipulationStartedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
-            RaiseManipulationStartedEvent(args);
+            inputManager.RaiseManipulationStarted(this, 0, cumulativeDelta);
         }
 
         private void OnManipulationUpdatedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
-            RaiseManipulationUpdatedEvent(args);
+            inputManager.RaiseManipulationUpdated(this, 0, cumulativeDelta);
         }
 
         private void OnManipulationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
-            RaiseManipulationCompletedEvent(args);
+            inputManager.RaiseManipulationCompleted(this, 0, cumulativeDelta);
         }
 
         private void OnManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            ManipulationEventArgs args = new ManipulationEventArgs(this, 0, cumulativeDelta);
-            RaiseManipulationCanceledEvent(args);
+            inputManager.RaiseManipulationCanceled(this, 0, cumulativeDelta);
         }
 
         private void OnNavigationStartedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
-            RaiseNavigationStartedEvent(args);
+            inputManager.RaiseNavigationStarted(this, 0, normalizedOffset);
         }
 
         private void OnNavigationUpdatedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
-            RaiseNavigationUpdatedEvent(args);
+            inputManager.RaiseNavigationUpdated(this, 0, normalizedOffset);
         }
 
         private void OnNavigationCompletedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
-            RaiseNavigationCompletedEvent(args);
+            inputManager.RaiseNavigationCompleted(this, 0, normalizedOffset);
         }
 
         private void OnNavigationCanceledEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            NavigationEventArgs args = new NavigationEventArgs(this, 0, normalizedOffset);
-            RaiseNavigationCanceledEvent(args);
+            inputManager.RaiseNavigationCanceled(this, 0, normalizedOffset);
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
