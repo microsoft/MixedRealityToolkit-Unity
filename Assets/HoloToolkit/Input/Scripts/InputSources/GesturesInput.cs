@@ -19,11 +19,6 @@ namespace HoloToolkit.Unity.InputModule
         private GestureRecognizer gestureRecognizer;
         private GestureRecognizer navigationGestureRecognizer;
 
-        private SourceClickedEventData sourceClickedEventData;
-        private HoldEventData holdEventData;
-        private ManipulationEventData manipulationEventData;
-        private NavigationEventData navigationEventData;
-
         public override SupportedInputEvents SupportedEvents
         {
             get
@@ -75,16 +70,6 @@ namespace HoloToolkit.Unity.InputModule
                                                                     GestureSettings.NavigationZ);
             }
             navigationGestureRecognizer.StartCapturingGestures();
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-
-            sourceClickedEventData = new SourceClickedEventData(EventSystem.current);
-            holdEventData = new HoldEventData(EventSystem.current);
-            manipulationEventData = new ManipulationEventData(EventSystem.current);
-            navigationEventData = new NavigationEventData(EventSystem.current);
         }
 
         protected virtual void OnDestroy()
