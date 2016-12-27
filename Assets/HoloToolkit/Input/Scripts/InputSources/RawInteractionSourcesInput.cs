@@ -60,11 +60,6 @@ namespace HoloToolkit.Unity.InputModule
         private readonly HashSet<uint> currentSources = new HashSet<uint>();
         private readonly HashSet<uint> newSources = new HashSet<uint>();
 
-        public override SupportedInputEvents SupportedEvents
-        {
-            get { return SupportedInputEvents.SourceUpAndDown; }
-        }
-
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             SupportedInputInfo retVal = SupportedInputInfo.None;

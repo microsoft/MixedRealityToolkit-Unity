@@ -44,14 +44,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
 
-        public override SupportedInputEvents SupportedEvents
-        {
-            get
-            {
-                return SupportedInputEvents.SpeechKeyword;
-            }
-        }
-
         protected override void Start()
         {
             base.Start();

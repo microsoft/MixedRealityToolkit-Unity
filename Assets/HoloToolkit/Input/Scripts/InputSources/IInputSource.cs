@@ -7,20 +7,6 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Flags used to indicate which input events are supported by an input source.
-    /// </summary>
-    [Flags]
-    public enum SupportedInputEvents
-    {
-        SourceUpAndDown = 1,
-        SourceClicked = 2,
-        Hold = 4,
-        Manipulation = 8,
-        Navigation = 16,
-        SpeechKeyword = 32
-    }
-
-    /// <summary>
     /// Flags used to indicate which input information is supported by an input source.
     /// </summary>
     [Flags]
@@ -37,11 +23,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IInputSource
     {
-        /// <summary>
-        /// Events supported by the input source.
-        /// </summary>
-        SupportedInputEvents SupportedEvents { get; }
-
         /// <summary>
         /// Returns the input info that that the input source can provide.
         /// </summary>

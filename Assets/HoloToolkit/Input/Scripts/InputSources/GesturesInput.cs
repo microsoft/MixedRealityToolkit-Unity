@@ -19,17 +19,6 @@ namespace HoloToolkit.Unity.InputModule
         private GestureRecognizer gestureRecognizer;
         private GestureRecognizer navigationGestureRecognizer;
 
-        public override SupportedInputEvents SupportedEvents
-        {
-            get
-            {
-                return SupportedInputEvents.SourceClicked |
-                        SupportedInputEvents.Hold |
-                        SupportedInputEvents.Manipulation |
-                        SupportedInputEvents.Navigation;
-            }
-        }
-
         private void Awake()
         {
             gestureRecognizer = new GestureRecognizer();

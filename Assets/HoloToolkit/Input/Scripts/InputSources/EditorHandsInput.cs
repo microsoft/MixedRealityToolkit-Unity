@@ -79,14 +79,6 @@ namespace HoloToolkit.Unity.InputModule
         private readonly HashSet<uint> currentHands = new HashSet<uint>();
         private readonly HashSet<uint> newHands = new HashSet<uint>();
 
-        public override SupportedInputEvents SupportedEvents
-        {
-            get
-            {
-                return SupportedInputEvents.SourceUpAndDown;
-            }
-        }
-
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             return SupportedInputInfo.Position;
