@@ -184,7 +184,7 @@ namespace HoloToolkit.Unity.InputModule
         public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
             where T : IEventSystemHandler
         {
-            if (disabledRefCount > 0)
+            if (!enabled || disabledRefCount > 0)
             {
                 return;
             }
