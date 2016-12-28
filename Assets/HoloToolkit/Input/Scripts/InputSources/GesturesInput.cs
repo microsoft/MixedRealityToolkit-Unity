@@ -46,7 +46,6 @@ namespace HoloToolkit.Unity.InputModule
             gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap | 
                                                       GestureSettings.ManipulationTranslate |
                                                       GestureSettings.Hold);
-            gestureRecognizer.StartCapturingGestures();
 
             // We need a separate gesture recognizer for navigation, since it isn't compatible with manipulation
             navigationGestureRecognizer = new GestureRecognizer();
@@ -68,8 +67,10 @@ namespace HoloToolkit.Unity.InputModule
                                                                     GestureSettings.NavigationY |
                                                                     GestureSettings.NavigationZ);
             }
+
             if (RecognizerStart == RecognizerStartBehavior.AutoStart)
             {
+                gestureRecognizer.StartCapturingGestures();
                 navigationGestureRecognizer.StartCapturingGestures();
             }
         }
