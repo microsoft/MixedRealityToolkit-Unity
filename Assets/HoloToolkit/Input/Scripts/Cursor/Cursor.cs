@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -217,8 +218,8 @@ namespace HoloToolkit.Unity.InputModule
                 OnInputDisabled();
             }
 
-            InputManager.Instance.InputEnabled += OnInputEnabled;
-            InputManager.Instance.InputDisabled += OnInputDisabled;
+            InputManager.Instance.InputEnabled += InputManager_InputEnabled;
+            InputManager.Instance.InputDisabled += InputManager_InputDisabled;
         }
 
         /// <summary>
@@ -234,9 +235,19 @@ namespace HoloToolkit.Unity.InputModule
             if (InputManager.Instance != null)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
-                InputManager.Instance.InputEnabled -= OnInputEnabled;
-                InputManager.Instance.InputDisabled -= OnInputDisabled;
+                InputManager.Instance.InputEnabled -= InputManager_InputEnabled;
+                InputManager.Instance.InputDisabled -= InputManager_InputDisabled;
             }
+        }
+
+        private void InputManager_InputEnabled(object sender, EventArgs e)
+        {
+            OnInputEnabled();
+        }
+
+        private void InputManager_InputDisabled(object sender, EventArgs e)
+        {
+            OnInputDisabled();
         }
 
         /// <summary>
@@ -322,7 +333,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Disable input and set to contextual to override input
         /// </summary>
-        public virtual void OnInputDisabled()
+        protected virtual void OnInputDisabled()
         {
             // Reset visible hands on disable
             visibleHandsCount = 0;
@@ -334,7 +345,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Enable input and set to none to reset cursor
         /// </summary>
-        public virtual void OnInputEnabled()
+        protected virtual void OnInputEnabled()
         {
             OnCursorStateChange(CursorStateEnum.None);
         }
