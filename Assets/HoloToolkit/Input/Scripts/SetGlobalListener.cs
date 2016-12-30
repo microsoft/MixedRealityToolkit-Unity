@@ -14,5 +14,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             InputManager.Instance.AddGlobalListener(gameObject);
         }
+
+        private void OnDestroy()
+        {
+            InputManager.Instance.RemoveGlobalListener(gameObject);
+        }
     }
 }
