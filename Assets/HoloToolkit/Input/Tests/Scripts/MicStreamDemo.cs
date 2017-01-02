@@ -17,6 +17,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     [RequireComponent(typeof(AudioSource))]
     public class MicStreamDemo : MonoBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// Which type of microphone/quality to access
         /// </summary>
@@ -159,5 +160,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             this.OnApplicationPause(false);
         }
 #endif
+#endif
     }
 }
+

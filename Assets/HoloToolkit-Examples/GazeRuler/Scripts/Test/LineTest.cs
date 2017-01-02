@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -6,6 +9,7 @@ using System.Collections;
 /// </summary>
 public class LineTest : MonoBehaviour
 {
+#if UNITY_WSA
 
     public GameObject start;
     public GameObject end;
@@ -28,4 +32,6 @@ public class LineTest : MonoBehaviour
 
         Debug.Log(Vector3.Angle(direction, Vector3.forward));
     }
+#endif
 }
+

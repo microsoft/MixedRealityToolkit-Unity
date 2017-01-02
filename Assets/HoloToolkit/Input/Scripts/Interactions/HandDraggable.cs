@@ -16,6 +16,7 @@ namespace HoloToolkit.Unity.InputModule
                                  IInputHandler,
                                  ISourceStateHandler
     {
+#if UNITY_WSA
         /// <summary>
         /// Event triggered when dragging starts.
         /// </summary>
@@ -299,5 +300,7 @@ namespace HoloToolkit.Unity.InputModule
                 StopDragging();
             }
         }
+#endif
     }
 }
+

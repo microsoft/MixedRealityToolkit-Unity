@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class KeyboardManager : Singleton<KeyboardManager>
     {
+#if UNITY_WSA
         public enum KeyEvent
         {
             /// <summary>
@@ -233,5 +234,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
         #endregion
+#endif
     }
 }
+

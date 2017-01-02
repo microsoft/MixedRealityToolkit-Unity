@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using HoloToolkit.Unity;
 
@@ -10,6 +8,7 @@ using HoloToolkit.Unity;
 /// </summary>
 public static class HoloToolkitCommands
 {
+#if UNITY_WSA
     /// <summary>
     /// Do a build configured for the HoloLens, returns the error from BuildPipeline.BuildPlayer
     /// </summary>
@@ -17,4 +16,6 @@ public static class HoloToolkitCommands
     {
         return BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory, false);
     }
+#endif
 }
+

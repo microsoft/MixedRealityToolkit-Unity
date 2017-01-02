@@ -9,6 +9,7 @@ using System;
 
 public class LineDrawer : MonoBehaviour
 {
+#if UNITY_WSA
     // Consts
     public const float DefaultLineWidth = 0.001f;
     public const float DefaultBasisLength = 0.2f;
@@ -469,4 +470,5 @@ public class LineDrawer : MonoBehaviour
             Lines_LineDataToMesh();
         }
     }
+#endif
 }

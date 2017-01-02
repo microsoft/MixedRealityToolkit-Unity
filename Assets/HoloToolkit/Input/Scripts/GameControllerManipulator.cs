@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -9,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <remarks>Make sure to enable the HumanInterfaceDevice capability before using.</remarks>
     public class GameControllerManipulator : MonoBehaviour
     {
+#if UNITY_WSA
         [Tooltip("Name of the joystick axis that moves the object along X as set in InputManager")]
         public string MoveXAxisName = "ControllerLeftStickX";
         [Tooltip("Speed of movement along X")]
@@ -157,5 +161,7 @@ namespace HoloToolkit.Unity.InputModule
             objectToRotate.transform.rotation = Quaternion.Euler(vectorToRotateAround * result) * objectToRotate.transform.rotation;
             return result;
         }
+#endif
     }
 }
+

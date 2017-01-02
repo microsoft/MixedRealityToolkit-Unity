@@ -9,5 +9,7 @@ using HoloToolkit.Unity;
 /// </summary>
 public class SharedCollection : Singleton<SharedCollection>
 {
-	
+#if UNITY_WSA
+#endif	
 }
+

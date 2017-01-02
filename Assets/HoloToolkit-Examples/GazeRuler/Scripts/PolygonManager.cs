@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
@@ -9,6 +12,7 @@ using HoloToolkit.Unity.InputModule;
 /// </summary>
 public class PolygonManager : Singleton<PolygonManager>, IGeometry, IPolygonClosable
 {
+#if UNITY_WSA
     // save all geometries
     public Stack<Ploygon> Ploygons = new Stack<Ploygon>();
     public Ploygon CurrentPloygon;
@@ -182,11 +186,13 @@ public class PolygonManager : Singleton<PolygonManager>, IGeometry, IPolygonClos
             };
         }
     }
+#endif
 }
 
 
 public class Ploygon
 {
+#if UNITY_WSA
     public float Area { get; set; }
 
     public List<Vector3> Points { get; set; }
@@ -195,5 +201,6 @@ public class Ploygon
 
     public bool IsFinished { get; set; }
 
+#endif
 }
 

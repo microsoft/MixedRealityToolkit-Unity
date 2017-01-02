@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class VectorExtensions
     {
+#if UNITY_WSA
         public static Vector2 Mul(this Vector2 value, Vector2 scale)
         {
             return new Vector2(value.x * scale.x, value.y * scale.y);
@@ -164,5 +165,7 @@ namespace HoloToolkit.Unity
 
             return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
+#endif
     }
 }
+

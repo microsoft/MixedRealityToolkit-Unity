@@ -10,7 +10,10 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface ISourceStateHandler : IEventSystemHandler
     {
+#if UNITY_WSA
         void OnSourceDetected(SourceStateEventData eventData);
         void OnSourceLost(SourceStateEventData eventData);
+#endif
     }
 }
+

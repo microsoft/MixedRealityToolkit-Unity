@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class ActionExtensions
     {
+#if UNITY_WSA
         public static void RaiseEvent(this Action action)
         {
             if (action != null)
@@ -50,5 +51,7 @@ namespace HoloToolkit.Unity
                 action(arg1, arg2, arg3, arg4);
             }
         }
+#endif
     }
 }
+

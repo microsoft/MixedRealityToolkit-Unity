@@ -17,6 +17,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class SpatialUnderstandingSourceMesh : MonoBehaviour
     {
+#if UNITY_WSA
         // Privates
         /// <summary>
         /// Internal list of meshes that is passed to the dll. This is
@@ -151,5 +152,7 @@ namespace HoloToolkit.Unity
 
             return true;
         }
+#endif
     }
 }
+

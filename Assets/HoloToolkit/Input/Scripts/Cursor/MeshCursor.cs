@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class MeshCursor : Cursor
     {
+#if UNITY_WSA
         [Serializable]
         public struct MeshCursorDatum
         {
@@ -82,5 +83,7 @@ namespace HoloToolkit.Unity.InputModule
                 TargetRenderer.transform.localScale = stateDatum.LocalScale;
             }
         }
+#endif
     }
 }
+

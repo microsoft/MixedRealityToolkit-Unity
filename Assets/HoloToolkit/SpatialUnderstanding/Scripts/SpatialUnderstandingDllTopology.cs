@@ -15,6 +15,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class SpatialUnderstandingDllTopology
     {
+#if UNITY_WSA
         /// <summary>
         /// Result of a topology query. Typically results return an array 
         /// of these structures.
@@ -185,6 +186,8 @@ namespace HoloToolkit.Unity
             return 0;
         }
 #endif
+#endif
     }
 
 }
+

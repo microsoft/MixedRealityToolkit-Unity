@@ -69,6 +69,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
         }
 
+#if UNITY_WSA
         /// <summary>
         /// Finds small planar patches that are contained within individual meshes.  The output of this
         /// API can then be passed to MergeSubPlanes() in order to find larger planar surfaces that
@@ -175,10 +176,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                 FinishPlaneFinding();
             }
         }
-
-        #endregion
-
-        #region Internal
+#endif
+		#endregion
+#if UNITY_WSA
+		#region Internal
 
         private static bool findPlanesRunning = false;
         private static System.Object findPlanesLock = new System.Object();
@@ -334,6 +335,8 @@ namespace HoloToolkit.Unity.SpatialMapping
                 [Out] out IntPtr planesPtr);
         }
 
-        #endregion
-    }
+		#endregion
+#endif
+	}
 }
+

@@ -11,6 +11,7 @@ using UnityEngine;
 /// </summary>
 public class SpatialUnderstandingBasicCursor : MonoBehaviour
 {
+#if UNITY_WSA
     public struct RaycastResult
     {
         public bool Hit;
@@ -89,4 +90,5 @@ public class SpatialUnderstandingBasicCursor : MonoBehaviour
         gameObject.transform.up = rayResult.Normal;
         gameObject.transform.rotation *= cursorDefaultRotation;
     }
+#endif
 }

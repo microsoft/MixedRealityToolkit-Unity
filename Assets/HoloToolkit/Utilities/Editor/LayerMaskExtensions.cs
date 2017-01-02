@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class LayerMaskExtensions
     {
+#if UNITY_WSA
         public const int LayerCount = 32;
 
         private static string[] layerMaskNames = null;
@@ -53,5 +54,7 @@ namespace HoloToolkit.Unity
 
             return stringBuilder == null ? "None" : stringBuilder.ToString();
         }
+#endif
     }
 }
+

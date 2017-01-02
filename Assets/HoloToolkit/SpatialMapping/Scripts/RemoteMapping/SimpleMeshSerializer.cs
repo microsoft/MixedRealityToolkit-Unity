@@ -218,3 +218,4 @@ namespace HoloToolkit.Unity.SpatialMapping
         }
     }
 }
+

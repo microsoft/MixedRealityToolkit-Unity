@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.VR.WSA.Input;
 using UnityEngine.Windows.Speech;
@@ -8,6 +11,7 @@ using HoloToolkit.Unity.InputModule;
 
 public class TextToSpeechManagerTest : MonoBehaviour
 {
+#if UNITY_WSA
     private GestureRecognizer gestureRecognizer;
     public TextToSpeechManager textToSpeechManager;
 
@@ -61,4 +65,6 @@ public class TextToSpeechManagerTest : MonoBehaviour
         // This voice will appear to follow the user.
         textToSpeechManager.SpeakText("The time is " + DateTime.Now.ToString("t"));
     }
+#endif
 }
+

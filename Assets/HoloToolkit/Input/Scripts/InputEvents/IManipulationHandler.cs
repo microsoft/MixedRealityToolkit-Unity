@@ -10,9 +10,12 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IManipulationHandler : IEventSystemHandler
     {
+#if UNITY_WSA
         void OnManipulationStarted(ManipulationEventData eventData);
         void OnManipulationUpdated(ManipulationEventData eventData);
         void OnManipulationCompleted(ManipulationEventData eventData);
         void OnManipulationCanceled(ManipulationEventData eventData);
+#endif
     }
 }
+

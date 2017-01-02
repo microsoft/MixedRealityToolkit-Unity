@@ -7,6 +7,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class ButtonObjectScaler : MonoBehaviour
     {
+#if UNITY_WSA
         [SerializeField]
         private TestButton button = null;
 
@@ -69,5 +70,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             button.Selected = false;
         }
+#endif
     }
 }
+

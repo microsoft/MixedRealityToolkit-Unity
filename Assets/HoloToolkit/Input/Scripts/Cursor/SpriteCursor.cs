@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class SpriteCursor : Cursor
     {
+#if UNITY_WSA
         [Serializable]
         public struct SpriteCursorDatum
         {
@@ -76,6 +77,8 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+#endif
     }
 
 }
+

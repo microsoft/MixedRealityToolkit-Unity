@@ -15,6 +15,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class SpatialUnderstandingDllObjectPlacement
     {
+#if UNITY_WSA
         /// <summary>
         /// Defines an object placement query. A query consists of
         /// a type a name, type, set of rules, and set of constraints.
@@ -535,5 +536,7 @@ namespace HoloToolkit.Unity
         {
         }
 #endif
+#endif
     }
 }
+

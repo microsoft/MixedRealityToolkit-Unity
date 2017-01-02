@@ -32,6 +32,7 @@ namespace HoloToolkit.Unity
     /// </example>
     public sealed class TimerScheduler : Singleton<TimerScheduler>
     {
+#if UNITY_WSA
         private struct TimerData
         {
             public Callback Callback;
@@ -239,5 +240,7 @@ namespace HoloToolkit.Unity
         {
             return GetActiveTimerIndex(timerId.Id) > -1 || GetTimerDeferredIndex(timerId.Id) > -1;
         }
+#endif
     }
 }
+

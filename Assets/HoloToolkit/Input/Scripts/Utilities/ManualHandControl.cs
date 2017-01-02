@@ -85,6 +85,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ManualHandControl : MonoBehaviour
     {
+#if UNITY_WSA
         public float HandReturnFactor = 0.25f;  /// [0.0,1.0] the closer this is to one the faster it brings the hand back to center
         public float HandTimeBeforeReturn = 0.5f;
         public float MinimumTrackedMovement = 0.001f;
@@ -275,6 +276,7 @@ namespace HoloToolkit.Unity.InputModule
                 RightHandVisualizer.SetActive(VisualizeHands);
             }
         }
+#endif
     }
 
 }

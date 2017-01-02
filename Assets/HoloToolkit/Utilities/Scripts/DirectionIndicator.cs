@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class DirectionIndicator : MonoBehaviour
     {
+#if UNITY_WSA
         [Tooltip("The Cursor object the direction indicator will be positioned around.")]
         public GameObject Cursor;
 
@@ -164,5 +165,7 @@ namespace HoloToolkit.Unity
                 Camera.main.transform.forward,
                 cursorIndicatorDirection) * directionIndicatorDefaultRotation;
         }
+#endif
     }
 }
+

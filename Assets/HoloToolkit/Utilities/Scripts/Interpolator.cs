@@ -10,7 +10,8 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class Interpolator : MonoBehaviour
     {
-        // A very small number that is used in determining if the Interpolator
+ #if UNITY_WSA
+       // A very small number that is used in determining if the Interpolator
         // needs to run at all.
         private const float smallNumber = 0.0000001f;
 
@@ -503,5 +504,7 @@ namespace HoloToolkit.Unity
                 return transform.localScale;
             }
         }
+#endif
     }
 }
+

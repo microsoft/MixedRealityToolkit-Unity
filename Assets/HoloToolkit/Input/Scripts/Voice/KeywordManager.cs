@@ -21,6 +21,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public partial class KeywordManager : MonoBehaviour
     {
+#if UNITY_WSA
         [System.Serializable]
         public struct KeywordAndResponse
         {
@@ -162,5 +163,7 @@ namespace HoloToolkit.Unity.InputModule
                 keywordRecognizer.Stop();
             }
         }
+#endif
     }
 }
+

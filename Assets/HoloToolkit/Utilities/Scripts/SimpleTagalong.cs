@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(BoxCollider), typeof(Interpolator))]
     public class SimpleTagalong : MonoBehaviour
     {
+#if UNITY_WSA
         // Simple Tagalongs seek to stay at a fixed distance from the Camera.
         [Tooltip("The distance in meters from the camera for the Tagalong to seek when updating its position.")]
         public float TagalongDistance = 2.0f;
@@ -176,5 +177,7 @@ namespace HoloToolkit.Unity
             // If we got here, needsToMove will be true.
             return needsToMove;
         }
+#endif
     }
 }
+

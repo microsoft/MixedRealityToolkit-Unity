@@ -1,6 +1,5 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
 
@@ -11,6 +10,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class Extensions
     {
+#if UNITY_WSA
         /// <summary>
         /// Returns the absolute duration of the curve from first to last key frame
         /// </summary>
@@ -25,5 +25,7 @@ namespace HoloToolkit.Unity
 
             return Mathf.Abs(curve[curve.length - 1].time - curve[0].time);
         }
+#endif
     }
 }
+

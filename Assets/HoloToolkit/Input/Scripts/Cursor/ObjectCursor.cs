@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ObjectCursor : Cursor
     {
+#if UNITY_WSA
         [Serializable]
         public struct ObjectCursorDatum
         {
@@ -67,5 +68,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+#endif
     }
 }
+

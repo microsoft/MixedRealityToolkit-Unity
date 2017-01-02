@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class SphereBasedTagalong : MonoBehaviour
     {
+#if UNITY_WSA
         [Tooltip("Sphere radius.")]
         public float SphereRadius = 1.0f;
 
@@ -64,5 +65,7 @@ namespace HoloToolkit.Unity
 
             Gizmos.color = oldColor;
         }
+#endif
     }
 }
+

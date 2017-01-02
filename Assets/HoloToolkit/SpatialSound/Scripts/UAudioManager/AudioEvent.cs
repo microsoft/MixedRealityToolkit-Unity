@@ -46,6 +46,7 @@ namespace HoloToolkit.Unity
         [Tooltip("The name of this AudioEvent.")]
         public string name = "_NewAudioEvent";
 
+#if UNITY_WSA
         [Tooltip("How this sound is to be positioned.")]
         public SpatialPositioningType spatialization = SpatialPositioningType.TwoD;
 
@@ -159,6 +160,7 @@ namespace HoloToolkit.Unity
         /// <returns>An integer that indicates whether this AudioEvent precedes (-1), follows (1),
         /// or appears in the same position (0) in the sort order as the AudioEvent being compared.</returns>
         /// <remarks>If the specified object is not an AudioEvent, the return value is 1.</remarks>
+#endif
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
@@ -185,5 +187,6 @@ namespace HoloToolkit.Unity
             if (other == null) return 1;
             return string.Compare(name, other.name);
         }
-    }
+	}
 }
+

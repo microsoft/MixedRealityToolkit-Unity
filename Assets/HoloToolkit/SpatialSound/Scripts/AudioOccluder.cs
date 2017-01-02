@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class AudioOccluder : MonoBehaviour, IAudioInfluencer
     {
+#if UNITY_WSA
         /// <summary>
         /// Frequency above the nominal range of human hearing. Applying this frequency to the filter will have no perceived impact on the audio source.
         /// </summary>
@@ -79,5 +80,7 @@ namespace HoloToolkit.Unity
 
             // Note: Volume attenuation is reset in the emitter.
         }
+#endif
     }
 }
+

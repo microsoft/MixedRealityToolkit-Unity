@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using HoloToolkit.Unity;
 using UnityEngine;
 
@@ -6,6 +9,7 @@ namespace HoloToolkit.Sharing
 {
     public class SharingStage : Singleton<SharingStage>
     {
+#if UNITY_WSA
         /// <summary>
         /// SharingManagerConnected event notifies when the sharing manager is created and connected.
         /// </summary>
@@ -245,5 +249,7 @@ namespace HoloToolkit.Sharing
                     break;
             }
         }
+#endif
     }
 }
+

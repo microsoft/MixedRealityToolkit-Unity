@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity
     [ExecuteInEditMode]
     public class NearPlaneFade : MonoBehaviour
     {
+#if UNITY_WSA
         public float FadeDistanceStart = 0.85f;
         public float FadeDistanceEnd = 0.5f;
 
@@ -48,5 +49,7 @@ namespace HoloToolkit.Unity
                 Shader.DisableKeyword(FadeKeywordOn);
             }
         }
+#endif
     }
 }
+

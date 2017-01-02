@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class HandGuidance : Singleton<HandGuidance>
     {
+#if UNITY_WSA
         [Tooltip("The Cursor object the HandGuidanceIndicator will be positioned around.")]
         public GameObject Cursor;
 
@@ -165,5 +166,7 @@ namespace HoloToolkit.Unity.InputModule
 
             base.OnDestroy();
         }
+#endif
     }
 }
+

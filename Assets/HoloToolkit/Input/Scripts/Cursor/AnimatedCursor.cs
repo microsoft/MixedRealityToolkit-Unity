@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AnimatedCursor : Cursor
     {
+#if UNITY_WSA
         /// <summary>
         /// Data struct for cursor state information for the Animated Cursor, which leverages the Unity animation system..
         /// This defines a modification to an Unity animation parameter, based on cursor state.
@@ -165,6 +166,8 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+#endif
     }
 
 }
+

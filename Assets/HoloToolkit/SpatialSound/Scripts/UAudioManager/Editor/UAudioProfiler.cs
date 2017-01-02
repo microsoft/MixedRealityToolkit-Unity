@@ -9,6 +9,7 @@ namespace HoloToolkit.Unity
 {
     public class UAudioProfiler : EditorWindow
     {
+#if UNITY_WSA
         private int currentFrame = 0;
         private List<ProfilerEvent[]> eventTimeline;
         private Vector2 scrollOffset = new Vector2();
@@ -117,5 +118,7 @@ namespace HoloToolkit.Unity
         {
             EditorGUILayout.SelectableLabel(currentEvent.EventName + "-->(" + currentEvent.EmitterName + ")-->(" + currentEvent.BusName + ")");
         }
+#endif
     }
 }
+

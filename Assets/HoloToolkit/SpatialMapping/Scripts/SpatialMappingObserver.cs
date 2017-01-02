@@ -29,6 +29,7 @@ namespace HoloToolkit.Unity.SpatialMapping
     /// </summary>
     public class SpatialMappingObserver : SpatialMappingSource
     {
+#if UNITY_WSA
         [Tooltip("The number of triangles to calculate per cubic meter.")]
         public float TrianglesPerCubicMeter = 500f;
 
@@ -389,5 +390,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             StopObserving();
             CleanupObserver();
         }
+#endif
     }
 }
+

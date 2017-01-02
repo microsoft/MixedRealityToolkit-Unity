@@ -10,6 +10,9 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface ISpeechHandler : IEventSystemHandler
     {
+#if UNITY_WSA
         void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData);
+#endif
     }
 }
+

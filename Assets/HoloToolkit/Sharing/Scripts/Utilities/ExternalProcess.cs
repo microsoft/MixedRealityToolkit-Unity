@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Sharing.Utilities
 {
+#if UNITY_WSA
     public class ExternalProcess : IDisposable
     {
         [DllImport("ExternalProcessAPI", CallingConvention = CallingConvention.Cdecl)]
@@ -286,5 +287,7 @@ namespace HoloToolkit.Sharing.Utilities
             this.Terminate();
         }
     }
+#endif
 }
 #endif
+

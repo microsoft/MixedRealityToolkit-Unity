@@ -1,6 +1,5 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 namespace HoloToolkit.Sharing
 {
@@ -10,6 +9,7 @@ namespace HoloToolkit.Sharing
     /// </summary>
     public class UserPresenceManagerAdapter : UserPresenceManagerListener
     {
+#if UNITY_WSA
         public event System.Action<User> UserPresenceChangedEvent;
 
         public UserPresenceManagerAdapter() { }
@@ -21,5 +21,7 @@ namespace HoloToolkit.Sharing
                 this.UserPresenceChangedEvent(user);
             }
         }
+#endif
     }
 }
+

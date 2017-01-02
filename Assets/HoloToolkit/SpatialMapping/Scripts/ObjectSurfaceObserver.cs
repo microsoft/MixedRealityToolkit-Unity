@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 {
     public class ObjectSurfaceObserver : SpatialMappingSource
     {
+#if UNITY_WSA
         [Tooltip("The room model to use when loading meshes in Unity.")]
         public GameObject RoomModel;
 
@@ -80,5 +81,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+#endif
     }
 }
+

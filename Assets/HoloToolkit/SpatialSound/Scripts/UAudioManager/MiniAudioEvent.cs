@@ -12,10 +12,13 @@ namespace HoloToolkit.Unity
     [Serializable]
     public class MiniAudioEvent : AudioEvent
     {
+#if UNITY_WSA
         [Tooltip("The primary AudioSource.")]
         public AudioSource primarySource = null;
 
         [Tooltip("The secondary AudioSource for continuous containers.")]
         public AudioSource secondarySource = null;
+#endif
     }
 }
+

@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public interface IAudioInfluencer
     {
+#if UNITY_WSA
         /// <summary>
         /// Applies an audio effect.
         /// </summary>
@@ -25,5 +26,7 @@ namespace HoloToolkit.Unity
         /// <param name="audioSource">The AudioSource that will be impacted by the effect.</param>
         void RemoveEffect(GameObject emitter,
                         AudioSource audioSource);
+#endif
     }
 }
+

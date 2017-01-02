@@ -10,6 +10,7 @@ using System;
 
 public class LevelSolver : LineDrawer
 {
+#if UNITY_WSA
     // Singleton
     public static LevelSolver Instance;
 
@@ -500,4 +501,6 @@ public class LevelSolver : LineDrawer
         // Lines: Finish up
         LineDraw_End(needsUpdate);
     }
+#endif
 }
+

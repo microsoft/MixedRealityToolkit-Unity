@@ -10,6 +10,9 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IInputClickHandler : IEventSystemHandler
     {
+#if UNITY_WSA
         void OnInputClicked(InputEventData eventData);
+#endif
     }
 }
+

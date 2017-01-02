@@ -10,7 +10,8 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class Cursor : MonoBehaviour, ICursor
     {
-        /// <summary>
+ #if UNITY_WSA
+       /// <summary>
         /// Enum for current cursor state
         /// </summary>
         public enum CursorStateEnum
@@ -436,5 +437,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             cursorState = state;
         }
+#endif
     }
 }
+

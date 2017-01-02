@@ -7,6 +7,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class DehydrationDeactivation : StateMachineBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
         /// </summary>
@@ -17,5 +18,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             animator.transform.gameObject.SetActive(false);
         }
+#endif
     }
 }
+

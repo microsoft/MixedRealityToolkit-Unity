@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class AudioSourcesReference : MonoBehaviour
     {
+#if UNITY_WSA
         private List<AudioSource> audioSources;
         public List<AudioSource> AudioSources
         {
@@ -51,5 +52,7 @@ namespace HoloToolkit.Unity
 
             audioSources = null;
         }
+#endif
     }
 }
+

@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public partial class UAudioManager : UAudioManagerBase<AudioEvent>
     {
+#if UNITY_WSA
         [Tooltip("The maximum number of AudioEvents that can be played at once. Zero (0) indicates there is no limit.")]
         [SerializeField]
         private int globalEventInstanceLimit = 0;
@@ -476,5 +477,7 @@ namespace HoloToolkit.Unity
             Array.Sort<AudioEvent>(events);
         }
 #endif
+#endif
     }
 }
+

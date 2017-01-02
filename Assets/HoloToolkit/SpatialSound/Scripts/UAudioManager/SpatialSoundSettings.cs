@@ -22,6 +22,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class SpatialSoundSettings
     {
+#if UNITY_WSA
         public const SpatialSoundRoomSizes DefaultSpatialSoundRoom = SpatialSoundRoomSizes.Small;
 
         // Ranges and default values for the Microsoft Spatial Sound Spatializer parameters.
@@ -96,5 +97,7 @@ namespace HoloToolkit.Unity
         {
             audioSource.SetSpatializerFloat((int)param, value);
         }
+#endif
     }
 }
+

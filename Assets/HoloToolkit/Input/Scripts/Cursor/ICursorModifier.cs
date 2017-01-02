@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface ICursorModifier
     {
+#if UNITY_WSA
         /// <summary>
         /// Indicates whether the cursor should be visible or not.
         /// </summary>
@@ -45,5 +46,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="rotation">Modified rotation.</param>
         /// <param name="scale">Modified scale.</param>
         void GetModifiedTransform(ICursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale);
+#endif
     }
 }
+

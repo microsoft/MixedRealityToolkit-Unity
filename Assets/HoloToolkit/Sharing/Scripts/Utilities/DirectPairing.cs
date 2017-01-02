@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Sharing
 {
@@ -9,6 +12,7 @@ namespace HoloToolkit.Sharing
     /// </summary>
     public class DirectPairing : MonoBehaviour
     {
+#if UNITY_WSA
         public enum Role
         {
             Connector,
@@ -119,5 +123,7 @@ namespace HoloToolkit.Sharing
                 }
             }
         }
+#endif
     }
 }
+

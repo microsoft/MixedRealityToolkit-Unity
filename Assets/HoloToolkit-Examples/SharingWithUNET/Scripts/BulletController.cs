@@ -10,6 +10,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
     /// </summary>
     public class BulletController : MonoBehaviour
     {
+#if UNITY_WSA
         private void Start()
         {
             // The bullet's transform should be in local space to the Shared Anchor.
@@ -22,5 +23,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
             Rigidbody rb = GetComponentInChildren<Rigidbody>();
             rb.velocity = transform.parent.TransformDirection(rb.velocity);
         }
-    }
+#endif
+	}
 }

@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class InputManager : Singleton<InputManager>
     {
+#if UNITY_WSA
         public event Action InputEnabled;
         public event Action InputDisabled;
 
@@ -673,5 +674,7 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
         }
+#endif
     }
 }
+

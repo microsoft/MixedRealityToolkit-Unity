@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class EditorGUILayoutExtensions
     {
+#if UNITY_WSA
         public static bool Button(string text, params GUILayoutOption[] options)
         {
             return Button(text, GUI.skin.button, options);
@@ -75,5 +76,7 @@ namespace HoloToolkit.Unity
 
             return (T)objValue;
         }
+#endif
     }
 }
+

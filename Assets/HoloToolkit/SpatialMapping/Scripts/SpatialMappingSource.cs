@@ -9,6 +9,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 {
     public class SpatialMappingSource : MonoBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// Surface object
         /// </summary>
@@ -182,5 +183,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             return meshRenderers;
         }
+#endif
     }
 }
+

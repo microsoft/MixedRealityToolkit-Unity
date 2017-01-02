@@ -10,7 +10,10 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IFocusable : IEventSystemHandler
     {
+#if UNITY_WSA
         void OnFocusEnter();
         void OnFocusExit();
+#endif
     }
 }
+

@@ -14,6 +14,7 @@ using UnityEngine;
 /// </summary>
 public class RemoteHeadManager : Singleton<RemoteHeadManager>
 {
+#if UNITY_WSA
     public class RemoteHeadInfo
     {
         public long UserID;
@@ -133,4 +134,6 @@ public class RemoteHeadManager : Singleton<RemoteHeadManager>
     {
         DestroyImmediate(remoteHeadObject);
     }
+#endif
 }
+

@@ -9,6 +9,7 @@ namespace HoloToolkit.Unity
 {
     public class UAudioManagerBaseEditor<TEvent> : Editor where TEvent : AudioEvent, new()
     {
+#if UNITY_WSA
         protected UAudioManagerBase<TEvent> myTarget;
         private string[] eventNames;
         private int selectedEventIndex = 0;
@@ -352,5 +353,7 @@ namespace HoloToolkit.Unity
 
             return newArray;
         }
+#endif
     }
 }
+

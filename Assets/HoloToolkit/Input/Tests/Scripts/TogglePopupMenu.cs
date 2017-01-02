@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class TogglePopupMenu : MonoBehaviour
     {
+#if UNITY_WSA
 
         [SerializeField]
         private PopupMenu popupMenu = null;
@@ -59,5 +60,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 button.Selected = false;
             }
         }
+#endif
     }
 }
+

@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(AudioSource))]    
     public class AudioEmitter : MonoBehaviour 
     {
+#if UNITY_WSA
         [Tooltip("Time, in seconds, between audio influence updates.  0 indicates to update every frame.")]
         [Range(0.0f, 1.0f)]
         public float UpdateInterval = 0.25f;
@@ -135,5 +136,7 @@ namespace HoloToolkit.Unity
 
             return influencers;
         }
+#endif
     }
 }
+

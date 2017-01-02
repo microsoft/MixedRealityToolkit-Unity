@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using UnityEngine;
 using System.Collections;
@@ -17,6 +15,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployPortal
     {
+#if UNITY_WSA
         // Consts
         public const float TimeOut = 6.0f;
         public const int TimeoutMS = (int)(TimeOut * 1000.0f);
@@ -442,5 +441,7 @@ namespace HoloToolkit.Unity
             string returnValue = System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
             return returnValue;
         }
+#endif
     }
 }
+

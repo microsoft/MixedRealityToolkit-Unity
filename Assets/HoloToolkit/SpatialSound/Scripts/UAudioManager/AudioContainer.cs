@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
     [Serializable]
     public class AudioContainer
     {
+#if UNITY_WSA
         [Tooltip("The type of the audio container.")]
         public AudioContainerType containerType = AudioContainerType.Random;
 
@@ -21,5 +22,7 @@ namespace HoloToolkit.Unity
         public UAudioClip[] sounds = null;
         public float crossfadeTime = 0f;
         public int currentClip = 0;
+#endif
     }
 }
+

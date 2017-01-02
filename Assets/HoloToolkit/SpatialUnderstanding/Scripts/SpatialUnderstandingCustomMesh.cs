@@ -18,6 +18,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class SpatialUnderstandingCustomMesh : SpatialMappingSource
     {
+#if UNITY_WSA
         // Config
         [Tooltip("Indicate the time in seconds between mesh imports, during the scanning phase. A value of zero will disable pulling meshes from the dll")]
         public float ImportMeshPeriod = 1.0f;
@@ -370,6 +371,8 @@ namespace HoloToolkit.Unity
         {
             Cleanup();
         }
+#endif
     }
 
 }
+

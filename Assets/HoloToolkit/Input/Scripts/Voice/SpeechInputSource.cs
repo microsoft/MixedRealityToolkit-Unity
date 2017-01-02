@@ -28,6 +28,7 @@ namespace HoloToolkit.Unity.InputModule
             public KeyCode KeyCode;
         }
 
+#if UNITY_WSA
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
         // set up the recognizer and add all keywords. The first causes the recognizer to start
         // immediately. The second allows the recognizer to be manually started at a later time.
@@ -177,5 +178,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             return SupportedInputInfo.None;
         }
+#endif
     }
 }
+

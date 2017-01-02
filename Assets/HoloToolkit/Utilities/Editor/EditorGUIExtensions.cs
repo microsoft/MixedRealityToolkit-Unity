@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class EditorGUIExtensions : MonoBehaviour
     {
+#if UNITY_WSA
         public static float Indent
         {
             get
@@ -173,5 +174,6 @@ namespace HoloToolkit.Unity
 
             return (T)objValue;
         }
-    }
+#endif
+	}
 }

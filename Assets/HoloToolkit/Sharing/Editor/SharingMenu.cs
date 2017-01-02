@@ -9,6 +9,7 @@ namespace HoloToolkit.Sharing
 {
     public static class SharingMenu
     {
+#if UNITY_WSA
         [MenuItem("HoloToolkit/Sharing Service/Launch Sharing Service", false, 100)]
         public static void LaunchSessionServer()
         {
@@ -53,5 +54,7 @@ namespace HoloToolkit.Sharing
 
             Utilities.ExternalProcess.FindAndLaunch(filePathName);
         }
+#endif
     }
 }
+
