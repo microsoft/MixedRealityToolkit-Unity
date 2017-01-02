@@ -53,13 +53,6 @@ namespace HoloToolkit.Unity
             base.Awake();
 
             CreateEventsDictionary();
-
-            //if (events.Length > 0)
-            //{
-            //    string key = events[0].name;
-            //    PlayEvent(key);
-            //    StopEvent(key);
-            //}
         }
 
         /// <summary>
@@ -143,7 +136,7 @@ namespace HoloToolkit.Unity
 
             if (!eventsDictionary.TryGetValue(eventName, out currentEvent))
             {
-                Debug.LogErrorFormat(this, "Could not find event \"{0}\"", eventName);
+                Debug.LogFormat( "Could not find event \"{0}\"", eventName);
                 return;
             }
 
