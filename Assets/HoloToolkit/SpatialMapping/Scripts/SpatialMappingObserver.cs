@@ -62,6 +62,13 @@ namespace HoloToolkit.Unity.SpatialMapping
         private SurfaceObject? outstandingMeshRequest = null;
 
         /// <summary>
+        /// When surfaces are replaced or removed, rather than destroying them, we'll keep
+        /// one as a spare for use in outstanding mesh requests. That way, we'll have fewer
+        /// game object create/destroy cycles, which should help performance.
+        /// </summary>
+        private SurfaceObject? spareSurfaceObject = null;
+
+        /// <summary>
         /// Used to track when the Observer was last updated.
         /// </summary>
         private float updateTime;
@@ -86,16 +93,41 @@ namespace HoloToolkit.Unity.SpatialMapping
                     // the queue based on distance to the user or some other metric.
                     var surfaceID = surfaceWorkQueue.Dequeue();
 
-                    // TODO: consider pooling objects for reuse
-                    var newSurface = CreateSurfaceObject(
-                        mesh: null,
-                        objectName: ("Surface-" + surfaceID.handle),
-                        parentObject: transform,
-                        meshID: surfaceID.handle,
-                        drawVisualMeshesOverride: false
-                        );
+                    string surfaceName = ("Surface-" + surfaceID.handle);
 
-                    var worldAnchor = newSurface.Object.AddComponent<WorldAnchor>();
+                    SurfaceObject newSurface;
+                    WorldAnchor worldAnchor;
+                    
+                    if (spareSurfaceObject == null)
+                    {
+                        newSurface = CreateSurfaceObject(
+                            mesh: null,
+                            objectName: surfaceName,
+                            parentObject: transform,
+                            meshID: surfaceID.handle,
+                            drawVisualMeshesOverride: false
+                            );
+
+                        worldAnchor = newSurface.Object.AddComponent<WorldAnchor>();
+                    }
+                    else
+                    {
+                        newSurface = spareSurfaceObject.Value;
+                        spareSurfaceObject = null;
+
+                        Debug.Assert(!newSurface.Object.activeSelf);
+                        newSurface.Object.SetActive(true);
+
+                        Debug.Assert(newSurface.Filter.sharedMesh == null);
+                        Debug.Assert(newSurface.Collider.sharedMesh == null);
+                        newSurface.Object.name = surfaceName;
+                        Debug.Assert(newSurface.Object.transform.parent == transform);
+                        newSurface.ID = surfaceID.handle;
+                        newSurface.Renderer.enabled = false;
+
+                        worldAnchor = newSurface.Object.GetComponent<WorldAnchor>();
+                        Debug.Assert(worldAnchor != null);
+                    }
 
                     var surfaceData = new SurfaceData(
                         surfaceID,
@@ -115,7 +147,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                         Debug.LogError(string.Format("Mesh request for failed. Is {0} a valid Surface ID?", surfaceID.handle));
 
                         Debug.Assert(outstandingMeshRequest == null);
-                        Destroy(newSurface.Object);
+                        ReclaimSurface(newSurface);
                     }
                 }
                 else if ((Time.time - updateTime) >= TimeBetweenUpdates)
@@ -178,7 +210,14 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (outstandingMeshRequest != null)
             {
-                ClearOutstandingMeshRequest();
+                CleanUpSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+            }
+
+            if (spareSurfaceObject != null)
+            {
+                CleanUpSurface(spareSurfaceObject.Value);
+                spareSurfaceObject = null;
             }
 
             Cleanup();
@@ -228,7 +267,9 @@ namespace HoloToolkit.Unity.SpatialMapping
                     outstandingMeshRequest.Value.ID
                     ));
 
-                ClearOutstandingMeshRequest();
+                ReclaimSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+
                 return;
             }
 
@@ -238,21 +279,30 @@ namespace HoloToolkit.Unity.SpatialMapping
                     cookedData.id.handle
                     ));
 
-                ClearOutstandingMeshRequest();
+                ReclaimSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+
                 return;
             }
 
             if (!outputWritten)
             {
-                ClearOutstandingMeshRequest();
+                ReclaimSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+
                 return;
             }
 
+            Debug.Assert(outstandingMeshRequest.Value.Object.activeSelf);
             outstandingMeshRequest.Value.Renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
 
-            // TODO: figure out if we need to do something special because Unity supposedly doesn't properly cleanup baked collision data...
-            UpdateOrAddSurfaceObject(outstandingMeshRequest.Value);
-            ClearOutstandingMeshRequest(destroy: false);
+            var replacedSurface = UpdateOrAddSurfaceObject(outstandingMeshRequest.Value, destroyGameObjectIfReplaced: false);
+            outstandingMeshRequest = null;
+
+            if (replacedSurface != null)
+            {
+                ReclaimSurface(replacedSurface.Value);
+            }
         }
 
         /// <summary>
@@ -278,8 +328,11 @@ namespace HoloToolkit.Unity.SpatialMapping
                     break;
 
                 case SurfaceChange.Removed:
-                    // TODO: figure out if we need to do something special because Unity supposedly doesn't properly cleanup baked collision data...
-                    RemoveSurfaceIfFound(id.handle);
+                    var removedSurface = RemoveSurfaceIfFound(id.handle, destroyGameObject: false);
+                    if (removedSurface != null)
+                    {
+                        ReclaimSurface(removedSurface.Value);
+                    }
                     break;
 
                 default:
@@ -296,17 +349,21 @@ namespace HoloToolkit.Unity.SpatialMapping
             CleanupObserver();
         }
 
-        private void ClearOutstandingMeshRequest(bool destroy = true)
+        private void ReclaimSurface(SurfaceObject availableSurface)
         {
-            Debug.Assert(outstandingMeshRequest != null);
-
-            if (destroy)
+            if (spareSurfaceObject == null)
             {
-                // TODO: figure out if we need to do something special because Unity supposedly doesn't properly cleanup baked collision data...
-                Destroy(outstandingMeshRequest.Value.Object);
-            }
+                CleanUpSurface(availableSurface, destroyGameObject: false);
 
-            outstandingMeshRequest = null;
+                availableSurface.Object.name = "Unused Surface";
+                availableSurface.Object.SetActive(false);
+
+                spareSurfaceObject = availableSurface;
+            }
+            else
+            {
+                CleanUpSurface(availableSurface);
+            }
         }
     }
 }
