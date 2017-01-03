@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
         public float MaxFrameTime = 5.0f;
         private float MaxFrameTimeInSeconds
         {
-            get { return (MaxFrameTime * 1000); }
+            get { return (MaxFrameTime / 1000); }
         }
 
         private bool drawProcessedMesh = true;
@@ -133,7 +133,7 @@ namespace HoloToolkit.Unity
             /// <param name="point1">First point on the triangle.</param>
             /// <param name="point2">Second point on the triangle.</param>
             /// <param name="point3">Third point on the triangle.</param>
-            public void AddTriangle(Vector3 point1, Vector3 point2, Vector3 point3) 
+            public void AddTriangle(Vector3 point1, Vector3 point2, Vector3 point3)
             {
                 // Currently spatial understanding in the native layer voxellizes the space 
                 // into ~2000 voxels per cubic meter.  Even in a degerate case we 
@@ -200,6 +200,9 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public IEnumerator Import_UnderstandingMesh()
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            int startFrameCount = Time.frameCount;
+
             if (!spatialUnderstanding.AllowSpatialUnderstanding || IsImportActive)
             {
                 yield break;
@@ -232,7 +235,9 @@ namespace HoloToolkit.Unity
             }
 
             // Wait a frame
+            stopwatch.Stop();
             yield return null;
+            stopwatch.Start();
 
             // Create output meshes
             if ((meshVertices != null) &&
@@ -264,7 +269,7 @@ namespace HoloToolkit.Unity
 
                     // If the second sector doesn't match the first, copy the triangle to the second sector.
                     Vector3 secondSector = VectorToSector(secondVertex);
-                    if(secondSector != firstSector)
+                    if (secondSector != firstSector)
                     {
                         AddTriangleToSector(secondSector, firstVertex, secondVertex, thirdVertex);
                     }
@@ -282,7 +287,9 @@ namespace HoloToolkit.Unity
                     if ((index % 30 == 0) && ((Time.realtimeSinceStartup - startTime) > MaxFrameTimeInSeconds))
                     {
                         //  Debug.LogFormat("{0} of {1} processed", index, meshIndices.Length);
+                        stopwatch.Stop();
                         yield return null;
+                        stopwatch.Start();
                         startTime = Time.realtimeSinceStartup;
                     }
                 }
@@ -320,7 +327,9 @@ namespace HoloToolkit.Unity
                     // Make sure we don't build too many meshes in a single frame.
                     if ((Time.realtimeSinceStartup - startTime) > MaxFrameTimeInSeconds)
                     {
+                        stopwatch.Stop();
                         yield return null;
+                        stopwatch.Start();
                         startTime = Time.realtimeSinceStartup;
                     }
                 }
@@ -335,7 +344,9 @@ namespace HoloToolkit.Unity
             }
 
             // Wait a frame
+            stopwatch.Stop();
             yield return null;
+            stopwatch.Start();
 
             // All done - can free up marshal pinned memory
             dll.UnpinAllObjects();
@@ -345,6 +356,17 @@ namespace HoloToolkit.Unity
 
             // Mark the timestamp
             timeLastImportedMesh = Time.time;
+
+            stopwatch.Stop();
+            int deltaFrameCount = (Time.frameCount - startFrameCount + 1);
+
+            if (stopwatch.Elapsed.TotalSeconds > 0.75)
+            {
+                Debug.LogWarningFormat("Import_UnderstandingMesh took {0:N0} frames ({1:N3} ms)",
+                    deltaFrameCount,
+                    stopwatch.Elapsed.TotalMilliseconds
+                    );
+            }
         }
 
         /// <summary>
