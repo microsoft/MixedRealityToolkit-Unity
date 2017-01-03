@@ -4,7 +4,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 using HoloToolkit.Unity.SpatialMapping;
@@ -90,18 +89,13 @@ namespace HoloToolkit.Unity
             /// <summary>
             /// Lists of verts/triangles that describe the mesh geometry.
             /// </summary>
-            private List<Vector3> verts = new List<Vector3>();
-            private List<int> tris = new List<int>();
+            private readonly List<Vector3> verts = new List<Vector3>();
+            private readonly List<int> tris = new List<int>();
 
             /// <summary>
             /// The mesh object based on the triangles passed in.
             /// </summary>
-            public Mesh MeshObject { get; private set;}
-
-            public MeshData()
-            {
-                MeshObject = new Mesh();
-            }
+            public readonly Mesh MeshObject = new Mesh();
 
             /// <summary>
             /// Clears the geometry, but does not clear the mesh.
@@ -121,7 +115,7 @@ namespace HoloToolkit.Unity
                 if (verts.Count > 2)
                 {
                     MeshObject.SetVertices(verts);
-                    MeshObject.SetTriangles(tris.ToArray(), 0);
+                    MeshObject.SetTriangles(tris, 0);
                     MeshObject.RecalculateNormals();
                     MeshObject.RecalculateBounds();
                 }
@@ -185,8 +179,19 @@ namespace HoloToolkit.Unity
             MeshData nextSectorData;
             if (!meshSectors.TryGetValue(sector, out nextSectorData))
             {
-                // Or make it if this is a new sector.
                 nextSectorData = new MeshData();
+
+                int surfaceObjectIndex = SurfaceObjects.Count;
+
+                AddSurfaceObject(CreateSurfaceObject(
+                    mesh: nextSectorData.MeshObject,
+                    objectName: string.Format("SurfaceUnderstanding Mesh-{0}", surfaceObjectIndex),
+                    parentObject: transform,
+                    meshID: surfaceObjectIndex,
+                    drawVisualMeshesOverride: DrawProcessedMesh
+                    ));
+
+                // Or make it if this is a new sector.
                 meshSectors.Add(sector, nextSectorData);
             }
 
@@ -298,31 +303,10 @@ namespace HoloToolkit.Unity
 
                 // Now we have all of our triangles assigned to the correct mesh, we can make all of the meshes.
                 // Each sector will have its own mesh.
-                for (int meshSectorsIndex = 0; meshSectorsIndex < meshSectors.Values.Count;meshSectorsIndex++)
+                foreach (MeshData meshData in meshSectors.Values)
                 {
-                    // Make a object to contain the mesh, mesh renderer, etc or reuse one from before.
-                    // It shouldn't matter if we switch which one of these has which mesh from call to call.
-                    // (Actually there is potential that a sector won't render for a few frames, but this should
-                    // be rare).
-                    if (SurfaceObjects.Count <= meshSectorsIndex)
-                    {
-                        AddSurfaceObject(CreateSurfaceObject(
-                            mesh: null,
-                            objectName: string.Format("SurfaceUnderstanding Mesh-{0}", meshSectorsIndex),
-                            parentObject: transform,
-                            meshID: meshSectorsIndex,
-                            drawVisualMeshesOverride: DrawProcessedMesh
-                            ));
-                    }
-
-                    // Get the next MeshData.
-                    MeshData meshData = meshSectors.Values.ElementAt(meshSectorsIndex);
-                    
                     // Construct the mesh.
                     meshData.Commit();
-
-                    // Assign the mesh to the surface object.
-                    SurfaceObjects[meshSectorsIndex].Filter.sharedMesh = meshData.MeshObject;
 
                     // Make sure we don't build too many meshes in a single frame.
                     if ((Time.realtimeSinceStartup - startTime) > MaxFrameTimeInSeconds)
@@ -332,14 +316,6 @@ namespace HoloToolkit.Unity
                         stopwatch.Start();
                         startTime = Time.realtimeSinceStartup;
                     }
-                }
-
-                // The current flow of the code shouldn't allow for there to be more Surfaces than sectors.
-                // In the future someone might want to destroy meshSectors where there is no longer any 
-                // geometry.
-                if (SurfaceObjects.Count > meshSectors.Values.Count)
-                {
-                    Debug.Log("More surfaces than mesh sectors. This is unexpected");
                 }
             }
 
