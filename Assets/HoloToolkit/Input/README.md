@@ -1,7 +1,7 @@
 ## [Input]()
 Input System Diagrams:
-![alt text](https://cloud.githubusercontent.com/assets/8505814/19321359/98bbeca0-9069-11e6-9e17-e9845c8846f0.png)
-![alt text](https://cloud.githubusercontent.com/assets/19958303/19947429/46c9b308-a105-11e6-9ef2-725cf5f27953.PNG)
+![alt text](/External/ReadMeImages/Input%20System%20Diagram.png)
+![alt text](/External/ReadMeImages/Cursor%20System%20Diagram.PNG)
 
 ##Scripts that leverage HoloLens input features namely Gaze, Gesture and Voice.
 
