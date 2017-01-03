@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
+#if UNITY_WSA
         public void ChangeColor(string color)
         {
             switch (color.ToLower())
@@ -28,5 +29,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             ChangeColor(eventData.RecognizedText);
         }
+#endif
     }
 }
+

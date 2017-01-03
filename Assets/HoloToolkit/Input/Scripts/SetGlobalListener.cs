@@ -10,9 +10,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// </summary>
     public class SetGlobalListener : MonoBehaviour
     {
+#if UNITY_WSA
         private void Start()
         {
             InputManager.Instance.AddGlobalListener(gameObject);
         }
+#endif
     }
 }
+

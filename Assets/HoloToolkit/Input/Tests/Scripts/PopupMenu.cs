@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class PopupMenu : MonoBehaviour, IInputClickHandler
     {
+#if UNITY_WSA
         [SerializeField]
         private TestButton cancelButton = null;
 
@@ -142,5 +143,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 Dismiss();
             }
         }
+#endif
     }
 }
+

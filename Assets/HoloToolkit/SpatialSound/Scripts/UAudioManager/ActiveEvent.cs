@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class ActiveEvent : IDisposable
     {
+#if UNITY_WSA
         private AudioSource primarySource = null;
         public AudioSource PrimarySource
         {
@@ -232,10 +233,11 @@ namespace HoloToolkit.Unity
 
             this.PrimarySource.pitch = newPitch;
         }
-
+#endif
         public void Dispose()
         {
-            if (this.primarySource != null)
+#if UNITY_WSA
+			if (this.primarySource != null)
             {
                 this.primarySource.enabled = false;
                 this.primarySource = null;
@@ -246,12 +248,13 @@ namespace HoloToolkit.Unity
                 this.secondarySource.enabled = false;
                 this.secondarySource = null;
             }
+#endif
         }
-
-        /// <summary>
-        /// Creates a flat animation curve to negate Unity's distance attenuation when using Spatial Sound
-        /// </summary>
-        public static void CreateFlatSpatialRolloffCurve()
+#if UNITY_WSA
+		/// <summary>
+		/// Creates a flat animation curve to negate Unity's distance attenuation when using Spatial Sound
+		/// </summary>
+		public static void CreateFlatSpatialRolloffCurve()
         {
             if (SpatialRolloff != null)
             {
@@ -261,5 +264,7 @@ namespace HoloToolkit.Unity
             SpatialRolloff.AddKey(0, 1);
             SpatialRolloff.AddKey(1, 1);
         }
+#endif
     }
 }
+

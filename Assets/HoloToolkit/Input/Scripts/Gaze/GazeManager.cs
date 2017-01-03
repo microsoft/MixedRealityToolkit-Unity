@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GazeManager : Singleton<GazeManager>
     {
+#if UNITY_WSA
         public delegate void FocusedChangedDelegate(GameObject previousObject, GameObject newObject);
 
         /// <summary>
@@ -367,5 +368,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion Helpers
+#endif
     }
 }
+

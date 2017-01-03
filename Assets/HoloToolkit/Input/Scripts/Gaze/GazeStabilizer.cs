@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GazeStabilizer : BaseRayStabilizer
     {
+#if UNITY_WSA
         [Tooltip("Number of samples that you want to iterate on.")]
         [Range(40, 120)]
         public int StoredStabilitySamples = 60;
@@ -111,5 +112,7 @@ namespace HoloToolkit.Unity.InputModule
             stableRotation = Quaternion.LookRotation(Vector3.Lerp(stableRotation * Vector3.forward, gazeDirection, lerpPower));
             stableRay = new Ray(stablePosition, stableRotation * Vector3.forward);
         }
+#endif
     }
 }
+

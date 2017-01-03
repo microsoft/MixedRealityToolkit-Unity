@@ -18,6 +18,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class SpatialUnderstandingDll
     {
+#if UNITY_WSA
         /// <summary>
         /// Representation of the mesh data to be passed to the understanding dll.
         /// Used by SpatialUnderstandingSourceMesh to store local copies of the mesh data.
@@ -574,5 +575,7 @@ namespace HoloToolkit.Unity
             }
 #endif
         }
+#endif
     }
 }
+

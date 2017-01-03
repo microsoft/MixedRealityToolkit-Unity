@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using HoloToolkit.Unity;
 
 /// <summary>
@@ -6,6 +9,7 @@ using HoloToolkit.Unity;
 /// </summary>
 public class ModeTip : Singleton<ModeTip>
 {
+#if UNITY_WSA
     private const string LineMode = "Line Mode";
     private const string PloygonMode = "Geometry Mode";
     private TextMesh text;
@@ -64,4 +68,6 @@ public class ModeTip : Singleton<ModeTip>
             }
         }
     }
+#endif
 }
+

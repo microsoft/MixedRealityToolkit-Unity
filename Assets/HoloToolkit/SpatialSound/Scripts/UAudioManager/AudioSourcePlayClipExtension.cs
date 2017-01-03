@@ -10,11 +10,14 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class AudioSourcePlayClipExtension
     {
+#if UNITY_WSA
         public static void PlayClip(this AudioSource source, UnityEngine.AudioClip clip, bool loop = false)
         {
             source.clip = clip;
             source.loop = loop;
             source.Play();
         }
+#endif
     }
 }
+

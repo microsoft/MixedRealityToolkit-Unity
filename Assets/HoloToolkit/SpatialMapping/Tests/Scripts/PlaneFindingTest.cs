@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
     /// </summary>
     public class PlaneFindingTest : MonoBehaviour
     {
+#if UNITY_WSA
         [Range(0, 45)]
         public float SnapToGravityThreshold = 0.0f;
 
@@ -137,5 +138,7 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
             }
         }
 #endif
+#endif
     }
 }
+

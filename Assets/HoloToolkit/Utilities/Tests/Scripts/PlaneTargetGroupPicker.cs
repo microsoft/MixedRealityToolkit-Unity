@@ -1,4 +1,4 @@
-﻿// Copyright Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
@@ -7,6 +7,7 @@ using HoloToolkit.Unity;
 
 public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
 {
+#if UNITY_WSA
     [Tooltip("In degrees")]
     public float AngleOfAcceptance = 45.0f;
     public PlaneTargetGroup[] Groups;
@@ -70,4 +71,6 @@ public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
         yield return new WaitForSeconds(displayTime);
         DisplayText.text = "";
     }
+#endif
 }
+

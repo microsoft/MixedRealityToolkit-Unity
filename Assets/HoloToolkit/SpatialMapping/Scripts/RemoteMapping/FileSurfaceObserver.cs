@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 {
     public class FileSurfaceObserver : SpatialMappingSource
     {
+#if UNITY_WSA
         [Tooltip("The file name to use when saving and loading meshes.")]
         public string MeshFileName = "roombackup";
 
@@ -85,5 +86,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
 #endif
         }
+#endif
     }
 }
+

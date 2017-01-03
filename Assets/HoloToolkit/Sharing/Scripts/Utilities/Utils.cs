@@ -1,6 +1,5 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
 
@@ -8,6 +7,7 @@ namespace HoloToolkit.Sharing.Utilities
 {
     public static class Utils
     {
+#if UNITY_WSA
         public static void SetLayerRecursively(GameObject gameObject, int layer)
         {
             gameObject.layer = layer;
@@ -167,5 +167,7 @@ namespace HoloToolkit.Sharing.Utilities
             }
             return null;
         }
+#endif
     }
 }
+

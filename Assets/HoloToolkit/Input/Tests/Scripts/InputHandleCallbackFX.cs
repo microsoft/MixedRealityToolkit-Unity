@@ -7,6 +7,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class InputHandleCallbackFX : MonoBehaviour, IInputClickHandler
     {
+#if UNITY_WSA
         [SerializeField]
         private ParticleSystem particles = null;
 
@@ -20,5 +21,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             particles.transform.position = GazeManager.Instance.HitPosition;
             particles.Emit(60);
         }
+#endif
     }
 }
+

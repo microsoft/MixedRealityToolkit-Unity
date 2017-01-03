@@ -18,6 +18,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                              IManipulationHandler,
                              INavigationHandler
     {
+#if UNITY_WSA
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance." )]
         public bool LogGesturesUpdateEvents = false;
 
@@ -156,5 +157,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 eventData.CumulativeDelta.y,
                 eventData.CumulativeDelta.z);
         }
+#endif
     }
 }
+

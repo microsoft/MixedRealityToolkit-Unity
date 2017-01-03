@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
 /// <summary>
 /// It is nice to know what is going on with the networking scene sometimes.
 /// </summary>
 public class SharedAnchorDebugText : MonoBehaviour {
+#if UNITY_WSA
 
     /// <summary>
     /// Set in the editor with the network discovery object since
@@ -115,4 +117,5 @@ public class SharedAnchorDebugText : MonoBehaviour {
             anchorEstablished ? "Anchored Here\n": (wasImporting  ? "Importing\n" : (wasDownloading ? "Downloading\n" : "Not Anchored\n")),
             anchorName);
     }
+#endif
 }

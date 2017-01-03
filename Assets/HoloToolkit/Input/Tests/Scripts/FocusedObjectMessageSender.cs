@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -9,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// </summary>
     public class FocusedObjectMessageSender : MonoBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// Sends message to the object currently focused on by GazeManager.
         /// </summary>
@@ -20,5 +24,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 GazeManager.Instance.HitObject.SendMessage(message, SendMessageOptions.DontRequireReceiver);
             }
         }
+#endif
     }
 }
+

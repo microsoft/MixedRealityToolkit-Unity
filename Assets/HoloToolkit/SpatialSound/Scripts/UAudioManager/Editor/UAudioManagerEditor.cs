@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity
     [CustomEditor(typeof(UAudioManager))]
     public class UAudioManagerEditor : UAudioManagerBaseEditor<AudioEvent>
     {
+#if UNITY_WSA
         private void OnEnable()
         {
             this.myTarget = (UAudioManager)target;
@@ -20,5 +21,7 @@ namespace HoloToolkit.Unity
             EditorGUILayout.PropertyField(this.serializedObject.FindProperty("globalInstanceBehavior"));
             DrawInspectorGUI(false);
         }
+#endif
     }
 }
+

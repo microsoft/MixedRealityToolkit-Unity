@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     /// <typeparam name="T"></typeparam>
     public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
+#if UNITY_WSA
         private static T instance;
         public static T Instance
         {
@@ -53,5 +54,7 @@ namespace HoloToolkit.Unity
                 instance = null;
             }
         }
+#endif
     }
 }
+

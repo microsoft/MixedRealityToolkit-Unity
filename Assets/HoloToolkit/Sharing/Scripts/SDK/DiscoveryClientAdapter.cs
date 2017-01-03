@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +10,7 @@ namespace HoloToolkit.Sharing
 {
     public class DiscoveryClientAdapter : DiscoveryClientListener
     {
+#if UNITY_WSA
         public event Action<DiscoveredSystem> DiscoveredEvent;
         public event Action<DiscoveredSystem> LostEvent;
 
@@ -25,5 +29,7 @@ namespace HoloToolkit.Sharing
                 this.LostEvent(remoteSystem);
             }
         }
+#endif
     }
 }
+

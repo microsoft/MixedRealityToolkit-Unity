@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class InterpolationUtilities
     {
+#if UNITY_WSA
         #region Exponential Decay
 
         public static float ExpDecay(float from, float to, float hLife, float dTime)
@@ -47,5 +48,7 @@ namespace HoloToolkit.Unity
         }
 
         #endregion
+#endif
     }
 }
+

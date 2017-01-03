@@ -7,6 +7,7 @@ namespace HoloToolkit.Sharing
 {
     public class AutoJoinSession : MonoBehaviour
     {
+#if UNITY_WSA
         // The name of the session to join
         public string SessionName = "Default";
 
@@ -77,5 +78,7 @@ namespace HoloToolkit.Sharing
                 }
             }
         }
+#endif
     }
 }
+

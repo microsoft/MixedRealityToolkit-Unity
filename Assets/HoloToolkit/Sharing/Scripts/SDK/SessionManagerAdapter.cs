@@ -1,6 +1,5 @@
-//
-// Copyright (C) Microsoft. All rights reserved.
-//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 namespace HoloToolkit.Sharing
 {
@@ -10,6 +9,7 @@ namespace HoloToolkit.Sharing
     /// </summary>
     public class SessionManagerAdapter : SessionManagerListener
     {
+#if UNITY_WSA
         public event System.Action<Session> CreateSucceededEvent;
         public event System.Action<XString> CreateFailedEvent;
         public event System.Action<Session> SessionAddedEvent;
@@ -111,5 +111,7 @@ namespace HoloToolkit.Sharing
             }
             Profile.EndRange();
         }
+#endif
     }
 }
+

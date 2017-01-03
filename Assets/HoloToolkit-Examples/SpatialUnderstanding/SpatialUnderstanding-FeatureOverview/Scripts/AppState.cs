@@ -9,6 +9,7 @@ using HoloToolkit.Unity.SpatialMapping;
 
 public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
 {
+#if UNITY_WSA
     // Consts
     public float kMinAreaForStats = 5.0f;
     public float kMinAreaForComplete = 50.0f;
@@ -261,4 +262,6 @@ public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHan
             SpatialUnderstanding.Instance.RequestFinishScan();
         }
     }
+#endif
 }
+

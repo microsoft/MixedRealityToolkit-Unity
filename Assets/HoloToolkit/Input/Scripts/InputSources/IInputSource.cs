@@ -37,6 +37,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IInputSource
     {
+#if UNITY_WSA
         /// <summary>
         /// Event triggered when the input source goes up. This is the equivalent of the pointer up event of a mouse.
         /// </summary>
@@ -158,5 +159,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="orientation">Out parameter filled with the orientation if available, otherwise the zero vector.</param>
         /// <returns>True if an orientation was retrieved, false if not.</returns>
         bool TryGetOrientation(uint sourceId, out Quaternion orientation);
+#endif
     }
 }
+

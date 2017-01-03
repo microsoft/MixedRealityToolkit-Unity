@@ -15,6 +15,7 @@ namespace HoloToolkit.Unity.InputModule
     [RequireComponent(typeof(ManualHandControl))]
     public class EditorHandsInput : BaseInputSource
     {
+#if UNITY_WSA
         /// <summary>
         /// Data for a hand.
         /// </summary>
@@ -345,5 +346,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             pendingHandIdDeletes.Clear();
         }
+#endif
     }
 }
+

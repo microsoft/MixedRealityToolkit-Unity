@@ -59,6 +59,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
         [Tooltip("Type of plane that the object has been classified as.")]
         public PlaneTypes PlaneType = PlaneTypes.Unknown;
+#if UNITY_WSA
 
         /// <summary>
         /// The BoundedPlane associated with the SurfacePlane object.
@@ -224,5 +225,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                     break;
             }
         }
+#endif
     }
 }
+

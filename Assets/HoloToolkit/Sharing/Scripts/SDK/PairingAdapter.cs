@@ -1,4 +1,5 @@
-﻿
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 namespace HoloToolkit.Sharing
 {
@@ -8,6 +9,7 @@ namespace HoloToolkit.Sharing
     /// </summary>
     public class PairingAdapter : PairingListener
     {
+#if UNITY_WSA
         public event System.Action SuccessEvent;
         public event System.Action<PairingResult> FailureEvent;
 
@@ -28,5 +30,7 @@ namespace HoloToolkit.Sharing
                 this.FailureEvent(result);
             }
         }
+#endif
     }
 }
+

@@ -1,4 +1,7 @@
-﻿using HoloToolkit.Unity;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +13,7 @@ namespace HoloToolkit.Sharing
     /// </summary>
     public class SharingSessionTracker : Singleton<SharingSessionTracker>
     {
+#if UNITY_WSA
         public class SessionJoinedEventArgs : EventArgs
         {
             public User joiningUser;
@@ -172,5 +176,7 @@ namespace HoloToolkit.Sharing
                 }
             }
         }
+#endif
     }
 }
+

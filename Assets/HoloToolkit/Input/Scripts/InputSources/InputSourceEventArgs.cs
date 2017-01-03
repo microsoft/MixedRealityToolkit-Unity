@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class InputSourceEventArgs : EventArgs
     {
+#if UNITY_WSA
         /// <summary>
         /// Input source that triggered the event.
         /// </summary>
@@ -90,5 +91,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             NormalizedOffset = normalizedOffset;
         }
+#endif
     }
 }
+

@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class TriggerButton : MonoBehaviour, IInputClickHandler
     {
+#if UNITY_WSA
         /// <summary>
         /// Indicates whether the button is clickable or not.
         /// </summary>
@@ -37,5 +38,7 @@ namespace HoloToolkit.Unity.InputModule
                 ButtonPressed.RaiseEvent();
             }
         }
+#endif
     }
 }
+

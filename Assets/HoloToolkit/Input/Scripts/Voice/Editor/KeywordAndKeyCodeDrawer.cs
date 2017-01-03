@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using UnityEditor;
 
 namespace HoloToolkit.Unity.InputModule
@@ -6,6 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     [CustomPropertyDrawer(typeof(SpeechInputSource.KeywordAndKeyCode))]
     public class KeywordAndKeyCodeDrawer : PropertyDrawer
     {
+#if UNITY_WSA
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
             EditorGUI.BeginProperty(rect, content, property);
@@ -22,5 +26,7 @@ namespace HoloToolkit.Unity.InputModule
 
             EditorGUI.EndProperty();
         }
+#endif
     }
 }
+

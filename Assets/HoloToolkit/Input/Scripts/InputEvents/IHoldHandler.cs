@@ -10,8 +10,11 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IHoldHandler : IEventSystemHandler
     {
+#if UNITY_WSA
         void OnHoldStarted(HoldEventData eventData);
         void OnHoldCompleted(HoldEventData eventData);
         void OnHoldCanceled(HoldEventData eventData);
+#endif
     }
 }
+

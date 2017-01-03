@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.IO;
@@ -19,6 +17,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployTools
     {
+#if UNITY_WSA
         // Consts
         public static readonly string DefaultMSBuildVersion = "14.0";
 
@@ -183,5 +182,7 @@ namespace HoloToolkit.Unity
             versionAttr.Value = newVersion.ToString();
             rootNode.Save(manifest);
         }
+#endif
     }
 }
+

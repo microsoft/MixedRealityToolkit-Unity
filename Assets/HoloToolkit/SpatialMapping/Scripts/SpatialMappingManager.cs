@@ -15,6 +15,7 @@ namespace HoloToolkit.Unity.SpatialMapping
     [RequireComponent(typeof(SpatialMappingObserver))]
     public partial class SpatialMappingManager : Singleton<SpatialMappingManager>
     {
+#if UNITY_WSA
         [Tooltip("The physics layer for spatial mapping objects to be set to.")]
         public int PhysicsLayer = 31;
 
@@ -301,5 +302,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+#endif
     }
 }
+

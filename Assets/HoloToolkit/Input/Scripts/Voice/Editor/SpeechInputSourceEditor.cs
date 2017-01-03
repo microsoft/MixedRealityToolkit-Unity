@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     [CustomEditor(typeof(SpeechInputSource))]
     public class SpeechInputSourceEditor : Editor
     {
+#if UNITY_WSA
         public override void OnInspectorGUI()
         {
             SerializedProperty recognizerStart = serializedObject.FindProperty("RecognizerStart");
@@ -72,5 +76,7 @@ namespace HoloToolkit.Unity.InputModule
                 EditorGUI.indentLevel--;
             }
         }
+#endif
     }
 }
+

@@ -18,6 +18,7 @@ namespace HoloToolkit.Unity
     
     public class AutoConfigureMenu : UnityEditor.EditorWindow
     {
+#if UNITY_WSA
 
         [MenuItem("HoloToolkit/Configure/Show Help", false, 3)]
         public static void ShowHelp()
@@ -251,6 +252,7 @@ application uses online services.");
             PlayerSettings.WSA.SetCapability(mCap, GUILayout.Toggle(PlayerSettings.WSA.GetCapability(mCap), new GUIContent(" " + mCap.ToString(), tooltip)));
         }
 
-
+#endif
     }
 }
+

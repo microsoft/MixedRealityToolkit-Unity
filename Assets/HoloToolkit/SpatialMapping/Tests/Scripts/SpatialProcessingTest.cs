@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.SpatialMapping.Tests
@@ -9,6 +12,7 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
     /// </summary>
     public class SpatialProcessingTest : Singleton<SpatialProcessingTest>
     {
+#if UNITY_WSA
         [Tooltip("How much time (in seconds) that the SurfaceObserver will run after being started; used when 'Limit Scanning By Time' is checked.")]
         public float scanTime = 30.0f;
 
@@ -142,5 +146,7 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
 
             base.OnDestroy();
         }
+#endif
     }
 }
+

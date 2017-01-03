@@ -20,6 +20,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
     public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
+#if UNITY_WSA
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
@@ -161,5 +162,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+#endif
     }
 }
+

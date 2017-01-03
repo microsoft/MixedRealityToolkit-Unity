@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class BaseRayStabilizer : MonoBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// The stabilized position.
         /// </summary>
@@ -32,5 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="position">Input position to smooth.</param>
         /// <param name="rotation">Input orientation to smooth.</param>
         public abstract void UpdateStability(Vector3 position, Quaternion rotation);
+#endif
     }
 }
+

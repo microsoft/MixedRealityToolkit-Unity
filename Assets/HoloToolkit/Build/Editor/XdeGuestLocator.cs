@@ -1,8 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Copyright (c) Rafael Rivera
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Linq;
@@ -16,6 +14,7 @@ namespace HoloToolkit.Unity
 {
     public static class XdeGuestLocator
     {
+#if UNITY_WSA
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
         struct XdePeerHostIdentifier
         {
@@ -146,5 +145,7 @@ namespace HoloToolkit.Unity
 
             return bytes;
         }
+#endif
     }
 }
+

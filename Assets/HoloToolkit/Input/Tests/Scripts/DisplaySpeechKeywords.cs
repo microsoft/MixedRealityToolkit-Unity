@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class DisplaySpeechKeywords : MonoBehaviour
     {
+#if UNITY_WSA
         public SpeechInputSource speechInputSource;
         public TextMesh textMesh;
 
@@ -25,5 +26,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 textMesh.text += " " + item.Keyword + "\n";
             }
         }
+#endif
     }
 }
+

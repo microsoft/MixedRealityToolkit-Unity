@@ -15,6 +15,7 @@ using System;
 /// </summary>
 public class UNetAnchorManager : NetworkBehaviour
 {
+#if UNITY_WSA
     /// <summary>
     ///  Since we aren't a MonoBehavior we can't just use the singleton class
     ///  so we'll reroll it as a one off here.
@@ -299,4 +300,6 @@ public class UNetAnchorManager : NetworkBehaviour
             CreateAnchor();
         }
     }
+#endif
 }
+

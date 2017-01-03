@@ -1,6 +1,5 @@
-﻿//
-// Copyright (C) Microsoft. All rights reserved.
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ namespace HoloToolkit.Sharing.Utilities
 {
     public static class MathUtils
     {
+#if UNITY_WSA
         /// <summary>
         /// Get the horizontal FOV from the stereo camera
         /// </summary>
@@ -447,5 +447,7 @@ namespace HoloToolkit.Sharing.Utilities
             Vector3 nearestPoint = sumOfProductInverse * sumOfProductTimesDirection;
             return nearestPoint;
         }
+#endif
     }
 }
+

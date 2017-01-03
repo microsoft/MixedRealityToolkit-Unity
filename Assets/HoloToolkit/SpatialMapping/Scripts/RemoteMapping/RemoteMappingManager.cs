@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.SpatialMapping
     [RequireComponent(typeof(RemoteMeshTarget))]
     public partial class RemoteMappingManager : Singleton<RemoteMappingManager>
     {
+#if UNITY_WSA
         [Tooltip("Key to press in editor to enable spatial mapping over the network.")]
         public KeyCode RemoteMappingKey = KeyCode.N;
 
@@ -112,5 +113,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
 #endif
         }
+#endif
     }
 }
+

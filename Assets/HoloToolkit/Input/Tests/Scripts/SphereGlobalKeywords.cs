@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SphereGlobalKeywords : MonoBehaviour, ISpeechHandler
     {
+#if UNITY_WSA
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             switch (eventData.RecognizedText.ToLower())
@@ -20,5 +21,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     break;
             }
         }
+#endif
     }
 }
+

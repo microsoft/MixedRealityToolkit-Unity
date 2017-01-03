@@ -8,6 +8,7 @@ namespace HoloToolKit.Unity
     [InitializeOnLoad]
     public class EnforceEditorSettings
     {
+#if UNITY_WSA
         static EnforceEditorSettings()
         {
             #region Editor Settings
@@ -26,5 +27,7 @@ namespace HoloToolKit.Unity
 
             #endregion
         }
+#endif
     }
 }
+

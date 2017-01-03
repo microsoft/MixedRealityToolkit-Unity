@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(TextMesh))]
     public class FpsDisplay : MonoBehaviour
     {
+#if UNITY_WSA
         [Tooltip("Reference to Text UI control where the FPS should be displayed.")]
         [SerializeField]
         private TextMesh textMesh;
@@ -96,5 +97,7 @@ namespace HoloToolkit.Unity
 
             averageFps = sum / frameRange;
         }
+#endif
     }
 }
+

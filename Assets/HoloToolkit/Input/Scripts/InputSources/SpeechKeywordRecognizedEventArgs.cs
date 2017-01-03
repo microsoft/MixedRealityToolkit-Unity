@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class SpeechKeywordRecognizedEventArgs : InputSourceEventArgs
     {
+#if UNITY_WSA
         /// <summary>
         /// A measure of correct recognition certainty.
         /// </summary>
@@ -45,5 +46,7 @@ namespace HoloToolkit.Unity.InputModule
             SemanticMeanings = semanticMeanings;
             RecognizedText = recognizedText;
         }
+#endif
     }
 }
+

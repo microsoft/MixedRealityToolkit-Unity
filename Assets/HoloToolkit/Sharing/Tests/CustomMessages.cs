@@ -9,6 +9,7 @@ using UnityEngine;
 
 public class CustomMessages : Singleton<CustomMessages>
 {
+#if UNITY_WSA
     /// <summary>
     /// Message enum containing our information bytes to share.
     /// The first message type has to start with UserMessageIDStart
@@ -188,4 +189,6 @@ public class CustomMessages : Singleton<CustomMessages>
     }
 
     #endregion HelperFunctionsForReading
+#endif
 }
+

@@ -18,6 +18,7 @@ using System;
 /// </summary>
 public class GenericNetworkTransmitter : Singleton<GenericNetworkTransmitter>
 {
+#if UNITY_WSA
 
     [Tooltip("The connection port on the machine to use.")]
     public int SendConnectionPort = 11000;
@@ -212,4 +213,6 @@ public class GenericNetworkTransmitter : Singleton<GenericNetworkTransmitter>
     }
     private void ConnectListener() {}
 #endif
+#endif
 }
+

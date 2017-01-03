@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public partial class UAudioMiniManager : UAudioManagerBase<MiniAudioEvent>
     {
+#if UNITY_WSA
         /// <summary>
         /// Plays all of the Audio Events in the manager
         /// </summary>
@@ -75,5 +76,7 @@ namespace HoloToolkit.Unity
                 events[i].primarySource.pitch = newPitch;
             }
         }
+#endif
     }
 }
+

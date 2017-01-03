@@ -7,6 +7,7 @@ namespace HoloToolkit.Sharing
 {
     public class ConsoleLogWriter : LogWriter
     {
+#if UNITY_WSA
         public override void WriteLogEntry(LogSeverity severity, string message)
         {
             if (severity == LogSeverity.Info)
@@ -22,5 +23,7 @@ namespace HoloToolkit.Sharing
                 Debug.LogError(message);
             }
         }
+#endif
     }
 }
+

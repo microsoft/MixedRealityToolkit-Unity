@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 
 public class ShapeDefinition : Singleton<ShapeDefinition>
 {
+#if UNITY_WSA
     // Properties
     public bool HasCreatedShapes { get; private set; }
     public ReadOnlyCollection<string> CustomShapeDefinitions { get { return customShapeDefinitions.AsReadOnly(); } }
@@ -212,4 +213,6 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
         // Mark it
         HasCreatedShapes = true;
     }
+#endif
 }
+

@@ -13,6 +13,7 @@ using Button = UnityEngine.UI.Button;
 
 public class SpatialUnderstandingCursor : SpatialUnderstandingBasicCursor
 {
+#if UNITY_WSA
     // Consts
     public const float RayCastLength = 10.0f;
 
@@ -157,4 +158,6 @@ public class SpatialUnderstandingCursor : SpatialUnderstandingBasicCursor
         float textAlpha = RayCastUI(out hitPos, out hitNormal, out hitButton) ? 0.15f : 1.0f;
         CursorText.color = new Color(1.0f, 1.0f, 1.0f, textAlpha);
     }
+#endif
 }
+

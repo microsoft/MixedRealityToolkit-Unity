@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ButtonController : MonoBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// These enums allow us to activate an axis only by a key press, such as CTRL mouse or ALT mouse
         /// </summary>
@@ -168,6 +169,8 @@ namespace HoloToolkit.Unity.InputModule
         }
 #endif
 
+#endif
     }
 
 } // namespace
+

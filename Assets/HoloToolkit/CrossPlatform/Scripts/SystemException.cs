@@ -6,9 +6,12 @@ namespace System
 {
     public class SystemException : Exception
     {
+#if UNITY_WSA
         public SystemException() {}
         public SystemException(string message) : base(message) {}
         public SystemException(string message, Exception innerException) : base(message, innerException) {}
+#endif
     }
 }
 #endif
+

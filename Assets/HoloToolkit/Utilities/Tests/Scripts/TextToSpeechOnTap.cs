@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
@@ -6,6 +9,7 @@ namespace HoloToolkit.Unity.Tests
 {
     public class TextToSpeechOnTap : MonoBehaviour, IInputClickHandler
     {
+#if UNITY_WSA
         public TextToSpeechManager TextToSpeech;
 
         public void OnInputClicked(InputEventData eventData)
@@ -24,5 +28,7 @@ namespace HoloToolkit.Unity.Tests
                 TextToSpeech.SpeakText(msg);
             }
         }
+#endif
     }
 }
+

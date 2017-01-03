@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
+#if UNITY_WSA
         public event EventHandler<InputSourceEventArgs> SourceUp;
         public event EventHandler<InputSourceEventArgs> SourceDown;
         public event EventHandler<SourceClickEventArgs> SourceClicked;
@@ -262,5 +263,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion
+#endif
     }
 }
+

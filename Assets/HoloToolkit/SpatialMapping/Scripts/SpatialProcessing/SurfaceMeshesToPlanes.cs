@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
 using System.Threading;
 using System.Threading.Tasks;
 #endif
@@ -22,7 +22,8 @@ namespace HoloToolkit.Unity.SpatialMapping
     /// </summary>
     public class SurfaceMeshesToPlanes : Singleton<SurfaceMeshesToPlanes>
     {
-        [Tooltip("Currently active planes found within the Spatial Mapping Mesh.")]
+#if UNITY_WSA
+		[Tooltip("Currently active planes found within the Spatial Mapping Mesh.")]
         public List<GameObject> ActivePlanes;
 
         [Tooltip("Object used for creating and rendering Surface Planes.")]
@@ -308,6 +309,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             surfacePlane.IsVisible = ((drawPlanesMask & surfacePlane.PlaneType) == surfacePlane.PlaneType);
         }
+#endif
     }
 
 #if UNITY_EDITOR
@@ -342,3 +344,4 @@ namespace HoloToolkit.Unity.SpatialMapping
     }
 #endif
 }
+

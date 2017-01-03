@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using System.Collections;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
@@ -10,6 +13,7 @@ using HoloToolkit.Unity.InputModule;
 /// </summary>
 public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputClickHandler
 {
+#if UNITY_WSA
     private IGeometry manager;
     public GeometryMode Mode;
 
@@ -103,22 +107,27 @@ public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputCli
     {
         OnSelect();
     }
+#endif
 }
 
 public class Point
 {
+#if UNITY_WSA
     public Vector3 Position { get; set; }
 
     public GameObject Root { get; set; }
     public bool IsStart { get; set; }
+#endif
 }
 
 
 public enum GeometryMode
 {
+#if UNITY_WSA
     Line,
     Triangle,
     Rectangle,
     Cube,
     Polygon
+#endif
 }

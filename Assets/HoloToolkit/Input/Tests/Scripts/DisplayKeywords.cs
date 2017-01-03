@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class DisplayKeywords : MonoBehaviour
     {
+#if UNITY_WSA
         public KeywordManager keywordManager;
         public Text textPanel;
 
@@ -25,5 +26,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 textPanel.text += k.Keyword + "\n";
             }
         }
+#endif
     }
 }
+

@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class CursorModifier : MonoBehaviour, ICursorModifier
     {
+#if UNITY_WSA
         [Tooltip("Transform for which this cursor modifier applies its various properties.")]
         public Transform HostTransform;
 
@@ -102,5 +103,7 @@ namespace HoloToolkit.Unity.InputModule
             rotation = GetModifiedRotation(cursor);
             scale = GetModifiedScale(cursor);
         }
+#endif
     }
 }
+

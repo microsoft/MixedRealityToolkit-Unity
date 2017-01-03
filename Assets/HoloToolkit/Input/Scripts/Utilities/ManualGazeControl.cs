@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ManualGazeControl : MonoBehaviour
     {
+#if UNITY_WSA
         public bool MouseSupported = true;
         public AxisController MouseXYRotationAxisControl;
         public AxisController MouseXYTranslationAxisControl;
@@ -118,6 +119,8 @@ namespace HoloToolkit.Unity.InputModule
             cameraTransform.Rotate(this.lastTrackerToUnityRotation.eulerAngles, Space.World);
             cameraTransform.Translate(this.lastTrackerToUnityTranslation, Space.World);
         }
+#endif
     }
 
 }
+

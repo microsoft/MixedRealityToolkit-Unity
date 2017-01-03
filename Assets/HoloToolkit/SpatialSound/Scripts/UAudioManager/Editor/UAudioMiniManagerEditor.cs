@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity
     [CustomEditor(typeof(UAudioMiniManager))]
     public class UAudioMiniManagerEditor : UAudioManagerBaseEditor<MiniAudioEvent>
     {
+#if UNITY_WSA
         private void OnEnable()
         {
             this.myTarget = (UAudioMiniManager)target;
@@ -18,5 +19,7 @@ namespace HoloToolkit.Unity
         {
             DrawInspectorGUI(true);
         }
+#endif
     }
 }
+

@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AxisController : MonoBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// Type of input axis, based on device.
         /// </summary>
@@ -553,6 +554,8 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 #endif
+#endif
     }
 
 }
+

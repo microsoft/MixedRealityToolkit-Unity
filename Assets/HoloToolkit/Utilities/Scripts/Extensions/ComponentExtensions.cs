@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class ComponentExtensions
     {
+#if UNITY_WSA
         /// <summary>
         /// Ensure that a component of type <typeparamref name="T"/> exists on the game object.
         /// If it doesn't exist, creates it.
@@ -134,5 +135,7 @@ namespace HoloToolkit.Unity
                 action(i);
             }
         }
+#endif
     }
 }
+

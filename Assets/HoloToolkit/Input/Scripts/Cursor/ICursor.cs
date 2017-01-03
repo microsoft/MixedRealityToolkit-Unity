@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface ICursor : IInputHandler, IInputClickHandler, ISourceStateHandler
     {
+#if UNITY_WSA
         /// <summary>
         /// Position of the cursor.
         /// </summary>
@@ -30,5 +31,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="visible">True if cursor should be visible, false if not.</param>
         void SetVisiblity(bool visible);
+#endif
     }
 }
+

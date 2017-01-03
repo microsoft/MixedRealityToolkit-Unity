@@ -14,6 +14,7 @@ using UnityEngine.Networking;
 /// </summary>
 public class NetworkDiscoveryWithAnchors : NetworkDiscovery
 {
+#if UNITY_WSA
     /// <summary>
     /// This flag gets set when we recieve a broadcast.
     /// if this flag is set then we should not create a server.
@@ -149,4 +150,6 @@ public class NetworkDiscoveryWithAnchors : NetworkDiscovery
         // And join the networked experience as a client.
         NetworkManager.singleton.StartClient();
     }
+#endif
 }
+

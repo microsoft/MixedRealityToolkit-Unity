@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class Tagalong : SimpleTagalong
     {
+#if UNITY_WSA
         // These members allow for specifying target and minimum percentage in
         // the FOV.
         [Range(0.0f, 1.0f), Tooltip("The minimum horizontal percentage visible before the object starts tagging along.")]
@@ -397,5 +398,7 @@ namespace HoloToolkit.Unity
             DebugDrawLine(draw, cameraPosition, calculatedPosition, Color.cyan);
         }
 #endif // UNITY_EDITOR
+#endif
     }
 }
+

@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class FixedAngularSize : MonoBehaviour
     {
+#if UNITY_WSA
         [Tooltip("Off sets the scale ratio so that text does not scale down too much. (Set to zero for linear scaling)")]
         public float SizeRatio = 0;
 
@@ -69,5 +70,7 @@ namespace HoloToolkit.Unity
             float curvedRatio = 1 - startingDistance * SizeRatio;
             transform.localScale = startingScale * (distanceToHologram * SizeRatio + curvedRatio);
         }
+#endif
     }
 }
+

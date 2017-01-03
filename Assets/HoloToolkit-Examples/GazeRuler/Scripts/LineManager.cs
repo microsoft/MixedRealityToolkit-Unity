@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
@@ -8,6 +11,7 @@ using HoloToolkit.Unity.InputModule;
 /// </summary>
 public class LineManager : Singleton<LineManager>, IGeometry
 {
+#if UNITY_WSA
     // save all lines in scene
     private Stack<Line> Lines = new Stack<Line>();
 
@@ -122,11 +126,13 @@ public class LineManager : Singleton<LineManager>, IGeometry
             lastPoint = null;
         }
     }
+#endif
 }
 
 
 public struct Line
 {
+#if UNITY_WSA
     public Vector3 Start { get; set; }
 
     public Vector3 End { get; set; }
@@ -134,4 +140,6 @@ public struct Line
     public GameObject Root { get; set; }
 
     public float Distance { get; set; }
+#endif
 }
+

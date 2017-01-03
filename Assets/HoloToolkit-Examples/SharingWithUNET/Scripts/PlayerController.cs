@@ -13,6 +13,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
     [NetworkSettings(sendInterval = 0.033f)]
     public class PlayerController : NetworkBehaviour, IInputClickHandler
     {
+#if UNITY_WSA
         /// <summary>
         /// The game object that represents the 'bullet' for 
         /// this player. Must exist in the spawnable prefabs on the
@@ -138,5 +139,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
                 CmdFire();
             }
         }
+#endif
     }
 }
+

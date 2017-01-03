@@ -11,6 +11,7 @@ using HoloToolkit.Unity;
 
 public class SpaceVisualizer : LineDrawer
 {
+#if UNITY_WSA
     // Singleton
     public static SpaceVisualizer Instance;
 
@@ -421,4 +422,6 @@ public class SpaceVisualizer : LineDrawer
         // Lines: Finish up
         LineDraw_End(needsUpdate);
     }
+#endif
 }
+

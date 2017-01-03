@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity
 {
     public static class TransformExtensions
     {
+#if UNITY_WSA
         /// <summary>
         /// An extension method that will get you the full path to an object.
         /// </summary>
@@ -32,5 +33,7 @@ namespace HoloToolkit.Unity
 
             return stringBuilder.ToString();
         }
+#endif
     }
 }
+

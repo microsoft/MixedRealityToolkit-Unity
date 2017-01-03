@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -8,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// </summary>
     public class SelectedObjectMessageReceiver : MonoBehaviour
     {
+#if UNITY_WSA
         [Tooltip("Object color changes to this when selected.")] public Color SelectedColor = Color.red;
 
         private Material material;
@@ -28,5 +32,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             material.color = originalColor;
         }
+#endif
     }
 }
+

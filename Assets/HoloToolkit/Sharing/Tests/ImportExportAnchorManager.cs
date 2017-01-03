@@ -15,6 +15,7 @@ using UnityEngine.VR.WSA.Sharing;
 /// </summary>
 public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 {
+#if UNITY_WSA
     /// <summary>
     /// Enum to track the progress through establishing a shared coordinate system.
     /// </summary>
@@ -537,4 +538,6 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
             currentState = ImportExportState.InitialAnchorRequired;
         }
     }
+#endif
 }
+

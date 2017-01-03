@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 public class UI : LineDrawer
 {
+#if UNITY_WSA
     // Consts
     public const float MenuWidth = 1.5f;
     public const float MenuHeight = 1.0f;
@@ -319,4 +320,6 @@ public class UI : LineDrawer
             }
         }
     }
+#endif
 }
+

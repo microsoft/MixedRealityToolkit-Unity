@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// </summary>
     public class TestButton : MonoBehaviour, IInputClickHandler, IFocusable
     {
+#if UNITY_WSA
         public Transform ToolTip;
         public Renderer ToolTipRenderer;
 
@@ -229,5 +230,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             UpdateVisuals();
         }
+#endif
     }
 }
+

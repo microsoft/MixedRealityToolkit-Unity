@@ -22,6 +22,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class SpatialUnderstandingDllShapes
     {
+#if UNITY_WSA
         /// <summary>
         /// Result structure returned by shape queries
         /// </summary>
@@ -935,5 +936,7 @@ namespace HoloToolkit.Unity
         {
         }
 #endif
+#endif
     }
 }
+

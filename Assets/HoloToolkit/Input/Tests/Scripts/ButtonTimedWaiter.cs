@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class ButtonTimedWaiter : MonoBehaviour
     {
+#if UNITY_WSA
         [SerializeField]
         private TestButton button = null;
 
@@ -50,5 +51,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             yield break;
         }
+#endif
     }
 }
+

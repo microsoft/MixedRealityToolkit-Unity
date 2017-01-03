@@ -20,7 +20,8 @@ namespace HoloToolkit.Unity.SpatialMapping
     /// </summary>
     public class RemoteMeshTarget : SpatialMappingSource
     {
-        [Tooltip("The IPv4 Address of the machine running the Unity editor.")]
+#if UNITY_WSA
+		[Tooltip("The IPv4 Address of the machine running the Unity editor.")]
         public string ServerIP;
 
         [Tooltip("The connection port on the machine to use.")]
@@ -157,5 +158,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
         }
 #endif
+#endif
     }
 }
+

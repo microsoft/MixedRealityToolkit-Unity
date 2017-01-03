@@ -19,6 +19,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </remarks>
     public class RawInteractionSourcesInput : BaseInputSource
     {
+#if UNITY_WSA
         /// <summary>
         /// Data for an interaction source.
         /// </summary>
@@ -241,5 +242,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             pendingSourceIdDeletes.Clear();
         }
+#endif
     }
 }
+

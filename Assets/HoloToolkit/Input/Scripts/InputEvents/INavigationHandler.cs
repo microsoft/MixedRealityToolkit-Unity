@@ -10,9 +10,12 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface INavigationHandler : IEventSystemHandler
     {
+#if UNITY_WSA
         void OnNavigationStarted(NavigationEventData eventData);
         void OnNavigationUpdated(NavigationEventData eventData);
         void OnNavigationCompleted(NavigationEventData eventData);
         void OnNavigationCanceled(NavigationEventData eventData);
+#endif
     }
 }
+

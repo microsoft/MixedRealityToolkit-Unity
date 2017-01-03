@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity
     /// <remarks>The TEvent type specified must derive from AudioEvent.</remarks>
     public partial class UAudioManagerBase<TEvent> : MonoBehaviour where TEvent : AudioEvent, new()
     {
+#if UNITY_WSA
         [SerializeField]
         protected TEvent[] events = null;
 
@@ -671,5 +672,7 @@ namespace HoloToolkit.Unity
                 return Mathf.Max(0.0f, pitchAdjustedClipLength + activeEvent.audioEvent.instanceTimeBuffer + additionalDelay);
             }
         }
+#endif
     }
 }
+

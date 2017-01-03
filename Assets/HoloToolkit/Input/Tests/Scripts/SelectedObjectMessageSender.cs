@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -10,6 +13,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// </summary>
     public class SelectedObjectMessageSender : MonoBehaviour
     {
+#if UNITY_WSA
         /// <summary>
         /// Currently selected object.
         /// </summary>
@@ -45,5 +49,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 selectedObject.SendMessage(message, SendMessageOptions.DontRequireReceiver);
             }
         }
+#endif
     }
 }
+

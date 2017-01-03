@@ -9,6 +9,7 @@ using System.Text;
 
 public static class TypeUtils
 {
+#if UNITY_WSA
     public static Type GetBaseType(this Type type)
     {
 #if UNITY_METRO && !UNITY_EDITOR
@@ -17,4 +18,6 @@ public static class TypeUtils
         return type.BaseType;
 #endif
     }
+#endif
 }
+

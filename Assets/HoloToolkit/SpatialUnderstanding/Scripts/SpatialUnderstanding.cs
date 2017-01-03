@@ -15,6 +15,7 @@ namespace HoloToolkit.Unity
     [RequireComponent(typeof(SpatialUnderstandingCustomMesh))]
     public class SpatialUnderstanding : Singleton<SpatialUnderstanding>
     {
+#if UNITY_WSA
         // Consts
         public const float ScanSearchDistance = 8.0f;
 
@@ -253,5 +254,7 @@ namespace HoloToolkit.Unity
                 ScanState = ScanStates.Done;
             }
         }
+#endif
     }
 }
+

@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class ScaleObjectMessageReceiver : MonoBehaviour
     {
+#if UNITY_WSA
         private const float DefaultSizeFactor = 2.0f;
 
         [Tooltip("Size multiplier to use when scaling the object up and down.")]
@@ -30,5 +34,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             scale /= SizeFactor;
             transform.localScale = scale;
         }
+#endif
     }
 }
+

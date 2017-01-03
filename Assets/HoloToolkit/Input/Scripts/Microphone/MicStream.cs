@@ -9,6 +9,7 @@ namespace HoloToolkit.Unity.InputModule
 {
     public class MicStream
     {
+#if UNITY_WSA
         // This class replaces Unity's Microphone object
         // This class is made for HoloLens mic stream selection, but should work well on all windows 10 devices
         // chooses from one of three possible microphone modes on HoloLens
@@ -191,5 +192,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             return true;
         }
+#endif
     }
 }
+

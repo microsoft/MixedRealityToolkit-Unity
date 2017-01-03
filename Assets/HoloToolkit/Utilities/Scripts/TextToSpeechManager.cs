@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using UnityEngine;
 
@@ -52,6 +53,7 @@ namespace HoloToolkit.Unity
     /// </remarks>
     public class TextToSpeechManager : MonoBehaviour
     {
+#if UNITY_WSA
         // Inspector Variables
         [Tooltip("The audio source where speech will be played.")]
         [SerializeField]
@@ -418,5 +420,7 @@ namespace HoloToolkit.Unity
         /// Gets or sets the voice that will be used to generate speech.
         /// </summary>
         public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
+#endif
     }
 }
+

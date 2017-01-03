@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
+#if UNITY_WSA
         /// <summary>
         /// To prevent initializing too many anchors at once
         /// and to allow for the WorldAnchorStore to load asyncronously
@@ -214,5 +215,7 @@ namespace HoloToolkit.Unity
                 Debug.LogError(gameObject.name + " : World anchor save failed.");
             }
         }
+#endif
     }
 }
+

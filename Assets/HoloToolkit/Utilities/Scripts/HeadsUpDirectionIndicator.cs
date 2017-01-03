@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -13,6 +16,7 @@ namespace HoloToolkit.Unity
     // object according to that assumption.
     public class HeadsUpDirectionIndicator : MonoBehaviour
     {
+#if UNITY_WSA
         // Use as a named indexer for Unity's frustum planes. The order follows that layed
         // out in the API documentation. DO NOT CHANGE ORDER unless a corresponding change
         // has been made in the Unity API.
@@ -363,5 +367,7 @@ namespace HoloToolkit.Unity
             indicatorVolume[4] = frustumPlanes[4];
             indicatorVolume[5] = frustumPlanes[5];
         }
+#endif
     }
 }
+

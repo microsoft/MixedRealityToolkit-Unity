@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity.SpatialMapping
     /// </summary>
     public class RemoveSurfaceVertices : Singleton<RemoveSurfaceVertices>
     {
+#if UNITY_WSA
         [Tooltip("The amount, if any, to expand each bounding volume by.")]
         public float BoundsExpansion = 0.0f;
 
@@ -239,5 +240,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             removingVerts = false;
         }
+#endif
     }
 }
+
