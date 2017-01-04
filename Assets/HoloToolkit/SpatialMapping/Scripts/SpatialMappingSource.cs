@@ -51,6 +51,13 @@ namespace HoloToolkit.Unity.SpatialMapping
         protected virtual void Awake()
         {
             SurfaceObjects = new List<SurfaceObject>();
+
+            // Initialize our our ripple effect if we're using it.
+            if (SpatialMappingManager.Instance.DrawVisualMeshes && RenderMaterial.HasProperty("_Center"))
+            {
+                RenderMaterial.SetFloat("_Radius", -RenderMaterial.GetFloat("_PulseWidth"));
+                RenderMaterial.SetVector("_Center", Vector3.zero);
+            }
         }
 
         protected virtual void LateUpdate()
