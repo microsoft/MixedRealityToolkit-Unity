@@ -32,12 +32,15 @@ Shader "HoloToolkit/WindowOcclusion"
             struct v2f
             {
                 float4 pos : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             v2f vert(appdata_base v)
             {
+                UNITY_SETUP_INSTANCE_ID(v);
                 v2f o;
                 o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 return o;
             }
 
