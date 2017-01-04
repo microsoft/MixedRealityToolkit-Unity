@@ -4,7 +4,7 @@ in your project.
 To get started either download the HoloToolkit-Unity Asset Package or grab a copy of this repository and download the entire project.
 
 # 1a. Download a HoloToolkit-Unity Asset Package
-You can download archived or daily builds of the HoloToolkit-Unity Asset Packages from the [HoloToolkit Archive](https://holotoolkit.download/) Rafael Rivera has so kindly put together for us.
+You can download the latest unity package from the [Asset Packages](External/HoloToolkit/Asset%20Packages/) folder
 
 [Continue to step 2](/GettingStarted.md#2-using-holotoolkit-unity-in-your-project)
 
