@@ -52,6 +52,9 @@ Add an `Event System` to your scene by right click on 'Managers' object in your 
 
 Optionally, if you wish to enable spatial mapping in your scene, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.
 
+Be aware that you must also enable `Spatial Perception` Capabilities:
+`Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
+
 # 4. Building Your Project for HoloLens
 
 `HoloToolkit -> Build Window -> Build Visual Studio SLN`
