@@ -89,6 +89,9 @@ namespace HoloToolkit.Unity.InputModule
         public float HandTimeBeforeReturn = 0.5f;
         public float MinimumTrackedMovement = 0.001f;
 
+        [Tooltip("Use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
+        public bool UseUnscaledTime = true;
+
         public AxisController LeftHandPrimaryAxisControl;
         public AxisController LeftHandSecondaryAxisControl;
         public ButtonController LeftFingerUpButtonControl;
@@ -166,10 +169,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             UpdateHandVisualization();
 
-            float smoothingFactor = Time.deltaTime * 30.0f * HandReturnFactor;
+            float deltaTime = UseUnscaledTime
+                ? Time.unscaledDeltaTime
+                : Time.deltaTime;
+
+            float smoothingFactor = deltaTime * 30.0f * HandReturnFactor;
             if (timeBeforeReturn > 0.0f)
             {
-                timeBeforeReturn = Mathf.Clamp(timeBeforeReturn - Time.deltaTime, 0.0f, HandTimeBeforeReturn);
+                timeBeforeReturn = Mathf.Clamp(timeBeforeReturn - deltaTime, 0.0f, HandTimeBeforeReturn);
             }
 
             LeftHandSourceState.Pressed = LeftFingerDownButtonControl.Pressed();

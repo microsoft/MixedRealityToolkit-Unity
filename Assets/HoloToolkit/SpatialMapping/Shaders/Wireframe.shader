@@ -38,12 +38,15 @@ Shader "HoloToolkit/Wireframe"
             struct v2g
             {
                 float4 viewPos : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             v2g vert(appdata_base v)
             {
+                UNITY_SETUP_INSTANCE_ID(v);
                 v2g o;
                 o.viewPos = mul(UNITY_MATRIX_MVP, v.vertex);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 return o;
             }
 
@@ -54,6 +57,7 @@ Shader "HoloToolkit/Wireframe"
                 float4 viewPos : SV_POSITION;
                 float inverseW : TEXCOORD0;
                 float3 dist : TEXCOORD1;
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             [maxvertexcount(3)]
@@ -70,27 +74,26 @@ Shader "HoloToolkit/Wireframe"
                 float2 vector2 = point1 - point0;
                 float area = abs(vector1.x * vector2.y - vector1.y * vector2.x);
 
+                float3 distScale[3];
+                distScale[0] = float3(area / length(vector0), 0, 0);
+                distScale[1] = float3(0, area / length(vector1), 0);
+                distScale[2] = float3(0, 0, area / length(vector2));
+
                 float wireScale = 800 - _WireThickness;
 
                 // Output each original vertex with its distance to the opposing line defined
                 // by the other two vertices.
-
                 g2f o;
 
-                o.viewPos = i[0].viewPos;
-                o.inverseW = 1.0 / o.viewPos.w;
-                o.dist = float3(area / length(vector0), 0, 0) * o.viewPos.w * wireScale;
-                triStream.Append(o);
-
-                o.viewPos = i[1].viewPos;
-                o.inverseW = 1.0 / o.viewPos.w;
-                o.dist = float3(0, area / length(vector1), 0) * o.viewPos.w * wireScale;
-                triStream.Append(o);
-
-                o.viewPos = i[2].viewPos;
-                o.inverseW = 1.0 / o.viewPos.w;
-                o.dist = float3(0, 0, area / length(vector2)) * o.viewPos.w * wireScale;
-                triStream.Append(o);
+                [unroll]
+                for (uint idx = 0; idx < 3; ++idx)
+                {
+                   o.viewPos = i[idx].viewPos;
+                   o.inverseW = 1.0 / o.viewPos.w;
+                   o.dist = distScale[idx] * o.viewPos.w * wireScale;
+                   UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(i[idx], o);
+                   triStream.Append(o);
+                }
             }
 
             float4 frag(g2f i) : COLOR
