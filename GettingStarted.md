@@ -50,10 +50,7 @@ Add the `InputManager.prefab` (found under HoloToolkit/Input/Prefabs) as a child
 
 Add an `Event System` to your scene by right click on 'Managers' object in your scene Hierarchy: `UI -> Event System`.
 
-Optionally, if you wish to enable spatial mapping in your scene, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.
-
-Be aware that you must also enable `Spatial Perception` Capabilities:
-`Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
+Optionally, if you wish to enable spatial mapping in your scene, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
 
 # 4. Building Your Project for HoloLens
 
