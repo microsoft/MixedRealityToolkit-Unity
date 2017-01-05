@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using System;
@@ -26,8 +25,10 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
         }
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (SpatialUnderstanding.Instance != null)
         {
             SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;

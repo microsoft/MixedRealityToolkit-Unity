@@ -52,7 +52,7 @@ You can update message of local commits you haven't pushed yet using git commit 
 # Pull request
 
 Start a GitHub pull request to merge your topic branch into the [main repository's master branch](https://github.com/Microsoft/HoloToolkit-Unity/tree/master). 
-(If you are a Microsoft employee and are not a member of the [Microsoft organization on GitHub](https://github.com/Microsoft) yet, please contact the DDE team via e-mail for instructions before starting your pull request. There's some process stuff you'll need to do ahead of time.)
+(If you are a Microsoft employee and are not a member of the [Microsoft organization on GitHub](https://github.com/Microsoft) yet, please link your Microsoft and GitHub accounts on corpnet by visiting [Open Source at Microsoft](https://opensource.microsoft.com/) before you start your pull request. There's some process stuff you'll need to do ahead of time.)
 If you haven't contributed to a Microsoft project before, you may be asked to sign a [contribution license agreement](https://cla.microsoft.com/). 
 A comment in the PR will let you know if you do.
 

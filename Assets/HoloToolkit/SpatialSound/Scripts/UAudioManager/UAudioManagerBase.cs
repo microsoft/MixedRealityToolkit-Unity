@@ -598,7 +598,6 @@ namespace HoloToolkit.Unity
                 {
                     yield return null;
                 }
-
             }
             // Otherwise, continue at next frame.
             else

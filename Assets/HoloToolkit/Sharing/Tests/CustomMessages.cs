@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using HoloToolkit.Sharing;
 using HoloToolkit.Unity;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomMessages : Singleton<CustomMessages>
@@ -21,7 +22,7 @@ public class CustomMessages : Singleton<CustomMessages>
 
     public enum UserMessageChannels
     {
-        Anchors = MessageChannel.UserMessageChannelStart,
+        Anchors = MessageChannel.UserMessageChannelStart
     }
 
     /// <summary>
@@ -58,7 +59,7 @@ public class CustomMessages : Singleton<CustomMessages>
         SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
     }
 
-    private void SharingManagerConnected(object sender, System.EventArgs e)
+    private void SharingManagerConnected(object sender, EventArgs e)
     {
         InitializeMessageHandlers();
     }
@@ -84,7 +85,7 @@ public class CustomMessages : Singleton<CustomMessages>
         connectionAdapter.MessageReceivedCallback += OnMessageReceived;
 
         // Cache the local user ID
-        this.localUserID = SharingStage.Instance.Manager.GetLocalUser().GetID();
+        localUserID = SharingStage.Instance.Manager.GetLocalUser().GetID();
 
         for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
         {
@@ -109,7 +110,7 @@ public class CustomMessages : Singleton<CustomMessages>
     public void SendHeadTransform(Vector3 position, Quaternion rotation)
     {
         // If we are connected to a session, broadcast our head info
-        if (this.serverConnection != null && this.serverConnection.IsConnected())
+        if (serverConnection != null && serverConnection.IsConnected())
         {
             // Create an outgoing network message to contain all the info we want to send
             NetworkOutMessage msg = CreateMessage((byte)TestMessageID.HeadTransform);
@@ -117,7 +118,7 @@ public class CustomMessages : Singleton<CustomMessages>
             AppendTransform(msg, position, rotation);
 
             // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
-            this.serverConnection.Broadcast(
+            serverConnection.Broadcast(
                 msg,
                 MessagePriority.Immediate,
                 MessageReliability.UnreliableSequenced,
@@ -125,16 +126,18 @@ public class CustomMessages : Singleton<CustomMessages>
         }
     }
 
-    void OnDestroy()
+    protected override void OnDestroy()
     {
-        if (this.serverConnection != null)
+        if (serverConnection != null)
         {
             for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
             {
-                this.serverConnection.RemoveListener(index, this.connectionAdapter);
+                serverConnection.RemoveListener(index, connectionAdapter);
             }
-            this.connectionAdapter.MessageReceivedCallback -= OnMessageReceived;
+            connectionAdapter.MessageReceivedCallback -= OnMessageReceived;
         }
+
+        base.OnDestroy();
     }
 
     void OnMessageReceived(NetworkConnection connection, NetworkInMessage msg)
