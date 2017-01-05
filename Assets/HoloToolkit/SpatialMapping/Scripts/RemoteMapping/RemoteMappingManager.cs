@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
             keywordRecognizer.Start();
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
             remoteMeshTarget = GetComponent<RemoteMeshTarget>();
 
             if (remoteMeshTarget != null && SpatialMappingManager.Instance.Source == null)
@@ -60,7 +60,7 @@ namespace HoloToolkit.Unity
         // Called every frame by the Unity engine.
         private void Update()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
             // Use the 'network' sourced mesh.  
             if (Input.GetKeyUp(RemoteMappingKey))
             {
@@ -88,7 +88,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void SendMeshes()
         {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
             List<MeshFilter> MeshFilters = SpatialMappingManager.Instance.GetMeshFilters();
             for (int index = 0; index < MeshFilters.Count; index++)
             {
