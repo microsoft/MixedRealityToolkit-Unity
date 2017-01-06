@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +11,7 @@ namespace HoloToolkit.Unity
 {
 	public abstract class AutoConfigureWindow<TSetting> : UnityEditor.EditorWindow
 	{
-		// Member Variables
+		#region Member Variables
 		private Dictionary<TSetting, bool> values = new Dictionary<TSetting, bool>();
 		private Dictionary<TSetting, string> names = new Dictionary<TSetting, string>();
 		private Dictionary<TSetting, string> descriptions = new Dictionary<TSetting, string>();
@@ -16,9 +19,9 @@ namespace HoloToolkit.Unity
 		private string statusMessage = string.Empty;
 		private Vector2 scrollPosition = Vector2.zero;
 		private GUIStyle wrapStyle;
+		#endregion // Member Variables
 
-		
-		// Private Methods
+		#region Internal Methods
 		private void SettingToggle(TSetting setting)
 		{
 			// Draw and update setting flag
@@ -31,10 +34,9 @@ namespace HoloToolkit.Unity
 				Repaint();
 			}
 		}
+		#endregion // Internal Methods
 
-		
-		// Overrides
-
+		#region Overridables / Event Triggers
 		/// <summary>
 		/// Called when settings should be applied.
 		/// </summary>
@@ -49,16 +51,15 @@ namespace HoloToolkit.Unity
 		/// Called when string names and descriptions should be loaded.
 		/// </summary>
 		protected abstract void LoadStrings();
+		#endregion // Overridables / Event Triggers
 
-		
-		// Behavior Overrides
-
+		#region Overrides / Event Handlers
 		/// <summary>
 		/// Called when the window is created.
 		/// </summary>
 		protected virtual void Awake()
 		{
-			 wrapStyle = new GUIStyle() { wordWrap = true };
+			wrapStyle = new GUIStyle() { wordWrap = true };
 		}
 		protected virtual void OnEnable()
 		{
@@ -103,9 +104,9 @@ namespace HoloToolkit.Unity
 				Close();
 			}
 		}
+		#endregion // Overrides / Event Handlers
 
-		// Properties
-
+		#region Public Properties
 		/// <summary>
 		/// Gets the descriptions of the settings.
 		/// </summary>
@@ -158,5 +159,6 @@ namespace HoloToolkit.Unity
 		/// Gets or sets the status message displayed at the bottom of the window.
 		/// </summary>
 		public string StatusMessage { get { return statusMessage; } set { statusMessage = value; } }
+		#endregion // Public Properties
 	}
 }

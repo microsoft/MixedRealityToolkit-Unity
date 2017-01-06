@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,18 +17,18 @@ namespace HoloToolkit.Unity
 	/// </summary>
 	public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
 	{
-		// Nested Types
+
+		#region Nested Types
 		public enum ProjectSetting
 		{
-			ActiveBuildToWsa,
-			WsaSdkToUwp,
+			BuildWsaUwp,
 			WsaUwpBuildToD3D,
 			WsaFastestQuality,
 			WsaEnableVR
 		}
+		#endregion // Nested Types
 
-		// Private Methods
-
+		#region Internal Methods
 		/// <summary>
 		/// Enables virtual reality for WSA and ensures HoloLens is in the supported SDKs.
 		/// </summary>
@@ -45,7 +48,7 @@ namespace HoloToolkit.Unity
 				bool foundDevices = false;
 				bool foundHoloLens = false;
 
-				var builder = new StringBuilder(); // Used to build the final output
+				StringBuilder builder = new StringBuilder(); // Used to build the final output
 				string[] lines = settings.Split(new char[] { '\n' });
 				for (int i = 0; i < lines.Length; ++i)
 				{
@@ -82,7 +85,6 @@ namespace HoloToolkit.Unity
 								foundBuildTargetVRSettings = true;
 							}
 						}
-
 					}
 
 					// Look for the build target for Metro
@@ -92,7 +94,6 @@ namespace HoloToolkit.Unity
 						{
 							foundBuildTargetMetro = true;
 						}
-
 					}
 
 					else if (!foundBuildTargetEnabled)
@@ -113,7 +114,6 @@ namespace HoloToolkit.Unity
 							line = line.Replace(" []", "");
 							foundDevices = true;
 						}
-
 					}
 
 					// Once we've found the list look for HoloLens or the next non element
@@ -139,7 +139,9 @@ namespace HoloToolkit.Unity
 					// Write out a \n for all but the last line
 					// NOTE: Specifically preserving unix line endings by avoiding StringBuilder.AppendLine
 					if (i != lines.Length - 1)
+					{
 						builder.Append('\n');
+					}
 				}
 
 				// Capture the final string
@@ -175,8 +177,9 @@ namespace HoloToolkit.Unity
 				Debug.LogException(e);
 			}
 		}
+		#endregion // Internal Methods
 
-		// Overrides
+		#region Overrides / Event Handlers
 		protected override void ApplySettings()
 		{
 			// See the blow notes for why text asset serialization is required
@@ -194,18 +197,17 @@ namespace HoloToolkit.Unity
 
 				bool forceText = EditorUtility.DisplayDialog(title, message, "Yes", "No");
 				if (!forceText)
+				{
 					return;
+				}
 
 				EditorSettings.serializationMode = SerializationMode.ForceText;
 			}
 
 			// Apply individual settings
-			if (Values[ProjectSetting.ActiveBuildToWsa])
+			if (Values[ProjectSetting.BuildWsaUwp])
 			{
 				EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.WSAPlayer);
-			}
-			if (Values[ProjectSetting.WsaSdkToUwp])
-			{
 				EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
 			}
 			if (Values[ProjectSetting.WsaUwpBuildToD3D])
@@ -237,7 +239,7 @@ namespace HoloToolkit.Unity
 
 		protected override void LoadSettings()
 		{
-			for (int i = (int)ProjectSetting.ActiveBuildToWsa; i <= (int)ProjectSetting.WsaEnableVR; i++)
+			for (int i = (int)ProjectSetting.BuildWsaUwp; i <= (int)ProjectSetting.WsaEnableVR; i++)
 			{
 				Values[(ProjectSetting)i] = true;
 			}
@@ -245,11 +247,8 @@ namespace HoloToolkit.Unity
 
 		protected override void LoadStrings()
 		{
-			Names[ProjectSetting.ActiveBuildToWsa] = "Target Windows Store";
-			Descriptions[ProjectSetting.ActiveBuildToWsa] = "Required\n\nSwitches the currently active target to produce a Windows Store app.\n\nSince HoloLens only supports Windows Store apps, this option should remain checked unless you plan to manually switch the target later before you build.";
-
-			Names[ProjectSetting.WsaSdkToUwp] = "Target UWP";
-			Descriptions[ProjectSetting.WsaSdkToUwp] = "Required\n\nSpecifies that the Windows Store app will target the Universal Windows Platform.\n\nSince HoloLens only supports UWP, this option should remain checked unless you plan to manually switch the target later before you build.";
+			Names[ProjectSetting.BuildWsaUwp] = "Target Windows Store and UWP";
+			Descriptions[ProjectSetting.BuildWsaUwp] = "Required\n\nSwitches the currently active target to produce a Store app targeting the Universal Windows Platform.\n\nSince HoloLens only supports Windows Store apps, this option should remain checked unless you plan to manually switch the target later before you build.";
 
 			Names[ProjectSetting.WsaUwpBuildToD3D] = "Build for Direct3D";
 			Descriptions[ProjectSetting.WsaUwpBuildToD3D] = "Recommended\n\nProduces an app that targets Direct3D instead of Xaml.\n\nPure Direct3D apps run faster than applications that include Xaml. This option should remain checked unless you plan to overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
@@ -270,5 +269,6 @@ namespace HoloToolkit.Unity
 			this.minSize = new Vector2(350, 260);
 			this.maxSize = this.minSize;
 		}
+		#endregion // Overrides / Event Handlers
 	}
 }

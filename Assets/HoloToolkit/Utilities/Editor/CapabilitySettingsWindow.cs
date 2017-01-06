@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,9 +13,7 @@ namespace HoloToolkit.Unity
 	/// </summary>
 	public class CapabilitySettingsWindow : AutoConfigureWindow<PlayerSettings.WSACapability>
 	{
-
-		// Private Methods
-
+		#region Internal Methods
 		private void ApplySetting(PlayerSettings.WSACapability setting)
 		{
 			PlayerSettings.WSA.SetCapability(setting, Values[setting]);
@@ -22,10 +23,9 @@ namespace HoloToolkit.Unity
 		{
 			Values[setting] = PlayerSettings.WSA.GetCapability(setting);
 		}
+		#endregion // Internal Methods
 
-		
-		// Overrides
-
+		#region Overrides / Event Handlers
 		protected override void ApplySettings()
 		{
 			ApplySetting(PlayerSettings.WSACapability.Microphone);
@@ -33,7 +33,6 @@ namespace HoloToolkit.Unity
 			ApplySetting(PlayerSettings.WSACapability.WebCam);
 			ApplySetting(PlayerSettings.WSACapability.InternetClient);
 		}
-
 
 		protected override void LoadSettings()
 		{
@@ -67,5 +66,6 @@ namespace HoloToolkit.Unity
 			this.minSize = new Vector2(350, 255);
 			this.maxSize = this.minSize;
 		}
+		#endregion // Overrides / Event Handlers
 	}
 }

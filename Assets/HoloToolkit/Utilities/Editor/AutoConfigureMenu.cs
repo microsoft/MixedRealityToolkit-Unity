@@ -18,11 +18,13 @@ namespace HoloToolkit.Unity
     
     public class AutoConfigureMenu : MonoBehaviour
     {
-
-        [MenuItem("HoloToolkit/Configure/Show Help", false, 3)]
+		/// <summary>
+		/// Displays a help page for the HoloToolkit.
+		/// </summary>
+		[MenuItem("HoloToolkit/Configure/Show Help", false, 3)]
         public static void ShowHelp()
         {
-            Application.OpenURL("https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens");
+            Application.OpenURL("https://github.com/Microsoft/HoloToolkit-Unity/wiki");
         }
 
         /// <summary>
@@ -45,6 +47,9 @@ namespace HoloToolkit.Unity
 			window.Show();
 		}
 
+		/// <summary>
+		/// Applies recommended capability settings to the current project
+		/// </summary>
 		[MenuItem("HoloToolkit/Configure/Apply HoloLens Capability Settings", false, 2)]
         static void ApplyHoloLensCapabilitySettings()
         {

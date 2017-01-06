@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +17,7 @@ namespace HoloToolkit.Unity
 	/// </summary>
 	public class SceneSettingsWindow : AutoConfigureWindow<SceneSettingsWindow.SceneSetting>
 	{
-		// Nested Types
+		#region Nested Types
 		public enum SceneSetting
 		{
 			CameraToOrigin,
@@ -22,8 +25,9 @@ namespace HoloToolkit.Unity
 			NearClipPlane,
 			FieldOfView,
 		}
+		#endregion // Nested Types
 
-		// Overrides
+		#region Overrides / Event Handlers
 		protected override void ApplySettings()
 		{
 			// Ensure we have a camera
@@ -85,5 +89,6 @@ namespace HoloToolkit.Unity
 			this.minSize = new Vector2(350, 240);
 			this.maxSize = this.minSize;
 		}
+		#endregion // Overrides / Event Handlers
 	}
 }
