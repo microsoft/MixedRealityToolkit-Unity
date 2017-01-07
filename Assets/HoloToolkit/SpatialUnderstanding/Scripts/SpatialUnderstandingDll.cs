@@ -462,7 +462,6 @@ namespace HoloToolkit.Unity
             /// <returns>Zero if fails, one if success</returns>
             [DllImport("SpatialUnderstanding")]
             public static extern int QueryPlayspaceStats(
-                // TODO: investigate... this sure looks like an "out"
                 [In] IntPtr playspaceStats);    // PlayspaceStats
 
             /// <summary>
@@ -472,7 +471,6 @@ namespace HoloToolkit.Unity
             /// <returns>Zero if fails, one if success</returns>
             [DllImport("SpatialUnderstanding")]
             public static extern int QueryPlayspaceAlignment(
-                // TODO: investigate... this sure looks like an "out"
                 [In] IntPtr playspaceAlignment); // PlayspaceAlignment
 
             /// <summary>
@@ -491,7 +489,6 @@ namespace HoloToolkit.Unity
             public static extern int PlayspaceRaycast(
                 [In] float rayPos_X, [In] float rayPos_Y, [In] float rayPos_Z,
                 [In] float rayVec_X, [In] float rayVec_Y, [In] float rayVec_Z,
-                // TODO: investigate... this sure looks like an "out"
                 [In] IntPtr result);            // RaycastResult
         }
     }

@@ -91,7 +91,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 {
                     // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
                     // the queue based on distance to the user or some other metric.
-                    var surfaceID = surfaceWorkQueue.Dequeue();
+                    SurfaceId surfaceID = surfaceWorkQueue.Dequeue();
 
                     string surfaceName = ("Surface-" + surfaceID.handle);
 
@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                     }
                     else
                     {
-                        Debug.LogError(string.Format("Mesh request for failed. Is {0} a valid Surface ID?", surfaceID.handle));
+                        Debug.LogErrorFormat("Mesh request for failed. Is {0} a valid Surface ID?", surfaceID.handle);
 
                         Debug.Assert(outstandingMeshRequest == null);
                         ReclaimSurface(newSurface);
@@ -249,9 +249,9 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             if (outstandingMeshRequest == null)
             {
-                Debug.LogError(string.Format("Got OnDataReady for surface {0} while no request was outstanding.",
+                Debug.LogErrorFormat("Got OnDataReady for surface {0} while no request was outstanding.",
                     cookedData.id.handle
-                    ));
+                    );
 
                 return;
             }
@@ -262,10 +262,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                 || (outstandingMeshRequest.Value.Collider != cookedData.outputCollider)
                 )
             {
-                Debug.LogError(string.Format("Got mismatched OnDataReady for surface {0} while request for surface {1} was outstanding.",
+                Debug.LogErrorFormat("Got mismatched OnDataReady for surface {0} while request for surface {1} was outstanding.",
                     cookedData.id.handle,
                     outstandingMeshRequest.Value.ID
-                    ));
+                    );
 
                 ReclaimSurface(outstandingMeshRequest.Value);
                 outstandingMeshRequest = null;
@@ -275,9 +275,9 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (ObserverState != ObserverStates.Running)
             {
-                Debug.Log(string.Format("Got OnDataReady for surface {0}, but observer was no longer running.",
+                Debug.LogFormat("Got OnDataReady for surface {0}, but observer was no longer running.",
                     cookedData.id.handle
-                    ));
+                    );
 
                 ReclaimSurface(outstandingMeshRequest.Value);
                 outstandingMeshRequest = null;
@@ -296,7 +296,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             Debug.Assert(outstandingMeshRequest.Value.Object.activeSelf);
             outstandingMeshRequest.Value.Renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
 
-            var replacedSurface = UpdateOrAddSurfaceObject(outstandingMeshRequest.Value, destroyGameObjectIfReplaced: false);
+            SurfaceObject? replacedSurface = UpdateOrAddSurfaceObject(outstandingMeshRequest.Value, destroyGameObjectIfReplaced: false);
             outstandingMeshRequest = null;
 
             if (replacedSurface != null)
@@ -328,7 +328,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                     break;
 
                 case SurfaceChange.Removed:
-                    var removedSurface = RemoveSurfaceIfFound(id.handle, destroyGameObject: false);
+                    SurfaceObject? removedSurface = RemoveSurfaceIfFound(id.handle, destroyGameObject: false);
                     if (removedSurface != null)
                     {
                         ReclaimSurface(removedSurface.Value);
@@ -336,7 +336,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                     break;
 
                 default:
-                    Debug.LogError(string.Format("Unexpected {0} value: {1}.", changeType.GetType(), changeType));
+                    Debug.LogErrorFormat("Unexpected {0} value: {1}.", changeType.GetType(), changeType);
                     break;
             }
         }

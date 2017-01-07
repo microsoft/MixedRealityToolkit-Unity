@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             try
             {
-                var storedMeshes = MeshSaver.Load(fileName);
+                IList<Mesh> storedMeshes = MeshSaver.Load(fileName);
 
                 for(int iMesh = 0; iMesh < storedMeshes.Count; iMesh++)
                 {

@@ -22,8 +22,7 @@ namespace HoloToolkit.Unity
     }
 
     [Serializable]
-    public class PropertyChangedEventArgsEx<TProperty> :
-        PropertyChangedEventArgs
+    public class PropertyChangedEventArgsEx<TProperty> : PropertyChangedEventArgs
     {
         public TProperty OldValue { get; private set; }
         public TProperty NewValue { get; private set; }
@@ -45,7 +44,7 @@ namespace HoloToolkit.Unity
         {
             Debug.Assert(memberGetter.Body is MemberExpression);
 
-            var memberName = ((MemberExpression)memberGetter.Body).Member.Name;
+            string memberName = ((MemberExpression)memberGetter.Body).Member.Name;
             return memberName;
         }
 

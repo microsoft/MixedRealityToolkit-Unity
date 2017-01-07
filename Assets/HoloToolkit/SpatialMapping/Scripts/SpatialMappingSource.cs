@@ -146,7 +146,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             for (int iSurface = 0; iSurface < surfaceObjectsWriteable.Count; iSurface++)
             {
-                var existing = surfaceObjectsWriteable[iSurface];
+                SurfaceObject existing = surfaceObjectsWriteable[iSurface];
 
                 if (existing.ID == toUpdateOrAdd.ID)
                 {
@@ -193,7 +193,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             for (int iSurface = 0; iSurface < surfaceObjectsWriteable.Count; iSurface++)
             {
-                var surface = surfaceObjectsWriteable[iSurface];
+                SurfaceObject surface = surfaceObjectsWriteable[iSurface];
 
                 if (surface.ID == surfaceID)
                 {
@@ -241,7 +241,6 @@ namespace HoloToolkit.Unity.SpatialMapping
                 Destroy(surface.Object);
                 Debug.Assert(surface.GetType().IsValueType(), "If surface is no longer a value type, you should probably set surface.Object to null.");
             }
-
 
             Mesh filterMesh = surface.Filter.sharedMesh;
             Mesh colliderMesh = surface.Collider.sharedMesh;

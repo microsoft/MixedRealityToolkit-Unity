@@ -94,7 +94,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                     {
                         int meshID = SurfaceObjects.Count;
 
-                        var surface = CreateSurfaceObject(
+                        SurfaceObject surface = CreateSurfaceObject(
                             mesh: meshes[index],
                             objectName: "Beamed-" + meshID,
                             parentObject: transform,

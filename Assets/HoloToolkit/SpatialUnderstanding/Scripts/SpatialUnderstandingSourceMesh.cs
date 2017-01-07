@@ -82,7 +82,7 @@ namespace HoloToolkit.Unity
             Debug.Assert(object.ReferenceEquals(sender, SpatialMappingManager.Instance.Source));
             Debug.Assert(e.Data.Old.ID == e.Data.New.ID);
 
-            var iMesh = FindMeshIndexInInputMeshList(e.Data.New.ID);
+            int iMesh = FindMeshIndexInInputMeshList(e.Data.New.ID);
             Debug.Assert(iMesh >= 0);
 
             inputMeshList[iMesh] = CreateMeshData(e.Data.New, (inputMeshList[iMesh].LastUpdateID + 1));

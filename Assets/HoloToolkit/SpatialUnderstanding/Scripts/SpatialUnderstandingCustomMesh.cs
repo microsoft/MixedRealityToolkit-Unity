@@ -256,7 +256,7 @@ namespace HoloToolkit.Unity
                     meshdata.Reset();
                 }
 
-                var startTime = Time.realtimeSinceStartup;
+                float startTime = Time.realtimeSinceStartup;
                 // first we need to split the playspace up into segments so we don't always 
                 // draw everything.  We can break things up in to cubic meters.  
                 for (int index = 0; index < meshIndices.Length; index += 3)

@@ -14,8 +14,7 @@ namespace HoloToolkit.Unity
     }
 
     [Serializable]
-    public class DataEventArgs<TData> :
-        EventArgs
+    public class DataEventArgs<TData> : EventArgs
     {
         public TData Data { get; private set; }
 
