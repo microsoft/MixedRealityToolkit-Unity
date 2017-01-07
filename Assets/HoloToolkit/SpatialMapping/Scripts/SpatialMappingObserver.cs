@@ -256,11 +256,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 return;
             }
 
-            if (false
-                || (outstandingMeshRequest.Value.ID != cookedData.id.handle)
-                || (outstandingMeshRequest.Value.Filter != cookedData.outputMesh)
-                || (outstandingMeshRequest.Value.Collider != cookedData.outputCollider)
-                )
+            if (!IsMatchingSurface(outstandingMeshRequest.Value, cookedData))
             {
                 Debug.LogErrorFormat("Got mismatched OnDataReady for surface {0} while request for surface {1} was outstanding.",
                     cookedData.id.handle,
@@ -364,6 +360,14 @@ namespace HoloToolkit.Unity.SpatialMapping
             {
                 CleanUpSurface(availableSurface);
             }
+        }
+
+        private bool IsMatchingSurface(SurfaceObject surfaceObject, SurfaceData surfaceData)
+        {
+            return (surfaceObject.ID == surfaceData.id.handle)
+                && (surfaceObject.Filter == surfaceData.outputMesh)
+                && (surfaceObject.Collider == surfaceData.outputCollider)
+                ;
         }
     }
 }
