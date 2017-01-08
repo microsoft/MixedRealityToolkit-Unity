@@ -33,6 +33,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public bool EnableActivation = true;
 
         private AnimatorControllerParameter[] animatorHashes;
+        private Material cachedToolTipMaterial;
 
         private bool focused;
         public bool Focused
@@ -101,13 +102,14 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         protected virtual void OnEnable()
         {
-
             // Set the initial alpha
             if (ToolTipRenderer != null)
             {
-                Color tipColor = ToolTipRenderer.material.color;
+                cachedToolTipMaterial = ToolTipRenderer.material;
+
+                Color tipColor = cachedToolTipMaterial.GetColor("_Color");
                 tipColor.a = 0.0f;
-                ToolTipRenderer.material.color = tipColor;
+                cachedToolTipMaterial.SetColor("_Color", tipColor);
                 toolTipTimer = 0.0f;
             }
 
@@ -135,9 +137,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 // Update the new opacity
                 if (ToolTipRenderer != null)
                 {
-                    Color tipColor = ToolTipRenderer.material.color;
+                    Color tipColor = cachedToolTipMaterial.GetColor("_Color");
                     tipColor.a = Mathf.Clamp(toolTipTimer, 0, ToolTipFadeTime) / ToolTipFadeTime;
-                    ToolTipRenderer.material.color = tipColor;
+                    cachedToolTipMaterial.SetColor("_Color", tipColor);
                 }
             }
         }
@@ -228,6 +230,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Focused = false;
 
             UpdateVisuals();
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedToolTipMaterial);
         }
     }
 }

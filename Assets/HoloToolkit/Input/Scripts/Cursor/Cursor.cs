@@ -23,11 +23,11 @@ namespace HoloToolkit.Unity.InputModule
             /// <summary>
             /// Not IsHandVisible
             /// </summary>
-            Observe, 
+            Observe,
             /// <summary>
             /// Not IsHandVisible AND not IsInputSourceDown AND TargetedObject exists
             /// </summary>
-            ObserveHover, 
+            ObserveHover,
             /// <summary>
             /// IsHandVisible AND not IsInputSourceDown AND TargetedObject is NULL
             /// </summary>
@@ -73,10 +73,13 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The distance from the hit surface to place the cursor")]
         public float SurfaceCursorDistance = 0.02f;
 
+        [Header("Motion")]
+        [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
+        public bool UseUnscaledTime = true;
+
         /// <summary>
         /// Blend value for surface normal to user facing lerp
         /// </summary>
-        [Header("Motion")]
         public float PositionLerpTime = 0.01f;
 
         /// <summary>
@@ -105,7 +108,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             get { return transform.position; }
         }
-        
+
         public Quaternion Rotation
         {
             get { return transform.rotation; }
@@ -153,7 +156,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-#region MonoBehaviour Functions
+        #region MonoBehaviour Functions
 
         private void Awake()
         {
@@ -177,7 +180,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Override for enable functions
         /// </summary>
-        protected virtual void OnEnable(){}
+        protected virtual void OnEnable() { }
 
         /// <summary>
         /// Override for disable functions
@@ -194,7 +197,7 @@ namespace HoloToolkit.Unity.InputModule
             UnregisterManagers();
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Register to events from the managers the cursor needs.
@@ -302,17 +305,21 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
+            float deltaTime = UseUnscaledTime
+                ? Time.unscaledDeltaTime
+                : Time.deltaTime;
+
             // Use the lerp times to blend the position to the target position
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / PositionLerpTime);
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime / ScaleLerpTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime / RotationLerpTime);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, deltaTime / PositionLerpTime);
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, deltaTime / ScaleLerpTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, deltaTime / RotationLerpTime);
         }
 
         /// <summary>
         /// Updates the visual representation of the cursor.
         /// </summary>
         public void SetVisiblity(bool visible)
-        { 
+        {
             if (PrimaryCursorVisual != null)
             {
                 PrimaryCursorVisual.gameObject.SetActive(visible);
@@ -414,7 +421,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     return CursorStateEnum.Select;
                 }
-                else if(cursorState == CursorStateEnum.Select)
+                else if (cursorState == CursorStateEnum.Select)
                 {
                     return CursorStateEnum.Release;
                 }

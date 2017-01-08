@@ -54,15 +54,15 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private const float FingerPressDelay = 0.07f;
 
-		/// <summary>
-		/// The maximum interval between button down and button up that will result in a clicked event.
-		/// </summary>
-		private const float MaxClickDuration = 0.5f;
+        /// <summary>
+        /// The maximum interval between button down and button up that will result in a clicked event.
+        /// </summary>
+        private const float MaxClickDuration = 0.5f;
 
-		/// <summary>
-		/// Number of fake hands supported in the editor.
-		/// </summary>
-		private const int EditorHandsCount = 2;
+        /// <summary>
+        /// Number of fake hands supported in the editor.
+        /// </summary>
+        private const int EditorHandsCount = 2;
 
         /// <summary>
         /// Array containing the hands data for the two fake hands
@@ -200,19 +200,33 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void UpdateHandData()
         {
+            float time;
+            float deltaTime;
+
+            if (manualHandControl.UseUnscaledTime)
+            {
+                time = Time.unscaledTime;
+                deltaTime = Time.unscaledDeltaTime;
+            }
+            else
+            {
+                time = Time.time;
+                deltaTime = Time.deltaTime;
+            }
+
             if (manualHandControl.LeftHandInView)
             {
                 GetOrAddHandData(0);
                 currentHands.Add(0);
 
-                UpdateHandState(manualHandControl.LeftHandSourceState, editorHandsData[0]);
+                UpdateHandState(manualHandControl.LeftHandSourceState, editorHandsData[0], deltaTime, time);
             }
 
             if (manualHandControl.RightHandInView)
             {
                 GetOrAddHandData(1);
                 currentHands.Add(1);
-                UpdateHandState(manualHandControl.RightHandSourceState, editorHandsData[1]);
+                UpdateHandState(manualHandControl.RightHandSourceState, editorHandsData[1], deltaTime, time);
             }
         }
 
@@ -240,7 +254,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="handSource">Hand source to use to update the position.</param>
         /// <param name="editorHandData">EditorHandData structure to update.</param>
-        private void UpdateHandState(DebugInteractionSourceState handSource, EditorHandData editorHandData)
+        private void UpdateHandState(DebugInteractionSourceState handSource, EditorHandData editorHandData, float deltaTime, float time)
         {
             // Update hand position
             Vector3 handPosition;
@@ -261,26 +275,26 @@ namespace HoloToolkit.Unity.InputModule
             editorHandData.FingerStateChanged = false;
             if (editorHandData.FingerStateUpdateTimer > 0)
             {
-                editorHandData.FingerStateUpdateTimer -= Time.deltaTime;
+                editorHandData.FingerStateUpdateTimer -= deltaTime;
                 if (editorHandData.FingerStateUpdateTimer <= 0)
                 {
                     editorHandData.IsFingerDown = editorHandData.IsFingerDownPending;
                     editorHandData.FingerStateChanged = true;
-					if (editorHandData.IsFingerDown)
-					{
-						editorHandData.FingerDownStartTime = Time.time;
-					}
+                    if (editorHandData.IsFingerDown)
+                    {
+                        editorHandData.FingerDownStartTime = time;
+                    }
                 }
             }
 
-            SendHandStateEvents(editorHandData);
+            SendHandStateEvents(editorHandData, time);
         }
 
         /// <summary>
         /// Sends the events for hand state changes.
         /// </summary>
         /// <param name="editorHandData">Hand data for which events should be sent.</param>
-        private void SendHandStateEvents(EditorHandData editorHandData)
+        private void SendHandStateEvents(EditorHandData editorHandData, float time)
         {
             // Hand moved event
             if (editorHandData.HandDelta.sqrMagnitude > 0)
@@ -300,8 +314,8 @@ namespace HoloToolkit.Unity.InputModule
                     inputManager.RaiseSourceUp(this, editorHandData.HandId);
 
                     // Also send click event when using this hands replacement input
-					if (Time.time - editorHandData.FingerDownStartTime < MaxClickDuration)
-					{
+                    if (time - editorHandData.FingerDownStartTime < MaxClickDuration)
+                    {
                         // We currently only support single taps in editor
                         inputManager.RaiseSourceClicked(this, editorHandData.HandId, 1);
 					}

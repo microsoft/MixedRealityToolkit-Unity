@@ -55,7 +55,7 @@ Shader "HoloToolkit/Unlit Configurable"
 
             #pragma shader_feature _USECOLOR_ON
             #pragma shader_feature _USEMAINTEX_ON
-            #pragma shader_feature _NEAR_PLANE_FADE_ON
+            #pragma multi_compile  __ _NEAR_PLANE_FADE_ON
 
             #include "HoloToolkitCommon.cginc"
             #include "UnlitConfigurable.cginc"

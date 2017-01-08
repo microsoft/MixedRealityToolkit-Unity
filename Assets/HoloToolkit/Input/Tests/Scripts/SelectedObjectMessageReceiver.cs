@@ -6,27 +6,34 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// SelectedObjectMessageReceiver class shows how to handle messages sent by SelectedObjectMessageSender.
     /// This particular implementatoin controls object appearance by changing its color when selected.
     /// </summary>
+    [RequireComponent(typeof(Renderer))]
     public class SelectedObjectMessageReceiver : MonoBehaviour
     {
-        [Tooltip("Object color changes to this when selected.")] public Color SelectedColor = Color.red;
+        [Tooltip("Object color changes to this when selected.")]
+        public Color SelectedColor = Color.red;
 
-        private Material material;
         private Color originalColor;
+        private Material cachedMaterial;
 
-        private void Start()
+        private void Awake()
         {
-            material = GetComponent<Renderer>().material;
-            originalColor = material.color;
+            cachedMaterial = GetComponent<Renderer>().material;
+            originalColor = cachedMaterial.GetColor("_Color");
         }
 
         public void OnSelectObject()
         {
-            material.color = SelectedColor;
+            cachedMaterial.SetColor("_Color", SelectedColor);
         }
 
         public void OnClearSelection()
         {
-            material.color = originalColor;
+            cachedMaterial.SetColor("_Color", originalColor);
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedMaterial);
         }
     }
 }
