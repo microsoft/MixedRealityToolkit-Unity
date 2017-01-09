@@ -29,12 +29,12 @@ namespace HoloToolkit.Unity
 
         public static bool Button(Rect position, string text)
         {
-            return EditorGUIExtensions.Button(position, new GUIContent(text));
+            return Button(position, new GUIContent(text));
         }
 
         public static bool Button(Rect position, GUIContent content)
         {
-            float indent = EditorGUIExtensions.Indent;
+            float indent = Indent;
             position.x += indent;
             position.width -= indent;
             return GUI.Button(position, content);
@@ -42,7 +42,7 @@ namespace HoloToolkit.Unity
 
         public static void Label(Rect position, string text)
         {
-            float indent = EditorGUIExtensions.Indent;
+            float indent = Indent;
             position.x += indent;
             position.width -= indent;
             GUI.Label(position, text);
@@ -52,21 +52,19 @@ namespace HoloToolkit.Unity
         // Doesn't handle serialized types with nested serialized children.
         public static float GetTypeHeight(bool hasLabel, Type valueType)
         {
-            if (valueType == typeof(Vector3) ||
-                valueType == typeof(Vector2))
+            if (valueType == typeof(Vector3) || valueType == typeof(Vector2))
             {
-                return (!hasLabel || EditorGUIUtility.wideMode ? 0f : EditorGUIUtility.singleLineHeight) +
-                    EditorGUIUtility.singleLineHeight;
+                return (!hasLabel || EditorGUIUtility.wideMode ? 0f : EditorGUIUtility.singleLineHeight) + EditorGUIUtility.singleLineHeight;
             }
-            else if (valueType == typeof(Rect))
+
+            if (valueType == typeof(Rect))
             {
-                return (!hasLabel || EditorGUIUtility.wideMode ? 0f : EditorGUIUtility.singleLineHeight) +
-                    EditorGUIUtility.singleLineHeight * 2;
+                return (!hasLabel || EditorGUIUtility.wideMode ? 0f : EditorGUIUtility.singleLineHeight) + EditorGUIUtility.singleLineHeight * 2;
             }
-            else if (valueType == typeof(Bounds))
+
+            if (valueType == typeof(Bounds))
             {
-                return (!hasLabel ? 0f : EditorGUIUtility.singleLineHeight) +
-                    EditorGUIUtility.singleLineHeight * 2;
+                return (!hasLabel ? 0f : EditorGUIUtility.singleLineHeight) + EditorGUIUtility.singleLineHeight * 2;
             }
 
             return EditorGUIUtility.singleLineHeight;
@@ -83,7 +81,7 @@ namespace HoloToolkit.Unity
         /// <returns>The new value.</returns>
         public static T ObjectField<T>(Rect position, GUIContent label, T value, bool allowSceneObjects)
         {
-            object objValue = (object)value;
+            object objValue = value;
 
             Type valueType = objValue.GetType();
             if (valueType == typeof(Bounds))
@@ -93,6 +91,10 @@ namespace HoloToolkit.Unity
             else if (valueType == typeof(Color))
             {
                 objValue = EditorGUI.ColorField(position, label, (Color)objValue);
+            }
+            else if (valueType == typeof(Material))
+            {
+                objValue = EditorGUI.ObjectField(position, (Material)objValue, typeof(Material), allowSceneObjects);
             }
             else if (valueType == typeof(AnimationCurve))
             {
@@ -150,6 +152,10 @@ namespace HoloToolkit.Unity
                 }
 
                 objValue = EditorGUI.Vector4Field(position, label.text, (Vector4)objValue);
+            }
+            else if (Equals(objValue, typeof(SceneAsset)))
+            {
+                objValue = EditorGUI.ObjectField(position, (SceneAsset)objValue, typeof(SceneAsset), allowSceneObjects);
             }
             else if (objValue is UnityEngine.Object)
             {

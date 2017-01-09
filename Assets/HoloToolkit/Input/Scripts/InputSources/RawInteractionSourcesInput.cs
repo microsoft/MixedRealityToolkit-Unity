@@ -52,6 +52,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private const float SourcePressDelay = 0.07f;
 
+        [Tooltip("Use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
+        public bool UseUnscaledTime = true;
+
         /// <summary>
         /// Dictionary linking each source ID to its data.
         /// </summary>
@@ -106,7 +109,7 @@ namespace HoloToolkit.Unity.InputModule
             orientation = Quaternion.identity;
             return false;
         }
-        
+
         private void Update()
         {
             newSources.Clear();
@@ -180,7 +183,11 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.SourceStateChanged = false;
             if (sourceData.SourceStateUpdateTimer >= 0)
             {
-                sourceData.SourceStateUpdateTimer -= Time.deltaTime;
+                float deltaTime = UseUnscaledTime
+                    ? Time.unscaledDeltaTime
+                    : Time.deltaTime;
+
+                sourceData.SourceStateUpdateTimer -= deltaTime;
                 if (sourceData.SourceStateUpdateTimer < 0)
                 {
                     sourceData.IsSourceDown = sourceData.IsSourceDownPending;

@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// RemoveSurfaceVertices will remove any vertices from the Spatial Mapping Mesh that fall within the bounding volume.
@@ -93,12 +93,10 @@ namespace HoloToolkit.Unity
         {
             foreach (GameObject item in boundingObjects)
             {
-                Bounds bounds = new Bounds();
-
                 Collider boundingCollider = item.GetComponent<Collider>();
                 if (boundingCollider != null)
                 {
-                    bounds = boundingCollider.bounds;
+                    Bounds bounds = boundingCollider.bounds;
 
                     // Expand the bounds, if requested.
                     if (BoundsExpansion > 0.0f)
@@ -135,7 +133,7 @@ namespace HoloToolkit.Unity
                     }
 
                     Mesh mesh = filter.sharedMesh;
-                    MeshRenderer renderer = filter.GetComponent<MeshRenderer>();
+                    MeshRenderer meshRenderer = filter.GetComponent<MeshRenderer>();
                     
                     // The mesh renderer bounds are in world space.
                     // If the mesh is null there is nothing to process
@@ -143,7 +141,7 @@ namespace HoloToolkit.Unity
                     // If the renderer's bounds aren't contained inside of the current
                     // bounds from the bounds queue there is no reason to process
                     // If any of the above conditions are met, then we should go to the next meshfilter. 
-                    if (mesh == null || renderer == null || !renderer.bounds.Intersects(bounds))
+                    if (mesh == null || meshRenderer == null || !meshRenderer.bounds.Intersects(bounds))
                     {
                         // We don't need to do anything to this mesh, move to the next one.
                         continue;
@@ -221,11 +219,11 @@ namespace HoloToolkit.Unity
                     start = Time.realtimeSinceStartup;
 
                     // Reset the mesh collider to fit the new mesh.
-                    MeshCollider collider = filter.gameObject.GetComponent<MeshCollider>();
-                    if (collider != null)
+                    MeshCollider meshCollider = filter.gameObject.GetComponent<MeshCollider>();
+                    if (meshCollider != null)
                     {
-                        collider.sharedMesh = null;
-                        collider.sharedMesh = mesh;
+                        meshCollider.sharedMesh = null;
+                        meshCollider.sharedMesh = mesh;
                     }
                 }
             }

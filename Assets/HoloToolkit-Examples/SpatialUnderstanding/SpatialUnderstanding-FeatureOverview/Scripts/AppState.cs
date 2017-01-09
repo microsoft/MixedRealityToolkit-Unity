@@ -5,6 +5,7 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using System;
 using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -199,13 +200,18 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             InputManager.Instance.AddGlobalListener(gameObject);
         }
 
-        private void Update_DebugDisplay(float deltaTime)
+    protected override void OnDestroy()
+    {
+        InputManager.Instance.RemoveGlobalListener(gameObject);
+    }
+
+    private void Update_DebugDisplay(float deltaTime)
+    {
+        // Basic checks
+        if (DebugDisplay == null)
         {
-            // Basic checks
-            if (DebugDisplay == null)
-            {
-                return;
-            }
+            return;
+        }
 
             // Update display text
             DebugDisplay.text = PrimaryText;
