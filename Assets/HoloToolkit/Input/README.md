@@ -237,6 +237,14 @@ In this particular implementation, selected object color it toggled on selecting
 A grid of dynamic objects to illustrate sending messages to prefab instances created at runtime as opposed
 to only static objects that already exist in the scene.
 
+#### GazeResponder.cs
+This class implements IFocusable to respond to gaze changes.
+It highlights the object being gazed at.
+
+#### TapResponder.cs
+This class implements IInputClickHandler to handle the tap gesture.
+It increases the scale of the object when tapped.
+
 ### [Tests](Tests)
 Tests related to the input features. To use the scene:
 
@@ -258,6 +266,10 @@ Shows the cursor hugging the test sphere in the scene and displays hand detected
 #### FocusedObjectKeywords.unity
 Example on how to send keyword messages to currently focused dynamically instantiated object.
 Gazing on an object and saying "Make Smaller" and "Make Bigger" will adjust object size.
+
+#### InputTapTest.unity
+Test scene shows you in a simple way, how to respond to user's gaze using the Input module.
+It also shows you how to respond to the user's tap gesture.
 
 #### KeywordManager.unity
 Shows how to use the KeywordManager.cs script to add keywords to your scene.
