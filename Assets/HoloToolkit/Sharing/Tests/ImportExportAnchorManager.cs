@@ -116,8 +116,9 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     private RoomManagerAdapter roomManagerCallbacks;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Debug.Log("Import Export Manager starting");
         // We need to get our local anchor store started up.
         currentState = ImportExportState.AnchorStore_Initializing;
@@ -134,7 +135,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
         SharingSessionTracker.Instance.SessionJoined += Instance_SessionJoined;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
         if (SharingStage.Instance != null)
         {
@@ -151,6 +152,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
                 roomManager.RemoveListener(roomManagerCallbacks);
             }
         }
+
+        base.OnDestroy();
     }
 
     private void SharingManagerConnected(object sender, EventArgs e)
@@ -273,10 +276,9 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
     private bool LocalUserHasLowestUserId()
     {
-        long localUserId = CustomMessages.Instance.localUserID;
-        foreach (long userid in SharingSessionTracker.Instance.UserIds)
+        for (int i = 0; i < SharingSessionTracker.Instance.UserIds.Count; i++)
         {
-            if (userid < localUserId)
+            if (SharingSessionTracker.Instance.UserIds[i] < CustomMessages.Instance.localUserID)
             {
                 return false;
             }
@@ -403,13 +405,13 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// Attempts to attach to  an anchor by anchorName in the local store..
     /// </summary>
     /// <returns>True if it attached, false if it could not attach</returns>
-    private bool AttachToCachedAnchor(string AnchorName)
+    private bool AttachToCachedAnchor(string anchorName)
     {
-        Debug.Log("Looking for " + AnchorName);
+        Debug.Log("Looking for " + anchorName);
         string[] ids = anchorStore.GetAllIds();
         for (int index = 0; index < ids.Length; index++)
         {
-            if (ids[index] == AnchorName)
+            if (ids[index] == anchorName)
             {
                 Debug.Log("Using what we have");
                 WorldAnchor wa = anchorStore.Load(ids[index], gameObject);

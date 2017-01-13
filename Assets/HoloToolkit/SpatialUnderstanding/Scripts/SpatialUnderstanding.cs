@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System;
+using UnityEngine;
+using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Unity
 {
@@ -116,8 +113,10 @@ namespace HoloToolkit.Unity
         private float timeSinceLastUpdate = 0.0f;
 
         // Functions
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             // Cache references to required component
             UnderstandingDLL = new SpatialUnderstandingDll();
             UnderstandingSourceMesh = GetComponent<SpatialUnderstandingSourceMesh>();
@@ -152,13 +151,15 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             // Term the DLL
             if (AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDll.Imports.SpatialUnderstanding_Term();
             }
+
+            base.OnDestroy();
         }
 
         /// <summary>

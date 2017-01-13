@@ -47,9 +47,6 @@ Spawns a user specified "pointer" object and startup and alligns it to aim at a 
 #### Interpolator.cs
 A MonoBehaviour that interpolates a transform's position, rotation or scale.
 
-#### ManualCameraControl.cs
-A script to add to the main camera object so that when running in Play mode in Unity, the user can control the camera using keyboard and mouse.
-
 #### SphereBasedTagalong.cs
 A simple Tagalong that stays inside a sphere at a fixed distance from the camera. Very cheap implementation with smoothing capability.
 
@@ -114,10 +111,6 @@ This scene shows 7 marker objects with 7 HeadsUpDirectionIndicators pointing to 
 - +Y at the top
 - \-Z also at the bottom
 - +Z in front
-
-#### ManualCameraControl.unity
-
-This scene shows how to use ManualCameraControl.cs.  The script is on the main camera of the scene.  When preview mode in Unity is activated, the user can move around the scene using WASD and look around using ctrl + mouse. 
 
 #### TextToSpeechManager.unity 
 

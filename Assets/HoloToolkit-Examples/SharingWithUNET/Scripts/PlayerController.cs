@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.Networking;
-using HoloToolkit.Unity;
+using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Examples.SharingWithUNET
 {
@@ -11,7 +11,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
     /// Controls player behavior (local and remote).
     /// </summary>
     [NetworkSettings(sendInterval = 0.033f)]
-    public class PlayerController : NetworkBehaviour
+    public class PlayerController : NetworkBehaviour, IInputClickHandler
     {
         /// <summary>
         /// The game object that represents the 'bullet' for 
@@ -65,7 +65,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
             {
                 // If we are the local player then we want to have airtaps 
                 // sent to this object so that projeciles can be spawned.
-                GestureManager.Instance.OverrideFocusedObject = this.gameObject;
+                InputManager.Instance.AddGlobalListener(gameObject);
 
             }
             else
@@ -76,6 +76,14 @@ namespace HoloToolkit.Examples.SharingWithUNET
 
             sharedWorldAnchorTransform = SharedCollection.Instance.gameObject.transform;
             transform.SetParent(sharedWorldAnchorTransform);
+        }
+
+        private void OnDestroy()
+        {
+            if (isLocalPlayer)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
         }
 
         private void Update()
@@ -112,17 +120,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
         }
 
         /// <summary>
-        /// Called by the gesture manager when an airtap is seen.
-        /// </summary>
-        void OnSelect()
-        {
-            if (isLocalPlayer)
-            {
-                CmdFire();
-            }
-        }
-
-        /// <summary>
         /// Called on the host when a bullet needs to be added. 
         /// This will 'spawn' the bullet on all clients, including the 
         /// client on the host.
@@ -140,6 +137,14 @@ namespace HoloToolkit.Examples.SharingWithUNET
 
             // Clean up the bullet in 8 seconds.
             Destroy(nextBullet, 8.0f);
+        }
+
+        public void OnInputClicked(InputEventData eventData)
+        {
+            if (isLocalPlayer)
+            {
+                CmdFire();
+            }
         }
     }
 }
