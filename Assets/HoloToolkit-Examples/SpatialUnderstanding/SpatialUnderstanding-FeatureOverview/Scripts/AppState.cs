@@ -198,6 +198,11 @@ public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHan
         InputManager.Instance.AddGlobalListener(gameObject);
     }
 
+    protected override void OnDestroy()
+    {
+        InputManager.Instance.RemoveGlobalListener(gameObject);
+    }
+
     private void Update_DebugDisplay(float deltaTime)
     {
         // Basic checks

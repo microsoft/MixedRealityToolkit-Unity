@@ -61,7 +61,7 @@ Shader "HoloToolkit/Lambertian Configurable"
         #pragma shader_feature _USEMAINTEX_ON
         #pragma shader_feature _USEBUMPMAP_ON
         #pragma shader_feature _USEEMISSIONTEX_ON
-        #pragma shader_feature _NEAR_PLANE_FADE_ON
+        #pragma multi_compile  __ _NEAR_PLANE_FADE_ON
 
         #include "HoloToolkitCommon.cginc"
         #include "LambertianConfigurable.cginc"

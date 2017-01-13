@@ -18,19 +18,22 @@ namespace HoloToolkit.Unity
         public static string GetFullPath(this Transform transform, string delimiter = ".", string prefix = "/")
         {
             StringBuilder stringBuilder = new StringBuilder();
+            GetFullPath(stringBuilder, transform, delimiter, prefix);
+            return stringBuilder.ToString();
+        }
+
+        private static void GetFullPath(StringBuilder stringBuilder, Transform transform, string delimiter, string prefix)
+        {
             if (transform.parent == null)
             {
                 stringBuilder.Append(prefix);
-                stringBuilder.Append(transform.name);
             }
             else
             {
-                stringBuilder.Append(transform.parent.GetFullPath(delimiter, prefix));
+                GetFullPath(stringBuilder, transform.parent, delimiter, prefix);
                 stringBuilder.Append(delimiter);
-                stringBuilder.Append(transform.name);
             }
-
-            return stringBuilder.ToString();
+            stringBuilder.Append(transform.name);
         }
     }
 }
