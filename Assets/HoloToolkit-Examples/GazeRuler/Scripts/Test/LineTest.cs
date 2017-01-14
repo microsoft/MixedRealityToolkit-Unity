@@ -18,7 +18,7 @@ namespace HoloToolkit.Examples.GazeRuler
         public GameObject text;
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             var distance = Vector3.Distance(start.transform.position, end.transform.position);
             var midPoint = (start.transform.position + end.transform.position) * 0.5f;

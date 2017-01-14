@@ -24,7 +24,7 @@ namespace HoloToolkit.Examples.GazeRuler
         public GameObject ModeTipObject;
         public GameObject TextPrefab;
 
-        void Start()
+        private void Start()
         {
             InputManager.Instance.PushFallbackInputHandler(gameObject);
 
@@ -62,7 +62,7 @@ namespace HoloToolkit.Examples.GazeRuler
         public void OnPolygonClose()
         {
             IPolygonClosable client = PolygonManager.Instance;
-            client.ClosePloygon(LinePrefab, TextPrefab);
+            client.ClosePolygon(LinePrefab, TextPrefab);
         }
 
         // change measure mode

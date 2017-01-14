@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
@@ -14,8 +14,8 @@ namespace HoloToolkit.Examples.GazeRuler
     public class PolygonManager : Singleton<PolygonManager>, IGeometry, IPolygonClosable
     {
         // save all geometries
-        public Stack<Ploygon> Ploygons = new Stack<Ploygon>();
-        public Ploygon CurrentPloygon;
+        public Stack<Polygon> Polygons = new Stack<Polygon>();
+        public Polygon CurrentPolygon;
 
         /// <summary>
         ///  handle new point users place
@@ -32,32 +32,32 @@ namespace HoloToolkit.Examples.GazeRuler
                 Position = hitPoint,
                 Root = point
             };
-            if (CurrentPloygon.IsFinished)
+            if (CurrentPolygon.IsFinished)
             {
-                CurrentPloygon = new Ploygon()
+                CurrentPolygon = new Polygon()
                 {
                     IsFinished = false,
                     Root = new GameObject(),
                     Points = new List<Vector3>()
                 };
 
-                CurrentPloygon.Points.Add(newPoint.Position);
-                newPoint.Root.transform.parent = CurrentPloygon.Root.transform;
+                CurrentPolygon.Points.Add(newPoint.Position);
+                newPoint.Root.transform.parent = CurrentPolygon.Root.transform;
             }
             else
             {
-                CurrentPloygon.Points.Add(newPoint.Position);
-                newPoint.Root.transform.parent = CurrentPloygon.Root.transform;
-                if (CurrentPloygon.Points.Count > 1)
+                CurrentPolygon.Points.Add(newPoint.Position);
+                newPoint.Root.transform.parent = CurrentPolygon.Root.transform;
+                if (CurrentPolygon.Points.Count > 1)
                 {
-                    var index = CurrentPloygon.Points.Count - 1;
-                    var centerPos = (CurrentPloygon.Points[index] + CurrentPloygon.Points[index - 1]) * 0.5f;
-                    var direction = CurrentPloygon.Points[index] - CurrentPloygon.Points[index - 1];
-                    var distance = Vector3.Distance(CurrentPloygon.Points[index], CurrentPloygon.Points[index - 1]);
+                    var index = CurrentPolygon.Points.Count - 1;
+                    var centerPos = (CurrentPolygon.Points[index] + CurrentPolygon.Points[index - 1]) * 0.5f;
+                    var direction = CurrentPolygon.Points[index] - CurrentPolygon.Points[index - 1];
+                    var distance = Vector3.Distance(CurrentPolygon.Points[index], CurrentPolygon.Points[index - 1]);
                     var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
                     line.transform.localScale = new Vector3(distance, 0.005f, 0.005f);
                     line.transform.Rotate(Vector3.down, 90f);
-                    line.transform.parent = CurrentPloygon.Root.transform;
+                    line.transform.parent = CurrentPolygon.Root.transform;
                 }
 
             }
@@ -69,35 +69,35 @@ namespace HoloToolkit.Examples.GazeRuler
         /// </summary>
         /// <param name="LinePrefab"></param>
         /// <param name="TextPrefab"></param>
-        public void ClosePloygon(GameObject LinePrefab, GameObject TextPrefab)
+        public void ClosePolygon(GameObject LinePrefab, GameObject TextPrefab)
         {
-            if (CurrentPloygon != null)
+            if (CurrentPolygon != null)
             {
-                CurrentPloygon.IsFinished = true;
-                var area = CalculatePloygonArea(CurrentPloygon);
-                var index = CurrentPloygon.Points.Count - 1;
-                var centerPos = (CurrentPloygon.Points[index] + CurrentPloygon.Points[0]) * 0.5f;
-                var direction = CurrentPloygon.Points[index] - CurrentPloygon.Points[0];
-                var distance = Vector3.Distance(CurrentPloygon.Points[index], CurrentPloygon.Points[0]);
+                CurrentPolygon.IsFinished = true;
+                var area = CalculatePolygonArea(CurrentPolygon);
+                var index = CurrentPolygon.Points.Count - 1;
+                var centerPos = (CurrentPolygon.Points[index] + CurrentPolygon.Points[0]) * 0.5f;
+                var direction = CurrentPolygon.Points[index] - CurrentPolygon.Points[0];
+                var distance = Vector3.Distance(CurrentPolygon.Points[index], CurrentPolygon.Points[0]);
                 var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
                 line.transform.localScale = new Vector3(distance, 0.005f, 0.005f);
                 line.transform.Rotate(Vector3.down, 90f);
-                line.transform.parent = CurrentPloygon.Root.transform;
+                line.transform.parent = CurrentPolygon.Root.transform;
 
                 var vect = new Vector3(0, 0, 0);
-                foreach (var point in CurrentPloygon.Points)
+                foreach (var point in CurrentPolygon.Points)
                 {
                     vect += point;
                 }
                 var centerPoint = vect / (index + 1);
-                var direction1 = CurrentPloygon.Points[1] - CurrentPloygon.Points[0];
+                var direction1 = CurrentPolygon.Points[1] - CurrentPolygon.Points[0];
                 var directionF = Vector3.Cross(direction, direction1);
                 var tip = (GameObject)Instantiate(TextPrefab, centerPoint, Quaternion.LookRotation(directionF));//anchor.x + anchor.y + anchor.z < 0 ? -1 * anchor : anchor));
 
                 // unit is ㎡
                 tip.GetComponent<TextMesh>().text = area + "㎡";
-                tip.transform.parent = CurrentPloygon.Root.transform;
-                Ploygons.Push(CurrentPloygon);
+                tip.transform.parent = CurrentPolygon.Root.transform;
+                Polygons.Push(CurrentPolygon);
             }
         }
 
@@ -106,11 +106,11 @@ namespace HoloToolkit.Examples.GazeRuler
         /// </summary>
         public void Clear()
         {
-            if (Ploygons != null && Ploygons.Count > 0)
+            if (Polygons != null && Polygons.Count > 0)
             {
-                while (Ploygons.Count > 0)
+                while (Polygons.Count > 0)
                 {
-                    var lastLine = Ploygons.Pop();
+                    var lastLine = Polygons.Pop();
                     Destroy(lastLine.Root);
                 }
             }
@@ -119,9 +119,9 @@ namespace HoloToolkit.Examples.GazeRuler
         // delete latest geometry
         public void Delete()
         {
-            if (Ploygons != null && Ploygons.Count > 0)
+            if (Polygons != null && Polygons.Count > 0)
             {
-                var lastLine = Ploygons.Pop();
+                var lastLine = Polygons.Pop();
                 Destroy(lastLine.Root);
             }
         }
@@ -133,7 +133,7 @@ namespace HoloToolkit.Examples.GazeRuler
         /// <param name="p2"></param>
         /// <param name="p3"></param>
         /// <returns></returns>
-        float CalculateTriangleArea(Vector3 p1, Vector3 p2, Vector3 p3)
+        private float CalculateTriangleArea(Vector3 p1, Vector3 p2, Vector3 p3)
         {
             var a = Vector3.Distance(p1, p2);
             var b = Vector3.Distance(p1, p3);
@@ -146,22 +146,22 @@ namespace HoloToolkit.Examples.GazeRuler
         /// <summary>
         /// Calculate an area of geometry
         /// </summary>
-        /// <param name="ploygon"></param>
+        /// <param name="polygon"></param>
         /// <returns></returns>
-        float CalculatePloygonArea(Ploygon ploygon)
+        private float CalculatePolygonArea(Polygon polygon)
         {
             var s = 0.0f;
             var i = 1;
-            var n = ploygon.Points.Count;
+            var n = polygon.Points.Count;
             for (; i < n - 1; i++)
-                s += CalculateTriangleArea(ploygon.Points[0], ploygon.Points[i], ploygon.Points[i + 1]);
+                s += CalculateTriangleArea(polygon.Points[0], polygon.Points[i], polygon.Points[i + 1]);
             return 0.5f * Mathf.Abs(s);
         }
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
-            CurrentPloygon = new Ploygon()
+            CurrentPolygon = new Polygon()
             {
                 IsFinished = false,
                 Root = new GameObject(),
@@ -175,10 +175,10 @@ namespace HoloToolkit.Examples.GazeRuler
         /// </summary>
         public void Reset()
         {
-            if (CurrentPloygon != null && !CurrentPloygon.IsFinished)
+            if (CurrentPolygon != null && !CurrentPolygon.IsFinished)
             {
-                Destroy(CurrentPloygon.Root);
-                CurrentPloygon = new Ploygon()
+                Destroy(CurrentPolygon.Root);
+                CurrentPolygon = new Polygon()
                 {
                     IsFinished = false,
                     Root = new GameObject(),
@@ -189,7 +189,7 @@ namespace HoloToolkit.Examples.GazeRuler
     }
 
 
-    public class Ploygon
+    public class Polygon
     {
         public float Area { get; set; }
 

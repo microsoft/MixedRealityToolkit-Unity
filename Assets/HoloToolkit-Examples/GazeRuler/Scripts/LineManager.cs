@@ -24,17 +24,17 @@ namespace HoloToolkit.Examples.GazeRuler
         public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
         {
 
-            var hitPoint = GazeManager.Instance.HitPosition;
+            Vector3 hitPoint = GazeManager.Instance.HitPosition;
 
-            var point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
+            GameObject point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
             if (lastPoint != null && lastPoint.IsStart)
             {
-                var centerPos = (lastPoint.Position + hitPoint) * 0.5f;
+                Vector3 centerPos = (lastPoint.Position + hitPoint) * 0.5f;
 
-                var directionFromCamera = centerPos - Camera.main.transform.position;
+                Vector3 directionFromCamera = centerPos - Camera.main.transform.position;
 
-                var distanceA = Vector3.Distance(lastPoint.Position, Camera.main.transform.position);
-                var distanceB = Vector3.Distance(hitPoint, Camera.main.transform.position);
+                float distanceA = Vector3.Distance(lastPoint.Position, Camera.main.transform.position);
+                float distanceB = Vector3.Distance(hitPoint, Camera.main.transform.position);
 
                 Debug.Log("A: " + distanceA + ",B: " + distanceB);
                 Vector3 direction;
@@ -47,20 +47,20 @@ namespace HoloToolkit.Examples.GazeRuler
                     direction = lastPoint.Position - hitPoint;
                 }
 
-                var distance = Vector3.Distance(lastPoint.Position, hitPoint);
-                var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
+                float distance = Vector3.Distance(lastPoint.Position, hitPoint);
+                GameObject line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
                 line.transform.localScale = new Vector3(distance, defaultLineScale, defaultLineScale);
                 line.transform.Rotate(Vector3.down, 90f);
 
-                var normalV = Vector3.Cross(direction, directionFromCamera);
-                var normalF = Vector3.Cross(direction, normalV) * -1;
-                var tip = (GameObject)Instantiate(TextPrefab, centerPos, Quaternion.LookRotation(normalF));
+                Vector3 normalV = Vector3.Cross(direction, directionFromCamera);
+                Vector3 normalF = Vector3.Cross(direction, normalV) * -1;
+                GameObject tip = (GameObject)Instantiate(TextPrefab, centerPos, Quaternion.LookRotation(normalF));
 
                 //unit is meter
                 tip.transform.Translate(Vector3.up * 0.05f);
                 tip.GetComponent<TextMesh>().text = distance + "m";
 
-                var root = new GameObject();
+                GameObject root = new GameObject();
                 lastPoint.Root.transform.parent = root.transform;
                 line.transform.parent = root.transform;
                 point.transform.parent = root.transform;
@@ -99,7 +99,7 @@ namespace HoloToolkit.Examples.GazeRuler
         {
             if (Lines != null && Lines.Count > 0)
             {
-                var lastLine = Lines.Pop();
+                Line lastLine = Lines.Pop();
                 Destroy(lastLine.Root);
             }
 
@@ -112,7 +112,7 @@ namespace HoloToolkit.Examples.GazeRuler
             {
                 while (Lines.Count > 0)
                 {
-                    var lastLine = Lines.Pop();
+                    Line lastLine = Lines.Pop();
                     Destroy(lastLine.Root);
                 }
             }

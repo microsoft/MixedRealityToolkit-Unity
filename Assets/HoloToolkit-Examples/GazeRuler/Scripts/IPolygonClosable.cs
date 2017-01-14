@@ -10,7 +10,7 @@ namespace HoloToolkit.Examples.GazeRuler
     /// </summary>
     public interface IPolygonClosable
     {
-        //finish special ploygon
-        void ClosePloygon(GameObject LinePrefab, GameObject TextPrefab);
+        //finish special polygon
+        void ClosePolygon(GameObject LinePrefab, GameObject TextPrefab);
     }
 }

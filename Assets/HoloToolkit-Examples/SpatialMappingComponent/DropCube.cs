@@ -13,7 +13,7 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
     {
         GestureRecognizer recognizer;
 
-        void Start()
+        private void Start()
         {
             recognizer = new GestureRecognizer();
             recognizer.SetRecognizableGestures(GestureSettings.Tap);
@@ -21,7 +21,7 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
             recognizer.StartCapturingGestures();
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             recognizer.TappedEvent -= Recognizer_TappedEvent;
         }

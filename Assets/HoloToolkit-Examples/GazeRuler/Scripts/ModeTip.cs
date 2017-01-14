@@ -12,26 +12,33 @@ namespace HoloToolkit.Examples.GazeRuler
     public class ModeTip : Singleton<ModeTip>
     {
         private const string LineMode = "Line Mode";
-        private const string PloygonMode = "Geometry Mode";
+        private const string PolygonMode = "Geometry Mode";
         private TextMesh text;
         private int fadeTime = 100;
+        private Material material;
 
-        void Start()
+        private void Start()
         {
             text = GetComponent<TextMesh>();
+            material = GetComponent<Renderer>().material;
             switch (MeasureManager.Instance.Mode)
             {
                 case GeometryMode.Line:
                     text.text = LineMode;
                     break;
                 default:
-                    text.text = PloygonMode;
+                    text.text = PolygonMode;
                     break;
             }
         }
 
+        protected override void OnDestroy()
+        {
+            DestroyImmediate(material);
+        }
+
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (gameObject.activeInHierarchy)
             {
@@ -41,30 +48,33 @@ namespace HoloToolkit.Examples.GazeRuler
                 {
                     case GeometryMode.Line:
                         if (!text.text.Contains(LineMode))
+                        {
                             text.text = LineMode;
+                        }
                         break;
                     default:
-                        if (!text.text.Contains(PloygonMode))
-                            text.text = PloygonMode;
+                        if (!text.text.Contains(PolygonMode))
+                        {
+                            text.text = PolygonMode;
+                        }
                         break;
                 }
 
-                var render = GetComponent<MeshRenderer>().material;
                 fadeTime = 100;
                 // fade tip text
                 if (fadeTime == 0)
                 {
-                    var color = render.color;
+                    var color = material.color;
                     fadeTime = 100;
                     color.a = 1f;
-                    render.color = color;
+                    material.color = color;
                     gameObject.SetActive(false);
                 }
                 else
                 {
-                    var color = render.color;
+                    var color = material.color;
                     color.a -= 0.01f;
-                    render.color = color;
+                    material.color = color;
                     fadeTime--;
                 }
             }
