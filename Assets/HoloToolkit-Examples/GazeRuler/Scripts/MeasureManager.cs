@@ -99,7 +99,7 @@ public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputCli
         // Nothing to do
     }
 
-    public void OnInputClicked(InputEventData eventData)
+    public void OnInputClicked(InputClickedEventData eventData)
     {
         OnSelect();
     }

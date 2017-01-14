@@ -317,7 +317,7 @@ namespace HoloToolkit.Unity.InputModule
                     if (time - editorHandData.FingerDownStartTime < MaxClickDuration)
                     {
                         // We currently only support single taps in editor
-                        inputManager.RaiseSourceClicked(this, editorHandData.HandId, 1);
+                        inputManager.RaiseInputClicked(this, editorHandData.HandId, 1);
 					}
                 }
             }

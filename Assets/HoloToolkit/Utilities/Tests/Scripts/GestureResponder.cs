@@ -8,7 +8,7 @@ public class GestureResponder : MonoBehaviour, IInputClickHandler
         InputManager.Instance.PushFallbackInputHandler(gameObject);
     }
 
-    public void OnInputClicked(InputEventData eventData)
+    public void OnInputClicked(InputClickedEventData eventData)
     {
         PlaneTargetGroupPicker.Instance.PickNewTarget();
     }

@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity.InputModule
         private int disabledRefCount;
 
         private InputEventData inputEventData;
-        private SourceClickedEventData sourceClickedEventData;
+        private InputClickedEventData sourceClickedEventData;
         private SourceStateEventData sourceStateEventData;
         private ManipulationEventData manipulationEventData;
         private HoldEventData holdEventData;
@@ -178,7 +178,7 @@ namespace HoloToolkit.Unity.InputModule
         private void InitializeEventDatas()
         {
             inputEventData = new InputEventData(EventSystem.current);
-            sourceClickedEventData = new SourceClickedEventData(EventSystem.current);
+            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
             navigationEventData = new NavigationEventData(EventSystem.current);
@@ -324,11 +324,11 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IInputClickHandler> OnInputClickedEventHandler =
             delegate (IInputClickHandler handler, BaseEventData eventData)
             {
-                SourceClickedEventData casted = ExecuteEvents.ValidateEventData<SourceClickedEventData>(eventData);
+                InputClickedEventData casted = ExecuteEvents.ValidateEventData<InputClickedEventData>(eventData);
                 handler.OnInputClicked(casted);
             };
 
-        public void RaiseSourceClicked(IInputSource source, uint sourceId, int tapCount)
+        public void RaiseInputClicked(IInputSource source, uint sourceId, int tapCount)
         {
             // Create input event
             sourceClickedEventData.Initialize(source, sourceId, tapCount);

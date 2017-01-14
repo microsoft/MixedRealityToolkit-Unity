@@ -7,16 +7,16 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Describes an input event that involves content manipulation.
+    /// Describes an input event that involves a tap.
     /// </summary>
-    public class SourceClickedEventData : InputEventData
+    public class InputClickedEventData : InputEventData
     {
         /// <summary>
         /// Number of taps that triggered the event.
         /// </summary>
         public int TapCount { get; private set; }
 
-        public SourceClickedEventData(EventSystem eventSystem) : base(eventSystem)
+        public InputClickedEventData(EventSystem eventSystem) : base(eventSystem)
         {
         }
 

@@ -46,7 +46,7 @@ namespace Lighthouse
             gazing = false;
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             UpdatePickedColor(OnPickedColor);
         }

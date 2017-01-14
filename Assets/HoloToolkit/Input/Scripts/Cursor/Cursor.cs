@@ -368,7 +368,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Function for receiving OnInputClicked events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnInputClicked(InputEventData eventData)
+        public virtual void OnInputClicked(InputClickedEventData eventData)
         {
             // Open input socket for other cool stuff...
         }
