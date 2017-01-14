@@ -179,11 +179,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void Start()
-        {
-            inputManager = InputManager.Instance;
-        }
-
 #if UNITY_EDITOR
         private void Update()
         {
