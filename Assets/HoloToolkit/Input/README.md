@@ -1,5 +1,9 @@
 ## [Input]()
-Scripts that leverage the HoloLens input features namely Gaze, Gesture and Voice.
+Input System Diagrams:
+![alt text](/External/ReadMeImages/InputSystemDiagram.png)
+![alt text](/External/ReadMeImages/CursorSystemDiagram.PNG)
+
+##Scripts that leverage HoloLens input features namely Gaze, Gesture and Voice.
 
 This contains a fully-featured **input module**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a **cursor** similar to the HoloLens shell cursor that fully leverages the Unity's animation system.
 
@@ -141,18 +145,6 @@ Event data for an event coming from the navigation gesture.
 
 ##### SourceStateEventData.cs
 Event data for an event that represents an input source being detected or lost.
-
-#### GestureManipulator.cs
-A component for moving an object via the GestureManager manipulation gesture.
-
-When an active GestureManipulator component is attached to a GameObject it will subscribe 
-to GestureManager's manipulation gestures, and move the GameObject when a ManipulationGesture occurs. 
-If the GestureManipulator is disabled it will not respond to any manipulation gestures. 
- 
-This means that if multiple GestureManipulators are active in a given scene when a manipulation 
-gesture is performed, all the relevant GameObjects will be moved.  If the desired behavior is that only 
-a single object be moved at a time, it is recommended that objects which should not be moved disable 
-their GestureManipulators, then re-enable them when necessary (e.g. the object is focused). 
 
 #### InputSources
 
