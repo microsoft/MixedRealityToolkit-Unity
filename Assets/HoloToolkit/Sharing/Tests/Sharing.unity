@@ -316,6 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa48b8a3119f2b24896e22f864cf43ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  KeepRoomAlive: 0
+  RoomName: DefaultRoom
 --- !u!114 &942915102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,14 +371,15 @@ Prefab:
     - target: {fileID: 114000012667812730, guid: 8aaf37823b26ee449bb3b3d7775965c3,
         type: 2}
       propertyPath: ServerAddress
-      value: localhost
+      value: 10.124.150.60
       objectReference: {fileID: 0}
     - target: {fileID: 114000012667812730, guid: 8aaf37823b26ee449bb3b3d7775965c3,
         type: 2}
       propertyPath: IsAudioEndpoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114000011012997360, guid: 8aaf37823b26ee449bb3b3d7775965c3, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8aaf37823b26ee449bb3b3d7775965c3, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1703234100 stripped

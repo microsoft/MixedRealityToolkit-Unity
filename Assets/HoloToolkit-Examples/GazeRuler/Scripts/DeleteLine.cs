@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using System.Collections;
 
-public class DeleteLine : MonoBehaviour
+namespace HoloToolkit.Examples.GazeRuler
 {
-    /// <summary>
-    /// when tip text is tapped, destroy this tip and relative objects.
-    /// </summary>
-	public void OnSelect()
+    public class DeleteLine : MonoBehaviour
     {
-        var parent = gameObject.transform.parent.gameObject;
-        if (parent != null)
+        /// <summary>
+        /// when tip text is tapped, destroy this tip and relative objects.
+        /// </summary>
+        public void OnSelect()
         {
-            Destroy(parent);
+            var parent = gameObject.transform.parent.gameObject;
+            if (parent != null)
+            {
+                Destroy(parent);
+            }
         }
     }
 }
