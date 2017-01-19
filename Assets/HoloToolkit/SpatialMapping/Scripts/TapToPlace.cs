@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
         [Tooltip("Place parent on tap instead of current game object.")]
-        public bool PlaceParentOnTap = false;
+        public bool PlaceParentOnTap;
 
         [Tooltip("Specify the parent game object to be moved on tap, if the immediate parent is not desired.")]
         public GameObject ParentGameObjectToPlace;
@@ -32,27 +31,23 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Keeps track of if the user is moving the object or not.
         /// Setting this to true will enable the user to move and place the object in the scene.
+        /// Useful when you want to place an object immediately.
         /// </summary>
+        [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
         public bool IsBeingPlaced;
 
         /// <summary>
         /// Manages persisted anchors.
         /// </summary>
-        private WorldAnchorManager anchorManager;
+        protected WorldAnchorManager anchorManager;
 
         /// <summary>
         /// Controls spatial mapping.  In this script we access spatialMappingManager
         /// to control rendering and to access the physics layer mask.
         /// </summary>
-        private SpatialMappingManager spatialMappingManager;
+        protected SpatialMappingManager spatialMappingManager;
 
-        /// <summary>
-        /// Keeps track of the relative position between the parent object to be moved and
-        /// the current gameobject this script is attached to.
-        /// </summary>
-        private Vector3 parentPositionRelativeToChild;
-
-        public virtual void Start()
+        protected virtual void Start()
         {
             // Make sure we have all the components in the scene we need.
             anchorManager = WorldAnchorManager.Instance;
@@ -69,7 +64,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (anchorManager != null && spatialMappingManager != null)
             {
-                anchorManager.AttachAnchor(this.gameObject, SavedAnchorFriendlyName);
+                anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
             }
             else
             {
@@ -79,18 +74,16 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (PlaceParentOnTap)
             {
-                if  (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+                if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
                 {
                     Debug.LogError("The specified parent object is not a parent of this object.");
                 }
 
                 DetermineParent();
-
-                parentPositionRelativeToChild = gameObject.transform.position - ParentGameObjectToPlace.transform.position;
             }
         }
 
-        public virtual void Update()
+        protected virtual void Update()
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
@@ -117,7 +110,8 @@ namespace HoloToolkit.Unity.SpatialMapping
                     if (PlaceParentOnTap)
                     {
                         // Place the parent object as well but keep the focus on the current game object
-                        ParentGameObjectToPlace.transform.position = hitInfo.point - parentPositionRelativeToChild;
+                        Vector3 currentMovement = hitInfo.point - gameObject.transform.position;
+                        ParentGameObjectToPlace.transform.position += currentMovement;
                         ParentGameObjectToPlace.transform.rotation = toQuat;
                     }
                     else
