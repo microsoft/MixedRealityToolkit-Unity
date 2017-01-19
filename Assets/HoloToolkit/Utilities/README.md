@@ -64,6 +64,12 @@ Provides dynamic Text to Speech. Speech is generated using the UWP SpeechSynthes
 
 ### [Shaders](Shaders)
 
+### FastConfigurable.shader
+Very fast shader that uses the Unity light system.  Compiles down to only performing the operations you're actually using.  Uses material property drawers rather than a custom editor for ease of maintenance.
+
+#### HoloToolkitCommon.cginc
+Common shader functionality
+
 #### LambertianConfigurable.cginc
 Code shared between LambertianConfigurable.shader and LambertianConfigurableTransparent.shader.
 
@@ -72,6 +78,9 @@ Feature configurable per-pixel lambertian shader.  Use when higher quality light
 
 #### LambertianConfigurableTransparent.shader
 Feature configurable per-pixel lambertian transparent shader.  Use when higher quality lighting and transparency are desired, but specular highlights are not needed.
+
+#### macro.cginc
+Preprocessor macros to support shaders
 
 #### StandardFast.shader
 Higher performance drop-in replacement for the Unity Standard Shader.  Use when very high quality lighting (including reflections) is needed.
