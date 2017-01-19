@@ -178,7 +178,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public void StartObserver()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_UWP
             // Allow observering if a device is present (Holographic Remoting)
             if (!UnityEngine.VR.VRDevice.isPresent) return;
 #endif
@@ -194,7 +194,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public void StopObserver()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_UWP
             // Allow observering if a device is present (Holographic Remoting)
             if (!UnityEngine.VR.VRDevice.isPresent) return;
 #endif

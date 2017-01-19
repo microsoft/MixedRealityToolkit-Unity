@@ -18,19 +18,15 @@ namespace HoloToolkit.Unity
         private const float smallNumber = 0.0000001f;
 
         // The movement speed in meters per second
-        [HideInInspector]
         public float PositionPerSecond = 30.0f;
 
         // The rotation speed, in degrees per second
-        [HideInInspector]
         public float RotationDegreesPerSecond = 720.0f;
 
         // Adjusts rotation speed based on angular distance
-        [HideInInspector]
         public float RotationSpeedScaler = 0.0f;
 
         // The amount to scale per second
-        [HideInInspector]
         public float ScalePerSecond = 5.0f;
 
         // Lerp the estimated targets towards the object each update,
