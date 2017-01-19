@@ -139,7 +139,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
             Destroy(nextBullet, 8.0f);
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             if (isLocalPlayer)
             {

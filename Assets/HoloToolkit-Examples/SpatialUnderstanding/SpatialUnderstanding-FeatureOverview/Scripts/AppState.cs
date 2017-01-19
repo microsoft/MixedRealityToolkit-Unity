@@ -260,13 +260,12 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             }
         }
 
-        public void OnInputClicked(InputEventData eventData)
+    public void OnInputClicked(InputClickedEventData eventData)
+    {
+        if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
+            !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
         {
-            if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-                !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
-            {
-                SpatialUnderstanding.Instance.RequestFinishScan();
-            }
+            SpatialUnderstanding.Instance.RequestFinishScan();
         }
     }
 }
