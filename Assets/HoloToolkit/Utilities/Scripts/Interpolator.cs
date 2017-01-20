@@ -10,24 +10,23 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class Interpolator : MonoBehaviour
     {
+        [Tooltip("When interpolating, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
+        public bool UseUnscaledTime = true;
+
         // A very small number that is used in determining if the Interpolator
         // needs to run at all.
         private const float smallNumber = 0.0000001f;
 
         // The movement speed in meters per second
-        [HideInInspector]
         public float PositionPerSecond = 30.0f;
 
         // The rotation speed, in degrees per second
-        [HideInInspector]
         public float RotationDegreesPerSecond = 720.0f;
 
         // Adjusts rotation speed based on angular distance
-        [HideInInspector]
         public float RotationSpeedScaler = 0.0f;
 
         // The amount to scale per second
-        [HideInInspector]
         public float ScalePerSecond = 5.0f;
 
         // Lerp the estimated targets towards the object each update,
@@ -261,6 +260,10 @@ namespace HoloToolkit.Unity
 
         public void Update()
         {
+            float deltaTime = UseUnscaledTime
+                ? Time.unscaledDeltaTime
+                : Time.deltaTime;
+
             bool interpOccuredThisFrame = false;
 
             if (AnimatingPosition)
@@ -271,7 +274,7 @@ namespace HoloToolkit.Unity
                     lerpTargetPosition = Vector3.Lerp(transform.position, lerpTargetPosition, SmoothPositionLerpRatio);
                 }
 
-                Vector3 newPosition = NonLinearInterpolateTo(transform.position, lerpTargetPosition, Time.deltaTime, PositionPerSecond);
+                Vector3 newPosition = NonLinearInterpolateTo(transform.position, lerpTargetPosition, deltaTime, PositionPerSecond);
                 if ((targetPosition - newPosition).sqrMagnitude <= smallNumber)
                 {
                     // Snap to final position
@@ -301,7 +304,7 @@ namespace HoloToolkit.Unity
 
                 float angleDiff = Quaternion.Angle(transform.rotation, lerpTargetRotation);
                 float speedScale = 1.0f + (Mathf.Pow(angleDiff, RotationSpeedScaler) / 180.0f);
-                float ratio = Mathf.Clamp01((speedScale * RotationDegreesPerSecond * Time.deltaTime) / angleDiff);
+                float ratio = Mathf.Clamp01((speedScale * RotationDegreesPerSecond * deltaTime) / angleDiff);
 
                 if (angleDiff < Mathf.Epsilon)
                 {
@@ -327,7 +330,7 @@ namespace HoloToolkit.Unity
 
                 float angleDiff = Quaternion.Angle(transform.localRotation, lerpTargetLocalRotation);
                 float speedScale = 1.0f + (Mathf.Pow(angleDiff, RotationSpeedScaler) / 180.0f);
-                float ratio = Mathf.Clamp01((speedScale * RotationDegreesPerSecond * Time.deltaTime) / angleDiff);
+                float ratio = Mathf.Clamp01((speedScale * RotationDegreesPerSecond * deltaTime) / angleDiff);
 
                 if (angleDiff < Mathf.Epsilon)
                 {
@@ -350,7 +353,7 @@ namespace HoloToolkit.Unity
                     lerpTargetLocalScale = Vector3.Lerp(transform.localScale, lerpTargetLocalScale, SmoothScaleLerpRatio);
                 }
 
-                Vector3 newScale = NonLinearInterpolateTo(transform.localScale, lerpTargetLocalScale, Time.deltaTime, ScalePerSecond);
+                Vector3 newScale = NonLinearInterpolateTo(transform.localScale, lerpTargetLocalScale, deltaTime, ScalePerSecond);
                 if ((targetLocalScale - newScale).sqrMagnitude <= smallNumber)
                 {
                     // Snap to final scale

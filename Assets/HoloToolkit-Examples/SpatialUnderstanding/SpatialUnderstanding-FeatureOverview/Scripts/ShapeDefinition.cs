@@ -2,105 +2,108 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
 
-public class ShapeDefinition : Singleton<ShapeDefinition>
+namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
-    // Properties
-    public bool HasCreatedShapes { get; private set; }
-    public ReadOnlyCollection<string> CustomShapeDefinitions { get { return customShapeDefinitions.AsReadOnly(); } }
-
-    // Privates
-    private List<string> customShapeDefinitions = new List<string>();
-
-    // Functions
-    private void Start()
+    public class ShapeDefinition : Singleton<ShapeDefinition>
     {
-        if (SpatialUnderstanding.Instance != null)
-        {
-            SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
-        }
-    }
+        // Properties
+        public bool HasCreatedShapes { get; private set; }
+        public ReadOnlyCollection<string> CustomShapeDefinitions { get { return customShapeDefinitions.AsReadOnly(); } }
 
-    private void OnDestroy()
-    {
-        if (SpatialUnderstanding.Instance != null)
-        {
-            SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
-        }
-    }
+        // Privates
+        private List<string> customShapeDefinitions = new List<string>();
 
-    public void CreateShapes()
-    {
-        if (HasCreatedShapes ||
-            !SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+        // Functions
+        private void Start()
         {
-            return;
+            if (SpatialUnderstanding.Instance != null)
+            {
+                SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
+            }
         }
 
-        // Create definitions and analyze
-        CreateCustomShapeDefinitions();
-        SpatialUnderstandingDllShapes.ActivateShapeAnalysis();
-    }
-
-    private void OnScanStateChanged()
-    {
-        // If we are leaving the None state, go ahead and register shapes now
-        if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
+            if (SpatialUnderstanding.Instance != null)
+            {
+                SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
+            }
+        }
+
+        public void CreateShapes()
+        {
+            if (HasCreatedShapes ||
+                !SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            {
+                return;
+            }
+
             // Create definitions and analyze
-            CreateShapes();
+            CreateCustomShapeDefinitions();
+            SpatialUnderstandingDllShapes.ActivateShapeAnalysis();
         }
-    }
 
-    private bool AddShape(
-        string shapeName,
-        List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents)
-    {
-        return AddShape(shapeName, shapeComponents, null);
-    }
-
-    private bool AddShape(
-        string shapeName, 
-        List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents,
-        List<SpatialUnderstandingDllShapes.ShapeConstraint> shapeConstraints)
-    {
-        if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+        private void OnScanStateChanged()
         {
-            return false;
+            // If we are leaving the None state, go ahead and register shapes now
+            if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
+            {
+                // Create definitions and analyze
+                CreateShapes();
+            }
         }
-        IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
-        IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
-        if (SpatialUnderstandingDllShapes.AddShape(
-                shapeName,
-                (shapeComponents == null) ? 0 : shapeComponents.Count,
-                shapeComponentsPtr,
-                (shapeConstraints == null) ? 0 : shapeConstraints.Count,
-                shapeConstraintsPtr) == 0)
+
+        private bool AddShape(
+            string shapeName,
+            List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents)
         {
-            Debug.LogError("Failed to create custom shape description");
-            return false;
+            return AddShape(shapeName, shapeComponents, null);
         }
-        customShapeDefinitions.Add(shapeName);
-        return true;
-    }
 
-    private void CreateCustomShapeDefinitions()
-    {
-        if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+        private bool AddShape(
+            string shapeName,
+            List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents,
+            List<SpatialUnderstandingDllShapes.ShapeConstraint> shapeConstraints)
         {
-            return;
+            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            {
+                return false;
+            }
+            IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
+            IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
+            if (SpatialUnderstandingDllShapes.AddShape(
+                    shapeName,
+                    (shapeComponents == null) ? 0 : shapeComponents.Count,
+                    shapeComponentsPtr,
+                    (shapeConstraints == null) ? 0 : shapeConstraints.Count,
+                    shapeConstraintsPtr) == 0)
+            {
+                Debug.LogError("Failed to create custom shape description");
+                return false;
+            }
+            customShapeDefinitions.Add(shapeName);
+            return true;
         }
 
-        List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents;
-        List<SpatialUnderstandingDllShapes.ShapeConstraint> shapeConstraints;
+        private void CreateCustomShapeDefinitions()
+        {
+            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            {
+                return;
+            }
 
-        // AllSurfaces
-        shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
+            List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents;
+            List<SpatialUnderstandingDllShapes.ShapeConstraint> shapeConstraints;
+
+            // AllSurfaces
+            shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
         {
             new SpatialUnderstandingDllShapes.ShapeComponent(
                 new List<SpatialUnderstandingDllShapes.ShapeComponentConstraint>()
@@ -108,10 +111,10 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
                     SpatialUnderstandingDllShapes.ShapeComponentConstraint.Create_SurfaceHeight_Between(0.15f, 1.75f),
                 }),
         };
-        AddShape("All Surfaces", shapeComponents);
+            AddShape("All Surfaces", shapeComponents);
 
-        // Sittable
-        shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
+            // Sittable
+            shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
         {
             new SpatialUnderstandingDllShapes.ShapeComponent(
                 new List<SpatialUnderstandingDllShapes.ShapeComponentConstraint>()
@@ -121,10 +124,10 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
                     SpatialUnderstandingDllShapes.ShapeComponentConstraint.Create_SurfaceArea_Min(0.035f),
                 }),
         };
-        AddShape("Sittable", shapeComponents);
+            AddShape("Sittable", shapeComponents);
 
-        // Chair
-        shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
+            // Chair
+            shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
         {
             new SpatialUnderstandingDllShapes.ShapeComponent(
                 new List<SpatialUnderstandingDllShapes.ShapeComponentConstraint>()
@@ -138,10 +141,10 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
                     SpatialUnderstandingDllShapes.ShapeComponentConstraint.Create_SurfaceNotPartOfShape("Couch"),
                 }),
         };
-        AddShape("Chair", shapeComponents);
+            AddShape("Chair", shapeComponents);
 
-        // LargeSurface
-        shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
+            // LargeSurface
+            shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
         {
             new SpatialUnderstandingDllShapes.ShapeComponent(
                 new List<SpatialUnderstandingDllShapes.ShapeComponentConstraint>()
@@ -153,10 +156,10 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
                     SpatialUnderstandingDllShapes.ShapeComponentConstraint.Create_RectangleWidth_Min(0.5f),
                 }),
         };
-        AddShape("Large Surface", shapeComponents);
+            AddShape("Large Surface", shapeComponents);
 
-        // EmptyTable
-        shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
+            // EmptyTable
+            shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
         {
             new SpatialUnderstandingDllShapes.ShapeComponent(
                 new List<SpatialUnderstandingDllShapes.ShapeComponentConstraint>()
@@ -168,14 +171,14 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
                     SpatialUnderstandingDllShapes.ShapeComponentConstraint.Create_RectangleWidth_Min(0.5f),
                 }),
         };
-        shapeConstraints = new List<SpatialUnderstandingDllShapes.ShapeConstraint>()
+            shapeConstraints = new List<SpatialUnderstandingDllShapes.ShapeConstraint>()
         {
             SpatialUnderstandingDllShapes.ShapeConstraint.Create_NoOtherSurface(),
         };
-        AddShape("Large Empty Surface", shapeComponents, shapeConstraints);
+            AddShape("Large Empty Surface", shapeComponents, shapeConstraints);
 
-        // "Couch"
-        shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
+            // "Couch"
+            shapeComponents = new List<SpatialUnderstandingDllShapes.ShapeComponent>()
         {
             new SpatialUnderstandingDllShapes.ShapeComponent(
                 new List<SpatialUnderstandingDllShapes.ShapeComponentConstraint>()
@@ -199,16 +202,17 @@ public class ShapeDefinition : Singleton<ShapeDefinition>
                     SpatialUnderstandingDllShapes.ShapeComponentConstraint.Create_RectangleWidth_Min(0.05f),
                 }),
         };
-        shapeConstraints = new List<SpatialUnderstandingDllShapes.ShapeConstraint>()
+            shapeConstraints = new List<SpatialUnderstandingDllShapes.ShapeConstraint>()
         {
             SpatialUnderstandingDllShapes.ShapeConstraint.Create_RectanglesSameLength(0, 1, 0.6f),
             SpatialUnderstandingDllShapes.ShapeConstraint.Create_RectanglesParallel(0, 1),
             SpatialUnderstandingDllShapes.ShapeConstraint.Create_RectanglesAligned(0, 1, 0.3f),
             SpatialUnderstandingDllShapes.ShapeConstraint.Create_AtBackOf(1, 0),
         };
-        AddShape("Couch", shapeComponents, shapeConstraints);
+            AddShape("Couch", shapeComponents, shapeConstraints);
 
-        // Mark it
-        HasCreatedShapes = true;
+            // Mark it
+            HasCreatedShapes = true;
+        }
     }
 }

@@ -1,188 +1,194 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using HoloToolkit.Sharing;
 using HoloToolkit.Unity;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomMessages : Singleton<CustomMessages>
+namespace HoloToolkit.Sharing
 {
-    /// <summary>
-    /// Message enum containing our information bytes to share.
-    /// The first message type has to start with UserMessageIDStart
-    /// so as not to conflict with HoloToolkit internal messages.
-    /// </summary>
-    public enum TestMessageID : byte
+    public class CustomMessages : Singleton<CustomMessages>
     {
-        HeadTransform = MessageID.UserMessageIDStart,
-        Max
-    }
-
-    public enum UserMessageChannels
-    {
-        Anchors = MessageChannel.UserMessageChannelStart,
-    }
-
-    /// <summary>
-    /// Cache the local user's ID to use when sending messages
-    /// </summary>
-    public long localUserID
-    {
-        get; set;
-    }
-
-    public delegate void MessageCallback(NetworkInMessage msg);
-    private Dictionary<TestMessageID, MessageCallback> _MessageHandlers = new Dictionary<TestMessageID, MessageCallback>();
-    public Dictionary<TestMessageID, MessageCallback> MessageHandlers
-    {
-        get
+        /// <summary>
+        /// Message enum containing our information bytes to share.
+        /// The first message type has to start with UserMessageIDStart
+        /// so as not to conflict with HoloToolkit internal messages.
+        /// </summary>
+        public enum TestMessageID : byte
         {
-            return _MessageHandlers;
+            HeadTransform = MessageID.UserMessageIDStart,
+            Max
         }
-    }
 
-    /// <summary>
-    /// Helper object that we use to route incoming message callbacks to the member
-    /// functions of this class
-    /// </summary>
-    NetworkConnectionAdapter connectionAdapter;
-
-    /// <summary>
-    /// Cache the connection object for the sharing service
-    /// </summary>
-    NetworkConnection serverConnection;
-
-    void Start()
-    {
-        SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
-    }
-
-    private void SharingManagerConnected(object sender, System.EventArgs e)
-    {
-        InitializeMessageHandlers();
-    }
-
-    void InitializeMessageHandlers()
-    {
-        SharingStage sharingStage = SharingStage.Instance;
-        
-        if (sharingStage == null)
+        public enum UserMessageChannels
         {
-            Debug.Log("Cannot Initialize CustomMessages. No SharingStage instance found.");
-            return;
+            Anchors = MessageChannel.UserMessageChannelStart,
         }
-        
-        serverConnection = sharingStage.Manager.GetServerConnection();
-        if (serverConnection == null)
+
+        /// <summary>
+        /// Cache the local user's ID to use when sending messages
+        /// </summary>
+        public long localUserID
         {
-            Debug.Log("Cannot initialize CustomMessages. Cannot get a server connection.");
-            return;
+            get; set;
         }
-        
-        connectionAdapter = new NetworkConnectionAdapter();
-        connectionAdapter.MessageReceivedCallback += OnMessageReceived;
 
-        // Cache the local user ID
-        this.localUserID = SharingStage.Instance.Manager.GetLocalUser().GetID();
-
-        for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
+        public delegate void MessageCallback(NetworkInMessage msg);
+        private Dictionary<TestMessageID, MessageCallback> _MessageHandlers = new Dictionary<TestMessageID, MessageCallback>();
+        public Dictionary<TestMessageID, MessageCallback> MessageHandlers
         {
-            if (MessageHandlers.ContainsKey((TestMessageID)index) == false)
+            get
             {
-                MessageHandlers.Add((TestMessageID)index, null);
+                return _MessageHandlers;
+            }
+        }
+
+        /// <summary>
+        /// Helper object that we use to route incoming message callbacks to the member
+        /// functions of this class
+        /// </summary>
+        NetworkConnectionAdapter connectionAdapter;
+
+        /// <summary>
+        /// Cache the connection object for the sharing service
+        /// </summary>
+        NetworkConnection serverConnection;
+
+        void Start()
+        {
+            SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
+        }
+
+        private void SharingManagerConnected(object sender, EventArgs e)
+        { 
+            InitializeMessageHandlers();
+        }
+
+        void InitializeMessageHandlers()
+        {
+            SharingStage sharingStage = SharingStage.Instance;
+
+            if (sharingStage == null)
+            {
+                Debug.Log("Cannot Initialize CustomMessages. No SharingStage instance found.");
+                return;
             }
 
-            serverConnection.AddListener(index, connectionAdapter);
-        }
-    }
+            serverConnection = sharingStage.Manager.GetServerConnection();
+            if (serverConnection == null)
+            {
+                Debug.Log("Cannot initialize CustomMessages. Cannot get a server connection.");
+                return;
+            }
 
-    private NetworkOutMessage CreateMessage(byte MessageType)
-    {
-        NetworkOutMessage msg = serverConnection.CreateMessage(MessageType);
-        msg.Write(MessageType);
-        // Add the local userID so that the remote clients know whose message they are receiving
-        msg.Write(localUserID);
-        return msg;
-    }
+            connectionAdapter = new NetworkConnectionAdapter();
+            connectionAdapter.MessageReceivedCallback += OnMessageReceived;
 
-    public void SendHeadTransform(Vector3 position, Quaternion rotation)
-    {
-        // If we are connected to a session, broadcast our head info
-        if (this.serverConnection != null && this.serverConnection.IsConnected())
-        {
-            // Create an outgoing network message to contain all the info we want to send
-            NetworkOutMessage msg = CreateMessage((byte)TestMessageID.HeadTransform);
+            // Cache the local user ID
+            this.localUserID = SharingStage.Instance.Manager.GetLocalUser().GetID();
 
-            AppendTransform(msg, position, rotation);
-
-            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
-            this.serverConnection.Broadcast(
-                msg,
-                MessagePriority.Immediate,
-                MessageReliability.UnreliableSequenced,
-                MessageChannel.Avatar);
-        }
-    }
-
-    void OnDestroy()
-    {
-        if (this.serverConnection != null)
-        {
             for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
             {
-                this.serverConnection.RemoveListener(index, this.connectionAdapter);
+                if (MessageHandlers.ContainsKey((TestMessageID)index) == false)
+                {
+                    MessageHandlers.Add((TestMessageID)index, null);
+                }
+
+                serverConnection.AddListener(index, connectionAdapter);
             }
-            this.connectionAdapter.MessageReceivedCallback -= OnMessageReceived;
         }
-    }
 
-    void OnMessageReceived(NetworkConnection connection, NetworkInMessage msg)
-    {
-        byte messageType = msg.ReadByte();
-        MessageCallback messageHandler = MessageHandlers[(TestMessageID)messageType];
-        if (messageHandler != null)
+        private NetworkOutMessage CreateMessage(byte messageType)
         {
-            messageHandler(msg);
+            NetworkOutMessage msg = serverConnection.CreateMessage(messageType);
+            msg.Write(messageType);
+            // Add the local userID so that the remote clients know whose message they are receiving
+            msg.Write(localUserID);
+            return msg;
         }
+
+        public void SendHeadTransform(Vector3 position, Quaternion rotation)
+        {
+            // If we are connected to a session, broadcast our head info
+            if (this.serverConnection != null && this.serverConnection.IsConnected())
+            {
+                // Create an outgoing network message to contain all the info we want to send
+                NetworkOutMessage msg = CreateMessage((byte)TestMessageID.HeadTransform);
+
+                AppendTransform(msg, position, rotation);
+
+                // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
+                this.serverConnection.Broadcast(
+                    msg,
+                    MessagePriority.Immediate,
+                    MessageReliability.UnreliableSequenced,
+                    MessageChannel.Avatar);
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (this.serverConnection != null)
+            {
+                for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
+                {
+                    this.serverConnection.RemoveListener(index, this.connectionAdapter);
+                }
+                this.connectionAdapter.MessageReceivedCallback -= OnMessageReceived;
+            }
+        }
+
+        void OnMessageReceived(NetworkConnection connection, NetworkInMessage msg)
+        {
+            byte messageType = msg.ReadByte();
+            MessageCallback messageHandler = MessageHandlers[(TestMessageID)messageType];
+            if (messageHandler != null)
+            {
+                messageHandler(msg);
+            }
+        }
+
+        #region HelperFunctionsForWriting
+
+        void AppendTransform(NetworkOutMessage msg, Vector3 position, Quaternion rotation)
+        {
+            AppendVector3(msg, position);
+            AppendQuaternion(msg, rotation);
+        }
+
+        void AppendVector3(NetworkOutMessage msg, Vector3 vector)
+        {
+            msg.Write(vector.x);
+            msg.Write(vector.y);
+            msg.Write(vector.z);
+        }
+
+        void AppendQuaternion(NetworkOutMessage msg, Quaternion rotation)
+        {
+            msg.Write(rotation.x);
+            msg.Write(rotation.y);
+            msg.Write(rotation.z);
+            msg.Write(rotation.w);
+        }
+
+        #endregion
+
+        #region HelperFunctionsForReading
+
+        public Vector3 ReadVector3(NetworkInMessage msg)
+        {
+            return new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
+        }
+
+        public Quaternion ReadQuaternion(NetworkInMessage msg)
+        {
+            return new Quaternion(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
+        }
+
+        #endregion
     }
-
-    #region HelperFunctionsForWriting
-
-    void AppendTransform(NetworkOutMessage msg, Vector3 position, Quaternion rotation)
-    {
-        AppendVector3(msg, position);
-        AppendQuaternion(msg, rotation);
-    }
-
-    void AppendVector3(NetworkOutMessage msg, Vector3 vector)
-    {
-        msg.Write(vector.x);
-        msg.Write(vector.y);
-        msg.Write(vector.z);
-    }
-
-    void AppendQuaternion(NetworkOutMessage msg, Quaternion rotation)
-    {
-        msg.Write(rotation.x);
-        msg.Write(rotation.y);
-        msg.Write(rotation.z);
-        msg.Write(rotation.w);
-    }
-
-    #endregion HelperFunctionsForWriting
-
-    #region HelperFunctionsForReading
-
-    public Vector3 ReadVector3(NetworkInMessage msg)
-    {
-        return new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
-    }
-
-    public Quaternion ReadQuaternion(NetworkInMessage msg)
-    {
-        return new Quaternion(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
-    }
-
-    #endregion HelperFunctionsForReading
 }

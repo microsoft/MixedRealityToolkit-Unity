@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// Spatial Mapping Observer states.
@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
     {
         [Tooltip("The number of triangles to calculate per cubic meter.")]
         public float TrianglesPerCubicMeter = 500f;
-        
+
         [Tooltip("The extents of the observation volume.")]
         public Vector3 Extents = Vector3.one * 10.0f;
 
@@ -42,6 +42,16 @@ namespace HoloToolkit.Unity
         /// Event for hooking when surfaces are changed.
         /// </summary>
         public event SurfaceObserver.SurfaceChangedDelegate SurfaceChanged;
+
+        /// <summary>
+        /// Event for hooking when the data for a surface is ready.
+        /// </summary>
+        public event SurfaceObserver.SurfaceDataReadyDelegate DataReady;
+
+        /// <summary>
+        /// Indicates the current state of the Surface Observer.
+        /// </summary>
+        public ObserverStates ObserverState { get; private set; }
 
         /// <summary>
         /// Our Surface Observer object for generating/updating Spatial Mapping data.
@@ -85,33 +95,11 @@ namespace HoloToolkit.Unity
         /// </summary>
         private float updateTime;
 
-        /// <summary>
-        /// Indicates the current state of the Surface Observer.
-        /// </summary>
-        public ObserverStates ObserverState { get; private set; }
-
         protected override void Awake()
         {
             base.Awake();
 
-            observer = new SurfaceObserver();
             ObserverState = ObserverStates.Stopped;
-            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
-        }
-
-        /// <summary>
-        /// Called when the GameObject is initialized.
-        /// </summary>
-        private void Start()
-        {
-        }
-
-        /// <summary>
-        /// Can be called to override the default origin for the observed volume
-        /// </summary>
-        public void SetObserverOrigin(Vector3 origin)
-        {
-            observer.SetVolumeAsAxisAlignedBox(origin, Extents);
         }
 
         /// <summary>
@@ -147,6 +135,12 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StartObserving()
         {
+            if (observer == null)
+            {
+                observer = new SurfaceObserver();
+                observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
+            }
+
             if (ObserverState != ObserverStates.Running)
             {
                 Debug.Log("Starting the observer.");
@@ -170,6 +164,59 @@ namespace HoloToolkit.Unity
             }
         }
 
+
+        /// <summary>
+        /// Cleans up all memory and objects associated with the observer.
+        /// </summary>
+        public void CleanupObserver()
+        {
+            if (observer != null)
+            {
+                StopObserving();
+
+                // Clear out all memory allocated the observer
+                observer.Dispose();
+                observer = null;
+
+                foreach (KeyValuePair<int, GameObject> surfaceRef in surfaces)
+                {
+                    CleanupSurface(surfaceRef.Value);
+                }
+
+                // Get all valid mesh filters for observed surfaces and destroy them
+                List<MeshFilter> meshFilters = GetMeshFilters();
+                for (int i = 0; i < meshFilters.Count; i++)
+                {
+                    Destroy(meshFilters[i].sharedMesh);
+                }
+                meshFilters.Clear();
+
+                // Cleanup all available surfaces
+                foreach (GameObject availableSurface in availableSurfaces)
+                {
+                    Destroy(availableSurface);
+                }
+                availableSurfaces.Clear();
+                surfaces.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Can be called to override the default origin for the observed volume.  Can only be called while observer has been started.
+        /// </summary>
+        public bool SetObserverOrigin(Vector3 origin)
+        {
+            bool originUpdated = false;
+
+            if (observer != null)
+            {
+                observer.SetVolumeAsAxisAlignedBox(origin, Extents);
+                originUpdated = true;
+            }
+
+            return originUpdated;
+        }
+
         /// <summary>
         /// Handles the SurfaceObserver's OnDataReady event.
         /// </summary>
@@ -178,7 +225,7 @@ namespace HoloToolkit.Unity
         /// <param name="elapsedCookTimeSeconds">Seconds between mesh cook request and propagation of this event.</param>
         private void SurfaceObserver_OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
         {
-            //We have new visuals, so we can disable and clenaup the older surface
+            //We have new visuals, so we can disable and cleanup the older surface
             GameObject surfaceToCleanup;
             if (pendingCleanup.TryGetValue(cookedData.id.handle, out surfaceToCleanup))
             {
@@ -190,17 +237,22 @@ namespace HoloToolkit.Unity
             if (surfaces.TryGetValue(cookedData.id.handle, out surface))
             {
                 // Set the draw material for the renderer.
-                MeshRenderer renderer = surface.GetComponent<MeshRenderer>();
-                renderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
-                renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+                MeshRenderer meshRenderer = surface.GetComponent<MeshRenderer>();
+                meshRenderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
+                meshRenderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
 
                 if (SpatialMappingManager.Instance.CastShadows == false)
                 {
-                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                    meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
             }
 
             surfaceWorkOutstanding = false;
+            SurfaceObserver.SurfaceDataReadyDelegate dataReady = DataReady;
+            if (dataReady != null)
+            {
+                dataReady(cookedData, outputWritten, elapsedCookTimeSeconds);
+            }
         }
 
         private void CleanupSurface(GameObject surface)
@@ -319,11 +371,11 @@ namespace HoloToolkit.Unity
         private void QueueSurfaceDataRequest(SurfaceId id, GameObject surface)
         {
             SurfaceData surfaceData = new SurfaceData(id,
-                                                        surface.GetComponent<MeshFilter>(),
-                                                        surface.GetComponent<WorldAnchor>(),
-                                                        surface.GetComponent<MeshCollider>(),
-                                                        TrianglesPerCubicMeter,
-                                                        true);
+                                                      surface.GetComponent<MeshFilter>(),
+                                                      surface.GetComponent<WorldAnchor>(),
+                                                      surface.GetComponent<MeshCollider>(),
+                                                      TrianglesPerCubicMeter,
+                                                      true);
 
             surfaceWorkQueue.Enqueue(surfaceData);
         }
@@ -333,14 +385,9 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void OnDestroy()
         {
-            // Stop the observer.
+            // Stop the observer and clean it up.
             StopObserving();
-
-            observer.Dispose();
-            observer = null;
-
-            // Clear our surface mesh collection.
-            surfaces.Clear();
+            CleanupObserver();
         }
     }
 }

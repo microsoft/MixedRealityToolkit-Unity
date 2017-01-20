@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
-
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
 using System.Net;
 using System.Net.Sockets;
 #endif
+using UnityEngine;
+using UnityEngine.Rendering;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// RemoteMeshTarget will listen for meshes being sent from a remote system (HoloLens).
@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity
         [Tooltip("The connection port on the machine to use.")]
         public int ConnectionPort = 11000;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// Listens for network connections over TCP.
         /// </summary> 
@@ -40,10 +40,10 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Tracks if a client is connected.
         /// </summary>
-        private bool ClientConnected = false;
+        private bool clientConnected;
 
         // Use this for initialization.
-        void Start()
+        private void Start()
         {
             // Setup the network listener.
             IPAddress localAddr = IPAddress.Parse(ServerIP.Trim());
@@ -51,15 +51,15 @@ namespace HoloToolkit.Unity
             networkListener.Start();
 
             // Request the network listener to wait for connections asynchronously.
-            AsyncCallback callback = new AsyncCallback(OnClientConnect);
+            AsyncCallback callback = OnClientConnect;
             networkListener.BeginAcceptTcpClient(callback, this);
         }
 
         // Update is called once per frame.
-        void Update()
+        private void Update()
         {
             // If we have a connected client, presumably the client wants to send some meshes.
-            if (ClientConnected)
+            if (clientConnected)
             {
                 // Get the clients stream.
                 NetworkStream stream = networkClient.GetStream();
@@ -103,16 +103,16 @@ namespace HoloToolkit.Unity
 
                         if (SpatialMappingManager.Instance.CastShadows == false)
                         {
-                            surface.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                            surface.GetComponent<MeshRenderer>().shadowCastingMode = ShadowCastingMode.Off;
                         }
                     }
 
                     // Finally disconnect.
-                    ClientConnected = false;
+                    clientConnected = false;
                     networkClient.Close();
 
                     // And wait for the next connection.
-                    AsyncCallback callback = new AsyncCallback(OnClientConnect);
+                    AsyncCallback callback = OnClientConnect;
                     networkListener.BeginAcceptTcpClient(callback, this);
                 }
             }
@@ -123,7 +123,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="stream">The stream to read the bytes from.</param>
         /// <returns>An integer representing the bytes.</returns>
-        int ReadInt(Stream stream)
+        private int ReadInt(Stream stream)
         {
             // The bytes arrive in the wrong order, so swap them.
             byte[] bytes = new byte[4];
@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity
         /// Called when a client connects.
         /// </summary>
         /// <param name="result">The result of the connection.</param>
-        void OnClientConnect(IAsyncResult result)
+        private void OnClientConnect(IAsyncResult result)
         {
             if (result.IsCompleted)
             {
@@ -152,7 +152,7 @@ namespace HoloToolkit.Unity
                 if (networkClient != null)
                 {
                     Debug.Log("Connected");
-                    ClientConnected = true;
+                    clientConnected = true;
                 }
             }
         }
