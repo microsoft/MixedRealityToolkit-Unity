@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <returns>Binary representation of the Mesh objects.</returns>
         public static byte[] Serialize(IEnumerable<Mesh> meshes)
         {
-            byte[] data = null;
+            byte[] data;
 
             using (MemoryStream stream = new MemoryStream())
             {

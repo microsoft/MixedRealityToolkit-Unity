@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Unity
 {
@@ -193,9 +194,9 @@ namespace HoloToolkit.Unity
                 {
                     // Format is "vertex index / material index / normal index"
                     stream.WriteLine(string.Format("f {0}//{0} {1}//{1} {2}//{2}",
-                        indices[i + 0] + 1 + offset,
+                        indices[i + 2] + 1 + offset,
                         indices[i + 1] + 1 + offset,
-                        indices[i + 2] + 1 + offset));
+                        indices[i + 0] + 1 + offset));
                 }
             }
 
