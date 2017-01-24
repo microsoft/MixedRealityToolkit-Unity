@@ -395,6 +395,7 @@ namespace HoloToolkit.Unity.InputModule
             if (visibleHandsCount == 0)
             {
                 IsHandVisible = false;
+                IsInputSourceDown = false;
             }
         }
 
@@ -420,10 +421,6 @@ namespace HoloToolkit.Unity.InputModule
                 if (IsInputSourceDown && visibleHandsCount > 0)
                 {
                     return CursorStateEnum.Select;
-                }
-                else if (IsInputSourceDown && visibleHandsCount == 0)
-                {
-                  IsInputSourceDown = false;
                 }
                 else if (cursorState == CursorStateEnum.Select)
                 {
