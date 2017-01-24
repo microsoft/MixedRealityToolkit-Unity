@@ -200,18 +200,18 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             InputManager.Instance.AddGlobalListener(gameObject);
         }
 
-    protected override void OnDestroy()
-    {
-        InputManager.Instance.RemoveGlobalListener(gameObject);
-    }
-
-    private void Update_DebugDisplay(float deltaTime)
-    {
-        // Basic checks
-        if (DebugDisplay == null)
+        protected override void OnDestroy()
         {
-            return;
+            InputManager.Instance.RemoveGlobalListener(gameObject);
         }
+
+        private void Update_DebugDisplay(float deltaTime)
+        {
+            // Basic checks
+            if (DebugDisplay == null)
+            {
+                return;
+            }
 
             // Update display text
             DebugDisplay.text = PrimaryText;
@@ -260,7 +260,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             }
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
                 !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)

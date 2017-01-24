@@ -197,7 +197,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             if (!EnableActivation)
             {

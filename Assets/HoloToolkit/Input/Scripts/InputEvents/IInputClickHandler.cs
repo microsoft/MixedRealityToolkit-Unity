@@ -10,6 +10,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IInputClickHandler : IEventSystemHandler
     {
-        void OnInputClicked(InputEventData eventData);
+        void OnInputClicked(InputClickedEventData eventData);
     }
 }
