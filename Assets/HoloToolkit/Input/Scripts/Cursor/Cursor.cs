@@ -395,6 +395,7 @@ namespace HoloToolkit.Unity.InputModule
             if (visibleHandsCount == 0)
             {
                 IsHandVisible = false;
+                IsInputSourceDown = false;
             }
         }
 
