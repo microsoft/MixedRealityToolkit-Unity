@@ -417,9 +417,13 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (cursorState != CursorStateEnum.Contextual)
             {
-                if (IsInputSourceDown)
+                if (IsInputSourceDown && visibleHandsCount > 0)
                 {
                     return CursorStateEnum.Select;
+                }
+                else if (IsInputSourceDown && visibleHandsCount == 0)
+                {
+                  IsInputSourceDown = false;
                 }
                 else if (cursorState == CursorStateEnum.Select)
                 {
