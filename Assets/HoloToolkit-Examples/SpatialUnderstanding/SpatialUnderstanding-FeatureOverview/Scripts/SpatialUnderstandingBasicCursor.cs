@@ -4,89 +4,92 @@
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-/// <summary>
-/// 1. Decides when to show the cursor.
-/// 2. Positions the cursor at the gazed location.
-/// 3. Rotates the cursor to match hologram normals.
-/// </summary>
-public class SpatialUnderstandingBasicCursor : MonoBehaviour
+namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
-    public struct RaycastResult
+    /// <summary>
+    /// 1. Decides when to show the cursor.
+    /// 2. Positions the cursor at the gazed location.
+    /// 3. Rotates the cursor to match hologram normals.
+    /// </summary>
+    public class SpatialUnderstandingBasicCursor : MonoBehaviour
     {
-        public bool Hit;
-        public Vector3 Position;
-        public Vector3 Normal;
-    }
-
-    [Tooltip("Distance, in meters, to offset the cursor from the collision point.")]
-    public float DistanceFromCollision = 0.01f;
-
-    private Quaternion cursorDefaultRotation;
-
-    private MeshRenderer meshRenderer;
-
-    private GazeManager gazeManager;
-
-    protected virtual void Awake()
-    {
-        meshRenderer = gameObject.GetComponent<MeshRenderer>();
-
-        if (meshRenderer == null)
+        public struct RaycastResult
         {
-            Debug.LogError("This script requires that your cursor asset has a MeshRenderer component on it.");
-            return;
+            public bool Hit;
+            public Vector3 Position;
+            public Vector3 Normal;
         }
 
-        // Hide the Cursor to begin with.
-        meshRenderer.enabled = false;
+        [Tooltip("Distance, in meters, to offset the cursor from the collision point.")]
+        public float DistanceFromCollision = 0.01f;
 
-        // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
-        cursorDefaultRotation = gameObject.transform.rotation;
-    }
+        private Quaternion cursorDefaultRotation;
 
-    protected virtual void Start()
-    {
-        gazeManager = GazeManager.Instance;
+        private MeshRenderer meshRenderer;
 
-        if (gazeManager == null)
+        private GazeManager gazeManager;
+
+        protected virtual void Awake()
         {
-            Debug.LogError("Must have a GazeManager somewhere in the scene.");
+            meshRenderer = gameObject.GetComponent<MeshRenderer>();
+
+            if (meshRenderer == null)
+            {
+                Debug.LogError("This script requires that your cursor asset has a MeshRenderer component on it.");
+                return;
+            }
+
+            // Hide the Cursor to begin with.
+            meshRenderer.enabled = false;
+
+            // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
+            cursorDefaultRotation = gameObject.transform.rotation;
         }
 
-        if ((GazeManager.Instance.RaycastLayerMasks[0] & (1 << gameObject.layer)) != 0)
+        protected virtual void Start()
         {
-            Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
-                LayerMask.LayerToName(gameObject.layer));
-        }
-    }
+            gazeManager = GazeManager.Instance;
 
-    protected virtual RaycastResult CalculateRayIntersect()
-    {
-        RaycastResult result = new RaycastResult();
-        result.Hit = GazeManager.Instance.IsGazingAtObject;
-        result.Position = GazeManager.Instance.HitPosition;
-        result.Normal = GazeManager.Instance.HitInfo.normal;
-        return result;
-    }
+            if (gazeManager == null)
+            {
+                Debug.LogError("Must have a GazeManager somewhere in the scene.");
+            }
 
-    protected virtual void LateUpdate()
-    {
-        if (meshRenderer == null || gazeManager == null)
-        {
-            return;
+            if ((GazeManager.Instance.RaycastLayerMasks[0] & (1 << gameObject.layer)) != 0)
+            {
+                Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
+                    LayerMask.LayerToName(gameObject.layer));
+            }
         }
 
-        // Calculate the raycast result
-        RaycastResult rayResult = CalculateRayIntersect();
+        protected virtual RaycastResult CalculateRayIntersect()
+        {
+            RaycastResult result = new RaycastResult();
+            result.Hit = GazeManager.Instance.IsGazingAtObject;
+            result.Position = GazeManager.Instance.HitPosition;
+            result.Normal = GazeManager.Instance.HitInfo.normal;
+            return result;
+        }
 
-        // Show or hide the Cursor based on if the user's gaze hit a hologram.
-        meshRenderer.enabled = rayResult.Hit;
+        protected virtual void LateUpdate()
+        {
+            if (meshRenderer == null || gazeManager == null)
+            {
+                return;
+            }
 
-        // Place the cursor at the calculated position.
-        gameObject.transform.position = rayResult.Position + rayResult.Normal * DistanceFromCollision;
+            // Calculate the raycast result
+            RaycastResult rayResult = CalculateRayIntersect();
 
-        // Reorient the cursor to match the hit object normal.
-        gameObject.transform.up = rayResult.Normal;
-        gameObject.transform.rotation *= cursorDefaultRotation;
+            // Show or hide the Cursor based on if the user's gaze hit a hologram.
+            meshRenderer.enabled = rayResult.Hit;
+
+            // Place the cursor at the calculated position.
+            gameObject.transform.position = rayResult.Position + rayResult.Normal * DistanceFromCollision;
+
+            // Reorient the cursor to match the hit object normal.
+            gameObject.transform.up = rayResult.Normal;
+            gameObject.transform.rotation *= cursorDefaultRotation;
+        }
     }
 }

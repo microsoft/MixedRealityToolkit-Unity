@@ -78,6 +78,14 @@ namespace HoloToolkit.Examples.SharingWithUNET
             transform.SetParent(sharedWorldAnchorTransform);
         }
 
+        private void OnDestroy()
+        {
+            if (isLocalPlayer)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
+        }
+
         private void Update()
         {
             // If we aren't the local player, we just need to make sure that the position of this object is set properly
@@ -131,7 +139,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
             Destroy(nextBullet, 8.0f);
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             if (isLocalPlayer)
             {

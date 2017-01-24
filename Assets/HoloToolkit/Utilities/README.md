@@ -11,14 +11,7 @@ Simple Tagalong billboard displaying application's frames per second.
 A drop in direction indicator that stays in the users view at all times.
 
 #### HeadsUpDirectionIndicatorPointer.prefab
-A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.k
-
-#### Main Camera.prefab
-Unity camera that has been customized for Holographic development.
-1. Camera.Transform set to 0,0,0
-2. 'Clear Flags' changed to 'Solid Color'
-3. Color set to R:0, G:0, B:0, A:0 as black renders transparent in HoloLens.
-4. Set the recommended near clipping plane.
+A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.
 
 ### [Scripts](Scripts)
 
@@ -64,6 +57,12 @@ Provides dynamic Text to Speech. Speech is generated using the UWP SpeechSynthes
 
 ### [Shaders](Shaders)
 
+### FastConfigurable.shader
+Very fast shader that uses the Unity light system.  Compiles down to only performing the operations you're actually using.  Uses material property drawers rather than a custom editor for ease of maintenance.
+
+#### HoloToolkitCommon.cginc
+Common shader functionality
+
 #### LambertianConfigurable.cginc
 Code shared between LambertianConfigurable.shader and LambertianConfigurableTransparent.shader.
 
@@ -72,6 +71,9 @@ Feature configurable per-pixel lambertian shader.  Use when higher quality light
 
 #### LambertianConfigurableTransparent.shader
 Feature configurable per-pixel lambertian transparent shader.  Use when higher quality lighting and transparency are desired, but specular highlights are not needed.
+
+#### macro.cginc
+Preprocessor macros to support shaders
 
 #### StandardFast.shader
 Higher performance drop-in replacement for the Unity Standard Shader.  Use when very high quality lighting (including reflections) is needed.

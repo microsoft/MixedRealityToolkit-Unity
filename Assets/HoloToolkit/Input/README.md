@@ -1,5 +1,9 @@
 ## [Input]()
-Scripts that leverage the HoloLens input features namely Gaze, Gesture and Voice.
+Input System Diagrams:
+![alt text](/External/ReadMeImages/InputSystemDiagram.png)
+![alt text](/External/ReadMeImages/CursorSystemDiagram.PNG)
+
+##Scripts that leverage HoloLens input features namely Gaze, Gesture and Voice.
 
 This contains a fully-featured **input module**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a **cursor** similar to the HoloLens shell cursor that fully leverages the Unity's animation system.
 
@@ -142,18 +146,6 @@ Event data for an event coming from the navigation gesture.
 ##### SourceStateEventData.cs
 Event data for an event that represents an input source being detected or lost.
 
-#### GestureManipulator.cs
-A component for moving an object via the GestureManager manipulation gesture.
-
-When an active GestureManipulator component is attached to a GameObject it will subscribe 
-to GestureManager's manipulation gestures, and move the GameObject when a ManipulationGesture occurs. 
-If the GestureManipulator is disabled it will not respond to any manipulation gestures. 
- 
-This means that if multiple GestureManipulators are active in a given scene when a manipulation 
-gesture is performed, all the relevant GameObjects will be moved.  If the desired behavior is that only 
-a single object be moved at a time, it is recommended that objects which should not be moved disable 
-their GestureManipulators, then re-enable them when necessary (e.g. the object is focused). 
-
 #### InputSources
 
 ##### BaseInputSource.cs
@@ -245,6 +237,14 @@ In this particular implementation, selected object color it toggled on selecting
 A grid of dynamic objects to illustrate sending messages to prefab instances created at runtime as opposed
 to only static objects that already exist in the scene.
 
+#### GazeResponder.cs
+This class implements IFocusable to respond to gaze changes.
+It highlights the object being gazed at.
+
+#### TapResponder.cs
+This class implements IInputClickHandler to handle the tap gesture.
+It increases the scale of the object when tapped.
+
 ### [Tests](Tests)
 Tests related to the input features. To use the scene:
 
@@ -266,6 +266,10 @@ Shows the cursor hugging the test sphere in the scene and displays hand detected
 #### FocusedObjectKeywords.unity
 Example on how to send keyword messages to currently focused dynamically instantiated object.
 Gazing on an object and saying "Make Smaller" and "Make Bigger" will adjust object size.
+
+#### InputTapTest.unity
+Test scene shows you in a simple way, how to respond to user's gaze using the Input module.
+It also shows you how to respond to the user's tap gesture.
 
 #### KeywordManager.unity
 Shows how to use the KeywordManager.cs script to add keywords to your scene.

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -6,27 +9,34 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// FocusedObjectMessageReceiver class shows how to handle focus events.
     /// This particular implementatoin controls object appearance by changing its color when focused.
     /// </summary>
+    [RequireComponent(typeof(Renderer))]
     public class FocusedObjectColorChanger : MonoBehaviour, IFocusable
     {
-        [Tooltip("Object color changes to this when focused.")] public Color FocusedColor = Color.red;
+        [Tooltip("Object color changes to this when focused.")]
+        public Color FocusedColor = Color.red;
 
-        private Material material;
         private Color originalColor;
+        private Material cachedMaterial;
 
-        private void Start()
+        private void Awake()
         {
-            material = GetComponent<Renderer>().material;
-            originalColor = material.color;
+            cachedMaterial = GetComponent<Renderer>().material;
+            originalColor = cachedMaterial.GetColor("_Color");
         }
 
         public void OnFocusEnter()
         {
-            material.color = FocusedColor;
+            cachedMaterial.SetColor("_Color", FocusedColor);
         }
 
         public void OnFocusExit()
         {
-            material.color = originalColor;
+            cachedMaterial.SetColor("_Color", originalColor);
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedMaterial);
         }
     }
 }

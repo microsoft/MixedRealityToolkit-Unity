@@ -31,9 +31,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnInputDown\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
-            Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1} TapCount: {2}", eventData.InputSource, eventData.SourceId, eventData.TapCount);
         }
 
         public void OnFocusEnter()

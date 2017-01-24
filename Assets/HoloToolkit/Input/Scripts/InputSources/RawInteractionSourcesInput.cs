@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private class SourceData
         {
-            public SourceData(IInputSource inputSource, uint sourceId)
+            public SourceData(uint sourceId)
             {
                 SourceId = sourceId;
                 HasPosition = false;
@@ -33,7 +33,6 @@ namespace HoloToolkit.Unity.InputModule
                 IsSourceDownPending = false;
                 SourceStateChanged = false;
                 SourceStateUpdateTimer = -1;
-                InputSourceArgs = new InputSourceEventArgs(inputSource, sourceId);
             }
 
             public readonly uint SourceId;
@@ -43,7 +42,6 @@ namespace HoloToolkit.Unity.InputModule
             public bool IsSourceDownPending;
             public bool SourceStateChanged;
             public float SourceStateUpdateTimer;
-            public readonly InputSourceEventArgs InputSourceArgs;
         }
 
         /// <summary>
@@ -51,6 +49,9 @@ namespace HoloToolkit.Unity.InputModule
         /// This mitigates fake source taps that can sometimes be detected while the input source is moving.
         /// </summary>
         private const float SourcePressDelay = 0.07f;
+
+        [Tooltip("Use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
+        public bool UseUnscaledTime = true;
 
         /// <summary>
         /// Dictionary linking each source ID to its data.
@@ -61,11 +62,6 @@ namespace HoloToolkit.Unity.InputModule
         // HashSets used to be able to quickly update the sources data when they become visible / not visible
         private readonly HashSet<uint> currentSources = new HashSet<uint>();
         private readonly HashSet<uint> newSources = new HashSet<uint>();
-
-        public override SupportedInputEvents SupportedEvents
-        {
-            get { return SupportedInputEvents.SourceUpAndDown; }
-        }
 
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
@@ -106,7 +102,7 @@ namespace HoloToolkit.Unity.InputModule
             orientation = Quaternion.identity;
             return false;
         }
-        
+
         private void Update()
         {
             newSources.Clear();
@@ -146,7 +142,7 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (!sourceIdToData.TryGetValue(interactionSource.id, out sourceData))
             {
-                sourceData = new SourceData(this, interactionSource.id);
+                sourceData = new SourceData(interactionSource.id);
                 sourceIdToData.Add(sourceData.SourceId, sourceData);
                 newSources.Add(sourceData.SourceId);
             }
@@ -180,7 +176,11 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.SourceStateChanged = false;
             if (sourceData.SourceStateUpdateTimer >= 0)
             {
-                sourceData.SourceStateUpdateTimer -= Time.deltaTime;
+                float deltaTime = UseUnscaledTime
+                    ? Time.unscaledDeltaTime
+                    : Time.deltaTime;
+
+                sourceData.SourceStateUpdateTimer -= deltaTime;
                 if (sourceData.SourceStateUpdateTimer < 0)
                 {
                     sourceData.IsSourceDown = sourceData.IsSourceDownPending;
@@ -202,11 +202,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (sourceData.IsSourceDown)
                 {
-                    RaiseSourceDownEvent(sourceData.InputSourceArgs);
+                    inputManager.RaiseSourceDown(this, sourceData.SourceId);
                 }
                 else
                 {
-                    RaiseSourceUpEvent(sourceData.InputSourceArgs);
+                    inputManager.RaiseSourceUp(this, sourceData.SourceId);
                 }
             }
         }
@@ -219,8 +219,7 @@ namespace HoloToolkit.Unity.InputModule
             // Send event for new sources that were added
             foreach (uint newSource in newSources)
             {
-                InputSourceEventArgs args = new InputSourceEventArgs(this, newSource);
-                RaiseSourceDetectedEvent(args);
+                inputManager.RaiseSourceDetected(this, newSource);
             }
 
             // Send event for sources that are no longer visible and remove them from our dictionary
@@ -229,8 +228,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (!currentSources.Contains(existingSource))
                 {
                     pendingSourceIdDeletes.Add(existingSource);
-                    InputSourceEventArgs args = new InputSourceEventArgs(this, existingSource);
-                    RaiseSourceLostEvent(args);
+                    inputManager.RaiseSourceLost(this, existingSource);
                 }
             }
 

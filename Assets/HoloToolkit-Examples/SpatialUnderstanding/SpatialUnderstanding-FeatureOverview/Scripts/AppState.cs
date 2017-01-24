@@ -10,280 +10,288 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 
-public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
+namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
-    // Consts
-    public float kMinAreaForStats = 5.0f;
-    public float kMinAreaForComplete = 50.0f;
-    public float kMinHorizAreaForComplete = 25.0f;
-    public float kMinWallAreaForComplete = 10.0f;
-
-    // Config
-    public TextMesh DebugDisplay;
-    public TextMesh DebugSubDisplay;
-    public Transform Parent_Scene;
-    public SpatialMappingObserver MappingObserver;
-    public SpatialUnderstandingCursor AppCursor;
-
-    // Properties
-    public string SpaceQueryDescription
+    public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
     {
-        get
-        {
-            return spaceQueryDescription;
-        }
-        set
-        {
-            spaceQueryDescription = value;
-            objectPlacementDescription = "";
-        }
-    }
+        // Consts
+        public float kMinAreaForStats = 5.0f;
+        public float kMinAreaForComplete = 50.0f;
+        public float kMinHorizAreaForComplete = 25.0f;
+        public float kMinWallAreaForComplete = 10.0f;
 
-    public string ObjectPlacementDescription
-    {
-        get
-        {
-            return objectPlacementDescription;
-        }
-        set
-        {
-            objectPlacementDescription = value;
-            spaceQueryDescription = "";
-        }
-    }
+        // Config
+        public TextMesh DebugDisplay;
+        public TextMesh DebugSubDisplay;
+        public Transform Parent_Scene;
+        public SpatialMappingObserver MappingObserver;
+        public SpatialUnderstandingCursor AppCursor;
 
-    public bool DoesScanMeetMinBarForCompletion
-    {
-        get
+        // Properties
+        public string SpaceQueryDescription
         {
-            // Only allow this when we are actually scanning
-            if ((SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Scanning) ||
-                (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
+            get
             {
-                return false;
+                return spaceQueryDescription;
             }
-
-            // Query the current playspace stats
-            IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
-            if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
+            set
             {
-                return false;
+                spaceQueryDescription = value;
+                objectPlacementDescription = "";
             }
-            SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
-
-            // Check our preset requirements
-            if ((stats.TotalSurfaceArea > kMinAreaForComplete) ||
-                (stats.HorizSurfaceArea > kMinHorizAreaForComplete) ||
-                (stats.WallSurfaceArea > kMinWallAreaForComplete))
-            {
-                return true;
-            }
-            return false;
         }
-    }
 
-    public string PrimaryText
-    {
-        get
+        public string ObjectPlacementDescription
         {
-            // Display the space and object query results (has priority)
-            if (!string.IsNullOrEmpty(SpaceQueryDescription))
+            get
             {
-                return SpaceQueryDescription;
+                return objectPlacementDescription;
             }
-            else if (!string.IsNullOrEmpty(ObjectPlacementDescription))
+            set
             {
-                return ObjectPlacementDescription;
+                objectPlacementDescription = value;
+                spaceQueryDescription = "";
             }
+        }
 
-            // Scan state
-            if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+        public bool DoesScanMeetMinBarForCompletion
+        {
+            get
             {
-                switch (SpatialUnderstanding.Instance.ScanState)
+                // Only allow this when we are actually scanning
+                if ((SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Scanning) ||
+                    (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
                 {
-                    case SpatialUnderstanding.ScanStates.Scanning:
-                        // Get the scan stats
-                        IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
-                        if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
-                        {
-                            return "playspace stats query failed";
-                        }
-
-                        // The stats tell us if we could potentially finish
-                        if (DoesScanMeetMinBarForCompletion)
-                        {
-                            return "When ready, air tap to finalize your playspace";
-                        }
-                        return "Walk around and scan in your playspace";
-                    case SpatialUnderstanding.ScanStates.Finishing:
-                        return "Finalizing scan (please wait)";
-                    case SpatialUnderstanding.ScanStates.Done:
-                        return "Scan complete - Use the menu to run queries";
-                    default:
-                        return "ScanState = " + SpatialUnderstanding.Instance.ScanState.ToString();
+                    return false;
                 }
-            }
-            return "";
-        }
-    }
 
-    public Color PrimaryColor
-    {
-        get
-        {
-            if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning)
-            {
-                if (trackedHandsCount > 0)
-                {
-                    return DoesScanMeetMinBarForCompletion ? Color.green : Color.red;
-                }
-                return DoesScanMeetMinBarForCompletion ? Color.yellow : Color.white;
-            }
-
-            // If we're looking at the menu, fade it out
-            Vector3 hitPos, hitNormal;
-            UnityEngine.UI.Button hitButton;
-            float alpha = AppCursor.RayCastUI(out hitPos, out hitNormal, out hitButton) ? 0.15f : 1.0f;
-
-            // Special case processing & 
-            return (!string.IsNullOrEmpty(SpaceQueryDescription) || !string.IsNullOrEmpty(ObjectPlacementDescription)) ?
-                (PrimaryText.Contains("processing") ? new Color(1.0f, 0.0f, 0.0f, 1.0f) : new Color(1.0f, 0.7f, 0.1f, alpha)) :
-                new Color(1.0f, 1.0f, 1.0f, alpha);
-        }
-    }
-
-    public string DetailsText
-    {
-        get
-        {
-            if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.None)
-            {
-                return "";
-            }
-
-            // Scanning stats get second priority
-            if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-                (SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
-            {
+                // Query the current playspace stats
                 IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
                 if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
                 {
-                    return "Playspace stats query failed";
+                    return false;
                 }
                 SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
 
-                // Start showing the stats when they are no longer zero
-                if (stats.TotalSurfaceArea > kMinAreaForStats)
+                // Check our preset requirements
+                if ((stats.TotalSurfaceArea > kMinAreaForComplete) ||
+                    (stats.HorizSurfaceArea > kMinHorizAreaForComplete) ||
+                    (stats.WallSurfaceArea > kMinWallAreaForComplete))
                 {
-                    string subDisplayText = string.Format("totalArea={0:0.0}, horiz={1:0.0}, wall={2:0.0}", stats.TotalSurfaceArea, stats.HorizSurfaceArea, stats.WallSurfaceArea);
-                    subDisplayText += string.Format("\nnumFloorCells={0}, numCeilingCells={1}, numPlatformCells={2}", stats.NumFloor, stats.NumCeiling, stats.NumPlatform);
-                    subDisplayText += string.Format("\npaintMode={0}, seenCells={1}, notSeen={2}", stats.CellCount_IsPaintMode, stats.CellCount_IsSeenQualtiy_Seen + stats.CellCount_IsSeenQualtiy_Good, stats.CellCount_IsSeenQualtiy_None);
-                    return subDisplayText;
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public string PrimaryText
+        {
+            get
+            {
+                // Display the space and object query results (has priority)
+                if (!string.IsNullOrEmpty(SpaceQueryDescription))
+                {
+                    return SpaceQueryDescription;
+                }
+                else if (!string.IsNullOrEmpty(ObjectPlacementDescription))
+                {
+                    return ObjectPlacementDescription;
+                }
+
+                // Scan state
+                if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                {
+                    switch (SpatialUnderstanding.Instance.ScanState)
+                    {
+                        case SpatialUnderstanding.ScanStates.Scanning:
+                            // Get the scan stats
+                            IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                            if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
+                            {
+                                return "playspace stats query failed";
+                            }
+
+                            // The stats tell us if we could potentially finish
+                            if (DoesScanMeetMinBarForCompletion)
+                            {
+                                return "When ready, air tap to finalize your playspace";
+                            }
+                            return "Walk around and scan in your playspace";
+                        case SpatialUnderstanding.ScanStates.Finishing:
+                            return "Finalizing scan (please wait)";
+                        case SpatialUnderstanding.ScanStates.Done:
+                            return "Scan complete - Use the menu to run queries";
+                        default:
+                            return "ScanState = " + SpatialUnderstanding.Instance.ScanState.ToString();
+                    }
                 }
                 return "";
             }
-            return "";
-        }
-    }
-
-    // Privates
-    private string spaceQueryDescription;
-    private string objectPlacementDescription;
-    private uint trackedHandsCount = 0;
-    private KeywordRecognizer keywordRecognizer;
-
-    // Functions
-    private void Start()
-    {
-        // Default the scene & the HoloToolkit objects to the camera
-        Vector3 sceneOrigin = Camera.main.transform.position;
-        Parent_Scene.transform.position = sceneOrigin;
-        MappingObserver.SetObserverOrigin(sceneOrigin);
-        InputManager.Instance.AddGlobalListener(gameObject);
-
-
-        var keywordsToActions = new Dictionary<string, Action>
-        {
-            { "Toggle Scanned Mesh", ToggleScannedMesh },
-            { "Toggle Processed Mesh", ToggleProcessedMesh },
-        };
-
-        keywordRecognizer = new KeywordRecognizer(keywordsToActions.Keys.ToArray());
-        keywordRecognizer.OnPhraseRecognized += args => keywordsToActions[args.text].Invoke();
-        keywordRecognizer.Start();
-    }
-
-    private void Update_DebugDisplay(float deltaTime)
-    {
-        // Basic checks
-        if (DebugDisplay == null)
-        {
-            return;
         }
 
-        // Update display text
-        DebugDisplay.text = PrimaryText;
-        DebugDisplay.color = PrimaryColor;
-        DebugSubDisplay.text = DetailsText;
-    }
-
-    private void Update_KeyboardInput(float deltaTime)
-    {
-        // Toggle SurfaceMapping & CustomUnderstandingMesh visibility
-        if (Input.GetKeyDown(KeyCode.BackQuote) &&
-            (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
+        public Color PrimaryColor
         {
-            ToggleScannedMesh();
+            get
+            {
+                if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning)
+                {
+                    if (trackedHandsCount > 0)
+                    {
+                        return DoesScanMeetMinBarForCompletion ? Color.green : Color.red;
+                    }
+                    return DoesScanMeetMinBarForCompletion ? Color.yellow : Color.white;
+                }
+
+                // If we're looking at the menu, fade it out
+                Vector3 hitPos, hitNormal;
+                UnityEngine.UI.Button hitButton;
+                float alpha = AppCursor.RayCastUI(out hitPos, out hitNormal, out hitButton) ? 0.15f : 1.0f;
+
+                // Special case processing & 
+                return (!string.IsNullOrEmpty(SpaceQueryDescription) || !string.IsNullOrEmpty(ObjectPlacementDescription)) ?
+                    (PrimaryText.Contains("processing") ? new Color(1.0f, 0.0f, 0.0f, 1.0f) : new Color(1.0f, 0.7f, 0.1f, alpha)) :
+                    new Color(1.0f, 1.0f, 1.0f, alpha);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.BackQuote) &&
-                 (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+
+        public string DetailsText
         {
-            ToggleProcessedMesh();
+            get
+            {
+                if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.None)
+                {
+                    return "";
+                }
+
+                // Scanning stats get second priority
+                if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
+                    (SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
+                {
+                    IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                    if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
+                    {
+                        return "Playspace stats query failed";
+                    }
+                    SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
+
+                    // Start showing the stats when they are no longer zero
+                    if (stats.TotalSurfaceArea > kMinAreaForStats)
+                    {
+                        string subDisplayText = string.Format("totalArea={0:0.0}, horiz={1:0.0}, wall={2:0.0}", stats.TotalSurfaceArea, stats.HorizSurfaceArea, stats.WallSurfaceArea);
+                        subDisplayText += string.Format("\nnumFloorCells={0}, numCeilingCells={1}, numPlatformCells={2}", stats.NumFloor, stats.NumCeiling, stats.NumPlatform);
+                        subDisplayText += string.Format("\npaintMode={0}, seenCells={1}, notSeen={2}", stats.CellCount_IsPaintMode, stats.CellCount_IsSeenQualtiy_Seen + stats.CellCount_IsSeenQualtiy_Good, stats.CellCount_IsSeenQualtiy_None);
+                        return subDisplayText;
+                    }
+                    return "";
+                }
+                return "";
+            }
         }
-    }
 
-    private static void ToggleScannedMesh()
-    {
-        SpatialMappingManager.Instance.DrawVisualMeshes = !SpatialMappingManager.Instance.DrawVisualMeshes;
-        Debug.Log("SpatialUnderstanding -> SpatialMappingManager.Instance.DrawVisualMeshes=" + SpatialMappingManager.Instance.DrawVisualMeshes);
-    }
+        // Privates
+        private string spaceQueryDescription;
+        private string objectPlacementDescription;
+        private uint trackedHandsCount = 0;
+        private KeywordRecognizer keywordRecognizer;
 
-    private static void ToggleProcessedMesh()
-    {
-        SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
-        Debug.Log("SpatialUnderstanding -> SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh=" + SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
-    }
-
-    private void Update()
-    {
-        // Updates
-        Update_DebugDisplay(Time.deltaTime);
-        Update_KeyboardInput(Time.deltaTime);
-    }
-
-    public void OnSourceDetected(SourceStateEventData eventData)
-    {
-        // If the source has positional info and there is currently no visible source
-        if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+        // Functions
+        private void Start()
         {
-            trackedHandsCount++;
+            // Default the scene & the HoloToolkit objects to the camera
+            Vector3 sceneOrigin = Camera.main.transform.position;
+            Parent_Scene.transform.position = sceneOrigin;
+            MappingObserver.SetObserverOrigin(sceneOrigin);
+            InputManager.Instance.AddGlobalListener(gameObject);
+
+
+            var keywordsToActions = new Dictionary<string, Action>
+            {
+                { "Toggle Scanned Mesh", ToggleScannedMesh },
+                { "Toggle Processed Mesh", ToggleProcessedMesh },
+            };
+
+            keywordRecognizer = new KeywordRecognizer(keywordsToActions.Keys.ToArray());
+            keywordRecognizer.OnPhraseRecognized += args => keywordsToActions[args.text].Invoke();
+            keywordRecognizer.Start();
         }
-    }
 
-    public void OnSourceLost(SourceStateEventData eventData)
-    {
-        if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+        protected override void OnDestroy()
         {
-            trackedHandsCount--;
+            InputManager.Instance.RemoveGlobalListener(gameObject);
         }
-    }
 
-    public void OnInputClicked(InputEventData eventData)
-    {
-        if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-            !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
+        private void Update_DebugDisplay(float deltaTime)
         {
-            SpatialUnderstanding.Instance.RequestFinishScan();
+            // Basic checks
+            if (DebugDisplay == null)
+            {
+                return;
+            }
+
+            // Update display text
+            DebugDisplay.text = PrimaryText;
+            DebugDisplay.color = PrimaryColor;
+            DebugSubDisplay.text = DetailsText;
+        }
+
+        private void Update_KeyboardInput(float deltaTime)
+        {
+            // Toggle SurfaceMapping & CustomUnderstandingMesh visibility
+            if (Input.GetKeyDown(KeyCode.BackQuote) &&
+                (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
+            {
+                ToggleScannedMesh();
+            }
+            else if (Input.GetKeyDown(KeyCode.BackQuote) &&
+                     (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            {
+                ToggleProcessedMesh();
+            }
+        }
+
+        private static void ToggleScannedMesh()
+        {
+            SpatialMappingManager.Instance.DrawVisualMeshes = !SpatialMappingManager.Instance.DrawVisualMeshes;
+            Debug.Log("SpatialUnderstanding -> SpatialMappingManager.Instance.DrawVisualMeshes=" + SpatialMappingManager.Instance.DrawVisualMeshes);
+        }
+
+        private static void ToggleProcessedMesh()
+        {
+            SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
+            Debug.Log("SpatialUnderstanding -> SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh=" + SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
+        }
+
+        private void Update()
+        {
+            // Updates
+            Update_DebugDisplay(Time.deltaTime);
+            Update_KeyboardInput(Time.deltaTime);
+        }
+
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
+            // If the source has positional info and there is currently no visible source
+            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+            {
+                trackedHandsCount++;
+            }
+        }
+
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+            {
+                trackedHandsCount--;
+            }
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
+                !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
+            {
+                SpatialUnderstanding.Instance.RequestFinishScan();
+            }
         }
     }
 }
