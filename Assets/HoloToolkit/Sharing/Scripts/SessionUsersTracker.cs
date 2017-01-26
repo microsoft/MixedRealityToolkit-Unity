@@ -10,7 +10,7 @@ namespace HoloToolkit.Sharing
     /// <summary>
     /// Keeps track of the users in the current session.
     /// </summary>
-    public class SessionUsersTracker : IDisposable
+	public class SessionUsersTracker : MonoBehaviour, IDisposable
     {
         /// <summary>
         /// UserJoined event notifies when a user joins the current session.
