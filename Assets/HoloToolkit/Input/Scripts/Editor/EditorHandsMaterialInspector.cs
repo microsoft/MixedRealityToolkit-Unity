@@ -12,6 +12,5 @@ public class EditorHandsMaterialInspector : ShaderGUI
                 materialEditor.ShaderProperty(materialProperty, materialProperty.displayName);
             }
         }
-
     }
 }
