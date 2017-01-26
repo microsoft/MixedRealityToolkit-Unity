@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             InputManager.Instance.PushFallbackInputHandler(gameObject);
         }
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             particles.transform.position = GazeManager.Instance.HitPosition;
             particles.Emit(60);

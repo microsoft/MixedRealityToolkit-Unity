@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.Tests
     {
         public TextToSpeechManager TextToSpeech;
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.
