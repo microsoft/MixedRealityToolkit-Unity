@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using HoloToolkit.Unity;
+using UnityEngine;
 
 namespace HoloToolkit.Sharing
 {
