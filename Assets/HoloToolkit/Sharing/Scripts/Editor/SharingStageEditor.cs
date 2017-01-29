@@ -10,7 +10,7 @@ using HoloToolkit.Sharing.SyncModel;
 
 namespace HoloToolkit.Sharing
 {
-    [CustomEditor(typeof (SharingStage))]
+    [CustomEditor(typeof(SharingStage))]
     public class SharingStageEditor : Editor
     {
         private Dictionary<object, bool> foldoutGUIMap = new Dictionary<object, bool>();
@@ -21,7 +21,7 @@ namespace HoloToolkit.Sharing
 
             if (Application.isPlaying)
             {
-                SharingStage networkManager = target as SharingStage;
+                SharingStage networkManager = (SharingStage)target;
 
                 SyncRoot root = networkManager.Root;
 
@@ -44,34 +44,34 @@ namespace HoloToolkit.Sharing
 
         private void DrawDataModelGUI(SyncPrimitive syncPrimitive, string parentPath)
         {
-            string name = syncPrimitive.FieldName;
-            object value = syncPrimitive.RawValue;
+            string fieldName = syncPrimitive.FieldName;
+            object rawValue = syncPrimitive.RawValue;
 
-            SyncObject SyncObject = syncPrimitive as SyncObject;
+            SyncObject syncObject = syncPrimitive as SyncObject;
 
-            if (SyncObject != null)
+            if (syncObject != null)
             {
                 bool foldout = false;
-                if (foldoutGUIMap.ContainsKey(SyncObject))
+                if (foldoutGUIMap.ContainsKey(syncObject))
                 {
-                    foldout = foldoutGUIMap[SyncObject];
+                    foldout = foldoutGUIMap[syncObject];
                 }
 
-                int ownerId = SyncObject.OwnerId;
+                int ownerId = syncObject.OwnerId;
                 string owner = ownerId == int.MaxValue ? string.Empty : ownerId.ToString();
-                string objectType = SyncObject.ObjectType;
+                string objectType = syncObject.ObjectType;
 
-                foldout = EditorGUILayout.Foldout(foldout, string.Format("{0} (Owner:{1} Type:{2})", name, owner, objectType));
-                foldoutGUIMap[SyncObject] = foldout;
+                foldout = EditorGUILayout.Foldout(foldout, string.Format("{0} (Owner:{1} Type:{2})", fieldName, owner, objectType));
+                foldoutGUIMap[syncObject] = foldout;
 
                 if (foldout)
                 {
                     EditorGUI.indentLevel++;
 
-                    SyncPrimitive[] children = SyncObject.GetChildren();
+                    SyncPrimitive[] children = syncObject.GetChildren();
                     for (int i = 0; i < children.Length; i++)
                     {
-                        DrawDataModelGUI(children[i], parentPath + "/" + name);
+                        DrawDataModelGUI(children[i], parentPath + "/" + fieldName);
                     }
 
                     EditorGUI.indentLevel--;
@@ -80,13 +80,12 @@ namespace HoloToolkit.Sharing
             else
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(name, GUILayout.MaxWidth(125));
-                EditorGUILayout.LabelField(value != null ? value.ToString() : "null", GUILayout.MaxWidth(200));
-                EditorGUILayout.LabelField(syncPrimitive.NetworkElement != null ? "live" : "local",
-                    GUILayout.MaxWidth(50));
+                EditorGUILayout.LabelField(fieldName, GUILayout.MaxWidth(125));
+                EditorGUILayout.LabelField(rawValue != null ? rawValue.ToString() : "null", GUILayout.MaxWidth(200));
+                EditorGUILayout.LabelField(syncPrimitive.NetworkElement != null ? "live" : "local", GUILayout.MaxWidth(50));
                 if (syncPrimitive.NetworkElement != null)
                 {
-                    EditorGUILayout.LabelField(parentPath + "/" + name, GUILayout.MaxWidth(500));
+                    EditorGUILayout.LabelField(parentPath + "/" + fieldName, GUILayout.MaxWidth(500));
                 }
 
                 EditorGUILayout.EndHorizontal();

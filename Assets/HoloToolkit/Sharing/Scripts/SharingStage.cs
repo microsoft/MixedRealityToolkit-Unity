@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using HoloToolkit.Sharing.Utilities;
 using HoloToolkit.Unity;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace HoloToolkit.Sharing
         /// <summary> 
         /// SharingManagerConnected event notifies when the sharing manager is created and connected. 
         /// </summary> 
-        public event EventHandler SharingManagerConnected; 
+        public event EventHandler SharingManagerConnected;
 
         /// <summary>
         /// Default username to use when joining a session.
@@ -52,7 +53,7 @@ namespace HoloToolkit.Sharing
         public SharingManager Manager { get { return sharingMgr; } }
         private SharingManager sharingMgr;
 
-        public bool AutoDiscoverServer = false;
+        public bool AutoDiscoverServer;
 
         [Tooltip("Determines how often the discovery service should ping the network in search of a server.")]
         public float PingIntervalSec = 2;
@@ -108,8 +109,8 @@ namespace HoloToolkit.Sharing
         /// </summary> 
         private DiscoveryClientAdapter discoveryClientAdapter;
 
-        private float pingIntervalCurrent = 0; 
-        private bool isTryingToFindServer = false; 
+        private float pingIntervalCurrent;
+        private bool isTryingToFindServer;
 
         public string UserName
         {
@@ -169,9 +170,9 @@ namespace HoloToolkit.Sharing
         {
             base.OnDestroy();
 
-            if (this.discoveryClient != null)
+            if (discoveryClient != null)
             {
-                discoveryClient.RemoveListener(this.discoveryClientAdapter);
+                discoveryClient.RemoveListener(discoveryClientAdapter);
                 discoveryClient.Dispose();
                 discoveryClient = null;
 
@@ -190,16 +191,16 @@ namespace HoloToolkit.Sharing
             }
 
             // Release the Sharing resources
-            if (this.SessionUsersTracker != null)
+            if (SessionUsersTracker != null)
             {
-                this.SessionUsersTracker.Dispose();
-                this.SessionUsersTracker = null;
+                SessionUsersTracker.Dispose();
+                SessionUsersTracker = null;
             }
 
-            if (this.SessionsTracker != null)
+            if (SessionsTracker != null)
             {
-                this.SessionsTracker.Dispose();
-                this.SessionsTracker = null;
+                SessionsTracker.Dispose();
+                SessionsTracker = null;
             }
 
             if (networkConnection != null)
@@ -227,7 +228,7 @@ namespace HoloToolkit.Sharing
 
         private void LateUpdate()
         {
-            if (this.isTryingToFindServer)
+            if (isTryingToFindServer)
             {
                 AutoDiscoverUpdate();
             }
@@ -265,8 +266,8 @@ namespace HoloToolkit.Sharing
 
             Root = new SyncRoot(sharingMgr.GetRootSyncObject());
 
-            this.SessionsTracker = new ServerSessionsTracker(sharingMgr.GetSessionManager());
-            this.SessionUsersTracker = new SessionUsersTracker(this.SessionsTracker);
+            SessionsTracker = new ServerSessionsTracker(sharingMgr.GetSessionManager());
+            SessionUsersTracker = new SessionUsersTracker(SessionsTracker);
 
             using (XString userName = new XString(DefaultUserName))
             {
@@ -280,58 +281,58 @@ namespace HoloToolkit.Sharing
         }
 
         private void SendConnectedNotification()
-        { 
-            if (Manager.GetServerConnection().IsConnected()) 
-            { 
+        {
+            if (Manager.GetServerConnection().IsConnected())
+            {
                 //Send notification that we're connected 
-                EventHandler connectedEvent = SharingManagerConnected; 
-                if (connectedEvent != null) 
-                { 
-                    connectedEvent(this, EventArgs.Empty); 
-                } 
-            } 
-            else 
-            { 
-                Log.Error(string.Format("Cannot connect to server {0}:{1}", ServerAddress, ServerPort)); 
-            } 
-        } 
- 
+                EventHandler connectedEvent = SharingManagerConnected;
+                if (connectedEvent != null)
+                {
+                    connectedEvent(this, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                Log.Error(string.Format("Cannot connect to server {0}:{1}", ServerAddress, ServerPort.ToString()));
+            }
+        }
+
         private void AutoDiscoverInit()
         {
             discoveryClientAdapter = new DiscoveryClientAdapter();
-            discoveryClientAdapter.DiscoveredEvent += OnSystemDiscovered; 
- 
-            discoveryClient = DiscoveryClient.Create(); 
-            discoveryClient.AddListener(discoveryClientAdapter); 
- 
+            discoveryClientAdapter.DiscoveredEvent += OnSystemDiscovered;
+
+            discoveryClient = DiscoveryClient.Create();
+            discoveryClient.AddListener(discoveryClientAdapter);
+
             //Start Finding Server 
-            isTryingToFindServer = true; 
-        } 
- 
+            isTryingToFindServer = true;
+        }
+
         private void AutoDiscoverUpdate()
-        { 
+        {
             //Searching Enabled-> Update DiscoveryClient to check results, Wait Interval then Ping network. 
-            pingIntervalCurrent += Time.deltaTime; 
-            if (pingIntervalCurrent > PingIntervalSec) 
-            { 
-                pingIntervalCurrent = 0; 
-                discoveryClient.Ping(); 
-            } 
-            discoveryClient.Update(); 
-        } 
- 
+            pingIntervalCurrent += Time.deltaTime;
+            if (pingIntervalCurrent > PingIntervalSec)
+            {
+                pingIntervalCurrent = 0;
+                discoveryClient.Ping();
+            }
+            discoveryClient.Update();
+        }
+
         private void OnSystemDiscovered(DiscoveredSystem obj)
-        { 
-            if (obj.GetRole() == SystemRole.SessionDiscoveryServerRole) 
-            { 
+        {
+            if (obj.GetRole() == SystemRole.SessionDiscoveryServerRole)
+            {
                 //Found a server. Stop pinging the network and connect 
-                isTryingToFindServer = false; 
-                this.ServerAddress = obj.GetAddress(); 
-                Debug.Log("System Discovered at: " + this.ServerAddress); 
-                Connect(); 
-                Debug.Log(string.Format("Connected to: {0}:{1}", this.ServerAddress, this.ServerPort)); 
-            } 
-        } 
+                isTryingToFindServer = false;
+                ServerAddress = obj.GetAddress();
+                Debug.Log("System Discovered at: " + ServerAddress);
+                Connect();
+                Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
+            }
+        }
 
         public void ConnectToServer(string serverAddress, int port)
         {

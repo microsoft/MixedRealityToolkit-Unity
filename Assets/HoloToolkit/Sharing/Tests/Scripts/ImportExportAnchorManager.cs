@@ -1,16 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Sharing;
-using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
+using HoloToolkit.Unity;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.VR.WSA.Sharing;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.Tests
 {
     /// <summary>
     /// Manages creating anchors and sharing the anchors with other clients.
@@ -88,7 +87,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Indicates if the room should kept around even after all users leave
         /// </summary>
-        public bool KeepRoomAlive = false;
+        public bool KeepRoomAlive;
 
         /// <summary>
         /// Cached point to the sharing stage.
@@ -108,17 +107,17 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Keeps track of stored anchor data blob.
         /// </summary>
-        private byte[] rawAnchorData = null;
+        private byte[] rawAnchorData;
 
         /// <summary>
         /// Keeps track of locally stored anchors.
         /// </summary>
-        private WorldAnchorStore anchorStore = null;
+        private WorldAnchorStore anchorStore;
 
         /// <summary>
         /// Keeps track of the name of the anchor we are exporting.
         /// </summary>
-        private string exportingAnchorName { get; set; }
+        private string exportingAnchorName;
 
         /// <summary>
         /// The datablob of the anchor.
@@ -130,7 +129,7 @@ namespace HoloToolkit.Sharing
         /// We need the sharing service to be ready so we can
         /// upload and download data for sharing anchors.
         /// </summary>
-        private bool sharingServiceReady = false;
+        private bool sharingServiceReady;
 
         /// <summary>
         /// The room manager API for the sharing service.
@@ -147,7 +146,7 @@ namespace HoloToolkit.Sharing
         /// Sometimes we'll see a really small anchor blob get generated.
         /// These tend to not work, so we have a minimum trustable size.
         /// </summary>
-        private const uint minTrustworthySerializedAnchorDataSize = 100000;
+        private const uint MinTrustworthySerializedAnchorDataSize = 100000;
 
         /// <summary>
         /// Some room ID for indicating which room we are in.
@@ -246,7 +245,7 @@ namespace HoloToolkit.Sharing
             if (successful)
             {
                 int datasize = request.GetDataSize();
-                Debug.Log(datasize + " bytes ");
+                Debug.Log(datasize.ToString() + " bytes ");
                 rawAnchorData = new byte[datasize];
 
                 request.GetData(rawAnchorData, datasize);
@@ -411,7 +410,7 @@ namespace HoloToolkit.Sharing
             // First, are there any anchors in this room?
             int anchorCount = currentRoom.GetAnchorCount();
 
-            Debug.Log(anchorCount + " anchors");
+            Debug.Log(anchorCount.ToString() + " anchors");
 
             // If there are anchors, we should attach to the first one.
             if (anchorCount > 0)
@@ -555,7 +554,7 @@ namespace HoloToolkit.Sharing
         /// <param name="located"></param>
         private void ImportExportAnchorManager_OnTrackingChanged_Attaching(WorldAnchor self, bool located)
         {
-            Debug.Log("anchor " + located);
+            Debug.Log("anchor " + located.ToString());
             if (located)
             {
                 AnchorLoadComplete();
@@ -652,7 +651,7 @@ namespace HoloToolkit.Sharing
         /// <param name="status"></param>
         public void ExportComplete(SerializationCompletionReason status)
         {
-            if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > minTrustworthySerializedAnchorDataSize)
+            if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > MinTrustworthySerializedAnchorDataSize)
             {
                 Debug.Log("Uploading anchor: " + exportingAnchorName);
                 roomManager.UploadAnchor(

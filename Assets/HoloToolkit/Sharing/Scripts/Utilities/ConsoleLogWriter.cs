@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.Utilities
 {
     public class ConsoleLogWriter : LogWriter
     {

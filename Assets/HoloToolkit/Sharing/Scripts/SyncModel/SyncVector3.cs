@@ -17,25 +17,24 @@ namespace HoloToolkit.Sharing.SyncModel
         [SyncData] private SyncFloat y = null;
         [SyncData] private SyncFloat z = null;
 
+#if UNITY_EDITOR
         public override object RawValue
         {
-            get { return new Vector3(this.x.Value, this.y.Value, this.z.Value); }
+            get { return new Vector3(x.Value, y.Value, z.Value); }
         }
+#endif
 
         public Vector3 Value
         {
-            get { return new Vector3(this.x.Value, this.y.Value, this.z.Value); }
+            get { return new Vector3(x.Value, y.Value, z.Value); }
             set
             {
-                this.x.Value = value.x;
-                this.y.Value = value.y;
-                this.z.Value = value.z;
+                x.Value = value.x;
+                y.Value = value.y;
+                z.Value = value.z;
             }
         }
 
-        public SyncVector3(string field)
-            : base(field)
-        {
-        }
+        public SyncVector3(string field) : base(field) { }
     }
 }

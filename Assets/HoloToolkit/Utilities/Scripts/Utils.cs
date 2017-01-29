@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Sharing.Utilities
+namespace HoloToolkit.Utilities
 {
     public static class Utils
     {

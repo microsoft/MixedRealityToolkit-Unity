@@ -3,11 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using HoloToolkit.Sharing;
 using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.Tests
 {
     public class CustomMessages : Singleton<CustomMessages>
     {
@@ -24,24 +23,24 @@ namespace HoloToolkit.Sharing
 
         public enum UserMessageChannels
         {
-            Anchors = MessageChannel.UserMessageChannelStart,
+            Anchors = MessageChannel.UserMessageChannelStart
         }
 
         /// <summary>
         /// Cache the local user's ID to use when sending messages
         /// </summary>
-        public long localUserID
+        public long LocalUserID
         {
             get; set;
         }
 
         public delegate void MessageCallback(NetworkInMessage msg);
-        private Dictionary<TestMessageID, MessageCallback> _MessageHandlers = new Dictionary<TestMessageID, MessageCallback>();
+        private Dictionary<TestMessageID, MessageCallback> messageHandlers = new Dictionary<TestMessageID, MessageCallback>();
         public Dictionary<TestMessageID, MessageCallback> MessageHandlers
         {
             get
             {
-                return _MessageHandlers;
+                return messageHandlers;
             }
         }
 
@@ -49,14 +48,14 @@ namespace HoloToolkit.Sharing
         /// Helper object that we use to route incoming message callbacks to the member
         /// functions of this class
         /// </summary>
-        NetworkConnectionAdapter connectionAdapter;
+        private NetworkConnectionAdapter connectionAdapter;
 
         /// <summary>
         /// Cache the connection object for the sharing service
         /// </summary>
-        NetworkConnection serverConnection;
+        private NetworkConnection serverConnection;
 
-        void Start()
+        private void Start()
         {
             SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
         }
@@ -66,7 +65,7 @@ namespace HoloToolkit.Sharing
             InitializeMessageHandlers();
         }
 
-        void InitializeMessageHandlers()
+        private void InitializeMessageHandlers()
         {
             SharingStage sharingStage = SharingStage.Instance;
 
@@ -87,7 +86,7 @@ namespace HoloToolkit.Sharing
             connectionAdapter.MessageReceivedCallback += OnMessageReceived;
 
             // Cache the local user ID
-            this.localUserID = SharingStage.Instance.Manager.GetLocalUser().GetID();
+            LocalUserID = SharingStage.Instance.Manager.GetLocalUser().GetID();
 
             for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
             {
@@ -105,14 +104,14 @@ namespace HoloToolkit.Sharing
             NetworkOutMessage msg = serverConnection.CreateMessage(messageType);
             msg.Write(messageType);
             // Add the local userID so that the remote clients know whose message they are receiving
-            msg.Write(localUserID);
+            msg.Write(LocalUserID);
             return msg;
         }
 
         public void SendHeadTransform(Vector3 position, Quaternion rotation)
         {
             // If we are connected to a session, broadcast our head info
-            if (this.serverConnection != null && this.serverConnection.IsConnected())
+            if (serverConnection != null && serverConnection.IsConnected())
             {
                 // Create an outgoing network message to contain all the info we want to send
                 NetworkOutMessage msg = CreateMessage((byte)TestMessageID.HeadTransform);
@@ -120,7 +119,7 @@ namespace HoloToolkit.Sharing
                 AppendTransform(msg, position, rotation);
 
                 // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
-                this.serverConnection.Broadcast(
+                serverConnection.Broadcast(
                     msg,
                     MessagePriority.Immediate,
                     MessageReliability.UnreliableSequenced,
@@ -132,17 +131,17 @@ namespace HoloToolkit.Sharing
         {
             base.OnDestroy();
 
-            if (this.serverConnection != null)
+            if (serverConnection != null)
             {
                 for (byte index = (byte)TestMessageID.HeadTransform; index < (byte)TestMessageID.Max; index++)
                 {
-                    this.serverConnection.RemoveListener(index, this.connectionAdapter);
+                    serverConnection.RemoveListener(index, connectionAdapter);
                 }
-                this.connectionAdapter.MessageReceivedCallback -= OnMessageReceived;
+                connectionAdapter.MessageReceivedCallback -= OnMessageReceived;
             }
         }
 
-        void OnMessageReceived(NetworkConnection connection, NetworkInMessage msg)
+        private void OnMessageReceived(NetworkConnection connection, NetworkInMessage msg)
         {
             byte messageType = msg.ReadByte();
             MessageCallback messageHandler = MessageHandlers[(TestMessageID)messageType];
@@ -154,20 +153,20 @@ namespace HoloToolkit.Sharing
 
         #region HelperFunctionsForWriting
 
-        void AppendTransform(NetworkOutMessage msg, Vector3 position, Quaternion rotation)
+        private void AppendTransform(NetworkOutMessage msg, Vector3 position, Quaternion rotation)
         {
             AppendVector3(msg, position);
             AppendQuaternion(msg, rotation);
         }
 
-        void AppendVector3(NetworkOutMessage msg, Vector3 vector)
+        private void AppendVector3(NetworkOutMessage msg, Vector3 vector)
         {
             msg.Write(vector.x);
             msg.Write(vector.y);
             msg.Write(vector.z);
         }
 
-        void AppendQuaternion(NetworkOutMessage msg, Quaternion rotation)
+        private void AppendQuaternion(NetworkOutMessage msg, Quaternion rotation)
         {
             msg.Write(rotation.x);
             msg.Write(rotation.y);

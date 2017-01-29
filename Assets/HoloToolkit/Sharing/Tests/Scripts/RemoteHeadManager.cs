@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
-using HoloToolkit.Sharing;
 using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.Tests
 {
     /// <summary>
     /// Broadcasts the head transform of the local user to other users in the session,
@@ -25,11 +24,11 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Keep a list of the remote heads, indexed by XTools userID
         /// </summary>
-        Dictionary<long, RemoteHeadInfo> remoteHeads = new Dictionary<long, RemoteHeadInfo>();
+        private Dictionary<long, RemoteHeadInfo> remoteHeads = new Dictionary<long, RemoteHeadInfo>();
 
         private void Start()
         {
-            CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = this.UpdateHeadTransform;
+            CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = UpdateHeadTransform;
 
             SharingStage.Instance.SessionUsersTracker.UserJoined += UserJoinedSession;
             SharingStage.Instance.SessionUsersTracker.UserLeft += UserLeftSession;
@@ -41,8 +40,8 @@ namespace HoloToolkit.Sharing
             Transform headTransform = Camera.main.transform;
 
             // Transform the head position and rotation from world space into local space
-            Vector3 headPosition = this.transform.InverseTransformPoint(headTransform.position);
-            Quaternion headRotation = Quaternion.Inverse(this.transform.rotation) * headTransform.rotation;
+            Vector3 headPosition = transform.InverseTransformPoint(headTransform.position);
+            Quaternion headRotation = Quaternion.Inverse(transform.rotation) * headTransform.rotation;
 
             CustomMessages.Instance.SendHeadTransform(headPosition, headRotation);
         }
@@ -56,8 +55,8 @@ namespace HoloToolkit.Sharing
             int userId = user.GetID();
             if (userId != SharingStage.Instance.Manager.GetLocalUser().GetID())
             {
-                RemoveRemoteHead(this.remoteHeads[userId].HeadObject);
-                this.remoteHeads.Remove(userId);
+                RemoveRemoteHead(remoteHeads[userId].HeadObject);
+                remoteHeads.Remove(userId);
             }
         }
 
@@ -83,13 +82,13 @@ namespace HoloToolkit.Sharing
             RemoteHeadInfo headInfo;
 
             // Get the head info if its already in the list, otherwise add it
-            if (!this.remoteHeads.TryGetValue(userId, out headInfo))
+            if (!remoteHeads.TryGetValue(userId, out headInfo))
             {
                 headInfo = new RemoteHeadInfo();
                 headInfo.UserID = userId;
                 headInfo.HeadObject = CreateRemoteHead();
 
-                this.remoteHeads.Add(userId, headInfo);
+                remoteHeads.Add(userId, headInfo);
             }
 
             return headInfo;
@@ -99,7 +98,7 @@ namespace HoloToolkit.Sharing
         /// Called when a remote user sends a head transform.
         /// </summary>
         /// <param name="msg"></param>
-        void UpdateHeadTransform(NetworkInMessage msg)
+        private void UpdateHeadTransform(NetworkInMessage msg)
         {
             // Parse the message
             long userID = msg.ReadInt64();
@@ -117,10 +116,10 @@ namespace HoloToolkit.Sharing
         /// Creates a new game object to represent the user's head.
         /// </summary>
         /// <returns></returns>
-        GameObject CreateRemoteHead()
+        private GameObject CreateRemoteHead()
         {
             GameObject newHeadObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            newHeadObj.transform.parent = this.gameObject.transform;
+            newHeadObj.transform.parent = gameObject.transform;
             newHeadObj.transform.localScale = Vector3.one * 0.2f;
             return newHeadObj;
         }
@@ -130,7 +129,7 @@ namespace HoloToolkit.Sharing
         /// head data.
         /// </summary>
         /// <param name="remoteHeadObject"></param>
-        void RemoveRemoteHead(GameObject remoteHeadObject)
+        private void RemoveRemoteHead(GameObject remoteHeadObject)
         {
             DestroyImmediate(remoteHeadObject);
         }

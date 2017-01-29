@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace HoloToolkit.Sharing.Utilities
+namespace HoloToolkit.Utilities
 {
     public static class MathUtils
     {
         /// <summary>
         /// Get the horizontal FOV from the stereo camera
         /// </summary>
-        /// <param name="sc"></param>
         /// <returns></returns>
         public static float GetHorizontalFieldOfViewRadians()
         {
@@ -31,7 +30,7 @@ namespace HoloToolkit.Sharing.Utilities
             float horizontalFovHalf = GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg / 2;
 
             Vector3 deltaPos = position - Camera.main.transform.position;
-            Vector3 headDeltaPos = MathUtils.TransformDirectionFromTo(null, Camera.main.transform, deltaPos).normalized;
+            Vector3 headDeltaPos = TransformDirectionFromTo(null, Camera.main.transform, deltaPos).normalized;
 
             float yaw = Mathf.Asin(headDeltaPos.x) * Mathf.Rad2Deg;
             float pitch = Mathf.Asin(headDeltaPos.y) * Mathf.Rad2Deg;
@@ -377,7 +376,7 @@ namespace HoloToolkit.Sharing.Utilities
             {
                 for (int it = 0; it < ransac_iterations; it++)
                 {
-                    Vector3 testPoint = NearestPointToLines(rays[UnityEngine.Random.Range(0, rays.Count)], rays[UnityEngine.Random.Range(0, rays.Count)]);
+                    Vector3 testPoint = NearestPointToLines(rays[Random.Range(0, rays.Count)], rays[Random.Range(0, rays.Count)]);
 
                     // count inliers
                     int numInliersForIteration = 0;
@@ -430,14 +429,14 @@ namespace HoloToolkit.Sharing.Utilities
 
             foreach (Ray r in rays)
             {
-                Vector4 point = (Vector4)r.origin;
+                Vector4 point = r.origin;
                 Matrix4x4 directionColumnMatrix = new Matrix4x4();
                 Vector3 rNormal = r.direction.normalized;
-                directionColumnMatrix.SetColumn(0, (Vector4)rNormal);
+                directionColumnMatrix.SetColumn(0, rNormal);
                 Matrix4x4 directionRowMatrix = directionColumnMatrix.transpose;
                 Matrix4x4 product = directionColumnMatrix * directionRowMatrix;
-                Matrix4x4 identityMinusDirectionProduct = MathUtils.Subtract(Matrix4x4.identity, product);
-                sumOfProduct = MathUtils.Add(sumOfProduct, identityMinusDirectionProduct);
+                Matrix4x4 identityMinusDirectionProduct = Subtract(Matrix4x4.identity, product);
+                sumOfProduct = Add(sumOfProduct, identityMinusDirectionProduct);
                 Vector4 vectorProduct = identityMinusDirectionProduct * point;
                 sumOfProductTimesDirection += vectorProduct;
             }

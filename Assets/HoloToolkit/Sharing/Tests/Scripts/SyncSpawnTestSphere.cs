@@ -4,8 +4,9 @@
 //
 
 using HoloToolkit.Sharing.Spawning;
+using HoloToolkit.Sharing.SyncModel;
 
-namespace HoloToolkit.Sharing.SyncModel
+namespace HoloToolkit.Sharing.Tests
 {
     [SyncDataClass]
     public class SyncSpawnTestSphere : SyncSpawnedObject
@@ -14,3 +15,4 @@ namespace HoloToolkit.Sharing.SyncModel
         public SyncFloat TestFloat;
     }
 }
+
