@@ -10,7 +10,6 @@ GameObject:
   - component: {fileID: 475158}
   - component: {fileID: 114000012667812730}
   - component: {fileID: 114000013602799446}
-  - component: {fileID: 114332427252237600}
   m_Layer: 0
   m_Name: Sharing
   m_TagString: Untagged
@@ -72,14 +71,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SessionName: Default
---- !u!114 &114332427252237600
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7a63ef1b98adec49bdb80fe1f187893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

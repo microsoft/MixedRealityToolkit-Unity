@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 942915100}
   - component: {fileID: 942915102}
   - component: {fileID: 942915101}
+  - component: {fileID: 942915103}
   m_Layer: 0
   m_Name: HologramCollection
   m_TagString: Untagged
@@ -330,6 +331,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d681d9f273ecb84285cb0fd9548d5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &942915103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 942915099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a63ef1b98adec49bdb80fe1f187893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1703234099
