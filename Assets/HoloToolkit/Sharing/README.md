@@ -131,6 +131,24 @@ Receives and plays voice data transmitted through the session server. This data 
 ##### MicrophoneTransmitter.cs
 Transmits data from your microphone to other clients connected to a SessionServer. Requires any receiving client to be running the MicrophoneReceiver script.
 
+#### ServerSessionTracker.cs
+The ServerSessionsTracker manages the list of sessions on the server and the users in these sessions.
+
+#### SessionUsersTracker.cs
+Keeps track of the users in the current session.
+
+#### SharingStage.cs
+he SharingStage is in charge of managing the core networking layer for the application.
+
+#### SyncRoot.cs
+Root of the synchronization data model used by this application.
+
+#### SyncSettings.cs
+Collection of sharing sync settings, used by the HoloToolkit Sharing sync system to figure out which data model classes need to be instantiated when receiving data that inherits from SyncObject.
+
+#### SyncStateListener.cs
+C# wrapper for the Sharing SyncListener, making changes available through the Action class.
+
 ### [Test Prefabs](Tests/Prefabs)
 
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
