@@ -164,6 +164,7 @@ Class that demonstrates a custom class using sync model attributes.
 
 ### [Tests](Tests/Scenes)
 Tests related to the sharing features. To use the scene:
+
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
 3. Either click "Play" in the unity editor or File -> Build Settings.
