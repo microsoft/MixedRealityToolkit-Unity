@@ -97,7 +97,6 @@ namespace HoloToolkit.Sharing
                 User user = joinedSession.GetUser(i);
                 CurrentUsers.Add(user);
                 UserJoined.RaiseEvent(user);
-                ;
             }
         }
 
