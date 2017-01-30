@@ -1,12 +1,12 @@
 ## [Sharing]()
 Sharing and networking components for rapid prototyping in Unity for building shared experiences.
 
-Ensure you have the following capabilities set:
-1. Enable the "SpatialPerception" capability in Player Settings -> Windows Store -> Publishing Settings -> Capabilities.
-2. For using Sharing components, you will also need to set the InternetClientServer, PrivateNetworkClientServer, and Microphone capabilities.
+Ensure you have the following capabilities set in Player Settings -> Windows Store -> Publishing Settings -> Capabilities:
 
-### [Editor](Editor)
-Enables the HoloToolkit menu option in the Unity top tool bar.
+1. SpatialPerception
+2. InternetClientServer
+3. PrivateNetworkClientServer
+4. Microphone capabilities
 
 ### [Plugins](Plugins)
 Contains compiled architecture specific binaries for SharingClient.dll which are required by the Unity application for accessing sharing APIs.
@@ -23,22 +23,146 @@ Prefabs related to the sharing and networking features.
 **Server Address** is the IP address of the machine running the HoloToolkit -> Launch Sharing Service.
 **Server Port** displays the port being used for communicating.
 
-**SharingSessionTracker.cs** keeps track of the players joining and leaving a shared session.
-
 **AutoJoinSession.cs** creates a shared session with Session Name 'Default' which is customizable.
 Joins a player to that session if once already exists.
 
 ### [Scripts](Scripts)
 Scripts related to the sharing and networking features.
 
-#### SDK
+#### [Editor](Scripts/Editor)
+
+##### SharingMenu.cs
+Enables users to start the Sharing Service, Sharing Manager, and Profiler from the Unity Editor via the HoloToolkit Menu.
+
+##### SharingStageEditor.cs
+Draws the default Sharing Stage Inspector and adds the SyncRoot Hierarchy view so users can quickly verify Sync Object updates.
+
+#### [SDK](Scripts/SDK)
 Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.
 
-#### Utilities
-Utility scripts for the Sharing.prefab.
-Also scripts for logging, launching processes, math utilities.
+#### [Spawning](Scripts/Spawning)
 
-### [Tests](Tests)
+##### PrefabSpawnerManager.cs
+Spawn manager that creates a GameObject based on a prefab when a new SyncSpawnedObject is created in the data model.
+
+##### SpawnManager.cs
+A SpawnManager is in charge of spawning the appropriate objects based on changes to an array of data model objects to which it is registered. It also manages the lifespan of these spawned objects.
+
+##### SyncSpawnArray.cs
+This array is meant to hold SyncSpawnedObject and objects of subclasses. Compared to SyncArray, this supports dynamic types for objects.
+
+##### SyncSpawnedObject.cs
+A SpawnedObject contains all the information needed for another device to spawn an object in the same location as where it was originally created on this device.
+
+#### [SyncModel](Scripts/SyncModel)
+
+##### SyncArray.cs
+The SyncArray class provides the functionality of an array in the data model. The array holds entire objects, not primitives, since each object is indexed by unique name. Note that this array is unordered.
+
+##### SyncBool.cs
+This class implements the boolean primitive for the syncing system.  It does the heavy lifting to make adding new bools to a class easy.
+
+##### SyncDataAttributes.cs
+Used to markup SyncObject classes and SyncPrimitives inside those classes, so that they properly get instantiated when using a hierarchical data model that inherits from SyncObject.
+
+##### SyncDouble.cs
+This class implements the double primitive for the syncing system.  It does the heavy lifting to make adding new doubles to a class easy.
+
+##### SyncFloat.cs
+This class implements the float primitive for the syncing system.  It does the heavy lifting to make adding new floats to a class easy.
+
+##### SyncInteger.cs
+This class implements the integer primitive for the syncing system.  It does the heavy lifting to make adding new integers to a class easy.
+
+##### SyncLong.cs
+This class implements the long primitive for the syncing system.  It does the heavy lifting to make adding new longs to a class easy.
+
+##### SyncObject.cs
+The SyncObject class is a container object that can hold multiple SyncPrimitives.
+
+##### SyncPrimitive.cs
+Base primitive used to define an element within the data model.  The primitive is defined by a field and a value.
+
+##### SyncQuaternion.cs
+This class implements the Quaternion object primitive for the syncing system.  It does the heavy lifting to make adding new Quaternion to a class easy.
+
+##### SyncString.cs
+This class implements the string primitive for the syncing system.  It does the heavy lifting to make adding new strings to a class easy.
+
+##### SyncTransform.cs
+This class implements the Transform object primitive for the syncing system.  It does the heavy lifting to make adding new transforms to a class easy.  A transform defines the position, rotation and scale of an object.
+
+##### SyncVector3.cs
+This class implements the Vector3 object primitive for the syncing system.  It does the heavy lifting to make adding new Vector3 to a class easy.
+
+#### [Unity](Scripts/Unity)
+
+##### DefaultSyncModelAccessor.cs
+ Default implementation of a behaviour that allows other components of a game object access the shared data model as a raw SyncObject instance.
+
+##### ISyncModelSccessor.cs
+Interface that allows a components of a game object access the shared data model set by a SpawnManager.
+
+##### QuaternionInterpolated.cs
+Class to encapsulate an interpolating Quaternion property.
+
+##### TransformSynchronizer.cs
+Synchronizer to update and broadcast a transform object through our data model.
+ 
+##### Vector3Interpolated.cs
+Class to encapsulate an interpolating Vector3 property.
+
+#### [Utilities](Scripts/Utilities)
+
+##### AutoJoinSession.cs
+Utility class for automatically joining shared sessions without needing to go through a lobby.
+
+##### ConsoleLogWriter.cs
+Utility class that writes the sharing service log messages to the Unity Engine's console.
+
+##### DirectPairing.cs
+This class enables users to pair with a remote client directly.  One side should use the Receiver role, the other side should use the Connector role.  RemoteAddress and RemotePort are used by the Connector role, LocalPort is used by the Receiver.
+
+#### [VoiceChat](Scripts/VoiceChat)
+
+##### MicrophoneReceiver.cs
+Receives and plays voice data transmitted through the session server. This data comes from other clients running the MicrophoneTransmitter behaviour.
+
+##### MicrophoneTransmitter.cs
+Transmits data from your microphone to other clients connected to a SessionServer. Requires any receiving client to be running the MicrophoneReceiver script.
+
+### [Test Prefabs](Tests/Prefabs)
+
+Prefabs used in the various test scenes, which you can use as inspiration to build your own.
+
+#### SpawnTestCube.prefab
+Simple Cube prefab with a Transform, Mesh Filter, Box Collider, Mesh Renderer, and Default Sync Model Accessor components.
+
+#### SpawnTestSphere.prefab
+A simple Sphere prefab with a Transform, Mesh Filter, Sphere Collider, and Mesh Renderer components.
+Purposefully missing Default Sync Model Accessor component for SharingSpawnTest.
+
+### [Test Scripts](Tests/Scripts)
+
+#### CustomMessages.cs
+Test class for demonstrating how to send custom messages between clients.
+
+#### ImportExportAnchorManager.cs
+Manages creating anchors and sharing the anchors with other clients.
+
+#### RemoteHeadManager.cs
+Broadcasts the head transform of the local user to other users in the session, and adds and updates the head transforms of remote users.  Head transforms are sent and received in the local coordinate space of the GameObject this component is on.  
+
+#### RoomTest.cs
+Test class for demonstrating creating rooms and anchors.
+
+#### SpawnTestKeyboardSpawning.cs
+Class that handles spawning sync objects on keyboard presses, for the `SpawningTest.scene`.
+
+#### SyncSpawnTestSphere.cs
+Class that demonstrates a custom class using sync model attributes.
+
+### [Tests](Tests/Scenes)
 Tests related to the sharing features. To use the scene:
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
@@ -46,8 +170,8 @@ Tests related to the sharing features. To use the scene:
 4. Add Open Scenes, Platform -> Windows Store, SDK -> Universal 10, Build Type -> D3D, Check 'Unity C# Projects'.
 5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
-#### Sharing.unity 
-Sharing scene demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
+#### SharingTest.unity 
+This test demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
 It also demonstrates how to share world anchors between clients to establish a shared space.
 
 1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
@@ -55,6 +179,22 @@ It also demonstrates how to share world anchors between clients to establish a s
 3. **CustomMessages.cs** shows how to communicate specific information across clients.
 4. **ImportExportAnchorManager.cs** shows how to create anchors and share them with other clients using the sharing service.
 5. **RemoteHeadManager.cs** draw cubes on remote heads of users joining the session.
+
+#### RoomAndAnchorTest.unity
+This test demonstrates how to create new rooms and anchors inside your application.
+It also demonstrates how to upload and download new anchors.
+
+1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
+2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
+3. **RoomTest.cs** shows how to create, join, and leave rooms; also shows how to create and download anchors.
+
+#### SharingSpawnTest.unity
+This test demonstrates how to spawn sync objects in your scene and across your networked clients.
+
+1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
+2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
+3. **PrefabSpawnManager.cs** enables you to store prefab references to use when spawning.
+4. **SpawnTestKeyboardSpawning** demonstrates how to spawn sync objects, as well as custom class types.
 
 ---
 ##### [Go back up to the table of contents.](../../../README.md)
