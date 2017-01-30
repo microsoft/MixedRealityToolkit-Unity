@@ -270,8 +270,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdateHandVisualization()
         {
-            leftHandVisualRenderer.material.SetColor("_Color", LeftHandInView ? ActiveHandColor : DroppedHandColor);
-            rightHandVisualRenderer.material.SetColor("_Color", RightHandInView ? ActiveHandColor : DroppedHandColor);
+            leftHandVisualPropertyBlock.SetColor("_Color", LeftHandInView ? ActiveHandColor : DroppedHandColor);
+            rightHandVisualPropertyBlock.SetColor("_Color", RightHandInView ? ActiveHandColor : DroppedHandColor);
 
             if (LeftHandVisualizer.activeSelf != VisualizeHands)
             {
