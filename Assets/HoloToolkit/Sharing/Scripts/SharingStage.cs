@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using UnityEngine;
 using HoloToolkit.Sharing.Utilities;
 using HoloToolkit.Unity;
-using UnityEngine;
 
 namespace HoloToolkit.Sharing
 {
