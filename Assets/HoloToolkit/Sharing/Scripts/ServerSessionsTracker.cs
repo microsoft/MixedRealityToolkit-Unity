@@ -10,8 +10,8 @@ using HoloToolkit.Unity;
 namespace HoloToolkit.Sharing
 {
     /// <summary>
-    /// The ServerSessionsTracker manages the list of sessions on the server 
-    /// and the users in these sessions.
+    /// The ServerSessionsTracker manages the list of sessions on the server and the users in these sessions.
+    /// Instance is created by Sharing Stage when a connection is found.
     /// </summary>
     public class ServerSessionsTracker : IDisposable
     {
