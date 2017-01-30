@@ -9,6 +9,7 @@ namespace HoloToolkit.Sharing
 {
     /// <summary>
     /// Keeps track of the users in the current session.
+    /// Instance is created by Sharing Stage when a connection is found.
     /// </summary>
     public class SessionUsersTracker : IDisposable
     {
