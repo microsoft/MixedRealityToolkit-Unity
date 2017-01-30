@@ -194,6 +194,9 @@ Class that handles spawning sync objects on keyboard presses, for the `SpawningT
 #### SyncSpawnTestSphere.cs
 Class that demonstrates a custom class using sync model attributes.
 
+#### UserNotifications.cs
+Used to demonstrate how to get notifications when users leave and enter room.
+
 ### [Tests](Tests/Scenes)
 ---
 Tests related to the sharing features. To use the scene:
