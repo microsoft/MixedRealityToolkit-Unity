@@ -144,10 +144,10 @@ Transmits data from your microphone to other clients connected to a SessionServe
 ---
 
 #### ServerSessionTracker.cs
-The ServerSessionsTracker manages the list of sessions on the server and the users in these sessions.
+The ServerSessionsTracker manages the list of sessions on the server and the users in these sessions.  Instance is created by Sharing Stage when a connection is found.
 
 #### SessionUsersTracker.cs
-Keeps track of the users in the current session.
+Keeps track of the users in the current session.  Instance is created by Sharing Stage when a connection is found.
 
 #### SharingStage.cs
 he SharingStage is in charge of managing the core networking layer for the application.
