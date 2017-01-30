@@ -3,13 +3,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
-using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Class to encapsulate an interpolating Vector3 property.
+    /// TODO: Remove if reduncatnt to InterpolatedVector3.cs
     /// </summary>
     public class Vector3Interpolated
     {

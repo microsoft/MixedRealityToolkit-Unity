@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Sharing.Utilities
 {
+    /// <summary>
+    /// Utility class for automatically joining shared sessions without needing to go through a lobby.
+    /// </summary>
     public class AutoJoinSession : MonoBehaviour
     {
         /// <summary>

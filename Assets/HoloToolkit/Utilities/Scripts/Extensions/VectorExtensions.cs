@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// A collection of useful extension methods for Unity's Vector structs
+    /// A collection of useful extension methods for Unity's Vector structs.
     /// </summary>
     public static class VectorExtensions
     {

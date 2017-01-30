@@ -3,8 +3,11 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Utilities
+namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Miscellaneous utility methods.
+    /// </summary>
     public static class Utils
     {
         public static void SetLayerRecursively(GameObject gameObject, int layer)
@@ -143,7 +146,7 @@ namespace HoloToolkit.Utilities
         public static bool IsInEditor()
         {
 #if UNITY_METRO && !UNITY_EDITOR
-        return false;
+            return false;
 #else
             return true;
 #endif

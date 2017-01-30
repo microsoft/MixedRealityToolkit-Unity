@@ -3,11 +3,10 @@
 
 using System;
 using System.Threading;
-using HoloToolkit.Unity;
-using HoloToolkit.Utilities;
 using UnityEngine;
+using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.VoiceChat
 {
     /// <summary>
     /// Receives and plays voice data transmitted through the session server. This data comes from other clients running the MicrophoneTransmitter behaviour.

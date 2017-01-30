@@ -3,26 +3,32 @@
 
 using System;
 
-public class BitManipulator
+namespace HoloToolkit.Unity
 {
-    Int32 mask;
-    Int32 shift;
-
-    public BitManipulator(Int32 mask, Int32 shift)
+    /// <summary>
+    /// Helper class for bit manipulation.
+    /// </summary>
+    public class BitManipulator
     {
-        this.mask = mask;
-        this.shift = shift;
-    }
+        Int32 mask;
+        Int32 shift;
 
-    public Int32 GetBitsValue(Int32 input)
-    {
-        return (input & this.mask) >> this.shift;
-    }
+        public BitManipulator(Int32 mask, Int32 shift)
+        {
+            this.mask = mask;
+            this.shift = shift;
+        }
 
-    public void SetBits(ref Int32 value, Int32 bitsValue)
-    {
-        Int32 iT = bitsValue << this.shift;
-        iT = iT & this.mask;
-        value = value | iT;
+        public Int32 GetBitsValue(Int32 input)
+        {
+            return (input & mask) >> shift;
+        }
+
+        public void SetBits(ref Int32 value, Int32 bitsValue)
+        {
+            Int32 iT = bitsValue << shift;
+            iT = iT & mask;
+            value = value | iT;
+        }
     }
 }

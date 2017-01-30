@@ -40,7 +40,7 @@ namespace HoloToolkit.Sharing.Spawning
         /// Counter used to create objects and make sure that no two objects created
         /// by the local application have the same name.
         /// </summary>
-        private int objectCreationCounter = 0;
+        private int objectCreationCounter;
 
         private void Awake()
         {

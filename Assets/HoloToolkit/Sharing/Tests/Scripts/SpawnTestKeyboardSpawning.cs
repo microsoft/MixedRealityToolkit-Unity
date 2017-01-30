@@ -9,13 +9,11 @@ using HoloToolkit.Sharing.Spawning;
 namespace HoloToolkit.Sharing.Tests
 {
     /// <summary>
-    /// Class that handles spawning objects on keyboard presses, for the spawning test scene of
-    /// the HoloToolkit's Sharing component.
+    /// Class that handles spawning sync objects on keyboard presses, for the SpawningTest scene.
     /// </summary>
     public class SpawnTestKeyboardSpawning : MonoBehaviour
     {
         public GameObject SpawnParent;
-        public GameObject Prefab;
 
         public PrefabSpawnManager SpawnManager;
 

@@ -4,7 +4,7 @@
 using System;
 
 namespace HoloToolkit.Unity
-{ 
+{
     /// <summary>
     /// Extensions for the action class.
     /// These methods encapsulate the null check before raising an event for an Action.

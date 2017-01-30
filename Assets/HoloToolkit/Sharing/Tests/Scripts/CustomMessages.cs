@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Sharing.Tests
 {
+    /// <summary>
+    /// Test class for demonstrating how to send custom messages between clients.
+    /// </summary>
     public class CustomMessages : Singleton<CustomMessages>
     {
         /// <summary>

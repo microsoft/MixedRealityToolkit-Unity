@@ -6,9 +6,9 @@ using UnityEngine;
 namespace HoloToolkit.Sharing.Utilities
 {
     /// <summary>
-    /// Component to pair with a remote client directly.
-    /// One side should use the Receiver roll, the other side should use the Connector roll.
-    /// RemoteAddress and RemotePort are used by the Connector roll, LocalPort is used by the Receiver
+    /// This class enables users to pair with a remote client directly.
+    /// One side should use the Receiver role, the other side should use the Connector role.
+    /// RemoteAddress and RemotePort are used by the Connector role, LocalPort is used by the Receiver.
     /// </summary>
     public class DirectPairing : MonoBehaviour
     {

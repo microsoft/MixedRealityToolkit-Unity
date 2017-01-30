@@ -20,6 +20,7 @@ namespace HoloToolkit.Sharing.SyncModel
             get { return value; }
         }
 #endif
+
         public bool Value
         {
             get { return value; }

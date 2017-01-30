@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace HoloToolkit.Utilities
+namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Math Utilities class.
+    /// </summary>
     public static class MathUtils
     {
         /// <summary>

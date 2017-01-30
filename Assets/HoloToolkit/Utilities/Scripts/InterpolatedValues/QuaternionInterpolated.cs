@@ -3,14 +3,16 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
+using System;
 using UnityEngine;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Class to encapsulate an interpolating Quaternion property.
+    /// TODO: Remove if redundant to InterpolatedQuaternion.cs
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class QuaternionInterpolated
     {
         /// <summary>

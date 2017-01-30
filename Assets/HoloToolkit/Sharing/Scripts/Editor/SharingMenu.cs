@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.IO;
-using HoloToolkit.Utilities;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Sharing
 {

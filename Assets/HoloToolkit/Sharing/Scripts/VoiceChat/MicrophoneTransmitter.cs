@@ -4,12 +4,11 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
-using HoloToolkit.Utilities;
-using UnityEngine;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.VoiceChat
 {
     /// <summary>
     /// Transmits data from your microphone to other clients connected to a SessionServer. Requires any receiving client to be running the MicrophoneReceiver script.

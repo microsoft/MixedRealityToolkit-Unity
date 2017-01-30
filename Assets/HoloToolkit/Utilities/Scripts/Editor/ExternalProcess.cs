@@ -9,8 +9,11 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
-namespace HoloToolkit.Utilities
+namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Helper class for launching external processes inside of the unity editor.
+    /// </summary>
     public class ExternalProcess : IDisposable
     {
         [DllImport("ExternalProcessAPI", CallingConvention = CallingConvention.Cdecl)]
