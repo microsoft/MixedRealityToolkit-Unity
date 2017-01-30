@@ -9,10 +9,12 @@ Ensure you have the following capabilities set in Player Settings -> Windows Sto
 4. Microphone capabilities
 
 ### [Plugins](Plugins)
+---
 Contains compiled architecture specific binaries for SharingClient.dll which are required by the Unity application for accessing sharing APIs.
 Binaries are compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing).
 
 ### [Prefabs](Prefabs)
+---
 Prefabs related to the sharing and networking features.
 
 #### Sharing.prefab
@@ -27,9 +29,12 @@ Prefabs related to the sharing and networking features.
 Joins a player to that session if once already exists.
 
 ### [Scripts](Scripts)
+---
 Scripts related to the sharing and networking features.
 
 #### [Editor](Scripts/Editor)
+---
+Scripts for in editor use only.
 
 ##### SharingMenu.cs
 Enables users to start the Sharing Service, Sharing Manager, and Profiler from the Unity Editor via the HoloToolkit Menu.
@@ -38,9 +43,12 @@ Enables users to start the Sharing Service, Sharing Manager, and Profiler from t
 Draws the default Sharing Stage Inspector and adds the SyncRoot Hierarchy view so users can quickly verify Sync Object updates.
 
 #### [SDK](Scripts/SDK)
+---
 Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.
 
 #### [Spawning](Scripts/Spawning)
+---
+Scripts for spawning objects using the sharing service.
 
 ##### PrefabSpawnerManager.cs
 Spawn manager that creates a GameObject based on a prefab when a new SyncSpawnedObject is created in the data model.
@@ -55,6 +63,8 @@ This array is meant to hold SyncSpawnedObject and objects of subclasses. Compare
 A SpawnedObject contains all the information needed for another device to spawn an object in the same location as where it was originally created on this device.
 
 #### [SyncModel](Scripts/SyncModel)
+---
+Scripts for syncing data over sharing service.
 
 ##### SyncArray.cs
 The SyncArray class provides the functionality of an array in the data model. The array holds entire objects, not primitives, since each object is indexed by unique name. Note that this array is unordered.
@@ -96,23 +106,21 @@ This class implements the Transform object primitive for the syncing system.  It
 This class implements the Vector3 object primitive for the syncing system.  It does the heavy lifting to make adding new Vector3 to a class easy.
 
 #### [Unity](Scripts/Unity)
+---
+Scripts used to implement unity specific sync services.
 
 ##### DefaultSyncModelAccessor.cs
- Default implementation of a behaviour that allows other components of a game object access the shared data model as a raw SyncObject instance.
+Default implementation of a behaviour that allows other components of a game object access the shared data model as a raw SyncObject instance.
 
 ##### ISyncModelSccessor.cs
 Interface that allows a components of a game object access the shared data model set by a SpawnManager.
 
-##### QuaternionInterpolated.cs
-Class to encapsulate an interpolating Quaternion property.
-
 ##### TransformSynchronizer.cs
 Synchronizer to update and broadcast a transform object through our data model.
- 
-##### Vector3Interpolated.cs
-Class to encapsulate an interpolating Vector3 property.
 
 #### [Utilities](Scripts/Utilities)
+---
+Scripts for sync service utilities.
 
 ##### AutoJoinSession.cs
 Utility class for automatically joining shared sessions without needing to go through a lobby.
@@ -124,12 +132,16 @@ Utility class that writes the sharing service log messages to the Unity Engine's
 This class enables users to pair with a remote client directly.  One side should use the Receiver role, the other side should use the Connector role.  RemoteAddress and RemotePort are used by the Connector role, LocalPort is used by the Receiver.
 
 #### [VoiceChat](Scripts/VoiceChat)
+---
+Scripts for Voice Chat service.
 
 ##### MicrophoneReceiver.cs
 Receives and plays voice data transmitted through the session server. This data comes from other clients running the MicrophoneTransmitter behaviour.
 
 ##### MicrophoneTransmitter.cs
 Transmits data from your microphone to other clients connected to a SessionServer. Requires any receiving client to be running the MicrophoneReceiver script.
+
+---
 
 #### ServerSessionTracker.cs
 The ServerSessionsTracker manages the list of sessions on the server and the users in these sessions.
@@ -150,7 +162,7 @@ Collection of sharing sync settings, used by the HoloToolkit Sharing sync system
 C# wrapper for the Sharing SyncListener, making changes available through the Action class.
 
 ### [Test Prefabs](Tests/Prefabs)
-
+---
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
 #### SpawnTestCube.prefab
@@ -161,6 +173,8 @@ A simple Sphere prefab with a Transform, Mesh Filter, Sphere Collider, and Mesh 
 Purposefully missing Default Sync Model Accessor component for SharingSpawnTest.
 
 ### [Test Scripts](Tests/Scripts)
+---
+Test Scripts.
 
 #### CustomMessages.cs
 Test class for demonstrating how to send custom messages between clients.
@@ -181,6 +195,7 @@ Class that handles spawning sync objects on keyboard presses, for the `SpawningT
 Class that demonstrates a custom class using sync model attributes.
 
 ### [Tests](Tests/Scenes)
+---
 Tests related to the sharing features. To use the scene:
 
 1. Navigate to the Tests folder.
