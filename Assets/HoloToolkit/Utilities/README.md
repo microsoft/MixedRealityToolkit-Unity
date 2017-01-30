@@ -2,6 +2,7 @@
 Useful common concepts that you can leverage in your application.
 
 ### [Prefabs](Prefabs)
+---
 Common useful prefabs not particularly related to a particular HoloLens feature.
 
 #### FPSDisplay.prefab
@@ -14,8 +15,12 @@ A drop in direction indicator that stays in the users view at all times.
 A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.
 
 ### [Scripts](Scripts)
+---
+Utilitiy Scripts.
 
 #### [Editor](Scripts/Editor)
+---
+Editor Specific Scripts.
 
 ##### AutoConfigureMenu.cs
 Configuration options derived from Microsoft Documentation [Configuring a Unity Project for HoloLens](https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens).
@@ -65,6 +70,8 @@ An extension method that will get you the full path to an object.
 A collection of useful extension methods for Unity's Vector structs.
 
 #### [InterpolatedValues](Scripts/InterpolatedValues)
+---
+Interpolated Value Scripts.
 
 ##### InterpolatedColor.cs
 Provides interpolation over Color.
@@ -91,6 +98,8 @@ TODO: Remove if redundant to InterpolatedQuaternion.cs
 ##### Vector3Interpolated.cs
 Class to encapsulate an interpolating Vector3 property.
 TODO: Remove if reduncatnt to InterpolatedVector3.cs
+
+---
 
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
@@ -176,8 +185,9 @@ Vector Statistics used in gaze stabilization.
 Wrapper around world anchor store to streamline some of the persistence api busy work.
 
 ### [Shaders](Shaders)
+---
 
-### FastConfigurable.shader
+#### FastConfigurable.shader
 Very fast shader that uses the Unity light system.  Compiles down to only performing the operations you're actually using.  Uses material property drawers rather than a custom editor for ease of maintenance.
 
 #### HoloToolkitCommon.cginc
@@ -223,6 +233,14 @@ Feature configurable vertex lit transparent shader.  Use when a higher performan
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
 ### [Tests](Tests)
+---
+Tests related to the utilities features. To use the scene:
+
+1. Navigate to the Tests folder.
+2. Double click on the test scene you wish to explore.
+3. Either click "Play" in the unity editor or File -> Build Settings.
+4. Add Open Scenes, Platform -> Windows Store, SDK -> Universal 10, Build Type -> D3D, Check 'Unity C# Projects'.
+5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
 #### HeadsUpDirectionIndicator.unity
 This scene shows 7 marker objects with 7 HeadsUpDirectionIndicators pointing to each. Each indicator has a label that matches its corresponding marker. 6 of the marker/indicator pairs are used to test the edge cases of axis aligned markers. The 7th is an arbitrary point off of the cartesean axes. From the starting position, the user should be able to follow the direction of each indicator and arrive at the marker with the corresponding axis label. At the start, the labels should be in the following screen locations.
