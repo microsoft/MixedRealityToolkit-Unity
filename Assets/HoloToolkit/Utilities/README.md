@@ -15,8 +15,91 @@ A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to cre
 
 ### [Scripts](Scripts)
 
+#### [Editor](Scripts/Editor)
+
+##### AutoConfigureMenu.cs
+Configuration options derived from Microsoft Documentation [Configuring a Unity Project for HoloLens](https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens).
+
+##### AutoConfigureWindow.cs
+Base class for auto configuration build windows.
+
+##### CapabilitySettingsWindow.cs
+Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Capability Settings.
+
+##### EditorGUIExtensions.cs
+Extensions for the UnityEnditor.EditorGUI class.
+
+##### EditorGUILayoutExtensions.cs
+Extensions for the UnityEditor.EditorGUILayout class.
+
+##### EnforceEditorSettings.cs
+Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.
+
+##### ExternalProcess.cs
+Helper class for launching external processes inside of the unity editor.
+
+##### LayerMaskExtensions.cs
+Extensions for the UnityEngine.LayerMask class.
+
+##### ProjectSettingsWindow.cs
+Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Project Settings.
+
+##### SceneSettingsWindow.cs
+Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Scene Settings.
+
+#### [Extensions](Scripts/Extensions)
+
+##### ActionExtensions.cs
+Extensions for the action class.  These methods encapsulate the null check before raising an event for an Action.
+
+##### ComponentExtensions.cs
+Extensions methods for the Unity Component class.  This also includes some component-related extensions for the GameObjet class.
+
+##### Extensions.cs
+A class with general purpose extensions methods.
+
+##### TransformExtensions.cs
+An extension method that will get you the full path to an object.
+
+##### VectorExtensions.cs
+A collection of useful extension methods for Unity's Vector structs.
+
+#### [InterpolatedValues](Scripts/InterpolatedValues)
+
+##### InterpolatedColor.cs
+Provides interpolation over Color.
+
+##### InterpolatedFloat.cs
+Provides interpolation over float.
+
+##### InterpolatedQuaternion.cs
+Provides interpolation over Quaternion.
+
+##### InterpolatedValue.cs
+Base class that provides the common logic for interpolating between values. This class does not inherit from MonoBehaviour in order to enable various scenarios under which it used. To perform the interpolation step, call FrameUpdate.
+
+##### InterpolatedVector2.cs
+Provides interpolation over Vector2.
+
+##### InterpolatedVector3.cs
+Provides interpolation over Vector3.
+
+##### QuaternionInterpolated.cs
+Class to encapsulate an interpolating Quaternion property.
+TODO: Remove if redundant to InterpolatedQuaternion.cs
+
+##### Vector3Interpolated.cs
+Class to encapsulate an interpolating Vector3 property.
+TODO: Remove if reduncatnt to InterpolatedVector3.cs
+
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
+
+#### BitManipulator.cs
+Helper class for bit manipulation.
+
+#### CircularBuffer.cs
+Helper class for transmitting data over network.
 
 #### DirectionIndicator.cs
 Show a GameObject around the cursor that points in the direction of the GameObject which this script is attached to.
@@ -34,26 +117,63 @@ You must provide GameObjects for the **_Cursor_** and **_DirectionIndicatorObjec
 #### FixedAngularSize.cs
 Causes a hologram to maintain a fixed angular size, which is to say it occupies the same pixels in the view regardless of its distance from the camera.
 
+#### FpsDisplay.cs
+Simple Behaviour which calculates the average frames per second over a number of frames and shows the FPS in a referenced Text control.
+
 #### HeadsUpDirectionIndicator.cs
 Spawns a user specified "pointer" object and startup and alligns it to aim at a target object which keeping the pointer in view at all times.
+
+#### InterpolationUtilities.cs
+Static class containing interpolation-related utility functions.
 
 #### Interpolator.cs
 A MonoBehaviour that interpolates a transform's position, rotation or scale.
 
-#### SphereBasedTagalong.cs
-A simple Tagalong that stays inside a sphere at a fixed distance from the camera. Very cheap implementation with smoothing capability.
+#### MathUtils.cs
+Math Utilities class.
+
+#### NearPlaneFade.cs
+Updates the shader parameters for use in near plade fading.
+
+#### PriorityQueue.cs
+Min-heap priority queue. In other words, lower priorities will be removed from the queue first.
+See [Binary Heap](http://en.wikipedia.org/wiki/Binary_heap) for more info.
+
+#### SessionExtensions.cs
+Extensions methods for the Session class.
 
 #### SimpleTagalong.cs
 A Tagalong that stays at a fixed distance from the camera and always seeks to have a part of itself in the view frustum of the camera.
 
-#### Tagalong.cs
-A Tagalong that extends SimpleTagalong that allows for specifying the minimum and target percentage of the object to keep in the view frustum of the camera and that keeps the Tagalong object in front of other holograms including the Spatial Mapping Mesh.
-
 #### Singleton.cs
 A base class to make a MonoBehaviour follow the singleton design pattern.
 
+#### SphereBasedTagalong.cs
+A simple Tagalong that stays inside a sphere at a fixed distance from the camera. Very cheap implementation with smoothing capability.
+
+#### StabilizationPlaneModifier.cs
+StabilizationPlaneModifier handles the setting of the stabilization plane in several ways.
+
+#### Tagalong.cs
+A Tagalong that extends SimpleTagalong that allows for specifying the minimum and target percentage of the object to keep in the view frustum of the camera and that keeps the Tagalong object in front of other holograms including the Spatial Mapping Mesh.
+
 #### TextToSpeechManager.cs
-Provides dynamic Text to Speech. Speech is generated using the UWP SpeechSynthesizer and then played through a Unity AudioSource. Both plain text and SSML are supported.   
+Provides dynamic Text to Speech. Speech is generated using the UWP SpeechSynthesizer and then played through a Unity AudioSource. Both plain text and SSML are supported.
+
+#### Timer.cs
+Structure that defines a timer. A timer can be scheduled through the TimerScheduler.
+
+#### TimerScheduler.cs
+A scheduler that manages various timers.
+
+#### Utils.cs
+Miscellaneous utility methods.
+
+#### VectorRollingStatistics.cs
+Vector Statistics used in gaze stabilization.
+
+#### WorldAnchorManager.cs
+Wrapper around world anchor store to streamline some of the persistence api busy work.
 
 ### [Shaders](Shaders)
 
