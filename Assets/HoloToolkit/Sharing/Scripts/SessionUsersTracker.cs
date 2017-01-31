@@ -118,19 +118,18 @@ namespace HoloToolkit.Sharing
 
             if (!CurrentUsers.Contains(user))
             {
-                //Debug.LogFormat("User {0} joined current session.", user.GetName());
-
                 // Remove any old users with the same ID
-                for (int i = 0; i < CurrentUsers.Count; i++)
+                for (int i = CurrentUsers.Count - 1; i >= 0; i--)
                 {
                     if (CurrentUsers[i].GetID() == user.GetID())
                     {
-                        CurrentUsers.Remove(user);
+                        CurrentUsers.RemoveAt(i);
                     }
                 }
 
                 CurrentUsers.Add(user);
                 UserJoined.RaiseEvent(user);
+                // Debug.LogFormat("User {0} joined current session.", user.GetName());
             }
         }
 
@@ -141,12 +140,13 @@ namespace HoloToolkit.Sharing
                 return;
             }
 
-            for (int i = 0; i < CurrentUsers.Count; i++)
+            for (int i = CurrentUsers.Count - 1; i >= 0; i--)
             {
                 if (CurrentUsers[i].GetID() == user.GetID())
                 {
-                    //Debug.LogFormat("User {0} left current session.", user.GetName());
+                    CurrentUsers.RemoveAt(i);
                     UserLeft.RaiseEvent(user);
+                    // Debug.LogFormat("User {0} left current session.", user.GetName());
                 }
             }
         }
