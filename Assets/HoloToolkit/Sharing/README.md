@@ -1,12 +1,109 @@
 ## [Sharing]()
-Sharing and networking components for rapid prototyping in Unity for building shared experiences.
+The HoloToolkit.Sharing library allows applications to span multiple devices, and enables holographic collaboration.  
 
+Originally developed for OnSight, a collaboration between SOTA (a Microsoft studio) and NASA to enhance their existing Mars rover planning tool with HoloLens, HoloToolkit.Sharing enables users to use multiple devices for a task by allowing the apps running on each device communicate and stay in sync seamlessly in real time.  
+
+Users can also collaborate with other users (who are also using multiple devices) who may be in the same room or working remotely.
+
+## Table of Contents
+
+- [Features](#features)
+- [Configuration](#configuration)
+- [Plugins](#plugins)
+- [Prefabs](#prefabs)
+- [Scripts](#scripts)
+- [Test Prefabs](#test-prefabs)
+- [Test Scripts](#test-scripts)
+- [Tests](#tests)
+
+### Features
+---
+
+#### Lobby & Session system
+* Discover available sessions or create your own
+* Permanent or ‘until empty’ session lifetime
+* See user status: current session, mute state
+* Easy to discover and hop between sessions
+
+#### Anchor Sharing
+* Users in a session can be in the same or different physical rooms
+* Users can share the location of Holographic 'anchors' they place in their room with other users in the same room
+* Users joining late can download all anchors in the session
+* Allows multiple users to see shared holograms
+
+#### Synchronization System
+Synchronize data across all participants in session
+* Everyone in session guaranteed to see the same thing
+* Automatic conflict resolution for simultanious conflicting remote changes
+* Real-time: See remote changes as they happen
+* Shared data sets automatically merged when new users join a session
+* Responsive: no delay in your own changes
+* Ownership: your data leaves session when you do
+
+#### Group Voice Chat
+Support for VOIP is built-in
+* Server-based mixing lowers processing and bandwidth requirements for clients
+
+#### Visual Pairing
+Connect devices just by looking at them
+* One device displays a QR code with connection info and security code
+* Other device sees QR code, connects, and validates with security code
+* Can also detect location in 3D space using built-in fiducial marker support
+
+#### Profiler
+Profiling and debugging an experience that spans multiple devices is challenging.  So HoloToolkit.Sharing provides an app that can connect to multiple devices at once and aggregates their timings and debug output in a single place
+
+#### Sync Model
+
+HoloToolkit.Sharing has the ability to synchronize data across any application connected to a given session. Conflict resolution is automatically handled by the framework, at whichever level the conflict occurs.
+
+##### Primitive Types
+The following primitives are natively supported by the sync system. The C# class that corresponds to each primitive is written in parentheses.
+
+- Boolean (SyncBool)
+- Double (SyncDouble)
+- Float (SyncFloat)
+- Integer (SyncInteger)
+- Long (SyncLong)
+- Object, which is a container class that can have child primitives (SyncObject
+- String (SyncString)
+
+On top of the native primitives above, the following types are supported in the C# layer:
+
+- Quaternion (SyncQuaternion)
+- Transform (SyncTransform)
+- Unordered array (SyncArray)
+- Vector3 (SyncVector3)
+
+Other types can be built for your own application as needed by inheriting from SyncObject in a similar way to what SyncVector3 and SyncTransform do.
+
+##### Defining the Sync Model
+By default, the SyncRoot object (which inherits from SyncObject) only contains an array of InstantiatedPrefabs, which may not be enough for your application.
+
+For any type inheriting from SyncObject, you can easily add new children primitives by using the SyncData attribute, such as in the following example:
+
+
+	public class MySyncObject : SyncObject
+	{
+	    [SyncData]
+	    public SyncSpawnArray<MyOtherSyncObject> OtherSyncObject;
+
+		[SyncData]
+		public SyncFloat FloatValue;
+	}
+
+Any SyncPrimitive tagged with the [SyncData] attribute will automatically be added to the data model and synced in the current HoloToolkit.Sharing session.
+
+### Configuration
+---
 Ensure you have the following capabilities set in Player Settings -> Windows Store -> Publishing Settings -> Capabilities:
 
 1. SpatialPerception
 2. InternetClientServer
 3. PrivateNetworkClientServer
 4. Microphone capabilities
+
+Install or run the server instance.
 
 ### [Plugins](Plugins)
 ---
@@ -51,10 +148,16 @@ Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.c
 Scripts for spawning objects using the sharing service.
 
 ##### PrefabSpawnerManager.cs
-Spawn manager that creates a GameObject based on a prefab when a new SyncSpawnedObject is created in the data model.
+A SpawnManager that creates a GameObject based on a prefab when a new SyncSpawnedObject is created in the data model. This class can spawn prefabs in reaction to the addition/removal of any object that inherits from SyncSpawnedObject, thus allowing applications to dynamically spawn prefabs as needed.
+
+The PrefabSpawnManager registers to the SyncArray of InstantiatedPrefabs in the SyncRoot object.
+
+The various classes can be linked to a prefab from the editor by specifying which class corresponds to which prefab. Note that the class field is currently a string that has to be typed in manually ("SyncSpawnedObject", for example): this could eventually be improved through a custom editor script.
 
 ##### SpawnManager.cs
-A SpawnManager is in charge of spawning the appropriate objects based on changes to an array of data model objects to which it is registered. It also manages the lifespan of these spawned objects.
+A SpawnManager is in charge of spawning the appropriate objects based on changes to an array of data model objects. It also manages the lifespan of these spawned objects.
+
+This is an abstract class from which you can derive a custom SpawnManager to react to specific synchronized objects being added or removed from the data model.
 
 ##### SyncSpawnArray.cs
 This array is meant to hold SyncSpawnedObject and objects of subclasses. Compared to SyncArray, this supports dynamic types for objects.
@@ -123,7 +226,9 @@ Synchronizer to update and broadcast a transform object through our data model.
 Scripts for sync service utilities.
 
 ##### AutoJoinSession.cs
-Utility class for automatically joining shared sessions without needing to go through a lobby.
+A behaviour component that allows the application to automatically join the specified session as soon as the application has a valid server connection. This class will also maintain the session connection throughout the application lifetime.
+
+This is mostly meant to be used to quickly test networking in an application. In most cases, some session management code should be written to allow users to join/leave sessions according to the desired application flow.
 
 ##### ConsoleLogWriter.cs
 Utility class that writes the sharing service log messages to the Unity Engine's console.
@@ -144,16 +249,22 @@ Transmits data from your microphone to other clients connected to a SessionServe
 ---
 
 #### ServerSessionTracker.cs
-The ServerSessionsTracker manages the list of sessions on the server and the users in these sessions.  Instance is created by Sharing Stage when a connection is found.
+The ServerSessionsTracker is in charge of listing the various sessions that exist on the server, and exposes events related to all of these sessions. This is also the class that allows the application to join or leave a session.  Instance is created by Sharing Stage when a connection is found.
 
 #### SessionUsersTracker.cs
-Keeps track of the users in the current session.  Instance is created by Sharing Stage when a connection is found.
+The SessionUsersTracker keeps track of the current session and its users. It also exposes events that are triggered whenever users join or leave the current session.  Instance is created by Sharing Stage when a connection is found.
 
 #### SharingStage.cs
-he SharingStage is in charge of managing the core networking layer for the application.
+A Singleton behaviour that is in charge of managing the core networking layer for the application. The SharingStage has the following responsibilities:
+
+- Server configuration (address, port and client role)
+- Establish and manage the server connection
+- Create and initialize the synchronized data model (SyncRoot)
+- Create the ServerSessionsTracker that tracks all sessions on the server
+- Create the SessionUsersTracker that tracks the users in the current session
 
 #### SyncRoot.cs
-Root of the synchronization data model used by this application.
+Root of the synchronized data model, under which every element of the model should be located. The SharingStage will automatically create and initialize the SyncRoot at application startup.
 
 #### SyncSettings.cs
 Collection of sharing sync settings, used by the HoloToolkit Sharing sync system to figure out which data model classes need to be instantiated when receiving data that inherits from SyncObject.
