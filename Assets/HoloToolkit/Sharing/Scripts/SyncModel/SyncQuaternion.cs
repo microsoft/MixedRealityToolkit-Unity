@@ -21,7 +21,7 @@ namespace HoloToolkit.Sharing.SyncModel
 #if UNITY_EDITOR
         public override object RawValue
         {
-            get { return new Quaternion(x.Value, y.Value, z.Value, w.Value); }
+            get { return Value; }
         }
 #endif
 

@@ -170,7 +170,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                // Othertimes we must wait for the
+                // Other times we must wait for the tracking system to locate the world.
                 anchor.OnTrackingChanged += Anchor_OnTrackingChanged;
             }
         }

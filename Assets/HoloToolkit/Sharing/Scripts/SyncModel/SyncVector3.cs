@@ -20,7 +20,7 @@ namespace HoloToolkit.Sharing.SyncModel
 #if UNITY_EDITOR
         public override object RawValue
         {
-            get { return new Vector3(x.Value, y.Value, z.Value); }
+            get { return Value; }
         }
 #endif
 

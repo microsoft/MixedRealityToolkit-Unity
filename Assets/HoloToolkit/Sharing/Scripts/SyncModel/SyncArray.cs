@@ -37,13 +37,13 @@ namespace HoloToolkit.Sharing.SyncModel
         /// Type of objects in the array.
         /// This is cached so that we don't have to call typeof(T) more than once.
         /// </summary>
-        protected Type ArrayType;
+        protected readonly Type arrayType;
 
         public SyncArray(string field)
             : base(field)
         {
             dataArray = new Dictionary<string, T>();
-            ArrayType = typeof(T);
+            arrayType = typeof(T);
         }
 
         public SyncArray() : this(string.Empty) { }
@@ -56,7 +56,7 @@ namespace HoloToolkit.Sharing.SyncModel
         protected virtual T CreateObject(ObjectElement objectElement)
         {
             Type objectType = SyncSettings.Instance.GetDataModelType(objectElement.GetObjectType()).AsType();
-            if (!objectType.IsSubclassOf(ArrayType) && objectType != ArrayType)
+            if (!objectType.IsSubclassOf(arrayType) && objectType != arrayType)
             {
                 throw new InvalidCastException(string.Format("Object of incorrect type added to SyncArray: Expected {0}, got {1} ", objectType, objectElement.GetObjectType().GetString()));
             }
@@ -212,7 +212,6 @@ namespace HoloToolkit.Sharing.SyncModel
         /// <returns></returns>
         private T AddObject(ObjectElement existingElement)
         {
-            //bool isLocal = false;
             string id = existingElement.GetName();
 
             // Create a new object and assign the element
@@ -223,12 +222,6 @@ namespace HoloToolkit.Sharing.SyncModel
 
             // Update internal map
             dataArray[id] = newObject;
-
-            // If it's local, make sure to initialize it so it can be used immediately.
-            //if (isLocal)
-            //{
-            //    newObject.InitializeLocal(Element);
-            //}
 
             return newObject;
         }
