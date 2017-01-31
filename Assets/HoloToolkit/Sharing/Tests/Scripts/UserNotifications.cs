@@ -12,7 +12,7 @@ namespace HoloToolkit.Sharing.Tests
 
         private void Start()
         {
-            // Sharing stage shouldn't be null unless you forgot to start your server.
+            // SharingStage should be valid at this point.
             SharingStage.Instance.SharingManagerConnected += Connected;
         }
 

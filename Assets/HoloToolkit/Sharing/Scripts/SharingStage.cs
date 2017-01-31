@@ -50,8 +50,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Sharing manager used by the application.
         /// </summary>
-        public SharingManager Manager { get { return sharingMgr; } }
-        private SharingManager sharingMgr;
+        public SharingManager Manager { get; private set; }
 
         public bool AutoDiscoverServer;
 
@@ -116,7 +115,7 @@ namespace HoloToolkit.Sharing
         {
             get
             {
-                using (User user = sharingMgr.GetLocalUser())
+                using (User user = Manager.GetLocalUser())
                 {
                     using (XString userName = user.GetName())
                     {
@@ -128,7 +127,7 @@ namespace HoloToolkit.Sharing
             {
                 using (XString userName = new XString(value))
                 {
-                    sharingMgr.SetUserName(userName);
+                    Manager.SetUserName(userName);
                 }
 
                 UserNameChanged.RaiseEvent(value);
@@ -143,7 +142,7 @@ namespace HoloToolkit.Sharing
             {
                 if (networkConnection == null)
                 {
-                    networkConnection = sharingMgr.GetServerConnection();
+                    networkConnection = Manager.GetServerConnection();
                 }
                 return networkConnection;
             }
@@ -183,11 +182,11 @@ namespace HoloToolkit.Sharing
                 }
             }
 
-            if (sharingMgr != null)
+            if (Manager != null)
             {
                 // Force a disconnection so that we can stop and start Unity without connections hanging around
-                sharingMgr.GetPairedConnection().Disconnect();
-                sharingMgr.GetServerConnection().Disconnect();
+                Manager.GetPairedConnection().Disconnect();
+                Manager.GetServerConnection().Disconnect();
             }
 
             // Release the Sharing resources
@@ -216,10 +215,10 @@ namespace HoloToolkit.Sharing
                 }
             }
 
-            if (sharingMgr != null)
+            if (Manager != null)
             {
-                sharingMgr.Dispose();
-                sharingMgr = null;
+                Manager.Dispose();
+                Manager = null;
             }
 
             // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects
@@ -233,10 +232,10 @@ namespace HoloToolkit.Sharing
                 AutoDiscoverUpdate();
             }
 
-            if (sharingMgr != null)
+            if (Manager != null)
             {
                 // Update the XToolsManager to processes any network messages that have arrived
-                sharingMgr.Update();
+                Manager.Update();
             }
         }
 
@@ -253,25 +252,25 @@ namespace HoloToolkit.Sharing
                 config.SetServerPort(ServerPort);
             }
 
-            sharingMgr = SharingManager.Create(config);
+            Manager = SharingManager.Create(config);
 
             //set up callbacks so that we know when we've connected successfully
-            networkConnection = sharingMgr.GetServerConnection();
+            networkConnection = Manager.GetServerConnection();
             networkConnectionAdapter = new NetworkConnectionAdapter();
             networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
             networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
 
             SyncStateListener = new SyncStateListener();
-            sharingMgr.RegisterSyncListener(SyncStateListener);
+            Manager.RegisterSyncListener(SyncStateListener);
 
-            Root = new SyncRoot(sharingMgr.GetRootSyncObject());
+            Root = new SyncRoot(Manager.GetRootSyncObject());
 
-            SessionsTracker = new ServerSessionsTracker(sharingMgr.GetSessionManager());
+            SessionsTracker = new ServerSessionsTracker(Manager.GetSessionManager());
             SessionUsersTracker = new SessionUsersTracker(SessionsTracker);
 
             using (XString userName = new XString(DefaultUserName))
             {
-                sharingMgr.SetUserName(userName);
+                Manager.SetUserName(userName);
             }
         }
 
@@ -299,6 +298,7 @@ namespace HoloToolkit.Sharing
 
         private void AutoDiscoverInit()
         {
+            Debug.Log("Looking for servers...");
             discoveryClientAdapter = new DiscoveryClientAdapter();
             discoveryClientAdapter.DiscoveredEvent += OnSystemDiscovered;
 
@@ -328,7 +328,7 @@ namespace HoloToolkit.Sharing
                 //Found a server. Stop pinging the network and connect 
                 isTryingToFindServer = false;
                 ServerAddress = obj.GetAddress();
-                Debug.Log("System Discovered at: " + ServerAddress);
+                Debug.Log("Server discovered at: " + ServerAddress);
                 Connect();
                 Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
             }
@@ -343,7 +343,7 @@ namespace HoloToolkit.Sharing
 
         public void ConnectToServer()
         {
-            sharingMgr.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
+            Manager.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
         }
 
         private void OnEnable()

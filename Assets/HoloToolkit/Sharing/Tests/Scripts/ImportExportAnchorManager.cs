@@ -90,11 +90,6 @@ namespace HoloToolkit.Sharing.Tests
         public bool KeepRoomAlive;
 
         /// <summary>
-        /// Cached point to the sharing stage.
-        /// </summary>
-        private SharingStage sharingStage;
-
-        /// <summary>
         /// Room name to join
         /// </summary>
         public string RoomName = "DefaultRoom";
@@ -161,7 +156,7 @@ namespace HoloToolkit.Sharing.Tests
         protected override void Awake()
         {
             base.Awake();
-            Debug.Log("Import Export Manager starting");
+
             // We need to get our local anchor store started up.
             currentState = ImportExportState.AnchorStore_Initializing;
             WorldAnchorStore.GetAsync(AnchorStoreReady);
@@ -169,27 +164,38 @@ namespace HoloToolkit.Sharing.Tests
 
         private void Start()
         {
-            // We will register for session joined and left to indicate when the sharing service
-            // is ready for us to make room related requests.
-            sharingStage = SharingStage.Instance;
-            sharingStage.SessionsTracker.CurrentUserJoined += CurrentUserJoinedSession;
-            sharingStage.SessionsTracker.CurrentUserLeft += CurrentUserLeftSession;
+            // SharingStage should be valid at this point.
+            SharingStage.Instance.SharingManagerConnected += Connected;
+        }
+
+        private void Connected(object sender, EventArgs e)
+        {
+            Debug.Log("Import Export Manager starting");
+            SharingStage.Instance.SharingManagerConnected -= Connected;
 
             // Setup the room manager callbacks.
-            roomManager = sharingStage.Manager.GetRoomManager();
+            roomManager = SharingStage.Instance.Manager.GetRoomManager();
             roomManagerCallbacks = new RoomManagerAdapter();
 
             roomManagerCallbacks.AnchorsDownloadedEvent += RoomManagerCallbacks_AnchorsDownloaded;
             roomManagerCallbacks.AnchorUploadedEvent += RoomManagerCallbacks_AnchorUploaded;
             roomManager.AddListener(roomManagerCallbacks);
+
+            // We will register for session joined and left to indicate when the sharing service
+            // is ready for us to make room related requests.
+            SharingStage.Instance.SessionsTracker.CurrentUserJoined += CurrentUserJoinedSession;
+            SharingStage.Instance.SessionsTracker.CurrentUserLeft += CurrentUserLeftSession;
         }
 
         protected override void OnDestroy()
         {
-            if (sharingStage.SessionsTracker != null)
+            if (SharingStage.Instance != null)
             {
-                sharingStage.SessionsTracker.CurrentUserJoined -= CurrentUserJoinedSession;
-                sharingStage.SessionsTracker.CurrentUserLeft -= CurrentUserLeftSession;
+                if (SharingStage.Instance.SessionsTracker != null)
+                {
+                    SharingStage.Instance.SessionsTracker.CurrentUserJoined -= CurrentUserJoinedSession;
+                    SharingStage.Instance.SessionsTracker.CurrentUserLeft -= CurrentUserLeftSession;
+                }
             }
 
             if (roomManagerCallbacks != null)
@@ -375,13 +381,13 @@ namespace HoloToolkit.Sharing.Tests
 
             if (currentRoom != null)
             {
-                Debug.LogFormat("In room : {0} with ID {1} and state {2}", roomManager.GetCurrentRoom().GetName().GetString(), roomManager.GetCurrentRoom().GetID(), currentState);
+                Debug.LogFormat("In room : {0} with ID {1} and state {2}", roomManager.GetCurrentRoom().GetName().GetString(), roomManager.GetCurrentRoom().GetID().ToString(), currentState);
             }
         }
 
         private bool ShouldLocalUserCreateRoom()
         {
-            if (sharingStage.SessionUsersTracker != null)
+            if (SharingStage.Instance.SessionUsersTracker != null)
             {
                 long localUserId = 0;
                 using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
@@ -389,9 +395,9 @@ namespace HoloToolkit.Sharing.Tests
                     localUserId = localUser.GetID();
                 }
 
-                for (int i = 0; i < sharingStage.SessionUsersTracker.CurrentUsers.Count; i++)
+                for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
                 {
-                    User user = sharingStage.SessionUsersTracker.CurrentUsers[i];
+                    User user = SharingStage.Instance.SessionUsersTracker.CurrentUsers[i];
                     if (user.GetID() < localUserId)
                     {
                         return false;

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity;
@@ -29,6 +30,14 @@ namespace HoloToolkit.Sharing.Tests
         {
             CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = UpdateHeadTransform;
 
+            // SharingStage should be valid at this point.
+            SharingStage.Instance.SharingManagerConnected += Connected;
+        }
+
+        private void Connected(object sender, EventArgs e)
+        {
+            SharingStage.Instance.SharingManagerConnected -= Connected;
+
             SharingStage.Instance.SessionUsersTracker.UserJoined += UserJoinedSession;
             SharingStage.Instance.SessionUsersTracker.UserLeft += UserLeftSession;
         }
@@ -43,6 +52,20 @@ namespace HoloToolkit.Sharing.Tests
             Quaternion headRotation = Quaternion.Inverse(transform.rotation) * headTransform.rotation;
 
             CustomMessages.Instance.SendHeadTransform(headPosition, headRotation);
+        }
+
+        protected override void OnDestroy()
+        {
+            if (SharingStage.Instance != null)
+            {
+                if (SharingStage.Instance.SessionUsersTracker != null)
+                {
+                    SharingStage.Instance.SessionUsersTracker.UserJoined -= UserJoinedSession;
+                    SharingStage.Instance.SessionUsersTracker.UserLeft -= UserLeftSession;
+                }
+            }
+
+            base.OnDestroy();
         }
 
         /// <summary>
