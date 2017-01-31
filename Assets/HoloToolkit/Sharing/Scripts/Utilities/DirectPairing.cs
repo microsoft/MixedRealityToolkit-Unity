@@ -80,7 +80,10 @@ namespace HoloToolkit.Sharing.Utilities
 
         private void OnPairingConnectionSucceeded()
         {
-            Debug.Log("Direct Pairing Succeeded");
+            if (SharingStage.Instance.ShowDetailedLogs)
+            {
+                Debug.Log("Direct Pairing Succeeded");
+            }
         }
 
         private void OnPairingConnectionFailed(PairingResult result)
@@ -89,6 +92,7 @@ namespace HoloToolkit.Sharing.Utilities
 
             if (AutoReconnect)
             {
+                Debug.LogWarning("Attempting to reconnect...");
                 StartPairing();
             }
         }

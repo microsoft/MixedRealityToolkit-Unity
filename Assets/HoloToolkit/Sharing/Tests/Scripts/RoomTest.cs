@@ -64,7 +64,9 @@ namespace HoloToolkit.Sharing.Tests
         private void OnGUI()
         {
             // Make a background box
-            scrollViewVector = GUI.BeginScrollView(new Rect(25, 25, areaWidth, areaHeight), scrollViewVector,
+            scrollViewVector = GUI.BeginScrollView(
+                new Rect(25, 25, areaWidth, areaHeight),
+                scrollViewVector,
                 new Rect(0, 0, areaWidth, areaHeight));
 
             if (roomMgr != null)
@@ -72,8 +74,7 @@ namespace HoloToolkit.Sharing.Tests
                 SessionManager sessionMgr = SharingStage.Instance.Manager.GetSessionManager();
                 if (sessionMgr != null)
                 {
-                    roomName =
-                        GUI.TextField(
+                    roomName = GUI.TextField(
                             new Rect(buttonWidth + padding, 0, areaWidth - (buttonWidth + padding), lineHeight),
                             roomName);
 
@@ -92,17 +93,17 @@ namespace HoloToolkit.Sharing.Tests
 
                     for (int i = 0; i < roomMgr.GetRoomCount(); ++i)
                     {
-                        Room r = roomMgr.GetRoom(i);
+                        Room room = roomMgr.GetRoom(i);
 
                         int vOffset = (padding + lineHeight) * (i + 1);
                         int hOffset = 0;
 
-                        bool keepOpen = GUI.Toggle(new Rect(hOffset, vOffset, lineHeight, lineHeight), r.GetKeepOpen(), "");
-                        r.SetKeepOpen(keepOpen);
+                        bool keepOpen = GUI.Toggle(new Rect(hOffset, vOffset, lineHeight, lineHeight), room.GetKeepOpen(), "");
+                        room.SetKeepOpen(keepOpen);
 
                         hOffset += lineHeight + padding;
 
-                        if (currentRoom != null && r.GetID() == currentRoom.GetID())
+                        if (currentRoom != null && room.GetID() == currentRoom.GetID())
                         {
                             if (GUI.Button(new Rect(hOffset, vOffset, buttonWidth, lineHeight), "Leave"))
                             {
@@ -113,7 +114,7 @@ namespace HoloToolkit.Sharing.Tests
                         {
                             if (GUI.Button(new Rect(hOffset, vOffset, buttonWidth, lineHeight), "Join"))
                             {
-                                if (!roomMgr.JoinRoom(r))
+                                if (!roomMgr.JoinRoom(room))
                                 {
                                     Debug.LogWarning("Cannot join room");
                                 }
@@ -123,7 +124,7 @@ namespace HoloToolkit.Sharing.Tests
                         hOffset += buttonWidth + padding;
 
                         GUI.Label(new Rect(hOffset, vOffset, areaWidth - (buttonWidth + padding), lineHeight),
-                            r.GetName().GetString());
+                            room.GetName().GetString());
                     }
                 }
             }
@@ -200,12 +201,14 @@ namespace HoloToolkit.Sharing.Tests
 
         private void OnUserJoinedRoom(Room room, int user)
         {
-            Debug.LogFormat("User {0} joined Room {1}", user.ToString(), room.GetName().GetString());
+            User joinedUser = SharingStage.Instance.SessionUsersTracker.GetUserById(user);
+            Debug.LogFormat("User {0} joined Room {1}", joinedUser.GetName(), room.GetName().GetString());
         }
 
         private void OnUserLeftRoom(Room room, int user)
         {
-            Debug.LogFormat("User {0} left Room {1}", user.ToString(), room.GetName().GetString());
+            User leftUser = SharingStage.Instance.SessionUsersTracker.GetUserById(user);
+            Debug.LogFormat("User {0} left Room {1}", leftUser.GetName(), room.GetName().GetString());
         }
 
         private void OnAnchorsChanged(Room room)

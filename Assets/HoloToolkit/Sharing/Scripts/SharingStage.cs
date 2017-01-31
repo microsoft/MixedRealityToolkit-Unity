@@ -111,6 +111,9 @@ namespace HoloToolkit.Sharing
         private float pingIntervalCurrent;
         private bool isTryingToFindServer;
 
+        [Tooltip("Show Detailed Information for server connections")]
+        public bool ShowDetailedLogs;
+
         public string UserName
         {
             get
@@ -154,6 +157,7 @@ namespace HoloToolkit.Sharing
 
             AppInstanceUniqueId = Guid.NewGuid().ToString();
             logWriter = new ConsoleLogWriter();
+            logWriter.ShowDetailedLogs = ShowDetailedLogs;
 
             if (AutoDiscoverServer)
             {
@@ -298,7 +302,10 @@ namespace HoloToolkit.Sharing
 
         private void AutoDiscoverInit()
         {
-            Debug.Log("Looking for servers...");
+            if (ShowDetailedLogs)
+            {
+                Debug.Log("Looking for servers...");
+            }
             discoveryClientAdapter = new DiscoveryClientAdapter();
             discoveryClientAdapter.DiscoveredEvent += OnSystemDiscovered;
 
@@ -315,6 +322,10 @@ namespace HoloToolkit.Sharing
             pingIntervalCurrent += Time.deltaTime;
             if (pingIntervalCurrent > PingIntervalSec)
             {
+                if (ShowDetailedLogs)
+                {
+                    Debug.Log("Looking for servers...");
+                }
                 pingIntervalCurrent = 0;
                 discoveryClient.Ping();
             }
@@ -328,9 +339,15 @@ namespace HoloToolkit.Sharing
                 //Found a server. Stop pinging the network and connect 
                 isTryingToFindServer = false;
                 ServerAddress = obj.GetAddress();
-                Debug.Log("Server discovered at: " + ServerAddress);
+                if (ShowDetailedLogs)
+                {
+                    Debug.Log("Server discovered at: " + ServerAddress);
+                }
                 Connect();
-                Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
+                if (ShowDetailedLogs)
+                {
+                    Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
+                }
             }
         }
 
@@ -372,7 +389,10 @@ namespace HoloToolkit.Sharing
 
                 case LogType.Log:
                 default:
-                    Log.Info(logString);
+                    if (ShowDetailedLogs)
+                    {
+                        Log.Info(logString);
+                    }
                     break;
             }
         }

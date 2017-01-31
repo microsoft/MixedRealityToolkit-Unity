@@ -25,7 +25,8 @@ namespace HoloToolkit.Sharing.Utilities
 
         private void Start()
         {
-            // Get the ServerSessionsTracker to use later.  Note that if this processes takes the role of a secondary client,
+            // Get the ServerSessionsTracker to use later.
+            // Note that if this processes takes the role of a secondary client,
             // then the sessionsTracker will always be null
             if (SharingStage.Instance != null && SharingStage.Instance.Manager != null)
             {
@@ -51,8 +52,11 @@ namespace HoloToolkit.Sharing.Utilities
                     currentSession.GetName().GetString() != SessionName ||                       // We're in the wrong session
                     currentSession.GetMachineSessionState() == MachineSessionState.DISCONNECTED) // We aren't joined or joining the right session
                 {
-                    Debug.LogFormat("Session conn {0} Sessions: {1}.", sessionsTracker.IsServerConnected.ToString(), sessionsTracker.Sessions.Count.ToString());
-                    Debug.Log("Looking for " + SessionName);
+                    if (SharingStage.Instance.ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("Session conn {0} Sessions: {1}.", sessionsTracker.IsServerConnected.ToString(), sessionsTracker.Sessions.Count.ToString());
+                        Debug.Log("Looking for " + SessionName);
+                    }
                     bool sessionFound = false;
 
                     for (int i = 0; i < sessionsTracker.Sessions.Count; ++i)
@@ -69,7 +73,11 @@ namespace HoloToolkit.Sharing.Utilities
 
                     if (sessionsTracker.IsServerConnected && !sessionFound && !sessionCreationRequested)
                     {
-                        Debug.Log("Didn't find session, making a new one");
+                        if (SharingStage.Instance.ShowDetailedLogs)
+                        {
+                            Debug.Log("Didn't find session, making a new one");
+                        }
+
                         if (sessionsTracker.CreateSession(new XString(SessionName)))
                         {
                             sessionCreationRequested = true;

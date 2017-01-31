@@ -74,6 +74,37 @@ namespace HoloToolkit.Sharing.Tests
             }
         }
 
+        private static bool ShouldLocalUserCreateRoom
+        {
+            get
+            {
+                if (SharingStage.Instance == null)
+                {
+                    return false;
+                }
+
+                if (SharingStage.Instance.SessionUsersTracker != null)
+                {
+                    long localUserId;
+                    using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
+                    {
+                        localUserId = localUser.GetID();
+                    }
+
+                    for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
+                    {
+                        User user = SharingStage.Instance.SessionUsersTracker.CurrentUsers[i];
+                        if (user.GetID() < localUserId)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
         /// <summary>
         /// Called once the anchor has fully uploaded
         /// </summary>
@@ -170,7 +201,11 @@ namespace HoloToolkit.Sharing.Tests
 
         private void Connected(object sender, EventArgs e)
         {
-            Debug.Log("Import Export Manager starting");
+            if (SharingStage.Instance.ShowDetailedLogs)
+            {
+                Debug.Log("Import Export Manager starting");
+            }
+
             SharingStage.Instance.SharingManagerConnected -= Connected;
 
             // Setup the room manager callbacks.
@@ -232,7 +267,7 @@ namespace HoloToolkit.Sharing.Tests
             }
             else
             {
-                Debug.Log("Upload failed " + failureReason);
+                Debug.LogError("Upload failed " + failureReason);
                 currentState = ImportExportState.Failed;
             }
 
@@ -251,7 +286,12 @@ namespace HoloToolkit.Sharing.Tests
             if (successful)
             {
                 int datasize = request.GetDataSize();
-                Debug.Log(datasize.ToString() + " bytes ");
+
+                if (SharingStage.Instance.ShowDetailedLogs)
+                {
+                    Debug.Log(datasize.ToString() + " bytes ");
+                }
+
                 rawAnchorData = new byte[datasize];
 
                 request.GetData(rawAnchorData, datasize);
@@ -260,7 +300,7 @@ namespace HoloToolkit.Sharing.Tests
             else
             {
                 // If we failed, we can ask for the data again.
-                Debug.Log("Anchor DL failed " + failureReason);
+                Debug.LogWarning("Anchor DL failed " + failureReason);
                 MakeAnchorDataRequest();
             }
         }
@@ -332,9 +372,13 @@ namespace HoloToolkit.Sharing.Tests
                 // Otherwise we will wait for the room to be created.
                 if (roomManager.GetRoomCount() == 0)
                 {
-                    if (ShouldLocalUserCreateRoom())
+                    if (ShouldLocalUserCreateRoom)
                     {
-                        Debug.Log("Creating room " + RoomName);
+                        if (SharingStage.Instance.ShowDetailedLogs)
+                        {
+                            Debug.Log("Creating room " + RoomName);
+                        }
+
                         // To keep anchors alive even if all users have left the session ...
                         // Pass in true instead of false in CreateRoom.
                         currentRoom = roomManager.CreateRoom(new XString(RoomName), roomID, KeepRoomAlive);
@@ -351,7 +395,12 @@ namespace HoloToolkit.Sharing.Tests
                         {
                             currentRoom = room;
                             roomManager.JoinRoom(currentRoom);
-                            Debug.Log("Joining room " + room.GetName().GetString());
+
+                            if (SharingStage.Instance.ShowDetailedLogs)
+                            {
+                                Debug.Log("Joining room " + room.GetName().GetString());
+                            }
+
                             break;
                         }
                     }
@@ -368,44 +417,32 @@ namespace HoloToolkit.Sharing.Tests
                 }
             }
 
-            if (currentRoom.GetAnchorCount() == 0)
+            if (currentRoom != null)
             {
-                // If the room has no anchors, request the initial anchor
-                currentState = ImportExportState.InitialAnchorRequired;
+                if (currentRoom.GetAnchorCount() == 0)
+                {
+                    // If the room has no anchors, request the initial anchor
+                    currentState = ImportExportState.InitialAnchorRequired;
+                }
+                else
+                {
+                    // Room already has anchors
+                    currentState = ImportExportState.RoomApiInitialized;
+                }
+
+
+                if (SharingStage.Instance.ShowDetailedLogs)
+                {
+                    Debug.LogFormat("In room : {0} with ID {1} and state {2}",
+                        roomManager.GetCurrentRoom().GetName().GetString(),
+                        roomManager.GetCurrentRoom().GetID().ToString(),
+                        currentState);
+                }
             }
             else
             {
-                // Room already has anchors
-                currentState = ImportExportState.RoomApiInitialized;
+                Debug.LogError("Unable to determine room");
             }
-
-            if (currentRoom != null)
-            {
-                Debug.LogFormat("In room : {0} with ID {1} and state {2}", roomManager.GetCurrentRoom().GetName().GetString(), roomManager.GetCurrentRoom().GetID().ToString(), currentState);
-            }
-        }
-
-        private bool ShouldLocalUserCreateRoom()
-        {
-            if (SharingStage.Instance.SessionUsersTracker != null)
-            {
-                long localUserId = 0;
-                using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
-                {
-                    localUserId = localUser.GetID();
-                }
-
-                for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
-                {
-                    User user = SharingStage.Instance.SessionUsersTracker.CurrentUsers[i];
-                    if (user.GetID() < localUserId)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -416,7 +453,10 @@ namespace HoloToolkit.Sharing.Tests
             // First, are there any anchors in this room?
             int anchorCount = currentRoom.GetAnchorCount();
 
-            Debug.Log(anchorCount.ToString() + " anchors");
+            if (SharingStage.Instance.ShowDetailedLogs)
+            {
+                Debug.Log(anchorCount.ToString() + " anchors");
+            }
 
             // If there are anchors, we should attach to the first one.
             if (anchorCount > 0)
@@ -428,7 +468,11 @@ namespace HoloToolkit.Sharing.Tests
                 // Attempt to attach to the anchor in our local anchor store.
                 if (AttachToCachedAnchor(storedAnchorName) == false)
                 {
-                    Debug.Log("Starting room download");
+                    if (SharingStage.Instance.ShowDetailedLogs)
+                    {
+                        Debug.Log("Starting room download");
+                    }
+
                     // If we cannot find the anchor by name, we will need the full data blob.
                     MakeAnchorDataRequest();
                 }
@@ -446,7 +490,7 @@ namespace HoloToolkit.Sharing.Tests
             }
             else
             {
-                Debug.Log("Couldn't make the download request.");
+                Debug.LogError("Couldn't make the download request.");
                 currentState = ImportExportState.Failed;
             }
         }
@@ -487,11 +531,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private void CreateAnchorLocally()
         {
-            WorldAnchor anchor = GetComponent<WorldAnchor>();
-            if (anchor == null)
-            {
-                anchor = gameObject.AddComponent<WorldAnchor>();
-            }
+            var anchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
 
             if (anchor.isLocated)
             {
@@ -510,12 +550,16 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (located)
             {
-                Debug.Log("Found anchor, ready to export");
+                if (SharingStage.Instance.ShowDetailedLogs)
+                {
+                    Debug.Log("Found anchor, ready to export");
+                }
+
                 currentState = ImportExportState.ReadyToExportInitialAnchor;
             }
             else
             {
-                Debug.Log("Failed to locate local anchor (super bad!)");
+                Debug.LogError("Failed to locate local anchor!");
                 currentState = ImportExportState.Failed;
             }
 
@@ -528,21 +572,30 @@ namespace HoloToolkit.Sharing.Tests
         /// <returns>True if it attached, false if it could not attach</returns>
         private bool AttachToCachedAnchor(string anchorName)
         {
-            Debug.Log("Looking for " + anchorName);
+
+            if (SharingStage.Instance.ShowDetailedLogs)
+            {
+                Debug.Log("Looking for " + anchorName);
+            }
+
             string[] ids = anchorStore.GetAllIds();
             for (int index = 0; index < ids.Length; index++)
             {
                 if (ids[index] == anchorName)
                 {
-                    Debug.Log("Using what we have");
-                    WorldAnchor wa = anchorStore.Load(ids[index], gameObject);
-                    if (wa.isLocated)
+                    if (SharingStage.Instance.ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("Attempting to load {0}...", anchorName);
+                    }
+
+                    WorldAnchor anchor = anchorStore.Load(ids[index], gameObject);
+                    if (anchor.isLocated)
                     {
                         AnchorLoadComplete();
                     }
                     else
                     {
-                        wa.OnTrackingChanged += ImportExportAnchorManager_OnTrackingChanged_Attaching;
+                        anchor.OnTrackingChanged += ImportExportAnchorManager_OnTrackingChanged_Attaching;
                         currentState = ImportExportState.Ready;
                     }
                     return true;
@@ -560,14 +613,18 @@ namespace HoloToolkit.Sharing.Tests
         /// <param name="located"></param>
         private void ImportExportAnchorManager_OnTrackingChanged_Attaching(WorldAnchor self, bool located)
         {
-            Debug.Log("anchor " + located.ToString());
+            if (SharingStage.Instance.ShowDetailedLogs)
+            {
+                Debug.Log("anchor " + located.ToString());
+            }
+
             if (located)
             {
                 AnchorLoadComplete();
             }
             else
             {
-                Debug.Log("Failed to find local anchor from cache.");
+                Debug.LogWarning("Failed to find local anchor from cache.");
                 MakeAnchorDataRequest();
             }
 
@@ -583,11 +640,19 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (status == SerializationCompletionReason.Succeeded)
             {
-                Debug.Log("Import complete");
+                if (SharingStage.Instance.ShowDetailedLogs)
+                {
+                    Debug.Log("Import complete");
+                }
+
                 if (wat.GetAllIds().Length > 0)
                 {
                     string first = wat.GetAllIds()[0];
-                    Debug.Log("Anchor name: " + first);
+
+                    if (SharingStage.Instance.ShowDetailedLogs)
+                    {
+                        Debug.Log("Anchor name: " + first);
+                    }
 
                     WorldAnchor anchor = wat.LockObject(first, gameObject);
                     anchorStore.Save(first, anchor);
@@ -597,7 +662,7 @@ namespace HoloToolkit.Sharing.Tests
             }
             else
             {
-                Debug.Log("Import fail");
+                Debug.LogError("Import failed");
                 currentState = ImportExportState.DataReady;
             }
         }
@@ -617,19 +682,13 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private void Export()
         {
-            WorldAnchor anchor = GetComponent<WorldAnchor>();
-
-            if (anchor == null)
-            {
-                Debug.Log("We should have made an anchor by now...");
-                return;
-            }
+            var anchor = GetComponent<WorldAnchor>();
 
             string guidString = Guid.NewGuid().ToString();
             exportingAnchorName = guidString;
 
             // Save the anchor to our local anchor store.
-            if (anchorStore.Save(exportingAnchorName, anchor))
+            if (anchor != null && anchorStore.Save(exportingAnchorName, anchor))
             {
                 sharedAnchorInterface = new WorldAnchorTransferBatch();
                 sharedAnchorInterface.AddWorldAnchor(guidString, anchor);
@@ -637,7 +696,7 @@ namespace HoloToolkit.Sharing.Tests
             }
             else
             {
-                Debug.Log("This anchor didn't work, trying again");
+                Debug.LogWarning("Failed to export anchor, trying again...");
                 currentState = ImportExportState.InitialAnchorRequired;
             }
         }
@@ -646,7 +705,7 @@ namespace HoloToolkit.Sharing.Tests
         /// Called by the WorldAnchorTransferBatch as anchor data is available.
         /// </summary>
         /// <param name="data"></param>
-        public void WriteBuffer(byte[] data)
+        private void WriteBuffer(byte[] data)
         {
             exportingAnchorBytes.AddRange(data);
         }
@@ -655,11 +714,15 @@ namespace HoloToolkit.Sharing.Tests
         /// Called by the WorldAnchorTransferBatch when anchor exporting is complete.
         /// </summary>
         /// <param name="status"></param>
-        public void ExportComplete(SerializationCompletionReason status)
+        private void ExportComplete(SerializationCompletionReason status)
         {
             if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > MinTrustworthySerializedAnchorDataSize)
             {
-                Debug.Log("Uploading anchor: " + exportingAnchorName);
+                if (SharingStage.Instance.ShowDetailedLogs)
+                {
+                    Debug.Log("Uploading anchor: " + exportingAnchorName);
+                }
+
                 roomManager.UploadAnchor(
                     currentRoom,
                     new XString(exportingAnchorName),
@@ -668,7 +731,7 @@ namespace HoloToolkit.Sharing.Tests
             }
             else
             {
-                Debug.Log("This anchor didn't work, trying again");
+                Debug.LogWarning("Failed to export anchor, trying again...");
                 currentState = ImportExportState.InitialAnchorRequired;
             }
         }
