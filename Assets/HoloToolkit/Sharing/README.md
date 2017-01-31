@@ -345,5 +345,6 @@ This test demonstrates how to spawn sync objects in your scene and across your n
 4. **SpawnTestKeyboardSpawning** demonstrates how to spawn sync objects, as well as custom class types.
 
 ---
-##### [Go back up to the table of contents.](../../../README.md)
+##### [Go back up to the table of contents](#table-of-contents)
+##### [Go back to the main page.](../../../README.md)
 ---
