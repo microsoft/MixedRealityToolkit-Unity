@@ -16,41 +16,79 @@ namespace HoloToolkit.Unity
         public static void UpdateExternalResources()
         {
             string dirPath = Path.GetDirectoryName(Application.dataPath);
-            string zipPath = dirPath + "/Assets/HoloToolkit/Utilities/Plugins/External.zip";
 
             if (!string.IsNullOrEmpty(dirPath))
             {
                 dirPath = dirPath.Replace("/", "\\");
-                zipPath = zipPath.Replace("/", "\\");
+                string zipPath = SearchDir(dirPath + "\\Assets");
 
-                string args = string.Format("/C PowerShell Expand-Archive -Path \'{0}\' -DestinationPath \'{1}\'", zipPath, dirPath);
-
-                try
+                if (!string.IsNullOrEmpty(zipPath))
                 {
-                    var processInfo = new ProcessStartInfo
+                    string args = string.Format("/C PowerShell Expand-Archive -Path \'{0}\' -DestinationPath \'{1}\'", zipPath, dirPath);
+
+                    try
                     {
-                        FileName = "cmd.exe",
-                        Arguments = args,
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                    };
+                        var processInfo = new ProcessStartInfo
+                        {
+                            FileName = "cmd.exe",
+                            Arguments = args,
+                            CreateNoWindow = true,
+                            UseShellExecute = false,
+                        };
 
-                    var process = new Process { StartInfo = processInfo };
+                        var process = new Process { StartInfo = processInfo };
 
-                    process.Start();
-                    process.WaitForExit();
-                    process.Close();
+                        process.Start();
+                        process.WaitForExit();
+                        process.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError(e);
+                    }
+
+                    if (Directory.Exists(dirPath + "/External"))
+                    {
+                        Debug.LogWarning("Sucessfully unpacked External Resources to " + dirPath + "\\External");
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    Debug.LogError(e);
-                }
-
-                if (Directory.Exists(dirPath + "/External"))
-                {
-                    Debug.LogWarning("Sucessfully unpacked External Resources to " + dirPath + "/External");
+                    Debug.LogError("Unable to find zip");
                 }
             }
+        }
+
+        private static string SearchDir(string sDir)
+        {
+            try
+            {
+                foreach (string directory in Directory.GetDirectories(sDir))
+                {
+                    foreach (string file in Directory.GetFiles(directory, "*.zip"))
+                    {
+                        string ext = Path.GetExtension(file);
+                        if (ext != null && (ext.Equals(".zip")))
+                        {
+                            if (file.Contains("External"))
+                            {
+                                return file;
+                            }
+                        }
+                    }
+                    string results = SearchDir(directory);
+                    if (!string.IsNullOrEmpty(results))
+                    {
+                        return results;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return null;
+            }
+            return null;
         }
     }
 }
