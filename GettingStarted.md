@@ -6,7 +6,7 @@ To get started either download the HoloToolkit-Unity Asset Package or grab a cop
 # 1a. Download a HoloToolkit-Unity Asset Package
 You can download the latest unity package from [Releases](https://github.com/Microsoft/HoloToolkit-Unity/releases) folder
 
-[Continue to step 2](/GettingStarted.md#2-using-holotoolkit-unity-in-your-project)
+[Continue to step 2](/GettingStarted.md#2-using-holotoolkit-unity-in-your-project).
 
 # 1b. Preparing the HoloToolkit-Unity Code
 
@@ -32,7 +32,15 @@ you have either downloaded or exported above]. **NOTE**: The HoloToolkit-Example
 
 You should now have a `HoloToolkit` menu item.
 
-`HoloToolkit -> Configure -> Apply HoloLens Scene Settings`
+Next we will configure your project using:
+
+`HoloToolkit -> Configure -> Apply HoloLens Project Settings`
+
+This window provides all the options your project may require when building for HoloLens.
+
+For additional UWP Capabilities see:
+
+`Edit -> Project Settings -> Player -> Publishing Settings -> Capabilities`
 
 # 3. Preparing a Scene for Holographic Content
 Create a new Scene: `File -> New Scene`
