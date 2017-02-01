@@ -1,16 +1,22 @@
-﻿using UnityEngine;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// interface for geometry class
-/// </summary>
-public interface IGeometry
+namespace HoloToolkit.Examples.GazeRuler
 {
-    void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab);
+    /// <summary>
+    /// interface for geometry class
+    /// </summary>
+    public interface IGeometry
+    {
+        void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab);
 
-    void Delete();
+        void Delete();
 
-    void Clear();
+        void Clear();
 
-    void Reset();
+        void Reset();
+    }
 }

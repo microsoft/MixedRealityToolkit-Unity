@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Min-heap priority queue. In other words, lower priorities will be removed from the queue first.
-    /// See http://en.wikipedia.org/wiki/Binary_heap for more info
+    /// See http://en.wikipedia.org/wiki/Binary_heap for more info.
     /// </summary>
     /// <typeparam name="TPriority">Type for the priority used for ordering.</typeparam>
     /// <typeparam name="TValue">Type of values in the queue.</typeparam>
@@ -28,15 +29,15 @@ namespace HoloToolkit.Unity
 
             public IEnumerator<TValue> GetEnumerator()
             {
-                foreach (KeyValuePair<TPriority, TValue> pair in this.parentCollection)
+                foreach (KeyValuePair<TPriority, TValue> pair in parentCollection)
                 {
                     yield return pair.Value;
                 }
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                return this.GetEnumerator();
+                return GetEnumerator();
             }
 
             #endregion
@@ -44,32 +45,31 @@ namespace HoloToolkit.Unity
 
         private readonly IComparer<TPriority> priorityComparer;
 
-        public PriorityQueue()
-            : this(Comparer<TPriority>.Default)
-        {
-        }
+        public PriorityQueue() : this(Comparer<TPriority>.Default) { }
 
         public PriorityQueue(IComparer<TPriority> comparer)
         {
             if (comparer == null)
+            {
                 throw new ArgumentNullException();
+            }
 
             priorityComparer = comparer;
         }
 
         private readonly List<KeyValuePair<TPriority, TValue>> queue = new List<KeyValuePair<TPriority, TValue>>();
-        private ValueCollection valueCollection = null;
+        private ValueCollection valueCollection;
 
         public ValueCollection Values
         {
             get
             {
-                if (this.valueCollection == null)
+                if (valueCollection == null)
                 {
-                    this.valueCollection = new ValueCollection(this);
+                    valueCollection = new ValueCollection(this);
                 }
 
-                return this.valueCollection;
+                return valueCollection;
             }
         }
 
@@ -77,12 +77,12 @@ namespace HoloToolkit.Unity
 
         public IEnumerator<KeyValuePair<TPriority, TValue>> GetEnumerator()
         {
-            return this.queue.GetEnumerator();
+            return queue.GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion
@@ -92,7 +92,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void Clear()
         {
-            this.queue.Clear();
+            queue.Clear();
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity
         /// <param name="value"></param>
         public void Push(TPriority priority, TValue value)
         {
-            this.queue.Add(new KeyValuePair<TPriority, TValue>(priority, value));
+            queue.Add(new KeyValuePair<TPriority, TValue>(priority, value));
             BubbleUp();
         }
 
@@ -113,7 +113,7 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                return this.queue.Count;
+                return queue.Count;
             }
         }
 
@@ -124,7 +124,7 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                return this.queue[0];
+                return queue[0];
             }
         }
 
@@ -134,9 +134,9 @@ namespace HoloToolkit.Unity
         /// <returns>The minmal element</returns>
         public KeyValuePair<TPriority, TValue> Pop()
         {
-            KeyValuePair<TPriority, TValue> ret = this.queue[0];
-            this.queue[0] = this.queue[queue.Count - 1];
-            this.queue.RemoveAt(this.queue.Count - 1);
+            KeyValuePair<TPriority, TValue> ret = queue[0];
+            queue[0] = queue[queue.Count - 1];
+            queue.RemoveAt(queue.Count - 1);
             BubbleDown();
             return ret;
         }
@@ -146,7 +146,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public bool Contains(TValue value)
         {
-            return this.queue.Any(itm => EqualityComparer<TValue>.Default.Equals(itm.Value, value));
+            return queue.Any(itm => EqualityComparer<TValue>.Default.Equals(itm.Value, value));
         }
 
         /// <summary>
@@ -154,14 +154,14 @@ namespace HoloToolkit.Unity
         /// </summary>
         public bool Remove(TValue value)
         {
-            var idx = this.queue.FindIndex(itm => EqualityComparer<TValue>.Default.Equals(itm.Value, value));
+            int idx = queue.FindIndex(itm => EqualityComparer<TValue>.Default.Equals(itm.Value, value));
             if (idx == -1)
             {
                 return false;
             }
 
-            this.queue[idx] = this.queue[this.queue.Count - 1];
-            this.queue.RemoveAt(this.queue.Count - 1);
+            queue[idx] = queue[queue.Count - 1];
+            queue.RemoveAt(queue.Count - 1);
             BubbleDown();
 
             return true;
@@ -175,13 +175,13 @@ namespace HoloToolkit.Unity
         {
             bool removed = false;
 
-            for (int i = this.queue.Count - 1; i >= 0; --i)
+            for (int i = queue.Count - 1; i >= 0; --i)
             {
                 // TODO: early out if key < priority
-                if (this.queue[i].Key.Equals(priority) && (shouldRemove == null || shouldRemove(this.queue[i].Value)))
+                if (queue[i].Key.Equals(priority) && (shouldRemove == null || shouldRemove(queue[i].Value)))
                 {
-                    this.queue[i] = this.queue[this.queue.Count - 1];
-                    this.queue.RemoveAt(this.queue.Count - 1);
+                    queue[i] = queue[queue.Count - 1];
+                    queue.RemoveAt(queue.Count - 1);
                     BubbleDown();
 
                     removed = true;
@@ -196,17 +196,17 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void BubbleUp()
         {
-            int node = this.queue.Count - 1;
+            int node = queue.Count - 1;
             while (node > 0)
             {
                 int parent = (node - 1) >> 1;
-                if (priorityComparer.Compare(this.queue[parent].Key, this.queue[node].Key) < 0)
+                if (priorityComparer.Compare(queue[parent].Key, queue[node].Key) < 0)
                 {
                     break; // we're in the right order, so we're done
                 }
-                var tmp = this.queue[parent];
-                this.queue[parent] = this.queue[node];
-                this.queue[node] = tmp;
+                KeyValuePair<TPriority, TValue> tmp = queue[parent];
+                queue[parent] = queue[node];
+                queue[node] = tmp;
                 node = parent;
             }
         }
@@ -223,15 +223,15 @@ namespace HoloToolkit.Unity
                 int child0 = (node << 1) + 1;
                 int child1 = (node << 1) + 2;
                 int smallest;
-                if (child0 < this.queue.Count && child1 < this.queue.Count)
+                if (child0 < queue.Count && child1 < queue.Count)
                 {
-                    smallest = priorityComparer.Compare(this.queue[child0].Key, this.queue[child1].Key) < 0 ? child0 : child1;
+                    smallest = priorityComparer.Compare(queue[child0].Key, queue[child1].Key) < 0 ? child0 : child1;
                 }
-                else if (child0 < this.queue.Count)
+                else if (child0 < queue.Count)
                 {
                     smallest = child0;
                 }
-                else if (child1 < this.queue.Count)
+                else if (child1 < queue.Count)
                 {
                     smallest = child1;
                 }
@@ -240,14 +240,14 @@ namespace HoloToolkit.Unity
                     break; // 'node' is a leaf, since both children are outside the array
                 }
 
-                if (priorityComparer.Compare(this.queue[node].Key, this.queue[smallest].Key) < 0)
+                if (priorityComparer.Compare(queue[node].Key, queue[smallest].Key) < 0)
                 {
                     break; // we're in the right order, so we're done.
                 }
 
-                var tmp = this.queue[node];
-                this.queue[node] = this.queue[smallest];
-                this.queue[smallest] = tmp;
+                KeyValuePair<TPriority, TValue> tmp = queue[node];
+                queue[node] = queue[smallest];
+                queue[smallest] = tmp;
                 node = smallest;
             }
         }

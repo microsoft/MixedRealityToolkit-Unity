@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
         }
 
         [SerializeField, Tooltip("Keeps track of position-based velocity for the target object.")]
-        private bool trackVelocity = false;
+        private bool trackVelocity;
         public bool TrackVelocity
         {
             get
@@ -70,7 +70,7 @@ namespace HoloToolkit.Unity
         public float DefaultPlaneDistance = 2.0f;
 
         [Tooltip("Visualize the plane at runtime.")]
-        public bool DrawGizmos = false;
+        public bool DrawGizmos;
 
         /// <summary>
         /// Position of the plane in world space.
@@ -87,13 +87,6 @@ namespace HoloToolkit.Unity
         /// Tracks the previous position of the target override object. Used if velocity is being tracked.
         /// </summary>
         private Vector3 targetOverridePreviousPosition;
-
-        private GazeManager gazeManager;
-
-        private void Start()
-        {
-            gazeManager = GazeManager.Instance;
-        }
 
         /// <summary>
         /// Updates the focus point for every frame after all objects have finished moving.
@@ -132,6 +125,52 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Gets the origin of the gaze for purposes of placing the stabilization plane
+        /// </summary>
+        private Vector3 GazeOrigin
+        {
+            get
+            {
+                if (GazeManager.Instance != null)
+                {
+                    return GazeManager.Instance.GazeOrigin;
+                }
+                return Camera.main.transform.position;
+            }
+        }
+
+        /// <summary>
+        /// Gets the direction of the gaze for purposes of placing the stabilization plane
+        /// </summary>
+        private Vector3 GazeNormal
+        {
+            get
+            {
+                if (GazeManager.Instance != null)
+                {
+                    return GazeManager.Instance.GazeNormal;
+                }
+                return Camera.main.transform.forward;
+            }
+        }
+
+        /// <summary>
+        /// Gets the position hit on the object the user is gazing at, if gaze tracking is supported.
+        /// </summary>
+        /// <param name="hitPosition">The position at which gaze ray intersects with an object.</param>
+        /// <returns>True if gaze is supported and an object was hit by gaze, otherwise false.</returns>
+        private bool TryGetGazeHitPosition(out Vector3 hitPosition)
+        {
+            if (GazeManager.Instance != null)
+            {
+                hitPosition = GazeManager.Instance.HitPosition;
+                return true;
+            }
+            hitPosition = Vector3.zero;
+            return false;
+        }
+
+        /// <summary>
         /// Configures the stabilization plane to update its position based on an object in the scene.        
         /// </summary>
         private void ConfigureTransformOverridePlane(float deltaTime)
@@ -145,7 +184,7 @@ namespace HoloToolkit.Unity
             }
             
             // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
-            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeManager.GazeNormal, velocity);
+            HolographicSettings.SetFocusPointForFrame(planePosition, -GazeNormal, velocity);
         }
 
         /// <summary>
@@ -153,14 +192,15 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void ConfigureGazeManagerPlane(float deltaTime)
         {
-            Vector3 gazeOrigin = GazeManager.Instance.GazeOrigin;
-            Vector3 gazeDirection = GazeManager.Instance.GazeNormal;
+            Vector3 gazeOrigin = GazeOrigin;
+            Vector3 gazeDirection = GazeNormal;
 
             // Calculate the delta between gaze origin's position and current hit position. If no object is hit, use default distance.
             float focusPointDistance;
-            if (gazeManager.IsGazingAtObject)
+            Vector3 gazeHitPosition;
+            if (TryGetGazeHitPosition(out gazeHitPosition))
             {
-                focusPointDistance = (gazeManager.GazeOrigin - GazeManager.Instance.HitPosition).magnitude;
+                focusPointDistance = (gazeOrigin - gazeHitPosition).magnitude;
             }
             else
             {
@@ -183,14 +223,17 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void ConfigureFixedDistancePlane(float deltaTime)
         {
+            Vector3 gazeOrigin = GazeOrigin;
+            Vector3 gazeNormal = GazeNormal;
+
             float lerpPower = DefaultPlaneDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
                                                                           : LerpStabilizationPlanePowerCloser;
 
             // Smoothly move the focus point from previous hit position to new position.
             currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, DefaultPlaneDistance, lerpPower * deltaTime);
 
-            planePosition = gazeManager.GazeOrigin + (gazeManager.GazeNormal * currentPlaneDistance);
-            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeManager.GazeNormal, Vector3.zero);
+            planePosition = gazeOrigin + (gazeNormal * currentPlaneDistance);
+            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
         }
 
         /// <summary>
@@ -209,9 +252,9 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void OnDrawGizmos()
         {
-            if (UnityEngine.Application.isPlaying && DrawGizmos)
+            if (Application.isPlaying && DrawGizmos)
             {
-                Vector3 focalPlaneNormal = -gazeManager.GazeNormal;
+                Vector3 focalPlaneNormal = -GazeNormal;
                 Vector3 planeUp = Vector3.Cross(Vector3.Cross(focalPlaneNormal, Vector3.up), focalPlaneNormal);
                 Gizmos.matrix = Matrix4x4.TRS(planePosition, Quaternion.LookRotation(focalPlaneNormal, planeUp), new Vector3(4.0f, 3.0f, 0.01f));
 

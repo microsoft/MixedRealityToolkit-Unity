@@ -1,124 +1,130 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using System.Collections;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using System;
 using HoloToolkit.Unity.InputModule;
 
-/// <summary>
-/// manager all measure tools here
-/// </summary>
-public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputClickHandler
+namespace HoloToolkit.Examples.GazeRuler
 {
-    private IGeometry manager;
-    public GeometryMode Mode;
-
-    // set up prefabs
-    public GameObject LinePrefab;
-    public GameObject PointPrefab;
-    public GameObject ModeTipObject;
-    public GameObject TextPrefab;
-
-    void Start()
+    /// <summary>
+    /// manager all measure tools here
+    /// </summary>
+    public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputClickHandler
     {
-        InputManager.Instance.PushFallbackInputHandler(gameObject);
+        private IGeometry manager;
+        public GeometryMode Mode;
 
-        // inti measure mode
-        switch (Mode)
+        // set up prefabs
+        public GameObject LinePrefab;
+        public GameObject PointPrefab;
+        public GameObject ModeTipObject;
+        public GameObject TextPrefab;
+
+        private void Start()
         {
-            case GeometryMode.Polygon:
-                manager = PolygonManager.Instance;
-                break;
-            default:
-                manager = LineManager.Instance;
-                break;
-        }
-    }
+            InputManager.Instance.PushFallbackInputHandler(gameObject);
 
-    // place spatial point
-    public void OnSelect()
-    {
-        manager.AddPoint(LinePrefab, PointPrefab, TextPrefab);
-    }
-
-    // delete latest line or geometry
-    public void DeleteLine()
-    {
-        manager.Delete();
-    }
-
-    // delete all lines or geometry
-    public void ClearAll()
-    {
-        manager.Clear();
-    }
-
-    // if current mode is geometry mode, try to finish geometry
-    public void OnPolygonClose()
-    {
-        IPolygonClosable client = PolygonManager.Instance;
-        client.ClosePloygon(LinePrefab, TextPrefab);
-    }
-
-    // change measure mode
-    public void OnModeChange()
-    {
-        try
-        {
-            manager.Reset();
-            if (Mode == GeometryMode.Line)
+            // inti measure mode
+            switch (Mode)
             {
-                Mode = GeometryMode.Polygon;
-                manager = PolygonManager.Instance;
-            }
-            else
-            {
-                Mode = GeometryMode.Line;
-                manager = LineManager.Instance;
+                case GeometryMode.Polygon:
+                    manager = PolygonManager.Instance;
+                    break;
+                default:
+                    manager = LineManager.Instance;
+                    break;
             }
         }
-        catch (Exception ex)
+
+        // place spatial point
+        public void OnSelect()
         {
-            Debug.Log(ex.Message);
+            manager.AddPoint(LinePrefab, PointPrefab, TextPrefab);
         }
-        ModeTipObject.SetActive(true);
-    }
 
-    public void OnHoldStarted(HoldEventData eventData)
-    {
-        OnPolygonClose();
-    }
+        // delete latest line or geometry
+        public void DeleteLine()
+        {
+            manager.Delete();
+        }
 
-    public void OnHoldCompleted(HoldEventData eventData)
-    {
-        // Nothing to do
-    }
+        // delete all lines or geometry
+        public void ClearAll()
+        {
+            manager.Clear();
+        }
 
-    public void OnHoldCanceled(HoldEventData eventData)
-    {
-        // Nothing to do
-    }
+        // if current mode is geometry mode, try to finish geometry
+        public void OnPolygonClose()
+        {
+            IPolygonClosable client = PolygonManager.Instance;
+            client.ClosePolygon(LinePrefab, TextPrefab);
+        }
 
-    public void OnInputClicked(InputEventData eventData)
+        // change measure mode
+        public void OnModeChange()
+        {
+            try
+            {
+                manager.Reset();
+                if (Mode == GeometryMode.Line)
+                {
+                    Mode = GeometryMode.Polygon;
+                    manager = PolygonManager.Instance;
+                }
+                else
+                {
+                    Mode = GeometryMode.Line;
+                    manager = LineManager.Instance;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(ex.Message);
+            }
+            ModeTipObject.SetActive(true);
+        }
+
+        public void OnHoldStarted(HoldEventData eventData)
+        {
+            OnPolygonClose();
+        }
+
+        public void OnHoldCompleted(HoldEventData eventData)
+        {
+            // Nothing to do
+        }
+
+        public void OnHoldCanceled(HoldEventData eventData)
+        {
+            // Nothing to do
+        }
+
+    public void OnInputClicked(InputClickedEventData eventData)
     {
         OnSelect();
     }
 }
 
-public class Point
-{
-    public Vector3 Position { get; set; }
+    public class Point
+    {
+        public Vector3 Position { get; set; }
 
-    public GameObject Root { get; set; }
-    public bool IsStart { get; set; }
-}
+        public GameObject Root { get; set; }
+        public bool IsStart { get; set; }
+    }
 
 
-public enum GeometryMode
-{
-    Line,
-    Triangle,
-    Rectangle,
-    Cube,
-    Polygon
+    public enum GeometryMode
+    {
+        Line,
+        Triangle,
+        Rectangle,
+        Cube,
+        Polygon
+    }
 }

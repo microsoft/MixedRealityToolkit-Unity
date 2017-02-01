@@ -1,4 +1,7 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
@@ -8,7 +11,7 @@ namespace HoloToolkit.Unity.Tests
     {
         public TextToSpeechManager TextToSpeech;
 
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.

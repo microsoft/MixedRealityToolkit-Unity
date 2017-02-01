@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-/// <summary>
-/// any geometry class inherit this interface should be closeable
-/// </summary>
-public interface IPolygonClosable
+using UnityEngine;
+
+namespace HoloToolkit.Examples.GazeRuler
 {
-    //finish special ploygon
-    void ClosePloygon(GameObject LinePrefab, GameObject TextPrefab);
+    /// <summary>
+    /// any geometry class inherit this interface should be closeable
+    /// </summary>
+    public interface IPolygonClosable
+    {
+        //finish special polygon
+        void ClosePolygon(GameObject LinePrefab, GameObject TextPrefab);
+    }
 }
