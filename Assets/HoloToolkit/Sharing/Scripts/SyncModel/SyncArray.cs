@@ -4,8 +4,8 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Sharing.SyncModel
@@ -37,19 +37,16 @@ namespace HoloToolkit.Sharing.SyncModel
         /// Type of objects in the array.
         /// This is cached so that we don't have to call typeof(T) more than once.
         /// </summary>
-        protected Type arrayType;
+        protected readonly Type arrayType;
 
         public SyncArray(string field)
             : base(field)
         {
-            this.dataArray = new Dictionary<string, T>();
-            this.arrayType = typeof(T);
+            dataArray = new Dictionary<string, T>();
+            arrayType = typeof(T);
         }
 
-        public SyncArray()
-            : this(string.Empty)
-        {
-        }
+        public SyncArray() : this(string.Empty) { }
 
         /// <summary>
         /// Creates the object in the array, based on its underlying object element that came from the sync system.
@@ -64,17 +61,14 @@ namespace HoloToolkit.Sharing.SyncModel
                 throw new InvalidCastException(string.Format("Object of incorrect type added to SyncArray: Expected {0}, got {1} ", objectType, objectElement.GetObjectType().GetString()));
             }
 
-            System.Object createdObject = Activator.CreateInstance(objectType);
-            T spawnedDataModel = createdObject as T;
+            object createdObject = Activator.CreateInstance(objectType);
 
-            if (spawnedDataModel != null)
-            {
-                spawnedDataModel.Element = objectElement;
-                spawnedDataModel.FieldName = objectElement.GetName();
+            T spawnedDataModel = (T)createdObject;
+            spawnedDataModel.Element = objectElement;
+            spawnedDataModel.FieldName = objectElement.GetName();
 
-                // TODO: this should not query SharingStage, but instead query the underlying session layer
-                spawnedDataModel.Owner = SharingStage.Instance.SessionUsersTracker.GetUserById(objectElement.GetOwnerID());
-            }
+            // TODO: this should not query SharingStage, but instead query the underlying session layer
+            spawnedDataModel.Owner = SharingStage.Instance.SessionUsersTracker.GetUserById(objectElement.GetOwnerID());
 
             return spawnedDataModel;
         }
@@ -87,12 +81,10 @@ namespace HoloToolkit.Sharing.SyncModel
         /// <returns>Object that was added, with its networking elements setup.</returns>
         public T AddObject(T newSyncObject, User owner = null)
         {
-            string id = null;
-
             // Create our object element for our target
-            id = System.Guid.NewGuid().ToString();
+            string id = System.Guid.NewGuid().ToString();
             string dataModelName = SyncSettings.Instance.GetDataModelName(newSyncObject.GetType());
-            ObjectElement existingElement = this.Element.CreateObjectElement(new XString(id), dataModelName, owner);
+            ObjectElement existingElement = Element.CreateObjectElement(new XString(id), dataModelName, owner);
 
             // Create a new object and assign the element
             newSyncObject.Element = existingElement;
@@ -103,7 +95,7 @@ namespace HoloToolkit.Sharing.SyncModel
             AddChild(newSyncObject);
 
             // Update internal map
-            this.dataArray[id] = newSyncObject;
+            dataArray[id] = newSyncObject;
 
             // Initialize it so it can be used immediately.
             newSyncObject.InitializeLocal(Element);
@@ -128,7 +120,7 @@ namespace HoloToolkit.Sharing.SyncModel
             if (existingObject != null)
             {
                 string uniqueName = existingObject.Element.GetName();
-                if (this.dataArray.Remove(uniqueName))
+                if (dataArray.Remove(uniqueName))
                 {
                     RemoveChild(existingObject);
 
@@ -147,8 +139,8 @@ namespace HoloToolkit.Sharing.SyncModel
         // Returns a full list of the objects
         public T[] GetDataArray()
         {
-            List<T> childrenList = new List<T>(this.dataArray.Count);
-            foreach (KeyValuePair<string, T> pair in this.dataArray)
+            var childrenList = new List<T>(dataArray.Count);
+            foreach (KeyValuePair<string, T> pair in dataArray)
             {
                 childrenList.Add(pair.Value);
             }
@@ -158,12 +150,12 @@ namespace HoloToolkit.Sharing.SyncModel
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return this.dataArray.Values.GetEnumerator();
+            return dataArray.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.dataArray.Values.GetEnumerator();
+            return dataArray.Values.GetEnumerator();
         }
 
         public void Clear()
@@ -197,9 +189,9 @@ namespace HoloToolkit.Sharing.SyncModel
             base.OnElementDeleted(element);
 
             string uniqueName = element.GetName();
-            if (this.dataArray.ContainsKey(uniqueName))
+            if (dataArray.ContainsKey(uniqueName))
             {
-                T obj = this.dataArray[uniqueName];
+                T obj = dataArray[uniqueName];
                 RemoveObject(obj);
             }
         }
@@ -220,7 +212,6 @@ namespace HoloToolkit.Sharing.SyncModel
         /// <returns></returns>
         private T AddObject(ObjectElement existingElement)
         {
-            bool isLocal = false;
             string id = existingElement.GetName();
 
             // Create a new object and assign the element
@@ -230,13 +221,7 @@ namespace HoloToolkit.Sharing.SyncModel
             AddChild(newObject);
 
             // Update internal map
-            this.dataArray[id] = newObject;
-
-            // If it's local, make sure to initialize it so it can be used immediately.
-            if (isLocal)
-            {
-                newObject.InitializeLocal(this.Element);
-            }
+            dataArray[id] = newObject;
 
             return newObject;
         }

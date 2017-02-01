@@ -1,15 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using System;
-using System.Collections;
 using System.Threading;
-using HoloToolkit.Sharing;
+using UnityEngine;
 using HoloToolkit.Unity;
-using HoloToolkit.Sharing.Utilities;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.VoiceChat
 {
     /// <summary>
     /// Receives and plays voice data transmitted through the session server. This data comes from other clients running the MicrophoneTransmitter behaviour.
@@ -17,26 +14,23 @@ namespace HoloToolkit.Sharing
     [RequireComponent(typeof(AudioSource))]
     public class MicrophoneReceiver : MonoBehaviour
     {
-        private const byte speakerPlaybackMessageID = (byte)MessageID.AudioSamples;
-
-        private BitManipulator versionExtractor = new BitManipulator(0x7, 0);           // 3 bits, 0 shift
-        private BitManipulator audioStreamCountExtractor = new BitManipulator(0x38, 3); // 3 bits, 3 shift
-        private BitManipulator channelCountExtractor = new BitManipulator(0x1c0, 6);    // 3 bits, 6 shift
-        private BitManipulator sampleRateExtractor = new BitManipulator(0x600, 9);      // 2 bits, 9 shift
-        private BitManipulator sampleTypeExtractor = new BitManipulator(0x1800, 11);    // 2 bits, 11 shift
-        private BitManipulator sampleCountExtractor = new BitManipulator(0x7fe000, 13); // 10 bits, 13 shift
-        private BitManipulator codecTypeExtractor = new BitManipulator(0x1800000, 23);  // 2 bits, 23 shift
-        private BitManipulator sequenceNumberExtractor = new BitManipulator((int)0x7C000000, 26);  // 6 bits, 26 shift
+        private readonly BitManipulator versionExtractor = new BitManipulator(0x7, 0);           // 3 bits, 0 shift
+        private readonly BitManipulator audioStreamCountExtractor = new BitManipulator(0x38, 3); // 3 bits, 3 shift
+        private readonly BitManipulator channelCountExtractor = new BitManipulator(0x1c0, 6);    // 3 bits, 6 shift
+        private readonly BitManipulator sampleRateExtractor = new BitManipulator(0x600, 9);      // 2 bits, 9 shift
+        private readonly BitManipulator sampleTypeExtractor = new BitManipulator(0x1800, 11);    // 2 bits, 11 shift
+        private readonly BitManipulator sampleCountExtractor = new BitManipulator(0x7fe000, 13); // 10 bits, 13 shift
+        private readonly BitManipulator codecTypeExtractor = new BitManipulator(0x1800000, 23);  // 2 bits, 23 shift
+        private readonly BitManipulator sequenceNumberExtractor = new BitManipulator(0x7C000000, 26);  // 6 bits, 26 shift
 
         public Transform GlobalAnchorTransform;
 
         public class ProminentSpeakerInfo
         {
-            public UInt32 sourceID;
-            public float averageAmplitude;
-            public Vector3 hrtfPosition;
-
-        };
+            public UInt32 SourceId;
+            public float AverageAmplitude;
+            public Vector3 HrtfPosition;
+        }
 
         /// <summary>
         /// Maximum number of prominent speakers we should ever encounter
@@ -46,7 +40,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// The information for current prominent speakers
         /// </summary>
-        private int prominentSpeakerCount = 0;
+        private int prominentSpeakerCount;
 
         /// <summary>
         /// The information for current prominent speakers. NOTE: preallocated to avoid any runtime allocations.
@@ -55,10 +49,10 @@ namespace HoloToolkit.Sharing
 
         private NetworkConnectionAdapter listener;
 
-        private Mutex audioDataMutex = new Mutex();
+        private readonly Mutex audioDataMutex = new Mutex();
 
-        private const float kDropOffMaximum = 5f;
-        private const float kPanMaximum = 5f;
+        private const float KDropOffMaximum = 5f;
+        private const float KPanMaximum = 5f;
 
         public float DropOffMaximumMetres = 5.0f;
         public float PanMaximumMetres = 5.0f;
@@ -69,9 +63,9 @@ namespace HoloToolkit.Sharing
         private CircularBuffer circularBuffer;
 
         #region DebugVariables
-        private CircularBuffer testCircularBuffer = new CircularBuffer(48000 * 2 * 4 * 3, true);
+        private readonly CircularBuffer testCircularBuffer = new CircularBuffer(48000 * 2 * 4 * 3, true);
         private AudioSource testSource;
-        public AudioClip testClip;
+        public AudioClip TestClip;
         public bool SaveTestClip;
         #endregion
 
@@ -93,10 +87,10 @@ namespace HoloToolkit.Sharing
             {
                 if (listener == null)
                 {
-                    var sharingStage = SharingStage.Instance;
+                    SharingStage sharingStage = SharingStage.Instance;
                     if (sharingStage && sharingStage.Manager != null)
                     {
-                        var connection = SharingStage.Instance.Manager.GetServerConnection();
+                        NetworkConnection connection = SharingStage.Instance.Manager.GetServerConnection();
 
                         listener = new NetworkConnectionAdapter();
                         listener.ConnectedCallback += OnConnected;
@@ -106,13 +100,13 @@ namespace HoloToolkit.Sharing
 
                         connection.AddListener((byte)MessageID.AudioSamples, listener);
 
-                        UnityEngine.Debug.Log("SpeakerController Start called");
+                        Debug.Log("SpeakerController Start called");
                     }
                 }
             }
             catch (Exception ex)
             {
-                UnityEngine.Debug.Log("Exception: " + ex.ToString());
+                Debug.Log("Exception: " + ex);
             }
         }
 
@@ -130,30 +124,30 @@ namespace HoloToolkit.Sharing
         private void OnConnected(NetworkConnection connection)
         {
             Profile.BeginRange("SpeakerController.OnConnected");
-            internalStartSpeaker();
-            UnityEngine.Debug.Log("SpeakerController: Connection to session server succeeded!");
+            InternalStartSpeaker();
+            Debug.Log("SpeakerController: Connection to session server succeeded!");
             Profile.EndRange();
         }
 
         private void OnDisconnected(NetworkConnection connection)
         {
-            internalStopSpeaker();
+            InternalStopSpeaker();
 
             prominentSpeakerCount = 0;
 
-            UnityEngine.Debug.Log("SpeakerController: Session server disconnected!");
+            Debug.Log("SpeakerController: Session server disconnected!");
         }
 
         private void OnConnectedFailed(NetworkConnection connection)
         {
-            internalStopSpeaker();
-            UnityEngine.Debug.Log("SpeakerController: Connection to session server failed!");
+            InternalStopSpeaker();
+            Debug.Log("SpeakerController: Connection to session server failed!");
         }
 
         /// <summary>
         /// Starts playing the audio stream out to the speaker.
         /// </summary>
-        private void internalStartSpeaker()
+        private void InternalStartSpeaker()
         {
             GetComponent<AudioSource>().Play();
         }
@@ -161,7 +155,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Stops playing the audio stream out to the speaker.
         /// </summary>
-        private void internalStopSpeaker()
+        private void InternalStopSpeaker()
         {
             GetComponent<AudioSource>().Stop();
         }
@@ -170,8 +164,8 @@ namespace HoloToolkit.Sharing
         {
             TryConnect();
 
-            var audioSource = GetComponent<AudioSource>();
-            var remoteHead = GameObject.Find("mixamorig:Head");
+            AudioSource audioSource = GetComponent<AudioSource>();
+            GameObject remoteHead = GameObject.Find("mixamorig:Head");
             if (remoteHead)
             {
                 transform.parent = remoteHead.transform;
@@ -193,15 +187,15 @@ namespace HoloToolkit.Sharing
                 float[] testBuffer = new float[testCircularBuffer.UsedCapacity / 4];
                 testCircularBuffer.Read(testBuffer, 0, testBuffer.Length * 4);
                 testCircularBuffer.Reset();
-                testClip = AudioClip.Create("testclip", testBuffer.Length / 2, 2, 48000, false);
-                testClip.SetData(testBuffer, 0);
+                TestClip = AudioClip.Create("testclip", testBuffer.Length / 2, 2, 48000, false);
+                TestClip.SetData(testBuffer, 0);
                 if (!testSource)
                 {
                     GameObject testObj = new GameObject("testclip");
                     testObj.transform.parent = transform;
                     testSource = testObj.AddComponent<AudioSource>();
                 }
-                testSource.PlayClip(testClip, true);
+                testSource.PlayClip(TestClip, true);
                 SaveTestClip = false;
             }
             #endregion
@@ -254,16 +248,16 @@ namespace HoloToolkit.Sharing
                     float averageAmplitude = message.ReadFloat();
                     UInt32 hrtfSourceID = (UInt32)message.ReadInt32();
                     Vector3 hrtfPosition = new Vector3();
-                    Vector3 hrtfDirection = new Vector3();
+                    //Vector3 hrtfDirection = new Vector3();
                     if (hrtfSourceID != 0)
                     {
                         hrtfPosition.x = message.ReadFloat();
                         hrtfPosition.y = message.ReadFloat();
                         hrtfPosition.z = message.ReadFloat();
 
-                        hrtfDirection.x = message.ReadFloat();
-                        hrtfDirection.y = message.ReadFloat();
-                        hrtfDirection.z = message.ReadFloat();
+                        //hrtfDirection.x = message.ReadFloat();
+                        //hrtfDirection.y = message.ReadFloat();
+                        //hrtfDirection.z = message.ReadFloat();
 
                         Vector3 cameraPosRelativeToGlobalAnchor = Vector3.zero;
                         Vector3 cameraDirectionRelativeToGlobalAnchor = Vector3.zero;
@@ -288,19 +282,19 @@ namespace HoloToolkit.Sharing
                         soundVector.Normalize();
 
                         // x is forward
-                        float fltx = (kDropOffMaximum / DropOffMaximumMetres) * Vector3.Dot(soundVector, cameraDirectionRelativeToGlobalAnchor);
+                        float fltx = (KDropOffMaximum / DropOffMaximumMetres) * Vector3.Dot(soundVector, cameraDirectionRelativeToGlobalAnchor);
                         // y is right
                         Vector3 myRight = Quaternion.Euler(0, 90, 0) * cameraDirectionRelativeToGlobalAnchor;
-                        float flty = -(kPanMaximum / PanMaximumMetres) * Vector3.Dot(soundVector, myRight);
+                        float flty = -(KPanMaximum / PanMaximumMetres) * Vector3.Dot(soundVector, myRight);
                         // z is up
                         Vector3 myUp = Quaternion.Euler(90, 0, 0) * cameraDirectionRelativeToGlobalAnchor;
-                        float fltz = (kPanMaximum / PanMaximumMetres) * Vector3.Dot(soundVector, myUp);
+                        float fltz = (KPanMaximum / PanMaximumMetres) * Vector3.Dot(soundVector, myUp);
 
                         // Hacky distance check so we don't get too close to source.
                         Vector3 flt = new Vector3(fltx, flty, fltz);
-                        if (flt.magnitude < (MinimumDistance * kDropOffMaximum))
+                        if (flt.magnitude < (MinimumDistance * KDropOffMaximum))
                         {
-                            flt = flt.normalized * MinimumDistance * kDropOffMaximum;
+                            flt = flt.normalized * MinimumDistance * KDropOffMaximum;
                             fltx = flt.x;
                             flty = flt.y;
                             fltz = flt.z;
@@ -380,11 +374,11 @@ namespace HoloToolkit.Sharing
             if (prominentSpeakerCount < MaximumProminentSpeakers)
             {
                 ProminentSpeakerInfo prominentSpeakerInfo = prominentSpeakerList[prominentSpeakerCount++];
-                prominentSpeakerInfo.sourceID = sourceID;
-                prominentSpeakerInfo.averageAmplitude = averageAmplitude;
-                prominentSpeakerInfo.hrtfPosition.x = posX;
-                prominentSpeakerInfo.hrtfPosition.y = posY;
-                prominentSpeakerInfo.hrtfPosition.z = posZ;
+                prominentSpeakerInfo.SourceId = sourceID;
+                prominentSpeakerInfo.AverageAmplitude = averageAmplitude;
+                prominentSpeakerInfo.HrtfPosition.x = posX;
+                prominentSpeakerInfo.HrtfPosition.y = posY;
+                prominentSpeakerInfo.HrtfPosition.z = posZ;
             }
         }
 
@@ -399,10 +393,7 @@ namespace HoloToolkit.Sharing
             {
                 return prominentSpeakerList[index];
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

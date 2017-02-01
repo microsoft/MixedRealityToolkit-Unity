@@ -245,7 +245,7 @@ It highlights the object being gazed at.
 This class implements IInputClickHandler to handle the tap gesture.
 It increases the scale of the object when tapped.
 
-### [Tests](Tests)
+### [Tests](Tests/Scenes)
 Tests related to the input features. To use the scene:
 
 1. Navigate to the Tests folder.

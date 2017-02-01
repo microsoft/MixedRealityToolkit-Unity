@@ -9,81 +9,129 @@ namespace HoloToolkit.Sharing.SyncModel
     /// Base primitive used to define an element within the data model.
     /// The primitive is defined by a field and a value.
     /// </summary>
-    abstract public class SyncPrimitive
+    public abstract class SyncPrimitive
     {
-        protected string fieldName = null;
-        private XString xStringFieldName = null;
-        protected Element internalElement = null;
+        protected string fieldName;
+        private XString xStringFieldName;
+        protected Element internalElement;
 
-        // Unique identifier for primitive.  Returns kInvalidXGuid if uninitialized.
+        /// <summary>
+        /// Unique identifier for primitive.  Returns kInvalidXGuid if uninitialized.
+        /// </summary>
         public long Guid
         {
             get
             {
-                if (this.internalElement != null)
-                {
-                    return this.internalElement.GetGUID();
-                }
-                else
-                {
-                    return SharingClient.kInvalidXGuid;
-                }
+                return internalElement != null ? internalElement.GetGUID() : SharingClient.kInvalidXGuid;
             }
         }
 
+        /// <summary>
+        /// Network Element that represents the sync primitive's value on the server.
+        /// </summary>
         public virtual Element NetworkElement
         {
             get { return internalElement; }
             protected set { internalElement = value; }
         }
 
-        // Indicates if the primitive has a network element.  The primitive can only be modified if this returns true.
+        /// <summary>
+        /// Indicates if the primitive has a network element.
+        /// The primitive can only be modified if this returns true.
+        /// </summary>
         public bool HasNetworkElement
         {
-            get { return (this.internalElement != null); }
+            get { return internalElement != null; }
         }
 
-        // The field name of the primitive
+        /// <summary>
+        /// The field name of the primitive.
+        /// </summary>
         public XString XStringFieldName
         {
-            get { return this.xStringFieldName; }
+            get { return xStringFieldName; }
         }
 
-        // The field name of the primitive
+        /// <summary>
+        /// The field name of the primitive.
+        /// </summary>
         public string FieldName
         {
             get { return fieldName; }
 
             set
             {
-                this.fieldName = value;
-                this.xStringFieldName = new XString(value);
+                fieldName = value;
+                xStringFieldName = new XString(value);
             }
         }
 
-        // Returns the raw boxed object this primitive holds
+#if UNITY_EDITOR
+        /// <summary>
+        /// Returns the raw boxed object this primitive holds.
+        /// Used by SharingStageEditor.cs
+        /// </summary>
         public abstract object RawValue
         {
             get;
         }
+#endif
 
+        /// <summary>
+        /// Base Constructor for Sync Primitives.
+        /// </summary>
+        /// <param name="field">field</param>
         public SyncPrimitive(string field)
         {
             FieldName = field;
         }
 
-        // Initializes this object for local use.  Doesn't wait for network initialization.
-        abstract public void InitializeLocal(ObjectElement parentElement);
+        /// <summary>
+        /// Initializes this object for local use.  Doesn't wait for network initialization.
+        /// </summary>
+        /// <param name="parentElement">Object Element Parent</param>
+        public abstract void InitializeLocal(ObjectElement parentElement);
 
-        // Called when being remotely initialized
-        abstract public void AddFromRemote(Element element);
+        /// <summary>
+        /// Called when being remotely initialized.
+        /// </summary>
+        /// <param name="remoteElement">Remote Element</param>
+        public abstract void AddFromRemote(Element remoteElement);
 
-        // Called when the primitive value has changed from a remote action
-        virtual public void UpdateFromRemote(XString value) { }
-        virtual public void UpdateFromRemote(float value) { }
-        virtual public void UpdateFromRemote(double value) { }
-        virtual public void UpdateFromRemote(int value) { }
-        virtual public void UpdateFromRemote(long value) { }
-        virtual public void UpdateFromRemote(bool value) { }
+        /// <summary>
+        /// Called when the primitive value has changed from a remote action.
+        /// </summary>
+        /// <param name="remoteValue">Remote Value</param>
+        public virtual void UpdateFromRemote(XString remoteValue) { }
+
+        /// <summary>
+        /// Called when the primitive value has changed from a remote action.
+        /// </summary>
+        /// <param name="remoteValue">Remote Value</param>
+        public virtual void UpdateFromRemote(float remoteValue) { }
+
+        /// <summary>
+        /// Called when the primitive value has changed from a remote action.
+        /// </summary>
+        /// <param name="remoteValue">Remote Value</param>
+        public virtual void UpdateFromRemote(double remoteValue) { }
+
+        /// <summary>
+        /// Called when the primitive value has changed from a remote action.
+        /// </summary>
+        /// <param name="remoteValue">Remote Value</param>
+        public virtual void UpdateFromRemote(int remoteValue) { }
+
+        /// <summary>
+        /// Called when the primitive value has changed from a remote action.
+        /// </summary>
+        /// <param name="remoteValue">Remote Value</param>
+        public virtual void UpdateFromRemote(long remoteValue) { }
+
+        /// <summary>
+        /// Called when the primitive value has changed from a remote action.
+        /// </summary>
+        /// <param name="remoteValue">Remote Value</param>
+        public virtual void UpdateFromRemote(bool remoteValue) { }
     }
 }

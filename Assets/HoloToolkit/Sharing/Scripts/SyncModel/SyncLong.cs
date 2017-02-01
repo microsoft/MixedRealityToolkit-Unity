@@ -14,14 +14,16 @@ namespace HoloToolkit.Sharing.SyncModel
         private LongElement element;
         private long value;
 
+#if UNITY_EDITOR
         public override object RawValue
         {
-            get { return this.value; }
+            get { return value; }
         }
+#endif
 
         public long Value
         {
-            get { return this.value; }
+            get { return value; }
 
             set
             {
@@ -31,10 +33,10 @@ namespace HoloToolkit.Sharing.SyncModel
                     // Change the value
                     this.value = value;
 
-                    if (this.element != null)
+                    if (element != null)
                     {
                         // Notify network that the value has changed
-                        this.element.SetValue(value);
+                        element.SetValue(value);
                     }
                 }
             }
@@ -47,27 +49,26 @@ namespace HoloToolkit.Sharing.SyncModel
 
         public override void InitializeLocal(ObjectElement parentElement)
         {
-            this.element = parentElement.CreateLongElement(XStringFieldName, this.value);
-            this.NetworkElement = element;
+            element = parentElement.CreateLongElement(XStringFieldName, value);
+            NetworkElement = element;
         }
 
-        public void AddFromLocal(ObjectElement parentElement, long value)
+        public void AddFromLocal(ObjectElement parentElement, long localValue)
         {
             InitializeLocal(parentElement);
-            this.Value = value;
+            Value = localValue;
         }
 
-        public override void AddFromRemote(Element element)
+        public override void AddFromRemote(Element remoteElement)
         {
-            this.NetworkElement = element;
-            this.element = LongElement.Cast(element);
-            this.value = this.element.GetValue();
+            NetworkElement = remoteElement;
+            element = LongElement.Cast(remoteElement);
+            value = element.GetValue();
         }
 
-        public override void UpdateFromRemote(long value)
+        public override void UpdateFromRemote(long remoteValue)
         {
-            // Change the value
-            this.value = value;
+            value = remoteValue;
         }
     }
 }

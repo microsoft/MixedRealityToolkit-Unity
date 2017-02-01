@@ -4,7 +4,7 @@ Low Level Message Routing                        {#messagerouting}
 
 All parts of the Sharing library use the same low level networking and message routing subsystem.   
 
-![](/Images/MessageRouting.png)
+![](../Images/MessageRouting.png)
 
 ### Threading
 Client applications are assumed to be single threaded.  The Sharing API is designed such that users do not need to add any 
