@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Updates the shader parameters for use in near plade fading.
+    /// </summary>
     [ExecuteInEditMode]
     public class NearPlaneFade : MonoBehaviour
     {

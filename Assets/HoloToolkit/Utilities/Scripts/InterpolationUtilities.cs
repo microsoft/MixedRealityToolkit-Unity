@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity
             if (hLife == 0)
                 return 1;
 
-            return 1.0f - Mathf.Pow(0.5f, dTime/hLife);
+            return 1.0f - Mathf.Pow(0.5f, dTime / hLife);
         }
 
         #endregion

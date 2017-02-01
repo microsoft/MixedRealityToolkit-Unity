@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private int frameRange = 60;
 
-        private int averageFps { get; set; }
+        private int averageFps;
 
         private int[] fpsBuffer;
         private int fpsBufferIndex;

@@ -3,8 +3,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
-using HoloToolkit.Sharing.SyncModel;
 using UnityEngine;
+using HoloToolkit.Sharing.SyncModel;
 
 namespace HoloToolkit.Sharing.Spawning
 {
@@ -37,8 +37,8 @@ namespace HoloToolkit.Sharing.Spawning
         /// </summary>
         private void RegisterToDataModel()
         {
-            this.SyncSource.ObjectAdded += OnObjectAdded;
-            this.SyncSource.ObjectRemoved += OnObjectRemoved;
+            SyncSource.ObjectAdded += OnObjectAdded;
+            SyncSource.ObjectRemoved += OnObjectRemoved;
         }
 
         private void OnObjectAdded(T addedObject)

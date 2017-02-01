@@ -18,26 +18,25 @@ namespace HoloToolkit.Sharing.SyncModel
         [SyncData] private SyncFloat z = null;
         [SyncData] private SyncFloat w = null;
 
+#if UNITY_EDITOR
         public override object RawValue
         {
-            get { return new Quaternion(this.x.Value, this.y.Value, this.z.Value, this.w.Value); }
+            get { return Value; }
         }
+#endif
 
         public Quaternion Value
         {
-            get { return new Quaternion(this.x.Value, this.y.Value, this.z.Value, this.w.Value); }
+            get { return new Quaternion(x.Value, y.Value, z.Value, w.Value); }
             set
             {
-                this.x.Value = value.x;
-                this.y.Value = value.y;
-                this.z.Value = value.z;
-                this.w.Value = value.w;
+                x.Value = value.x;
+                y.Value = value.y;
+                z.Value = value.z;
+                w.Value = value.w;
             }
         }
 
-        public SyncQuaternion(string field)
-            : base(field)
-        {
-        }
+        public SyncQuaternion(string field) : base(field) { }
     }
 }

@@ -5,8 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using HoloToolkit.Unity;
 using UnityEngine;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Sharing.Spawning
 {
@@ -32,7 +32,7 @@ namespace HoloToolkit.Sharing.Spawning
         /// </summary>
         /// <remarks>It is assumed that this list is the same on all connected applications.</remarks>
         [SerializeField]
-        private List<PrefabToDataModel> spawnablePrefabs = null;
+        private List<PrefabToDataModel> spawnablePrefabs;
 
         private Dictionary<string, GameObject> typeToPrefab;
 
@@ -40,7 +40,7 @@ namespace HoloToolkit.Sharing.Spawning
         /// Counter used to create objects and make sure that no two objects created
         /// by the local application have the same name.
         /// </summary>
-        private int objectCreationCounter = 0;
+        private int objectCreationCounter;
 
         private void Awake()
         {
@@ -49,10 +49,10 @@ namespace HoloToolkit.Sharing.Spawning
 
         private void InitializePrefabs()
         {
-            typeToPrefab = new Dictionary<string, GameObject>(this.spawnablePrefabs.Count);
-            for (int i = 0; i < this.spawnablePrefabs.Count; i++)
+            typeToPrefab = new Dictionary<string, GameObject>(spawnablePrefabs.Count);
+            for (int i = 0; i < spawnablePrefabs.Count; i++)
             {
-                typeToPrefab.Add(this.spawnablePrefabs[i].DataModelClassName, this.spawnablePrefabs[i].Prefab);
+                typeToPrefab.Add(spawnablePrefabs[i].DataModelClassName, spawnablePrefabs[i].Prefab);
             }
         }
 
@@ -71,13 +71,12 @@ namespace HoloToolkit.Sharing.Spawning
                 parent = GameObject.Find(spawnedObject.ParentPath.Value);
                 if (parent == null)
                 {
-                    Debug.LogErrorFormat("Parent object '{0}' could not be found to instantiate object.",
-                        spawnedObject.ParentPath);
+                    Debug.LogErrorFormat("Parent object '{0}' could not be found to instantiate object.", spawnedObject.ParentPath);
                     return;
                 }
             }
 
-            this.CreatePrefabInstance(spawnedObject, prefab, parent, spawnedObject.Name.Value);
+            CreatePrefabInstance(spawnedObject, prefab, parent, spawnedObject.Name.Value);
         }
 
         protected override void RemoveFromNetwork(SyncSpawnedObject removedObject)
@@ -91,8 +90,8 @@ namespace HoloToolkit.Sharing.Spawning
 
         protected virtual string CreateInstanceName(string baseName)
         {
-            string instanceName = string.Format("{0}{1}_{2}", baseName, this.objectCreationCounter, NetworkManager.AppInstanceUniqueId);
-            this.objectCreationCounter++;
+            string instanceName = string.Format("{0}{1}_{2}", baseName, objectCreationCounter.ToString(), NetworkManager.AppInstanceUniqueId);
+            objectCreationCounter++;
             return instanceName;
         }
 
@@ -107,8 +106,7 @@ namespace HoloToolkit.Sharing.Spawning
             string dataModelTypeName = GetPrefabLookupKey(dataModel, baseName);
             if (dataModelTypeName == null || !typeToPrefab.TryGetValue(dataModelTypeName, out prefabToSpawn))
             {
-                Debug.LogErrorFormat("Trying to instantiate an object from unregistered data model {0}.",
-                    dataModelTypeName);
+                Debug.LogErrorFormat("Trying to instantiate an object from unregistered data model {0}.", dataModelTypeName);
                 return null;
             }
             return prefabToSpawn;
@@ -128,10 +126,9 @@ namespace HoloToolkit.Sharing.Spawning
         /// An object that is locally owned will be removed from the sync system when its owner leaves the session.
         /// </param>
         /// <returns>True if spawning succeeded, false if not.</returns>
-        public bool Spawn(SyncSpawnedObject dataModel, Vector3 localPosition, Quaternion localRotation, Vector3? localScale,
-            GameObject parent, string baseName, bool isOwnedLocally)
+        public bool Spawn(SyncSpawnedObject dataModel, Vector3 localPosition, Quaternion localRotation, Vector3? localScale, GameObject parent, string baseName, bool isOwnedLocally)
         {
-            if (this.SyncSource == null)
+            if (SyncSource == null)
             {
                 Debug.LogError("Can't spawn an object: PrefabSpawnManager is not initialized.");
                 return false;
@@ -145,7 +142,7 @@ namespace HoloToolkit.Sharing.Spawning
 
             if (parent == null)
             {
-                parent = this.gameObject;
+                parent = gameObject;
             }
 
             // Validate that the prefab is valid
@@ -177,7 +174,7 @@ namespace HoloToolkit.Sharing.Spawning
                 owner = SharingStage.Instance.Manager.GetLocalUser();
             }
 
-            this.SyncSource.AddObject(dataModel, owner);
+            SyncSource.AddObject(dataModel, owner);
             return true;
         }
 
@@ -196,17 +193,17 @@ namespace HoloToolkit.Sharing.Spawning
         /// <returns>True if the function succeeded, false if not.</returns>
         public bool Spawn(SyncSpawnedObject dataModel, Vector3 localPosition, Quaternion localRotation, GameObject parent, string baseName, bool isOwnedLocally)
         {
-            return this.Spawn(dataModel, localPosition, localRotation, null, parent, baseName, isOwnedLocally);
+            return Spawn(dataModel, localPosition, localRotation, null, parent, baseName, isOwnedLocally);
         }
 
         protected override void SetDataModelSource()
         {
-            this.SyncSource = NetworkManager.Root.InstantiatedPrefabs;
+            SyncSource = NetworkManager.Root.InstantiatedPrefabs;
         }
 
         public override void Delete(SyncSpawnedObject objectToDelete)
         {
-            this.SyncSource.RemoveObject(objectToDelete);
+            SyncSource.RemoveObject(objectToDelete);
         }
 
         /// <summary>
@@ -219,7 +216,7 @@ namespace HoloToolkit.Sharing.Spawning
         /// <returns></returns>
         protected virtual GameObject CreatePrefabInstance(SyncSpawnedObject dataModel, GameObject prefabToInstantiate, GameObject parentObject, string objectName)
         {
-            GameObject instance = (GameObject)Instantiate(prefabToInstantiate, dataModel.Transform.Position.Value, dataModel.Transform.Rotation.Value);
+            GameObject instance = Instantiate(prefabToInstantiate, dataModel.Transform.Position.Value, dataModel.Transform.Rotation.Value);
             instance.transform.localScale = dataModel.Transform.Scale.Value;
             instance.transform.SetParent(parentObject.transform, false);
             instance.gameObject.name = objectName;

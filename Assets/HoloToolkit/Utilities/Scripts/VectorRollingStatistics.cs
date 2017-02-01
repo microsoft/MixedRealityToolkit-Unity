@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Vector Statistics used in gaze stabilization.
+    /// </summary>
     public class VectorRollingStatistics
     {
         /// <summary>
@@ -32,13 +35,12 @@ namespace HoloToolkit.Unity
         public float ActualSampleCount;
 
         /// <summary>
-        /// Keeps track of the index into the sample list for 
-        /// the rolling average.
+        /// Keeps track of the index into the sample list for the rolling average.
         /// </summary>
         private int currentSampleIndex;
 
         /// <summary>
-        /// An array of samples for calculating standard deviation
+        /// An array of samples for calculating standard deviation.
         /// </summary>
         private Vector3[] samples;
 
@@ -48,7 +50,7 @@ namespace HoloToolkit.Unity
         private Vector3 cumulativeFrame;
 
         /// <summary>
-        /// The sum of all of the samples squared
+        /// The sum of all of the samples squared.
         /// </summary>
         private Vector3 cumulativeFrameSquared;
 
@@ -135,7 +137,6 @@ namespace HoloToolkit.Unity
             StandardDeviationDeltaAfterLatestSample = oldStandardDeviation - newStandardDev;
             CurrentStandardDeviation = newStandardDev;
 
-            //
             // update the next list position
             currentSampleIndex = (currentSampleIndex + 1) % maxSamples;
         }

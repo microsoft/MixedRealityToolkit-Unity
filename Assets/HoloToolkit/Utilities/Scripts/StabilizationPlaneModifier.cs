@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
         }
 
         [SerializeField, Tooltip("Keeps track of position-based velocity for the target object.")]
-        private bool trackVelocity = false;
+        private bool trackVelocity;
         public bool TrackVelocity
         {
             get
@@ -70,7 +70,7 @@ namespace HoloToolkit.Unity
         public float DefaultPlaneDistance = 2.0f;
 
         [Tooltip("Visualize the plane at runtime.")]
-        public bool DrawGizmos = false;
+        public bool DrawGizmos;
 
         /// <summary>
         /// Position of the plane in world space.
@@ -166,11 +166,8 @@ namespace HoloToolkit.Unity
                 hitPosition = GazeManager.Instance.HitPosition;
                 return true;
             }
-            else
-            {
-                hitPosition = Vector3.zero;
-                return false;
-            }
+            hitPosition = Vector3.zero;
+            return false;
         }
 
         /// <summary>
@@ -255,7 +252,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void OnDrawGizmos()
         {
-            if (UnityEngine.Application.isPlaying && DrawGizmos)
+            if (Application.isPlaying && DrawGizmos)
             {
                 Vector3 focalPlaneNormal = -GazeNormal;
                 Vector3 planeUp = Vector3.Cross(Vector3.Cross(focalPlaneNormal, Vector3.up), focalPlaneNormal);
