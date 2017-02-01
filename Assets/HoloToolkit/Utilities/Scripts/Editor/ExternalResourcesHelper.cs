@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity
         public static void UpdateExternalResources()
         {
             string dirPath = Path.GetDirectoryName(Application.dataPath);
-            string zipPath = dirPath + "/External.zip";
+            string zipPath = dirPath + "/Assets/HoloToolkit/Utilities/Plugins/External.zip";
 
             if (!string.IsNullOrEmpty(dirPath))
             {
