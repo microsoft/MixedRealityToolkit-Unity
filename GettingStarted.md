@@ -1,7 +1,11 @@
 This document describes how to prepare the HoloToolkit sourcecode for use
 in your project.
 
-To get started either download the HoloToolkit-Unity Asset Package or grab a copy of this repository and download the entire project.
+First please be sure your developement envionment is setup with the latest version of Unity.
+
+**The project currently requires Unity 5.5.1f1.**
+
+Next either download the HoloToolkit-Unity Asset Package or grab a copy of this repository and download the entire project.
 
 # 1a. Download a HoloToolkit-Unity Asset Package
 You can download the latest unity package from [Releases](https://github.com/Microsoft/HoloToolkit-Unity/releases) folder
