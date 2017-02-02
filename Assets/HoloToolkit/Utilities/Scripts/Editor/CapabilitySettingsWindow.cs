@@ -12,7 +12,6 @@ namespace HoloToolkit.Unity
     public class CapabilitySettingsWindow : AutoConfigureWindow<PlayerSettings.WSACapability>
     {
         #region Internal Methods
-
         private void ApplySetting(PlayerSettings.WSACapability setting)
         {
             PlayerSettings.WSA.SetCapability(setting, Values[setting]);
