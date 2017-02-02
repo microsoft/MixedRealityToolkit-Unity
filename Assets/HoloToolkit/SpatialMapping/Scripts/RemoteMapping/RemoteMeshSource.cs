@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEngine;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
+using System.Collections.Generic;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.Networking;
 using Windows.Foundation;
 #endif
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// RemoteMeshSource will try to send meshes from the HoloLens to a remote system that is running the Unity editor.
@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity
         [Tooltip("The connection port on the machine to use.")]
         public int ConnectionPort = 11000;
 
-#if !UNITY_EDITOR 
+#if !UNITY_EDITOR && UNITY_METRO
         /// <summary>
         /// Tracks the network connection to the remote machine we are sending meshes to.
         /// </summary>

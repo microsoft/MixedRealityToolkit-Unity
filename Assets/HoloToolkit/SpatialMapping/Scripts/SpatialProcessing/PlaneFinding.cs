@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct OrientedBoundingBox
@@ -182,7 +182,7 @@ namespace HoloToolkit.Unity
 
         private static bool findPlanesRunning = false;
         private static System.Object findPlanesLock = new System.Object();
-        private static DLLImports.MeshData[] reusedMeshesForMarshalling = null;
+        private static DLLImports.ImportedMeshData[] reusedImportedMeshesForMarshalling;
         private static List<GCHandle> reusedPinnedMemoryHandles = new List<GCHandle>();
 
         /// <summary>
@@ -246,14 +246,14 @@ namespace HoloToolkit.Unity
         private static IntPtr PinMeshDataForMarshalling(List<MeshData> meshes)
         {
             // if we have a big enough array reuse it, otherwise create new
-            if (reusedMeshesForMarshalling == null || reusedMeshesForMarshalling.Length < meshes.Count)
+            if (reusedImportedMeshesForMarshalling == null || reusedImportedMeshesForMarshalling.Length < meshes.Count)
             {
-                reusedMeshesForMarshalling = new DLLImports.MeshData[meshes.Count];
+                reusedImportedMeshesForMarshalling = new DLLImports.ImportedMeshData[meshes.Count];
             }
 
             for (int i = 0; i < meshes.Count; ++i)
             {
-                reusedMeshesForMarshalling[i] = new DLLImports.MeshData()
+                reusedImportedMeshesForMarshalling[i] = new DLLImports.ImportedMeshData
                 {
                     transform = meshes[i].Transform,
                     vertCount = meshes[i].Verts.Length,
@@ -264,7 +264,7 @@ namespace HoloToolkit.Unity
                 };
             }
 
-            return PinObject(reusedMeshesForMarshalling);
+            return PinObject(reusedImportedMeshesForMarshalling);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace HoloToolkit.Unity
         private class DLLImports
         {
             [StructLayout(LayoutKind.Sequential)]
-            public struct MeshData
+            public struct ImportedMeshData
             {
                 public Matrix4x4 transform;
                 public Int32 vertCount;

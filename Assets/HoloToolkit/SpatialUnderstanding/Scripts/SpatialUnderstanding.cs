@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System;
+using UnityEngine;
+using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Unity
 {
@@ -49,8 +46,9 @@ namespace HoloToolkit.Unity
             {
 #if UNITY_METRO && !UNITY_EDITOR
                 return true;
-#endif
+#else
                 return false;
+#endif
             }
         }
         /// <summary>
@@ -94,9 +92,9 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                if (AllowSpatialUnderstanding)
                 {
-                    SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
+                    SpatialUnderstandingDll.Imports.PlayspaceStats stats = UnderstandingDLL.GetStaticPlayspaceStats();
                     return (stats.IsWorkingOnStats != 0);
                 }
                 return false;
@@ -112,31 +110,56 @@ namespace HoloToolkit.Unity
         // Privates
         private ScanStates scanState;
 
+        private float timeSinceLastUpdate = 0.0f;
+
         // Functions
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             // Cache references to required component
             UnderstandingDLL = new SpatialUnderstandingDll();
             UnderstandingSourceMesh = GetComponent<SpatialUnderstandingSourceMesh>();
             UnderstandingCustomMesh = GetComponent<SpatialUnderstandingCustomMesh>();
         }
 
-        void Start()
+        private void Start()
         {
             // Initialize the DLL
-            if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDll.Imports.SpatialUnderstanding_Init();
             }
         }
 
-        private void OnDestroy()
+        private void Update()
+        {
+            if (!AllowSpatialUnderstanding)
+            {
+                return;
+            }
+
+            // Only update every few frames, and only if we aren't pulling in a mesh 
+            // already.
+            timeSinceLastUpdate += Time.deltaTime;
+            if ((!UnderstandingCustomMesh.IsImportActive) &&
+                (Time.frameCount % 3 == 0))
+            {
+                // Real-Time scan
+                Update_Scan(timeSinceLastUpdate);
+                timeSinceLastUpdate = 0;
+            }
+        }
+
+        protected override void OnDestroy()
         {
             // Term the DLL
-            if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDll.Imports.SpatialUnderstanding_Term();
             }
+
+            base.OnDestroy();
         }
 
         /// <summary>
@@ -159,7 +182,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void RequestFinishScan()
         {
-            if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDll.Imports.GeneratePlayspace_RequestFinish();
                 ScanState = ScanStates.Finishing;
@@ -185,7 +208,7 @@ namespace HoloToolkit.Unity
             if (((ScanState == ScanStates.ReadyToScan) ||
                  (ScanState == ScanStates.Scanning) ||
                  (ScanState == ScanStates.Finishing)) &&
-                (SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
+                (AllowSpatialUnderstanding))
             {
                 // Camera
                 Vector3 camPos = Camera.main.transform.position;
@@ -219,7 +242,8 @@ namespace HoloToolkit.Unity
 
             // If it's done, finish up
             if ((ScanState == ScanStates.Finishing) &&
-                (scanDone) &&
+                (scanDone) && 
+                (!UnderstandingCustomMesh.IsImportActive) &&
                 (UnderstandingCustomMesh != null))
             {
                 // Final mesh import
@@ -228,17 +252,6 @@ namespace HoloToolkit.Unity
                 // Mark it
                 ScanState = ScanStates.Done;
             }
-        }
-
-        void Update()
-        {
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
-            {
-                return;
-            }
-
-            // Real-Time scan
-            Update_Scan(Time.deltaTime);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace HoloToolkit.Unity
         private float timeLastUpdatedBuilds = 0.0f;
 
         // Functions
-        [MenuItem("HoloToolkit/Build Window", false, 101)]
+        [MenuItem("HoloToolkit/Build Window", false, 0)]
         public static void OpenWindow()
         {
             BuildDeployWindow window = GetWindow<BuildDeployWindow>("Build Window") as BuildDeployWindow;

@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
 using System.Threading.Tasks;
 using Windows.Storage;
 #endif
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// MeshSaver is a static class containing methods used for saving and loading meshes.
@@ -30,12 +30,48 @@ namespace HoloToolkit.Unity
         {
             get
             {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
                 return ApplicationData.Current.RoamingFolder.Path;
 #else
                 return Application.persistentDataPath;
 #endif
             }
+        }
+
+        /// <summary>
+        /// Transforms all the mesh vertices into world position before saving to file.
+        /// </summary>
+        /// <param name="fileName">Name to give the saved mesh file. Exclude path and extension.</param>
+        /// <param name="meshes">The collection of Mesh objects to save.</param>
+        /// <returns>Fully qualified name of the saved mesh file.</returns>
+        /// <remarks>Determines the save path to use and automatically applies the file extension.</remarks>
+        public static string Save(string fileName, IEnumerable<MeshFilter> meshFilters)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("Must specify a valid fileName.");
+            }
+
+            if (meshFilters == null)
+            {
+                throw new ArgumentNullException("Value of meshFilters cannot be null.");
+            }
+
+            // Create the mesh file.
+            String folderName = MeshFolderName;
+            Debug.Log(String.Format("Saving mesh file: {0}", Path.Combine(folderName, fileName + fileExtension)));
+
+            using (Stream stream = OpenFileForWrite(folderName, fileName + fileExtension))
+            {
+                // Serialize and write the meshes to the file.
+                byte[] data = SimpleMeshSerializer.Serialize(meshFilters);
+                stream.Write(data, 0, data.Length);
+                stream.Flush();
+            }
+
+            Debug.Log("Mesh file saved.");
+
+            return Path.Combine(folderName, fileName + fileExtension);
         }
 
         /// <summary>
@@ -117,7 +153,7 @@ namespace HoloToolkit.Unity
         {
             Stream stream = null;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
             Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {
@@ -144,7 +180,7 @@ namespace HoloToolkit.Unity
         {
             Stream stream = null;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_METRO
             Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {

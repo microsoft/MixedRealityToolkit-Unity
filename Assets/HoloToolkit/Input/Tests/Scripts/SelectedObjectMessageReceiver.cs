@@ -1,31 +1,42 @@
-﻿using UnityEngine;
-using System.Collections;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-/// <summary>
-/// SelectedObjectMessageReceiver class shows how to handle messages sent by SelectedObjectMessageSender.
-/// This particular implementatoin controls object appearance by changing its color when selected.
-/// </summary>
-public class SelectedObjectMessageReceiver : MonoBehaviour
+using UnityEngine;
+
+namespace HoloToolkit.Unity.InputModule.Tests
 {
-    [Tooltip("Object color changes to this when selected.")]
-    public Color SelectedColor = Color.red;
-
-    private Material material;
-    private Color originalColor;
-
-    private void Start()
+    /// <summary>
+    /// SelectedObjectMessageReceiver class shows how to handle messages sent by SelectedObjectMessageSender.
+    /// This particular implementatoin controls object appearance by changing its color when selected.
+    /// </summary>
+    [RequireComponent(typeof(Renderer))]
+    public class SelectedObjectMessageReceiver : MonoBehaviour
     {
-        material = GetComponent<Renderer>().material;
-        originalColor = material.color;
-    }
+        [Tooltip("Object color changes to this when selected.")]
+        public Color SelectedColor = Color.red;
 
-    public void OnSelectObject()
-    {
-        material.color = SelectedColor;
-    }
+        private Color originalColor;
+        private Material cachedMaterial;
 
-    public void OnClearSelection()
-    {
-        material.color = originalColor;
+        private void Awake()
+        {
+            cachedMaterial = GetComponent<Renderer>().material;
+            originalColor = cachedMaterial.GetColor("_Color");
+        }
+
+        public void OnSelectObject()
+        {
+            cachedMaterial.SetColor("_Color", SelectedColor);
+        }
+
+        public void OnClearSelection()
+        {
+            cachedMaterial.SetColor("_Color", originalColor);
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedMaterial);
+        }
     }
 }

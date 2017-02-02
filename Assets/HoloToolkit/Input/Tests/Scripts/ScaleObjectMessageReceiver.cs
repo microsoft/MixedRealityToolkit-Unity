@@ -1,32 +1,37 @@
-﻿using UnityEngine;
-using System.Collections;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-public class ScaleObjectMessageReceiver : MonoBehaviour
+using UnityEngine;
+
+namespace HoloToolkit.Unity.InputModule.Tests
 {
-    private const float DefaultSizeFactor = 2.0f;
-
-    [Tooltip("Size multiplier to use when scaling the object up and down.")]
-    public float SizeFactor = DefaultSizeFactor;
-
-    private void Start()
+    public class ScaleObjectMessageReceiver : MonoBehaviour
     {
-        if (SizeFactor <= 0.0f)
+        private const float DefaultSizeFactor = 2.0f;
+
+        [Tooltip("Size multiplier to use when scaling the object up and down.")]
+        public float SizeFactor = DefaultSizeFactor;
+
+        private void Start()
         {
-            SizeFactor = DefaultSizeFactor;
+            if (SizeFactor <= 0.0f)
+            {
+                SizeFactor = DefaultSizeFactor;
+            }
         }
-    }
 
-    public void OnMakeBigger()
-    {
-        Vector3 scale = transform.localScale;
-        scale *= SizeFactor;
-        transform.localScale = scale;
-    }
+        public void OnMakeBigger()
+        {
+            Vector3 scale = transform.localScale;
+            scale *= SizeFactor;
+            transform.localScale = scale;
+        }
 
-    public void OnMakeSmaller()
-    {
-        Vector3 scale = transform.localScale;
-        scale /= SizeFactor;
-        transform.localScale = scale;
+        public void OnMakeSmaller()
+        {
+            Vector3 scale = transform.localScale;
+            scale /= SizeFactor;
+            transform.localScale = scale;
+        }
     }
 }

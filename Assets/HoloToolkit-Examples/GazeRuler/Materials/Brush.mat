@@ -7,8 +7,8 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Brush
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION
+  m_Shader: {fileID: 4800000, guid: 0118fa4f1c88b4640b193eca2c181644, type: 3}
+  m_ShaderKeywords: _EMISSION _USECOLOR_ON
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -46,6 +46,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _EmissionTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 0}
@@ -74,6 +80,12 @@ Material:
         name: _BumpScale
       second: 1
     - first:
+        name: _ColorWriteMask
+      second: 15
+    - first:
+        name: _Cull
+      second: 2
+    - first:
         name: _Cutoff
       second: 0.5
     - first:
@@ -82,6 +94,9 @@ Material:
     - first:
         name: _DstBlend
       second: 0
+    - first:
+        name: _Gloss
+      second: 0.5
     - first:
         name: _GlossMapScale
       second: 1
@@ -107,6 +122,9 @@ Material:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
+        name: _Specular
+      second: 0.5
+    - first:
         name: _SpecularHighlights
       second: 1
     - first:
@@ -115,6 +133,21 @@ Material:
     - first:
         name: _UVSec
       second: 0
+    - first:
+        name: _UseBumpMap
+      second: 0
+    - first:
+        name: _UseColor
+      second: 1
+    - first:
+        name: _UseEmissionTex
+      second: 0
+    - first:
+        name: _UseMainTex
+      second: 0
+    - first:
+        name: _ZTest
+      second: 4
     - first:
         name: _ZWrite
       second: 1
@@ -125,3 +158,6 @@ Material:
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _SpecColor
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}

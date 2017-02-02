@@ -12,7 +12,7 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using System.Text;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.InputModule.Tests
 {
     [RequireComponent(typeof(AudioSource))]
     public class MicStreamDemo : MonoBehaviour

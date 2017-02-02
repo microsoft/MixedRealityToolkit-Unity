@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     public class SpatialMappingSource : MonoBehaviour
     {
@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        protected Type[] componentsRequiredForSurfaceMesh =
+        protected readonly Type[] componentsRequiredForSurfaceMesh =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),
@@ -79,18 +79,19 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Updates an existing surface object.
         /// </summary>
-        /// <param name="gameObject">Game object reference to the surfaceObject.</param>
+        /// <param name="surfaceGameObject">Game object reference to the surfaceObject.</param>
         /// <param name="meshID">User specified ID for the mesh.</param>
         /// <returns>True if successful</returns>
-        protected void UpdateSurfaceObject(GameObject gameObject, int meshID)
+        protected void UpdateSurfaceObject(GameObject surfaceGameObject, int meshID)
         {
             // If it's in the list, update it
             for (int i = 0; i < SurfaceObjects.Count; ++i)
             {
-                if (SurfaceObjects[i].Object == gameObject)
+                if (SurfaceObjects[i].Object == surfaceGameObject)
                 {
                     SurfaceObject thisSurfaceObject = SurfaceObjects[i];
                     thisSurfaceObject.ID = meshID;
+                    thisSurfaceObject.UpdateID++;
                     SurfaceObjects[i] = thisSurfaceObject;
                     return;
                 }
@@ -101,7 +102,7 @@ namespace HoloToolkit.Unity
             surfaceObject.ID = meshID;
             surfaceObject.UpdateID = 0;
 
-            surfaceObject.Object = gameObject;
+            surfaceObject.Object = surfaceGameObject;
             surfaceObject.Filter = surfaceObject.Object.GetComponent<MeshFilter>();
             surfaceObject.Renderer = surfaceObject.Object.GetComponent<MeshRenderer>();
 
@@ -146,7 +147,7 @@ namespace HoloToolkit.Unity
         /// Gets all mesh filters that have a valid mesh.
         /// </summary>
         /// <returns>A list of filters, each with a mesh containing at least one triangle.</returns>
-        virtual public List<MeshFilter> GetMeshFilters()
+        public virtual List<MeshFilter> GetMeshFilters()
         {
             List<MeshFilter> meshFilters = new List<MeshFilter>();
 
@@ -167,7 +168,7 @@ namespace HoloToolkit.Unity
         /// Gets all mesh renderers that have been created.
         /// </summary>
         /// <returns></returns>
-        virtual public List<MeshRenderer> GetMeshRenderers()
+        public virtual List<MeshRenderer> GetMeshRenderers()
         {
             List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
 
@@ -180,6 +181,15 @@ namespace HoloToolkit.Unity
             }
 
             return meshRenderers;
+        }
+
+        /// <summary>
+        /// Saves all the currently created spatial source meshes in world space.
+        /// </summary>
+        /// <param name="fileName">Name to give the mesh file. Exclude path and extension.</param>
+        public void SaveSpatialMeshes(string fileName)
+        {
+            MeshSaver.Save(fileName, GetMeshFilters());
         }
     }
 }
