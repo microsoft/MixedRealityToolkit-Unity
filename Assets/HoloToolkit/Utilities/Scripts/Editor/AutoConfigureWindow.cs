@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity
         }
         #endregion // Overrides / Event Handlers
 
-        #region Public Properties
+        #region Protected Properties
         /// <summary>
         /// Gets the descriptions of the settings.
         /// </summary>
@@ -161,6 +161,6 @@ namespace HoloToolkit.Unity
         /// Gets or sets the status message displayed at the bottom of the window.
         /// </summary>
         private string StatusMessage { get { return statusMessage; } set { statusMessage = value; } }
-        #endregion // Public Properties
+        #endregion // Protected Properties
     }
 }
