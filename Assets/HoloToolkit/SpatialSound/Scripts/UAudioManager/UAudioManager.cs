@@ -132,11 +132,17 @@ namespace HoloToolkit.Unity
                 emitter = gameObject;
             }
 
+            if (string.IsNullOrEmpty(eventName))
+            {
+                Debug.LogWarning("Audio Event string is null or empty!");
+                return;
+            }
+
             AudioEvent currentEvent;
 
             if (!eventsDictionary.TryGetValue(eventName, out currentEvent))
             {
-                Debug.LogFormat( "Could not find event \"{0}\"", eventName);
+                Debug.LogFormat("Could not find event \"{0}\"", eventName);
                 return;
             }
 
