@@ -80,7 +80,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Sends Click Position to our material to create our ripple effect.
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnInputClicked(InputEventData eventData)
+        public void OnInputClicked(InputClickedEventData eventData)
         {
             if (SpatialMappingManager.Instance.DrawVisualMeshes && RenderMaterial.HasProperty("_Center"))
             {
@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <returns>The newly created game object.</returns>
         protected GameObject AddSurfaceObject(Mesh mesh, string objectName, Transform parentObject, int meshID = 0)
         {
-            SurfaceObject surfaceObject = new SurfaceObject();
+            var surfaceObject = new SurfaceObject();
             surfaceObject.ID = meshID;
             surfaceObject.UpdateID = 0;
 
@@ -141,7 +141,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
 
             // Not in the list, add it
-            SurfaceObject surfaceObject = new SurfaceObject();
+            var surfaceObject = new SurfaceObject();
             surfaceObject.ID = meshID;
             surfaceObject.UpdateID = 0;
 
@@ -192,7 +192,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <returns>A list of filters, each with a mesh containing at least one triangle.</returns>
         public virtual List<MeshFilter> GetMeshFilters()
         {
-            List<MeshFilter> meshFilters = new List<MeshFilter>();
+            var meshFilters = new List<MeshFilter>();
 
             for (int index = 0; index < SurfaceObjects.Count; index++)
             {
@@ -213,7 +213,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <returns></returns>
         public virtual List<MeshRenderer> GetMeshRenderers()
         {
-            List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+            var meshRenderers = new List<MeshRenderer>();
 
             for (int index = 0; index < SurfaceObjects.Count; index++)
             {
