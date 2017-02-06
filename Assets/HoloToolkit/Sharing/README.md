@@ -113,6 +113,12 @@ This will create a new instance of the server on your machine.
 
 For a production envionment, follow the instructions from the main HoloToolkit: [Running the Server](../../../External/HoloToolkit/Sharing/DocSource/MDFiles/GettingStarted.md#running-the-server).
 
+### Troubleshooting
+---
+- Double check the Server Address on your sharing stage component in your scene matches the address shown in the sharing service console.
+- Make sure all devices are connected to the same Wireless Local Area Network.
+- Ensure all firewall settings are correct.  Windows firewall gives you options to enable/disable by network type (private, public, home), make sure you're enabling the firewall for connection type.
+
 ### [Plugins](Plugins)
 ---
 Contains compiled architecture specific binaries for SharingClient.dll which are required by the Unity application for accessing sharing APIs.
