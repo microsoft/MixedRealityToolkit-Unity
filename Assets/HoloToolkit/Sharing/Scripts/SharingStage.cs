@@ -22,7 +22,7 @@ namespace HoloToolkit.Sharing
         /// Default username to use when joining a session.
         /// </summary>
         /// <remarks>User code should set the user name by setting the UserName property.</remarks>
-        private const string DefaultUserName = "User0";
+        private const string DefaultUserName = "User";
 
         /// <summary>
         /// Set whether this app should be a Primary or Secondary client.
@@ -272,9 +272,17 @@ namespace HoloToolkit.Sharing
             SessionsTracker = new ServerSessionsTracker(Manager.GetSessionManager());
             SessionUsersTracker = new SessionUsersTracker(SessionsTracker);
 
-            using (XString userName = new XString(DefaultUserName))
+            using (var userName = new XString(DefaultUserName))
             {
-                Manager.SetUserName(userName);
+                if (!string.IsNullOrEmpty(Environment.UserName))
+                {
+                    Manager.SetUserName(Environment.UserName);
+                }
+                else
+                {
+                    User localUser = Manager.GetLocalUser();
+                    Manager.SetUserName(userName + localUser.GetID().ToString());
+                }
             }
         }
 
