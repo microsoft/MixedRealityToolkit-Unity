@@ -18,7 +18,7 @@ namespace HoloToolkit.Sharing
             if (!File.Exists(filePathName))
             {
                 Debug.LogError("Sharing service does not exist at location: " + filePathName);
-                Debug.LogError("Manually copy SharingService.exe to this path from HoloToolkit-Unity\\External.");
+                Debug.LogError("Please enable the Sharing Serivce via HoloToolkit -> Configure -> Apply Project Settings.");
                 return;
             }
 
@@ -33,7 +33,7 @@ namespace HoloToolkit.Sharing
             if (!File.Exists(filePathName))
             {
                 Debug.LogError("Session Manager UI does not exist at location: " + filePathName);
-                Debug.LogError("Manually copy SessionManager.UI.exe to this path from HoloToolkit-Unity\\External.");
+                Debug.LogError("Please enable the Sharing Serivce via HoloToolkit -> Configure -> Apply Project Settings.");
                 return;
             }
 
@@ -48,7 +48,7 @@ namespace HoloToolkit.Sharing
             if (!File.Exists(filePathName))
             {
                 Debug.LogError("Profiler does not exist at location: " + filePathName);
-                Debug.LogError("Manually copy ProfilerX.exe to this path from HoloToolkit-Unity\\External.");
+                Debug.LogError("Please enable the Sharing Serivce via HoloToolkit -> Configure -> Apply Project Settings.");
                 return;
             }
 
