@@ -73,22 +73,7 @@ namespace HoloToolkit.Unity
         /// <param name="messageOnAudioEnd">The Message to Send to the GameObject when the sound has finished playing.</param>
         public void PlayEvent(string eventName, GameObject emitter, string messageOnAudioEnd = null)
         {
-            PlayEvent(
-                eventName,
-                emitter,
-                null,
-                null,
-                messageOnAudioEnd);
-        }
-
-        /// <summary>
-        /// Plays an AudioEvent.
-        /// </summary>
-        /// <param name="eventName">The name associated with the AudioEvent.</param>
-        /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
-        public void PlayEvent(string eventName, AudioSource primarySource)
-        {
-            PlayEvent(eventName, primarySource, null);
+            PlayEvent(eventName, emitter, null, null, messageOnAudioEnd);
         }
 
         /// <summary>
@@ -97,14 +82,9 @@ namespace HoloToolkit.Unity
         /// <param name="eventName">The name associated with the AudioEvent.</param>
         /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
         /// <param name="secondarySource">The AudioSource component to use as the secondary source for the event.</param>
-        public void PlayEvent(string eventName,
-                            AudioSource primarySource,
-                            AudioSource secondarySource)
+        public void PlayEvent(string eventName, AudioSource primarySource, AudioSource secondarySource = null)
         {
-            PlayEvent(eventName,
-                    primarySource.gameObject,
-                    primarySource,
-                    secondarySource);
+            PlayEvent(eventName, primarySource.gameObject, primarySource, secondarySource);
         }
 
         /// <summary>
@@ -115,11 +95,7 @@ namespace HoloToolkit.Unity
         /// <param name="primarySource">The AudioSource component to use as the primary source for the event.</param>
         /// <param name="secondarySource">The AudioSource component to use as the secondary source for the event.</param>
         /// <param name="messageOnAudioEnd">The Message to Send to the GameObject when the sound has finished playing.</param>
-        private void PlayEvent(string eventName,
-                            GameObject emitter,
-                            AudioSource primarySource,
-                            AudioSource secondarySource,
-                            string messageOnAudioEnd = null)
+        private void PlayEvent(string eventName, GameObject emitter, AudioSource primarySource, AudioSource secondarySource, string messageOnAudioEnd = null)
         {
             if (!CanPlayNewEvent())
             {
@@ -132,11 +108,17 @@ namespace HoloToolkit.Unity
                 emitter = gameObject;
             }
 
+            if (string.IsNullOrEmpty(eventName))
+            {
+                Debug.LogWarning("Audio Event string is null or empty!");
+                return;
+            }
+
             AudioEvent currentEvent;
 
             if (!eventsDictionary.TryGetValue(eventName, out currentEvent))
             {
-                Debug.LogFormat( "Could not find event \"{0}\"", eventName);
+                Debug.LogFormat("Could not find event \"{0}\"", eventName);
                 return;
             }
 
