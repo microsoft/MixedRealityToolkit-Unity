@@ -14,8 +14,8 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class InputManager : Singleton<InputManager>
     {
-        public event Action InputEnabled;
-        public event Action InputDisabled;
+        public event EventHandler InputEnabled;
+        public event EventHandler InputDisabled;
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -130,7 +130,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (disabledRefCount == 1)
             {
-                InputDisabled.RaiseEvent();
+                InputDisabled.RaiseEvent(this, EventArgs.Empty);
             }
         }
 
@@ -145,7 +145,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (disabledRefCount == 0)
             {
-                InputEnabled.RaiseEvent();
+                InputEnabled.RaiseEvent(this, EventArgs.Empty);
             }
         }
 
@@ -159,7 +159,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (wasInputDisabled)
             {
-                InputEnabled.RaiseEvent();
+                InputEnabled.RaiseEvent(this, EventArgs.Empty);
             }
         }
 

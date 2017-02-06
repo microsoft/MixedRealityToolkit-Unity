@@ -79,7 +79,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Change anim stage when enabled
         /// </summary>
-        public override void OnInputEnabled()
+        protected override void OnInputEnabled()
         {
             base.OnInputEnabled();
             SetCursorState(EnableStateData);
@@ -88,7 +88,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Change anim stage when disabled
         /// </summary>
-        public override void OnInputDisabled()
+        protected override void OnInputDisabled()
         {
             base.OnInputDisabled();
             SetCursorState(DisableStateData);
