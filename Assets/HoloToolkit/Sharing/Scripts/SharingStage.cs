@@ -274,6 +274,9 @@ namespace HoloToolkit.Sharing
 
             using (var userName = new XString(DefaultUserName))
             {
+#if UNITY_WSA && !UNITY_EDITOR
+                Manager.SetUserName(SystemInfo.deviceName);
+#else
                 if (!string.IsNullOrEmpty(Environment.UserName))
                 {
                     Manager.SetUserName(Environment.UserName);
@@ -283,6 +286,7 @@ namespace HoloToolkit.Sharing
                     User localUser = Manager.GetLocalUser();
                     Manager.SetUserName(userName + localUser.GetID().ToString());
                 }
+#endif
             }
         }
 
