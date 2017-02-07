@@ -14,26 +14,29 @@ namespace HoloToolkit.Sharing.SyncModel
         private IntElement element;
         private int value;
 
+#if UNITY_EDITOR
         public override object RawValue
         {
-            get { return this.value; }
+            get { return value; }
         }
+#endif
 
         public int Value
         {
-            get { return this.value; }
+            get { return value; }
 
             set
             {
+                // Has the value actually changed?
                 if (this.value != value)
                 {
                     // Change the value
                     this.value = value;
 
-                    if (this.element != null)
+                    if (element != null)
                     {
                         // Notify network that the value has changed
-                        this.element.SetValue(value);
+                        element.SetValue(value);
                     }
                 }
             }
@@ -46,27 +49,26 @@ namespace HoloToolkit.Sharing.SyncModel
 
         public override void InitializeLocal(ObjectElement parentElement)
         {
-            this.element = parentElement.CreateIntElement(XStringFieldName, this.value);
-            this.NetworkElement = element;
+            element = parentElement.CreateIntElement(XStringFieldName, value);
+            NetworkElement = element;
         }
 
-        public void AddFromLocal(ObjectElement parentElement, int value)
+        public void AddFromLocal(ObjectElement parentElement, int localValue)
         {
             InitializeLocal(parentElement);
-            this.Value = value;
+            Value = localValue;
         }
 
-        public override void AddFromRemote(Element element)
+        public override void AddFromRemote(Element remoteElement)
         {
-            this.NetworkElement = element;
-            this.element = IntElement.Cast(element);
-            this.value = this.element.GetValue();
+            NetworkElement = remoteElement;
+            element = IntElement.Cast(remoteElement);
+            value = element.GetValue();
         }
 
-        public override void UpdateFromRemote(int value)
+        public override void UpdateFromRemote(int remoteValue)
         {
-            // Change the value
-            this.value = value;
+            value = remoteValue;
         }
     }
 }

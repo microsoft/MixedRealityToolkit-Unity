@@ -14,8 +14,7 @@ namespace HoloToolkit.Unity
     }
 
     /// <summary>
-    /// The Billboard class implements the behaviors needed to keep a GameObject 
-    /// oriented towards the user.
+    /// The Billboard class implements the behaviors needed to keep a GameObject oriented towards the user.
     /// </summary>
     public class Billboard : MonoBehaviour
     {

@@ -7,12 +7,13 @@
 #define USE_WINRT
 #endif
 
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
-using HoloToolkit.Unity;
 using UnityEngine;
 using UnityEngine.Assertions;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Sharing.SyncModel
 {
@@ -28,60 +29,71 @@ namespace HoloToolkit.Sharing.SyncModel
         public event Action<SyncObject> ObjectChanged;             // Invoked when one of the child primitives has changed
         public event Action<SyncObject> InitializationComplete;    // Invoked when this object has been fully initialized
 
-        // This is the sync element for this object.
         private ObjectElement internalObjectElement;
+        /// <summary>
+        /// This is the sync element for this object.
+        /// </summary>
         public ObjectElement Element
         {
-            get { return this.internalObjectElement; }
+            get { return internalObjectElement; }
             internal set
             {
-                if (this.internalObjectElement == null)
+                if (internalObjectElement == null)
                 {
-                    this.internalObjectElement = value;
-                    this.NetworkElement = value;
+                    internalObjectElement = value;
+                    NetworkElement = value;
 
-                    if (this.internalObjectElement != null)
+                    if (internalObjectElement != null)
                     {
-                        CreateSyncListener(this.internalObjectElement);
+                        CreateSyncListener(internalObjectElement);
                     }
                 }
             }
         }
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Raw Value used when displaying sync objects in the inspector.
+        /// </summary>
         public override object RawValue
         {
             get { return null; }
         }
+#endif
 
-        // Optional user that owns this object.  
-        private HoloToolkit.Sharing.User owner;
-        public HoloToolkit.Sharing.User Owner
+        private User owner;
+        /// <summary>
+        /// Optional user that owns this object.
+        /// </summary>
+        public User Owner
         {
             get { return owner; }
             set
             {
-                if (this.owner == null)
+                if (owner == null)
                 {
-                    this.owner = value;
+                    owner = value;
                 }
             }
         }
 
+        /// <summary>
+        /// The Object Type as string.
+        /// </summary>
         public string ObjectType
         {
             get
             {
-                if (this.internalObjectElement != null)
-                    return this.internalObjectElement.GetObjectType().GetString();
-                else
-                    return null;
+                return internalObjectElement != null ? internalObjectElement.GetObjectType().GetString() : null;
             }
         }
 
-        // Returns the object element registered owner id
+        /// <summary>
+        /// Returns the object element registered owner id.
+        /// </summary>
         public int OwnerId
         {
-            get { return this.internalObjectElement != null ? this.internalObjectElement.GetOwnerID() : int.MaxValue; }
+            get { return internalObjectElement != null ? internalObjectElement.GetOwnerID() : int.MaxValue; }
         }
 
         public SyncObject(string field)
@@ -96,7 +108,10 @@ namespace HoloToolkit.Sharing.SyncModel
             InitializePrimitives();
         }
 
-        // Returns a list of all child primitives
+        /// <summary>
+        /// Returns a list of all child primitives.
+        /// </summary>
+        /// <returns>Array of SyncPrimitives.</returns>
         public SyncPrimitive[] GetChildren()
         {
             return primitives.ToArray();
@@ -104,11 +119,11 @@ namespace HoloToolkit.Sharing.SyncModel
 
         private void InitializePrimitives()
         {
-            this.primitiveMap = new Dictionary<long, SyncPrimitive>();
-            this.primitives = new List<SyncPrimitive>();
+            primitiveMap = new Dictionary<long, SyncPrimitive>();
+            primitives = new List<SyncPrimitive>();
 
             // Scan the type of object this is a look for the SyncDataAttribute
-            System.Type baseType = this.GetType();
+            Type baseType = GetType();
 
 #if USE_WINRT
             var typeFields = baseType.GetRuntimeFields();
@@ -132,7 +147,7 @@ namespace HoloToolkit.Sharing.SyncModel
 
                 if (attribute != null)
                 {
-                    System.Type fieldType = typeField.FieldType;
+                    Type fieldType = typeField.FieldType;
                     string memberName = typeField.Name;
 
                     // Override the member name if provided
@@ -152,10 +167,10 @@ namespace HoloToolkit.Sharing.SyncModel
                             // that takes the "memberName" property or use the default (parameter less constructor).
 
                             // First check if there is a constructor that takes the member name and if so call it
-                            bool hasConstructor = fieldType.GetConstructor(new Type[] { typeof(string) }) != null;
+                            bool hasConstructor = fieldType.GetConstructor(new[] { typeof(string) }) != null;
                             if (hasConstructor)
                             {
-                                dataPrimitive = (SyncPrimitive)Activator.CreateInstance(fieldType, new object[] { memberName });
+                                dataPrimitive = (SyncPrimitive)Activator.CreateInstance(fieldType, memberName);
                             }
                             else
                             {
@@ -181,29 +196,35 @@ namespace HoloToolkit.Sharing.SyncModel
             }
         }
 
-        // Register a new data model primitive as part of this object.  Can be called multiple times on the same child.
+        /// <summary>
+        /// Register a new data model primitive as part of this object.  Can be called multiple times on the same child.
+        /// </summary>
+        /// <param name="data">Sync Primitive Data</param>
         protected void AddChild(SyncPrimitive data)
         {
             if (data.HasNetworkElement)
             {
                 long guid = data.Guid;
                 Assert.AreNotEqual(SharingClient.kInvalidXGuid, guid, "A primitive GUID should never be invalid if it is networked.");
-                this.primitiveMap.Add(guid, data);
+                primitiveMap.Add(guid, data);
             }
 
-            if (!this.primitives.Contains(data))
+            if (!primitives.Contains(data))
             {
-                this.primitives.Add(data);
+                primitives.Add(data);
             }
         }
 
-        // Remove a child primitive that belongs to this object
+        /// <summary>
+        /// Remove a child primitive that belongs to this object.
+        /// </summary>
+        /// <param name="data">Sync Primitive Data</param>
         protected void RemoveChild(SyncPrimitive data)
         {
             // Manually remove from maps
-            if (this.primitives.Remove(data) && data.HasNetworkElement)
+            if (primitives.Remove(data) && data.HasNetworkElement)
             {
-                this.primitiveMap.Remove(data.NetworkElement.GetGUID());
+                primitiveMap.Remove(data.NetworkElement.GetGUID());
 
                 // Object has been removed internally, notify network
                 ObjectElement parentElement = ObjectElement.Cast(data.NetworkElement.GetParent());
@@ -214,21 +235,24 @@ namespace HoloToolkit.Sharing.SyncModel
             }
         }
 
-        // Handler for if a child is added
+        /// <summary>
+        /// Handler for if a child is added.
+        /// </summary>
+        /// <param name="element">Added Element</param>
         protected virtual void OnElementAdded(Element element)
         {
             // Find the existing element.
             bool primitiveDataChanged = false;
-            for (int i = 0; i < this.primitives.Count; i++)
+            for (int i = 0; i < primitives.Count; i++)
             {
-                if (this.primitives[i].XStringFieldName.IsEqual(element.GetName()))
+                if (primitives[i].XStringFieldName.IsEqual(element.GetName()))
                 {
                     // Found it, register the element so it knows where to pull data from
-                    this.primitives[i].AddFromRemote(element);
+                    primitives[i].AddFromRemote(element);
 
                     // Update the internal map
                     long guid = element.GetGUID();
-                    this.primitiveMap[guid] = this.primitives[i];
+                    primitiveMap[guid] = primitives[i];
                     primitiveDataChanged = true;
                     break;
                 }
@@ -237,33 +261,40 @@ namespace HoloToolkit.Sharing.SyncModel
             if (primitiveDataChanged)
             {
                 // If there are no more primitives waiting to be added, finish the initialization
-                if (this.primitiveMap.Count == this.primitives.Count)
+                if (primitiveMap.Count == primitives.Count)
                 {
-                    if (this.InitializationComplete != null)
+                    if (InitializationComplete != null)
                     {
-                        this.InitializationComplete(this);
+                        InitializationComplete(this);
                     }
                 }
             }
         }
 
-        // Handler for if a child is deleted
+        /// <summary>
+        /// Handler for if a child is deleted.
+        /// </summary>
+        /// <param name="element">Deleted Element</param>
         protected virtual void OnElementDeleted(Element element)
         {
             // If the child exists, then remove it.
             long guid = element.GetGUID();
-            if (this.primitiveMap.ContainsKey(guid))
+            if (primitiveMap.ContainsKey(guid))
             {
-                RemoveChild(this.primitiveMap[guid]);
+                RemoveChild(primitiveMap[guid]);
             }
         }
 
-        // Handler for if a child bool changes
+        /// <summary>
+        /// Handler for if a child bool changes.
+        /// </summary>
+        /// <param name="elementID">Element Id</param>
+        /// <param name="newValue">New Value</param>
         protected virtual void OnBoolElementChanged(long elementID, bool newValue)
         {
-            if (this.primitiveMap.ContainsKey(elementID))
+            if (primitiveMap.ContainsKey(elementID))
             {
-                SyncPrimitive primitive = this.primitiveMap[elementID];
+                SyncPrimitive primitive = primitiveMap[elementID];
                 primitive.UpdateFromRemote(newValue);
                 NotifyPrimitiveChanged(primitive);
             }
@@ -273,12 +304,16 @@ namespace HoloToolkit.Sharing.SyncModel
             }
         }
 
-        // Handler for if a child int changes
+        /// <summary>
+        /// Handler for if a child int changes.
+        /// </summary>
+        /// <param name="elementID">Element Id</param>
+        /// <param name="newValue">New Value</param>
         protected virtual void OnIntElementChanged(long elementID, int newValue)
         {
-            if (this.primitiveMap.ContainsKey(elementID))
+            if (primitiveMap.ContainsKey(elementID))
             {
-                SyncPrimitive primitive = this.primitiveMap[elementID];
+                SyncPrimitive primitive = primitiveMap[elementID];
                 primitive.UpdateFromRemote(newValue);
                 NotifyPrimitiveChanged(primitive);
             }
@@ -288,12 +323,16 @@ namespace HoloToolkit.Sharing.SyncModel
             }
         }
 
-        // Handler for if a child long changes
+        /// <summary>
+        /// Handler for if a child long changes
+        /// </summary>
+        /// <param name="elementID">Element Id</param>
+        /// <param name="newValue">New Value</param>
         protected virtual void OnLongElementChanged(long elementID, long newValue)
         {
-            if (this.primitiveMap.ContainsKey(elementID))
+            if (primitiveMap.ContainsKey(elementID))
             {
-                SyncPrimitive primitive = this.primitiveMap[elementID];
+                SyncPrimitive primitive = primitiveMap[elementID];
                 primitive.UpdateFromRemote(newValue);
                 NotifyPrimitiveChanged(primitive);
             }
@@ -303,42 +342,54 @@ namespace HoloToolkit.Sharing.SyncModel
             }
         }
 
-        // Handler for if a child float changes
+        /// <summary>
+        /// Handler for if a child float changes
+        /// </summary>
+        /// <param name="elementID">Element Id</param>
+        /// <param name="newValue">New Value</param>
         protected virtual void OnFloatElementChanged(long elementID, float newValue)
         {
-            if (this.primitiveMap.ContainsKey(elementID))
+            if (primitiveMap.ContainsKey(elementID))
             {
-                SyncPrimitive primitive = this.primitiveMap[elementID];
+                SyncPrimitive primitive = primitiveMap[elementID];
                 primitive.UpdateFromRemote(newValue);
                 NotifyPrimitiveChanged(primitive);
             }
             else
             {
-                LogUnknownElement(elementID.ToString(), newValue.ToString(), typeof(float));
+                LogUnknownElement(elementID.ToString(), newValue.ToString(CultureInfo.InvariantCulture), typeof(float));
             }
         }
 
-        // Handler for if a child double changes
+        /// <summary>
+        /// Handler for if a child double changes
+        /// </summary>
+        /// <param name="elementID">Element Id</param>
+        /// <param name="newValue">New Value</param>
         protected virtual void OnDoubleElementChanged(long elementID, double newValue)
         {
-            if (this.primitiveMap.ContainsKey(elementID))
+            if (primitiveMap.ContainsKey(elementID))
             {
-                SyncPrimitive primitive = this.primitiveMap[elementID];
+                SyncPrimitive primitive = primitiveMap[elementID];
                 primitive.UpdateFromRemote(newValue);
                 NotifyPrimitiveChanged(primitive);
             }
             else
             {
-                LogUnknownElement(elementID.ToString(), newValue.ToString(), typeof(double));
+                LogUnknownElement(elementID.ToString(), newValue.ToString(CultureInfo.InvariantCulture), typeof(double));
             }
         }
 
-        // Handler for if a child string changes
+        /// <summary>
+        /// Handler for if a child string changes
+        /// </summary>
+        /// <param name="elementID">Element Id</param>
+        /// <param name="newValue">New Value</param>
         protected virtual void OnStringElementChanged(long elementID, XString newValue)
         {
-            if (this.primitiveMap.ContainsKey(elementID))
+            if (primitiveMap.ContainsKey(elementID))
             {
-                SyncPrimitive primitive = this.primitiveMap[elementID];
+                SyncPrimitive primitive = primitiveMap[elementID];
                 primitive.UpdateFromRemote(newValue);
                 NotifyPrimitiveChanged(primitive);
             }
@@ -361,19 +412,19 @@ namespace HoloToolkit.Sharing.SyncModel
         private void CreateSyncListener(ObjectElement element)
         {
             // Create a listener for this
-            this.syncListener = new ObjectElementAdapter();
-            this.syncListener.ElementAddedEvent += OnElementAdded;
-            this.syncListener.ElementDeletedEvent += OnElementDeleted;
-            this.syncListener.BoolChangedEvent += OnBoolElementChanged;
-            this.syncListener.IntChangedEvent += OnIntElementChanged;
-            this.syncListener.LongChangedEvent += OnLongElementChanged;
-            this.syncListener.FloatChangedEvent += OnFloatElementChanged;
-            this.syncListener.DoubleChangedEvent += OnDoubleElementChanged;
-            this.syncListener.StringChangedEvent += OnStringElementChanged;
-            element.AddListener(this.syncListener);
+            syncListener = new ObjectElementAdapter();
+            syncListener.ElementAddedEvent += OnElementAdded;
+            syncListener.ElementDeletedEvent += OnElementDeleted;
+            syncListener.BoolChangedEvent += OnBoolElementChanged;
+            syncListener.IntChangedEvent += OnIntElementChanged;
+            syncListener.LongChangedEvent += OnLongElementChanged;
+            syncListener.FloatChangedEvent += OnFloatElementChanged;
+            syncListener.DoubleChangedEvent += OnDoubleElementChanged;
+            syncListener.StringChangedEvent += OnStringElementChanged;
+            element.AddListener(syncListener);
         }
 
-        // From SyncPrimitive
+        #region From SyncPrimitive
 
         /// <summary>
         /// Initializes this object for local use.  Doesn't wait for network initialization. 
@@ -382,31 +433,33 @@ namespace HoloToolkit.Sharing.SyncModel
         public override void InitializeLocal(ObjectElement parentElement)
         {
             // Auto create element if needed
-            if (this.Element == null)
+            if (Element == null)
             {
-                this.Element = parentElement.CreateObjectElement(XStringFieldName, GetType().FullName, this.Owner);
-                this.NetworkElement = this.Element;
+                Element = parentElement.CreateObjectElement(XStringFieldName, GetType().FullName, Owner);
+                NetworkElement = Element;
             }
 
             // Initialize all primitives
-            for (int i = 0; i < this.primitives.Count; i++)
+            for (int i = 0; i < primitives.Count; i++)
             {
-                SyncPrimitive data = this.primitives[i];
+                SyncPrimitive data = primitives[i];
                 data.InitializeLocal(Element);
-                this.primitiveMap[data.Guid] = data;
+                primitiveMap[data.Guid] = data;
             }
 
             // Complete the initialization
-            if (this.InitializationComplete != null)
+            if (InitializationComplete != null)
             {
-                this.InitializationComplete(this);
+                InitializationComplete(this);
             }
         }
 
-        public override void AddFromRemote(Element element)
+        public override void AddFromRemote(Element remoteElement)
         {
-            this.Element = ObjectElement.Cast(element);
-            this.NetworkElement = element;
+            Element = ObjectElement.Cast(remoteElement);
+            NetworkElement = remoteElement;
         }
+
+        #endregion //From SyncPrimitive
     }
 }

@@ -4,6 +4,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace HoloToolkit.Unity.SpatialMapping
 {
     public class FileSurfaceObserver : SpatialMappingSource
@@ -86,4 +90,21 @@ namespace HoloToolkit.Unity.SpatialMapping
 #endif
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(FileSurfaceObserver))]
+    public class FileSurfaceObserverEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            // Quick way for the user to get access to the room file location.
+            if (GUILayout.Button("Open File Location"))
+            {
+                System.Diagnostics.Process.Start(MeshSaver.MeshFolderName);
+            }
+        }
+    }
+#endif
 }

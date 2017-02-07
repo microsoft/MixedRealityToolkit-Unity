@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -146,27 +144,27 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Updates the target value and starts the interpolator if it is not running already.
         /// </summary>
-        /// <param name="targetValue">The new target value.</param>
-        public void UpdateTarget(T targetValue)
+        /// <param name="updateTargetValue">The new target value.</param>
+        public void UpdateTarget(T updateTargetValue)
         {
-            UpdateTarget(targetValue, false);
+            UpdateTarget(updateTargetValue, false);
         }
 
         /// <summary>
         /// Updates the target value and starts the interpolator if it is not running already.
         /// </summary>
-        /// <param name="targetValue">The new target value.</param>
+        /// <param name="updateTargetValue">The new target value.</param>
         /// <param name="forceUpdate">A flag for forcing an update propagation.</param>
-        public void UpdateTarget(T targetValue, bool forceUpdate)
+        public void UpdateTarget(T updateTargetValue, bool forceUpdate)
         {
             performingInterpolativeSnap = false;
 
-            this.targetValue = targetValue;
+            targetValue = updateTargetValue;
 
             startValue = Value;
             timeInterpolationStartedAt = CurrentTime;
 
-            if (!DoValuesEqual(targetValue, Value))
+            if (!DoValuesEqual(updateTargetValue, Value))
             {
                 EnsureEnabled();
             }
@@ -187,11 +185,11 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Update the target to a new value and snap (set) the interpolated value to it.
         /// </summary>
-        /// <param name="targetValue">The new target value.</param>
-        public void SnapToTarget(T targetValue)
+        /// <param name="snapTargetValue">The new target value.</param>
+        public void SnapToTarget(T snapTargetValue)
         {
             performingInterpolativeSnap = false;
-            Value = startValue = targetValue;
+            Value = startValue = snapTargetValue;
             EnsureDisabled();
         }
 
@@ -199,24 +197,24 @@ namespace HoloToolkit.Unity
         /// Interpolative snap to target will interpolate until it reaches the given target value, after which subsequent calls to this method it will snap to the target value given.
         /// </summary>
         /// <remarks>SnapToTarget and UpdateTarget resets this.</remarks>
-        /// <param name="targetValue">The target value to set and interpolatively snap to.</param>
-        public void InterpolateThenSnapToTarget(T targetValue)
+        /// <param name="snapTargetValue">The target value to set and interpolatively snap to.</param>
+        public void InterpolateThenSnapToTarget(T snapTargetValue)
         {
             if (performingInterpolativeSnap)
             {
                 // If we are running, just update the target, otherwise just snap to target
                 if (IsRunning)
                 {
-                    this.targetValue = targetValue;
+                    targetValue = snapTargetValue;
                 }
                 else
                 {
-                    Value = startValue = targetValue;
+                    Value = startValue = snapTargetValue;
                 }
             }
             else
             {
-                UpdateTarget(targetValue);
+                UpdateTarget(snapTargetValue);
                 performingInterpolativeSnap = true;
             }
         }
