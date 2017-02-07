@@ -26,7 +26,7 @@ Common useful UI prefabs
 
 UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-**IMPORTANT: Text Prefab uses oepn source font 'Selawik'. To use Text Prefab with different font, please import font file and follow the instruction below. Below example shows how to use 'Segoe UI' font with Text Prefab.**
+**IMPORTANT: Text Prefab uses open source font 'Selawik'. To use Text Prefab with different font, please import font file and follow the instruction below. Below example shows how to use 'Segoe UI' font with Text Prefab.**
 
 ![Importing Segoe UI font file](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions01.png)
 
