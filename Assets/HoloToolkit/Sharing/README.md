@@ -9,6 +9,7 @@ Users can also collaborate with other users (who are also using multiple devices
 
 - [Features](#features)
 - [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
 - [Plugins](#plugins)
 - [Prefabs](#prefabs)
 - [Scripts](#scripts)
