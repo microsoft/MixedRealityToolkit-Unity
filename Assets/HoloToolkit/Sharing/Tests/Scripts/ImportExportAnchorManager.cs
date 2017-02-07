@@ -886,7 +886,7 @@ namespace HoloToolkit.Sharing.Tests
             {
                 if (SharingStage.Instance.ShowDetailedLogs)
                 {
-                    Debug.Log("Anchor Manager: Exporting anchor {0}", exportingAnchorName);
+                    Debug.Log("Anchor Manager: Exporting anchor {0}", exportingAnchorName");
                 }
 
                 if (AnchorDebugText != null)
