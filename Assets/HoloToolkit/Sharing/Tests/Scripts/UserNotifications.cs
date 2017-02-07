@@ -9,7 +9,7 @@ namespace HoloToolkit.Sharing.Tests
     public class UserNotifications : MonoBehaviour
     {
         private SessionUsersTracker usersTracker;
-
+        private static User localUser = null;
         private void Start()
         {
             // SharingStage should be valid at this point.
@@ -21,13 +21,16 @@ namespace HoloToolkit.Sharing.Tests
             SharingStage.Instance.SharingManagerConnected -= Connected;
 
             usersTracker = SharingStage.Instance.SessionUsersTracker;
+            string users = string.Empty;
 
-            Debug.LogFormat("{0} users in room.", usersTracker.CurrentUsers.Count);
-
-            foreach (User currentUser in usersTracker.CurrentUsers)
+            for (int i = 0; i < usersTracker.CurrentUsers.Count; i++)
             {
-                Debug.LogFormat(currentUser.GetName());
+                users += "\n" + usersTracker.CurrentUsers[i].GetName();
             }
+
+            Debug.LogFormat("User Notifications: {0} users in room.{1}", usersTracker.CurrentUsers.Count, users);
+
+            localUser = SharingStage.Instance.Manager.GetLocalUser();
 
             usersTracker.UserJoined += NotifyUserJoined;
             usersTracker.UserLeft += NotifyUserLeft;
@@ -35,12 +38,18 @@ namespace HoloToolkit.Sharing.Tests
 
         private static void NotifyUserJoined(User user)
         {
-            Debug.LogFormat("User {0} has joined the room.", user.GetName());
+            if (user.IsValid() && localUser != user)
+            {
+                Debug.LogFormat("User Notifications: User {0} has joined the room.", user.GetName());
+            }
         }
 
         private static void NotifyUserLeft(User user)
         {
-            Debug.LogFormat("User {0} has left the room.", user.GetName());
+            if (user.IsValid() && localUser != user)
+            {
+                Debug.LogFormat("User Notifications: User {0} has left the room.", user.GetName());
+            }
         }
 
         private void OnDestroy()
