@@ -13,10 +13,17 @@ namespace HoloToolkit.Sharing.Tests
         private void Start()
         {
             // SharingStage should be valid at this point.
-            SharingStage.Instance.SharingManagerConnected += Connected;
+            if (SharingStage.Instance.Connection.IsConnected())
+            {
+                Connected();
+            }
+            else
+            {
+                SharingStage.Instance.SharingManagerConnected += Connected;
+            }
         }
 
-        private void Connected(object sender, EventArgs e)
+        private void Connected(object sender = null, EventArgs e = null)
         {
             SharingStage.Instance.SharingManagerConnected -= Connected;
 

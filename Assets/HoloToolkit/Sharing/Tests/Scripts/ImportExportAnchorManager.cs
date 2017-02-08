@@ -85,29 +85,33 @@ namespace HoloToolkit.Sharing.Tests
         {
             get
             {
-                if (SharingStage.Instance == null)
+                if (SharingStage.Instance != null)
                 {
-                    return false;
-                }
-
-                if (SharingStage.Instance.SessionUsersTracker != null)
-                {
-                    long localUserId;
-                    using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
+                    if (SharingStage.Instance.SessionUsersTracker != null)
                     {
-                        localUserId = localUser.GetID();
-                    }
-
-                    for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
-                    {
-                        if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() < localUserId)
+                        for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
                         {
-                            return false;
+                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() <
+                                SharingStage.Instance.Manager.GetLocalUser().GetID())
+                            {
+                                return false;
+                            }
                         }
+
+                        // We're the first user in the session
+                        return true;
                     }
+
+                    Debug.LogWarning("Couldn't find session users tracker");
+                }
+                else
+                {
+                    Debug.LogWarning("Couldn't find sharing stage");
                 }
 
-                return true;
+                // Can't find SharingStage nor SessionUsersTracker
+                return false;
+
             }
         }
 
@@ -226,9 +230,15 @@ namespace HoloToolkit.Sharing.Tests
 #if UNITY_WSA && !UNITY_EDITOR
             thisAnchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
 #endif
-
             // SharingStage should be valid at this point.
-            SharingStage.Instance.SharingManagerConnected += Connected;
+            if (SharingStage.Instance.Connection.IsConnected())
+            {
+                Connected();
+            }
+            else
+            {
+                SharingStage.Instance.SharingManagerConnected += Connected;
+            }
         }
 
         private void Update()
@@ -308,7 +318,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Events Arguements.</param>
-        private void Connected(object sender, EventArgs e)
+        private void Connected(object sender = null, EventArgs e = null)
         {
             SharingStage.Instance.SharingManagerConnected -= Connected;
 
