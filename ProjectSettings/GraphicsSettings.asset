@@ -40,7 +40,7 @@ GraphicsSettings:
     type: 0}
   m_TierSettings_Tier1:
     renderingPath: 1
-    useCascadedShadowMaps: 1
+    useCascadedShadowMaps: 0
   m_TierSettings_Tier2:
     renderingPath: 1
     useCascadedShadowMaps: 1

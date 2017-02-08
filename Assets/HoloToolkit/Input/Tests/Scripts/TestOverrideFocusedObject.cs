@@ -4,11 +4,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class TestOverrideFocusedObject : MonoBehaviour, IInputClickHandler
     {
+        InputManager inputManager;
         TextMesh textMesh;
 
         void Start()
         {
-            InputManager inputManager = InputManager.Instance;
+            inputManager = InputManager.Instance;
 
             if (inputManager != null)
             {
@@ -20,9 +21,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            if (textMesh != null)
+            if (textMesh != null && inputManager != null)
             {
-                textMesh.text = "Air tap worked!";
+                textMesh.text = "Air tap worked and OverrideFocusedObject is null.";
+                inputManager.OverrideFocusedObject = null;
             }
         }
     }
