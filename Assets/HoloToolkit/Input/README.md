@@ -295,6 +295,7 @@ Gazing on an object and saying "Select Object" will persistently select that obj
 after which the user can also adjust object size with "Make Smaller" and "Make Bigger" voice commands and finally clear
 currently selected object by saying "Clear Selection".
 
+#### OverrideFocusedObjectTest.unity
 Test scene shows you in a simple way, how to route input to an object not being gazed/focused at.
 Useful for scenarios like placing head locked content or clicking around to create objects.
 
