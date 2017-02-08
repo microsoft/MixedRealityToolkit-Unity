@@ -94,12 +94,10 @@ namespace HoloToolkit.Sharing.Tests
                             if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() <
                                 SharingStage.Instance.Manager.GetLocalUser().GetID())
                             {
-                                return false;
+                                // We're the first user in the session
+                                return true;
                             }
                         }
-
-                        // We're the first user in the session
-                        return true;
                     }
 
                     Debug.LogWarning("Couldn't find session users tracker");
