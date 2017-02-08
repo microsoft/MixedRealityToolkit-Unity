@@ -202,11 +202,6 @@ namespace HoloToolkit.Sharing.Tests
         public TextMesh AnchorDebugText;
 
         /// <summary>
-        /// Clears the world anchor store cache on start.
-        /// </summary>
-        public bool ClearCacheOnStart;
-
-        /// <summary>
         /// Provides updates when anchor data is uploaded/downloaded.
         /// </summary>
         private RoomManagerAdapter roomManagerListener;
@@ -683,7 +678,7 @@ namespace HoloToolkit.Sharing.Tests
         {
             anchorStore = store;
 
-            if (ClearCacheOnStart)
+            if (!KeepRoomAlive)
             {
                 anchorStore.Clear();
             }
