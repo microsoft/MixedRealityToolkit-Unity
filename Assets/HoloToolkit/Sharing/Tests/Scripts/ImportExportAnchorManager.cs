@@ -91,11 +91,9 @@ namespace HoloToolkit.Sharing.Tests
                     {
                         for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
                         {
-                            // Skip the local user.
-                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() ==
-                                SharingStage.Instance.Manager.GetLocalUser().GetID())
+                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count == 1)
                             {
-                                continue;
+                                return true;
                             }
 
                             // return false if we find a user with a lower id.
@@ -104,7 +102,6 @@ namespace HoloToolkit.Sharing.Tests
                             {
                                 return false;
                             }
-
                         }
 
                         // We're the first user in the session
@@ -120,7 +117,6 @@ namespace HoloToolkit.Sharing.Tests
 
                 // Can't find SharingStage nor SessionUsersTracker
                 return false;
-
             }
         }
 
