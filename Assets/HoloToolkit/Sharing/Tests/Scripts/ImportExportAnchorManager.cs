@@ -89,34 +89,23 @@ namespace HoloToolkit.Sharing.Tests
                 {
                     if (SharingStage.Instance.SessionUsersTracker != null)
                     {
+                        long localUserId;
+                        using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
+                        {
+                            localUserId = localUser.GetID();
+                        }
+
                         for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
                         {
-                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count == 1)
-                            {
-                                return true;
-                            }
-
-                            // return false if we find a user with a lower id.
-                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() <
-                                SharingStage.Instance.Manager.GetLocalUser().GetID())
+                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() < localUserId)
                             {
                                 return false;
                             }
                         }
-
-                        // We're the first user in the session
-                        return true;
                     }
-
-                    Debug.LogWarning("Couldn't find session users tracker");
-                }
-                else
-                {
-                    Debug.LogWarning("Couldn't find sharing stage");
                 }
 
-                // Can't find SharingStage nor SessionUsersTracker
-                return false;
+                return true;
             }
         }
 
@@ -454,17 +443,24 @@ namespace HoloToolkit.Sharing.Tests
         }
 
         /// <summary>
-        /// Called when the local user joins a session.
+        /// Called when the user joins a session.
         /// In this case, we are using this event is used to signal that the sharing service is ready to make room-related requests.
         /// </summary>
         /// <param name="session">Session joined.</param>
         private void CurrentUserJoinedSession(Session session)
         {
-            sharingServiceReady = true;
+            if (SharingStage.Instance.Manager.GetLocalUser().IsValid())
+            {
+                sharingServiceReady = true;
+            }
+            else
+            {
+                Debug.LogWarning("Unable to get local user on session joined");
+            }
         }
 
         /// <summary>
-        /// Called when the local user leaves a session.
+        /// Called when the user leaves a session.
         /// This event is used to signal that the sharing service must stop making room-related requests.
         /// </summary>
         /// <param name="session">Session left.</param>
