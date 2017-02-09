@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using System;
+using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
@@ -22,10 +22,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="initialValue">Initial current value to use.</param>
         /// <param name="skipFirstUpdateFrame">A flag to skip first update frame after the interpolation target has been set.</param>
-        public InterpolatedVector3(Vector3 initialValue, bool skipFirstUpdateFrame = false)
-            : base(initialValue, skipFirstUpdateFrame)
-        {
-        }
+        public InterpolatedVector3(Vector3 initialValue, bool skipFirstUpdateFrame = false) : base(initialValue, skipFirstUpdateFrame) { }
 
         /// <summary>
         /// Overrides the method to check if two Vector3s are close enough.

@@ -39,6 +39,42 @@ namespace HoloToolkit.Unity.SpatialMapping
         }
 
         /// <summary>
+        /// Transforms all the mesh vertices into world position before saving to file.
+        /// </summary>
+        /// <param name="fileName">Name to give the saved mesh file. Exclude path and extension.</param>
+        /// <param name="meshes">The collection of Mesh objects to save.</param>
+        /// <returns>Fully qualified name of the saved mesh file.</returns>
+        /// <remarks>Determines the save path to use and automatically applies the file extension.</remarks>
+        public static string Save(string fileName, IEnumerable<MeshFilter> meshFilters)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("Must specify a valid fileName.");
+            }
+
+            if (meshFilters == null)
+            {
+                throw new ArgumentNullException("Value of meshFilters cannot be null.");
+            }
+
+            // Create the mesh file.
+            String folderName = MeshFolderName;
+            Debug.Log(String.Format("Saving mesh file: {0}", Path.Combine(folderName, fileName + fileExtension)));
+
+            using (Stream stream = OpenFileForWrite(folderName, fileName + fileExtension))
+            {
+                // Serialize and write the meshes to the file.
+                byte[] data = SimpleMeshSerializer.Serialize(meshFilters);
+                stream.Write(data, 0, data.Length);
+                stream.Flush();
+            }
+
+            Debug.Log("Mesh file saved.");
+
+            return Path.Combine(folderName, fileName + fileExtension);
+        }
+
+        /// <summary>
         /// Saves the provided meshes to the specified file.
         /// </summary>
         /// <param name="fileName">Name to give the saved mesh file. Exclude path and extension.</param>

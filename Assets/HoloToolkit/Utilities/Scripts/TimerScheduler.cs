@@ -147,9 +147,9 @@ namespace HoloToolkit.Unity
 
         private void AddDeferredTimers()
         {
-            foreach (var timer in deferredTimers)
+            for (int i = 0; i < deferredTimers.Count; i++)
             {
-                AddTimer(timer, false);
+                AddTimer(deferredTimers[i]);
             }
 
             deferredTimers.Clear();
@@ -160,7 +160,7 @@ namespace HoloToolkit.Unity
             // while waiting for an event to happen, we'll just early out
             while (timers.Count > 0 && HasKeyTimePassed(timers.Top.Key))
             {
-                var timer = timers.Top.Value;
+                TimerData timer = timers.Top.Value;
 
                 // remove from active timers
                 RemoveActiveTimer(timer.Id);
@@ -222,7 +222,7 @@ namespace HoloToolkit.Unity
                     // TODO: remove specific value
                     // allocation here is fine, since it's a temporary, and will get cleaned in gen 0 GC
                     int id = timerId.Id;
-                    timers.RemoveAtPriority(priority, (t => t.Id == id));
+                    timers.RemoveAtPriority(priority, t => t.Id == id);
                 }
                 else
                 {
