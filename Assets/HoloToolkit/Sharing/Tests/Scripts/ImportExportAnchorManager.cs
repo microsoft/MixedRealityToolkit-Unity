@@ -85,23 +85,22 @@ namespace HoloToolkit.Sharing.Tests
         {
             get
             {
-                if (SharingStage.Instance != null)
+                if (SharingStage.Instance == null || SharingStage.Instance.SessionUsersTracker == null)
                 {
-                    if (SharingStage.Instance.SessionUsersTracker != null)
-                    {
-                        long localUserId;
-                        using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
-                        {
-                            localUserId = localUser.GetID();
-                        }
+                    return false;
+                }
 
-                        for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
-                        {
-                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() < localUserId)
-                            {
-                                return false;
-                            }
-                        }
+                long localUserId;
+                using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
+                {
+                    localUserId = localUser.GetID();
+                }
+
+                for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
+                {
+                    if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() < localUserId)
+                    {
+                        return false;
                     }
                 }
 
