@@ -108,7 +108,14 @@ namespace HoloToolkit.Sharing
         /// </summary> 
         private DiscoveryClientAdapter discoveryClientAdapter;
 
+        /// <summary>
+        /// The current ping interval during AutoDiscovery updates.
+        /// </summary>
         private float pingIntervalCurrent;
+
+        /// <summary>
+        /// True when AutoDiscovery is actively searching, otherwise false.
+        /// </summary>
         private bool isTryingToFindServer;
 
         [Tooltip("Show Detailed Information for server connections")]
@@ -128,7 +135,7 @@ namespace HoloToolkit.Sharing
             }
             set
             {
-                using (XString userName = new XString(value))
+                using (var userName = new XString(value))
                 {
                     Manager.SetUserName(userName);
                 }
@@ -171,8 +178,6 @@ namespace HoloToolkit.Sharing
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-
             if (discoveryClient != null)
             {
                 discoveryClient.RemoveListener(discoveryClientAdapter);
@@ -227,6 +232,8 @@ namespace HoloToolkit.Sharing
 
             // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects
             GC.Collect();
+
+            base.OnDestroy();
         }
 
         private void LateUpdate()
@@ -245,7 +252,7 @@ namespace HoloToolkit.Sharing
 
         private void Connect()
         {
-            ClientConfig config = new ClientConfig(ClientRole);
+            var config = new ClientConfig(ClientRole);
             config.SetIsAudioEndpoint(IsAudioEndpoint);
             config.SetLogWriter(logWriter);
 
