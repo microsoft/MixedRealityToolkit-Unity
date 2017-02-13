@@ -224,7 +224,7 @@ namespace HoloToolkit.Sharing.Tests
             thisAnchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
 #endif
             // SharingStage should be valid at this point, but we may not be connected.
-            if (SharingStage.Instance.Connection != null && SharingStage.Instance.Connection.IsConnected())
+            if (SharingStage.Instance.IsConnected)
             {
                 Connected();
             }

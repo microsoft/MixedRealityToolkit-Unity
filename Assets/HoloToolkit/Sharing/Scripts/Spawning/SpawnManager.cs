@@ -25,7 +25,7 @@ namespace HoloToolkit.Sharing.Spawning
         {
             // SharingStage should be valid at this point, but we may not be connected.
             NetworkManager = SharingStage.Instance;
-            if (NetworkManager.Connection != null && NetworkManager.Connection.IsConnected())
+            if (NetworkManager.IsConnected)
             {
                 Connected();
             }

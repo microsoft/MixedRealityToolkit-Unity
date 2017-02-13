@@ -158,6 +158,22 @@ namespace HoloToolkit.Sharing
             }
         }
 
+        /// <summary>
+        /// Returns true if connected to a Sharing Service server.
+        /// </summary>
+        public bool IsConnected
+        {
+            get
+            {
+                if (Manager != null && Connection != null)
+                {
+                    return Connection.IsConnected();
+                }
+
+                return false;
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
