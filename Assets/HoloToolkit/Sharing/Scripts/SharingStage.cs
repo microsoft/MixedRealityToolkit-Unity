@@ -150,7 +150,7 @@ namespace HoloToolkit.Sharing
         {
             get
             {
-                if (networkConnection == null)
+                if (networkConnection == null && Manager != null)
                 {
                     networkConnection = Manager.GetServerConnection();
                 }

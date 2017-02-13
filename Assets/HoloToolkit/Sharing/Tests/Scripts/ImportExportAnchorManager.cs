@@ -223,8 +223,8 @@ namespace HoloToolkit.Sharing.Tests
 #if UNITY_WSA && !UNITY_EDITOR
             thisAnchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
 #endif
-            // SharingStage should be valid at this point.
-            if (SharingStage.Instance.Connection.IsConnected())
+            // SharingStage should be valid at this point, but we may not be connected.
+            if (SharingStage.Instance.Connection != null && SharingStage.Instance.Connection.IsConnected())
             {
                 Connected();
             }

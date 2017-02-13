@@ -30,8 +30,8 @@ namespace HoloToolkit.Sharing.Tests
         {
             CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = UpdateHeadTransform;
 
-            // SharingStage should be valid at this point.
-            if (SharingStage.Instance.Connection.IsConnected())
+            // SharingStage should be valid at this point, but we may not be connected.
+            if (SharingStage.Instance.Connection != null && SharingStage.Instance.Connection.IsConnected())
             {
                 Connected();
             }
