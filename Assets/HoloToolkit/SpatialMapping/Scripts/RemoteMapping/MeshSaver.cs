@@ -116,7 +116,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="fileName">Name of the saved mesh file. Exclude path and extension.</param>
         /// <returns>Collection of Mesh objects read from the file.</returns>
         /// <remarks>Determines the path from which to load and automatically applies the file extension.</remarks>
-        public static IEnumerable<Mesh> Load(string fileName)
+        public static IList<Mesh> Load(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
             {

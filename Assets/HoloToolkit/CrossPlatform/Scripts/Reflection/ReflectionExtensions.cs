@@ -152,6 +152,11 @@ public static class ReflectionExtensions
         return type.GetTypeInfo().IsEnum;
     }
 
+    public static bool IsValueType(this Type type)
+    {
+        return type.GetTypeInfo().IsValueType;
+    }
+
     public static bool IsAssignableFrom(this Type type, TypeInfo typeInfo)
     {
         return type.GetTypeInfo().IsAssignableFrom(typeInfo);
@@ -186,6 +191,11 @@ public static class ReflectionExtensions
     public static bool IsEnum(this Type type)
     {
         return type.IsEnum;
+    }
+
+    public static bool IsValueType(this Type type)
+    {
+        return type.IsValueType;
     }
 }
 
