@@ -149,32 +149,39 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             // Tell user we are processing
             AppState.Instance.ObjectPlacementDescription = placementName + " (processing)";
 
-#if UNITY_WSA && !UNITY_EDITOR
-        // Kick off a thread to do process the queries
-        System.Threading.Tasks.Task.Run(() =>
-            {
-                // Go through the queries in the list
-                for (int i = 0; i < placementList.Count; ++i)
-                {
-                    // Do the query
-                    bool success = PlaceObject(
-                        placementName,
-                        placementList[i].PlacementDefinition,
-                        placementList[i].PlacementRules,
-                        placementList[i].PlacementConstraints, 
-                        clearObjectsFirst, 
-                        true);
-
-                    // Mark the result
-                    queryStatus.CountSuccess = success ? (queryStatus.CountSuccess + 1) : queryStatus.CountSuccess;
-                    queryStatus.CountFail = !success ? (queryStatus.CountFail + 1) : queryStatus.CountFail;
-                }
-
-                // Done
-                queryStatus.State = QueryStates.Finished;
-            }
-        );
+            // Kick off a thread to do process the queries
+#if UNITY_EDITOR || !UNITY_WSA
+            new System.Threading.Thread
+#else
+            System.Threading.Tasks.Task.Run
 #endif
+            (() =>
+                {
+                    // Go through the queries in the list
+                    for (int i = 0; i < placementList.Count; ++i)
+                    {
+                        // Do the query
+                        bool success = PlaceObject(
+                            placementName,
+                            placementList[i].PlacementDefinition,
+                            placementList[i].PlacementRules,
+                            placementList[i].PlacementConstraints, 
+                            clearObjectsFirst, 
+                            true);
+
+                        // Mark the result
+                        queryStatus.CountSuccess = success ? (queryStatus.CountSuccess + 1) : queryStatus.CountSuccess;
+                        queryStatus.CountFail = !success ? (queryStatus.CountFail + 1) : queryStatus.CountFail;
+                    }
+
+                    // Done
+                    queryStatus.State = QueryStates.Finished;
+                }
+            )
+#if UNITY_EDITOR || !UNITY_WSA
+            .Start()
+#endif
+            ;
 
             return true;
         }
@@ -415,39 +422,39 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void Update_Queries()
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.R))
             {
                 Query_OnFloor();
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.T))
             {
                 Query_OnWall();
             }
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.Y))
             {
                 Query_OnCeiling();
             }
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (Input.GetKeyDown(KeyCode.U))
             {
                 Query_OnEdge();
             }
-            if (Input.GetKeyDown(KeyCode.U))
+            if (Input.GetKeyDown(KeyCode.I))
             {
                 Query_OnFloorAndCeiling();
             }
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.O))
             {
                 Query_RandomInAir_AwayFromMe();
             }
-            if (Input.GetKeyDown(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.P))
             {
                 Query_OnEdge_NearCenter();
             }
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.LeftBracket))
             {
                 Query_OnFloor_AwayFromMe();
             }
-            if (Input.GetKeyDown(KeyCode.LeftBracket))
+            if (Input.GetKeyDown(KeyCode.RightBracket))
             {
                 Query_OnFloor_NearMe();
             }
