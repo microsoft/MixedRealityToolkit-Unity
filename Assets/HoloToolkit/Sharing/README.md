@@ -97,22 +97,14 @@ Any SyncPrimitive tagged with the [SyncData] attribute will automatically be add
 
 ### Configuration
 ---
-Ensure you have the Sharing Service Feature enabled in `HoloToolkit -> Configure -> Apply HoloLens Project Settings`.
-
-Enabling the Sharing Service will also enable these UWP capabilities:
+Ensure you have the following capabilities set in Player Settings -> Windows Store -> Publishing Settings -> Capabilities:
 
 1. SpatialPerception
-2. InternetClient
-3. InternetClientServer
-4. PrivateNetworkClientServer
-5. Microphone capabilities
+2. InternetClientServer
+3. PrivateNetworkClientServer
+4. Microphone capabilities
 
-Enabling the Sharing Service will also uppack a new directory in your projects root folder named `External`.
-
-To run the Sharing Service `HoloToolkit -> Launch Sharing Service`.
-This will create a new instance of the server on your machine.
-
-For a production envionment, follow the instructions from the main HoloToolkit: [Running the Server](../../../External/HoloToolkit/Sharing/DocSource/MDFiles/GettingStarted.md#running-the-server).
+Install or run the server instance.
 
 ### Troubleshooting
 ---
