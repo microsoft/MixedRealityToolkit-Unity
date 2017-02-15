@@ -112,6 +112,19 @@ Install or run the server instance.
 - Make sure all devices are connected to the same Wireless Local Area Network.
 - Ensure all firewall settings are correct.  Windows firewall gives you options to enable/disable by network type (private, public, home), make sure you're enabling the firewall for your connection's type.
 
+####Invalid Schema Version
+
+```
+SharingService [..\..\Source\Common\Private\SessionListHandshakeLogic.cpp (67)]: 
+***************************************************************
+List Server Handshake Failed: Invalid schema version. 
+Expected: 17, got 15 
+Please sync to latest XTools
+***************************************************************
+```
+
+- Ensure you're using the latest binaries of the sharing service found at `HoloToolkit-Unity\External\HoloToolkit\Sharing\Server`.
+
 ### [Plugins](Plugins)
 ---
 Contains compiled architecture specific binaries for SharingClient.dll which are required by the Unity application for accessing sharing APIs.
