@@ -44,6 +44,7 @@ namespace HoloToolkit.Unity.InputModule
         private bool isDragging;
         private bool isGazed;
         private Vector3 objRefForward;
+        private Vector3 objRefUp;
         private float objRefDistance;
         private Quaternion gazeAngularOffset;
         private float handRefDistance;
@@ -117,6 +118,7 @@ namespace HoloToolkit.Unity.InputModule
             objRefDistance = Vector3.Magnitude(gazeHitPosition - pivotPosition);
 
             Vector3 objForward = HostTransform.forward;
+            Vector3 objUp = HostTransform.up;
 
             // Store where the object was grabbed from
             objRefGrabPoint = mainCamera.transform.InverseTransformDirection(HostTransform.position - gazeHitPosition);
@@ -125,10 +127,12 @@ namespace HoloToolkit.Unity.InputModule
             Vector3 handDirection = Vector3.Normalize(handPosition - pivotPosition);
 
             objForward = mainCamera.transform.InverseTransformDirection(objForward);       // in camera space
+            objUp = mainCamera.transform.InverseTransformDirection(objUp);       		   // in camera space
             objDirection = mainCamera.transform.InverseTransformDirection(objDirection);   // in camera space
             handDirection = mainCamera.transform.InverseTransformDirection(handDirection); // in camera space
 
             objRefForward = objForward;
+            objRefUp = objUp;
 
             // Store the initial offset between the hand and the object, so that we can consider it when dragging
             gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirection);
@@ -197,7 +201,8 @@ namespace HoloToolkit.Unity.InputModule
             else
             {
                 Vector3 objForward = mainCamera.transform.TransformDirection(objRefForward); // in world space
-                draggingRotation = Quaternion.LookRotation(objForward);
+                Vector3 objUp = mainCamera.transform.TransformDirection(objRefUp);   // in world space
+                draggingRotation = Quaternion.LookRotation(objForward, objUp);
             }
 
             // Apply Final Position
