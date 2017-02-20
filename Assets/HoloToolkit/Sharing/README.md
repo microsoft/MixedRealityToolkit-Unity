@@ -319,8 +319,14 @@ Broadcasts the head transform of the local user to other users in the session, a
 #### RoomTest.cs
 Test class for demonstrating creating rooms and anchors.
 
-#### SpawnTestKeyboardSpawning.cs
-Class that handles spawning sync objects on keyboard presses, for the `SpawningTest.scene`.
+#### SyncObjectSpawner.cs
+Class that handles spawning and deleteing sync objects for the `SpawningTest.scene`.  Uses the `KeywordManager` to spawn objects using voice and keyboard input.
+
+|Voice Command|Key Command|Description|
+|---|---|---|
+| Spawn Basic | Key `I`| Spawns a cube with a `SyncSpawnedObject` basic sync model.|
+| Spawn Custom | Key `O`| Spawns a sphere with a `SyncSpawnTestSphere` custom sync model.|
+| Delete Object | Key `M`| Deletes both sync model types.|
 
 #### SyncSpawnTestSphere.cs
 Class that demonstrates a custom class using sync model attributes.
@@ -363,7 +369,7 @@ This test demonstrates how to spawn and delete sync objects in your scene and ac
 1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
 2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
 3. **PrefabSpawnManager.cs** enables you to store prefab references to use when spawning.
-4. **SpawnTestKeyboardSpawning** demonstrates how to spawn sync objects, as well as custom class types.
+4. **SyncObjectSpawner.cs** demonstrates how to spawn and delete sync objects, as well as custom class types.
 
 ---
 ##### [Go back up to the table of contents](#table-of-contents)
