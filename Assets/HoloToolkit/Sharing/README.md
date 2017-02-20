@@ -330,13 +330,14 @@ Used to demonstrate how to get notifications when users leave and enter room.
 
 ### [Tests](Tests/Scenes)
 ---
-Tests related to the sharing features. To use the scene:
+Tests related to the sharing features. To use the each scene:
 
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
 3. Either click "Play" in the unity editor or File -> Build Settings.
 4. Add Open Scenes, Platform -> Windows Store, SDK -> Universal 10, Build Type -> D3D, Check 'Unity C# Projects'.
-5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
+5. Enable all required [capabilities](configuration).
+6. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
 #### SharingTest.unity 
 This test demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
@@ -357,7 +358,7 @@ It also demonstrates how to upload and download new anchors.
 3. **RoomTest.cs** shows how to create, join, and leave rooms; also shows how to create and download anchors.
 
 #### SharingSpawnTest.unity
-This test demonstrates how to spawn sync objects in your scene and across your networked clients.
+This test demonstrates how to spawn and delete sync objects in your scene and across your networked clients.
 
 1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
 2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
