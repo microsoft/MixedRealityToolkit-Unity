@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using HoloToolkit.Sharing.Spawning;
+using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Sharing.Tests
 {
@@ -53,6 +54,23 @@ namespace HoloToolkit.Sharing.Tests
             spawnedObject.TestFloat.Value = Random.Range(0f, 100f);
 
             spawnManager.Spawn(spawnedObject, position, rotation, spawnParentTransform.gameObject, "SpawnTestSphere", false);
+        }
+
+        /// <summary>
+        /// Deletes any sync object that inherits from SyncSpawnObject.
+        /// </summary>
+        public void DeleteSyncObject()
+        {
+            GameObject hitObject = GazeManager.Instance.HitObject;
+            if (hitObject != null)
+            {
+                var syncModelAccessor = hitObject.GetComponent<DefaultSyncModelAccessor>();
+                if (syncModelAccessor != null)
+                {
+                    var syncSpawnObject = (SyncSpawnedObject)syncModelAccessor.SyncModel;
+                    spawnManager.Delete(syncSpawnObject);
+                }
+            }
         }
     }
 }
