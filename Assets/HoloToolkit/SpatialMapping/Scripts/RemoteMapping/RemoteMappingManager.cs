@@ -17,10 +17,12 @@ namespace HoloToolkit.Unity.SpatialMapping
         [Tooltip("Keyword for sending meshes from HoloLens to Unity over the network.")]
         public string SendMeshesKeyword = "send meshes";
 
+#if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// Receives meshes collected over the network.
         /// </summary>
         private RemoteMeshTarget remoteMeshTarget;
+#endif
 
         /// <summary>
         /// Used for voice commands.

@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using HoloToolkit.Unity;
-using System;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity.SpatialMapping;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -189,6 +192,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private string spaceQueryDescription;
         private string objectPlacementDescription;
         private uint trackedHandsCount = 0;
+        private KeywordRecognizer keywordRecognizer;
 
         // Functions
         private void Start()
@@ -198,6 +202,17 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             Parent_Scene.transform.position = sceneOrigin;
             MappingObserver.SetObserverOrigin(sceneOrigin);
             InputManager.Instance.AddGlobalListener(gameObject);
+
+
+            var keywordsToActions = new Dictionary<string, Action>
+            {
+                { "Toggle Scanned Mesh", ToggleScannedMesh },
+                { "Toggle Processed Mesh", ToggleProcessedMesh },
+            };
+
+            keywordRecognizer = new KeywordRecognizer(keywordsToActions.Keys.ToArray());
+            keywordRecognizer.OnPhraseRecognized += args => keywordsToActions[args.text].Invoke();
+            keywordRecognizer.Start();
         }
 
         protected override void OnDestroy()
@@ -225,15 +240,25 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             if (Input.GetKeyDown(KeyCode.BackQuote) &&
                 (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
             {
-                SpatialMappingManager.Instance.DrawVisualMeshes = !SpatialMappingManager.Instance.DrawVisualMeshes;
-                Debug.Log("SpatialUnderstanding -> ProcessedMap.drawMeshes=" + SpatialMappingManager.Instance.DrawVisualMeshes);
+                ToggleScannedMesh();
             }
             else if (Input.GetKeyDown(KeyCode.BackQuote) &&
                      (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
-                SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
-                Debug.Log("SpatialUnderstanding -> ProcessedMap.drawMeshes=" + SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
+                ToggleProcessedMesh();
             }
+        }
+
+        private static void ToggleScannedMesh()
+        {
+            SpatialMappingManager.Instance.DrawVisualMeshes = !SpatialMappingManager.Instance.DrawVisualMeshes;
+            Debug.Log("SpatialUnderstanding -> SpatialMappingManager.Instance.DrawVisualMeshes=" + SpatialMappingManager.Instance.DrawVisualMeshes);
+        }
+
+        private static void ToggleProcessedMesh()
+        {
+            SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
+            Debug.Log("SpatialUnderstanding -> SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh=" + SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
         }
 
         private void Update()
