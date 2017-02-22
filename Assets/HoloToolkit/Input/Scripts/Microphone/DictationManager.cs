@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Dictation Audio Source. Useful for dictation playback.
         /// </summary>
-        public AudioSource DictationAudioSource { get; private set; }
+        public AudioSource DictationAudioSource { get; set; }
 
         /// <summary>
         /// String result of the current dictation.
@@ -120,8 +120,6 @@ namespace HoloToolkit.Unity.InputModule
 
             DictationResult = string.Empty;
 
-            DictationAudioSource = gameObject.GetComponent<AudioSource>();
-
             dictationRecognizer = new DictationRecognizer();
             dictationRecognizer.DictationHypothesis += DictationRecognizer_DictationHypothesis;
             dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
@@ -176,7 +174,10 @@ namespace HoloToolkit.Unity.InputModule
             recordingStarted = true;
 
             // Start recording from the microphone.
-            DictationAudioSource.clip = Microphone.Start(DeviceName, false, recordingTime, samplingRate);
+            if (DictationAudioSource != null)
+            {
+                DictationAudioSource.clip = Microphone.Start(DeviceName, false, recordingTime, samplingRate);
+            }
         }
 
         /// <summary>
