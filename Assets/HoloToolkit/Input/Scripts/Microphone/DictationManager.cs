@@ -21,12 +21,17 @@ namespace HoloToolkit.Unity.InputModule
         public string DictationResult { get; private set; }
 
         /// <summary>
-        /// Initial value for InitialSilenceTimeout. Only used to initialize the DictationRecognizer's InitialSilenceTimeout value during Start.
+        /// Initial value for InitialSilenceTimeout.
+        /// <remarks>Only used to initialize the DictationRecognizer's InitialSilenceTimeout value during Start.</remarks>
         /// </summary>
         [SerializeField]
         [Tooltip("The default timeout with initial silence is 5 seconds.")]
         [Range(0.1f, 30f)]
         private float initialSilenceTimeout = 5f;
+
+        /// <summary>
+        /// The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
+        /// </summary>
         public float InitialSilenceTimeout
         {
             get
@@ -47,12 +52,17 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Initial value for AutoSilenceTimeout. Only used to initalize the DictationRecognizer's AutoSilenceTimeout value during Start.
+        /// Initial value for AutoSilenceTimeout.
+        /// <remarks>Only used to initalize the DictationRecognizer's AutoSilenceTimeout value during Start.</remarks>
         /// </summary>
         [SerializeField]
         [Tooltip("The default timeout after a recognition is 20 seconds.")]
         [Range(5f, 60f)]
         private float autoSilenceTimeout = 20f;
+
+        /// <summary>
+        /// The time length in seconds before dictation recognizer session ends due to lack of audio input.
+        /// </summary>
         public float AutoSilenceTimeout
         {
             get
