@@ -1,6 +1,6 @@
 ﻿Shader "HoloToolkit/3DTextShader"
 {
-Properties
+    Properties
     {
         _MainTex ("Alpha (A)", 2D) = "white" {}
 
