@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: 3DTextSelawik_black
+  m_Name: 3DTextSelawik
   m_Shader: {fileID: 4800000, guid: cfe12bbf45a06fb4b8fce6adb726485f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -130,7 +130,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0, g: 0, b: 0, a: 1}
+      second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
