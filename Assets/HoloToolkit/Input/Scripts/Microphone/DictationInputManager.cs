@@ -57,7 +57,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return dictationRecognizer != null ? dictationRecognizer.AutoSilenceTimeoutSeconds : autoSilenceTimeout;
             }
-
             set
             {
                 if (value <= 0) throw new ArgumentOutOfRangeException("value");
