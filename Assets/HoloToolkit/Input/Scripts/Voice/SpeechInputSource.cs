@@ -42,13 +42,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private KeywordRecognizer keywordRecognizer;
 
-        private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
 
         protected override void Start()
         {
             base.Start();
-
-            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
 
             int keywordCount = Keywords.Length;
             if (keywordCount > 0)
@@ -146,20 +143,9 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
-            delegate (ISpeechHandler handler, BaseEventData eventData)
-            {
-                SpeechKeywordRecognizedEventData casted = ExecuteEvents.ValidateEventData<SpeechKeywordRecognizedEventData>(eventData);
-                handler.OnSpeechKeywordRecognized(casted);
-            };
-
         protected void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
-            // Create input event
-            speechKeywordRecognizedEventData.Initialize(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            inputManager.HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
+            InputManager.Instance.RaiseSpeechKeywordPhraseRecognized(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
