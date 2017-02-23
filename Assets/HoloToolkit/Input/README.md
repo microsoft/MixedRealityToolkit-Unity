@@ -22,6 +22,7 @@ Game objects that want to consume input events can implement one or many **input
 - **INavigationnHandler** for the Windows navigation gesture.
 - **ISourceStateHandler** for the source detected and source lost events.
 - **ISpeechHandler** for voice commands.
+- **IDictationHandler** for speech to text dictation.
 
 The **input manager** listens to the various events coming from the input sources, and also takes into account the gaze. Currently, that gaze is always coming from the GazeManager class, but this could be extended to support multiple gaze sources if the need arises.
 
