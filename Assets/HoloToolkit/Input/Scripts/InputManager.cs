@@ -712,7 +712,7 @@ namespace HoloToolkit.Unity.InputModule
             delegate (IDictationHandler handler, BaseEventData eventData)
             {
                 DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
-                handler.OnDictationComplete(casted);
+                handler.OnDictationError(casted);
             };
 
         public void RaiseDictationError(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null)

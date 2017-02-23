@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Unity.InputModule
@@ -19,9 +18,6 @@ namespace HoloToolkit.Unity.InputModule
         /// Initial value for InitialSilenceTimeout.
         /// <remarks>Only used to initialize the DictationRecognizer's InitialSilenceTimeout value during Start.</remarks>
         /// </summary>
-        [SerializeField]
-        [Tooltip("The default timeout with initial silence is 5 seconds.")]
-        [Range(0.1f, 30f)]
         private static float initialSilenceTimeout = 5f;
 
         /// <summary>
@@ -50,9 +46,6 @@ namespace HoloToolkit.Unity.InputModule
         /// Initial value for AutoSilenceTimeout.
         /// <remarks>Only used to initalize the DictationRecognizer's AutoSilenceTimeout value during Start.</remarks>
         /// </summary>
-        [SerializeField]
-        [Tooltip("The default timeout after a recognition is 20 seconds.")]
-        [Range(5f, 60f)]
         private static float autoSilenceTimeout = 20f;
 
         /// <summary>
@@ -79,12 +72,27 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
+        /// Initial value for RecordingTime.
+        /// <remarks>Only used to initalize the DictationRecognizer's RecordingTime value during Start.</remarks>
+        /// </summary>
+        private static int recordingTime = 10;
+
+        /// <summary>
         /// Length in seconds for the manager to listen.
         /// </summary>
-        [SerializeField]
-        [Tooltip("Length in seconds for the manager to listen.")]
-        [Range(1f, 60f)]
-        private static int recordingTime = 10;
+        public static int RecordingTime
+        {
+            get
+            {
+                return recordingTime;
+            }
+            set
+            {
+                if (value <= 0) throw new ArgumentOutOfRangeException("value");
+
+                recordingTime = value;
+            }
+        }
 
         /// <summary>
         /// Caches the text currently being displayed in dictation display text.
@@ -182,7 +190,7 @@ namespace HoloToolkit.Unity.InputModule
             recordingStarted = true;
 
             // Start recording from the microphone.
-            dictationAudioClip = Microphone.Start(DeviceName, false, recordingTime, samplingRate);
+            dictationAudioClip = Microphone.Start(DeviceName, false, RecordingTime, samplingRate);
         }
 
         /// <summary>
