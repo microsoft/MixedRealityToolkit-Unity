@@ -16,7 +16,6 @@ namespace HoloToolkit.Unity.InputModule
     {
         /// <summary>
         /// Initial value for InitialSilenceTimeout.
-        /// <remarks>Only used to initialize the DictationRecognizer's InitialSilenceTimeout value during Start.</remarks>
         /// </summary>
         private static float initialSilenceTimeout = 5f;
 
@@ -44,7 +43,6 @@ namespace HoloToolkit.Unity.InputModule
 
         /// <summary>
         /// Initial value for AutoSilenceTimeout.
-        /// <remarks>Only used to initalize the DictationRecognizer's AutoSilenceTimeout value during Start.</remarks>
         /// </summary>
         private static float autoSilenceTimeout = 20f;
 
@@ -72,7 +70,6 @@ namespace HoloToolkit.Unity.InputModule
 
         /// <summary>
         /// Initial value for RecordingTime.
-        /// <remarks>Only used to initalize the DictationRecognizer's RecordingTime value during Start.</remarks>
         /// </summary>
         private static int recordingTime = 10;
 
@@ -139,10 +136,6 @@ namespace HoloToolkit.Unity.InputModule
             dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
             dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
             dictationRecognizer.DictationError += DictationRecognizer_DictationError;
-
-            //Initialize our timeout values
-            dictationRecognizer.InitialSilenceTimeoutSeconds = initialSilenceTimeout;
-            dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
 
             // Query the maximum frequency of the default microphone.
             int minSamplingRate; // Unsued.
