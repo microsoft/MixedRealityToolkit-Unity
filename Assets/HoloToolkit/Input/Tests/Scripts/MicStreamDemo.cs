@@ -1,16 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Assertions;
-using System.Text;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -31,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// if keepAllData==false, you'll always get the newest data no matter how long the program hangs for any reason, but will lose some data if the program does hang 
         /// can only be set on initialization
         /// </summary>
-        public bool KeepAllData = false;
+        public bool KeepAllData;
 
         /// <summary>
         /// Should the mic stream start automatically when this component is enabled?
@@ -51,7 +42,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// <summary>
         /// Records estimation of volume from the microphone to affect other elements of the game object
         /// </summary>
-        private float averageAmplitude = 0;
+        private float averageAmplitude;
 
         /// <summary>
         /// how small can our object be in this demo?
@@ -64,8 +55,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             CheckForErrorOnCall(MicStream.MicGetFrame(buffer, buffer.Length, numChannels));
 
             float sumOfValues = 0;
+
             // figure out the average amplitude from this new data
-            for (int i=0; i<buffer.Length; i++)
+            for (int i = 0; i < buffer.Length; i++)
             {
                 sumOfValues += Mathf.Abs(buffer[i]);
             }
@@ -79,7 +71,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             if (!ListenToAudioSource)
             {
-                this.gameObject.GetComponent<AudioSource>().volume = 0; // can set to zero to mute mic monitoring
+                gameObject.GetComponent<AudioSource>().volume = 0; // can set to zero to mute mic monitoring
             }
 
             if (AutomaticallyStartStream)
@@ -122,42 +114,33 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 CheckForErrorOnCall(MicStream.MicStopStream());
             }
 
-            this.gameObject.transform.localScale = new Vector3(minSize + averageAmplitude, minSize + averageAmplitude, minSize + averageAmplitude);
+            gameObject.transform.localScale = new Vector3(minSize + averageAmplitude, minSize + averageAmplitude, minSize + averageAmplitude);
         }
 
-        private void CheckForErrorOnCall(int returnCode)
+        private static void CheckForErrorOnCall(int returnCode)
         {
             MicStream.CheckForErrorOnCall(returnCode);
         }
 
-#if DOTNET_FX
-        // on device, deal with all the ways that we could suspend our program in as few lines as possible
+        // Deal with all the ways that we could suspend our program in as few lines as possible
         private void OnApplicationPause(bool pause)
         {
-            if (pause)
-            {
-                CheckForErrorOnCall(MicStream.MicPause());
-            }
-            else
-            {
-                CheckForErrorOnCall(MicStream.MicResume());
-            }
+            CheckForErrorOnCall(pause ? MicStream.MicPause() : MicStream.MicResume());
         }
 
         private void OnApplicationFocus(bool focused)
         {
-            this.OnApplicationPause(!focused);
+            OnApplicationPause(!focused);
         }
 
         private void OnDisable()
         {
-            this.OnApplicationPause(true);
+            OnApplicationPause(true);
         }
 
         private void OnEnable()
         {
-            this.OnApplicationPause(false);
+            OnApplicationPause(false);
         }
-#endif
     }
 }
