@@ -98,6 +98,11 @@ namespace HoloToolkit.Unity
             public readonly Mesh MeshObject = new Mesh();
 
             /// <summary>
+            /// The MeshCollider with which this mesh is associated.
+            /// </summary>
+            public MeshCollider Collider = null;
+
+            /// <summary>
             /// Clears the geometry, but does not clear the mesh.
             /// </summary>
             public void Reset()
@@ -118,6 +123,11 @@ namespace HoloToolkit.Unity
                     MeshObject.SetTriangles(tris, 0);
                     MeshObject.RecalculateNormals();
                     MeshObject.RecalculateBounds();
+                    if (Collider)
+                    {
+                      Collider.sharedMesh = null;
+                      Collider.sharedMesh = MeshObject;
+                    }
                 }
             }
 
@@ -183,13 +193,16 @@ namespace HoloToolkit.Unity
 
                 int surfaceObjectIndex = SurfaceObjects.Count;
 
-                AddSurfaceObject(CreateSurfaceObject(
-                    mesh: nextSectorData.MeshObject,
-                    objectName: string.Format("SurfaceUnderstanding Mesh-{0}", surfaceObjectIndex),
-                    parentObject: transform,
-                    meshID: surfaceObjectIndex,
-                    drawVisualMeshesOverride: DrawProcessedMesh
-                    ));
+                SurfaceObject surfaceObject = CreateSurfaceObject(
+                  mesh: nextSectorData.MeshObject,
+                  objectName: string.Format("SurfaceUnderstanding Mesh-{0}", surfaceObjectIndex),
+                  parentObject: transform,
+                  meshID: surfaceObjectIndex,
+                  drawVisualMeshesOverride: DrawProcessedMesh);
+
+                nextSectorData.Collider = surfaceObject.Collider;
+
+                AddSurfaceObject(surfaceObject);
 
                 // Or make it if this is a new sector.
                 meshSectors.Add(sector, nextSectorData);
