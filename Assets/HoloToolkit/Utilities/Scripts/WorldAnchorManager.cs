@@ -141,6 +141,8 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void RemoveAllAnchors()
         {
+            SpatialMappingManager spatialMappingManager = SpatialMappingManager.Instance;
+
             // This case is unexpected, but just in case.
             if (AnchorStore == null)
             {
@@ -148,20 +150,22 @@ namespace HoloToolkit.Unity
             }
 
             WorldAnchor[] anchors = FindObjectsOfType<WorldAnchor>();
-            SpatialMappingManager spatialMappingManager = FindObjectOfType<SpatialMappingManager>();
 
             if (anchors != null)
             {
                 foreach (WorldAnchor anchor in anchors)
                 {
-                    //Don't remove SpatialMapping anchors
-                    if (anchor.gameObject.transform.parent.gameObject != spatialMappingManager.gameObject)
+                    // Don't remove SpatialMapping anchors if exists
+                    if (spatialMappingManager == null ||
+                        anchor.gameObject.transform.parent.gameObject != spatialMappingManager.gameObject)
+                    {
                         anchorOperations.Enqueue(new Unity.WorldAnchorManager.AnchorAttachmentInfo()
                         {
                             AnchorName = anchor.name,
                             GameObjectToAnchor = anchor.gameObject,
                             Operation = AnchorOperation.Delete
                         });
+                    }
                 }
             }
         }
