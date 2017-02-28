@@ -159,7 +159,7 @@ namespace HoloToolkit.Unity
                     if (spatialMappingManager == null ||
                         anchor.gameObject.transform.parent.gameObject != spatialMappingManager.gameObject)
                     {
-                        anchorOperations.Enqueue(new Unity.WorldAnchorManager.AnchorAttachmentInfo()
+                        anchorOperations.Enqueue(new AnchorAttachmentInfo()
                         {
                             AnchorName = anchor.name,
                             GameObjectToAnchor = anchor.gameObject,
