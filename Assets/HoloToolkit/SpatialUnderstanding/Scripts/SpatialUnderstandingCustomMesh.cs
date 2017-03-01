@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity
             /// <summary>
             /// The MeshCollider with which this mesh is associated.
             /// </summary>
-            public MeshCollider Collider = null;
+            public MeshCollider SpatialCollider = null;
 
             /// <summary>
             /// Clears the geometry, but does not clear the mesh.
@@ -123,11 +123,8 @@ namespace HoloToolkit.Unity
                     MeshObject.SetTriangles(tris, 0);
                     MeshObject.RecalculateNormals();
                     MeshObject.RecalculateBounds();
-                    if (Collider)
-                    {
-                      Collider.sharedMesh = null;
-                      Collider.sharedMesh = MeshObject;
-                    }
+                    SpatialCollider.sharedMesh = null;
+                    SpatialCollider.sharedMesh = MeshObject;
                 }
             }
 
@@ -200,7 +197,7 @@ namespace HoloToolkit.Unity
                   meshID: surfaceObjectIndex,
                   drawVisualMeshesOverride: DrawProcessedMesh);
 
-                nextSectorData.Collider = surfaceObject.Collider;
+                nextSectorData.SpatialCollider = surfaceObject.Collider;
 
                 AddSurfaceObject(surfaceObject);
 
