@@ -123,6 +123,7 @@ namespace HoloToolkit.Unity
                     MeshObject.SetTriangles(tris, 0);
                     MeshObject.RecalculateNormals();
                     MeshObject.RecalculateBounds();
+                    // The null assignment is required by Unity in order to pick up the new mesh
                     SpatialCollider.sharedMesh = null;
                     SpatialCollider.sharedMesh = MeshObject;
                 }
