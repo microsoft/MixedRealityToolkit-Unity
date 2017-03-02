@@ -531,7 +531,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private void CreateAnchorLocally()
         {
-            var anchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
+            var anchor = GetComponent<WorldAnchor>() ? GetComponent<WorldAnchor>() : gameObject.AddComponent<WorldAnchor>();
 
             if (anchor.isLocated)
             {
