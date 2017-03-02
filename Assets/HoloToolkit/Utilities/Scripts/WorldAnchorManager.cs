@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.VR.WSA;
+using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Unity
 {
@@ -133,6 +134,40 @@ namespace HoloToolkit.Unity
                     AnchorName = string.Empty,
                     Operation = AnchorOperation.Delete
                 });
+        }
+
+        /// <summary>
+        /// Removes all anchors from the scene and deletes them from the anchor store.
+        /// </summary>
+        public void RemoveAllAnchors()
+        {
+            SpatialMappingManager spatialMappingManager = SpatialMappingManager.Instance;
+
+            // This case is unexpected, but just in case.
+            if (AnchorStore == null)
+            {
+                Debug.LogError("remove all anchors called before anchor store is ready.");
+            }
+
+            WorldAnchor[] anchors = FindObjectsOfType<WorldAnchor>();
+
+            if (anchors != null)
+            {
+                foreach (WorldAnchor anchor in anchors)
+                {
+                    // Don't remove SpatialMapping anchors if exists
+                    if (spatialMappingManager == null ||
+                        anchor.gameObject.transform.parent.gameObject != spatialMappingManager.gameObject)
+                    {
+                        anchorOperations.Enqueue(new AnchorAttachmentInfo()
+                        {
+                            AnchorName = anchor.name,
+                            GameObjectToAnchor = anchor.gameObject,
+                            Operation = AnchorOperation.Delete
+                        });
+                    }
+                }
+            }
         }
 
         /// <summary>
