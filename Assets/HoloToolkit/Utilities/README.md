@@ -15,6 +15,8 @@ A drop in direction indicator that stays in the users view at all times.
 A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.
 
 ###[Scenes](Scenes)
+---
+
 ####HeadsetAdjustment.unity
 Helps the user adjust the headset so that he/she gets the full experience in demo scenarios. 
 
