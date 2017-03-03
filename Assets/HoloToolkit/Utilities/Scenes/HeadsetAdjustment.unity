@@ -469,7 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74ada5ef10acb14a8a07fc789a8bad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextSceneName: GazeRulerTest
+  NextSceneName: 
 --- !u!4 &1952827301
 Transform:
   m_ObjectHideFlags: 0

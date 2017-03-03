@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandler {
 
+    [Tooltip("The name of the scene to load when the user is ready. If left empty, the next scene is loaded as specified in the 'Scenes in Build')")]
     public string NextSceneName;
 
     public void OnInputClicked(InputClickedEventData eventData)
@@ -30,7 +31,6 @@ public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandl
 
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
     {
-        Debug.Log("Speech command recognized");
         GotoNextScene();
     }
 
