@@ -12,12 +12,12 @@ public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandl
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        Debug.Log("Clicked");
         GotoNextScene();
     }
 
     private void GotoNextScene()
     {
+        InputManager.Instance.RemoveGlobalListener(this.gameObject);
         if (!string.IsNullOrEmpty(NextSceneName))
         {
             SceneManager.LoadScene(NextSceneName);
@@ -35,12 +35,8 @@ public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandl
     }
 
     // Use this for initialization
-    void Start () {
+    private void Start ()
+    {
         InputManager.Instance.AddGlobalListener(this.gameObject);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	}	
 }
