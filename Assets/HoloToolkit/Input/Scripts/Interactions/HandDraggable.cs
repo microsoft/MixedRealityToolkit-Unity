@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
@@ -32,11 +32,17 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Scale by which hand movement in z is multipled to move the dragged object.")]
         public float DistanceScale = 2f;
 
+        [Header("Rotation Handling (only select one!)")]
         [Tooltip("Should the object be kept upright as it is being dragged?")]
         public bool IsKeepUpright = false;
 
         [Tooltip("Should the object be oriented towards the user as it is being dragged?")]
         public bool IsOrientTowardsUser = true;
+
+        [Tooltip("Should the rotation of the object be locked?")]
+        public bool LockRotation = false;
+
+        [Space(10)]
 
         public bool IsDraggingEnabled = true;
 
@@ -198,7 +204,12 @@ namespace HoloToolkit.Unity.InputModule
             {
                 draggingRotation = Quaternion.LookRotation(HostTransform.position - pivotPosition);
             }
-            else
+            else if (IsKeepUpright)
+            {
+                Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);
+                draggingRotation = upRotation * HostTransform.rotation; ;
+            }
+            else if (!IsRotationLocked)
             {
                 Vector3 objForward = mainCamera.transform.TransformDirection(objRefForward); // in world space
                 Vector3 objUp = mainCamera.transform.TransformDirection(objRefUp);   // in world space
@@ -207,13 +218,8 @@ namespace HoloToolkit.Unity.InputModule
 
             // Apply Final Position
             HostTransform.position = draggingPosition + mainCamera.transform.TransformDirection(objRefGrabPoint);
+            // Apply Final Rotation
             HostTransform.rotation = draggingRotation;
-
-            if (IsKeepUpright)
-            {
-                Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);
-                HostTransform.rotation = upRotation * HostTransform.rotation;
-            }
         }
 
         /// <summary>
