@@ -122,7 +122,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
             MicStream.CheckForErrorOnCall(returnCode);
         }
 
-        // Deal with all the ways that we could suspend our program in as few lines as possible
+#if DOTNET_FX
+        // On device, deal with all the ways that we could suspend our program in as few lines as possible.
         private void OnApplicationPause(bool pause)
         {
             CheckForErrorOnCall(pause ? MicStream.MicPause() : MicStream.MicResume());
@@ -142,5 +143,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             OnApplicationPause(false);
         }
+#endif
     }
 }
