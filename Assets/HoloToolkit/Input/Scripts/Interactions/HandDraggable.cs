@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity.InputModule
             Default,
             LockObjectRotation,
             OrientTowardUser,
-            KeepUpright
+            OrientTowardUserAndKeepUpright
         }
 
         public RotationModeEnum RotationMode = RotationModeEnum.Default;
@@ -198,20 +198,15 @@ namespace HoloToolkit.Unity.InputModule
 
             draggingPosition = pivotPosition + (targetDirection * targetDistance);
 
-            if (RotationMode == RotationModeEnum.OrientTowardUser)
+            if (RotationMode == RotationModeEnum.OrientTowardUser || RotationMode == RotationModeEnum.OrientTowardUserAndKeepUpright) 
             {
                 draggingRotation = Quaternion.LookRotation(HostTransform.position - pivotPosition);
-            }
-            else if (RotationMode == RotationModeEnum.KeepUpright)
-            {
-                Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);
-                draggingRotation = upRotation * HostTransform.rotation;
             }
             else if (RotationMode == RotationModeEnum.LockObjectRotation)
             {
                 draggingRotation = HostTransform.rotation;
             }
-            else
+            else // RotationModeEnum.Default
             {
                 Vector3 objForward = mainCamera.transform.TransformDirection(objRefForward); // in world space
                 Vector3 objUp = mainCamera.transform.TransformDirection(objRefUp);   // in world space
@@ -222,6 +217,11 @@ namespace HoloToolkit.Unity.InputModule
             HostTransform.position = draggingPosition + mainCamera.transform.TransformDirection(objRefGrabPoint);
             // Apply Final Rotation
             HostTransform.rotation = draggingRotation;
+            if (RotationMode == RotationModeEnum.OrientTowardUserAndKeepUpright)		
+            {		
+                Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);		
+                HostTransform.rotation = upRotation * HostTransform.rotation;		
+            }
         }
 
         /// <summary>
