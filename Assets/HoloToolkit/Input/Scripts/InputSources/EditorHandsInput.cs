@@ -58,22 +58,22 @@ namespace HoloToolkit.Unity.InputModule
         /// Delay before a finger pressed is considered.
         /// This mitigates fake finger taps that can sometimes be detected while the hand is moving.
         /// </summary>
-        private const float FINGER_PRESS_DELAY = 0.07f;
+        private const float fingerPressDelay = 0.07f;
 
         /// <summary>
         /// The maximum interval between button down and button up that will result in a clicked event.
         /// </summary>
-        private const float MAX_CLICK_DURATION = 0.5f;
+        private const float maxClickDuration = 0.5f;
 
         /// <summary>
         /// Number of fake hands supported in the editor.
         /// </summary>
-        private const int EDITOR_HANDS_COUNT = 2;
+        private const int editorHandsCount = 2;
 
         /// <summary>
-        /// Array containing the hands data for the two fake hands
+        /// Array containing the hands data for the two fake hands.
         /// </summary>
-        private readonly EditorHandData[] editorHandsData = new EditorHandData[EDITOR_HANDS_COUNT];
+        private readonly EditorHandData[] editorHandsData = new EditorHandData[editorHandsCount];
 
         /// <summary>
         /// Dictionary linking each hand ID to its data.
@@ -81,7 +81,7 @@ namespace HoloToolkit.Unity.InputModule
         private readonly Dictionary<uint, EditorHandData> handIdToData = new Dictionary<uint, EditorHandData>(4);
         private readonly List<uint> pendingHandIdDeletes = new List<uint>();
 
-        // HashSets used to be able to quickly update the hands data when hands become visible / not visible
+        // HashSets used to be able to quickly update the hands data when hands become visible / not visible.
         private readonly HashSet<uint> currentHands = new HashSet<uint>();
         private readonly HashSet<uint> newHands = new HashSet<uint>();
 
@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
         {
-            // Orientation is not supported by hands
+            // Orientation is not supported by hands.
             orientation = Quaternion.identity;
             return false;
         }
@@ -264,7 +264,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="time">Unscaled time of last event.</param>
         private void UpdateHandState(DebugInteractionSourceState handSource, EditorHandData editorHandData, float deltaTime, float time)
         {
-            // Update hand position
+            // Update hand position.
             Vector3 handPosition;
             if (handSource.Properties.Location.TryGetPosition(out handPosition))
             {
@@ -272,14 +272,14 @@ namespace HoloToolkit.Unity.InputModule
                 editorHandData.HandPosition = handPosition;
             }
 
-            // Check for finger presses
+            // Check for finger presses.
             if (handSource.Pressed != editorHandData.IsFingerDownPending)
             {
                 editorHandData.IsFingerDownPending = handSource.Pressed;
-                editorHandData.FingerStateUpdateTimer = FINGER_PRESS_DELAY;
+                editorHandData.FingerStateUpdateTimer = fingerPressDelay;
             }
 
-            // Finger presses are delayed to mitigate issue with hand position shifting during air tap
+            // Finger presses are delayed to mitigate issue with hand position shifting during air tap.
             editorHandData.FingerStateChanged = false;
             if (editorHandData.FingerStateUpdateTimer > 0)
             {
@@ -317,7 +317,7 @@ namespace HoloToolkit.Unity.InputModule
                 // New down presses are straightforward - fire input down and be on your way.
                 if (editorHandData.IsFingerDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, editorHandData.HandId);
+                    inputManager.RaiseSourceDown(this, editorHandData.HandId);
                     editorHandData.CumulativeDelta = Vector3.zero;
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
@@ -326,22 +326,22 @@ namespace HoloToolkit.Unity.InputModule
                     // A gesture is always either a click, a hold or a manipulation.
                     if (editorHandData.ManipulationInProgress)
                     {
-                        InputManager.Instance.RaiseManipulationCompleted(this, editorHandData.HandId, editorHandData.CumulativeDelta);
+                        inputManager.RaiseManipulationCompleted(this, editorHandData.HandId, editorHandData.CumulativeDelta);
                         editorHandData.ManipulationInProgress = false;
                     }
                     // Clicks and holds are based on time, and both are overruled by manipulations.
                     else if (editorHandData.HoldInProgress)
                     {
-                        InputManager.Instance.RaiseHoldCompleted(this, editorHandData.HandId);
+                        inputManager.RaiseHoldCompleted(this, editorHandData.HandId);
                         editorHandData.HoldInProgress = false;
                     }
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, editorHandData.HandId, 1);
+                        inputManager.RaiseInputClicked(this, editorHandData.HandId, 1);
                     }
 
-                    InputManager.Instance.RaiseSourceUp(this, editorHandData.HandId);
+                    inputManager.RaiseSourceUp(this, editorHandData.HandId);
                 }
             }
             // If the finger state hasn't changed, and the finger is down, that means if calculations need to be done
@@ -358,23 +358,23 @@ namespace HoloToolkit.Unity.InputModule
                         // Starting a manipulation will cancel an existing hold.
                         if (editorHandData.HoldInProgress)
                         {
-                            InputManager.Instance.RaiseHoldCanceled(this, editorHandData.HandId);
+                            inputManager.RaiseHoldCanceled(this, editorHandData.HandId);
                             editorHandData.HoldInProgress = false;
                         }
 
-                        InputManager.Instance.RaiseManipulationStarted(this, editorHandData.HandId, editorHandData.CumulativeDelta);
+                        inputManager.RaiseManipulationStarted(this, editorHandData.HandId, editorHandData.CumulativeDelta);
                         editorHandData.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.
-                    else if (!editorHandData.HoldInProgress && (time - editorHandData.FingerDownStartTime >= MAX_CLICK_DURATION))
+                    else if (!editorHandData.HoldInProgress && (time - editorHandData.FingerDownStartTime >= maxClickDuration))
                     {
-                        InputManager.Instance.RaiseHoldStarted(this, editorHandData.HandId);
+                        inputManager.RaiseHoldStarted(this, editorHandData.HandId);
                         editorHandData.HoldInProgress = true;
                     }
                 }
                 else
                 {
-                    InputManager.Instance.RaiseManipulationUpdated(this, editorHandData.HandId, editorHandData.CumulativeDelta);
+                    inputManager.RaiseManipulationUpdated(this, editorHandData.HandId, editorHandData.CumulativeDelta);
                 }
             }
         }
@@ -384,23 +384,23 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void SendHandVisibilityEvents()
         {
-            // Send event for new hands that were added
+            // Send event for new hands that were added.
             foreach (uint newHand in newHands)
             {
-                InputManager.Instance.RaiseSourceDetected(this, newHand);
+                inputManager.RaiseSourceDetected(this, newHand);
             }
 
-            // Send event for hands that are no longer visible and remove them from our dictionary
+            // Send event for hands that are no longer visible and remove them from our dictionary.
             foreach (uint existingHand in handIdToData.Keys)
             {
                 if (!currentHands.Contains(existingHand))
                 {
                     pendingHandIdDeletes.Add(existingHand);
-                    InputManager.Instance.RaiseSourceLost(this, existingHand);
+                    inputManager.RaiseSourceLost(this, existingHand);
                 }
             }
 
-            // Remove pending hand IDs
+            // Remove pending hand IDs.
             for (int i = 0; i < pendingHandIdDeletes.Count; ++i)
             {
                 handIdToData.Remove(pendingHandIdDeletes[i]);
