@@ -124,6 +124,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private static DictationRecognizer dictationRecognizer;
 
+        private bool hasFailed;
+
         #region Unity Methods
 
         protected override void Awake()
@@ -156,7 +158,13 @@ namespace HoloToolkit.Unity.InputModule
                 recordingStarted = false;
 
                 // If the microphone stops as a result of timing out, make sure to manually stop the dictation recognizer.
-                StopRecording();
+                StartCoroutine(StopRecording());
+            }
+
+            if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
+            {
+                hasFailed = true;
+                InputManager.Instance.RaiseDictationError(Instance, 0, "Dictation recognizer has failed!");
             }
         }
 
@@ -179,16 +187,29 @@ namespace HoloToolkit.Unity.InputModule
                 PhraseRecognitionSystem.Shutdown();
             }
 
-            yield return PhraseRecognitionSystem.Status == SpeechSystemStatus.Stopped;
+            while (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
+            {
+                yield return null;
+            }
 
             dictationRecognizer.Start();
 
-            yield return dictationRecognizer.Status == SpeechSystemStatus.Running;
+            while (dictationRecognizer.Status == SpeechSystemStatus.Failed)
+            {
+                InputManager.Instance.RaiseDictationError(Instance, 0, "Dictation recognizer failed to start!");
+                yield break;
+            }
+
+            while (dictationRecognizer.Status == SpeechSystemStatus.Stopped)
+            {
+                yield return null;
+            }
 
             recordingStarted = true;
 
             // Start recording from the microphone.
             dictationAudioClip = Microphone.Start(DeviceName, false, RecordingTime, samplingRate);
+            Debug.LogFormat("Recording Started {0}", dictationRecognizer.Status);
         }
 
         /// <summary>
@@ -203,9 +224,14 @@ namespace HoloToolkit.Unity.InputModule
                 dictationRecognizer.Stop();
             }
 
-            yield return dictationRecognizer.Status == SpeechSystemStatus.Stopped;
+            while (dictationRecognizer.Status == SpeechSystemStatus.Running)
+            {
+                yield return null;
+            }
 
             PhraseRecognitionSystem.Restart();
+
+            Debug.LogFormat("Recording Stopped {0}", dictationRecognizer.Status);
         }
 
         #region Dictation Recognizer Callbacks

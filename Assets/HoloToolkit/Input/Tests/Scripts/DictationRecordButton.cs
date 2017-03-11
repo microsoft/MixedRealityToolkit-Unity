@@ -13,12 +13,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private float initialSilenceTimeout = 5f;
 
         [SerializeField]
-        [Range(5f,60f)]
+        [Range(5f, 60f)]
         [Tooltip("The time length in seconds before dictation recognizer session ends due to lack of audio input.")]
         private float autoSilenceTimeout = 20f;
 
         [SerializeField]
-        [Range(1,60)]
+        [Range(1, 60)]
         [Tooltip("Length in seconds for the manager to listen.")]
         private int recordingTime = 10;
 
@@ -41,6 +41,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         }
 
         public void OnInputClicked(InputClickedEventData eventData)
+        {
+            ToggleRecording();
+        }
+
+        private void ToggleRecording()
         {
             if (isRecording)
             {
@@ -77,8 +82,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnDictationError(DictationEventData eventData)
         {
+            isRecording = false;
             speechToTextOutput.color = Color.red;
+            buttonRenderer.enabled = true;
+            recordLight.SetActive(false);
             speechToTextOutput.text = eventData.DictationResult;
+            Debug.LogError(eventData.DictationResult);
+            StartCoroutine(DictationInputManager.StopRecording());
         }
     }
 }
