@@ -85,23 +85,22 @@ namespace HoloToolkit.Sharing.Tests
         {
             get
             {
-                if (SharingStage.Instance != null)
+                if (SharingStage.Instance == null || SharingStage.Instance.SessionUsersTracker == null)
                 {
-                    if (SharingStage.Instance.SessionUsersTracker != null)
-                    {
-                        long localUserId;
-                        using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
-                        {
-                            localUserId = localUser.GetID();
-                        }
+                    return false;
+                }
 
-                        for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
-                        {
-                            if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() < localUserId)
-                            {
-                                return false;
-                            }
-                        }
+                long localUserId;
+                using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
+                {
+                    localUserId = localUser.GetID();
+                }
+
+                for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
+                {
+                    if (SharingStage.Instance.SessionUsersTracker.CurrentUsers[i].GetID() < localUserId)
+                    {
+                        return false;
                     }
                 }
 
@@ -224,8 +223,8 @@ namespace HoloToolkit.Sharing.Tests
 #if UNITY_WSA && !UNITY_EDITOR
             thisAnchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
 #endif
-            // SharingStage should be valid at this point.
-            if (SharingStage.Instance.Connection.IsConnected())
+            // SharingStage should be valid at this point, but we may not be connected.
+            if (SharingStage.Instance.IsConnected)
             {
                 Connected();
             }

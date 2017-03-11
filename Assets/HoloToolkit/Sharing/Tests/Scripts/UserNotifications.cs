@@ -10,10 +10,11 @@ namespace HoloToolkit.Sharing.Tests
     {
         private SessionUsersTracker usersTracker;
         private static User localUser = null;
+
         private void Start()
         {
-            // SharingStage should be valid at this point.
-            if (SharingStage.Instance.Connection.IsConnected())
+            // SharingStage should be valid at this point, but we may not be connected.
+            if (SharingStage.Instance.IsConnected)
             {
                 Connected();
             }

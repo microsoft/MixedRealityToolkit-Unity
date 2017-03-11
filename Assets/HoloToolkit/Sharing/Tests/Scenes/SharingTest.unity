@@ -377,7 +377,10 @@ MonoBehaviour:
   KeepRoomAlive: 0
   RoomName: DefaultRoom
   AnchorDebugText: {fileID: 754146363}
+<<<<<<< HEAD
   ClearCacheOnStart: 1
+=======
+>>>>>>> HTK-local
 --- !u!114 &942915102
 MonoBehaviour:
   m_ObjectHideFlags: 0
