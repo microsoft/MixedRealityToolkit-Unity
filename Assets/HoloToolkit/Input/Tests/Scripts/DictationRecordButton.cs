@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             if (isRecording)
             {
                 isRecording = false;
-                DictationInputManager.StopRecording();
+                StartCoroutine(DictationInputManager.StopRecording());
                 speechToTextOutput.color = Color.white;
                 buttonRenderer.enabled = true;
                 recordLight.SetActive(false);
@@ -54,7 +54,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             else
             {
                 isRecording = true;
-                DictationInputManager.StartRecording();
+                StartCoroutine(DictationInputManager.StartRecording());
                 speechToTextOutput.color = Color.green;
                 recordLight.SetActive(true);
                 buttonRenderer.enabled = false;

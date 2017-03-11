@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
@@ -150,8 +151,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Update()
         {
-            //Debug.Log(dictationRecognizer.Status);
-
             if (recordingStarted && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 recordingStarted = false;
@@ -173,11 +172,18 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Turns on the dictation recognizer and begins recording audio from the default microphone.
         /// </summary>
-        public static void StartRecording()
+        public static IEnumerator StartRecording()
         {
-            PhraseRecognitionSystem.Shutdown();
+            if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
+            {
+                PhraseRecognitionSystem.Shutdown();
+            }
+
+            yield return PhraseRecognitionSystem.Status == SpeechSystemStatus.Stopped;
 
             dictationRecognizer.Start();
+
+            yield return dictationRecognizer.Status == SpeechSystemStatus.Running;
 
             recordingStarted = true;
 
@@ -188,14 +194,16 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Ends the recording session.
         /// </summary>
-        public static void StopRecording()
+        public static IEnumerator StopRecording()
         {
+            Microphone.End(DeviceName);
+
             if (dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 dictationRecognizer.Stop();
             }
 
-            Microphone.End(DeviceName);
+            yield return dictationRecognizer.Status == SpeechSystemStatus.Stopped;
 
             PhraseRecognitionSystem.Restart();
         }
