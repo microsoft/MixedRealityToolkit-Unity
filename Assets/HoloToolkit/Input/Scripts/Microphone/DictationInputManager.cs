@@ -150,7 +150,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Update()
         {
-            Debug.Log(dictationRecognizer.Status);
+            //Debug.Log(dictationRecognizer.Status);
 
             if (recordingStarted && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
