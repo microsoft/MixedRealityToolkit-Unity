@@ -9,45 +9,50 @@ namespace HoloToolkit.Unity.InputModule.Tests
     public class MicStreamDemo : MonoBehaviour
     {
         /// <summary>
-        /// Which type of microphone/quality to access
+        /// Which type of microphone/quality to access.
         /// </summary>
         public MicStream.StreamCategory StreamType = MicStream.StreamCategory.HIGH_QUALITY_VOICE;
 
         /// <summary>
-        /// can boost volume here as desired. 1 is default but probably too quiet. can change during operation. 
+        /// Can boost volume here as desired. 1 is default.
+        /// <remarks>Can be updated at runtime.</remarks> 
         /// </summary>
         public float InputGain = 1;
 
         /// <summary>
-        /// if keepAllData==false, you'll always get the newest data no matter how long the program hangs for any reason, but will lose some data if the program does hang 
-        /// can only be set on initialization
+        /// if keepAllData==false, you'll always get the newest data no matter how long the program hangs for any reason,
+        /// but will lose some data if the program does hang.
+        /// <remarks>Can only be set on initialization.</remarks>
         /// </summary>
         public bool KeepAllData;
 
         /// <summary>
-        /// Should the mic stream start automatically when this component is enabled?
+        /// If true, Starts the mic stream automatically when this component is enabled.
         /// </summary>
         public bool AutomaticallyStartStream = true;
 
         /// <summary>
-        /// Do you want to hear what the microphone sounds like by listening to the AudioSource in Unity?
+        /// Plays back the microphone audio source though default audio device.
         /// </summary>
-        public bool ListenToAudioSource = true;
+        public bool PlaybackMicrophoneAudioSource = true;
 
         /// <summary>
-        /// The name of the file to which to save audio (for commands that save to a file)
+        /// The name of the file to which to save audio (for commands that save to a file).
         /// </summary>
         public string SaveFileName = "MicrophoneTest.wav";
 
         /// <summary>
-        /// Records estimation of volume from the microphone to affect other elements of the game object
+        /// Records estimation of volume from the microphone to affect other elements of the game object.
         /// </summary>
         private float averageAmplitude;
 
         /// <summary>
-        /// how small can our object be in this demo?
+        /// Minimum size the demo cube can be during runtime.
         /// </summary>
-        private float minSize = .3f;
+        [SerializeField]
+        private float minObjectScale = .3f;
+
+        private bool isRunning;
 
         private void OnAudioFilterRead(float[] buffer, int numChannels)
         {
@@ -59,17 +64,23 @@ namespace HoloToolkit.Unity.InputModule.Tests
             // figure out the average amplitude from this new data
             for (int i = 0; i < buffer.Length; i++)
             {
-                sumOfValues += Mathf.Abs(buffer[i]);
+                if (float.IsNaN(buffer[i]))
+                {
+                    buffer[i] = 0;
+                }
+
+                buffer[i] = Mathf.Clamp(buffer[i], -1f, 1f);
+                sumOfValues += Mathf.Clamp01(Mathf.Abs(buffer[i]));
             }
             averageAmplitude = sumOfValues / buffer.Length;
         }
 
-        private void Awake()
+        private void Start()
         {
             CheckForErrorOnCall(MicStream.MicInitializeCustomRate((int)StreamType, AudioSettings.outputSampleRate));
             CheckForErrorOnCall(MicStream.MicSetGain(InputGain));
 
-            if (!ListenToAudioSource)
+            if (!PlaybackMicrophoneAudioSource)
             {
                 gameObject.GetComponent<AudioSource>().volume = 0; // can set to zero to mute mic monitoring
             }
@@ -84,6 +95,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             print("It will start a recording and save it to a wav file. S will stop that recording.");
             print("Since this all goes through the AudioSource, you can mute the mic while using it there, or do anything else you would do with an AudioSource");
             print("In this demo, we start the stream automatically, and then change the size of the gameobject based on microphone signal amplitude");
+            isRunning = true;
         }
 
         private void OnDestroy()
@@ -114,7 +126,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 CheckForErrorOnCall(MicStream.MicStopStream());
             }
 
-            gameObject.transform.localScale = new Vector3(minSize + averageAmplitude, minSize + averageAmplitude, minSize + averageAmplitude);
+            gameObject.transform.localScale = new Vector3(minObjectScale + averageAmplitude, minObjectScale + averageAmplitude, minObjectScale + averageAmplitude);
         }
 
         private static void CheckForErrorOnCall(int returnCode)
@@ -122,27 +134,43 @@ namespace HoloToolkit.Unity.InputModule.Tests
             MicStream.CheckForErrorOnCall(returnCode);
         }
 
-#if DOTNET_FX
-        // On device, deal with all the ways that we could suspend our program in as few lines as possible.
-        private void OnApplicationPause(bool pause)
+        private void ToggleMicStream(bool pause)
         {
             CheckForErrorOnCall(pause ? MicStream.MicPause() : MicStream.MicResume());
+            isRunning = pause;
         }
 
+        private void OnApplicationPause(bool pause)
+        {
+            if (isRunning)
+            {
+                ToggleMicStream(pause);
+            }
+        }
+
+#if !UNITY_EDITOR
         private void OnApplicationFocus(bool focused)
         {
-            OnApplicationPause(!focused);
+            if (isInitialized)
+            {
+                ToggleMicStream(!focused);
+            }
         }
-
+#endif
         private void OnDisable()
         {
-            OnApplicationPause(true);
+            if (isRunning)
+            {
+                ToggleMicStream(true);
+            }
         }
 
         private void OnEnable()
         {
-            OnApplicationPause(false);
+            if (isRunning)
+            {
+                ToggleMicStream(false);
+            }
         }
-#endif
     }
 }
