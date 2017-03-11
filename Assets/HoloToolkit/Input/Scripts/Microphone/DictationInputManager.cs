@@ -209,7 +209,6 @@ namespace HoloToolkit.Unity.InputModule
 
             // Start recording from the microphone.
             dictationAudioClip = Microphone.Start(DeviceName, false, RecordingTime, samplingRate);
-            Debug.LogFormat("Recording Started {0}", dictationRecognizer.Status);
         }
 
         /// <summary>
@@ -230,8 +229,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             PhraseRecognitionSystem.Restart();
-
-            Debug.LogFormat("Recording Stopped {0}", dictationRecognizer.Status);
         }
 
         #region Dictation Recognizer Callbacks
