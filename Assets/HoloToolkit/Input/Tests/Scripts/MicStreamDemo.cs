@@ -151,7 +151,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 #if !UNITY_EDITOR
         private void OnApplicationFocus(bool focused)
         {
-            if (isInitialized)
+            if (isRunning)
             {
                 ToggleMicStream(!focused);
             }
