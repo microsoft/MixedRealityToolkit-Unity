@@ -150,10 +150,10 @@ namespace HoloToolkit.Unity.SpatialMapping
                         ReclaimSurface(newSurface);
                     }
                 }
-                else if ((Time.time - updateTime) >= TimeBetweenUpdates)
+                else if ((Time.unscaledTime - updateTime) >= TimeBetweenUpdates)
                 {
                     observer.Update(SurfaceObserver_OnSurfaceChanged);
-                    updateTime = Time.time;
+                    updateTime = Time.unscaledTime;
                 }
             }
         }
