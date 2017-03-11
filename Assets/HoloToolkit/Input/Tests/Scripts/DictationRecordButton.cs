@@ -7,7 +7,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class DictationRecordButton : MonoBehaviour, IInputClickHandler, IDictationHandler
     {
-
         [SerializeField]
         [Range(0.1f, 5f)]
         [Tooltip("The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.")]
