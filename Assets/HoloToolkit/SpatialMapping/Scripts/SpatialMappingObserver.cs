@@ -40,6 +40,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         public float TimeBetweenUpdates = 3.5f;
 
         /// <summary>
+        /// The origin of the observation volume.
+        /// </summary>
+        private Vector3 origin = Vector3.zero;
+
+        /// <summary>
         /// Indicates the current state of the Surface Observer.
         /// </summary>
         public ObserverStates ObserverState { get; private set; }
@@ -237,6 +242,35 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
 
             return originUpdated;
+        }
+
+        /// <summary>
+        /// Can be called to override the default extents as an axis aligned box for the observed volume. Can only be called while observer has been started.
+        /// </summary>
+        public bool SetObserverExtentsAxisAligned(Vector3 extents)
+        {
+            bool extentsUpdated = false;
+            if (observer != null)
+            {
+                observer.SetVolumeAsAxisAlignedBox(origin, extents);
+                Extents = extents;
+                extentsUpdated = true;
+            }
+            return extentsUpdated;
+        }
+
+        /// <summary>
+        /// Can be called to override the default extents as an oriented box for the observed volume. Can only be called while observer has been started.
+        /// </summary>
+        public bool SetObserverExtentsOrientedBox(Vector3 extents, Quaternion orientation)
+        {
+            bool extentsUpdated = false;
+            if (observer != null)
+            {
+                observer.SetVolumeAsOrientedBox(origin, extents, orientation);
+                extentsUpdated = true;
+            }
+            return extentsUpdated;
         }
 
         /// <summary>
