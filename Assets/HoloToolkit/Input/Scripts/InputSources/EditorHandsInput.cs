@@ -58,22 +58,22 @@ namespace HoloToolkit.Unity.InputModule
         /// Delay before a finger pressed is considered.
         /// This mitigates fake finger taps that can sometimes be detected while the hand is moving.
         /// </summary>
-        private const float fingerPressDelay = 0.07f;
+        private const float FingerPressDelay = 0.07f;
 
         /// <summary>
         /// The maximum interval between button down and button up that will result in a clicked event.
         /// </summary>
-        private const float maxClickDuration = 0.5f;
+        private const float MaxClickDuration = 0.5f;
 
         /// <summary>
         /// Number of fake hands supported in the editor.
         /// </summary>
-        private const int editorHandsCount = 2;
+        private const int EditorHandsCount = 2;
 
         /// <summary>
         /// Array containing the hands data for the two fake hands.
         /// </summary>
-        private readonly EditorHandData[] editorHandsData = new EditorHandData[editorHandsCount];
+        private readonly EditorHandData[] editorHandsData = new EditorHandData[EditorHandsCount];
 
         /// <summary>
         /// Dictionary linking each hand ID to its data.
@@ -249,7 +249,6 @@ namespace HoloToolkit.Unity.InputModule
                 handData = new EditorHandData(sourceId);
                 handIdToData.Add(handData.HandId, handData);
                 newHands.Add(handData.HandId);
-
             }
 
             return handData;
@@ -276,7 +275,7 @@ namespace HoloToolkit.Unity.InputModule
             if (handSource.Pressed != editorHandData.IsFingerDownPending)
             {
                 editorHandData.IsFingerDownPending = handSource.Pressed;
-                editorHandData.FingerStateUpdateTimer = fingerPressDelay;
+                editorHandData.FingerStateUpdateTimer = FingerPressDelay;
             }
 
             // Finger presses are delayed to mitigate issue with hand position shifting during air tap.
@@ -366,7 +365,7 @@ namespace HoloToolkit.Unity.InputModule
                         editorHandData.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.
-                    else if (!editorHandData.HoldInProgress && (time - editorHandData.FingerDownStartTime >= maxClickDuration))
+                    else if (!editorHandData.HoldInProgress && (time - editorHandData.FingerDownStartTime >= MaxClickDuration))
                     {
                         inputManager.RaiseHoldStarted(this, editorHandData.HandId);
                         editorHandData.HoldInProgress = true;
