@@ -16,7 +16,7 @@ Process: Scan, save, download, and load.
 
 1. Install the app on a device.
 2. Scan room.
-3. When your ready to save the mesh say, "Capture Mesh". Text will display to acknowledge the completion of the action.
+3. When you're ready to save the mesh say, "Capture Mesh". Text will display to acknowledge the completion of the action.
 4. Pull the saved mesh off of the device by going to the Device Portal. Navigate to System > File Explorer > User Files > LocalAppData > [Your App Name] > RoamingState. This is where .room files are saved.
 5. Download the .room file to your computer in the location opened by FileSurfaceObserver's "Open File Location" button.
 6. Press the Play button.
