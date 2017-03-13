@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
             {
                 // Check to see if enough scanning time has passed
                 // since starting the observer.
-                if ((Time.time - SpatialMappingManager.Instance.StartTime) < scanTime)
+                if ((Time.unscaledTime - SpatialMappingManager.Instance.StartTime) < scanTime)
                 {
                     // If we have a limited scanning time, then we should wait until
                     // enough time has passed before processing the mesh.
