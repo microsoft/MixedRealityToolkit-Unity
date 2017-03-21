@@ -20,7 +20,7 @@ The HoloToolkit is a collection of scripts and components intended to accelerate
 ## Please note:
 1. We will not merge this branch into master until we have a publicly available Unity that supports it and a HoloLens build that works with these new APIs.
 2. You can use this branch with RS2 builds on your PC and deploy it to RS1 HoloLens flight.
-3. RS2 flights don’t ship on HoloLens.
+3. RS2 flights don't ship on HoloLens.
 
 ## What's new?
 **GamepadInput** supports the Xbox controller and maps it to the input manager events.
