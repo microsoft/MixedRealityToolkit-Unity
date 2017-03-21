@@ -60,7 +60,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Events
             SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
-            InteractionManager.SourcePressed += OnAirTap;            
+            InteractionManager.SourcePressed += OnAirTap;
         }
 
         protected override void OnDestroy()
@@ -98,7 +98,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
 
             // Place on a wall (do it in a thread, as it can take a little while)
-            SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef = 
+            SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef =
                 SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_OnWall(new Vector3(MenuWidth * 0.5f, MenuHeight * 0.5f, MenuMinDepth * 0.5f), 0.5f, 3.0f);
             SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
 

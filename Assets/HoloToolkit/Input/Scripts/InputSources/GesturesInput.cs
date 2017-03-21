@@ -39,17 +39,17 @@ namespace HoloToolkit.Unity.InputModule
 
         private struct AxisButton2D
         {
-            public bool isPressed;
-            public double x;
-            public double y;
+            public bool Pressed;
+            public double X;
+            public double Y;
 
             public static AxisButton2D GetThumbstick(InteractionSourceState interactionSource)
             {
                 return new AxisButton2D
                 {
-                    isPressed = interactionSource.controllerProperties.thumbstickPressed,
-                    x = interactionSource.controllerProperties.thumbstickX,
-                    y = interactionSource.controllerProperties.thumbstickY,
+                    Pressed = interactionSource.controllerProperties.thumbstickPressed,
+                    X = interactionSource.controllerProperties.thumbstickX,
+                    Y = interactionSource.controllerProperties.thumbstickY,
                 };
             }
 
@@ -57,9 +57,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return new AxisButton2D
                 {
-                    isPressed = interactionSource.controllerProperties.touchpadPressed,
-                    x = interactionSource.controllerProperties.touchpadX,
-                    y = interactionSource.controllerProperties.touchpadY,
+                    Pressed = interactionSource.controllerProperties.touchpadPressed,
+                    X = interactionSource.controllerProperties.touchpadX,
+                    Y = interactionSource.controllerProperties.touchpadY,
                 };
             }
         }
@@ -67,29 +67,29 @@ namespace HoloToolkit.Unity.InputModule
         private struct TouchpadData
         {
             public AxisButton2D AxisButton;
-            public bool IsTouched;
+            public bool Touched;
 
             public static TouchpadData GetTouchpad(InteractionSourceState interactionSource)
             {
                 return new TouchpadData
                 {
                     AxisButton = AxisButton2D.GetTouchpad(interactionSource),
-                    IsTouched = interactionSource.controllerProperties.touchpadTouched,
+                    Touched = interactionSource.controllerProperties.touchpadTouched,
                 };
             }
         }
 
         private struct AxisButton1D
         {
-            public bool isPressed;
-            public double pressedValue;
+            public bool Pressed;
+            public double PressedValue;
 
             public static AxisButton1D GetTrigger(InteractionSourceState interactionSource)
             {
                 return new AxisButton1D
                 {
-                    isPressed = interactionSource.isSelectPressed,
-                    pressedValue = interactionSource.selectPressedValue,
+                    Pressed = interactionSource.selectPressed,
+                    PressedValue = interactionSource.selectPressedValue,
                 };
             }
         }
@@ -343,90 +343,90 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out double x, out double y)
+        public override bool TryGetThumbstick(uint sourceId, out bool thumbstickPressed, out double thumbstickX, out double thumbstickY)
         {
             SourceData sourceData;
             AxisButton2D thumbstick;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Thumbstick, out thumbstick))
             {
-                isPressed = thumbstick.isPressed;
-                x = thumbstick.x;
-                y = thumbstick.y;
+                thumbstickPressed = thumbstick.Pressed;
+                thumbstickX = thumbstick.X;
+                thumbstickY = thumbstick.Y;
                 return true;
             }
             else
             {
-                isPressed = false;
-                x = 0;
-                y = 0;
+                thumbstickPressed = false;
+                thumbstickX = 0;
+                thumbstickY = 0;
                 return false;
             }
         }
 
-        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out double x, out double y)
+        public override bool TryGetTouchpad(uint sourceId, out bool touchpadPressed, out bool touchpadTouched, out double touchpadX, out double touchpadY)
         {
             SourceData sourceData;
             TouchpadData touchpad;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Touchpad, out touchpad))
             {
-                isPressed = touchpad.AxisButton.isPressed;
-                isTouched = touchpad.IsTouched;
-                x = touchpad.AxisButton.x;
-                y = touchpad.AxisButton.y;
+                touchpadPressed = touchpad.AxisButton.Pressed;
+                touchpadTouched = touchpad.Touched;
+                touchpadX = touchpad.AxisButton.X;
+                touchpadY = touchpad.AxisButton.Y;
                 return true;
             }
             else
             {
-                isPressed = false;
-                isTouched = false;
-                x = 0;
-                y = 0;
+                touchpadPressed = false;
+                touchpadTouched = false;
+                touchpadX = 0;
+                touchpadY = 0;
                 return false;
             }
         }
 
-        public override bool TryGetTrigger(uint sourceId, out bool isPressed, out double pressedValue)
+        public override bool TryGetTrigger(uint sourceId, out bool triggerPressed, out double triggerPressedValue)
         {
             SourceData sourceData;
             AxisButton1D trigger;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Trigger, out trigger))
             {
-                isPressed = trigger.isPressed;
-                pressedValue = trigger.pressedValue;
+                triggerPressed = trigger.Pressed;
+                triggerPressedValue = trigger.PressedValue;
                 return true;
             }
             else
             {
-                isPressed = false;
-                pressedValue = 0;
+                triggerPressed = false;
+                triggerPressedValue = 0;
                 return false;
             }
         }
 
-        public override bool TryGetGrasp(uint sourceId, out bool isPressed)
+        public override bool TryGetGrasp(uint sourceId, out bool graspPressed)
         {
             SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Grasp, out isPressed))
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Grasp, out graspPressed))
             {
                 return true;
             }
             else
             {
-                isPressed = false;
+                graspPressed = false;
                 return false;
             }
         }
 
-        public override bool TryGetMenu(uint sourceId, out bool isPressed)
+        public override bool TryGetMenu(uint sourceId, out bool menuPressed)
         {
             SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Menu, out isPressed))
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Menu, out menuPressed))
             {
                 return true;
             }
             else
             {
-                isPressed = false;
+                menuPressed = false;
                 return false;
             }
         }
@@ -547,11 +547,11 @@ namespace HoloToolkit.Unity.InputModule
 
             sourceData.Grasp.IsSupported = interactionSource.source.supportsGrasp;
             sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
-            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable ? interactionSource.isGrasped : false);
+            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable ? interactionSource.grasped : false);
 
             sourceData.Menu.IsSupported = interactionSource.source.supportsMenu;
             sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
-            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable ? interactionSource.isMenuPressed : false);
+            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable ? interactionSource.menuPressed : false);
         }
 
         #endregion
