@@ -104,46 +104,57 @@ namespace HoloToolkit.Unity.InputModule
             rotation = Quaternion.LookRotation(Camera.main.transform.forward, hand.properties.sourceLossMitigationDirection);
         }
 
-        private void InteractionManager_SourceUpdated(InteractionSourceState hand)
+        private void InteractionManager_SourceUpdated(InteractionManager.SourceEventArgs obj)
         {
-            // Only display hand indicators when we are in a holding state, since hands going out of view will affect any active gestures.
-            if (!hand.pressed)
+            if (obj.state.source.kind == InteractionSourceKind.Hand)
             {
-                return;
-            }
+                InteractionSourceState hand = obj.state;
 
-            // Only track a new hand if are not currently tracking a hand.
-            if (!currentlyTrackedHand.HasValue)
-            {
-                currentlyTrackedHand = hand.source.id;
-            }
-            else if (currentlyTrackedHand.Value != hand.source.id)
-            {
-                // This hand is not the currently tracked hand, do not drawn a guidance indicator for this hand.
-                return;
-            }
+                // Only display hand indicators when we are in a holding state, since hands going out of view will affect any active gestures.
+                if (!hand.pressed)
+                {
+                    return;
+                }
 
-            // Start showing an indicator to move your hand toward the center of the view.
-            if (hand.properties.sourceLossRisk > HandGuidanceThreshold)
-            {
-                ShowHandGuidanceIndicator(hand);
-            }
-            else
-            {
-                HideHandGuidanceIndicator(hand);
+                // Only track a new hand if are not currently tracking a hand.
+                if (!currentlyTrackedHand.HasValue)
+                {
+                    currentlyTrackedHand = hand.source.id;
+                }
+                else if (currentlyTrackedHand.Value != hand.source.id)
+                {
+                    // This hand is not the currently tracked hand, do not drawn a guidance indicator for this hand.
+                    return;
+                }
+
+                // Start showing an indicator to move your hand toward the center of the view.
+                if (hand.properties.sourceLossRisk > HandGuidanceThreshold)
+                {
+                    ShowHandGuidanceIndicator(hand);
+                }
+                else
+                {
+                    HideHandGuidanceIndicator(hand);
+                }
             }
         }
 
-        private void InteractionManager_SourceReleased(InteractionSourceState hand)
+        private void InteractionManager_SourceReleased(InteractionManager.SourceEventArgs obj)
         {
-            // Stop displaying the guidance indicator when the user releases their finger from the pressed state.
-            RemoveTrackedHand(hand);
+            if (obj.state.source.kind == InteractionSourceKind.Hand)
+            {
+                // Stop displaying the guidance indicator when the user releases their finger from the pressed state.
+                RemoveTrackedHand(obj.state);
+            }
         }
 
-        private void InteractionManager_SourceLost(InteractionSourceState hand)
+        private void InteractionManager_SourceLost(InteractionManager.SourceEventArgs obj)
         {
-            // Stop displaying the guidance indicator when the user's hand leaves the view.
-            RemoveTrackedHand(hand);
+            if (obj.state.source.kind == InteractionSourceKind.Hand)
+            {
+                // Stop displaying the guidance indicator when the user's hand leaves the view.
+                RemoveTrackedHand(obj.state);
+            }
         }
 
         private void RemoveTrackedHand(InteractionSourceState hand)

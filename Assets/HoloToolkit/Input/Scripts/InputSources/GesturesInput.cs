@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Input source for gestures information from the WSA APIs, which gives access to various system-supported gestures.
-    /// This is a wrapper on top of GestureRecognizer.
+    /// Input source for gestures information from the WSA APIs, which gives access to various system-supported gestures
+    /// and positional information for the various inputs that Windows gestures supports.
+    /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
     public class GesturesInput : BaseInputSource
     {
@@ -27,13 +28,109 @@ namespace HoloToolkit.Unity.InputModule
         protected GestureRecognizer gestureRecognizer;
         protected GestureRecognizer navigationGestureRecognizer;
 
+        #region IInputSource Capabilities and SourceData
+
+        private struct SourceCapability<TReading>
+        {
+            public bool IsSupported;
+            public bool IsAvailable;
+            public TReading CurrentReading;
+        }
+
+        private struct AxisButton2D
+        {
+            public bool isPressed;
+            public double x;
+            public double y;
+
+            public static AxisButton2D GetThumbstick(InteractionSourceState interactionSource)
+            {
+                return new AxisButton2D
+                {
+                    isPressed = interactionSource.controllerProperties.thumbstickPressed,
+                    x = interactionSource.controllerProperties.thumbstickX,
+                    y = interactionSource.controllerProperties.thumbstickY,
+                };
+            }
+
+            public static AxisButton2D GetTouchpad(InteractionSourceState interactionSource)
+            {
+                return new AxisButton2D
+                {
+                    isPressed = interactionSource.controllerProperties.touchpadPressed,
+                    x = interactionSource.controllerProperties.touchpadX,
+                    y = interactionSource.controllerProperties.touchpadY,
+                };
+            }
+        }
+
+        private struct TouchpadData
+        {
+            public AxisButton2D AxisButton;
+            public bool IsTouched;
+
+            public static TouchpadData GetTouchpad(InteractionSourceState interactionSource)
+            {
+                return new TouchpadData
+                {
+                    AxisButton = AxisButton2D.GetTouchpad(interactionSource),
+                    IsTouched = interactionSource.controllerProperties.touchpadTouched,
+                };
+            }
+        }
+
+        private struct AxisButton1D
+        {
+            public bool isPressed;
+            public double pressedValue;
+
+            public static AxisButton1D GetTrigger(InteractionSourceState interactionSource)
+            {
+                return new AxisButton1D
+                {
+                    isPressed = interactionSource.isSelectPressed,
+                    pressedValue = interactionSource.selectPressedValue,
+                };
+            }
+        }
+
+        /// <summary>
+        /// Data for an interaction source.
+        /// </summary>
+        private class SourceData
+        {
+            public SourceData(IInputSource inputSource, InteractionSource interactionSource)
+            {
+                SourceId = interactionSource.id;
+                SourceKind = interactionSource.kind;
+            }
+
+            public readonly uint SourceId;
+            public readonly InteractionSourceKind SourceKind;
+            public SourceCapability<Vector3> Position;
+            public SourceCapability<Quaternion> Orientation;
+            public SourceCapability<Ray> PointingRay;
+            public SourceCapability<AxisButton2D> Thumbstick;
+            public SourceCapability<TouchpadData> Touchpad;
+            public SourceCapability<AxisButton1D> Trigger;
+            public SourceCapability<bool> Grasp;
+            public SourceCapability<bool> Menu;
+        }
+
+        /// <summary>
+        /// Dictionary linking each source ID to its data.
+        /// </summary>
+        private readonly Dictionary<uint, SourceData> sourceIdToData = new Dictionary<uint, SourceData>(4);
+
+        #endregion
+
         protected override void Start()
         {
             base.Start();
 
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.TappedEvent += OnTappedEvent;
-            
+
             gestureRecognizer.HoldStartedEvent += OnHoldStartedEvent;
             gestureRecognizer.HoldCompletedEvent += OnHoldCompletedEvent;
             gestureRecognizer.HoldCanceledEvent += OnHoldCanceledEvent;
@@ -43,7 +140,7 @@ namespace HoloToolkit.Unity.InputModule
             gestureRecognizer.ManipulationCompletedEvent += OnManipulationCompletedEvent;
             gestureRecognizer.ManipulationCanceledEvent += OnManipulationCanceledEvent;
 
-            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap | 
+            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap |
                                                       GestureSettings.ManipulationTranslate |
                                                       GestureSettings.Hold);
 
@@ -77,7 +174,6 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void OnDestroy()
         {
-            StopGestureRecognizer();
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.TappedEvent -= OnTappedEvent;
@@ -93,6 +189,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 gestureRecognizer.Dispose();
             }
+
             if (navigationGestureRecognizer != null)
             {
                 navigationGestureRecognizer.NavigationStartedEvent -= OnNavigationStartedEvent;
@@ -104,126 +201,425 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected virtual void OnDisable()
+        protected override void OnEnableAfterStart()
         {
-            StopGestureRecognizer();
-        }
+            base.OnEnableAfterStart();
 
-        protected virtual void OnEnable()
-        {
             if (RecognizerStart == RecognizerStartBehavior.AutoStart)
             {
                 StartGestureRecognizer();
             }
+
+            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
+
+            InteractionManager.SourceReleased += InteractionManager_SourceReleased;
+            InteractionManager.SourcePressed += InteractionManager_SourcePressed;
+
+            InteractionManager.SourceLost += InteractionManager_SourceLost;
+            InteractionManager.SourceDetected += InteractionManager_SourceDetected;
+
+            // TODO: robertes: Should we use InteractionManager.GetCurrentReading() to get all sources currently available and synthesize a SourceDetected?
         }
 
-        /// <summary>
-        /// Make sure the gesture recognizer is off, then start it.
-        /// Otherwise, leave it alone because it's already in the desired state.
-        /// </summary>
+        protected override void OnDisableAfterStart()
+        {
+            StopGestureRecognizer();
+
+            InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
+
+            InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
+            InteractionManager.SourcePressed -= InteractionManager_SourcePressed;
+
+            InteractionManager.SourceLost -= InteractionManager_SourceLost;
+            InteractionManager.SourceDetected -= InteractionManager_SourceDetected;
+
+            // TODO: robertes: Should we synthesize SourceLost for all outstanding sources and then clear our list?
+
+            base.OnDisableAfterStart();
+        }
+
         public void StartGestureRecognizer()
         {
-            if (gestureRecognizer != null && !gestureRecognizer.IsCapturingGestures())
+            if (gestureRecognizer != null)
             {
                 gestureRecognizer.StartCapturingGestures();
             }
-            if (navigationGestureRecognizer != null && !navigationGestureRecognizer.IsCapturingGestures())
+
+            if (navigationGestureRecognizer != null)
             {
                 navigationGestureRecognizer.StartCapturingGestures();
             }
         }
 
-        /// <summary>
-        /// Make sure the gesture recognizer is on, then stop it.
-        /// Otherwise, leave it alone because it's already in the desired state.
-        /// </summary>
         public void StopGestureRecognizer()
         {
-            if (gestureRecognizer != null && gestureRecognizer.IsCapturingGestures())
+            if (gestureRecognizer != null)
             {
                 gestureRecognizer.StopCapturingGestures();
             }
-            if (navigationGestureRecognizer != null && navigationGestureRecognizer.IsCapturingGestures())
+
+            if (navigationGestureRecognizer != null)
             {
                 navigationGestureRecognizer.StopCapturingGestures();
             }
         }
 
-        protected void OnTappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
+        #region BaseInputSource implementations
+
+        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
-            inputManager.RaiseInputClicked(this, 0, tapCount);
+            SupportedInputInfo retVal = SupportedInputInfo.None;
+
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                retVal |= GetSupportFlag(sourceData.Position, SupportedInputInfo.Position);
+                retVal |= GetSupportFlag(sourceData.Orientation, SupportedInputInfo.Orientation);
+                retVal |= GetSupportFlag(sourceData.PointingRay, SupportedInputInfo.PointingRay);
+                retVal |= GetSupportFlag(sourceData.Thumbstick, SupportedInputInfo.Thumbstick);
+                retVal |= GetSupportFlag(sourceData.Touchpad, SupportedInputInfo.Touchpad);
+                retVal |= GetSupportFlag(sourceData.Trigger, SupportedInputInfo.Trigger);
+                retVal |= GetSupportFlag(sourceData.Menu, SupportedInputInfo.Menu);
+                retVal |= GetSupportFlag(sourceData.Grasp, SupportedInputInfo.Grasp);
+            }
+
+            return retVal;
         }
 
-        protected void OnHoldStartedEvent(InteractionSourceKind source, Ray headray)
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
         {
-            inputManager.RaiseHoldStarted(this, 0);
-        }
-
-        protected void OnHoldCanceledEvent(InteractionSourceKind source, Ray headray)
-        {
-            inputManager.RaiseHoldCanceled(this, 0);
-        }
-
-        protected void OnHoldCompletedEvent(InteractionSourceKind source, Ray headray)
-        {
-            inputManager.RaiseHoldCompleted(this, 0);
-        }
-
-        protected void OnManipulationStartedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
-        {
-            inputManager.RaiseManipulationStarted(this, 0, cumulativeDelta);
-        }
-
-        protected void OnManipulationUpdatedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
-        {
-            inputManager.RaiseManipulationUpdated(this, 0, cumulativeDelta);
-        }
-
-        protected void OnManipulationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
-        {
-            inputManager.RaiseManipulationCompleted(this, 0, cumulativeDelta);
-        }
-
-        protected void OnManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
-        {
-            inputManager.RaiseManipulationCanceled(this, 0, cumulativeDelta);
-        }
-
-        protected void OnNavigationStartedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
-        {
-            inputManager.RaiseNavigationStarted(this, 0, normalizedOffset);
-        }
-
-        protected void OnNavigationUpdatedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
-        {
-            inputManager.RaiseNavigationUpdated(this, 0, normalizedOffset);
-        }
-
-        protected void OnNavigationCompletedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
-        {
-            inputManager.RaiseNavigationCompleted(this, 0, normalizedOffset);
-        }
-
-        protected void OnNavigationCanceledEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
-        {
-            inputManager.RaiseNavigationCanceled(this, 0, normalizedOffset);
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                sourceKind = sourceData.SourceKind;
+                return true;
+            }
+            else
+            {
+                sourceKind = default(InteractionSourceKind);
+                return false;
+            }
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
         {
-            position = Vector3.zero;
-            return false;
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Position, out position))
+            {
+                return true;
+            }
+            else
+            {
+                position = default(Vector3);
+                return false;
+            }
         }
 
         public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
         {
-            orientation = Quaternion.identity;
-            return false;
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Orientation, out orientation))
+            {
+                return true;
+            }
+            else
+            {
+                orientation = default(Quaternion);
+                return false;
+            }
         }
 
-        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
-            return SupportedInputInfo.None;
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.PointingRay, out pointingRay))
+            {
+                return true;
+            }
+            else
+            {
+                pointingRay = default(Ray);
+                return false;
+            }
         }
+
+        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out double x, out double y)
+        {
+            SourceData sourceData;
+            AxisButton2D thumbstick;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Thumbstick, out thumbstick))
+            {
+                isPressed = thumbstick.isPressed;
+                x = thumbstick.x;
+                y = thumbstick.y;
+                return true;
+            }
+            else
+            {
+                isPressed = false;
+                x = 0;
+                y = 0;
+                return false;
+            }
+        }
+
+        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out double x, out double y)
+        {
+            SourceData sourceData;
+            TouchpadData touchpad;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Touchpad, out touchpad))
+            {
+                isPressed = touchpad.AxisButton.isPressed;
+                isTouched = touchpad.IsTouched;
+                x = touchpad.AxisButton.x;
+                y = touchpad.AxisButton.y;
+                return true;
+            }
+            else
+            {
+                isPressed = false;
+                isTouched = false;
+                x = 0;
+                y = 0;
+                return false;
+            }
+        }
+
+        public override bool TryGetTrigger(uint sourceId, out bool isPressed, out double pressedValue)
+        {
+            SourceData sourceData;
+            AxisButton1D trigger;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Trigger, out trigger))
+            {
+                isPressed = trigger.isPressed;
+                pressedValue = trigger.pressedValue;
+                return true;
+            }
+            else
+            {
+                isPressed = false;
+                pressedValue = 0;
+                return false;
+            }
+        }
+
+        public override bool TryGetGrasp(uint sourceId, out bool isPressed)
+        {
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Grasp, out isPressed))
+            {
+                return true;
+            }
+            else
+            {
+                isPressed = false;
+                return false;
+            }
+        }
+
+        public override bool TryGetMenu(uint sourceId, out bool isPressed)
+        {
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Menu, out isPressed))
+            {
+                return true;
+            }
+            else
+            {
+                isPressed = false;
+                return false;
+            }
+        }
+
+        private bool TryGetReading<TReading>(SourceCapability<TReading> capability, out TReading reading)
+        {
+            if (capability.IsAvailable)
+            {
+                Debug.Assert(capability.IsSupported);
+
+                reading = capability.CurrentReading;
+                return true;
+            }
+            else
+            {
+                reading = default(TReading);
+                return false;
+            }
+        }
+
+        private SupportedInputInfo GetSupportFlag<TReading>(SourceCapability<TReading> capability, SupportedInputInfo flagIfSupported)
+        {
+            return (capability.IsSupported ? flagIfSupported : SupportedInputInfo.None);
+        }
+
+        private void InteractionManager_SourceUpdated(InteractionManager.SourceEventArgs args)
+        {
+            UpdateSourceState(args.state, GetOrAddSourceData(args.state.source));
+
+            // TODO: robertes: raise update events?  Perhaps part of UpdateSourceState and have UpdateSourceState measure deltas and raise events iff changed... rename it to UpdateSourceStateAndRaiseUpdateEvents? ... and don't forget the TouchpadTouched events.
+            // TODO: robertes: We should call UpdateSourceState in other handlers, too, right?  All handlers?
+        }
+
+        private void InteractionManager_SourceReleased(InteractionManager.SourceEventArgs args)
+        {
+            InputManager.Instance.RaiseSourceUp(this, args.state.source.id, args.kind);
+        }
+
+        private void InteractionManager_SourcePressed(InteractionManager.SourceEventArgs args)
+        {
+            InputManager.Instance.RaiseSourceDown(this, args.state.source.id, args.kind);
+        }
+
+        private void InteractionManager_SourceLost(InteractionManager.SourceEventArgs args)
+        {
+            // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
+            sourceIdToData.Remove(args.state.source.id);
+
+            InputManager.Instance.RaiseSourceLost(this, args.state.source.id);
+        }
+
+        private void InteractionManager_SourceDetected(InteractionManager.SourceEventArgs args)
+        {
+            // NOTE: We don't need to use the data here. We just need to make sure it's added if it's not available yet:
+            GetOrAddSourceData(args.state.source);
+
+            InputManager.Instance.RaiseSourceDetected(this, args.state.source.id);
+        }
+
+        /// <summary>
+        /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
+        /// </summary>
+        /// <param name="interactionSource">Interaction source for which data should be retrieved.</param>
+        /// <returns>The source data requested.</returns>
+        private SourceData GetOrAddSourceData(InteractionSource interactionSource)
+        {
+            SourceData sourceData;
+            if (!sourceIdToData.TryGetValue(interactionSource.id, out sourceData))
+            {
+                sourceData = new SourceData(this, interactionSource);
+                sourceIdToData.Add(sourceData.SourceId, sourceData);
+
+                // TODO: robertes: whenever we end up adding, should we first synthesize a SourceDetected?  Or
+                //       perhaps if we keep strict track of all sources, we should never need to just-in-time add anymore.
+            }
+
+            return sourceData;
+        }
+
+        /// <summary>
+        /// Updates the source information.
+        /// </summary>
+        /// <param name="interactionSource">Interaction source to use to update the source information.</param>
+        /// <param name="sourceData">SourceData structure to update.</param>
+        private void UpdateSourceState(InteractionSourceState interactionSource, SourceData sourceData)
+        {
+            Debug.Assert(interactionSource.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
+            Debug.Assert(interactionSource.source.kind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
+
+            InteractionSourceLocation locationData = interactionSource.properties.location;
+
+            sourceData.Position.IsAvailable = locationData.TryGetPosition(out sourceData.Position.CurrentReading);
+            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
+            sourceData.Position.IsSupported |= sourceData.Position.IsAvailable;
+
+            sourceData.Orientation.IsAvailable = locationData.TryGetOrientation(out sourceData.Orientation.CurrentReading);
+            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
+            sourceData.Orientation.IsSupported |= sourceData.Orientation.IsAvailable;
+
+            sourceData.PointingRay.IsSupported = interactionSource.source.supportsPointing;
+            sourceData.PointingRay.IsAvailable = interactionSource.sourceRay.IsValid();
+            sourceData.PointingRay.CurrentReading = interactionSource.sourceRay;
+
+            InteractionController controller;
+            bool gotController = interactionSource.source.TryGetController(out controller);
+
+            sourceData.Thumbstick.IsSupported = (gotController && controller.hasThumbstick);
+            sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
+            sourceData.Thumbstick.CurrentReading = (sourceData.Thumbstick.IsAvailable ? AxisButton2D.GetThumbstick(interactionSource) : default(AxisButton2D));
+
+            sourceData.Touchpad.IsSupported = (gotController && controller.hasTouchpad);
+            sourceData.Touchpad.IsAvailable = sourceData.Touchpad.IsSupported;
+            sourceData.Touchpad.CurrentReading = (sourceData.Touchpad.IsAvailable ? TouchpadData.GetTouchpad(interactionSource) : default(TouchpadData));
+
+            sourceData.Trigger.IsSupported = true; // All input mechanisms support "select" which is considered the same as "trigger".
+            sourceData.Trigger.IsAvailable = sourceData.Trigger.IsSupported;
+            sourceData.Trigger.CurrentReading = AxisButton1D.GetTrigger(interactionSource);
+
+            sourceData.Grasp.IsSupported = interactionSource.source.supportsGrasp;
+            sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
+            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable ? interactionSource.isGrasped : false);
+
+            sourceData.Menu.IsSupported = interactionSource.source.supportsMenu;
+            sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
+            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable ? interactionSource.isMenuPressed : false);
+        }
+
+        #endregion
+
+        #region Raise GestureRecognizer Events
+
+        // TODO: robertes: Should these also cause source state data to be stored/updated? What about SourceDetected synthesized events?
+
+        protected void OnTappedEvent(TappedEventArgs obj)
+        {
+            InputManager.Instance.RaiseInputClicked(this, (uint)obj.sourceId, InteractionPressKind.Select, obj.tapCount);
+        }
+
+        protected void OnHoldStartedEvent(HoldStartedEventArgs obj)
+        {
+            InputManager.Instance.RaiseHoldStarted(this, (uint)obj.sourceId);
+        }
+
+        protected void OnHoldCanceledEvent(HoldCanceledEventArgs obj)
+        {
+            InputManager.Instance.RaiseHoldCanceled(this, (uint)obj.sourceId);
+        }
+
+        protected void OnHoldCompletedEvent(HoldCompletedEventArgs obj)
+        {
+            InputManager.Instance.RaiseHoldCompleted(this, (uint)obj.sourceId);
+        }
+
+        protected void OnManipulationStartedEvent(ManipulationStartedEventArgs obj)
+        {
+            InputManager.Instance.RaiseManipulationStarted(this, (uint)obj.sourceId, obj.cumulativeDelta);
+        }
+
+        protected void OnManipulationUpdatedEvent(ManipulationUpdatedEventArgs obj)
+        {
+            InputManager.Instance.RaiseManipulationUpdated(this, (uint)obj.sourceId, obj.cumulativeDelta);
+        }
+
+        protected void OnManipulationCompletedEvent(ManipulationCompletedEventArgs obj)
+        {
+            InputManager.Instance.RaiseManipulationCompleted(this, (uint)obj.sourceId, obj.cumulativeDelta);
+        }
+
+        protected void OnManipulationCanceledEvent(ManipulationCanceledEventArgs obj)
+        {
+            InputManager.Instance.RaiseManipulationCanceled(this, (uint)obj.sourceId, obj.cumulativeDelta);
+        }
+
+        protected void OnNavigationStartedEvent(NavigationStartedEventArgs obj)
+        {
+            InputManager.Instance.RaiseNavigationStarted(this, (uint)obj.sourceId, obj.normalizedOffset);
+        }
+
+        protected void OnNavigationUpdatedEvent(NavigationUpdatedEventArgs obj)
+        {
+            InputManager.Instance.RaiseNavigationUpdated(this, (uint)obj.sourceId, obj.normalizedOffset);
+        }
+
+        protected void OnNavigationCompletedEvent(NavigationCompletedEventArgs obj)
+        {
+            InputManager.Instance.RaiseNavigationCompleted(this, (uint)obj.sourceId, obj.normalizedOffset);
+        }
+
+        protected void OnNavigationCanceledEvent(NavigationCanceledEventArgs obj)
+        {
+            InputManager.Instance.RaiseNavigationCanceled(this, (uint)obj.sourceId, obj.normalizedOffset);
+        }
+
+        #endregion
     }
 }

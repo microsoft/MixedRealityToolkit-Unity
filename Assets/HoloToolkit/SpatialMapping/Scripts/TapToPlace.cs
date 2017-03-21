@@ -144,6 +144,8 @@ namespace HoloToolkit.Unity.SpatialMapping
                 // Add world anchor when object placement is done.
                 anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
             }
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         private void DetermineParent()

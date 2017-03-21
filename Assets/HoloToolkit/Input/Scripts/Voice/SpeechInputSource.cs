@@ -4,6 +4,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.VR.WSA.Input;
 using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Unity.InputModule
@@ -60,11 +61,6 @@ namespace HoloToolkit.Unity.InputModule
                 }
                 keywordRecognizer = new KeywordRecognizer(keywords);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
-
-                if (RecognizerStart == RecognizerStartBehavior.AutoStart)
-                {
-                    keywordRecognizer.Start();
-                }
             }
             else
             {
@@ -90,17 +86,18 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected virtual void OnDisable()
+        protected override void OnDisableAfterStart()
         {
-            if (keywordRecognizer != null)
-            {
-                StopKeywordRecognizer();
-            }
+            StopKeywordRecognizer();
+
+            base.OnDisableAfterStart();
         }
 
-        protected virtual void OnEnable()
+        protected override void OnEnableAfterStart()
         {
-            if (keywordRecognizer != null && RecognizerStart == RecognizerStartBehavior.AutoStart)
+            base.OnEnableAfterStart();
+
+            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
             {
                 StartKeywordRecognizer();
             }
@@ -155,11 +152,20 @@ namespace HoloToolkit.Unity.InputModule
 
         protected void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
+            uint sourceId = 0;
+            object tag = null;
+
             // Create input event
-            speechKeywordRecognizedEventData.Initialize(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            speechKeywordRecognizedEventData.Initialize(this, sourceId, tag, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            inputManager.HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
+            InputManager.Instance.HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
+        }
+
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        {
+            sourceKind = InteractionSourceKind.Voice;
+            return true;
         }
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
@@ -174,9 +180,49 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
+        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        {
+            pointingRay = default(Ray);
+            return false;
+        }
+
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             return SupportedInputInfo.None;
+        }
+
+        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out double x, out double y)
+        {
+            isPressed = false;
+            x = y = 0.0;
+            return false;
+        }
+
+        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out double x, out double y)
+        {
+            isPressed = false;
+            isTouched = false;
+            x = y = 0.0;
+            return false;
+        }
+
+        public override bool TryGetTrigger(uint sourceId, out bool isPressed, out double pressedValue)
+        {
+            isPressed = false;
+            pressedValue = 0.0;
+            return false;
+        }
+
+        public override bool TryGetGrasp(uint sourceId, out bool isPressed)
+        {
+            isPressed = false;
+            return false;
+        }
+
+        public override bool TryGetMenu(uint sourceId, out bool isPressed)
+        {
+            isPressed = false;
+            return false;
         }
     }
 }

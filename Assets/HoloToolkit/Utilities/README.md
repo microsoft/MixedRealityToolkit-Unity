@@ -123,6 +123,9 @@ You must provide GameObjects for the **_Cursor_** and **_DirectionIndicatorObjec
 
 **TitleSafeFactor** The percentage the GameObject can be within the view frustum for the DirectionIndicatorObject to start appearing.  A value of 0 will display the DirectionIndicatorObject when the GameObject leaves the view.  0.1 will display when the GameObject is 10% away from the edge of the view.  -0.1 will display when the GameObject is 10% out of view.
 
+#### DisplayDependentObjectActivator.cs
+Causes a GameObject to activate or disable depending on the settings and type of display the application is launched on.
+
 #### FixedAngularSize.cs
 Causes a hologram to maintain a fixed angular size, which is to say it occupies the same pixels in the view regardless of its distance from the camera.
 

@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VR.WSA.Input;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -60,7 +60,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Events
             SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
-            InteractionManager.SourcePressed += OnAirTap;
+            InteractionManager.SourcePressed += OnAirTap;            
         }
 
         protected override void OnDestroy()
@@ -97,37 +97,53 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             SpatialUnderstandingDllTopology.TopologyResult[] resultsTopology = new SpatialUnderstandingDllTopology.TopologyResult[1];
             IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
 
-#if UNITY_WSA && !UNITY_EDITOR
-        // Place on a wall (do it in a thread, as it can take a little while)
-        SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef = 
-            SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_OnWall(new Vector3(MenuWidth * 0.5f, MenuHeight * 0.5f, MenuMinDepth * 0.5f), 0.5f, 3.0f);
-        SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
-        System.Threading.Tasks.Task thread = System.Threading.Tasks.Task.Run(() =>
-        {
-            if (SpatialUnderstandingDllObjectPlacement.Solver_PlaceObject(
-                "UIPlacement",
-                SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placeOnWallDef),
-                0,
-                IntPtr.Zero,
-                0,
-                IntPtr.Zero,
-                SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) == 0)
-            {
-                placementResult = null;
-            }
-        });
-        while (!thread.IsCompleted)
-        {
-            yield return null;
-        }
-        if (placementResult != null)
-        {
-            Debug.Log("PlaceMenu - ObjectSolver-OnWall");
-            Vector3 posOnWall = placementResult.Position - placementResult.Forward * MenuMinDepth * 0.5f;
-            PlaceMenu(posOnWall, -placementResult.Forward);
-            yield break;
-        }
+            // Place on a wall (do it in a thread, as it can take a little while)
+            SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef = 
+                SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_OnWall(new Vector3(MenuWidth * 0.5f, MenuHeight * 0.5f, MenuMinDepth * 0.5f), 0.5f, 3.0f);
+            SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
+
+            var thread =
+#if UNITY_EDITOR || !UNITY_WSA
+                new System.Threading.Thread
+#else
+                System.Threading.Tasks.Task.Run
 #endif
+            (() => {
+                if (SpatialUnderstandingDllObjectPlacement.Solver_PlaceObject(
+                    "UIPlacement",
+                    SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placeOnWallDef),
+                    0,
+                    IntPtr.Zero,
+                    0,
+                    IntPtr.Zero,
+                    SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) == 0)
+                {
+                    placementResult = null;
+                }
+            });
+
+#if UNITY_EDITOR || !UNITY_WSA
+            thread.Start();
+#endif
+
+            while
+                (
+#if UNITY_EDITOR || !UNITY_WSA
+                !thread.Join(TimeSpan.Zero)
+#else
+                !thread.IsCompleted
+#endif
+                )
+            {
+                yield return null;
+            }
+            if (placementResult != null)
+            {
+                Debug.Log("PlaceMenu - ObjectSolver-OnWall");
+                Vector3 posOnWall = placementResult.Position - placementResult.Forward * MenuMinDepth * 0.5f;
+                PlaceMenu(posOnWall, -placementResult.Forward);
+                yield break;
+            }
 
             // Wait a frame
             yield return null;
@@ -153,7 +169,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             Debug.Log("PlaceMenu - InFrontOfUser");
         }
 
-        private void OnAirTap(InteractionSourceState state)
+        private void OnAirTap(InteractionManager.SourceEventArgs obj)
         {
             // Try to intersect one of the buttons
             Vector3 hitPos, hitNormal;
@@ -197,7 +213,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 bool isEnabled = (i == (int)ActivePanel);
 
-                ButtonPanels[i].Button.enabled = isEnabled;
                 ButtonPanels[i].ButtonImage.color = isEnabled ? colorButtonActive : colorButtonInactive;
                 ButtonPanels[i].Background.enabled = isEnabled;
                 ButtonPanels[i].Background.color = isEnabled ? colorPanelActive : colorPanelInactive;

@@ -23,17 +23,20 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnInputUp(InputEventData eventData)
         {
-            Debug.LogFormat("OnInputUp\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            Debug.LogFormat("OnInputUp\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId, eventData.PressKind);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnInputDown(InputEventData eventData)
         {
-            Debug.LogFormat("OnInputDown\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            Debug.LogFormat("OnInputDown\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId, eventData.PressKind);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1} TapCount: {2}", eventData.InputSource, eventData.SourceId, eventData.TapCount);
+            Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}  TapCount: {3}", eventData.InputSource, eventData.SourceId, eventData.PressKind, eventData.TapCount);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnFocusEnter()
@@ -49,36 +52,43 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnSourceDetected(SourceStateEventData eventData)
         {
             Debug.LogFormat("OnSourceDetected\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
             Debug.LogFormat("OnSourceLost\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnHoldStarted(HoldEventData eventData)
         {
             Debug.LogFormat("OnHoldStarted\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnHoldCompleted(HoldEventData eventData)
         {
             Debug.LogFormat("OnHoldCompleted\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnHoldCanceled(HoldEventData eventData)
         {
             Debug.LogFormat("OnHoldCanceled\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnManipulationStarted(ManipulationEventData eventData)
         {
             Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}", 
                 eventData.InputSource, 
-                eventData.SourceId, 
+                eventData.SourceId,
                 eventData.CumulativeDelta.x,
                 eventData.CumulativeDelta.y,
                 eventData.CumulativeDelta.z);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnManipulationUpdated(ManipulationEventData eventData)
@@ -91,6 +101,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     eventData.CumulativeDelta.x,
                     eventData.CumulativeDelta.y,
                     eventData.CumulativeDelta.z);
+
+                eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
             }
         }
 
@@ -102,6 +114,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 eventData.CumulativeDelta.x,
                 eventData.CumulativeDelta.y,
                 eventData.CumulativeDelta.z);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnManipulationCanceled(ManipulationEventData eventData)
@@ -112,6 +126,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 eventData.CumulativeDelta.x,
                 eventData.CumulativeDelta.y,
                 eventData.CumulativeDelta.z);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnNavigationStarted(NavigationEventData eventData)
@@ -119,9 +135,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnNavigationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
                 eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+                eventData.NormalizedOffset.x,
+                eventData.NormalizedOffset.y,
+                eventData.NormalizedOffset.z);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnNavigationUpdated(NavigationEventData eventData)
@@ -131,9 +149,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 Debug.LogFormat("OnNavigationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                     eventData.InputSource,
                     eventData.SourceId,
-                    eventData.CumulativeDelta.x,
-                    eventData.CumulativeDelta.y,
-                    eventData.CumulativeDelta.z);
+                    eventData.NormalizedOffset.x,
+                    eventData.NormalizedOffset.y,
+                    eventData.NormalizedOffset.z);
+
+                eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
             }
         }
 
@@ -142,9 +162,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnNavigationCompleted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
                 eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+                eventData.NormalizedOffset.x,
+                eventData.NormalizedOffset.y,
+                eventData.NormalizedOffset.z);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnNavigationCanceled(NavigationEventData eventData)
@@ -152,9 +174,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnNavigationCanceled\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
                 eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+                eventData.NormalizedOffset.x,
+                eventData.NormalizedOffset.y,
+                eventData.NormalizedOffset.z);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
     }
 }

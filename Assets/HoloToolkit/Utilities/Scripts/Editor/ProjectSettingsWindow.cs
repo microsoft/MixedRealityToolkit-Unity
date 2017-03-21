@@ -11,7 +11,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Project Settings.
+    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Project Settings.
     /// </summary>
     public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
     {
@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity
 
         #region Internal Methods
         /// <summary>
-        /// Enables virtual reality for WSA and ensures HoloLens is in the supported SDKs.
+        /// Enables virtual reality for WSA and ensures Mixed Reality is in the supported SDKs.
         /// </summary>
         private void EnableVirtualReality()
         {
@@ -39,7 +39,7 @@ namespace HoloToolkit.Unity
                 string settings = File.ReadAllText(settingsPath);
 
                 // We're looking for the list of VR devices for the current build target, then
-                // ensuring that the HoloLens is in that list
+                // ensuring that HoloLens is in that list
                 bool foundBuildTargetVRSettings = false;
                 bool foundBuildTargetMetro = false;
                 bool foundBuildTargetEnabled = false;
@@ -125,7 +125,7 @@ namespace HoloToolkit.Unity
                             foundHoloLens = true;
                         }
 
-                        // Otherwise test if this is the hololens device
+                        // Otherwise test if this is the HoloLens device
                         else if (line.Contains("HoloLens"))
                         {
                             foundHoloLens = true;
@@ -246,7 +246,7 @@ namespace HoloToolkit.Unity
         protected override void LoadStrings()
         {
             Names[ProjectSetting.BuildWsaUwp] = "Target Windows Store and UWP";
-            Descriptions[ProjectSetting.BuildWsaUwp] = "Required\n\nSwitches the currently active target to produce a Store app targeting the Universal Windows Platform.\n\nSince HoloLens only supports Windows Store apps, this option should remain checked unless you plan to manually switch the target later before you build.";
+            Descriptions[ProjectSetting.BuildWsaUwp] = "Required\n\nSwitches the currently active target to produce a Store app targeting the Universal Windows Platform.\n\nSince Mixed Reality only supports Windows Store apps, this option should remain checked unless you plan to manually switch the target later before you build.";
 
             Names[ProjectSetting.WsaUwpBuildToD3D] = "Build for Direct3D";
             Descriptions[ProjectSetting.WsaUwpBuildToD3D] = "Recommended\n\nProduces an app that targets Direct3D instead of Xaml.\n\nPure Direct3D apps run faster than applications that include Xaml. This option should remain checked unless you plan to overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
@@ -255,7 +255,7 @@ namespace HoloToolkit.Unity
             Descriptions[ProjectSetting.WsaFastestQuality] = "Recommended\n\nChanges the quality settings for Windows Store apps to the 'Fastest' setting.\n\n'Fastest' is the recommended quality setting for HoloLens apps, but this option can be unchecked if you have already optimized your project for the HoloLens.";
 
             Names[ProjectSetting.WsaEnableVR] = "Enable VR";
-            Descriptions[ProjectSetting.WsaEnableVR] = "Required\n\nEnables VR for Windows Store apps and adds the HoloLens as a target VR device.\n\nThe application will not compile for HoloLens and tools like Holographic Remoting will not function without this enabled. Therefore this option should remain checked unless you plan to manually perform these steps later.";
+            Descriptions[ProjectSetting.WsaEnableVR] = "Required\n\nEnables VR for Windows Store apps and adds Mixed Reality as a target VR device.\n\nThe application will not compile for Mixed Reality and tools like Holographic Remoting will not function without this enabled. Therefore this option should remain checked unless you plan to manually perform these steps later.";
         }
 
         protected override void OnEnable()

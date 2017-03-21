@@ -28,7 +28,7 @@ namespace HoloToolkit.Sharing.Utilities
             // Get the ServerSessionsTracker to use later.
             // Note that if this processes takes the role of a secondary client,
             // then the sessionsTracker will always be null
-            if (SharingStage.Instance != null && SharingStage.Instance.Manager != null)
+            if (SharingStage.IsInitialized && SharingStage.Instance.Manager != null)
             {
                 sessionsTracker = SharingStage.Instance.SessionsTracker;
             }
@@ -54,8 +54,8 @@ namespace HoloToolkit.Sharing.Utilities
                 {
                     if (SharingStage.Instance.ShowDetailedLogs)
                     {
-                        Debug.LogFormat("Session conn {0} Sessions: {1}.", sessionsTracker.IsServerConnected.ToString(), sessionsTracker.Sessions.Count.ToString());
-                        Debug.Log("Looking for " + SessionName);
+                        Debug.LogFormat("AutoJoinSession: Session connected is {0} with {1} Sessions.", sessionsTracker.IsServerConnected.ToString(), sessionsTracker.Sessions.Count.ToString());
+                        Debug.Log("AutoJoinSession: Looking for " + SessionName);
                     }
                     bool sessionFound = false;
 

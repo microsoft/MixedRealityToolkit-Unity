@@ -27,10 +27,20 @@ namespace HoloToolkit.Unity.InputModule
         public abstract Ray StableRay { get; }
 
         /// <summary>
-        /// Call this each frame to smooth out changes to a position and orientation.
+        /// Call this each frame to smooth out changes to a position and orientation, if supported.
         /// </summary>
         /// <param name="position">Input position to smooth.</param>
         /// <param name="rotation">Input orientation to smooth.</param>
-        public abstract void UpdateStability(Vector3 position, Quaternion rotation);
+        public virtual void UpdateStability(Vector3 position, Quaternion rotation)
+        {
+            UpdateStability(position, (rotation * Vector3.forward));
+        }
+
+        /// <summary>
+        /// Call this each frame to smooth out changes to a position and direction, if supported.
+        /// </summary>
+        /// <param name="position">Input position to smooth.</param>
+        /// <param name="direction">Input direction to smooth.</param>
+        public abstract void UpdateStability(Vector3 position, Vector3 direction);
     }
 }
