@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
@@ -32,6 +32,15 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Scale by which hand movement in z is multipled to move the dragged object.")]
         public float DistanceScale = 2f;
 
+        [Tooltip("Transform which will be used for collision check. Defaults to the object of the component.")]
+        public Transform CollideTransform;
+
+        [Tooltip("Check for collisions if true.")]
+        public bool WatchForCollision = false;
+
+        [Tooltip("Defines which mask should be used for collision checking.")]
+        public LayerMask CollisionMask = 0;
+
         [Tooltip("Should the object be kept upright as it is being dragged?")]
         public bool IsKeepUpright = false;
 
@@ -61,6 +70,10 @@ namespace HoloToolkit.Unity.InputModule
             if (HostTransform == null)
             {
                 HostTransform = transform;
+            }
+            if (CollideTransform == null)
+            {
+                CollideTransform = transform;
             }
 
             mainCamera = Camera.main;
@@ -205,14 +218,55 @@ namespace HoloToolkit.Unity.InputModule
                 draggingRotation = Quaternion.LookRotation(objForward, objUp);
             }
 
+            Vector3 newPosition = draggingPosition + mainCamera.transform.TransformDirection(objRefGrabPoint);
+            Vector3 lastPosition = HostTransform.position;
+
             // Apply Final Position
-            HostTransform.position = draggingPosition + mainCamera.transform.TransformDirection(objRefGrabPoint);
+            HostTransform.position = newPosition;
             HostTransform.rotation = draggingRotation;
 
             if (IsKeepUpright)
             {
                 Quaternion upRotation = Quaternion.FromToRotation(HostTransform.up, Vector3.up);
                 HostTransform.rotation = upRotation * HostTransform.rotation;
+            }
+
+            // Check for a possible collision
+            if (WatchForCollision && CollideTransform != null)
+            {
+                // Get bounds for CollideTransform
+                Bounds bounds = new Bounds(CollideTransform.position, Vector3.zero);
+                Renderer[] renderers = CollideTransform.gameObject.GetComponentsInChildren<Renderer>();
+                foreach (Renderer render in renderers)
+                {
+                    bounds.Encapsulate(render.bounds);
+                }
+
+                Vector3 movement = newPosition - lastPosition;
+                float distance = movement.magnitude;
+                movement.Normalize();
+
+                // Check for collision
+                // Only via Physics.CheckBox isn't enough, because the user could be moving the object so fast
+                // that the object is moving through the possible colliding object and we wouldn't hit it.
+                if (Physics.CheckBox(bounds.center, bounds.extents, Quaternion.identity, CollisionMask) ||
+                    Physics.Raycast(lastPosition, movement, distance, CollisionMask))
+                {
+                    // If we collided with something, set back the position to the last one.
+                    HostTransform.position = lastPosition;
+
+                    // Save source temporary so we can reset and set the current position
+                    // as new start position
+                    IInputSource tmpCurrentInputSource = currentInputSource;
+                    uint tmpCurrentInputSourceId = currentInputSourceId;
+                    SetDragging(false);
+                    SetDragging(true);
+
+                    currentInputSource = tmpCurrentInputSource;
+                    currentInputSourceId = tmpCurrentInputSourceId;
+
+                    StartDragging();
+                }
             }
         }
 
