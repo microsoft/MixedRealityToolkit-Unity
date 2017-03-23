@@ -13,17 +13,20 @@ namespace HoloToolkit.Unity.InputModule
     {
         private SerializedProperty keywordsProperty;
         private string[] registeredKeywords;
+        private SerializedProperty recognizeResponse;
 
         private void OnEnable()
         {
             keywordsProperty = serializedObject.FindProperty("keywords");
             registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+            recognizeResponse = serializedObject.FindProperty("RecognizeResponse");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
             ShowList(keywordsProperty);
+            EditorGUILayout.PropertyField(recognizeResponse);
             serializedObject.ApplyModifiedProperties();
 
             // error and warning messages
