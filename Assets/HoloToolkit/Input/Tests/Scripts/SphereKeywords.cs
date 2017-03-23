@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using System.Collections;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -40,5 +41,27 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             DestroyImmediate(cachedMaterial);
         }
+
+		public void ScaleResponse()
+		{
+			StartCoroutine(ScaleResponseAnimation());
+		}
+
+		IEnumerator ScaleResponseAnimation()
+		{
+
+			while(transform.localScale.x < 0.4)
+			{
+				transform.localScale += Vector3.one * Time.deltaTime * 3;
+				yield return null;
+			}
+			yield return new WaitForSeconds(0.1f);
+			while (transform.localScale.x > 0.2f)
+			{
+				transform.localScale -= Vector3.one * Time.deltaTime * 3;
+				yield return null;
+			}
+			transform.localScale = Vector3.one * 0.2f;
+		}
     }
 }
