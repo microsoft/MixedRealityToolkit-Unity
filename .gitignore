@@ -32,7 +32,7 @@ obj/
 *.ipch
 *.opensdf
 *.sdf
-#*.obj
+*.obj
 *.tlog
 *.log
 *.idb
