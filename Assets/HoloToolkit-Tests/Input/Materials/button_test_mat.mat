@@ -1,0 +1,372 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: button_test_mat
+  m_Shader: {fileID: 4800000, guid: 2782662d6263cbb479829be3d5c71cd7, type: 3}
+  m_ShaderKeywords: ALBEDO_ON ALPHA_USAGE_OFF AMBIENTLIGHT_OFF CUBEMAP_ON EMISSIVE_ON
+    FRESNEL_OFF LIGHTMAP_OFF LIGHTPROBES_OFF LIGHT_OFF NEARCLIP_OFF NORMAL_VERTEX
+    SHOWDEBUG_OFF TINT_OFF VERTCOLOR_OFF _FOG_OFF _METALLICGLOSSMAP _USECOLOR_ON _USEMAINTEX_ON
+  m_LightmapFlags: 6
+  m_CustomRenderQueue: 2000
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _BumpMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Cube
+      second:
+        m_Texture: {fileID: 8900000, guid: add25f48a27ac4d4da8d43d90499a6a2, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Cubemap
+      second:
+        m_Texture: {fileID: 8900000, guid: 52eeea39ac23fdb4a8d26345665f22b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailAlbedoMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailMask
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailNormalMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _EmissionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _EmissionTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _LightmapTexture
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MetallicGlossMap
+      second:
+        m_Texture: {fileID: 2800000, guid: f9f1b52d89f86e64f880dc1594b5f569, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _NormalMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _NormalMapAlpha
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _OcclusionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _ParallaxMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: ALBEDO
+      second: 0
+    - first:
+        name: ALPHA_TEST
+      second: 0
+    - first:
+        name: ALPHA_USAGE
+      second: 0
+    - first:
+        name: AMBIENTLIGHT
+      second: 0
+    - first:
+        name: CUBEMAP
+      second: 0
+    - first:
+        name: EMISSIVE
+      second: 0
+    - first:
+        name: FRESNEL
+      second: 0
+    - first:
+        name: LIGHT
+      second: 0
+    - first:
+        name: LIGHTMAP
+      second: 0
+    - first:
+        name: LIGHTPROBES
+      second: 0
+    - first:
+        name: NEARCLIP
+      second: 0
+    - first:
+        name: NORMAL
+      second: 0
+    - first:
+        name: SHOWDEBUG
+      second: 0
+    - first:
+        name: TINT
+      second: 0
+    - first:
+        name: VERTCOLOR
+      second: 0
+    - first:
+        name: ZOFFSET_CONSTANT
+      second: 0
+    - first:
+        name: ZOFFSET_SLOPE
+      second: 0
+    - first:
+        name: _Alpha
+      second: 1
+    - first:
+        name: _AlphaTestThreshold
+      second: 0.05
+    - first:
+        name: _Brightness
+      second: 0.66
+    - first:
+        name: _BumpScale
+      second: 1
+    - first:
+        name: _COLORMASK
+      second: 15
+    - first:
+        name: _CULL
+      second: 2
+    - first:
+        name: _ColorWriteMask
+      second: 15
+    - first:
+        name: _CubemapContribution
+      second: 0.787
+    - first:
+        name: _Cull
+      second: 2
+    - first:
+        name: _Cutoff
+      second: 0.5
+    - first:
+        name: _DetailNormalMapScale
+      second: 1
+    - first:
+        name: _DstBlend
+      second: 0
+    - first:
+        name: _FOG
+      second: 0
+    - first:
+        name: _Gloss
+      second: 0.5
+    - first:
+        name: _GlossMapScale
+      second: 1
+    - first:
+        name: _Glossiness
+      second: 0.5
+    - first:
+        name: _GlossyReflections
+      second: 1
+    - first:
+        name: _Iridecence
+      second: 0.041
+    - first:
+        name: _LightProbeAmount
+      second: 1
+    - first:
+        name: _Metallic
+      second: 0.911
+    - first:
+        name: _Mode
+      second: 0
+    - first:
+        name: _Mult
+      second: 37.52
+    - first:
+        name: _NormalAlphaAsEmissive
+      second: 0
+    - first:
+        name: _NormalAlphaAsSpecular
+      second: 0
+    - first:
+        name: _OcclusionStrength
+      second: 1
+    - first:
+        name: _Parallax
+      second: 0.02
+    - first:
+        name: _Pow
+      second: 0.8
+    - first:
+        name: _Ref
+      second: 0.1
+    - first:
+        name: _ReflectionAmount
+      second: 0.92
+    - first:
+        name: _ReflectionBlur
+      second: 0.59
+    - first:
+        name: _ShowDebugValue
+      second: 0
+    - first:
+        name: _Side_Brightness
+      second: 0.482
+    - first:
+        name: _SmoothnessTextureChannel
+      second: 0
+    - first:
+        name: _Specular
+      second: 0.5
+    - first:
+        name: _SpecularHighlights
+      second: 1
+    - first:
+        name: _SrcBlend
+      second: 1
+    - first:
+        name: _UVSec
+      second: 0
+    - first:
+        name: _UseBumpMap
+      second: 0
+    - first:
+        name: _UseColor
+      second: 1
+    - first:
+        name: _UseEmissionTex
+      second: 0
+    - first:
+        name: _UseMainTex
+      second: 1
+    - first:
+        name: _VertColorScale
+      second: 1
+    - first:
+        name: _ZTEST
+      second: 4
+    - first:
+        name: _ZTest
+      second: 4
+    - first:
+        name: _ZWRITE
+      second: 1
+    - first:
+        name: _ZWrite
+      second: 1
+    - first:
+        name: _worldScale
+      second: -0.27
+    m_Colors:
+    - first:
+        name: _AlphaScale
+      second: {r: 1, g: 0, b: 0, a: 0}
+    - first:
+        name: _AmbientColor
+      second: {r: 0.125, g: 0.125, b: 0.125, a: 1}
+    - first:
+        name: _BounceColor
+      second: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - first:
+        name: _Color
+      second: {r: 0.23718642, g: 0.26575714, b: 0.30147058, a: 1}
+    - first:
+        name: _CubemapBalance
+      second: {r: 0, g: 0.44, b: 0, a: 0}
+    - first:
+        name: _CubemapRoughness
+      second: {r: 0, g: 1, b: 0, a: 0}
+    - first:
+        name: _EmissionColor
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _EmissiveColor
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _FogColor
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _FogRange
+      second: {r: 1, g: 10, b: 0, a: 0}
+    - first:
+        name: _FresnelColor
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _FresnelScale
+      second: {r: 1, g: 1, b: 0, a: 0}
+    - first:
+        name: _Light_Dir
+      second: {r: 0.5, g: -1, b: 0, a: 10}
+    - first:
+        name: _LightmapParams
+      second: {r: 1, g: 0, b: 0, a: 0}
+    - first:
+        name: _Material_Color
+      second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - first:
+        name: _NearClipDistance
+      second: {r: 0.2, g: 1, b: 0, a: 0}
+    - first:
+        name: _NormalAlphaScale
+      second: {r: 1, g: 0, b: 0, a: 0}
+    - first:
+        name: _NormalScale
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _Reflection_Tint
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _SpecColor
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - first:
+        name: _SpecPower
+      second: {r: 60, g: 0, b: 1, a: 0}
+    - first:
+        name: _TintColor
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _UplightColor
+      second: {r: 0.3, g: 0.3, b: 0.3, a: 1}
