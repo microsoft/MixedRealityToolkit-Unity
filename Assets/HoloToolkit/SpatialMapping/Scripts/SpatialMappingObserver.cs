@@ -65,6 +65,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Indicates the current type of the observed volume
         /// </summary>
+        [SerializeField][Tooltip("The shape of the observation volume.")]
         private ObserverVolumeTypes observerVolumeType = ObserverVolumeTypes.AxisAlignedBox;
         public ObserverVolumeTypes ObserverVolumeType
         {
@@ -111,7 +112,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private float updateTime;
 
-        [Tooltip("The extents of the observation volume.")]
+        [SerializeField][Tooltip("The extents of the observation volume.")]
         private Vector3 extents = Vector3.one * 10.0f;
         public Vector3 Extents
         {
@@ -132,6 +133,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// The origin of the observation volume.
         /// </summary>
+        [SerializeField][Tooltip("The origin of the observation volume.")]
         private Vector3 origin = Vector3.zero;
         public Vector3 Origin
         {
@@ -150,8 +152,9 @@ namespace HoloToolkit.Unity.SpatialMapping
         }
 
         /// <summary>
-        /// The direction of the observed volume if an oriented box is choosen.
+        /// The direction of the observed volume, if an oriented box is choosen.
         /// </summary>
+        [SerializeField][Tooltip("The direction of the observation volume.")]
         private Quaternion orientation = Quaternion.identity;
         public Quaternion Orientation
         {
