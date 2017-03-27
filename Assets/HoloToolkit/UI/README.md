@@ -26,7 +26,8 @@ Common useful UI prefabs
 
 UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-**IMPORTANT**: To use Text prefabs, please make sure to import SegoeUI.TTF font file from your system font folder (C:\Windows\Fonts\)  
+**IMPORTANT: Text Prefab uses open source font 'Selawik'. To use Text Prefab with different font, please import font file and follow the instruction below. Below example shows how to use 'Segoe UI' font with Text Prefab.**
+
 ![Importing Segoe UI font file](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions01.png)
 
 1. Assign font texture to 3DTextSegoeUI.mat material. 
