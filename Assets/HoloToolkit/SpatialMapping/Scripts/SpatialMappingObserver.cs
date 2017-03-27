@@ -348,24 +348,27 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private void SwitchObservedVolume()
         {
-            if (observer != null)
+            if (observer == null)
             {
-                switch (observerVolumeType)
-                {
-                    case ObserverVolumeTypes.AxisAlignedBox:
-                        observer.SetVolumeAsAxisAlignedBox(origin, extents);
-                        break;
-                    case ObserverVolumeTypes.OrientedBox:
-                        observer.SetVolumeAsOrientedBox(origin, extents, orientation);
-                        break;
-                    case ObserverVolumeTypes.Sphere:
-                        observer.SetVolumeAsSphere(origin, extents.magnitude); //workaround
-                        break;
-                    default:
-                        observer.SetVolumeAsAxisAlignedBox(origin, extents);
-                        break;
-                }
+              return;
             }
+
+            switch (observerVolumeType)
+            {
+                case ObserverVolumeTypes.AxisAlignedBox:
+                    observer.SetVolumeAsAxisAlignedBox(origin, extents);
+                    break;
+                case ObserverVolumeTypes.OrientedBox:
+                    observer.SetVolumeAsOrientedBox(origin, extents, orientation);
+                    break;
+                case ObserverVolumeTypes.Sphere:
+                    observer.SetVolumeAsSphere(origin, extents.magnitude); //workaround
+                    break;
+                default:
+                    observer.SetVolumeAsAxisAlignedBox(origin, extents);
+                    break;
+            }
+            
         }
 
         /// <summary>
