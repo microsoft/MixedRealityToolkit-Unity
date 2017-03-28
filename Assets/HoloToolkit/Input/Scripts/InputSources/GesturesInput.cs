@@ -518,13 +518,31 @@ namespace HoloToolkit.Unity.InputModule
 
             InteractionSourceLocation locationData = interactionSource.properties.location;
 
-            sourceData.Position.IsAvailable = locationData.TryGetPosition(out sourceData.Position.CurrentReading);
+            Vector3 newPosition;
+            sourceData.Position.IsAvailable = locationData.TryGetPosition(out newPosition);
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.Position.IsSupported |= sourceData.Position.IsAvailable;
+            if (sourceData.Position.IsAvailable)
+            {
+                if (!(sourceData.Position.CurrentReading.Equals(newPosition)))
+                {
+                    InputManager.Instance.RaiseSourcePositionChanged(this, sourceData.SourceId, newPosition);
+                }
+            }
+            sourceData.Position.CurrentReading = newPosition;
 
-            sourceData.Orientation.IsAvailable = locationData.TryGetOrientation(out sourceData.Orientation.CurrentReading);
+            Quaternion newOrientation;
+            sourceData.Orientation.IsAvailable = locationData.TryGetOrientation(out newOrientation);
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.Orientation.IsSupported |= sourceData.Orientation.IsAvailable;
+            if (sourceData.Orientation.IsAvailable)
+            {
+                if(!(sourceData.Orientation.CurrentReading.Equals(newOrientation)))
+                {
+                    InputManager.Instance.RaiseSourceOrientationChanged(this, sourceData.SourceId, newOrientation);
+                }
+            }
+            sourceData.Orientation.CurrentReading = newOrientation;
 
             sourceData.PointingRay.IsSupported = interactionSource.source.supportsPointing;
             sourceData.PointingRay.IsAvailable = interactionSource.sourceRay.IsValid();
@@ -535,15 +553,55 @@ namespace HoloToolkit.Unity.InputModule
 
             sourceData.Thumbstick.IsSupported = (gotController && controller.hasThumbstick);
             sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
-            sourceData.Thumbstick.CurrentReading = (sourceData.Thumbstick.IsAvailable ? AxisButton2D.GetThumbstick(interactionSource) : default(AxisButton2D));
+            if (sourceData.Thumbstick.IsAvailable)
+            {
+                AxisButton2D newThumbstick = AxisButton2D.GetThumbstick(interactionSource);
+                if  ((sourceData.Thumbstick.CurrentReading.X != newThumbstick.X) || (sourceData.Thumbstick.CurrentReading.Y != newThumbstick.Y))
+                {
+                    InputManager.Instance.RaiseInputXYChanged(this, sourceData.SourceId, InteractionPressKind.Thumbstick, newThumbstick.X, newThumbstick.Y);
+                }
+                sourceData.Thumbstick.CurrentReading = newThumbstick;
+            }
+            else
+            {
+                sourceData.Thumbstick.CurrentReading = default(AxisButton2D);
+            }
 
             sourceData.Touchpad.IsSupported = (gotController && controller.hasTouchpad);
             sourceData.Touchpad.IsAvailable = sourceData.Touchpad.IsSupported;
-            sourceData.Touchpad.CurrentReading = (sourceData.Touchpad.IsAvailable ? TouchpadData.GetTouchpad(interactionSource) : default(TouchpadData));
+            if (sourceData.Touchpad.IsAvailable)
+            {
+                TouchpadData newTouchpad = TouchpadData.GetTouchpad(interactionSource);
+                if ((sourceData.Touchpad.CurrentReading.AxisButton.X != newTouchpad.AxisButton.X) || (sourceData.Touchpad.CurrentReading.AxisButton.Y != newTouchpad.AxisButton.Y))
+                {
+                    InputManager.Instance.RaiseInputXYChanged(this, sourceData.SourceId, InteractionPressKind.Touchpad, newTouchpad.AxisButton.X, newTouchpad.AxisButton.Y);
+                }
+                if (sourceData.Touchpad.CurrentReading.Touched != newTouchpad.Touched)
+                {
+                    if (newTouchpad.Touched)
+                    {
+                        InputManager.Instance.RaiseTouchpadTouched(this, sourceData.SourceId);
+                    }
+                    else
+                    {
+                        InputManager.Instance.RaiseTouchpadReleased(this, sourceData.SourceId);
+                    }
+                }
+                sourceData.Touchpad.CurrentReading = newTouchpad;
+            }
+            else
+            {
+                sourceData.Touchpad.CurrentReading = default(TouchpadData);
+            }
 
             sourceData.Trigger.IsSupported = true; // All input mechanisms support "select" which is considered the same as "trigger".
             sourceData.Trigger.IsAvailable = sourceData.Trigger.IsSupported;
-            sourceData.Trigger.CurrentReading = AxisButton1D.GetTrigger(interactionSource);
+            AxisButton1D newTrigger = AxisButton1D.GetTrigger(interactionSource);
+            if (sourceData.Trigger.CurrentReading.PressedValue != newTrigger.PressedValue)
+            {
+                InputManager.Instance.RaiseTriggerPressedValueChanged(this, sourceData.SourceId, newTrigger.PressedValue);
+            }
+            sourceData.Trigger.CurrentReading = newTrigger;
 
             sourceData.Grasp.IsSupported = interactionSource.source.supportsGrasp;
             sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
