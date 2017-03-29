@@ -39,6 +39,7 @@ namespace HoloToolkit.Unity
         public bool CreateMeshColliders = true;
 
         private bool drawProcessedMesh = true;
+
         // Properties
         /// <summary>
         /// Controls rendering of the mesh. This can be set by the user to hide or show the mesh.
@@ -58,6 +59,11 @@ namespace HoloToolkit.Unity
                 }
             }
         }
+
+        /// <summary>
+        /// Has any mesh sectors been scanned
+        /// </summary>
+        public bool HasMeshSectors { get { return meshSectors != null && meshSectors.Count > 0; } }
 
         /// <summary>
         /// Indicates if the previous import is still being processed.

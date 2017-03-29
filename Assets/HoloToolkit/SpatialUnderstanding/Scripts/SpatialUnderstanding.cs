@@ -50,6 +50,12 @@ namespace HoloToolkit.Unity
                 return true;
             }
         }
+
+        /// <summary>
+        /// Has any mesh sectors been scanned
+        /// </summary>
+        public bool HasMeshSectors { get { return UnderstandingCustomMesh.HasMeshSectors; } }
+
         /// <summary>
         /// Reference to the SpatialUnderstandingDLL class (wraps the understanding dll functions).
         /// </summary>
@@ -250,7 +256,7 @@ namespace HoloToolkit.Unity
 
             // If it's done, finish up
             if ((ScanState == ScanStates.Finishing) &&
-                (scanDone) && 
+                (scanDone) &&
                 (!UnderstandingCustomMesh.IsImportActive) &&
                 (UnderstandingCustomMesh != null))
             {
