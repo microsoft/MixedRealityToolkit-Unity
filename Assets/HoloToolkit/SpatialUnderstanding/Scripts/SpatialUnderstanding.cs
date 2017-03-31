@@ -36,9 +36,6 @@ namespace HoloToolkit.Unity
         [Tooltip("Update period used after the scanning process is completed")]
         public float UpdatePeriod_AfterScanning = 4.0f;
 
-        public event OnScanDoneDelegate OnScanDone;
-        public delegate void OnScanDoneDelegate();
-
         // Properties
         /// <summary>
         /// Switch used by the entire SpatialUnderstanding module to activate processing.
@@ -50,11 +47,6 @@ namespace HoloToolkit.Unity
                 return true;
             }
         }
-
-        /// <summary>
-        /// Has any mesh sectors been scanned
-        /// </summary>
-        public bool HasMeshSectors { get { return UnderstandingCustomMesh.HasMeshSectors; } }
 
         /// <summary>
         /// Reference to the SpatialUnderstandingDLL class (wraps the understanding dll functions).
@@ -106,7 +98,14 @@ namespace HoloToolkit.Unity
             }
         }
 
+        public delegate void OnScanDoneDelegate();
+
         // Events
+        /// <summary>
+        /// Event indicating that the scan is done
+        /// </summary>
+        public event OnScanDoneDelegate OnScanDone;
+
         /// <summary>
         /// Event indicating that the scan state has changed
         /// </summary>
@@ -265,7 +264,7 @@ namespace HoloToolkit.Unity
 
                 // Mark it
                 ScanState = ScanStates.Done;
-                OnScanDone.Invoke();
+                if (OnScanDone != null) OnScanDone.Invoke();
             }
         }
     }
