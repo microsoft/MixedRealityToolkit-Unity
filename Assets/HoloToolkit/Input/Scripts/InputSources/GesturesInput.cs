@@ -537,7 +537,7 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.Orientation.IsSupported |= sourceData.Orientation.IsAvailable;
             if (sourceData.Orientation.IsAvailable)
             {
-                if(!(sourceData.Orientation.CurrentReading.Equals(newOrientation)))
+                if (!(sourceData.Orientation.CurrentReading.Equals(newOrientation)))
                 {
                     InputManager.Instance.RaiseSourceOrientationChanged(this, sourceData.SourceId, newOrientation);
                 }
@@ -556,7 +556,7 @@ namespace HoloToolkit.Unity.InputModule
             if (sourceData.Thumbstick.IsAvailable)
             {
                 AxisButton2D newThumbstick = AxisButton2D.GetThumbstick(interactionSource);
-                if  ((sourceData.Thumbstick.CurrentReading.X != newThumbstick.X) || (sourceData.Thumbstick.CurrentReading.Y != newThumbstick.Y))
+                if ((sourceData.Thumbstick.CurrentReading.X != newThumbstick.X) || (sourceData.Thumbstick.CurrentReading.Y != newThumbstick.Y))
                 {
                     InputManager.Instance.RaiseInputXYChanged(this, sourceData.SourceId, InteractionPressKind.Thumbstick, newThumbstick.X, newThumbstick.Y);
                 }

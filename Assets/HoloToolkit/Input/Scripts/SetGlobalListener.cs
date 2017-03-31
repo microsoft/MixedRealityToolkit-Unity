@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Register this game object on the InputManager as a global listener.
@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private void Start()
         {
             started = true;
-            if (InputManager.Instance != null)
+            if (InputManager.IsInitialized)
             {
                 InputManager.Instance.AddGlobalListener(gameObject);
             }
@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void OnEnable()
         {
-            if (started && InputManager.Instance != null)
+            if (started && InputManager.IsInitialized)
             {
                 InputManager.Instance.AddGlobalListener(gameObject);
             }
@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void OnDisable()
         {
-            if (InputManager.Instance != null)
+            if (InputManager.IsInitialized)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
@@ -39,7 +39,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void OnDestroy()
         {
-            if (InputManager.Instance != null)
+            if (InputManager.IsInitialized)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
