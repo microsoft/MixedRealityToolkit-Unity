@@ -83,6 +83,14 @@ In order to prevent the MainCamera position from being overwritten in the next u
 ### [Scripts](Scripts)
 Scripts related to the input features.
 
+##### ControllerVisualizer.cs
+Use this to visualize a 6DoF controller in your application. Add this script to a GameObject at the root of your scene and add a model prefab to be used to represent the controller.
+
+- **controllerModel** A prefab to spawn to represent the controllers. This will automatically move and reorient when the controller is moved.
+
+##### SetGlobalListener.cs
+Add this to a GameObject to register it as a global listener on the InputManager. This means it will receive events from the InputManager even while not focused.
+
 #### Cursor
 ##### AnimatedCursor.cs
 Animated cursor is a cursor driven using an animator to inject state information and animate accordingly.
@@ -290,18 +298,18 @@ or in your Visual Studio Package.appxmanifest capabilities.
 ##### KeywordManager.cs
 Allows you to specify keywords and methods in the Unity Inspector, instead of registering them explicitly in code.  
 
-**_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
+- **_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
 
-**RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+- **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 ##### SpeechInputSource.cs
 Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.
 
 Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/HoloToolkit/Input/Tests/Scripts/SphereGlobalKeywords.cs for an example of implementing these features, which is used in the demo scene at Assets/HoloToolkit/Input/Tests/SpeechInputSource.unity.
 
-**_KeywordsAndKeys_** Set the size as the number of keywords you'd like to listen for, then specify the keywords to complete the array.
+- **_KeywordsAndKeys_** Set the size as the number of keywords you'd like to listen for, then specify the keywords to complete the array.
 
-**RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+- **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 ##### ISpeechHandler.cs
 Interface that a game object can implement to react to speech keywords.
