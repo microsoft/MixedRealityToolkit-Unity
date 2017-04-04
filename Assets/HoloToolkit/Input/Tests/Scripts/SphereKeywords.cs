@@ -6,17 +6,26 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     [RequireComponent(typeof(Renderer))]
-    public class SphereKeywords : MonoBehaviour, ISpeechHandler
+    public class SphereKeywords : MonoBehaviour, ISpeechHandler, IFocusable
     {
         private Material cachedMaterial;
+        private Color defaultColor;
+        private bool gazed = false;
 
         private void Awake()
         {
-            cachedMaterial = GetComponent<Renderer>().material;
+            if(GetComponent<Renderer>() != null) 
+            {
+                cachedMaterial = GetComponent<Renderer>().material;
+                defaultColor = cachedMaterial.color;
+            }
         }
 
         public void ChangeColor(string color)
         {
+            if(!gazed) {
+                return;
+            }
             switch (color.ToLower())
             {
                 case "red":
@@ -31,9 +40,24 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
+        public void ResetColor() 
+        {
+            cachedMaterial.SetColor("_Color", defaultColor);
+        }
+
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             ChangeColor(eventData.RecognizedText);
+        }
+
+        public void OnFocusEnter() 
+        {
+            gazed = true;
+        }
+
+        public void OnFocusExit() 
+        {
+            gazed = false;
         }
 
         private void OnDestroy()
