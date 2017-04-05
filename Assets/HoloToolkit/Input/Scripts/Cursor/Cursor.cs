@@ -180,7 +180,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Override for enable functions
         /// </summary>
-        protected virtual void OnEnable() { }
+        protected virtual void OnEnable()
+        {
+            if (gazeManager)
+            {
+                OnFocusedObjectChanged(null, gazeManager.HitObject);
+            }
+            OnCursorStateChange(CursorStateEnum.None);
+        }
 
         /// <summary>
         /// Override for disable functions
@@ -190,6 +197,8 @@ namespace HoloToolkit.Unity.InputModule
             TargetedObject = null;
             TargetedCursorModifier = null;
             visibleHandsCount = 0;
+            IsHandVisible = false;
+            OnCursorStateChange(CursorStateEnum.Contextual);
         }
 
         private void OnDestroy()
