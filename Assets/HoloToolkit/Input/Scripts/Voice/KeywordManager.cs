@@ -43,6 +43,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
         public KeywordAndResponse[] KeywordsAndResponses;
 
+	// A UnityEvent that gets triggered by any recognized Phrase or Keycode
+	public UnityEvent Response;
+
         private KeywordRecognizer keywordRecognizer;
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
@@ -122,6 +125,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (Input.GetKeyDown(kvp.KeyCode))
                 {
+                    if(Response != null) {
+                        Response.Invoke();
+                    }
                     kvp.Response.Invoke();
                     return;
                 }
@@ -130,6 +136,9 @@ namespace HoloToolkit.Unity.InputModule
 
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
+            if(Response != null) {
+                Response.Invoke();
+            }
             UnityEvent keywordResponse;
 
             // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.

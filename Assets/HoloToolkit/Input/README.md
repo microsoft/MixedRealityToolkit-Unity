@@ -192,6 +192,8 @@ Allows you to specify keywords and methods in the Unity Inspector, instead of re
 
 **_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
 
+**_Response_** Define a method response to be triggered by any recognized phrase or keycode.
+
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 ##### SpeechInputSource.cs
