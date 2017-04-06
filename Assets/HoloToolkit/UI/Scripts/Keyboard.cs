@@ -402,7 +402,7 @@ namespace HoloToolkit.UI.Keyboard
 
         private void ScaleToSize()
         {
-            float distance = (this.transform.position - GazeManager.Instance.GazeOrigin).magnitude;
+            float distance = (this.transform.position - Camera.main.transform.position).magnitude;
             float distancePercent = (distance - m_MinDistance) / (m_MaxDistance - m_MinDistance);
             float scale = m_MinScale + (m_MaxScale - m_MinScale) * distancePercent;
             scale = Mathf.Clamp(scale, m_MinScale, m_MaxScale);
@@ -413,7 +413,7 @@ namespace HoloToolkit.UI.Keyboard
 
         private void LookAtTargetOrigin()
         {
-            this.transform.LookAt(GazeManager.Instance.GazeOrigin);
+            this.transform.LookAt(Camera.main.transform.position);
             this.transform.Rotate(Vector3.up, 180.0f);
         }
 

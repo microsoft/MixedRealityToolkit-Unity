@@ -14,10 +14,16 @@ namespace HoloToolkit.UI.Keyboard
 		[SerializeField]
 		private Text m_TextField;
 
-		/// <summary>
-		/// The color to switch to when the button is disabled.
-		/// </summary>
-		[SerializeField]
+        /// <summary>
+        /// The text field to update.
+        /// </summary>
+        [SerializeField]
+        private Image m_ImageField;
+
+        /// <summary>
+        /// The color to switch to when the button is disabled.
+        /// </summary>
+        [SerializeField]
 		private Color m_DisabledColor = Color.grey;
 
 		/// <summary>
@@ -40,7 +46,12 @@ namespace HoloToolkit.UI.Keyboard
 				m_StartingColor = m_TextField.color;
 			}
 
-			m_Button = this.GetComponentInParent<Button>();
+            if (m_ImageField != null)
+            {
+                m_StartingColor = m_ImageField.color;
+            }
+
+            m_Button = this.GetComponentInParent<Button>();
 
 			this.UpdateState();
 
@@ -64,6 +75,11 @@ namespace HoloToolkit.UI.Keyboard
 			{
 				m_TextField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
 			}
-		}
+
+            if (m_ImageField != null && m_Button != null)
+            {
+                m_ImageField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
+            }
+        }
 	}
 }
