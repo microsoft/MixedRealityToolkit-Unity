@@ -11,11 +11,13 @@ namespace HoloToolkit.Unity.InputModule
     {
         private SerializedProperty recognizerStart;
         private SerializedProperty keywordsAndKeys;
+        private SerializedProperty recognizeResponse;
 
         private void OnEnable()
         {
             recognizerStart = serializedObject.FindProperty("RecognizerStart");
             keywordsAndKeys = serializedObject.FindProperty("Keywords");
+            recognizeResponse = serializedObject.FindProperty("RecognizeRespone");
         }
 
         public override void OnInspectorGUI()
@@ -25,6 +27,8 @@ namespace HoloToolkit.Unity.InputModule
             EditorGUILayout.PropertyField(recognizerStart);
             // the Keywords field
             ShowList(keywordsAndKeys);
+            // RecognizeResponse field
+            EditorGUILayout.PropertyField(recognizeResponse);
             serializedObject.ApplyModifiedProperties();
 
             // error and warning messages

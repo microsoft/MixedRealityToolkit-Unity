@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Windows.Speech;
+using UnityEngine.Events;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -39,6 +40,9 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndKeyCode[] Keywords;
+
+        // Triggers on any recognized phrase and KeyCode
+        public UnityEvent RecognizeRespone;
 
         private KeywordRecognizer keywordRecognizer;
 
@@ -112,6 +116,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (Input.GetKeyDown(Keywords[index].KeyCode))
                 {
+                    if(RecognizeRespone != null)
+                    {
+                        RecognizeRespone.Invoke();
+                    }
                     OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }
             }
@@ -119,6 +127,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
+            if (RecognizeRespone != null)
+            {
+                RecognizeRespone.Invoke();
+            }
             OnPhraseRecognized(args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
         }
 

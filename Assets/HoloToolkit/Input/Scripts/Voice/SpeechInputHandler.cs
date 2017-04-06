@@ -22,6 +22,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndResponse[] keywords;
 
+        // Triggers on any recognized phrase and KeyCode
+        public UnityEvent RecognizeResponse;
+
         [NonSerialized]
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
@@ -53,6 +56,10 @@ namespace HoloToolkit.Unity.InputModule
             // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
             if (enabled && responses.TryGetValue(eventData.RecognizedText.ToLower(), out keywordResponse))
             {
+                if(RecognizeResponse != null)
+                {
+                    RecognizeResponse.Invoke();
+                }
                 keywordResponse.Invoke();
             }
         }
