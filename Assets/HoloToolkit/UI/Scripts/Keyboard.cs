@@ -1,8 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 
 #if UNITY_WSA
@@ -391,9 +393,15 @@ namespace HoloToolkit.UI.Keyboard
 
             if (aCollider != null)
             {
-                float yTranslation = -((aCollider.bounds.size.y * (0.5f + verticalOffset)));
+                float yTranslation = -((aCollider.bounds.size.y * 0.5f) + verticalOffset);
                 this.transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
             }
+            else
+            {
+                float yTranslation = -((m_ObjectBounds.y * 0.5f) + verticalOffset);
+                this.transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
+            }
+
 
             ScaleToSize();
 
@@ -408,7 +416,7 @@ namespace HoloToolkit.UI.Keyboard
             scale = Mathf.Clamp(scale, m_MinScale, m_MaxScale);
             this.transform.localScale = m_StartingScale * scale;
 
-            Debug.LogFormat("Setting�scale:�{0}�for�distance:�{1}", scale, distance);
+            Debug.LogFormat("Setting scale: {0} for distance: {1}", scale, distance);
         }
 
         private void LookAtTargetOrigin()
@@ -580,18 +588,7 @@ namespace HoloToolkit.UI.Keyboard
 
 				case KeyboardKeyFunc.Function.Shift:
 				{
-                    // On click ouc
-					//if (FocusManager.Instance.UIEventPointerData.clickCount == 2)
-					//{
-					//	if (m_IsShifted)
-					//	{
-					//		CapsLock(!m_IsCapslocked);
-					//	}
-					//}
-					//else
-					//{
-						Shift(!m_IsShifted);
-					//}
+					Shift(!m_IsShifted);
 					break;
 				}
 
