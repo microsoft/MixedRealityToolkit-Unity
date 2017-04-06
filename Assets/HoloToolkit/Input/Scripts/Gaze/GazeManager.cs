@@ -300,19 +300,22 @@ namespace HoloToolkit.Unity.InputModule
                 combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
             }
 
+            RaycastResult? minHit = null;
             for (var i = 0; i < candidates.Count; ++i)
             {
                 if (candidates[i].gameObject == null || !IsLayerInLayerMask(candidates[i].gameObject.layer, combinedLayerMask))
                 {
                     continue;
                 }
-
-                return candidates[i];
+                if (minHit == null || candidates[i].distance < minHit.Value.distance)
+                {
+                    minHit = candidates[i];
+                }
             }
 
-            return new RaycastResult();
+             return minHit ?? new RaycastResult();
         }
-
+        
         /// <summary>
         /// Look through the layerMaskList and find the index in that list for which the supplied layer is part of
         /// </summary>
