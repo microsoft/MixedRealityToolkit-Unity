@@ -206,7 +206,7 @@ Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/Ho
 ##### ISpeechHandler.cs
 Interface that a game object can implement to react to speech keywords.
 
-### [Test Prefabs](TestPrefabs)
+### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Prefabs)
 
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
@@ -218,7 +218,7 @@ You can simply drop this into your scene and be able to send arbitrary messages 
 Keyword manager pre-wired to send messages to object being currently selected via SelectedObjectMessageSender component.
 You can simply drop this into your scene and be able to send arbitrary messages to currently selected object.
 
-### [Test Scripts](TestScripts)
+### [Test Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Scripts)
 #### FocusedObjectMessageSender.cs
 Sends Unity message to currently focused object.
 FocusedObjectMessageSender.SendMessageToFocusedObject needs to be registered as a response in KeywordManager
@@ -245,7 +245,7 @@ It highlights the object being gazed at.
 This class implements IInputClickHandler to handle the tap gesture.
 It increases the scale of the object when tapped.
 
-### [Tests](Tests/Scenes)
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Scenes)
 Tests related to the input features. To use the scene:
 
 1. Navigate to the Tests folder.
