@@ -8,11 +8,11 @@ Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing S
 or in your Visual Studio Package.appxmanifest capabilities.
 
 ### Microsoft HoloLens Documentation
-- [Spatial Mapping In Unity](https://developer.microsoft.com/en-us/windows/holographic/spatial_mapping_in_unity)
-- [Spatial Understanding In Unity](https://developer.microsoft.com/en-us/windows/holographic/spatial_mapping_in_unity#holotoolkit.spatialunderstanding)
+- [Spatial Mapping In Unity](https://developer.microsoft.com/en-us/windows/mixed-reality/spatial_mapping_in_unity)
+- [Spatial Understanding In Unity](https://developer.microsoft.com/en-us/windows/mixed-reality/spatial_mapping_in_unity#holotoolkit.spatialunderstanding)
 
 ### Case studies
-- [Expanding the spatial mapping capabilities of HoloLens](https://developer.microsoft.com/en-us/windows/holographic/case_study_-_expanding_the_spatial_mapping_capabilities_of_hololens)
+- [Expanding the spatial mapping capabilities of HoloLens](https://developer.microsoft.com/en-us/windows/mixed-reality/case_study_-_expanding_the_spatial_mapping_capabilities_of_hololens)
 
 ### [Plugins](Plugins)
 SpatialUnderstanding addon that can be used for topology, object detection, and object placement.
