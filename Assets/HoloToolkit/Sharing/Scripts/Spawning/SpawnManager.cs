@@ -3,6 +3,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
+using System;
 using UnityEngine;
 using HoloToolkit.Sharing.SyncModel;
 
@@ -22,7 +23,22 @@ namespace HoloToolkit.Sharing.Spawning
 
         protected virtual void Start()
         {
+            // SharingStage should be valid at this point, but we may not be connected.
             NetworkManager = SharingStage.Instance;
+            if (NetworkManager.IsConnected)
+            {
+                Connected();
+            }
+            else
+            {
+                NetworkManager.SharingManagerConnected += Connected;
+            }
+        }
+
+        protected virtual void Connected(object sender = null, EventArgs e = null)
+        {
+            NetworkManager.SharingManagerConnected -= Connected;
+
             SetDataModelSource();
             RegisterToDataModel();
         }
