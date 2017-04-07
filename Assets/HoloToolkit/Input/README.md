@@ -3,7 +3,7 @@ Input System Diagrams:
 ![alt text](/External/ReadMeImages/InputSystemDiagram.png)
 ![alt text](/External/ReadMeImages/CursorSystemDiagram.PNG)
 
-##Scripts that leverage HoloLens input features namely Gaze, Gesture and Voice.
+## Scripts that leverage HoloLens input features namely Gaze, Gesture and Voice.
 
 This contains a fully-featured **input module**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a **cursor** similar to the HoloLens shell cursor that fully leverages the Unity's animation system.
 

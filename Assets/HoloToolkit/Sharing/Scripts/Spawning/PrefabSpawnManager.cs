@@ -32,7 +32,7 @@ namespace HoloToolkit.Sharing.Spawning
         /// </summary>
         /// <remarks>It is assumed that this list is the same on all connected applications.</remarks>
         [SerializeField]
-        private List<PrefabToDataModel> spawnablePrefabs;
+        private List<PrefabToDataModel> spawnablePrefabs = null;
 
         private Dictionary<string, GameObject> typeToPrefab;
 
