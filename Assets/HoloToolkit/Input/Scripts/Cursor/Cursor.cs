@@ -294,6 +294,7 @@ namespace HoloToolkit.Unity.InputModule
             if (TargetedObject == null)
             {
                 this.TargetedObject = null;
+                this.TargetedCursorModifier = null;
                 targetPosition = gazeManager.GazeOrigin + gazeManager.GazeNormal * DefaultCursorDistance;
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
