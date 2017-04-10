@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Has any mesh sectors been scanned
+        /// Have any mesh sectors been scanned
         /// </summary>
         public bool HasMeshSectors { get { return meshSectors != null && meshSectors.Count > 0; } }
 
@@ -86,13 +86,13 @@ namespace HoloToolkit.Unity
         private SpatialUnderstanding spatialUnderstanding;
 
         /// <summary>
-        /// The spatial understanding mesh will be split into pieces so that we don't have to 
+        /// The spatial understanding mesh will be split into pieces so that we don't have to
         /// render the whole mesh, rather just the parts that are visible to the user.
         /// </summary>
         private Dictionary<Vector3, MeshData> meshSectors = new Dictionary<Vector3, MeshData>();
 
         /// <summary>
-        /// A data structure to manage collecting triangles as we 
+        /// A data structure to manage collecting triangles as we
         /// subdivide the spatial understanding mesh into smaller sub meshes.
         /// </summary>
         private class MeshData
@@ -163,11 +163,11 @@ namespace HoloToolkit.Unity
             /// <param name="point3">Third point on the triangle.</param>
             public void AddTriangle(Vector3 point1, Vector3 point2, Vector3 point3)
             {
-                // Currently spatial understanding in the native layer voxellizes the space 
-                // into ~2000 voxels per cubic meter.  Even in a degerate case we 
+                // Currently spatial understanding in the native layer voxellizes the space
+                // into ~2000 voxels per cubic meter.  Even in a degerate case we
                 // will use far fewer than 65000 vertices, this check should not fail
                 // unless the spatial understanding native layer is updated to have more
-                // voxels per cubic meter. 
+                // voxels per cubic meter.
                 if (verts.Count < 65000)
                 {
                     tris.Add(verts.Count);
@@ -201,7 +201,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Adds a triangle with the specified points to the specified sector. 
+        /// Adds a triangle with the specified points to the specified sector.
         /// </summary>
         /// <param name="sector">The sector to add the triangle to.</param>
         /// <param name="point1">First point of the triangle.</param>
@@ -295,8 +295,8 @@ namespace HoloToolkit.Unity
                 }
 
                 float startTime = Time.realtimeSinceStartup;
-                // first we need to split the playspace up into segments so we don't always 
-                // draw everything.  We can break things up in to cubic meters.  
+                // first we need to split the playspace up into segments so we don't always
+                // draw everything.  We can break things up in to cubic meters.
                 for (int index = 0; index < meshIndices.Length; index += 3)
                 {
                     Vector3 firstVertex = meshVertices[meshIndices[index]];
@@ -395,7 +395,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Updates the mesh import process. This function will kick off the import 
+        /// Updates the mesh import process. This function will kick off the import
         /// coroutine at the requested internal.
         /// </summary>
         private void Update_MeshImport()
