@@ -2,8 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+#if UNITY_METRO && !UNITY_EDITOR
+using System.Reflection;
+#endif
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit
 {
     public static class TypeUtils
     {
