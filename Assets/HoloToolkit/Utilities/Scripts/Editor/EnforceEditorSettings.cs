@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace HoloToolKit.Unity
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.
