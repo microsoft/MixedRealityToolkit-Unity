@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using UnityEditor;
 
-namespace HoloToolKit.Unity
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.
