@@ -2,7 +2,7 @@
 This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
 
-**Required Unity Editor Version: 5.5.2f1**
+**Required Unity Editor Version: 5.6.0f3**
 
 HoloToolkit contains the following feature areas:
 
