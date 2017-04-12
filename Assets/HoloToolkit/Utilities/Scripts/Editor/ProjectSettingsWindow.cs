@@ -15,7 +15,6 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
     {
-
         #region Nested Types
         public enum ProjectSetting
         {
