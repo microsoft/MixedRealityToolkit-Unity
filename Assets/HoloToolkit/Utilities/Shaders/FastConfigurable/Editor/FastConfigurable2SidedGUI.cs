@@ -3,27 +3,30 @@
 
 using UnityEditor;
 
-/// <summary>
-/// Editor for FastConfigurable2Sided shader
-/// </summary>
-public class FastConfigurable2SidedGUI : FastConfigurableGUI
+namespace HoloToolkit.Unity
 {
-    protected override void ShowOutputConfigurationGUI(MaterialEditor matEditor)
+    /// <summary>
+    /// Editor for FastConfigurable2Sided shader
+    /// </summary>
+    public class FastConfigurable2SidedGUI : FastConfigurableGUI
     {
-        ShaderGUIUtils.BeginHeader("Output Configuration");
+        protected override void ShowOutputConfigurationGUI(MaterialEditor matEditor)
         {
-            matEditor.ShaderProperty(zTest, Styles.zTest);
-            matEditor.ShaderProperty(zWrite, Styles.zWrite);
-            matEditor.ShaderProperty(colorWriteMask, Styles.colorWriteMask);
-            matEditor.RenderQueueField();
+            ShaderGUIUtils.BeginHeader("Output Configuration");
+            {
+                matEditor.ShaderProperty(zTest, Styles.zTest);
+                matEditor.ShaderProperty(zWrite, Styles.zWrite);
+                matEditor.ShaderProperty(colorWriteMask, Styles.colorWriteMask);
+                matEditor.RenderQueueField();
+            }
+            ShaderGUIUtils.EndHeader();
         }
-        ShaderGUIUtils.EndHeader();
-    }
 
-    protected override void CacheOutputConfigurationProperties(MaterialProperty[] props)
-    {
-        zTest = FindProperty("_ZTest", props);
-        zWrite = FindProperty("_ZWrite", props);
-        colorWriteMask = FindProperty("_ColorWriteMask", props);
+        protected override void CacheOutputConfigurationProperties(MaterialProperty[] props)
+        {
+            zTest = FindProperty("_ZTest", props);
+            zWrite = FindProperty("_ZWrite", props);
+            colorWriteMask = FindProperty("_ColorWriteMask", props);
+        }
     }
 }

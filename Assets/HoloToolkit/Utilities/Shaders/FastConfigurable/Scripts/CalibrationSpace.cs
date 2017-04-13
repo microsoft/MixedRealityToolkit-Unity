@@ -3,14 +3,17 @@
 
 using UnityEngine;
 
-/// <summary>
-/// Sets global shader variables relating to calibration space transforms
-/// </summary>
-public class CalibrationSpace : MonoBehaviour
+namespace HoloToolkit.Unity
 {
-    void Update()
+    /// <summary>
+    /// Sets global shader variables relating to calibration space transforms
+    /// </summary>
+    public class CalibrationSpace : MonoBehaviour
     {
-        Shader.SetGlobalMatrix("CalibrationSpaceWorldToLocal", transform.worldToLocalMatrix);
-        Shader.SetGlobalMatrix("CalibrationSpaceLocalToWorld", transform.localToWorldMatrix);
+        void Update()
+        {
+            Shader.SetGlobalMatrix("CalibrationSpaceWorldToLocal", transform.worldToLocalMatrix);
+            Shader.SetGlobalMatrix("CalibrationSpaceLocalToWorld", transform.localToWorldMatrix);
+        }
     }
 }
