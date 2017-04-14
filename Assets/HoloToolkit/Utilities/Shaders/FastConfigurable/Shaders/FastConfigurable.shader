@@ -126,6 +126,6 @@ Shader "HoloToolkit/Fast Configurable"
         }
     } 
 	
-	CustomEditor "FastConfigurableGUI"
+	CustomEditor "HoloToolkit.Unity.FastConfigurableGUI"
     Fallback "Legacy Shaders/VertexLit" //for shadow casting
 }

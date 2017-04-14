@@ -169,6 +169,6 @@ Shader "HoloToolkit/Fast Configurable 2 Sided"
         }
     } 
 
-	CustomEditor "FastConfigurable2SidedGUI"
+	CustomEditor "HoloToolkit.Unity.FastConfigurable2SidedGUI"
     Fallback "VertexLit" //for shadows
 }
