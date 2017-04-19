@@ -20,13 +20,13 @@ namespace HoloToolkit.Unity
 
         private int fadeDistancePropertyID;
 
-        void Awake()
+        private void Awake()
         {
             fadeDistancePropertyID = Shader.PropertyToID("_NearPlaneFadeDistance");
             UpdateShaderParams();
         }
 
-        void OnValidate()
+        private void OnValidate()
         {
             UpdateShaderParams();
         }

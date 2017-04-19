@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class CalibrationSpace : MonoBehaviour
     {
-        void Update()
+        private void Update()
         {
             Shader.SetGlobalMatrix("CalibrationSpaceWorldToLocal", transform.worldToLocalMatrix);
             Shader.SetGlobalMatrix("CalibrationSpaceLocalToWorld", transform.localToWorldMatrix);
