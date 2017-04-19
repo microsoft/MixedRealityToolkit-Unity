@@ -48,14 +48,15 @@ namespace HoloToolkit.Unity
                 GUIContent tooltipOnly = new GUIContent();
                 tooltipOnly.text = string.Empty;
                 tooltipOnly.tooltip = label.tooltip;
+
+                EditorGUI.showMixedValue = colorProp.hasMixedValue;
                 EditorGUI.BeginChangeCheck();
-
                 var color = EditorGUI.ColorField(controlRect, tooltipOnly, colorProp.colorValue);
-
                 if (EditorGUI.EndChangeCheck())
                 {
                     colorProp.colorValue = color;
                 }
+                EditorGUI.showMixedValue = false;
             }
 
             return lineRect;
@@ -101,6 +102,7 @@ namespace HoloToolkit.Unity
         {
             matEditor.BeginAnimatedCheck(scaleOffsetProp);
 
+            EditorGUI.showMixedValue = scaleOffsetProp.hasMixedValue;
             EditorGUI.BeginChangeCheck();
 
             Vector4 scaleOffsetVector = scaleOffsetProp.vectorValue;
@@ -115,6 +117,7 @@ namespace HoloToolkit.Unity
             {
                 scaleOffsetProp.vectorValue = new Vector4(textureScale.x, textureScale.y, textureOffset.x, textureOffset.y);
             }
+            EditorGUI.showMixedValue = false;
 
             matEditor.EndAnimatedCheck();
         }
