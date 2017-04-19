@@ -70,8 +70,6 @@ namespace HoloToolkit.Unity
             CacheMainProperties(props);
             CacheOutputConfigurationProperties(props);
 
-            var mat = matEditor.target as Material;
-
             // Make sure that needed setup (ie keywords/renderqueue) are set up if we're switching from an existing material.
             // Do this before any GUI code has been issued to prevent layout issues in subsequent GUILayout statements (case 780071)
             if (firstTimeApply)
@@ -94,8 +92,12 @@ namespace HoloToolkit.Unity
             }
             if (EditorGUI.EndChangeCheck())
             {
-                SetMaterialAutoPropertiesAndKeywords(mat);
-                SetMaterialBlendMode(mat, (BlendMode)blendMode.floatValue);
+                foreach (var obj in blendMode.targets)
+                {
+                    var mat = obj as Material;
+                    SetMaterialBlendMode(mat, (BlendMode)blendMode.floatValue);
+                    SetMaterialAutoPropertiesAndKeywords(mat);
+                }
             }
         }
 
