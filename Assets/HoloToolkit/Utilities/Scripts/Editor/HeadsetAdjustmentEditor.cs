@@ -32,7 +32,16 @@ namespace HoloToolkit.Unity
 
             if (GUI.changed)
             {
-                sceneAsset = sceneObj == null ? null : GetSceneObject(sceneObj.name);
+                if (sceneObj == null)
+                {
+                    sceneAsset = null;
+                    myTarget.NextSceneName = string.Empty;
+                }
+                else
+                {
+                    sceneAsset = GetSceneObject(sceneObj.name);
+                    myTarget.NextSceneName = sceneObj.name;
+                }
             }
         }
 
