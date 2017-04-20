@@ -65,6 +65,7 @@ namespace HoloToolkit.Unity
 #if !UNITY_EDITOR && UNITY_METRO
         private SpeechSynthesizer synthesizer;
         private VoiceInformation voiceInfo;
+        private bool speechTextInQueue = false;
 #endif
 
         // Static Helper Methods
@@ -234,6 +235,7 @@ namespace HoloToolkit.Unity
             {
                 try
                 {
+                    speechTextInQueue = true;
                     // Need await, so most of this will be run as a new Task in its own thread.
                     // This is good since it frees up Unity to keep running anyway.
                     Task.Run(async () =>
@@ -304,11 +306,13 @@ namespace HoloToolkit.Unity
 
                             // Play audio
                             audioSource.Play();
+                            speechTextInQueue = false;
                         }, false);
                     });
                 }
                 catch (Exception ex)
                 {
+                    speechTextInQueue = false;
                     Debug.LogErrorFormat("Speech generation problem: \"{0}\"", ex.Message);
                 }
             }
@@ -383,6 +387,22 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Returns info whether a text is submitted and being processed by PlaySpeech method
+        /// Handy for avoiding situations when a text is submitted, but audio clip is not yet build (audiosource is not playing it yet!)
+        /// Example: yield return new WaitWhile(() => textToSpeechManager.SpeechTextInQueue() || textToSpeechManager.IsSpeaking())
+        /// </summary>
+        /// <returns></returns>
+        public bool SpeechTextInQueue()
+        {
+#if !UNITY_EDITOR && UNITY_METRO
+            return speechTextInQueue;
+#else
+            return false;
+#endif
+
+        }
+
+        /// <summary>
         /// Returns whether or not the AudioSource is actively playing.
         /// </summary>
         /// <returns>
@@ -407,6 +427,7 @@ namespace HoloToolkit.Unity
             {
                 audioSource.Stop();
             }
+
         }
 
         /// <summary>
