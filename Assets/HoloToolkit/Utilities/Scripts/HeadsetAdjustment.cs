@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using HoloToolkit.Unity.InputModule;
 
@@ -6,7 +9,6 @@ namespace HoloToolkit.Unity
 {
     public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandler
     {
-        [Tooltip("The name of the scene to load when the user is ready. If left empty, the next scene is loaded as specified in the 'Scenes in Build')")]
         public string NextSceneName;
 
         private void Start()
