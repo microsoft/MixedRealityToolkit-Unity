@@ -388,7 +388,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Returns info whether a text is submitted and being processed by PlaySpeech method
-        /// Handy for avoiding situations when a text is submitted, but audio clip is not yet build (audiosource is not playing it yet!)
+        /// Handy for avoiding situations when a text is submitted, but audio clip is not yet ready because the audio source isn't playing yet.
         /// Example: yield return new WaitWhile(() => textToSpeechManager.SpeechTextInQueue() || textToSpeechManager.IsSpeaking())
         /// </summary>
         /// <returns></returns>
@@ -399,7 +399,6 @@ namespace HoloToolkit.Unity
 #else
             return false;
 #endif
-
         }
 
         /// <summary>
@@ -427,7 +426,6 @@ namespace HoloToolkit.Unity
             {
                 audioSource.Stop();
             }
-
         }
 
         /// <summary>
