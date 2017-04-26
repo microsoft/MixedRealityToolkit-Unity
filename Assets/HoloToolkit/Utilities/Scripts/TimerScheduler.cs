@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -147,9 +148,9 @@ namespace HoloToolkit.Unity
 
         private void AddDeferredTimers()
         {
-            for (int i = 0; i < deferredTimers.Count; i++)
+            foreach (var timer in deferredTimers)
             {
-                AddTimer(deferredTimers[i]);
+                AddTimer(timer, false);
             }
 
             deferredTimers.Clear();
@@ -160,7 +161,7 @@ namespace HoloToolkit.Unity
             // while waiting for an event to happen, we'll just early out
             while (timers.Count > 0 && HasKeyTimePassed(timers.Top.Key))
             {
-                TimerData timer = timers.Top.Value;
+                var timer = timers.Top.Value;
 
                 // remove from active timers
                 RemoveActiveTimer(timer.Id);
@@ -222,7 +223,7 @@ namespace HoloToolkit.Unity
                     // TODO: remove specific value
                     // allocation here is fine, since it's a temporary, and will get cleaned in gen 0 GC
                     int id = timerId.Id;
-                    timers.RemoveAtPriority(priority, t => t.Id == id);
+                    timers.RemoveAtPriority(priority, (t => t.Id == id));
                 }
                 else
                 {
