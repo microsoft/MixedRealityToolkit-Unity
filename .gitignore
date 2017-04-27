@@ -39,3 +39,4 @@ obj/
 *.opendb
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
+/Assets/HoloToolkit-Examples/FastConfigurableShader/Scenes/FastConfigurableTest
