@@ -65,6 +65,7 @@ namespace HoloToolkit.Unity
 #if !UNITY_EDITOR && UNITY_METRO
         private SpeechSynthesizer synthesizer;
         private VoiceInformation voiceInfo;
+        private bool speechTextInQueue = false;
 #endif
 
         // Static Helper Methods
@@ -234,6 +235,7 @@ namespace HoloToolkit.Unity
             {
                 try
                 {
+                    speechTextInQueue = true;
                     // Need await, so most of this will be run as a new Task in its own thread.
                     // This is good since it frees up Unity to keep running anyway.
                     Task.Run(async () =>
@@ -304,11 +306,13 @@ namespace HoloToolkit.Unity
 
                             // Play audio
                             audioSource.Play();
+                            speechTextInQueue = false;
                         }, false);
                     });
                 }
                 catch (Exception ex)
                 {
+                    speechTextInQueue = false;
                     Debug.LogErrorFormat("Speech generation problem: \"{0}\"", ex.Message);
                 }
             }
@@ -379,6 +383,21 @@ namespace HoloToolkit.Unity
             PlaySpeech(text, ()=> synthesizer.SynthesizeTextToStreamAsync(text));
 #else
             LogSpeech(text);
+#endif
+        }
+
+        /// <summary>
+        /// Returns info whether a text is submitted and being processed by PlaySpeech method
+        /// Handy for avoiding situations when a text is submitted, but audio clip is not yet ready because the audio source isn't playing yet.
+        /// Example: yield return new WaitWhile(() => textToSpeechManager.SpeechTextInQueue() || textToSpeechManager.IsSpeaking())
+        /// </summary>
+        /// <returns></returns>
+        public bool SpeechTextInQueue()
+        {
+#if !UNITY_EDITOR && UNITY_METRO
+            return speechTextInQueue;
+#else
+            return false;
 #endif
         }
 

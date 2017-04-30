@@ -1,3 +1,5 @@
+#include "UnityCG.cginc"
+
 #ifndef HOLOTOOLKIT_COMMON
 #define HOLOTOOLKIT_COMMON
 
@@ -7,7 +9,7 @@ float4 _NearPlaneFadeDistance;
 // Could instead be done non-linear in projected space for speed
 inline float ComputeNearPlaneFadeLinear(float4 vertex)
 {
-    float distToCamera = -(mul(UNITY_MATRIX_MV, vertex).z);
+    float distToCamera = -(UnityObjectToViewPos(vertex).z);
     return saturate(mad(distToCamera, _NearPlaneFadeDistance.y, _NearPlaneFadeDistance.x));
 }
 

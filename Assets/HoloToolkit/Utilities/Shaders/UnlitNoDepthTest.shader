@@ -40,7 +40,7 @@
 			{
 				UNITY_SETUP_INSTANCE_ID(v);
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				return o;
