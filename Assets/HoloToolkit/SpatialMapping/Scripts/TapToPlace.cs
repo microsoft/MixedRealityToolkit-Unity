@@ -146,7 +146,10 @@ namespace HoloToolkit.Unity.SpatialMapping
             {
                 spatialMappingManager.DrawVisualMeshes = false;
                 // Add world anchor when object placement is done.
-                anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                if (anchorManager.AnchorStore != null)
+                {
+                    anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                }
             }
         }
 
