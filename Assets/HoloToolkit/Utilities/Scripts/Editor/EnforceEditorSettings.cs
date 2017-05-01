@@ -16,32 +16,37 @@ namespace HoloToolkit.Unity
         {
             #region Editor Settings
 
-            if (TrueOnce()) {
-                if (EditorSettings.serializationMode != SerializationMode.ForceText)
-                {
-                    if (EditorUtility.DisplayDialog( 
-                            "Force Text Asset Serialization?", 
-                            "HoloToolkit is easier to maintain if the asset serialization mode for this project is set to \"Force Text\". Would you like to make this change?", 
-                            "Force Text Serialization", 
-                            "Later")) {
-                        EditorSettings.serializationMode = SerializationMode.ForceText;
-                        UnityEngine.Debug.Log("Setting Force Text Serialization");
-                    }
-                }
+            if (!IsNewEditorSession())
+            {
+                return;
+            }
 
-                if (!EditorSettings.externalVersionControl.Equals("Visible Meta Files"))
+            if (EditorSettings.serializationMode != SerializationMode.ForceText)
+            {
+                if (EditorUtility.DisplayDialog( 
+                        "Force Text Asset Serialization?", 
+                        "HoloToolkit is easier to maintain if the asset serialization mode for this project is set to \"Force Text\". Would you like to make this change?", 
+                        "Force Text Serialization", 
+                        "Later")) 
                 {
-                    if (EditorUtility.DisplayDialog( 
-                        "Make Meta Files Visible?", 
-                        "HoloToolkit would like to make meta files visible so they can be more easily handled with common version control systems. Would you like to make this change?", 
-                        "Enable Visible Meta Files", 
-                        "Later")) {
-                        EditorSettings.externalVersionControl = "Visible Meta Files";
-                        UnityEngine.Debug.Log("Updated external version control mode: " + EditorSettings.externalVersionControl);
-                    }
+                    EditorSettings.serializationMode = SerializationMode.ForceText;
+                    UnityEngine.Debug.Log("Setting Force Text Serialization");
                 }
             }
 
+            if (!EditorSettings.externalVersionControl.Equals("Visible Meta Files"))
+            {
+                if (EditorUtility.DisplayDialog( 
+                    "Make Meta Files Visible?", 
+                    "HoloToolkit would like to make meta files visible so they can be more easily handled with common version control systems. Would you like to make this change?", 
+                    "Enable Visible Meta Files", 
+                    "Later"))
+                {
+                    EditorSettings.externalVersionControl = "Visible Meta Files";
+                    UnityEngine.Debug.Log("Updated external version control mode: " + EditorSettings.externalVersionControl);
+                }
+            }
+            
             #endregion
         }
 
@@ -59,11 +64,11 @@ namespace HoloToolkit.Unity
         /// The stored timestamp is then compared with the true start time of this editor
         /// instance.
         /// </remarks>
-        private static bool TrueOnce () 
+        private static bool IsNewEditorSession () 
         {
             // Determine the last known launch date of the editor by loading it from the PlayerPrefs cache.
             System.DateTime lastLaunchDate = System.DateTime.UtcNow;
-            System.DateTime.TryParse( EditorPrefs.GetString(_assemblyReloadTimestampKey), out lastLaunchDate );
+            System.DateTime.TryParse(EditorPrefs.GetString(_assemblyReloadTimestampKey), out lastLaunchDate);
 
             // Determine the launch date for this editor session using the current time, and the time since startup.
             System.DateTime thisLaunchDate = System.DateTime.UtcNow.AddSeconds(-EditorApplication.timeSinceStartup);
