@@ -98,7 +98,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4544468564473042}
   - component: {fileID: 114311967993387244}
-  - component: {fileID: 114202353462275096}
+  - component: {fileID: 114178217131111198}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -147,7 +147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4635053292629236}
   - component: {fileID: 114638912439690652}
-  - component: {fileID: 114834762022950884}
+  - component: {fileID: 114764948378371232}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -176,8 +176,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012136398872}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.025000088, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.025, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4000013036710172}
@@ -443,10 +443,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114638912439690652}
-  PositionTheme: {fileID: 114834762022950884}
-  MovePosition: {fileID: 114926005012448992}
   ButtonLabels: {fileID: 114460579583407446}
+  ColorThemeTag: toggleButtonLabelColor
+  PositionThemeTag: toggleButtonLabelPosition
+  MovePosition: {fileID: 114926005012448992}
 --- !u!114 &114000012932369162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -516,13 +516,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012136398872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114311967993387244}
-  PositionTheme: {fileID: 114202353462275096}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: toggleButtonBackgroundColor
+  PositionThemeTag: toggleButtonBackgroundPosition
+  ScaleThemeTag: 
   ColorBlender: {fileID: 114375483683248958}
   MovePosition: {fileID: 114371943292047360}
   ScaleSize: {fileID: 0}
@@ -540,10 +540,10 @@ MonoBehaviour:
   InteractiveHost: {fileID: 0}
   InnerMaterial: {fileID: 2100000, guid: f70f27f4f60d7764bb09488b0a99ae57, type: 2}
   OuterMaterial: {fileID: 2100000, guid: 41fbc9f3579903d43b9d7c6f3cb41b29, type: 2}
-  InnterColorTheme: {fileID: 114762881500475536}
-  OuterColorTheme: {fileID: 114762881500475536}
+  InnerColorThemeTag: toggleButtonOutlineColor
+  OuterColorThemeTag: toggleButtonOutlineColor
   ColorBlender: {fileID: 114000012932369162}
---- !u!114 &114202353462275096
+--- !u!114 &114178217131111198
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -551,10 +551,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1200125202482424}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleButtonBackgroundPosition
   Default: {x: 0, y: -0.025, z: 0}
   Focus: {x: 0, y: -0.05, z: 0}
   Press: {x: 0, y: 0, z: 0}
@@ -576,7 +576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleButtonBackgroundColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
@@ -647,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleButtonLabelColor
   Default: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
   Focus: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
   Press: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
@@ -669,7 +669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleButtonOutlineColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.28627452, g: 0.28627452, b: 0.28627452, a: 1}
   Press: {r: 0.28627452, g: 0.28627452, b: 0.28627452, a: 1}
@@ -680,7 +680,7 @@ MonoBehaviour:
   DisabledSelected: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   CurrentValue: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Button: {fileID: 0}
---- !u!114 &114834762022950884
+--- !u!114 &114764948378371232
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -688,10 +688,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1900357481084312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleButtonLabelPosition
   Default: {x: 0, y: -0.04, z: 0.115}
   Focus: {x: 0, y: -0.1, z: 0.115}
   Press: {x: 0, y: -0.02, z: 0.115}
@@ -713,7 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: defaultColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}

@@ -10,19 +10,17 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// GestureInteractiveControl receiveds gesture updates from GestureInteractive.
     /// 
     /// We take raw gesture data and convert it into simple values that can be acted on, like
-    /// Perctage dragged from origin position, angle or vector from origin point.
+    /// perctage dragged from origin position, angle or vector from origin point, and distance from origin point.
     /// 
     /// These values can be flattened for 2D UI elements and rotated based on user orientation
-    /// </summary>
-
-
-    /// <summary>
-    /// Contains basic values about a gesture compared to a vector.
-    /// Allows one gesture control to a set of gesture values comparing muliple axes instead of the default horizontal axis for camera aligned data.
     /// 
-    /// Use the GetGestureData method to get a processed set of values based on the latest gesture information.
+    /// GestureInteractiveData: Contains basic values about a gesture compared to a vector.
+    /// Use the "GetGestureData" method to get a processed set of values based on the latest gesture information compared to a vector direction.
+    /// 
+    /// Use a gestureData object for different gesture directions, good for handling horizontal or vertical movements from one controller instead of the default raw or camera aligned data.
+    ///
     /// Example : GestureInteractiveData vertData = new GetGestureData(new Vector(0,1,0), 0.1f, false);
-    /// Result: a set a values comparing the current gesture of movement along the y axis. If the movement is up,
+    /// Result: a set a values (direction, percent and distance) comparing the current gesture along the y axis. If the movement is up,
     ///         the distance will be positive and the percent report if the movement is equal to the maxDistance in the aligned direction. 
     /// </summary>
     public struct GestureInteractiveData
@@ -49,9 +47,9 @@ namespace HoloToolkit.Examples.InteractiveElements
     {
         /// <summary>
         /// Dictates how the control processes data.
-        /// Raw: no extra processing is done, just current gesture information compared to starting gesture information.
-        /// Camera: compares gestures to the facing camera direction, processes data based on camera's right vector.
-        /// Aligned: compares the gesture to the Alignment Vector, for instance (1, 0, 0) will compute distance and percentage of the gesture along the x axis.
+        /// Raw: no extra processing is done, just current gesture information compared to start gesture information.
+        /// Camera: compares gestures to the facing camera direction, processes data based on camera's right vector, good for billboarded UI.
+        /// Aligned: compares the gesture to the Alignment Vector, for instance (1, 0, 0) will compute distance and percentage of the gesture moving to the right along the x axis.
         /// </summary>
         public enum GestureDataType { Raw, Camera, Aligned }
 
@@ -192,6 +190,34 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+        /// <summary>
+        /// Returns a data set about the current gesture information compared to a specific vector.
+        /// For instance, to compare if the gesture is moving vertically or horizontally,
+        /// create two isntances of this data set and compare the distance for each.
+        /// If the vertical percentage is greater than the horizontal percentage then the gesture is moving vertically.
+        /// </summary>
+        /// <param name="alignmentVector"></param>
+        /// <param name="maxDistance"></param>
+        /// <param name="flipDirecationOnCameraForward"></param>
+        /// <returns></returns>
+        public GestureInteractiveData GetGestureData(Vector3 alignmentVector, float maxDistance, bool flipDirecationOnCameraForward)
+        {
+            GestureInteractiveData data = new GestureInteractiveData(alignmentVector, maxDistance, flipDirecationOnCameraForward);
+
+            data.Direction = DirectionVector;
+            bool flipDirection = Vector3.Dot(Vector3.forward, StartHeadRay) < 0 && flipDirecationOnCameraForward;
+
+            if (flipDirection)
+            {
+                data.Direction = -data.Direction;
+            }
+            data.Distance = Vector3.Dot(data.Direction, alignmentVector);
+
+            data.Percentage = Mathf.Min(Mathf.Abs(data.Distance) / maxDistance, 1);
+
+            return data;
+        }
+        
         /// <summary>
         /// Get the current camera's world matrix in world space
         /// </summary>
@@ -380,34 +406,6 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
 
             return toFlip;
-        }
-
-        /// <summary>
-        /// Returns a data set about the current gesture information compared to a specific vector.
-        /// For instance, to compare if the gesture is moving vertically or horizontally,
-        /// create two isntances of this data set and compare the distance for each.
-        /// If the vertical percentage is greater than the horizontal percentage then the gesture is moving vertically.
-        /// </summary>
-        /// <param name="alignmentVector"></param>
-        /// <param name="maxDistance"></param>
-        /// <param name="flipDirecationOnCameraForward"></param>
-        /// <returns></returns>
-        public GestureInteractiveData GetGestureData(Vector3 alignmentVector, float maxDistance, bool flipDirecationOnCameraForward)
-        {
-            GestureInteractiveData data = new GestureInteractiveData(alignmentVector, maxDistance, flipDirecationOnCameraForward);
-
-            data.Direction = DirectionVector;
-            bool flipDirection = Vector3.Dot(Vector3.forward, StartHeadRay) < 0 && flipDirecationOnCameraForward;
-
-            if (flipDirection)
-            {
-                data.Direction = -data.Direction;
-            }
-            data.Distance = Vector3.Dot(data.Direction, alignmentVector);
-
-            data.Percentage = Mathf.Min(Mathf.Abs(data.Distance) / maxDistance, 1);
-
-            return data;
         }
         
         /// <summary>

@@ -8,15 +8,19 @@ namespace HoloToolkit.Examples.InteractiveElements
 {
     /// <summary>
     /// InteractiveState can exist on a child element of the game object containing the Interactive component.
-    /// </summary>
-    /// <remarks>
     /// Extend this class to make custom behaviors that listen from state updates from Interactive
     /// </remarks>
     public class InteractiveWidget : MonoBehaviour
     {
+        [Tooltip("The Interactive that will update the widget, optional: use if the widget is a sibling of the Interactive or if the parent Interactive is child of another Interactive")]
         public Interactive InteractiveHost;
+
+        // the Interactive state
         protected Interactive.ButtonStateEnum State;
 
+        /// <summary>
+        /// register if the InteractiveHost was not manually set
+        /// </summary>
         protected virtual void OnEnable()
         {
             if (InteractiveHost != null)
@@ -25,6 +29,9 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+        /// <summary>
+        /// un register when disabled
+        /// </summary>
         protected virtual void OnDisable()
         {
             if (InteractiveHost != null)

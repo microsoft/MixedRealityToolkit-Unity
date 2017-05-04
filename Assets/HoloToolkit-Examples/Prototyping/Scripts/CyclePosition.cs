@@ -7,38 +7,51 @@ using HoloToolkit.Unity;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// updates the position of an object based on currently selected values from the array.
+    /// Use MoveToPosition for easing... Auto detected
+    /// </summary>
     public class CyclePosition : CycleArray<Vector3>
     {
-        [Tooltip("Requires Interpolator")]
-        public bool SmoothLerpToTarget = false;
-        public float PositionPerSecond = 30.0f;
-        public float SmoothPositionLerpRatio = 0.5f;
+        [Tooltip("use local position instead of position. Overrides MoveToPosition ToLocalPosition setting.")]
+        public bool UseLocalPosition = false;
 
-        private Interpolator mInterpolator;
+        private MoveToPosition mMoveTranslator;
 
         protected override void Awake()
         {
-            mInterpolator = GetComponent<Interpolator>();
-
+            mMoveTranslator = GetComponent<MoveToPosition>();
             base.Awake();
         }
 
+        /// <summary>
+        /// set the position
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);
 
             Vector3 item = Array[Index];
 
-            if (mInterpolator != null)
+            // use MoveTo Position
+            if (mMoveTranslator != null)
             {
-                mInterpolator.SmoothLerpToTarget = SmoothLerpToTarget;
-                mInterpolator.SmoothPositionLerpRatio = SmoothPositionLerpRatio;
-                mInterpolator.PositionPerSecond = PositionPerSecond;
-                mInterpolator.SetTargetPosition(item);
+                mMoveTranslator.ToLocalTransform = UseLocalPosition;
+                mMoveTranslator.TargetValue = item;
+                mMoveTranslator.StartRunning();
             }
             else
             {
-                TargetObject.transform.position = item;
+                if (UseLocalPosition)
+                {
+                    TargetObject.transform.localPosition = item;
+                }
+                else
+                {
+                    TargetObject.transform.position = item;
+                }
+                
             }
 
             

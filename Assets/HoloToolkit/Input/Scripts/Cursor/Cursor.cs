@@ -328,7 +328,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Updates the visual representation of the cursor.
         /// </summary>
-        public void SetVisiblity(bool visible)
+        public virtual void SetVisiblity(bool visible)
         {
             if (PrimaryCursorVisual != null)
             {

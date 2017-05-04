@@ -6,22 +6,28 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
-
+    /// <summary>
+    /// A controller for managing multiple radial or tab type buttons
+    /// </summary>
     public class InteractiveRadialSet : MonoBehaviour
     {
-
+        [Tooltip("Interactives that will be managed by this controller")]
         public InteractiveToggle[] Interactives;
+
+        [Tooltip("Currently selected index or default starting index")]
         public int SelectedIndex = 0;
 
+        [Tooltip("exposed selection changed event")]
         public UnityEvent OnSelectionEvents;
 
         private bool mHasInit = false;
 
-        private void Awake()
+        private void Start()
         {
             for (int i = 0; i < Interactives.Length; ++i)
             {
                 int itemIndex = i;
+                // add selection event handler to each button
                 Interactives[i].OnSelectEvents.AddListener(() => HandleOnSelection(itemIndex));
                 Interactives[i].AllowDeselect = false;
             }
@@ -29,6 +35,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             HandleOnSelection(SelectedIndex);
         }
 
+        /// <summary>
+        /// Sets the selected index and selected Interactive
+        /// </summary>
+        /// <param name="index"></param>
         public void SetSelection(int index)
         {
             if (!isActiveAndEnabled ||
@@ -40,6 +50,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             Interactives[index].OnInputClicked(null);
         }
 
+        /// <summary>
+        /// responds to selection events
+        /// </summary>
+        /// <param name="index"></param>
         private void HandleOnSelection(int index)
         {
             for (int i = 0; i < Interactives.Length; ++i)
@@ -68,12 +82,6 @@ namespace HoloToolkit.Examples.InteractiveElements
                 int itemIndex = i;
                 Interactives[i].OnSelectEvents.RemoveListener(() => HandleOnSelection(itemIndex));
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
     }
 }

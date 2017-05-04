@@ -117,7 +117,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4559110781546870}
-  - component: {fileID: 114944598506372214}
+  - component: {fileID: 114898514485183372}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4521043753115470}
   - component: {fileID: 114235994459223374}
-  - component: {fileID: 114182603925482294}
+  - component: {fileID: 114670225713520502}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -151,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4096898491087936}
   - component: {fileID: 114485754375846162}
-  - component: {fileID: 114102710886412038}
+  - component: {fileID: 114900985719784146}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -541,13 +541,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013421027548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114485754375846162}
-  PositionTheme: {fileID: 114102710886412038}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: checkBoxBackgroundColor
+  PositionThemeTag: checkBoxBackgroundPosition
+  ScaleThemeTag: 
   ColorBlender: {fileID: 114298094614705736}
   MovePosition: {fileID: 114189857285212478}
   ScaleSize: {fileID: 0}
@@ -634,28 +634,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
---- !u!114 &114102710886412038
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1358151374307770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tag: default
-  Default: {x: 0, y: -0.025, z: 0}
-  Focus: {x: 0, y: -0.05, z: 0}
-  Press: {x: 0, y: 0, z: 0}
-  Selected: {x: 0, y: -0.025, z: 0}
-  FocusSelected: {x: 0, y: -0.05, z: 0}
-  PressSelected: {x: 0, y: 0, z: 0}
-  Disabled: {x: 0, y: -0.025, z: 0}
-  DisabledSelected: {x: 0, y: -0.025, z: 0}
-  CurrentValue: {x: 0, y: 0, z: 0}
-  Button: {fileID: 0}
 --- !u!114 &114151602309190804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -664,38 +642,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013551368788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 0}
-  PositionTheme: {fileID: 114944598506372214}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: 
+  PositionThemeTag: checkBoxIconPosition
+  ScaleThemeTag: 
   ColorBlender: {fileID: 0}
   MovePosition: {fileID: 114226659044554810}
   ScaleSize: {fileID: 0}
---- !u!114 &114182603925482294
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1333620779106598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tag: default
-  Default: {x: 0.119, y: -0.009, z: 0.079}
-  Focus: {x: 0.119, y: -0.029, z: 0.079}
-  Press: {x: 0.119, y: 0.009, z: 0.079}
-  Selected: {x: 0.119, y: -0.009, z: 0.079}
-  FocusSelected: {x: 0.119, y: -0.029, z: 0.079}
-  PressSelected: {x: 0.119, y: 0.009, z: 0.079}
-  Disabled: {x: 0.119, y: -0.009, z: 0.079}
-  DisabledSelected: {x: 0.119, y: -0.009, z: 0.079}
-  CurrentValue: {x: 0.119, y: 0, z: 0.079}
-  Button: {fileID: 0}
 --- !u!114 &114189857285212478
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -732,8 +688,8 @@ MonoBehaviour:
   InteractiveHost: {fileID: 0}
   InnerMaterial: {fileID: 2100000, guid: e7e08850a9ead3d4a895328bd8f05b2a, type: 2}
   OuterMaterial: {fileID: 2100000, guid: 0ca6ef64c999fe648b5d49dd29b9e734, type: 2}
-  InnterColorTheme: {fileID: 114547516331882724}
-  OuterColorTheme: {fileID: 114547516331882724}
+  InnerColorThemeTag: checkBoxOutlineColor
+  OuterColorThemeTag: checkBoxOutlineColor
   ColorBlender: {fileID: 114000014007198006}
 --- !u!114 &114226659044554810
 MonoBehaviour:
@@ -768,7 +724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: checkBoxLabelColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
@@ -817,7 +773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: checkBoxBackgroundColor
   Default: {r: 0.23529412, g: 0.23529412, b: 0.23529412, a: 1}
   Focus: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   Press: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
@@ -840,10 +796,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114235994459223374}
-  PositionTheme: {fileID: 114182603925482294}
-  MovePosition: {fileID: 114060542116162698}
   ButtonLabels: {fileID: 114873759200163750}
+  ColorThemeTag: checkBoxLabelColor
+  PositionThemeTag: checkBoxLabelPosition
+  MovePosition: {fileID: 114060542116162698}
 --- !u!114 &114547516331882724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -855,7 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: checkBoxOutlineColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
@@ -865,6 +821,28 @@ MonoBehaviour:
   Disabled: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   DisabledSelected: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   CurrentValue: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+  Button: {fileID: 0}
+--- !u!114 &114670225713520502
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333620779106598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tag: checkBoxLabelPosition
+  Default: {x: 0.119, y: -0.009, z: 0.079}
+  Focus: {x: 0.119, y: -0.029, z: 0.079}
+  Press: {x: 0.119, y: 0.009, z: 0.079}
+  Selected: {x: 0.119, y: -0.009, z: 0.079}
+  FocusSelected: {x: 0.119, y: -0.029, z: 0.079}
+  PressSelected: {x: 0.119, y: 0.009, z: 0.079}
+  Disabled: {x: 0.119, y: -0.009, z: 0.079}
+  DisabledSelected: {x: 0.119, y: -0.009, z: 0.079}
+  CurrentValue: {x: 0, y: 0, z: 0}
   Button: {fileID: 0}
 --- !u!114 &114820782642851596
 MonoBehaviour:
@@ -877,7 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: defaultColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
@@ -901,7 +879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Default: CheckBox
   Selected: 
---- !u!114 &114944598506372214
+--- !u!114 &114898514485183372
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -909,10 +887,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1109689419134662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: checkBoxIconPosition
   Default: {x: 0.016, y: -0.045, z: 0.083}
   Focus: {x: 0.016, y: -0.065, z: 0.083}
   Press: {x: 0.016, y: -0.025, z: 0.083}
@@ -921,5 +899,27 @@ MonoBehaviour:
   PressSelected: {x: 0.016, y: -0.025, z: 0.083}
   Disabled: {x: 0.016, y: -0.045, z: 0.083}
   DisabledSelected: {x: 0.016, y: -0.045, z: 0.083}
-  CurrentValue: {x: 0.016, y: 0, z: 0}
+  CurrentValue: {x: 0, y: 0, z: 0}
+  Button: {fileID: 0}
+--- !u!114 &114900985719784146
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1358151374307770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tag: checkBoxBackgroundPosition
+  Default: {x: 0, y: -0.035, z: 0}
+  Focus: {x: 0, y: -0.05, z: 0}
+  Press: {x: 0, y: 0, z: 0}
+  Selected: {x: 0, y: -0.035, z: 0}
+  FocusSelected: {x: 0, y: -0.05, z: 0}
+  PressSelected: {x: 0, y: 0, z: 0}
+  Disabled: {x: 0, y: -0.035, z: 0}
+  DisabledSelected: {x: 0, y: -0.035, z: 0}
+  CurrentValue: {x: 0, y: 0, z: 0}
   Button: {fileID: 0}

@@ -4,35 +4,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HoloToolkit.Examples.Prototyping
 {
-
+    /// <summary>
+    /// Sets the text value of a TextMesh or UI Text object based on the selected value of the array
+    /// </summary>
     public class CycleText : CycleArray<string>
     {
+        private TextMesh mTextMesh;
+        private Text mText;
 
-        public TextMesh Label;
         protected override void Awake()
         {
             base.Awake();
 
-            if (Label == null)
-            {
-                Label = GetComponent<TextMesh>();
-            }
+            mTextMesh = GetComponent<TextMesh>();
+            mText = GetComponent<Text>();
 
-            if (Label == null)
+            if (mTextMesh == null && mText == null)
             {
-                Debug.LogError("Textmesh:Label is not set in CycleText!");
+                Debug.LogError("Textmesh or Text is not set in CycleText!");
                 Destroy(this);
             }
         }
 
+        /// <summary>
+        /// Set the text...
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);
 
-            Label.text = Array[index];
+            if (mTextMesh != null)
+            {
+                mTextMesh.text = Array[index];
+            }
+
+            if (mText != null)
+            {
+                mText.text = Array[index];
+            }
+
         }
     }
 }

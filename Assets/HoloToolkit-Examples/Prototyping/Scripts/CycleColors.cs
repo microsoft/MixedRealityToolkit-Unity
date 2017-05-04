@@ -7,79 +7,62 @@ using System.Collections.Generic;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// Cycle through a list of colors and apply the current color to the material
+    /// Supports ColorTransition for animaiton and easing. Auto detected, just add it to the component
+    /// </summary>
     public class CycleColors : CycleArray<Color>
     {
-        public bool BlendColors;
-        public float BlendTime = 0.75f;
-        public bool SmoothBlend;
-
-        private float mBlendCounter = 0;
+        // color to blend to
         private Color mTargetColor;
 
-        private Renderer mRenderer;
+        // the material to change colors
+        private Material mMaterial;
 
+        // color transition component - used for animation
+        private ColorTransition mColorTransition;
+
+        protected override void Start()
+        {
+            mColorTransition = TargetObject.GetComponent<ColorTransition>();
+            base.Start();
+        }
+
+        /// <summary>
+        /// Select the color from the Array and apply it.
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);
 
-            if (mRenderer == null)
-            {
-                mRenderer = TargetObject.GetComponent<Renderer>();
-            }
-
             mTargetColor = Array[Index];
 
-            if (BlendColors)
+            if (mColorTransition == null)
             {
-                mBlendCounter = 0;
+                Renderer renderer = TargetObject.GetComponent<Renderer>();
+
+                if (renderer != null)
+                {
+                    mMaterial = renderer.material;
+                }
+
+                mMaterial.color = mTargetColor;
             }
             else
             {
-                if (mRenderer != null)
-                {
-                    GetComponent<Renderer>().material.color = mTargetColor;
-                }
-                mBlendCounter = BlendTime;
+                mColorTransition.StartTransition(mTargetColor);
             }
         }
 
-        private void ApplyColorBlend(Color targetColor, float lerpPercentage)
+        /// <summary>
+        /// clean up material if one was created dynamically
+        /// </summary>
+        private void OnDestroy()
         {
-            Color newColor = targetColor;
-
-            if (mRenderer == null)
+            if(mMaterial != null)
             {
-                mRenderer = TargetObject.GetComponent<Renderer>();
-            }
-
-            if (mRenderer != null)
-            {
-                if (lerpPercentage < 1)
-                {
-                    float smoothPercentage = lerpPercentage;
-                    if (SmoothBlend)
-                    {
-                        smoothPercentage = -1 * 0.5f * (Mathf.Cos(Mathf.PI * lerpPercentage) - 1);
-                    }
-
-                    newColor = Color.LerpUnclamped(GetComponent<Renderer>().material.color, targetColor, smoothPercentage);
-                }
-                GetComponent<Renderer>().material.color = newColor;
-            }
-        }
-
-        private void Update()
-        {
-            if (mBlendCounter < BlendTime)
-            {
-                mBlendCounter += Time.deltaTime;
-
-                if (mBlendCounter >= BlendTime)
-                {
-                    mBlendCounter = BlendTime;
-                }
-
-                ApplyColorBlend(mTargetColor, mBlendCounter / BlendTime);
+                GameObject.Destroy(mMaterial);
             }
         }
     }

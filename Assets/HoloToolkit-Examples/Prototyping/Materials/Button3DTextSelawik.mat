@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Button3DTextSelawik
-  m_Shader: {fileID: 4800000, guid: b8f70e33b66693948927d7540c8bbdfa, type: 3}
+  m_Shader: {fileID: 4800000, guid: cfe12bbf45a06fb4b8fce6adb726485f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1

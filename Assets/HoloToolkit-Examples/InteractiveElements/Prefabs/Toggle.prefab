@@ -116,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4030250545438618}
   - component: {fileID: 114743188364878098}
-  - component: {fileID: 114252068309996348}
+  - component: {fileID: 114596564481101906}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -148,7 +148,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4428658185453720}
-  - component: {fileID: 114351574422203034}
+  - component: {fileID: 114895046839169486}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -165,7 +165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4654304151815436}
   - component: {fileID: 114032360333918648}
-  - component: {fileID: 114281391011750128}
+  - component: {fileID: 114450952302494114}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -588,13 +588,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010284820992}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114032360333918648}
-  PositionTheme: {fileID: 114281391011750128}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: toggleBackgroundColor
+  PositionThemeTag: toggleBackgroundPosition
+  ScaleThemeTag: 
   ColorBlender: {fileID: 114569540866142524}
   MovePosition: {fileID: 114746706344018958}
   ScaleSize: {fileID: 0}
@@ -609,7 +609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleBackgroundColor
   Default: {r: 0.23529412, g: 0.23529412, b: 0.23529412, a: 1}
   Focus: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   Press: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
@@ -642,29 +642,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
---- !u!114 &114252068309996348
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1341255559282464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tag: default
-  Default: {x: -0.149, y: 0.003, z: 0.04}
-  Focus: {x: -0.149, y: 0.003, z: 0.06}
-  Press: {x: -0.149, y: 0.003, z: 0.02}
-  Selected: {x: -0.149, y: 0.003, z: 0.04}
-  FocusSelected: {x: -0.149, y: 0.003, z: 0.06}
-  PressSelected: {x: -0.149, y: 0.003, z: 0.02}
-  Disabled: {x: -0.149, y: 0.003, z: 0.04}
-  DisabledSelected: {x: -0.149, y: 0.003, z: 0.04}
-  CurrentValue: {x: 0, y: 0, z: 0}
-  Button: {fileID: 0}
---- !u!114 &114281391011750128
+--- !u!114 &114450952302494114
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -672,10 +650,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1765171921263042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleBackgroundPosition
   Default: {x: -0.03556, y: 0, z: 0.0815}
   Focus: {x: -0.03556, y: 0, z: 0.095}
   Press: {x: -0.03556, y: 0, z: 0.055}
@@ -684,28 +662,6 @@ MonoBehaviour:
   PressSelected: {x: -0.03556, y: 0, z: 0.055}
   Disabled: {x: -0.03556, y: 0, z: 0.0815}
   DisabledSelected: {x: -0.03556, y: 0, z: 0.0815}
-  CurrentValue: {x: 0, y: 0, z: 0}
-  Button: {fileID: 0}
---- !u!114 &114351574422203034
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1477303876052944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tag: default
-  Default: {x: 0.04, y: 0, z: 0.085}
-  Focus: {x: 0.04, y: 0, z: 0.1}
-  Press: {x: 0.04, y: 0, z: 0.06}
-  Selected: {x: -0.04, y: 0, z: 0.085}
-  FocusSelected: {x: -0.04, y: 0, z: 0.1}
-  PressSelected: {x: -0.04, y: 0, z: 0.06}
-  Disabled: {x: 0.04, y: 0, z: 0.085}
-  DisabledSelected: {x: -0.04, y: 0, z: 0.085}
   CurrentValue: {x: 0, y: 0, z: 0}
   Button: {fileID: 0}
 --- !u!114 &114461559572522606
@@ -719,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleOutlineColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
@@ -742,10 +698,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114743188364878098}
-  PositionTheme: {fileID: 114252068309996348}
-  MovePosition: {fileID: 114143298628911268}
   ButtonLabels: {fileID: 114638852004369314}
+  ColorThemeTag: toggleLabelColor
+  PositionThemeTag: toggleLabelPosition
+  MovePosition: {fileID: 114143298628911268}
 --- !u!114 &114537162026645710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -757,7 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: defaultColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
@@ -782,6 +738,28 @@ MonoBehaviour:
   TargetObject: {fileID: 0}
   TransitionTime: 0.25
   SmoothTransition: 1
+--- !u!114 &114596564481101906
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1341255559282464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tag: toggleLabelPosition
+  Default: {x: -0.149, y: 0.003, z: 0.04}
+  Focus: {x: -0.149, y: 0.003, z: 0.06}
+  Press: {x: -0.149, y: 0.003, z: 0.02}
+  Selected: {x: -0.149, y: 0.003, z: 0.04}
+  FocusSelected: {x: -0.149, y: 0.003, z: 0.06}
+  PressSelected: {x: -0.149, y: 0.003, z: 0.02}
+  Disabled: {x: -0.149, y: 0.003, z: 0.04}
+  DisabledSelected: {x: -0.149, y: 0.003, z: 0.04}
+  CurrentValue: {x: 0, y: 0, z: 0}
+  Button: {fileID: 0}
 --- !u!114 &114638852004369314
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -809,8 +787,8 @@ MonoBehaviour:
   InteractiveHost: {fileID: 0}
   InnerMaterial: {fileID: 2100000, guid: 0941cc9d1fb9d5a46af6e6c78fdda999, type: 2}
   OuterMaterial: {fileID: 2100000, guid: 1e8a348f1ecbe4d4380cf99556301e81, type: 2}
-  InnterColorTheme: {fileID: 114461559572522606}
-  OuterColorTheme: {fileID: 114461559572522606}
+  InnerColorThemeTag: toggleOutlineColor
+  OuterColorThemeTag: toggleOutlineColor
   ColorBlender: {fileID: 114000010229574584}
 --- !u!114 &114743188364878098
 MonoBehaviour:
@@ -823,7 +801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: toggleLabelColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
@@ -886,13 +864,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011598663686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 0}
-  PositionTheme: {fileID: 114351574422203034}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: 
+  PositionThemeTag: toggleIconPosition
+  ScaleThemeTag: 
   ColorBlender: {fileID: 0}
   MovePosition: {fileID: 114844220242307014}
   ScaleSize: {fileID: 0}
+--- !u!114 &114895046839169486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1477303876052944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tag: toggleIconPosition
+  Default: {x: 0.04, y: 0, z: 0.085}
+  Focus: {x: 0.04, y: 0, z: 0.1}
+  Press: {x: 0.04, y: 0, z: 0.06}
+  Selected: {x: -0.04, y: 0, z: 0.085}
+  FocusSelected: {x: -0.04, y: 0, z: 0.1}
+  PressSelected: {x: -0.04, y: 0, z: 0.06}
+  Disabled: {x: 0.04, y: 0, z: 0.085}
+  DisabledSelected: {x: -0.04, y: 0, z: 0.085}
+  CurrentValue: {x: 0, y: 0, z: 0}
+  Button: {fileID: 0}

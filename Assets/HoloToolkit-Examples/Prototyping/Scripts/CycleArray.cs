@@ -14,7 +14,6 @@ namespace HoloToolkit.Examples.Prototyping
     /// </summary>
     public class CycleArray<Type> : MonoBehaviour, ICycle
     {
-
         /// <summary>
         /// Placeholder for the array of objects to cycle through
         /// </summary>

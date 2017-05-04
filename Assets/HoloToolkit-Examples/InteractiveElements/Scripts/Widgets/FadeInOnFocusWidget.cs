@@ -8,42 +8,46 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
+    /// <summary>
+    /// An InteractiveWidget for fading in elements based on Interactive focus state
+    /// </summary>
+    [RequireComponent(typeof(Prototyping.FadeColors))]
     public class FadeInOnFocusWidget : InteractiveWidget
     {
+        private Prototyping.FadeColors mFadeController;
 
-        public FadeMaterialColor FadeController;
-
+        /// <summary>
+        /// Set the Fade Controller
+        /// </summary>
         private void Awake()
         {
-            if (FadeController == null)
+            if (mFadeController == null)
             {
-                FadeController = GetComponent<FadeMaterialColor>();
+                mFadeController = GetComponent<Prototyping.FadeColors>();
             }
 
-            if (FadeController == null)
+            if (mFadeController == null)
             {
                 Debug.LogError("FadeMaterialColor:FadeController is not set in FadeInOnFocusWidget!");
                 Destroy(this);
             }
         }
 
+        /// <summary>
+        /// Fade in or out based on focus
+        /// </summary>
+        /// <param name="state"></param>
         public override void SetState(Interactive.ButtonStateEnum state)
         {
             base.SetState(state);
 
             if (state == Interactive.ButtonStateEnum.FocusSelected || state == Interactive.ButtonStateEnum.Focus || state == Interactive.ButtonStateEnum.Press || state == Interactive.ButtonStateEnum.PressSelected)
             {
-                if (FadeController != null)
-                {
-                    FadeController.FadeIn();
-                }
+                mFadeController.FadeIn();
             }
             else
             {
-                if (FadeController != null)
-                {
-                    FadeController.FadeOut();
-                }
+                mFadeController.FadeOut();
             }
         }
     }

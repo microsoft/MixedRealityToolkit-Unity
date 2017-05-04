@@ -7,43 +7,55 @@ using HoloToolkit.Unity;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// sets the rotation (eulerAngles) of an object to the selected value in the array.
+    /// Add RotateToValue for animaiton and easing, auto detected.
+    /// </summary>
     public class CycleRotation : CycleArray<Vector3>
     {
-        [Tooltip("Requires Interpolator")]
-        public bool SmoothLerpToTarget = false;
-        public float RotationDegreesPerSecond = 720.0f;
-        public float RotationSpeedScaler = 0.0f;
-        public float SmoothRotationLerpRatio = 0.5f;
+        [Tooltip("use the local rotation - overrides the UseLocalTransform value of RotateToValue")]
+        public bool UseLocalRotation = false;
 
-        private Interpolator mInterpolator;
+        private RotateToValue mRotation;
 
         protected override void Awake()
         {
-            mInterpolator = GetComponent<Interpolator>();
+            mRotation = GetComponent<RotateToValue>();
 
             base.Awake();
         }
 
+        /// <summary>
+        /// set the rotation from the vector 3 euler angle
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);
 
+            // get the rotation and convert it to a Quaternion
             Vector3 item = Array[Index];
 
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = item;
 
-            if (mInterpolator != null)
+            // set the rotation
+            if (mRotation != null)
             {
-                mInterpolator.SmoothLerpToTarget = SmoothLerpToTarget;
-                mInterpolator.SmoothRotationLerpRatio = SmoothRotationLerpRatio;
-                mInterpolator.RotationSpeedScaler = RotationSpeedScaler;
-                mInterpolator.RotationDegreesPerSecond = RotationDegreesPerSecond;
-                mInterpolator.SetTargetRotation(rotation);
+                mRotation.ToLocalTransform = UseLocalRotation;
+                mRotation.TargetValue = rotation;
+                mRotation.StartRunning();
             }
             else
             {
-                TargetObject.transform.rotation = rotation;
+                if (UseLocalRotation)
+                {
+                    TargetObject.transform.localRotation = rotation;
+                }
+                else
+                {
+                    TargetObject.transform.rotation = rotation;
+                }
             }
         }
 

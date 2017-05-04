@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: LoaderOrb
-  m_Shader: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: d58a74a2854483b4197d3a636cff80ec, type: 3}
   m_ShaderKeywords: _EMISSION _USECOLOR_ON
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -77,8 +77,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _Ambient
+      second: 0.55
+    - first:
         name: _BumpScale
       second: 1
+    - first:
+        name: _CameraIntensity
+      second: 0.2
     - first:
         name: _ColorWriteMask
       second: 15
@@ -103,6 +109,9 @@ Material:
     - first:
         name: _GlossyReflections
       second: 1
+    - first:
+        name: _LightIntensity
+      second: 0.8
     - first:
         name: _Metallic
       second: 0
@@ -148,7 +157,10 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.66176474, g: 0.66176474, b: 0.66176474, a: 1}
+      second: {r: 0.06666667, g: 0.6117647, b: 0.8745098, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _LightDir
+      second: {r: 0.3, g: 0.8, b: -0.6, a: 1}

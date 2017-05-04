@@ -6,8 +6,16 @@ using System.Collections;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// Active and detactivate objects based on the selected item in the array.
+    /// Only shows the currently selected item.
+    /// </summary>
     public class CycleShowHideObjects : CycleArray<GameObject>
     {
+        /// <summary>
+        /// Show the item by index and hide all others
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);
@@ -22,6 +30,5 @@ namespace HoloToolkit.Examples.Prototyping
                 }
             }
         }
-
     }
 }

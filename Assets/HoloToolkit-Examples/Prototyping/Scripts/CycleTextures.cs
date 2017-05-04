@@ -6,51 +6,67 @@ using System.Collections;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// sets the texture of a material based on the selected item in the array
+    /// </summary>
     public class CycleTextures : CycleArray<Texture>
     {
-        public int DefaultTextureIndex = 0;
-        public int TextureIndex { get; private set; }
+        private Material mMaterial;
 
-        private Renderer mRenderer;
-
+        /// <summary>
+        /// get the material to assign textures to
+        /// </summary>
         override protected void Awake()
         {
             base.Awake();
 
-            mRenderer = TargetObject.GetComponent<Renderer>();
-            if (mRenderer == null)
+            Renderer renderer = TargetObject.GetComponent<Renderer>();
+            if (renderer != null)
             {
-                Debug.LogError("A Rrenderer does not exist on the assigned TargetObject!");
+                mMaterial = renderer.material;
+            }
+            else
+            {
+                Debug.LogError("CycleTexture requires a renderer and material on the assigned GameObject!");
                 Destroy(this);
             }
         }
 
+        /// <summary>
+        /// set the texture
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);
 
             if (index > -1 && index < Array.Length)
             {
-                if (mRenderer != null)
+                if (mMaterial != null)
                 {
-                    mRenderer.material.SetTexture("_MainTex", Array[index]);
+                    mMaterial.SetTexture("_MainTex", Array[index]);
                 }
-
-                TextureIndex = index;
             }
         }
 
+        /// <summary>
+        /// Update the current set of textures
+        /// </summary>
+        /// <param name="arr"></param>
         public void SetNewArray(Texture[] arr)
         {
             Array = arr;
             SetIndex(0);
         }
 
+        /// <summary>
+        /// clean up if material was created dynamically
+        /// </summary>
         private void OnDestroy()
         {
-            if (mRenderer != null)
+            if (mMaterial != null)
             {
-                Destroy(mRenderer.material);
+                Destroy(mMaterial);
             }
         }
     }

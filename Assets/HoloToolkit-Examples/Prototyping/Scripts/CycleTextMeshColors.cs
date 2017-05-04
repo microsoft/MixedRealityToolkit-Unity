@@ -7,11 +7,28 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// Sets the color of a TextMesh object based on the selected value in the array
+    /// </summary>
     public class CycleTextMeshColors : CycleArray<Color>
     {
-
+        [Tooltip("TextMesh to assign the selected text")]
         public TextMesh TextMeshObject;
 
+        protected override void Awake()
+        {
+            if (TextMeshObject == null)
+            {
+                TextMeshObject = GetComponent<TextMesh>();
+            }
+
+            base.Awake();
+        }
+
+        /// <summary>
+        /// apply the selected text
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);

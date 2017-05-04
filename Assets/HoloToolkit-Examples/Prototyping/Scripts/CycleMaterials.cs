@@ -6,6 +6,9 @@ using System.Collections;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// sets the material of an object to a material selected in the array
+    /// </summary>
     public class CycleMaterials : CycleArray<Material>
     {
         public override void SetIndex(int index)

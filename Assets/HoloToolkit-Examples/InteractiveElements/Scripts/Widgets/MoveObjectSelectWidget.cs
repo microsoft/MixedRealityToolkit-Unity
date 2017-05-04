@@ -8,21 +8,32 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
-
+    /// <summary>
+    /// Changes the position of an element based on the Interactive selected state
+    /// </summary>
     [RequireComponent(typeof(MoveToPosition))]
     public class MoveObjectSelectWidget : InteractiveWidget
     {
-
+        [Tooltip("Default position for the default state")]
         public Vector3 DefaultPosition;
+
+        [Tooltip("Position for the selected state")]
         public Vector3 SelectPosition;
+
         private MoveToPosition mMoveToPosition;
 
-        // Use this for initialization
+        /// <summary>
+        /// Get the Move to Position component
+        /// </summary>
         void Awake()
         {
             mMoveToPosition = GetComponent<MoveToPosition>();
         }
 
+        /// <summary>
+        /// Animate the position
+        /// </summary>
+        /// <param name="state"></param>
         public override void SetState(Interactive.ButtonStateEnum state)
         {
             base.SetState(state);

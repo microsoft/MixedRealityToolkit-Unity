@@ -136,7 +136,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4038079255161038}
   - component: {fileID: 114724013658626500}
-  - component: {fileID: 114923226773201044}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -169,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4566048139154272}
   - component: {fileID: 114240541300402256}
-  - component: {fileID: 114942031292318160}
+  - component: {fileID: 114451379618091290}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -186,7 +185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4270623259448474}
   - component: {fileID: 114606406977787976}
-  - component: {fileID: 114430820500558112}
+  - component: {fileID: 114425133298623510}
   m_Layer: 0
   m_Name: Knob
   m_TagString: Untagged
@@ -724,7 +723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: defaultColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
@@ -743,13 +742,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012031565074}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114606406977787976}
-  PositionTheme: {fileID: 0}
-  ScaleTheme: {fileID: 114430820500558112}
+  ColorThemeTag: sliderKnobColor
+  PositionThemeTag: 
+  ScaleThemeTag: sliderKnobScale
   ColorBlender: {fileID: 114000012151299866}
   MovePosition: {fileID: 0}
   ScaleSize: {fileID: 114396711802821738}
@@ -764,7 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: sliderLabelColor
   Default: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Focus: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
   Press: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
@@ -787,10 +786,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114240541300402256}
-  PositionTheme: {fileID: 114942031292318160}
-  MovePosition: {fileID: 114623199245567628}
   ButtonLabels: {fileID: 0}
+  ColorThemeTag: sliderLabelColor
+  PositionThemeTag: sliderLabelPosition
+  MovePosition: {fileID: 114623199245567628}
 --- !u!114 &114396711802821738
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -812,7 +811,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
---- !u!114 &114430820500558112
+--- !u!114 &114425133298623510
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -820,10 +819,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1674507656696820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97c30a5a350b4554188967458cf8a6f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: sliderKnobScale
   Default: {x: 1, y: 1, z: 1.5}
   Focus: {x: 1, y: 1, z: 1.5}
   Press: {x: 1, y: 1, z: 1}
@@ -833,6 +832,28 @@ MonoBehaviour:
   Disabled: {x: 1, y: 1, z: 1.5}
   DisabledSelected: {x: 1, y: 1, z: 1.5}
   CurrentValue: {x: 1, y: 1, z: 1}
+  Button: {fileID: 0}
+--- !u!114 &114451379618091290
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1106716950969414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tag: sliderLabelPosition
+  Default: {x: -0.0071, y: 0.1445, z: 0.01}
+  Focus: {x: -0.0071, y: 0.1445, z: -0.02}
+  Press: {x: -0.0071, y: 0.1445, z: 0.02}
+  Selected: {x: -0.0071, y: 0.1445, z: 0.01}
+  FocusSelected: {x: -0.0071, y: 0.1445, z: -0.02}
+  PressSelected: {x: -0.0071, y: 0.1445, z: 0.02}
+  Disabled: {x: -0.0071, y: 0.1445, z: 0.01}
+  DisabledSelected: {x: -0.0071, y: 0.1445, z: 0.01}
+  CurrentValue: {x: 0, y: 0, z: 0}
   Button: {fileID: 0}
 --- !u!114 &114606406977787976
 MonoBehaviour:
@@ -845,7 +866,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: sliderKnobColor
   Default: {r: 0.50980395, g: 0.50980395, b: 0.50980395, a: 1}
   Focus: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Press: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
@@ -886,13 +907,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010121767078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114922840319301710}
-  PositionTheme: {fileID: 0}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: sliderBarColor
+  PositionThemeTag: 
+  ScaleThemeTag: 
   ColorBlender: {fileID: 114000010601737356}
   MovePosition: {fileID: 0}
   ScaleSize: {fileID: 0}
@@ -907,7 +928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: sliderFillColor
   Default: {r: 0.14509805, g: 0.5058824, b: 0.68235296, a: 1}
   Focus: {r: 0.06666667, g: 0.6117647, b: 0.8745098, a: 1}
   Press: {r: 0.29411766, g: 0.7607843, b: 0.9843137, a: 1}
@@ -926,13 +947,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011534470254}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114724013658626500}
-  PositionTheme: {fileID: 0}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: sliderFillColor
+  PositionThemeTag: 
+  ScaleThemeTag: 
   ColorBlender: {fileID: 114000013916789966}
   MovePosition: {fileID: 0}
   ScaleSize: {fileID: 0}
@@ -959,7 +980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd20823c70902f4a9d1d7a7daaf96f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: default
+  Tag: sliderBarColor
   Default: {r: 0.50980395, g: 0.50980395, b: 0.50980395, a: 1}
   Focus: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
   Press: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
@@ -970,50 +991,6 @@ MonoBehaviour:
   DisabledSelected: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   CurrentValue: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Button: {fileID: 0}
---- !u!114 &114923226773201044
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1011959923585164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tag: default
-  Default: {x: 0, y: 0, z: 0.04}
-  Focus: {x: 0, y: 0, z: 0.06}
-  Press: {x: 0, y: 0, z: 0.01}
-  Selected: {x: 0, y: 0, z: 0.04}
-  FocusSelected: {x: 0, y: 0, z: 0.06}
-  PressSelected: {x: 0, y: 0, z: 0.01}
-  Disabled: {x: 0, y: 0, z: 0.04}
-  DisabledSelected: {x: 0, y: 0, z: 0.04}
-  CurrentValue: {x: 0, y: 0, z: 0}
-  Button: {fileID: 0}
---- !u!114 &114942031292318160
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1106716950969414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tag: default
-  Default: {x: -0.0071, y: 0.1445, z: 0.01}
-  Focus: {x: -0.0071, y: 0.1445, z: -0.02}
-  Press: {x: -0.0071, y: 0.1445, z: 0.02}
-  Selected: {x: -0.0071, y: 0.1445, z: 0.01}
-  FocusSelected: {x: -0.0071, y: 0.1445, z: -0.02}
-  PressSelected: {x: -0.0071, y: 0.1445, z: 0.02}
-  Disabled: {x: -0.0071, y: 0.1445, z: 0.01}
-  DisabledSelected: {x: -0.0071, y: 0.1445, z: 0.01}
-  CurrentValue: {x: 0, y: 0, z: 0}
-  Button: {fileID: 0}
 --- !u!114 &114980341250394410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1022,13 +999,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011042864930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f550dfe6ef257f47b7078b7d7b5c33f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6c86add047f7e498462872cc4a1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
-  ColorTheme: {fileID: 114606406977787976}
-  PositionTheme: {fileID: 0}
-  ScaleTheme: {fileID: 0}
+  ColorThemeTag: sliderKnobColor
+  PositionThemeTag: 
+  ScaleThemeTag: 
   ColorBlender: {fileID: 114000012235487670}
   MovePosition: {fileID: 0}
   ScaleSize: {fileID: 0}

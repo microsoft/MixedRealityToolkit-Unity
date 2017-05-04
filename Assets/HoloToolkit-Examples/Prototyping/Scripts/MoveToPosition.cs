@@ -8,24 +8,59 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Examples.Prototyping
 {
-
+    /// <summary>
+    /// A position animation component that supports easing and local position
+    /// The animation can be triggered through code or the inspector
+    /// 
+    /// Supports easing, reverse and reseting positions.
+    /// Free easing allows the object to animate by just updating the TargetValue for a more organic feel
+    /// 
+    /// Typical use:
+    /// Set the TargetValue
+    /// Call StartRunning();
+    /// </summary>
     public class MoveToPosition : MonoBehaviour
     {
-
+        /// <summary>
+        /// ease types
+        ///     Linear: steady progress
+        ///     EaseIn: ramp up in speed
+        ///     EaseOut: ramp down in speed
+        ///     EaseInOut: ramp up then down in speed
+        ///     Free: super ease - just updates as the TargetValue changes
+        /// </summary>
         public enum LerpTypes { Linear, EaseIn, EaseOut, EaseInOut, Free }
 
+        [Tooltip("The GameObject with the position the requires animation")]
         public GameObject TargetObject;
+
+        [Tooltip("The target Vector3 to animate to")]
         public Vector3 TargetValue;
+
+        [Tooltip("easy type to use for the tween")]
         public LerpTypes LerpType;
+
+        [Tooltip("Duration of the animation in seconds")]
         public float LerpTime = 1f;
+
+        [Tooltip("Auto start? or status")]
         public bool IsRunning = false;
+
+        [Tooltip("use the local position instead of world position")]
         public bool ToLocalTransform = false;
+
+        [Tooltip("animation is complete!")]
         public UnityEvent OnComplete;
 
+        // animation ticker
         private float mLerpTimeCounter;
+
+        // cached start value, updates everytime a new animation starts
         private Vector3 mStartValue;
 
-        // Use this for initialization
+        /// <summary>
+        /// Get the game object and set the start values
+        /// </summary>
         private void Awake()
         {
             if (TargetObject == null)
@@ -35,6 +70,9 @@ namespace HoloToolkit.Examples.Prototyping
             mStartValue = GetPosition();
         }
 
+        /// <summary>
+        /// Start the animation
+        /// </summary>
         public void StartRunning()
         {
             if (TargetObject == null)
@@ -47,6 +85,9 @@ namespace HoloToolkit.Examples.Prototyping
             IsRunning = true;
         }
 
+        /// <summary>
+        /// Reset the position back to the cached starting position
+        /// </summary>
         public void ResetTransform()
         {
             if (ToLocalTransform)
@@ -61,6 +102,9 @@ namespace HoloToolkit.Examples.Prototyping
             mLerpTimeCounter = 0;
         }
 
+        /// <summary>
+        /// Run the animation backwards for a ping-pong effect
+        /// </summary>
         public void Reverse()
         {
             TargetValue = mStartValue;
@@ -69,16 +113,29 @@ namespace HoloToolkit.Examples.Prototyping
             IsRunning = true;
         }
 
+        /// <summary>
+        /// Stop the animation
+        /// </summary>
         public void StopRunning()
         {
             IsRunning = false;
         }
 
+        /// <summary>
+        /// get the current position
+        /// </summary>
+        /// <returns></returns>
         private Vector3 GetPosition()
         {
             return ToLocalTransform ? TargetObject.transform.localPosition : TargetObject.transform.position;
         }
 
+        /// <summary>
+        /// Calculate the new position based on time and ease settings
+        /// </summary>
+        /// <param name="currentPosition"></param>
+        /// <param name="percent"></param>
+        /// <returns></returns>
         private Vector3 GetNewPosition(Vector3 currentPosition, float percent)
         {
             Vector3 newPosition = Vector3.zero;
@@ -106,6 +163,7 @@ namespace HoloToolkit.Examples.Prototyping
             return newPosition;
         }
 
+        // ease curves
         public static float QuadEaseIn(float s, float e, float v)
         {
             return e * (v /= 1) * v + s;
@@ -124,7 +182,9 @@ namespace HoloToolkit.Examples.Prototyping
             return -e / 2 * ((--v) * (v - 2) - 1) + s;
         }
 
-        // Update is called once per frame
+        /// <summary>
+        /// Animate!
+        /// </summary>
         private void Update()
         {
             if (IsRunning && LerpType != LerpTypes.Free)

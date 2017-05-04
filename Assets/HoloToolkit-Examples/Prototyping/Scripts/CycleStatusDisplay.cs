@@ -5,18 +5,21 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-/// <summary>
-/// CycleStatusDisplay shows the n of totla (n/t) of a CycleBase component
-/// </summary>
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// CycleStatusDisplay shows the current index and array length (i/l) of a CycleBase component
+    /// Works with TextMesh or UI Text
+    /// </summary>
     public class CycleStatusDisplay : MonoBehaviour
     {
-        [Tooltip("CycleBase class reference for displaying current cycle count")]
+        [Tooltip("A GameObject containing a component that impliments ICycle")]
         public GameObject CycleHost;
+
         private ICycle mCycleHost;
         private TextMesh mTextMesh;
         private Text mText;
+
         // Use this for initialization
         void Awake()
         {
@@ -37,7 +40,9 @@ namespace HoloToolkit.Examples.Prototyping
             mCycleHost = CycleHost.GetComponent<ICycle>();
         }
 
-        // Update is called once per frame
+        /// <summary>
+        /// Update the status of the ICycle component
+        /// </summary>
         void Update()
         {
             if (mTextMesh != null && mCycleHost != null)

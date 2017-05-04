@@ -302,6 +302,11 @@ Prefab:
       propertyPath: FlipDirecationOnCameraForward
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114854604571829066, guid: a61fbf52f79ff5b479d7c59ec56dd0bc,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a61fbf52f79ff5b479d7c59ec56dd0bc, type: 2}
   m_IsPrefabParent: 0
@@ -1020,6 +1025,11 @@ Prefab:
         type: 2}
       propertyPath: FlipDirecationOnCameraForward
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114854604571829066, guid: a61fbf52f79ff5b479d7c59ec56dd0bc,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a61fbf52f79ff5b479d7c59ec56dd0bc, type: 2}

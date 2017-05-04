@@ -7,13 +7,22 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
+    /// <summary>
+    /// Swaps the text in the TextMesh based on Interactive state, like "On" and "Off"
+    /// </summary>
     public class LabelSwapWidget : InteractiveWidget
     {
-
+        [Tooltip("string for the default state")]
         public string DefaultLabel;
+
+        [Tooltip("string for the selected state")]
         public string SelectedLabel;
+
         public TextMesh Label;
 
+        /// <summary>
+        /// Get the TextMesh
+        /// </summary>
         private void Awake()
         {
             if (Label == null)
@@ -28,6 +37,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+        /// <summary>
+        /// Set the text value
+        /// </summary>
+        /// <param name="state"></param>
         public override void SetState(Interactive.ButtonStateEnum state)
         {
             base.SetState(state);

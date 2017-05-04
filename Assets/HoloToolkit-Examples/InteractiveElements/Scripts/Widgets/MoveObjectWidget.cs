@@ -7,16 +7,23 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace HoloToolkit.Examples.InteractiveElements
 {
-
+    /// <summary>
+    /// Updates the position of an element based on the Interactive focus state
+    /// </summary>
     [RequireComponent(typeof(MoveToPosition))]
     public class MoveObjectWidget : InteractiveWidget
     {
-
+        [Tooltip("Starting default position")]
         public Vector3 DefaultPosition;
+
+        [Tooltip("Target position on focus")]
         public Vector3 FocusPosition;
+
         private MoveToPosition mMoveToPosition;
 
-        // Use this for initialization
+        /// <summary>
+        /// Get the Move to Position component
+        /// </summary>
         void Awake()
         {
             mMoveToPosition = GetComponent<MoveToPosition>();
@@ -28,6 +35,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+        /// <summary>
+        /// Set or animate the position
+        /// </summary>
+        /// <param name="state"></param>
         public override void SetState(Interactive.ButtonStateEnum state)
         {
             base.SetState(state);

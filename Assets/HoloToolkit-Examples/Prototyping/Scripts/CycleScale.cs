@@ -7,34 +7,35 @@ using HoloToolkit.Unity;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// scales an object based on the selected value in the array
+    /// Supports ScaletoValue for animaiton and easing, ...auto detected.
+    /// </summary>
     public class CycleScale : CycleArray<Vector3>
     {
-        [Tooltip("Requires Interpolator")]
-        public bool SmoothLerpToTarget = false;
-        public float ScalePerSecond = 5.0f;
-        public float SmoothScaleLerpRatio = 0.5f;
-
-        private Interpolator mInterpolator;
+        private ScaleToValue mScaler;
 
         protected override void Awake()
         {
-            mInterpolator = GetComponent<Interpolator>();
+            mScaler = GetComponent<ScaleToValue>();
 
             base.Awake();
         }
 
+        /// <summary>
+        /// Set the scale value or animate scale
+        /// </summary>
+        /// <param name="index"></param>
         public override void SetIndex(int index)
         {
             base.SetIndex(index);
 
             Vector3 item = Current;
 
-            if (mInterpolator != null)
+            if (mScaler != null)
             {
-                mInterpolator.SmoothLerpToTarget = SmoothLerpToTarget;
-                mInterpolator.SmoothScaleLerpRatio = SmoothScaleLerpRatio;
-                mInterpolator.ScalePerSecond = ScalePerSecond;
-                mInterpolator.SetTargetLocalScale(item);
+                mScaler.TargetValue = item;
+                mScaler.StartRunning();
             }
             else
             {

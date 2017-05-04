@@ -10,7 +10,7 @@ using HoloToolkit.Unity.InputModule;
 namespace HoloToolkit.Examples.InteractiveElements
 {
     /// <summary>
-    /// InteractiveToggle expands InteractiveButton to add a selection or toggle state.
+    /// InteractiveToggle expands Interactive to expose selection or toggle states.
     /// 
     /// Beyong the basic button functionality, Interactive also maintains the notion of selection and enabled, which allow for more robust UI features.
     /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on

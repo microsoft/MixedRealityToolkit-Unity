@@ -6,6 +6,10 @@ using System.Collections;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// An interface for components that cycle through an array of properties.
+    /// A component can be built to cycle through colors, positions, textures and apply these values to the gameObject they are assigned to.
+    /// </summary>
     public interface ICycle
     {
         int Index { get; set; }

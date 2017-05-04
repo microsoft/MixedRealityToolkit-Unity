@@ -7,21 +7,20 @@ using HoloToolkit.Unity;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// Uniformly scales an object using a float based on the selected value from the array
+    /// Supports ScaleToValue for animation and easing, ...auto detected
+    /// </summary>
     public class CycleUniformScale : CycleArray<float>
     {
-        [Tooltip("Requires Interpolator")]
-        public bool SmoothLerpToTarget = false;
-        public float ScalePerSecond = 5.0f;
-        public float SmoothScaleLerpRatio = 0.5f;
-
         private Vector3 StartScale;
         private bool isFirstCall = true;
 
-        private Interpolator mInterpolator;
+        private ScaleToValue mScaler;
 
         protected override void Awake()
         {
-            mInterpolator = GetComponent<Interpolator>();
+            mScaler = GetComponent<ScaleToValue>();
 
             base.Awake();
         }
@@ -38,12 +37,10 @@ namespace HoloToolkit.Examples.Prototyping
 
             float item = Current;
 
-            if (mInterpolator != null)
+            if (mScaler != null)
             {
-                mInterpolator.SmoothLerpToTarget = SmoothLerpToTarget;
-                mInterpolator.SmoothScaleLerpRatio = SmoothScaleLerpRatio;
-                mInterpolator.ScalePerSecond = ScalePerSecond;
-                mInterpolator.SetTargetLocalScale(item * StartScale);
+                mScaler.TargetValue = item * StartScale;
+                mScaler.StartRunning();
             }
             else
             {
