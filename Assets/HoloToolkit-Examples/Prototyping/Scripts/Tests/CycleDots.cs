@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.Prototyping
 {
+    /// <summary>
+    /// Cycles through gameObjects to update the ColorColors and CycleScale on each dot according to the selected index.
+    /// </summary>
     public class CycleDots : CycleArray<GameObject>
     {
         public override void SetIndex(int index)

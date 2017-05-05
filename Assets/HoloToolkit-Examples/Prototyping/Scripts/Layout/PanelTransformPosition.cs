@@ -7,21 +7,42 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.Prototyping
 {
-
+    /// <summary>
+    /// Takes size values, similar to RectTransorm position values or pixel values used in desiger tools and applies them to primitive objects.
+    /// 
+    /// A quick way to align and anchor 3D objects in Unity for mocking up UI and click-throughs.
+    /// This solution is not as robust as Unity's RectTransform layout system,
+    /// but it's quicker for prototypes.
+    /// 
+    /// Use with PanelTransformSize and PanelTransformSizeOffset to anchor and layout groups of elements.
+    /// </summary>
     [ExecuteInEditMode]
     public class PanelTransformPosition : MonoBehaviour
     {
+        // alignment choices, sets the center of the transform to the chosen position of the anchor
         public enum AlignmentTypes { None, TopLeft, Top, TopRight, CenterLeft, Center, CenterRight, BottomLeft, Bottom, BottomRight }
+
+        [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
         public AlignmentTypes Alignment;
+
+        [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
         public float BasePixelSize = 2048;
 
+        [Tooltip("The transform this object should be linked and aligned to")]
         public Transform Anchor;
-        public Vector3 AnchorOffset;
-        public bool IgnoreZScale;
 
+        [Tooltip("Offset this object's position based on the same pixel based size ratio")]
+        public Vector3 AnchorOffset;
+
+        [Tooltip("Ignore the anchor's z scaling when positioning this object")]
+        public bool IgnoreZScale;
+        
         protected Vector3 mAnchorScale;
         protected Vector3 mAnchorPosition;
 
+        /// <summary>
+        /// A transform is required for alignment
+        /// </summary>
         protected virtual void Awake()
         {
             if (Anchor == null)
@@ -30,24 +51,33 @@ namespace HoloToolkit.Examples.Prototyping
             }
         }
 
+        /// <summary>
+        /// Get the scale and position of the anchor
+        /// </summary>
         protected virtual void SetScale()
         {
             mAnchorScale = Anchor.localScale;
             mAnchorPosition = Anchor.localPosition;
         }
 
+        /// <summary>
+        /// Set this object's position
+        /// </summary>
         protected virtual void UpdatePosition()
         {
             SetScale();
 
+            // set the default directions
             Vector3 horizontalVector = Vector3.right;
             Vector3 verticalVector = Vector3.up;
             Vector3 startPosition = mAnchorPosition;
 
+            // set the offset distances
             float xMagnitude = AnchorOffset.x / BasePixelSize;
             float yMagnitude = AnchorOffset.y / BasePixelSize;
             float zMagnitude = AnchorOffset.z / BasePixelSize;
 
+            // set the default position
             if (Alignment == AlignmentTypes.None)
             {
 
@@ -56,6 +86,7 @@ namespace HoloToolkit.Examples.Prototyping
                 return;
             }
 
+            // update the directions and anchor alignment position based on the alignment setting
             switch (Alignment)
             {
                 case AlignmentTypes.TopLeft:
@@ -116,6 +147,7 @@ namespace HoloToolkit.Examples.Prototyping
                     break;
             }
 
+            // set the aligned position
             if (!IgnoreZScale)
             {
                 startPosition.z = mAnchorPosition.z - mAnchorScale.z * 0.5f;
