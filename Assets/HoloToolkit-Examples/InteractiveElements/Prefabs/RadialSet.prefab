@@ -1316,8 +1316,8 @@ MonoBehaviour:
   DetectHold: 0
   HoldTime: 0.5
   RollOffTime: 0.02
-  Keyword: 
-  KeywordRequiresGaze: 1
+  Keyword: radial three
+  KeywordRequiresGaze: 0
   OnSelectEvents:
     m_PersistentCalls:
       m_Calls: []
@@ -1363,8 +1363,8 @@ MonoBehaviour:
   DetectHold: 0
   HoldTime: 0.5
   RollOffTime: 0.02
-  Keyword: 
-  KeywordRequiresGaze: 1
+  Keyword: radial two
+  KeywordRequiresGaze: 0
   OnSelectEvents:
     m_PersistentCalls:
       m_Calls: []
@@ -2047,8 +2047,8 @@ MonoBehaviour:
   DetectHold: 0
   HoldTime: 0.5
   RollOffTime: 0.02
-  Keyword: 
-  KeywordRequiresGaze: 1
+  Keyword: radial one
+  KeywordRequiresGaze: 0
   OnSelectEvents:
     m_PersistentCalls:
       m_Calls: []
