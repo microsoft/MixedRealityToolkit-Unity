@@ -307,7 +307,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 271624721}
-  m_Text: Scale using User Position (Front)
+  m_Text: Scale using Position (Front)
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -406,7 +406,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 505245551}
-  m_Text: Scale using User Position (Back)
+  m_Text: Scale using Position (Back)
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1

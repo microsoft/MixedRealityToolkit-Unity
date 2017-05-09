@@ -48,6 +48,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 case Interactive.ButtonStateEnum.Focus:
                     this.gameObject.transform.localScale = EffectScale[1];
                     this.gameObject.transform.localPosition = EffectPosition[0];
+                    colorIndex = 0;
                     break;
                 case Interactive.ButtonStateEnum.Press:
                     this.gameObject.transform.localPosition = EffectPosition[1];
@@ -61,6 +62,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 case Interactive.ButtonStateEnum.FocusSelected:
                     this.gameObject.transform.localScale = EffectScale[1];
                     this.gameObject.transform.localPosition = EffectPosition[0];
+                    colorIndex = 1;
                     break;
                 case Interactive.ButtonStateEnum.PressSelected:
                     this.gameObject.transform.localPosition = EffectPosition[1];
