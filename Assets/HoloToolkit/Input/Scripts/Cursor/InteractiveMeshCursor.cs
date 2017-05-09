@@ -15,6 +15,8 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("Inner cursor element")]
         public GameObject Dot;
+
+        [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disapprear.")]
         public float DistanceScaleFactor = 0.3f;
 
         [Tooltip("The scale both elements will be at their default state")]
@@ -58,6 +60,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.OnCursorStateChange(state);
 
+            // the cursor state has changed, reset the animation timer
             if (mHasHand != this.IsHandVisible || mIsDown != this.IsInputSourceDown || mHasHover != (this.TargetedObject != null))
             {
                 mTimer = 0;
@@ -106,6 +109,7 @@ namespace HoloToolkit.Unity.InputModule
             Ring.SetActive(showRing);
             Dot.SetActive(!showRing);
 
+            // added observation of CursorModifier
             if (TargetedCursorModifier != null && mHasHover)
             {
                 Ring.SetActive(!TargetedCursorModifier.GetCursorVisibility());
@@ -120,6 +124,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.UpdateCursorTransform();
 
+            // animate scale of ring and dot
             if (mTimer < ScaleTime)
             {
                 mTimer += Time.deltaTime;
@@ -131,6 +136,11 @@ namespace HoloToolkit.Unity.InputModule
                 Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer/ScaleTime);
                 Dot.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
             }
+
+            // handle scale of main cursor go
+            float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
+            float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
+            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
         }
 
         /// <summary>
@@ -139,7 +149,8 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="visible"></param>
         public override void SetVisiblity(bool visible)
         {
-            //base.SetVisiblity(visible);
+            base.SetVisiblity(visible);
+
             mIsVisible = visible;
 
             if (visible)
@@ -154,10 +165,6 @@ namespace HoloToolkit.Unity.InputModule
                     Dot.SetActive(visible);
                 }
             }
-            float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
-            float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
-            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
-
         }
     }
 }
