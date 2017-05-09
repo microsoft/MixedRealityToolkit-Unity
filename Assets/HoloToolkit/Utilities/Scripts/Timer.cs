@@ -4,7 +4,7 @@
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Structure that defines a timer. A timer can be scheduled through the TimerScheduler
+    /// Structure that defines a timer. A timer can be scheduled through the TimerScheduler.
     /// </summary>
     public struct Timer
     {
@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity
                 return TimerScheduler.Instance.StartTimer(timeSeconds, callback, loop);
             }
 
-            return Timer.Invalid;
+            return Invalid;
         }
 
         public static Timer StartNextFrame(TimerScheduler.Callback callback)
@@ -42,7 +42,7 @@ namespace HoloToolkit.Unity
                 return TimerScheduler.Instance.StartTimer(0.0f, callback, false, true);
             }
 
-            return Timer.Invalid;
+            return Invalid;
         }
 
         public void Stop()
