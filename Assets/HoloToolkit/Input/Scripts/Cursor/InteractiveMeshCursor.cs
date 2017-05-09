@@ -8,13 +8,14 @@ namespace HoloToolkit.Unity.InputModule
     /// A cursor that looks and acts more like the shell cursor.
     /// A two part cursor with visual feedback for all cursor states
     /// </summary>
-    public class InteractiveCursor : Cursor
+    public class InteractiveMeshCursor : Cursor
     {
         [Tooltip("The ring or outer element")]
         public GameObject Ring;
 
         [Tooltip("Inner cursor element")]
         public GameObject Dot;
+        public float DistanceScaleFactor = 0.3f;
 
         [Tooltip("The scale both elements will be at their default state")]
         public float DefaultScale = 0.75f;
@@ -41,6 +42,13 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 mBaseScale = new Vector3(1, 1, 1);
         private Vector3 mTargetScale;
         private bool mIsVisible = true;
+
+        private Vector3 mAwakeScale;
+
+        private void Awake()
+        {
+            mAwakeScale = transform.localScale;
+        }
 
         /// <summary>
         /// Decide which element (ring or dot) should be visible and at what scale
@@ -146,6 +154,10 @@ namespace HoloToolkit.Unity.InputModule
                     Dot.SetActive(visible);
                 }
             }
+            float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
+            float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
+            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
+
         }
     }
 }

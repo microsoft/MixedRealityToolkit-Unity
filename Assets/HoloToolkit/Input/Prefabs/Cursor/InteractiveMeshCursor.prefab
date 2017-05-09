@@ -266,6 +266,7 @@ MonoBehaviour:
   PrimaryCursorVisual: {fileID: 0}
   Ring: {fileID: 1000013883439490}
   Dot: {fileID: 1000010809468922}
+  DistanceScaleFactor: 0.3
   DefaultScale: 0.5
   DownScale: 0.4
   UpScale: 0.65

@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: MeshCursorEdges
+  m_Name: InteractiveMeshCursorFaces
   m_Shader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
-  m_ShaderKeywords: _EMISSION
+  m_ShaderKeywords: _EMISSION _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF _USEMAINTEX_ON
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -46,6 +46,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _EmissionTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 0}
@@ -75,7 +81,13 @@ Material:
       second: 1
     - first:
         name: _ColorMask
+      second: 255
+    - first:
+        name: _ColorWriteMask
       second: 15
+    - first:
+        name: _Cull
+      second: 2
     - first:
         name: _Cutoff
       second: 0.5
@@ -90,10 +102,10 @@ Material:
       second: 1
     - first:
         name: _Glossiness
-      second: 0.5
+      second: 0
     - first:
         name: _GlossyReflections
-      second: 1
+      second: 0
     - first:
         name: _Metallic
       second: 0
@@ -111,7 +123,7 @@ Material:
       second: 0
     - first:
         name: _SpecularHighlights
-      second: 1
+      second: 0
     - first:
         name: _SrcBlend
       second: 1
@@ -126,20 +138,32 @@ Material:
       second: 0
     - first:
         name: _StencilReadMask
-      second: 255
+      second: 0
     - first:
         name: _StencilWriteMask
-      second: 255
+      second: 0
     - first:
         name: _UVSec
       second: 0
+    - first:
+        name: _UseColor
+      second: 0
+    - first:
+        name: _UseEmissionTex
+      second: 0
+    - first:
+        name: _UseMainTex
+      second: 1
+    - first:
+        name: _ZTest
+      second: 4
     - first:
         name: _ZWrite
       second: 1
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.5514706, g: 0.5514706, b: 0.5514706, a: 1}
+      second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0, g: 0, b: 0, a: 1}
+      second: {r: 0.7352941, g: 0.7352941, b: 0.7352941, a: 1}
