@@ -93,7 +93,7 @@ namespace HoloToolkit.Examples.Prototyping
             IsRunning = true;
             mIsFadingIn = false;
             
-            if (resetStartValue)
+            if (resetStartValue && mMaterial != null)
             {
                 mCachedColor.a = 1;
                 mMaterial.color = mCachedColor;
@@ -111,7 +111,7 @@ namespace HoloToolkit.Examples.Prototyping
             IsRunning = true;
             mIsFadingIn = true;
 
-            if (resetStartValue)
+            if (resetStartValue && mMaterial != null)
             {
                 mCachedColor.a = 0;
                 mMaterial.color = mCachedColor;
@@ -174,7 +174,14 @@ namespace HoloToolkit.Examples.Prototyping
             }
             else
             {
-                mCachedColor = mMaterial.color;
+                if (mMaterial != null)
+                {
+                    mCachedColor = mMaterial.color;
+                }
+                else
+                {
+                    mCachedColor = new Color();
+                }
             }
         }
 

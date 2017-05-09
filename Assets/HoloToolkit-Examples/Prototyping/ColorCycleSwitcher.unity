@@ -223,9 +223,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &218488885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,9 +329,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &271082501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,9 +477,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &475326914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -592,9 +583,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &752661060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -701,9 +689,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &908585279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -944,9 +929,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &1432885642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1053,9 +1035,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &1583257490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1304,7 +1283,7 @@ Transform:
   m_GameObject: {fileID: 1723285392}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 989935897}
   - {fileID: 124069618}
@@ -1417,7 +1396,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010560871102, guid: d379ed0a5618c9f479f58bd83a2d0ad3, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4000010560871102, guid: d379ed0a5618c9f479f58bd83a2d0ad3, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1438,6 +1417,11 @@ Prefab:
     - target: {fileID: 4000010560871102, guid: d379ed0a5618c9f479f58bd83a2d0ad3, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20000013304850028, guid: d379ed0a5618c9f479f58bd83a2d0ad3,
+        type: 2}
+      propertyPath: near clip plane
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d379ed0a5618c9f479f58bd83a2d0ad3, type: 2}
@@ -1492,9 +1476,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &2132810502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1601,9 +1582,6 @@ MonoBehaviour:
   - 1.35
   TargetObject: {fileID: 0}
   DefaultIndex: 0
-  SmoothLerpToTarget: 0
-  ScalePerSecond: 5
-  SmoothScaleLerpRatio: 0.5
 --- !u!114 &2143381099
 MonoBehaviour:
   m_ObjectHideFlags: 0

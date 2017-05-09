@@ -130,14 +130,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
 
             base.ManipulationUpdate(startGesturePosition, currentGesturePosition, startHeadOrigin, startHeadRay, gestureState);
-
-            if (FlipDirecationOnCameraForward)
-            {
-                CurrentDistance = FlipDistanceOnFacingControl(CurrentDistance, SliderBar.transform.position, -SliderBar.transform.forward);
-            }
-
+            
             // get the current delta
             float delta =  (CurrentDistance > 0) ? CurrentPercentage : -CurrentPercentage;
+            print(delta);
             
             // combine the delta with the current slider position so the slider does not start over every time
             mDeltaValue = Mathf.Clamp01(delta + mCachedValue);

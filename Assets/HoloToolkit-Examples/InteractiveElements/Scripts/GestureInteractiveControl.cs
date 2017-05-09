@@ -430,10 +430,6 @@ namespace HoloToolkit.Examples.InteractiveElements
                     CurrentDistance = Vector3.Dot(DirectionVector, MainCamera.transform.right);
                     break;
                 case GestureDataType.Aligned:
-                    if (flipDirection)
-                    {
-                        DirectionVector = -DirectionVector;
-                    }
                     CurrentDistance = Vector3.Dot(DirectionVector, AlignmentVector);
                     break;
                 default:

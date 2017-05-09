@@ -392,7 +392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4336600929723758}
   - component: {fileID: 114222937859299940}
-  - component: {fileID: 114587006130998058}
+  - component: {fileID: 114805017726586100}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -1876,28 +1876,6 @@ MonoBehaviour:
   DisabledSelected: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   CurrentValue: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   Button: {fileID: 0}
---- !u!114 &114587006130998058
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1928799751095982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89110c18ccc774641a60dd9e05605564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tag: 72616469616c4261636b67726f756e64506f736974696f6e
-  Default: {x: 0, y: 0, z: 0.04}
-  Focus: {x: 0, y: 0, z: 0.06}
-  Press: {x: 0, y: 0, z: 0.01}
-  Selected: {x: 0, y: 0, z: 0.04}
-  FocusSelected: {x: 0, y: 0, z: 0.06}
-  PressSelected: {x: 0, y: 0, z: 0.01}
-  Disabled: {x: 0, y: 0, z: 0.04}
-  DisabledSelected: {x: 0, y: 0, z: 0.04}
-  CurrentValue: {x: 0, y: 0, z: 0}
-  Button: {fileID: 0}
 --- !u!114 &114613629808166556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1987,6 +1965,28 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+--- !u!114 &114805017726586100
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1928799751095982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fb64812c09ab9448331612dd7c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tag: radialBackgroundPosition
+  Default: {x: 0, y: 0, z: 0.04}
+  Focus: {x: 0, y: 0, z: 0.06}
+  Press: {x: 0, y: 0, z: 0.01}
+  Selected: {x: 0, y: 0, z: 0.04}
+  FocusSelected: {x: 0, y: 0, z: 0.06}
+  PressSelected: {x: 0, y: 0, z: 0.01}
+  Disabled: {x: 0, y: 0, z: 0.04}
+  DisabledSelected: {x: 0, y: 0, z: 0.04}
+  CurrentValue: {x: 0, y: 0, z: 0}
+  Button: {fileID: 0}
 --- !u!114 &114854890359796848
 MonoBehaviour:
   m_ObjectHideFlags: 1
