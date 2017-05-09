@@ -83,9 +83,13 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <param name="state"></param>
         private void SetTexture(Interactive.ButtonStateEnum state)
         {
+
+
+            print(mTextureTheme + " / " + mMaterial);
+
             if (mTextureTheme != null)
             {
-                mMaterial.SetTexture("_MainTex", mTextureTheme.GetThemeValue(Interactive.ButtonStateEnum.Default));
+                mMaterial.SetTexture("_MainTex", mTextureTheme.GetThemeValue(state));
             }
         }
 
