@@ -190,7 +190,9 @@ namespace HoloToolkit.Unity
                             progress++;
                             cancelled = EditorUtility.DisplayCancelableProgressBar("Generating images", string.Format("Generating resized images {0} of {1}", progress, progressTotal), progress / progressTotal);
                             if (cancelled)
+                            {
                                 break;
+                            }
                         }
                     }
                 }
@@ -299,9 +301,13 @@ namespace HoloToolkit.Unity
                         scale != PlayerSettings.WSAImageScale.Target32 &&
                         scale != PlayerSettings.WSAImageScale.Target48 &&
                         scale != PlayerSettings.WSAImageScale.Target256)
+                    {
                         return _originalSplashImage;
+                    }
                     else
+                    {
                         break;
+                    }
                 default:
                     break;
             }
