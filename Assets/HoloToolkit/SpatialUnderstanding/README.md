@@ -1,7 +1,7 @@
 ## [Spatial Understanding]()
 Scripts, Prefabs, and Test Scenes that leverage Spatial Understanding related features.
 
-See the [HoloToolkit Spatial Mapping](HoloToolkit/SpatialMapping) documentation to ensure your project is set up correctly.
+See the [HoloToolkit Spatial Mapping](../SpatialMapping) documentation to ensure your project is set up correctly.
 
 **IMPORTANT**: Please make sure to add the Spatial Perception capability in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
