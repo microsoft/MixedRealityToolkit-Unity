@@ -152,9 +152,9 @@ namespace HoloToolkit.Unity
         private static Color ColorLerpUnclamped(Color c1, Color c2, float value)
         {
             return new Color(c1.r + (c2.r - c1.r) * value,
-                              c1.g + (c2.g - c1.g) * value,
-                              c1.b + (c2.b - c1.b) * value,
-                              c1.a + (c2.a - c1.a) * value);
+                             c1.g + (c2.g - c1.g) * value,
+                             c1.b + (c2.b - c1.b) * value,
+                             c1.a + (c2.a - c1.a) * value);
         }
     }
 }

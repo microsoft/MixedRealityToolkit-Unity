@@ -7,10 +7,8 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
-
     public class SetIconsWindow : EditorWindow
     {
-
         private const string WindowTitle = "Tile Generator";
         private const string InitialOutputDirectoryName = "TileGenerator";
         private const float GUISectionOffset = 10.0f;
@@ -109,13 +107,17 @@ namespace HoloToolkit.Unity
             _outputDirectoryName = EditorPrefs.GetString(EditorPrefsKey_DirectoryName);
 
             if (!string.IsNullOrEmpty(_originalAppIconPath))
+            {
                 _originalAppIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(_originalAppIconPath);
-
+            }
             if (!string.IsNullOrEmpty(_originalSplashImagePath))
+            {
                 _originalSplashImage = AssetDatabase.LoadAssetAtPath<Texture2D>(_originalSplashImagePath);
-
+            }
             if (string.IsNullOrEmpty(_outputDirectoryName))
+            {
                 _outputDirectoryName = InitialOutputDirectoryName;
+            }
         }
 
         private Texture2D CreateImageInput(string title, int width, int height, Texture2D texture, ref string path)
@@ -171,7 +173,10 @@ namespace HoloToolkit.Unity
 
                 foreach (var type in types)
                 {
-                    if (cancelled) break;
+                    if (cancelled)
+                    {
+                        break;
+                    }
 
                     foreach (var scale in scales)
                     {
@@ -241,8 +246,7 @@ namespace HoloToolkit.Unity
             string directoryPath = Application.dataPath + "/" + _outputDirectoryName;
             string filepath = directoryPath + "/" + fileName;
 
-            if (!((iconSize.x == 1240 && iconSize.y == 1240) ||
-                (iconSize.x == 2480 && iconSize.y == 1200)))
+            if (!((iconSize.x == 1240 && iconSize.y == 1240) || (iconSize.x == 2480 && iconSize.y == 1200)))
             {
 
                 // Create copy of original image
@@ -338,11 +342,6 @@ namespace HoloToolkit.Unity
         {
             Vector2 size = Vector2.zero;
             float scaleFactor = (float)scale / 100;
-
-            if (scale == PlayerSettings.WSAImageScale._125)
-            {
-
-            }
 
             switch (type)
             {
