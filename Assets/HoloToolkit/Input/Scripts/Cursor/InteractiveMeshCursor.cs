@@ -1,5 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+//
+
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -13,17 +16,13 @@ namespace HoloToolkit.Unity.InputModule
         public float DownScale = 0.5f;
         public float UpScale = 1;
         public float ScaleTime = 0.5f;
-
-        private bool mRingVisible = false;
-        private bool mScaleDown = false;
-        private float mTimer = 0;
-
-        private bool mHasHover = false;
-        private bool mHasHand = false;
-        private bool mIsDown = false;
+        
+        private float mTimer;
+        private bool mHasHover;
+        private bool mHasHand;
+        private bool mIsDown;
         private Vector3 mBaseScale = new Vector3(1, 1, 1);
         private Vector3 mTargetScale;
-
         private Vector3 mAwakeScale;
 
         private void Awake()
@@ -35,14 +34,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.OnCursorStateChange(state);
 
-            if (mHasHand != this.IsHandVisible || mIsDown != this.IsInputSourceDown || mHasHover != (this.TargetedObject != null))
+            if (mHasHand != IsHandVisible || mIsDown != IsInputSourceDown || mHasHover != (TargetedObject != null))
             {
                 mTimer = 0;
             }
 
-            mHasHand = this.IsHandVisible;
-            mIsDown = this.IsInputSourceDown;
-            mHasHover = this.TargetedObject != null;
+            mHasHand = IsHandVisible;
+            mIsDown = IsInputSourceDown;
+            mHasHover = TargetedObject != null;
 
             mTargetScale = mBaseScale * DefaultScale;
             bool showRing = false;
@@ -77,7 +76,6 @@ namespace HoloToolkit.Unity.InputModule
             
             Ring.SetActive(showRing);
             Dot.SetActive(!showRing);
-            
         }
 
         protected override void UpdateCursorTransform()
@@ -99,7 +97,6 @@ namespace HoloToolkit.Unity.InputModule
             float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
             float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
             transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
-
         }
     }
 }
