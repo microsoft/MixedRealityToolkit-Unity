@@ -46,6 +46,8 @@ namespace HoloToolkit.Unity.InputModule
         private KeywordRecognizer keywordRecognizer;
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
+        private bool keyBindingsOnly = false;
+
         void Start()
         {
             int keywordCount = KeywordsAndResponses.Length;
@@ -75,6 +77,11 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Debug.LogError("Duplicate keywords specified in the Inspector on " + gameObject.name + ".");
                 }
+                catch (UnityException ue)
+                {
+                    Debug.LogWarning("Something went wrong when tried to initialize KeywordRecognizer.\r\nFalling back to key bindings.\r\n" + ue);
+                    keyBindingsOnly = true;
+                }
             }
             else
             {
@@ -84,7 +91,7 @@ namespace HoloToolkit.Unity.InputModule
 
         void Update()
         {
-            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
+            if ((keywordRecognizer != null && keywordRecognizer.IsRunning) || keyBindingsOnly)
             {
                 ProcessKeyBindings();
             }
@@ -149,6 +156,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 keywordRecognizer.Start();
             }
+            else
+            {
+                keyBindingsOnly = true;
+            }
         }
 
         /// <summary>
@@ -160,6 +171,10 @@ namespace HoloToolkit.Unity.InputModule
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Stop();
+            }
+            else
+            {
+                keyBindingsOnly = false;
             }
         }
     }
