@@ -44,6 +44,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
 
+        private bool keyBindingsOnly = false;
+
         protected override void Start()
         {
             base.Start();
@@ -53,17 +55,25 @@ namespace HoloToolkit.Unity.InputModule
             int keywordCount = Keywords.Length;
             if (keywordCount > 0)
             {
-                string[] keywords = new string[keywordCount];
-                for (int index = 0; index < keywordCount; index++)
+                try
                 {
-                    keywords[index] = Keywords[index].Keyword;
-                }
-                keywordRecognizer = new KeywordRecognizer(keywords);
-                keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+                    string[] keywords = new string[keywordCount];
+                    for (int index = 0; index < keywordCount; index++)
+                    {
+                        keywords[index] = Keywords[index].Keyword;
+                    }
+                    keywordRecognizer = new KeywordRecognizer(keywords);
+                    keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
-                if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+                    if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+                    {
+                        keywordRecognizer.Start();
+                    }
+                } 
+                catch (UnityException ue)
                 {
-                    keywordRecognizer.Start();
+                    Debug.LogWarning("Something went wrong when tried to initialize KeywordRecognizer.\r\nFalling back to key bindings.\r\n" + ue);
+                    keyBindingsOnly = true;
                 }
             }
             else
@@ -74,7 +84,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void Update()
         {
-            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
+            if ((keywordRecognizer != null && keywordRecognizer.IsRunning) || keyBindingsOnly)
             {
                 ProcessKeyBindings();
             }
@@ -132,6 +142,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 keywordRecognizer.Start();
             }
+            else
+            {
+                keyBindingsOnly = true;
+            }
         }
 
         /// <summary>
@@ -143,6 +157,10 @@ namespace HoloToolkit.Unity.InputModule
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Stop();
+            }
+            else
+            {
+                keyBindingsOnly = false;
             }
         }
 
