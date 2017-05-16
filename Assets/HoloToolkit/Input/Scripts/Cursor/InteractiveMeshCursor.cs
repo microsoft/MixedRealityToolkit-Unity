@@ -34,8 +34,6 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// internal state and element management
         /// </summary>
-        private bool mRingVisible = false;
-        private bool mScaleDown = false;
         private float mTimer = 0;
 
         private bool mHasHover = false;
