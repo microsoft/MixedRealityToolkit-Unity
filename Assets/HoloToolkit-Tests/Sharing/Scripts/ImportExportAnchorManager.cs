@@ -133,11 +133,6 @@ namespace HoloToolkit.Sharing.Tests
         private WorldAnchorStore anchorStore;
 
         /// <summary>
-        /// The anchor this object is attached to.
-        /// </summary>
-        private WorldAnchor thisAnchor;
-
-        /// <summary>
         /// Keeps track of the name of the anchor we are exporting.
         /// </summary>
         private string exportingAnchorName;
@@ -220,9 +215,6 @@ namespace HoloToolkit.Sharing.Tests
 
         private void Start()
         {
-#if UNITY_WSA && !UNITY_EDITOR
-            thisAnchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
-#endif
             // SharingStage should be valid at this point, but we may not be connected.
             if (SharingStage.Instance.IsConnected)
             {
@@ -701,13 +693,14 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private void CreateAnchorLocally()
         {
-            if (thisAnchor.isLocated)
+            WorldAnchor anchor = this.EnsureComponent<WorldAnchor>();
+            if (anchor.isLocated)
             {
                 currentState = ImportExportState.ReadyToExportInitialAnchor;
             }
             else
             {
-                thisAnchor.OnTrackingChanged += Anchor_OnTrackingChanged_InitialAnchor;
+                anchor.OnTrackingChanged += Anchor_OnTrackingChanged_InitialAnchor;
             }
         }
 
@@ -883,11 +876,12 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private void Export()
         {
+            WorldAnchor anchor = this.GetComponent<WorldAnchor>();
             string guidString = Guid.NewGuid().ToString();
             exportingAnchorName = guidString;
 
             // Save the anchor to our local anchor store.
-            if (thisAnchor != null && anchorStore.Save(exportingAnchorName, thisAnchor))
+            if (anchor != null && anchorStore.Save(exportingAnchorName, anchor))
             {
                 if (SharingStage.Instance.ShowDetailedLogs)
                 {
@@ -900,7 +894,7 @@ namespace HoloToolkit.Sharing.Tests
                 }
 
                 sharedAnchorInterface = new WorldAnchorTransferBatch();
-                sharedAnchorInterface.AddWorldAnchor(guidString, thisAnchor);
+                sharedAnchorInterface.AddWorldAnchor(guidString, anchor);
                 WorldAnchorTransferBatch.ExportAsync(sharedAnchorInterface, WriteBuffer, ExportComplete);
             }
             else

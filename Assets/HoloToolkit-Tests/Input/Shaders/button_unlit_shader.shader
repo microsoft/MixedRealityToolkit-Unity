@@ -52,7 +52,7 @@
 			struct v2f
 			{
 				float4 pos : SV_POSITION;
-				fixed4 uv : TEXCOORD0;
+				fixed3 uv : TEXCOORD0;
 				fixed3 localNormal : TEXCOORD1;
 				fixed3 viewDir : TEXCOORD2;
 				fixed3 halfVec : TEXCOORD3;
@@ -63,7 +63,7 @@
 			{
 				v2f o;
 
-				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.pos = UnityObjectToClipPos(v.vertex);
 				o.uv.xy = v.texcoord;
 				o.localNormal = normalize(v.normal);
 				o.viewDir = normalize(ObjSpaceViewDir(v.vertex));

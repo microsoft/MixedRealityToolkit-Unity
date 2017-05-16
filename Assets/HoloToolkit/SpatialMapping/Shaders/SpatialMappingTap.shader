@@ -63,7 +63,7 @@ Shader "HoloToolkit/Spatial Mapping Tap"
 				UNITY_SETUP_INSTANCE_ID(v);
 				v2g o;
 
-				o.viewPos = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.viewPos = UnityObjectToClipPos(v.vertex);
 
 				float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
 				half distToCenter = distance(_Center, worldPos.xyz);		
