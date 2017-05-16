@@ -152,7 +152,7 @@ A MonoBehaviour that interpolates a transform's position, rotation or scale.
 Math Utilities class.
 
 #### NearPlaneFade.cs
-Updates the shader parameters for use in near plade fading.
+Updates the shader parameters for use in near plane fading.
 
 #### PriorityQueue.cs
 Min-heap priority queue. In other words, lower priorities will be removed from the queue first.
