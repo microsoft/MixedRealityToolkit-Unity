@@ -14,6 +14,16 @@ A drop in direction indicator that stays in the users view at all times.
 #### HeadsUpDirectionIndicatorPointer.prefab
 A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.
 
+### [Scenes](Scenes)
+---
+
+#### HeadsetAdjustment.unity
+Helps the user adjust the headset so that he/she gets the full experience in demo scenarios. 
+
+When demoing an app, it is important to ensure that the user has the headset on properly. This scene shows a border at the edge of the user's field of view and instructs him/her to adjust the headset until all four edges are visible. The user (or the demonstrator) can then air-tap or say "I'm ready" to proceed to the actual experience. 
+
+This scene is designed to be the first scene the user sees, once the experience is ready to begin. Once the user is ready, it loads either the next scene in the sequence or a scene specified by the NextSceneName property of the HeadsetAdjustment script.
+
 ### [Scripts](Scripts)
 ---
 Utilitiy Scripts.
@@ -142,7 +152,7 @@ A MonoBehaviour that interpolates a transform's position, rotation or scale.
 Math Utilities class.
 
 #### NearPlaneFade.cs
-Updates the shader parameters for use in near plade fading.
+Updates the shader parameters for use in near plane fading.
 
 #### PriorityQueue.cs
 Min-heap priority queue. In other words, lower priorities will be removed from the queue first.
@@ -232,7 +242,7 @@ Feature configurable vertex lit transparent shader.  Use when a higher performan
 #### WindowOcclusion.shader
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
-### [Tests](Tests)
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Utilities/Scenes)
 ---
 Tests related to the utilities features. To use the scene:
 
