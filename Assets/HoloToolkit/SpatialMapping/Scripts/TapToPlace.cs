@@ -64,7 +64,11 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (anchorManager != null && spatialMappingManager != null)
             {
-                anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                // If we are not starting out with actively placing the object, give it a World Anchor
+                if(!IsBeingPlaced)
+                {
+                    anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                }
             }
             else
             {
