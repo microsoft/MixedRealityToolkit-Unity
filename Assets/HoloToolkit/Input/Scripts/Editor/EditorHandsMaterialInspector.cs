@@ -1,14 +1,17 @@
 ﻿using UnityEditor;
 
-public class EditorHandsMaterialInspector : ShaderGUI
+namespace HoloToolkit.Unity
 {
-    public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
+    public class EditorHandsMaterialInspector : ShaderGUI
     {
-        foreach (MaterialProperty materialProperty in properties)
+        public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
         {
-            if (materialProperty.flags != MaterialProperty.PropFlags.PerRendererData)
+            foreach (MaterialProperty materialProperty in properties)
             {
-                materialEditor.ShaderProperty(materialProperty, materialProperty.displayName);
+                if (materialProperty.flags != MaterialProperty.PropFlags.PerRendererData)
+                {
+                    materialEditor.ShaderProperty(materialProperty, materialProperty.displayName);
+                }
             }
         }
     }

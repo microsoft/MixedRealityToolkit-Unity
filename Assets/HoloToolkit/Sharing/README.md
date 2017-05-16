@@ -9,6 +9,7 @@ Users can also collaborate with other users (who are also using multiple devices
 
 - [Features](#features)
 - [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
 - [Plugins](#plugins)
 - [Prefabs](#prefabs)
 - [Scripts](#scripts)
@@ -104,6 +105,25 @@ Ensure you have the following capabilities set in Player Settings -> Windows Sto
 4. Microphone capabilities
 
 Install or run the server instance.
+
+### Troubleshooting
+---
+- Double check the Server Address on your sharing stage component in your scene matches the address shown in the sharing service console.
+- Make sure all devices are connected to the same Wireless Local Area Network.
+- Ensure all firewall settings are correct.  Windows firewall gives you options to enable/disable by network type (private, public, home), make sure you're enabling the firewall for your connection's type.
+
+#### Invalid Schema Version
+
+```
+SharingService [..\..\Source\Common\Private\SessionListHandshakeLogic.cpp (67)]: 
+***************************************************************
+List Server Handshake Failed: Invalid schema version. 
+Expected: 17, got 15 
+Please sync to latest XTools
+***************************************************************
+```
+
+- Ensure you're using the latest binaries of the sharing service found at `HoloToolkit-Unity\External\HoloToolkit\Sharing\Server`.
 
 ### [Plugins](Plugins)
 ---
@@ -272,7 +292,7 @@ Collection of sharing sync settings, used by the HoloToolkit Sharing sync system
 #### SyncStateListener.cs
 C# wrapper for the Sharing SyncListener, making changes available through the Action class.
 
-### [Test Prefabs](Tests/Prefabs)
+### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Prefabs)
 ---
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
@@ -283,7 +303,7 @@ Simple Cube prefab with a Transform, Mesh Filter, Box Collider, Mesh Renderer, a
 A simple Sphere prefab with a Transform, Mesh Filter, Sphere Collider, and Mesh Renderer components.
 Purposefully missing Default Sync Model Accessor component for SharingSpawnTest.
 
-### [Test Scripts](Tests/Scripts)
+### [Test Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Scripts)
 ---
 Test Scripts.
 
@@ -299,8 +319,14 @@ Broadcasts the head transform of the local user to other users in the session, a
 #### RoomTest.cs
 Test class for demonstrating creating rooms and anchors.
 
-#### SpawnTestKeyboardSpawning.cs
-Class that handles spawning sync objects on keyboard presses, for the `SpawningTest.scene`.
+#### SyncObjectSpawner.cs
+Class that handles spawning and deleteing sync objects for the `SpawningTest.scene`.  Uses the `KeywordManager` to spawn objects using voice and keyboard input.
+
+|Voice Command|Key Command|Description|
+|---|---|---|
+| Spawn Basic | Key `I`| Spawns a cube with a `SyncSpawnedObject` basic sync model.|
+| Spawn Custom | Key `O`| Spawns a sphere with a `SyncSpawnTestSphere` custom sync model.|
+| Delete Object | Key `M`| Deletes both sync model types.|
 
 #### SyncSpawnTestSphere.cs
 Class that demonstrates a custom class using sync model attributes.
@@ -308,15 +334,16 @@ Class that demonstrates a custom class using sync model attributes.
 #### UserNotifications.cs
 Used to demonstrate how to get notifications when users leave and enter room.
 
-### [Tests](Tests/Scenes)
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Scenes)
 ---
-Tests related to the sharing features. To use the scene:
+Tests related to the sharing features. To use the each scene:
 
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
 3. Either click "Play" in the unity editor or File -> Build Settings.
 4. Add Open Scenes, Platform -> Windows Store, SDK -> Universal 10, Build Type -> D3D, Check 'Unity C# Projects'.
-5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
+5. Enable all required [capabilities](configuration).
+6. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
 #### SharingTest.unity 
 This test demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
@@ -337,12 +364,12 @@ It also demonstrates how to upload and download new anchors.
 3. **RoomTest.cs** shows how to create, join, and leave rooms; also shows how to create and download anchors.
 
 #### SharingSpawnTest.unity
-This test demonstrates how to spawn sync objects in your scene and across your networked clients.
+This test demonstrates how to spawn and delete sync objects in your scene and across your networked clients.
 
 1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
 2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
 3. **PrefabSpawnManager.cs** enables you to store prefab references to use when spawning.
-4. **SpawnTestKeyboardSpawning** demonstrates how to spawn sync objects, as well as custom class types.
+4. **SyncObjectSpawner.cs** demonstrates how to spawn and delete sync objects, as well as custom class types.
 
 ---
 ##### [Go back up to the table of contents](#table-of-contents)

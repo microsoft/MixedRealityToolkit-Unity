@@ -15,7 +15,6 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
     {
-
         #region Nested Types
         public enum ProjectSetting
         {
@@ -205,7 +204,7 @@ namespace HoloToolkit.Unity
             // Apply individual settings
             if (Values[ProjectSetting.BuildWsaUwp])
             {
-                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.WSAPlayer);
+                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
                 EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
             }
             if (Values[ProjectSetting.WsaUwpBuildToD3D])

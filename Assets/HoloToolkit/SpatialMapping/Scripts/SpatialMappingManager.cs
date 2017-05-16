@@ -48,6 +48,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         public float StartTime { get; private set; }
 
         /// <summary>
+        /// SurfaceMappingObserver GET
+        /// </summary>
+        public SpatialMappingObserver SurfaceObserver { get { return surfaceObserver; } }
+
+        /// <summary>
         /// The current source of spatial mapping data.
         /// </summary>
         public SpatialMappingSource Source
@@ -212,7 +217,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             if (!IsObserverRunning())
             {
                 surfaceObserver.StartObserving();
-                StartTime = Time.time;
+                StartTime = Time.unscaledTime;
             }
         }
 

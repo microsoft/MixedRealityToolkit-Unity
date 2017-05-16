@@ -66,12 +66,12 @@ namespace HoloToolkit.Unity
 
             public void AppendSymbols(params string[] symbol)
             {
-                this.AppendSymbols((IEnumerable<string>)symbol);
+                AppendSymbols((IEnumerable<string>)symbol);
             }
 
             public void AppendSymbols(IEnumerable<string> symbols)
             {
-                string[] toAdd = symbols.Except(this.BuildSymbols.Split(';'))
+                string[] toAdd = symbols.Except(BuildSymbols.Split(';'))
                     .Where(sym => !string.IsNullOrEmpty(sym)).ToArray();
 
                 if (!toAdd.Any())
@@ -79,40 +79,40 @@ namespace HoloToolkit.Unity
                     return;
                 }
 
-                if (!String.IsNullOrEmpty(this.BuildSymbols))
+                if (!String.IsNullOrEmpty(BuildSymbols))
                 {
-                    this.BuildSymbols += ";";
+                    BuildSymbols += ";";
                 }
 
-                this.BuildSymbols += String.Join(";", toAdd);
+                BuildSymbols += String.Join(";", toAdd);
             }
 
             public bool HasAnySymbols(params string[] symbols)
             {
-                return this.BuildSymbols.Split(';').Intersect(symbols).Any();
+                return BuildSymbols.Split(';').Intersect(symbols).Any();
             }
 
             public bool HasConfigurationSymbol()
             {
                 return HasAnySymbols(
-                    BuildSLNUtilities.BuildSymbolDebug,
-                    BuildSLNUtilities.BuildSymbolRelease,
-                    BuildSLNUtilities.BuildSymbolMaster);
+                    BuildSymbolDebug,
+                    BuildSymbolRelease,
+                    BuildSymbolMaster);
             }
 
             public static IEnumerable<string> RemoveConfigurationSymbols(string symbolstring)
             {
                 return symbolstring.Split(';').Except(new[]
                 {
-                    BuildSLNUtilities.BuildSymbolDebug,
-                    BuildSLNUtilities.BuildSymbolRelease,
-                    BuildSLNUtilities.BuildSymbolMaster
+                    BuildSymbolDebug,
+                    BuildSymbolRelease,
+                    BuildSymbolMaster
                 });
             }
 
             public bool HasAnySymbols(IEnumerable<string> symbols)
             {
-                return this.BuildSymbols.Split(';').Intersect(symbols).Any();
+                return BuildSymbols.Split(';').Intersect(symbols).Any();
             }
         }
 
@@ -151,16 +151,16 @@ namespace HoloToolkit.Unity
             {
                 if (!buildInfo.HasConfigurationSymbol())
                 {
-                    buildInfo.AppendSymbols(BuildSLNUtilities.BuildSymbolDebug);
+                    buildInfo.AppendSymbols(BuildSymbolDebug);
                 }
             }
 
-            if (buildInfo.HasAnySymbols(BuildSLNUtilities.BuildSymbolDebug))
+            if (buildInfo.HasAnySymbols(BuildSymbolDebug))
             {
                 buildInfo.BuildOptions |= BuildOptions.Development | BuildOptions.AllowDebugging;
             }
 
-            if (buildInfo.HasAnySymbols(BuildSLNUtilities.BuildSymbolRelease))
+            if (buildInfo.HasAnySymbols(BuildSymbolRelease))
             {
                 //Unity automatically adds the DEBUG symbol if the BuildOptions.Development flag is
                 //specified. In order to have debug symbols and the RELEASE symbole we have to
@@ -168,8 +168,10 @@ namespace HoloToolkit.Unity
                 buildInfo.AppendSymbols("DEVELOPMENT_BUILD");
             }
 
-            var oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            EditorUserBuildSettings.SwitchActiveBuildTarget(buildInfo.BuildTarget);
+            BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+            BuildTargetGroup oldBuildTargetGroup = GetGroup(oldBuildTarget);
+
+            EditorUserBuildSettings.SwitchActiveBuildTarget(buildTargetGroup, buildInfo.BuildTarget);
 
             var oldWSASDK = EditorUserBuildSettings.wsaSDK;
             if (buildInfo.WSASdk.HasValue)
@@ -243,13 +245,13 @@ namespace HoloToolkit.Unity
 
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
 
-                EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTarget);
+                EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTargetGroup, oldBuildTarget);
             }
         }
 
         public static void ParseBuildCommandLine(ref BuildInfo buildInfo)
         {
-            string[] arguments = System.Environment.GetCommandLineArgs();
+            string[] arguments = Environment.GetCommandLineArgs();
 
             buildInfo.IsCommandLine = true;
 
@@ -293,10 +295,10 @@ namespace HoloToolkit.Unity
 
         public static void PerformBuild_CommandLine()
         {
-            BuildInfo buildInfo = new BuildInfo()
+            BuildInfo buildInfo = new BuildInfo
             {
                 // Use scenes from the editor build settings.
-                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path)
             };
 
             ParseBuildCommandLine(ref buildInfo);
@@ -403,7 +405,7 @@ namespace HoloToolkit.Unity
                                 }
                                 else if (string.Equals(reader.Name, "Recursive", StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    recursive = System.Convert.ToBoolean(reader.Value);
+                                    recursive = Convert.ToBoolean(reader.Value);
                                 }
                                 else if (string.Equals(reader.Name, "Filter", StringComparison.InvariantCultureIgnoreCase))
                                 {
