@@ -76,6 +76,7 @@ PlayerSettings:
   forceSingleInstance: 0
   resizableWindow: 0
   useMacAppStoreValidation: 0
+  macAppStoreCategory: public.app-category.games
   gpuSkinning: 1
   graphicsJobs: 0
   xboxPIXTextureCapture: 0
@@ -209,6 +210,7 @@ PlayerSettings:
   iOSMetalForceHardShadows: 0
   metalEditorSupport: 1
   metalAPIValidation: 1
+  iOSRenderExtraFrameOnPause: 1
   appleDeveloperTeamID: 
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
@@ -631,7 +633,7 @@ PlayerSettings:
   tizenMicrophonePermissions: 0
   tizenDeploymentTarget: 
   tizenDeploymentTargetType: -522528772
-  tizenMinOSVersion: 0
+  tizenMinOSVersion: 1
   n3dsUseExtSaveData: 0
   n3dsCompressStaticMem: 1
   n3dsExtSaveDataNumber: 0x12345
