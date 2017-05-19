@@ -1,42 +1,44 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using HoloToolkit.Unity.InputModule;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using HoloToolkit.Unity.InputModule;
 
-public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandler {
-
-    [Tooltip("The name of the scene to load when the user is ready. If left empty, the next scene is loaded as specified in the 'Scenes in Build')")]
-    public string NextSceneName;
-
-    public void OnInputClicked(InputClickedEventData eventData)
+namespace HoloToolkit.Unity
+{
+    public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandler
     {
-        GotoNextScene();
-    }
+        public string NextSceneName;
 
-    private void GotoNextScene()
-    {
-        InputManager.Instance.RemoveGlobalListener(this.gameObject);
-        if (!string.IsNullOrEmpty(NextSceneName))
+        private void Start()
         {
-            SceneManager.LoadScene(NextSceneName);
+            InputManager.Instance.AddGlobalListener(gameObject);
         }
-        else
+
+        public void OnInputClicked(InputClickedEventData eventData)
         {
-            var sceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(sceneIndex + 1);
+            GotoNextScene();
+        }
+
+        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
+        {
+            GotoNextScene();
+        }
+
+        private void GotoNextScene()
+        {
+            InputManager.Instance.RemoveGlobalListener(gameObject);
+
+            if (!string.IsNullOrEmpty(NextSceneName))
+            {
+                SceneManager.LoadScene(NextSceneName);
+            }
+            else
+            {
+                int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+                SceneManager.LoadScene(sceneIndex + 1);
+            }
         }
     }
-
-    public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
-    {
-        GotoNextScene();
-    }
-
-    // Use this for initialization
-    private void Start ()
-    {
-        InputManager.Instance.AddGlobalListener(this.gameObject);
-	}	
 }
