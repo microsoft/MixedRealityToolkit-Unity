@@ -1,2 +1,1 @@
-m_EditorVersion: 5.4.0b14-HTP
-m_StandardAssetsVersion: 0
+m_EditorVersion: 5.6.1f1

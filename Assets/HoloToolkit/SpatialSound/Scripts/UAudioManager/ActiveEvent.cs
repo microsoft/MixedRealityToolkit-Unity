@@ -149,7 +149,19 @@ namespace HoloToolkit.Unity
             {
                 forEachSource((source) =>
                 {
-                    source.rolloffMode = AudioRolloffMode.Logarithmic;
+                    if (audioEvent.spatialization == SpatialPositioningType.ThreeD)
+                    {
+                        source.rolloffMode = AudioRolloffMode.Custom;
+                        source.maxDistance = audioEvent.maxDistanceAttenuation3D;
+                        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioEvent.attenuationCurve);
+                        source.SetCustomCurve(AudioSourceCurveType.SpatialBlend, audioEvent.spatialCurve);
+                        source.SetCustomCurve(AudioSourceCurveType.Spread, audioEvent.spreadCurve);
+                        source.SetCustomCurve(AudioSourceCurveType.ReverbZoneMix, audioEvent.reverbCurve);
+                    }
+                    else
+                    {
+                        source.rolloffMode = AudioRolloffMode.Logarithmic;
+                    }
                 });
             }
 

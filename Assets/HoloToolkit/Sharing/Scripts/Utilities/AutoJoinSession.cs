@@ -3,75 +3,84 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.Utilities
 {
+    /// <summary>
+    /// Utility class for automatically joining shared sessions without needing to go through a lobby.
+    /// </summary>
     public class AutoJoinSession : MonoBehaviour
     {
-        // The name of the session to join
+        /// <summary>
+        /// Name of the session to join.
+        /// </summary>
         public string SessionName = "Default";
 
-        // local cached pointer to the SessionManager
-        private SessionManager sessionManager;
+        /// <summary>
+        /// Cached pointer to the sessions tracker.
+        /// </summary>
+        private ServerSessionsTracker sessionsTracker;
 
-        void Start()
+        private bool sessionCreationRequested;
+        private string previousSessionName;
+
+        private void Start()
         {
-            // Get the SessionManager to use later.  Note that if this processes takes the role of a secondary client,
-            // then the SessionManager will always be null
+            // Get the ServerSessionsTracker to use later.
+            // Note that if this processes takes the role of a secondary client,
+            // then the sessionsTracker will always be null
             if (SharingStage.Instance != null && SharingStage.Instance.Manager != null)
             {
-                this.sessionManager = SharingStage.Instance.Manager.GetSessionManager();
+                sessionsTracker = SharingStage.Instance.SessionsTracker;
             }
         }
 
-        void Update()
+        private void Update()
         {
-            // Get an instance of the SessionManager if one does not exist.
-            if (sessionManager == null && SharingStage.Instance != null && SharingStage.Instance.Manager != null)
+            if (previousSessionName != SessionName)
             {
-                this.sessionManager = SharingStage.Instance.Manager.GetSessionManager();
+                sessionCreationRequested = false;
+                previousSessionName = SessionName;
             }
 
             // If we are a Primary Client and can join sessions...
-            if (this.sessionManager != null && sessionManager.GetSessionCount() > 0)
+            if (sessionsTracker != null && sessionsTracker.Sessions.Count > 0)
             {
                 // Check to see if we aren't already in the desired session
-                Session currentSession = this.sessionManager.GetCurrentSession();
+                Session currentSession = sessionsTracker.GetCurrentSession();
 
-                if (currentSession == null ||                                                       // We aren't in any session
-                    currentSession.GetName().GetString() != this.SessionName ||                     // We're in the wrong session
-                    currentSession.GetMachineSessionState() == MachineSessionState.DISCONNECTED)    // We aren't joined or joining the right session
+                if (currentSession == null ||                                                    // We aren't in any session
+                    currentSession.GetName().GetString() != SessionName ||                       // We're in the wrong session
+                    currentSession.GetMachineSessionState() == MachineSessionState.DISCONNECTED) // We aren't joined or joining the right session
                 {
-                    Debug.Log("Session conn " + sessionManager.IsServerConnected() + " sessions: " + sessionManager.GetSessionCount());
-                    Debug.Log("Looking for " + SessionName);
+                    if (SharingStage.Instance.ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("AutoJoinSession: Session connected is {0} with {1} Sessions.", sessionsTracker.IsServerConnected.ToString(), sessionsTracker.Sessions.Count.ToString());
+                        Debug.Log("AutoJoinSession: Looking for " + SessionName);
+                    }
                     bool sessionFound = false;
 
-                    for (int i = 0; i < this.sessionManager.GetSessionCount(); ++i)
+                    for (int i = 0; i < sessionsTracker.Sessions.Count; ++i)
                     {
-                        Session s = this.sessionManager.GetSession(i);
-                        Debug.Log(string.Format("session {0}", s.GetName().GetString()));
+                        Session session = sessionsTracker.Sessions[i];
 
-                        if (s.GetName().GetString() == this.SessionName)
+                        if (session.GetName().GetString() == SessionName)
                         {
-                            s.Join();
+                            sessionsTracker.JoinSession(session);
                             sessionFound = true;
                             break;
                         }
                     }
-                    if (sessionManager.IsServerConnected() && !sessionFound)
-                    {
-                        Debug.Log("Didn't find session, making a new one");
-                        sessionManager.CreateSession(new XString(SessionName));
 
-                        for (int i = 0; i < this.sessionManager.GetSessionCount(); ++i)
+                    if (sessionsTracker.IsServerConnected && !sessionFound && !sessionCreationRequested)
+                    {
+                        if (SharingStage.Instance.ShowDetailedLogs)
                         {
-                            Session s = this.sessionManager.GetSession(i);
-                            if (s.GetName().GetString() == this.SessionName)
-                            {
-                                s.Join();
-                                Debug.Log("Joining our new session");
-                                sessionFound = true;
-                                break;
-                            }
+                            Debug.Log("Didn't find session, making a new one");
+                        }
+
+                        if (sessionsTracker.CreateSession(new XString(SessionName)))
+                        {
+                            sessionCreationRequested = true;
                         }
                     }
                 }

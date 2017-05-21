@@ -15,6 +15,7 @@ struct appdata_t
     #if _USEMAINTEX_ON
         float2 texcoord : TEXCOORD0;
     #endif
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct v2f
@@ -27,12 +28,14 @@ struct v2f
     #if _NEAR_PLANE_FADE_ON
         float fade : TEXCOORD2;
     #endif
+    UNITY_VERTEX_OUTPUT_STEREO
 };
 
 v2f vert(appdata_t v)
 {
+    UNITY_SETUP_INSTANCE_ID(v);
     v2f o;
-    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+    o.vertex = UnityObjectToClipPos(v.vertex);
 
     #if _USEMAINTEX_ON
         o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
@@ -43,6 +46,7 @@ v2f vert(appdata_t v)
     #endif
 
     UNITY_TRANSFER_FOG(o, o.vertex);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
     return o;
 }
 

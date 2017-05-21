@@ -3,15 +3,42 @@
 using System;
 using UnityEngine;
 
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_METRO
 using Windows.Foundation;
 using Windows.Media.SpeechSynthesis;
 using Windows.Storage.Streams;
+using System.Linq;
 using System.Threading.Tasks;
 #endif
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// The well-know voices that can be used by <see cref="TextToSpeechManager"/>.
+    /// </summary>
+    public enum TextToSpeechVoice
+    {
+        /// <summary>
+        /// The default system voice.
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// Microsoft David Mobile
+        /// </summary>
+        David,
+
+        /// <summary>
+        /// Microsoft Mark Mobile
+        /// </summary>
+        Mark,
+
+        /// <summary>
+        /// Microsoft Zira Mobile
+        /// </summary>
+        Zira,
+    }
+
     /// <summary>
     /// Enables text to speech using the Windows 10 <see cref="SpeechSynthesizer"/> class.
     /// </summary>
@@ -27,12 +54,19 @@ namespace HoloToolkit.Unity
     {
         // Inspector Variables
         [Tooltip("The audio source where speech will be played.")]
-        public AudioSource audioSource;
+        [SerializeField]
+        private AudioSource audioSource;
+
+        [Tooltip("The voice that will be used to generate speech.")]
+        [SerializeField]
+        private TextToSpeechVoice voice;
 
         // Member Variables
-        #if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_METRO
         private SpeechSynthesizer synthesizer;
-        #endif
+        private VoiceInformation voiceInfo;
+        private bool speechTextInQueue = false;
+#endif
 
         // Static Helper Methods
 
@@ -182,7 +216,7 @@ namespace HoloToolkit.Unity
             Debug.LogFormat("Speech not supported in editor. \"{0}\"", text);
         }
 
-        #if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_METRO
         /// <summary>
         /// Executes a function that generates a speech stream and then converts and plays it in Unity.
         /// </summary>
@@ -201,10 +235,35 @@ namespace HoloToolkit.Unity
             {
                 try
                 {
+                    speechTextInQueue = true;
                     // Need await, so most of this will be run as a new Task in its own thread.
                     // This is good since it frees up Unity to keep running anyway.
                     Task.Run(async () =>
                     {
+                        // Change voice?
+                        if (voice != TextToSpeechVoice.Default)
+                        {
+                            // Get name
+                            var voiceName = Enum.GetName(typeof(TextToSpeechVoice), voice);
+
+                            // See if it's never been found or is changing
+                            if ((voiceInfo == null) || (!voiceInfo.DisplayName.Contains(voiceName)))
+                            {
+                                // Search for voice info
+                                voiceInfo = SpeechSynthesizer.AllVoices.Where(v => v.DisplayName.Contains(voiceName)).FirstOrDefault();
+
+                                // If found, select
+                                if (voiceInfo != null)
+                                {
+                                    synthesizer.Voice = voiceInfo;
+                                }
+                                else
+                                {
+                                    Debug.LogErrorFormat("TTS voice {0} could not be found.", voiceName);
+                                }
+                            }
+                        }
+
                         // Speak and get stream
                         var speechStream = await speakFunc();
 
@@ -247,11 +306,13 @@ namespace HoloToolkit.Unity
 
                             // Play audio
                             audioSource.Play();
+                            speechTextInQueue = false;
                         }, false);
                     });
                 }
                 catch (Exception ex)
                 {
+                    speechTextInQueue = false;
                     Debug.LogErrorFormat("Speech generation problem: \"{0}\"", ex.Message);
                 }
             }
@@ -260,7 +321,7 @@ namespace HoloToolkit.Unity
                 Debug.LogErrorFormat("Speech not initialized. \"{0}\"", text);
             }
         }
-        #endif
+#endif
 
         // MonoBehaviour Methods
         void Start()
@@ -272,10 +333,10 @@ namespace HoloToolkit.Unity
                     Debug.LogError("An AudioSource is required and should be assigned to 'Audio Source' in the inspector.");
                 }
                 else
-                { 
-                    #if WINDOWS_UWP
+                {
+#if !UNITY_EDITOR && UNITY_METRO
                     synthesizer = new SpeechSynthesizer();
-                    #endif
+#endif
                 }
             }
             catch (Exception ex)
@@ -299,11 +360,11 @@ namespace HoloToolkit.Unity
             if (string.IsNullOrEmpty(ssml)) { return; }
 
             // Pass to helper method
-            #if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_METRO
             PlaySpeech(ssml, () => synthesizer.SynthesizeSsmlToStreamAsync(ssml));
-            #else
+#else
             LogSpeech(ssml);
-            #endif
+#endif
         }
 
         /// <summary>
@@ -318,11 +379,63 @@ namespace HoloToolkit.Unity
             if (string.IsNullOrEmpty(text)) { return; }
 
             // Pass to helper method
-            #if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_METRO
             PlaySpeech(text, ()=> synthesizer.SynthesizeTextToStreamAsync(text));
-            #else
+#else
             LogSpeech(text);
-            #endif
+#endif
         }
+
+        /// <summary>
+        /// Returns info whether a text is submitted and being processed by PlaySpeech method
+        /// Handy for avoiding situations when a text is submitted, but audio clip is not yet ready because the audio source isn't playing yet.
+        /// Example: yield return new WaitWhile(() => textToSpeechManager.SpeechTextInQueue() || textToSpeechManager.IsSpeaking())
+        /// </summary>
+        /// <returns></returns>
+        public bool SpeechTextInQueue()
+        {
+#if !UNITY_EDITOR && UNITY_METRO
+            return speechTextInQueue;
+#else
+            return false;
+#endif
+        }
+
+        /// <summary>
+        /// Returns whether or not the AudioSource is actively playing.
+        /// </summary>
+        /// <returns>
+        /// True, if the AudioSource is playing. False, if the AudioSource is not playing or is null.
+        /// </returns>
+        public bool IsSpeaking()
+        {
+            if (audioSource != null)
+            {
+                return audioSource.isPlaying;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Stops text-to-speech playback.
+        /// </summary>
+        public void StopSpeaking()
+        {
+            if (IsSpeaking())
+            {
+                audioSource.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the audio source where speech will be played.
+        /// </summary>
+        public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
+
+        /// <summary>
+        /// Gets or sets the voice that will be used to generate speech.
+        /// </summary>
+        public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
     }
 }

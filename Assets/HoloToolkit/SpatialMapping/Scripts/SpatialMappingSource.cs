@@ -3,32 +3,50 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     public class SpatialMappingSource : MonoBehaviour
     {
         /// <summary>
+        /// Surface object
+        /// </summary>
+        public struct SurfaceObject
+        {
+            public int ID;
+            public GameObject Object;
+            public MeshRenderer Renderer;
+            public MeshFilter Filter;
+            public MeshCollider Collider;
+        }
+
+        public struct SurfaceUpdate
+        {
+            public SurfaceObject Old;
+            public SurfaceObject New;
+        }
+
+        /// <summary>
         /// Collection of surface objects that have been created for this spatial mapping source.
         /// </summary>
-        protected List<GameObject> surfaceObjects = new List<GameObject>();
+        public ReadOnlyCollection<SurfaceObject> SurfaceObjects
+        {
+            get { return surfaceObjects; }
+        }
 
-        /// <summary>
-        /// Collection of mesh renderers that have been created for this spatial mapping source.
-        /// </summary>
-        protected List<MeshRenderer> surfaceObjectRenderers = new List<MeshRenderer>();
-
-        /// <summary>
-        /// Collection of mesh filters that have been created for this spatial mapping source.
-        /// </summary>
-        protected List<MeshFilter> surfaceObjectMeshFilters = new List<MeshFilter>();
+        public event EventHandler<DataEventArgs<SurfaceObject>> SurfaceAdded;
+        public event EventHandler<DataEventArgs<SurfaceUpdate>> SurfaceUpdated;
+        public event EventHandler<DataEventArgs<SurfaceObject>> SurfaceRemoved;
+        public event EventHandler<EventArgs> RemovingAllSurfaces;
 
         /// <summary>
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        protected Type[] componentsRequiredForSurfaceMesh =
+        protected readonly Type[] componentsRequiredForSurfaceMesh =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),
@@ -36,82 +54,254 @@ namespace HoloToolkit.Unity
         };
 
         /// <summary>
-        /// Creates a new surface game object.
+        /// Material to use for rendering the mesh
+        /// </summary>
+        protected virtual Material RenderMaterial { get { return SpatialMappingManager.Instance.SurfaceMaterial; } }
+
+        private readonly List<SurfaceObject> surfaceObjectsWriteable;
+        private readonly ReadOnlyCollection<SurfaceObject> surfaceObjects;
+
+        public SpatialMappingSource()
+        {
+            surfaceObjectsWriteable = new List<SurfaceObject>();
+            surfaceObjects = new ReadOnlyCollection<SurfaceObject>(surfaceObjectsWriteable);
+        }
+
+        protected virtual void Awake()
+        {
+            // Nothing.
+        }
+
+        /// <summary>
+        /// Create a new surface object.
         /// </summary>
         /// <param name="mesh">The mesh to attach. Can be null.</param>
         /// <param name="objectName">What to name this object.</param>
         /// <param name="parentObject">What to parent this object to.</param>
-        /// <param name="material">What material to use to draw this object.</param>
-        /// <returns>The newly created game object.</returns>
-        protected GameObject AddSurfaceObject(Mesh mesh, string objectName, Transform parentObject)
+        /// <param name="meshID">Optional user specified ID for the mesh.</param>
+        /// <param name="drawVisualMeshesOverride">If specified, overrides the default value for enabling/disabling the mesh renderer.</param>
+        /// <param name="castShadowsOverride">If specified, overrides the default value for casting shadows.</param>
+        /// <returns>The newly created surface object.</returns>
+        protected SurfaceObject CreateSurfaceObject(
+            Mesh mesh,
+            string objectName,
+            Transform parentObject,
+            int meshID = 0,
+            bool? drawVisualMeshesOverride = null,
+            bool? castShadowsOverride = null
+            )
         {
-            GameObject surface = new GameObject(objectName, componentsRequiredForSurfaceMesh);
-            surface.transform.SetParent(parentObject);
-            surfaceObjects.Add(surface);
+            SurfaceObject surfaceObject = new SurfaceObject();
+            surfaceObject.ID = meshID;
 
-            MeshFilter surfaceMeshFilter = surface.GetComponent<MeshFilter>();
-            surfaceMeshFilter.sharedMesh = mesh;
-            surfaceObjectMeshFilters.Add(surfaceMeshFilter);
+            surfaceObject.Object = new GameObject(objectName, componentsRequiredForSurfaceMesh);
+            surfaceObject.Object.transform.SetParent(parentObject);
+            surfaceObject.Object.layer = SpatialMappingManager.Instance.PhysicsLayer;
 
+            surfaceObject.Filter = surfaceObject.Object.GetComponent<MeshFilter>();
+            surfaceObject.Filter.sharedMesh = mesh;
 
-            MeshRenderer surfaceMeshRenderer = surface.GetComponent<MeshRenderer>();
-            surfaceMeshRenderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
-            surfaceObjectRenderers.Add(surfaceMeshRenderer);
+            surfaceObject.Renderer = surfaceObject.Object.GetComponent<MeshRenderer>();
+            surfaceObject.Renderer.sharedMaterial = RenderMaterial;
+            surfaceObject.Renderer.enabled = (drawVisualMeshesOverride ?? SpatialMappingManager.Instance.DrawVisualMeshes);
+            surfaceObject.Renderer.shadowCastingMode = ((castShadowsOverride ?? SpatialMappingManager.Instance.CastShadows) ? ShadowCastingMode.On : ShadowCastingMode.Off);
 
-            surface.layer = SpatialMappingManager.Instance.PhysicsLayer;
-            return surface;
+            surfaceObject.Collider = surfaceObject.Object.GetComponent<MeshCollider>();
+
+            // Reset the surface mesh collider to fit the updated mesh. 
+            // Unity tribal knowledge indicates that to change the mesh assigned to a
+            // mesh collider, the mesh must first be set to null.  Presumably there
+            // is a side effect in the setter when setting the shared mesh to null.
+            surfaceObject.Collider.sharedMesh = null;
+            surfaceObject.Collider.sharedMesh = surfaceObject.Filter.sharedMesh;
+
+            return surfaceObject;
         }
 
         /// <summary>
-        /// When we aren't using a surface object any more we need to clean
-        /// up the cached objects we made for the surface.
+        /// Add the surface to <see cref="SurfaceObjects"/>.
         /// </summary>
-        /// <param name="surfaceObject">The surface we aren't using anymore.</param>
-        protected void RemoveSurfaceObject(GameObject surfaceObject)
+        /// <param name="toAdd">The surface to add.</param>
+        protected void AddSurfaceObject(SurfaceObject toAdd)
         {
-            surfaceObjects.Remove(surfaceObject);
+            surfaceObjectsWriteable.Add(toAdd);
 
-            MeshFilter filter = surfaceObject.GetComponent<MeshFilter>();
+            var handlers = SurfaceAdded;
+            if (handlers != null)
+            {
+                handlers(this, DataEventArgs.Create(toAdd));
+            }
+        }
 
-            surfaceObjectMeshFilters.Remove(filter);
+        /// <summary>
+        /// Update the first surface with a matching ID if one exists in <see cref="SurfaceObjects"/>, otherwise add the surface as new.
+        /// </summary>
+        /// <param name="toUpdateOrAdd">The surface to be updated or added.</param>
+        /// <param name="destroyGameObjectIfReplaced">If a surface is updated, and a game object is being replaced, pass true to destroy the outgoing game object or false otherwise.</param>
+        /// <param name="destroyMeshesIfReplaced">If a surface is updated, and new meshes are replacing old meshes, pass true to destroy the outgoing meshes or false otherwise.</param>
+        /// <returns>The surface object that was updated or null if one was not found meaning a new surface was added.</returns>
+        protected SurfaceObject? UpdateOrAddSurfaceObject(SurfaceObject toUpdateOrAdd, bool destroyGameObjectIfReplaced = true, bool destroyMeshesIfReplaced = true)
+        {
+            SurfaceObject? replaced = null;
 
-            MeshRenderer surfaceMeshRenderer = surfaceObject.GetComponent<MeshRenderer>();
-            surfaceObjectRenderers.Remove(surfaceMeshRenderer);
-            Destroy(surfaceObject);
+            for (int iSurface = 0; iSurface < surfaceObjectsWriteable.Count; iSurface++)
+            {
+                SurfaceObject existing = surfaceObjectsWriteable[iSurface];
+
+                if (existing.ID == toUpdateOrAdd.ID)
+                {
+                    surfaceObjectsWriteable[iSurface] = toUpdateOrAdd;
+
+                    var handlers = SurfaceUpdated;
+                    if (handlers != null)
+                    {
+                        handlers(this, DataEventArgs.Create(new SurfaceUpdate { Old = existing, New = toUpdateOrAdd }));
+                    }
+
+                    CleanUpSurface(
+                        existing,
+                        destroyGameObjectIfReplaced,
+                        destroyMeshesIfReplaced,
+                        objectToPreserve: toUpdateOrAdd.Object,
+                        meshToPreserveA: toUpdateOrAdd.Filter.sharedMesh,
+                        meshToPreserveB: toUpdateOrAdd.Collider.sharedMesh
+                        );
+
+                    replaced = existing;
+                    break;
+                }
+            }
+
+            if (replaced == null)
+            {
+                AddSurfaceObject(toUpdateOrAdd);
+            }
+
+            return replaced;
+        }
+
+        /// <summary>
+        /// Remove the first surface with the specified ID if one exists in <see cref="SurfaceObjects"/>.
+        /// </summary>
+        /// <param name="surfaceID">The ID of the surface to remove.</param>
+        /// <param name="destroyGameObject">True to destroy the <see cref="SurfaceObject.Object"/> associated with the surface, false otherwise.</param>
+        /// <param name="destroyMeshes">True to destroy the meshes associated with the surface, false otherwise.</param>
+        /// <returns>The surface object if one was found and removed or null if one was not found.</returns>
+        protected SurfaceObject? RemoveSurfaceIfFound(int surfaceID, bool destroyGameObject = true, bool destroyMeshes = true)
+        {
+            SurfaceObject? removed = null;
+
+            for (int iSurface = 0; iSurface < surfaceObjectsWriteable.Count; iSurface++)
+            {
+                SurfaceObject surface = surfaceObjectsWriteable[iSurface];
+
+                if (surface.ID == surfaceID)
+                {
+                    surfaceObjectsWriteable.RemoveAt(iSurface);
+
+                    var handlers = SurfaceRemoved;
+                    if (handlers != null)
+                    {
+                        handlers(this, DataEventArgs.Create(surface));
+                    }
+
+                    CleanUpSurface(surface, destroyGameObject, destroyMeshes);
+
+                    removed = surface;
+                    break;
+                }
+            }
+
+            return removed;
+        }
+
+        /// <summary>
+        /// Clean up the resources associated with the surface.
+        /// </summary>
+        /// <param name="surface">The surface whose resources will be cleaned up.</param>
+        /// <param name="destroyGameObject"></param>
+        /// <param name="destroyMeshes"></param>
+        /// <param name="objectToPreserve">If the surface's game object matches this parameter, it will not be destroyed.</param>
+        /// <param name="meshToPreserveA">If either of the surface's meshes matches this parameter, it will not be destroyed.</param>
+        /// <param name="meshToPreserveB">If either of the surface's meshes matches this parameter, it will not be destroyed.</param>
+        protected void CleanUpSurface(
+            SurfaceObject surface,
+            bool destroyGameObject = true,
+            bool destroyMeshes = true,
+            GameObject objectToPreserve = null,
+            Mesh meshToPreserveA = null,
+            Mesh meshToPreserveB = null
+            )
+        {
+            if (destroyGameObject
+                && (surface.Object != null)
+                && (surface.Object != objectToPreserve)
+                )
+            {
+                Destroy(surface.Object);
+                Debug.Assert(surface.GetType().IsValueType(), "If surface is no longer a value type, you should probably set surface.Object to null.");
+            }
+
+            Mesh filterMesh = surface.Filter.sharedMesh;
+            Mesh colliderMesh = surface.Collider.sharedMesh;
+
+            if (destroyMeshes
+                && (filterMesh != null)
+                && (filterMesh != meshToPreserveA)
+                && (filterMesh != meshToPreserveB)
+                )
+            {
+                Destroy(filterMesh);
+                surface.Filter.sharedMesh = null;
+            }
+
+            if (destroyMeshes
+                && (colliderMesh != null)
+                && (colliderMesh != filterMesh)
+                && (colliderMesh != meshToPreserveA)
+                && (colliderMesh != meshToPreserveB)
+                )
+            {
+                Destroy(colliderMesh);
+                surface.Collider.sharedMesh = null;
+            }
         }
 
         /// <summary>
         /// Cleans up references to objects that we have created.
         /// </summary>
-        protected void Cleanup()
+        /// <param name="destroyGameObjects">True to destroy the game objects of each surface, false otherwise.</param>
+        /// <param name="destroyMeshes">True to destroy the meshes of each surface, false otherwise.</param>
+        protected void Cleanup(bool destroyGameObjects = true, bool destroyMeshes = true)
         {
-            // For renderers and filters, clearing the lists is sufficient, 
-            // since renderers and filters are attached to the surface objects
-            // that we will call destroy on.
-            surfaceObjectRenderers.Clear();
-            surfaceObjectMeshFilters.Clear();
-
-            for (int index = 0; index < surfaceObjects.Count; index++)
+            var handlers = RemovingAllSurfaces;
+            if (handlers != null)
             {
-                Destroy(surfaceObjects[index]);
+                handlers(this, EventArgs.Empty);
             }
 
-            surfaceObjects.Clear();
+            for (int index = 0; index < surfaceObjectsWriteable.Count; index++)
+            {
+                CleanUpSurface(surfaceObjectsWriteable[index], destroyGameObjects, destroyMeshes);
+            }
+            surfaceObjectsWriteable.Clear();
         }
 
         /// <summary>
         /// Gets all mesh filters that have a valid mesh.
         /// </summary>
         /// <returns>A list of filters, each with a mesh containing at least one triangle.</returns>
-        virtual public List<MeshFilter> GetMeshFilters()
+        public virtual List<MeshFilter> GetMeshFilters()
         {
             List<MeshFilter> meshFilters = new List<MeshFilter>();
 
-            foreach (MeshFilter filter in surfaceObjectMeshFilters)
+            for (int index = 0; index < surfaceObjectsWriteable.Count; index++)
             {
-                if (filter != null && filter.sharedMesh != null && filter.sharedMesh.vertexCount > 2)
+                if (surfaceObjectsWriteable[index].Filter != null &&
+                    surfaceObjectsWriteable[index].Filter.sharedMesh != null &&
+                    surfaceObjectsWriteable[index].Filter.sharedMesh.vertexCount > 2)
                 {
-                    meshFilters.Add(filter);
+                    meshFilters.Add(surfaceObjectsWriteable[index].Filter);
                 }
             }
 
@@ -122,9 +312,28 @@ namespace HoloToolkit.Unity
         /// Gets all mesh renderers that have been created.
         /// </summary>
         /// <returns></returns>
-        virtual public List<MeshRenderer> GetMeshRenderers()
+        public virtual List<MeshRenderer> GetMeshRenderers()
         {
-            return surfaceObjectRenderers;
+            List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+
+            for (int index = 0; index < surfaceObjectsWriteable.Count; index++)
+            {
+                if (surfaceObjectsWriteable[index].Renderer != null)
+                {
+                    meshRenderers.Add(surfaceObjectsWriteable[index].Renderer);
+                }
+            }
+
+            return meshRenderers;
+        }
+
+        /// <summary>
+        /// Saves all the currently created spatial source meshes in world space.
+        /// </summary>
+        /// <param name="fileName">Name to give the mesh file. Exclude path and extension.</param>
+        public void SaveSpatialMeshes(string fileName)
+        {
+            MeshSaver.Save(fileName, GetMeshFilters());
         }
     }
 }

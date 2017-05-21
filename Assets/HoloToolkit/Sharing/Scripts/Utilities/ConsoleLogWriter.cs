@@ -3,23 +3,32 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Sharing
+namespace HoloToolkit.Sharing.Utilities
 {
+    /// <summary>
+    /// Utility class that writes the sharing service log messages to the Unity Engine's console.
+    /// </summary>
     public class ConsoleLogWriter : LogWriter
     {
+        public bool ShowDetailedLogs = false;
+
         public override void WriteLogEntry(LogSeverity severity, string message)
         {
-            if (severity == LogSeverity.Info)
+            switch (severity)
             {
-                Debug.Log(message);
-            }
-            else if (severity == LogSeverity.Warning)
-            {
-                Debug.LogWarning(message);
-            }
-            else
-            {
-                Debug.LogError(message);
+                case LogSeverity.Warning:
+                    Debug.LogWarning(message);
+                    break;
+                case LogSeverity.Error:
+                    Debug.LogError(message);
+                    break;
+                case LogSeverity.Info:
+                default:
+                    if (ShowDetailedLogs)
+                    {
+                        Debug.Log(message);
+                    }
+                    break;
             }
         }
     }
