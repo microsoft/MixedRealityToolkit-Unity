@@ -140,6 +140,8 @@ MonoBehaviour:
     type: 2}
   ButtonCenterLocation: {x: 0, y: 0, z: 1}
   MaxRows: 5
+  ReturnToSceneLauncherPrefab: {fileID: 114998364064331914, guid: d3e63db7107735545ad50e3ecce77c54,
+    type: 2}
 --- !u!4 &1182681694
 Transform:
   m_ObjectHideFlags: 0

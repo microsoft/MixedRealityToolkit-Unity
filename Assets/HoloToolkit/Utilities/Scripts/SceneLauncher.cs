@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using HoloToolkit.Examples.InteractiveElements;
+using HoloToolkit.Unity.InputModule;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,15 +15,41 @@ namespace HoloToolkit.Unity
         public Interactive SceneButtonPrefab;
         public Vector3 ButtonCenterLocation = new Vector3(0, 0, 1);
         public int MaxRows = 5;
+        public KeywordManager ReturnToSceneLauncherPrefab;
 
         private Vector3 sceneButtonSize = Vector3.one;
 
-        public void Start()
+        private void Start()
         {
             if (SceneButtonPrefab == null)
             {
-                Debug.Log("Error: SceneLauncher.SceneButtonPrefab is not set.");
+                Debug.LogError("SceneLauncher.SceneButtonPrefab is not set.");
                 return;
+            }
+
+            if (ReturnToSceneLauncherPrefab == null)
+            {
+                Debug.LogWarning("SceneLauncher.ReturnToSceneLauncherPrefab is not set. You won't be able to return to the scene launcher after loading a different scene.");
+            }
+            else
+            {
+                KeywordManager returnToSceneLauncher = Instantiate(ReturnToSceneLauncherPrefab);
+                DontDestroyOnLoad(returnToSceneLauncher);
+                if (returnToSceneLauncher.KeywordsAndResponses.Length == 0)
+                {
+                    Debug.LogWarning("SceneLauncher.ReturnToSceneLauncherPrefab has no keywords. You won't be able to return to the scene launcher after loading a different scene.");
+                }
+                else
+                {
+                    int sceneLauncherBuildIndex = SceneManager.GetActiveScene().buildIndex;
+                    UnityAction action = delegate
+                    {
+                        Debug.LogFormat("SceneLauncher: Returning to SceneLauncher scene {0}.", sceneLauncherBuildIndex);
+                        SceneManager.LoadScene(sceneLauncherBuildIndex, LoadSceneMode.Single);
+                        GameObject.Destroy(returnToSceneLauncher);
+                    };
+                    returnToSceneLauncher.KeywordsAndResponses[0].Response.AddListener(action);
+                }
             }
 
             List<string> sceneNames = SceneList.Instance.GetSceneNames();
