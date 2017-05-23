@@ -88,6 +88,9 @@ namespace HoloToolkit.Unity
         [PostProcessScene]
         public static void OnPostProcessScene()
         {
+            if (Application.isPlaying)
+                return;
+
             SceneList sceneList = FindObjectOfType<SceneList>();
             if (sceneList == null)
                 return;
