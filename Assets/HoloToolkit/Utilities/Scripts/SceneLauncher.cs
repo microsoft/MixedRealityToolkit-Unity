@@ -4,6 +4,7 @@
 using HoloToolkit.Examples.InteractiveElements;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace HoloToolkit.Unity
@@ -42,6 +43,12 @@ namespace HoloToolkit.Unity
                 }
                 sceneButton.transform.position = GetButtonPosition(iScene, sceneNames.Count);
                 sceneButton.IsEnabled = scene != SceneManager.GetActiveScene(); // Disable button to launch our own scene.
+                int buildIndex = iScene;
+                UnityAction action = delegate
+                {
+                    OnButtonSelect(buildIndex);
+                };
+                sceneButton.OnSelectEvents.AddListener(action);
                 LabelTheme labelTheme = sceneButton.GetComponent<LabelTheme>();
                 if (labelTheme != null)
                 {
@@ -66,6 +73,12 @@ namespace HoloToolkit.Unity
             Vector3 positionOffset = Vector3.Scale(topLeft + cellFromTopLeft, new Vector3(sceneButtonSize.x, sceneButtonSize.y, 1.0f));
 
             return ButtonCenterLocation + positionOffset;
+        }
+
+        private void OnButtonSelect(int buildIndex)
+        {
+            Debug.LogFormat("SceneLauncher: Loading scene {0}: {1}", buildIndex, SceneList.Instance.GetSceneNames()[buildIndex]);
+            SceneManager.LoadScene(buildIndex, LoadSceneMode.Single);
         }
     }
 }

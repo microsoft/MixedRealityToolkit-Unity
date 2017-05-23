@@ -139,6 +139,7 @@ MonoBehaviour:
   SceneButtonPrefab: {fileID: 114000013833810220, guid: 1208d39814b498d47a41952deff3abd0,
     type: 2}
   ButtonCenterLocation: {x: 0, y: 0, z: 1}
+  MaxRows: 5
 --- !u!4 &1182681694
 Transform:
   m_ObjectHideFlags: 0
