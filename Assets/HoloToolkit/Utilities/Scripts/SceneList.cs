@@ -42,7 +42,9 @@ namespace HoloToolkit.Unity
             {
                 string sceneName = sceneNames[iScene];
                 if (iScene > 0)
+                {
                     stringBuilder.Append(", ");
+                }
                 stringBuilder.Append(sceneName);
             }
             Debug.Log(stringBuilder.ToString());
@@ -74,7 +76,9 @@ namespace HoloToolkit.Unity
             foreach (UnityEditor.EditorBuildSettingsScene buildScene in UnityEditor.EditorBuildSettings.scenes)
             {
                 if (!buildScene.enabled)
+                {
                     continue;
+                }
                 string name = Path.GetFileNameWithoutExtension(buildScene.path);
                 result.Add(name);
             }
@@ -89,11 +93,15 @@ namespace HoloToolkit.Unity
         public static void OnPostProcessScene()
         {
             if (Application.isPlaying)
+            {
                 return;
+            }
 
             SceneList sceneList = FindObjectOfType<SceneList>();
             if (sceneList == null)
+            {
                 return;
+            }
             sceneList.sceneNamesUpdatedByBuild = new List<string>(GetSceneNamesFromEditor());
             sceneList.LogSceneNames();
         }
