@@ -26,41 +26,36 @@ namespace HoloToolkit.Unity
 
         private Vector3 sceneButtonSize = Vector3.one;
 
+        private void OnValidate()
+        {
+            Debug.Assert(SceneButtonPrefab != null, "SceneLauncher.SceneButtonPrefab is not set.");
+            Debug.Assert(ReturnToSceneLauncherPrefab != null, "SceneLauncher.ReturnToSceneLauncherPrefab is not set.");
+            if (ReturnToSceneLauncherPrefab != null)
+                Debug.Assert(ReturnToSceneLauncherPrefab.KeywordsAndResponses.Length > 0, "SceneLauncher.ReturnToSceneLauncherPrefab has a KeywordManager with no keywords.");
+        }
+
         private void Start()
         {
             if (SceneButtonPrefab == null)
-            {
-                Debug.LogError("SceneLauncher.SceneButtonPrefab is not set.");
                 return;
-            }
 
-            if (ReturnToSceneLauncherPrefab == null)
-            {
-                Debug.LogWarning("SceneLauncher.ReturnToSceneLauncherPrefab is not set. You won't be able to return to the scene launcher after loading a different scene.");
-            }
-            else
+            if (ReturnToSceneLauncherPrefab != null)
             {
                 KeywordManager returnToSceneLauncher = Instantiate(ReturnToSceneLauncherPrefab);
                 DontDestroyOnLoad(returnToSceneLauncher);
-                if (returnToSceneLauncher.KeywordsAndResponses.Length == 0)
+                if (returnToSceneLauncher.KeywordsAndResponses.Length > 0)
                 {
-                    Debug.LogWarning("SceneLauncher.ReturnToSceneLauncherPrefab has no keywords. You won't be able to return to the scene launcher after loading a different scene.");
-                }
-                else
-                {
+                    // Set the response action of the first keyword to reload this scene.
                     int sceneLauncherBuildIndex = SceneManager.GetActiveScene().buildIndex;
-                    UnityAction action = delegate
+                    UnityAction keywordAction = delegate
                     {
                         Debug.LogFormat("SceneLauncher: Returning to SceneLauncher scene {0}.", sceneLauncherBuildIndex);
                         SceneManager.LoadScene(sceneLauncherBuildIndex, LoadSceneMode.Single);
                         GameObject.Destroy(returnToSceneLauncher);
                     };
-                    returnToSceneLauncher.KeywordsAndResponses[0].Response.AddListener(action);
+                    returnToSceneLauncher.KeywordsAndResponses[0].Response.AddListener(keywordAction);
                 }
             }
-
-            // Create an empty game object to serve as a parent for all the buttons we're about to create.
-            GameObject buttonParent = new GameObject("Buttons");
 
             // Determine the size of the buttons. Instantiate one of them so that we can check its bounds.
             Interactive sceneButtonForSize = Instantiate(SceneButtonPrefab);
@@ -72,28 +67,37 @@ namespace HoloToolkit.Unity
             }
             Destroy(sceneButtonForSize.gameObject);
 
+            // Create an empty game object to serve as a parent for all the buttons we're about to create.
+            GameObject buttonParent = new GameObject("Buttons");
+
             List<string> sceneNames = SceneList.Instance.GetSceneNames();
             for (int iScene = 0; iScene < sceneNames.Count; ++iScene)
             {
-                string sceneName = sceneNames[iScene];
-                Scene scene = SceneManager.GetSceneByBuildIndex(iScene);
-                Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
+                CreateSceneButton(buttonParent, iScene, sceneNames);
+            }
+        }
 
-                Interactive sceneButton = Instantiate<Interactive>(SceneButtonPrefab, GetButtonPosition(iScene, sceneNames.Count), Quaternion.identity, buttonParent.transform);
-                sceneButton.name = sceneName;
-                SetSceneButtonWidthScale(sceneButton);
-                sceneButton.IsEnabled = scene != SceneManager.GetActiveScene(); // Disable button to launch our own scene.
-                int buildIndex = iScene;
-                UnityAction action = delegate
-                {
-                    OnButtonSelect(buildIndex);
-                };
-                sceneButton.OnSelectEvents.AddListener(action);
-                LabelTheme labelTheme = sceneButton.GetComponent<LabelTheme>();
-                if (labelTheme != null)
-                {
-                    labelTheme.Default = sceneName;
-                }
+        private void CreateSceneButton(GameObject buttonParent, int iScene, List<string> sceneNames)
+        {
+            string sceneName = sceneNames[iScene];
+            Scene scene = SceneManager.GetSceneByBuildIndex(iScene);
+            Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
+
+            Interactive sceneButton = Instantiate<Interactive>(SceneButtonPrefab, GetButtonPosition(iScene, sceneNames.Count), Quaternion.identity, buttonParent.transform);
+            sceneButton.name = sceneName;
+            SetSceneButtonWidthScale(sceneButton);
+            sceneButton.IsEnabled = scene != SceneManager.GetActiveScene(); // Disable button to launch our own scene.
+            int buildIndex = iScene;
+            UnityAction buttonAction = delegate
+            {
+                Debug.LogFormat("SceneLauncher: Loading scene {0}: {1}", buildIndex, SceneList.Instance.GetSceneNames()[buildIndex]);
+                SceneManager.LoadScene(buildIndex, LoadSceneMode.Single);
+            };
+            sceneButton.OnSelectEvents.AddListener(buttonAction);
+            LabelTheme labelTheme = sceneButton.GetComponent<LabelTheme>();
+            if (labelTheme != null)
+            {
+                labelTheme.Default = sceneName;
             }
         }
 
@@ -103,7 +107,7 @@ namespace HoloToolkit.Unity
             sceneButton.transform.localScale = Vector3.Scale(sceneButton.transform.localScale, new Vector3(SceneButtonWidthScale, 1.0f, 1.0f));
             foreach (TextMesh textMesh in sceneButton.GetComponentsInChildren<TextMesh>())
             {
-                // Reverse the scale applied to the button so that the text is unaffected by the scale.
+                // Reverse the scale applied to the button so that the text isn't stretched by the scale.
                 textMesh.transform.localScale = Vector3.Scale(textMesh.transform.localScale, new Vector3(1.0f / SceneButtonWidthScale, 1.0f, 1.0f));
             }
         }
@@ -124,12 +128,6 @@ namespace HoloToolkit.Unity
             Vector3 positionOffset = Vector3.Scale(topLeft + cellFromTopLeft, new Vector3(sceneButtonSize.x, sceneButtonSize.y, 1.0f));
 
             return ButtonCenterLocation + positionOffset;
-        }
-
-        private void OnButtonSelect(int buildIndex)
-        {
-            Debug.LogFormat("SceneLauncher: Loading scene {0}: {1}", buildIndex, SceneList.Instance.GetSceneNames()[buildIndex]);
-            SceneManager.LoadScene(buildIndex, LoadSceneMode.Single);
         }
     }
 }
