@@ -130,8 +130,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 496281404}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.17, z: 1}
-  m_LocalScale: {x: 0.005, y: 0.005000004, z: 0.005000003}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 741264352}
   - {fileID: 1619367441}
@@ -219,8 +219,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 741264347}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.21000004, z: 1}
+  m_LocalScale: {x: 0.005, y: 0.005000004, z: 0.005000003}
   m_Children: []
   m_Father: {fileID: 496281405}
   m_RootOrder: 0
@@ -420,13 +420,15 @@ TextMesh:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1619367436}
-  m_Text: Air tap a scene to load it. Say "Scene Launcher" or press the Backspace
-    key to return the this scene list.
+  m_Text: 'Air tap a scene to load it.
+
+    When finished with a scene, say "Scene Launcher" or press the Backspace key to
+    return the this scene list.'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
   m_Anchor: 4
-  m_Alignment: 0
+  m_Alignment: 1
   m_TabSize: 4
   m_FontSize: 42
   m_FontStyle: 0
@@ -476,8 +478,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1619367436}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.16, z: 1}
+  m_LocalScale: {x: 0.005, y: 0.005000004, z: 0.005000003}
   m_Children: []
   m_Father: {fileID: 496281405}
   m_RootOrder: 1
