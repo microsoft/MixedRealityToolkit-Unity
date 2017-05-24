@@ -7,14 +7,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace HoloToolkit.Unity
 {
     public class SceneLauncher : MonoBehaviour
     {
+        [Tooltip("Prefab used as a button for each scene.")]
         public Interactive SceneButtonPrefab;
+        [Tooltip("Scale applied to the width of SceneButtonPrefab in order to make room for the names of scenes. For example, a value of 2 would double the width of the button.")]
+        public float SceneButtonWidthScale = 1.0f;
+        [Tooltip("Location of the center of the grid of buttons in Unity space.")]
         public Vector3 ButtonCenterLocation = new Vector3(0, 0, 1);
+        [Tooltip("Number of rows in the grid of buttons. As more scenes are added, they will spread out horizontally using this number of rows.")]
         public int MaxRows = 5;
+        [Tooltip("Prefab that will continue running when another scene is launched, offering a command to return to the scene launcher.")]
         public KeywordManager ReturnToSceneLauncherPrefab;
 
         private Vector3 sceneButtonSize = Vector3.one;
@@ -60,6 +67,7 @@ namespace HoloToolkit.Unity
                 Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
 
                 Interactive sceneButton = Instantiate<Interactive>(SceneButtonPrefab);
+                SetSceneButtonWidthScale(sceneButton);
                 if (iScene == 0)
                 {
                     Collider sceneButtonCollider = sceneButton.GetComponent<Collider>();
@@ -81,6 +89,17 @@ namespace HoloToolkit.Unity
                 {
                     labelTheme.Default = sceneName;
                 }
+            }
+        }
+
+        private void SetSceneButtonWidthScale(Interactive sceneButton)
+        {
+            // Scale the button horizontally by SceneButtonWidthScale to make more space for text.
+            sceneButton.transform.localScale = Vector3.Scale(sceneButton.transform.localScale, new Vector3(SceneButtonWidthScale, 1.0f, 1.0f));
+            foreach (TextMesh textMesh in sceneButton.GetComponentsInChildren<TextMesh>())
+            {
+                // Reverse the scale applied to the button so that the text is unaffected by the scale.
+                textMesh.transform.localScale = Vector3.Scale(textMesh.transform.localScale, new Vector3(1.0f / SceneButtonWidthScale, 1.0f, 1.0f));
             }
         }
 

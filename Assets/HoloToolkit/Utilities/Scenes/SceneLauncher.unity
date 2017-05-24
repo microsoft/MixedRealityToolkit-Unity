@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SceneButtonPrefab: {fileID: 114000013833810220, guid: 1208d39814b498d47a41952deff3abd0,
     type: 2}
+  SceneButtonWidthScale: 2
   ButtonCenterLocation: {x: 0, y: 0, z: 1}
   MaxRows: 5
   ReturnToSceneLauncherPrefab: {fileID: 114998364064331914, guid: d3e63db7107735545ad50e3ecce77c54,
