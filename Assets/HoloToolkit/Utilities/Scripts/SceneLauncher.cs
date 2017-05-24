@@ -59,6 +59,9 @@ namespace HoloToolkit.Unity
                 }
             }
 
+            // Create an empty game object to serve as a parent for all the buttons we're about to create.
+            GameObject buttonParent = new GameObject("Buttons");
+
             List<string> sceneNames = SceneList.Instance.GetSceneNames();
             for (int iScene = 0; iScene < sceneNames.Count; ++iScene)
             {
@@ -66,7 +69,8 @@ namespace HoloToolkit.Unity
                 Scene scene = SceneManager.GetSceneByBuildIndex(iScene);
                 Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
 
-                Interactive sceneButton = Instantiate<Interactive>(SceneButtonPrefab);
+                Interactive sceneButton = Instantiate<Interactive>(SceneButtonPrefab, GetButtonPosition(iScene, sceneNames.Count), Quaternion.identity, buttonParent.transform);
+                sceneButton.name = sceneName;
                 SetSceneButtonWidthScale(sceneButton);
                 if (iScene == 0)
                 {
@@ -76,7 +80,6 @@ namespace HoloToolkit.Unity
                         sceneButtonSize = sceneButtonCollider.bounds.size;
                     }
                 }
-                sceneButton.transform.position = GetButtonPosition(iScene, sceneNames.Count);
                 sceneButton.IsEnabled = scene != SceneManager.GetActiveScene(); // Disable button to launch our own scene.
                 int buildIndex = iScene;
                 UnityAction action = delegate
