@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity.InputModule
     {
         None = 0,
         Position = (1 << 0),
-        Orientation = (1 << 1),
+        Rotation = (1 << 1),
         PointingRay = (1 << 2),
         Thumbstick = (1 << 3),
         Touchpad = (1 << 4),
@@ -67,20 +67,20 @@ namespace HoloToolkit.Unity.InputModule
         bool TryGetPosition(uint sourceId, out Vector3 position);
 
         /// <summary>
-        /// Returns the orientation of the input source, if available.
-        /// Not all input sources support orientation information, and those that do may not always have it available.
+        /// Returns the rotation of the input source, if available.
+        /// Not all input sources support rotation information, and those that do may not always have it available.
         /// </summary>
-        /// <param name="sourceId">ID of the source for which the orientation should be retrieved.</param>
-        /// <param name="orientation">Out parameter filled with the orientation if available, otherwise <see cref="Quaternion.identity"/>.</param>
-        /// <returns>True if an orientation was retrieved, false if not.</returns>
-        bool TryGetOrientation(uint sourceId, out Quaternion orientation);
+        /// <param name="sourceId">ID of the source for which the rotation should be retrieved.</param>
+        /// <param name="rotation">Out parameter filled with the rotation if available, otherwise <see cref="Quaternion.identity"/>.</param>
+        /// <returns>True if an rotation was retrieved, false if not.</returns>
+        bool TryGetRotation(uint sourceId, out Quaternion rotation);
 
         /// <summary>
         /// Returns the pointing ray of the input source, if available.
         /// Not all input sources support pointing information, and those that do may not always have it available.
         /// </summary>
         /// <param name="sourceId">ID of the source for which the pointing ray should be retrieved.</param>
-        /// <param name="orientation">Out parameter filled with the pointing ray if available.</param>
+        /// <param name="pointingRay">Out parameter filled with the pointing ray if available.</param>
         /// <returns>True if a pointing ray was retrieved, false if not.</returns>
         bool TryGetPointingRay(uint sourceId, out Ray pointingRay);
 

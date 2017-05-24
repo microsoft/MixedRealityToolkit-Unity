@@ -39,7 +39,7 @@ namespace HoloToolkit.Unity.InputModule
         private InputEventData inputEventData;
         private InputClickedEventData sourceClickedEventData;
         private SourceStateEventData sourceStateEventData;
-        private SourceOrientationEventData sourceOrientationEventData;
+        private SourceRotationEventData sourceRotationEventData;
         private SourcePositionEventData sourcePositionEventData;
         private ManipulationEventData manipulationEventData;
         private HoldEventData holdEventData;
@@ -248,7 +248,7 @@ namespace HoloToolkit.Unity.InputModule
             inputEventData = new InputEventData(EventSystem.current);
             sourceClickedEventData = new InputClickedEventData(EventSystem.current);
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
-            sourceOrientationEventData = new SourceOrientationEventData(EventSystem.current);
+            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
             navigationEventData = new NavigationEventData(EventSystem.current);
@@ -744,20 +744,20 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<ISourceOrientationHandler> OnSourceOrientationChangedEventHandler =
-            delegate (ISourceOrientationHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<ISourceRotationHandler> OnSourceRotationChangedEventHandler =
+            delegate (ISourceRotationHandler handler, BaseEventData eventData)
             {
-                SourceOrientationEventData casted = ExecuteEvents.ValidateEventData<SourceOrientationEventData>(eventData);
-                handler.OnOrientationChanged(casted);
+                SourceRotationEventData casted = ExecuteEvents.ValidateEventData<SourceRotationEventData>(eventData);
+                handler.OnRotationChanged(casted);
             };
 
-        public void RaiseSourceOrientationChanged(IInputSource source, uint sourceId, Quaternion orientation, object tag = null)
+        public void RaiseSourceRotationChanged(IInputSource source, uint sourceId, Quaternion rotation, object tag = null)
         {
             // Create input event
-            sourceOrientationEventData.Initialize(source, sourceId, tag, orientation);
+            sourceRotationEventData.Initialize(source, sourceId, tag, rotation);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceOrientationEventData, OnSourceOrientationChangedEventHandler);
+            HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
         }
     }
 }

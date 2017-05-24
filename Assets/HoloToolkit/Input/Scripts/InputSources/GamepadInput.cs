@@ -220,9 +220,9 @@ namespace HoloToolkit.Unity.InputModule
             return SupportedInputInfo.None;
         }
 
-        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        public override bool TryGetRotation(uint sourceId, out Quaternion rotation)
         {
-            orientation = Quaternion.identity;
+            rotation = Quaternion.identity;
             return false;
         }
 

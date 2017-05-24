@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         public bool SupportsPosition;
-        public bool SupportsOrientation;
+        public bool SupportsRotation;
         public bool SupportsPointing;
         public bool SupportsMenuButton;
         public bool SupportsGrasp;
@@ -56,7 +56,7 @@ namespace HoloToolkit.Unity.InputModule
         public InteractionSourceKind sourceKind;
 
         public Vector3 ControllerPosition;
-        public Quaternion ControllerOrientation;
+        public Quaternion ControllerRotation;
 
         public Ray? PointingRay;
 
@@ -89,9 +89,9 @@ namespace HoloToolkit.Unity.InputModule
                 supportedInputInfo |= SupportedInputInfo.Position;
             }
 
-            if (SupportsOrientation)
+            if (SupportsRotation)
             {
-                supportedInputInfo |= SupportedInputInfo.Orientation;
+                supportedInputInfo |= SupportedInputInfo.Rotation;
             }
 
             if (SupportsPointing)
@@ -134,17 +134,17 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        public override bool TryGetRotation(uint sourceId, out Quaternion rotation)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsOrientation)
+            if (SupportsRotation)
             {
-                orientation = ControllerOrientation;
+                rotation = ControllerRotation;
                 return true;
             }
 
-            orientation = Quaternion.identity;
+            rotation = Quaternion.identity;
             return false;
         }
 
@@ -309,12 +309,9 @@ namespace HoloToolkit.Unity.InputModule
         /// Updates the controller state information.
         /// </summary>
         /// <param name="source">Input source to use to update the position.</param>
-        /// <param name="deltaTime">Unscaled delta time of last event.</param>
-        /// <param name="time">Unscaled time of last event.</param>
         private void UpdateControllerState(DebugInteractionSourceState source)
         {
             float time;
-            float deltaTime;
 
             if (manualController.UseUnscaledTime)
             {
@@ -325,10 +322,10 @@ namespace HoloToolkit.Unity.InputModule
                 time = Time.time;
             }
 
-            buttonStates.SelectButtonStateChanged = (buttonStates.IsSelectButtonDown != source.IsSelectPressed);
-            buttonStates.IsSelectButtonDown = source.IsSelectPressed;
+            buttonStates.SelectButtonStateChanged = (buttonStates.IsSelectButtonDown != source.selectPressed);
+            buttonStates.IsSelectButtonDown = source.selectPressed;
 
-            if (buttonStates.SelectButtonStateChanged && source.IsSelectPressed)
+            if (buttonStates.SelectButtonStateChanged && source.selectPressed)
             {
                 buttonStates.SelectDownStartTime = time;
                 buttonStates.CumulativeDelta = Vector3.zero;
@@ -337,37 +334,37 @@ namespace HoloToolkit.Unity.InputModule
             if (SupportsPosition)
             {
                 Vector3 controllerPosition;
-                if (source.Properties.Location.TryGetPosition(out controllerPosition))
+                if (source.sourcePose.TryGetPosition(out controllerPosition))
                 {
                     buttonStates.CumulativeDelta += controllerPosition - ControllerPosition;
                     ControllerPosition = controllerPosition;
                 }
             }
 
-            if (SupportsOrientation)
+            if (SupportsRotation)
             {
-                Quaternion controllerOrientation;
-                if (source.Properties.Location.TryGetOrientation(out controllerOrientation))
+                Quaternion controllerRotation;
+                if (source.sourcePose.TryGetRotation(out controllerRotation))
                 {
-                    ControllerOrientation = controllerOrientation;
+                    ControllerRotation = controllerRotation;
                 }
             }
 
             if (SupportsPointing)
             {
-                PointingRay = source.PointingRay;
+                PointingRay = source.sourcePose.PointerRay;
             }
 
             if (SupportsMenuButton)
             {
-                buttonStates.MenuButtonStateChanged = (buttonStates.IsMenuButtonDown != source.IsMenuPressed);
-                buttonStates.IsMenuButtonDown = source.IsMenuPressed;
+                buttonStates.MenuButtonStateChanged = (buttonStates.IsMenuButtonDown != source.menuPressed);
+                buttonStates.IsMenuButtonDown = source.menuPressed;
             }
 
             if (SupportsGrasp)
             {
-                buttonStates.GraspStateChanged = (buttonStates.IsGrasped != source.IsGrasped);
-                buttonStates.IsGrasped = source.IsGrasped;
+                buttonStates.GraspStateChanged = (buttonStates.IsGrasped != source.grasped);
+                buttonStates.IsGrasped = source.grasped;
             }
 
             SendControllerStateEvents(time);
@@ -463,11 +460,6 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionPressKind.Grasp);
                 }
-            }
-
-            if (buttonStates.ManipulationInProgress)
-            {
-
             }
         }
 

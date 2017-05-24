@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity.InputModule
             if (HandGuidanceIndicator != null)
             {
                 // Cache the initial rotation of the HandGuidanceIndicator so future rotations 
-                // can be done with respect to this orientation.
+                // can be done with respect to this rotation.
                 defaultHandGuidanceRotation = HandGuidanceIndicator.transform.rotation;
             }
 
@@ -106,7 +106,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_SourceUpdated(InteractionManager.SourceEventArgs obj)
         {
-            if (obj.state.source.kind == InteractionSourceKind.Hand)
+            if (obj.state.source.sourceKind == InteractionSourceKind.Hand)
             {
                 InteractionSourceState hand = obj.state;
 
@@ -141,7 +141,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_SourceReleased(InteractionManager.SourceEventArgs obj)
         {
-            if (obj.state.source.kind == InteractionSourceKind.Hand)
+            if (obj.state.source.sourceKind == InteractionSourceKind.Hand)
             {
                 // Stop displaying the guidance indicator when the user releases their finger from the pressed state.
                 RemoveTrackedHand(obj.state);
@@ -150,7 +150,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_SourceLost(InteractionManager.SourceEventArgs obj)
         {
-            if (obj.state.source.kind == InteractionSourceKind.Hand)
+            if (obj.state.source.sourceKind == InteractionSourceKind.Hand)
             {
                 // Stop displaying the guidance indicator when the user's hand leaves the view.
                 RemoveTrackedHand(obj.state);

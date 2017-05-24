@@ -6,10 +6,10 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Interface to implement to react to source orientation changes.
+    /// Interface to implement to react to source rotation changes.
     /// </summary>
-    public interface ISourceOrientationHandler : IEventSystemHandler
+    public interface ISourceRotationHandler : IEventSystemHandler
     {
-        void OnOrientationChanged(SourceOrientationEventData eventData);
+        void OnRotationChanged(SourceRotationEventData eventData);
     }
 }

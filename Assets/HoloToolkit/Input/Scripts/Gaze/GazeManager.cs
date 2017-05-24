@@ -67,10 +67,10 @@ namespace HoloToolkit.Unity.InputModule
         public BaseRayStabilizer Stabilizer = null;
 
         /// <summary>
-        /// Transform that should be used as the source of the gaze position and orientation.
+        /// Transform that should be used as the source of the gaze position and rotation.
         /// Defaults to the main camera.
         /// </summary>
-        [Tooltip("Transform that should be used to represent the gaze position and orientation. Defaults to Camera.Main")]
+        [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to Camera.Main")]
         public Transform GazeTransform;
 
         [Tooltip("True to draw a debug view of the ray.")]

@@ -153,7 +153,7 @@ This class uses the InputSourcePointer to define the rules of stealing focus whe
 
 #### Gaze
 ##### BaseRayStabilizer.cs
-A base abstract class for a stabilizer that takes as input position and orientation, and performs operations on them to stabilize or smooth that data.
+A base abstract class for a stabilizer that takes as input position and rotation, and performs operations on them to stabilize or smooth that data.
 
 ##### GazeManager.cs
 Singleton component in charge of managing the gaze vector. This is where you can define which layers are considered when gazing at objects. Optionally, the gaze manager can reference a ray stabilizer that will be used to stabilize the gaze of the user.
@@ -197,8 +197,8 @@ Event data for an event coming from the navigation gesture.
 ##### PointerSpecificEventData.cs
 Event data for an event that represents a pointer entering or exiting focus on an object.
 
-##### SourceOrientationEventData.cs
-Event data for an event that represents a change in orientation of an input source.
+##### SourceRotationEventData.cs
+Event data for an event that represents a change in rotation of an input source.
 
 ##### SourcePositionEventData.cs
 Event data for an event that represents a change in position of an input source.
@@ -240,8 +240,8 @@ Interface that a game object can implement to react to navigation gestures.
 ##### IPointerSpecificFocusable.cs
 Interface that a game object can implement to react to a specific pointer's focus enter/exit.
 
-##### ISourceOrientationHandler.cs
-Interface that a game object can implement to react to a source's orientation changing.
+##### ISourceRotationHandler.cs
+Interface that a game object can implement to react to a source's rotation changing.
 
 ##### ISourcePositionHandler.cs
 Interface that a game object can implement to react to a source's position changing.

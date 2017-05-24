@@ -9,10 +9,10 @@ namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// This script spawns a specific GameObject when a controller is detected
-    /// and animates the controller position and orientation.
+    /// and animates the controller position and rotation.
     /// </summary>
     [RequireComponent(typeof(SetGlobalListener))]
-    public class ControllerVisualizer : MonoBehaviour, ISourceStateHandler, ISourceOrientationHandler, ISourcePositionHandler
+    public class ControllerVisualizer : MonoBehaviour, ISourceStateHandler, ISourceRotationHandler, ISourcePositionHandler
     {
         [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction.")]
         [SerializeField]
@@ -71,12 +71,12 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public void OnOrientationChanged(SourceOrientationEventData eventData)
+        public void OnRotationChanged(SourceRotationEventData eventData)
         {
             GameObject controller;
             if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                controller.transform.rotation = eventData.Orientation;
+                controller.transform.rotation = eventData.Rotation;
             }
         }
 

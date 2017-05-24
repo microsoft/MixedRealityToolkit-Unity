@@ -35,7 +35,7 @@ v2f vert(appdata_t v)
 {
     UNITY_SETUP_INSTANCE_ID(v);
     v2f o;
-    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+    o.vertex = UnityObjectToClipPos(v.vertex);
 
     #if _USEMAINTEX_ON
         o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);

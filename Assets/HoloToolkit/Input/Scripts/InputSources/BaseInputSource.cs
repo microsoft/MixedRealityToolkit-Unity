@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public abstract bool TryGetPosition(uint sourceId, out Vector3 position);
 
-        public abstract bool TryGetOrientation(uint sourceId, out Quaternion orientation);
+        public abstract bool TryGetRotation(uint sourceId, out Quaternion rotation);
 
         public abstract bool TryGetPointingRay(uint sourceId, out Ray pointingRay);
 

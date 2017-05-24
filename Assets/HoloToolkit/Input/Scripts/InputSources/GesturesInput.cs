@@ -102,13 +102,13 @@ namespace HoloToolkit.Unity.InputModule
             public SourceData(IInputSource inputSource, InteractionSource interactionSource)
             {
                 SourceId = interactionSource.id;
-                SourceKind = interactionSource.kind;
+                SourceKind = interactionSource.sourceKind;
             }
 
             public readonly uint SourceId;
             public readonly InteractionSourceKind SourceKind;
             public SourceCapability<Vector3> Position;
-            public SourceCapability<Quaternion> Orientation;
+            public SourceCapability<Quaternion> Rotation;
             public SourceCapability<Ray> PointingRay;
             public SourceCapability<AxisButton2D> Thumbstick;
             public SourceCapability<TouchpadData> Touchpad;
@@ -274,7 +274,7 @@ namespace HoloToolkit.Unity.InputModule
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 retVal |= GetSupportFlag(sourceData.Position, SupportedInputInfo.Position);
-                retVal |= GetSupportFlag(sourceData.Orientation, SupportedInputInfo.Orientation);
+                retVal |= GetSupportFlag(sourceData.Rotation, SupportedInputInfo.Rotation);
                 retVal |= GetSupportFlag(sourceData.PointingRay, SupportedInputInfo.PointingRay);
                 retVal |= GetSupportFlag(sourceData.Thumbstick, SupportedInputInfo.Thumbstick);
                 retVal |= GetSupportFlag(sourceData.Touchpad, SupportedInputInfo.Touchpad);
@@ -315,16 +315,16 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        public override bool TryGetRotation(uint sourceId, out Quaternion rotation)
         {
             SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Orientation, out orientation))
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Rotation, out rotation))
             {
                 return true;
             }
             else
             {
-                orientation = default(Quaternion);
+                rotation = default(Quaternion);
                 return false;
             }
         }
@@ -462,12 +462,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_SourceReleased(InteractionManager.SourceEventArgs args)
         {
-            InputManager.Instance.RaiseSourceUp(this, args.state.source.id, args.kind);
+            InputManager.Instance.RaiseSourceUp(this, args.state.source.id, args.pressKind);
         }
 
         private void InteractionManager_SourcePressed(InteractionManager.SourceEventArgs args)
         {
-            InputManager.Instance.RaiseSourceDown(this, args.state.source.id, args.kind);
+            InputManager.Instance.RaiseSourceDown(this, args.state.source.id, args.pressKind);
         }
 
         private void InteractionManager_SourceLost(InteractionManager.SourceEventArgs args)
@@ -514,12 +514,12 @@ namespace HoloToolkit.Unity.InputModule
         private void UpdateSourceState(InteractionSourceState interactionSource, SourceData sourceData)
         {
             Debug.Assert(interactionSource.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
-            Debug.Assert(interactionSource.source.kind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
+            Debug.Assert(interactionSource.source.sourceKind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
 
-            InteractionSourceLocation locationData = interactionSource.properties.location;
+            InteractionSourcePose sourcePose = interactionSource.sourcePose;
 
             Vector3 newPosition;
-            sourceData.Position.IsAvailable = locationData.TryGetPosition(out newPosition);
+            sourceData.Position.IsAvailable = sourcePose.TryGetPosition(out newPosition);
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.Position.IsSupported |= sourceData.Position.IsAvailable;
             if (sourceData.Position.IsAvailable)
@@ -531,22 +531,23 @@ namespace HoloToolkit.Unity.InputModule
             }
             sourceData.Position.CurrentReading = newPosition;
 
-            Quaternion newOrientation;
-            sourceData.Orientation.IsAvailable = locationData.TryGetOrientation(out newOrientation);
+            Quaternion newRotation;
+            sourceData.Rotation.IsAvailable = sourcePose.TryGetRotation(out newRotation);
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
-            sourceData.Orientation.IsSupported |= sourceData.Orientation.IsAvailable;
-            if (sourceData.Orientation.IsAvailable)
+            sourceData.Rotation.IsSupported |= sourceData.Rotation.IsAvailable;
+            if (sourceData.Rotation.IsAvailable)
             {
-                if (!(sourceData.Orientation.CurrentReading.Equals(newOrientation)))
+                if (!(sourceData.Rotation.CurrentReading.Equals(newRotation)))
                 {
-                    InputManager.Instance.RaiseSourceOrientationChanged(this, sourceData.SourceId, newOrientation);
+                    InputManager.Instance.RaiseSourceRotationChanged(this, sourceData.SourceId, newRotation);
                 }
             }
-            sourceData.Orientation.CurrentReading = newOrientation;
+            sourceData.Rotation.CurrentReading = newRotation;
 
+            Ray newPointerRay;
             sourceData.PointingRay.IsSupported = interactionSource.source.supportsPointing;
-            sourceData.PointingRay.IsAvailable = interactionSource.sourceRay.IsValid();
-            sourceData.PointingRay.CurrentReading = interactionSource.sourceRay;
+            sourceData.PointingRay.IsAvailable = sourcePose.TryGetPointerRay(out newPointerRay) && newPointerRay.IsValid();
+            sourceData.PointingRay.CurrentReading = newPointerRay;
 
             InteractionController controller;
             bool gotController = interactionSource.source.TryGetController(out controller);
