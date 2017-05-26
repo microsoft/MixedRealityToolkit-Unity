@@ -79,7 +79,6 @@ namespace HoloToolkit.Unity.InputModule
             if (Input.GetButtonDown(GamePadButtonA))
             {
                 inputManager.RaiseSourceDown(this, GamePadId, InteractionPressKind.Select);
-                Debug.Log("Gamepad: A pressed");
                 isAPressed = true;
                 navigationCompleted = false;
                 currentGestureState = GestureState.APressed;

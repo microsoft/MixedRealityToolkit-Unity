@@ -24,6 +24,12 @@ namespace HoloToolkit.Unity.InputModule
         public Vector3 HitPosition { get; private set; }
 
         /// <summary>
+        /// Normal of the point at which the gaze manager hit an object.
+        /// If no object is currently being hit, this will return the previous normal.
+        /// </summary>
+        public Vector3 HitNormal { get; private set; }
+
+        /// <summary>
         /// Origin of the gaze.
         /// </summary>
         public Vector3 GazeOrigin
@@ -178,6 +184,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 lastHitDistance = (focusDetails.Point - Ray.origin).magnitude;
                 UpdateHitPosition();
+                HitNormal = focusDetails.Normal;
             }
         }
 

@@ -54,10 +54,12 @@ namespace HoloToolkit.Unity.InputModule
         public CursorStateEnum CursorState { get { return cursorState; } }
         private CursorStateEnum cursorState = CursorStateEnum.None;
 
+#pragma warning disable 0649
         [Tooltip("Set this in the editor to an object with a component that implements IPointerSource to tell this"
             + " cursor which pointer to follow. To set the pointer programmatically, set Pointer directly.")]
         [SerializeField]
         private GameObject loadPointer;
+#pragma warning restore 0649
 
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
@@ -276,6 +278,11 @@ namespace HoloToolkit.Unity.InputModule
                 // pointer currently registered with FocusManager, we use it.
 
                 Pointer = FocusManager.Instance.TryGetSinglePointer();
+
+                if (Pointer == null)
+                {
+                    Pointer = GazeManager.Instance;
+                }
             }
             else
             {
@@ -330,14 +337,13 @@ namespace HoloToolkit.Unity.InputModule
             // If no game object is hit, put the cursor at the default distance
             if (TargetedObject == null)
             {
-                this.TargetedObject = null;
                 targetPosition = Pointer.Ray.origin + Pointer.Ray.direction * DefaultCursorDistance;
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else
             {
                 // Update currently targeted object
-                this.TargetedObject = focusDetails.Object;
+                TargetedObject = focusDetails.Object;
 
                 if (TargetedCursorModifier != null)
                 {

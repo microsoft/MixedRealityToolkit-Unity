@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657946, g: 0.49641383, b: 0.5748181, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -272,8 +272,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
-  PlayspaceBoundsMaterial: {fileID: 2100000, guid: c9eb9258e335f144fae9e9e50e1fe664,
-    type: 2}
+  StageBoundsMaterial: {fileID: 0}
+  EditorLines: []
 --- !u!35540181 &648067043
 StageRoot:
   m_ObjectHideFlags: 0

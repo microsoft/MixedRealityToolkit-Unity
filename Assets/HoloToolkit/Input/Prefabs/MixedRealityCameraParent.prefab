@@ -96,6 +96,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1513531127815602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4086749064721888}
+  - component: {fileID: 114739834933575946}
+  m_Layer: 0
+  m_Name: Stage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1586147040494190
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4600145158608852}
+  - component: {fileID: 33130031905284994}
+  - component: {fileID: 23322403167181422}
+  - component: {fileID: 114244653559405336}
+  m_Layer: 0
+  m_Name: FadePlane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1610307795917906
 GameObject:
   m_ObjectHideFlags: 1
@@ -185,7 +219,7 @@ GameObject:
   - component: {fileID: 4541142303025740}
   - component: {fileID: 114092548863884916}
   m_Layer: 0
-  m_Name: HoloToolkitCameraParent
+  m_Name: MixedRealityCameraParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,6 +270,19 @@ Transform:
   m_Father: {fileID: 4766909944503646}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4086749064721888
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1513531127815602}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4541142303025740}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4087389880838868
 Transform:
   m_ObjectHideFlags: 1
@@ -273,6 +320,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4587520633816736}
+  - {fileID: 4086749064721888}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -287,6 +335,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4766909944503646}
+  - {fileID: 4600145158608852}
   m_Father: {fileID: 4541142303025740}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -302,6 +351,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4766909944503646}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4600145158608852
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1586147040494190}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.31}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4587520633816736}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4611253421078720
 Transform:
@@ -440,6 +502,45 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
+--- !u!23 &23322403167181422
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1586147040494190}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: facb09b0003896243b48c50481ddf816, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &33130031905284994
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1586147040494190}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!81 &81867938468442352
 AudioListener:
   m_ObjectHideFlags: 1
@@ -509,12 +610,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc175d33f66e6647aabac1b65e7e632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GamePadButtonY: Jump
-  GamePadButtonB: Fire2
+  TeleportButtonName: Jump
+  GoBackButtonName: Fire2
   LeftJoystickX: ControllerLeftStickX
   LeftJoystickY: ControllerLeftStickY
   RightJoystickX: ControllerRightStickX
   RightJoystickY: ControllerRightStickY
+  EnableTeleport: 1
+  EnableJoystickMovement: 0
+  BumperRotationSize: 30
+  TeleportMarker: {fileID: 1503526479864244, guid: 10d95b99055c6ad40b735cc8b3593745,
+    type: 2}
 --- !u!114 &114121188885475510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -555,6 +661,17 @@ MonoBehaviour:
   Axis0Destination: 0
   Axis1Destination: 2
   Axis2Destination: 6
+--- !u!114 &114244653559405336
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1586147040494190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 794a5a07720daf4479efca14d8ba4297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114465015496195000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -589,8 +706,8 @@ MonoBehaviour:
   NearClipPlane_OpaqueDisplay: 0.3
   CameraClearFlags_OpaqueDisplay: 1
   OpaqueQualityLevel: 5
-  CameraClearFlags_TransparentDisplay: 2
   NearClipPlane_TransparentDisplay: 0.85
+  CameraClearFlags_TransparentDisplay: 2
   BackgroundColor_TransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
   HoloLensQualityLevel: 0
 --- !u!114 &114690106885971528
@@ -613,6 +730,24 @@ MonoBehaviour:
   Axis0Destination: 2
   Axis1Destination: 6
   Axis2Destination: 6
+--- !u!114 &114739834933575946
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1513531127815602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561e8f47394c2dd449fffae7c1a3eef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
+  StageBoundsMaterial: {fileID: 0}
+  EditorLines:
+  - {x: 1, y: 0, z: 1}
+  - {x: -1, y: 0, z: 1}
+  - {x: -1, y: 0, z: -1}
+  - {x: 1, y: 0, z: -1}
 --- !u!114 &114755176645041546
 MonoBehaviour:
   m_ObjectHideFlags: 1

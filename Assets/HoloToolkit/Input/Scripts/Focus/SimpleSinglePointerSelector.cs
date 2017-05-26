@@ -251,7 +251,6 @@ namespace HoloToolkit.Unity.InputModule
                 // prevent it from falling through to other handlers to prevent potentially
                 // unintended input from reaching handlers that aren't being pointed at by
                 // the new pointer.
-
                 eventData.Use();
             }
         }

@@ -522,8 +522,8 @@ MonoBehaviour:
   NearClipPlane_OpaqueDisplay: 0.3
   CameraClearFlags_OpaqueDisplay: 1
   OpaqueQualityLevel: 5
-  CameraClearFlags_TransparentDisplay: 2
   NearClipPlane_TransparentDisplay: 0.85
+  CameraClearFlags_TransparentDisplay: 2
   BackgroundColor_TransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
   HoloLensQualityLevel: 0
 --- !u!114 &114635442116257526
@@ -577,7 +577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b627838df61e64baecc87fee2dec17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SensitivityScale: 3
+  SensitivityScale: 0.75
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b627838df61e64baecc87fee2dec17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SensitivityScale: 3
+  SensitivityScale: 1
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
@@ -657,7 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b627838df61e64baecc87fee2dec17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SensitivityScale: 3
+  SensitivityScale: 1
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21

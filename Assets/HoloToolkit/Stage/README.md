@@ -1,25 +1,25 @@
-## [Playspace]()
+## [Stage]()
 
-##Scripts that leverage Windows Mixed Reality StageRoot and play space concepts.
+##Scripts that leverage Windows Mixed Reality StageRoot and stage concepts.
 These are useful for finding the floor for occluded devices and also finding the root 0,0,0 position so game objects can be placed accurately.
-These also help with drawing playspace bounds that you might have setup during the Mixed Reality Portal first run experience.
+These also help with drawing stage bounds that you might have setup during the Mixed Reality Portal first run experience.
 
 ### [Prefabs](Prefabs)
-Prefabs related to the playspace features.
+Prefabs related to the stage features.
 
 #### FloorQuad.prefab
-A simple quad scaled up to 10x that will be rendered as the floor for an occluded device.
+A simple quad scaled up to 10x that will be rendered as the floor for an immersive device.
 
 ### [Scripts](Scripts)
-Scripts related to the playspace features.
+Scripts related to the stage features.
 
-#### PlayspaceManager.cs
+#### stageManager.cs
 Uses the StageRoot component to ensure we the coordinate system grounded at 0,0,0 for occluded devices.
 Places a floor quad as a child of the stage root at 0,0,0.
-Will also draw the bounds of your placespace if you set it during the Mixed Reality Portal first run experience.
+Will also draw the bounds of your stage if you set it during the Mixed Reality Portal first run experience.
 
 ### [Tests](Tests)
-Tests related to the playspace features. To use the scene:
+Tests related to the stage features. To use the scene:
 
 1. Navigate to the Tests folder.
 2. Double click on the test scene you wish to explore.
@@ -27,7 +27,7 @@ Tests related to the playspace features. To use the scene:
 4. Add Open Scenes, Platform -> Windows Store, SDK -> Universal 10, Build Type -> D3D, Check 'Unity C# Projects'.
 5. Click 'Build' and create an App folder. When compile is done, open the solution and deploy to device.
 
-#### PlayspaceTest.unity 
+#### StageTest.unity 
 Shows how to use the StageRoot component and render a floor quad.
 
 Observe the Managers object, where we attach a StageRoot to define our grounding coordinates.

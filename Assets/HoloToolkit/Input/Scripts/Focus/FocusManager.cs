@@ -356,7 +356,6 @@ namespace HoloToolkit.Unity.InputModule
                             owner.name,
                             typeof(IPointingSource).Name
                             );
-
                         break;
                     }
 
@@ -418,7 +417,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (gazeManagerPointingData != null)
             {
-                Debug.Assert(object.ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
+                Debug.Assert(ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
 
                 if (!gazeManagerIsRegistered)
                 {
