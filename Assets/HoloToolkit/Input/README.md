@@ -7,7 +7,7 @@ Input System Diagrams:
 
 This contains a fully-featured **input module**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a **cursor** similar to the HoloLens shell cursor that fully leverages the Unity's animation system.
 
-### [Input Module Design](InputModuleDesign)
+### Input Module Design
 The input module is designed to be extensible: it could support various input mechanisms and various types of gazers.
 
 Each input source (hands, gestures, others) implement a **IInputSource** interface. The interface defines various events that the input sources can trigger. The input sources register themselves with the InputManager, whose role it is to forward input to the appropriate game objects. Input sources can be dynamically enabled / disabled as necessary, and new input sources can be created to support different input devices.
@@ -214,7 +214,7 @@ Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/Ho
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 ##### SpeechInputHandler.cs
-Used to assign a Unity Event to a keyword stored in the SpeechInputSource
+Used to assign a Unity Event to a keyword stored in the SpeechInputSource component.
 
 ##### ISpeechHandler.cs
 Interface that a game object can implement to react to speech keywords.
