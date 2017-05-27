@@ -196,7 +196,8 @@ or in your Visual Studio Package.appxmanifest capabilities.
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
 
-##### KeywordManager.cs
+##### KeywordManager.cs (_Depreciated_)
+Please use SpeechInputSource and SpeechInputHandler instead.
 Allows you to specify keywords and methods in the Unity Inspector, instead of registering them explicitly in code.  
 
 **_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
@@ -204,13 +205,16 @@ Allows you to specify keywords and methods in the Unity Inspector, instead of re
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 ##### SpeechInputSource.cs
-Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.
+Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.  You can utilize keywords with the SpeechInputHandler component by assigning game objects and specifying a Unity Event trigger.
 
 Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/HoloToolkit/Input/Tests/Scripts/SphereGlobalKeywords.cs for an example of implementing these features, which is used in the demo scene at Assets/HoloToolkit/Input/Tests/SpeechInputSource.unity.
 
 **_KeywordsAndKeys_** Set the size as the number of keywords you'd like to listen for, then specify the keywords to complete the array.
 
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+
+##### SpeechInputHandler.cs
+Used to assign a Unity Event to a keyword stored in the SpeechInputSource
 
 ##### ISpeechHandler.cs
 Interface that a game object can implement to react to speech keywords.
