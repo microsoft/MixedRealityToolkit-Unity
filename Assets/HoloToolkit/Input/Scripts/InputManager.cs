@@ -638,14 +638,12 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Speech Events
 
-
         private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
             delegate (ISpeechHandler handler, BaseEventData eventData)
             {
                 SpeechKeywordRecognizedEventData casted = ExecuteEvents.ValidateEventData<SpeechKeywordRecognizedEventData>(eventData);
                 handler.OnSpeechKeywordRecognized(casted);
             };
-
 
         public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
