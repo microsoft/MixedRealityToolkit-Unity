@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public partial class SpeechInputSource : BaseInputSource
     {
-        [System.Serializable]
+        [Serializable]
         public struct KeywordAndKeyCode
         {
             [Tooltip("The keyword to recognize.")]
@@ -51,10 +51,12 @@ namespace HoloToolkit.Unity.InputModule
             if (keywordCount > 0)
             {
                 string[] keywords = new string[keywordCount];
+
                 for (int index = 0; index < keywordCount; index++)
                 {
                     keywords[index] = Keywords[index].Keyword;
                 }
+
                 keywordRecognizer = new KeywordRecognizer(keywords);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 

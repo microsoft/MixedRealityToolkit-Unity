@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnEnable()
         {
-            keywordsProperty = serializedObject.FindProperty("keywords");
+            keywordsProperty = serializedObject.FindProperty("Keywords");
             registeredKeywords = RegisteredKeywords().Distinct().ToArray();
         }
 
@@ -33,8 +33,12 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                SpeechInputHandler handler = (SpeechInputHandler)target;
-                string duplicateKeyword = handler.keywords.GroupBy(keyword => keyword.Keyword.ToLower()).Where(group => group.Count() > 1).Select(group => group.Key).FirstOrDefault();
+                var handler = (SpeechInputHandler)target;
+                string duplicateKeyword = handler.Keywords
+                    .GroupBy(keyword => keyword.Keyword.ToLower())
+                    .Where(group => group.Count() > 1)
+                    .Select(group => group.Key).FirstOrDefault();
+
                 if (duplicateKeyword != null)
                 {
                     EditorGUILayout.HelpBox("Keyword '" + duplicateKeyword + "' is assigned more than once!", MessageType.Warning);
@@ -42,20 +46,20 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private static GUIContent removeButtonContent = new GUIContent("-", "Remove keyword");
-        private static GUIContent addButtonContent = new GUIContent("+", "Add keyword");
-        private static GUILayoutOption miniButtonWidth = GUILayout.Width(20.0f);
+        private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
+        private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
+        private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
 
         private void ShowList(SerializedProperty list)
         {
             EditorGUI.indentLevel++;
 
             // remove the keywords already assigned from the registered list
-            SpeechInputHandler handler = (SpeechInputHandler)target;
+            var handler = (SpeechInputHandler)target;
             
-            if (handler.keywords == null) { return; }
+            if (handler.Keywords == null) { return; }
             
-            string[] availableKeywords = registeredKeywords.Except(handler.keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
+            string[] availableKeywords = registeredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
 
             // keyword rows
             for (int index = 0; index < list.arraySize; index++)
@@ -66,11 +70,13 @@ namespace HoloToolkit.Unity.InputModule
                 bool elementExpanded = EditorGUILayout.PropertyField(elementProperty);
                 GUILayout.FlexibleSpace();
                 // the remove element button
-                bool elementRemoved = GUILayout.Button(removeButtonContent, EditorStyles.miniButton, miniButtonWidth);
+                bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
+
                 if (elementRemoved)
                 {
                     list.DeleteArrayElementAtIndex(index);
                 }
+
                 EditorGUILayout.EndHorizontal();
 
                 if (!elementRemoved && elementExpanded)
@@ -79,6 +85,7 @@ namespace HoloToolkit.Unity.InputModule
                     string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
                     int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
                     int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
+
                     if (currentSelection != previousSelection)
                     {
                         keywordProperty.stringValue = keywords[currentSelection];
@@ -92,11 +99,13 @@ namespace HoloToolkit.Unity.InputModule
             // add button row
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
+
             // the add element button
-            if (GUILayout.Button(addButtonContent, EditorStyles.miniButton, miniButtonWidth))
+            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton, MiniButtonWidth))
             {
                 list.InsertArrayElementAtIndex(list.arraySize);
             }
+
             EditorGUILayout.EndHorizontal();
 
             EditorGUI.indentLevel--;
