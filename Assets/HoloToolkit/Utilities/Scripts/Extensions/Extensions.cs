@@ -24,5 +24,31 @@ namespace HoloToolkit.Unity
 
             return Mathf.Abs(curve[curve.length - 1].time - curve[0].time);
         }
+
+        /// <summary>
+        /// Determines whether or not a ray is valid.
+        /// </summary>
+        /// <param name="ray">The ray being tested.</param>
+        /// <returns>True if the ray is valid, false otherwise.</returns>
+        public static bool IsValid(this Ray ray)
+        {
+            return (ray.direction != Vector3.zero);
+        }
+
+        #region GameObject
+
+        /// <summary>
+        /// Determines whether or not a game object's layer is included in the specified layer mask.
+        /// </summary>
+        /// <param name="gameObject">The game object whose layer to test.</param>
+        /// <param name="layerMask">The layer mask to test against.</param>
+        /// <returns>True if <paramref name="gameObject"/>'s layer is included in <paramref name="layerMask"/>, false otherwise.</returns>
+        public static bool IsInLayerMask(this GameObject gameObject, LayerMask layerMask)
+        {
+            LayerMask gameObjectMask = (1 << gameObject.layer);
+            return ((gameObjectMask & layerMask) == gameObjectMask);
+        }
+
+        #endregion
     }
 }

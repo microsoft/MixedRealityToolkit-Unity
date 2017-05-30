@@ -28,7 +28,7 @@ namespace HoloToolkit.Sharing.Utilities
             // Get the ServerSessionsTracker to use later.
             // Note that if this processes takes the role of a secondary client,
             // then the sessionsTracker will always be null
-            if (SharingStage.Instance != null && SharingStage.Instance.Manager != null)
+            if (SharingStage.IsInitialized && SharingStage.Instance.Manager != null)
             {
                 sessionsTracker = SharingStage.Instance.SessionsTracker;
             }

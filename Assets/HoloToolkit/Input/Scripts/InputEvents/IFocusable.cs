@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Interface to implement to react to focus enter/exit.
+    /// Interface to implement to react to overall focus enter/exit.
     /// </summary>
     public interface IFocusable : IEventSystemHandler
     {

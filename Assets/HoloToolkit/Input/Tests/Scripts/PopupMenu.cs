@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class PopupMenu : MonoBehaviour, IInputClickHandler
+    public class PopupMenu : MonoBehaviour, IInputHandler
     {
         [SerializeField]
         private TestButton cancelButton = null;
@@ -135,12 +135,24 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Dismiss();
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        void IInputHandler.OnInputDown(InputEventData eventData)
         {
             if (closeOnNonTargetedTap)
             {
                 Dismiss();
             }
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        void IInputHandler.OnInputUp(InputEventData eventData)
+        {
+            if (closeOnNonTargetedTap)
+            {
+                Dismiss();
+            }
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VR.WSA.Input;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -98,7 +98,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
 
             // Place on a wall (do it in a thread, as it can take a little while)
-            SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef = 
+            SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef =
                 SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_OnWall(new Vector3(MenuWidth * 0.5f, MenuHeight * 0.5f, MenuMinDepth * 0.5f), 0.5f, 3.0f);
             SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
 
@@ -169,7 +169,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             Debug.Log("PlaceMenu - InFrontOfUser");
         }
 
-        private void OnAirTap(InteractionSourceState state)
+        private void OnAirTap(InteractionManager.SourceEventArgs obj)
         {
             // Try to intersect one of the buttons
             Vector3 hitPos, hitNormal;

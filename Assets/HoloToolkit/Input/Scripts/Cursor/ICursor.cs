@@ -11,6 +11,11 @@ namespace HoloToolkit.Unity.InputModule
     public interface ICursor : IInputHandler, IInputClickHandler, ISourceStateHandler
     {
         /// <summary>
+        /// The pointer this cursor is associated with.
+        /// </summary>
+        IPointingSource Pointer { get; }
+
+        /// <summary>
         /// Position of the cursor.
         /// </summary>
         Vector3 Position { get; }

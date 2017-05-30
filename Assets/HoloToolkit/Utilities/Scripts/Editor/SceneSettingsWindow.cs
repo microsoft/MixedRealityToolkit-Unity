@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Scene Settings.
+    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Scene Settings.
     /// </summary>
     public class SceneSettingsWindow : AutoConfigureWindow<SceneSettingsWindow.SceneSetting>
     {
@@ -54,14 +54,14 @@ namespace HoloToolkit.Unity
         {
             for (int i = (int)SceneSetting.CameraToOrigin; i <= (int)SceneSetting.FieldOfView; i++)
             {
-                Values[(SceneSetting)i] = true;
+                Values[(SceneSetting)i] = false;
             }
         }
 
         protected override void LoadStrings()
         {
             Names[SceneSetting.CameraToOrigin] = "Move Camera to Origin";
-            Descriptions[SceneSetting.CameraToOrigin] = "Moves the main camera to the origin of the scene (0,0,0).\n\nWhen a HoloLens application starts, the users head is the center of the world. Not having the main camera at 0,0,0 will result in holograms not appearing where they are expeted. This option should remain checked unless you have code that explicitly deals with any offset.";
+            Descriptions[SceneSetting.CameraToOrigin] = "Moves the main camera to the origin of the scene (0,0,0).\n\nWhen a Mixed Reality application starts, the users head is the center of the world. Not having the main camera at 0,0,0 will result in holograms not appearing where they are expeted. This option should remain checked unless you have code that explicitly deals with any offset.";
 
             Names[SceneSetting.CameraClearBlack] = "Camera Clears to Black";
             Descriptions[SceneSetting.CameraClearBlack] = "Causes the camera to render to a black background instead of the default skybox.\n\nIn HoloLens the color black is transparent. Rendering to a black background allows the user to see the real world wherever there are no holograms. This option should remain checked unless you are building a VR-like experience or are implementing advanced rendering techniques.";
