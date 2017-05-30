@@ -117,14 +117,14 @@ Material:
       second: 0
     - first:
         name: _WireThickness
-      second: 100
+      second: 15
     - first:
         name: _ZWrite
       second: 1
     m_Colors:
     - first:
         name: _BaseColor
-      second: {r: 0, g: 0, b: 0, a: 1}
+      second: {r: 0.14705884, g: 0.0075692036, b: 0.934, a: 0.035}
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}

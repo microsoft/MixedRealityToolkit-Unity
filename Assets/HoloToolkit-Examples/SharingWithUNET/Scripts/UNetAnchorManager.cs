@@ -187,7 +187,8 @@ namespace HoloToolkit.Examples.SharingWithUNET
             }
 
             exportingAnchorName = Guid.NewGuid().ToString();
-            Debug.Log("exporting " + exportingAnchorName);
+
+            // Debug.Log("exporting " + exportingAnchorName);
             watb.AddWorldAnchor(exportingAnchorName, worldAnchor);
             WorldAnchorTransferBatch.ExportAsync(watb, WriteBuffer, ExportComplete);
         }
