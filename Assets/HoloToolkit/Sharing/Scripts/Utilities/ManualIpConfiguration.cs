@@ -9,7 +9,7 @@ namespace HoloToolkit.Sharing.Utilities
     /// </summary>
     public class ManualIpConfiguration : MonoBehaviour
     {
-        public string IpAdress { get { return ipAddress.text; } }
+        public string IpAddress { get { return ipAddress.text; } }
 
         [SerializeField]
         private Text ipAddress;
