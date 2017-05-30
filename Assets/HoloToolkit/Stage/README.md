@@ -1,6 +1,6 @@
 ## [Stage]()
 
-##Scripts that leverage Windows Mixed Reality StageRoot and stage concepts.
+Scripts that leverage Windows Mixed Reality StageRoot and stage concepts.
 These are useful for finding the floor for occluded devices and also finding the root 0,0,0 position so game objects can be placed accurately.
 These also help with drawing stage bounds that you might have setup during the Mixed Reality Portal first run experience.
 
