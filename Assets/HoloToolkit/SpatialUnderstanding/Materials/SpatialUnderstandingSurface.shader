@@ -45,7 +45,7 @@ Shader "HoloToolkit/SpatialUnderstanding/Understanding"
            {
                v2g o;
                UNITY_SETUP_INSTANCE_ID(v);
-               o.viewPos = mul(UNITY_MATRIX_MVP, v.vertex);
+               o.viewPos = UnityObjectToClipPos(v.vertex);
                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                return o;
            }

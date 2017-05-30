@@ -42,7 +42,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             // Hide the Cursor to begin with.
             meshRenderer.enabled = false;
 
-            // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
+            // Cache the cursor default rotation so the cursor can be rotated with respect to the original rotation.
             cursorDefaultRotation = gameObject.transform.rotation;
         }
 
@@ -65,9 +65,9 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         protected virtual RaycastResult CalculateRayIntersect()
         {
             RaycastResult result = new RaycastResult();
-            result.Hit = GazeManager.Instance.IsGazingAtObject;
+            result.Hit = (GazeManager.Instance.HitObject == null) ? false : true;
             result.Position = GazeManager.Instance.HitPosition;
-            result.Normal = GazeManager.Instance.HitInfo.normal;
+            result.Normal = GazeManager.Instance.GazeNormal;
             return result;
         }
 

@@ -37,12 +37,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 ParentTransform = transform;
             }
-
-            for (int i = 0; i < ParentTransform.childCount; i++)
-            {
-                ParentTransform.GetChild(i).gameObject.SetActive(false);
-            }
-
             base.OnEnable();
         }
 
@@ -54,42 +48,23 @@ namespace HoloToolkit.Unity.InputModule
         public override void OnCursorStateChange(CursorStateEnum state)
         {
             base.OnCursorStateChange(state);
+
             if (state != CursorStateEnum.Contextual)
             {
-
-                // First, try to find a cursor for the current state
-                var newActive = new ObjectCursorDatum();
-                for(int cursorIndex = 0; cursorIndex < CursorStateData.Length; cursorIndex++)
+                // Hide all children first
+                for(int i = 0; i < ParentTransform.childCount; i++)
                 {
-                    ObjectCursorDatum cursor = CursorStateData[cursorIndex];
-                    if (cursor.CursorState == state)
+                    ParentTransform.GetChild(i).gameObject.SetActive(false);
+                }
+
+                // Set active any that match the current state
+                for (int i = 0; i < CursorStateData.Length; i++)
+                {
+                    if (CursorStateData[i].CursorState == state)
                     {
-                        newActive = cursor;
-                        break;
+                        CursorStateData[i].CursorObject.SetActive(true);
                     }
                 }
-
-                // If no cursor for current state is found, let the last active cursor be
-                // (any cursor is better than an invisible cursor)
-                if (newActive.Name == null)
-                {
-                    return;
-                }
-
-                // If we come here, there is a cursor for the new state, 
-                // so de-activate a possible earlier active cursor
-                for(int cursorIndex = 0; cursorIndex < CursorStateData.Length; cursorIndex++)
-                {
-                    ObjectCursorDatum cursor = CursorStateData[cursorIndex];
-                    if (cursor.CursorObject.activeSelf)
-                    {
-                        cursor.CursorObject.SetActive(false);
-                        break;
-                    }
-                }
-
-                // ... and set the cursor for the new state active.
-                newActive.CursorObject.SetActive(true);
             }
         }
     }

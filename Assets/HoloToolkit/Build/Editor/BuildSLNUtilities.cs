@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
@@ -50,6 +51,8 @@ namespace HoloToolkit.Unity
             public BuildTarget BuildTarget { get; set; }
 
             public WSASDK? WSASdk { get; set; }
+
+            public string WsaUwpSdk { get; set; }
 
             public WSAUWPBuildType? WSAUWPBuildType { get; set; }
 
@@ -116,6 +119,33 @@ namespace HoloToolkit.Unity
             }
         }
 
+        /// <summary>
+        /// A method capable of configuring <see cref="BuildInfo"/> settings.
+        /// </summary>
+        /// <param name="toConfigure">The settings to configure.</param>
+        public delegate void BuildInfoConfigurationMethod(ref BuildInfo toConfigure);
+
+        /// <summary>
+        /// Add a handler to this event to override <see cref="BuildInfo"/> defaults before a build.
+        /// </summary>
+        /// <seealso cref="RaiseOverrideBuildDefaults"/>
+        public static event BuildInfoConfigurationMethod OverrideBuildDefaults;
+
+        /// <summary>
+        /// Call this method to give other code an opportunity to override <see cref="BuildInfo"/> defaults.
+        /// </summary>
+        /// <param name="toConfigure">>The settings to configure.</param>
+        /// <seealso cref="OverrideBuildDefaults"/>
+        public static void RaiseOverrideBuildDefaults(ref BuildInfo toConfigure)
+        {
+            var handlers = OverrideBuildDefaults;
+
+            if (handlers != null)
+            {
+                handlers(ref toConfigure);
+            }
+        }
+
         // Build configurations. Exactly one of these should be defined for any given build.
         public const string BuildSymbolDebug = "DEBUG";
         public const string BuildSymbolRelease = "RELEASE";
@@ -177,9 +207,13 @@ namespace HoloToolkit.Unity
                 EditorUserBuildSettings.wsaSDK = buildInfo.WSASdk.Value;
             }
 
+            string oldWsaUwpSdk = null;
             WSAUWPBuildType? oldWSAUWPBuildType = null;
             if (EditorUserBuildSettings.wsaSDK == WSASDK.UWP)
             {
+                oldWsaUwpSdk = EditorUserBuildSettings.wsaUWPSDK;
+                EditorUserBuildSettings.wsaUWPSDK = buildInfo.WsaUwpSdk;
+
                 oldWSAUWPBuildType = EditorUserBuildSettings.wsaUWPBuildType;
                 if (buildInfo.WSAUWPBuildType.HasValue)
                 {
@@ -207,6 +241,11 @@ namespace HoloToolkit.Unity
             string buildError = "Error";
             try
             {
+                if (EditorUserBuildSettings.wsaSDK == WSASDK.UWP)
+                {
+                    VerifyWsaUwpSdkIsInstalled(EditorUserBuildSettings.wsaUWPSDK);
+                }
+
                 // For the WSA player, Unity builds into a target directory.
                 // For other players, the OutputPath parameter indicates the
                 // path to the target executable to build.
@@ -231,19 +270,78 @@ namespace HoloToolkit.Unity
             {
                 OnPostProcessBuild(buildInfo, buildError);
 
+                if (buildInfo.BuildTarget == BuildTarget.WSAPlayer && EditorUserBuildSettings.wsaGenerateReferenceProjects)
+                {
+                    UwpProjectPostProcess.Execute(buildInfo.OutputDirectory);
+                }
+
                 PlayerSettings.colorSpace = oldColorSpace;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, oldBuildSymbols);
 
-                EditorUserBuildSettings.wsaSDK = oldWSASDK;
-
-                if (oldWSAUWPBuildType.HasValue)
+                if (EditorUserBuildSettings.wsaSDK == WSASDK.UWP)
                 {
+                    EditorUserBuildSettings.wsaUWPSDK = oldWsaUwpSdk;
                     EditorUserBuildSettings.wsaUWPBuildType = oldWSAUWPBuildType.Value;
                 }
+                EditorUserBuildSettings.wsaSDK = oldWSASDK;
 
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
 
                 EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTarget);
+            }
+        }
+
+        private static void VerifyWsaUwpSdkIsInstalled(string wsaUwpSdk)
+        {
+            if (string.IsNullOrEmpty(wsaUwpSdk))
+            {
+                // Unity uses a null or empty string to mean "use the latest sdk that's installed", so we don't need to
+                // verify any particular version.
+                return;
+            }
+
+
+            IEnumerable<Version> uwpSdksAvailable;
+            try
+            {
+                // In order to get the same list of SDKs that the Unity build settings "UWP SDK" box has, we call into an
+                // internal Unity function.  If Unity changes how its internals work, we'll need to update this code.
+
+                Type uwpReferencesType = typeof(UnityEditor.Editor).Assembly
+                    .GetType("UnityEditor.Scripting.Compilers.UWPReferences", throwOnError: false);
+
+                MethodInfo uwpReferencesMethod = (uwpReferencesType == null)
+                    ? null
+                    : uwpReferencesType.GetMethod("GetInstalledSDKVersions");
+
+                uwpSdksAvailable = (uwpReferencesMethod == null)
+                    ? null
+                    : (uwpReferencesMethod.Invoke(obj: null, parameters: null) as IEnumerable<Version>);
+            }
+            catch
+            {
+                uwpSdksAvailable = null;
+            }
+
+
+            if (uwpSdksAvailable == null)
+            {
+                Debug.LogWarningFormat("Couldn't verify that UWP SDK \"{0}\" is installed. You better make sure it's installed"
+                        + " and available in your Unity Build settings menu, or you may get unexpected build breaks or runtime"
+                        + " behavior.",
+                    wsaUwpSdk
+                    );
+            }
+            else if (!uwpSdksAvailable.Select(version => version.ToString()).Contains(wsaUwpSdk))
+            {
+                throw new Exception(string.Format("UWP SDK \"{0}\" is not installed. Please install it and try building again. If"
+                        + " you really want to build without that SDK, build directly from Unity's Build settings menu instead.",
+                    wsaUwpSdk
+                    ));
+            }
+            else
+            {
+                // The SDK is verified installed. All is right with the world!
             }
         }
 
@@ -265,6 +363,10 @@ namespace HoloToolkit.Unity
                     string wsaSdkArg = arguments[++i];
 
                     buildInfo.WSASdk = (WSASDK)Enum.Parse(typeof(WSASDK), wsaSdkArg);
+                }
+                else if (string.Equals(arguments[i], "-wsaUwpSdk", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    buildInfo.WsaUwpSdk = arguments[++i];
                 }
                 else if (string.Equals(arguments[i], "-wsaUWPBuildType", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -295,10 +397,10 @@ namespace HoloToolkit.Unity
         {
             BuildInfo buildInfo = new BuildInfo()
             {
-                // Use scenes from the editor build settings.
-                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path), // Use scenes from the editor build settings.
             };
 
+            RaiseOverrideBuildDefaults(ref buildInfo);
             ParseBuildCommandLine(ref buildInfo);
 
             PerformBuild(buildInfo);
@@ -509,7 +611,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private static string GetProjectPath()
+        public static string GetProjectPath()
         {
             return Path.GetDirectoryName(Path.GetFullPath(Application.dataPath));
         }

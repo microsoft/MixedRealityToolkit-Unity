@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Configuration options derived from here: 
-    /// https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens
+    /// https://developer.microsoft.com/en-us/windows/mixed-reality/unity_development_overview#Configuring_a_Unity_project_for_HoloLens
     /// </summary>
     public class AutoConfigureMenu : MonoBehaviour
     {
@@ -24,30 +24,30 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Applies recommended scene settings to the current scenes
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Scene Settings", false, 1)]
+        [MenuItem("HoloToolkit/Configure/Apply Mixed Reality Scene Settings", false, 1)]
         public static void ApplySceneSettings()
         {
-            SceneSettingsWindow window = (SceneSettingsWindow)EditorWindow.GetWindow(typeof(SceneSettingsWindow), true, "Apply HoloLens Scene Settings");
+            SceneSettingsWindow window = (SceneSettingsWindow)EditorWindow.GetWindow(typeof(SceneSettingsWindow), true, "Apply Mixed Reality Scene Settings");
             window.Show();
         }
 
         /// <summary>
         /// Applies recommended project settings to the current project
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Project Settings", false, 1)]
+        [MenuItem("HoloToolkit/Configure/Apply Mixed Reality Project Settings", false, 1)]
         public static void ApplyProjectSettings()
         {
-            ProjectSettingsWindow window = (ProjectSettingsWindow)EditorWindow.GetWindow(typeof(ProjectSettingsWindow), true, "Apply HoloLens Project Settings");
+            ProjectSettingsWindow window = (ProjectSettingsWindow)EditorWindow.GetWindow(typeof(ProjectSettingsWindow), true, "Apply Mixed Reality Project Settings");
             window.Show();
         }
 
         /// <summary>
         /// Applies recommended capability settings to the current project
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply HoloLens Capability Settings", false, 2)]
+        [MenuItem("HoloToolkit/Configure/Apply Mixed Reality Capability Settings", false, 2)]
         static void ApplyHoloLensCapabilitySettings()
         {
-            CapabilitySettingsWindow window = (CapabilitySettingsWindow)EditorWindow.GetWindow(typeof(CapabilitySettingsWindow), true, "Apply HoloLens Capability Settings");
+            CapabilitySettingsWindow window = (CapabilitySettingsWindow)EditorWindow.GetWindow(typeof(CapabilitySettingsWindow), true, "Apply Mixed Reality Capability Settings");
             window.Show();
         }
     }

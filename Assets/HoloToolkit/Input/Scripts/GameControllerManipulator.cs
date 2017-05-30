@@ -7,7 +7,7 @@ namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Allows the user to place and rotate GameObjects using a game controller.
-    /// TODO This should be converted to an input source.
+    /// For a more completed game pad control script refer to GamepadInput.cs and MixedRealityTeleport.cs
     /// </summary>
     /// <remarks>Make sure to enable the HumanInterfaceDevice capability before using.</remarks>
     public class GameControllerManipulator : MonoBehaviour
