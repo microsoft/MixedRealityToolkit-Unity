@@ -77,6 +77,11 @@ namespace HoloToolkit.Unity.SpatialMapping
 
                 DetermineParent();
             }
+
+            if (IsBeingPlaced)
+            {
+                HandlePlacement();
+            }
         }
 
         protected virtual void Update()
@@ -125,7 +130,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
+            HandlePlacement();
+        }
 
+        private void HandlePlacement()
+        {
             if (IsBeingPlaced)
             {
                 gameObject.layer = DefaultIgnoreRaycastLayer;
