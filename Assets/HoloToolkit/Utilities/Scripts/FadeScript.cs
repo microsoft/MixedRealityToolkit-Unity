@@ -83,14 +83,12 @@ namespace HoloToolkit.Unity
             }
         }
 
-        new void OnDestroy()
+        private void OnDestroy()
         {
             if (fadeMaterial != null)
             {
                 Destroy(fadeMaterial);
             }
-
-            base.OnDestroy();
         }
 
         public bool DoFade(float fadeOutTime, float fadeInTime, Action FadedOutAction, Action FadedInAction)
