@@ -137,7 +137,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             if (IsBeingPlaced)
             {
-                gameObject.layer = DefaultIgnoreRaycastLayer;
+                SetLayerRecursively(transform, DefaultIgnoreRaycastLayer);
                 InputManager.Instance.AddGlobalListener(gameObject);
 #if UNITY_WSA && !UNITY_EDITOR
 
@@ -150,7 +150,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
             else
             {
-                gameObject.layer = defaultLayer;
+                SetLayerRecursively(transform, defaultLayer);
                 InputManager.Instance.RemoveGlobalListener(gameObject);
 #if UNITY_WSA && !UNITY_EDITOR
 
@@ -177,6 +177,16 @@ namespace HoloToolkit.Unity.SpatialMapping
                     Debug.LogWarning("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
                     ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
                 }
+            }
+        }
+
+        private static void SetLayerRecursively(Transform gameObjectToSet, int layerId)
+        {
+            gameObjectToSet.gameObject.layer = layerId;
+
+            for (int i = 0; i < gameObjectToSet.childCount; i++)
+            {
+                SetLayerRecursively(gameObjectToSet.GetChild(i), layerId);
             }
         }
     }
