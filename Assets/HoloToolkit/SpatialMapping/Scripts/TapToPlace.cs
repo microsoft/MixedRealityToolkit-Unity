@@ -41,12 +41,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Manages persisted anchors.
         /// </summary>
         protected WorldAnchorManager anchorManager;
-
-        /// <summary>
-        /// Controls spatial mapping.  In this script we access spatialMappingManager
-        /// to control rendering and to access the physics layer mask.
-        /// </summary>
-        protected SpatialMappingManager spatialMappingManager;
 #endif
 
         /// <summary>
@@ -67,7 +61,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
             }
 
-            if (anchorManager != null && spatialMappingManager != null)
+            if (anchorManager != null)
             {
                 // If we are not starting out with actively placing the object, give it a World Anchor
                 if (!IsBeingPlaced)
@@ -92,12 +86,12 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
-            if (IsBeingPlaced)
-            {
-                // Rotate this object to face the user.
-                Quaternion toQuat = Camera.main.transform.localRotation;
-                toQuat.x = 0;
-                toQuat.z = 0;
+            if (!IsBeingPlaced) { return; }
+
+            // Rotate this object to face the user.
+            Quaternion toQuat = Camera.main.transform.localRotation;
+            toQuat.x = 0;
+            toQuat.z = 0;
 
 #if UNITY_WSA && !UNITY_EDITOR
                 Vector3 headPosition = Camera.main.transform.position;
@@ -105,29 +99,28 @@ namespace HoloToolkit.Unity.SpatialMapping
 
                 // If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
                 RaycastHit hitInfo;
-                Vector3 placementPosition = spatialMappingManager != null &&
-                    Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, spatialMappingManager.LayerMask)
+                Vector3 placementPosition = SpatialMappingManager.Instance != null &&
+                    Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, SpatialMappingManager.LayerMask)
                         ? hitInfo.point
                         : GazeManager.Instance.HitPosition;
 #else
-                Vector3 placementPosition = GazeManager.Instance.HitPosition;
+            Vector3 placementPosition = GazeManager.Instance.HitPosition;
 #endif
 
-                // Here is where you might consider adding intelligence
-                // to how the object is placed.  For example, consider
-                // placing based on the bottom of the object's
-                // collider so it sits properly on surfaces.
+            // Here is where you might consider adding intelligence
+            // to how the object is placed.  For example, consider
+            // placing based on the bottom of the object's
+            // collider so it sits properly on surfaces.
 
-                if (PlaceParentOnTap)
-                {
-                    ParentGameObjectToPlace.transform.position += placementPosition - gameObject.transform.position;
-                    ParentGameObjectToPlace.transform.rotation = toQuat;
-                }
-                else
-                {
-                    gameObject.transform.position = placementPosition;
-                    gameObject.transform.rotation = toQuat;
-                }
+            if (PlaceParentOnTap)
+            {
+                ParentGameObjectToPlace.transform.position += placementPosition - gameObject.transform.position;
+                ParentGameObjectToPlace.transform.rotation = toQuat;
+            }
+            else
+            {
+                gameObject.transform.position = placementPosition;
+                gameObject.transform.rotation = toQuat;
             }
         }
 
@@ -144,7 +137,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 #if UNITY_WSA && !UNITY_EDITOR
 
                 // If the user is in placing mode, display the spatial mapping mesh.
-                spatialMappingManager.DrawVisualMeshes = true;
+                SpatialMappingManager.Instance.DrawVisualMeshes = true;
 
                 //Removes existing world anchor if any exist.
                 anchorManager.RemoveAnchor(gameObject);
@@ -157,7 +150,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 #if UNITY_WSA && !UNITY_EDITOR
 
                 // If the user is not in placing mode, hide the spatial mapping mesh.
-                spatialMappingManager.DrawVisualMeshes = false;
+                SpatialMappingManager.Instance.DrawVisualMeshes = false;
 
                 // Add world anchor when object placement is done.
                 anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
