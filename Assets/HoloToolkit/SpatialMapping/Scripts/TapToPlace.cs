@@ -36,15 +36,8 @@ namespace HoloToolkit.Unity.SpatialMapping
         [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
         public bool IsBeingPlaced;
 
-#if UNITY_WSA && !UNITY_EDITOR
         /// <summary>
-        /// Manages persisted anchors.
-        /// </summary>
-        protected WorldAnchorManager anchorManager;
-#endif
-
-        /// <summary>
-        /// Keeps track of the layer the game object was on.
+        /// Keeps track of the layer the game object was initially on.
         /// During placement the layer is switched to Ignore Raycast while placing the object.
         /// </summary>
         private int defaultLayer;
@@ -60,18 +53,17 @@ namespace HoloToolkit.Unity.SpatialMapping
 
 #if UNITY_WSA && !UNITY_EDITOR
             // Make sure we have all the components in the scene we need.
-            anchorManager = WorldAnchorManager.Instance;
-            if (anchorManager == null)
+            if (WorldAnchorManager.Instance == null)
             {
                 Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
             }
 
-            if (anchorManager != null)
+            if (WorldAnchorManager.Instance != null)
             {
                 // If we are not starting out with actively placing the object, give it a World Anchor
                 if (!IsBeingPlaced)
                 {
-                    anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                    WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
                 }
             }
 #endif
@@ -138,14 +130,13 @@ namespace HoloToolkit.Unity.SpatialMapping
             {
                 gameObject.layer = DefaultIgnoreRaycastLayer;
                 InputManager.Instance.AddGlobalListener(gameObject);
-
 #if UNITY_WSA && !UNITY_EDITOR
 
                 // If the user is in placing mode, display the spatial mapping mesh.
                 SpatialMappingManager.Instance.DrawVisualMeshes = true;
 
                 //Removes existing world anchor if any exist.
-                anchorManager.RemoveAnchor(gameObject);
+                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
 #endif
             }
             else
@@ -158,7 +149,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 SpatialMappingManager.Instance.DrawVisualMeshes = false;
 
                 // Add world anchor when object placement is done.
-                anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
 #endif
             }
         }
