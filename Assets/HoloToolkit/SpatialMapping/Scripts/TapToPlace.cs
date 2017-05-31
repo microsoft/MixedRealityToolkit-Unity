@@ -17,6 +17,7 @@ namespace HoloToolkit.Unity.SpatialMapping
     /// TapToPlace also adds a WorldAnchor component to enable persistence.
     /// </summary>
     [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(Interpolator))]
     public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
@@ -47,6 +48,8 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private const int DefaultIgnoreRaycastLayer = 2;
 
+        private Interpolator interpolator;
+
         protected virtual void Start()
         {
             defaultLayer = gameObject.layer;
@@ -68,15 +71,11 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
 #endif
 
-            if (PlaceParentOnTap)
-            {
-                if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
-                {
-                    Debug.LogError("The specified parent object is not a parent of this object.");
-                }
+            DetermineParent();
 
-                DetermineParent();
-            }
+            interpolator = PlaceParentOnTap
+                ? ParentGameObjectToPlace.EnsureComponent<Interpolator>()
+                : gameObject.EnsureComponent<Interpolator>();
 
             if (IsBeingPlaced)
             {
@@ -116,14 +115,11 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (PlaceParentOnTap)
             {
-                ParentGameObjectToPlace.transform.position += placementPosition - gameObject.transform.position;
-                ParentGameObjectToPlace.transform.rotation = toQuat;
+                placementPosition = ParentGameObjectToPlace.transform.position + (placementPosition - gameObject.transform.position);
             }
-            else
-            {
-                gameObject.transform.position = placementPosition;
-                gameObject.transform.rotation = toQuat;
-            }
+
+            interpolator.SetTargetPosition(placementPosition);
+            interpolator.SetTargetRotation(toQuat);
         }
 
         public virtual void OnInputClicked(InputClickedEventData eventData)
@@ -165,6 +161,8 @@ namespace HoloToolkit.Unity.SpatialMapping
 
         private void DetermineParent()
         {
+            if (!PlaceParentOnTap) { return; }
+
             if (ParentGameObjectToPlace == null)
             {
                 if (gameObject.transform.parent == null)
@@ -177,6 +175,11 @@ namespace HoloToolkit.Unity.SpatialMapping
                     Debug.LogWarning("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
                     ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
                 }
+            }
+
+            if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+            {
+                Debug.LogWarning("The specified parent object is not a parent of this object.");
             }
         }
 
