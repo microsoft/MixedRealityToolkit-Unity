@@ -49,6 +49,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private int defaultLayer;
 
+        /// <summary>
+        /// The default ignore raycast layer built into unity.
+        /// </summary>
+        private const int DefaultIgnoreRaycastLayer = 2;
+
         protected virtual void Start()
         {
             defaultLayer = gameObject.layer;
@@ -131,7 +136,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             if (IsBeingPlaced)
             {
-                gameObject.layer = 2;
+                gameObject.layer = DefaultIgnoreRaycastLayer;
                 InputManager.Instance.AddGlobalListener(gameObject);
 
 #if UNITY_WSA && !UNITY_EDITOR
