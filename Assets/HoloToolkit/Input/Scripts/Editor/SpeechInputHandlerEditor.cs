@@ -56,8 +56,12 @@ namespace HoloToolkit.Unity.InputModule
 
             // remove the keywords already assigned from the registered list
             var handler = (SpeechInputHandler)target;
-            
-            string[] availableKeywords = registeredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
+            var availableKeywords = new string[0];
+
+            if (handler.Keywords != null)
+            {
+                availableKeywords = registeredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
+            }
 
             // keyword rows
             for (int index = 0; index < list.arraySize; index++)
