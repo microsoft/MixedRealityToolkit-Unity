@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -19,6 +21,9 @@ namespace HoloToolkit.Unity.InputModule
     [RequireComponent(typeof(Interpolator))]
     public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
+        [Tooltip("Distance from camera to keep the object while placing it.")]
+        public float DefaultGazeDistance = 2.0f;
+
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
@@ -37,23 +42,16 @@ namespace HoloToolkit.Unity.InputModule
         public bool IsBeingPlaced;
 
         /// <summary>
-        /// Keeps track of the layer the game object was initially on.
-        /// During placement the layer is switched to Ignore Raycast while placing the object.
-        /// </summary>
-        private int defaultLayer;
-
-        /// <summary>
         /// The default ignore raycast layer built into unity.
         /// </summary>
-        private const int DefaultIgnoreRaycastLayer = 2;
+        private const int IgnoreRaycastLayer = 2;
 
         private Interpolator interpolator;
 
+        private static Dictionary<GameObject, int> defaultLayersCache = new Dictionary<GameObject, int>();
+
         protected virtual void Start()
         {
-            defaultLayer = gameObject.layer;
-
-#if UNITY_WSA && !UNITY_EDITOR
             // Make sure we have all the components in the scene we need.
             if (WorldAnchorManager.Instance == null)
             {
@@ -68,7 +66,6 @@ namespace HoloToolkit.Unity.InputModule
                     WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
                 }
             }
-#endif
 
             DetermineParent();
 
@@ -84,28 +81,19 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void Update()
         {
-            // If the user is in placing mode,
-            // update the placement to match the user's gaze.
             if (!IsBeingPlaced) { return; }
 
-            // Rotate this object to face the user.
-            Quaternion toQuat = Camera.main.transform.localRotation;
-            toQuat.x = 0;
-            toQuat.z = 0;
+            Vector3 headPosition = Camera.main.transform.position;
+            Vector3 gazeDirection = Camera.main.transform.forward;
 
-#if UNITY_WSA && !UNITY_EDITOR
-                Vector3 headPosition = Camera.main.transform.position;
-                Vector3 gazeDirection = Camera.main.transform.forward;
-
-                // If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
-                RaycastHit hitInfo;
-                Vector3 placementPosition = SpatialMappingManager.Instance != null &&
-                    Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, SpatialMappingManager.LayerMask)
-                        ? hitInfo.point
-                        : GazeManager.Instance.HitPosition;
-#else
-            Vector3 placementPosition = GazeManager.Instance.HitPosition;
-#endif
+            // If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
+            RaycastHit hitInfo;
+            Vector3 placementPosition = SpatialMappingManager.Instance != null &&
+                Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask)
+                    ? hitInfo.point
+                    : (GazeManager.Instance.HitObject == null
+                        ? GazeManager.Instance.GazeOrigin + GazeManager.Instance.GazeNormal * DefaultGazeDistance
+                        : GazeManager.Instance.HitPosition);
 
             // Here is where you might consider adding intelligence
             // to how the object is placed.  For example, consider
@@ -117,8 +105,11 @@ namespace HoloToolkit.Unity.InputModule
                 placementPosition = ParentGameObjectToPlace.transform.position + (placementPosition - gameObject.transform.position);
             }
 
+            // update the placement to match the user's gaze.
             interpolator.SetTargetPosition(placementPosition);
-            interpolator.SetTargetRotation(toQuat);
+
+            // Rotate this object to face the user.
+            interpolator.SetTargetRotation(Quaternion.Euler(0, Camera.main.transform.localEulerAngles.y, 0));
         }
 
         public virtual void OnInputClicked(InputClickedEventData eventData)
@@ -132,12 +123,12 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (IsBeingPlaced)
             {
-                SetLayerRecursively(transform, DefaultIgnoreRaycastLayer);
+                SetLayerRecursively(transform, useDefaultLayer: false);
                 InputManager.Instance.AddGlobalListener(gameObject);
-#if UNITY_WSA && !UNITY_EDITOR
 
                 // If the user is in placing mode, display the spatial mapping mesh.
                 SpatialMappingManager.Instance.DrawVisualMeshes = true;
+#if UNITY_WSA && !UNITY_EDITOR
 
                 //Removes existing world anchor if any exist.
                 WorldAnchorManager.Instance.RemoveAnchor(gameObject);
@@ -145,12 +136,14 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                SetLayerRecursively(transform, defaultLayer);
+                SetLayerRecursively(transform, useDefaultLayer: true);
+                // Clear our cache in case we added or removed gameobjects between taps
+                defaultLayersCache.Clear();
                 InputManager.Instance.RemoveGlobalListener(gameObject);
-#if UNITY_WSA && !UNITY_EDITOR
 
                 // If the user is not in placing mode, hide the spatial mapping mesh.
                 SpatialMappingManager.Instance.DrawVisualMeshes = false;
+#if UNITY_WSA && !UNITY_EDITOR
 
                 // Add world anchor when object placement is done.
                 WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
@@ -182,13 +175,30 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private static void SetLayerRecursively(Transform gameObjectToSet, int layerId)
+        private static void SetLayerRecursively(Transform objectToSet, bool useDefaultLayer)
         {
-            gameObjectToSet.gameObject.layer = layerId;
-
-            for (int i = 0; i < gameObjectToSet.childCount; i++)
+            if (useDefaultLayer)
             {
-                SetLayerRecursively(gameObjectToSet.GetChild(i), layerId);
+                if (defaultLayersCache.ContainsKey(objectToSet.gameObject))
+                {
+                    int defaultLayerId;
+                    if (defaultLayersCache.TryGetValue(objectToSet.gameObject, out defaultLayerId))
+                    {
+                        objectToSet.gameObject.layer = defaultLayerId;
+                        defaultLayersCache.Remove(objectToSet.gameObject);
+                    }
+                }
+            }
+            else
+            {
+                defaultLayersCache.Add(objectToSet.gameObject, objectToSet.gameObject.layer);
+
+                objectToSet.gameObject.layer = IgnoreRaycastLayer;
+            }
+
+            for (int i = 0; i < objectToSet.childCount; i++)
+            {
+                SetLayerRecursively(objectToSet.GetChild(i), useDefaultLayer);
             }
         }
     }
