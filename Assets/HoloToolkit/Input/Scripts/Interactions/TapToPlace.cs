@@ -179,14 +179,11 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (useDefaultLayer)
             {
-                if (defaultLayersCache.ContainsKey(objectToSet.gameObject))
+                int defaultLayerId;
+                if (defaultLayersCache.TryGetValue(objectToSet.gameObject, out defaultLayerId))
                 {
-                    int defaultLayerId;
-                    if (defaultLayersCache.TryGetValue(objectToSet.gameObject, out defaultLayerId))
-                    {
-                        objectToSet.gameObject.layer = defaultLayerId;
-                        defaultLayersCache.Remove(objectToSet.gameObject);
-                    }
+                    objectToSet.gameObject.layer = defaultLayerId;
+                    defaultLayersCache.Remove(objectToSet.gameObject);
                 }
             }
             else
