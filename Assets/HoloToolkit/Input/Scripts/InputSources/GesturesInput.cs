@@ -526,6 +526,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (!(sourceData.Position.CurrentReading.Equals(newPosition)))
                 {
+                    // TODO: Raising events here may cause reentrancy complexity. Consider delaying all event-raising till
+					//       after all updates are stored. Alternatively, consider switching from polling to responding to
+					//       InteractionManager events.
                     InputManager.Instance.RaiseSourcePositionChanged(this, sourceData.SourceId, newPosition);
                 }
             }
@@ -544,10 +547,8 @@ namespace HoloToolkit.Unity.InputModule
             }
             sourceData.Rotation.CurrentReading = newRotation;
 
-            Ray newPointerRay;
             sourceData.PointingRay.IsSupported = interactionSource.source.supportsPointing;
-            sourceData.PointingRay.IsAvailable = sourcePose.TryGetPointerRay(out newPointerRay) && newPointerRay.IsValid();
-            sourceData.PointingRay.CurrentReading = newPointerRay;
+            sourceData.PointingRay.IsAvailable = sourcePose.TryGetPointerRay(out sourceData.PointingRay.CurrentReading);
 
             InteractionController controller;
             bool gotController = interactionSource.source.TryGetController(out controller);

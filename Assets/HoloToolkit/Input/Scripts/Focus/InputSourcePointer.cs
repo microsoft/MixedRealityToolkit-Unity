@@ -67,10 +67,19 @@ namespace HoloToolkit.Unity.InputModule
         {
             var inputData = (eventData as BaseInputEventData);
 
-            return (inputData != null)
-                && (inputData.InputSource == InputSource)
-                && (inputData.SourceId == InputSourceId)
-                ;
+            if (inputData != null)
+            {
+                return (inputData.InputSource == InputSource) && (inputData.SourceId == InputSourceId);
+            }
+
+            var pointerInputEventData = (eventData as PointerInputEventData);
+
+            if (pointerInputEventData != null)
+            {
+                return (pointerInputEventData.InputSource == InputSource) && (pointerInputEventData.InputSourceId == InputSourceId);
+            }
+
+            return false;
         }
     }
 }
