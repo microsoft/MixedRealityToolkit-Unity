@@ -11,11 +11,8 @@ namespace HoloToolkit.Unity.InputModule
     /// The TapToPlace class is a basic way to enable users to move objects 
     /// and place them on real world surfaces.
     /// Put this script on the object you want to be able to move. 
-    /// Users will be able to tap objects, gaze elsewhere, and perform the
-    /// tap gesture again to place.
-    /// This script is used in conjunction with GazeManager, GestureManager,
-    /// and SpatialMappingManager.
-    /// TapToPlace also adds a WorldAnchor component to enable persistence.
+    /// Users will be able to tap objects, gaze elsewhere, and perform the tap gesture again to place.
+    /// This script is used in conjunction with GazeManager, WorldAnchorManager, and SpatialMappingManager.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Interpolator))]
