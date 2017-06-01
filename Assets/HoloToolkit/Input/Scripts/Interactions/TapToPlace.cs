@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// The TapToPlace class is a basic way to enable users to move objects 
