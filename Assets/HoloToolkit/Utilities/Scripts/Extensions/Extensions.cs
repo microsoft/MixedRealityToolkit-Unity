@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -82,7 +86,7 @@ namespace HoloToolkit.Unity
 
                 if (effectiveComparer.Compare(element, nextElement) > 0)
                 {
-                    Assert.Fail(DiagnosticContext.Create(), "elements must already be sorted to call this method.");
+                    Debug.Assert(false, "elements must already be sorted to call this method.");
                     break;
                 }
             }
@@ -203,7 +207,7 @@ namespace HoloToolkit.Unity
 
             public ReverseComparer(IComparer<TElement> originalComparer)
             {
-                Assert.IsTrue(DiagnosticContext.Create(), originalComparer != null, "originalComparer cannot be null.");
+                Debug.Assert(originalComparer != null, "originalComparer cannot be null.");
 
                 this.originalComparer = originalComparer;
             }
