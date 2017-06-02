@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
@@ -178,6 +177,13 @@ namespace HoloToolkit.Unity.SharingWithUNET
             {
                 networkTransmitter.dataReadyEvent += NetworkTransmitter_dataReadyEvent;
             }
+
+            // If we have a debug panel, then we have debug data for the panel. 
+            DebugPanel debugPanel = DebugPanel.Instance;
+            if (debugPanel != null)
+            {
+                DebugPanel.Instance.RegisterExternalLogCallback(GenearteDebugData);
+            }
         }
 
         private void Update()
@@ -214,6 +220,21 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #else
             return;
 #endif
+        }
+
+        /// <summary>
+        ///  creates a debug string with information about the anchor state.
+        /// </summary>
+        /// <returns>The calculated string</returns>
+        private string GenearteDebugData()
+        {
+            return string.Format("Anchor Name: {0}\nAnchor Size: {1}\nAnchor Established?: {2}\nImporting?: {3}\nDownloading? {4}\n",
+                AnchorName, 
+                anchorData == null? exportingAnchorBytes.Count : anchorData.Length,
+                AnchorEstablished.ToString(),
+                ImportInProgress.ToString(),
+                DownloadingAnchor.ToString()
+                );
         }
 
         /// <summary>

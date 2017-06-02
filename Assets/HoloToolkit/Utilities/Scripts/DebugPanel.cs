@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Script to control writing the Debug.Log output to a control.
 /// </summary>
-public class DebugPanel : MonoBehaviour
+public class DebugPanel : SingleInstance<DebugPanel>
 {
     /// <summary>
     /// The text mesh we will write log messages to
@@ -24,12 +26,17 @@ public class DebugPanel : MonoBehaviour
     private int maxLogMessages = 30;
 
     /// <summary>
-    /// Variables for an FPS counter
+    /// If another script wants to make a log entry per frame they will implement this delegate.
     /// </summary>
-    private int frameCount;
-    private int framesPerSecond;
-    private int lastWholeTime = 0;
+    /// <returns></returns>
+    public delegate string GetLogLine();
 
+    /// <summary>
+    /// A list of GetLogLine delegates to call for per frame information.
+    /// </summary>
+    private List<GetLogLine> ExternalLogs = new List<GetLogLine>();
+
+    
     void Awake()
     {
         textMesh = GetComponent<TextMesh>();
@@ -38,12 +45,8 @@ public class DebugPanel : MonoBehaviour
 
     void Update()
     {
-        UpdateFPS();
-
         string logMessageString = CalculateLogMessageString();
-        string FPSString = string.Format("FPS: {0}\n", framesPerSecond);
-
-        textMesh.text = string.Format("{0}\n{1}\n", FPSString, logMessageString);
+        textMesh.text = logMessageString;
     }
 
     /// <summary>
@@ -52,7 +55,17 @@ public class DebugPanel : MonoBehaviour
     /// <returns>The formatted string</returns>
     string CalculateLogMessageString()
     {
-        string logMessageString = "";
+        string logMessageString = "Per Frame Data:\n------\n";
+        for(int index=0;index<ExternalLogs.Count;index++)
+        {
+            string nextExternalLine = ExternalLogs[index]();
+            if (!string.IsNullOrEmpty(nextExternalLine))
+            {
+                logMessageString += string.Format("{0}\n", nextExternalLine);
+            }
+        }
+
+        logMessageString += string.Format("------\n");
 
         lock (logMessages)
         {
@@ -71,21 +84,6 @@ public class DebugPanel : MonoBehaviour
         }
 
         return logMessageString;
-    }
-
-    /// <summary>
-    /// Keeps track of rough frames per second.
-    /// </summary>
-    void UpdateFPS()
-    {
-        frameCount++;
-        int currentWholeTime = (int)Time.realtimeSinceStartup;
-        if (currentWholeTime != lastWholeTime)
-        {
-            lastWholeTime = currentWholeTime;
-            framesPerSecond = frameCount;
-            frameCount = 0;
-        }
     }
 
     /// <summary>
@@ -115,6 +113,27 @@ public class DebugPanel : MonoBehaviour
                 // and the stack information is valuable in error/warning cases.
                 logMessages.Enqueue(stack);
             }
+        }
+    }
+
+    /// <summary>
+    /// Call this to register your script to provide a debug string each frame.
+    /// </summary>
+    /// <param name="callback">The delegate to call back</param>
+    public void RegisterExternalLogCallback(GetLogLine callback)
+    {
+        ExternalLogs.Add(callback);
+    }
+
+    /// <summary>
+    /// Call this when you no longer want to provide a debug string each frame.
+    /// </summary>
+    /// <param name="callback">The callback to stop calling</param>
+    public void UnregisterExternalLogCallback(GetLogLine callback)
+    {
+        if (ExternalLogs.Contains(callback))
+        {
+            ExternalLogs.Remove(callback);
         }
     }
 }
