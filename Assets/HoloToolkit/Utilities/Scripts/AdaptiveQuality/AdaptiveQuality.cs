@@ -10,15 +10,18 @@ namespace HoloToolkit.Unity
 	/// Main components for controlling the quality of the system to maintain a steady framerate.
 	/// Calulates a QualityLevel based on the reported framerate and the refreshrate of the device inside the provided thresholds.
 	/// A QualityChangedEvent is triggered whenever the quality level changes.
-	/// Uses the GpuTimingCamera component to meassure gpu time of the frame, if the Camera doesnt already have this component, it is automatically added.
+	/// Uses the GpuTimingCamera component to measure gpu time of the frame, if the Camera doesnt already have this component, it is automatically added.
 	/// </summary>
 
 	public class AdaptiveQuality : MonoBehaviour
 	{
 		[SerializeField]
-		private float MinFrameTimeThreshold = 0.75f; //The minimum frame time percentage threshold used to increase render quality
+		[Tooltip("The minimum frame time percentage threshold used to increase render quality.")]
+		private float MinFrameTimeThreshold = 0.75f;
+
 		[SerializeField]
-		private float MaxFrameTimeThreshold = 0.95f; //The maximum frame time percentage threshold used to decrease render quality
+		[Tooltip("The maximum frame time percentage threshold used to decrease render quality.")]
+		private float MaxFrameTimeThreshold = 0.95f;
 
 		[SerializeField]
 		private int MinQualityLevel = -5;
@@ -35,8 +38,11 @@ namespace HoloToolkit.Unity
 
 		private float frameTimeQuota;
 
-		private const int maxLastFrames = 7;    //The maximum number of frames used to extrapolate a future frame
-		private List<float> lastFrames = new List<float>();
+		/// <summary>
+		/// The maximum number of frames used to extrapolate a future frame
+		/// </summary>
+		private const int maxLastFrames = 7;
+		private Queue<float> lastFrames = new Queue<float>();
 
 		private const int minFrameCountBeforeQualityChange = 5;
 		private int frameCountSinceLastLevelUpdate;
@@ -46,7 +52,7 @@ namespace HoloToolkit.Unity
 
 		public const string TimingTag = "Frame";
 
-		void OnEnable()
+		private void OnEnable()
 		{
 			QualityLevel = StartQualityLevel;
 
@@ -89,10 +95,11 @@ namespace HoloToolkit.Unity
 				return false;
 			}
 
+			float maxTime = frameTimeQuota * MinFrameTimeThreshold;
 			//See if all our frames are below the threshold
-			for (int i = 0; i < frameCount; i++)
+			foreach (var frameTime in lastFrames)
 			{
-				if (lastFrames[lastFrames.Count - 1 - i] >= (frameTimeQuota * MinFrameTimeThreshold))
+				if (frameTime >= maxTime)
 				{
 					return false;
 				}
@@ -105,7 +112,7 @@ namespace HoloToolkit.Unity
 		{
 			//Change and clamp the new quality level
 			int prevQualityLevel = QualityLevel;
-			QualityLevel = Mathf.Max(MinQualityLevel, Mathf.Min(MaxQualityLevel, QualityLevel + delta));
+			QualityLevel = Mathf.Clamp(QualityLevel + delta, MinQualityLevel, MaxQualityLevel);
 
 			//Trigger the event if we changed quality
 			if (QualityLevel != prevQualityLevel)
@@ -128,10 +135,10 @@ namespace HoloToolkit.Unity
 			}
 
 			//Store a list of the frame samples
-			lastFrames.Add(lastAppFrameTime);
+			lastFrames.Enqueue(lastAppFrameTime);
 			if (lastFrames.Count > maxLastFrames)
 			{
-				lastFrames.RemoveAt(0);
+				lastFrames.Dequeue();
 			}
 
 			//Wait for a few frames between changes

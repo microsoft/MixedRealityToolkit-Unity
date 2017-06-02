@@ -25,8 +25,11 @@ namespace HoloToolkit.Unity
 		private static int nextAvailableEventId = 0;
 		private static Stack<int> currentEventId = new Stack<int>();
 		private static Dictionary<string, int> eventIds = new Dictionary<string, int>();
-
-		// Gets the latest available sample time for the given event.
+		/// <summary>
+		/// Gets the latest available sample time for the given event. 
+		/// </summary>
+		/// <param name="eventId">Name of the event.</param>
+		/// <returns>Time in miliseconds.</returns>
 		public static double GetTime(string eventId)
 		{
 			int eventValue;
@@ -37,8 +40,11 @@ namespace HoloToolkit.Unity
 
 			return -1;
 		}
-
-		// Begins sampling GPU time.
+		/// <summary>
+		/// Begins sampling GPU time. 
+		/// </summary>
+		/// <param name="eventId">Name of the event.</param>
+		/// <returns>Returns true if a BeginSample with the same event name was last added.</returns>
 		public static bool BeginSample(string eventId)
 		{
 			int eventValue;
@@ -66,8 +72,9 @@ namespace HoloToolkit.Unity
 			GL.IssuePluginEvent(GetRenderEventFunc(), eventFunctionId);
 			return true;
 		}
-
-		// Ends the GPU sample currently in flight.
+		/// <summary>
+		/// Ends the GPU sample currently in flight. 
+		/// </summary>
 		public static void EndSample()
 		{
 			if (currentEventId.Count > 0)

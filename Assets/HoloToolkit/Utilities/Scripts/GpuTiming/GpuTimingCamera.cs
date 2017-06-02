@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity
 
 		private Camera timingCamera;
 
-		void Start()
+		private void Start()
 		{
 			timingCamera = GetComponent<Camera>();
 			Debug.Assert(timingCamera, "GpuTimingComponent must be attached to a Camera.");

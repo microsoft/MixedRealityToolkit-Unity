@@ -9,22 +9,29 @@ namespace HoloToolkit.Unity
 	/// Changes the VR viewport to correlate to the requested quality, trying to maintain a steady framerate by reducing the amount of pixels rendered.
 	/// Uses the AdaptiveQuality component to respond to quality change events.
 	/// At MaxQualityLevel, the viewport will be set to 1.0 and will linearly drop of to MinViewportSize at MinQualityLevel
+	/// Note, that it is ok to have the quality levels in this component correlate to a subset of the levels reported from the AdaptiveQuality component
 	/// </summary>
 
 	public class AdaptiveViewport : MonoBehaviour
 	{
 		[SerializeField]
-		private int MaxQualityLevel = 5;
+		[Tooltip("The quality level where the viewport will be at full size.")]
+		private int FullSizeQualityLevel = 5;
+
 		[SerializeField]
-		private int MinQualityLevel = -5;
+		[Tooltip("The quality level where the viewport will be at Min Viewport Size.")]
+		private int MinSizeQualityLevel = -5;
+
 		[SerializeField]
+		[Tooltip("Percentage size of viewport when quality is at Min Size Quality Level.")]
 		private float MinViewportSize = 0.5f;
+
 		[SerializeField]
 		private AdaptiveQuality qualityController;
 
 		public float CurrentScale { get; private set; }
 
-		void OnEnable()
+		private void OnEnable()
 		{
 			CurrentScale = 1.0f;
 
@@ -38,7 +45,7 @@ namespace HoloToolkit.Unity
 			}
 		}
 
-		void OnDisable()
+		private void OnDisable()
 		{
 			if (qualityController)
 			{
@@ -52,7 +59,7 @@ namespace HoloToolkit.Unity
 			UnityEngine.VR.VRSettings.renderViewportScale = CurrentScale;
 		}
 
-		public void QualityChangedEvent(int newQuality, int previousQuality)
+		private void QualityChangedEvent(int newQuality, int previousQuality)
 		{
 			SetScaleFromQuality(newQuality);
 		}
@@ -60,10 +67,10 @@ namespace HoloToolkit.Unity
 		private void SetScaleFromQuality(int quality)
 		{
 			//Clamp the quality to our min and max
-			int clampedQuality = Math.Min(MaxQualityLevel, Math.Max(MinQualityLevel, quality));
+			int clampedQuality = Mathf.Clamp(quality, MinSizeQualityLevel, FullSizeQualityLevel);
 
 			//Calculate our new scale value based on quality
-			float lerpVal = Mathf.InverseLerp(MinQualityLevel, MaxQualityLevel, clampedQuality);
+			float lerpVal = Mathf.InverseLerp(MinSizeQualityLevel, FullSizeQualityLevel, clampedQuality);
 			CurrentScale = Mathf.Lerp(MinViewportSize, 1.0f, lerpVal);
 		}
 	}
