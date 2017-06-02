@@ -3,6 +3,10 @@
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Provides helper methods for combining hash codes of many properties or objects into an
+    /// aggregated hash code.
+    /// </summary>
     public static class HashCodes
     {
         public static int Combine(int first, int second)
