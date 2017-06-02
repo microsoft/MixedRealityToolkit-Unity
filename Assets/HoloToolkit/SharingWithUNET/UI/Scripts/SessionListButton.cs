@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <summary>
         /// When the control gets started we need to do some setup.
         /// </summary>
-        private void Start()
+        private void Awake()
         {
             textMesh = gameObject.GetComponentInChildren<TextMesh>();
             textMaterial = textMesh.GetComponent<MeshRenderer>().material;

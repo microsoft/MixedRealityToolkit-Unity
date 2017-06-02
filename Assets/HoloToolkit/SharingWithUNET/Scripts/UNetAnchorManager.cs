@@ -4,11 +4,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
-using HoloToolkit.Unity;
+using HoloToolkit.Unity.SpatialMapping;
 using UnityEngine.VR.WSA.Sharing;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 using System;
+using System.Collections.ObjectModel;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
@@ -64,11 +65,31 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         private GenericNetworkTransmitter networkTransmitter;
 
+#pragma warning disable 0414
         /// <summary>
         /// Keeps track of if we created the anchor.
         /// </summary>
-#pragma warning disable 0414
         private bool createdAnchor = false;
+
+        /// <summary>
+        /// Previous anchor name.
+        /// </summary>
+        private string oldAnchorName = "";
+
+        /// <summary>
+        /// Tracks if we have updated data to import.
+        /// </summary>
+        private bool gotOne = false;
+
+        /// <summary>
+        /// While seeking a good place to put an anchor, we use spatial mapping;
+        /// </summary>
+        private SpatialMappingManager spatialMapping;
+
+        /// <summary>
+        /// Tracks if we had to manually start the observer so we should turn it off when we don't need it.
+        /// </summary>
+        private bool StartedObserver = false;
 #pragma warning restore 0414
 
         /// <summary>
@@ -77,23 +98,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private GameObject objectToAnchor;
 
         /// <summary>
-        /// Previous anchor name.
-        /// </summary>
-#pragma warning disable 0414
-        private string oldAnchorName = "";
-#pragma warning restore 0414
-
-        /// <summary>
         /// The anchorData to import.
         /// </summary>
         private byte[] anchorData = null;
-
-        /// <summary>
-        /// Tracks if we have updated data to import.
-        /// </summary>
-#pragma warning disable 0414
-        private bool gotOne = false;
-#pragma warning restore 0414
 
         /// <summary>
         /// Keeps track of the name of the anchor we are exporting.
@@ -143,6 +150,12 @@ namespace HoloToolkit.Unity.SharingWithUNET
             else
             {
                 objectToAnchor = SharedCollection.Instance.gameObject;
+            }
+
+            spatialMapping = SpatialMappingManager.Instance;
+            if (spatialMapping == null)
+            {
+                Debug.Log("Spatial mapping not found in scene.  Better anchor locations can be found if a SpatialMappingManager is in the scene");
             }
 
             return true;
@@ -211,29 +224,178 @@ namespace HoloToolkit.Unity.SharingWithUNET
             exportingAnchorBytes.Clear();
             GenericNetworkTransmitter.Instance.SetData(null);
             objectToAnchor = SharedCollection.Instance.gameObject;
+            FindAnchorPosition();
+        }
 
+        /// <summary>
+        /// Finds a good position to set the anchor.
+        /// 1. If we have an anchor stored in the player prefs/ anchor store, use that
+        /// 2. If we don't have spatial mapping, just use where the object happens to be 
+        /// 3. if we do have spatial mapping, anchor at a vertex dense portion of spatial mapping
+        /// </summary>
+        private void FindAnchorPosition()
+        {
+            // 1. recover a stored anchor if we can
             if (PlayerPrefs.HasKey(SavedAnchorKey) && AttachToCachedAnchor(PlayerPrefs.GetString(SavedAnchorKey)))
             {
                 exportingAnchorName = PlayerPrefs.GetString(SavedAnchorKey);
-                Debug.Log("found " + AnchorName + " again");
-                
+                Debug.Log("found " + exportingAnchorName + " again");
+                ExportAnchor();
             }
+            // 2. just use the current object position if we don't have access to spatial mapping
+            else if (spatialMapping == null)
+            {
+                Debug.Log("No spatial mapping...");
+                ExportAnchorAtPosition(objectToAnchor.transform.position);
+            }
+            // 3. seek a vertex dense portion of spatial mapping
             else
             {
-                exportingAnchorName = Guid.NewGuid().ToString();
+                ReadOnlyCollection<SpatialMappingSource.SurfaceObject> surfaces = spatialMapping.GetSurfaceObjects();
+                if (surfaces == null || surfaces.Count == 0)
+                {
+                    // If we aren't getting surfaces we may need to start the observer.
+                    if (spatialMapping.IsObserverRunning() == false)
+                    {
+                        spatialMapping.StartObserver();
+                        StartedObserver = true;
+                    }
+
+                    // And try again after the observer has a chance to get an update.
+                    Invoke("FindAnchorPosition", spatialMapping.GetComponent<SpatialMappingObserver>().TimeBetweenUpdates);
+                }
+                else
+                {
+                    float startTime = Time.realtimeSinceStartup;
+                    // If we have surfaces, we need to iterate through them to find a dense area
+                    // of geometry, which should provide a good spot for an anchor.
+                    Mesh bestMesh = null;
+                    MeshFilter bestFilter = null;
+                    int mostVerts = 0;
+
+                    for (int index = 0; index < surfaces.Count; index++)
+                    {
+                        // If the current surface doesn't have a filter or a mesh, skip to the next one
+                        // This happens as a surface is being processed.  We need to track both the mesh 
+                        // and the filter because the mesh has the verts in local space and the filter has the transform to 
+                        // world space.
+                        MeshFilter currentFilter = surfaces[index].Filter;
+                        if (currentFilter == null)
+                        {
+                            continue;
+                        }
+
+                        Mesh currentMesh = currentFilter.sharedMesh;
+                        if (currentMesh == null)
+                        {
+                            continue;
+                        }
+
+                        // If we have a collider we can use the extents to estimate the volume.
+                        MeshCollider currentCollider = surfaces[index].Collider;
+                        float volume = currentCollider == null ? 1.0f : currentCollider.bounds.extents.magnitude;
+
+                        // get th verts divided by the volume if any
+                        int meshVerts = (int)(currentMesh.vertexCount/volume);
+
+                        // and if this is most verts/volume we've seen, record this mesh as the current best.
+                        mostVerts = Mathf.Max(meshVerts, mostVerts);
+                        if (mostVerts == meshVerts)
+                        {
+                            bestMesh = currentMesh;
+                            bestFilter = currentFilter;
+                        }
+                    }
+
+                    // If we have a good area to use, then use it.
+                    if (bestMesh != null && mostVerts > 100)
+                    {
+                        // Get the average of the vertices
+                        Vector3[] verts = bestMesh.vertices;
+                        Vector3 avgVert = verts.Average();
+
+                        // transform the average into world space.
+                        Vector3 center =  bestFilter.transform.TransformPoint(avgVert);
+
+                        Debug.LogFormat("found a good mesh mostVerts = {0} processed {1} meshes in {2} ms", mostVerts, surfaces.Count, 1000 * (Time.realtimeSinceStartup - startTime));
+                        // then export the anchor where we've calculated.
+                        ExportAnchorAtPosition(center);
+                    }
+                    else
+                    {
+                        // If we didn't find a good mesh, try again a little later.
+                        Debug.LogFormat("Failed to find a good mesh mostVerts = {0} processed {1} meshes in {2} ms", mostVerts, surfaces.Count, 1000*(Time.realtimeSinceStartup - startTime));
+                        Invoke("FindAnchorPosition", spatialMapping.GetComponent<SpatialMappingObserver>().TimeBetweenUpdates);
+                    }
+                }
             }
-            
-            WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
+        }
+
+        /// <summary>
+        /// Createx and exports the anchor at the specified world position
+        /// </summary>
+        /// <param name="worldPos">The position to place the anchor</param>
+        private void ExportAnchorAtPosition(Vector3 worldPos)
+        {
+            // Need to remove any anchor that is on the object before we can move the object.
             WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
-            if (worldAnchor == null)
+            if (worldAnchor != null)
             {
-                worldAnchor = objectToAnchor.AddComponent<WorldAnchor>();
+                DestroyImmediate(worldAnchor);
             }
 
+            // Move the object to the specifid place
+            objectToAnchor.transform.position = worldPos;
+
+            // Attach a new anchor
+            worldAnchor = objectToAnchor.AddComponent<WorldAnchor>();
+
+            // Name the anchor
             exportingAnchorName = Guid.NewGuid().ToString();
-            Debug.Log("exporting " + exportingAnchorName);
+            Debug.Log("preparing " + exportingAnchorName);
+
+            // Register for on tracking changed in case the anchor isn't already located
+            worldAnchor.OnTrackingChanged += WorldAnchor_OnTrackingChanged;
+
+            // And call our callback in line just in case it is already located.
+            WorldAnchor_OnTrackingChanged(worldAnchor, worldAnchor.isLocated);
+        }
+
+        /// <summary>
+        /// Callback for when tracking changes for an anchor
+        /// </summary>
+        /// <param name="self">The anchor that tracking has changed for.</param>
+        /// <param name="located">Bool if the anchor is located</param>
+        private void WorldAnchor_OnTrackingChanged(WorldAnchor self, bool located)
+        {
+            if(located)
+            {
+                // If we have located the anchor we can export it.
+                Debug.Log("exporting " + exportingAnchorName);
+                // And we don't need this callback anymore
+                self.OnTrackingChanged -= WorldAnchor_OnTrackingChanged;
+
+                ExportAnchor();
+            }
+        }
+
+        /// <summary>
+        /// Exports the anchor on the objectToAnchor.
+        /// </summary>
+        private void ExportAnchor()
+        {
+            WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
+            WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
             watb.AddWorldAnchor(exportingAnchorName, worldAnchor);
             WorldAnchorTransferBatch.ExportAsync(watb, WriteBuffer, ExportComplete);
+
+            // If we started the observer to find a good anchor position, then we need to
+            // stop the observer.
+            if (StartedObserver)
+            {
+                spatialMapping.StopObserver();
+                StartedObserver = false;
+            }
         }
 
         /// <summary>
@@ -370,6 +532,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
+        /// <summary>
+        /// Call this when a remote system has locked onto the same anchor, and we can feel fairly safe about
+        /// storing the anchor in the playerprefs for the next run.
+        /// </summary>
         public void AnchorFoundRemotely()
         {
             Debug.Log("Setting saved anchor to " + AnchorName);
@@ -378,20 +544,28 @@ namespace HoloToolkit.Unity.SharingWithUNET
             PlayerPrefs.Save();
         }
 
+        /// <summary>
+        /// Call this when a new anchor is desired.
+        /// </summary>
         public void MakeNewAnchor()
         {
+            // forget our cached anchor if we have one.
             if (PlayerPrefs.HasKey(SavedAnchorKey))
             {
                 PlayerPrefs.DeleteKey(SavedAnchorKey);
             }
 
+            // remove the world anchor from the object if it is there.
             WorldAnchor currentAnchor = objectToAnchor.GetComponent<WorldAnchor>();
             if (currentAnchor != null)
             {
                 DestroyImmediate(currentAnchor);
             }
 
+            // reset the anchor name so that other participants see that the current anchor is no longer valid.
             AnchorName = "";
+
+            // and then go to create the anchor.
             CreateAnchor();
         }
     }

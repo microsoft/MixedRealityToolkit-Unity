@@ -294,14 +294,23 @@ namespace HoloToolkit.Unity.SharingWithUNET
             StartAsServer();
 
 #if !UNITY_EDITOR
-            // Start creating an anchor.
-            UNetAnchorManager.Instance.CreateAnchor();
+            // Invoke creating an anchor in a couple frames to give all the Unet network objects time to spawn.
+            Invoke("InvokeCreateAnchor", 0.25f);
 #else
             Debug.LogWarning("This script will need modification to work in the Unity Editor");
 #endif
 
             SignalSessionListEvent();
             SignalConnectionStatusEvent();
+        }
+
+        /// <summary>
+        /// The UNetAnchorManager won't be ready immediately after a scene is started so we defer calling 
+        /// create anchor using unity's 'Invoke' on this function.
+        /// </summary>
+        void InvokeCreateAnchor()
+        {
+            UNetAnchorManager.Instance.CreateAnchor();
         }
 
         /// <summary>
