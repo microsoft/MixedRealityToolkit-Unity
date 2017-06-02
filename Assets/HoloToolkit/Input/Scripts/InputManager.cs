@@ -388,7 +388,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
                 pointerInputEventData.InputSource = source;
-                pointerInputEventData.InputSourceId = sourceId;
+                pointerInputEventData.SourceId = sourceId;
 
                 HandleEvent(pointerInputEventData, ExecuteEvents.pointerUpHandler);
                 HandleEvent(pointerInputEventData, ExecuteEvents.pointerClickHandler);
@@ -415,7 +415,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
                 pointerInputEventData.InputSource = source;
-                pointerInputEventData.InputSourceId = sourceId;
+                pointerInputEventData.SourceId = sourceId;
 
                 pointerInputEventData.eligibleForClick = true;
                 pointerInputEventData.delta = Vector2.zero;

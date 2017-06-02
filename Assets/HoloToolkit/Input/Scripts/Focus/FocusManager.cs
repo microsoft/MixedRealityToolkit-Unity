@@ -924,7 +924,7 @@ namespace HoloToolkit.Unity.InputModule
             uiRaycastPointerInputData.selectedObject = null;
             uiRaycastPointerInputData.useDragThreshold = false;
             uiRaycastPointerInputData.InputSource = null;
-            uiRaycastPointerInputData.InputSourceId = 0;
+            uiRaycastPointerInputData.SourceId = 0;
         }
 
         #endregion
