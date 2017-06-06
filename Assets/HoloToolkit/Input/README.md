@@ -170,13 +170,6 @@ Allows dragging an object in space with your hand on HoloLens. Just attach the s
 
 #### Microphone
 
-##### DictationInputManager.cs
-Singleton class that implements  the DictationRecognizer to convert the user's speech to text. The DictationRecognizer exposes dictation functionality and supports registering and listening for hypothesis and phrase completed events.
-
-- **InitialSilenceTimeout** :  The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
-- **AutoSilenceTimeout** : The time length in seconds before dictation recognizer session ends due to lack of audio input.
-- **RecordingTime** : Length in seconds for the manager to listen.
-
 ##### MicStream.cs
 Lets you access beam-formed microphone streams from the HoloLens to optimize voice and/or room captures, which is impossible to do with Unity's Microphone object. Takes the data and inserts it into Unity's AudioSource object for easy handling. Also lets you record indeterminate-length audio files from the Microphone to your device's Music Library, also using beam-forming.
 
@@ -218,6 +211,13 @@ Used to assign a Unity Event to a keyword stored in the SpeechInputSource compon
 
 ##### ISpeechHandler.cs
 Interface that a game object can implement to react to speech keywords.
+
+##### DictationInputManager.cs
+Singleton class that implements  the DictationRecognizer to convert the user's speech to text. The DictationRecognizer exposes dictation functionality and supports registering and listening for hypothesis and phrase completed events.
+
+- **InitialSilenceTimeout** :  The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
+- **AutoSilenceTimeout** : The time length in seconds before dictation recognizer session ends due to lack of audio input.
+- **RecordingTime** : Length in seconds for the manager to listen.
 
 ### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Prefabs)
 
