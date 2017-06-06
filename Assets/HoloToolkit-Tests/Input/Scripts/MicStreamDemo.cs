@@ -143,7 +143,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void OnApplicationPause(bool pause)
         {
-            IsRunning = pause;
+            IsRunning = !pause;
         }
 
         private void OnDisable()
