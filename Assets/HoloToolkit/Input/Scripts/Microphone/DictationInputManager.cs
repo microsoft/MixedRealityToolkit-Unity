@@ -108,9 +108,9 @@ namespace HoloToolkit.Unity.InputModule
         private static int samplingRate;
 
         /// <summary>
-        /// Use this to reset the UI once the Mic is done recording.
+        /// Is the Dictation Manager currently running?
         /// </summary>
-        private static bool recordingStarted;
+        public static bool IsListening { get; private set; }
 
         /// <summary>
         /// String result of the current dictation.
@@ -125,8 +125,6 @@ namespace HoloToolkit.Unity.InputModule
         private static DictationRecognizer dictationRecognizer;
 
         private bool hasFailed;
-
-        private static bool isListening;
 
         #region Unity Methods
 
@@ -148,17 +146,12 @@ namespace HoloToolkit.Unity.InputModule
 
             // Use this string to cache the text currently displayed.
             textSoFar = new StringBuilder();
-
-            // Use this to reset once the Microphone is done recording after it was started.
-            recordingStarted = false;
         }
 
         private void Update()
         {
-            if (recordingStarted && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
+            if (IsListening && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
-                recordingStarted = false;
-
                 // If the microphone stops as a result of timing out, make sure to manually stop the dictation recognizer.
                 StartCoroutine(StopRecording());
             }
@@ -184,9 +177,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StartRecording()
         {
-            if (isListening) { yield break; }
+            if (IsListening) { yield break; }
 
-            isListening = true;
+            IsListening = true;
 
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             {
@@ -211,8 +204,6 @@ namespace HoloToolkit.Unity.InputModule
                 yield return null;
             }
 
-            recordingStarted = true;
-
             // Start recording from the microphone.
             dictationAudioClip = Microphone.Start(DeviceName, false, RecordingTime, samplingRate);
 
@@ -223,9 +214,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StopRecording()
         {
-            if (!isListening) { yield break; }
+            if (!IsListening) { yield break; }
 
-            isListening = false;
+            IsListening = false;
 
             Microphone.End(DeviceName);
 
