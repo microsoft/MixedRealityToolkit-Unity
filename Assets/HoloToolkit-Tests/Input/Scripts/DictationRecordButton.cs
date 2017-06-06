@@ -35,9 +35,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private void Awake()
         {
             buttonRenderer = GetComponent<Renderer>();
-            DictationInputManager.InitialSilenceTimeout = initialSilenceTimeout;
-            DictationInputManager.AutoSilenceTimeout = autoSilenceTimeout;
-            DictationInputManager.RecordingTime = recordingTime;
         }
 
         public void OnInputClicked(InputClickedEventData eventData)
@@ -58,7 +55,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             else
             {
                 isRecording = true;
-                StartCoroutine(DictationInputManager.StartRecording());
+                StartCoroutine(DictationInputManager.StartRecording(initialSilenceTimeout, autoSilenceTimeout, recordingTime));
                 speechToTextOutput.color = Color.green;
                 recordLight.SetActive(true);
                 buttonRenderer.enabled = false;

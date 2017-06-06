@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using System.Collections;
 using System.Text;
 using UnityEngine;
@@ -15,82 +14,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class DictationInputManager : Singleton<DictationInputManager>, IInputSource
     {
-        /// <summary>
-        /// Initial value for InitialSilenceTimeout.
-        /// </summary>
-        private static float initialSilenceTimeout = 5f;
-
-        /// <summary>
-        /// The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
-        /// </summary>
-        public static float InitialSilenceTimeout
-        {
-            get
-            {
-                return dictationRecognizer != null ? dictationRecognizer.InitialSilenceTimeoutSeconds : initialSilenceTimeout;
-            }
-            set
-            {
-                if (value <= 0) throw new ArgumentOutOfRangeException("value");
-
-                initialSilenceTimeout = value;
-
-                if (dictationRecognizer != null)
-                {
-                    dictationRecognizer.InitialSilenceTimeoutSeconds = initialSilenceTimeout;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Initial value for AutoSilenceTimeout.
-        /// </summary>
-        private static float autoSilenceTimeout = 20f;
-
-        /// <summary>
-        /// The time length in seconds before dictation recognizer session ends due to lack of audio input.
-        /// </summary>
-        public static float AutoSilenceTimeout
-        {
-            get
-            {
-                return dictationRecognizer != null ? dictationRecognizer.AutoSilenceTimeoutSeconds : autoSilenceTimeout;
-            }
-            set
-            {
-                if (value <= 0) throw new ArgumentOutOfRangeException("value");
-
-                autoSilenceTimeout = value;
-
-                if (dictationRecognizer != null)
-                {
-                    dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Initial value for RecordingTime.
-        /// </summary>
-        private static int recordingTime = 10;
-
-        /// <summary>
-        /// Length in seconds for the manager to listen.
-        /// </summary>
-        public static int RecordingTime
-        {
-            get
-            {
-                return recordingTime;
-            }
-            set
-            {
-                if (value <= 0) throw new ArgumentOutOfRangeException("value");
-
-                recordingTime = value;
-            }
-        }
-
         /// <summary>
         /// Caches the text currently being displayed in dictation display text.
         /// </summary>
@@ -143,12 +66,9 @@ namespace HoloToolkit.Unity.InputModule
             // Query the maximum frequency of the default microphone.
             int minSamplingRate; // Unsued.
             Microphone.GetDeviceCaps(DeviceName, out minSamplingRate, out samplingRate);
-
-            // Use this string to cache the text currently displayed.
-            textSoFar = new StringBuilder();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (IsListening && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
@@ -175,7 +95,11 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Turns on the dictation recognizer and begins recording audio from the default microphone.
         /// </summary>
-        public static IEnumerator StartRecording()
+        /// <param name="initialSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.</param>
+        /// <param name="autoSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input.</param>
+        /// <param name="recordingTime">Length in seconds for the manager to listen.</param>
+        /// <returns></returns>
+        public static IEnumerator StartRecording(float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
             if (IsListening) { yield break; }
 
@@ -191,6 +115,8 @@ namespace HoloToolkit.Unity.InputModule
                 yield return null;
             }
 
+            dictationRecognizer.InitialSilenceTimeoutSeconds = initialSilenceTimeout;
+            dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
             dictationRecognizer.Start();
 
             while (dictationRecognizer.Status == SpeechSystemStatus.Failed)
@@ -205,8 +131,10 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Start recording from the microphone.
-            dictationAudioClip = Microphone.Start(DeviceName, false, RecordingTime, samplingRate);
+            dictationAudioClip = Microphone.Start(DeviceName, false, recordingTime, samplingRate);
 
+            // Use this string to cache the text currently displayed.
+            textSoFar = new StringBuilder();
         }
 
         /// <summary>
@@ -277,6 +205,8 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             InputManager.Instance.RaiseDictationComplete(Instance, 0, dictationResult, dictationAudioClip);
+            textSoFar = null;
+            dictationResult = string.Empty;
         }
 
         /// <summary>
@@ -289,6 +219,8 @@ namespace HoloToolkit.Unity.InputModule
             dictationResult = error + "\nHRESULT: " + hresult.ToString();
 
             InputManager.Instance.RaiseDictationError(Instance, 0, dictationResult);
+            textSoFar = null;
+            dictationResult = string.Empty;
         }
 
         #endregion // Dictation Recognizer Callbacks
