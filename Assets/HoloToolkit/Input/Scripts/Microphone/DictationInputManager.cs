@@ -126,6 +126,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool hasFailed;
 
+        private static bool isListening;
+
         #region Unity Methods
 
         protected override void Awake()
@@ -182,6 +184,10 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StartRecording()
         {
+            if (isListening) { yield break; }
+
+            isListening = true;
+
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             {
                 PhraseRecognitionSystem.Shutdown();
@@ -209,6 +215,7 @@ namespace HoloToolkit.Unity.InputModule
 
             // Start recording from the microphone.
             dictationAudioClip = Microphone.Start(DeviceName, false, RecordingTime, samplingRate);
+
         }
 
         /// <summary>
@@ -216,6 +223,10 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StopRecording()
         {
+            if (!isListening) { yield break; }
+
+            isListening = false;
+
             Microphone.End(DeviceName);
 
             if (dictationRecognizer.Status == SpeechSystemStatus.Running)
