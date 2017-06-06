@@ -47,7 +47,9 @@ namespace HoloToolkit.Unity.InputModule
 
         private static DictationRecognizer dictationRecognizer;
 
-        private bool hasFailed;
+        private static bool isTransitioning;
+
+        private static bool hasFailed;
 
         #region Unity Methods
 
@@ -101,9 +103,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns></returns>
         public static IEnumerator StartRecording(float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
-            if (IsListening) { yield break; }
+            if (IsListening || isTransitioning)
+            {
+                Debug.LogWarning("Unable to start recording");
+                yield break;
+            }
 
             IsListening = true;
+            isTransitioning = true;
 
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             {
@@ -132,9 +139,8 @@ namespace HoloToolkit.Unity.InputModule
 
             // Start recording from the microphone.
             dictationAudioClip = Microphone.Start(DeviceName, false, recordingTime, samplingRate);
-
-            // Use this string to cache the text currently displayed.
             textSoFar = new StringBuilder();
+            isTransitioning = false;
         }
 
         /// <summary>
@@ -142,9 +148,14 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StopRecording()
         {
-            if (!IsListening) { yield break; }
+            if (!IsListening || isTransitioning)
+            {
+                Debug.LogWarning("Unable to stop recording");
+                yield break;
+            }
 
             IsListening = false;
+            isTransitioning = true;
 
             Microphone.End(DeviceName);
 
@@ -159,6 +170,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             PhraseRecognitionSystem.Restart();
+            isTransitioning = false;
         }
 
         #region Dictation Recognizer Callbacks
