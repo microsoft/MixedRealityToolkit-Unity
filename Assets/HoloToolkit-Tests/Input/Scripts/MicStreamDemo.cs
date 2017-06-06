@@ -54,6 +54,18 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private bool isRunning;
 
+        public bool IsRunning
+        {
+            get { return isRunning; }
+            private set
+            {
+                isRunning = value;
+                CheckForErrorOnCall(isRunning ? MicStream.MicPause() : MicStream.MicResume());
+            }
+        }
+
+        #region Unity Methods
+
         private void OnAudioFilterRead(float[] buffer, int numChannels)
         {
             // this is where we call into the DLL and let it fill our audio buffer for us
@@ -73,6 +85,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 sumOfValues += Mathf.Clamp01(Mathf.Abs(buffer[i]));
             }
             averageAmplitude = sumOfValues / buffer.Length;
+        }
+
+        private void OnEnable()
+        {
+            IsRunning = true;
         }
 
         private void Start()
@@ -96,11 +113,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             print("Since this all goes through the AudioSource, you can mute the mic while using it there, or do anything else you would do with an AudioSource");
             print("In this demo, we start the stream automatically, and then change the size of the gameobject based on microphone signal amplitude");
             isRunning = true;
-        }
-
-        private void OnDestroy()
-        {
-            CheckForErrorOnCall(MicStream.MicDestroy());
         }
 
         private void Update()
@@ -129,48 +141,42 @@ namespace HoloToolkit.Unity.InputModule.Tests
             gameObject.transform.localScale = new Vector3(minObjectScale + averageAmplitude, minObjectScale + averageAmplitude, minObjectScale + averageAmplitude);
         }
 
-        private static void CheckForErrorOnCall(int returnCode)
-        {
-            MicStream.CheckForErrorOnCall(returnCode);
-        }
-
-        private void ToggleMicStream(bool pause)
-        {
-            CheckForErrorOnCall(pause ? MicStream.MicPause() : MicStream.MicResume());
-            isRunning = pause;
-        }
-
         private void OnApplicationPause(bool pause)
         {
-            if (isRunning)
-            {
-                ToggleMicStream(pause);
-            }
+            IsRunning = pause;
+        }
+
+        private void OnDisable()
+        {
+            IsRunning = false;
+        }
+
+        private void OnDestroy()
+        {
+            CheckForErrorOnCall(MicStream.MicDestroy());
         }
 
 #if !UNITY_EDITOR
         private void OnApplicationFocus(bool focused)
         {
-            if (isRunning)
-            {
-                ToggleMicStream(!focused);
-            }
+            IsRunning = focused;
         }
 #endif
-        private void OnDisable()
+        #endregion
+
+        private static void CheckForErrorOnCall(int returnCode)
         {
-            if (isRunning)
-            {
-                ToggleMicStream(true);
-            }
+            MicStream.CheckForErrorOnCall(returnCode);
         }
 
-        private void OnEnable()
+        public void Enable()
         {
-            if (isRunning)
-            {
-                ToggleMicStream(false);
-            }
+            IsRunning = true;
+        }
+
+        public void Disable()
+        {
+            IsRunning = false;
         }
     }
 }
