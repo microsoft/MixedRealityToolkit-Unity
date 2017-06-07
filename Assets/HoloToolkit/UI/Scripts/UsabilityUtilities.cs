@@ -10,26 +10,6 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class UsabilityUtilities
     {
-        private const float HololensV1PixelHeight = 720f;
-        private const float HololensV1FieldOfView = 17.15f;
-        private const float HololensV1PixelsPerDegree = (HololensV1PixelHeight / HololensV1FieldOfView);
-
-        private const float OtherHmdPixelHeight = 1200f;
-        private const float OtherHmdFieldOfView = 110f;
-        private const float OtherHmdPixelsPerDegree = (OtherHmdPixelHeight / OtherHmdFieldOfView);
-
-        // This scale factor was measured by having a number of humans choose an "optimal usability" size for
-        // a piece of UI with text on both a HoloLens V1 device and a different HMD and comparing their
-        // choices from one HMD to the other. Keep in mind that as new HMDs come on the market, this scale
-        // factor may be adjusted or the whole equation may be reworked to better target all devices.
-        private const float HumanMeasuredScaleFactorFromHololensV1ToOtherHmd = 2.18f;
-
-        private const float Slope = ((HumanMeasuredScaleFactorFromHololensV1ToOtherHmd - 1f) / (OtherHmdPixelsPerDegree - HololensV1PixelsPerDegree));
-        private const float YAxisIntercept = (1f - (HololensV1PixelsPerDegree * Slope));
-
-        private const float MinimumScaleFactor = 0.1f;
-        private const float MaximumScaleFactor = 10f;
-
         /// <summary>
         /// Gets a factor useful for scaling visual and interactable objects based on a camera's characteristics (resolution, field of view, etc).
         /// </summary>
@@ -46,8 +26,30 @@ namespace HoloToolkit.Unity
             }
             else
             {
+                const float HololensV1PixelHeight = 720f;
+                const float HololensV1FieldOfView = 17.15f;
+                const float HololensV1PixelsPerDegree = (HololensV1PixelHeight / HololensV1FieldOfView);
+
                 float pixelsPerDegree = (camera.pixelHeight / camera.fieldOfView);
-                float unclampedScaleFactor = ((Slope * pixelsPerDegree) + YAxisIntercept);
+
+                // This scaling equation was derived by having a number of people look at a piece of UI with text
+                // on a HoloLens V1 and a few other HMDs. Each person scaled the content up or down until they
+                // reached an "optimal usability" scale for that HMD. Then, the chosen "optimal usability" scales
+                // were plotted against the HMDs' pixels per degree, and an equation was chosen that approximated
+                // the chosen scales across people and HMDs decently well.
+                //
+                // The equation currently places HoloLensV1 at 1x scale, which means content previously designed
+                // for HoloLens will work as expected. Also, it's asymptotic, so HMDs with extremely high pixels
+                // per degree won't shrink content down too quickly.
+                //
+                // All that said, keep in mind that as new HMDs are created with different pixels per degree and
+                // different visual characteristics, the equation may need to be adjusted or reworked to include
+                // those new characteristics as input to make sure it best targets the broad range of devices.
+
+                float unclampedScaleFactor = Mathf.Sqrt(HololensV1PixelsPerDegree / pixelsPerDegree);
+
+                const float MinimumScaleFactor = 0.1f;
+                const float MaximumScaleFactor = 10f;
 
                 scaleFactor = Mathf.Clamp(unclampedScaleFactor, MinimumScaleFactor, MaximumScaleFactor);
 
