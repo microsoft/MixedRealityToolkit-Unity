@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity.InputModule
             FindCursorIfNeeded();
             ConnectBestAvailablePointer();
 
-            Debug.Assert(currentPointer != null);
+            Debug.Assert(currentPointer != null, this);
         }
 
         private void OnEnable()
@@ -134,6 +134,7 @@ namespace HoloToolkit.Unity.InputModule
             if ((Cursor == null) && SearchForCursorIfUnset)
             {
                 Debug.LogWarningFormat(
+                    this,
                     "Cursor hasn't been explicitly set on \"{0}.{1}\". We'll search for a cursor in the hierarchy, but"
                         + " that comes with a performance cost, so it would be best if you explicitly set the cursor.",
                     name,
@@ -144,11 +145,12 @@ namespace HoloToolkit.Unity.InputModule
 
                 if ((foundCursors == null) || (foundCursors.Length == 0))
                 {
-                    Debug.LogErrorFormat("Couldn't find cursor for \"{0}.{1}\".", name, GetType().Name);
+                    Debug.LogErrorFormat(this, "Couldn't find cursor for \"{0}.{1}\".", name, GetType().Name);
                 }
                 else if (foundCursors.Length > 1)
                 {
                     Debug.LogErrorFormat(
+                        this,
                         "Found more than one ({0}) cursors for \"{1}.{2}\", so couldn't automatically set one.",
                         foundCursors.Length,
                         name,
