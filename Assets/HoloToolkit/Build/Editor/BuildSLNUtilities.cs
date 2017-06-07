@@ -171,7 +171,11 @@ namespace HoloToolkit.Unity
             BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             BuildTargetGroup oldBuildTargetGroup = GetGroup(oldBuildTarget);
 
+#if UNITY_5_6
             EditorUserBuildSettings.SwitchActiveBuildTarget(buildTargetGroup, buildInfo.BuildTarget);
+#else
+            EditorUserBuildSettings.SwitchActiveBuildTarget(buildInfo.BuildTarget);
+#endif
 
             var oldWSASDK = EditorUserBuildSettings.wsaSDK;
             if (buildInfo.WSASdk.HasValue)
@@ -245,7 +249,11 @@ namespace HoloToolkit.Unity
 
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
 
+#if UNITY_5_6
                 EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTargetGroup, oldBuildTarget);
+#else
+                EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTarget);
+#endif
             }
         }
 
