@@ -1003,8 +1003,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dc603e0d201da746b38b8ce2e4ae7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HideWhenConnected: 0
+  Timeout: 5
   ipAddress: {fileID: 114104649135736844}
-  ConnectionIndicator: {fileID: 114366805303276948}
+  connectionIndicator: {fileID: 114366805303276948}
 --- !u!114 &114210292327548538
 MonoBehaviour:
   m_ObjectHideFlags: 1

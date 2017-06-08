@@ -18,6 +18,11 @@ namespace HoloToolkit.Sharing
         /// </summary> 
         public event EventHandler SharingManagerConnected;
 
+        /// <summary> 
+        /// SharingManagerConnected event notifies when the sharing manager is disconnected.
+        /// </summary> 
+        public event EventHandler SharingManagerDisconnected;
+
         /// <summary>
         /// Default username to use when joining a session.
         /// </summary>
@@ -285,6 +290,7 @@ namespace HoloToolkit.Sharing
             networkConnection = Manager.GetServerConnection();
             networkConnectionAdapter = new NetworkConnectionAdapter();
             networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
+            networkConnectionAdapter.DisconnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
             networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
 
             SyncStateListener = new SyncStateListener();
@@ -320,13 +326,20 @@ namespace HoloToolkit.Sharing
 
         private void SendConnectedNotification()
         {
-            if (Manager.GetServerConnection().IsConnected())
+            NetworkConnection serverConnection = Manager.GetServerConnection();
+            if (serverConnection.IsConnected())
             {
                 //Send notification that we're connected 
-                EventHandler connectedEvent = SharingManagerConnected;
-                if (connectedEvent != null)
+                if (SharingManagerConnected != null)
                 {
-                    connectedEvent(this, EventArgs.Empty);
+                    SharingManagerConnected(this, EventArgs.Empty);
+                }
+            }
+            else if (!serverConnection.IsConnected())
+            {
+                if (SharingManagerDisconnected != null)
+                {
+                    SharingManagerDisconnected(this, EventArgs.Empty);
                 }
             }
             else
