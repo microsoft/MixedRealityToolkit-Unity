@@ -20,6 +20,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// When moving, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.
         /// </summary>
+        [SerializeField]
         [Tooltip("When moving, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         private bool useUnscaledTime = true;
 
@@ -30,9 +31,11 @@ namespace HoloToolkit.Unity
         [Tooltip("Used to initialize the initial position of the SphereBasedTagalong before being hidden on LateUpdate.")]
         private bool hideOnStart;
 
+        [SerializeField]
         [Tooltip("Display the sphere in red wireframe for debugging purposes.")]
         private bool debugDisplaySphere;
 
+        [SerializeField]
         [Tooltip("Display a small green cube where the target position is.")]
         private bool debugDisplayTargetPosition;
 
