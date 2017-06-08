@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,8 +19,16 @@ namespace HoloToolkit.Sharing.Utilities
         public bool HideWhenConnected;
 
         /// <summary>
+        /// Hides the UI after this many seconds.
+        /// </summary>
+        [Range(0.1f, 5f)]
+        [Tooltip("Hides the UI after this many seconds.")]
+        public float HideAfterSeconds = 1f;
+
+        /// <summary>
         /// How many seconds before server connection times out.
         /// </summary>
+        [Range(1, 30)]
         [Tooltip("How many seconds before server connection times out.")]
         public int Timeout = 5;
 
@@ -35,34 +44,55 @@ namespace HoloToolkit.Sharing.Utilities
 
         private bool isTryingToConnect;
 
+        private bool firstRun;
+
         private void Awake()
         {
             ipAddress.text = PlayerPrefs.GetString("SharingServerIp", "Not Connected");
+            firstRun = true;
         }
 
-        private void OnEnable()
+        private void Start()
         {
             if (SharingStage.Instance != null)
             {
                 SharingStage.Instance.SharingManagerConnected += OnConnected;
                 SharingStage.Instance.SharingManagerDisconnected += OnDisconnected;
             }
+            else
+            {
+                Debug.LogError("Unable to subscribe to Sharing Stage!");
+            }
+        }
 
-            ConnectToSharingService();
+        private void OnEnable()
+        {
+            if (!firstRun)
+            {
+                isTryingToConnect = true;
+                ConnectToSharingService();
+            }
+            else
+            {
+                firstRun = false;
+            }
         }
 
         private void Update()
         {
             if (timerRunning && timer - Time.time < 0)
             {
-                isTryingToConnect = false;
-                OnDisconnected();
+                if (isTryingToConnect)
+                {
+                    isTryingToConnect = false;
+                    OnDisconnected();
 
-                PlayerPrefs.SetString("SharingServerIp", "Not Connected");
+                    PlayerPrefs.SetString("SharingServerIp", "Not Connected");
+                }
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (SharingStage.Instance != null)
             {
@@ -89,16 +119,17 @@ namespace HoloToolkit.Sharing.Utilities
         private void OnConnected(object sender = null, EventArgs e = null)
         {
             timerRunning = false;
-            isTryingToConnect = false;
             connectionIndicator.color = Color.green;
             ipAddress.text = SharingStage.Instance.Connection.GetRemoteAddress().ToString();
 
             PlayerPrefs.SetString("SharingServerIp", ipAddress.text);
 
-            if (HideWhenConnected)
+            if (HideWhenConnected && isTryingToConnect)
             {
-                gameObject.SetActive(false);
+                StartCoroutine(Hide());
             }
+
+            isTryingToConnect = false;
         }
 
         private void OnDisconnected(object sender = null, EventArgs e = null)
@@ -114,6 +145,9 @@ namespace HoloToolkit.Sharing.Utilities
 
         public void InputString(string intput)
         {
+            timerRunning = false;
+            isTryingToConnect = false;
+
             if (ipAddress.text.Contains("Connected") || ipAddress.text.Contains("127.0.0.1"))
             {
                 ipAddress.text = string.Empty;
@@ -127,6 +161,9 @@ namespace HoloToolkit.Sharing.Utilities
 
         public void DeleteLastCharacter()
         {
+            timerRunning = false;
+            isTryingToConnect = false;
+
             if (!string.IsNullOrEmpty(ipAddress.text))
             {
                 ipAddress.text = ipAddress.text.Substring(0, ipAddress.text.Length - 1);
@@ -135,11 +172,17 @@ namespace HoloToolkit.Sharing.Utilities
 
         public void ClearIpAddressString()
         {
+            timerRunning = false;
+            isTryingToConnect = false;
+
             ipAddress.text = "";
         }
 
         public void ConnectToSharingService()
         {
+            timerRunning = false;
+            isTryingToConnect = false;
+
             if (ipAddress.text.Contains("Connected"))
             {
                 OnDisconnected();
@@ -150,6 +193,13 @@ namespace HoloToolkit.Sharing.Utilities
             connectionIndicator.color = Color.yellow;
             SharingStage.Instance.ConnectToServer(ipAddress.text, SharingStage.Instance.ServerPort);
             CheckConnection();
+        }
+
+        private IEnumerator Hide()
+        {
+            yield return new WaitForSeconds(HideAfterSeconds);
+
+            gameObject.SetActive(false);
         }
     }
 }

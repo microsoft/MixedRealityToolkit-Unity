@@ -958,7 +958,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SphereRadius: 0.1
   MoveSpeed: 2
+  useUnscaledTime: 1
   hideOnStart: 0
+  debugDisplaySphere: 0
+  debugDisplayTargetPosition: 0
 --- !u!114 &114203344055936422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1003,7 +1006,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dc603e0d201da746b38b8ce2e4ae7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HideWhenConnected: 0
+  HideWhenConnected: 1
+  HideAfterSeconds: 1
   Timeout: 5
   ipAddress: {fileID: 114104649135736844}
   connectionIndicator: {fileID: 114366805303276948}
