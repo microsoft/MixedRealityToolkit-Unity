@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using HoloToolkit.Unity;
+using UnityEngine;
 
 namespace HoloToolkit.Sharing
 {
@@ -11,7 +12,7 @@ namespace HoloToolkit.Sharing
     /// Keeps track of the users in the current session.
     /// Instance is created by Sharing Stage when a connection is found.
     /// </summary>
-    public class SessionUsersTracker : IDisposable
+	public class SessionUsersTracker : MonoBehaviour, IDisposable
     {
         /// <summary>
         /// UserJoined event notifies when a user joins the current session.
