@@ -19,7 +19,7 @@ namespace HoloToolkit.Sharing
         public event EventHandler SharingManagerConnected;
 
         /// <summary> 
-        /// SharingManagerConnected event notifies when the sharing manager is disconnected.
+        /// SharingManagerDisconnected event notifies when the sharing manager is disconnected.
         /// </summary> 
         public event EventHandler SharingManagerDisconnected;
 
