@@ -5,9 +5,7 @@
 
 using System;
 using System.IO;
-using System.Xml;
 using System.Linq;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System.Xml.Linq;
@@ -19,15 +17,13 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployTools
     {
-        // Consts
         public static readonly string DefaultMSBuildVersion = "14.0";
 
-        // Functions
         public static bool BuildSLN(string buildDirectory, bool showConfDlg = true)
         {
             // Use BuildSLNUtilities to create the SLN
             bool buildSuccess = false;
-            BuildSLNUtilities.PerformBuild(new BuildSLNUtilities.BuildInfo()
+            BuildSLNUtilities.PerformBuild(new BuildSLNUtilities.BuildInfo
             {
                 // These properties should all match what the Standalone.proj file specifies
                 OutputDirectory = buildDirectory,
@@ -49,6 +45,7 @@ namespace HoloToolkit.Unity
                         {
                             EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK");
                         }
+
                         buildSuccess = true;
                     }
                 }
@@ -65,16 +62,17 @@ namespace HoloToolkit.Unity
                 {
                     return null;
                 }
-                string msBuildBinFolder = key.GetValue("MSBuildToolsPath") as string;
-                string msBuildPath = Path.Combine(msBuildBinFolder, "msbuild.exe");
-                return msBuildPath;
+
+                var msBuildBinFolder = (string)key.GetValue("MSBuildToolsPath");
+                return Path.Combine(msBuildBinFolder, "msbuild.exe");
             }
         }
 
         public static bool BuildAppxFromSolution(string productName, string msBuildVersion, bool forceRebuildAppx, string buildConfig, string buildDirectory, bool incrementVersion)
         {
             // Get and validate the msBuild path...
-            string vs = CalcMSBuildPath(msBuildVersion);
+            var vs = CalcMSBuildPath(msBuildVersion);
+
             if (!File.Exists(vs))
             {
                 Debug.LogError("MSBuild.exe is missing or invalid (path=" + vs + "). Note that the default version is " + DefaultMSBuildVersion);
@@ -83,17 +81,21 @@ namespace HoloToolkit.Unity
 
             // Get the path to the NuGet tool
             string unity = Path.GetDirectoryName(EditorApplication.applicationPath);
+            System.Diagnostics.Debug.Assert(unity != null, "unity != null");
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
             string storePath = Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildDirectory));
             string solutionProjectPath = Path.GetFullPath(Path.Combine(storePath, productName + @".sln"));
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do
             // this breaks the build in VS RTM
-            var nugetPInfo = new System.Diagnostics.ProcessStartInfo();
-            nugetPInfo.FileName = nugetPath;
-            nugetPInfo.WorkingDirectory = buildDirectory;
-            nugetPInfo.UseShellExecute = false;
-            nugetPInfo.Arguments = "restore \"" + PlayerSettings.productName + "/project.json\"";
+            var nugetPInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = nugetPath,
+                WorkingDirectory = buildDirectory,
+                UseShellExecute = false,
+                Arguments = "restore \"" + PlayerSettings.productName + "/project.json\""
+            };
+
             using (var nugetP = new System.Diagnostics.Process())
             {
                 Debug.Log(nugetPath + " " + nugetPInfo.Arguments);
@@ -110,18 +112,23 @@ namespace HoloToolkit.Unity
             }
 
             // Now do the actual build
-            var pinfo = new System.Diagnostics.ProcessStartInfo();
-            pinfo.FileName = vs;
-            pinfo.UseShellExecute = false;
-            string buildType = forceRebuildAppx ? "Rebuild" : "Build";
-            pinfo.Arguments = string.Format("\"{0}\" /t:{2} /p:Configuration={1} /p:Platform=x86", solutionProjectPath, buildConfig, buildType);
-            var p = new System.Diagnostics.Process();
+            var pinfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = vs,
+                UseShellExecute = false,
+                Arguments = string.Format("\"{0}\" /t:{2} /p:Configuration={1} /p:Platform=x86",
+                    solutionProjectPath,
+                    buildConfig,
+                    forceRebuildAppx ? "Rebuild" : "Build")
+            };
 
             Debug.Log(vs + " " + pinfo.Arguments);
-            p.StartInfo = pinfo;
-            p.Start();
 
+            var p = new System.Diagnostics.Process { StartInfo = pinfo };
+
+            p.Start();
             p.WaitForExit();
+
             if (p.ExitCode == 0)
             {
                 Debug.Log("APPX build succeeded!");
@@ -136,28 +143,27 @@ namespace HoloToolkit.Unity
                 EditorUtility.DisplayDialog(PlayerSettings.productName + " build Failed!", "Failed to build appx from solution. Error code: " + p.ExitCode, "OK");
                 return false;
             }
-            else
-            {
-                // Build succeeded. Allow user to install build on remote PC
-                BuildDeployWindow.OpenWindow();
-                return true;
-            }
+
+            // Build succeeded. Allow user to install build on remote PC
+            BuildDeployWindow.OpenWindow();
+            return true;
         }
 
         private static void IncrementPackageVersion()
         {
             // Find the manifest, assume the one we want is the first one
             string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+
             if (manifests.Length == 0)
             {
                 Debug.LogError("Unable to find Package.appxmanifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
                 return;
             }
-            string manifest = manifests[0];
 
-            XElement rootNode = XElement.Load(manifest);
-            XNamespace ns = rootNode.GetDefaultNamespace();
-            var identityNode = rootNode.Element(ns + "Identity");
+            string manifest = manifests[0];
+            var rootNode = XElement.Load(manifest);
+            var identityNode = rootNode.Element(rootNode.GetDefaultNamespace() + "Identity");
+
             if (identityNode == null)
             {
                 Debug.LogError("Package.appxmanifest for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ") is missing an <Identity /> node");
@@ -168,6 +174,7 @@ namespace HoloToolkit.Unity
             // when we pass in the string "Version", the program doesn't find the attribute.
             // Best guess as to why this happens is that implicit string conversion doesn't set the namespace to empty
             var versionAttr = identityNode.Attribute(XName.Get("Version"));
+
             if (versionAttr == null)
             {
                 Debug.LogError("Package.appxmanifest for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ") is missing a version attribute in the <Identity /> node.");
