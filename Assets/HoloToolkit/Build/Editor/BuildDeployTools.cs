@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity
             nugetPInfo.FileName = nugetPath;
             nugetPInfo.WorkingDirectory = buildDirectory;
             nugetPInfo.UseShellExecute = false;
-            nugetPInfo.Arguments = @"restore " + PlayerSettings.productName + "/project.json";
+            nugetPInfo.Arguments = "restore \"" + PlayerSettings.productName + "/project.json\"";
             using (var nugetP = new System.Diagnostics.Process())
             {
                 Debug.Log(nugetPath + " " + nugetPInfo.Arguments);
