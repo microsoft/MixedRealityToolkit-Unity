@@ -288,7 +288,16 @@ namespace HoloToolkit.Unity
             var buildInfo = new BuildInfo
             {
                 // Use scenes from the editor build settings.
-                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path)
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
+
+                // Configure a post build action that will compile the generated solution
+                PostBuildAction = (innerBuildInfo, buildError) =>
+                {
+                    if (string.IsNullOrEmpty(buildError))
+                    {
+                        EditorApplication.Exit(1);
+                    }
+                }
             };
 
             RaiseOverrideBuildDefaults(ref buildInfo);
