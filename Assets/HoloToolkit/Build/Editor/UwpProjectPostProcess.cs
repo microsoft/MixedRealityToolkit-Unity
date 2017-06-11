@@ -129,7 +129,6 @@ namespace HoloToolkit.Unity
                     fileStream.Dispose();
                 }
             }
-
         }
     }
 }
