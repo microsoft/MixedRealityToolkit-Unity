@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -41,6 +42,8 @@ namespace HoloToolkit.Unity.InputModule
         private ManipulationEventData manipulationEventData;
         private HoldEventData holdEventData;
         private NavigationEventData navigationEventData;
+        private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
+        private DictationEventData dictationEventData;
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -170,6 +173,20 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        private void InitializeEventDatas()
+        {
+            inputEventData = new InputEventData(EventSystem.current);
+            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
+            sourceStateEventData = new SourceStateEventData(EventSystem.current);
+            manipulationEventData = new ManipulationEventData(EventSystem.current);
+            navigationEventData = new NavigationEventData(EventSystem.current);
+            holdEventData = new HoldEventData(EventSystem.current);
+            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
+            dictationEventData = new DictationEventData(EventSystem.current);
+        }
+
+        #region Unity Methods
+
         private void Start()
         {
             InitializeEventDatas();
@@ -182,21 +199,6 @@ namespace HoloToolkit.Unity.InputModule
             RegisterGazeManager();
         }
 
-        private void InitializeEventDatas()
-        {
-            inputEventData = new InputEventData(EventSystem.current);
-            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
-            sourceStateEventData = new SourceStateEventData(EventSystem.current);
-            manipulationEventData = new ManipulationEventData(EventSystem.current);
-            navigationEventData = new NavigationEventData(EventSystem.current);
-            holdEventData = new HoldEventData(EventSystem.current);
-        }
-
-        protected override void OnDestroy()
-        {
-            UnregisterGazeManager();
-        }
-
         private void OnEnable()
         {
             RegisterGazeManager();
@@ -207,10 +209,17 @@ namespace HoloToolkit.Unity.InputModule
             UnregisterGazeManager();
         }
 
+        protected override void OnDestroy()
+        {
+            UnregisterGazeManager();
+        }
+
+        #endregion // Unity Methods
+
         public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
             where T : IEventSystemHandler
         {
-            if (!enabled || disabledRefCount > 0)
+            if (!Instance.enabled || disabledRefCount > 0)
             {
                 return;
             }
@@ -439,6 +448,8 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
         }
 
+        #region Manipulation Events
+
         private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationStartedEventHandler =
             delegate (IManipulationHandler handler, BaseEventData eventData)
             {
@@ -503,6 +514,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
         }
 
+        #endregion // Manipulation Events
+
+        #region Hold Events
+
         private static readonly ExecuteEvents.EventFunction<IHoldHandler> OnHoldStartedEventHandler =
             delegate (IHoldHandler handler, BaseEventData eventData)
             {
@@ -550,6 +565,10 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(holdEventData, OnHoldCanceledEventHandler);
         }
+
+        #endregion // Hold Events
+
+        #region Navigation Events
 
         private static readonly ExecuteEvents.EventFunction<INavigationHandler> OnNavigationStartedEventHandler =
             delegate (INavigationHandler handler, BaseEventData eventData)
@@ -614,6 +633,96 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
         }
+
+        #endregion // Navigation Events
+
+        #region Speech Events
+
+        private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
+            delegate (ISpeechHandler handler, BaseEventData eventData)
+            {
+                SpeechKeywordRecognizedEventData casted = ExecuteEvents.ValidateEventData<SpeechKeywordRecognizedEventData>(eventData);
+                handler.OnSpeechKeywordRecognized(casted);
+            };
+
+        public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
+        {
+            // Create input event
+            speechKeywordRecognizedEventData.Initialize(source, sourceId, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationHypothesisEventHandler =
+            delegate (IDictationHandler handler, BaseEventData eventData)
+            {
+                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                handler.OnDictationHypothesis(casted);
+            };
+
+        #endregion // Speech Events
+
+        #region Dictation Events
+
+        public void RaiseDictationHypothesis(IInputSource source, uint sourceId, string dictationHypothesis, AudioClip dictationAudioClip = null)
+        {
+            // Create input event
+            dictationEventData.Initialize(source, sourceId, dictationHypothesis, dictationAudioClip);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationResultEventHandler =
+            delegate (IDictationHandler handler, BaseEventData eventData)
+            {
+                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                handler.OnDictationResult(casted);
+            };
+
+        public void RaiseDictationResult(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null)
+        {
+            // Create input event
+            dictationEventData.Initialize(source, sourceId, dictationResult, dictationAudioClip);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(dictationEventData, OnDictationResultEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationCompleteEventHandler =
+            delegate (IDictationHandler handler, BaseEventData eventData)
+            {
+                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                handler.OnDictationComplete(casted);
+            };
+
+        public void RaiseDictationComplete(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip)
+        {
+            // Create input event
+            dictationEventData.Initialize(source, sourceId, dictationResult, dictationAudioClip);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationErrorEventHandler =
+            delegate (IDictationHandler handler, BaseEventData eventData)
+            {
+                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                handler.OnDictationError(casted);
+            };
+
+        public void RaiseDictationError(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null)
+        {
+            // Create input event
+            dictationEventData.Initialize(source, sourceId, dictationResult, dictationAudioClip);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(dictationEventData, OnDictationErrorEventHandler);
+        }
+
+        #endregion // Dictation Events
 
     }
 }

@@ -142,7 +142,9 @@ Generates planes and classifies them by type (wall, ceiling, floor, table, unkno
 
 **WallMaterial** Material to use when rendering wall plane types.
 
-**FloorMaterial** Material to use when rendering ceiling plane types.
+**FloorMaterial** Material to use when rendering floor plane types.
+
+**CeilingMaterial** Material to use when rendering ceiling plane types.
 
 **TableMaterial** Material to use when rendering table plane types.
 

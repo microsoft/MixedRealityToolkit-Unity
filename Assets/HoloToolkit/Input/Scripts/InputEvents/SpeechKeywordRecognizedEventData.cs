@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Windows.Speech;
 
@@ -38,9 +37,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public string RecognizedText { get; private set; }
 
-        public SpeechKeywordRecognizedEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
+        public SpeechKeywordRecognizedEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(IInputSource inputSource, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText)
         {
