@@ -19,6 +19,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
     /// </summary>
+    [Obsolete("Use HoloToolkit.Unity.InputModule.SpeechInputSource")]
     public partial class KeywordManager : MonoBehaviour
     {
         [System.Serializable]
