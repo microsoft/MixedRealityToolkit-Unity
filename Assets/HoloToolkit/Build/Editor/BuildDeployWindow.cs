@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity
                 GUILayout.FlexibleSpace();
                 GUI.enabled = ShouldBuildSLNBeEnabled;
 
-                if (GUILayout.Button(!locatorIsSearching && locatorHasData ? "Build SLN, Build APPX, then Install" : "Build SLN, Build APPX", GUILayout.Width(buttonWidth_Half)))
+                if (GUILayout.Button(!locatorIsSearching && locatorHasData ? "Build SLN, Build APPX, then Install" : "Build SLN, Build APPX", GUILayout.Width(buttonWidth_Half - 20)))
                 {
                     // Build SLN
                     EditorApplication.delayCall += () => { BuildAll(!locatorIsSearching && locatorHasData); };
