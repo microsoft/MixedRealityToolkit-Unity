@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity
         private void Setup()
         {
             titleContent = new GUIContent("Build Window");
-            minSize = new Vector2(600, 200);
+            minSize = new Vector2(600, 555);
 
             windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
 
