@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -192,7 +192,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 636cd3603c4bfcd4e8a12d4f6fb90c89, type: 2}
+  - {fileID: 2100000, guid: 86574c70442309b45be5a1c37a37a40b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -253,9 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d28210caf2b8340860c439c592e979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneButtonPrefab: {fileID: 114000013833810220, guid: 1208d39814b498d47a41952deff3abd0,
+  SceneButtonPrefab: {fileID: 114712049552519426, guid: c943b5508bd87f347a6d36c5ca46424c,
     type: 2}
-  SceneButtonWidthScale: 1.5
   ButtonCenterLocation: {x: 0, y: 0, z: 1}
   MaxRows: 5
   ReturnToSceneLauncherPrefab: {fileID: 114998364064331914, guid: d3e63db7107735545ad50e3ecce77c54,
@@ -458,7 +457,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 636cd3603c4bfcd4e8a12d4f6fb90c89, type: 2}
+  - {fileID: 2100000, guid: 86574c70442309b45be5a1c37a37a40b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -485,7 +484,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1619367436}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 1.05}
   m_LocalScale: {x: 0.005, y: 0.005000004, z: 0.005000003}
   m_Children: []
   m_Father: {fileID: 496281405}

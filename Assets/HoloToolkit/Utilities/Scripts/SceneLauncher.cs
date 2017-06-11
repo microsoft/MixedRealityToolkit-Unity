@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Examples.InteractiveElements;
 using HoloToolkit.Unity.InputModule;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +12,7 @@ namespace HoloToolkit.Unity
     public class SceneLauncher : MonoBehaviour
     {
         [Tooltip("Prefab used as a button for each scene.")]
-        public Interactive SceneButtonPrefab;
-        [Tooltip("Scale applied to the width of SceneButtonPrefab in order to make room for the names of scenes. For example, a value of 2 would double the width of the button.")]
-        public float SceneButtonWidthScale = 1.0f;
+        public SceneLauncherButton SceneButtonPrefab;
         [Tooltip("Location of the center of the grid of buttons in Unity space.")]
         public Vector3 ButtonCenterLocation = new Vector3(0, 0, 1);
         [Tooltip("Number of rows in the grid of buttons. As more scenes are added, they will spread out horizontally using this number of rows.")]
@@ -54,18 +51,17 @@ namespace HoloToolkit.Unity
                     {
                         Debug.LogFormat("SceneLauncher: Returning to SceneLauncher scene {0}.", sceneLauncherBuildIndex);
                         SceneManager.LoadScene(sceneLauncherBuildIndex, LoadSceneMode.Single);
-                        GameObject.Destroy(returnToSceneLauncher);
+                        GameObject.Destroy(returnToSceneLauncher.gameObject);
                     };
                     returnToSceneLauncher.KeywordsAndResponses[0].Response.AddListener(keywordAction);
                 }
             }
 
             // Determine the size of the buttons. Instantiate one of them so that we can check its bounds.
-            Interactive sceneButtonForSize = Instantiate(SceneButtonPrefab);
+            SceneLauncherButton sceneButtonForSize = Instantiate(SceneButtonPrefab);
             Collider sceneButtonForSizeCollider = sceneButtonForSize.GetComponent<Collider>();
             if (sceneButtonForSizeCollider != null)
             {
-                SetSceneButtonWidthScale(sceneButtonForSize);
                 sceneButtonSize = sceneButtonForSizeCollider.bounds.size;
             }
             Destroy(sceneButtonForSize.gameObject);
@@ -86,35 +82,9 @@ namespace HoloToolkit.Unity
             Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
             Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
 
-            Interactive sceneButton = Instantiate<Interactive>(SceneButtonPrefab, GetButtonPosition(sceneIndex, sceneNames.Count), Quaternion.identity, buttonParent.transform);
-            sceneButton.name = sceneName;
-            SetSceneButtonWidthScale(sceneButton);
-            sceneButton.IsEnabled = scene != SceneManager.GetActiveScene(); // Disable button to launch our own scene.
-            int sceneBuildIndex = sceneIndex;
-            UnityAction buttonAction = delegate
-            {
-                Debug.LogFormat("SceneLauncher: Loading scene {0}: {1}", sceneBuildIndex, SceneList.Instance.GetSceneNames()[sceneBuildIndex]);
-                SceneManager.LoadScene(sceneBuildIndex, LoadSceneMode.Single);
-            };
-            sceneButton.OnSelectEvents.AddListener(buttonAction);
-            LabelTheme labelTheme = sceneButton.GetComponent<LabelTheme>();
-            if (labelTheme != null)
-            {
-                labelTheme.Default = sceneName;
-            }
-        }
-
-        private void SetSceneButtonWidthScale(Interactive sceneButton)
-        {
-            // Scale the button horizontally by SceneButtonWidthScale to make more space for text.
-            sceneButton.transform.localScale = Vector3.Scale(sceneButton.transform.localScale, new Vector3(SceneButtonWidthScale, 1.0f, 1.0f));
-            // For text, we are going to invert the scale applied to the button so that text isn't stretched by the scale.
-            Vector3 textScale = new Vector3(1.0f / SceneButtonWidthScale, 1.0f, 1.0f);
-            TextMesh[] childTextMeshes = sceneButton.GetComponentsInChildren<TextMesh>();
-            for (int i = 0; i < childTextMeshes.Length; i++)
-            {
-                childTextMeshes[i].transform.localScale = Vector3.Scale(childTextMeshes[i].transform.localScale, textScale);
-            }
+            SceneLauncherButton sceneButton = Instantiate(SceneButtonPrefab, GetButtonPosition(sceneIndex, sceneNames.Count), Quaternion.identity, buttonParent.transform);
+            sceneButton.SceneIndex = sceneIndex;
+            sceneButton.SceneName = sceneName;
         }
 
         private Vector3 GetButtonPosition(int sceneIndex, int numberOfScenes)
