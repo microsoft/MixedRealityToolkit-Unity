@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -23,7 +24,8 @@ namespace HoloToolkit.Unity
         {
             CertificatePasswordWindow[] array = (CertificatePasswordWindow[])Resources.FindObjectsOfTypeAll(typeof(CertificatePasswordWindow));
             CertificatePasswordWindow certificatePasswordWindow = (array.Length <= 0) ? CreateInstance<CertificatePasswordWindow>() : array[0];
-            certificatePasswordWindow.path = path;
+            path = path.Substring(path.LastIndexOf("/", StringComparison.Ordinal));
+            certificatePasswordWindow.path = Application.dataPath + path;
             certificatePasswordWindow.password = string.Empty;
             certificatePasswordWindow.message = GUIContent.none;
             certificatePasswordWindow.messageStyle = new GUIStyle(GUI.skin.label);
