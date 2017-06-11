@@ -26,9 +26,19 @@ namespace HoloToolkit.Unity
         private const string GUIHorizSpacer = "     ";
         private const float UpdateBuildsPeriod = 1.0f;
 
-        // Properties
+        private enum BuildConfigEnum
+        {
+            DEBUG = 0,
+            RELEASE = 1,
+            MASTER = 2
+        }
+
+        #region Properties
+
         private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
+
         private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
+
         private bool ShouldBuildAppxBeEnabled
         {
             get
@@ -39,26 +49,37 @@ namespace HoloToolkit.Unity
                   !string.IsNullOrEmpty(BuildDeployPrefs.BuildConfig);
             }
         }
+
         private bool ShouldLaunchAppBeEnabled
         {
             get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
+
         private bool ShouldWebPortalBeEnabled
         {
             get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
+
         private bool ShouldLogViewBeEnabled
         {
             get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
+
         private bool LocalIPsOnly { get { return true; } }
 
-        // Privates
+        #endregion // Properties
+
+        #region Fields
+
         private List<string> builds = new List<string>();
         private float timeLastUpdatedBuilds;
         private string[] windowsSdkPaths;
+        private Vector2 scrollPosition;
 
-        // Functions
+        #endregion // Fields
+
+        #region Methods
+
         [MenuItem("HoloToolkit/Build Window", false, 0)]
         public static void OpenWindow()
         {
@@ -104,10 +125,10 @@ namespace HoloToolkit.Unity
             int buttonWidth_Quarter = Screen.width / 4;
             int buttonWidth_Half = Screen.width / 2;
             int buttonWidth_Full = Screen.width - 25;
-            string appName = PlayerSettings.productName;
 
             // Build section
             GUILayout.BeginVertical();
+
             GUILayout.Label("SLN");
 
             EditorGUILayout.BeginHorizontal();
@@ -165,7 +186,7 @@ namespace HoloToolkit.Unity
                 if (GUILayout.Button("Build SLN, Build APPX, then Install", GUILayout.Width(buttonWidth_Half)))
                 {
                     // Build SLN
-                    EditorApplication.delayCall += () => { BuildAndRun(appName); };
+                    EditorApplication.delayCall += () => { BuildAll(); };
                 }
 
                 GUI.enabled = true;
@@ -221,13 +242,30 @@ namespace HoloToolkit.Unity
             }
 
             // Build config (and save setting, if it's changed)
-            string curBuildConfig = BuildDeployPrefs.BuildConfig;
-            string newBuildConfig = EditorGUILayout.TextField(GUIHorizSpacer + "Build Configuration", curBuildConfig);
+            string curBuildConfigString = BuildDeployPrefs.BuildConfig;
 
-            if (newBuildConfig != curBuildConfig)
+            BuildConfigEnum buildConfigOption;
+            if (curBuildConfigString.ToLower().Equals("master"))
+            {
+                buildConfigOption = BuildConfigEnum.MASTER;
+            }
+            else if (curBuildConfigString.ToLower().Equals("release"))
+            {
+                buildConfigOption = BuildConfigEnum.RELEASE;
+            }
+            else
+            {
+                buildConfigOption = BuildConfigEnum.DEBUG;
+            }
+
+            buildConfigOption = (BuildConfigEnum)EditorGUILayout.EnumPopup(GUIHorizSpacer + "Build Configuration", buildConfigOption);
+
+            string newBuildConfig = buildConfigOption.ToString();
+
+            if (newBuildConfig != curBuildConfigString)
             {
                 BuildDeployPrefs.BuildConfig = newBuildConfig;
-                curBuildConfig = newBuildConfig;
+                curBuildConfigString = newBuildConfig;
             }
 
             // Build APPX button
@@ -267,11 +305,31 @@ namespace HoloToolkit.Unity
 
                 if (GUILayout.Button("Build APPX from SLN", GUILayout.Width(buttonWidth_Half)))
                 {
-                    BuildDeployTools.BuildAppxFromSolution(appName, curMSBuildVer, curForceRebuildAppx, curBuildConfig, curBuildDirectory, curIncrementVersion);
+                    // Open SLN
+                    string slnFilename = Path.Combine(curBuildDirectory, PlayerSettings.productName + ".sln");
+
+                    if (File.Exists(slnFilename))
+                    {
+                        // Build APPX
+                        EditorApplication.delayCall += () =>
+                            BuildDeployTools.BuildAppxFromSLN(
+                                PlayerSettings.productName,
+                                curMSBuildVer,
+                                curForceRebuildAppx,
+                                curBuildConfigString,
+                                curBuildDirectory,
+                                curIncrementVersion);
+                    }
+                    else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
+                    {
+                        // Build SLN then APPX
+                        EditorApplication.delayCall += () => BuildAll(install: false);
+                    }
                 }
 
                 GUI.enabled = true;
             }
+
             GUILayout.EndVertical();
             GUILayout.EndVertical();
 
@@ -280,6 +338,10 @@ namespace HoloToolkit.Unity
             // Deploy section
             GUILayout.BeginVertical();
             GUILayout.Label("Deploy");
+
+            var locatorIsSearching = XdeGuestLocator.IsSearching;
+            var locatorHasData = XdeGuestLocator.HasData;
+            var xdeGuestIpAddress = XdeGuestLocator.GuestIpAddress;
 
             // Target IPs (and save setting, if it's changed)
             string curTargetIps = BuildDeployPrefs.TargetIPs;
@@ -297,10 +359,6 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                var locatorIsSearching = XdeGuestLocator.IsSearching;
-                var locatorHasData = XdeGuestLocator.HasData;
-                var xdeGuestIpAddress = XdeGuestLocator.GuestIpAddress;
-
                 // Queue up a repaint if we're still busy, or we'll get stuck
                 // in a disabled state.
 
@@ -373,6 +431,9 @@ namespace HoloToolkit.Unity
             }
             else
             {
+                GUILayout.BeginVertical();
+                scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(buttonWidth_Full), GUILayout.Height(128));
+
                 foreach (var fullBuildLocation in builds)
                 {
                     int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\", StringComparison.Ordinal);
@@ -397,6 +458,8 @@ namespace HoloToolkit.Unity
                     GUILayout.Label(packageName + " (" + directoryDate + ")");
                     EditorGUILayout.EndHorizontal();
                 }
+                GUILayout.EndScrollView();
+                GUILayout.EndVertical();
 
                 EditorGUILayout.Separator();
             }
@@ -407,6 +470,21 @@ namespace HoloToolkit.Unity
             // Utilities section
             GUILayout.BeginVertical();
             GUILayout.Label("Utilities");
+
+            // Open AppX packages location
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUI.enabled = builds.Count > 0;
+
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(buttonWidth_Full)))
+                {
+                    Process.Start("explorer.exe", "/open," + Path.GetFullPath(curBuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
+                }
+
+                GUI.enabled = true;
+            }
 
             // Open web portal
             using (new EditorGUILayout.HorizontalScope())
@@ -425,13 +503,13 @@ namespace HoloToolkit.Unity
             // Launch app..
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLaunchAppBeEnabled;
+                GUI.enabled = ShouldLaunchAppBeEnabled && !locatorIsSearching && locatorHasData;
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("Launch Application", GUILayout.Width(buttonWidth_Full)))
                 {
                     // If already running, kill it (button is a toggle)
-                    if (IsAppRunning_FirstIPCheck(appName, curTargetIps))
+                    if (IsAppRunning_FirstIPCheck(PlayerSettings.productName, curTargetIps))
                     {
                         KillAppOnIPs(curTargetIps);
                     }
@@ -447,7 +525,7 @@ namespace HoloToolkit.Unity
             // Log file
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLogViewBeEnabled;
+                GUI.enabled = ShouldLogViewBeEnabled && !locatorIsSearching && locatorHasData;
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
@@ -461,7 +539,7 @@ namespace HoloToolkit.Unity
             // Uninstall...
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLogViewBeEnabled;
+                GUI.enabled = ShouldLogViewBeEnabled && !locatorIsSearching && locatorHasData;
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("Uninstall Application", GUILayout.Width(buttonWidth_Full)))
@@ -475,10 +553,11 @@ namespace HoloToolkit.Unity
                 GUI.enabled = true;
             }
 
+            //GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 
-        private void BuildAndRun(string appName)
+        private void BuildAll(bool install = true)
         {
             // First build SLN
             if (!BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory, false))
@@ -487,21 +566,25 @@ namespace HoloToolkit.Unity
             }
 
             // Next, APPX
-            if (!BuildDeployTools.BuildAppxFromSolution(
-                appName,
+            if (!BuildDeployTools.BuildAppxFromSLN(
+                PlayerSettings.productName,
                 BuildDeployPrefs.MsBuildVersion,
                 BuildDeployPrefs.ForceRebuild,
                 BuildDeployPrefs.BuildConfig,
                 BuildDeployPrefs.BuildDirectory,
-                BuildDeployPrefs.IncrementBuildVersion))
+                BuildDeployPrefs.IncrementBuildVersion,
+                showConfDlg: !install))
             {
                 return;
             }
 
             // Next, Install
-            string fullBuildLocation = CalcMostRecentBuild();
-            string[] ipList = ParseIPList(BuildDeployPrefs.TargetIPs);
-            InstallAppOnDevicesList(fullBuildLocation, ipList);
+            if (install)
+            {
+                string fullBuildLocation = CalcMostRecentBuild();
+                string[] ipList = ParseIPList(BuildDeployPrefs.TargetIPs);
+                InstallAppOnDevicesList(fullBuildLocation, ipList);
+            }
         }
 
         private string CalcMostRecentBuild()
@@ -814,5 +897,7 @@ namespace HoloToolkit.Unity
                     new BuildDeployPortal.ConnectInfo(FinalizeIP(ipList[i]), BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
+
+        #endregion // Methods
     }
 }

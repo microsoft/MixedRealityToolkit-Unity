@@ -419,7 +419,7 @@ namespace HoloToolkit.Unity
                     // Open it up in default text editor
                     System.Diagnostics.Process.Start(logFile);
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     Debug.LogError(ex.ToString());
                     return false;
