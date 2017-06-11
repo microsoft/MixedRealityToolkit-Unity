@@ -75,6 +75,7 @@ namespace HoloToolkit.Unity
         private float timeLastUpdatedBuilds;
         private string[] windowsSdkPaths;
         private Vector2 scrollPosition;
+        private string wsaCertPath;
 
         #endregion // Fields
 
@@ -125,9 +126,11 @@ namespace HoloToolkit.Unity
             int buttonWidth_Quarter = Screen.width / 4;
             int buttonWidth_Half = Screen.width / 2;
             int buttonWidth_Full = Screen.width - 25;
+            var locatorHasData = XdeGuestLocator.HasData;
+            var locatorIsSearching = XdeGuestLocator.IsSearching;
+            var xdeGuestIpAddress = XdeGuestLocator.GuestIpAddress;
 
             // Quick Options
-
             GUILayout.BeginVertical();
             GUILayout.Label("Quick Options");
 
@@ -139,31 +142,35 @@ namespace HoloToolkit.Unity
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
-                GUI.enabled = true;
+                GUI.enabled = ShouldBuildSLNBeEnabled;
 
-                if (GUILayout.Button("Select Certificate", GUILayout.Width(buttonWidth_Quarter)))
+                if (GUILayout.Button(!locatorIsSearching && locatorHasData ? "Build SLN, Build APPX, then Install" : "Build SLN, Build APPX", GUILayout.Width(buttonWidth_Half)))
                 {
-                    string path = EditorUtility.OpenFilePanel("Select Certificate", Application.dataPath, "pfx");
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        CertificatePasswordWindow.Show(path);
-                    }
+                    // Build SLN
+                    EditorApplication.delayCall += () => { BuildAll(!locatorIsSearching && locatorHasData); };
                 }
+
+                GUI.enabled = true;
 
                 if (GUILayout.Button("Open Player Settings", GUILayout.Width(buttonWidth_Quarter)))
                 {
                     EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
                 }
 
-                GUI.enabled = ShouldBuildSLNBeEnabled;
-
-                if (GUILayout.Button("Build SLN, Build APPX, then Install", GUILayout.Width(buttonWidth_Half)))
+                if (GUILayout.Button(string.IsNullOrEmpty(wsaCertPath) ? "Select Certificate" : wsaCertPath, GUILayout.Width(buttonWidth_Quarter)))
                 {
-                    // Build SLN
-                    EditorApplication.delayCall += () => { BuildAll(); };
-                }
+                    string path = EditorUtility.OpenFilePanel("Select Certificate", Application.dataPath, "pfx");
+                    wsaCertPath = path.Substring(path.LastIndexOf("/", StringComparison.Ordinal) + 1);
 
-                GUI.enabled = true;
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        CertificatePasswordWindow.Show(path);
+                    }
+                    else
+                    {
+                        PlayerSettings.WSA.SetCertificate(string.Empty, string.Empty);
+                    }
+                }
             }
 
             GUILayout.EndVertical();
@@ -367,10 +374,6 @@ namespace HoloToolkit.Unity
             GUILayout.BeginVertical();
             GUILayout.Label("Deploy");
 
-            var locatorIsSearching = XdeGuestLocator.IsSearching;
-            var locatorHasData = XdeGuestLocator.HasData;
-            var xdeGuestIpAddress = XdeGuestLocator.GuestIpAddress;
-
             // Target IPs (and save setting, if it's changed)
             string curTargetIps = BuildDeployPrefs.TargetIPs;
             if (!LocalIPsOnly)
@@ -472,6 +475,7 @@ namespace HoloToolkit.Unity
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(GUISectionOffset + 15);
 
+                    GUI.enabled = !locatorIsSearching && locatorHasData;
                     if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
                     {
                         string thisBuildLocation = fullBuildLocation;
@@ -481,6 +485,8 @@ namespace HoloToolkit.Unity
                             InstallAppOnDevicesList(thisBuildLocation, ipList);
                         };
                     }
+
+                    GUI.enabled = true;
 
                     GUILayout.Space(5);
                     GUILayout.Label(packageName + " (" + directoryDate + ")");
