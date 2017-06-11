@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) @jevertt
 // Copyright (c) Rafael Rivera
 // Licensed under the MIT License. See LICENSE in the project root for license information.
@@ -37,13 +37,13 @@ namespace HoloToolkit.Unity
 
         private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
 
-        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
+        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) && !string.IsNullOrEmpty(PlayerSettings.WSA.certificatePath); } }
 
         private bool ShouldBuildAppxBeEnabled
         {
             get
             {
-                return
+                return ShouldBuildSLNBeEnabled &&
                   !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) &&
                   !string.IsNullOrEmpty(BuildDeployPrefs.MsBuildVersion) &&
                   !string.IsNullOrEmpty(BuildDeployPrefs.BuildConfig);
@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity
         private void Setup()
         {
             titleContent = new GUIContent("Build Window");
-            minSize = new Vector2(600, 555);
+            minSize = new Vector2(600, 575);
 
             windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
 
@@ -126,9 +126,50 @@ namespace HoloToolkit.Unity
             int buttonWidth_Half = Screen.width / 2;
             int buttonWidth_Full = Screen.width - 25;
 
+            // Quick Options
+
+            GUILayout.BeginVertical();
+            GUILayout.Label("Quick Options");
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
+
+            // Build & Run button...
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                GUI.enabled = true;
+
+                if (GUILayout.Button("Select Certificate", GUILayout.Width(buttonWidth_Quarter)))
+                {
+                    string path = EditorUtility.OpenFilePanel("Select Certificate", Application.dataPath, "pfx");
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        CertificatePasswordWindow.Show(path);
+                    }
+                }
+
+                if (GUILayout.Button("Open Player Settings", GUILayout.Width(buttonWidth_Quarter)))
+                {
+                    EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
+                }
+
+                GUI.enabled = ShouldBuildSLNBeEnabled;
+
+                if (GUILayout.Button("Build SLN, Build APPX, then Install", GUILayout.Width(buttonWidth_Half)))
+                {
+                    // Build SLN
+                    EditorApplication.delayCall += () => { BuildAll(); };
+                }
+
+                GUI.enabled = true;
+            }
+
+            GUILayout.EndVertical();
+
             // Build section
             GUILayout.BeginVertical();
-
             GUILayout.Label("SLN");
 
             EditorGUILayout.BeginHorizontal();
@@ -150,6 +191,7 @@ namespace HoloToolkit.Unity
             {
                 GUILayout.FlexibleSpace();
                 GUI.enabled = ShouldOpenSLNBeEnabled;
+
                 if (GUILayout.Button("Open SLN", GUILayout.Width(buttonWidth_Quarter)))
                 {
                     // Open SLN
@@ -166,27 +208,13 @@ namespace HoloToolkit.Unity
                         EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(curBuildDirectory); };
                     }
                 }
+
                 GUI.enabled = ShouldBuildSLNBeEnabled;
 
                 if (GUILayout.Button("Build Visual Studio SLN", GUILayout.Width(buttonWidth_Half)))
                 {
                     // Build SLN
                     EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(curBuildDirectory); };
-                }
-
-                GUI.enabled = true;
-            }
-
-            // Build & Run button...
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUILayout.FlexibleSpace();
-                GUI.enabled = ShouldBuildSLNBeEnabled;
-
-                if (GUILayout.Button("Build SLN, Build APPX, then Install", GUILayout.Width(buttonWidth_Half)))
-                {
-                    // Build SLN
-                    EditorApplication.delayCall += () => { BuildAll(); };
                 }
 
                 GUI.enabled = true;
