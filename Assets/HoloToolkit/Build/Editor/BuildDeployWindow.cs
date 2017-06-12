@@ -109,6 +109,9 @@ namespace HoloToolkit.Unity
                 windowsSdkPaths[i] = windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1);
             }
 
+            wsaCertPath = PlayerSettings.WSA.certificatePath;
+            wsaCertPath = wsaCertPath.Substring(wsaCertPath.LastIndexOf("/", StringComparison.Ordinal) + 1);
+
             UpdateXdeStatus();
             UpdateBuilds();
         }
@@ -197,6 +200,22 @@ namespace HoloToolkit.Unity
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
+
+                float previousLabelWidth = EditorGUIUtility.labelWidth;
+
+                // Generate C# Project References
+                EditorGUIUtility.labelWidth = 105;
+                bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
+                bool shouldGenerateProjects = EditorGUILayout.Toggle("Unity C# Projects", generateReferenceProjects);
+
+                if (shouldGenerateProjects != generateReferenceProjects)
+                {
+                    EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
+                }
+
+                // Restore previous label width
+                EditorGUIUtility.labelWidth = previousLabelWidth;
+
                 GUI.enabled = ShouldOpenSLNBeEnabled;
 
                 if (GUILayout.Button("Open SLN", GUILayout.Width(buttonWidth_Quarter)))

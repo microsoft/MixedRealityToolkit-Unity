@@ -176,8 +176,8 @@ namespace HoloToolkit.Unity
             // this breaks the build in VS RTM
             if (!RestoreNugetPackages(nugetPath, storePath) ||
                 !RestoreNugetPackages(nugetPath, storePath + "\\" + productName) ||
-                !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp") ||
-                !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass"))
+                EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp") ||
+                EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass"))
             {
                 Debug.LogError("Failed to restore nuget packages");
                 EditorUtility.ClearProgressBar();
