@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
                 Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
                 BuildTarget = BuildTarget.WSAPlayer,
                 WSASdk = WSASDK.UWP,
-                WSAUWPBuildType = WSAUWPBuildType.D3D,
+                WSAUWPBuildType = EditorUserBuildSettings.wsaUWPBuildType,
                 WSAUwpSdk = EditorUserBuildSettings.wsaUWPSDK,
 
                 // Configure a post build action that will compile the generated solution
