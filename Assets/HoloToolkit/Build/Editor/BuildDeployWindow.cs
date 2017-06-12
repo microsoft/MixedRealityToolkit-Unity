@@ -67,6 +67,32 @@ namespace HoloToolkit.Unity
 
         private bool LocalIPsOnly { get { return true; } }
 
+        private bool HoloLensUsbConnected
+        {
+            get
+            {
+                bool isConnected = false;
+
+                if (USBDeviceListener.USBDevices != null)
+                {
+                    foreach (USBDeviceInfo device in USBDeviceListener.USBDevices)
+                    {
+                        if (device.Name.Equals("Microsoft HoloLens"))
+                        {
+                            isConnected = true;
+                        }
+                    }
+                }
+                else
+                {
+                    isConnected = SessionState.GetBool("HoloLensUsbConnected", false);
+                }
+
+                SessionState.SetBool("HoloLensUsbConnected", isConnected);
+                return isConnected;
+            }
+        }
+
         #endregion // Properties
 
         #region Fields
@@ -110,6 +136,7 @@ namespace HoloToolkit.Unity
             }
 
             wsaCertPath = PlayerSettings.WSA.certificatePath;
+            wsaCertPath = wsaCertPath.Replace("\\", "/");
             wsaCertPath = wsaCertPath.Substring(wsaCertPath.LastIndexOf("/", StringComparison.Ordinal) + 1);
 
             UpdateXdeStatus();
@@ -147,7 +174,10 @@ namespace HoloToolkit.Unity
                 GUILayout.FlexibleSpace();
                 GUI.enabled = ShouldBuildSLNBeEnabled;
 
-                if (GUILayout.Button(!locatorIsSearching && locatorHasData ? "Build SLN, Build APPX, then Install" : "Build SLN, Build APPX", GUILayout.Width(buttonWidth_Half - 20)))
+                if (GUILayout.Button((!locatorIsSearching && locatorHasData || HoloLensUsbConnected)
+                    ? "Build SLN, Build APPX, then Install"
+                    : "Build SLN, Build APPX",
+                    GUILayout.Width(buttonWidth_Half - 20)))
                 {
                     // Build SLN
                     EditorApplication.delayCall += () => { BuildAll(!locatorIsSearching && locatorHasData); };
@@ -494,7 +524,7 @@ namespace HoloToolkit.Unity
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(GUISectionOffset + 15);
 
-                    GUI.enabled = !locatorIsSearching && locatorHasData;
+                    GUI.enabled = (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
                     if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
                     {
                         string thisBuildLocation = fullBuildLocation;
@@ -542,7 +572,7 @@ namespace HoloToolkit.Unity
             // Open web portal
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldWebPortalBeEnabled;
+                GUI.enabled = ShouldWebPortalBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("Open Device Portal", GUILayout.Width(buttonWidth_Full)))
@@ -556,7 +586,7 @@ namespace HoloToolkit.Unity
             // Launch app..
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLaunchAppBeEnabled && !locatorIsSearching && locatorHasData;
+                GUI.enabled = ShouldLaunchAppBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("Launch Application", GUILayout.Width(buttonWidth_Full)))
@@ -578,7 +608,7 @@ namespace HoloToolkit.Unity
             // Log file
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLogViewBeEnabled && !locatorIsSearching && locatorHasData;
+                GUI.enabled = ShouldLogViewBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
@@ -592,7 +622,7 @@ namespace HoloToolkit.Unity
             // Uninstall...
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLogViewBeEnabled && !locatorIsSearching && locatorHasData;
+                GUI.enabled = ShouldLogViewBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("Uninstall Application", GUILayout.Width(buttonWidth_Full)))

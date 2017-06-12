@@ -4,7 +4,6 @@
 //
 
 using UnityEngine;
-using System.Collections;
 using System.Net;
 using System;
 using System.IO;
