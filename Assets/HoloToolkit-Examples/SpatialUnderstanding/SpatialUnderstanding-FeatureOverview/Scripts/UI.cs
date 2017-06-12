@@ -6,7 +6,6 @@ using System.Collections;
 using HoloToolkit.Unity;
 using System;
 using UnityEngine.UI;
-using UnityEngine.VR.WSA.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 
@@ -60,7 +59,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Events
             SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
-            InteractionManager.SourcePressed += OnAirTap;
         }
 
         protected override void OnDestroy()
@@ -69,7 +67,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
             }
-            InteractionManager.SourcePressed -= OnAirTap;
 
             base.OnDestroy();
         }
@@ -167,21 +164,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             Vector3 defaultPosition = Camera.main.transform.position + Camera.main.transform.forward * 2.0f;
             PlaceMenu(new Vector3(defaultPosition.x, Math.Max(defaultPosition.y, alignment.FloorYValue + 1.5f), defaultPosition.z), (new Vector3(Camera.main.transform.forward.x, 0.0f, Camera.main.transform.forward.z)).normalized, true);
             Debug.Log("PlaceMenu - InFrontOfUser");
-        }
-
-        private void OnAirTap(InteractionSourceState state)
-        {
-            // Try to intersect one of the buttons
-            Vector3 hitPos, hitNormal;
-            Button hitButton;
-            if (AppState.Instance.AppCursor.RayCastUI(out hitPos, out hitNormal, out hitButton) &&
-                (hitButton != null))
-            {
-                if (hitButton.onClick != null)
-                {
-                    hitButton.onClick.Invoke();
-                }
-            }
         }
 
         private void SetActiveTab(Panels panel)
