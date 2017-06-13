@@ -98,7 +98,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 Moving = !Moving;
                 if (Moving)
                 {
-                    inputManager.OverrideFocusedObject = this.gameObject;
+                    inputManager.AddGlobalListener(gameObject);
                     if (SpatialMappingManager.Instance != null)
                     {
                         SpatialMappingManager.Instance.DrawVisualMeshes = true;
@@ -106,7 +106,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 }
                 else
                 {
-                    inputManager.OverrideFocusedObject = null;
+                    inputManager.RemoveGlobalListener(gameObject);
                     if (SpatialMappingManager.Instance != null)
                     {
                         SpatialMappingManager.Instance.DrawVisualMeshes = false;
@@ -121,6 +121,8 @@ namespace HoloToolkit.Unity.SharingWithUNET
                         PlayerController.Instance.SendSharedTransform(this.gameObject, localPosition, localRotation);
                     }
                 }
+
+                eventData.Use();
             }
         }
     }

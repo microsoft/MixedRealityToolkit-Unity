@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Base class of all input events.
     /// </summary>
-    public abstract class BaseInputEventData : BaseEventData
+    public abstract class BaseInputEventData : BaseEventData, IInputSourceInfoProvider
     {
         /// <summary>
         /// The source the input event originates from.
