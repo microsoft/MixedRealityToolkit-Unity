@@ -59,15 +59,11 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData">The source event data to be used to detect which controller to destroy.</param>
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            InteractionSourceKind sourceKind;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind) && sourceKind == InteractionSourceKind.Controller)
+            GameObject controller;
+            if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                GameObject controller;
-                if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
-                {
-                    Destroy(controller);
-                    controllerDictionary.Remove(eventData.SourceId);
-                }
+                Destroy(controller);
+                controllerDictionary.Remove(eventData.SourceId);
             }
         }
 
@@ -76,7 +72,7 @@ namespace HoloToolkit.Unity.InputModule
             GameObject controller;
             if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                controller.transform.rotation = eventData.Rotation;
+                controller.transform.localRotation = eventData.Rotation;
             }
         }
 
@@ -85,7 +81,7 @@ namespace HoloToolkit.Unity.InputModule
             GameObject controller;
             if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                controller.transform.position = eventData.Position;
+                controller.transform.localPosition = eventData.Position;
             }
         }
     }
