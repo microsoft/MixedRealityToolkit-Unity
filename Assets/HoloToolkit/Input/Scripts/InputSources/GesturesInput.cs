@@ -210,6 +210,12 @@ namespace HoloToolkit.Unity.InputModule
                 StartGestureRecognizer();
             }
 
+            foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
+            {
+                GetOrAddSourceData(iss.source);
+                InputManager.Instance.RaiseSourceDetected(this, iss.source.id);
+            }
+
             InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
 
             InteractionManager.SourceReleased += InteractionManager_SourceReleased;
@@ -217,8 +223,6 @@ namespace HoloToolkit.Unity.InputModule
 
             InteractionManager.SourceLost += InteractionManager_SourceLost;
             InteractionManager.SourceDetected += InteractionManager_SourceDetected;
-
-            // TODO: robertes: Should we use InteractionManager.GetCurrentReading() to get all sources currently available and synthesize a SourceDetected?
         }
 
         protected override void OnDisableAfterStart()
@@ -233,7 +237,12 @@ namespace HoloToolkit.Unity.InputModule
             InteractionManager.SourceLost -= InteractionManager_SourceLost;
             InteractionManager.SourceDetected -= InteractionManager_SourceDetected;
 
-            // TODO: robertes: Should we synthesize SourceLost for all outstanding sources and then clear our list?
+            foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
+            {
+                // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
+                sourceIdToData.Remove(iss.source.id);
+                InputManager.Instance.RaiseSourceLost(this, iss.source.id);
+            }
 
             base.OnDisableAfterStart();
         }
@@ -451,6 +460,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             return (capability.IsSupported ? flagIfSupported : SupportedInputInfo.None);
         }
+
+        #endregion
 
         private void InteractionManager_SourceUpdated(InteractionManager.SourceEventArgs args)
         {
