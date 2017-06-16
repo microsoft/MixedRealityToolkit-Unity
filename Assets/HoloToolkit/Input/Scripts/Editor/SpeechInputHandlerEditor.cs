@@ -14,7 +14,6 @@ namespace HoloToolkit.Unity.InputModule
         private SerializedProperty keywordsProperty;
         private string[] registeredKeywords;
         private SerializedProperty isGlobalListenerProperty;
-        private bool isGlobalListerer;
 
         private void OnEnable()
         {

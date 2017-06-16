@@ -22,8 +22,8 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndResponse[] Keywords;
 
-        [Tooltip("Determines whether this handler is a global listener, not connected to a specific gameobject")]
-        public bool IsGlobalListener = true;
+        [Tooltip("Determines if this handler is a global listener, not connected to a specific gameobject")]
+        public bool IsGlobalListener = false;
 
         [NonSerialized]
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
