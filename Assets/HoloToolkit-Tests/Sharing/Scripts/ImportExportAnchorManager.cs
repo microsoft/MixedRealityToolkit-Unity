@@ -29,6 +29,7 @@ namespace HoloToolkit.Sharing.Tests
             Start,
             Failed,
             Ready,
+            RoomApiInitializing,
             RoomApiInitialized,
             AnchorEstablished,
             // AnchorStore states
@@ -489,6 +490,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private IEnumerator InitRoomApi()
         {
+            currentState = ImportExportState.RoomApiInitializing;
             // First check if there is a current room
             currentRoom = roomManager.GetCurrentRoom();
 
