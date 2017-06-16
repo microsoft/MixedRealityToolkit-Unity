@@ -38,6 +38,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
         public bool IsBeingPlaced;
 
+        [Tooltip("Setting this to true will this behavior control the DrawMesh property on the spatial mapping")]
+        public bool ControlDrawMeshOnSpatialMappingWhenBeeingPlaced = true;
+
         /// <summary>
         /// The default ignore raycast layer built into unity.
         /// </summary>
@@ -124,7 +127,10 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.AddGlobalListener(gameObject);
 
                 // If the user is in placing mode, display the spatial mapping mesh.
-                SpatialMappingManager.Instance.DrawVisualMeshes = true;
+                if (ControlDrawMeshOnSpatialMappingWhenBeeingPlaced)
+                {
+                    SpatialMappingManager.Instance.DrawVisualMeshes = true;
+                }
 #if UNITY_WSA && !UNITY_EDITOR
 
                 //Removes existing world anchor if any exist.
@@ -139,7 +145,10 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.RemoveGlobalListener(gameObject);
 
                 // If the user is not in placing mode, hide the spatial mapping mesh.
-                SpatialMappingManager.Instance.DrawVisualMeshes = false;
+                if (ControlDrawMeshOnSpatialMappingWhenBeeingPlaced)
+                {
+                    SpatialMappingManager.Instance.DrawVisualMeshes = false;
+                }
 #if UNITY_WSA && !UNITY_EDITOR
 
                 // Add world anchor when object placement is done.
