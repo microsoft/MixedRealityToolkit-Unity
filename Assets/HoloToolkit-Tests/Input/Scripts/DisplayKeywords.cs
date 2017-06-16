@@ -1,17 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
+    [Obsolete("See DisplaySpeechKeywords for updated usage.")]
     public class DisplayKeywords : MonoBehaviour
     {
         public KeywordManager keywordManager;
         public Text textPanel;
 
-        void Start()
+        private void Start()
         {
             if (keywordManager == null || textPanel == null)
             {

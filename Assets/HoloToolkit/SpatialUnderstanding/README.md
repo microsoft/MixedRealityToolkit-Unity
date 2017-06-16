@@ -20,7 +20,7 @@ SpatialUnderstanding addon that can be used for topology, object detection, and 
 ### [Prefabs](Prefabs)
 The following prefab makes it easy to quickly get started using the Spatial Understanding Modules.
 
-####SpatialUnderstanding.prefab
+#### SpatialUnderstanding.prefab
 This prefab is used to control the state and flow of the scanning process used in the understanding module, provides the means to visualize the scanning process.
 
 ### [Scripts](Scripts)

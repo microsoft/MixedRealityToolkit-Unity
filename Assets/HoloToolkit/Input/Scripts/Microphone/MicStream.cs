@@ -162,10 +162,10 @@ namespace HoloToolkit.Unity.InputModule
             switch (returnCode)
             {
                 case (int)ErrorCodes.ALREADY_RECORDING:
-                    Debug.LogError("WARNING: Tried to start recording when you were already doing so. You need to stop your previous recording before you can start again.");
+                    Debug.LogWarning("WARNING: Tried to start recording when you were already doing so. You need to stop your previous recording before you can start again.");
                     return false;
                 case (int)ErrorCodes.ALREADY_RUNNING:
-                    Debug.LogError("WARNING: Tried to initialize microphone more than once");
+                    Debug.LogWarning("WARNING: Tried to initialize microphone more than once");
                     return false;
                 case (int)ErrorCodes.GRAPH_NOT_EXIST:
                     Debug.LogError("ERROR: Tried to do microphone things without a properly initialized microphone. \n Do you have a mic plugged into a functional audio system and did you call MicInitialize() before anything else ??");

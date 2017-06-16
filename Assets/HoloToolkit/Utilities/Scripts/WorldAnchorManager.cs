@@ -62,6 +62,10 @@ namespace HoloToolkit.Unity
             base.Awake();
 
             AnchorStore = null;
+
+#if UNITY_EDITOR
+            Debug.LogWarning("World Anchor Manager does not work in the editor. Anchor Store will never be ready.");
+#endif
             WorldAnchorStore.GetAsync(AnchorStoreReady);
         }
 
