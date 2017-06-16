@@ -161,6 +161,12 @@ namespace HoloToolkit.Unity
 
                 // Create a copy of the original images
                 string directoryPath = Application.dataPath + "/" + _outputDirectoryName;
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
                 File.Copy(_originalAppIconPath, directoryPath + "/1240x1240.png");
                 File.Copy(_originalSplashImagePath, directoryPath + "/2480x1200.png");
 
@@ -256,7 +262,10 @@ namespace HoloToolkit.Unity
 
                 // Write clone to assets folder
                 var bytes = clone.EncodeToPNG();
-                Directory.CreateDirectory(directoryPath);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
                 File.WriteAllBytes(filepath, bytes);
             }
 
