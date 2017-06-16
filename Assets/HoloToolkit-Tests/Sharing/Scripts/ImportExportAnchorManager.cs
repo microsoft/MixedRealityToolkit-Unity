@@ -499,6 +499,7 @@ namespace HoloToolkit.Sharing.Tests
                 // If we have a room, we'll join the first room we see.
                 // If we are the user with the lowest user ID, we will create the room.
                 // Otherwise we will wait for the room to be created.
+                yield return new WaitForEndOfFrame();
                 if (roomManager.GetRoomCount() == 0)
                 {
                     if (ShouldLocalUserCreateRoom)
