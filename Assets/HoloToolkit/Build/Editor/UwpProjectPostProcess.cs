@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class UwpProjectPostProcess
     {
-        private static Regex platformRegex = new Regex(@"'\$\(Configuration\)\|\$\(Platform\)' == '(?<Configuration>.*)\|(?<Platform>.*)'");
+        private static readonly Regex PlatformRegex = new Regex(@"'\$\(Configuration\)\|\$\(Platform\)' == '(?<Configuration>.*)\|(?<Platform>.*)'");
 
         /// <summary>
         /// Executes the Post Processes on the C# Projects generated as part of the UWP build.
@@ -35,7 +35,7 @@ namespace HoloToolkit.Unity
         /// <remarks>This is manually parsing the Unity generated MSBuild projects, which means it will be fragile to changes.</remarks>
         private static void UpdateProjectFile(string filename)
         {
-            UnityEngine.Debug.LogFormat("Update Project File: {0}", filename);
+            //UnityEngine.Debug.LogFormat("Update Project File: {0}", filename);
 
             if (!File.Exists(filename))
             {
@@ -43,8 +43,14 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            XmlDocument projectDocument = new XmlDocument();
+            var projectDocument = new XmlDocument();
             projectDocument.Load(filename);
+
+            if (projectDocument.DocumentElement == null)
+            {
+                UnityEngine.Debug.LogWarningFormat("Unabled to load file \"{0}\", double check that the build suceeded and that the C# Projects are set to be generated.", filename);
+                return;
+            }
 
             if (projectDocument.DocumentElement.Name != "Project")
             {
@@ -55,23 +61,22 @@ namespace HoloToolkit.Unity
             foreach (XmlNode node in projectDocument.DocumentElement.ChildNodes)
             {
                 // Everything we are looking for is inside a PropertyGroup...
-                if (node.Name == "PropertyGroup")
-                {
-                    if (node.Attributes.Count == 0 && node["Configuration"] != null && node["Platform"] != null)
-                    {
-                        // Update the defaults to Release and x86 so that we can run NuGet restore ok.
-                        node["Configuration"].InnerText = "Release";
-                        node["Platform"].InnerText = "x86";
-                    }
-                    else if (node.Attributes["Condition"] != null)
-                    {
-                        // Update the DefineConstants to include the configuration allowing us to conditionally compile code based on the configuration.
-                        Match match = platformRegex.Match(node.Attributes["Condition"].InnerText);
+                if (node.Name != "PropertyGroup" || node.Attributes == null) { continue; }
 
-                        if (match.Success)
-                        {
-                            UpdateDefineConstants(node["DefineConstants"], match.Groups["Configuration"].Value, match.Groups["Platform"].Value);
-                        }
+                if (node.Attributes.Count == 0 && node["Configuration"] != null && node["Platform"] != null)
+                {
+                    // Update the defaults to Release and x86 so that we can run NuGet restore ok.
+                    node["Configuration"].InnerText = "Release";
+                    node["Platform"].InnerText = "x86";
+                }
+                else if (node.Attributes["Condition"] != null)
+                {
+                    // Update the DefineConstants to include the configuration allowing us to conditionally compile code based on the configuration.
+                    Match match = PlatformRegex.Match(node.Attributes["Condition"].InnerText);
+
+                    if (match.Success)
+                    {
+                        UpdateDefineConstants(node["DefineConstants"], match.Groups["Configuration"].Value, match.Groups["Platform"].Value);
                     }
                 }
             }
@@ -87,15 +92,15 @@ namespace HoloToolkit.Unity
             }
 
             IEnumerable<string> symbols = defineConstants.InnerText.Split(';').Except(new[]
-                {
-                    string.Empty,
-                    BuildSLNUtilities.BuildSymbolDebug,
-                    BuildSLNUtilities.BuildSymbolRelease,
-                    BuildSLNUtilities.BuildSymbolMaster
-                }).Union(new[] { configuration.ToUpperInvariant() });
+            {
+                string.Empty,
+                BuildSLNUtilities.BuildSymbolDebug,
+                BuildSLNUtilities.BuildSymbolRelease,
+                BuildSLNUtilities.BuildSymbolMaster
+            }).Union(new[] { configuration.ToUpperInvariant() });
 
             defineConstants.InnerText = string.Join(";", symbols.ToArray());
-            UnityEngine.Debug.LogFormat("Updating defines for Configuration|Platform: {0}|{1} => {2}", configuration, platform, defineConstants.InnerText);
+            //UnityEngine.Debug.LogFormat("Updating defines for Configuration|Platform: {0}|{1} => {2}", configuration, platform, defineConstants.InnerText);
         }
 
         private static void WriteXmlDocumentToFile(XmlDocument document, string fullPath)
@@ -105,9 +110,11 @@ namespace HoloToolkit.Unity
             {
                 fileStream = File.Open(fullPath, FileMode.Create);
 
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.CloseOutput = true;
+                var settings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    CloseOutput = true
+                };
 
                 using (XmlWriter writer = XmlWriter.Create(fileStream, settings))
                 {
@@ -120,10 +127,8 @@ namespace HoloToolkit.Unity
                 if (fileStream != null)
                 {
                     fileStream.Dispose();
-                    fileStream = null;
                 }
             }
-
         }
     }
 }
