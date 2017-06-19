@@ -6,7 +6,7 @@ namespace HoloToolkit.Unity
 {
     public class TextureScale
     {
-        public class ThreadData
+        private class ThreadData
         {
             public int start;
             public int end;

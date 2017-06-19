@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity
         private Texture2D _originalSplashImage;
 
         [MenuItem("HoloToolkit/Tile Generator", false, 0)]
-        public static void OpenWindow()
+        private static void OpenWindow()
         {
             SetIconsWindow window = GetWindow<SetIconsWindow>(WindowTitle) as SetIconsWindow;
             if (window != null)
@@ -33,12 +33,12 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             Setup();
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             // Save settings
             EditorPrefs.SetString(EditorPrefsKey_AppIcon, _originalAppIconPath);
@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity
             EditorPrefs.SetString(EditorPrefsKey_DirectoryName, _outputDirectoryName);
         }
 
-        public void OnGUI()
+        private void OnGUI()
         {
             GUILayout.Space(GUISectionOffset);
 
