@@ -16,6 +16,12 @@ using Windows.UI.Xaml.Controls;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// ApplicationViewManager can switch to Plan View, populate an Application View (New Window of UAP), then navigate to the page with page name. 
+    /// After the page called 'CallbackReturnValue' method, the new Application View will be closed, and the system will switch back to your Full3D view.
+    /// The corotine were waiting will get the return value by callback.
+    /// </summary>
+
     public class ApplicationViewManager : MonoBehaviour
     {
         void Start()
@@ -37,7 +43,7 @@ namespace HoloToolkit.Unity
 #endif
 
         /// <summary>
-        /// Execute this method in Application View Dispatcher can return to 3D View and close Application View
+        /// Call this method with Application View Dispatcher， or in Application View Thread, will return to Full3D View and close Application View
         /// </summary>
         /// <param name="returnValue">The return value of the Xaml View Execution</param>
 #if WINDOWS_UWP
@@ -71,7 +77,7 @@ namespace HoloToolkit.Unity
 
 
         /// <summary>
-        /// Execute this method in Unity Behaviors can create and switch to a new Xaml View. 
+        /// Call this method in Unity App Thread can switch to Plan View, create and show a new Xaml View. 
         /// </summary>
         /// <typeparam name="TReturnValue"></typeparam>
         /// <param name="xamlPageName"></param>
@@ -90,7 +96,8 @@ namespace HoloToolkit.Unity
             {
                 Frame frame = new Frame();
                 var pageType = Type.GetType(Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName.Replace(".App,", $".{xamlPageName},"));
-                newViewId = ApplicationView.GetForCurrentView().Id;
+                var appv= ApplicationView.GetForCurrentView();
+                newViewId =appv.Id;     
                 var cb = new Action<object>(rval =>
                 {
                     returnValue = rval;
