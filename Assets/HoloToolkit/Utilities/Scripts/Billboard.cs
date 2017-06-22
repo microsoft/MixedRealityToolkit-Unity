@@ -24,8 +24,15 @@ namespace HoloToolkit.Unity
         [Tooltip("Specifies the axis about which the object will rotate.")]
         public PivotAxis PivotAxis = PivotAxis.Free;
 
+        public Transform TargetTransform;
+
         private void OnEnable()
         {
+            if (TargetTransform == null)
+            {
+                TargetTransform = Camera.main.transform;
+            }
+
             Update();
         }
 
@@ -34,13 +41,13 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void Update()
         {
-            if (!Camera.main)
+            if (TargetTransform == null)
             {
                 return;
             }
 
             // Get a Vector that points from the target to the main camera.
-            Vector3 directionToTarget = Camera.main.transform.position - transform.position;
+            Vector3 directionToTarget = TargetTransform.position - transform.position;
 
             // Adjust for the pivot axis.
             switch (PivotAxis)
