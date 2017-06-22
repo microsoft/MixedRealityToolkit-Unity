@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
 using System.Collections;
@@ -13,9 +13,12 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 #endif
 
-
 namespace HoloToolkit.Unity
 {
+
+
+    public delegate void ReturnValueCallback<TReturnValue>(TReturnValue returnValue);
+
     /// <summary>
     /// ApplicationViewManager can switch to Plan View, populate an Application View (New Window of UAP), then navigate to the page with page name. 
     /// After the page called 'CallbackReturnValue' method, the new Application View will be closed, and the system will switch back to your Full3D view.
@@ -24,7 +27,7 @@ namespace HoloToolkit.Unity
 
     public class ApplicationViewManager : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
 #if WINDOWS_UWP
         UnityEngine.WSA.Application.InvokeOnUIThread(
@@ -62,20 +65,15 @@ namespace HoloToolkit.Unity
 
                 }
             }
-
             await Windows.UI.ViewManagement.ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationViewManager.Full3DViewId).AsTask();
             v.CoreWindow.Close();
-
         }
 #else
         public static void CallbackReturnValue(object returnValue)
-        {
-          
+        {       
 
         }
 #endif
-
-
         /// <summary>
         /// Call this method in Unity App Thread can switch to Plan View, create and show a new Xaml View. 
         /// </summary>
@@ -88,7 +86,6 @@ namespace HoloToolkit.Unity
 
             bool isCompleted = false;
             object returnValue = null;
-
 #if WINDOWS_UWP
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;
@@ -120,14 +117,10 @@ namespace HoloToolkit.Unity
                     },
                     true);
             yield return new WaitUntil(() => viewShownTask.IsCompleted || viewShownTask.IsCanceled || viewShownTask.IsFaulted);
-
 #else
             isCompleted = true;
-
 #endif
-
             yield return new WaitUntil(() => isCompleted);
-
             try
             {
                 if (callback != null)
@@ -139,11 +132,6 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogError(ex);
             }
-
-        }
-
-        
+        }        
     }
-
-    public delegate void ReturnValueCallback<TReturnValue>(TReturnValue returnValue);
 }
