@@ -12,11 +12,8 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 #endif
-
 namespace HoloToolkit.Unity
 {
-
-
     public delegate void ReturnValueCallback<TReturnValue>(TReturnValue returnValue);
 
     /// <summary>
@@ -24,7 +21,6 @@ namespace HoloToolkit.Unity
     /// After the page called 'CallbackReturnValue' method, the new Application View will be closed, and the system will switch back to your Full3D view.
     /// The corotine were waiting will get the return value by callback.
     /// </summary>
-
     public class ApplicationViewManager : MonoBehaviour
     {
         private void Start()
@@ -39,7 +35,6 @@ namespace HoloToolkit.Unity
         }
 
 #if WINDOWS_UWP
-
         static int Full3DViewId { get; set; }
         static System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>> CallbackDictionary
             = new System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>>();
