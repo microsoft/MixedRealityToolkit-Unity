@@ -80,8 +80,8 @@ namespace HoloToolkit.Unity
         {
 
             bool isCompleted = false;
-            object returnValue = null;
 #if WINDOWS_UWP
+            object returnValue = null;
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;
             var dispt = newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -138,6 +138,7 @@ namespace HoloToolkit.Unity
             }
 #else
             isCompleted = true;
+            yield return new WaitUntil(() => isCompleted);
 #endif
         }
     }
