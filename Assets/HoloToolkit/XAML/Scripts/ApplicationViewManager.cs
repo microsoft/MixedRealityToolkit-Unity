@@ -26,11 +26,11 @@ namespace HoloToolkit.Unity
         private void Start()
         {
 #if WINDOWS_UWP
-        UnityEngine.WSA.Application.InvokeOnUIThread(
-            () =>
-            {
-                Full3DViewId = ApplicationView.GetForCurrentView().Id;
-            }, true);
+            UnityEngine.WSA.Application.InvokeOnUIThread(
+                () =>
+                {
+                    Full3DViewId = ApplicationView.GetForCurrentView().Id;
+                }, true);
 #endif
         }
 
@@ -59,9 +59,9 @@ namespace HoloToolkit.Unity
                 {
 
                 }
+                await Windows.UI.ViewManagement.ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationViewManager.Full3DViewId).AsTask();
+                v.CoreWindow.Close();
             }
-            await Windows.UI.ViewManagement.ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationViewManager.Full3DViewId).AsTask();
-            v.CoreWindow.Close();
         }
 #else
         public static void CallbackReturnValue(object returnValue)
@@ -86,10 +86,20 @@ namespace HoloToolkit.Unity
             int newViewId = 0;
             var dispt = newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
+                //This happens when User switch view back to Main App manually 
+                void CoreWindow_VisibilityChanged(CoreWindow sender, VisibilityChangedEventArgs args)
+                {
+                    if (args.Visible == false)
+                    {
+                        CallbackReturnValue(null);
+                    }
+                }
+
+                newView.CoreWindow.VisibilityChanged += CoreWindow_VisibilityChanged;
                 Frame frame = new Frame();
                 var pageType = Type.GetType(Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName.Replace(".App,", $".{xamlPageName},"));
-                var appv= ApplicationView.GetForCurrentView();
-                newViewId =appv.Id;     
+                var appv = ApplicationView.GetForCurrentView();
+                newViewId = appv.Id;
                 var cb = new Action<object>(rval =>
                 {
                     returnValue = rval;
@@ -101,32 +111,34 @@ namespace HoloToolkit.Unity
                 Window.Current.Activate();
 
             }).AsTask();
-
             yield return new WaitUntil(() => dispt.IsCompleted || dispt.IsCanceled || dispt.IsFaulted);
-
             Task viewShownTask = null;
             UnityEngine.WSA.Application.InvokeOnUIThread(
                 () =>
-                    {
-                        viewShownTask = ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId).AsTask();
-                    },
+                {
+                    viewShownTask = ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId).AsTask();
+                },
                     true);
             yield return new WaitUntil(() => viewShownTask.IsCompleted || viewShownTask.IsCanceled || viewShownTask.IsFaulted);
-#else
-            isCompleted = true;
-#endif
             yield return new WaitUntil(() => isCompleted);
             try
             {
-                if (callback != null)
+                if (returnValue is TReturnValue)
                 {
-                    callback((TReturnValue)returnValue);
+                    callback?.Invoke((TReturnValue)returnValue);
+                }
+                else
+                {
+                    callback?.Invoke(default(TReturnValue));
                 }
             }
             catch (Exception ex)
             {
                 Debug.LogError(ex);
             }
-        }        
+#else
+            isCompleted = true;
+#endif
+        }
     }
 }
