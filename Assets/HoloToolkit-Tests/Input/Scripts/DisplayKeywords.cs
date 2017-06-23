@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     [Obsolete("See DisplaySpeechKeywords for updated usage.")]
     public class DisplayKeywords : MonoBehaviour
     {
+#if UNITY_EDITOR || UNITY_WSA
         public KeywordManager keywordManager;
         public Text textPanel;
 
@@ -27,5 +28,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 textPanel.text += k.Keyword + "\n";
             }
         }
+#endif
     }
 }
