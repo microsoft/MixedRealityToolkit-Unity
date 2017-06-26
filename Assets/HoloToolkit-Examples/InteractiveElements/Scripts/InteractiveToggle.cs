@@ -19,6 +19,7 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// </summary>
     public class InteractiveToggle : Interactive
     {
+
         /// <summary>
         /// Sets the button to act like a navigation button or toggle type button
         /// </summary>

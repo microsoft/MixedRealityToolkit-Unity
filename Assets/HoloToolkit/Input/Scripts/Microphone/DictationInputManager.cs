@@ -5,7 +5,6 @@ using System.Collections;
 using System.Text;
 using UnityEngine;
 
-
 #if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.Windows.Speech;
 #endif
@@ -251,9 +250,9 @@ namespace HoloToolkit.Unity.InputModule
             dictationResult = string.Empty;
         }
 
-#endregion // Dictation Recognizer Callbacks
+        #endregion // Dictation Recognizer Callbacks
 
-#region IInputSource Implementation
+        #region IInputSource Implementation
 
         public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
@@ -277,6 +276,6 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-#endregion // IInputSource Implementation
+        #endregion // IInputSource Implementation
     }
 }

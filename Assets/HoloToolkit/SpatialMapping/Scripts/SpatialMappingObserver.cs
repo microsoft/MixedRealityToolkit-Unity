@@ -449,7 +449,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 ReclaimSurface(replacedSurface.Value);
             }
         }
-        
+
         /// <summary>
         /// Handles the SurfaceObserver's OnSurfaceChanged event.
         /// </summary>
