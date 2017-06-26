@@ -22,7 +22,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-#if UNITY_EDITOR || UNITY_WSA
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
         {
             switch (eventData.RecognizedText.ToLower())
@@ -35,12 +34,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     break;
             }
         }
-#else
-
-        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
-        {
-        }
-#endif
 
         private void OnDestroy()
         {
