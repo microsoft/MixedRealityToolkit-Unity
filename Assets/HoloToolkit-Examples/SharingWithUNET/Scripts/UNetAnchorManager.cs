@@ -205,14 +205,14 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// Attempts to attach to  an anchor by anchorName in the local store..
         /// </summary>
         /// <returns>True if it attached, false if it could not attach</returns>
-        private bool AttachToCachedAnchor(string AnchorName)
+        private bool AttachToCachedAnchor(string anchorName)
         {
             WorldAnchorStore anchorStore = WorldAnchorManager.Instance.AnchorStore;
-            Debug.Log("Looking for " + AnchorName);
+            Debug.Log("Looking for " + anchorName);
             string[] ids = anchorStore.GetAllIds();
             for (int index = 0; index < ids.Length; index++)
             {
-                if (ids[index] == AnchorName)
+                if (ids[index] == anchorName)
                 {
                     Debug.Log("Using what we have");
                     anchorStore.Load(ids[index], objectToAnchor);

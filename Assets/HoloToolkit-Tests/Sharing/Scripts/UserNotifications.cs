@@ -36,7 +36,7 @@ namespace HoloToolkit.Sharing.Tests
                 users += "\n" + usersTracker.CurrentUsers[i].GetName();
             }
 
-            Debug.LogFormat("User Notifications: {0} users in room.{1}", usersTracker.CurrentUsers.Count, users);
+            Debug.LogFormat("[User Notifications] {0} users in room.{1}", usersTracker.CurrentUsers.Count, users);
 
             localUser = SharingStage.Instance.Manager.GetLocalUser();
 
@@ -48,7 +48,7 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (user.IsValid() && localUser != user)
             {
-                Debug.LogFormat("User Notifications: User {0} has joined the room.", user.GetName());
+                Debug.LogFormat("[User Notifications] User {0} has joined the room.", user.GetName());
             }
         }
 
@@ -56,7 +56,7 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (user.IsValid() && localUser != user)
             {
-                Debug.LogFormat("User Notifications: User {0} has left the room.", user.GetName());
+                Debug.LogFormat("[User Notifications] User {0} has left the room.", user.GetName());
             }
         }
 
