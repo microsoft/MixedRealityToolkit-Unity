@@ -56,8 +56,8 @@ namespace HoloToolkit.Sharing
         /// </summary>
         private List<byte> rawAnchorUploadData = new List<byte>(0);
 
-        private bool isDownloadingAnchors;
-        private bool shouldDownloadAnchors;
+        private bool isImportingAnchors;
+        private bool shouldImportAnchors;
 
         /// <summary>
         /// The current download anchor data blob.
@@ -94,24 +94,24 @@ namespace HoloToolkit.Sharing
 
             if (LocalAnchorOperations.Count > 0)
             {
-                if (!isExportingAnchors && !isDownloadingAnchors)
+                if (!isExportingAnchors && !isImportingAnchors)
                 {
                     DoAnchorOperation(LocalAnchorOperations.Dequeue());
                 }
             }
             else
             {
-                if (shouldExportAnchors && !isExportingAnchors && !isDownloadingAnchors)
+                if (shouldExportAnchors && !isExportingAnchors && !isImportingAnchors)
                 {
                     isExportingAnchors = true;
                     shouldExportAnchors = false;
                     WorldAnchorTransferBatch.ExportAsync(currentAnchorTransferBatch, WriteBuffer, ExportComplete);
                 }
 
-                if (shouldDownloadAnchors && !isDownloadingAnchors && !isExportingAnchors)
+                if (shouldImportAnchors && !isImportingAnchors && !isExportingAnchors)
                 {
-                    isDownloadingAnchors = true;
-                    shouldDownloadAnchors = false;
+                    isImportingAnchors = true;
+                    shouldImportAnchors = false;
                     WorldAnchorTransferBatch.ImportAsync(rawAnchorDownloadData, ImportComplete);
                 }
             }
@@ -212,25 +212,35 @@ namespace HoloToolkit.Sharing
         {
             if (successful)
             {
-                if (ShowDetailedLogs)
-                {
-                    Debug.Log("[WorldAnchorManager] Successfully uploaded anchor.");
-                }
+                string[] anchorIds = currentAnchorTransferBatch.GetAllIds();
 
-                if (AnchorDebugText != null)
+                for (int i = 0; i < anchorIds.Length; i++)
                 {
-                    AnchorDebugText.text += "\nSuccessfully uploaded anchor.";
+                    if (ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("[WorldAnchorManager] Successfully uploaded anchor \"{0}\".", anchorIds[i]);
+                    }
+
+                    if (AnchorDebugText != null)
+                    {
+                        AnchorDebugText.text += string.Format("\nSuccessfully uploaded anchor \"{0}\".", anchorIds[i]);
+                    }
                 }
             }
             else
             {
                 if (AnchorDebugText != null)
                 {
-                    AnchorDebugText.text += string.Format("\n Upload failed: " + failureReason);
+                    AnchorDebugText.text += string.Format("\nUpload failed: " + failureReason);
                 }
 
                 Debug.LogError("[WorldAnchorManager] Upload failed: " + failureReason);
             }
+
+            rawAnchorUploadData.Clear();
+            currentAnchorTransferBatch.Dispose();
+            currentAnchorTransferBatch = null;
+            isExportingAnchors = false;
 
             if (AnchorUploaded != null)
             {
@@ -250,16 +260,17 @@ namespace HoloToolkit.Sharing
 
                 if (ShowDetailedLogs)
                 {
-                    Debug.LogFormat("[WorldAnchorManager] Anchor size: {0} bytes.", dataSize.ToString());
+                    Debug.LogFormat("[WorldAnchorManager] Downloaded {0} bytes.", dataSize.ToString());
                 }
 
                 if (AnchorDebugText != null)
                 {
-                    AnchorDebugText.text += string.Format("\nAnchor size: {0} bytes.", dataSize.ToString());
+                    AnchorDebugText.text += string.Format("\nDownloaded {0} bytes.", dataSize.ToString());
                 }
 
                 rawAnchorDownloadData = new byte[dataSize];
                 request.GetData(rawAnchorDownloadData, dataSize);
+                shouldImportAnchors = true;
             }
             else
             {
@@ -269,9 +280,6 @@ namespace HoloToolkit.Sharing
                 }
 
                 Debug.LogWarning("[WorldAnchorManager] Anchor DL failed " + failureReason);
-
-                // If we failed, we can ask for the data again.
-                //MakeAnchorDataRequest();
             }
         }
 
@@ -289,7 +297,8 @@ namespace HoloToolkit.Sharing
                     XString roomAnchorId = SharingStage.Instance.CurrentRoom.GetAnchorName(i);
                     if (roomAnchorId.GetString().Equals(anchorId))
                     {
-                        return shouldDownloadAnchors = roomManager.DownloadAnchor(SharingStage.Instance.CurrentRoom, anchorId);
+                        roomManager.DownloadAnchor(SharingStage.Instance.CurrentRoom, anchorId);
+                        return true;
                     }
                 }
             }
@@ -309,7 +318,7 @@ namespace HoloToolkit.Sharing
                 SharingStage.Instance.Manager == null ||
                 SharingStage.Instance.Manager.GetRoomManager() == null)
             {
-                Debug.LogErrorFormat("[WorldAnchorManager] Failed to export anchor {0}!  The sharing service was not ready.", anchor.name);
+                Debug.LogErrorFormat("[WorldAnchorManager] Failed to export anchor \"{0}\"!  The sharing service was not ready.", anchor.name);
                 return;
             }
 
@@ -335,16 +344,21 @@ namespace HoloToolkit.Sharing
         /// <param name="status">Serialization Status.</param>
         private void ExportComplete(SerializationCompletionReason status)
         {
-            if (status == SerializationCompletionReason.Succeeded && rawAnchorUploadData.Count > MinTrustworthySerializedAnchorDataSize)
+            if (status == SerializationCompletionReason.Succeeded &&
+                rawAnchorUploadData.Count > MinTrustworthySerializedAnchorDataSize)
             {
                 if (ShowDetailedLogs)
                 {
-                    Debug.LogFormat("[WorldAnchorManager] Uploading {0} anchors.", currentAnchorTransferBatch.anchorCount.ToString());
+                    Debug.LogFormat("[WorldAnchorManager] Exporting {0} anchors with {1} bytes.",
+                        currentAnchorTransferBatch.anchorCount.ToString(),
+                        rawAnchorUploadData.ToArray().Length.ToString());
                 }
 
                 if (AnchorDebugText != null)
                 {
-                    AnchorDebugText.text += string.Format("\n Uploading {0} anchors.", currentAnchorTransferBatch.anchorCount.ToString());
+                    AnchorDebugText.text += string.Format("\nExporting {0} anchors with {1} bytes.",
+                        currentAnchorTransferBatch.anchorCount.ToString(),
+                        rawAnchorUploadData.ToArray().Length.ToString());
                 }
 
                 string[] anchorNames = currentAnchorTransferBatch.GetAllIds();
@@ -377,11 +391,6 @@ namespace HoloToolkit.Sharing
                     }
                 }
             }
-
-            rawAnchorUploadData.Clear();
-            currentAnchorTransferBatch.Dispose();
-            currentAnchorTransferBatch = null;
-            isExportingAnchors = false;
         }
 
         /// <summary>
@@ -398,12 +407,12 @@ namespace HoloToolkit.Sharing
             {
                 if (ShowDetailedLogs)
                 {
-                    Debug.LogFormat("[WorldAnchorManager] Successfully imported {0} anchors.", anchorBatch.anchorCount.ToString());
+                    Debug.LogFormat("[WorldAnchorManager] Successfully imported \"{0}\" anchors.", anchorBatch.anchorCount.ToString());
                 }
 
                 if (AnchorDebugText != null)
                 {
-                    AnchorDebugText.text += string.Format("\nSuccessfully imported {0} anchors.", anchorBatch.anchorCount.ToString());
+                    AnchorDebugText.text += string.Format("\nSuccessfully imported \"{0}\" anchors.", anchorBatch.anchorCount.ToString());
                 }
 
                 string[] anchorNames = anchorBatch.GetAllIds();
@@ -416,7 +425,7 @@ namespace HoloToolkit.Sharing
                     }
                     else
                     {
-                        //TODO: Figure out how to get the GameObject reference from across the network.
+                        //TODO: Figure out how to get the GameObject reference from across the network.  For now it's best to use unique GameObject names.
                         Debug.LogWarning("[WorldAnchorManager] Unable to import anchor!  We don't know which GameObject to anchor!");
                     }
                 }
@@ -438,7 +447,7 @@ namespace HoloToolkit.Sharing
 
             anchorBatch.Dispose();
             rawAnchorDownloadData = null;
-            isDownloadingAnchors = false;
+            isImportingAnchors = false;
         }
 
         /// <summary>

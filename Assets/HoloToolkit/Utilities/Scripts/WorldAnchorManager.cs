@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected Dictionary<string, GameObject> AnchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
 
-#region Unity Methods
+        #region Unity Methods
 
         protected override void Awake()
         {
@@ -94,9 +94,9 @@ namespace HoloToolkit.Unity
             }
         }
 
-#endregion // Unity Methods
+        #endregion // Unity Methods
 
-#region Event Callbacks
+        #region Event Callbacks
 
         /// <summary>
         /// Callback function that contains the WorldAnchorStore object.
@@ -131,7 +131,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-#endregion // Event Callbacks
+        #endregion // Event Callbacks
 
         /// <summary>
         /// Attaches an anchor to the GameObject.  
@@ -294,6 +294,11 @@ namespace HoloToolkit.Unity
                     {
                         Debug.LogError("[WorldAnchorManager] The GameObject referenced must have been destroyed before we got a chance to anchor it.");
                         break;
+                    }
+
+                    if (string.IsNullOrEmpty(anchorId))
+                    {
+                        anchorId = anchoredGameObject.name;
                     }
 
                     // Try to load a previously saved world anchor.

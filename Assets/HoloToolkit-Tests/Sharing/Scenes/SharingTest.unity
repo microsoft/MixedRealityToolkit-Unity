@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 942915102}
   - component: {fileID: 942915104}
   m_Layer: 0
-  m_Name: MainWorldAnchor
+  m_Name: WorldStage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -428,11 +428,6 @@ Prefab:
       propertyPath: AnchorDebugText
       value: 
       objectReference: {fileID: 754146363}
-    - target: {fileID: 114000012667812730, guid: 8aaf37823b26ee449bb3b3d7775965c3,
-        type: 2}
-      propertyPath: ServerAddress
-      value: 192.168.0.21
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8aaf37823b26ee449bb3b3d7775965c3, type: 2}
   m_IsPrefabParent: 0
