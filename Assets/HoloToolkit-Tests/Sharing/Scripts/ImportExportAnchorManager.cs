@@ -5,10 +5,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 using HoloToolkit.Unity;
+
+#if UNITY_WSA && !UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.VR.WSA.Sharing;
+#endif
 
 namespace HoloToolkit.Sharing.Tests
 {
@@ -110,6 +113,8 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         public event Action<bool> AnchorUploaded;
 
+#if UNITY_WSA && !UNITY_EDITOR
+
         /// <summary>
         /// Called when the anchor has been loaded
         /// </summary>
@@ -142,6 +147,8 @@ namespace HoloToolkit.Sharing.Tests
         /// These tend to not work, so we have a minimum trustworthy size.
         /// </summary>
         private const uint MinTrustworthySerializedAnchorDataSize = 100000;
+
+#endif
 
         /// <summary>
         /// Keeps track of stored anchor data blob.
@@ -197,9 +204,13 @@ namespace HoloToolkit.Sharing.Tests
         {
             base.Awake();
 
+#if UNITY_WSA && !UNITY_EDITOR
             // We need to get our local anchor store started up.
             currentState = ImportExportState.AnchorStore_Initializing;
             WorldAnchorStore.GetAsync(AnchorStoreReady);
+#else
+            currentState = ImportExportState.Ready;
+#endif
         }
 
         private void Start()
@@ -229,6 +240,7 @@ namespace HoloToolkit.Sharing.Tests
                 case ImportExportState.RoomApiInitialized:
                     StartAnchorProcess();
                     break;
+#if UNITY_WSA && !UNITY_EDITOR
                 case ImportExportState.DataReady:
                     // DataReady is set when the anchor download completes.
                     currentState = ImportExportState.Importing;
@@ -243,6 +255,7 @@ namespace HoloToolkit.Sharing.Tests
                     currentState = ImportExportState.UploadingInitialAnchor;
                     Export();
                     break;
+#endif
             }
         }
 
@@ -391,7 +404,9 @@ namespace HoloToolkit.Sharing.Tests
 
                 // If we failed, we can ask for the data again.
                 Debug.LogWarning("Anchor Manager: Anchor DL failed " + failureReason);
+#if UNITY_WSA && !UNITY_EDITOR
                 MakeAnchorDataRequest();
+#endif
             }
         }
 
@@ -455,6 +470,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private void ResetState()
         {
+#if UNITY_WSA && !UNITY_EDITOR
             if (anchorStore != null)
             {
                 currentState = ImportExportState.Ready;
@@ -463,6 +479,9 @@ namespace HoloToolkit.Sharing.Tests
             {
                 currentState = ImportExportState.AnchorStore_Initializing;
             }
+#else
+            currentState = ImportExportState.Ready;
+#endif
         }
 
         /// <summary>
@@ -539,8 +558,12 @@ namespace HoloToolkit.Sharing.Tests
 
             if (currentRoom.GetAnchorCount() == 0)
             {
+#if UNITY_WSA && !UNITY_EDITOR
                 // If the room has no anchors, request the initial anchor
                 currentState = ImportExportState.InitialAnchorRequired;
+#else
+                currentState = ImportExportState.RoomApiInitialized;
+#endif
             }
             else
             {
@@ -583,6 +606,8 @@ namespace HoloToolkit.Sharing.Tests
                 AnchorDebugText.text += string.Format("\n{0} anchors found.", anchorCount.ToString());
             }
 
+#if UNITY_WSA && !UNITY_EDITOR
+
             // If there are anchors, we should attach to the first one.
             if (anchorCount > 0)
             {
@@ -607,9 +632,22 @@ namespace HoloToolkit.Sharing.Tests
                     MakeAnchorDataRequest();
                 }
             }
+
+#else
+
+            currentState = ImportExportState.AnchorEstablished;
+
+            if (AnchorDebugText != null)
+            {
+                AnchorDebugText.text += anchorCount > 0 ? "\n" + currentRoom.GetAnchorName(0).ToString() : "\nNo Anchors Found";
+            }
+
+#endif
         }
 
         #region WSA Specific Methods
+
+#if UNITY_WSA && !UNITY_EDITOR
 
         /// <summary>
         /// Kicks off getting the datablob required to import the shared anchor.
@@ -918,6 +956,7 @@ namespace HoloToolkit.Sharing.Tests
             }
         }
 
+#endif // UNITY_WSA
         #endregion // WSA Specific Methods
     }
 }
