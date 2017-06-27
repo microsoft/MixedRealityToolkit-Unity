@@ -92,7 +92,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             IsRunning = true;
         }
 
-        private void Start()
+        private void Awake()
         {
             CheckForErrorOnCall(MicStream.MicInitializeCustomRate((int)StreamType, AudioSettings.outputSampleRate));
             CheckForErrorOnCall(MicStream.MicSetGain(InputGain));
@@ -109,7 +109,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             print("MicStream selector demo");
             print("press Q to start stream to audio source, W will stop that stream");
-            print("It will start a recording and save it to a wav file. S will stop that recording.");
+            print("press A to start a recording and S to stop that recording and save it to a wav file.");
             print("Since this all goes through the AudioSource, you can mute the mic while using it there, or do anything else you would do with an AudioSource");
             print("In this demo, we start the stream automatically, and then change the size of the gameobject based on microphone signal amplitude");
             isRunning = true;
