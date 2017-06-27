@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 #if WINDOWS_UWP
@@ -48,7 +47,7 @@ namespace HoloToolkit.Unity
         public static async void CallbackReturnValue(object returnValue)
         {
             var viewId = ApplicationView.GetForCurrentView().Id;
-            var v = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView();
+            var view = CoreApplication.GetCurrentView();
             if (CallbackDictionary.TryRemove(viewId, out var cb))
             {
                 try
@@ -59,14 +58,13 @@ namespace HoloToolkit.Unity
                 {
 
                 }
-                await Windows.UI.ViewManagement.ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationViewManager.Full3DViewId).AsTask();
-                v.CoreWindow.Close();
+                await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationViewManager.Full3DViewId).AsTask();
+                view.CoreWindow.Close();
             }
         }
 #else
         public static void CallbackReturnValue(object returnValue)
-        {       
-
+        {  
         }
 #endif
         /// <summary>
@@ -78,7 +76,6 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback)
         {
-
             bool isCompleted = false;
 #if WINDOWS_UWP
             object returnValue = null;
@@ -94,7 +91,6 @@ namespace HoloToolkit.Unity
                         CallbackReturnValue(null);
                     }
                 }
-
                 newView.CoreWindow.VisibilityChanged += CoreWindow_VisibilityChanged;
                 Frame frame = new Frame();
                 var pageType = Type.GetType(Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName.Replace(".App,", $".{xamlPageName},"));
