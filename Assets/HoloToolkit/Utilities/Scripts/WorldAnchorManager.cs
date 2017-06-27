@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected struct AnchorAttachmentInfo
         {
-            public GameObject GameObjectToAnchor { get; set; }
+            public GameObject AnchoredGameObject { get; set; }
             public string AnchorName { get; set; }
             public AnchorOperation Operation { get; set; }
         }
@@ -285,7 +285,7 @@ namespace HoloToolkit.Unity
         protected void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
         {
             string anchorId = anchorAttachmentInfo.AnchorName;
-            GameObject anchoredGameObject = anchorAttachmentInfo.GameObjectToAnchor;
+            GameObject anchoredGameObject = anchorAttachmentInfo.AnchoredGameObject;
 
             switch (anchorAttachmentInfo.Operation)
             {
