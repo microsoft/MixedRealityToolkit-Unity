@@ -7,7 +7,7 @@ Input System Diagrams:
 
 This contains a fully-featured **input module**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a **cursor** similar to the HoloLens shell cursor that fully leverages the Unity's animation system.
 
-### [Input Module Design](InputModuleDesign)
+### Input Module Design
 The input module is designed to be extensible: it could support various input mechanisms and various types of gazers.
 
 Each input source (hands, gestures, others) implement a **IInputSource** interface. The interface defines various events that the input sources can trigger. The input sources register themselves with the InputManager, whose role it is to forward input to the appropriate game objects. Input sources can be dynamically enabled / disabled as necessary, and new input sources can be created to support different input devices.
@@ -22,6 +22,7 @@ Game objects that want to consume input events can implement one or many **input
 - **INavigationnHandler** for the Windows navigation gesture.
 - **ISourceStateHandler** for the source detected and source lost events.
 - **ISpeechHandler** for voice commands.
+- **IDictationHandler** for speech to text dictation.
 
 The **input manager** listens to the various events coming from the input sources, and also takes into account the gaze. Currently, that gaze is always coming from the GazeManager class, but this could be extended to support multiple gaze sources if the need arises.
 
@@ -168,6 +169,7 @@ Input source for raw interactions sources information, which gives finer details
 Allows dragging an object in space with your hand on HoloLens. Just attach the script to a game object to make it movable.
 
 #### Microphone
+
 ##### MicStream.cs
 Lets you access beam-formed microphone streams from the HoloLens to optimize voice and/or room captures, which is impossible to do with Unity's Microphone object. Takes the data and inserts it into Unity's AudioSource object for easy handling. Also lets you record indeterminate-length audio files from the Microphone to your device's Music Library, also using beam-forming.
 
@@ -187,7 +189,8 @@ or in your Visual Studio Package.appxmanifest capabilities.
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
 
-##### KeywordManager.cs
+##### KeywordManager.cs (_Depreciated_)
+Please use SpeechInputSource and SpeechInputHandler instead.
 Allows you to specify keywords and methods in the Unity Inspector, instead of registering them explicitly in code.  
 
 **_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
@@ -195,7 +198,7 @@ Allows you to specify keywords and methods in the Unity Inspector, instead of re
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 ##### SpeechInputSource.cs
-Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.
+Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.  You can utilize keywords with the SpeechInputHandler component by assigning game objects and specifying a Unity Event trigger.
 
 Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/HoloToolkit/Input/Tests/Scripts/SphereGlobalKeywords.cs for an example of implementing these features, which is used in the demo scene at Assets/HoloToolkit/Input/Tests/SpeechInputSource.unity.
 
@@ -203,8 +206,18 @@ Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/Ho
 
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
+##### SpeechInputHandler.cs
+Used to assign a Unity Event to a keyword stored in the SpeechInputSource component.
+
 ##### ISpeechHandler.cs
 Interface that a game object can implement to react to speech keywords.
+
+##### DictationInputManager.cs
+Singleton class that implements  the DictationRecognizer to convert the user's speech to text. The DictationRecognizer exposes dictation functionality and supports registering and listening for hypothesis and phrase completed events.
+
+- **InitialSilenceTimeout** :  The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
+- **AutoSilenceTimeout** : The time length in seconds before dictation recognizer session ends due to lack of audio input.
+- **RecordingTime** : Length in seconds for the manager to listen.
 
 ### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Prefabs)
 

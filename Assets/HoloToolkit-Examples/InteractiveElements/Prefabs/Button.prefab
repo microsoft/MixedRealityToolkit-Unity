@@ -461,7 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InteractiveHost: {fileID: 0}
   ButtonLabels: {fileID: 114374334392891108}
-  ColorThemeTag: buttonLableColor
+  ColorThemeTag: buttonLabelColor
   PositionThemeTag: buttonLabelPosition
   MovePosition: {fileID: 114310027305425480}
 --- !u!114 &114000011132779576
