@@ -3,7 +3,7 @@ in your project.
 
 First please be sure your developement envionment is setup with the latest version of Unity.
 
-**The project currently requires Unity 5.5.2f1.**
+**The project currently requires Unity 5.6.1f1.**
 
 Next either download the HoloToolkit-Unity Asset Package or grab a copy of this repository and download the entire project.
 
