@@ -133,6 +133,7 @@ namespace HoloToolkit.Unity.InputModule
             UpdateGazeInfo();
 
             // Perform raycast to determine gazed object
+            bool isPreviousGazingAtObject = IsGazingAtObject;
             GameObject previousFocusObject = RaycastPhysics();
 
             // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
@@ -143,7 +144,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Dispatch changed event if focus is different
-            if (previousFocusObject != HitObject && FocusedObjectChanged != null)
+            if ((previousFocusObject != HitObject || isPreviousGazingAtObject != IsGazingAtObject) && FocusedObjectChanged != null)
             {
                 FocusedObjectChanged(previousFocusObject, HitObject);
             }
