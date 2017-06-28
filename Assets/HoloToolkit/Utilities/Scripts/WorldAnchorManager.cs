@@ -165,7 +165,7 @@ namespace HoloToolkit.Unity
             LocalAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
-                    GameObjectToAnchor = gameObjectToAnchor,
+                    AnchoredGameObject = gameObjectToAnchor,
                     AnchorName = anchorName,
                     Operation = AnchorOperation.Save
                 }
@@ -226,7 +226,7 @@ namespace HoloToolkit.Unity
             LocalAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
-                    GameObjectToAnchor = gameObjectToUnanchor,
+                    AnchoredGameObject = gameObjectToUnanchor,
                     AnchorName = anchorName,
                     Operation = AnchorOperation.Delete
                 });
@@ -271,7 +271,7 @@ namespace HoloToolkit.Unity
                 LocalAnchorOperations.Enqueue(new AnchorAttachmentInfo
                 {
                     AnchorName = anchors[i].name,
-                    GameObjectToAnchor = anchors[i].gameObject,
+                    AnchoredGameObject = anchors[i].gameObject,
                     Operation = AnchorOperation.Delete
                 });
             }
