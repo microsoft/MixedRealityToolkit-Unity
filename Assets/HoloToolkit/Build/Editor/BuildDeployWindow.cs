@@ -180,7 +180,7 @@ namespace HoloToolkit.Unity
                     GUILayout.Width(buttonWidth_Half - 20)))
                 {
                     // Build SLN
-                    EditorApplication.delayCall += () => { BuildAll(!locatorIsSearching && locatorHasData); };
+                    EditorApplication.delayCall += () => { BuildAll(!locatorIsSearching && locatorHasData || HoloLensUsbConnected); };
                 }
 
                 GUI.enabled = true;
