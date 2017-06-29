@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA.Input;
@@ -45,6 +46,10 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     GameObject controller = Instantiate(controllerModel);
                     GameObject parent = new GameObject();
+                    // TODO: Replace this with Controller[Handedness], when possible.
+                    parent.name = "Controller" + Guid.NewGuid().ToString();
+
+                    parent.transform.parent = transform;
                     controller.transform.parent = parent.transform;
 
                     controllerDictionary.Add(eventData.SourceId, parent);
