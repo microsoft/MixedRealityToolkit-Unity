@@ -101,18 +101,18 @@ namespace HoloToolkit.Sharing
             }
             else
             {
-                if (shouldExportAnchors && !isExportingAnchors && !isImportingAnchors)
-                {
-                    isExportingAnchors = true;
-                    shouldExportAnchors = false;
-                    WorldAnchorTransferBatch.ExportAsync(currentAnchorTransferBatch, WriteBuffer, ExportComplete);
-                }
-
                 if (shouldImportAnchors && !isImportingAnchors && !isExportingAnchors)
                 {
                     isImportingAnchors = true;
                     shouldImportAnchors = false;
                     WorldAnchorTransferBatch.ImportAsync(rawAnchorDownloadData, ImportComplete);
+                }
+
+                if (shouldExportAnchors && !isExportingAnchors && !isImportingAnchors)
+                {
+                    isExportingAnchors = true;
+                    shouldExportAnchors = false;
+                    WorldAnchorTransferBatch.ExportAsync(currentAnchorTransferBatch, WriteBuffer, ExportComplete);
                 }
             }
         }
@@ -332,34 +332,22 @@ namespace HoloToolkit.Sharing
                 return false;
             }
 
-            int roomAnchorCount = SharingStage.Instance.CurrentRoom.GetAnchorCount();
-
-            for (int i = 0; i < roomAnchorCount; i++)
+            if (!shouldExportAnchors)
             {
-                XString roomAnchorId = SharingStage.Instance.CurrentRoom.GetAnchorName(i);
-
-                if (roomAnchorId.GetString().Equals(anchor.name))
+                if (currentAnchorTransferBatch == null)
                 {
-                    if (ShowDetailedLogs)
-                    {
-                        Debug.LogFormat("[WorldAnchorManager] Skipping export for anchor \"{0}\".  This anchor is already stored in the room.", anchor.name);
-                    }
-
-                    return false;
+                    currentAnchorTransferBatch = new WorldAnchorTransferBatch();
                 }
+                else
+                {
+                    Debug.LogWarning("[WorldAnchorManager] We didn't properly cleanup our WorldAnchorTransferBatch!");
+                }
+
+                currentAnchorTransferBatch.AddWorldAnchor(anchor.name, anchor);
+                return shouldExportAnchors = true;
             }
 
-            if (currentAnchorTransferBatch == null)
-            {
-                currentAnchorTransferBatch = new WorldAnchorTransferBatch();
-            }
-            else
-            {
-                Debug.LogWarning("[WorldAnchorManager] We didn't properly cleanup our WorldAnchorTransferBatch!");
-            }
-
-            currentAnchorTransferBatch.AddWorldAnchor(anchor.name, anchor);
-            return shouldExportAnchors = true;
+            return shouldExportAnchors = false;
         }
 
         /// <summary>
