@@ -68,13 +68,26 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void Vector3_TransformPoint()
         {
-            throw new NotImplementedException();
+            Vector3 point = new Vector3(1f, 2f, 3f);
+            Vector3 scale = new Vector3(2f, 3f, 4f); // scaled point: (2, 6, 12)
+            Quaternion rotation = Quaternion.AngleAxis(180f, Vector3.up); // scaled rotated point: (-2, 6, -12)
+            Vector3 translation = new Vector3(3f, 4f, 5f); // translated scaled rotated point: (1, 10, -7)
+            Vector3 expected = new Vector3(1, 10, -7);
+            Vector3 result = point.TransformPoint(translation, rotation, scale);
+            Assert.That(Vector3.Distance(result, expected), Is.LessThan(0.00001f));
         }
 
         [Test]
         public void Vector3_InverseTransformPoint()
         {
-            throw new NotImplementedException();
+            // Perform the same transformation as Vector3_TransformPoint in reverse.
+            Vector3 point = new Vector3(1, 10, -7);
+            Vector3 scale = new Vector3(2f, 3f, 4f);
+            Quaternion rotation = Quaternion.AngleAxis(180f, Vector3.up);
+            Vector3 translation = new Vector3(3f, 4f, 5f);
+            Vector3 expected = new Vector3(1f, 2f, 3f);
+            Vector3 result = point.InverseTransformPoint(translation, rotation, scale);
+            Assert.That(Vector3.Distance(result, expected), Is.LessThan(0.00001f));
         }
 
         [Test]
