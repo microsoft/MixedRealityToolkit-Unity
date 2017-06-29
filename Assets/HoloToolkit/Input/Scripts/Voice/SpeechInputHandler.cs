@@ -88,7 +88,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            StartCoroutine(AttachToInputManagerInstance());
+            if (IsGlobalListener)
+            {
+                StartCoroutine(AttachToInputManagerInstance());
+            }
         }
 
         private IEnumerator AttachToInputManagerInstance()
