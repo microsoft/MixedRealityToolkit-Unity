@@ -278,59 +278,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SceneList:
   - Assets/HoloToolkit/Utilities/Scenes/SceneLauncher.unity
-  - Assets/HoloToolkit/Utilities/Scenes/HeadsetAdjustment.unity
-  - Assets/HoloToolkit-Examples/ColorPicker/ColorPickerExample.unity
-  - Assets/HoloToolkit-Examples/FastConfigurableShader/Scenes/DoubleSidedTest.unity
-  - Assets/HoloToolkit-Examples/FastConfigurableShader/Scenes/FastConfigurableTest.unity
-  - Assets/HoloToolkit-Examples/GameControllerManipulator/GameControllerManipulatorTest.unity
-  - Assets/HoloToolkit-Examples/GazeRuler/Scenes/GazeRulerExample.unity
-  - Assets/HoloToolkit-Examples/GazeRuler/Scenes/GazeRulerTest.unity
-  - Assets/HoloToolkit-Examples/InteractiveElements/Scenes/GestureInteractiveExample.unity
-  - Assets/HoloToolkit-Examples/InteractiveElements/Scenes/InteractiveButtonComponents.unity
-  - Assets/HoloToolkit-Examples/InteractiveElements/Scenes/InteractiveExample.unity
-  - Assets/HoloToolkit-Examples/InteractiveElements/Scenes/SliderSamples.unity
-  - Assets/HoloToolkit-Examples/Prototyping/Scenes/ClickThroughExample.unity
-  - Assets/HoloToolkit-Examples/Prototyping/Scenes/ColorCycleSwitcher.unity
-  - Assets/HoloToolkit-Examples/Prototyping/Scenes/CycleArray.unity
-  - Assets/HoloToolkit-Examples/Prototyping/Scenes/PlanelLayout.unity
-  - Assets/HoloToolkit-Examples/Prototyping/Scenes/PositionAnObject.unity
-  - Assets/HoloToolkit-Examples/Prototyping/Scenes/ScaleObjectByDistance.unity
-  - Assets/HoloToolkit-Examples/SavingSpatialMeshes/SaveSpatialMapping.unity
-  - Assets/HoloToolkit-Examples/SavingSpatialMeshes/SaveSpatialUnderstanding.unity
-  - Assets/HoloToolkit-Examples/SharingWithUNET/Scenes/sharingwithunet.unity
-  - Assets/HoloToolkit-Examples/SpatialMappingComponent/SpatialMappingExample.unity
-  - Assets/HoloToolkit-Examples/SpatialUnderstanding/SpatialUnderstanding-FeatureOverview/Scenes/SpatialUnderstandingExample.unity
-  - Assets/HoloToolkit-Examples/Text/TextPrefabSamplesTest.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/BasicCursor.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/Cursor.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/CursorWithFeedback.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/DictationTest.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/FocusedObjectKeywords.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/GazeEvents.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/InputManagerTest.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/InputTapTest.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/InteractiveMeshCursor.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/KeywordManager.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/ManualCameraControl.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/MicrophoneStream.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/OverrideFocusedObjectTest.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/SelectedObjectKeywords.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/SpeechInputSource.unity
-  - Assets/HoloToolkit-Tests/Input/Scenes/TapToPlace.unity
-  - Assets/HoloToolkit-Tests/Sharing/Scenes/RoomAndAnchorTest.unity
-  - Assets/HoloToolkit-Tests/Sharing/Scenes/SharingSpawnTest.unity
-  - Assets/HoloToolkit-Tests/Sharing/Scenes/SharingTest.unity
-  - Assets/HoloToolkit-Tests/SpatialMapping/Scenes/PlaneFinding.unity
-  - Assets/HoloToolkit-Tests/SpatialMapping/Scenes/RemoteMapping.unity
-  - Assets/HoloToolkit-Tests/SpatialMapping/Scenes/SpatialProcessing.unity
-  - Assets/HoloToolkit-Tests/SpatialMapping/SpatialMappingTap.unity
-  - Assets/HoloToolkit-Tests/SpatialSound/Scenes/AudioOcclusionTest.unity
-  - Assets/HoloToolkit-Tests/Utilities/Scenes/FixedAngularSize.unity
-  - Assets/HoloToolkit-Tests/Utilities/Scenes/HeadsUpDirectionIndicator.unity
-  - Assets/HoloToolkit-Tests/Utilities/Scenes/SphereBasedTagalong.unity
-  - Assets/HoloToolkit-Tests/Utilities/Scenes/StabilizationPlaneSetting.unity
-  - Assets/HoloToolkit-Tests/Utilities/Scenes/TextToSpeechManager.unity
-  - Assets/HoloToolkit-Tests/Utilities/Scenes/WindowOcclusion.unity
   ButtonSpawnLocation: {fileID: 1899756416056624}
   SceneButtonPrefab: {fileID: 114712049552519426, guid: c943b5508bd87f347a6d36c5ca46424c,
     type: 2}
