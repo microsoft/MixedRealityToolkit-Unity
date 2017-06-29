@@ -656,7 +656,7 @@ namespace HoloToolkit.Unity
                 BuildDeployPrefs.BuildConfig,
                 BuildDeployPrefs.BuildDirectory,
                 BuildDeployPrefs.IncrementBuildVersion,
-                showConfDlg: !install))
+                showDialog: !install))
             {
                 return;
             }

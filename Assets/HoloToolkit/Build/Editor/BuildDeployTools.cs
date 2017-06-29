@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
     {
         public static readonly string DefaultMSBuildVersion = "14.0";
 
-        public static bool BuildSLN(string buildDirectory, bool showConfDlg = true)
+        public static bool BuildSLN(string buildDirectory, bool showDialog = true)
         {
             // Use BuildSLNUtilities to create the SLN
             bool buildSuccess = false;
@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity
                     }
                     else
                     {
-                        if (showConfDlg)
+                        if (showDialog)
                         {
                             if (!EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
                             {
@@ -136,14 +136,14 @@ namespace HoloToolkit.Unity
             return File.Exists(storePath + "\\project.lock.json");
         }
 
-        public static bool BuildAppxFromSLN(string productName, string msBuildVersion, bool forceRebuildAppx, string buildConfig, string buildDirectory, bool incrementVersion, bool showConfDlg = true)
+        public static bool BuildAppxFromSLN(string productName, string msBuildVersion, bool forceRebuildAppx, string buildConfig, string buildDirectory, bool incrementVersion, bool showDialog = true)
         {
             EditorUtility.DisplayProgressBar("Build AppX", "Building AppX Package...", 0);
             string slnFilename = Path.Combine(buildDirectory, PlayerSettings.productName + ".sln");
 
             if (!File.Exists(slnFilename))
             {
-                Debug.LogError("Unabel to find Solution to build from!");
+                Debug.LogError("Unable to find Solution to build from!");
                 EditorUtility.ClearProgressBar();
                 return false;
             }
@@ -194,7 +194,7 @@ namespace HoloToolkit.Unity
             }
 
             // Now do the actual build
-            var pinfo = new System.Diagnostics.ProcessStartInfo
+            var pInfo = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = vs,
                 CreateNoWindow = false,
@@ -205,9 +205,9 @@ namespace HoloToolkit.Unity
             };
 
             // Uncomment out to debug by copying into command window
-            //Debug.Log("\"" + vs + "\"" + " " + pinfo.Arguments);
+            //Debug.Log("\"" + vs + "\"" + " " + pInfo.Arguments);
 
-            var process = new System.Diagnostics.Process { StartInfo = pinfo };
+            var process = new System.Diagnostics.Process { StartInfo = pInfo };
 
             try
             {
@@ -223,7 +223,7 @@ namespace HoloToolkit.Unity
                 EditorUtility.ClearProgressBar();
 
                 if (process.ExitCode == 0 &&
-                    showConfDlg &&
+                    showDialog &&
                     !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open Project Folder"))
                 {
                     System.Diagnostics.Process.Start("explorer.exe", "/select," + storePath);
