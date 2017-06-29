@@ -326,7 +326,7 @@ namespace HoloToolkit.Sharing
         {
             if (SharingStage.Instance == null ||
                 SharingStage.Instance.Manager == null ||
-                SharingStage.Instance.Manager.GetRoomManager() == null)
+                SharingStage.Instance.CurrentRoom == null)
             {
                 Debug.LogErrorFormat("[WorldAnchorManager] Failed to export anchor \"{0}\"!  The sharing service was not ready.", anchor.name);
                 return false;
