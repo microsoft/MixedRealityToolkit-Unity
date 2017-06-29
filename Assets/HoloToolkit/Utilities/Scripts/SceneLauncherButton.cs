@@ -23,6 +23,8 @@ namespace HoloToolkit.Unity
 
         public Color HighlightedTextColor;
 
+        public GameObject MenuReference;
+
         private TextMesh textMesh;
         private Color originalTextColor;
 
@@ -35,7 +37,7 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            IsHighlighted = GazeManager.Instance.HitObject == this.gameObject;
+            IsHighlighted = GazeManager.Instance.HitObject == gameObject;
         }
 
         private bool IsHighlighted
@@ -48,8 +50,8 @@ namespace HoloToolkit.Unity
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            Debug.LogFormat("SceneLauncher: Loading scene {0}: {1}", SceneIndex, SceneList.Instance.GetSceneNames()[SceneIndex]);
-            SceneManager.LoadScene(SceneIndex, LoadSceneMode.Single);
+            MenuReference.SetActive(false);
+            SceneManager.LoadSceneAsync(SceneIndex, LoadSceneMode.Single);
         }
     }
 }

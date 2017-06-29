@@ -11,16 +11,21 @@ namespace HoloToolkit.Unity.InputModule
     {
         private SerializedProperty recognizerStart;
         private SerializedProperty keywordsAndKeys;
+        private SerializedProperty persistentKeywordsProperty;
 
         private void OnEnable()
         {
             recognizerStart = serializedObject.FindProperty("RecognizerStart");
             keywordsAndKeys = serializedObject.FindProperty("Keywords");
+            persistentKeywordsProperty = serializedObject.FindProperty("PersistentKeywords");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            EditorGUILayout.PropertyField(persistentKeywordsProperty);
+
             // the RecognizerStart field
             EditorGUILayout.PropertyField(recognizerStart);
             // the Keywords field
