@@ -285,26 +285,35 @@ namespace HoloToolkit.Sharing
 
         #endregion // Event Callbacks
 
+        /// <summary>
+        /// Called before creating anchor.  Used to check if import required.
+        /// </summary>
+        /// <param name="anchorId">Name of the anchor to import.</param>
+        /// <param name="objectToAnchor">GameObject </param>
+        /// <returns>Success.</returns>
         protected override bool ImportAnchor(string anchorId, GameObject objectToAnchor)
         {
-            // Check room anchor ids and we don't have them in the anchor store, attempt to download them.
-            if (SharingStage.Instance.CurrentRoom != null)
+            if (SharingStage.Instance == null ||
+                SharingStage.Instance.Manager == null ||
+                SharingStage.Instance.CurrentRoom == null)
             {
-                int roomAnchorCount = SharingStage.Instance.CurrentRoom.GetAnchorCount();
+                Debug.LogErrorFormat("[WorldAnchorManager] Failed to import anchor \"{0}\"!  The sharing service was not ready.", anchorId);
+                return false;
+            }
 
-                for (int i = 0; i < roomAnchorCount; i++)
+            int roomAnchorCount = SharingStage.Instance.CurrentRoom.GetAnchorCount();
+
+            for (int i = 0; i < roomAnchorCount; i++)
+            {
+                XString roomAnchorId = SharingStage.Instance.CurrentRoom.GetAnchorName(i);
+                if (roomAnchorId.GetString().Equals(anchorId))
                 {
-                    XString roomAnchorId = SharingStage.Instance.CurrentRoom.GetAnchorName(i);
-                    if (roomAnchorId.GetString().Equals(anchorId))
-                    {
-                        roomManager.DownloadAnchor(SharingStage.Instance.CurrentRoom, anchorId);
-                        return true;
-                    }
+                    roomManager.DownloadAnchor(SharingStage.Instance.CurrentRoom, anchorId);
+                    return true;
                 }
             }
 
-            Debug.LogError("[WorldAnchorManager] Unable to import anchors! We were not in a room.");
-
+            Debug.LogErrorFormat("[WorldAnchorManager] Failed to import anchor \"{0}\"!  TNo matching anchors stored in room.", anchorId);
             return false;
         }
 
@@ -312,30 +321,45 @@ namespace HoloToolkit.Sharing
         /// Exports and uploads the anchor to the sharing service.
         /// </summary>
         /// <param name="anchor">The anchor to export.</param>
-        protected override void ExportAnchor(WorldAnchor anchor)
+        /// <returns>Success</returns>
+        protected override bool ExportAnchor(WorldAnchor anchor)
         {
             if (SharingStage.Instance == null ||
                 SharingStage.Instance.Manager == null ||
                 SharingStage.Instance.Manager.GetRoomManager() == null)
             {
                 Debug.LogErrorFormat("[WorldAnchorManager] Failed to export anchor \"{0}\"!  The sharing service was not ready.", anchor.name);
-                return;
+                return false;
             }
 
-            if (!shouldExportAnchors)
+            int roomAnchorCount = SharingStage.Instance.CurrentRoom.GetAnchorCount();
+
+            for (int i = 0; i < roomAnchorCount; i++)
             {
-                if (currentAnchorTransferBatch == null)
+                XString roomAnchorId = SharingStage.Instance.CurrentRoom.GetAnchorName(i);
+
+                if (roomAnchorId.GetString().Equals(anchor.name))
                 {
-                    currentAnchorTransferBatch = new WorldAnchorTransferBatch();
+                    if (ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("[WorldAnchorManager] Skipping export for anchor \"{0}\".  This anchor is already stored in the room.", anchor.name);
+                    }
+
+                    return false;
                 }
-                else
-                {
-                    Debug.LogWarning("[WorldAnchorManager] We didn't properly cleanup our WorldAnchorTransferBatch!");
-                }
+            }
+
+            if (currentAnchorTransferBatch == null)
+            {
+                currentAnchorTransferBatch = new WorldAnchorTransferBatch();
+            }
+            else
+            {
+                Debug.LogWarning("[WorldAnchorManager] We didn't properly cleanup our WorldAnchorTransferBatch!");
             }
 
             currentAnchorTransferBatch.AddWorldAnchor(anchor.name, anchor);
-            shouldExportAnchors = true;
+            return shouldExportAnchors = true;
         }
 
         /// <summary>
@@ -427,6 +451,8 @@ namespace HoloToolkit.Sharing
                     {
                         //TODO: Figure out how to get the GameObject reference from across the network.  For now it's best to use unique GameObject names.
                         Debug.LogWarning("[WorldAnchorManager] Unable to import anchor!  We don't know which GameObject to anchor!");
+
+                        if (AnchorDebugText != null) { AnchorDebugText.text += "\nUnable to import anchor!  We don\'t know which GameObject to anchor!"; }
                     }
                 }
             }

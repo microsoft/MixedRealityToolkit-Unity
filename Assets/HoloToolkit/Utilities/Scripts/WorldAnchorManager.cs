@@ -311,7 +311,7 @@ namespace HoloToolkit.Unity
                         {
                             if (ShowDetailedLogs)
                             {
-                                Debug.LogFormat("[WorldAnchorManager] Anchor could not be loaded for {0}. Creating a new anchor.", anchoredGameObject.name);
+                                Debug.LogFormat("[WorldAnchorManager] Anchor could not be loaded for \"{0}\". Creating a new anchor.", anchoredGameObject.name);
                             }
 
                             // Create anchor since one does not exist.
@@ -323,7 +323,7 @@ namespace HoloToolkit.Unity
                         savedAnchor.name = anchorId;
                         if (ShowDetailedLogs)
                         {
-                            Debug.LogFormat("[WorldAnchorManager] Anchor loaded from anchor store and updated for {0}.", anchoredGameObject.name);
+                            Debug.LogFormat("[WorldAnchorManager] Anchor loaded from anchor store and updated for \"{0}\".", anchoredGameObject.name);
                         }
                     }
 
@@ -404,18 +404,28 @@ namespace HoloToolkit.Unity
             {
                 if (ShowDetailedLogs)
                 {
-                    Debug.LogFormat("[WorldAnchorManager] Successfully saved anchor to {0}.", anchor.name);
+                    Debug.LogFormat("[WorldAnchorManager] Successfully saved anchor \"{0}\".", anchor.name);
                 }
 
-                if (export)
+                if (export && ExportAnchor(anchor))
                 {
-                    ExportAnchor(anchor);
+                    if (ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("[WorldAnchorManager] Successfully exported anchor \"{0}\".", anchor.name);
+                    }
+                }
+                else
+                {
+                    if (ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("[WorldAnchorManager] Anchor \"{0}\" was not exported.", anchor.name);
+                    }
                 }
 
                 return true;
             }
 
-            Debug.LogErrorFormat("[WorldAnchorManager] failed to save anchor on {0}!", anchor.name);
+            Debug.LogErrorFormat("[WorldAnchorManager] failed to save anchor \"{0}\"!", anchor.name);
             return false;
         }
 
@@ -431,7 +441,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                Debug.LogErrorFormat("[WorldAnchorManager] failed to delete {0}.", anchorId);
+                Debug.LogErrorFormat("[WorldAnchorManager] failed to delete \"{0}\".", anchorId);
             }
         }
 
@@ -440,7 +450,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="anchorId">Name of the anchor to import.</param>
         /// <param name="objectToAnchor">GameObject </param>
-        /// <returns></returns>
+        /// <returns>Success.</returns>
         protected virtual bool ImportAnchor(string anchorId, GameObject objectToAnchor)
         {
             return false;
@@ -450,6 +460,10 @@ namespace HoloToolkit.Unity
         /// Called after creating a new anchor.
         /// </summary>
         /// <param name="anchor">The anchor to export.</param>
-        protected virtual void ExportAnchor(WorldAnchor anchor) { }
+        /// <returns>Success.</returns>
+        protected virtual bool ExportAnchor(WorldAnchor anchor)
+        {
+            return false;
+        }
     }
 }
