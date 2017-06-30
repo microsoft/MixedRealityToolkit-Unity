@@ -108,27 +108,37 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Called when tracking changes for a 'cached' anchor.  
         /// When an anchor isn't located immediately we subscribe to this event so
-        /// we can save the anchor when it is finally located.
+        /// we can save the anchor when it is finally located or downloaded.
         /// </summary>
         /// <param name="anchor">The anchor that is reporting a tracking changed event.</param>
         /// <param name="located">Indicates if the anchor is located or not located.</param>
         private void Anchor_OnTrackingChanged(WorldAnchor anchor, bool located)
         {
-            if (located && SaveAnchor(anchor))
+            if (located && SaveAnchor(anchor, export: false))
             {
                 if (ShowDetailedLogs)
                 {
-                    Debug.LogFormat("[WorldAnchorManager] Successfully updated anchor for {0}.", anchor.name);
+                    Debug.LogFormat("[WorldAnchorManager] Successfully updated cached  anchor \"{0}\".", anchor.name);
+                    AnchorDebugText.text += string.Format("[WorldAnchorManager] Successfully updated cached  anchor \"{0}\".", anchor.name);
                 }
-
-                // Once the anchor is located we can unsubscribe from this event.
-                anchor.OnTrackingChanged -= Anchor_OnTrackingChanged;
             }
             else
             {
-                Debug.LogErrorFormat("[WorldAnchorManager] Failed to locate anchor for {0}!", anchor.name);
+                if (ShowDetailedLogs)
+                {
+                    Debug.LogFormat("[WorldAnchorManager] Failed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
+                    AnchorDebugText.text += string.Format("\nFailed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
+                }
+
+                GameObject anchoredObject;
+                AnchorGameObjectReferenceList.TryGetValue(anchor.name, out anchoredObject);
+                AnchorGameObjectReferenceList.Remove(anchor.name);
+                AttachAnchor(anchoredObject, anchor.name);
             }
+
+            anchor.OnTrackingChanged -= Anchor_OnTrackingChanged;
         }
 
         #endregion // Event Callbacks
@@ -328,7 +338,6 @@ namespace HoloToolkit.Unity
                     }
 
                     AnchorGameObjectReferenceList.Add(anchorId, anchoredGameObject);
-
                     break;
                 case AnchorOperation.Delete:
                     if (AnchorStore == null)
@@ -418,7 +427,7 @@ namespace HoloToolkit.Unity
                 {
                     if (ShowDetailedLogs)
                     {
-                        Debug.LogFormat("[WorldAnchorManager] Anchor \"{0}\" was not exported.", anchor.name);
+                        Debug.LogWarningFormat("[WorldAnchorManager] Failed to export anchor \"{0}\"!", anchor.name);
                     }
                 }
 
