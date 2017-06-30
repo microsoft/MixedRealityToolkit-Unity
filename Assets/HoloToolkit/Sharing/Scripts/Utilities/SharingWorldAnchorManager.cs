@@ -136,9 +136,9 @@ namespace HoloToolkit.Sharing
         /// <param name="anchorStore">The WorldAnchorStore to cache.</param>
         protected override void AnchorStoreReady(WorldAnchorStore anchorStore)
         {
-            base.AnchorStoreReady(anchorStore);
+            AnchorStore = anchorStore;
 
-            if (SharingStage.Instance != null && !SharingStage.Instance.KeepRoomAlive)
+            if (!SharingStage.Instance.KeepRoomAlive || !PersistentAnchors)
             {
                 anchorStore.Clear();
             }
@@ -296,6 +296,8 @@ namespace HoloToolkit.Sharing
         {
             if (SharingStage.Instance.CurrentRoom == room)
             {
+                // Clear our local anchor store, and download all our shared anchors again.
+                // TODO: Only download the anchors that changed. Currently there's no way to know which anchor changed.
                 AnchorStore.Clear();
 
                 if (ShowDetailedLogs)

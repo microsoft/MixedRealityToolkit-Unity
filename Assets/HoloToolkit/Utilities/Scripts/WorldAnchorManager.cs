@@ -65,10 +65,16 @@ namespace HoloToolkit.Unity
         public bool ShowDetailedLogs;
 
         /// <summary>
+        /// Enables anchors to be stored from subsequent game sessions.
+        /// </summary>
+        [Tooltip("Enables anchors to be stored from subsequent game sessions.")]
+        public bool PersistentAnchors;
+
+        /// <summary>
         /// The WorldAnchorStore for the current application.
         /// Can be null when the application starts.
         /// </summary>
-        public WorldAnchorStore AnchorStore { get; private set; }
+        public WorldAnchorStore AnchorStore { get; protected set; }
 
         /// <summary>
         /// Internal list of anchors and their GameObject references.
@@ -105,6 +111,11 @@ namespace HoloToolkit.Unity
         protected virtual void AnchorStoreReady(WorldAnchorStore anchorStore)
         {
             AnchorStore = anchorStore;
+
+            if (!PersistentAnchors)
+            {
+                AnchorStore.Clear();
+            }
         }
 
         /// <summary>
