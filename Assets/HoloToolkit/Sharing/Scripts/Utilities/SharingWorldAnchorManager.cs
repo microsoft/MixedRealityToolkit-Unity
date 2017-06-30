@@ -426,14 +426,14 @@ namespace HoloToolkit.Sharing
         /// </summary>
         /// <param name="anchor">The anchor to export.</param>
         /// <returns>Success</returns>
-        protected override bool ExportAnchor(WorldAnchor anchor)
+        protected override void ExportAnchor(WorldAnchor anchor)
         {
             if (SharingStage.Instance == null ||
                 SharingStage.Instance.Manager == null ||
                 SharingStage.Instance.CurrentRoom == null)
             {
                 Debug.LogErrorFormat("[SharingWorldAnchorManager] Failed to export anchor \"{0}\"!  The sharing service was not ready.", anchor.name);
-                return false;
+                return;
             }
 
             if (!shouldExportAnchors)
@@ -448,10 +448,8 @@ namespace HoloToolkit.Sharing
                 }
 
                 currentAnchorTransferBatch.AddWorldAnchor(anchor.name, anchor);
-                return shouldExportAnchors = true;
+                shouldExportAnchors = true;
             }
-
-            return shouldExportAnchors = false;
         }
 
         /// <summary>

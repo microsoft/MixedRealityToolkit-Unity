@@ -422,19 +422,9 @@ namespace HoloToolkit.Unity
                     Debug.LogFormat("[WorldAnchorManager] Successfully saved anchor \"{0}\".", anchor.name);
                 }
 
-                if (export && ExportAnchor(anchor))
+                if (export)
                 {
-                    if (ShowDetailedLogs)
-                    {
-                        Debug.LogFormat("[WorldAnchorManager] Successfully exported anchor \"{0}\".", anchor.name);
-                    }
-                }
-                else
-                {
-                    if (ShowDetailedLogs)
-                    {
-                        Debug.LogWarningFormat("[WorldAnchorManager] Failed to export anchor \"{0}\"!", anchor.name);
-                    }
+                    ExportAnchor(anchor);
                 }
 
                 return true;
@@ -464,7 +454,7 @@ namespace HoloToolkit.Unity
         /// Called before creating anchor.  Used to check if import required.
         /// </summary>
         /// <param name="anchorId">Name of the anchor to import.</param>
-        /// <param name="objectToAnchor">GameObject </param>
+        /// <param name="objectToAnchor">GameObject to anchor.</param>
         /// <returns>Success.</returns>
         protected virtual bool ImportAnchor(string anchorId, GameObject objectToAnchor)
         {
@@ -476,9 +466,6 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="anchor">The anchor to export.</param>
         /// <returns>Success.</returns>
-        protected virtual bool ExportAnchor(WorldAnchor anchor)
-        {
-            return false;
-        }
+        protected virtual void ExportAnchor(WorldAnchor anchor) { }
     }
 }
