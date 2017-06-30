@@ -233,7 +233,7 @@ namespace HoloToolkit.Sharing.Utilities
 
                     // To keep anchors alive even if all users have left the session...
                     // Pass in true instead of false in CreateRoom.
-                    roomManager.CreateRoom(
+                    currentRoom = roomManager.CreateRoom(
                         new XString(SharingStage.Instance.RoomName),
                         roomID,
                         SharingStage.Instance.KeepRoomAlive);
@@ -260,9 +260,16 @@ namespace HoloToolkit.Sharing.Utilities
                 }
             }
 
-            yield return roomManager.GetCurrentRoom();
+            if (currentRoom == null)
+            {
+                Debug.LogError("[AutoJoinSession] Unable to create or join a room!");
+                yield break;
+            }
 
-            currentRoom = roomManager.GetCurrentRoom();
+            while (currentRoom != SharingStage.Instance.CurrentRoom)
+            {
+                yield return null;
+            }
 
             if (SharingStage.Instance.ShowDetailedLogs)
             {
