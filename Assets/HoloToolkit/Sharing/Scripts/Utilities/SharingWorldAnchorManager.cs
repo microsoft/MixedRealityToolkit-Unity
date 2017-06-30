@@ -291,7 +291,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Called when anchors are changed in the room.
         /// </summary>
-        /// <param name="room"></param>
+        /// <param name="room">The room where the anchors were changed.</param>
         private void RoomManagerListener_AnchorsChanged(Room room)
         {
             if (SharingStage.Instance.CurrentRoom == room)
