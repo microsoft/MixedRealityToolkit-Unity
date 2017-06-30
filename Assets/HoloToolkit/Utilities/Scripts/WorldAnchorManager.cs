@@ -121,7 +121,10 @@ namespace HoloToolkit.Unity
                 if (ShowDetailedLogs)
                 {
                     Debug.LogFormat("[WorldAnchorManager] Successfully updated cached  anchor \"{0}\".", anchor.name);
-                    AnchorDebugText.text += string.Format("[WorldAnchorManager] Successfully updated cached  anchor \"{0}\".", anchor.name);
+                    if (AnchorDebugText != null)
+                    {
+                        AnchorDebugText.text += string.Format("[WorldAnchorManager] Successfully updated cached  anchor \"{0}\".", anchor.name);
+                    }
                 }
             }
             else
@@ -129,7 +132,10 @@ namespace HoloToolkit.Unity
                 if (ShowDetailedLogs)
                 {
                     Debug.LogFormat("[WorldAnchorManager] Failed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
-                    AnchorDebugText.text += string.Format("\nFailed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
+                    if (AnchorDebugText != null)
+                    {
+                        AnchorDebugText.text += string.Format("\nFailed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
+                    }
                 }
 
                 GameObject anchoredObject;
