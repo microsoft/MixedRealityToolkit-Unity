@@ -241,9 +241,8 @@ namespace HoloToolkit.Unity.InputModule
 
                 // If there is a focused object in the hierarchy of the modal handler, start the event
                 // bubble there
-                if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
                 {
-
                     if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler))
                     {
                         return;
