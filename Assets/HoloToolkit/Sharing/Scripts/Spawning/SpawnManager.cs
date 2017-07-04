@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Sharing.SyncModel;
 
@@ -21,6 +22,14 @@ namespace HoloToolkit.Sharing.Spawning
 
         protected SyncArray<T> SyncSource;
 
+        protected bool IsReSpawningObjects;
+
+        public bool IsSpawningObjects { get { return IsReSpawningObjects; } }
+
+        public List<GameObject> SyncSpawnObjectList { get { return SyncSpawnObjectListInternal; } }
+
+        protected List<GameObject> SyncSpawnObjectListInternal = new List<GameObject>();
+
         protected virtual void Start()
         {
             // SharingStage should be valid at this point, but we may not be connected.
@@ -37,10 +46,27 @@ namespace HoloToolkit.Sharing.Spawning
 
         protected virtual void Connected(object sender = null, EventArgs e = null)
         {
-            NetworkManager.SharingManagerConnected -= Connected;
+            if (SyncSource != null)
+            {
+                IsReSpawningObjects = true;
+                UnRegesterToDataModel();
+
+                for (var i = 0; i < SyncSpawnObjectListInternal.Count; i++)
+                {
+                    Destroy(SyncSpawnObjectListInternal[i]);
+                }
+
+                SyncSpawnObjectListInternal.Clear();
+            }
 
             SetDataModelSource();
             RegisterToDataModel();
+
+            if (IsReSpawningObjects)
+            {
+                RespawnObjects();
+                IsReSpawningObjects = false;
+            }
         }
 
         /// <summary>
@@ -57,6 +83,12 @@ namespace HoloToolkit.Sharing.Spawning
             SyncSource.ObjectRemoved += OnObjectRemoved;
         }
 
+        private void UnRegesterToDataModel()
+        {
+            SyncSource.ObjectAdded -= OnObjectAdded;
+            SyncSource.ObjectRemoved -= OnObjectRemoved;
+        }
+
         private void OnObjectAdded(T addedObject)
         {
             InstantiateFromNetwork(addedObject);
@@ -65,6 +97,16 @@ namespace HoloToolkit.Sharing.Spawning
         private void OnObjectRemoved(T removedObject)
         {
             RemoveFromNetwork(removedObject);
+        }
+
+        private void RespawnObjects()
+        {
+            T[] objs = SyncSource.GetDataArray();
+
+            for (var i = 0; i < objs.Length; i++)
+            {
+                InstantiateFromNetwork(objs[i]);
+            }
         }
 
         /// <summary>
