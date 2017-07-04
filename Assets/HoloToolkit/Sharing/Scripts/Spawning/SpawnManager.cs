@@ -22,9 +22,7 @@ namespace HoloToolkit.Sharing.Spawning
 
         protected SyncArray<T> SyncSource;
 
-        protected bool IsReSpawningObjects;
-
-        public bool IsSpawningObjects { get { return IsReSpawningObjects; } }
+        public bool IsSpawningObjects { get; protected set; }
 
         public List<GameObject> SyncSpawnObjectList { get { return SyncSpawnObjectListInternal; } }
 
@@ -48,7 +46,7 @@ namespace HoloToolkit.Sharing.Spawning
         {
             if (SyncSource != null)
             {
-                IsReSpawningObjects = true;
+                IsSpawningObjects = true;
                 UnRegesterToDataModel();
 
                 for (var i = 0; i < SyncSpawnObjectListInternal.Count; i++)
@@ -62,10 +60,10 @@ namespace HoloToolkit.Sharing.Spawning
             SetDataModelSource();
             RegisterToDataModel();
 
-            if (IsReSpawningObjects)
+            if (IsSpawningObjects)
             {
                 RespawnObjects();
-                IsReSpawningObjects = false;
+                IsSpawningObjects = false;
             }
         }
 
