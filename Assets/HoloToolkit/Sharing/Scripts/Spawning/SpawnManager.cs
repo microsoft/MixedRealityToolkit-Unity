@@ -22,11 +22,11 @@ namespace HoloToolkit.Sharing.Spawning
 
         protected SyncArray<T> SyncSource;
 
+        protected List<GameObject> SyncSpawnObjectListInternal = new List<GameObject>(0);
+
         public bool IsSpawningObjects { get; protected set; }
 
         public List<GameObject> SyncSpawnObjectList { get { return SyncSpawnObjectListInternal; } }
-
-        protected List<GameObject> SyncSpawnObjectListInternal = new List<GameObject>();
 
         protected virtual void Start()
         {
@@ -47,7 +47,7 @@ namespace HoloToolkit.Sharing.Spawning
             if (SyncSource != null)
             {
                 IsSpawningObjects = true;
-                UnRegesterToDataModel();
+                UnRegisterToDataModel();
 
                 for (var i = 0; i < SyncSpawnObjectListInternal.Count; i++)
                 {
@@ -62,7 +62,7 @@ namespace HoloToolkit.Sharing.Spawning
 
             if (IsSpawningObjects)
             {
-                RespawnObjects();
+                ReSpawnObjects();
                 IsSpawningObjects = false;
             }
         }
@@ -81,7 +81,7 @@ namespace HoloToolkit.Sharing.Spawning
             SyncSource.ObjectRemoved += OnObjectRemoved;
         }
 
-        private void UnRegesterToDataModel()
+        private void UnRegisterToDataModel()
         {
             SyncSource.ObjectAdded -= OnObjectAdded;
             SyncSource.ObjectRemoved -= OnObjectRemoved;
@@ -97,7 +97,7 @@ namespace HoloToolkit.Sharing.Spawning
             RemoveFromNetwork(removedObject);
         }
 
-        private void RespawnObjects()
+        private void ReSpawnObjects()
         {
             T[] objs = SyncSource.GetDataArray();
 
