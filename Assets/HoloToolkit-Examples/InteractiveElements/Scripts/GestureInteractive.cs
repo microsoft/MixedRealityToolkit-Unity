@@ -3,12 +3,11 @@
 
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Events;
-using HoloToolkit.Unity;
-using UnityEngine.VR.WSA.Input;
-using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity.InputModule;
-using HoloToolkit.Examples.Prototyping;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -303,6 +302,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// From Interactive, but customized for triggering gestures from keywords
         /// Handle the manipulation in the GestureInteractiveControl
@@ -323,6 +323,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 }
             }
         }
+#endif
 
         /// <summary>
         /// Clean up

@@ -4,7 +4,10 @@
 using System.Collections;
 using System.Text;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -44,15 +47,16 @@ namespace HoloToolkit.Unity.InputModule
         /// Audio clip of the last dictation session.
         /// </summary>
         private static AudioClip dictationAudioClip;
-
+#if UNITY_EDITOR || UNITY_WSA
         private static DictationRecognizer dictationRecognizer;
-
+#endif
         private static bool isTransitioning;
 
         private static bool hasFailed;
 
         #region Unity Methods
 
+#if UNITY_EDITOR || UNITY_WSA
         protected override void Awake()
         {
             base.Awake();
@@ -91,6 +95,7 @@ namespace HoloToolkit.Unity.InputModule
 
             base.OnDestroy();
         }
+#endif
 
         #endregion // Unity Methods
 
@@ -103,6 +108,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns></returns>
         public static IEnumerator StartRecording(float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to start recording");
@@ -141,6 +147,9 @@ namespace HoloToolkit.Unity.InputModule
             dictationAudioClip = Microphone.Start(DeviceName, false, recordingTime, samplingRate);
             textSoFar = new StringBuilder();
             isTransitioning = false;
+#else
+            return null;
+#endif
         }
 
         /// <summary>
@@ -148,6 +157,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StopRecording()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (!IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to stop recording");
@@ -171,6 +181,9 @@ namespace HoloToolkit.Unity.InputModule
 
             PhraseRecognitionSystem.Restart();
             isTransitioning = false;
+#else
+            return null;
+#endif
         }
 
         #region Dictation Recognizer Callbacks
@@ -187,6 +200,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.RaiseDictationHypothesis(Instance, 0, dictationResult);
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// This event is fired after the user pauses, typically at the end of a sentence. The full recognized string is returned here.
         /// </summary>
@@ -220,6 +234,7 @@ namespace HoloToolkit.Unity.InputModule
             textSoFar = null;
             dictationResult = string.Empty;
         }
+#endif
 
         /// <summary>
         /// This event is fired when an error occurs.
