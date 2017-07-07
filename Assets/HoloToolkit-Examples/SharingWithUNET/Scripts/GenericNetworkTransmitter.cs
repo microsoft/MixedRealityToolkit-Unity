@@ -4,7 +4,7 @@
 using UnityEngine;
 using HoloToolkit.Unity;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.Networking;
@@ -74,7 +74,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         }
 
         // A lot of the work done in this class can only be done in UWP. The editor is not a UWP app.
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
         /// <summary>
         /// Tracks the network connection to the remote machine we are sending meshes to.
         /// </summary>
@@ -206,7 +206,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         }
 
 #else
-    public void ConfigureAsServer()
+        public void ConfigureAsServer()
     {
         Debug.Log("This script is not intended to be run from the Unity Editor");
         // In order to avoid compiler warnings in the Unity Editor we have to access a few of our fields.

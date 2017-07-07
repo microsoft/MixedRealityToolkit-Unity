@@ -5,10 +5,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using HoloToolkit.Unity;
+using System;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.VR.WSA.Sharing;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
-using System;
+#endif
 
 namespace HoloToolkit.Examples.SharingWithUNET
 {
@@ -152,6 +155,84 @@ namespace HoloToolkit.Examples.SharingWithUNET
             networkTransmitter.dataReadyEvent += NetworkTransmitter_dataReadyEvent;
         }
 
+        /// <summary>
+        /// Called when anchor data is ready.
+        /// </summary>
+        /// <param name="data">The data blob to import.</param>
+        private void NetworkTransmitter_dataReadyEvent(byte[] data)
+        {
+            Debug.Log("Anchor data arrived.");
+            anchorData = data;
+            Debug.Log(data.Length);
+            DownloadingAnchor = false;
+            gotOne = true;
+        }
+
+        /// <summary>
+        /// If we are supposed to create the anchor for export, this is the function to call.
+        /// </summary>
+        public void CreateAnchor()
+        {
+#if UNITY_EDITOR || UNITY_WSA
+            objectToAnchor = SharedCollection.Instance.gameObject;
+            WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
+            WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
+            if (worldAnchor == null)
+            {
+                worldAnchor = objectToAnchor.AddComponent<WorldAnchor>();
+            }
+
+            exportingAnchorName = Guid.NewGuid().ToString();
+            Debug.Log("exporting " + exportingAnchorName);
+            watb.AddWorldAnchor(exportingAnchorName, worldAnchor);
+            WorldAnchorTransferBatch.ExportAsync(watb, WriteBuffer, ExportComplete);
+#endif
+        }
+
+        /// <summary>
+        /// If we don't have the anchor already, call this to download the anchor.
+        /// </summary>
+        public void WaitForAnchor()
+        {
+            DownloadingAnchor = true;
+            networkTransmitter.RequestAndGetData();
+        }
+
+        /// <summary>
+        /// Attempts to attach to  an anchor by anchorName in the local store..
+        /// </summary>
+        /// <returns>True if it attached, false if it could not attach</returns>
+        private bool AttachToCachedAnchor(string AnchorName)
+        {
+#if UNITY_EDITOR || UNITY_WSA
+            WorldAnchorStore anchorStore = WorldAnchorManager.Instance.AnchorStore;
+            Debug.Log("Looking for " + AnchorName);
+            string[] ids = anchorStore.GetAllIds();
+            for (int index = 0; index < ids.Length; index++)
+            {
+                if (ids[index] == AnchorName)
+                {
+                    Debug.Log("Using what we have");
+                    anchorStore.Load(ids[index], objectToAnchor);
+                    AnchorEstablished = true;
+                    return true;
+                }
+            }
+#endif
+            // Didn't find the anchor.
+            return false;
+        }
+
+        /// <summary>
+        /// Called as anchor data becomes available to export
+        /// </summary>
+        /// <param name="data">The next chunk of data.</param>
+        private void WriteBuffer(byte[] data)
+        {
+            exportingAnchorBytes.AddRange(data);
+        }
+
+#if UNITY_EDITOR || UNITY_WSA
         private void Update()
         {
             if (gotOne)
@@ -171,71 +252,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
                     WaitForAnchor();
                 }
             }
-        }
-
-        /// <summary>
-        /// If we are supposed to create the anchor for export, this is the function to call.
-        /// </summary>
-        public void CreateAnchor()
-        {
-            objectToAnchor = SharedCollection.Instance.gameObject;
-            WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
-            WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
-            if (worldAnchor == null)
-            {
-                worldAnchor = objectToAnchor.AddComponent<WorldAnchor>();
-            }
-
-            exportingAnchorName = Guid.NewGuid().ToString();
-            Debug.Log("exporting " + exportingAnchorName);
-            watb.AddWorldAnchor(exportingAnchorName, worldAnchor);
-            WorldAnchorTransferBatch.ExportAsync(watb, WriteBuffer, ExportComplete);
-        }
-
-        /// <summary>
-        /// If we don't have the anchor already, call this to download the anchor.
-        /// </summary>
-        public void WaitForAnchor()
-        {
-            DownloadingAnchor = true;
-            networkTransmitter.RequestAndGetData();
-        }
-
-        /// <summary>
-        /// Attempts to attach to  an anchor by anchorName in the local store..
-        /// </summary>
-        /// <returns>True if it attached, false if it could not attach</returns>
-        private bool AttachToCachedAnchor(string AnchorName)
-        {
-            WorldAnchorStore anchorStore = WorldAnchorManager.Instance.AnchorStore;
-            Debug.Log("Looking for " + AnchorName);
-            string[] ids = anchorStore.GetAllIds();
-            for (int index = 0; index < ids.Length; index++)
-            {
-                if (ids[index] == AnchorName)
-                {
-                    Debug.Log("Using what we have");
-                    anchorStore.Load(ids[index], objectToAnchor);
-                    AnchorEstablished = true;
-                    return true;
-                }
-            }
-
-            // Didn't find the anchor.
-            return false;
-        }
-
-        /// <summary>
-        /// Called when anchor data is ready.
-        /// </summary>
-        /// <param name="data">The data blob to import.</param>
-        private void NetworkTransmitter_dataReadyEvent(byte[] data)
-        {
-            Debug.Log("Anchor data arrived.");
-            anchorData = data;
-            Debug.Log(data.Length);
-            DownloadingAnchor = false;
-            gotOne = true;
         }
 
         /// <summary>
@@ -272,15 +288,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
         }
 
         /// <summary>
-        /// Called as anchor data becomes available to export
-        /// </summary>
-        /// <param name="data">The next chunk of data.</param>
-        private void WriteBuffer(byte[] data)
-        {
-            exportingAnchorBytes.AddRange(data);
-        }
-
-        /// <summary>
         /// Called when serializing an anchor is complete.
         /// </summary>
         /// <param name="status">If the serialization succeeded.</param>
@@ -301,5 +308,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
                 CreateAnchor();
             }
         }
+#endif
     }
 }

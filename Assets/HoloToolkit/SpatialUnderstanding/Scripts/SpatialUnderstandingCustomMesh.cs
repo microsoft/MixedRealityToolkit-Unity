@@ -5,8 +5,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VR.WSA;
 using HoloToolkit.Unity.SpatialMapping;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.VR.WSA;
+#endif
 
 namespace HoloToolkit.Unity
 {
@@ -211,10 +214,12 @@ namespace HoloToolkit.Unity
         private void Start()
         {
             spatialUnderstanding = SpatialUnderstanding.Instance;
+#if UNITY_EDITOR || UNITY_WSA
             if (gameObject.GetComponent<WorldAnchor>() == null)
             {
                 gameObject.AddComponent<WorldAnchor>();
             }
+#endif
         }
 
         private void Update()

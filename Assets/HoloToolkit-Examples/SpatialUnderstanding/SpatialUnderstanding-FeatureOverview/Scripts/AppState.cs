@@ -8,7 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -192,6 +195,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private string spaceQueryDescription;
         private string objectPlacementDescription;
         private uint trackedHandsCount = 0;
+#if UNITY_EDITOR || UNITY_WSA
         private KeywordRecognizer keywordRecognizer;
 
         // Functions
@@ -214,6 +218,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             keywordRecognizer.OnPhraseRecognized += args => keywordsToActions[args.text].Invoke();
             keywordRecognizer.Start();
         }
+#endif
 
         protected override void OnDestroy()
         {

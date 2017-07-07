@@ -5,7 +5,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -47,6 +50,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndKeyCode[] Keywords;
 
+#if UNITY_EDITOR || UNITY_WSA
         private KeywordRecognizer keywordRecognizer;
 
         #region Unity Methods
@@ -168,6 +172,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             InputManager.Instance.RaiseSpeechKeywordPhraseRecognized(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
         }
+#endif
 
         #region Base Input Source Methods
 
