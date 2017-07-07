@@ -94,7 +94,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="listener">Listener to add.</param>
         public void AddGlobalListener(GameObject listener)
         {
-            globalListeners.Add(listener);
+            if (!globalListeners.Contains(listener))
+            {
+                globalListeners.Add(listener);
+            }
+            else
+            {
+                Debug.LogWarning("Listener has already been added.");
+            }
         }
 
         /// <summary>
