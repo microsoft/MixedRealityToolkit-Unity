@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.InputModule
 
         /// <summary>
         /// Push a game object into the modal input stack. Any input handlers
-        /// on the game object is given priority to input events before any focused objects.
+        /// on the game object are given priority to input events before any focused objects.
         /// </summary>
         /// <param name="inputHandler">The input handler to push</param>
         public void PushModalInputHandler(GameObject inputHandler)
@@ -243,8 +243,8 @@ namespace HoloToolkit.Unity.InputModule
             for (int i = 0; i < globalListeners.Count; i++)
             {
                 // Only execute the global event if it's not already being handled.
-                if (globalListeners[i] != focusedObject ||
-                    globalListeners[i] != modalInput ||
+                if (globalListeners[i] != focusedObject &&
+                    globalListeners[i] != modalInput &&
                     globalListeners[i] != fallbackInput)
                 {
                     // Global listeners should only get events on themselves, as opposed to their hierarchy.
