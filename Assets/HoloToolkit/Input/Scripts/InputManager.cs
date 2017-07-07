@@ -235,9 +235,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Use focused object when OverrideFocusedObject is null.
-            GameObject focusedObject = (OverrideFocusedObject == null) ? GazeManager.Instance.HitObject : OverrideFocusedObject;
+            GameObject focusedObject = OverrideFocusedObject == null ? GazeManager.Instance.HitObject : OverrideFocusedObject;
 
-            // Handle modal input if one exists
+            // Handle modal input if one exists.
             if (modalInputStack.Count > 0)
             {
                 GameObject modalInput = modalInputStack.Peek();
@@ -263,8 +263,7 @@ namespace HoloToolkit.Unity.InputModule
             // If event was not handled by modal, pass it on to the current focused object.
             if (focusedObject != null)
             {
-                bool eventHandled = ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler);
-                if (eventHandled)
+                if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler))
                 {
                     return;
                 }
@@ -274,8 +273,11 @@ namespace HoloToolkit.Unity.InputModule
             if (fallbackInputStack.Count > 0)
             {
                 GameObject fallbackInput = fallbackInputStack.Peek();
-                ExecuteEvents.ExecuteHierarchy(fallbackInput, eventData, eventHandler);
-                return;
+
+                if (ExecuteEvents.ExecuteHierarchy(fallbackInput, eventData, eventHandler))
+                {
+                    return;
+                }
             }
 
             // Finally, if the event is not handled by the fallback handler, pass it to the global listeners.
