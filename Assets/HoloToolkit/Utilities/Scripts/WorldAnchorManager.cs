@@ -4,8 +4,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
+#endif
 
 #if !UNITY_EDITOR && UNITY_WSA
 using HoloToolkit.Unity.SpatialMapping;
@@ -81,7 +84,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected Dictionary<string, GameObject> AnchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
 
-        #region Unity Methods
+#region Unity Methods
 
         protected override void Awake()
         {
@@ -100,9 +103,9 @@ namespace HoloToolkit.Unity
             }
         }
 
-        #endregion // Unity Methods
+#endregion // Unity Methods
 
-        #region Event Callbacks
+#region Event Callbacks
 
         /// <summary>
         /// Callback function that contains the WorldAnchorStore object.
@@ -158,7 +161,7 @@ namespace HoloToolkit.Unity
             anchor.OnTrackingChanged -= Anchor_OnTrackingChanged;
         }
 
-        #endregion // Event Callbacks
+#endregion // Event Callbacks
 
         /// <summary>
         /// Attaches an anchor to the GameObject.  
