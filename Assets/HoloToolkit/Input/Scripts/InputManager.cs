@@ -94,7 +94,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="listener">Listener to add.</param>
         public void AddGlobalListener(GameObject listener)
         {
-            globalListeners.Add(listener);
+            if (!globalListeners.Contains(listener))
+            {
+                globalListeners.Add(listener);
+            }
+            else
+            {
+                Debug.LogWarningFormat("[{0}] This listener has already been added to Global Listeners.");
+            }
         }
 
         /// <summary>
@@ -228,54 +235,62 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Use focused object when OverrideFocusedObject is null.
-            GameObject focusedObject = (OverrideFocusedObject == null) ? GazeManager.Instance.HitObject : OverrideFocusedObject;
+            GameObject focusedObject = OverrideFocusedObject ?? GazeManager.Instance.HitObject;
 
-            // Send the event to global listeners
+            // Send the event to global listeners.
             for (int i = 0; i < globalListeners.Count; i++)
             {
-                // Global listeners should only get events on themselves, as opposed to their hierarchy
+                // Global listeners should only get events on themselves, as opposed to their hierarchy.
                 ExecuteEvents.Execute(globalListeners[i], eventData, eventHandler);
             }
 
-            // Handle modal input if one exists
+            // Check if the event has already been used by the global listeners.
+            if (eventData.used)
+            {
+                return;
+            }
+
+            // Handle modal input if one exists.
             if (modalInputStack.Count > 0)
             {
                 GameObject modalInput = modalInputStack.Peek();
 
-                // If there is a focused object in the hierarchy of the modal handler, start the event
-                // bubble there
-                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                if (modalInput != null)
                 {
-                    if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler))
+                    // If there is a focused object in the hierarchy of the modal handler, start the event bubble there.
+                    if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
                     {
-                        return;
+                        if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler))
+                        {
+                            return;
+                        }
                     }
-                }
-                // Otherwise, just invoke the event on the modal handler itself
-                else
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler))
+                    // Otherwise, just invoke the event on the modal handler itself.
+                    else
                     {
-                        return;
+                        if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler))
+                        {
+                            return;
+                        }
                     }
                 }
             }
 
-            // If event was not handled by modal, pass it on to the current focused object
-            if (focusedObject != null)
+            // If event was not handled by modal, pass it on to the current focused object.
+            if (focusedObject != null && ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler))
             {
-                bool eventHandled = ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler);
-                if (eventHandled)
-                {
-                    return;
-                }
+                return;
             }
 
-            // If event was not handled by the focused object, pass it on to any fallback handlers
+            // If event was not handled by the focused object, pass it on to any fallback handlers.
             if (fallbackInputStack.Count > 0)
             {
                 GameObject fallbackInput = fallbackInputStack.Peek();
-                ExecuteEvents.ExecuteHierarchy(fallbackInput, eventData, eventHandler);
+
+                if (fallbackInput != null)
+                {
+                    ExecuteEvents.ExecuteHierarchy(fallbackInput, eventData, eventHandler);
+                }
             }
         }
 
