@@ -2,12 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
-using HoloToolkit.Unity;
-using UnityEngine.Windows.Speech;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -87,7 +88,9 @@ namespace HoloToolkit.Examples.InteractiveElements
         protected bool mCheckRollOff = false;
         protected bool mCheckHold = false;
 
+#if UNITY_EDITOR || UNITY_WSA
         protected KeywordRecognizer mKeywordRecognizer;
+#endif
         protected Dictionary<string, int> mKeywordDictionary;
         protected string[] mKeywordArray;
 
@@ -131,12 +134,14 @@ namespace HoloToolkit.Examples.InteractiveElements
                     }
                 }
 
+#if UNITY_EDITOR || UNITY_WSA
                 if (!KeywordRequiresGaze)
                 {
                     mKeywordRecognizer = new KeywordRecognizer(mKeywordArray);
                     mKeywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
                     mKeywordRecognizer.Start();
                 }
+#endif
 
             }
 
@@ -201,6 +206,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void SetKeywordListener(bool listen)
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (listen)
             {
                 if (KeywordRequiresGaze && mKeywordArray != null)
@@ -233,6 +239,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                     }
                 }
             }
+#endif
         }
 
         /// <summary>
@@ -367,6 +374,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         protected virtual void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
 
@@ -379,6 +387,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 }
             }
         }
+#endif
 
         /// <summary>
         /// Check if any state changes have occured, from alternate input sources
@@ -501,10 +510,12 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         protected virtual void OnEnable()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (mKeywordRecognizer != null && !KeywordRequiresGaze)
             {
                 SetKeywordListener(true);
             }
+#endif
         }
 
         protected virtual void OnDisable()
