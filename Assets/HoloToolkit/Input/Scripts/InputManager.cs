@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                Debug.LogWarning("Listener has already been added.");
+                Debug.LogWarningFormat("[{0}] This listener has already been added.", listener.name);
             }
         }
 
