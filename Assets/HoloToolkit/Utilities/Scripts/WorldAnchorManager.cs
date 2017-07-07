@@ -21,6 +21,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
+#if UNITY_WSA
         /// <summary>
         /// To prevent initializing too many anchors at once
         /// and to allow for the WorldAnchorStore to load asynchronously
@@ -162,6 +163,7 @@ namespace HoloToolkit.Unity
         }
 
 #endregion // Event Callbacks
+#endif
 
         /// <summary>
         /// Attaches an anchor to the GameObject.  
@@ -308,6 +310,7 @@ namespace HoloToolkit.Unity
 #endif
         }
 
+#if UNITY_WSA
         /// <summary>
         /// Executes the anchor operations from the localAnchorOperations queue.
         /// </summary>
@@ -481,5 +484,6 @@ namespace HoloToolkit.Unity
         /// <param name="anchor">The anchor to export.</param>
         /// <returns>Success.</returns>
         protected virtual void ExportAnchor(WorldAnchor anchor) { }
+#endif
     }
 }

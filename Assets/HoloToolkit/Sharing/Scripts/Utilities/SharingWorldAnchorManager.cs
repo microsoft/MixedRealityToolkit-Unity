@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_WSA
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.VR.WSA.Sharing;
+#endif
+
 using HoloToolkit.Unity;
 
 namespace HoloToolkit.Sharing
@@ -16,6 +19,7 @@ namespace HoloToolkit.Sharing
     /// </summary>
     public class SharingWorldAnchorManager : WorldAnchorManager
     {
+#if UNITY_WSA
         /// <summary>
         /// Called once the anchor has fully uploaded.
         /// </summary>
@@ -579,5 +583,6 @@ namespace HoloToolkit.Sharing
         {
             rawAnchorUploadData.AddRange(data);
         }
+#endif
     }
 }
