@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
-using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity.InputModule;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -18,7 +19,7 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// </summary>
     public class InteractiveToggle : Interactive
     {
-        
+
         /// <summary>
         /// Sets the button to act like a navigation button or toggle type button
         /// </summary>
@@ -189,6 +190,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         protected override void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
             base.KeywordRecognizer_OnPhraseRecognized(args);
@@ -205,5 +207,6 @@ namespace HoloToolkit.Examples.InteractiveElements
                 }
             }
         }
+#endif
     }
 }
