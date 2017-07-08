@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity
         /// <param name="xamlPageName"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
-        public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback)
+        public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback, object pageNavigateParameter = null)
         {
             bool isCompleted = false;
 #if WINDOWS_UWP
@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity
                     returnValue = rval;
                     isCompleted = true;
                 });
-                frame.Navigate(pageType, null);
+                frame.Navigate(pageType,pageNavigateParameter);
                 CallbackDictionary[newViewId] = cb;
                 Window.Current.Content = frame;
                 Window.Current.Activate();
