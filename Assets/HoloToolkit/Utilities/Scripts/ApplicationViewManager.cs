@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
 using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 #if WINDOWS_UWP
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -16,9 +16,10 @@ namespace HoloToolkit.Unity
     public delegate void ReturnValueCallback<TReturnValue>(TReturnValue returnValue);
 
     /// <summary>
-    /// ApplicationViewManager can switch to Plan View, populate an Application View (New Window of UAP), then navigate to the page with page name. 
-    /// After the page called 'CallbackReturnValue' method, the new Application View will be closed, and the system will switch back to your Full3D view.
-    /// The corotine were waiting will get the return value by callback.
+    /// ApplicationViewManager ( For XAML UWP project) can switch app to Plan View, populate an Application View (New Window of UAP), 
+    /// then navigate the Window root frame to a page. 
+    /// After the page's logic called 'CallbackReturnValue' method, the newly created Application View will be closed, and the system will switch back to your Full3D view.
+    /// The corotine which was waiting the callback will get the return value.
     /// </summary>
     public class ApplicationViewManager : MonoBehaviour
     {
