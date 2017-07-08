@@ -20,14 +20,15 @@ namespace HoloToolkit.Unity
     public class BuildDeployTools
     {
         // Consts
-        public static readonly string DefaultMSBuildVersion = "14.0";
+        public static readonly string DefaultMSBuildVersion = "15.0";
 
         // Functions
         public static bool BuildSLN(string buildDirectory, bool showConfDlg = true)
         {
             // Use BuildSLNUtilities to create the SLN
             bool buildSuccess = false;
-            BuildSLNUtilities.PerformBuild(new BuildSLNUtilities.BuildInfo()
+
+            var buildInfo = new BuildSLNUtilities.BuildInfo()
             {
                 // These properties should all match what the Standalone.proj file specifies
                 OutputDirectory = buildDirectory,
@@ -37,7 +38,7 @@ namespace HoloToolkit.Unity
                 WSAUWPBuildType = WSAUWPBuildType.D3D,
 
                 // Configure a post build action that will compile the generated solution
-                PostBuildAction = (buildInfo, buildError) =>
+                PostBuildAction = (innerBuildInfo, buildError) =>
                 {
                     if (!string.IsNullOrEmpty(buildError))
                     {
@@ -52,13 +53,19 @@ namespace HoloToolkit.Unity
                         buildSuccess = true;
                     }
                 }
-            });
+            };
+
+            BuildSLNUtilities.RaiseOverrideBuildDefaults(ref buildInfo);
+
+            BuildSLNUtilities.PerformBuild(buildInfo);
 
             return buildSuccess;
         }
 
         public static string CalcMSBuildPath(string msBuildVersion)
         {
+            // TODO: robertes: If this is going to support msbuild 15 and beyond, it needs to be updated to use the COM or powershell interfaces to find msbuild.
+            //                 See: https://github.com/Microsoft/vssetup.powershell/wiki
             using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(string.Format(@"Software\Microsoft\MSBuild\ToolsVersions\{0}", msBuildVersion)))
             {
                 if (key == null)
