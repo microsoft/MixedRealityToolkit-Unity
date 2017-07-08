@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.UI.Keyboard
 {
+    /// <summary>
+    /// Axis slider is a script to lock a bar acros a specific axis.
+    /// </summary>
     public class AxisSlider : MonoBehaviour
     {
 
@@ -29,12 +32,6 @@ namespace HoloToolkit.UI.Keyboard
         [HideInInspector]
         public Vector3 TargetPoint;
 
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
         float GetAxis(Vector3 v)
         {
             switch (Axis)
@@ -57,10 +54,11 @@ namespace HoloToolkit.UI.Keyboard
             return v;
         }
 
-        // Update is called once per frame
-        void Update()
+        /// <summary>
+        /// Use late update to track the input slider
+        /// </summary>
+        public void LateUpdate()
         {
-
             float targetP = GetAxis(TargetPoint);
 
             float dt = Time.deltaTime;

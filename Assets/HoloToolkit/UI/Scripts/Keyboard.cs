@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using HoloToolkit.Unity.InputModule;
 
 #if UNITY_WSA
 using UnityEngine.Windows.Speech;
@@ -82,17 +81,20 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public InputField m_InputField = null;
 
-		// TODO Update comment when InputFieldSlide is implemented
 		/// <summary>
-		/// Currently not used. The idea is to move the input field back and forth in sync
-		/// with your gaze's horizontal position on the keyboard.
+		/// Move the axis slider based on the camera forward and the keyboard plane projection.
 		/// </summary>
 		public AxisSlider m_InputFieldSlide = null;
 
-		/// <summary>
-		/// The panel that contains the alpha keys.
-		/// </summary>
-		public Image AlphaKeyboard = null;
+        /// <summary>
+        /// Bool for toggling the slider being enabled.
+        /// </summary>
+        public bool m_SliderEnabled = true;
+
+        /// <summary>
+        /// The panel that contains the alpha keys.
+        /// </summary>
+        public Image AlphaKeyboard = null;
 
 		/// <summary>
 		/// The panel that contains the number and symbol keys.
@@ -194,10 +196,10 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		private Vector3 m_ObjectBounds;
 
-		/// <summary>
-		/// Reference to instance of keyboard script.
-		/// </summary>
-		static private Keyboard s_Keyboard;
+        /// <summary>
+        /// Reference to instance of keyboard script.
+        /// </summary>
+        static private Keyboard s_Keyboard;
 
         /// <summary>
         /// Gets or Creates the Keyboard to use.
@@ -242,14 +244,14 @@ namespace HoloToolkit.UI.Keyboard
 		{
 			// Delegate Subscription
 			m_InputField.onValueChanged.AddListener(new UnityEngine.Events.UnityAction<string>(DoTextUpdated));
-		}
+        }
 
-		/// <summary>
-		/// Intermediary function for text update events.
-		/// Workaround for strange leftover reference when unsubscribing.
-		/// </summary>
-		/// <param name="value">String value.</param>
-		private void DoTextUpdated(string value)
+        /// <summary>
+        /// Intermediary function for text update events.
+        /// Workaround for strange leftover reference when unsubscribing.
+        /// </summary>
+        /// <param name="value">String value.</param>
+        private void DoTextUpdated(string value)
 		{
 			if (onTextUpdated != null)
 			{
@@ -257,49 +259,32 @@ namespace HoloToolkit.UI.Keyboard
 			}
 		}
 
-		/// <summary>
-		/// Makes sure the input field is always selected while the keyboard is up.
-		/// </summary>
-		private void Update()
+        /// <summary>
+        /// Makes sure the input field is always selected while the keyboard is up.
+        /// </summary>
+        private void LateUpdate()
 		{
-			if (EventSystem.current.currentSelectedGameObject != m_InputField.gameObject)
-			{
-				m_InputField.Select();
-				m_InputField.ActivateInputField();
-				m_InputField.OnPointerClick(new PointerEventData(EventSystem.current));
-
-				StartCoroutine(WaitToUpdateInputField());
-			}
-
             // Axis Slider
-            bool updateSliderPos = GazeManager.Instance.HitObject == this.gameObject;
-			if (updateSliderPos)
+			if (m_SliderEnabled)
 			{
-				Vector3 relPos = this.transform.InverseTransformPoint(GazeManager.Instance.HitPosition);
+                Vector3 nearPoint = Vector3.ProjectOnPlane(Camera.main.transform.forward, this.transform.forward);
+				Vector3 relPos = this.transform.InverseTransformPoint(nearPoint);
 				m_InputFieldSlide.TargetPoint = relPos;
 			}
-		}
+        }
 
-		/// <summary>
-		/// Called whenever the keyboard is disabled or deactivated.
-		/// </summary>
-		private void OnDisable()
+        private void UpdateCaratPosition(int newPos)
+        {
+            m_InputField.caretPosition = newPos;
+        }
+
+        /// <summary>
+        /// Called whenever the keyboard is disabled or deactivated.
+        /// </summary>
+        private void OnDisable()
 		{
 			m_LastKeyboardLayout = LayoutType.Alpha;
-			Clear();
-		}
-
-		/// <summary>
-		/// Workaround for unity bug in InputField.
-		/// Waits for a frame before updating the caret position to remove highlight.
-		/// </summary>
-		/// <returns></returns>
-		private IEnumerator WaitToUpdateInputField()
-		{
-			yield return null;
-
-			m_InputField.caretPosition = m_CaretPosition;
-			m_InputField.ForceLabelUpdate();
+            Clear();
 		}
 
 #if UNITY_WSA
@@ -344,13 +329,16 @@ namespace HoloToolkit.UI.Keyboard
             ActivateSpecificKeyboard(LayoutType.Alpha);
 
 			onPlacement(this, EventArgs.Empty);
-		}
 
-		/// <summary>
-		/// Presents the default keyboard to the camera, with start text.
-		/// </summary>
-		/// <param name="startText">The initial text to show in the Keyboard's InputField.</param>
-		public void PresentKeyboard(string startText)
+            m_InputField.ActivateInputField();
+
+        }
+
+        /// <summary>
+        /// Presents the default keyboard to the camera, with start text.
+        /// </summary>
+        /// <param name="startText">The initial text to show in the Keyboard's InputField.</param>
+        public void PresentKeyboard(string startText)
 		{
 			PresentKeyboard();
 			Clear();
@@ -418,6 +406,9 @@ namespace HoloToolkit.UI.Keyboard
             LookAtTargetOrigin();
         }
 
+        /// <summary>
+        /// Function to scale keyboard to the appropriate size based on distance
+        /// </summary>
         private void ScaleToSize()
         {
             float distance = (this.transform.position - Camera.main.transform.position).magnitude;
@@ -539,9 +530,12 @@ namespace HoloToolkit.UI.Keyboard
 				Shift(false);
 			}
 
-			m_InputField.text = m_InputField.text.Insert(m_CaretPosition, value);
-			m_CaretPosition += value.Length;
-			m_InputField.caretPosition = m_CaretPosition;
+            m_CaretPosition = m_InputField.caretPosition;
+
+            m_InputField.text = m_InputField.text.Insert(m_CaretPosition, value);
+            m_CaretPosition += value.Length;
+
+            UpdateCaratPosition(m_CaretPosition);
 		}
 
 		/// <summary>
@@ -638,11 +632,13 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public void Backspace()
 		{
-			if (m_CaretPosition > 0)
+            m_CaretPosition = m_InputField.caretPosition;
+
+            if (m_CaretPosition > 0)
 			{
 				--m_CaretPosition;
 				m_InputField.text = m_InputField.text.Remove(m_CaretPosition, 1);
-				m_InputField.caretPosition = m_CaretPosition;
+                UpdateCaratPosition(m_CaretPosition);
 			}
 		}
 
@@ -707,8 +703,7 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public void Space()
 		{
-			m_InputField.text = m_InputField.text.Insert(m_CaretPosition++, " ");
-			m_InputField.caretPosition = m_CaretPosition;
+			m_InputField.text = m_InputField.text.Insert(m_InputField.caretPosition++, " ");
 		}
 
 		/// <summary>
@@ -717,9 +712,13 @@ namespace HoloToolkit.UI.Keyboard
 		public void Tab()
 		{
 			string tabString = "\t";
-			m_InputField.text = m_InputField.text.Insert(m_CaretPosition, tabString);
-			m_CaretPosition += tabString.Length;
-			m_InputField.caretPosition = m_CaretPosition;
+
+            m_CaretPosition = m_InputField.caretPosition;
+
+            m_InputField.text = m_InputField.text.Insert(m_CaretPosition, tabString);
+            m_CaretPosition += tabString.Length;
+
+            UpdateCaratPosition(m_CaretPosition);
 		}
 
 		/// <summary>
@@ -727,10 +726,12 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public void MoveCaretLeft()
 		{
-			if (m_CaretPosition > 0)
+            m_CaretPosition = m_InputField.caretPosition;
+
+            if (m_CaretPosition > 0)
 			{
-				--m_CaretPosition;
-				m_InputField.caretPosition = m_CaretPosition;
+                --m_CaretPosition;
+                UpdateCaratPosition(m_CaretPosition);
 			}
 		}
 
@@ -739,10 +740,12 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public void MoveCaretRight()
 		{
-			if (m_CaretPosition < m_InputField.text.Length)
+            m_CaretPosition = m_InputField.caretPosition;
+
+            if (m_CaretPosition < m_InputField.text.Length)
 			{
-				++m_CaretPosition;
-				m_InputField.caretPosition = m_CaretPosition;
+                ++m_CaretPosition;
+                UpdateCaratPosition(m_CaretPosition);
 			}
 		}
 
