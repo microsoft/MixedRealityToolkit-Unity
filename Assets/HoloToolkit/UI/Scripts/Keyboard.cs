@@ -5,10 +5,12 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using HoloToolkit.Unity;
 
 #if UNITY_WSA
 using UnityEngine.Windows.Speech;
 #endif
+
 using UnityEngine.EventSystems;
 
 namespace HoloToolkit.UI.Keyboard
@@ -22,7 +24,7 @@ namespace HoloToolkit.UI.Keyboard
 	///       To retrieve the input from the Keyboard, subscribe to the textEntered event. Note that
 	///       tapping 'Close' on the Keyboard will not fire the textEntered event. You must tap 'Enter' to
 	///       get the textEntered event.
-	public class Keyboard : MonoBehaviour
+	public class Keyboard : Singleton<Keyboard>
 	{
 		public enum LayoutType
 		{
@@ -196,36 +198,13 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		private Vector3 m_ObjectBounds;
 
-        /// <summary>
-        /// Reference to instance of keyboard script.
-        /// </summary>
-        static private Keyboard s_Keyboard;
-
-        /// <summary>
-        /// Gets or Creates the Keyboard to use.
-        /// </summary>
-        static public Keyboard Instance
-		{
-			get
-			{
-				if (s_Keyboard == null)
-				{
-					Debug.LogError("Keyboard does not exist in the scene.  Drag the Keyboard prefab into the scene for the keyboard to work.");
-				}
-
-				return s_Keyboard;
-			}
-		}
 
 		/// <summary>
 		/// Deactivate on Awake.
 		/// </summary>
-		private void Awake()
+		protected override void Awake()
 		{
-			if (s_Keyboard == null)
-			{
-				s_Keyboard = this;
-			}
+            base.Awake();
 
 			m_StartingScale = this.transform.localScale;
 			Bounds canvasBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(this.transform);
@@ -306,7 +285,7 @@ namespace HoloToolkit.UI.Keyboard
 		/// <summary>
 		/// Destroy unmanaged memory links.
 		/// </summary>
-		private void OnDestroy()
+		protected override void OnDestroy()
 		{
 #if UNITY_WSA
 			// HACK Must manually call destroy on DictationRecognizer according to the documentation.
@@ -316,14 +295,15 @@ namespace HoloToolkit.UI.Keyboard
 				m_Dictation = null;
 			}
 #endif
-		}
+            base.OnDestroy();
+        }
 
-		#region Present Functions
+        #region Present Functions
 
-		/// <summary>
-		/// Present the default keyboard to the camera.
-		/// </summary>
-		public void PresentKeyboard()
+        /// <summary>
+        /// Present the default keyboard to the camera.
+        /// </summary>
+        public void PresentKeyboard()
 		{
             this.gameObject.SetActive(true);
             ActivateSpecificKeyboard(LayoutType.Alpha);

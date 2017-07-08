@@ -59,6 +59,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void Start()
         {
+            m_Button.onClick.RemoveAllListeners();
             m_Button.onClick.AddListener(new UnityEngine.Events.UnityAction(FireFunctionKey));
         }
 

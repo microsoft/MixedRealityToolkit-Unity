@@ -48,6 +48,7 @@ namespace HoloToolkit.UI.Keyboard
             m_text = gameObject.GetComponentInChildren<Text>();
             m_text.text = Value;
 
+            m_Button.onClick.RemoveAllListeners();
             m_Button.onClick.AddListener(new UnityEngine.Events.UnityAction(FireAppendValue));
 
             Keyboard.Instance.onKeyboardShifted += Shift;
