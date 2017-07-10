@@ -4,7 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/HoloToolkit-Examples/Medical/Scenes/main.unity
-    guid: fa700b7899107cf45a4fd5d162feb39c
+  m_Scenes: []
