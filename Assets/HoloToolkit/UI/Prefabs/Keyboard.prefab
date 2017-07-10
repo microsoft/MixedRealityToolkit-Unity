@@ -5505,6 +5505,7 @@ MonoBehaviour:
   m_InputField: {fileID: 114302835711036314}
   m_InputFieldSlide: {fileID: 11448462}
   m_SliderEnabled: 1
+  m_SubmitOnEnter: 1
   AlphaKeyboard: {fileID: 11451576}
   SymbolKeyboard: {fileID: 11428666}
   AlphaSubKeys: {fileID: 11429994}

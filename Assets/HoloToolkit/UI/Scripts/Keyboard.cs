@@ -94,6 +94,11 @@ namespace HoloToolkit.UI.Keyboard
         public bool m_SliderEnabled = true;
 
         /// <summary>
+        /// Bool to flag submitting on enter
+        /// </summary>
+        public bool m_SubmitOnEnter = true;
+
+        /// <summary>
         /// The panel that contains the alpha keys.
         /// </summary>
         public Image AlphaKeyboard = null;
@@ -150,10 +155,10 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public event Action<bool> onKeyboardShifted = delegate { };
 
-		/// <summary>
-		/// Current shift state of keyboard.
-		/// </summary>
-		private bool m_IsShifted = false;
+        /// <summary>
+        /// Current shift state of keyboard.
+        /// </summary>
+        private bool m_IsShifted = false;
 
 		/// <summary>
 		/// Current caps lock state of keyboard.
@@ -570,8 +575,15 @@ namespace HoloToolkit.UI.Keyboard
 
 				case KeyboardKeyFunc.Function.Dictate:
 				{
-					BeginDictation();
-					break;
+					if(m_Dictation != null && m_Dictation.Status == SpeechSystemStatus.Running)
+                    {
+                            EndDictation();
+                    }
+                    else
+                    {
+                            BeginDictation();
+                    }
+                    break;
 				}
 
 				case KeyboardKeyFunc.Function.Shift:
@@ -644,13 +656,28 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public void Enter()
 		{
-			// Send text entered event and close the keyboard
-			if (onTextSubmitted != null)
-			{
-				onTextSubmitted(this, EventArgs.Empty);
-			}
+           if( m_SubmitOnEnter )
+            {
+                // Send text entered event and close the keyboard
+                if (onTextSubmitted != null)
+                {
+                    onTextSubmitted(this, EventArgs.Empty);
+                }
 
-			Close();
+                Close();
+            }
+            else
+            {
+                string enterString = "\n";
+
+                m_CaretPosition = m_InputField.caretPosition;
+
+                m_InputField.text = m_InputField.text.Insert(m_CaretPosition, enterString);
+                m_CaretPosition += enterString.Length;
+
+                UpdateCaratPosition(m_CaretPosition);
+            }
+
 		}
 
 		/// <summary>
@@ -683,8 +710,11 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		public void Space()
 		{
-			m_InputField.text = m_InputField.text.Insert(m_InputField.caretPosition++, " ");
-		}
+            m_CaretPosition = m_InputField.caretPosition;
+            m_InputField.text = m_InputField.text.Insert(m_CaretPosition++, " ");
+
+            UpdateCaratPosition(m_CaretPosition);
+        }
 
 		/// <summary>
 		/// Insert a tab character.
