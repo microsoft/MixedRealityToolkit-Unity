@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.VR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Examples.SpatialMappingComponent
 {
@@ -11,6 +14,7 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
     /// </summary>
     public class DropCube : MonoBehaviour
     {
+#if UNITY_EDITOR || UNITY_WSA
         GestureRecognizer recognizer;
 
         private void Start()
@@ -33,5 +37,6 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
             cube.transform.position = Camera.main.transform.position + Camera.main.transform.forward; // Start to drop it in front of the camera
             cube.AddComponent<Rigidbody>(); // Apply physics
         }
+#endif
     }
 }
