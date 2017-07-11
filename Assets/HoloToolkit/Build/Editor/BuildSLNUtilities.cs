@@ -255,7 +255,7 @@ namespace HoloToolkit.Unity
 
                     buildInfo.WSASdk = (WSASDK)Enum.Parse(typeof(WSASDK), wsaSdkArg);
                 }
-                else if (string.Equals(arguments[i], "-usaUwpSdk", StringComparison.InvariantCultureIgnoreCase))
+                else if (string.Equals(arguments[i], "-wsaUwpSdk", StringComparison.InvariantCultureIgnoreCase))
                 {
                     buildInfo.WSAUwpSdk = arguments[++i];
                 }
