@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 namespace HoloToolkit.UI.Keyboard
 {
-	public class SymbolDisableHighlight : MonoBehaviour
-	{
+    public class SymbolDisableHighlight : MonoBehaviour
+    {
         /// <summary>
         /// The text field to update.
         /// </summary>
@@ -36,11 +36,11 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private Button m_Button;
 
-		/// <summary>
-		/// Standard Unity start.
-		/// </summary>
-		private void Start()
-		{
+        /// <summary>
+        /// Standard Unity start.
+        /// </summary>
+        private void Start()
+        {
             if (m_TextField != null)
             {
 	            m_StartingColor = m_TextField.color;
@@ -54,15 +54,15 @@ namespace HoloToolkit.UI.Keyboard
             m_Button = GetComponentInParent<Button>();
 
             UpdateState();
-		}
+        }
 
-		/// <summary>
-		/// Standard Unity update.
-		/// </summary>
-		private void Update()
-		{
+        /// <summary>
+        /// Standard Unity update.
+        /// </summary>
+        private void Update()
+        {
             UpdateState();
-		}
+        }
 
         /// <summary>
         /// Updates the visual state of the text based on the buttons state.
