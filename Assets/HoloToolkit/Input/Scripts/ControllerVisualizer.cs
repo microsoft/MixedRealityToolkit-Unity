@@ -45,14 +45,14 @@ namespace HoloToolkit.Unity.InputModule
                 if (!controllerDictionary.ContainsKey(eventData.SourceId))
                 {
                     GameObject controller = Instantiate(controllerModel);
-                    GameObject parent = new GameObject();
+                    GameObject parentGameObject = new GameObject();
                     // TODO: Replace this with Controller[Handedness], when possible.
-                    parent.name = "Controller" + Guid.NewGuid().ToString();
+                    parentGameObject.name = "Controller" + Guid.NewGuid().ToString();
 
-                    parent.transform.parent = transform;
-                    controller.transform.parent = parent.transform;
+                    parentGameObject.transform.parent = transform;
+                    controller.transform.parent = parentGameObject.transform;
 
-                    controllerDictionary.Add(eventData.SourceId, parent);
+                    controllerDictionary.Add(eventData.SourceId, parentGameObject);
                 }
             }
         }
