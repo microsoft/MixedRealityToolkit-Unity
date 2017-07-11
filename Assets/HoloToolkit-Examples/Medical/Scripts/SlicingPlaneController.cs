@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
-    public class SlicingPlaneController : MonoBehaviour, INavigationHandler
+    public class SlicingPlaneController : MonoBehaviour, IManipulationHandler
     {
         public float KeyboardMovementSpeed = 1.5f;
         public float GestureMovementSpeed = 1.0f;
@@ -100,12 +101,11 @@ namespace HoloToolkit.Unity
             if (Input.GetKey(KeyCode.RightBracket)) { this.transform.localPosition += positionDeltaZ; }
             if (Input.GetKey(KeyCode.LeftBracket)) { this.transform.localPosition -= positionDeltaZ; }
         }
-
-        public void OnNavigationStarted(NavigationEventData eventData)
+        public void OnManipulationStarted(ManipulationEventData eventData)
         {
         }
 
-        public void OnNavigationUpdated(NavigationEventData eventData)
+        public void OnManipulationUpdated(ManipulationEventData eventData)
         {
             float movementDelta = GestureMovementSpeed * Time.deltaTime;
 
@@ -113,11 +113,11 @@ namespace HoloToolkit.Unity
             this.transform.localPosition += this.transform.localRotation * eventData.CumulativeDelta * movementDelta;
         }
 
-        public void OnNavigationCompleted(NavigationEventData eventData)
+        public void OnManipulationCompleted(ManipulationEventData eventData)
         {
         }
 
-        public void OnNavigationCanceled(NavigationEventData eventData)
+        public void OnManipulationCanceled(ManipulationEventData eventData)
         {
         }
     }

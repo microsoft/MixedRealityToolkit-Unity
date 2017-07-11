@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 246111676}
   - component: {fileID: 246111679}
   - component: {fileID: 246111677}
+  - component: {fileID: 246111678}
   m_Layer: 0
   m_Name: Y
   m_TagString: Untagged
@@ -240,6 +241,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &246111678
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 246111675}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000002, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &246111679
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -271,7 +284,7 @@ Transform:
   m_GameObject: {fileID: 305125703}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1587742382}
   m_Father: {fileID: 512838808}
@@ -474,6 +487,7 @@ GameObject:
   - component: {fileID: 1151015349}
   - component: {fileID: 1151015352}
   - component: {fileID: 1151015350}
+  - component: {fileID: 1151015351}
   m_Layer: 0
   m_Name: X
   m_TagString: Untagged
@@ -528,6 +542,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1151015351
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1151015348}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1151015352
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -967,7 +993,6 @@ GameObject:
   - component: {fileID: 1587742382}
   - component: {fileID: 1587742383}
   - component: {fileID: 1587742384}
-  - component: {fileID: 1587742385}
   m_Layer: 0
   m_Name: Slicing Plane Controller
   m_TagString: Untagged
@@ -1003,7 +1028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KeyboardMovementSpeed: 1.5
-  GestureMovementSpeed: 1
+  GestureMovementSpeed: 0.3
   PlaneX: {fileID: 1151015348}
   PlaneY: {fileID: 246111675}
   PlaneZ: {fileID: 1967623087}
@@ -1023,18 +1048,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Min: {x: -0.5, y: 0.5, z: -0.5}
   Max: {x: 0.5, y: 1.5, z: 0.5}
---- !u!65 &1587742385
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1587742381}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1642723234
 Prefab:
   m_ObjectHideFlags: 0
@@ -1389,6 +1402,7 @@ GameObject:
   - component: {fileID: 1967623088}
   - component: {fileID: 1967623091}
   - component: {fileID: 1967623089}
+  - component: {fileID: 1967623090}
   m_Layer: 0
   m_Name: Z
   m_TagString: Untagged
@@ -1443,6 +1457,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1967623090
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1967623087}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1967623091
 MeshFilter:
   m_ObjectHideFlags: 0
