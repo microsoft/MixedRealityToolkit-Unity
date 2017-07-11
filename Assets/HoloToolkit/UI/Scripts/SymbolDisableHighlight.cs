@@ -24,7 +24,7 @@ namespace HoloToolkit.UI.Keyboard
         /// The color to switch to when the button is disabled.
         /// </summary>
         [SerializeField]
-		private Color m_DisabledColor = Color.grey;
+        private Color m_DisabledColor = Color.grey;
 
 		/// <summary>
 		/// The color the text field starts as.
@@ -54,8 +54,6 @@ namespace HoloToolkit.UI.Keyboard
             m_Button = this.GetComponentInParent<Button>();
 
 			this.UpdateState();
-
-			
 		}
 
 		/// <summary>

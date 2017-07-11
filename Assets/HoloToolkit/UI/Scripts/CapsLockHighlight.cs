@@ -18,15 +18,14 @@ namespace HoloToolkit.UI.Keyboard
 		/// The keyboard to check for caps locks
 		/// </summary>
 		private Keyboard m_Keyboard;
-
-		
+        		
 		/// <summary>
 		/// Unity Start method.
 		/// </summary>
 		private void Start()
 		{
 			m_Keyboard = this.GetComponentInParent<Keyboard>();
-			this.UpdateState();
+			UpdateState();
 		}
 
 		/// <summary>
@@ -34,7 +33,7 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		private void Update()
 		{
-			this.UpdateState();
+			UpdateState();
 		}
 
 		/// <summary>

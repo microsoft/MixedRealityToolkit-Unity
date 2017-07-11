@@ -49,24 +49,29 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public List<RectTransform> Items { get; private set; }
 
-        void Awake()
+        /// <summary>
+        /// Cached rect transform to use for collection
+        /// </summary>
+        private RectTransform m_rectTransform;
+
+        private void Awake()
         {
             Items = new List<RectTransform>();
         }
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             // Verify this is attached to a GameObject with a rect transform
-            RectTransform rectTransform = GetComponent<RectTransform>();
-            if (rectTransform == null)
+            m_rectTransform = GetComponent<RectTransform>();
+
+            if (m_rectTransform == null)
             {
                 Debug.LogError("This component must be attached to a GameObject with a RectTransform component!");
             }
 
             // Collect children items already added (likely added in the Editor)
             CollectItems();
-
             UpdateLayout();
         }
 
@@ -86,19 +91,14 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="item">The UI element to add to the collection.</param>
         public void AddItem(RectTransform item)
         {
-            _AddItem(item);
-
-            UpdateLayout();
-        }
-
-        private void _AddItem(RectTransform item)
-        {
             Items.Add(item);
 
             item.SetParent(transform);
             item.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             item.position = Vector3.zero;
             item.anchoredPosition3D = Vector3.zero;
+
+            UpdateLayout();
         }
 
         /// <summary>
@@ -135,15 +135,14 @@ namespace HoloToolkit.UI.Keyboard
                 RectTransform childRect = childTransform.GetComponent<RectTransform>();
                 if (childRect != null)
                 {
-                    _AddItem(childRect);
+                    AddItem(childRect);
                 }                
             }
         }
 
         protected virtual void UpdateLayout()
         {
-            RectTransform rectTransform = GetComponent<RectTransform>();
-            Rect rect = rectTransform.rect;
+            Rect rect = m_rectTransform.rect;
 
             Vector2 updatedSize = Vector2.zero;
             if (MaxWidth < 0.0f)
@@ -169,6 +168,7 @@ namespace HoloToolkit.UI.Keyboard
             }
 
             Vector2 currentOffset = Vector2.zero;
+            Vector2 anchorVec = Vector2.up;
 
             float columnHeight = 0.0f;
             float maxPanelWidth = 0.0f;
@@ -176,9 +176,9 @@ namespace HoloToolkit.UI.Keyboard
             foreach (RectTransform item in Items)
             {
                 // Ensure the anchors and pivot are set properly for positioning in the UICollection
-                item.anchorMin = new Vector2(0.0f, 1.0f);
-                item.anchorMax = new Vector2(0.0f, 1.0f);
-                item.pivot = new Vector2(0.0f, 1.0f);
+                item.anchorMin = anchorVec;
+                item.anchorMax = anchorVec;
+                item.pivot = anchorVec;
 
                 columnHeight = Mathf.Max(item.rect.height, columnHeight);
 
@@ -209,7 +209,7 @@ namespace HoloToolkit.UI.Keyboard
             // Update the panel size
             float finalWidth = MaxWidth < 0.0f ? rect.width : maxPanelWidth;
             float finalHeight = MaxHeight < 0.0f ? rect.height : columnHeight + currentOffset.y;
-            rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight);
+            m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight);
         }
     }
 }
