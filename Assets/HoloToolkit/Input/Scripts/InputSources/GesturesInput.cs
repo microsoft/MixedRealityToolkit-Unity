@@ -538,8 +538,8 @@ namespace HoloToolkit.Unity.InputModule
                 if (!(sourceData.Position.CurrentReading.Equals(newPosition)))
                 {
                     // TODO: Raising events here may cause reentrancy complexity. Consider delaying all event-raising till
-					//       after all updates are stored. Alternatively, consider switching from polling to responding to
-					//       InteractionManager events.
+                    //       after all updates are stored. Alternatively, consider switching from polling to responding to
+                    //       InteractionManager events.
                     InputManager.Instance.RaiseSourcePositionChanged(this, sourceData.SourceId, newPosition);
                 }
             }
@@ -624,8 +624,6 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
             sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable ? interactionSource.menuPressed : false);
         }
-
-        #endregion
 
         #region Raise GestureRecognizer Events
 
