@@ -173,24 +173,25 @@ namespace HoloToolkit.UI.Keyboard
             float columnHeight = 0.0f;
             float maxPanelWidth = 0.0f;
 
-            foreach (RectTransform item in Items)
+            for (int i = 0; i < Items.Count; i++ )
             {
+
                 // Ensure the anchors and pivot are set properly for positioning in the UICollection
-                item.anchorMin = anchorVec;
-                item.anchorMax = anchorVec;
-                item.pivot = anchorVec;
+                Items[i].anchorMin = anchorVec;
+                Items[i].anchorMax = anchorVec;
+                Items[i].pivot = anchorVec;
 
-                columnHeight = Mathf.Max(item.rect.height, columnHeight);
+                columnHeight = Mathf.Max(Items[i].rect.height, columnHeight);
 
-                if (item.rect.width + currentOffset.x > updatedSize.x)
+                if (Items[i].rect.width + currentOffset.x > updatedSize.x)
                 {
                     // Move to next column
                     currentOffset.y += columnHeight + VerticalSpacing;
                     currentOffset.x = 0.0f;
-                    columnHeight = item.rect.height;
+                    columnHeight = Items[i].rect.height;
 
                     // Check to see if it can fit in the next column
-                    if (item.rect.height + currentOffset.y > updatedSize.y)
+                    if (Items[i].rect.height + currentOffset.y > updatedSize.y)
                     {
                         // Bail out... can't fit any more items!!!
                         break;
@@ -198,10 +199,10 @@ namespace HoloToolkit.UI.Keyboard
                 }
 
                 // Position item
-                item.anchoredPosition = new Vector2(currentOffset.x, -currentOffset.y);
+                Items[i].anchoredPosition = new Vector2(currentOffset.x, -currentOffset.y);
 
                 // Update current offset
-                currentOffset.x += item.rect.width + HorizontalSpacing;
+                currentOffset.x += Items[i].rect.width + HorizontalSpacing;
 
                 maxPanelWidth = Mathf.Max(currentOffset.x - HorizontalSpacing, maxPanelWidth);
             }
