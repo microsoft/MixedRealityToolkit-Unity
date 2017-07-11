@@ -41,19 +41,19 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		private void Start()
 		{
-		    if (m_TextField != null)
-		    {
-			    m_StartingColor = m_TextField.color;
-		    }
+            if (m_TextField != null)
+            {
+	            m_StartingColor = m_TextField.color;
+            }
 
             if (m_ImageField != null)
             {
                 m_StartingColor = m_ImageField.color;
             }
 
-            m_Button = this.GetComponentInParent<Button>();
+            m_Button = GetComponentInParent<Button>();
 
-		    this.UpdateState();
+            UpdateState();
 		}
 
 		/// <summary>
@@ -61,18 +61,18 @@ namespace HoloToolkit.UI.Keyboard
 		/// </summary>
 		private void Update()
 		{
-			this.UpdateState();
+            UpdateState();
 		}
 
-		/// <summary>
-		/// Updates the visual state of the text based on the buttons state.
-		/// </summary>
-		private void UpdateState()
-		{
-			if (m_TextField != null && m_Button != null)
-			{
-				m_TextField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
-			}
+        /// <summary>
+        /// Updates the visual state of the text based on the buttons state.
+        /// </summary>
+        private void UpdateState()
+        {
+            if (m_TextField != null && m_Button != null)
+            {
+	            m_TextField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
+            }
 
             if (m_ImageField != null && m_Button != null)
             {
