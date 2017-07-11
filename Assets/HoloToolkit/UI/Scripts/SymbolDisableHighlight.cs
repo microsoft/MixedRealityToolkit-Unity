@@ -8,11 +8,11 @@ namespace HoloToolkit.UI.Keyboard
 {
 	public class SymbolDisableHighlight : MonoBehaviour
 	{
-		/// <summary>
-		/// The text field to update.
-		/// </summary>
-		[SerializeField]
-		private Text m_TextField;
+        /// <summary>
+        /// The text field to update.
+        /// </summary>
+        [SerializeField]
+        private Text m_TextField;
 
         /// <summary>
         /// The text field to update.
@@ -26,25 +26,25 @@ namespace HoloToolkit.UI.Keyboard
         [SerializeField]
         private Color m_DisabledColor = Color.grey;
 
-		/// <summary>
-		/// The color the text field starts as.
-		/// </summary>
-		private Color m_StartingColor;
+        /// <summary>
+        /// The color the text field starts as.
+        /// </summary>
+        private Color m_StartingColor;
 
-		/// <summary>
-		/// The button to check for disabled/enabled.
-		/// </summary>
-		private Button m_Button;
+        /// <summary>
+        /// The button to check for disabled/enabled.
+        /// </summary>
+        private Button m_Button;
 
 		/// <summary>
 		/// Standard Unity start.
 		/// </summary>
 		private void Start()
 		{
-			if (m_TextField != null)
-			{
-				m_StartingColor = m_TextField.color;
-			}
+		    if (m_TextField != null)
+		    {
+			    m_StartingColor = m_TextField.color;
+		    }
 
             if (m_ImageField != null)
             {
@@ -53,7 +53,7 @@ namespace HoloToolkit.UI.Keyboard
 
             m_Button = this.GetComponentInParent<Button>();
 
-			this.UpdateState();
+		    this.UpdateState();
 		}
 
 		/// <summary>
