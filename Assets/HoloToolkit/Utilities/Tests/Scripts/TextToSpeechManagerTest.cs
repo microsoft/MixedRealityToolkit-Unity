@@ -1,13 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using UnityEngine.VR.WSA.Input;
-using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity;
-using System;
 using HoloToolkit.Unity.InputModule;
+using System;
+using UnityEngine;
+using UnityEngine.XR.WSA.Input;
 
 public class TextToSpeechManagerTest : MonoBehaviour, IInputHandler
 {
@@ -55,7 +53,7 @@ public class TextToSpeechManagerTest : MonoBehaviour, IInputHandler
 
     void IInputHandler.OnInputUp(InputEventData eventData)
     {
-        if (eventData.PressKind == InteractionPressKind.Select)
+        if (eventData.PressType == InteractionSourcePressType.Select)
         {
             GameObject obj = FocusManager.Instance.TryGetFocusedObject(eventData);
 
