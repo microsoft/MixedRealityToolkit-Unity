@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -54,9 +54,9 @@ namespace HoloToolkit.Unity.InputModule
 
             // Register for hand and finger events to know where your hand
             // is being tracked and what state it is in.
-            InteractionManager.SourceLost += InteractionManager_SourceLost;
-            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
-            InteractionManager.SourceReleased += InteractionManager_SourceReleased;
+            InteractionManager.OnSourceLost += InteractionManager_OnSourceLost;
+            InteractionManager.OnSourceUpdated += InteractionManager_OnSourceUpdated;
+            InteractionManager.OnSourceReleased += InteractionManager_OnSourceReleased;
         }
 
         private void ShowHandGuidanceIndicator(InteractionSourceState hand)
@@ -104,14 +104,14 @@ namespace HoloToolkit.Unity.InputModule
             rotation = Quaternion.LookRotation(Camera.main.transform.forward, hand.properties.sourceLossMitigationDirection);
         }
 
-        private void InteractionManager_SourceUpdated(InteractionManager.SourceEventArgs obj)
+        private void InteractionManager_OnSourceUpdated(SourceUpdatedEventArgs obj)
         {
-            if (obj.state.source.sourceKind == InteractionSourceKind.Hand)
+            if (obj.state.source.kind == InteractionSourceKind.Hand)
             {
                 InteractionSourceState hand = obj.state;
 
                 // Only display hand indicators when we are in a holding state, since hands going out of view will affect any active gestures.
-                if (!hand.pressed)
+                if (!hand.anyPressed)
                 {
                     return;
                 }
@@ -139,18 +139,18 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InteractionManager_SourceReleased(InteractionManager.SourceEventArgs obj)
+        private void InteractionManager_OnSourceReleased(SourceReleasedEventArgs obj)
         {
-            if (obj.state.source.sourceKind == InteractionSourceKind.Hand)
+            if (obj.state.source.kind == InteractionSourceKind.Hand)
             {
                 // Stop displaying the guidance indicator when the user releases their finger from the pressed state.
                 RemoveTrackedHand(obj.state);
             }
         }
 
-        private void InteractionManager_SourceLost(InteractionManager.SourceEventArgs obj)
+        private void InteractionManager_OnSourceLost(SourceLostEventArgs obj)
         {
-            if (obj.state.source.sourceKind == InteractionSourceKind.Hand)
+            if (obj.state.source.kind == InteractionSourceKind.Hand)
             {
                 // Stop displaying the guidance indicator when the user's hand leaves the view.
                 RemoveTrackedHand(obj.state);
@@ -170,9 +170,9 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void OnDestroy()
         {
-            InteractionManager.SourceLost -= InteractionManager_SourceLost;
-            InteractionManager.SourceUpdated -= InteractionManager_SourceUpdated;
-            InteractionManager.SourceReleased -= InteractionManager_SourceReleased;
+            InteractionManager.OnSourceLost -= InteractionManager_OnSourceLost;
+            InteractionManager.OnSourceUpdated -= InteractionManager_OnSourceUpdated;
+            InteractionManager.OnSourceReleased -= InteractionManager_OnSourceReleased;
 
             base.OnDestroy();
         }
