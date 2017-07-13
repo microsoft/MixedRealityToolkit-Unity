@@ -212,11 +212,6 @@ namespace HoloToolkit.Sharing
 
         #region Unity Methods
 
-        private void OnEnable()
-        {
-            Application.logMessageReceived += HandleLog;
-        }
-
         protected override void Awake()
         {
             base.Awake();
@@ -232,6 +227,11 @@ namespace HoloToolkit.Sharing
             {
                 Connect(connectOnAwake);
             }
+        }
+
+        private void OnEnable()
+        {
+            Application.logMessageReceived += HandleLog;
         }
 
         private void LateUpdate()
