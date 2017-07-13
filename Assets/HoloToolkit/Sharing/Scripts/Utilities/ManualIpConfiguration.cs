@@ -104,8 +104,7 @@ namespace HoloToolkit.Sharing.Utilities
         private void CheckConnection()
         {
             // SharingStage should be valid at this point, but we may not be connected.
-            if (SharingStage.Instance.Connection != null &&
-                SharingStage.Instance.Connection.IsConnected())
+            if (SharingStage.Instance.IsConnected)
             {
                 OnConnected();
             }
@@ -143,7 +142,7 @@ namespace HoloToolkit.Sharing.Utilities
             }
         }
 
-        public void InputString(string intput)
+        public void InputString(string input)
         {
             timerRunning = false;
             isTryingToConnect = false;
@@ -155,7 +154,7 @@ namespace HoloToolkit.Sharing.Utilities
 
             if (ipAddress.text.Length < 15)
             {
-                ipAddress.text += intput;
+                ipAddress.text += input;
             }
         }
 

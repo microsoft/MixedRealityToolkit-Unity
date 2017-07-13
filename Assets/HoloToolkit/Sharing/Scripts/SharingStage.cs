@@ -150,17 +150,9 @@ namespace HoloToolkit.Sharing
         }
 
         private NetworkConnectionAdapter networkConnectionAdapter;
-        private NetworkConnection networkConnection;
         public NetworkConnection Connection
         {
-            get
-            {
-                if (networkConnection == null && Manager != null)
-                {
-                    networkConnection = Manager.GetServerConnection();
-                }
-                return networkConnection;
-            }
+            get { return Manager != null ? Manager.GetServerConnection() : null; }
         }
 
         /// <summary>
@@ -168,15 +160,7 @@ namespace HoloToolkit.Sharing
         /// </summary>
         public bool IsConnected
         {
-            get
-            {
-                if (Manager != null && Connection != null)
-                {
-                    return Connection.IsConnected();
-                }
-
-                return false;
-            }
+            get { return Manager != null && Connection != null && Connection.IsConnected(); }
         }
 
         protected override void Awake()
@@ -184,8 +168,7 @@ namespace HoloToolkit.Sharing
             base.Awake();
 
             AppInstanceUniqueId = Guid.NewGuid().ToString();
-            logWriter = new ConsoleLogWriter();
-            logWriter.ShowDetailedLogs = ShowDetailedLogs;
+            logWriter = new ConsoleLogWriter { ShowDetailedLogs = ShowDetailedLogs };
 
             if (AutoDiscoverServer)
             {
@@ -195,6 +178,30 @@ namespace HoloToolkit.Sharing
             {
                 Connect();
             }
+        }
+
+        private void OnEnable()
+        {
+            Application.logMessageReceived += HandleLog;
+        }
+
+        private void LateUpdate()
+        {
+            if (isTryingToFindServer)
+            {
+                AutoDiscoverUpdate();
+            }
+
+            if (Manager != null)
+            {
+                // Update the XToolsManager to processes any network messages that have arrived
+                Manager.Update();
+            }
+        }
+
+        private void OnDisable()
+        {
+            Application.logMessageReceived -= HandleLog;
         }
 
         protected override void OnDestroy()
@@ -232,11 +239,10 @@ namespace HoloToolkit.Sharing
                 SessionsTracker = null;
             }
 
-            if (networkConnection != null)
+            if (Connection != null)
             {
-                networkConnection.RemoveListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
-                networkConnection.Dispose();
-                networkConnection = null;
+                Connection.RemoveListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+                Connection.Dispose();
 
                 if (networkConnectionAdapter != null)
                 {
@@ -257,20 +263,6 @@ namespace HoloToolkit.Sharing
             base.OnDestroy();
         }
 
-        private void LateUpdate()
-        {
-            if (isTryingToFindServer)
-            {
-                AutoDiscoverUpdate();
-            }
-
-            if (Manager != null)
-            {
-                // Update the XToolsManager to processes any network messages that have arrived
-                Manager.Update();
-            }
-        }
-
         private void Connect()
         {
             var config = new ClientConfig(ClientRole);
@@ -287,11 +279,10 @@ namespace HoloToolkit.Sharing
             Manager = SharingManager.Create(config);
 
             //set up callbacks so that we know when we've connected successfully
-            networkConnection = Manager.GetServerConnection();
             networkConnectionAdapter = new NetworkConnectionAdapter();
             networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
             networkConnectionAdapter.DisconnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
-            networkConnection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
+            Connection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
 
             SyncStateListener = new SyncStateListener();
             Manager.RegisterSyncListener(SyncStateListener);
@@ -409,16 +400,6 @@ namespace HoloToolkit.Sharing
         public void ConnectToServer()
         {
             Manager.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
-        }
-
-        private void OnEnable()
-        {
-            Application.logMessageReceived += HandleLog;
-        }
-
-        private void OnDisable()
-        {
-            Application.logMessageReceived -= HandleLog;
         }
 
         private void HandleLog(string logString, string stackTrace, LogType type)
