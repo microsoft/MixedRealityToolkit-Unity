@@ -317,8 +317,7 @@ namespace HoloToolkit.Sharing
 
         private void SendConnectedNotification()
         {
-            NetworkConnection serverConnection = Manager.GetServerConnection();
-            if (serverConnection.IsConnected())
+            if (IsConnected)
             {
                 //Send notification that we're connected 
                 if (SharingManagerConnected != null)
@@ -326,16 +325,12 @@ namespace HoloToolkit.Sharing
                     SharingManagerConnected(this, EventArgs.Empty);
                 }
             }
-            else if (!serverConnection.IsConnected())
+            else if (!IsConnected)
             {
                 if (SharingManagerDisconnected != null)
                 {
                     SharingManagerDisconnected(this, EventArgs.Empty);
                 }
-            }
-            else
-            {
-                Log.Error(string.Format("Cannot connect to server {0}:{1}", ServerAddress, ServerPort.ToString()));
             }
         }
 
