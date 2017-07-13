@@ -94,7 +94,7 @@ namespace HoloToolkit.UI.Keyboard
             Items.Add(item);
 
             item.SetParent(transform);
-            item.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            item.transform.localScale = Vector3.one;
             item.position = Vector3.zero;
             item.anchoredPosition3D = Vector3.zero;
 

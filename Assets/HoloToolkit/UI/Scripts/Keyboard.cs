@@ -26,7 +26,11 @@ namespace HoloToolkit.UI.Keyboard
 	///       get the textEntered event.
 	public class Keyboard : Singleton<Keyboard>
 	{
-		public enum LayoutType
+        /// <summary>
+        /// Layout type enum for the type of keyboard layout to use.  
+        /// This is used when spawning to enable the correct keys based on layout type.
+        /// </summary>
+        public enum LayoutType
 		{
 			Alpha,
 			Symbol,
