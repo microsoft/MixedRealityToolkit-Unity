@@ -75,7 +75,7 @@ namespace HoloToolkit.UI.Keyboard
             UpdateLayout();
         }
 
-        void Update()
+        private void Update()
         {
 #if UNITY_EDITOR
             CollectItems();
