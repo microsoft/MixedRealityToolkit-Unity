@@ -4,7 +4,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.VR.WSA;
+#endif
 
 namespace HoloToolkit.Unity.SpatialMapping
 {
@@ -25,6 +28,27 @@ namespace HoloToolkit.Unity.SpatialMapping
     }
 
     /// <summary>
+    /// Spatial Mapping Volume Type
+    /// </summary>
+    public enum ObserverVolumeTypes
+    {
+        /// <summary>
+        /// The observed volume is an axis aligned box.
+        /// </summary>
+        AxisAlignedBox = 0,
+
+        /// <summary>
+        /// The observed volume is an oriented box.
+        /// </summary>
+        OrientedBox = 1,
+
+        /// <summary>
+        /// The observed volume is a sphere.
+        /// </summary>
+        Sphere = 2
+    }
+
+    /// <summary>
     /// The SpatialMappingObserver class encapsulates the SurfaceObserver into an easy to use
     /// object that handles managing the observed surfaces and the rendering of surface geometry.
     /// </summary>
@@ -32,9 +56,6 @@ namespace HoloToolkit.Unity.SpatialMapping
     {
         [Tooltip("The number of triangles to calculate per cubic meter.")]
         public float TrianglesPerCubicMeter = 500f;
-
-        [Tooltip("The extents of the observation volume.")]
-        public Vector3 Extents = Vector3.one * 10.0f;
 
         [Tooltip("How long to wait (in sec) between Spatial Mapping updates.")]
         public float TimeBetweenUpdates = 3.5f;
@@ -45,6 +66,28 @@ namespace HoloToolkit.Unity.SpatialMapping
         public ObserverStates ObserverState { get; private set; }
 
         /// <summary>
+        /// Indicates the current type of the observed volume
+        /// </summary>
+        [SerializeField][Tooltip("The shape of the observation volume.")]
+        private ObserverVolumeTypes observerVolumeType = ObserverVolumeTypes.AxisAlignedBox;
+        public ObserverVolumeTypes ObserverVolumeType
+        {
+            get
+            {
+                return observerVolumeType;
+            }
+            set
+            {
+                if(observerVolumeType != value)
+                {
+                    observerVolumeType = value;
+                    SwitchObservedVolume();
+                }
+            }
+        }
+
+#if UNITY_EDITOR || UNITY_WSA
+        /// <summary>
         /// Our Surface Observer object for generating/updating Spatial Mapping data.
         /// </summary>
         private SurfaceObserver observer;
@@ -53,6 +96,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// A queue of surfaces that need their meshes created (or updated).
         /// </summary>
         private readonly Queue<SurfaceId> surfaceWorkQueue = new Queue<SurfaceId>();
+#endif
 
         /// <summary>
         /// To prevent too many meshes from being generated at the same time, we will
@@ -73,6 +117,70 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private float updateTime;
 
+        [SerializeField][Tooltip("The extents of the observation volume.")]
+        private Vector3 extents = Vector3.one * 10.0f;
+        public Vector3 Extents
+        {
+            get
+            {
+                return extents;
+            }
+            set
+            {
+                if(extents != value)
+                {
+                    extents = value;
+                    SwitchObservedVolume();
+                }
+            }
+        }
+
+        /// <summary>
+        /// The origin of the observation volume.
+        /// </summary>
+        [SerializeField][Tooltip("The origin of the observation volume.")]
+        private Vector3 origin = Vector3.zero;
+        public Vector3 Origin
+        {
+            get
+            {
+                return origin;
+            }
+            set
+            {
+                if(origin != value)
+                {
+                    origin = value;
+                    SwitchObservedVolume();
+                }
+            }
+        }
+
+        /// <summary>
+        /// The direction of the observed volume, if an oriented box is choosen.
+        /// </summary>
+        [SerializeField][Tooltip("The direction of the observation volume.")]
+        private Quaternion orientation = Quaternion.identity;
+        public Quaternion Orientation
+        {
+            get
+            {
+                return orientation;
+            }
+            set
+            {
+                if(orientation != value)
+                {
+                    orientation = value;
+                    // Only needs to be changed if the corresponding mode is active.
+                    if(ObserverVolumeType == ObserverVolumeTypes.OrientedBox)
+                    {
+                        SwitchObservedVolume();
+                    }
+                }
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -80,6 +188,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             ObserverState = ObserverStates.Stopped;
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// Called once per frame.
         /// </summary>
@@ -97,7 +206,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
                     SurfaceObject newSurface;
                     WorldAnchor worldAnchor;
-                    
+
                     if (spareSurfaceObject == null)
                     {
                         newSurface = CreateSurfaceObject(
@@ -157,16 +266,18 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+#endif
 
         /// <summary>
         /// Starts the Surface Observer.
         /// </summary>
         public void StartObserving()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (observer == null)
             {
                 observer = new SurfaceObserver();
-                observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
+                SwitchObservedVolume();
             }
 
             if (ObserverState != ObserverStates.Running)
@@ -177,6 +288,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 // We want the first update immediately.
                 updateTime = 0;
             }
+#endif
         }
 
         /// <summary>
@@ -185,6 +297,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <remarks>Sets the Surface Observer state to ObserverStates.Stopped.</remarks>
         public void StopObserving()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (ObserverState == ObserverStates.Running)
             {
                 Debug.Log("Stopping the observer.");
@@ -193,6 +306,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 surfaceWorkQueue.Clear();
                 updateTime = 0;
             }
+#endif
         }
 
         /// <summary>
@@ -200,6 +314,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public void CleanupObserver()
         {
+#if UNITY_EDITOR || UNITY_WSA
             StopObserving();
 
             if (observer != null)
@@ -221,24 +336,58 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
 
             Cleanup();
+#endif
         }
 
         /// <summary>
         /// Can be called to override the default origin for the observed volume.  Can only be called while observer has been started.
+        /// Kept for compatibility with Examples/SpatialUnderstanding
         /// </summary>
         public bool SetObserverOrigin(Vector3 origin)
         {
             bool originUpdated = false;
 
+#if UNITY_EDITOR || UNITY_WSA
             if (observer != null)
             {
-                observer.SetVolumeAsAxisAlignedBox(origin, Extents);
+                Origin = origin;
                 originUpdated = true;
             }
+#endif
 
             return originUpdated;
         }
 
+        /// <summary>
+        /// Change the observed volume according to ObserverVolumeType.
+        /// </summary>
+        private void SwitchObservedVolume()
+        {
+#if UNITY_EDITOR || UNITY_WSA
+            if (observer == null)
+            {
+              return;
+            }
+
+            switch (observerVolumeType)
+            {
+                case ObserverVolumeTypes.AxisAlignedBox:
+                    observer.SetVolumeAsAxisAlignedBox(origin, extents);
+                    break;
+                case ObserverVolumeTypes.OrientedBox:
+                    observer.SetVolumeAsOrientedBox(origin, extents, orientation);
+                    break;
+                case ObserverVolumeTypes.Sphere:
+                    observer.SetVolumeAsSphere(origin, extents.magnitude); //workaround
+                    break;
+                default:
+                    observer.SetVolumeAsAxisAlignedBox(origin, extents);
+                    break;
+            }
+#endif
+        }
+
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// Handles the SurfaceObserver's OnDataReady event.
         /// </summary>
@@ -336,6 +485,14 @@ namespace HoloToolkit.Unity.SpatialMapping
                     break;
             }
         }
+        private bool IsMatchingSurface(SurfaceObject surfaceObject, SurfaceData surfaceData)
+        {
+            return (surfaceObject.ID == surfaceData.id.handle)
+                && (surfaceObject.Filter == surfaceData.outputMesh)
+                && (surfaceObject.Collider == surfaceData.outputCollider)
+                ;
+        }
+#endif
 
         /// <summary>
         /// Called when the GameObject is unloaded.
@@ -360,14 +517,6 @@ namespace HoloToolkit.Unity.SpatialMapping
             {
                 CleanUpSurface(availableSurface);
             }
-        }
-
-        private bool IsMatchingSurface(SurfaceObject surfaceObject, SurfaceData surfaceData)
-        {
-            return (surfaceObject.ID == surfaceData.id.handle)
-                && (surfaceObject.Filter == surfaceData.outputMesh)
-                && (surfaceObject.Collider == surfaceData.outputCollider)
-                ;
         }
     }
 }

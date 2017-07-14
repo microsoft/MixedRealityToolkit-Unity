@@ -112,7 +112,7 @@ Install or run the server instance.
 - Make sure all devices are connected to the same Wireless Local Area Network.
 - Ensure all firewall settings are correct.  Windows firewall gives you options to enable/disable by network type (private, public, home), make sure you're enabling the firewall for your connection's type.
 
-####Invalid Schema Version
+#### Invalid Schema Version
 
 ```
 SharingService [..\..\Source\Common\Private\SessionListHandshakeLogic.cpp (67)]: 
@@ -292,7 +292,7 @@ Collection of sharing sync settings, used by the HoloToolkit Sharing sync system
 #### SyncStateListener.cs
 C# wrapper for the Sharing SyncListener, making changes available through the Action class.
 
-### [Test Prefabs](Tests/Prefabs)
+### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Prefabs)
 ---
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
@@ -303,7 +303,7 @@ Simple Cube prefab with a Transform, Mesh Filter, Box Collider, Mesh Renderer, a
 A simple Sphere prefab with a Transform, Mesh Filter, Sphere Collider, and Mesh Renderer components.
 Purposefully missing Default Sync Model Accessor component for SharingSpawnTest.
 
-### [Test Scripts](Tests/Scripts)
+### [Test Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Scripts)
 ---
 Test Scripts.
 
@@ -334,7 +334,7 @@ Class that demonstrates a custom class using sync model attributes.
 #### UserNotifications.cs
 Used to demonstrate how to get notifications when users leave and enter room.
 
-### [Tests](Tests/Scenes)
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Scenes)
 ---
 Tests related to the sharing features. To use the each scene:
 
