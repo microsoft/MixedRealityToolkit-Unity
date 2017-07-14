@@ -4,7 +4,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Unity.SpatialMapping
 {
@@ -24,10 +27,12 @@ namespace HoloToolkit.Unity.SpatialMapping
         private RemoteMeshTarget remoteMeshTarget;
 #endif
 
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// Used for voice commands.
         /// </summary>
         private KeywordRecognizer keywordRecognizer;
+#endif
 
         /// <summary>
         /// Collection of supported keywords and their associated actions.
@@ -41,12 +46,13 @@ namespace HoloToolkit.Unity.SpatialMapping
             keywordCollection = new Dictionary<string, System.Action>();
             keywordCollection.Add(SendMeshesKeyword, () => SendMeshes());
 
+#if UNITY_EDITOR || UNITY_WSA
             // Tell the KeywordRecognizer about our keywords.
             keywordRecognizer = new KeywordRecognizer(keywordCollection.Keys.ToArray());
-
             // Register a callback for the KeywordRecognizer and start recognizing.
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
             keywordRecognizer.Start();
+#endif
 
 #if UNITY_EDITOR || UNITY_STANDALONE
             remoteMeshTarget = GetComponent<RemoteMeshTarget>();
@@ -71,6 +77,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 #endif
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// Called by keywordRecognizer when a phrase we registered for is heard.
         /// </summary>
@@ -84,7 +91,8 @@ namespace HoloToolkit.Unity.SpatialMapping
                 keywordAction.Invoke();
             }
         }
-
+#endif
+        
         /// <summary>
         /// Sends the spatial mapping surfaces from the HoloLens to a remote system running the Unity editor.
         /// </summary>
