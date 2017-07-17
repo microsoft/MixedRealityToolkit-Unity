@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+namespace HoloToolkit.Examples
 {
-    public void LoadNextScene()
+    public class LevelManager : MonoBehaviour
     {
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (sceneIndex >= SceneManager.sceneCountInBuildSettings)
+        public void LoadNextScene()
         {
-            sceneIndex = 0;
-        }
+            int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            if (sceneIndex >= SceneManager.sceneCountInBuildSettings)
+            {
+                sceneIndex = 0;
+            }
 
-        SceneManager.LoadScene(sceneIndex);
+            SceneManager.LoadScene(sceneIndex);
+        }
     }
 }
