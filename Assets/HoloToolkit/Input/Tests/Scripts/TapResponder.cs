@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             if (info == SupportedInputInfo.Position)
             {
                 Vector3 position;
-                if (eventData.InputSource.TryGetPosition(eventData.SourceId, out position))
+                if (eventData.InputSource.TryGetGripPosition(eventData.SourceId, out position))
                 {
                     controller.transform.localPosition = position;
                     controller.SetActive(true);
@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnSourceDetected(SourceStateEventData eventData)
         {
             Vector3 position;
-            if (eventData.InputSource.TryGetPosition(eventData.SourceId, out position))
+            if (eventData.InputSource.TryGetGripPosition(eventData.SourceId, out position))
             {
                 controller.transform.localPosition = position;
                 controller.SetActive(true);

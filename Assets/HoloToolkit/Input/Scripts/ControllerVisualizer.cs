@@ -77,7 +77,7 @@ namespace HoloToolkit.Unity.InputModule
             GameObject controller;
             if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                controller.transform.localRotation = eventData.Rotation;
+                controller.transform.localRotation = eventData.GripRotation;
             }
         }
 
@@ -86,7 +86,7 @@ namespace HoloToolkit.Unity.InputModule
             GameObject controller;
             if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                controller.transform.localPosition = eventData.Position;
+                controller.transform.localPosition = eventData.GripPosition;
             }
         }
     }

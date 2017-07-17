@@ -542,6 +542,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -557,6 +558,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -579,6 +581,7 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1258163383466032}
   m_Enabled: 1
+  m_ExtensionPropertyValues: []
 --- !u!92 &92112836195471388
 Behaviour:
   m_ObjectHideFlags: 1
@@ -836,7 +839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
-  StageBoundsMaterial: {fileID: 0}
+  StageBoundsMaterial: {fileID: 2100000, guid: 474f0e0481d4aa14e92a5ada98042f3a, type: 2}
   EditorLines:
   - {x: 1, y: 0, z: 1}
   - {x: -1, y: 0, z: 1}

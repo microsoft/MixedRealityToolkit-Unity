@@ -5,7 +5,6 @@ using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
-
     /// <summary>
     /// Starts a session when the user taps the control this script is attached to.
     /// </summary>
@@ -21,7 +20,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         {
             networkDiscovery = NetworkDiscoveryWithAnchors.Instance;
 #if !UNITY_EDITOR
-            if (UnityEngine.VR.WSA.HolographicSettings.IsDisplayOpaque)
+            if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
             {
                 Debug.Log("Only hololens can host for now");
                 Destroy(this.gameObject);
@@ -41,9 +40,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 // We are also allowing the editor to host for testing purposes, but shared anchors
                 // will currently not work in this mode.
 #if !UNITY_EDITOR
-                if (!UnityEngine.VR.WSA.HolographicSettings.IsDisplayOpaque)
+                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
 #else
-            Debug.Log("Unity editor can host, but World Anchors will not be shared");
+                Debug.Log("Unity editor can host, but World Anchors will not be shared");
 #endif
                 {
                     networkDiscovery.StartHosting("DefaultName");

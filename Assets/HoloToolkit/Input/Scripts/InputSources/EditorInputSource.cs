@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool SupportsPosition;
         public bool SupportsRotation;
-        public bool SupportsPointing;
+        public bool SupportsRay;
         public bool SupportsMenuButton;
         public bool SupportsGrasp;
         public bool RaiseEventsBasedOnVisibility;
@@ -94,9 +94,9 @@ namespace HoloToolkit.Unity.InputModule
                 supportedInputInfo |= SupportedInputInfo.Rotation;
             }
 
-            if (SupportsPointing)
+            if (SupportsRay)
             {
-                supportedInputInfo |= SupportedInputInfo.PointingRay;
+                supportedInputInfo |= SupportedInputInfo.Ray;
             }
 
             if (SupportsMenuButton)
@@ -120,7 +120,7 @@ namespace HoloToolkit.Unity.InputModule
             return true;
         }
 
-        public override bool TryGetPosition(uint sourceId, out Vector3 position)
+        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
@@ -134,7 +134,7 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetRotation(uint sourceId, out Quaternion rotation)
+        public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
@@ -148,11 +148,11 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        public override bool TryGetPointerRay(uint sourceId, out Ray pointingRay)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsPointing && (PointingRay != null))
+            if (SupportsRay && (PointingRay != null))
             {
                 pointingRay = (Ray)PointingRay;
                 return true;
@@ -162,33 +162,73 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out double x, out double y)
+        public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        {
+            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+
+            if (SupportsPosition)
+            {
+                position = ControllerPosition;
+                return true;
+            }
+
+            position = Vector3.zero;
+            return false;
+        }
+
+        public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
+        {
+            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+
+            if (SupportsRotation)
+            {
+                rotation = ControllerRotation;
+                return true;
+            }
+
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public override bool TryGetGripRay(uint sourceId, out Ray pointingRay)
+        {
+            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+
+            if (SupportsRay && (PointingRay != null))
+            {
+                pointingRay = (Ray)PointingRay;
+                return true;
+            }
+
+            pointingRay = default(Ray);
+            return false;
+        }
+
+        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
             isPressed = false;
-            x = 0;
-            y = 0;
+            position = Vector2.zero;
             return false;
         }
 
-        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out double x, out double y)
+        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
             isPressed = false;
             isTouched = false;
-            x = 0;
-            y = 0;
+            position = Vector2.zero;
             return false;
         }
 
-        public override bool TryGetTrigger(uint sourceId, out bool isPressed, out double pressedValue)
+        public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
             isPressed = false;
-            pressedValue = 0;
+            pressedAmount = 0;
             return false;
         }
 
@@ -350,7 +390,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            if (SupportsPointing)
+            if (SupportsRay)
             {
                 PointingRay = source.sourcePose.PointerRay;
             }
@@ -381,7 +421,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (buttonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionPressKind.Select);
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressType.Select);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -401,9 +441,9 @@ namespace HoloToolkit.Unity.InputModule
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, controllerId, InteractionPressKind.Select, 1);
+                        InputManager.Instance.RaiseInputClicked(this, controllerId, InteractionSourcePressType.Select, 1);
                     }
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionPressKind.Select);
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressType.Select);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -442,11 +482,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (buttonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionPressKind.Menu);
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressType.Menu);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionPressKind.Menu);
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressType.Menu);
                 }
             }
 
@@ -454,11 +494,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (buttonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionPressKind.Grasp);
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressType.Grasp);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionPressKind.Grasp);
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressType.Grasp);
                 }
             }
         }

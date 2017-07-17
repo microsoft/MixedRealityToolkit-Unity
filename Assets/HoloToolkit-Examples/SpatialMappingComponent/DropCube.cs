@@ -17,16 +17,16 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
         {
             recognizer = new GestureRecognizer();
             recognizer.SetRecognizableGestures(GestureSettings.Tap);
-            recognizer.TappedEvent += Recognizer_TappedEvent;
+            recognizer.OnTappedEvent += Recognizer_OnTappedEvent;
             recognizer.StartCapturingGestures();
         }
 
         private void OnDestroy()
         {
-            recognizer.TappedEvent -= Recognizer_TappedEvent;
+            recognizer.OnTappedEvent -= Recognizer_OnTappedEvent;
         }
 
-        private void Recognizer_TappedEvent(TappedEventArgs obj)
+        private void Recognizer_OnTappedEvent(TappedEventArgs obj)
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube); // Create a cube
             cube.transform.localScale = Vector3.one * 0.3f; // Make the cube smaller

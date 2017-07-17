@@ -3,7 +3,7 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -78,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule
             // TODO: Should this handle Submit from Edit > ProjectSettings > Input ?
             if (Input.GetButtonDown(GamePadButtonA))
             {
-                inputManager.RaiseSourceDown(this, GamePadId, InteractionPressKind.Select);
+                inputManager.RaiseSourceDown(this, GamePadId, InteractionSourcePressType.Select);
                 isAPressed = true;
                 navigationCompleted = false;
                 currentGestureState = GestureState.APressed;
@@ -145,7 +145,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (Input.GetButtonUp(GamePadButtonA))
             {
-                inputManager.RaiseSourceUp(this, GamePadId, InteractionPressKind.Select);
+                inputManager.RaiseSourceUp(this, GamePadId, InteractionSourcePressType.Select);
 
                 switch (currentGestureState)
                 {
@@ -175,7 +175,7 @@ namespace HoloToolkit.Unity.InputModule
                         CancelInvoke("HandleHoldStarted");
                         CancelInvoke("HandleHoldCompleted");
                         Debug.Log("Gamepad: Tap");
-                        inputManager.RaiseInputClicked(this, GamePadId, InteractionPressKind.Select, 1);
+                        inputManager.RaiseInputClicked(this, GamePadId, InteractionSourcePressType.Select, 1);
                         Reset();
                         break;
                 }
@@ -219,21 +219,39 @@ namespace HoloToolkit.Unity.InputModule
             return SupportedInputInfo.None;
         }
 
-        public override bool TryGetRotation(uint sourceId, out Quaternion rotation)
+        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
             rotation = Quaternion.identity;
             return false;
         }
 
-        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        public override bool TryGetPointerRay(uint sourceId, out Ray pointerRay)
         {
-            pointingRay = new Ray(Vector3.zero, Vector3.zero);
+            pointerRay = new Ray(Vector3.zero, Vector3.zero);
             return false;
         }
 
-        public override bool TryGetPosition(uint sourceId, out Vector3 position)
+        public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
             position = Vector3.zero;
+            return false;
+        }
+
+        public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public override bool TryGetGripRay(uint sourceId, out Ray gripRay)
+        {
+            gripRay = new Ray(Vector3.zero, Vector3.zero);
             return false;
         }
 
@@ -243,25 +261,25 @@ namespace HoloToolkit.Unity.InputModule
             return true;
         }
 
-        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out double x, out double y)
+        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
         {
             isPressed = false;
-            x = y = 0.0;
+            position = Vector2.zero;
             return false;
         }
 
-        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out double x, out double y)
+        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
         {
             isPressed = false;
             isTouched = false;
-            x = y = 0.0;
+            position = Vector2.zero;
             return false;
         }
 
-        public override bool TryGetTrigger(uint sourceId, out bool isPressed, out double pressedValue)
+        public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
         {
             isPressed = false;
-            pressedValue = 0.0;
+            pressedAmount = 0.0;
             return false;
         }
 
