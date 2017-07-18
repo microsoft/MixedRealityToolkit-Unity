@@ -42,8 +42,10 @@ namespace HoloToolkit.Sharing.Spawning
         /// </summary>
         private int objectCreationCounter;
 
-        private void Awake()
+        protected override void Start()
         {
+            base.Start();
+
             InitializePrefabs();
         }
 
