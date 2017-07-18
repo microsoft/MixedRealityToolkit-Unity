@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -63,7 +64,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleTeleport();
             HandleGoBackPressed();
             HandleJoystickMovement();
-            HandleBumperRotation();
+            if (InteractionManager.numSourceStates == 0)
+            {
+                HandleBumperRotation();
+            }
         }
 
         private void HandleTeleport()
