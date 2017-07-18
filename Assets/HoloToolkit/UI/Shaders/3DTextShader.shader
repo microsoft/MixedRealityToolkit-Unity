@@ -55,6 +55,7 @@
                     float4 vertex : POSITION;
                     half4 color : COLOR;
                     float2 texcoord : TEXCOORD0;
+                    UNITY_VERTEX_OUTPUT_STEREO
                 };
 
                 struct v2f
@@ -62,6 +63,7 @@
                     float4 vertex : POSITION;
                     half4 color : COLOR;
                     float2 texcoord : TEXCOORD0;
+                    UNITY_VERTEX_OUTPUT_STEREO
                 };
 
                 sampler2D _MainTex;
@@ -70,6 +72,7 @@
 
                 v2f vert (appdata_t v)
                 {
+                    UNITY_SETUP_INSTANCE_ID(v);
                     v2f o;
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
@@ -77,13 +80,14 @@
                     #ifdef UNITY_HALF_TEXEL_OFFSET
                     o.vertex.xy += (_ScreenParams.zw-1.0)*float2(-1,1);
                     #endif
+                    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                     return o;
                 }
 
                 half4 frag (v2f i) : COLOR
                 {
                     half4 col = i.color;
-                    col.a *= tex2D(_MainTex, i.texcoord).a;
+                    col.a *= tex2D(_MainTex, UnityStereoScreenSpaceUVAdjust(i.texcoord, _MainTex_ST)).a;
                     col = col * _Color;
                     clip (col.a - 0.01);
                     return col;
