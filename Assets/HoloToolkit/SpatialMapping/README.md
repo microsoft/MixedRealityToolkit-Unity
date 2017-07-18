@@ -19,7 +19,13 @@ The following prefabs make it easy to quickly access and visualize spatial mappi
 Use with SpatialMapping prefab, it allows you to send meshes from the HoloLens to Unity and save/load the meshes for use later.
 
 #### SpatialMapping.prefab
-Base prefab which allows you to visualize and access spatial mapping data on the HoloLens. It can also save/load room models that were captured from the Windows Device Portal.
+Base prefab which allows you to visualize and access spatial mapping data on the HoloLens.
+
+You can assign surface materials, and tweak their values as well:
+
+![image](https://cloud.githubusercontent.com/assets/13334553/21393202/6b5c0d7e-c761-11e6-829f-ed607f4e5660.png)
+
+To save/load room models that were captured from the Windows Device Portal you will need to attach the Object Surface Observer component.
 
 #### SurfacePlane.prefab
 Helper prefab which should be referenced by the SurfaceMeshesToPlanes component for classifying planes as floor, ceiling, wall, etc during processing.
@@ -38,11 +44,27 @@ Manages interactions between the application and all spatial mapping data source
 
 **PhysicsLayer** The physics layer to use for all spatial mapping mesh data.
 
-**SurfaceMaterial** The material to apply when rendering the spatial mapping mesh data.
-
 **DrawVisualMeshes** Determines if spatial mapping meshes will be rendered.
 
+**SurfaceMaterial** The material to apply when rendering the spatial mapping mesh data.
+
 **CastShadows** Determines if spatial mapping meshes can cast shadows.
+
+**Optional Material Settings for Spatial Mapping Tap**
+
+**Pulse Speed** The speed of the pulse as it flows over the spatial map.
+
+**Pulse Maximum** The maximum extent the pulse will travel before stopping.
+
+**Pulse Color** The main color of the pulse.
+
+**Pulse Width** The width/thickness of the pulse ring.
+
+**Use Wireframe** Toggles the use of the wireframe lines on the spatial map.
+
+**Wireframe Color** The color of the wireframe on the spatial map.
+
+**Wireframe Thickness** The thickness of the wires of the wireframe.
 
 #### SpatialMappingObserver.cs
 Adds and updates spatial mapping data for all surfaces discovered by the SurfaceObserver running on the HoloLens.
@@ -182,7 +204,10 @@ The SpatialProcessing scene tests the two processing scripts available in HoloTo
 If running in the Editor, the ObjectSurfaceObserver will load the SRMesh.obj file set in the SpatialMapping object of the scene. If you don't already have a file, you can capture one from the '3D View' page of the Windows Device Portal.  If running on the HoloLens, real-world surfaces will be scanned. After 15 seconds, the meshes will be converted to planes. If a floor plane is found, the test will remove vertices from surface meshes that fall within the bounds of any active plane.
 
 #### TapToPlace.unity
-This scene is the minimum setup to use the TapToPlace script.  It includes GazeManager, GestureManager, and SpatialMapping prefab.  BasicCursor prefab is included for ease of use. There is a cube in the scene with TapToPlace added on it. Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze. While the cube is in 'placement' mode, the spatial mapping mesh will be visible. When tap is performed again, the cube will be placed on the mesh and the mesh will no longer be visible.
+This scene is the minimum setup to use the TapToPlace script.  It includes InputManager, HoloLensCamera, DefaultCursor, and SpatialMapping prefab. There is a cube in the scene with TapToPlace added on it. Gaze at and tap the cube.  It will move along the spatial mapping mesh based on user's gaze. While the cube is in 'placement' mode, the spatial mapping mesh will be visible. When tap is performed again, the cube will be placed on the mesh and the mesh will no longer be visible.
+
+#### SpatialMappingTap.unity
+This scene is the minimum setup to use the spatial mapping Tap effect.  It includes InputManager, HoloLensCamera, DefaultCursor, and SpatialMapping prefab.  Must be deployed to device to view effect.
 
 ---
 ##### [Go back up to the table of contents.](../../../README.md)

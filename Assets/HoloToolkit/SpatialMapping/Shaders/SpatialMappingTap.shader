@@ -1,19 +1,20 @@
-Shader "Spatial Mapping/Spatial Mappping Tap"
+Shader "HoloToolkit/Spatial Mapping Tap"
 {
 	Properties
 	{
 		// Main knobs
-		_Center ("Center", Vector) = (0, 0, 0, -1) // world space position
-		_Radius ("Radius", Range(0, 10)) = 1 // grows the pulse
+		[HideInInspector]_Center ("Center", Vector) = (0, 0, 0, 1) // world space position
+		[HideInInspector]_Radius ("Radius", Float)  = -1 // grows the pulse.  Should start at the nagative number of _PulseWidth to prevent rendering when inactive.
+		[HideInInspector]_Speed  ("Speed", Range(0.01, 100)) = 1  // The speed that the pulse will travel across the mesh.
 
 		// Pulse knobs
 		_PulseColor ("Pulse Color", Color) = (.145, .447, .922)
-		_PulseWidth ("Pulse Width", Float) = 1
+		[HideInInspector]_PulseWidth ("Pulse Width", Float) = 1
 
 		// Wireframe knobs
 		[MaterialToggle] _UseWireframe ("Use Wireframe", Int) = 1
 		_WireframeColor ("Wireframe Color", Color) = (.5, .5, .5)
-		_WireframeFill ("Wireframe Fill", Range(0, 1)) = .1
+		_WireframeFill  ("Wireframe Fill", Range(0, 1)) = .1
 	}
 	
 	SubShader
@@ -54,10 +55,12 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 			{
 				half4 viewPos : SV_POSITION;
 				half  pulse : COLOR;
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			v2g vert(appdata_base v)
 			{
+				UNITY_SETUP_INSTANCE_ID(v);
 				v2g o;
 
 				o.viewPos = UnityObjectToClipPos(v.vertex);
@@ -68,6 +71,7 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 
 				o.pulse = pulse;
 
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				return o;
 			}
 
@@ -76,6 +80,7 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 				float4 viewPos : SV_POSITION;
 				half3  bary    : COLOR;
 				half   pulse   : COLOR1;
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			[maxvertexcount(3)]
@@ -96,6 +101,7 @@ Shader "Spatial Mapping/Spatial Mappping Tap"
 					o.viewPos = i[idx].viewPos;
 					o.bary = barys[idx];
 					o.pulse = i[idx].pulse;
+					UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(i[idx], o)
 					triStream.Append(o);
 				}
 			}

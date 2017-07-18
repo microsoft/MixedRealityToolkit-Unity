@@ -105,15 +105,18 @@ Material:
       second: 0.02
     - first:
         name: _PulseWidth
-      second: 0.99
+      second: 0.5
     - first:
         name: _Radius
-      second: 4.55
+      second: -0.5
     - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
         name: _SpecularHighlights
+      second: 1
+    - first:
+        name: _Speed
       second: 1
     - first:
         name: _SrcBlend
@@ -126,7 +129,7 @@ Material:
       second: 1
     - first:
         name: _WireframeFill
-      second: 0.13
+      second: 0
     - first:
         name: _WireframeThick
       second: 0
@@ -136,7 +139,7 @@ Material:
     m_Colors:
     - first:
         name: _Center
-      second: {r: 0, g: 0, b: 0, a: -1}
+      second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}

@@ -17,34 +17,9 @@ namespace HoloToolkit.Unity.SpatialMapping
     [RequireComponent(typeof(SpatialMappingObserver))]
     public partial class SpatialMappingManager : Singleton<SpatialMappingManager>
     {
-        [Tooltip("The physics layer for spatial mapping objects to be set to.")]
-        public int PhysicsLayer = 31;
-
-        [Tooltip("The material to use for rendering spatial mapping data.")]
-        [SerializeField]
-        private Material surfaceMaterial;
-
-        [Tooltip("Determines if the surface observer should be automatically started.")]
-        [SerializeField]
-        private bool autoStartObserver = true;
-
-        [Tooltip("Determines if spatial mapping data will be rendered.")]
-        [SerializeField]
-        private bool drawVisualMeshes = false;
-
-        [Tooltip("Determines if spatial mapping data will cast shadows.")]
-        [SerializeField]
-        private bool castShadows = false;
-
-        /// <summary>
-        /// Used for gathering real-time Spatial Mapping data on the HoloLens.
-        /// </summary>
-        private SpatialMappingObserver surfaceObserver;
-
         /// <summary>
         /// Time when StartObserver() was called.
         /// </summary>
-        [HideInInspector]
         public float StartTime { get; private set; }
 
         /// <summary>
@@ -85,24 +60,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public event EventHandler<PropertyChangedEventArgsEx<SpatialMappingSource>> SourceChanged;
 
-        // Called when the GameObject is first created.
-        protected override void Awake()
-        {
-            base.Awake();
-
-            surfaceObserver = gameObject.GetComponent<SpatialMappingObserver>();
-            Source = surfaceObserver;
-        }
-
-        // Use for initialization.
-        private void Start()
-        {
-            if (autoStartObserver)
-            {
-                StartObserver();
-            }
-        }
-
         /// <summary>
         /// Returns the layer as a bit mask.
         /// </summary>
@@ -116,10 +73,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public Material SurfaceMaterial
         {
-            get
-            {
-                return surfaceMaterial;
-            }
+            get { return surfaceMaterial; }
             set
             {
                 if (value != surfaceMaterial)
@@ -129,16 +83,15 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        [SerializeField]
+        private Material surfaceMaterial;
 
         /// <summary>
         /// Specifies whether or not the SpatialMapping meshes are to be rendered.
         /// </summary>
         public bool DrawVisualMeshes
         {
-            get
-            {
-                return drawVisualMeshes;
-            }
+            get { return drawVisualMeshes; }
             set
             {
                 if (value != drawVisualMeshes)
@@ -148,16 +101,15 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        [SerializeField]
+        private bool drawVisualMeshes;
 
         /// <summary>
         /// Specifies whether or not the SpatialMapping meshes can cast shadows.
         /// </summary>
         public bool CastShadows
         {
-            get
-            {
-                return castShadows;
-            }
+            get { return castShadows; }
             set
             {
                 if (value != castShadows)
@@ -167,6 +119,53 @@ namespace HoloToolkit.Unity.SpatialMapping
                 }
             }
         }
+        [SerializeField]
+        private bool castShadows;
+
+        /// <summary>
+        /// The Physics layer assigned to handle Spatial Mapping.
+        /// </summary>
+        public int PhysicsLayer
+        {
+            get { return physicsLayer; }
+        }
+        private int physicsLayer = 31;
+
+        /// <summary>
+        /// Auto Starts the Observer in Start()
+        /// </summary>
+        [SerializeField]
+        public bool AutoStartObserver = true;
+
+        /// <summary>
+        /// The Maximum radius from the tap, that the pulse will expand from.
+        /// </summary>
+        [SerializeField]
+        [Range(0.01f, 100f)]
+        public float PulseMaximum = 10f;
+
+        /// <summary>
+        /// Used for gathering real-time Spatial Mapping data on the HoloLens.
+        /// </summary>
+        private SpatialMappingObserver surfaceObserver;
+
+        // Called when the GameObject is first created.
+        protected override void Awake()
+        {
+            base.Awake();
+
+            surfaceObserver = gameObject.GetComponent<SpatialMappingObserver>();
+            Source = surfaceObserver;
+        }
+
+        // Use for initialization.
+        private void Start()
+        {
+            if (AutoStartObserver)
+            {
+                StartObserver();
+            }
+        }
 
         /// <summary>
         /// Sets the source of surface information.
@@ -174,7 +173,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="mappingSource">The source to switch to. Null means return to the live stream if possible.</param>
         public void SetSpatialMappingSource(SpatialMappingSource mappingSource)
         {
-            Source = (mappingSource ?? surfaceObserver);
+            UpdateRendering(false);
+
+            Source = mappingSource ?? surfaceObserver;
+
+            UpdateRendering(DrawVisualMeshes);
         }
 
         /// <summary>

@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Rendering;
+using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.SpatialMapping
 {
-    public class SpatialMappingSource : MonoBehaviour
+    public class SpatialMappingSource : MonoBehaviour, IInputClickHandler
     {
         /// <summary>
         /// Surface object
@@ -58,6 +59,11 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         protected virtual Material RenderMaterial { get { return SpatialMappingManager.Instance.SurfaceMaterial; } }
 
+        /// <summary>
+        /// Used to pulse the material for a ripple effect.
+        /// </summary>
+        private bool pulse;
+
         private readonly List<SurfaceObject> surfaceObjectsWriteable;
         private readonly ReadOnlyCollection<SurfaceObject> surfaceObjects;
 
@@ -69,7 +75,42 @@ namespace HoloToolkit.Unity.SpatialMapping
 
         protected virtual void Awake()
         {
-            // Nothing.
+            // Initialize our our ripple effect if we're using it.
+            if (SpatialMappingManager.Instance.DrawVisualMeshes && RenderMaterial.HasProperty("_Center"))
+            {
+                RenderMaterial.SetFloat("_Radius", -RenderMaterial.GetFloat("_PulseWidth"));
+                RenderMaterial.SetVector("_Center", Vector3.zero);
+            }
+        }
+
+        protected virtual void LateUpdate()
+        {
+            if (pulse)
+            {
+                float pulseRadius = RenderMaterial.GetFloat("_Radius");
+                float pulseSpeed = RenderMaterial.GetFloat("_Speed");
+                pulseRadius += pulseSpeed * Time.deltaTime;
+                if (pulseRadius >= SpatialMappingManager.Instance.PulseMaximum)
+                {
+                    pulseRadius = -RenderMaterial.GetFloat("_PulseWidth");
+                    pulse = false;
+                }
+                RenderMaterial.SetFloat("_Radius", pulseRadius);
+            }
+        }
+
+        /// <summary>
+        /// Sends Click Position to our material to create our ripple effect.
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            if (SpatialMappingManager.Instance.DrawVisualMeshes && RenderMaterial.HasProperty("_Center"))
+            {
+                RenderMaterial.SetFloat("_Radius", -RenderMaterial.GetFloat("_PulseWidth"));
+                RenderMaterial.SetVector("_Center", GazeManager.Instance.HitPosition);
+                pulse = true;
+            }
         }
 
         /// <summary>
@@ -91,7 +132,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             bool? castShadowsOverride = null
             )
         {
-            SurfaceObject surfaceObject = new SurfaceObject();
+            var surfaceObject = new SurfaceObject();
             surfaceObject.ID = meshID;
 
             surfaceObject.Object = new GameObject(objectName, componentsRequiredForSurfaceMesh);
@@ -293,7 +334,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <returns>A list of filters, each with a mesh containing at least one triangle.</returns>
         public virtual List<MeshFilter> GetMeshFilters()
         {
-            List<MeshFilter> meshFilters = new List<MeshFilter>();
+            var meshFilters = new List<MeshFilter>();
 
             for (int index = 0; index < surfaceObjectsWriteable.Count; index++)
             {
@@ -314,7 +355,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <returns></returns>
         public virtual List<MeshRenderer> GetMeshRenderers()
         {
-            List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+            var meshRenderers = new List<MeshRenderer>();
 
             for (int index = 0; index < surfaceObjectsWriteable.Count; index++)
             {
