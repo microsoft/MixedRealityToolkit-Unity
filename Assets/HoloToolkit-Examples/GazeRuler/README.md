@@ -1,8 +1,8 @@
-#What is GazeRuler
+# What is GazeRuler
 
 GazeRuler is a project which can be used to measure spatial distance and area. It's based on Gaze and Spatial Mapping and users can enjoy it by using voice command and gesture.
 
-#How to use?
+# How to use?
 
 There are two measure modes in this app, including Line Mode and Geometry Mode. Line Mode is used to measure the distance between one spatial point and another point, when Geometry Mode is used to measure the area of spatial geometries.
 By default, Line Mode is on.
