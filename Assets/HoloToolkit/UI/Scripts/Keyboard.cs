@@ -328,7 +328,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         /// <param name="startText">The initial text to show in the Keyboard's InputField.</param>
         public void PresentKeyboard(string startText)
-		{
+        {
 			PresentKeyboard();
 			Clear();
 			m_InputField.text = startText;
@@ -579,15 +579,17 @@ namespace HoloToolkit.UI.Keyboard
 
 				case KeyboardKeyFunc.Function.Dictate:
 				{
-					if(m_Dictation != null && m_Dictation.Status == SpeechSystemStatus.Running)
+#if UNITY_WSA
+                    if(m_Dictation != null && m_Dictation.Status == SpeechSystemStatus.Running)
                     {
-                            EndDictation();
+                        EndDictation();
                     }
                     else
                     {
                             BeginDictation();
                     }
                     break;
+#endif
 				}
 
 				case KeyboardKeyFunc.Function.Shift:
@@ -785,9 +787,9 @@ namespace HoloToolkit.UI.Keyboard
 			m_CaretPosition = m_InputField.caretPosition;
 		}
 
-		#endregion
+#endregion
 
-		#region Keyboard Layout Modes
+#region Keyboard Layout Modes
 
 		/// <summary>
 		/// Enable the alpha keyboard.
@@ -880,6 +882,6 @@ namespace HoloToolkit.UI.Keyboard
 			CapsLock(false);
 		}
 
-		#endregion Keyboard Layout Modes
+#endregion Keyboard Layout Modes
 	}
 }
