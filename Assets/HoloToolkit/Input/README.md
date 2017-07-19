@@ -91,7 +91,7 @@ Scripts related to the input features.
 Use this to visualize a 6DoF controller in your application. Add this script to a GameObject as a child of the MainCamera, or use the MixedRealityCameraParentWithControllers prefab. Either specify a shader to use for the [glTF](https://www.khronos.org/gltf) model or add GameObject overrides to represent the controllers.
 
 - **leftControllerOverride** [Optional] A prefab to spawn to represent the left controller. This will automatically move and reorient when the controller is moved.
-- **rightControllerOverride** [Optional] A prefab to spawn to represent the left controller. This will automatically move and reorient when the controller is moved.
+- **rightControllerOverride** [Optional] A prefab to spawn to represent the right controller. This will automatically move and reorient when the controller is moved.
 - **touchpadTouchedOverride** [Optional] A prefab to spawn to represent the user's touch location on the touchpad. This will automatically move when the user moves their touch location. Default is a sphere.
 - **GLTFShader** [Optional, if using overrides] If using the controller's built-in [glTF](https://www.khronos.org/gltf) model, this will be the shader applied to the resulting GameObject.
 
