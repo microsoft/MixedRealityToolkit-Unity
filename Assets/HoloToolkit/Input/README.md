@@ -76,17 +76,32 @@ You can either use the defaults that have been set or customize them to match yo
 2. Near clip plane is set to 0.3 which is typical for VR applications.
 3. Quality Settings to be Fantastic as it uses the PC GPU to render content.
 
-#### HoloToolkitCameraParent.prefab
+#### MixedRealityCameraParent.prefab
 This prefab is used when you want to enable teleporting on mixed reality enabled occluded devices.
+In order to prevent the MainCamera position from being overwritten in the next update we use a parent GameObject.
+
+#### MixedRealityCameraParentWithControllers.prefab
+This prefab is used when you want to enable teleporting on mixed reality enabled occluded devices, as well as motion controller visualization.
 In order to prevent the MainCamera position from being overwritten in the next update we use a parent GameObject.
 
 ### [Scripts](Scripts)
 Scripts related to the input features.
 
 ##### ControllerVisualizer.cs
-Use this to visualize a 6DoF controller in your application. Add this script to a GameObject at the root of your scene and add a model prefab to be used to represent the controller.
+Use this to visualize a 6DoF controller in your application. Add this script to a GameObject as a child of the MainCamera, or use the MixedRealityCameraParentWithControllers prefab. Either specify a shader to use for the [glTF](https://www.khronos.org/gltf) model or add GameObject overrides to represent the controllers.
 
-- **controllerModel** A prefab to spawn to represent the controllers. This will automatically move and reorient when the controller is moved.
+- **leftControllerOverride** [Optional] A prefab to spawn to represent the left controller. This will automatically move and reorient when the controller is moved.
+- **rightControllerOverride** [Optional] A prefab to spawn to represent the left controller. This will automatically move and reorient when the controller is moved.
+- **touchpadTouchedOverride** [Optional] A prefab to spawn to represent the user's touch location on the touchpad. This will automatically move when the user moves their touch location. Default is a sphere.
+- **GLTFShader** [Optional, if using overrides] If using the controller's built-in [glTF](https://www.khronos.org/gltf) model, this will be the shader applied to the resulting GameObject.
+
+##### ControllerDebug.cs
+This can be used to load a [glTF](https://www.khronos.org/gltf) file in the editor, as well as displaying input and source data from motion controllers on a text panel for debugging purposes on the device.
+- **LoadGLTFFile** A boolean to specify if a glTF file should be loaded from StreamingAssets.
+- **GLTFName** The name of the GLTF file to be loaded from StreamingAssets.
+- **touchpadTouchedOverride** [Optional] A prefab to spawn on the touchpad of the glTF file specified. Default is a sphere.
+- **GLTFShader** [Optional, if not loading a glTF model] If loading a [glTF](https://www.khronos.org/gltf) model, this will be the shader applied to the resulting GameObject.
+- **TextPanel** This is the text display where controller state info will be logged, for on-device debugging purposes.
 
 ##### SetGlobalListener.cs
 Add this to a GameObject to register it as a global listener on the InputManager. This means it will receive events from the InputManager even while not focused.
@@ -420,6 +435,9 @@ This scene shows how to manually control the camera.  The script is on the main 
 
 #### MicrophoneStream.unity
 Example usage of MicStream.cs to select and record beam-formed audio from the hololens. In editor, the script lets you choose if you want to beam-form capture on voice or on the room. When running, press 'Q' to start the stream you selected, 'W' will stop the stream, 'A' starts recording a wav file, and 'S' stops the recording, saves it to your Music library, and prints the full path of the audio clip.
+
+#### MotionControllerTest.unity
+This scene shows how to render motion controllers in your app. It also contains a debug panel to help diagnose the state of a connected controller.
 
 #### SelectedObjectKeywords.unity
 Example on how to send keyword messages to currently selected dynamically instantiated object.
