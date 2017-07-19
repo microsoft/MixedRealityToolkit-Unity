@@ -586,10 +586,10 @@ namespace HoloToolkit.UI.Keyboard
                     }
                     else
                     {
-                            BeginDictation();
+                        BeginDictation();
                     }
-                    break;
 #endif
+                    break;
                 }
 
                 case KeyboardKeyFunc.Function.Shift:
