@@ -18,16 +18,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// <summary>
     /// This script can be used to test motion controller input.
     /// </summary>
-    public class ControllerDebug : MonoBehaviour
+    public class ControllerDebug : ControllerVisualizer
     {
-        [Tooltip("Use this to override the indicator used to show the user's touch location on the touchpad. Default is a sphere.")]
-        [SerializeField]
-        protected GameObject touchpadTouchedOverride;
-
         public bool LoadGLTFFile;
         public string GLTFName;
-        public Shader GLTFShader;
-
         public Text TextPanel;
 
 #if !UNITY_EDITOR && UNITY_WSA
@@ -42,10 +36,18 @@ namespace HoloToolkit.Unity.InputModule.Tests
             {
                 if (File.Exists(Path.Combine(Application.streamingAssetsPath, GLTFName)))
                 {
+                    if (GLTFShader == null)
+                    {
+                        Debug.Log("If using glTF, please specify a shader on " + name + ".");
+                        yield break;
+                    }
+
                     byte[] gltfData = File.ReadAllBytes(Path.Combine(Application.streamingAssetsPath, GLTFName));
 
-                    GameObject controllerModelGO = new GameObject();
-                    controllerModelGO.name = "Controller" + Guid.NewGuid().ToString();
+                    GameObject controllerModelGO = new GameObject()
+                    {
+                        name = "Controller" + Guid.NewGuid().ToString()
+                    };
                     controllerModelGO.transform.SetParent(transform);
                     GLTFComponent gltfScript = controllerModelGO.AddComponent<GLTFComponent>();
                     gltfScript.GLTFStandard = GLTFShader;
@@ -53,7 +55,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     yield return gltfScript.LoadModel();
 
                     ControllerInfo newControllerInfo = controllerModelGO.AddComponent<ControllerInfo>();
-                    newControllerInfo.LoadInfo(controllerModelGO.GetComponentsInChildren<Transform>(), touchpadTouchedOverride, GLTFShader);
+                    newControllerInfo.LoadInfo(controllerModelGO.GetComponentsInChildren<Transform>(), this);
                 }
                 else
                 {

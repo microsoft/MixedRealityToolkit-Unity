@@ -61,10 +61,23 @@ namespace HoloToolkit.Unity.InputModule
         public double lastTouchpadY;
         public double lastSelectPressedValue;
 
-        public void LoadInfo(Transform[] childTransforms, GameObject touchpadTouchedOverride, Shader shader)
+        /// <summary>
+        /// Iterates through the Transform array to find specifically named GameObjects.
+        /// These GameObjects specifiy the animation bounds and the GameObject to modify for button,
+        /// thumbstick, and touchpad animation.
+        /// </summary>
+        /// <param name="childTransforms">The transforms of the glTF model.</param>
+        /// <param name="visualizerScript">The script containing references to any objects to spawn.</param>
+        public void LoadInfo(Transform[] childTransforms, ControllerVisualizer visualizerScript)
         {
             foreach (Transform child in childTransforms)
             {
+                // Animation bounds are named in two pairs:
+                // pressed/unpressed and min/max. There is also a value
+                // transform, which is the transform to modify to
+                // animate the interactions. We also look for the
+                // touch transform, in order to spawn the touchpadTouched
+                // visualizer.
                 switch (child.name.ToLower())
                 {
                     case "pressed":
@@ -110,47 +123,6 @@ namespace HoloToolkit.Unity.InputModule
                                 break;
                             case "touchpad_press":
                                 touchpadUnpressed = child;
-                                break;
-                        }
-                        break;
-                    case "value":
-                        switch (child.parent.name.ToLower())
-                        {
-                            case "home":
-                                home = child.gameObject;
-                                break;
-                            case "menu":
-                                menu = child.gameObject;
-                                break;
-                            case "grasp":
-                                grasp = child.gameObject;
-                                break;
-                            case "select":
-                                select = child.gameObject;
-                                break;
-                            case "thumbstick_press":
-                                thumbstickPress = child.gameObject;
-                                break;
-                            case "thumbstick_x":
-                                thumbstickX = child.gameObject;
-                                break;
-                            case "thumbstick_y":
-                                thumbstickY = child.gameObject;
-                                break;
-                            case "touchpad_press":
-                                touchpadPress = child.gameObject;
-                                break;
-                            case "touchpad_press_x":
-                                touchpadPressX = child.gameObject;
-                                break;
-                            case "touchpad_press_y":
-                                touchpadPressY = child.gameObject;
-                                break;
-                            case "touchpad_touch_x":
-                                touchpadTouchX = child.gameObject;
-                                break;
-                            case "touchpad_touch_y":
-                                touchpadTouchY = child.gameObject;
                                 break;
                         }
                         break;
@@ -200,28 +172,52 @@ namespace HoloToolkit.Unity.InputModule
                                 break;
                         }
                         break;
+                    case "value":
+                        switch (child.parent.name.ToLower())
+                        {
+                            case "home":
+                                home = child.gameObject;
+                                break;
+                            case "menu":
+                                menu = child.gameObject;
+                                break;
+                            case "grasp":
+                                grasp = child.gameObject;
+                                break;
+                            case "select":
+                                select = child.gameObject;
+                                break;
+                            case "thumbstick_press":
+                                thumbstickPress = child.gameObject;
+                                break;
+                            case "thumbstick_x":
+                                thumbstickX = child.gameObject;
+                                break;
+                            case "thumbstick_y":
+                                thumbstickY = child.gameObject;
+                                break;
+                            case "touchpad_press":
+                                touchpadPress = child.gameObject;
+                                break;
+                            case "touchpad_press_x":
+                                touchpadPressX = child.gameObject;
+                                break;
+                            case "touchpad_press_y":
+                                touchpadPressY = child.gameObject;
+                                break;
+                            case "touchpad_touch_x":
+                                touchpadTouchX = child.gameObject;
+                                break;
+                            case "touchpad_touch_y":
+                                touchpadTouchY = child.gameObject;
+                                break;
+                        }
+                        break;
                     case "touch":
-                        GameObject touchVisualizer;
-                        if (touchpadTouchedOverride != null)
-                        {
-                            touchVisualizer = Instantiate(touchpadTouchedOverride);
-                        }
-                        else
-                        {
-                            touchVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                            touchVisualizer.transform.localScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
-                            touchVisualizer.GetComponent<Renderer>().material.shader = shader;
-                        }
-                        Destroy(touchVisualizer.GetComponent<Collider>());
-                        touchVisualizer.transform.parent = child;
-                        touchVisualizer.transform.localPosition = Vector3.zero;
-                        touchVisualizer.transform.localRotation = Quaternion.identity;
-                        touchVisualizer.SetActive(false);
-                        touchpadTouchVisualizer = touchVisualizer;
+                        touchpadTouchVisualizer = visualizerScript.SpawnTouchpadVisualizer(child);
                         break;
                 }
             }
         }
     }
-
 }

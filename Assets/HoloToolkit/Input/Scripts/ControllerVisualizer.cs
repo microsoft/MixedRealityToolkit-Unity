@@ -273,6 +273,12 @@ namespace HoloToolkit.Unity.InputModule
                 }
                 else
                 {
+                    if (GLTFShader == null)
+                    {
+                        Debug.Log("If using glTF, please specify a shader on " + name + ".");
+                        yield break;
+                    }
+
                     // This API returns the appropriate GLTF file according to the motion controller you're currently using, if supported.
                     IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = controller.TryGetRenderableModelAsync();
 
@@ -323,12 +329,33 @@ namespace HoloToolkit.Unity.InputModule
                 controllerModelGO.transform.SetParent(parent.transform);
 
                 ControllerInfo newControllerInfo = parent.AddComponent<ControllerInfo>();
-                newControllerInfo.LoadInfo(controllerModelGO.GetComponentsInChildren<Transform>(), touchpadTouchedOverride, GLTFShader);
+                newControllerInfo.LoadInfo(controllerModelGO.GetComponentsInChildren<Transform>(), this);
 
                 controllerDictionary.Add(source.Id, newControllerInfo);
             }
         }
 #endif
+
+        public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
+        {
+            GameObject touchVisualizer;
+            if (touchpadTouchedOverride != null)
+            {
+                touchVisualizer = Instantiate(touchpadTouchedOverride);
+            }
+            else
+            {
+                touchVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                touchVisualizer.transform.localScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
+                touchVisualizer.GetComponent<Renderer>().material.shader = GLTFShader;
+            }
+            Destroy(touchVisualizer.GetComponent<Collider>());
+            touchVisualizer.transform.parent = parentTransform;
+            touchVisualizer.transform.localPosition = Vector3.zero;
+            touchVisualizer.transform.localRotation = Quaternion.identity;
+            touchVisualizer.SetActive(false);
+            return touchVisualizer;
+        }
 
         public void OnRotationChanged(SourceRotationEventData eventData)
         {

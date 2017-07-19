@@ -663,8 +663,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc9c923d4c149c4d96619e8a630554d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftControllerOverride: {fileID: 0}
+  rightControllerOverride: {fileID: 0}
   touchpadTouchedOverride: {fileID: 0}
+  GLTFShader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
   LoadGLTFFile: 0
   GLTFName: 
-  GLTFShader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
   TextPanel: {fileID: 1176831541}
