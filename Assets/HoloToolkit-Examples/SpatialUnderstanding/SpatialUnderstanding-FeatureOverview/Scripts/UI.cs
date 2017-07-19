@@ -9,10 +9,6 @@ using UnityEngine.UI;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 
-#if UNITY_EDITOR || UNITY_WSA
-using UnityEngine.VR.WSA.Input;
-#endif
-
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
     public class UI : LineDrawer
@@ -63,9 +59,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Events
             SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
-#if UNITY_EDITOR || UNITY_WSA
-            InteractionManager.SourcePressed += OnAirTap;
-#endif
         }
 
         protected override void OnDestroy()
@@ -74,9 +67,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
             }
-#if UNITY_EDITOR || UNITY_WSA
-            InteractionManager.SourcePressed -= OnAirTap;
-#endif
 
             base.OnDestroy();
         }
@@ -175,23 +165,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             PlaceMenu(new Vector3(defaultPosition.x, Math.Max(defaultPosition.y, alignment.FloorYValue + 1.5f), defaultPosition.z), (new Vector3(Camera.main.transform.forward.x, 0.0f, Camera.main.transform.forward.z)).normalized, true);
             Debug.Log("PlaceMenu - InFrontOfUser");
         }
-
-#if UNITY_EDITOR || UNITY_WSA
-        private void OnAirTap(InteractionSourceState state)
-        {
-            // Try to intersect one of the buttons
-            Vector3 hitPos, hitNormal;
-            Button hitButton;
-            if (AppState.Instance.AppCursor.RayCastUI(out hitPos, out hitNormal, out hitButton) &&
-                (hitButton != null))
-            {
-                if (hitButton.onClick != null)
-                {
-                    hitButton.onClick.Invoke();
-                }
-            }
-        }
-#endif
 
         private void SetActiveTab(Panels panel)
         {
