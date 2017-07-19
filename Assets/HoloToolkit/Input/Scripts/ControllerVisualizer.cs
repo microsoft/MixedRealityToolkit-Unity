@@ -21,10 +21,10 @@ namespace HoloToolkit.Unity.InputModule
     [RequireComponent(typeof(SetGlobalListener))]
     public class ControllerVisualizer : MonoBehaviour, ISourcePositionHandler, ISourceRotationHandler
     {
-        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction.")]
+        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform left controller model.")]
         [SerializeField]
         protected GameObject leftControllerOverride;
-        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction.")]
+        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform right controller model.")]
         [SerializeField]
         protected GameObject rightControllerOverride;
         [Tooltip("Use this to override the indicator used to show the user's touch location on the touchpad. Default is a sphere.")]
