@@ -2,7 +2,7 @@
 This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
 
-**Current Unity Editor Project Version: Early access 5.6.1f1-MRTP8** **Not accessible broadly yet.**
+**Current Unity Editor Project Version: Early access 5.6.1f1-MRTP9** **Not accessible broadly yet.**
 
 **Branch: HoloToolkit-Unity Creators Update with Windows Mixed Reality support for immersive headsets.**
 
@@ -13,7 +13,7 @@ The HoloToolkit is a collection of scripts and components intended to accelerate
 4. Development PC needs to be on Creators Update SDK and builds as below. Either:
     1. Launch Settings > Updates and Security > Windows Insider Program > Get Insider Preview builds 
     2. Update to the publicly released Creators Update, build 15063.
-5. Early access private build of Unity 5.6.1f1-MRTP8 with Creators Update API support. This build of Unity is currently invite only.
+5. Early access private build of Unity 5.6.1f1-MRTP9 with Creators Update API support. This build of Unity is currently invite-only.
     1. Please read more about [Immersive headset details](https://developer.microsoft.com/en-us/windows/mixed-reality/immersive_headset_details).
 6. [Visual Studio 2017](https://www.visualstudio.com/downloads/).
 
