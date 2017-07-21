@@ -2,21 +2,22 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Runtime.InteropServices;
-using UnityEngine;
 using System.Text;
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
     public class MicStream
     {
-        // This class replaces Unity's Microphone object
-        // This class is made for HoloLens mic stream selection, but should work well on all windows 10 devices
-        // chooses from one of three possible microphone modes on HoloLens
-        // There is an example of how to use this script in HoloToolkit\Input\Tests\Scripts\MicStreamDemo.cs
+        // This class replaces Unity's Microphone object.
+        // This class is made for HoloLens mic stream selection but should work well on all Windows 10 devices.
+        // Choose from one of three possible microphone modes on HoloLens.
+        // There is an example of how to use this script in HoloToolkit-Tests\Input\Scripts\MicStreamDemo.cs.
 
-        // Streams: LOW_QUALITY_VOICE is optimized for speech analysis, COMMUNICATIONS is higher quality voice and is probably preferred
-        //          ROOM_CAPTURE tries to get the sounds of the room more than the voice of the suer
-        // can only be set on initialization
+        // Streams: LOW_QUALITY_VOICE is optimized for speech analysis.
+        //          COMMUNICATIONS is higher quality voice and is probably preferred.
+        //          ROOM_CAPTURE tries to get the sounds of the room more than the voice of the user.
+        // This can only be set on initialization.
         public enum StreamCategory { LOW_QUALITY_VOICE, HIGH_QUALITY_VOICE, ROOM_CAPTURE }
 
         public enum ErrorCodes { ALREADY_RUNNING = -10, NO_AUDIO_DEVICE, NO_INPUT_DEVICE, ALREADY_RECORDING, GRAPH_NOT_EXIST, CHANNEL_COUNT_MISMATCH, FILE_CREATION_PERMISSION_ERROR, NOT_ENOUGH_DATA, NEED_ENABLED_MIC_CAPABILITY };
@@ -162,10 +163,10 @@ namespace HoloToolkit.Unity.InputModule
             switch (returnCode)
             {
                 case (int)ErrorCodes.ALREADY_RECORDING:
-                    Debug.LogError("WARNING: Tried to start recording when you were already doing so. You need to stop your previous recording before you can start again.");
+                    Debug.LogWarning("WARNING: Tried to start recording when you were already doing so. You need to stop your previous recording before you can start again.");
                     return false;
                 case (int)ErrorCodes.ALREADY_RUNNING:
-                    Debug.LogError("WARNING: Tried to initialize microphone more than once");
+                    Debug.LogWarning("WARNING: Tried to initialize microphone more than once");
                     return false;
                 case (int)ErrorCodes.GRAPH_NOT_EXIST:
                     Debug.LogError("ERROR: Tried to do microphone things without a properly initialized microphone. \n Do you have a mic plugged into a functional audio system and did you call MicInitialize() before anything else ??");

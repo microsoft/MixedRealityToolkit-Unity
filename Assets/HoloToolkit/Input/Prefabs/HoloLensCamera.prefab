@@ -16,10 +16,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010085977160}
-  - 114: {fileID: 114000011221680894}
+  - component: {fileID: 4000010085977160}
+  - component: {fileID: 114000011221680894}
   m_Layer: 0
   m_Name: JoystickXZTranslationAxis
   m_TagString: Untagged
@@ -32,10 +32,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011708201582}
-  - 114: {fileID: 114000012656745502}
+  - component: {fileID: 4000011708201582}
+  - component: {fileID: 114000012656745502}
   m_Layer: 0
   m_Name: KeyboardXZTranslationAxis
   m_TagString: Untagged
@@ -48,14 +48,14 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010560871102}
-  - 20: {fileID: 20000013304850028}
-  - 92: {fileID: 92000010221946138}
-  - 124: {fileID: 124000011504821460}
-  - 81: {fileID: 81000013783107718}
-  - 114: {fileID: 114000013543835744}
+  - component: {fileID: 4000010560871102}
+  - component: {fileID: 20000013304850028}
+  - component: {fileID: 92000010221946138}
+  - component: {fileID: 124000011504821460}
+  - component: {fileID: 81000013783107718}
+  - component: {fileID: 114000013543835744}
   m_Layer: 0
   m_Name: HoloLensCamera
   m_TagString: MainCamera
@@ -68,10 +68,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000014150713462}
-  - 114: {fileID: 114000010160007858}
+  - component: {fileID: 4000014150713462}
+  - component: {fileID: 114000010160007858}
   m_Layer: 0
   m_Name: JoystickXYTranslationAxis
   m_TagString: Untagged
@@ -84,10 +84,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010590998566}
-  - 114: {fileID: 114000013933693316}
+  - component: {fileID: 4000010590998566}
+  - component: {fileID: 114000013933693316}
   m_Layer: 0
   m_Name: MouseXYRotationAxis
   m_TagString: Untagged
@@ -100,9 +100,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010510211078}
+  - component: {fileID: 4000010510211078}
   m_Layer: 0
   m_Name: GazeControls
   m_TagString: Untagged
@@ -115,10 +115,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012378391282}
-  - 114: {fileID: 114000013988799740}
+  - component: {fileID: 4000012378391282}
+  - component: {fileID: 114000013988799740}
   m_Layer: 0
   m_Name: MouseXZTranslationAxis
   m_TagString: Untagged
@@ -131,10 +131,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011800569768}
-  - 114: {fileID: 114000012889557236}
+  - component: {fileID: 4000011800569768}
+  - component: {fileID: 114000012889557236}
   m_Layer: 0
   m_Name: KeyboardXYRotationAxis
   m_TagString: Untagged
@@ -147,10 +147,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011251444590}
-  - 114: {fileID: 114000012298662144}
+  - component: {fileID: 4000011251444590}
+  - component: {fileID: 114000012298662144}
   m_Layer: 0
   m_Name: KeyboardXYTranslationAxis
   m_TagString: Untagged
@@ -163,10 +163,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010393938340}
-  - 114: {fileID: 114000011359953050}
+  - component: {fileID: 4000010393938340}
+  - component: {fileID: 114000011359953050}
   m_Layer: 0
   m_Name: MouseXYTranslationAxis
   m_TagString: Untagged
@@ -179,10 +179,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012536474926}
-  - 114: {fileID: 114000014171224568}
+  - component: {fileID: 4000012536474926}
+  - component: {fileID: 114000014171224568}
   m_Layer: 0
   m_Name: KeyboardXZRotationAxis
   m_TagString: Untagged
@@ -195,10 +195,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012610367806}
-  - 114: {fileID: 114000013649663976}
+  - component: {fileID: 4000012610367806}
+  - component: {fileID: 114000013649663976}
   m_Layer: 0
   m_Name: JoystickXYRotationAxis
   m_TagString: Untagged
@@ -215,10 +215,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010393938340
 Transform:
   m_ObjectHideFlags: 1
@@ -228,10 +228,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010510211078
 Transform:
   m_ObjectHideFlags: 1
@@ -241,7 +241,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010590998566}
   - {fileID: 4000010393938340}
@@ -255,6 +254,7 @@ Transform:
   - {fileID: 4000010085977160}
   m_Father: {fileID: 4000010560871102}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010560871102
 Transform:
   m_ObjectHideFlags: 1
@@ -264,11 +264,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010510211078}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010590998566
 Transform:
   m_ObjectHideFlags: 1
@@ -278,10 +278,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011251444590
 Transform:
   m_ObjectHideFlags: 1
@@ -291,10 +291,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011708201582
 Transform:
   m_ObjectHideFlags: 1
@@ -304,10 +304,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011800569768
 Transform:
   m_ObjectHideFlags: 1
@@ -317,10 +317,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012378391282
 Transform:
   m_ObjectHideFlags: 1
@@ -330,10 +330,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012536474926
 Transform:
   m_ObjectHideFlags: 1
@@ -343,10 +343,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012610367806
 Transform:
   m_ObjectHideFlags: 1
@@ -356,10 +356,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000014150713462
 Transform:
   m_ObjectHideFlags: 1
@@ -369,10 +369,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010510211078}
   m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20000013304850028
 Camera:
   m_ObjectHideFlags: 1
@@ -403,6 +403,8 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 0
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -433,6 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 3
+  UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
   InputManagerHorizontalAxisName: LeftTrigger
@@ -452,6 +455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 3
+  UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
   InputManagerHorizontalAxisName: RightStickHorizontal
@@ -471,6 +475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 1
+  UseUnscaledTime: 1
   axisType: 13
   buttonType: 21
   InputManagerHorizontalAxisName: 
@@ -490,6 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 1
+  UseUnscaledTime: 1
   axisType: 3
   buttonType: 21
   InputManagerHorizontalAxisName: 
@@ -509,6 +515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 3
+  UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
   InputManagerHorizontalAxisName: Horizontal
@@ -528,6 +535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 1
+  UseUnscaledTime: 1
   axisType: 6
   buttonType: 21
   InputManagerHorizontalAxisName: 
@@ -571,6 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 3
+  UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
   InputManagerHorizontalAxisName: LeftStickHorizontal
@@ -590,6 +599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 4.5
+  UseUnscaledTime: 1
   axisType: 11
   buttonType: 1
   InputManagerHorizontalAxisName: 
@@ -609,6 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 3
+  UseUnscaledTime: 1
   axisType: 12
   buttonType: 3
   InputManagerHorizontalAxisName: 
@@ -628,6 +639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensitivityScale: 1
+  UseUnscaledTime: 1
   axisType: 7
   buttonType: 21
   InputManagerHorizontalAxisName: 

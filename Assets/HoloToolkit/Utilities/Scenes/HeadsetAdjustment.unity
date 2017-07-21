@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 1952827300}
   - component: {fileID: 1952827299}
   m_Layer: 0
-  m_Name: Scripts
+  m_Name: HeadsetAdjustment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

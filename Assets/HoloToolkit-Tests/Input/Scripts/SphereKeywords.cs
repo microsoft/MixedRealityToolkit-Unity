@@ -9,10 +9,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
     public class SphereKeywords : MonoBehaviour, ISpeechHandler
     {
         private Material cachedMaterial;
+        private Color defaultColor;
 
         private void Awake()
         {
             cachedMaterial = GetComponent<Renderer>().material;
+            defaultColor = cachedMaterial.color;
         }
 
         public void ChangeColor(string color)
@@ -29,6 +31,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     cachedMaterial.SetColor("_Color", Color.green);
                     break;
             }
+        }
+
+        public void ResetColor()
+        {
+            cachedMaterial.SetColor("_Color", defaultColor);
         }
 
         public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)

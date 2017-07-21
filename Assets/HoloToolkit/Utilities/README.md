@@ -14,15 +14,27 @@ A drop in direction indicator that stays in the users view at all times.
 #### HeadsUpDirectionIndicatorPointer.prefab
 A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.
 
-###[Scenes](Scenes)
+### [Scenes](Scenes)
 ---
 
-####HeadsetAdjustment.unity
+#### HeadsetAdjustment.unity
 Helps the user adjust the headset so that he/she gets the full experience in demo scenarios. 
 
 When demoing an app, it is important to ensure that the user has the headset on properly. This scene shows a border at the edge of the user's field of view and instructs him/her to adjust the headset until all four edges are visible. The user (or the demonstrator) can then air-tap or say "I'm ready" to proceed to the actual experience. 
 
 This scene is designed to be the first scene the user sees, once the experience is ready to begin. Once the user is ready, it loads either the next scene in the sequence or a scene specified by the NextSceneName property of the HeadsetAdjustment script.
+
+#### SceneLauncher.unity
+Creates a menu allowing you to jump to any scene in your project.
+
+To run the SceneLauncher:
+
+1) In Unity > File  Build Settings > Scenes in Build, drag in the scene files that you would like to run.
+    *  If you would like to use all scenes in the project, search for t:Scene in the Project tab, select all, and drag all scenes into Scenes in Build.
+2) Make sure that SceneLauncher is the first scene (#0).
+3) Build and run your project. (Or open the SceneLauncher scene and hit Play in the Unity editor.) A grid will be created with a button for each of your scenes.
+4) Air tap a scene to load it.
+5) When finished with a scene, say "Scene Launcher" or press the Backspace key to return the the scene list.
 
 ### [Scripts](Scripts)
 ---
@@ -155,7 +167,7 @@ A MonoBehaviour that interpolates a transform's position, rotation or scale.
 Math Utilities class.
 
 #### NearPlaneFade.cs
-Updates the shader parameters for use in near plade fading.
+Updates the shader parameters for use in near plane fading.
 
 #### PriorityQueue.cs
 Min-heap priority queue. In other words, lower priorities will be removed from the queue first.
