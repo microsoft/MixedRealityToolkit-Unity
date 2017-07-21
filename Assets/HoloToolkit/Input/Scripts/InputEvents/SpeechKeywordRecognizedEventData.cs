@@ -2,9 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using UnityEngine;
 using UnityEngine.EventSystems;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -13,11 +15,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class SpeechKeywordRecognizedEventData : InputEventData
     {
-        /// <summary>
-        /// A measure of correct recognition certainty.
-        /// </summary>
-        public ConfidenceLevel Confidence { get; private set; }
-
         /// <summary>
         /// The time it took for the phrase to be uttered.
         /// </summary>
@@ -29,18 +26,22 @@ namespace HoloToolkit.Unity.InputModule
         public DateTime PhraseStartTime { get; private set; }
 
         /// <summary>
-        /// A semantic meaning of recognized phrase.
-        /// </summary>
-        public SemanticMeaning[] SemanticMeanings { get; private set; }
-
-        /// <summary>
         /// The text that was recognized.
         /// </summary>
         public string RecognizedText { get; private set; }
 
-        public SpeechKeywordRecognizedEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
+        public SpeechKeywordRecognizedEventData(EventSystem eventSystem) : base(eventSystem) { }
+
+#if UNITY_EDITOR || UNITY_WSA
+        /// <summary>
+        /// A measure of correct recognition certainty.
+        /// </summary>
+        public ConfidenceLevel Confidence { get; private set; }
+
+        /// <summary>
+        /// A semantic meaning of recognized phrase.
+        /// </summary>
+        public SemanticMeaning[] SemanticMeanings { get; private set; }
 
         public void Initialize(IInputSource inputSource, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText)
         {
@@ -51,5 +52,6 @@ namespace HoloToolkit.Unity.InputModule
             SemanticMeanings = semanticMeanings;
             RecognizedText = recognizedText;
         }
+#endif
     }
 }

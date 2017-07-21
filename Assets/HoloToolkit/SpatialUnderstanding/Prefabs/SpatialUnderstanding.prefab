@@ -16,12 +16,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012071801678}
-  - 114: {fileID: 114000012099205058}
-  - 114: {fileID: 114000012152922318}
-  - 114: {fileID: 114000013027790266}
+  - component: {fileID: 4000012071801678}
+  - component: {fileID: 114000012099205058}
+  - component: {fileID: 114000012152922318}
+  - component: {fileID: 114000013027790266}
   m_Layer: 0
   m_Name: SpatialUnderstanding
   m_TagString: Untagged
@@ -79,4 +79,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ImportMeshPeriod: 1
-  MeshMaterial: {fileID: 2100000, guid: ddc2ff62e97ce6d41991784c3aa8e233, type: 2}
+  meshMaterial: {fileID: 2100000, guid: ddc2ff62e97ce6d41991784c3aa8e233, type: 2}
+  MaxFrameTime: 5
+  CreateMeshColliders: 1

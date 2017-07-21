@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -94,15 +95,28 @@ namespace HoloToolkit.Examples.SharingWithUNET
                 return;
             }
 
+            StartCoroutine(InitAsServer());
+        }
+
+        private IEnumerator InitAsServer()
+        {
             Debug.Log("Acting as host");
             // StopBroadcast will also 'StopListening'
             StopBroadcast();
+
+            // Work-around when building to the HoloLens with "Compile with .NET Native tool chain".
+            // Need a frame of delay after StopBroadcast() otherwise clients won't connect.
+            yield return null;
 
             // Starting as a 'host' makes us both a client and a server.
             // There are nuances to this in UNet's sync system, so do make sure
             // to test behavior of your networked objects on both a host and a client 
             // device.
             NetworkManager.singleton.StartHost();
+
+            // Work-around when building to the HoloLens with "Compile with .NET Native tool chain".
+            // Need a frame of delay between StartHost() and StartAsServer() otherwise clients won't connect.
+            yield return null;
 
             // Start broadcasting for other clients.
             StartAsServer();
@@ -111,7 +125,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
             // Start creating an anchor.
             UNetAnchorManager.Instance.CreateAnchor();
 #else
-        Debug.LogWarning("This script will need modification to work in the Unity Editor");
+            Debug.LogWarning("This script will need modification to work in the Unity Editor");
 #endif
         }
 
