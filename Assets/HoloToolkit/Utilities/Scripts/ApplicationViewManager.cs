@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
     /// ApplicationViewManager ( For XAML UWP project) can switch app to Plan View, populate an Application View (New Window of UAP), 
     /// then navigate the Window root frame to a page. 
     /// After the page's logic called 'CallbackReturnValue' method, the newly created Application View will be closed, and the system will switch back to your Full3D view.
-    /// The corotine which was waiting the callback will get the return value.
+    /// The coroutine which was waiting the callback will get the return value.
     /// </summary>
     public class ApplicationViewManager : MonoBehaviour
     {
