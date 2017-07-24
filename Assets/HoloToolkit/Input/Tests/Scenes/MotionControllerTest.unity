@@ -353,6 +353,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114178310629464548, guid: 3ea986c6f265e5d4fa6a15ab0ee3a518,
+        type: 2}
+      propertyPath: leftControllerOverride
+      value: 
+      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3ea986c6f265e5d4fa6a15ab0ee3a518, type: 2}
   m_IsPrefabParent: 0
