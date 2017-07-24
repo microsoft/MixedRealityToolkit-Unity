@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Helper functions for file I/O
+    /// </summary>
     public static class FileSystemHelper
     {
         public static void WriteBytesToLocalFile(string filename, byte[] content)
