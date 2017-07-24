@@ -60,6 +60,8 @@ namespace HoloToolkit.Unity.InputModule
         public double lastTouchpadX;
         public double lastTouchpadY;
         public double lastSelectPressedValue;
+        public Vector3 lastPosition;
+        public Quaternion lastRotation;
 
         /// <summary>
         /// Iterates through the Transform array to find specifically named GameObjects.
