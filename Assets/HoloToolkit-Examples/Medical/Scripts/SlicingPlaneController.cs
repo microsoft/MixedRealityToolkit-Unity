@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Controls slicing planes for use in volumetric rendering
+    /// Planes represent maniuplatable viewable regions of the volume
+    /// </summary>
     public class SlicingPlaneController : MonoBehaviour, IManipulationHandler
     {
         public float KeyboardMovementSpeed = 1.5f;
@@ -55,7 +58,7 @@ namespace HoloToolkit.Unity
             Vector4 planeEquation;
 
             var forward = this.transform.forward;
-            var pos = this.transform.position;//new Vector3(0.5f, 0.5f, 0.5f);
+            var pos = this.transform.position;
 
             planeEquation.x = forward.x;
             planeEquation.y = forward.y;

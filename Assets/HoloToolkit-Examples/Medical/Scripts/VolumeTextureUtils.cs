@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Helper functions for dealing with volume data
+    /// </summary>
     public static class VolumeTextureUtils
     {
         public static byte[] Color32ArrayToByteArray(Color32[] vals)

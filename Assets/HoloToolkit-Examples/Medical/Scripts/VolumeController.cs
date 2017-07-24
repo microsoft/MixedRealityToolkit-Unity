@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Configures volume variables in shader
+    /// </summary>
     public class VolumeController : MonoBehaviour
     {
         public VolumeInformation VolumeInfo;

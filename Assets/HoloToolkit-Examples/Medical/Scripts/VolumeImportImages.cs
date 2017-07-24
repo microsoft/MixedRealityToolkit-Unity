@@ -8,6 +8,11 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Processes a folder of "stacked" images representing 2D slices of a 3D volume and 
+    /// creates a volume from them.  Dicom files of all different types can be exported
+    /// with external tools to this format then processed here.
+    /// </summary>
     public static class VolumeImportImages
     {
         //TODO: handle textures to import as actual assets so more file support works

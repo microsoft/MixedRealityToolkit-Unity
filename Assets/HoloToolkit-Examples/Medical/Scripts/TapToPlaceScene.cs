@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Lightweight game object placement
+    /// </summary>
     public class TapToPlaceScene : MonoBehaviour, IInputClickHandler
     {
         public float DistanceFromHead = 1.0f;

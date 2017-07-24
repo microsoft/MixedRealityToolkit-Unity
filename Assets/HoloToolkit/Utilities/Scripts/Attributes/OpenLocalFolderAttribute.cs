@@ -5,5 +5,8 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Attribute which flags a member with desired use of the OpenLocalFolderEdtor
+    /// </summary>
     public class OpenLocalFolderAttribute : PropertyAttribute { }
 }

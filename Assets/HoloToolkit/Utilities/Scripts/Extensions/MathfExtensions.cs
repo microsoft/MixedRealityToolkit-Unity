@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Extension methods and helper functions for various math data
+    /// </summary>
     public static class MathExtensions
     {
         public static int MostSignificantBit(this int x)

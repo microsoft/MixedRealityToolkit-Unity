@@ -7,6 +7,9 @@ using UnityEditor;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Property drawer for selection of a local input folder with the resultant path stored in a string
+    /// </summary>
     [CustomPropertyDrawer(typeof(OpenLocalFolderAttribute))]
     public class OpenLocalFolderEditor : PropertyDrawer
     {

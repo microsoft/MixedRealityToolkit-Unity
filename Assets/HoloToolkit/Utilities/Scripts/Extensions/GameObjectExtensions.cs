@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Extension methods for Unity's GameObject class
+    /// </summary>
     public static class GameObjectExtensions
     {
         public static string GetFullPath(this GameObject go)

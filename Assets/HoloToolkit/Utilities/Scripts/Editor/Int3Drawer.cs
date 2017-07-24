@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Property drawer for in-editor display/editing of Int3 data
+    /// </summary>
     [CustomPropertyDrawer(typeof(Int3))]
     public class Int3Drawer : PropertyDrawer
     {

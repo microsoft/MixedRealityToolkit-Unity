@@ -7,6 +7,9 @@ using UnityEditor;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Property drawer for selection of a local output file with the resultant path stored in a string
+    /// </summary>
     [CustomPropertyDrawer(typeof(SaveLocalFileAttribute))]
     public class SaveLocalFileEditor : PropertyDrawer
     {

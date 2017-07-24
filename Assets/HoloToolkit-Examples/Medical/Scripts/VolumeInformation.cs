@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Holds data about a volume asset
+    /// </summary>
     [CreateAssetMenu]
     public class VolumeInformation : ScriptableObject
     {

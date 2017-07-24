@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Extension methods for Unity's Color32 class
+    /// </summary>
     public static class Color32Extensions
     {
         public static Color PremultiplyAlpha(Color col)

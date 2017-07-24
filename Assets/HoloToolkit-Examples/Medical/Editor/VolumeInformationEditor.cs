@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Editor script for editor configuration of volume files
+    /// Conversion of stacked images to volumes happens here
+    /// </summary>
     [CustomEditor(typeof(VolumeInformation))]
     public class VolumeInformationEditor : Editor
     {

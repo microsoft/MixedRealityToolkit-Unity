@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// 3D integer class - operates similarly to Unity's Vector3D
+    /// </summary>
     [System.Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Int3 : IEquatable<Int3>, IFormattable
