@@ -23,7 +23,7 @@ Utilitiy Scripts.
 Editor Specific Scripts.
 
 ##### AutoConfigureMenu.cs
-Configuration options derived from Microsoft Documentation [Configuring a Unity Project for HoloLens](https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens).
+Configuration options derived from Microsoft Documentation [Configuring a Unity Project for HoloLens](https://developer.microsoft.com/en-us/windows/mixed-reality/unity_development_overview#Configuring_a_Unity_project_for_HoloLens).
 
 ##### AutoConfigureWindow.cs
 Base class for auto configuration build windows.
