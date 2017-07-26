@@ -54,12 +54,10 @@ namespace HoloToolkit.Unity.InputModule
         public CursorStateEnum CursorState { get { return cursorState; } }
         private CursorStateEnum cursorState = CursorStateEnum.None;
 
-#pragma warning disable 0649
         [Tooltip("Set this in the editor to an object with a component that implements IPointerSource to tell this"
             + " cursor which pointer to follow. To set the pointer programmatically, set Pointer directly.")]
         [SerializeField]
-        private GameObject loadPointer;
-#pragma warning restore 0649
+        protected GameObject loadPointer;
 
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
@@ -230,10 +228,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.InputEnabled += OnInputEnabled;
             InputManager.Instance.InputDisabled += OnInputDisabled;
 
-            if (FocusManager.IsInitialized)
-            {
-                FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
-            }
+            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -278,16 +273,10 @@ namespace HoloToolkit.Unity.InputModule
                 // pointer currently registered with FocusManager, we use it.
 
                 Pointer = FocusManager.Instance.TryGetSinglePointer();
-
-                if (Pointer == null)
-                {
-                    Pointer = GazeManager.Instance;
-                }
             }
             else
             {
-                gameObject.AddComponent<FocusManager>();
-                Pointer = FocusManager.Instance.TryGetSinglePointer();
+                // No options available, so we leave Pointer unset. It will need to be set programmatically later.
             }
         }
 

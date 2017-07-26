@@ -16,13 +16,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class InputManager : Singleton<InputManager>
     {
-        /// <summary>
-        /// To tap on a hologram even when not focused on,
-        /// set OverrideFocusedObject to desired game object.
-        /// If it's null, then focused object will be used.
-        /// </summary>
-        public GameObject OverrideFocusedObject { get; set; }
-
         public event Action InputEnabled;
         public event Action InputDisabled;
 
@@ -197,8 +190,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (ShouldSendUnityUiEvents)
             {
-                PointerEventData pointerEventData = FocusManager.Instance.BorrowPointerEventData();
-                ExecuteEvents.ExecuteHierarchy(focusedObject, pointerEventData, ExecuteEvents.pointerEnterHandler);
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                ExecuteEvents.ExecuteHierarchy(focusedObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
             }
         }
 
@@ -212,8 +205,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (ShouldSendUnityUiEvents)
             {
-                PointerEventData pointerEventData = FocusManager.Instance.BorrowPointerEventData();
-                ExecuteEvents.ExecuteHierarchy(defocusedObject, pointerEventData, ExecuteEvents.pointerExitHandler);
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                ExecuteEvents.ExecuteHierarchy(defocusedObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
             }
         }
 
@@ -238,8 +231,9 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
             InitializeEventDatas();
         }
 
@@ -267,7 +261,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             Debug.Assert(!eventData.used);
-            GameObject focusedObject = (OverrideFocusedObject == null) ? FocusManager.Instance.TryGetFocusedObject(eventData) : OverrideFocusedObject;
+            GameObject focusedObject = FocusManager.Instance.TryGetFocusedObject(eventData);
 
             // Send the event to global listeners
             for (int i = 0; i < globalListeners.Count; i++)
@@ -392,9 +386,12 @@ namespace HoloToolkit.Unity.InputModule
             // UI events
             if (ShouldSendUnityUiEvents && (pressKind == InteractionPressKind.Select))
             {
-                PointerEventData pointerEventData = FocusManager.Instance.BorrowPointerEventData();
-                HandleEvent(pointerEventData, ExecuteEvents.pointerUpHandler);
-                HandleEvent(pointerEventData, ExecuteEvents.pointerClickHandler);
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                pointerInputEventData.InputSource = source;
+                pointerInputEventData.SourceId = sourceId;
+
+                HandleEvent(pointerInputEventData, ExecuteEvents.pointerUpHandler);
+                HandleEvent(pointerInputEventData, ExecuteEvents.pointerClickHandler);
             }
         }
 
@@ -416,16 +413,18 @@ namespace HoloToolkit.Unity.InputModule
             // UI events
             if (ShouldSendUnityUiEvents && (pressKind == InteractionPressKind.Select))
             {
-                PointerEventData pointerEventData = FocusManager.Instance.BorrowPointerEventData();
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                pointerInputEventData.InputSource = source;
+                pointerInputEventData.SourceId = sourceId;
 
-                pointerEventData.eligibleForClick = true;
-                pointerEventData.delta = Vector2.zero;
-                pointerEventData.dragging = false;
-                pointerEventData.useDragThreshold = true;
-                pointerEventData.pressPosition = pointerEventData.position;
-                pointerEventData.pointerPressRaycast = pointerEventData.pointerCurrentRaycast;
+                pointerInputEventData.eligibleForClick = true;
+                pointerInputEventData.delta = Vector2.zero;
+                pointerInputEventData.dragging = false;
+                pointerInputEventData.useDragThreshold = true;
+                pointerInputEventData.pressPosition = pointerInputEventData.position;
+                pointerInputEventData.pointerPressRaycast = pointerInputEventData.pointerCurrentRaycast;
 
-                HandleEvent(pointerEventData, ExecuteEvents.pointerDownHandler);
+                HandleEvent(pointerInputEventData, ExecuteEvents.pointerDownHandler);
             }
         }
 

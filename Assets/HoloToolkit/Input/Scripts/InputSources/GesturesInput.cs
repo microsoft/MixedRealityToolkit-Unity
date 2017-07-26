@@ -210,6 +210,12 @@ namespace HoloToolkit.Unity.InputModule
                 StartGestureRecognizer();
             }
 
+            foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
+            {
+                GetOrAddSourceData(iss.source);
+                InputManager.Instance.RaiseSourceDetected(this, iss.source.id);
+            }
+
             InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
 
             InteractionManager.SourceReleased += InteractionManager_SourceReleased;
@@ -217,8 +223,6 @@ namespace HoloToolkit.Unity.InputModule
 
             InteractionManager.SourceLost += InteractionManager_SourceLost;
             InteractionManager.SourceDetected += InteractionManager_SourceDetected;
-
-            // TODO: robertes: Should we use InteractionManager.GetCurrentReading() to get all sources currently available and synthesize a SourceDetected?
         }
 
         protected override void OnDisableAfterStart()
@@ -233,7 +237,12 @@ namespace HoloToolkit.Unity.InputModule
             InteractionManager.SourceLost -= InteractionManager_SourceLost;
             InteractionManager.SourceDetected -= InteractionManager_SourceDetected;
 
-            // TODO: robertes: Should we synthesize SourceLost for all outstanding sources and then clear our list?
+            foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
+            {
+                // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
+                sourceIdToData.Remove(iss.source.id);
+                InputManager.Instance.RaiseSourceLost(this, iss.source.id);
+            }
 
             base.OnDisableAfterStart();
         }
@@ -452,6 +461,8 @@ namespace HoloToolkit.Unity.InputModule
             return (capability.IsSupported ? flagIfSupported : SupportedInputInfo.None);
         }
 
+        #endregion
+
         private void InteractionManager_SourceUpdated(InteractionManager.SourceEventArgs args)
         {
             UpdateSourceState(args.state, GetOrAddSourceData(args.state.source));
@@ -526,6 +537,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (!(sourceData.Position.CurrentReading.Equals(newPosition)))
                 {
+                    // TODO: Raising events here may cause reentrancy complexity. Consider delaying all event-raising till
+                    //       after all updates are stored. Alternatively, consider switching from polling to responding to
+                    //       InteractionManager events.
                     InputManager.Instance.RaiseSourcePositionChanged(this, sourceData.SourceId, newPosition);
                 }
             }
@@ -544,10 +558,8 @@ namespace HoloToolkit.Unity.InputModule
             }
             sourceData.Rotation.CurrentReading = newRotation;
 
-            Ray newPointerRay;
             sourceData.PointingRay.IsSupported = interactionSource.source.supportsPointing;
-            sourceData.PointingRay.IsAvailable = sourcePose.TryGetPointerRay(out newPointerRay) && newPointerRay.IsValid();
-            sourceData.PointingRay.CurrentReading = newPointerRay;
+            sourceData.PointingRay.IsAvailable = sourcePose.TryGetPointerRay(out sourceData.PointingRay.CurrentReading);
 
             InteractionController controller;
             bool gotController = interactionSource.source.TryGetController(out controller);
@@ -612,8 +624,6 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
             sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable ? interactionSource.menuPressed : false);
         }
-
-        #endregion
 
         #region Raise GestureRecognizer Events
 

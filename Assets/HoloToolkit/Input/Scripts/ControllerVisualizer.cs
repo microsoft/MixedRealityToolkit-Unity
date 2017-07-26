@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR.WSA.Input;
@@ -44,10 +45,14 @@ namespace HoloToolkit.Unity.InputModule
                 if (!controllerDictionary.ContainsKey(eventData.SourceId))
                 {
                     GameObject controller = Instantiate(controllerModel);
-                    GameObject parent = new GameObject();
-                    controller.transform.parent = parent.transform;
+                    GameObject parentGameObject = new GameObject();
+                    // TODO: Replace this with Controller[Handedness], when possible.
+                    parentGameObject.name = "Controller" + Guid.NewGuid().ToString();
 
-                    controllerDictionary.Add(eventData.SourceId, parent);
+                    parentGameObject.transform.parent = transform;
+                    controller.transform.parent = parentGameObject.transform;
+
+                    controllerDictionary.Add(eventData.SourceId, parentGameObject);
                 }
             }
         }
@@ -59,15 +64,11 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData">The source event data to be used to detect which controller to destroy.</param>
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            InteractionSourceKind sourceKind;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind) && sourceKind == InteractionSourceKind.Controller)
+            GameObject controller;
+            if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                GameObject controller;
-                if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
-                {
-                    Destroy(controller);
-                    controllerDictionary.Remove(eventData.SourceId);
-                }
+                Destroy(controller);
+                controllerDictionary.Remove(eventData.SourceId);
             }
         }
 
@@ -76,7 +77,7 @@ namespace HoloToolkit.Unity.InputModule
             GameObject controller;
             if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                controller.transform.rotation = eventData.Rotation;
+                controller.transform.localRotation = eventData.Rotation;
             }
         }
 
@@ -85,7 +86,7 @@ namespace HoloToolkit.Unity.InputModule
             GameObject controller;
             if (controllerDictionary.TryGetValue(eventData.SourceId, out controller))
             {
-                controller.transform.position = eventData.Position;
+                controller.transform.localPosition = eventData.Position;
             }
         }
     }

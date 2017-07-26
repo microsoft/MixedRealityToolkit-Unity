@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool InputIsFromSource(BaseEventData eventData)
         {
-            var inputData = (eventData as BaseInputEventData);
+            var inputData = (eventData as IInputSourceInfoProvider);
 
             return (inputData != null)
                 && (inputData.InputSource == InputSource)

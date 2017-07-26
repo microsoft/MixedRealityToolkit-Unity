@@ -8,19 +8,6 @@ using UnityEngine.VR.WSA.Input;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Flags used to indicate which input events are supported by an input source.
-    /// </summary>
-    [Flags]
-    public enum SupportedInputEvents
-    {
-        SourceUpAndDown = (1 << 0),
-        SourceClicked = (1 << 1),
-        Hold = (1 << 2),
-        Manipulation = (1 << 3),
-        Navigation = (1 << 4)
-    }
-
-    /// <summary>
     /// Flags used to indicate which input information is supported by an input source.
     /// </summary>
     [Flags]
