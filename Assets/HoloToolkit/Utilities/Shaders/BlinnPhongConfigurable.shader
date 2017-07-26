@@ -2,7 +2,7 @@
 // Compiles down to only performing the operations you're actually using.
 // Uses material property drawers rather than a custom editor for ease of maintenance.
 
-Shader "HoloToolkit/BlinnPhong Configurable"
+Shader "HoloToolkit/Obsolete/BlinnPhong Configurable"
 {
     Properties
     {

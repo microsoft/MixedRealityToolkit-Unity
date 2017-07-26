@@ -1,4 +1,4 @@
-﻿Shader "Custom/Unlit_glass_button"
+﻿Shader "HoloToolkit/Obsolete/Unlit_glass_button"
 {
 	Properties
 	{

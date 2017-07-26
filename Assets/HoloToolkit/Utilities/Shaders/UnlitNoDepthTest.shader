@@ -1,4 +1,4 @@
-﻿Shader "Unlit/NoDepth"
+﻿Shader "HoloToolkit/Obsolete/Unlit/NoDepth"
 {
 	Properties
 	{
