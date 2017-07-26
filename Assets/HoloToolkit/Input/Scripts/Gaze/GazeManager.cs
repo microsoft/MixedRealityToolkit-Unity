@@ -225,7 +225,7 @@ namespace HoloToolkit.Unity.InputModule
             // Graphics raycast
             raycastResultList.Clear();
             EventSystem.current.RaycastAll(UnityUIPointerEvent, raycastResultList);
-            RaycastResult uiRaycastResult = FindClosestRaycastHitInLayermasks(raycastResultList, RaycastLayerMasks);
+            RaycastResult uiRaycastResult = FindClosestRaycastHitInLayerMasks(raycastResultList, RaycastLayerMasks);
             UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
 
             // If we have a raycast result, check if we need to overwrite the 3D raycast info
@@ -289,7 +289,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="candidates">List of RaycastResults from a Unity UI raycast</param>
         /// <param name="layerMaskList">List of layers to support</param>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
-        private RaycastResult FindClosestRaycastHitInLayermasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
+        private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
         {
             int combinedLayerMask = 0;
             for (int i = 0; i < layerMaskList.Length; i++)
