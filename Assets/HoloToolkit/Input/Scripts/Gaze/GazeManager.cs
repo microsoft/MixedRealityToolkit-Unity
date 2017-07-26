@@ -231,9 +231,6 @@ namespace HoloToolkit.Unity.InputModule
             // If we have a raycast result, check if we need to overwrite the 3D raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                // Add the near clip distance since this is where the raycast is from
-                float uiRaycastDistance = uiRaycastResult.distance + Camera.main.nearClipPlane;
-
                 bool superseded3DObject = false;
                 if (IsGazingAtObject)
                 {
@@ -250,7 +247,7 @@ namespace HoloToolkit.Unity.InputModule
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            if (hitInfo.distance > uiRaycastDistance)
+                            if (hitInfo.distance > uiRaycastResult.distance)
                             {
                                 superseded3DObject = true;
                             }
@@ -258,7 +255,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                     else
                     {
-                        if (hitInfo.distance > uiRaycastDistance)
+                        if (hitInfo.distance > uiRaycastResult.distance)
                         {
                             superseded3DObject = true;
                         }
@@ -269,10 +266,10 @@ namespace HoloToolkit.Unity.InputModule
                 if (!IsGazingAtObject || superseded3DObject)
                 {
                     IsGazingAtObject = true;
-                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastDistance));
-                    hitInfo = new RaycastHit()
+                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
+                    hitInfo = new RaycastHit
                     {
-                        distance = uiRaycastDistance,
+                        distance = uiRaycastResult.distance,
                         normal = -Camera.main.transform.forward,
                         point = worldPos
                     };
@@ -313,9 +310,9 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-             return minHit ?? new RaycastResult();
+            return minHit ?? new RaycastResult();
         }
-        
+
         /// <summary>
         /// Look through the layerMaskList and find the index in that list for which the supplied layer is part of
         /// </summary>
