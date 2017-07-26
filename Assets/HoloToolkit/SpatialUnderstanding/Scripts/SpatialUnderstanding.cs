@@ -44,13 +44,10 @@ namespace HoloToolkit.Unity
         {
             get
             {
-#if UNITY_METRO && !UNITY_EDITOR
                 return true;
-#else
-                return false;
-#endif
             }
         }
+
         /// <summary>
         /// Reference to the SpatialUnderstandingDLL class (wraps the understanding dll functions).
         /// </summary>
@@ -101,7 +98,14 @@ namespace HoloToolkit.Unity
             }
         }
 
+        public delegate void OnScanDoneDelegate();
+
         // Events
+        /// <summary>
+        /// Event indicating that the scan is done
+        /// </summary>
+        public event OnScanDoneDelegate OnScanDone;
+
         /// <summary>
         /// Event indicating that the scan state has changed
         /// </summary>
@@ -231,18 +235,27 @@ namespace HoloToolkit.Unity
                 IntPtr meshList;
                 if (UnderstandingSourceMesh.GetInputMeshList(out meshCount, out meshList))
                 {
+                    var stopWatch = System.Diagnostics.Stopwatch.StartNew();
+
                     scanDone = SpatialUnderstandingDll.Imports.GeneratePlayspace_UpdateScan(
                         meshCount, meshList,
                         camPos.x, camPos.y, camPos.z,
                         camFwd.x, camFwd.y, camFwd.z,
                         camUp.x, camUp.y, camUp.z,
                         deltaTime) == 1;
+
+                    stopWatch.Stop();
+
+                    if (stopWatch.Elapsed.TotalMilliseconds > (1000.0 / 30.0))
+                    {
+                        Debug.LogWarningFormat("SpatialUnderstandingDll.Imports.GeneratePlayspace_UpdateScan took {0,9:N2} ms", stopWatch.Elapsed.TotalMilliseconds);
+                    }
                 }
             }
 
             // If it's done, finish up
             if ((ScanState == ScanStates.Finishing) &&
-                (scanDone) && 
+                (scanDone) &&
                 (!UnderstandingCustomMesh.IsImportActive) &&
                 (UnderstandingCustomMesh != null))
             {
@@ -251,6 +264,7 @@ namespace HoloToolkit.Unity
 
                 // Mark it
                 ScanState = ScanStates.Done;
+                if (OnScanDone != null) OnScanDone.Invoke();
             }
         }
     }
