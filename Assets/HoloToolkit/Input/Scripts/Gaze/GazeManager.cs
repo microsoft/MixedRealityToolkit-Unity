@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity.InputModule
         public PointerEventData UnityUIPointerEvent { get; private set; }
 
         /// <summary>
-        /// Cached results of racast results.
+        /// Cached results of raycast results.
         /// </summary>
         private List<RaycastResult> raycastResultList = new List<RaycastResult>();
 
@@ -106,26 +106,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 RaycastLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
             }
-        }
 
-        private void Start()
-        {
-            if (GazeTransform == null)
-            {
-                if (Camera.main != null)
-                {
-                    GazeTransform = Camera.main.transform;
-                }
-                else
-                {
-                    Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to.");
-                }
-            }
+            FindGazeTransform();
         }
 
         private void Update()
         {
-            if (GazeTransform == null)
+            if (!FindGazeTransform())
             {
                 return;
             }
@@ -147,6 +134,20 @@ namespace HoloToolkit.Unity.InputModule
             {
                 FocusedObjectChanged(previousFocusObject, HitObject);
             }
+        }
+
+        private bool FindGazeTransform()
+        {
+            if (GazeTransform != null) { return true; }
+
+            if (Camera.main != null)
+            {
+                GazeTransform = Camera.main.transform;
+                return true;
+            }
+
+            Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to.");
+            return false;
         }
 
         /// <summary>
