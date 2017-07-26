@@ -14,10 +14,10 @@ A drop in direction indicator that stays in the users view at all times.
 #### HeadsUpDirectionIndicatorPointer.prefab
 A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.
 
-###[Scenes](Scenes)
+### [Scenes](Scenes)
 ---
 
-####HeadsetAdjustment.unity
+#### HeadsetAdjustment.unity
 Helps the user adjust the headset so that he/she gets the full experience in demo scenarios. 
 
 When demoing an app, it is important to ensure that the user has the headset on properly. This scene shows a border at the edge of the user's field of view and instructs him/her to adjust the headset until all four edges are visible. The user (or the demonstrator) can then air-tap or say "I'm ready" to proceed to the actual experience. 
