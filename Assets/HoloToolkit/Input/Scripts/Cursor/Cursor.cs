@@ -83,8 +83,8 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The distance from the hit surface to place the cursor")]
         public float SurfaceCursorDistance = 0.02f;
 
-        [Header("Motion")] 
-        [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")] 
+        [Header("Motion")]
+        [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         public bool UseUnscaledTime = true;
 
         /// <summary>
@@ -190,9 +190,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void OnEnable()
         {
-            if (gazeManager)
+            if (FocusManager.IsInitialized)
             {
-                OnFocusedObjectChanged(null, gazeManager.HitObject);
+                OnPointerSpecificFocusChanged(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
             }
             OnCursorStateChange(CursorStateEnum.None);
         }
@@ -325,6 +325,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void UpdateCursorTransform()
         {
             FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(Pointer);
+            GameObject newTargetedObject = focusDetails.Object;
 
             // Get the forward vector looking back along the pointing ray.
             Vector3 lookForward = -Pointer.Ray.direction;
@@ -335,13 +336,15 @@ namespace HoloToolkit.Unity.InputModule
             // If no game object is hit, put the cursor at the default distance
             if (TargetedObject == null)
             {
+                this.TargetedObject = null;
+                this.TargetedCursorModifier = null;
                 targetPosition = Pointer.Ray.origin + Pointer.Ray.direction * DefaultCursorDistance;
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else
             {
                 // Update currently targeted object
-                TargetedObject = focusDetails.Object;
+                TargetedObject = newTargetedObject;
 
                 if (TargetedCursorModifier != null)
                 {
@@ -355,7 +358,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            var deltaTime = UseUnscaledTime
+            float deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
 

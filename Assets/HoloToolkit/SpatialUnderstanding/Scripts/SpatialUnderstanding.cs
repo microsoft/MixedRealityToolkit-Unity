@@ -47,6 +47,7 @@ namespace HoloToolkit.Unity
                 return true;
             }
         }
+
         /// <summary>
         /// Reference to the SpatialUnderstandingDLL class (wraps the understanding dll functions).
         /// </summary>
@@ -97,7 +98,14 @@ namespace HoloToolkit.Unity
             }
         }
 
+        public delegate void OnScanDoneDelegate();
+
         // Events
+        /// <summary>
+        /// Event indicating that the scan is done
+        /// </summary>
+        public event OnScanDoneDelegate OnScanDone;
+
         /// <summary>
         /// Event indicating that the scan state has changed
         /// </summary>
@@ -247,7 +255,7 @@ namespace HoloToolkit.Unity
 
             // If it's done, finish up
             if ((ScanState == ScanStates.Finishing) &&
-                (scanDone) && 
+                (scanDone) &&
                 (!UnderstandingCustomMesh.IsImportActive) &&
                 (UnderstandingCustomMesh != null))
             {
@@ -256,6 +264,7 @@ namespace HoloToolkit.Unity
 
                 // Mark it
                 ScanState = ScanStates.Done;
+                if (OnScanDone != null) OnScanDone.Invoke();
             }
         }
     }
