@@ -334,7 +334,7 @@ namespace HoloToolkit.Unity.InputModule
             targetScale = Vector3.one;
 
             // If no game object is hit, put the cursor at the default distance
-            if (TargetedObject == null)
+            if (newTargetedObject == null)
             {
                 this.TargetedObject = null;
                 this.TargetedCursorModifier = null;
@@ -371,7 +371,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Updates the visual representation of the cursor.
         /// </summary>
-        public void SetVisiblity(bool visible)
+        public virtual void SetVisiblity(bool visible)
         {
             if (PrimaryCursorVisual != null)
             {
