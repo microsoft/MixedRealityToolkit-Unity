@@ -43,7 +43,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Initialize key text, subscribe to the onClick event, and subscribe to keyboard shift event.
         /// </summary>
-        void Start()
+        private void Start()
         {
             m_text = gameObject.GetComponentInChildren<Text>();
             m_text.text = Value;

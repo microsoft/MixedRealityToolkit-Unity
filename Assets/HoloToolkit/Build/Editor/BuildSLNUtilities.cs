@@ -138,11 +138,9 @@ namespace HoloToolkit.Unity
         /// <seealso cref="OverrideBuildDefaults"/>
         public static void RaiseOverrideBuildDefaults(ref BuildInfo toConfigure)
         {
-            var handlers = OverrideBuildDefaults;
-
-            if (handlers != null)
+            if (OverrideBuildDefaults != null)
             {
-                handlers(ref toConfigure);
+                OverrideBuildDefaults(ref toConfigure);
             }
         }
 
@@ -203,33 +201,22 @@ namespace HoloToolkit.Unity
 
             EditorUserBuildSettings.SwitchActiveBuildTarget(buildTargetGroup, buildInfo.BuildTarget);
 
-            var oldWSASDK = EditorUserBuildSettings.wsaSDK;
-            if (buildInfo.WSASdk.HasValue)
-            {
-                EditorUserBuildSettings.wsaSDK = buildInfo.WSASdk.Value;
-            }
+            WSAUWPBuildType? oldWSAUWPBuildType = EditorUserBuildSettings.wsaUWPBuildType;
 
-            string oldWsaUwpSdk = null;
-            WSAUWPBuildType? oldWSAUWPBuildType = null;
-            if (EditorUserBuildSettings.wsaSDK == WSASDK.UWP)
+            if (buildInfo.WSAUWPBuildType.HasValue)
             {
-                oldWsaUwpSdk = EditorUserBuildSettings.wsaUWPSDK;
-                EditorUserBuildSettings.wsaUWPSDK = buildInfo.WsaUwpSdk;
-
-                oldWSAUWPBuildType = EditorUserBuildSettings.wsaUWPBuildType;
-                if (buildInfo.WSAUWPBuildType.HasValue)
-                {
-                    EditorUserBuildSettings.wsaUWPBuildType = buildInfo.WSAUWPBuildType.Value;
-                }
+                EditorUserBuildSettings.wsaUWPBuildType = buildInfo.WSAUWPBuildType.Value;
             }
 
             var oldWSAGenerateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
+
             if (buildInfo.WSAGenerateReferenceProjects.HasValue)
             {
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = buildInfo.WSAGenerateReferenceProjects.Value;
             }
 
             var oldColorSpace = PlayerSettings.colorSpace;
+
             if (buildInfo.ColorSpace.HasValue)
             {
                 PlayerSettings.colorSpace = buildInfo.ColorSpace.Value;
@@ -243,10 +230,7 @@ namespace HoloToolkit.Unity
             string buildError = "Error";
             try
             {
-                if (EditorUserBuildSettings.wsaSDK == WSASDK.UWP)
-                {
-                    VerifyWsaUwpSdkIsInstalled(EditorUserBuildSettings.wsaUWPSDK);
-                }
+                VerifyWsaUwpSdkIsInstalled(EditorUserBuildSettings.wsaUWPSDK);
 
                 // For the WSA player, Unity builds into a target directory.
                 // For other players, the OutputPath parameter indicates the
@@ -280,12 +264,10 @@ namespace HoloToolkit.Unity
                 PlayerSettings.colorSpace = oldColorSpace;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, oldBuildSymbols);
 
-                if (EditorUserBuildSettings.wsaSDK == WSASDK.UWP)
+                if (oldWSAUWPBuildType.HasValue)
                 {
-                    EditorUserBuildSettings.wsaUWPSDK = oldWsaUwpSdk;
                     EditorUserBuildSettings.wsaUWPBuildType = oldWSAUWPBuildType.Value;
                 }
-                EditorUserBuildSettings.wsaSDK = oldWSASDK;
 
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
 
@@ -302,49 +284,43 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-
             IEnumerable<Version> uwpSdksAvailable;
             try
             {
                 // In order to get the same list of SDKs that the Unity build settings "UWP SDK" box has, we call into an
                 // internal Unity function.  If Unity changes how its internals work, we'll need to update this code.
+                Type uwpReferencesType = typeof(Editor).Assembly.GetType("UnityEditor.Scripting.Compilers.UWPReferences", throwOnError: false);
 
-                Type uwpReferencesType = typeof(UnityEditor.Editor).Assembly
-                    .GetType("UnityEditor.Scripting.Compilers.UWPReferences", throwOnError: false);
-
-                MethodInfo uwpReferencesMethod = (uwpReferencesType == null)
+                MethodInfo uwpReferencesMethod = uwpReferencesType == null
                     ? null
                     : uwpReferencesType.GetMethod("GetInstalledSDKVersions");
 
-                uwpSdksAvailable = (uwpReferencesMethod == null)
+                uwpSdksAvailable = uwpReferencesMethod == null
                     ? null
-                    : (uwpReferencesMethod.Invoke(obj: null, parameters: null) as IEnumerable<Version>);
+                    : uwpReferencesMethod.Invoke(null, null) as IEnumerable<Version>;
             }
             catch
             {
                 uwpSdksAvailable = null;
             }
 
-
             if (uwpSdksAvailable == null)
             {
                 Debug.LogWarningFormat("Couldn't verify that UWP SDK \"{0}\" is installed. You better make sure it's installed"
-                        + " and available in your Unity Build settings menu, or you may get unexpected build breaks or runtime"
-                        + " behavior.",
+                                    + " and available in your Unity Build settings menu, or you may get unexpected build breaks or runtime"
+                                    + " behavior.",
                     wsaUwpSdk
-                    );
+                );
             }
             else if (!uwpSdksAvailable.Select(version => version.ToString()).Contains(wsaUwpSdk))
             {
                 throw new Exception(string.Format("UWP SDK \"{0}\" is not installed. Please install it and try building again. If"
-                        + " you really want to build without that SDK, build directly from Unity's Build settings menu instead.",
+                                               + " you really want to build without that SDK, build directly from Unity's Build settings menu instead.",
                     wsaUwpSdk
-                    ));
+                ));
             }
-            else
-            {
-                // The SDK is verified installed. All is right with the world!
-            }
+
+            // The SDK is verified installed. All is right with the world!
         }
 
         public static void ParseBuildCommandLine(ref BuildInfo buildInfo)
@@ -368,16 +344,15 @@ namespace HoloToolkit.Unity
                 }
                 else if (string.Equals(arguments[i], "-wsaUwpSdk", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    buildInfo.WsaUwpSdk = arguments[++i];
+                    buildInfo.WSAUwpSdk = arguments[++i];
                 }
                 else if (string.Equals(arguments[i], "-wsaUWPBuildType", StringComparison.InvariantCultureIgnoreCase))
                 {
-
                     buildInfo.WSAUWPBuildType = (WSAUWPBuildType)Enum.Parse(typeof(WSAUWPBuildType), arguments[++i]);
                 }
                 else if (string.Equals(arguments[i], "-wsaGenerateReferenceProjects", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    buildInfo.WSAGenerateReferenceProjects = Boolean.Parse(arguments[++i]);
+                    buildInfo.WSAGenerateReferenceProjects = bool.Parse(arguments[++i]);
                 }
                 else if (string.Equals(arguments[i], "-buildOutput", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -397,13 +372,23 @@ namespace HoloToolkit.Unity
 
         public static void PerformBuild_CommandLine()
         {
-            BuildInfo buildInfo = new BuildInfo
+            var buildInfo = new BuildInfo
             {
                 // Use scenes from the editor build settings.
-                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path)
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
+
+                // Configure a post build action to throw appropreate error code.
+                PostBuildAction = (innerBuildInfo, buildError) =>
+                {
+                    if (!string.IsNullOrEmpty(buildError))
+                    {
+                        EditorApplication.Exit(1);
+                    }
+                }
             };
 
             RaiseOverrideBuildDefaults(ref buildInfo);
+
             ParseBuildCommandLine(ref buildInfo);
 
             PerformBuild(buildInfo);
@@ -414,7 +399,7 @@ namespace HoloToolkit.Unity
             Debug.Log(string.Format(CultureInfo.InvariantCulture, "Build: Using \"{0}\" as build description", filename));
 
             // Parse the XML file
-            XmlTextReader reader = new XmlTextReader(filename);
+            var reader = new XmlTextReader(filename);
 
             while (reader.Read())
             {
@@ -452,7 +437,7 @@ namespace HoloToolkit.Unity
 
         private static IEnumerable<string> ReadSceneList(XmlTextReader reader)
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -473,7 +458,9 @@ namespace HoloToolkit.Unity
 
                     case XmlNodeType.EndElement:
                         if (string.Equals(reader.Name, "SceneList", StringComparison.InvariantCultureIgnoreCase))
+                        {
                             return result;
+                        }
                         break;
                 }
             }
@@ -483,7 +470,7 @@ namespace HoloToolkit.Unity
 
         private static IEnumerable<CopyDirectoryInfo> ReadCopyList(XmlTextReader reader)
         {
-            List<CopyDirectoryInfo> result = new List<CopyDirectoryInfo>();
+            var result = new List<CopyDirectoryInfo>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -519,8 +506,8 @@ namespace HoloToolkit.Unity
                             if (source != null)
                             {
                                 // Either the file specifies the Destination as well, or else CopyDirectory will use Source for Destination
-                                CopyDirectoryInfo info = new CopyDirectoryInfo();
-                                info.Source = source;
+                                var info = new CopyDirectoryInfo { Source = source };
+
                                 if (dest != null)
                                 {
                                     info.Destination = dest;

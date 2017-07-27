@@ -32,7 +32,7 @@ namespace HoloToolkit.UI.Keyboard
         [HideInInspector]
         public Vector3 TargetPoint;
 
-        float GetAxis(Vector3 v)
+        private float GetAxis(Vector3 v)
         {
             switch (Axis)
             {
@@ -43,7 +43,7 @@ namespace HoloToolkit.UI.Keyboard
             return 0;
         }
 
-        Vector3 SetAxis(Vector3 v, float f)
+        private Vector3 SetAxis(Vector3 v, float f)
         {
             switch (Axis)
             {
@@ -57,7 +57,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Use late update to track the input slider
         /// </summary>
-        public void LateUpdate()
+        private void LateUpdate()
         {
             float targetP = GetAxis(TargetPoint);
 

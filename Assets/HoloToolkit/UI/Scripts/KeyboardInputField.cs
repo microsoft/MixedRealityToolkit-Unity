@@ -5,10 +5,6 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 namespace HoloToolkit.UI.Keyboard
 {
     /// <summary>
@@ -75,26 +71,4 @@ namespace HoloToolkit.UI.Keyboard
             Keyboard.Instance.onClosed -= this.Keyboard_onClosed;
         }
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(KeyboardInputField))]
-    public class KeyboardInputFieldEditor : Editor
-    {
-        public Keyboard.LayoutType KeyboardLayout = Keyboard.LayoutType.Alpha;
-        protected KeyboardInputField myField;
-
-        private void Awake()
-        {
-            myField = (KeyboardInputField)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            myField.m_KeyboardLayout = (Keyboard.LayoutType)EditorGUILayout.EnumPopup("Keyboard Type:", myField.m_KeyboardLayout);
-
-            EditorGUILayout.Separator();
-            base.OnInspectorGUI();
-        }
-    }
-#endif
 }

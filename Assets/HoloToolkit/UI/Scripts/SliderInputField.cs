@@ -18,5 +18,4 @@ namespace HoloToolkit.UI.Keyboard
             // Do nothing for deselection
         }
     }
-
 }
