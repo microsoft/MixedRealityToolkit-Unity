@@ -63,7 +63,10 @@ namespace HoloToolkit.Unity
             base.Awake();
 
             AnchorStore = null;
-            
+
+#if UNITY_EDITOR
+            Debug.LogWarning("World Anchor Manager does not work in the editor. Anchor Store will never be ready.");
+#endif
         }
 
         private void Start()
@@ -91,10 +94,7 @@ namespace HoloToolkit.Unity
         /// <param name="anchorName">Name of the anchor.</param>
         public void AttachAnchor(GameObject gameObjectToAnchor, string anchorName)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
+#if !UNITY_EDITOR
             if (gameObjectToAnchor == null)
             {
                 Debug.LogError("Must pass in a valid gameObject");
@@ -114,7 +114,7 @@ namespace HoloToolkit.Unity
                     AnchorName = anchorName,
                     Operation = AnchorOperation.Create
                 });
-#pragma warning restore 0162
+#endif
         }
 
         /// <summary>
@@ -124,11 +124,7 @@ namespace HoloToolkit.Unity
         /// <param name="gameObjectToUnanchor">gameObject to remove the anchor from.</param>
         public void RemoveAnchor(GameObject gameObjectToUnanchor)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
-
+#if !UNITY_EDITOR
             if (gameObjectToUnanchor == null)
             {
                 Debug.LogError("Invalid GameObject");
@@ -183,7 +179,7 @@ namespace HoloToolkit.Unity
                     }
                 }
             }
-#pragma warning restore 0162
+#endif
         }
 
         /// <summary>
@@ -252,10 +248,7 @@ namespace HoloToolkit.Unity
         /// <param name="anchorName">The name to give to the anchor.</param>
         private void CreateAnchor(GameObject gameObjectToAnchor, string anchorName)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
+#if !UNITY_EDITOR
             WorldAnchor anchor = gameObjectToAnchor.AddComponent<WorldAnchor>();
             anchor.name = anchorName;
 
@@ -269,7 +262,7 @@ namespace HoloToolkit.Unity
                 // Other times we must wait for the tracking system to locate the world.
                 anchor.OnTrackingChanged += Anchor_OnTrackingChanged;
             }
-#pragma warning restore 0162
+#endif
         }
 
         /// <summary>
@@ -301,10 +294,7 @@ namespace HoloToolkit.Unity
         /// <param name="anchor"></param>
         private void SaveAnchor(WorldAnchor anchor)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
+#if !UNITY_EDITOR
             // Save the anchor to persist holograms across sessions.
             if (AnchorStore.Save(anchor.name, anchor))
             {
@@ -314,7 +304,7 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogError(gameObject.name + " : World anchor save failed.");
             }
-#pragma warning restore 0162
+#endif
         }
     }
 }
