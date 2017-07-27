@@ -4,8 +4,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.VR.WSA.Input;
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -41,6 +44,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndKeyCode[] Keywords;
 
+#if UNITY_EDITOR || UNITY_WSA
         private KeywordRecognizer keywordRecognizer;
 
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
@@ -174,6 +178,7 @@ namespace HoloToolkit.Unity.InputModule
             sourceKind = InteractionSourceKind.Voice;
             return true;
         }
+#endif
 
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
         {

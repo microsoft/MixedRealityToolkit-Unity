@@ -3,7 +3,10 @@
 
 using System;
 using UnityEngine.EventSystems;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -12,11 +15,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class SpeechKeywordRecognizedEventData : BaseInputEventData
     {
-        /// <summary>
-        /// A measure of correct recognition certainty.
-        /// </summary>
-        public ConfidenceLevel Confidence { get; private set; }
-
         /// <summary>
         /// The time it took for the phrase to be uttered.
         /// </summary>
@@ -28,14 +26,20 @@ namespace HoloToolkit.Unity.InputModule
         public DateTime PhraseStartTime { get; private set; }
 
         /// <summary>
-        /// A semantic meaning of recognized phrase.
-        /// </summary>
-        public SemanticMeaning[] SemanticMeanings { get; private set; }
-
-        /// <summary>
         /// The text that was recognized.
         /// </summary>
         public string RecognizedText { get; private set; }
+
+#if UNITY_EDITOR || UNITY_WSA
+        /// <summary>
+        /// A measure of correct recognition certainty.
+        /// </summary>
+        public ConfidenceLevel Confidence { get; private set; }
+        
+        /// <summary>
+        /// A semantic meaning of recognized phrase.
+        /// </summary>
+        public SemanticMeaning[] SemanticMeanings { get; private set; }
 
         public SpeechKeywordRecognizedEventData(EventSystem eventSystem) : base(eventSystem) { }
 
@@ -48,5 +52,6 @@ namespace HoloToolkit.Unity.InputModule
             SemanticMeanings = semanticMeanings;
             RecognizedText = recognizedText;
         }
+#endif
     }
 }

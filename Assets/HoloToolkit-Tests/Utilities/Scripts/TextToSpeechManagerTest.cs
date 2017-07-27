@@ -2,17 +2,20 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
-using UnityEngine.VR.WSA.Input;
-using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity;
 using System;
 using HoloToolkit.Unity.InputModule;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.VR.WSA.Input;
+using UnityEngine.Windows.Speech;
+#endif
 
 public class TextToSpeechManagerTest : MonoBehaviour, IInputHandler
 {
     public TextToSpeechManager textToSpeechManager;
 
+#if UNITY_EDITOR || UNITY_WSA
     private bool started = false;
     private bool addedInputManagerHandler = false;
 
@@ -88,6 +91,7 @@ public class TextToSpeechManagerTest : MonoBehaviour, IInputHandler
             }
         }
     }
+#endif
 
     public void SpeakTime()
     {

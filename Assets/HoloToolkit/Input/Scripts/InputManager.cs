@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.VR.WSA.Input;
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -40,7 +43,7 @@ namespace HoloToolkit.Unity.InputModule
         private NavigationEventData navigationEventData;
         private PointerSpecificEventData pointerSpecificEventData;
         private InputXYEventData inputXYEventData;
-        private TriggerEventData triggerEventData;        
+        private TriggerEventData triggerEventData;
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
         private DictationEventData dictationEventData;
 
@@ -677,7 +680,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion // Navigation Events
-        
+
         #region Controller Events
 
         private static readonly ExecuteEvents.EventFunction<IControllerInputHandler> OnInputXYChangedEventHandler =
@@ -787,6 +790,7 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
+#if UNITY_EDITOR || UNITY_WSA
         public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text, object tag = null)
         {
             // Create input event
@@ -795,6 +799,7 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
         }
+#endif
 
         #endregion // Speech Events
 

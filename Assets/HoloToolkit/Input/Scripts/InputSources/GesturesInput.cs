@@ -3,7 +3,10 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.VR.WSA.Input;
+#endif 
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -25,8 +28,10 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
         public bool UseRailsNavigation = false;
 
+#if UNITY_EDITOR || UNITY_WSA
         protected GestureRecognizer gestureRecognizer;
         protected GestureRecognizer navigationGestureRecognizer;
+#endif
 
         #region IInputSource Capabilities and SourceData
 
@@ -249,6 +254,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void StartGestureRecognizer()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.StartCapturingGestures();
@@ -258,10 +264,12 @@ namespace HoloToolkit.Unity.InputModule
             {
                 navigationGestureRecognizer.StartCapturingGestures();
             }
+#endif
         }
 
         public void StopGestureRecognizer()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.StopCapturingGestures();
@@ -271,6 +279,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 navigationGestureRecognizer.StopCapturingGestures();
             }
+#endif
         }
 
         #region BaseInputSource implementations
@@ -627,8 +636,9 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Raise GestureRecognizer Events
 
-        // TODO: robertes: Should these also cause source state data to be stored/updated? What about SourceDetected synthesized events?
+#if UNITY_EDITOR || UNITY_WSA
 
+        // TODO: robertes: Should these also cause source state data to be stored/updated? What about SourceDetected synthesized events?
         protected void OnTappedEvent(TappedEventArgs obj)
         {
             InputManager.Instance.RaiseInputClicked(this, (uint)obj.sourceId, InteractionPressKind.Select, obj.tapCount);
@@ -688,6 +698,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             InputManager.Instance.RaiseNavigationCanceled(this, (uint)obj.sourceId, obj.normalizedOffset);
         }
+
+#endif
 
         #endregion
     }
