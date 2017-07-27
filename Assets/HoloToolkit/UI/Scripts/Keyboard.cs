@@ -630,13 +630,34 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Backspace()
         {
-            m_CaretPosition = m_InputField.caretPosition;
-
-            if (m_CaretPosition > 0)
+            // check if text is selected
+            if (m_InputField.selectionFocusPosition != m_InputField.caretPosition || m_InputField.selectionAnchorPosition != m_InputField.caretPosition)
             {
-                --m_CaretPosition;
-                m_InputField.text = m_InputField.text.Remove(m_CaretPosition, 1);
-                UpdateCaratPosition(m_CaretPosition);
+                if (m_InputField.selectionAnchorPosition > m_InputField.selectionFocusPosition) // right to left
+                {
+                    m_InputField.text = m_InputField.text.Substring(0, m_InputField.selectionFocusPosition) + m_InputField.text.Substring(m_InputField.selectionAnchorPosition);
+                    m_InputField.caretPosition = m_InputField.selectionFocusPosition;
+                }
+                else // left to right
+                {
+                    m_InputField.text = m_InputField.text.Substring(0, m_InputField.selectionAnchorPosition) + m_InputField.text.Substring(m_InputField.selectionFocusPosition);
+                    m_InputField.caretPosition = m_InputField.selectionAnchorPosition;
+                }
+
+                m_CaretPosition = m_InputField.caretPosition;
+                m_InputField.selectionAnchorPosition = m_CaretPosition;
+                m_InputField.selectionFocusPosition = m_CaretPosition;
+            }
+            else
+            {
+                m_CaretPosition = m_InputField.caretPosition;
+
+                if (m_CaretPosition > 0)
+                {
+                    --m_CaretPosition;
+                    m_InputField.text = m_InputField.text.Remove(m_CaretPosition, 1);
+                    UpdateCaratPosition(m_CaretPosition);
+                }
             }
         }
 
