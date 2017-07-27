@@ -71,6 +71,8 @@ Optionally, if you wish to enable spatial mapping in your scene, you can add the
 ![Build Window](/External/ReadMeImages/BuildWindow.PNG)
 
 # Deploying your HoloLens app using Visual Studio
- 1. Select **x86** in your build configuration
- 2. Select emulator or the device that you're using
- 3. Run the app
+ 1. Navigate to the Build WInodw: `HoloToolkit -> Build Window`.
+ 2. Press `Open SLN`
+ 3. Select **x86** in your build configuration options
+ 4. In the debug toolbar, Select the emulator or the device that you're using
+ 5. Run the app using the debug toolbar
