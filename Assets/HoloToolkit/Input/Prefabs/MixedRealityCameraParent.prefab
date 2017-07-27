@@ -614,8 +614,6 @@ MonoBehaviour:
   GoBackButtonName: Fire2
   LeftJoystickX: ControllerLeftStickX
   LeftJoystickY: ControllerLeftStickY
-  RightJoystickX: ControllerRightStickX
-  RightJoystickY: ControllerRightStickY
   EnableTeleport: 1
   EnableJoystickMovement: 0
   BumperRotationSize: 30

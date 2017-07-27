@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -48,8 +49,8 @@ namespace HoloToolkit.Unity.InputModule
             fadeControl = FadeScript.Instance;
             SpeedScale = 0.6f;
 
-            TeleportMarker.SetActive(false);
             teleportMarker = Instantiate(TeleportMarker);
+            teleportMarker.SetActive(false);
 
             animationController = teleportMarker.GetComponentInChildren<Animator>();
             if (animationController != null)
@@ -63,7 +64,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleTeleport();
             HandleGoBackPressed();
             HandleJoystickMovement();
-            HandleBumperRotation();
+            if (InteractionManager.numSourceStates == 0)
+            {
+                HandleBumperRotation();
+            }
         }
 
         private void HandleTeleport()
