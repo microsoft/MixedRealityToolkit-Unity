@@ -14,13 +14,13 @@ Please go over the [Getting started guide](GettingStarted.md) to learn more abou
 
 ## Release cadence for Master:
 - **Master branch releases** will align with **major Unity releases marking a release every 3 months**. Please read the [Unity roadmap](https://unity3d.com/unity/roadmap).
-- Each release will be marked as a GitHub release tag. You can consume this release by:
+- Each release will be marked as a GitHub [release tag](https://github.com/Microsoft/HoloToolkit-Unity/releases). You can consume this release by:
 	- Using the zip file available in the release notes
 	- Unity packages available in the release notes
 	- Syncing to the specific git tag you would like to lock on.
-- Release tag name convention: v1.<Unity release major number>.<Unity release minor number>.<Iteration number>
+- Release tag name convention: v1.Unity release major number.Unity release minor number.Iteration number
 	- For example: For Unity version 2017.1.0 our release tag would be **v1.2017.1.0**
-	- If we marked another release with the same Unity version: v1.2017.1.1
+	- If we marked another release with the same Unity version: **v1.2017.1.1**
 - Unity packages for each release will be published to the Unity asset store.
 - Unity packages for each feature area like Input/SpatialMapping will also be added to the release notes.
 - Academy content will be updated with each major toolkit release.
@@ -61,7 +61,7 @@ Please go over the [Getting started guide](GettingStarted.md) to learn more abou
 
 | Breaking change description                     | Release timeframe | Notes                    |
 | ----------------------------------------------- | ----------------- | ------------------------ |
-| Rename repository to MixedRealityToolkit-Unity. | Mid Aug 2017      | - Recommend you do: $git remote set-url origin new_url. - Recommend reading: https://help.github.com/articles/renaming-a-repository ; https://github.com/blog/1508-repository-redirects-are-here |
+| Rename repository to MixedRealityToolkit-Unity. | Mid Aug 2017      | - Recommend you do: $git remote set-url origin new_url. - Recommend reading: https://help.github.com/articles/renaming-a-repository ; https://github.com/blog/1508-repository-redirects-are-here |
 | Updating toolkit namespace to MixedReality      | Nov 2017          | - Update folder names, class names and namespace names post 2017.2.0 release. |
 
 ## Future work planning:
