@@ -70,6 +70,8 @@ Optionally, if you wish to enable spatial mapping in your scene, you can add the
 
 ![Build Window](/External/ReadMeImages/BuildWindow.PNG)
 
+Optionally, you can use the [default build steps if needed](https://docs.unity3d.com/Manual/windowsholographic-startup.html).
+
 # 6. Deploying your HoloLens app using Visual Studio
  1. Navigate to the Build WInodw: `HoloToolkit -> Build Window`.
  2. Press `Open SLN`.
