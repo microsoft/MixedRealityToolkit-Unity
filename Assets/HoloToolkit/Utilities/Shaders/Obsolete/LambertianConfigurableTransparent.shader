@@ -1,8 +1,8 @@
-// Very fast vertex lit shader that uses the Unity lighting model.
+// Very fast shader that uses the Unity lighting model.
 // Compiles down to only performing the operations you're actually using.
 // Uses material property drawers rather than a custom editor for ease of maintenance.
 
-Shader "HoloToolkit/Vertex Lit Configurable"
+Shader "HoloToolkit/Obsolete/Lambertian Configurable Transparent"
 {
     Properties
     {
@@ -14,6 +14,12 @@ Shader "HoloToolkit/Vertex Lit Configurable"
         [Header(Base(RGB))]
         [Toggle] _UseMainTex("Enabled?", Float) = 1
         _MainTex("Base (RGB)", 2D) = "white" {}
+        [Space(20)]
+
+        // Uses UV scale, etc from main texture
+        [Header(Normalmap)]
+        [Toggle] _UseBumpMap("Enabled?", Float) = 0
+        [NoScaleOffset] _BumpMap("Normalmap", 2D) = "bump" {}
         [Space(20)]
 
         // Uses UV scale, etc from main texture
@@ -36,39 +42,30 @@ Shader "HoloToolkit/Vertex Lit Configurable"
 
     SubShader
     {
-        Tags { "RenderType" = "Opaque" "PerformanceChecks" = "False" }
-        LOD 100
+        Tags { "RenderType" = "Transparent" "Queue" = "Transparent" "PerformanceChecks" = "False" }
         Blend[_SrcBlend][_DstBlend]
         ZTest[_ZTest]
         ZWrite[_ZWrite]
         Cull[_Cull]
         ColorMask[_ColorWriteMask]
+        LOD 300
 
-        Pass
-        {
-            Name "FORWARD"
-            Tags { "LightMode" = "ForwardBase" }
+        CGPROGRAM
+        // We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
+        #pragma target 5.0
+        #pragma only_renderers d3d11
 
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+        #pragma surface surf Lambert vertex:vert alpha:fade
 
-            #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
+        #pragma shader_feature _USECOLOR_ON
+        #pragma shader_feature _USEMAINTEX_ON
+        #pragma shader_feature _USEBUMPMAP_ON
+        #pragma shader_feature _USEEMISSIONTEX_ON
+        #pragma multi_compile  __ _NEAR_PLANE_FADE_ON
 
-            // We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
-            #pragma target 5.0
-            #pragma only_renderers d3d11
+        #include "HoloToolkitCommon.cginc"
+        #include "LambertianConfigurable.cginc"
 
-            #pragma shader_feature _USECOLOR_ON
-            #pragma shader_feature _USEMAINTEX_ON
-            #pragma shader_feature _USEEMISSIONTEX_ON
-            #pragma multi_compile  __ _NEAR_PLANE_FADE_ON
-
-            #include "HoloToolkitCommon.cginc"
-            #include "VertexLitConfigurable.cginc"
-
-            ENDCG
-        }
+        ENDCG
     }
 }

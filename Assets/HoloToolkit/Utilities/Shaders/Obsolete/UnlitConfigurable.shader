@@ -3,7 +3,7 @@
 // Compiles down to only performing the operations you're actually using.
 // Uses material property drawers rather than a custom editor for ease of maintenance.
 
-Shader "HoloToolkit/Unlit Configurable Transparent"
+Shader "HoloToolkit/Obsolete/Unlit Configurable"
 {
     Properties
     {
@@ -31,7 +31,7 @@ Shader "HoloToolkit/Unlit Configurable Transparent"
 
     SubShader
     {
-        Tags { "RenderType" = "Transparent" "Queue" = "Transparent" }
+        Tags { "RenderType" = "Opaque" }
         LOD 100
         Blend[_SrcBlend][_DstBlend]
         ZTest[_ZTest]

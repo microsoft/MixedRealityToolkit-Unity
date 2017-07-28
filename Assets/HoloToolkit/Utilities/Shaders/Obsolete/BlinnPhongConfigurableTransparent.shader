@@ -2,7 +2,7 @@
 // Compiles down to only performing the operations you're actually using.
 // Uses material property drawers rather than a custom editor for ease of maintenance.
 
-Shader "HoloToolkit/Lambertian Configurable Transparent"
+Shader "HoloToolkit/Obsolete/BlinnPhong Configurable Transparent"
 {
     Properties
     {
@@ -26,6 +26,13 @@ Shader "HoloToolkit/Lambertian Configurable Transparent"
         [Header(Emission(RGB))]
         [Toggle] _UseEmissionTex("Enabled?", Float) = 0
         [NoScaleOffset] _EmissionTex("Emission (RGB)", 2D) = "white" {}
+        [Space(20)]
+
+        // Specular
+        [Header(Specular)]
+        _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 1)
+        _Specular("Specular", Range(0.0, 1.0)) = 0.5
+        _Gloss("Gloss", Range(0.0, 10.0)) = 0.5
         [Space(20)]
 
         [Header(Blend State)]
@@ -55,7 +62,7 @@ Shader "HoloToolkit/Lambertian Configurable Transparent"
         #pragma target 5.0
         #pragma only_renderers d3d11
 
-        #pragma surface surf Lambert vertex:vert alpha:fade
+        #pragma surface surf BlinnPhong vertex:vert alpha:fade
 
         #pragma shader_feature _USECOLOR_ON
         #pragma shader_feature _USEMAINTEX_ON
@@ -64,7 +71,7 @@ Shader "HoloToolkit/Lambertian Configurable Transparent"
         #pragma multi_compile  __ _NEAR_PLANE_FADE_ON
 
         #include "HoloToolkitCommon.cginc"
-        #include "LambertianConfigurable.cginc"
+        #include "BlinnPhongConfigurable.cginc"
 
         ENDCG
     }

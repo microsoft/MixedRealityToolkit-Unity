@@ -5,7 +5,7 @@
 // Merging should be relatively easy as none of the .cginc files need to be touched.
 // Supports stereo instancing.
 
-Shader "HoloToolkit/StandardFast"
+Shader "HoloToolkit/Obsolete/StandardFast"
 {
     Properties
     {
