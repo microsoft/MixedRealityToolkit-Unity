@@ -184,7 +184,6 @@ namespace HoloToolkit.Unity
             if (Values[ProjectSetting.BuildWsaUwp])
             {
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
-                EditorUserBuildSettings.wsaSDK = WSASDK.UWP;
             }
 
             if (Values[ProjectSetting.WsaUwpBuildToD3D])
