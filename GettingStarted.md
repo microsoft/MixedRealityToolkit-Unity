@@ -1,6 +1,6 @@
 This document describes how to prepare your work envionment to use the HoloToolkit-Unity in your project.
 
-# 1 Setting up your development envionment
+# 1. Setting up your development envionment
 Be sure to enable Developer mode for Windows 10 via:
 
 `Action Center -> All Settings -> Update & Security -> For Developers -> Enable Developer mode`
@@ -17,7 +17,7 @@ _Note: Be sure to include the Windows Store .NET scripting backend components._
 
 ![Unity Installer](/External/ReadMeImages/UnityInstaller.PNG "Unity Installer")
 
-# 2 Download the HoloToolkit-Unity asset packages
+# 2. Download the HoloToolkit-Unity asset packages
 You can download the latest unity package from [Releases](https://github.com/Microsoft/HoloToolkit-Unity/releases) folder.
 
 ### Using the source code
@@ -31,7 +31,7 @@ Now, inside of Unity ensure you have the Assets folder selected in the project v
 
 `Assets -> Export Package…`
 
-# 3 Adding the HoloToolkit-Unity package in your project
+# 3. Adding the HoloToolkit-Unity package in your project
 
 Open or create your project in Unity.
 
@@ -44,7 +44,7 @@ You should now have a `HoloToolkit` menu item.
 
 _Note: This process should be repeated for the examples and test asset packages as well._
 
-# 4 Preparing a Scene for Holographic Content
+# 4. Preparing a Scene for Holographic Content
 Create a new Scene: `File -> New Scene`
 
 Remove the default `Main Camera` and `Directional Light` objects in the scene.
@@ -62,7 +62,7 @@ Add an `Event System` to your scene by right click on 'Managers' object in your 
 
 Optionally, if you wish to enable spatial mapping in your scene, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
 
-# 5 Building your project for HoloLens
+# 5. Building your project for HoloLens
  1. Be sure to plug in your HoloLens via usb.
  2. Navigate to the Build Window: `HoloToolkit -> Build Window`.
  3. Under `Deploy` be sure to fill out the device Username and Password fields.
@@ -70,7 +70,7 @@ Optionally, if you wish to enable spatial mapping in your scene, you can add the
 
 ![Build Window](/External/ReadMeImages/BuildWindow.PNG)
 
-# 6 Deploying your HoloLens app using Visual Studio
+# 6. Deploying your HoloLens app using Visual Studio
  1. Navigate to the Build WInodw: `HoloToolkit -> Build Window`.
  2. Press `Open SLN`.
  3. Select **x86** in your build configuration options.
