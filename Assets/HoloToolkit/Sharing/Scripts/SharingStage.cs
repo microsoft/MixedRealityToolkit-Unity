@@ -297,14 +297,14 @@ namespace HoloToolkit.Sharing
 
             if (Manager != null)
             {
-                // Force a disconnection so that we can stop and start Unity without connections hanging around
+                // Force a disconnection so that we can stop and start Unity without connections hanging around.
                 Manager.GetPairedConnection().Disconnect();
                 Manager.GetServerConnection().Disconnect();
                 Manager.Dispose();
                 Manager = null;
             }
 
-            // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects
+            // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects.
             GC.Collect();
 
             base.OnDestroy();
@@ -314,7 +314,7 @@ namespace HoloToolkit.Sharing
 
         #region Event Callbacks
 
-        private void OnConnectionChanged(NetworkConnection networkConnection)
+        private void OnNetworkConnectionChanged(NetworkConnection networkConnection)
         {
             if (IsConnected)
             {
@@ -397,8 +397,8 @@ namespace HoloToolkit.Sharing
 
             // Set up callbacks so that we know when we've connected successfully.
             networkConnectionAdapter = new NetworkConnectionAdapter();
-            networkConnectionAdapter.ConnectedCallback += OnConnectionChanged;
-            networkConnectionAdapter.DisconnectedCallback += OnConnectionChanged;
+            networkConnectionAdapter.ConnectedCallback += OnNetworkConnectionChanged;
+            networkConnectionAdapter.DisconnectedCallback += OnNetworkConnectionChanged;
             Connection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
 
             SyncStateListener = new SyncStateListener();
