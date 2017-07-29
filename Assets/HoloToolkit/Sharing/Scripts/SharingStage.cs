@@ -26,7 +26,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Default username to use when joining a session.
         /// </summary>
-        /// <remarks>Set the user name by setting <see cref="UserName"/> property.</remarks>
+        /// <remarks>Set the user name with the <see cref="UserName"/> property.</remarks>
         private const string DefaultUserName = "User ";
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace HoloToolkit.Sharing
         public bool IsAudioEndpoint = true;
 
         /// <summary>
-        /// Pipes sharing server console output to Unity's output window for debugging
+        /// Pipes sharing server console output to Unity's output window for debugging.
         /// </summary>
         private ConsoleLogWriter logWriter;
 
