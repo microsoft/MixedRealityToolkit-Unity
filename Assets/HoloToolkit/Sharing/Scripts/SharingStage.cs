@@ -150,7 +150,7 @@ namespace HoloToolkit.Sharing
         private DiscoveryClient discoveryClient;
 
         /// <summary> 
-        /// Provides callbacks when server is discovered or lost.
+        /// Provides callbacks when server is discovered or lost. 
         /// </summary> 
         private DiscoveryClientAdapter discoveryClientAdapter;
 
