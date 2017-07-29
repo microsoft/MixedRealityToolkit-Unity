@@ -54,6 +54,7 @@ namespace HoloToolkit.Sharing
                     : defaultSessionName;
             }
         }
+
         [SerializeField]
         [Tooltip("Name of the session to join.")]
         private string defaultSessionName = "DefaultSession";
@@ -70,6 +71,7 @@ namespace HoloToolkit.Sharing
                     : defaultRoomName;
             }
         }
+
         [SerializeField]
         [Tooltip("Name of the room to join.")]
         private string defaultRoomName = "DefaultRoom";
