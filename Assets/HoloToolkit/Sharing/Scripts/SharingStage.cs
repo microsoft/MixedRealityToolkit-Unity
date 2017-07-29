@@ -164,6 +164,8 @@ namespace HoloToolkit.Sharing
             get { return Manager != null && Connection != null && Connection.IsConnected(); }
         }
 
+        #region Unity Methods
+
         protected override void Awake()
         {
             base.Awake();
@@ -177,13 +179,13 @@ namespace HoloToolkit.Sharing
             }
             else
             {
-                Connect();
+                ManagerInit();
             }
         }
 
         private void OnEnable()
         {
-            Application.logMessageReceived += HandleLog;
+            Application.logMessageReceived += OnLogReceived;
         }
 
         private void LateUpdate()
@@ -202,7 +204,7 @@ namespace HoloToolkit.Sharing
 
         private void OnDisable()
         {
-            Application.logMessageReceived -= HandleLog;
+            Application.logMessageReceived -= OnLogReceived;
         }
 
         protected override void OnDestroy()
@@ -259,7 +261,77 @@ namespace HoloToolkit.Sharing
             base.OnDestroy();
         }
 
-        private void Connect()
+        #endregion // Unity Methods
+
+        #region Callbacks
+
+        private void OnNetworkConnectionChanged(NetworkConnection networkConnection)
+        {
+            if (IsConnected)
+            {
+                if (SharingManagerConnected != null)
+                {
+                    SharingManagerConnected(this, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                if (SharingManagerDisconnected != null)
+                {
+                    SharingManagerDisconnected(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        private void OnSystemDiscovered(DiscoveredSystem system)
+        {
+            if (system.GetRole() != SystemRole.SessionDiscoveryServerRole) { return; }
+
+            // Found a server. Stop pinging the network and connect.
+            isTryingToFindServer = false;
+            ServerAddress = system.GetAddress();
+
+            if (ShowDetailedLogs)
+            {
+                Debug.Log("Server discovered at: " + ServerAddress);
+            }
+
+            ManagerInit();
+
+            if (ShowDetailedLogs)
+            {
+                Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
+            }
+        }
+
+        private void OnLogReceived(string logString, string stackTrace, LogType type)
+        {
+            switch (type)
+            {
+                case LogType.Error:
+                case LogType.Assert:
+                case LogType.Exception:
+                    Log.Error(string.Format("{0} \n {1}", logString, stackTrace));
+                    break;
+
+                case LogType.Warning:
+                    Log.Warning(string.Format("{0} \n {1}", logString, stackTrace));
+                    break;
+
+                case LogType.Log:
+                    if (ShowDetailedLogs)
+                    {
+                        Log.Info(logString);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("type", type, "Invalid Message Type");
+            }
+        }
+
+        #endregion // Callbacks
+
+        private void ManagerInit()
         {
             var config = new ClientConfig(ClientRole);
             config.SetIsAudioEndpoint(IsAudioEndpoint);
@@ -276,8 +348,8 @@ namespace HoloToolkit.Sharing
 
             // Set up callbacks so that we know when we've connected successfully.
             networkConnectionAdapter = new NetworkConnectionAdapter();
-            networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
-            networkConnectionAdapter.DisconnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
+            networkConnectionAdapter.ConnectedCallback += OnNetworkConnectionChanged;
+            networkConnectionAdapter.DisconnectedCallback += OnNetworkConnectionChanged;
             Connection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
 
             SyncStateListener = new SyncStateListener();
@@ -303,29 +375,6 @@ namespace HoloToolkit.Sharing
                     Manager.SetUserName(userName + localUser.GetID().ToString());
                 }
 #endif
-            }
-        }
-
-        private void NetworkConnectionAdapter_ConnectedCallback(NetworkConnection obj)
-        {
-            SendConnectedNotification();
-        }
-
-        private void SendConnectedNotification()
-        {
-            if (IsConnected)
-            {
-                if (SharingManagerConnected != null)
-                {
-                    SharingManagerConnected(this, EventArgs.Empty);
-                }
-            }
-            else
-            {
-                if (SharingManagerDisconnected != null)
-                {
-                    SharingManagerDisconnected(this, EventArgs.Empty);
-                }
             }
         }
 
@@ -363,27 +412,6 @@ namespace HoloToolkit.Sharing
             discoveryClient.Update();
         }
 
-        private void OnSystemDiscovered(DiscoveredSystem obj)
-        {
-            if (obj.GetRole() != SystemRole.SessionDiscoveryServerRole) { return; }
-
-            // Found a server. Stop pinging the network and connect.
-            isTryingToFindServer = false;
-            ServerAddress = obj.GetAddress();
-
-            if (ShowDetailedLogs)
-            {
-                Debug.Log("Server discovered at: " + ServerAddress);
-            }
-
-            Connect();
-
-            if (ShowDetailedLogs)
-            {
-                Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
-            }
-        }
-
         public void ConnectToServer(string serverAddress, int port)
         {
             ServerAddress = serverAddress;
@@ -394,31 +422,6 @@ namespace HoloToolkit.Sharing
         public void ConnectToServer()
         {
             Manager.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
-        }
-
-        private void HandleLog(string logString, string stackTrace, LogType type)
-        {
-            switch (type)
-            {
-                case LogType.Error:
-                case LogType.Assert:
-                case LogType.Exception:
-                    Log.Error(string.Format("{0} \n {1}", logString, stackTrace));
-                    break;
-
-                case LogType.Warning:
-                    Log.Warning(string.Format("{0} \n {1}", logString, stackTrace));
-                    break;
-
-                case LogType.Log:
-                    if (ShowDetailedLogs)
-                    {
-                        Log.Info(logString);
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("type", type, "Invalid Message Type");
-            }
         }
     }
 }
