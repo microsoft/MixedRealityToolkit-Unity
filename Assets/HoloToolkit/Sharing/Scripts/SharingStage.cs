@@ -226,7 +226,7 @@ namespace HoloToolkit.Sharing
             }
             else
             {
-                CreateManager(connectOnAwake);
+                ManagerInit(connectOnAwake);
             }
         }
 
@@ -345,7 +345,7 @@ namespace HoloToolkit.Sharing
                 Debug.Log("Server discovered at: " + ServerAddress);
             }
 
-            CreateManager(true);
+            ManagerInit(true);
 
             if (ShowDetailedLogs)
             {
@@ -392,7 +392,7 @@ namespace HoloToolkit.Sharing
             Manager.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
         }
 
-        private void CreateManager(bool setConnection)
+        private void ManagerInit(bool setConnection)
         {
             var config = new ClientConfig(ClientRole);
             config.SetIsAudioEndpoint(IsAudioEndpoint);
