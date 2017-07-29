@@ -4,7 +4,7 @@ This example shows some different components for rapidly prototyping basic inter
 Using these components with some Interactive controls, a designer can put together a basic click-through in a few hours without any code.
 
 ## ClickThroughExample:
-A simple click-through of three panels. The Main Menu allows naivation to two other panels (Placement and Lobby). The only interactive button in the Placement panel is the Cancel button which navigates back to Main Menu. The Lobby panel has a toggle button (Join A Session) which will show a set of available sessions. Selecting the button again will hide the sessions and show the Cancel button to navigate back to the Main Menu.
+A simple click-through of three panels. The Main Menu allows navigation to two other panels (Placement and Lobby). The only interactive button in the Placement panel is the Cancel button which navigates back to Main Menu. The Lobby panel has a toggle button (Join A Session) which will show a set of available sessions. Selecting the button again will hide the sessions and show the Cancel button to navigate back to the Main Menu.
 
 With these base elements we can build out a much deeper set of interactive wireframes that can be tested on the HoloLens.
 

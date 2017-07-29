@@ -1,21 +1,29 @@
-This document describes how to prepare the HoloToolkit sourcecode for use
-in your project.
+This document describes how to prepare your work envionment to use the HoloToolkit-Unity in your project.
 
-To get started either download the HoloToolkit-Unity Asset Package or grab a copy of this repository and download the entire project.
+# 1. Setting up your development envionment
+Be sure to enable Developer mode for Windows 10 via:
 
-# 1a. Download a HoloToolkit-Unity Asset Package
-You can download the latest unity package from [Releases](https://github.com/Microsoft/HoloToolkit-Unity/releases) folder
+`Action Center -> All Settings -> Update & Security -> For Developers -> Enable Developer mode`
 
-[Continue to step 2](/GettingStarted.md#2-using-holotoolkit-unity-in-your-project)
+![Enable Developer Mode](/External/ReadMeImages/EnableDevModeWin10.PNG "Enable Developer Mode for Windows 10")
 
-# 1b. Preparing the HoloToolkit-Unity Code
+Be sure to download and install [Visual Studio 2017](https://www.visualstudio.com/vs/) and these required componenets:
 
-If you'd like to build the HoloToolkit from the source, you'll need to clone the GitHub repository at 
-https://github.com/Microsoft/HoloToolkit-Unity.git. If you've never cloned a
-repo before then you should consider using the GitHub desktop client, see 
-https://desktop.github.com/.
+![Visual Studio Components](/External/ReadMeImages/VisualStudioComponents.PNG)
 
-# 1c. Preparing to use the HoloToolkit-Unity package
+If you haven't already installed Unity 3d on your machine, you should [download and install the latest version](https://unity3d.com/get-unity/download/archive) this project says it supports on the [main readme page](/README.md).
+
+_Note: Be sure to include the Windows Store .NET scripting backend components._
+
+![Unity Installer](/External/ReadMeImages/UnityInstaller.PNG "Unity Installer")
+
+# 2. Download the HoloToolkit-Unity asset packages
+You can download the latest unity package from [Releases](https://github.com/Microsoft/HoloToolkit-Unity/releases) folder.
+
+### Using the source code
+Optionally, If you'd like to build the HoloToolkit from the source, you'll need to clone the GitHub repository at https://github.com/Microsoft/HoloToolkit-Unity.git. If you've never cloned a repo before then you should consider using the GitHub desktop client, see https://desktop.github.com/.
+
+### Preparing an asset package from the source code
 
 Open the folder you just cloned in Unity.
 
@@ -23,18 +31,20 @@ Now, inside of Unity ensure you have the Assets folder selected in the project v
 
 `Assets -> Export Package…`
 
-# 2. Using HoloToolkit-Unity in Your Project
+# 3. Adding the HoloToolkit-Unity package in your project
 
 Open or create your project in Unity.
 
 `Assets -> Import Package -> Custom Package…` [Navigate to the package 
-you have either downloaded or exported above]. **NOTE**: The HoloToolkit-Examples folder (and all its content and subfolders) is optional when you import the custom package. You can uncheck it in the **Import Unity Package** window that shows all the contents of the package before performing the import.   
+you have either downloaded or exported above].
+
+- **NOTE**: If you've prepared the source code yourself, The HoloToolkit-Examples and HoloToolkit-Test folders (and all its content and subfolders) is optional when you import the custom package. You can uncheck it in the **Import Unity Package** window that shows all the contents of the package before performing the import.   
 
 You should now have a `HoloToolkit` menu item.
 
-`HoloToolkit -> Configure -> Apply HoloLens Scene Settings`
+_Note: This process should be repeated for the examples and test asset packages as well._
 
-# 3. Preparing a Scene for Holographic Content
+# 4. Preparing a Scene for Holographic Content
 Create a new Scene: `File -> New Scene`
 
 Remove the default `Main Camera` and `Directional Light` objects in the scene.
@@ -52,15 +62,19 @@ Add an `Event System` to your scene by right click on 'Managers' object in your 
 
 Optionally, if you wish to enable spatial mapping in your scene, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
 
-# 4. Building Your Project for HoloLens
+# 5. Building your project for HoloLens
+ 1. Be sure to plug in your HoloLens via usb.
+ 2. Navigate to the Build Window: `HoloToolkit -> Build Window`.
+ 3. Under `Deploy` be sure to fill out the device Username and Password fields.
+ 4. Under `Quick Options` press: `Build SLN, Build APPX, then Install`.
 
-`HoloToolkit -> Build Window -> Build Visual Studio SLN`
+![Build Window](/External/ReadMeImages/BuildWindow.PNG)
 
-`Open SLN`
+Optionally, you can use the [default build steps if needed](https://docs.unity3d.com/Manual/windowsholographic-startup.html).
 
-Deploy to the emulator or device.
-
-# 5. Deploying your HoloLens app using Visual Studio
- 1. Select **x86** in your build configuration
- 2. Select emulator or the device that you're using
- 3. Run the app
+# 6. Deploying your HoloLens app using Visual Studio
+ 1. Navigate to the Build WInodw: `HoloToolkit -> Build Window`.
+ 2. Press `Open SLN`.
+ 3. Select **x86** in your build configuration options.
+ 4. In the debug toolbar, Select the emulator or the device that you're using.
+ 5. Run the app using the debug toolbar.
