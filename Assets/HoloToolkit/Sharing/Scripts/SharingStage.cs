@@ -150,6 +150,7 @@ namespace HoloToolkit.Sharing
         }
 
         private NetworkConnectionAdapter networkConnectionAdapter;
+
         public NetworkConnection Connection
         {
             get { return Manager != null ? Manager.GetServerConnection() : null; }
@@ -194,7 +195,7 @@ namespace HoloToolkit.Sharing
 
             if (Manager != null)
             {
-                // Update the XToolsManager to processes any network messages that have arrived
+                // Update the Sharing Manager to processes any network messages that have arrived.
                 Manager.Update();
             }
         }
@@ -219,14 +220,6 @@ namespace HoloToolkit.Sharing
                 }
             }
 
-            if (Manager != null)
-            {
-                // Force a disconnection so that we can stop and start Unity without connections hanging around
-                Manager.GetPairedConnection().Disconnect();
-                Manager.GetServerConnection().Disconnect();
-            }
-
-            // Release the Sharing resources
             if (SessionUsersTracker != null)
             {
                 SessionUsersTracker.Dispose();
@@ -253,11 +246,14 @@ namespace HoloToolkit.Sharing
 
             if (Manager != null)
             {
+                // Force a disconnection so that we can stop and start Unity without connections hanging around.
+                Manager.GetPairedConnection().Disconnect();
+                Manager.GetServerConnection().Disconnect();
                 Manager.Dispose();
                 Manager = null;
             }
 
-            // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects
+            // Forces a garbage collection to try to clean up any additional reference to SWIG-wrapped objects.
             GC.Collect();
 
             base.OnDestroy();
@@ -278,7 +274,7 @@ namespace HoloToolkit.Sharing
 
             Manager = SharingManager.Create(config);
 
-            //set up callbacks so that we know when we've connected successfully
+            // Set up callbacks so that we know when we've connected successfully.
             networkConnectionAdapter = new NetworkConnectionAdapter();
             networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
             networkConnectionAdapter.DisconnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
@@ -319,13 +315,12 @@ namespace HoloToolkit.Sharing
         {
             if (IsConnected)
             {
-                //Send notification that we're connected 
                 if (SharingManagerConnected != null)
                 {
                     SharingManagerConnected(this, EventArgs.Empty);
                 }
             }
-            else if (!IsConnected)
+            else
             {
                 if (SharingManagerDisconnected != null)
                 {
@@ -346,13 +341,13 @@ namespace HoloToolkit.Sharing
             discoveryClient = DiscoveryClient.Create();
             discoveryClient.AddListener(discoveryClientAdapter);
 
-            //Start Finding Server 
+            // Start Finding Server.
             isTryingToFindServer = true;
         }
 
         private void AutoDiscoverUpdate()
         {
-            //Searching Enabled-> Update DiscoveryClient to check results, Wait Interval then Ping network. 
+            // Searching Enabled-> Update DiscoveryClient to check results, Wait Interval then Ping network.
             pingIntervalCurrent += Time.deltaTime;
             if (pingIntervalCurrent > PingIntervalSec)
             {
@@ -360,28 +355,32 @@ namespace HoloToolkit.Sharing
                 {
                     Debug.Log("Looking for servers...");
                 }
+
                 pingIntervalCurrent = 0;
                 discoveryClient.Ping();
             }
+
             discoveryClient.Update();
         }
 
         private void OnSystemDiscovered(DiscoveredSystem obj)
         {
-            if (obj.GetRole() == SystemRole.SessionDiscoveryServerRole)
+            if (obj.GetRole() != SystemRole.SessionDiscoveryServerRole) { return; }
+
+            // Found a server. Stop pinging the network and connect.
+            isTryingToFindServer = false;
+            ServerAddress = obj.GetAddress();
+
+            if (ShowDetailedLogs)
             {
-                //Found a server. Stop pinging the network and connect 
-                isTryingToFindServer = false;
-                ServerAddress = obj.GetAddress();
-                if (ShowDetailedLogs)
-                {
-                    Debug.Log("Server discovered at: " + ServerAddress);
-                }
-                Connect();
-                if (ShowDetailedLogs)
-                {
-                    Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
-                }
+                Debug.Log("Server discovered at: " + ServerAddress);
+            }
+
+            Connect();
+
+            if (ShowDetailedLogs)
+            {
+                Debug.LogFormat("Connected to: {0}:{1}", ServerAddress, ServerPort.ToString());
             }
         }
 
@@ -412,12 +411,13 @@ namespace HoloToolkit.Sharing
                     break;
 
                 case LogType.Log:
-                default:
                     if (ShowDetailedLogs)
                     {
                         Log.Info(logString);
                     }
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException("type", type, "Invalid Message Type");
             }
         }
     }
