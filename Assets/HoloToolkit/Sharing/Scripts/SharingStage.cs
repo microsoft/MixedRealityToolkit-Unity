@@ -234,7 +234,7 @@ namespace HoloToolkit.Sharing
 
         private void OnEnable()
         {
-            Application.logMessageReceived += HandleLog;
+            Application.logMessageReceived += OnLogReceived;
         }
 
         private void LateUpdate()
@@ -253,7 +253,7 @@ namespace HoloToolkit.Sharing
 
         private void OnDisable()
         {
-            Application.logMessageReceived -= HandleLog;
+            Application.logMessageReceived -= OnLogReceived;
         }
 
         protected override void OnDestroy()
@@ -314,11 +314,10 @@ namespace HoloToolkit.Sharing
 
         #region Event Callbacks
 
-        private void NetworkConnectionAdapter_ConnectedCallback(NetworkConnection networkConnection)
+        private void OnConnectionChanged(NetworkConnection networkConnection)
         {
-            if (networkConnection.IsConnected())
+            if (IsConnected)
             {
-                //Send notification that we're connected.
                 if (SharingManagerConnected != null)
                 {
                     SharingManagerConnected(this, EventArgs.Empty);
@@ -333,14 +332,14 @@ namespace HoloToolkit.Sharing
             }
         }
 
-        private void OnSystemDiscovered(DiscoveredSystem discoveredSystem)
+        private void OnSystemDiscovered(DiscoveredSystem system)
         {
-            if (discoveredSystem.GetRole() != SystemRole.SessionDiscoveryServerRole) { return; }
+            if (system.GetRole() != SystemRole.SessionDiscoveryServerRole) { return; }
 
             // Found a server. Stop pinging the network and connect.
             discoveryClientAdapter.DiscoveredEvent -= OnSystemDiscovered;
             isTryingToFindServer = false;
-            ServerAddress = discoveredSystem.GetAddress();
+            ServerAddress = system.GetAddress();
 
             if (ShowDetailedLogs)
             {
@@ -355,7 +354,7 @@ namespace HoloToolkit.Sharing
             }
         }
 
-        private void HandleLog(string logString, string stackTrace, LogType type)
+        private void OnLogReceived(string logString, string stackTrace, LogType type)
         {
             switch (type)
             {
@@ -382,18 +381,6 @@ namespace HoloToolkit.Sharing
 
         #endregion // Event Callbacks
 
-        public void ConnectToServer(string serverAddress, int port)
-        {
-            ServerAddress = serverAddress;
-            ServerPort = port;
-            ConnectToServer();
-        }
-
-        public void ConnectToServer()
-        {
-            Manager.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
-        }
-
         private void ManagerInit(bool setConnection)
         {
             var config = new ClientConfig(ClientRole);
@@ -410,8 +397,8 @@ namespace HoloToolkit.Sharing
 
             // Set up callbacks so that we know when we've connected successfully.
             networkConnectionAdapter = new NetworkConnectionAdapter();
-            networkConnectionAdapter.ConnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
-            networkConnectionAdapter.DisconnectedCallback += NetworkConnectionAdapter_ConnectedCallback;
+            networkConnectionAdapter.ConnectedCallback += OnConnectionChanged;
+            networkConnectionAdapter.DisconnectedCallback += OnConnectionChanged;
             Connection.AddListener((byte)MessageID.StatusOnly, networkConnectionAdapter);
 
             SyncStateListener = new SyncStateListener();
@@ -473,6 +460,18 @@ namespace HoloToolkit.Sharing
             }
 
             discoveryClient.Update();
+        }
+
+        public void ConnectToServer(string serverAddress, int port)
+        {
+            ServerAddress = serverAddress;
+            ServerPort = port;
+            ConnectToServer();
+        }
+
+        public void ConnectToServer()
+        {
+            Manager.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
         }
     }
 }
