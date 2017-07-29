@@ -1003,10 +1003,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1315177525143494}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d529249adad35084bbde52a834d075cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 1dc603e0d201da746b38b8ce2e4ae7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HideWhenConnected: 1
+  HideWhenConnected: 0
   HideAfterSeconds: 1
   Timeout: 5
   ipAddress: {fileID: 114104649135736844}
