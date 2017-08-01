@@ -830,7 +830,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
-  StageBoundsMaterial: {fileID: 2100000, guid: 474f0e0481d4aa14e92a5ada98042f3a, type: 2}
+  StageBoundsMaterial: {fileID: 0}
   EditorLines:
   - {x: 1, y: 0, z: 1}
   - {x: -1, y: 0, z: 1}
