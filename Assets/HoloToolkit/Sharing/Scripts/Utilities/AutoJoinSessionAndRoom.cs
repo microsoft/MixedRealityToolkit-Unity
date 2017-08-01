@@ -64,8 +64,11 @@ namespace HoloToolkit.Sharing.Utilities
 
         protected override void OnDestroy()
         {
-            SharingStage.Instance.SharingManagerConnected -= Connected;
-            SharingStage.Instance.SharingManagerDisconnected -= Disconnected;
+            if (SharingStage.Instance != null)
+            {
+                SharingStage.Instance.SharingManagerConnected -= Connected;
+                SharingStage.Instance.SharingManagerDisconnected -= Disconnected;
+            }
 
             if (autoConnect != null)
             {
@@ -82,6 +85,7 @@ namespace HoloToolkit.Sharing.Utilities
         /// <param name="e">Events Arguments.</param>
         private void Connected(object sender = null, EventArgs e = null)
         {
+            StopCoroutine(autoConnect);
             SharingStage.Instance.SharingManagerConnected -= Connected;
             SharingStage.Instance.SharingManagerDisconnected += Disconnected;
         }
@@ -93,10 +97,11 @@ namespace HoloToolkit.Sharing.Utilities
         /// <param name="e">Events Arguments.</param>
         private void Disconnected(object sender = null, EventArgs e = null)
         {
+            Debug.LogError("[AutoJoinSession] Disconnected!");
             SharingStage.Instance.SharingManagerDisconnected -= Disconnected;
             SharingStage.Instance.SharingManagerConnected += Connected;
 
-            if (SharingStage.Instance.ClientRole == ClientRole.Primary && autoConnect == null)
+            if (SharingStage.Instance.ClientRole == ClientRole.Primary)
             {
                 autoConnect = StartCoroutine(AutoConnect());
             }
@@ -104,6 +109,7 @@ namespace HoloToolkit.Sharing.Utilities
 
         private IEnumerator AutoConnect()
         {
+            Debug.LogWarning("[AutoJoinSession] Attempting to connect...");
             if (SharingStage.Instance.SessionsTracker == null)
             {
                 if (SharingStage.Instance.ShowDetailedLogs)
