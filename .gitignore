@@ -40,3 +40,5 @@ obj/
 *.opendb
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
+
+!*SRMesh.obj
