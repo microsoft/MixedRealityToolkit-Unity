@@ -55,11 +55,9 @@ namespace HoloToolkit.Unity.InputModule
         public bool wasThumbstickPressed;
         public bool wasTouchpadPressed;
         public bool wasTouchpadTouched;
-        public double lastThumbstickX;
-        public double lastThumbstickY;
-        public double lastTouchpadX;
-        public double lastTouchpadY;
-        public double lastSelectPressedValue;
+        public Vector2 lastThumbstickPosition;
+        public Vector2 lastTouchpadPosition;
+        public double lastSelectPressedAmount;
         public Vector3 lastPosition;
         public Quaternion lastRotation;
 

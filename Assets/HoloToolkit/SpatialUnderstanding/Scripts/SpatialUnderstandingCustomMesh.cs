@@ -8,7 +8,7 @@ using UnityEngine;
 using HoloToolkit.Unity.SpatialMapping;
 
 #if UNITY_EDITOR || UNITY_WSA
-using UnityEngine.VR.WSA;
+using UnityEngine.XR.WSA;
 #endif
 
 namespace HoloToolkit.Unity
@@ -443,5 +443,4 @@ namespace HoloToolkit.Unity
             Cleanup();
         }
     }
-
 }

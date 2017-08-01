@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using System.Collections;
 using System.Text;
 using UnityEngine;
 
 #if UNITY_EDITOR || UNITY_WSA
-using UnityEngine.VR.WSA.Input;
 using UnityEngine.Windows.Speech;
+using UnityEngine.XR.WSA.Input;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -256,30 +255,48 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IInputSource Implementation
 
-        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;
-        }
-
         public bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
         {
             sourceKind = InteractionSourceKind.Voice;
             return true;
         }
 
-        public bool TryGetPosition(uint sourceId, out Vector3 position)
+        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
+        {
+            return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;
+        }
+
+        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             position = Vector3.zero;
             return false;
         }
 
-        public bool TryGetRotation(uint sourceId, out Quaternion rotation)
+        public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
             rotation = Quaternion.identity;
             return false;
         }
 
-        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        public bool TryGetPointerRay(uint sourceId, out Ray pointingRay)
+        {
+            pointingRay = default(Ray);
+            return false;
+        }
+
+        public bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public bool TryGetGripRay(uint sourceId, out Ray pointingRay)
         {
             pointingRay = default(Ray);
             return false;
@@ -290,25 +307,25 @@ namespace HoloToolkit.Unity.InputModule
             return SupportedInputInfo.None;
         }
 
-        public bool TryGetThumbstick(uint sourceId, out bool isPressed, out double x, out double y)
+        public bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
         {
             isPressed = false;
-            x = y = 0.0;
+            position = Vector2.zero;
             return false;
         }
 
-        public bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out double x, out double y)
+        public bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
         {
             isPressed = false;
             isTouched = false;
-            x = y = 0.0;
+            position = Vector2.zero;
             return false;
         }
 
-        public bool TryGetTrigger(uint sourceId, out bool isPressed, out double pressedValue)
+        public bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
         {
             isPressed = false;
-            pressedValue = 0.0;
+            pressedAmount = 0.0;
             return false;
         }
 

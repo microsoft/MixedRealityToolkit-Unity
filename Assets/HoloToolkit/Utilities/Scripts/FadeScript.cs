@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.VR.WSA;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.XR.WSA;
+#endif
 
 namespace HoloToolkit.Unity
 {

@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR || UNITY_WSA
-using UnityEngine.VR.WSA;
-using UnityEngine.VR.WSA.Persistence;
+using UnityEngine.XR.WSA;
+using UnityEngine.XR.WSA.Persistence;
 #endif
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Wrapper around world anchor store to streamline some of the persistence api busy work.
+    /// Wrapper around world anchor store to streamline some of the persistence API busy work.
     /// </summary>
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {

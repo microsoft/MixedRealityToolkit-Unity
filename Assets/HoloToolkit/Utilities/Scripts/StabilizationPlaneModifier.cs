@@ -5,7 +5,7 @@ using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 #if UNITY_EDITOR || UNITY_WSA
-using UnityEngine.VR.WSA;
+using UnityEngine.XR.WSA;
 #endif
 
 namespace HoloToolkit.Unity

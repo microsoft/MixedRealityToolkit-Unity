@@ -8,9 +8,9 @@ using UnityEngine.Networking;
 using HoloToolkit.Unity.SpatialMapping;
 
 #if UNITY_EDITOR || UNITY_WSA
-using UnityEngine.VR.WSA.Sharing;
-using UnityEngine.VR.WSA;
-using UnityEngine.VR.WSA.Persistence;
+using UnityEngine.XR.WSA.Sharing;
+using UnityEngine.XR.WSA;
+using UnityEngine.XR.WSA.Persistence;
 #endif
 
 namespace HoloToolkit.Unity.SharingWithUNET
@@ -172,7 +172,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 return;
             }
 
-            if (UnityEngine.VR.WSA.HolographicSettings.IsDisplayOpaque)
+            if (HolographicSettings.IsDisplayOpaque)
             {
                 AnchorEstablished = true;
             }
@@ -192,7 +192,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private void Update()
         {
 #if WINDOWS_UWP
-            if (UnityEngine.VR.WSA.HolographicSettings.IsDisplayOpaque)
+            if (HolographicSettings.IsDisplayOpaque)
             {
                 return;
             }

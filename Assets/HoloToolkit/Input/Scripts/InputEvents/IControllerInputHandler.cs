@@ -9,6 +9,6 @@ namespace HoloToolkit.Unity.InputModule
     public interface IControllerInputHandler : IInputHandler
     {
         void OnTriggerPressedValueChanged(TriggerEventData eventData);
-        void OnInputXYChanged(InputXYEventData eventData);
+        void OnInputPositionChanged(InputPositionEventData eventData);
     }
 }

@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity;
 using System;
-using UnityEngine.UI;
-using System.Collections.ObjectModel;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -105,7 +105,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 #else
                 System.Threading.Tasks.Task.Run
 #endif
-            (() => {
+            (() =>
+            {
                 if (SpatialUnderstandingDllObjectPlacement.Solver_PlaceObject(
                     "UIPlacement",
                     SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placeOnWallDef),

@@ -14,16 +14,18 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The new rotation of the source.
         /// </summary>
-        public Quaternion Rotation { get; private set; }
+        public Quaternion PointerRotation { get; private set; }
+        public Quaternion GripRotation { get; private set; }
 
         public SourceRotationEventData(EventSystem eventSystem) : base(eventSystem)
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Quaternion rotation)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Quaternion pointerRotation, Quaternion gripRotation)
         {
             BaseInitialize(inputSource, sourceId, tag);
-            Rotation = rotation;
+            PointerRotation = pointerRotation;
+            GripRotation = gripRotation;
         }
     }
 }

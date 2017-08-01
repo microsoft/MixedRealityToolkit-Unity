@@ -1,7 +1,5 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Collections.Generic;
@@ -20,105 +18,6 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class BuildSLNUtilities
     {
-        public class CopyDirectoryInfo
-        {
-            public string Source { get; set; }
-            public string Destination { get; set; }
-            public string Filter { get; set; }
-            public bool Recursive { get; set; }
-
-            public CopyDirectoryInfo()
-            {
-                Source = null;
-                Destination = null;
-                Filter = "*";
-                Recursive = false;
-            }
-        }
-
-        public class BuildInfo
-        {
-            public string OutputDirectory { get; set; }
-            public IEnumerable<string> Scenes { get; set; }
-            public IEnumerable<CopyDirectoryInfo> CopyDirectories { get; set; }
-
-            public Action<BuildInfo> PreBuildAction { get; set; }
-            public Action<BuildInfo, string> PostBuildAction { get; set; }
-
-            public BuildOptions BuildOptions { get; set; }
-
-            // EditorUserBuildSettings
-            public BuildTarget BuildTarget { get; set; }
-
-            public WSASDK? WSASdk { get; set; }
-
-            public string WsaUwpSdk { get; set; }
-
-            public WSAUWPBuildType? WSAUWPBuildType { get; set; }
-
-            public Boolean? WSAGenerateReferenceProjects { get; set; }
-
-            public ColorSpace? ColorSpace { get; set; }
-            public bool IsCommandLine { get; set; }
-            public string BuildSymbols { get; private set; }
-
-            public BuildInfo()
-            {
-                BuildSymbols = string.Empty;
-            }
-
-            public void AppendSymbols(params string[] symbol)
-            {
-                AppendSymbols((IEnumerable<string>)symbol);
-            }
-
-            public void AppendSymbols(IEnumerable<string> symbols)
-            {
-                string[] toAdd = symbols.Except(BuildSymbols.Split(';'))
-                    .Where(sym => !string.IsNullOrEmpty(sym)).ToArray();
-
-                if (!toAdd.Any())
-                {
-                    return;
-                }
-
-                if (!String.IsNullOrEmpty(BuildSymbols))
-                {
-                    BuildSymbols += ";";
-                }
-
-                BuildSymbols += String.Join(";", toAdd);
-            }
-
-            public bool HasAnySymbols(params string[] symbols)
-            {
-                return BuildSymbols.Split(';').Intersect(symbols).Any();
-            }
-
-            public bool HasConfigurationSymbol()
-            {
-                return HasAnySymbols(
-                    BuildSymbolDebug,
-                    BuildSymbolRelease,
-                    BuildSymbolMaster);
-            }
-
-            public static IEnumerable<string> RemoveConfigurationSymbols(string symbolstring)
-            {
-                return symbolstring.Split(';').Except(new[]
-                {
-                    BuildSymbolDebug,
-                    BuildSymbolRelease,
-                    BuildSymbolMaster
-                });
-            }
-
-            public bool HasAnySymbols(IEnumerable<string> symbols)
-            {
-                return BuildSymbols.Split(';').Intersect(symbols).Any();
-            }
-        }
-
         /// <summary>
         /// A method capable of configuring <see cref="BuildInfo"/> settings.
         /// </summary>
