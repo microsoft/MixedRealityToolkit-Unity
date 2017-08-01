@@ -60,13 +60,18 @@ namespace HoloToolkit.Unity.InputModule
             {
                 inputManager = InputManager.Instance;
             }
+            
+            if (inputManager == null)
+            {
+                Debug.LogError("Ensure your scene has the InputManager prefab.");
+                gameObject.SetActive(false);
+            }
         }
 
         private void Update()
         {
-            if (inputManager == null)
+            if (InteractionManager.numSourceStates > 0)
             {
-                Debug.LogError("Ensure your scene has the InputManager prefab.");
                 return;
             }
 

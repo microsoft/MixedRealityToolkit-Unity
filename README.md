@@ -2,7 +2,7 @@
 This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
 The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
 
-**Current Unity Editor Project Version: Early access 5.6.1f1-MRTP8** **Not accessible broadly yet.**
+**Current Unity Editor Project Version: Early access 5.6.1f1-MRTP9** **Not accessible broadly yet.**
 
 **Branch: HoloToolkit-Unity Creators Update with Windows Mixed Reality support for immersive headsets.**
 
@@ -13,7 +13,7 @@ The HoloToolkit is a collection of scripts and components intended to accelerate
 4. Development PC needs to be on Creators Update SDK and builds as below. Either:
     1. Launch Settings > Updates and Security > Windows Insider Program > Get Insider Preview builds 
     2. Update to the publicly released Creators Update, build 15063.
-5. Early access private build of Unity 5.6.1f1-MRTP8 with Creators Update API support. This build of Unity is currently invite only.
+5. Early access private build of Unity 5.6.1f1-MRTP9 with Creators Update API support. This build of Unity is currently invite-only.
     1. Please read more about [Immersive headset details](https://developer.microsoft.com/en-us/windows/mixed-reality/immersive_headset_details).
 6. [Visual Studio 2017](https://www.visualstudio.com/downloads/).
 
@@ -22,13 +22,18 @@ The HoloToolkit is a collection of scripts and components intended to accelerate
 2. You can use this branch with Windows Creators Update builds on your PC and deploy it to Windows Anniversary Update HoloLens flight.
 3. Windows Creators Update flights don’t ship on HoloLens.
 
-## What's new?
+## What's new for Immersive headsets in this branch?
+
 **GamepadInput** supports the Xbox controller and maps it to the input manager events.
 You can use the Xbox controller A to tap.
 Press A and hold to do hold started, canceled and completed.
 Press A and left joystick to trigger the navigation events.
 Press the Y button to teleport in your world.
 Press the B button to return back to your original location.
+
+**Motion Controller** support that renders a prefab where you have the Crytal Key motion controller in your hand. Refer to [MotionControllerTest.unity](https://github.com/Microsoft/HoloToolkit-Unity/blob/RS2_WindowsMixedReality/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene for how to use the scripts.
+
+**Teleport** capability with new prefabs like [MixedRealityCameraParent.prefab](https://github.com/Microsoft/HoloToolkit-Unity/blob/RS2_WindowsMixedReality/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) that help you [teleport](https://github.com/Microsoft/HoloToolkit-Unity/blob/RS2_WindowsMixedReality/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) to different locations in your app using the gamepad.
 
 **Stage** folder has the scripts that support the StageRoot component that helps define the 0,0,0 for your immersive applications.
 Prefabs help to draw the floor for immersive headsets and also renders the stage bounds if you wish to display those in your application.
