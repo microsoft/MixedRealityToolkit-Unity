@@ -31,9 +31,9 @@ Press A and left joystick to trigger the navigation events.
 Press the Y button to teleport in your world.
 Press the B button to return back to your original location.
 
-**Motion Controller** support that renders a prefab where you have the Crytal Key motion controller in your hand. Refer to [MotionControllerTest.unity](https://github.com/Microsoft/HoloToolkit-Unity/blob/RS2_WindowsMixedReality/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene for how to use the scripts.
+**Motion Controller** support that renders a prefab where you have the Crytal Key motion controller in your hand. Refer to [MotionControllerTest.unity](https://github.com/Microsoft/HoloToolkit-Unity/blob/Dev_Unity_2017.2.0/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene for how to use the scripts.
 
-**Teleport** capability with new prefabs like [MixedRealityCameraParent.prefab](https://github.com/Microsoft/HoloToolkit-Unity/blob/RS2_WindowsMixedReality/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) that help you [teleport](https://github.com/Microsoft/HoloToolkit-Unity/blob/RS2_WindowsMixedReality/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) to different locations in your app using the gamepad.
+**Teleport** capability with new prefabs like [MixedRealityCameraParent.prefab](https://github.com/Microsoft/HoloToolkit-Unity/blob/Dev_Unity_2017.2.0/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) that help you [teleport](https://github.com/Microsoft/HoloToolkit-Unity/blob/Dev_Unity_2017.2.0/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) to different locations in your app using the gamepad.
 
 **Stage** folder has the scripts that support the StageRoot component that helps define the 0,0,0 for your immersive applications.
 Prefabs help to draw the floor for immersive headsets and also renders the stage bounds if you wish to display those in your application.
