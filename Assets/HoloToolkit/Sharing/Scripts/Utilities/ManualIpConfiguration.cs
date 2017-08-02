@@ -10,6 +10,11 @@ namespace HoloToolkit.Sharing.Utilities
     /// </summary>
     public class ManualIpConfiguration : MonoBehaviour
     {
+        /// <summary>
+        /// The maximum length of characters in a IPv4 address.
+        /// </summary>
+        private const int MaximumCharacterLength = 12;
+
         public string IpAddress { get { return ipAddress.text; } }
 
         /// <summary>
@@ -152,7 +157,7 @@ namespace HoloToolkit.Sharing.Utilities
                 ipAddress.text = string.Empty;
             }
 
-            if (ipAddress.text.Length < 15)
+            if (ipAddress.text.Length < MaximumCharacterLength)
             {
                 ipAddress.text += input;
             }
