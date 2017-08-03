@@ -3,7 +3,11 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VR.WSA.Input;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 #if !UNITY_EDITOR && UNITY_WSA
 using GLTF;
 using System.Collections;
@@ -56,14 +60,17 @@ namespace HoloToolkit.Unity.InputModule
                     spatialInteractionManager.SourceDetected += SpatialInteractionManager_SourceDetected;
                 }
             }, true);
-#else
+
+#elif UNITY_EDITOR
             // Since we're using non-Unity APIs, this will only run in a UWP app.
             Debug.Log("Running in the editor will only render the override models.");
-            InteractionManager.SourceDetected += InteractionManager_SourceDetected;
+            InteractionManager.OnSourceDetected += InteractionManager_OnSourceDetected;
 #endif
 
-            InteractionManager.SourceLost += InteractionManager_SourceLost;
-            InteractionManager.SourceUpdated += InteractionManager_SourceUpdated;
+#if UNITY_EDITOR || UNITY_WSA
+            InteractionManager.OnSourceLost += InteractionManager_OnSourceLost;
+            InteractionManager.OnSourceUpdated += InteractionManager_OnSourceUpdated;
+#endif
         }
 
 #if !UNITY_EDITOR && UNITY_WSA
@@ -163,18 +170,18 @@ namespace HoloToolkit.Unity.InputModule
         }
 #endif
 
-        private void InteractionManager_SourceDetected(InteractionManager.SourceEventArgs obj)
+        private void InteractionManager_OnSourceDetected(SourceDetectedEventArgs obj)
         {
-            if (obj.state.source.sourceKind == InteractionSourceKind.Controller)
+            if (obj.state.source.kind == InteractionSourceKind.Controller)
             {
                 if (!controllerDictionary.ContainsKey(obj.state.source.id))
                 {
                     GameObject controllerModelGO;
-                    if (obj.state.source.handedness == InteractionSourceHandedness.Left && leftControllerOverride != null)
+                    if (obj.state.handType == InteractionSourceHandType.Left && leftControllerOverride != null)
                     {
                         controllerModelGO = Instantiate(leftControllerOverride);
                     }
-                    else if (obj.state.source.handedness == InteractionSourceHandedness.Right && rightControllerOverride != null)
+                    else if (obj.state.handType == InteractionSourceHandType.Right && rightControllerOverride != null)
                     {
                         controllerModelGO = Instantiate(rightControllerOverride);
                     }
@@ -183,7 +190,7 @@ namespace HoloToolkit.Unity.InputModule
                         return;
                     }
 
-                    FinishControllerSetup(controllerModelGO, true, obj.state.source.handedness.ToString(), obj.state.source.id);
+                    FinishControllerSetup(controllerModelGO, true, obj.state.handType.ToString(), obj.state.source.id);
                 }
             }
         }
@@ -194,10 +201,10 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="sender">The SpatialInteractionManager which sent this event.</param>
         /// <param name="args">The source event data to be used determine the controller model to be removed.</param>
-        private void InteractionManager_SourceLost(InteractionManager.SourceEventArgs obj)
+        private void InteractionManager_OnSourceLost(SourceLostEventArgs obj)
         {
             InteractionSource source = obj.state.source;
-            if (source.sourceKind == InteractionSourceKind.Controller)
+            if (source.kind == InteractionSourceKind.Controller)
             {
                 ControllerInfo controller;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
@@ -210,12 +217,12 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InteractionManager_SourceUpdated(InteractionManager.SourceEventArgs obj)
+        private void InteractionManager_OnSourceUpdated(SourceUpdatedEventArgs obj)
         {
             ControllerInfo currentController;
             if (controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
             {
-                if (currentController.grasp != null && obj.state.source.supportsGrasp)
+                if (currentController.grasp != null && obj.state.supportsGrasp)
                 {
                     if (obj.state.grasped != currentController.wasGrasped)
                     {
@@ -233,7 +240,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if (currentController.menu != null && obj.state.source.supportsMenu)
+                if (currentController.menu != null && obj.state.supportsMenu)
                 {
                     if (obj.state.menuPressed != currentController.wasMenuPressed)
                     {
@@ -253,20 +260,19 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (currentController.select != null)
                 {
-                    if (obj.state.selectPressedValue != currentController.lastSelectPressedValue)
+                    if (obj.state.selectPressedAmount != currentController.lastSelectPressedAmount)
                     {
-                        currentController.select.transform.localPosition = Vector3.Lerp(currentController.selectUnpressed.localPosition, currentController.selectPressed.localPosition, (float)(obj.state.selectPressedValue));
-                        currentController.select.transform.localRotation = Quaternion.Lerp(currentController.selectUnpressed.localRotation, currentController.selectPressed.localRotation, (float)(obj.state.selectPressedValue));
-                        currentController.lastSelectPressedValue = obj.state.selectPressedValue;
+                        currentController.select.transform.localPosition = Vector3.Lerp(currentController.selectUnpressed.localPosition, currentController.selectPressed.localPosition, (float)(obj.state.selectPressedAmount));
+                        currentController.select.transform.localRotation = Quaternion.Lerp(currentController.selectUnpressed.localRotation, currentController.selectPressed.localRotation, (float)(obj.state.selectPressedAmount));
+                        currentController.lastSelectPressedAmount = obj.state.selectPressedAmount;
                     }
                 }
 
-                InteractionController controller;
-                if (currentController.thumbstickPress != null && currentController.thumbstickX != null && currentController.thumbstickY != null && obj.state.source.TryGetController(out controller) && controller.hasThumbstick)
+                if (currentController.thumbstickPress != null && obj.state.supportsThumbstick)
                 {
-                    if (obj.state.controllerProperties.thumbstickPressed != currentController.wasThumbstickPressed)
+                    if (obj.state.thumbstickPressed != currentController.wasThumbstickPressed)
                     {
-                        if (obj.state.controllerProperties.thumbstickPressed)
+                        if (obj.state.thumbstickPressed)
                         {
                             currentController.thumbstickPress.transform.localPosition = currentController.thumbstickPressed.localPosition;
                             currentController.thumbstickPress.transform.localRotation = currentController.thumbstickPressed.localRotation;
@@ -276,31 +282,31 @@ namespace HoloToolkit.Unity.InputModule
                             currentController.thumbstickPress.transform.localPosition = currentController.thumbstickUnpressed.localPosition;
                             currentController.thumbstickPress.transform.localRotation = currentController.thumbstickUnpressed.localRotation;
                         }
-                        currentController.wasThumbstickPressed = obj.state.controllerProperties.thumbstickPressed;
-                    }
-
-                    if (obj.state.controllerProperties.thumbstickX != currentController.lastThumbstickX)
-                    {
-                        float thumbstickXNormalized = (float)((obj.state.controllerProperties.thumbstickX + 1) / 2.0f);
-                        currentController.thumbstickX.transform.localPosition = Vector3.Lerp(currentController.thumbstickXMin.localPosition, currentController.thumbstickXMax.localPosition, thumbstickXNormalized);
-                        currentController.thumbstickX.transform.localRotation = Quaternion.Lerp(currentController.thumbstickXMin.localRotation, currentController.thumbstickXMax.localRotation, thumbstickXNormalized);
-                        currentController.lastThumbstickX = obj.state.controllerProperties.thumbstickX;
-                    }
-
-                    if (obj.state.controllerProperties.thumbstickY != currentController.lastThumbstickY)
-                    {
-                        float thumbstickYNormalized = (float)((obj.state.controllerProperties.thumbstickY + 1) / 2.0f);
-                        currentController.thumbstickY.transform.localPosition = Vector3.Lerp(currentController.thumbstickYMax.localPosition, currentController.thumbstickYMin.localPosition, thumbstickYNormalized);
-                        currentController.thumbstickY.transform.localRotation = Quaternion.Lerp(currentController.thumbstickYMax.localRotation, currentController.thumbstickYMin.localRotation, thumbstickYNormalized);
-                        currentController.lastThumbstickY = obj.state.controllerProperties.thumbstickY;
+                        currentController.wasThumbstickPressed = obj.state.thumbstickPressed;
                     }
                 }
 
-                if (currentController.touchpadPress != null && obj.state.source.TryGetController(out controller) && controller.hasTouchpad)
+                if(currentController.thumbstickX != null && currentController.thumbstickY != null && obj.state.supportsThumbstick)
                 {
-                    if (obj.state.controllerProperties.touchpadPressed != currentController.wasTouchpadPressed)
+                    if (obj.state.thumbstickPosition != currentController.lastThumbstickPosition)
                     {
-                        if (obj.state.controllerProperties.touchpadPressed)
+                        Vector2 thumbstickNormalized = (obj.state.thumbstickPosition + Vector2.one) / 2.0f;
+
+                        currentController.thumbstickX.transform.localPosition = Vector3.Lerp(currentController.thumbstickXMin.localPosition, currentController.thumbstickXMax.localPosition, thumbstickNormalized.x);
+                        currentController.thumbstickX.transform.localRotation = Quaternion.Lerp(currentController.thumbstickXMin.localRotation, currentController.thumbstickXMax.localRotation, thumbstickNormalized.x);
+
+                        currentController.thumbstickY.transform.localPosition = Vector3.Lerp(currentController.thumbstickYMax.localPosition, currentController.thumbstickYMin.localPosition, thumbstickNormalized.y);
+                        currentController.thumbstickY.transform.localRotation = Quaternion.Lerp(currentController.thumbstickYMax.localRotation, currentController.thumbstickYMin.localRotation, thumbstickNormalized.y);
+
+                        currentController.lastThumbstickPosition = obj.state.thumbstickPosition;
+                    }
+                }
+
+                if (currentController.touchpadPress != null && obj.state.supportsTouchpad)
+                {
+                    if (obj.state.touchpadPressed != currentController.wasTouchpadPressed)
+                    {
+                        if (obj.state.touchpadPressed)
                         {
                             currentController.touchpadPress.transform.localPosition = currentController.touchpadPressed.localPosition;
                             currentController.touchpadPress.transform.localRotation = currentController.touchpadPressed.localRotation;
@@ -310,15 +316,15 @@ namespace HoloToolkit.Unity.InputModule
                             currentController.touchpadPress.transform.localPosition = currentController.touchpadUnpressed.localPosition;
                             currentController.touchpadPress.transform.localRotation = currentController.touchpadUnpressed.localRotation;
                         }
-                        currentController.wasTouchpadPressed = obj.state.controllerProperties.touchpadPressed;
+                        currentController.wasTouchpadPressed = obj.state.touchpadPressed;
                     }
                 }
 
-                if (currentController.touchpadTouchX != null && currentController.touchpadTouchY != null && obj.state.source.TryGetController(out controller) && controller.hasTouchpad)
+                if (currentController.touchpadTouchX != null && currentController.touchpadTouchY != null && obj.state.supportsTouchpad)
                 {
-                    if (obj.state.controllerProperties.touchpadTouched != currentController.wasTouchpadTouched)
+                    if (obj.state.touchpadTouched != currentController.wasTouchpadTouched)
                     {
-                        if (obj.state.controllerProperties.touchpadTouched)
+                        if (obj.state.touchpadTouched)
                         {
                             currentController.touchpadTouchVisualizer.SetActive(true);
                         }
@@ -326,35 +332,32 @@ namespace HoloToolkit.Unity.InputModule
                         {
                             currentController.touchpadTouchVisualizer.SetActive(false);
                         }
-                        currentController.wasTouchpadTouched = obj.state.controllerProperties.touchpadTouched;
+                        currentController.wasTouchpadTouched = obj.state.touchpadTouched;
                     }
 
-                    if (obj.state.controllerProperties.touchpadX != currentController.lastTouchpadX)
+                    if (obj.state.touchpadPosition != currentController.lastTouchpadPosition)
                     {
-                        float touchpadXNormalized = (float)((obj.state.controllerProperties.touchpadX + 1) / 2.0f);
-                        currentController.touchpadTouchX.transform.localPosition = Vector3.Lerp(currentController.touchpadTouchXMin.localPosition, currentController.touchpadTouchXMax.localPosition, touchpadXNormalized);
-                        currentController.touchpadTouchX.transform.localRotation = Quaternion.Lerp(currentController.touchpadTouchXMin.localRotation, currentController.touchpadTouchXMax.localRotation, touchpadXNormalized);
-                        currentController.lastTouchpadX = obj.state.controllerProperties.touchpadX;
-                    }
+                        Vector2 touchpadNormalized = (obj.state.touchpadPosition + Vector2.one) / 2.0f;
 
-                    if (obj.state.controllerProperties.touchpadY != currentController.lastTouchpadY)
-                    {
-                        float touchpadYNormalized = (float)((obj.state.controllerProperties.touchpadY + 1) / 2.0f);
-                        currentController.touchpadTouchY.transform.localPosition = Vector3.Lerp(currentController.touchpadTouchYMax.localPosition, currentController.touchpadTouchYMin.localPosition, touchpadYNormalized);
-                        currentController.touchpadTouchY.transform.localRotation = Quaternion.Lerp(currentController.touchpadTouchYMax.localRotation, currentController.touchpadTouchYMin.localRotation, touchpadYNormalized);
-                        currentController.lastTouchpadY = obj.state.controllerProperties.touchpadY;
+                        currentController.touchpadTouchX.transform.localPosition = Vector3.Lerp(currentController.touchpadTouchXMin.localPosition, currentController.touchpadTouchXMax.localPosition, touchpadNormalized.x);
+                        currentController.touchpadTouchX.transform.localRotation = Quaternion.Lerp(currentController.touchpadTouchXMin.localRotation, currentController.touchpadTouchXMax.localRotation, touchpadNormalized.x);
+
+                        currentController.touchpadTouchY.transform.localPosition = Vector3.Lerp(currentController.touchpadTouchYMax.localPosition, currentController.touchpadTouchYMin.localPosition, touchpadNormalized.y);
+                        currentController.touchpadTouchY.transform.localRotation = Quaternion.Lerp(currentController.touchpadTouchYMax.localRotation, currentController.touchpadTouchYMin.localRotation, touchpadNormalized.y);
+
+                        currentController.lastTouchpadPosition = obj.state.touchpadPosition;
                     }
                 }
 
                 Vector3 newPosition;
-                if (obj.state.sourcePose.TryGetPosition(out newPosition) && newPosition != currentController.lastPosition)
+                if (obj.state.properties.location.grip.TryGetPosition(out newPosition) && newPosition != currentController.lastPosition)
                 {
                     currentController.gameObject.transform.localPosition = newPosition;
                     currentController.lastPosition = newPosition;
                 }
 
                 Quaternion newRotation;
-                if (obj.state.sourcePose.TryGetRotation(out newRotation) && newRotation != currentController.lastRotation)
+                if (obj.state.properties.location.grip.TryGetRotation(out newRotation) && newRotation != currentController.lastRotation)
                 {
                     currentController.gameObject.transform.localRotation = newRotation;
                     currentController.lastRotation = newRotation;

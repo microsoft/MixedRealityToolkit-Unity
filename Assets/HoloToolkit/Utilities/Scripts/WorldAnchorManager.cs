@@ -4,8 +4,8 @@
 using HoloToolkit.Unity.SpatialMapping;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VR.WSA;
-using UnityEngine.VR.WSA.Persistence;
+using UnityEngine.XR.WSA;
+using UnityEngine.XR.WSA.Persistence;
 
 namespace HoloToolkit.Unity
 {

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -60,7 +60,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Events
             SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
-            InteractionManager.SourcePressed += OnAirTap;
+            InteractionManager.OnSourcePressed += OnAirTap;
         }
 
         protected override void OnDestroy()
@@ -69,7 +69,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
             }
-            InteractionManager.SourcePressed -= OnAirTap;
+            InteractionManager.OnSourcePressed -= OnAirTap;
 
             base.OnDestroy();
         }
@@ -108,7 +108,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 #else
                 System.Threading.Tasks.Task.Run
 #endif
-            (() => {
+            (() =>
+            {
                 if (SpatialUnderstandingDllObjectPlacement.Solver_PlaceObject(
                     "UIPlacement",
                     SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placeOnWallDef),
@@ -169,7 +170,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             Debug.Log("PlaceMenu - InFrontOfUser");
         }
 
-        private void OnAirTap(InteractionManager.SourceEventArgs obj)
+        private void OnAirTap(SourcePressedEventArgs obj)
         {
             // Try to intersect one of the buttons
             Vector3 hitPos, hitNormal;

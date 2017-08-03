@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.VR.WSA;
+using UnityEngine.XR.WSA;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity.InputModule
         public Color BackgroundColor_TransparentDisplay = Color.clear;
         [Tooltip("Set the desired quality for your application for HoloLens.")]
         public QualityLevel HoloLensQualityLevel;
-        
+
         public enum DisplayType
         {
             Opaque = 0,

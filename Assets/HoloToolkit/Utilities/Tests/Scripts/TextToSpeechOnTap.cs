@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.Tests
 {
@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.Tests
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (eventData.PressKind == InteractionPressKind.Select)
+            if (eventData.PressType == InteractionSourcePressType.Select)
             {
                 // If we have a text to speech manager on the target object, say something.
                 // This voice will appear to emanate from the object.

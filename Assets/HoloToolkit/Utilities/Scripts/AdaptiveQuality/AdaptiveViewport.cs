@@ -51,12 +51,12 @@ namespace HoloToolkit.Unity
 			{
 				qualityController.QualityChanged -= QualityChangedEvent;
 			}
-			UnityEngine.VR.VRSettings.renderViewportScale = 1.0f;
+			UnityEngine.XR.XRSettings.renderViewportScale = 1.0f;
 		}
 
 		protected void OnPreCull()
 		{
-			UnityEngine.VR.VRSettings.renderViewportScale = CurrentScale;
+			UnityEngine.XR.XRSettings.renderViewportScale = CurrentScale;
 		}
 
 		private void QualityChangedEvent(int newQuality, int previousQuality)

@@ -3,7 +3,7 @@
 
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-using UnityEngine.VR.WSA;
+using UnityEngine.XR.WSA;
 
 namespace HoloToolkit.Unity
 {
