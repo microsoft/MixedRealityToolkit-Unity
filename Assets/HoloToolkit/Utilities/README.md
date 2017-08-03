@@ -123,6 +123,9 @@ TODO: Remove if reduncatnt to InterpolatedVector3.cs
 
 ---
 
+#### ApplicationViewManager.cs
+Switchs app to a XAML page vaiew, and waits for a return value from it.
+
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
 
@@ -209,47 +212,17 @@ Wrapper around world anchor store to streamline some of the persistence api busy
 ### [Shaders](Shaders)
 ---
 
-#### FastConfigurable.shader
-Very fast shader that uses the Unity light system.  Compiles down to only performing the operations you're actually using.  Uses material property drawers rather than a custom editor for ease of maintenance.
+#### macro.cginc
+Preprocessor macros to support shaders
 
 #### HoloToolkitCommon.cginc
 Common shader functionality
 
-#### LambertianConfigurable.cginc
-Code shared between LambertianConfigurable.shader and LambertianConfigurableTransparent.shader.
+#### FastConfigurable.shader
+Very fast shader that uses the Unity light system.  Compiles down to only performing the operations you're actually using.  Uses material property drawers rather than a custom editor for ease of maintenance.
 
-#### LambertianConfigurable.shader
-Feature configurable per-pixel lambertian shader.  Use when higher quality lighting is desired, but specular highlights are not needed.
-
-#### LambertianConfigurableTransparent.shader
-Feature configurable per-pixel lambertian transparent shader.  Use when higher quality lighting and transparency are desired, but specular highlights are not needed.
-
-#### macro.cginc
-Preprocessor macros to support shaders
-
-#### StandardFast.shader
-Higher performance drop-in replacement for the Unity Standard Shader.  Use when very high quality lighting (including reflections) is needed.
-
-#### UnlitConfigurable.cginc
-Code shared between UnlitConfigurable.shader and UnlitConfigurableTransparent.shader.
-
-#### UnlitConfigurable.shader
-Feature configurable unlit shader.  Use when no lighting is desired.
-
-#### UnlitConfigurableTransparent.shader
-Feature configurable unlit transparent shader.  Use when transparency and no lighting are desired.
-
-#### UnlitNoDepthTest.shader
-Render with a single texture but ignore depth test resuls so object always appears on top.
-
-#### VertexLitConfigurable.cginc
-Code shared between VertexLitConfigurable.shader and VertexLitConfigurableTransparent.shader.
-
-#### VertexLitConfigurable.shader
-Feature configurable vertex lit shader.  Use when a higher performance but lower precision lighting trade-off is acceptable.
-
-#### VertexLitConfigurableTransparent.shader
-Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
+#### FastConfigurable2Sided.shader
+Similar attributes for FastConfigurable with the benefit of 2 sides!
 
 #### WindowOcclusion.shader
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.

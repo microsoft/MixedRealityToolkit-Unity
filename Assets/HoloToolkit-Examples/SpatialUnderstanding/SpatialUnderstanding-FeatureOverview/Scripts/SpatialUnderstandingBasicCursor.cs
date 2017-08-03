@@ -64,10 +64,12 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         protected virtual RaycastResult CalculateRayIntersect()
         {
-            RaycastResult result = new RaycastResult();
-            result.Hit = GazeManager.Instance.IsGazingAtObject;
-            result.Position = GazeManager.Instance.HitPosition;
-            result.Normal = GazeManager.Instance.HitInfo.normal;
+            var result = new RaycastResult
+            {
+                Hit = GazeManager.Instance.IsGazingAtObject,
+                Position = GazeManager.Instance.HitPosition,
+                Normal = GazeManager.Instance.HitInfo.normal
+            };
             return result;
         }
 
