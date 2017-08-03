@@ -241,23 +241,23 @@ namespace HoloToolkit.Unity.SpatialMapping
             // Create SurfacePlane objects to represent each plane found in the Spatial Mapping mesh.
             for (int index = 0; index < planes.Length; index++)
             {
-                GameObject destPlane;
+                GameObject destinationPlane;
                 BoundedPlane boundedPlane = planes[index];
 
                 // Instantiate a SurfacePlane object, which will have the same bounds as our BoundedPlane object.
                 if (SurfacePlanePrefab != null && SurfacePlanePrefab.GetComponent<SurfacePlane>() != null)
                 {
-                    destPlane = Instantiate(SurfacePlanePrefab);
+                    destinationPlane = Instantiate(SurfacePlanePrefab);
                 }
                 else
                 {
-                    destPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    destPlane.AddComponent<SurfacePlane>();
-                    destPlane.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                    destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    destinationPlane.AddComponent<SurfacePlane>();
+                    destinationPlane.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 }
 
-                destPlane.transform.parent = planesParent.transform;
-                SurfacePlane surfacePlane = destPlane.GetComponent<SurfacePlane>();
+                destinationPlane.transform.parent = planesParent.transform;
+                var surfacePlane = destinationPlane.GetComponent<SurfacePlane>();
 
                 // Set the Plane property to adjust transform position/scale/rotation and determine plane type.
                 surfacePlane.Plane = boundedPlane;
@@ -266,13 +266,13 @@ namespace HoloToolkit.Unity.SpatialMapping
 
                 if ((destroyPlanesMask & surfacePlane.PlaneType) == surfacePlane.PlaneType)
                 {
-                    DestroyImmediate(destPlane);
+                    DestroyImmediate(destinationPlane);
                 }
                 else
                 {
                     // Set the plane to use the same layer as the SpatialMapping mesh.
-                    destPlane.layer = SpatialMappingManager.Instance.PhysicsLayer;
-                    ActivePlanes.Add(destPlane);
+                    destinationPlane.layer = SpatialMappingManager.Instance.PhysicsLayer;
+                    ActivePlanes.Add(destinationPlane);
                 }
 
                 // If too much time has passed, we need to return control to the main game loop.
