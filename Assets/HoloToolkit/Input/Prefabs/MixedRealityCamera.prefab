@@ -404,7 +404,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -417,6 +417,7 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1208988342737728}
   m_Enabled: 1
+  m_ExtensionPropertyValues: []
 --- !u!92 &92627437589219448
 Behaviour:
   m_ObjectHideFlags: 1
