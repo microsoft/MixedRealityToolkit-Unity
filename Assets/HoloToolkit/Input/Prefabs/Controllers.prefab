@@ -54,4 +54,4 @@ MonoBehaviour:
   leftControllerOverride: {fileID: 0}
   rightControllerOverride: {fileID: 0}
   touchpadTouchedOverride: {fileID: 0}
-  GLTFShader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
+  GLTFShader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
