@@ -27,8 +27,24 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("Sends slider event information on Update")]
         public UnityEvent OnUpdateEvent;
 
-        [Tooltip("The value of the slider")]
-        public float SliderValue = 0;
+        /// <summary>
+        /// The value of the slider
+        /// </summary>
+        public float SliderValue
+        {
+            private set
+            {
+                if (mSliderValue != value)
+                {
+                    mSliderValue = value;
+                    OnUpdateEvent.Invoke();
+                }
+            }
+            get
+            {
+                return mSliderValue;
+            }
+        }
 
         [Tooltip("Min numeric value to display in the slider label")]
         public float MinSliderValue = 0;
@@ -41,6 +57,8 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         [Tooltip("Format the slider value and control decimal places if needed")]
         public string LabelFormat = "#.##";
+
+        private float mSliderValue;
 
         // calculation variables
         private float mValueSpan;
@@ -84,7 +102,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartSliderPosition = mStartCenter + Vector3.left * mSliderMagnitude / 2;
 
             mValueSpan = MaxSliderValue - MinSliderValue;
-            SliderValue = Mathf.Clamp(SliderValue, MinSliderValue, MaxSliderValue);
+            mSliderValue = Mathf.Clamp(SliderValue, MinSliderValue, MaxSliderValue);
 
             if (!Centered)
             {
@@ -207,7 +225,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 				return;
 			}
 			
-			SliderValue = Mathf.Clamp(value, MinSliderValue, MaxSliderValue);
+			mSliderValue = Mathf.Clamp(value, MinSliderValue, MaxSliderValue);
 			mDeltaValue = SliderValue / MaxSliderValue;
 			UpdateVisuals();
             mCachedValue = mDeltaValue;
