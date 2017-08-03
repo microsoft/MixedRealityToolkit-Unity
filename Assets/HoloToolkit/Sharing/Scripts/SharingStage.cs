@@ -66,8 +66,8 @@ namespace HoloToolkit.Sharing
         {
             get
             {
-                return Manager.GetRoomManager() != null && Manager.GetRoomManager().GetCurrentRoom() != null
-                    ? Manager.GetRoomManager().GetCurrentRoom().GetName().GetString()
+                return CurrentRoomManager != null && CurrentRoomManager.GetCurrentRoom() != null
+                    ? CurrentRoomManager.GetCurrentRoom().GetName().GetString()
                     : defaultRoomName;
             }
         }
@@ -193,9 +193,11 @@ namespace HoloToolkit.Sharing
             }
         }
 
+        public RoomManager CurrentRoomManager { get { return Manager != null ? Manager.GetRoomManager() : null; } }
+
         public Room CurrentRoom
         {
-            get { return Manager != null ? Manager.GetRoomManager().GetCurrentRoom() : null; }
+            get { return CurrentRoomManager != null ? CurrentRoomManager.GetCurrentRoom() : null; }
         }
 
         private NetworkConnectionAdapter networkConnectionAdapter;
