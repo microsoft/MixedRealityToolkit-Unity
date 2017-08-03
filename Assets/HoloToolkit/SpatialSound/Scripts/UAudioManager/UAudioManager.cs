@@ -120,7 +120,7 @@ namespace HoloToolkit.Unity
             // If the instance limit has been reached...
             if (currentEvent.InstanceLimit != 0 && GetInstances(eventName) >= currentEvent.InstanceLimit)
             {
-                if (currentEvent.AudioEventInstance == AudioEventInstanceBehavior.KillNewest)
+                if (currentEvent.AudioEventInstanceBehavior == AudioEventInstanceBehavior.KillNewest)
                 {
                     // Do not play the event.
                     Debug.LogFormat(this, "Instance limit reached, not playing event \"{0}\"", eventName);
