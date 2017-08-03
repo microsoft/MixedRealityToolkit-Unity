@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -88,7 +88,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         protected bool mCheckRollOff = false;
         protected bool mCheckHold = false;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         protected KeywordRecognizer mKeywordRecognizer;
 #endif
         protected Dictionary<string, int> mKeywordDictionary;
@@ -134,7 +134,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                     }
                 }
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
                 if (!KeywordRequiresGaze)
                 {
                     mKeywordRecognizer = new KeywordRecognizer(mKeywordArray);
@@ -206,7 +206,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void SetKeywordListener(bool listen)
         {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (listen)
             {
                 if (KeywordRequiresGaze && mKeywordArray != null)
@@ -374,7 +374,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         protected virtual void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
 
@@ -510,7 +510,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         protected virtual void OnEnable()
         {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (mKeywordRecognizer != null && !KeywordRequiresGaze)
             {
                 SetKeywordListener(true);

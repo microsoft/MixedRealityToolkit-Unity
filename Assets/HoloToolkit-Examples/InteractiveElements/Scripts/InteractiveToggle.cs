@@ -4,7 +4,7 @@
 using UnityEngine.Events;
 using HoloToolkit.Unity.InputModule;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -190,7 +190,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             
         }
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         protected override void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
             base.KeywordRecognizer_OnPhraseRecognized(args);

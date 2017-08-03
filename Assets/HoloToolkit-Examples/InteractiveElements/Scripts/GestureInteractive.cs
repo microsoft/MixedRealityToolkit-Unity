@@ -6,7 +6,7 @@ using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using Cursor = HoloToolkit.Unity.InputModule.Cursor;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -303,7 +303,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// From Interactive, but customized for triggering gestures from keywords
         /// Handle the manipulation in the GestureInteractiveControl

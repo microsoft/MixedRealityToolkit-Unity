@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         private RemoteMeshTarget remoteMeshTarget;
 #endif
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Used for voice commands.
         /// </summary>
@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             // Create our keyword collection.
             keywordCollection = new Dictionary<string, System.Action> { { SendMeshesKeyword, SendMeshes } };
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             // Tell the KeywordRecognizer about our keywords.
             keywordRecognizer = new KeywordRecognizer(keywordCollection.Keys.ToArray());
             // Register a callback for the KeywordRecognizer and start recognizing.
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 #endif
         }
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Called by keywordRecognizer when a phrase we registered for is heard.
         /// </summary>

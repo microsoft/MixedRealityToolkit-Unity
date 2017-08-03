@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -187,7 +187,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private int m_CaretPosition = 0;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Reference to dictation recognizer.
         /// </summary>
@@ -272,7 +272,7 @@ namespace HoloToolkit.UI.Keyboard
             Clear();
         }
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Event fired when dictation completed.
         /// </summary>
@@ -293,7 +293,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         protected override void OnDestroy()
         {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             // HACK Must manually call destroy on DictationRecognizer according to the documentation.
             if (m_Dictation != null)
             {
@@ -466,7 +466,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void BeginDictation()
         {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (m_Dictation == null)
             {
                 m_Dictation = new DictationRecognizer();
@@ -483,7 +483,7 @@ namespace HoloToolkit.UI.Keyboard
         /// TODO: Something needs to call this.
         public void EndDictation()
         {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (m_Dictation.Status == SpeechSystemStatus.Running)
             {
                 m_Dictation.Stop();
@@ -576,7 +576,7 @@ namespace HoloToolkit.UI.Keyboard
 
                 case KeyboardKeyFunc.Function.Dictate:
                     {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
                         if (m_Dictation != null && m_Dictation.Status == SpeechSystemStatus.Running)
                         {
                             EndDictation();

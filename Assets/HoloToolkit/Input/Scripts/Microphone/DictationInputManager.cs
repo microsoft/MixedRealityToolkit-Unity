@@ -5,7 +5,7 @@ using System.Collections;
 using System.Text;
 using UnityEngine;
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Audio clip of the last dictation session.
         /// </summary>
         private static AudioClip dictationAudioClip;
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         private static DictationRecognizer dictationRecognizer;
 #endif
         private static bool isTransitioning;
@@ -56,7 +56,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Unity Methods
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         protected override void Awake()
         {
             base.Awake();
@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns></returns>
         public static IEnumerator StartRecording(float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to start recording");
@@ -157,7 +157,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StopRecording()
         {
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (!IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to stop recording");
@@ -200,7 +200,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.RaiseDictationHypothesis(Instance, 0, dictationResult);
         }
 
-#if UNITY_WSA || UNITY_STANDALONE
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// This event is fired after the user pauses, typically at the end of a sentence. The full recognized string is returned here.
         /// </summary>
