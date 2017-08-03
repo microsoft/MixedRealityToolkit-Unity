@@ -3,7 +3,7 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.InputModule
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (IsEnabled && (eventData.PressKind == InteractionPressKind.Select))
+            if (IsEnabled && (eventData.PressType == InteractionSourcePressType.Select))
             {
                 ButtonPressed.RaiseEvent();
                 eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.

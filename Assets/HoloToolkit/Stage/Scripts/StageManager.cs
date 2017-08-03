@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VR.WSA;
+using UnityEngine.XR.WSA;
+using UnityEngine.Experimental.XR;
 
 namespace HoloToolkit.Unity.Stage
 {
@@ -18,10 +19,9 @@ namespace HoloToolkit.Unity.Stage
         [Tooltip("Material used to draw bounds for the stage. Leave empty if you have not setup your space or don't want to render bounds.")]
         public Material StageBoundsMaterial;
 
-        StageRoot stageRoot = null;
         bool updateStageBounds = true;
 
-        public Vector3[] EditorLines;
+        public List<Vector3> EditorLines;
         List<GameObject> boundingBoxLines = new List<GameObject>();
 
         private bool renderStage = true;
@@ -56,17 +56,8 @@ namespace HoloToolkit.Unity.Stage
 
         private void Start()
         {
-            stageRoot = GetComponent<StageRoot>();
-            if (stageRoot == null)
-            {
-                Debug.Log("Adding a StageRoot component to the game object.");
-                stageRoot = gameObject.AddComponent<StageRoot>();
-            }
-            stageRoot.OnTrackingChanged += StageRoot_OnTrackingChanged;
-
             // Render the floor as a child of the StageRoot component.
-            if (FloorQuad != null && stageRoot != null &&
-                HolographicSettings.IsDisplayOpaque)
+            if (FloorQuad != null && HolographicSettings.IsDisplayOpaque)
             {
                 floorQuadInstance = Instantiate(FloorQuad);
                 floorQuadInstance.SetActive(true);
@@ -84,22 +75,6 @@ namespace HoloToolkit.Unity.Stage
                 // Draw the floor at 0,0,0 under stage root.
                 floorQuadInstance.transform.localPosition = Vector3.zero;
 #endif
-            }
-        }
-
-        private void StageRoot_OnTrackingChanged(StageRoot self, bool located)
-        {
-            Debug.Log("Stage root tracking changed " + located);
-            // Hide the floor if tracking is lost or if StageRoot can't be located.
-            if (floorQuadInstance != null &&
-                HolographicSettings.IsDisplayOpaque)
-            {
-                floorQuadInstance.SetActive((located && renderStage));
-                if (located)
-                {
-                    floorQuadInstance.transform.localPosition = new Vector3(0, Mathf.Min(-1.5f, transform.position.y), 0);
-                }
-                updateStageBounds = located;
             }
         }
 
@@ -121,25 +96,25 @@ namespace HoloToolkit.Unity.Stage
             RemoveBoundingBox();
 
 #if UNITY_EDITOR
-            Vector3[] bounds = EditorLines;
+            List<Vector3> bounds = EditorLines;
             bool tryGetBoundsSuccess = true;
 #else
-            Vector3[] bounds = null;
-            bool tryGetBoundsSuccess = stageRoot.TryGetBounds(out bounds);
+            List<Vector3> bounds = null;
+            bool tryGetBoundsSuccess = Boundary.TryGetGeometry(bounds);
 #endif
-            if (tryGetBoundsSuccess && bounds != null && bounds.Length > 1)
+            if (tryGetBoundsSuccess && bounds != null && bounds.Count > 1)
             {
                 if (StageBoundsMaterial != null)
                 {
                     Vector3 start;
                     Vector3 end;
-                    for (int i = 1; i < bounds.Length; i++)
+                    for (int i = 1; i < bounds.Count; i++)
                     {
                         start = bounds[i - 1];
                         end = bounds[i];
                         DrawLine(start, end);
                     }
-                    DrawLine(bounds[0], bounds[bounds.Length - 1]);
+                    DrawLine(bounds[0], bounds[bounds.Count - 1]);
                     updateStageBounds = false;
                 }
             }
@@ -149,7 +124,7 @@ namespace HoloToolkit.Unity.Stage
         {
             GameObject boundingBox = new GameObject();
             boundingBoxLines.Add(boundingBox);
-            boundingBox.transform.SetParent(this.transform.parent);
+            boundingBox.transform.SetParent(transform.parent);
 
             LineRenderer lr = boundingBox.AddComponent<LineRenderer>();
             lr.useWorldSpace = false;

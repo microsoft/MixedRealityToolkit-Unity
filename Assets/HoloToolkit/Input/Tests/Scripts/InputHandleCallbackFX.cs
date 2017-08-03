@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (eventData.PressKind == InteractionPressKind.Select)
+            if (eventData.PressType == InteractionSourcePressType.Select)
             {
                 FocusDetails? focusDetails = FocusManager.Instance.TryGetFocusDetails(eventData);
 

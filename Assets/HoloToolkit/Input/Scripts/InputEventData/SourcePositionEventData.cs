@@ -14,16 +14,18 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The new position of the source.
         /// </summary>
-        public Vector3 Position { get; private set; }
+        public Vector3 PointerPosition { get; private set; }
+        public Vector3 GripPosition { get; private set; }
 
         public SourcePositionEventData(EventSystem eventSystem) : base(eventSystem)
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 position)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 pointerPosition, Vector3 gripPosition)
         {
             BaseInitialize(inputSource, sourceId, tag);
-            Position = position;
+            PointerPosition = pointerPosition;
+            GripPosition = gripPosition;
         }
     }
 }

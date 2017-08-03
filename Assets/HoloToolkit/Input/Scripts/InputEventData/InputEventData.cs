@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine.EventSystems;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -14,16 +14,16 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Button type that initiated the event.
         /// </summary>
-        public InteractionPressKind PressKind { get; private set; }
+        public InteractionSourcePressType PressType { get; private set; }
 
         public InputEventData(EventSystem eventSystem) : base(eventSystem)
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, InteractionPressKind pressKind)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, InteractionSourcePressType pressType)
         {
             BaseInitialize(inputSource, sourceId, tag);
-            PressKind = pressKind;
+            PressType = pressType;
         }
     }
 }

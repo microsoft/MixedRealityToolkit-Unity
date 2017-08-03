@@ -8,9 +8,9 @@ using HoloToolkit.Unity;
 
 #if UNITY_WSA && !UNITY_EDITOR
 using System.Collections.Generic;
-using UnityEngine.VR.WSA;
-using UnityEngine.VR.WSA.Persistence;
-using UnityEngine.VR.WSA.Sharing;
+using UnityEngine.XR.WSA;
+using UnityEngine.XR.WSA.Persistence;
+using UnityEngine.XR.WSA.Sharing;
 #endif
 
 namespace HoloToolkit.Sharing.Tests

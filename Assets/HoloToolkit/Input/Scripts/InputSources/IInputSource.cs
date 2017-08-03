@@ -3,7 +3,7 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.VR.WSA.Input;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -16,10 +16,10 @@ namespace HoloToolkit.Unity.InputModule
         None = 0,
         Position = (1 << 0),
         Rotation = (1 << 1),
-        PointingRay = (1 << 2),
+        Ray = (1 << 2),
         Thumbstick = (1 << 3),
         Touchpad = (1 << 4),
-        Trigger = (1 << 5),
+        Select = (1 << 5),
         Menu = (1 << 6),
         Grasp = (1 << 7),
     }
@@ -51,7 +51,16 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="sourceId">ID of the source for which the position should be retrieved.</param>
         /// <param name="position">Out parameter filled with the position if available, otherwise <see cref="Vector3.zero"/>.</param>
         /// <returns>True if a position was retrieved, false if not.</returns>
-        bool TryGetPosition(uint sourceId, out Vector3 position);
+        bool TryGetPointerPosition(uint sourceId, out Vector3 position);
+        
+        /// <summary>
+        /// Returns the position of the input source, if available.
+        /// Not all input sources support positional information, and those that do may not always have it available.
+        /// </summary>
+        /// <param name="sourceId">ID of the source for which the position should be retrieved.</param>
+        /// <param name="position">Out parameter filled with the position if available, otherwise <see cref="Vector3.zero"/>.</param>
+        /// <returns>True if a position was retrieved, false if not.</returns>
+        bool TryGetGripPosition(uint sourceId, out Vector3 position);
 
         /// <summary>
         /// Returns the rotation of the input source, if available.
@@ -60,20 +69,38 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="sourceId">ID of the source for which the rotation should be retrieved.</param>
         /// <param name="rotation">Out parameter filled with the rotation if available, otherwise <see cref="Quaternion.identity"/>.</param>
         /// <returns>True if an rotation was retrieved, false if not.</returns>
-        bool TryGetRotation(uint sourceId, out Quaternion rotation);
+        bool TryGetPointerRotation(uint sourceId, out Quaternion rotation);
+        
+        /// <summary>
+        /// Returns the rotation of the input source, if available.
+        /// Not all input sources support rotation information, and those that do may not always have it available.
+        /// </summary>
+        /// <param name="sourceId">ID of the source for which the rotation should be retrieved.</param>
+        /// <param name="rotation">Out parameter filled with the rotation if available, otherwise <see cref="Quaternion.identity"/>.</param>
+        /// <returns>True if an rotation was retrieved, false if not.</returns>
+        bool TryGetGripRotation(uint sourceId, out Quaternion rotation);
 
         /// <summary>
         /// Returns the pointing ray of the input source, if available.
         /// Not all input sources support pointing information, and those that do may not always have it available.
         /// </summary>
         /// <param name="sourceId">ID of the source for which the pointing ray should be retrieved.</param>
-        /// <param name="pointingRay">Out parameter filled with the pointing ray if available.</param>
+        /// <param name="pointerRay">Out parameter filled with the pointing ray if available.</param>
         /// <returns>True if a pointing ray was retrieved, false if not.</returns>
-        bool TryGetPointingRay(uint sourceId, out Ray pointingRay);
+        bool TryGetPointerRay(uint sourceId, out Ray pointerRay);
+       
+        /// <summary>
+        /// Returns the pointing ray of the input source, if available.
+        /// Not all input sources support pointing information, and those that do may not always have it available.
+        /// </summary>
+        /// <param name="sourceId">ID of the source for which the pointing ray should be retrieved.</param>
+        /// <param name="gripRay">Out parameter filled with the pointing ray if available.</param>
+        /// <returns>True if a pointing ray was retrieved, false if not.</returns>
+        bool TryGetGripRay(uint sourceId, out Ray gripRay);
 
-        bool TryGetThumbstick(uint sourceId, out bool isPressed, out double x, out double y);
-        bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out double x, out double y);
-        bool TryGetTrigger(uint sourceId, out bool isPressed, out double pressedValue);
+        bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position);
+        bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position);
+        bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedValue);
         bool TryGetGrasp(uint sourceId, out bool isPressed);
         bool TryGetMenu(uint sourceId, out bool isPressed);
     }
