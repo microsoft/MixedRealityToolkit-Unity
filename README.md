@@ -4,21 +4,21 @@ The HoloToolkit is a collection of scripts and components intended to accelerate
 
 **Current Unity Editor Project Version: 2017.2.0b4**
 
-**Branch: HoloToolkit-Unity Creators Update with Windows Mixed Reality support for immersive headsets.**
+**Branch: HoloToolkit-Unity with Windows Mixed Reality support for immersive headsets.**
 
 ## Prerequisites:
 1. See [Development PC specs](https://developer.microsoft.com/en-us/windows/mixed-reality/install_the_tools#developing_for_immersive_headsets) for tips on developing for immersive headsets.
 2. [Holograms 100](https://developer.microsoft.com/en-us/windows/mixed-reality/holograms_100) has been updated with how to setup Windows Mixed Reality in your app.
 3. [How to navigate the Windows Mixed Reality home](https://developer.microsoft.com/en-us/windows/mixed-reality/navigating_the_windows_mixed_reality_home).
-4. Development PC needs to be on Creators Update SDK and builds as below. Either:
+4. Development PC needs to be on Windows Insider SDK and a Windows Insider build as below.
     1. Launch Settings > Updates and Security > Windows Insider Program > Get Insider Preview builds 
-    2. Update to the publicly released Creators Update, build 15063.
-5. Early access private build of Unity 5.6.1f1-MRTP9 with Creators Update API support. This build of Unity is currently invite-only.
+    2. Install the SDK found [here](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
+5. Unity beta 2017.2.0 with Mixed Reality API support. This build of Unity can be found [here](https://unity3d.com/unity/beta).
     1. Please read more about [Immersive headset details](https://developer.microsoft.com/en-us/windows/mixed-reality/immersive_headset_details).
 6. [Visual Studio 2017](https://www.visualstudio.com/downloads/).
 
 ## Please note:
-1. We will not merge this branch into master until we have a publicly available Unity that supports it and a HoloLens build that works with these new APIs.
+1. We will not merge this branch into master until we have a publicly available non-beta Unity that supports it and a HoloLens build that works with these new APIs.
 2. You can use this branch with Windows Creators Update builds on your PC and deploy it to Windows Anniversary Update HoloLens flight.
 3. Windows Creators Update flights don’t ship on HoloLens.
 
