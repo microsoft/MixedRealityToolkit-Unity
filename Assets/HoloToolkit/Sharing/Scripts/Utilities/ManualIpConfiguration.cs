@@ -72,14 +72,15 @@ namespace HoloToolkit.Sharing.Utilities
 
         private void OnEnable()
         {
-            if (!firstRun)
+            if (firstRun)
             {
+                firstRun = false;
                 isTryingToConnect = true;
                 ConnectToSharingService();
             }
             else
             {
-                firstRun = false;
+                isTryingToConnect = false;
             }
         }
 

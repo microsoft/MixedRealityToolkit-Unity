@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Keywords:
-  - Keyword: Show Connection Info
+  - Keyword: Show Info
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -717,7 +717,7 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-  - Keyword: Hide Connection Info
+  - Keyword: Hide Info
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -748,9 +748,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RecognizerStart: 0
   Keywords:
-  - Keyword: Show Connection Info
+  - Keyword: Show Info
     KeyCode: 43
-  - Keyword: Hide Connection Info
+  - Keyword: Hide Info
     KeyCode: 45
 --- !u!1001 &1703234099
 Prefab:
