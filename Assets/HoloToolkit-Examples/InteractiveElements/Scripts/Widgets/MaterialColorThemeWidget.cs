@@ -39,13 +39,17 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             if (mMaterial != null && mColorTheme != null)
             {
-                mMaterial.color = mColorTheme.GetThemeValue(Interactive.ButtonStateEnum.Default);
+                mMaterial.color = mColorTheme.GetThemeValue(State);
             }
         }
 
         private void Start()
         {
-            mColorTheme = GetColorTheme(ThemeTag);
+            if (mColorTheme == null)
+            {
+                mColorTheme = GetColorTheme(ThemeTag);
+                SetState(State);
+            }
         }
 
         /// <summary>

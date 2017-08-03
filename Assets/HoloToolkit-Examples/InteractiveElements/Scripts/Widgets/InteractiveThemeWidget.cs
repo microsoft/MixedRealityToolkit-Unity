@@ -12,6 +12,12 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// </summary>
     public class InteractiveThemeWidget : InteractiveWidget
     {
+
+        public virtual void SetTheme(object theme)
+        {
+            // use abstract class
+        }
+
         /// <summary>
         /// Find a ColorInteractiveTheme by tag
         /// </summary>
