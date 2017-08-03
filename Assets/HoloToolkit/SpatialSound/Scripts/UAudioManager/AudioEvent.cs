@@ -130,11 +130,11 @@ namespace HoloToolkit.Unity
         public float PanRandomization;
 
 
-        [Tooltip("Time, in seconds, for the audio to fade from 0 to the selected volume.  Does not apply to continuous containers in which the Crossfade TGime property is used.")]
+        [Tooltip("Time, in seconds, for the audio to fade from 0 to the selected volume.  Does not apply to continuous containers in which the Crossfade time property is used.")]
         [Range(0f, 20f)]
         public float FadeInTime;
 
-        [Tooltip("Time, in seconds, for the audio to fade out from the selected volume to 0.  Does not apply to continuous containers in which the Crossfade TGime property is used.")]
+        [Tooltip("Time, in seconds, for the audio to fade out from the selected volume to 0.  Does not apply to continuous containers in which the Crossfade time property is used.")]
         [Range(0f, 20f)]
         public float FadeOutTime;
 
@@ -145,7 +145,7 @@ namespace HoloToolkit.Unity
         public float InstanceTimeBuffer;
 
         [Tooltip("The behavior when the instance limit is reached.")]
-        public AudioEventInstanceBehavior AudioEventInstance = AudioEventInstanceBehavior.KillOldest;
+        public AudioEventInstanceBehavior AudioEventInstanceBehavior = AudioEventInstanceBehavior.KillOldest;
 
         /// <summary>
         /// Contains the sounds associated with this AudioEvent.
