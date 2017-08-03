@@ -47,15 +47,15 @@ namespace HoloToolkit.UI.Keyboard
             }
 
             // Subscribe to keyboard delegates
-            Keyboard.Instance.OnTextUpdated += Keyboard_onTextUpdated;
-            Keyboard.Instance.OnClosed += Keyboard_onClosed;
+            Keyboard.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
+            Keyboard.Instance.OnClosed += Keyboard_OnClosed;
         }
 
         /// <summary>
         /// Delegate function for getting keyboard input
         /// </summary>
         /// <param name="newText"></param>
-        private void Keyboard_onTextUpdated(string newText)
+        private void Keyboard_OnTextUpdated(string newText)
         {
             if (!string.IsNullOrEmpty(newText))
             {
@@ -67,11 +67,11 @@ namespace HoloToolkit.UI.Keyboard
         /// Delegate function for getting keyboard input
         /// </summary>
         /// <param name="sender"></param>
-        private void Keyboard_onClosed(object sender, EventArgs e)
+        private void Keyboard_OnClosed(object sender, EventArgs e)
         {
             // Unsubscribe from delegate functions
-            Keyboard.Instance.OnTextUpdated -= Keyboard_onTextUpdated;
-            Keyboard.Instance.OnClosed -= Keyboard_onClosed;
+            Keyboard.Instance.OnTextUpdated -= Keyboard_OnTextUpdated;
+            Keyboard.Instance.OnClosed -= Keyboard_OnClosed;
         }
     }
 }
