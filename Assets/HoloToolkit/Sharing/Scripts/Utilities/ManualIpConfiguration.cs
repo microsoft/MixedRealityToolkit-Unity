@@ -188,7 +188,7 @@ namespace HoloToolkit.Sharing.Utilities
             timerRunning = false;
             isTryingToConnect = false;
 
-            if (ipAddress.text.Contains("Connected"))
+            if (SharingStage.Instance == null || ipAddress.text.Contains("Connected"))
             {
                 OnDisconnected();
                 return;
