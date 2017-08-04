@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Examples.Prototyping;
+using System;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -30,6 +31,9 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("scale animation component: optional")]
         public ScaleToValue ScaleSize;
 
+        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
+        public bool WatchForThemeChange = false;
+
         // themes
         private ColorInteractiveTheme mColorTheme;
         private Vector3InteractiveTheme mPositionTheme;
@@ -37,6 +41,10 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         // material
         private Material mMaterial;
+
+        private string mCheckColorThemeTag;
+        private string mCheckPositionThemeTag;
+        private string mCheckScaleThemeTag;
 
         /// <summary>
         /// Get animaiton components
@@ -68,19 +76,28 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Start()
         {
+            SetTheme();
+            RefreshIfNeeded();
+        }
+
+        public override void SetTheme()
+        {
             if (ColorThemeTag != "")
             {
                 mColorTheme = GetColorTheme(ColorThemeTag);
+                mCheckColorThemeTag = ColorThemeTag;
             }
 
             if (PositionThemeTag != "")
             {
                 mPositionTheme = GetVector3Theme(PositionThemeTag);
+                mCheckPositionThemeTag = PositionThemeTag;
             }
 
             if (ScaleThemeTag != "")
             {
                 mScaleTheme = GetVector3Theme(ScaleThemeTag);
+                mCheckScaleThemeTag = ScaleThemeTag;
             }
         }
 
@@ -128,6 +145,15 @@ namespace HoloToolkit.Examples.InteractiveElements
                 {
                     transform.localScale = mScaleTheme.GetThemeValue(state);
                 }
+            }
+        }
+
+        private void Update()
+        {
+            if(WatchForThemeChange && (!mCheckScaleThemeTag.Equals(ScaleThemeTag) || !mCheckPositionThemeTag.Equals(PositionThemeTag) || !mCheckColorThemeTag.Equals(ColorThemeTag)))
+            {
+                SetTheme();
+                RefreshIfNeeded();
             }
         }
 

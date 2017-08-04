@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Examples.Prototyping;
+using System;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -18,7 +19,12 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("Move to Position, a component for animating position")]
         public MoveToPosition MovePositionTweener;
 
+        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
+        public bool WatchForThemeChange = false;
+
         private Vector3InteractiveTheme mPositionTheme;
+
+        private string mCheckThemeTag;
 
         /// <summary>
         /// Get Move to Position
@@ -36,7 +42,18 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         private void Start()
         {
+            if (mPositionTheme == null)
+            {
+                SetTheme();
+            }
+
+            RefreshIfNeeded();
+        }
+
+        public override void SetTheme()
+        {
             mPositionTheme = GetVector3Theme(ThemeTag);
+            mCheckThemeTag = ThemeTag;
         }
 
         /// <summary>
@@ -58,6 +75,15 @@ namespace HoloToolkit.Examples.InteractiveElements
                 {
                     transform.localPosition = mPositionTheme.GetThemeValue(state);
                 }
+            }
+        }
+
+        private void Update()
+        {
+            if (WatchForThemeChange && (!mCheckThemeTag.Equals(ThemeTag)))
+            {
+                SetTheme();
+                RefreshIfNeeded();
             }
         }
     }

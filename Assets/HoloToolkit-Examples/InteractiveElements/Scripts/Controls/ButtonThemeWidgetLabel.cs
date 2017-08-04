@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Examples.Prototyping;
+using System;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -24,12 +25,18 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("position animation component: optional")]
         public MoveToPosition MovePosition;
 
+        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
+        public bool WatchForThemeChange = false;
+
         // themes
         private ColorInteractiveTheme mColorTheme;
         private Vector3InteractiveTheme mPositionTheme;
 
         // the TextMesh
         private TextMesh mText;
+
+        private string mCheckColorThemeTag;
+        private string mCheckPositionThemeTag;
         
         /// <summary>
         /// Get the TextMesh and position animation component
@@ -46,14 +53,22 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Start()
         {
+            SetTheme();
+            RefreshIfNeeded();
+        }
+
+        public override void SetTheme()
+        {
             if (ColorThemeTag != "")
             {
                 mColorTheme = GetColorTheme(ColorThemeTag);
+                mCheckColorThemeTag = ColorThemeTag;
             }
 
             if (PositionThemeTag != "")
             {
                 mPositionTheme = GetVector3Theme(PositionThemeTag);
+                mCheckPositionThemeTag = PositionThemeTag;
             }
         }
 
@@ -103,6 +118,15 @@ namespace HoloToolkit.Examples.InteractiveElements
                 {
                     transform.localPosition = mPositionTheme.GetThemeValue(state);
                 }
+            }
+        }
+
+        private void Update()
+        {
+            if (WatchForThemeChange && (!mCheckPositionThemeTag.Equals(PositionThemeTag) || !mCheckColorThemeTag.Equals(ColorThemeTag)))
+            {
+                SetTheme();
+                RefreshIfNeeded();
             }
         }
     }

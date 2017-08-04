@@ -5,6 +5,7 @@ using HoloToolkit.Examples.Prototyping;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -19,8 +20,13 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("A component for color transitions: optional")]
         public ColorTransition ColorBlender;
 
-        protected ColorInteractiveTheme mColorTheme;
-        protected Material mMaterial;
+        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
+        public bool WatchForThemeChange = false;
+
+        private ColorInteractiveTheme mColorTheme;
+        private Material mMaterial;
+
+        private string mCheckThemeTag;
 
         void Awake()
         {
@@ -47,9 +53,16 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             if (mColorTheme == null)
             {
-                mColorTheme = GetColorTheme(ThemeTag);
-                SetState(State);
+                SetTheme();
             }
+
+            RefreshIfNeeded();
+        }
+
+        public override void SetTheme()
+        {
+            mColorTheme = GetColorTheme(ThemeTag);
+            mCheckThemeTag = ThemeTag;
         }
 
         /// <summary>
@@ -70,6 +83,15 @@ namespace HoloToolkit.Examples.InteractiveElements
                 {
                     mMaterial.color = mColorTheme.GetThemeValue(state);
                 }
+            }
+        }
+
+        private void Update()
+        {
+            if (WatchForThemeChange && (!mCheckThemeTag.Equals(ThemeTag)))
+            {
+                SetTheme();
+                RefreshIfNeeded();
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,15 +19,16 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("The target object with the material to swap textures on : optional, leave blank for self")]
         public GameObject Target;
 
-        /// <summary>
-        /// The theme with the texture states
-        /// </summary>
-        protected TextureInteractiveTheme mTextureTheme;
+        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
+        public bool WatchForThemeChange = false;
 
-        /// <summary>
-        /// material to swap the texture on
-        /// </summary>
-        protected Material mMaterial;
+        // The theme with the texture states
+        private TextureInteractiveTheme mTextureTheme;
+
+        // material to swap the texture on
+        private Material mMaterial;
+
+        private string mCheckThemeTag;
 
         void Awake()
         {
@@ -44,7 +46,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 mMaterial = renderer.material;
                 if (mTextureTheme != null)
                 {
-                    SetTexture(Interactive.ButtonStateEnum.Default);
+                    SetTexture(State);
                 }
             }
             else
@@ -61,9 +63,16 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             if (mTextureTheme == null)
             {
-                mTextureTheme = GetTextureTheme(ThemeTag);
-                SetTexture(State);
+                SetTheme();
             }
+
+            RefreshIfNeeded();
+        }
+
+        public override void SetTheme()
+        {
+            mTextureTheme = GetTextureTheme(ThemeTag);
+            mCheckThemeTag = ThemeTag;
         }
 
         /// <summary>
@@ -86,6 +95,15 @@ namespace HoloToolkit.Examples.InteractiveElements
             if (mTextureTheme != null)
             {
                 mMaterial.SetTexture("_MainTex", mTextureTheme.GetThemeValue(state));
+            }
+        }
+
+        private void Update()
+        {
+            if(WatchForThemeChange && (!mCheckThemeTag.Equals(ThemeTag)))
+            {
+                SetTheme();
+                RefreshIfNeeded();
             }
         }
 
