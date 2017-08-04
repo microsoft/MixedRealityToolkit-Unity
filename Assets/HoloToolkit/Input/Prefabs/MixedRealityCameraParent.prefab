@@ -526,7 +526,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -785,9 +785,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftControllerOverride: {fileID: 0}
-  rightControllerOverride: {fileID: 0}
-  touchpadTouchedOverride: {fileID: 0}
+  LeftControllerOverride: {fileID: 0}
+  RightControllerOverride: {fileID: 0}
+  TouchpadTouchedOverride: {fileID: 0}
   GLTFShader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
 --- !u!114 &114755176645041546
 MonoBehaviour:

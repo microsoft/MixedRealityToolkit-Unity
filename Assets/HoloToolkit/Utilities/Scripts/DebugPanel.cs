@@ -36,14 +36,14 @@ public class DebugPanel : SingleInstance<DebugPanel>
     /// </summary>
     private List<GetLogLine> ExternalLogs = new List<GetLogLine>();
 
-    
-    void Awake()
+
+    private void Awake()
     {
         textMesh = GetComponent<TextMesh>();
         Application.logMessageReceivedThreaded += Application_logMessageReceivedThreaded;
     }
 
-    void Update()
+    private void Update()
     {
         string logMessageString = CalculateLogMessageString();
         textMesh.text = logMessageString;
@@ -56,7 +56,7 @@ public class DebugPanel : SingleInstance<DebugPanel>
     string CalculateLogMessageString()
     {
         string logMessageString = "Per Frame Data:\n------\n";
-        for(int index=0;index<ExternalLogs.Count;index++)
+        for (int index = 0; index < ExternalLogs.Count; index++)
         {
             string nextExternalLine = ExternalLogs[index]();
             if (!string.IsNullOrEmpty(nextExternalLine))
@@ -65,7 +65,7 @@ public class DebugPanel : SingleInstance<DebugPanel>
             }
         }
 
-        logMessageString += string.Format("------\n");
+        logMessageString += "------\n";
 
         lock (logMessages)
         {
