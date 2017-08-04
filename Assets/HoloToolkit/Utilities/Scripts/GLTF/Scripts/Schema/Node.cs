@@ -89,6 +89,7 @@ namespace GLTF
 			position = new Vector3(localPosition.x, localPosition.y, -localPosition.z);
 			rotation = new Quaternion(-localRotation.x, -localRotation.y, localRotation.z, localRotation.w);
 			scale = new Vector3(localScale.x, localScale.y, localScale.z);
+			// normally you would flip scale.z here too, but that's done in Accessor
 		}
 
 		public void SetUnityTransform(Transform transform)
@@ -108,17 +109,7 @@ namespace GLTF
 				mat.GetColumn(2).magnitude
 			);
 
-			var w = Mathf.Sqrt(1.0f + mat.m00 + mat.m11 + mat.m22) / 2.0f;
-			var w4 = 4.0f * w;
-			var x = (mat.m21 - mat.m12) / w4;
-			var y = (mat.m02 - mat.m20) / w4;
-			var z = (mat.m10 - mat.m01) / w4;
-
-			x = float.IsNaN(x) ? 0 : x;
-			y = float.IsNaN(y) ? 0 : y;
-			z = float.IsNaN(z) ? 0 : z;
-
-			rotation = new Quaternion(x, y, z, w);
+			rotation = Quaternion.LookRotation( mat.GetColumn(2), mat.GetColumn(1) );
 		}
 
 		public static Node Deserialize(GLTFRoot root, JsonReader reader)

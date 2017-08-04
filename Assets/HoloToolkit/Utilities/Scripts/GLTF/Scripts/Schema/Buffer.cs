@@ -20,6 +20,8 @@ namespace GLTF
 		/// </summary>
 		public int ByteLength;
 
+		public byte[] Contents;
+
 		public static Buffer Deserialize(GLTFRoot root, JsonReader reader)
 		{
 			var buffer = new Buffer();

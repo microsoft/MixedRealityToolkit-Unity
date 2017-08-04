@@ -8,23 +8,23 @@ namespace GLTF
 		public GLTFHeaderInvalidException() : base() { }
 		public GLTFHeaderInvalidException(string message) : base(message) { }
 		public GLTFHeaderInvalidException(string message, Exception inner) : base(message, inner) { }
-#if !UNITY_WSA
+#if !NETFX_CORE
 		protected GLTFHeaderInvalidException(System.Runtime.Serialization.SerializationInfo info,
 			System.Runtime.Serialization.StreamingContext context)
 		{ }
 #endif
-    }
+	}
 
-    [Serializable()]
+	[Serializable()]
 	public class ShaderNotFoundException : Exception
 	{
 		public ShaderNotFoundException() : base() { }
 		public ShaderNotFoundException(string message) : base(message) { }
 		public ShaderNotFoundException(string message, Exception inner) : base(message, inner) { }
-#if !UNITY_WSA
+#if !NETFX_CORE
 		protected ShaderNotFoundException(System.Runtime.Serialization.SerializationInfo info,
 			System.Runtime.Serialization.StreamingContext context)
 		{ }
 #endif
-    }
+	}
 }

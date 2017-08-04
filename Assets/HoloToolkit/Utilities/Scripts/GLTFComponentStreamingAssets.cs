@@ -36,7 +36,7 @@ namespace GLTF
 
         public IEnumerator LoadModel()
         {
-            var loader = new GLTFLoader(
+            var loader = new GLTFByteArrayLoader(
                 GLTFData,
                 gameObject.transform
             );
