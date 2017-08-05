@@ -24,7 +24,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private Vector3InteractiveTheme mPositionTheme;
 
-        private string mCheckThemeTag;
+        private string mCheckThemeTag = "";
 
         /// <summary>
         /// Get Move to Position

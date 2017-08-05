@@ -35,8 +35,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         private ColorInteractiveTheme mInnerColorTheme;
         private ColorInteractiveTheme mOuterColorTheme;
 
-        private string mCheckInnerColorThemeTag;
-        private string mCheckOuterColorThemeTag;
+        private string mCheckInnerColorThemeTag = "";
+        private string mCheckOuterColorThemeTag = "";
 
         /// <summary>
         /// set the ColorBlender

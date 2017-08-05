@@ -42,9 +42,9 @@ namespace HoloToolkit.Examples.InteractiveElements
         // material
         private Material mMaterial;
 
-        private string mCheckColorThemeTag;
-        private string mCheckPositionThemeTag;
-        private string mCheckScaleThemeTag;
+        private string mCheckColorThemeTag = "";
+        private string mCheckPositionThemeTag = "";
+        private string mCheckScaleThemeTag = "";
 
         /// <summary>
         /// Get animaiton components

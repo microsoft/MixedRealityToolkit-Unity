@@ -26,7 +26,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private ColorInteractiveTheme mColorTheme;
         private Material mMaterial;
 
-        private string mCheckThemeTag;
+        private string mCheckThemeTag = "";
 
         void Awake()
         {

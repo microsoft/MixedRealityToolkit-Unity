@@ -28,7 +28,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         // material to swap the texture on
         private Material mMaterial;
 
-        private string mCheckThemeTag;
+        private string mCheckThemeTag = "";
 
         void Awake()
         {

@@ -35,8 +35,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         // the TextMesh
         private TextMesh mText;
 
-        private string mCheckColorThemeTag;
-        private string mCheckPositionThemeTag;
+        private string mCheckColorThemeTag = "";
+        private string mCheckPositionThemeTag = "";
         
         /// <summary>
         /// Get the TextMesh and position animation component

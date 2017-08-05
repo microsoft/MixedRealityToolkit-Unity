@@ -25,7 +25,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3InteractiveTheme mScaleTheme;
         private Material mMaterial;
         
-        private string mCheckThemeTag;
+        private string mCheckThemeTag = "";
 
         /// <summary>
         /// Get Scale to Value
