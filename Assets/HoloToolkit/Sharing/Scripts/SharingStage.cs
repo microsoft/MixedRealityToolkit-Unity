@@ -14,7 +14,7 @@ namespace HoloToolkit.Sharing
     public class SharingStage : Singleton<SharingStage>
     {
         /// <summary> 
-        /// SharingManagerConnected event notifies when the sharing manager is created and connected. 
+        /// SharingManagerConnected event notifies when the sharing manager is created and connected.
         /// </summary> 
         public event EventHandler SharingManagerConnected;
 
@@ -192,6 +192,11 @@ namespace HoloToolkit.Sharing
                 UserNameChanged.RaiseEvent(value);
             }
         }
+
+        /// <summary>
+        /// Provides updates when rooms change.
+        /// </summary>
+        public RoomManagerAdapter RoomManagerAdapter;
 
         public RoomManager CurrentRoomManager { get { return Manager != null ? Manager.GetRoomManager() : null; } }
 
@@ -410,6 +415,10 @@ namespace HoloToolkit.Sharing
 
             SessionsTracker = new ServerSessionsTracker(Manager.GetSessionManager());
             SessionUsersTracker = new SessionUsersTracker(SessionsTracker);
+
+            RoomManagerAdapter = new RoomManagerAdapter();
+
+            CurrentRoomManager.AddListener(RoomManagerAdapter);
 
             using (var userName = new XString(DefaultUserName))
             {

@@ -85,7 +85,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected Dictionary<string, GameObject> AnchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
 
-#region Unity Methods
+        #region Unity Methods
 
         protected override void Awake()
         {
@@ -104,9 +104,9 @@ namespace HoloToolkit.Unity
             }
         }
 
-#endregion // Unity Methods
+        #endregion // Unity Methods
 
-#region Event Callbacks
+        #region Event Callbacks
 
         /// <summary>
         /// Callback function that contains the WorldAnchorStore object.
@@ -131,15 +131,16 @@ namespace HoloToolkit.Unity
         /// <param name="located">Indicates if the anchor is located or not located.</param>
         private void Anchor_OnTrackingChanged(WorldAnchor anchor, bool located)
         {
-            if (located && SaveAnchor(anchor, export: false))
+            if (located && SaveAnchor(anchor))
             {
                 if (ShowDetailedLogs)
                 {
-                    Debug.LogFormat("[WorldAnchorManager] Successfully updated cached  anchor \"{0}\".", anchor.name);
-                    if (AnchorDebugText != null)
-                    {
-                        AnchorDebugText.text += string.Format("[WorldAnchorManager] Successfully updated cached  anchor \"{0}\".", anchor.name);
-                    }
+                    Debug.LogFormat("[WorldAnchorManager] Successfully updated cached anchor \"{0}\".", anchor.name);
+                }
+
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nSuccessfully updated cached anchor \"{0}\".", anchor.name);
                 }
             }
             else
@@ -147,10 +148,11 @@ namespace HoloToolkit.Unity
                 if (ShowDetailedLogs)
                 {
                     Debug.LogFormat("[WorldAnchorManager] Failed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
-                    if (AnchorDebugText != null)
-                    {
-                        AnchorDebugText.text += string.Format("\nFailed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
-                    }
+                }
+
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nFailed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
                 }
 
                 GameObject anchoredObject;
@@ -162,7 +164,7 @@ namespace HoloToolkit.Unity
             anchor.OnTrackingChanged -= Anchor_OnTrackingChanged;
         }
 
-#endregion // Event Callbacks
+        #endregion // Event Callbacks
 #endif
 
         /// <summary>
@@ -216,6 +218,10 @@ namespace HoloToolkit.Unity
             if (gameObjectToUnanchor == null)
             {
                 Debug.LogError("[WorldAnchorManager] Invalid GameObject! Try removing anchor by name.");
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += "\nInvalid GameObject! Try removing anchor by name.";
+                }
                 return;
             }
 
@@ -231,7 +237,11 @@ namespace HoloToolkit.Unity
         {
             if (string.IsNullOrEmpty(anchorName))
             {
-                Debug.LogError("[WorldAnchorManager] Invalid anchor name! Try removing anchor by GameObject");
+                Debug.LogErrorFormat("[WorldAnchorManager] Invalid anchor \"{0}\"! Try removing anchor by GameObject.", anchorName);
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nInvalid anchor \"{0}\"! Try removing anchor by GameObject.", anchorName);
+                }
                 return;
             }
 
@@ -246,6 +256,12 @@ namespace HoloToolkit.Unity
         /// <param name="gameObjectToUnanchor">GameObject to remove the anchor from.</param>
         private void RemoveAnchor(string anchorName, GameObject gameObjectToUnanchor)
         {
+            if (string.IsNullOrEmpty(anchorName) && gameObjectToUnanchor == null)
+            {
+                Debug.LogWarning("Invalid Remove Anchor Request!");
+                return;
+            }
+
 #if !UNITY_WSA || UNITY_EDITOR
             Debug.LogWarning("World Anchor Manager does not work for this build. RemoveAnchor will not be called.");
 #else
@@ -288,16 +304,18 @@ namespace HoloToolkit.Unity
             for (var i = 0; i < anchors.Length; i++)
             {
                 // Don't remove SpatialMapping anchors if exists
-                if (spatialMappingManager != null &&
-                    anchors[i].gameObject.transform.parent.gameObject == spatialMappingManager.gameObject)
+                if (spatialMappingManager != null && anchors[i].gameObject.transform.parent.gameObject == spatialMappingManager.gameObject)
                 { continue; }
 
                 // Let's check to see if there are anchors we weren't accounting for.
                 // Maybe they were created without using the WorldAnchorManager.
                 if (!AnchorGameObjectReferenceList.ContainsKey(anchors[i].name))
                 {
-                    Debug.LogWarning("[WorldAnchorManager] Removing an anchor that was created outside of the" +
-                                     " WorldAnchorManager.  Please use the WorldAnchorManager to create or delete anchors.");
+                    Debug.LogWarning("[WorldAnchorManager] Removing an anchor that was created outside of the WorldAnchorManager.  Please use the WorldAnchorManager to create or delete anchors.");
+                    if (AnchorDebugText != null)
+                    {
+                        AnchorDebugText.text += string.Format("\nRemoving an anchor that was created outside of the WorldAnchorManager.  Please use the WorldAnchorManager to create or delete anchors.");
+                    }
                 }
 
                 LocalAnchorOperations.Enqueue(new AnchorAttachmentInfo
@@ -326,6 +344,10 @@ namespace HoloToolkit.Unity
                     if (anchoredGameObject == null)
                     {
                         Debug.LogError("[WorldAnchorManager] The GameObject referenced must have been destroyed before we got a chance to anchor it.");
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += "\nThe GameObject referenced must have been destroyed before we got a chance to anchor it.";
+                        }
                         break;
                     }
 
@@ -347,6 +369,11 @@ namespace HoloToolkit.Unity
                                 Debug.LogFormat("[WorldAnchorManager] Anchor could not be loaded for \"{0}\". Creating a new anchor.", anchoredGameObject.name);
                             }
 
+                            if (AnchorDebugText != null)
+                            {
+                                AnchorDebugText.text += string.Format("\nAnchor could not be loaded for \"{0}\". Creating a new anchor.", anchoredGameObject.name);
+                            }
+
                             // Create anchor since one does not exist.
                             CreateAnchor(anchoredGameObject, anchorId);
                         }
@@ -357,6 +384,11 @@ namespace HoloToolkit.Unity
                         if (ShowDetailedLogs)
                         {
                             Debug.LogFormat("[WorldAnchorManager] Anchor loaded from anchor store and updated for \"{0}\".", anchoredGameObject.name);
+                        }
+
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += string.Format("\nAnchor loaded from anchor store and updated for \"{0}\".", anchoredGameObject.name);
                         }
                     }
 
@@ -384,6 +416,22 @@ namespace HoloToolkit.Unity
                             anchorId = anchor.name;
                             DestroyImmediate(anchor);
                         }
+                        else
+                        {
+                            Debug.LogErrorFormat("[WorldAnchorManager] Unable remove WorldAnchor from {0}!", anchoredGameObject.name);
+                            if (AnchorDebugText != null)
+                            {
+                                AnchorDebugText.text += string.Format("\nUnable remove WorldAnchor from {0}!", anchoredGameObject.name);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("[WorldAnchorManager] Unable find a GameObject to remove an anchor from!");
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += "\nUnable find a GameObject to remove an anchor from!";
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(anchorId))
@@ -394,6 +442,10 @@ namespace HoloToolkit.Unity
                     else
                     {
                         Debug.LogError("[WorldAnchorManager] Unable find an anchor to delete!");
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += "\nUnable find an anchor to delete!";
+                        }
                     }
 
                     break;
@@ -428,8 +480,7 @@ namespace HoloToolkit.Unity
         /// Saves the anchor to the anchor store.
         /// </summary>
         /// <param name="anchor">Anchor.</param>
-        /// <param name="export">Should the anchor be exported to the room.</param>
-        private bool SaveAnchor(WorldAnchor anchor, bool export = true)
+        private bool SaveAnchor(WorldAnchor anchor)
         {
             // Save the anchor to persist holograms across sessions.
             if (AnchorStore.Save(anchor.name, anchor))
@@ -439,15 +490,22 @@ namespace HoloToolkit.Unity
                     Debug.LogFormat("[WorldAnchorManager] Successfully saved anchor \"{0}\".", anchor.name);
                 }
 
-                if (export)
+                if (AnchorDebugText != null)
                 {
-                    ExportAnchor(anchor);
+                    AnchorDebugText.text += string.Format("\nSuccessfully saved anchor \"{0}\".", anchor.name);
                 }
+
+                ExportAnchor(anchor);
 
                 return true;
             }
 
-            Debug.LogErrorFormat("[WorldAnchorManager] failed to save anchor \"{0}\"!", anchor.name);
+            Debug.LogErrorFormat("[WorldAnchorManager] Failed to save anchor \"{0}\"!", anchor.name);
+
+            if (AnchorDebugText != null)
+            {
+                AnchorDebugText.text += string.Format("\nFailed to save anchor \"{0}\"!", anchor.name);
+            }
             return false;
         }
 
@@ -459,11 +517,24 @@ namespace HoloToolkit.Unity
         {
             if (AnchorStore.Delete(anchorId))
             {
-                Debug.LogFormat("[WorldAnchorManager] {0} deleted successfully.", anchorId);
+                Debug.LogFormat("[WorldAnchorManager] Anchor {0} deleted successfully.", anchorId);
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nAnchor {0} deleted successfully.", anchorId);
+                }
             }
             else
             {
-                Debug.LogErrorFormat("[WorldAnchorManager] failed to delete \"{0}\".", anchorId);
+                if (string.IsNullOrEmpty(anchorId))
+                {
+                    anchorId = "NULL";
+                }
+
+                Debug.LogErrorFormat("[WorldAnchorManager] Failed to delete \"{0}\".", anchorId);
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nFailed to delete \"{0}\".", anchorId);
+                }
             }
         }
 

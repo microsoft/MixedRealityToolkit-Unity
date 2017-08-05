@@ -18,8 +18,6 @@ namespace HoloToolkit.Sharing.Utilities
         /// </summary>
         private long roomID = 1;
 
-        private Coroutine autoConnect;
-
         private static bool ShouldLocalUserCreateRoom
         {
             get
@@ -52,11 +50,11 @@ namespace HoloToolkit.Sharing.Utilities
             // SharingStage should be valid at this point, but we may not be connected.
             if (SharingStage.Instance.IsConnected)
             {
-                Connected();
+                SharingManagerConnected();
             }
             else
             {
-                Disconnected();
+                SessionTrackerDisconnected();
             }
         }
 
@@ -64,14 +62,11 @@ namespace HoloToolkit.Sharing.Utilities
         {
             if (SharingStage.Instance != null)
             {
-                SharingStage.Instance.SharingManagerConnected -= Connected;
-                SharingStage.Instance.SessionsTracker.ServerDisconnected -= Disconnected;
+                SharingStage.Instance.SharingManagerConnected -= SharingManagerConnected;
+                SharingStage.Instance.SessionsTracker.ServerDisconnected -= SessionTrackerDisconnected;
             }
 
-            if (autoConnect != null)
-            {
-                StopCoroutine(autoConnect);
-            }
+            StopCoroutine(AutoConnect());
 
             base.OnDestroy();
         }
@@ -81,28 +76,23 @@ namespace HoloToolkit.Sharing.Utilities
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Events Arguments.</param>
-        private void Connected(object sender = null, EventArgs e = null)
+        private void SharingManagerConnected(object sender = null, EventArgs e = null)
         {
-            if (autoConnect != null)
-            {
-                StopCoroutine(autoConnect);
-            }
-
-            SharingStage.Instance.SharingManagerConnected -= Connected;
-            SharingStage.Instance.SessionsTracker.ServerDisconnected += Disconnected;
+            SharingStage.Instance.SharingManagerConnected -= SharingManagerConnected;
+            SharingStage.Instance.SessionsTracker.ServerDisconnected += SessionTrackerDisconnected;
         }
 
         /// <summary>
         /// Called when the Session Tracker connects to a server.
         /// </summary>
-        private void Disconnected()
+        private void SessionTrackerDisconnected()
         {
-            SharingStage.Instance.SessionsTracker.ServerDisconnected -= Disconnected;
-            SharingStage.Instance.SharingManagerConnected += Connected;
+            SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
+            SharingStage.Instance.SessionsTracker.ServerDisconnected -= SessionTrackerDisconnected;
 
             if (SharingStage.Instance.ClientRole == ClientRole.Primary)
             {
-                autoConnect = StartCoroutine(AutoConnect());
+                StartCoroutine(AutoConnect());
             }
         }
 
@@ -110,39 +100,14 @@ namespace HoloToolkit.Sharing.Utilities
         {
             if (SharingStage.Instance.ShowDetailedLogs)
             {
-                Debug.Log("[AutoJoinSession] Attempting to connect...");
+                Debug.Log("[AutoJoinSessionAndRoom] Attempting to connect...");
             }
 
-            if (SharingStage.Instance.SessionsTracker == null)
+            if (!SharingStage.Instance.SessionsTracker.IsServerConnected)
             {
                 if (SharingStage.Instance.ShowDetailedLogs)
                 {
-                    Debug.LogWarning("[AutoJoinSession] Sharing Manager is not ready!  Attempting to reinitialize...");
-                }
-
-                SharingStage.Instance.ConnectToServer();
-            }
-
-            while (SharingStage.Instance.SessionsTracker == null)
-            {
-                yield return null;
-            }
-
-            if (SharingStage.Instance.SessionsTracker.IsServerConnected)
-            {
-                if (SharingStage.Instance.ShowDetailedLogs)
-                {
-                    Debug.LogFormat("[AutoJoinSession] Looking for {0}...", SharingStage.Instance.SessionName);
-
-                    Debug.LogFormat("[AutoJoinSession] Successfully connected to server with {0} Sessions.",
-                        SharingStage.Instance.SessionsTracker.Sessions.Count.ToString());
-                }
-            }
-            else
-            {
-                if (SharingStage.Instance.ShowDetailedLogs)
-                {
-                    Debug.LogWarning("[AutoJoinSession] Disconnected from server. Waiting for a connection... ");
+                    Debug.LogWarning("[AutoJoinSessionAndRoom] Disconnected from server. Waiting for a connection... ");
                 }
 
                 while (!SharingStage.Instance.SessionsTracker.IsServerConnected)
@@ -152,97 +117,82 @@ namespace HoloToolkit.Sharing.Utilities
 
                 if (SharingStage.Instance.ShowDetailedLogs)
                 {
-                    Debug.Log("[AutoJoinSession] Connected!");
+                    Debug.Log("[AutoJoinSessionAndRoom] Connected!");
                 }
             }
 
-            // If we are a Primary Client and can join sessions...
-            // Check to see if we aren't already in the desired session
-            Session currentSession = SharingStage.Instance.SessionsTracker.GetCurrentSession();
-
-            // We're not in a valid session.
-            if (currentSession == null)
+            if (SharingStage.Instance.ShowDetailedLogs)
             {
-                if (SharingStage.Instance.ShowDetailedLogs)
-                {
-                    Debug.Log("[AutoJoinSession] Didn't find the session, making a new one...");
-                }
+                Debug.LogFormat("[AutoJoinSessionAndRoom] Looking for {0}...", SharingStage.Instance.SessionName);
 
-                yield return SharingStage.Instance.SessionsTracker.CreateSession(new XString(SharingStage.Instance.SessionName));
-
-                currentSession = SharingStage.Instance.SessionsTracker.GetCurrentSession();
+                Debug.LogFormat("[AutoJoinSessionAndRoom] Successfully connected to server with {0} Sessions.",
+                    SharingStage.Instance.SessionsTracker.Sessions.Count.ToString());
             }
 
-            // We're already in the Session we're searching for.
-            if (currentSession != null && currentSession.GetName().GetString() == SharingStage.Instance.SessionName)
-            {
-                if (SharingStage.Instance.ShowDetailedLogs)
-                {
-                    Debug.LogFormat("[AutoJoinSession] We're already in the session we're attempting to join.");
-                }
+            yield return new WaitForEndOfFrame();
 
-                autoConnect = null;
-                yield break;
-            }
-
-            // We're already connected to the session.
-            if (currentSession != null && currentSession.GetMachineSessionState() != MachineSessionState.DISCONNECTED)
-            {
-                if (SharingStage.Instance.ShowDetailedLogs)
-                {
-                    Debug.LogFormat("[AutoJoinSession] We're joining or we've already joined the session.");
-                }
-
-                autoConnect = null;
-                yield break;
-            }
+            bool sessionExists = false;
 
             for (int i = 0; i < SharingStage.Instance.SessionsTracker.Sessions.Count; ++i)
             {
-                if (SharingStage.Instance.SessionsTracker.Sessions[i].GetName().GetString() != SharingStage.Instance.SessionName)
+                if (SharingStage.Instance.SessionsTracker.Sessions[i].GetName().GetString() ==
+                    SharingStage.Instance.SessionName)
                 {
-                    continue;
-                }
+                    sessionExists = true;
+                    if (SharingStage.Instance.ShowDetailedLogs)
+                    {
+                        Debug.LogFormat("[AutoJoinSessionAndRoom] Joining session {0}...", SharingStage.Instance.SessionName);
+                    }
 
-                if (SharingStage.Instance.ShowDetailedLogs)
-                {
-                    Debug.LogFormat("[AutoJoinSession] Joining session {0}...", SharingStage.Instance.SessionName);
-                }
+                    yield return SharingStage.Instance.SessionsTracker.JoinSession(SharingStage.Instance.SessionsTracker.Sessions[i]);
 
-                yield return SharingStage.Instance.SessionsTracker.JoinSession(SharingStage.Instance.SessionsTracker.Sessions[i]);
+                    yield return new WaitForEndOfFrame();
+                    break;
+                }
             }
 
-            while (currentSession != null && currentSession.GetMachineSessionState() != MachineSessionState.JOINED)
+            if (!sessionExists)
+            {
+                if (SharingStage.Instance.ShowDetailedLogs)
+                {
+                    Debug.LogFormat("[AutoJoinSessionAndRoom] Didn't find session {0}, making a new one...", SharingStage.Instance.SessionName);
+                }
+
+                yield return SharingStage.Instance.SessionsTracker.CreateSession(SharingStage.Instance.SessionName);
+
+                yield return new WaitForEndOfFrame();
+
+                while (SharingStage.Instance.SessionsTracker.GetCurrentSession() == null)
+                {
+                    yield return null;
+                }
+            }
+
+            while (SharingStage.Instance.SessionsTracker.GetCurrentSession().GetMachineSessionState() != MachineSessionState.JOINED)
             {
                 yield return null;
             }
 
             if (SharingStage.Instance.ShowDetailedLogs)
             {
-                Debug.LogFormat("[AutoJoinSession] Joined session {0} successfully!", SharingStage.Instance.SessionName);
+                Debug.LogFormat("[AutoJoinSessionAndRoom] Joined session {0} successfully!", SharingStage.Instance.SessionName);
             }
 
-            // First check if there is a current room
-            var currentRoom = SharingStage.Instance.CurrentRoom;
+            yield return new WaitForEndOfFrame();
 
-            while (SharingStage.Instance.CurrentRoom != null)
-            {
-                yield return null;
-            }
-
-            if (currentRoom == null || SharingStage.Instance.CurrentRoomManager.GetRoomCount() == 0)
+            if (SharingStage.Instance.CurrentRoomManager.GetRoomCount() == 0)
             {
                 // If we are the user with the lowest user ID, we will create the room.
                 if (ShouldLocalUserCreateRoom)
                 {
                     if (SharingStage.Instance.ShowDetailedLogs)
                     {
-                        Debug.LogFormat("[AutoJoinSession] Creating room {0}...", SharingStage.Instance.RoomName);
+                        Debug.LogFormat("[AutoJoinSessionAndRoom] Creating room {0}...", SharingStage.Instance.RoomName);
                     }
 
                     // To keep anchors alive even if all users have left the session...
                     // Pass in true instead of false in CreateRoom.
-                    currentRoom = SharingStage.Instance.CurrentRoomManager.CreateRoom(
+                    SharingStage.Instance.CurrentRoomManager.CreateRoom(
                         new XString(SharingStage.Instance.RoomName),
                         roomID,
                         SharingStage.Instance.KeepRoomAlive);
@@ -250,18 +200,23 @@ namespace HoloToolkit.Sharing.Utilities
             }
             else if (SharingStage.Instance.CurrentRoomManager.GetRoomCount() > 0)
             {
+                if (SharingStage.Instance.CurrentRoom != null)
+                {
+                    SharingStage.Instance.CurrentRoomManager.LeaveRoom();
+                }
+
+                yield return new WaitForEndOfFrame();
+
                 // Look through the existing rooms and join the one that matches the room name provided.
                 for (int i = 0; i < SharingStage.Instance.CurrentRoomManager.GetRoomCount(); i++)
                 {
-                    if (SharingStage.Instance.CurrentRoomManager.GetRoom(i).GetName().GetString().Equals(SharingStage.Instance.RoomName,
-                        StringComparison.OrdinalIgnoreCase))
+                    if (SharingStage.Instance.CurrentRoomManager.GetRoom(i).GetName().GetString().Equals(SharingStage.Instance.RoomName, StringComparison.OrdinalIgnoreCase))
                     {
-                        currentRoom = SharingStage.Instance.CurrentRoomManager.GetRoom(i);
-                        SharingStage.Instance.CurrentRoomManager.JoinRoom(currentRoom);
+                        SharingStage.Instance.CurrentRoomManager.JoinRoom(SharingStage.Instance.CurrentRoomManager.GetRoom(i));
 
                         if (SharingStage.Instance.ShowDetailedLogs)
                         {
-                            Debug.LogFormat("[AutoJoinSession] Joining room {0}...", currentRoom.GetName().GetString());
+                            Debug.LogFormat("[AutoJoinSessionAndRoom] Joining room {0}...", SharingStage.Instance.CurrentRoomManager.GetRoom(i).GetName().GetString());
                         }
 
                         break;
@@ -269,20 +224,19 @@ namespace HoloToolkit.Sharing.Utilities
                 }
             }
 
-            if (currentRoom == null)
+            while (SharingStage.Instance.CurrentRoom == null)
             {
-                Debug.LogError("[AutoJoinSession] Unable to create or join a room!");
-                yield break;
+                yield return null;
             }
 
             if (SharingStage.Instance.ShowDetailedLogs)
             {
-                Debug.LogFormat("[AutoJoinSession] Joined room {0} successfully!", currentRoom.GetName().GetString());
+                Debug.LogFormat("[AutoJoinSessionAndRoom] Joined room {0} successfully!", SharingStage.Instance.CurrentRoom.GetName().GetString());
             }
 
-            SharingWorldAnchorManager.Instance.AttachAnchor(gameObject);
+            yield return new WaitForEndOfFrame();
 
-            autoConnect = null;
+            SharingWorldAnchorManager.Instance.AttachAnchor(gameObject);
         }
     }
 }

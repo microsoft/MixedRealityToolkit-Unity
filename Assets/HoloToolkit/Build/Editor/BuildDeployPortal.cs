@@ -230,8 +230,7 @@ namespace HoloToolkit.Unity
                 query += "?package=" + WWW.EscapeURL(fileName);
                 WWW www = new WWW(query, form.data, headers);
                 DateTime queryStartTime = DateTime.Now;
-                while (!www.isDone &&
-                       ((DateTime.Now - queryStartTime).TotalSeconds < TimeOut))
+                while (!www.isDone && ((DateTime.Now - queryStartTime).TotalSeconds < TimeOut))
                 {
                     System.Threading.Thread.Sleep(10);
                 }
@@ -309,7 +308,6 @@ namespace HoloToolkit.Unity
                 request.Method = "DELETE";
                 using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
                 {
-                    Debug.Log("Response = " + httpResponse.StatusDescription);
                     httpResponse.Close();
                 }
             }
