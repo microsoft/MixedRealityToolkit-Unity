@@ -17,10 +17,9 @@ The Mixed Reality Toolkit is a collection of scripts and components intended to 
 | To develop the apps for mixed reality headsets, you need Creators Update.           | The Unity engine is an easy way to get started building a mixed reality app.     | Visual Studio is used for code editing, deploying and building UWP app package.       | Emulator allows you test your app without the device in simulated environment. |
 
 # Getting started with MRTK
-### Wondering how to simply get started?
-Please go over the [Getting started guide](GettingStarted.md) to learn more about just getting off the ground quickly.
-### Contributing to this project
-Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking.
+| ![Hololens Emulator(optional)](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802c_Short_22.png) Wondering how to simply get started? | ![Hololens Emulator(optional)](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802c_Short_23.png) Contributing to this project |
+| :--------------------- | :----------------- |
+| Please go over the [Getting started guide](GettingStarted.md) to learn more about just getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. |
 
 
 # Roadmaps
