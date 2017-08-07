@@ -29,9 +29,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("A color tween component : required, but could be on a different object")]
         public ColorTransition ColorBlender;
 
-        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
-        public bool WatchForThemeChange = false;
-
         private ColorInteractiveTheme mInnerColorTheme;
         private ColorInteractiveTheme mOuterColorTheme;
 
@@ -100,7 +97,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Update()
         {
-            if (WatchForThemeChange && (!mCheckOuterColorThemeTag.Equals(OuterColorThemeTag) || !mCheckInnerColorThemeTag.Equals(InnerColorThemeTag)))
+            if (!mCheckOuterColorThemeTag.Equals(OuterColorThemeTag) || !mCheckInnerColorThemeTag.Equals(InnerColorThemeTag))
             {
                 SetTheme();
                 RefreshIfNeeded();

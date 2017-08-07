@@ -20,9 +20,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("A component for color transitions: optional")]
         public ColorTransition ColorBlender;
 
-        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
-        public bool WatchForThemeChange = false;
-
         private ColorInteractiveTheme mTextColorTheme;
         private TextMesh mTextMesh;
 
@@ -82,7 +79,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Update()
         {
-            if (WatchForThemeChange && (!mCheckThemeTag.Equals(ThemeTag)))
+            if (!mCheckThemeTag.Equals(ThemeTag))
             {
                 SetTheme();
                 RefreshIfNeeded();

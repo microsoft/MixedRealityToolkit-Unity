@@ -19,9 +19,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("The target object with the material to swap textures on : optional, leave blank for self")]
         public GameObject Target;
 
-        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
-        public bool WatchForThemeChange = false;
-
         // The theme with the texture states
         private TextureInteractiveTheme mTextureTheme;
 
@@ -100,7 +97,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Update()
         {
-            if(WatchForThemeChange && (!mCheckThemeTag.Equals(ThemeTag)))
+            if(!mCheckThemeTag.Equals(ThemeTag))
             {
                 SetTheme();
                 RefreshIfNeeded();

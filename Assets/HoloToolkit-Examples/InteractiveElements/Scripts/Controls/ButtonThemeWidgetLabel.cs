@@ -25,9 +25,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("position animation component: optional")]
         public MoveToPosition MovePosition;
 
-        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
-        public bool WatchForThemeChange = false;
-
         // themes
         private ColorInteractiveTheme mColorTheme;
         private Vector3InteractiveTheme mPositionTheme;
@@ -123,7 +120,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Update()
         {
-            if (WatchForThemeChange && (!mCheckPositionThemeTag.Equals(PositionThemeTag) || !mCheckColorThemeTag.Equals(ColorThemeTag)))
+            if (!mCheckPositionThemeTag.Equals(PositionThemeTag) || !mCheckColorThemeTag.Equals(ColorThemeTag))
             {
                 SetTheme();
                 RefreshIfNeeded();

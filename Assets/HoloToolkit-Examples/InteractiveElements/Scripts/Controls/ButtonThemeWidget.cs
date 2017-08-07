@@ -31,9 +31,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("scale animation component: optional")]
         public ScaleToValue ScaleSize;
 
-        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
-        public bool WatchForThemeChange = false;
-
         // themes
         private ColorInteractiveTheme mColorTheme;
         private Vector3InteractiveTheme mPositionTheme;
@@ -150,7 +147,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Update()
         {
-            if(WatchForThemeChange && (!mCheckScaleThemeTag.Equals(ScaleThemeTag) || !mCheckPositionThemeTag.Equals(PositionThemeTag) || !mCheckColorThemeTag.Equals(ColorThemeTag)))
+            if(!mCheckScaleThemeTag.Equals(ScaleThemeTag) || !mCheckPositionThemeTag.Equals(PositionThemeTag) || !mCheckColorThemeTag.Equals(ColorThemeTag))
             {
                 SetTheme();
                 RefreshIfNeeded();

@@ -19,9 +19,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("Scale to Value component for animating scale")]
         public ScaleToValue ScaleTweener;
 
-        [Tooltip("Upate the widget's theme and refresh if the theme tag changes")]
-        public bool WatchForThemeChange = false;
-
         private Vector3InteractiveTheme mScaleTheme;
         private Material mMaterial;
         
@@ -81,7 +78,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Update()
         {
-            if (WatchForThemeChange && (!mCheckThemeTag.Equals(ThemeTag)))
+            if (!mCheckThemeTag.Equals(ThemeTag))
             {
                 SetTheme();
                 RefreshIfNeeded();
