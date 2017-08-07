@@ -231,138 +231,38 @@ namespace HoloToolkit.Unity.InputModule
             ControllerInfo currentController;
             if (controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
             {
-                if (currentController.grasp != null && obj.state.source.supportsGrasp)
+                currentController.AnimateSelect(obj.state.selectPressedAmount);
+
+                if (obj.state.source.supportsGrasp)
                 {
-                    if (obj.state.grasped != currentController.wasGrasped)
-                    {
-                        if (obj.state.grasped)
-                        {
-                            currentController.grasp.transform.localPosition = currentController.graspPressed.localPosition;
-                            currentController.grasp.transform.localRotation = currentController.graspPressed.localRotation;
-                        }
-                        else
-                        {
-                            currentController.grasp.transform.localPosition = currentController.graspUnpressed.localPosition;
-                            currentController.grasp.transform.localRotation = currentController.graspUnpressed.localRotation;
-                        }
-                        currentController.wasGrasped = obj.state.grasped;
-                    }
+                    currentController.AnimateGrasp(obj.state.grasped);
                 }
 
-                if (currentController.menu != null && obj.state.source.supportsMenu)
+                if (obj.state.source.supportsMenu)
                 {
-                    if (obj.state.menuPressed != currentController.wasMenuPressed)
-                    {
-                        if (obj.state.menuPressed)
-                        {
-                            currentController.menu.transform.localPosition = currentController.menuPressed.localPosition;
-                            currentController.menu.transform.localRotation = currentController.menuPressed.localRotation;
-                        }
-                        else
-                        {
-                            currentController.menu.transform.localPosition = currentController.menuUnpressed.localPosition;
-                            currentController.menu.transform.localRotation = currentController.menuUnpressed.localRotation;
-                        }
-                        currentController.wasMenuPressed = obj.state.menuPressed;
-                    }
+                    currentController.AnimateMenu(obj.state.menuPressed);
                 }
 
-                if (currentController.select != null)
+                if (obj.state.source.supportsThumbstick)
                 {
-                    if (obj.state.selectPressedAmount != currentController.lastSelectPressedAmount)
-                    {
-                        currentController.select.transform.localPosition = Vector3.Lerp(currentController.selectUnpressed.localPosition, currentController.selectPressed.localPosition, obj.state.selectPressedAmount);
-                        currentController.select.transform.localRotation = Quaternion.Lerp(currentController.selectUnpressed.localRotation, currentController.selectPressed.localRotation, obj.state.selectPressedAmount);
-                        currentController.lastSelectPressedAmount = obj.state.selectPressedAmount;
-                    }
+                    currentController.AnimateThumbstick(obj.state.thumbstickPressed, obj.state.thumbstickPosition);
                 }
 
-                if (currentController.thumbstickPress != null && obj.state.source.supportsThumbstick)
+                if (obj.state.source.supportsTouchpad)
                 {
-                    if (obj.state.thumbstickPressed != currentController.wasThumbstickPressed)
-                    {
-                        if (obj.state.thumbstickPressed)
-                        {
-                            currentController.thumbstickPress.transform.localPosition = currentController.thumbstickPressed.localPosition;
-                            currentController.thumbstickPress.transform.localRotation = currentController.thumbstickPressed.localRotation;
-                        }
-                        else
-                        {
-                            currentController.thumbstickPress.transform.localPosition = currentController.thumbstickUnpressed.localPosition;
-                            currentController.thumbstickPress.transform.localRotation = currentController.thumbstickUnpressed.localRotation;
-                        }
-                        currentController.wasThumbstickPressed = obj.state.thumbstickPressed;
-                    }
-                }
-
-                if(currentController.thumbstickX != null && currentController.thumbstickY != null && obj.state.source.supportsThumbstick)
-                {
-                    if (obj.state.thumbstickPosition != currentController.lastThumbstickPosition)
-                    {
-                        Vector2 thumbstickNormalized = (obj.state.thumbstickPosition + Vector2.one) / 2.0f;
-
-                        currentController.thumbstickX.transform.localPosition = Vector3.Lerp(currentController.thumbstickXMin.localPosition, currentController.thumbstickXMax.localPosition, thumbstickNormalized.x);
-                        currentController.thumbstickX.transform.localRotation = Quaternion.Lerp(currentController.thumbstickXMin.localRotation, currentController.thumbstickXMax.localRotation, thumbstickNormalized.x);
-
-                        currentController.thumbstickY.transform.localPosition = Vector3.Lerp(currentController.thumbstickYMax.localPosition, currentController.thumbstickYMin.localPosition, thumbstickNormalized.y);
-                        currentController.thumbstickY.transform.localRotation = Quaternion.Lerp(currentController.thumbstickYMax.localRotation, currentController.thumbstickYMin.localRotation, thumbstickNormalized.y);
-
-                        currentController.lastThumbstickPosition = obj.state.thumbstickPosition;
-                    }
-                }
-
-                if (currentController.touchpadPress != null && obj.state.source.supportsTouchpad)
-                {
-                    if (obj.state.touchpadPressed != currentController.wasTouchpadPressed)
-                    {
-                        if (obj.state.touchpadPressed)
-                        {
-                            currentController.touchpadPress.transform.localPosition = currentController.touchpadPressed.localPosition;
-                            currentController.touchpadPress.transform.localRotation = currentController.touchpadPressed.localRotation;
-                        }
-                        else
-                        {
-                            currentController.touchpadPress.transform.localPosition = currentController.touchpadUnpressed.localPosition;
-                            currentController.touchpadPress.transform.localRotation = currentController.touchpadUnpressed.localRotation;
-                        }
-                        currentController.wasTouchpadPressed = obj.state.touchpadPressed;
-                    }
-                }
-
-                if (currentController.touchpadTouchX != null && currentController.touchpadTouchY != null && obj.state.source.supportsTouchpad)
-                {
-                    if (obj.state.touchpadTouched != currentController.wasTouchpadTouched)
-                    {
-                        currentController.touchpadTouchVisualizer.SetActive(obj.state.touchpadTouched);
-                        currentController.wasTouchpadTouched = obj.state.touchpadTouched;
-                    }
-
-                    if (obj.state.touchpadPosition != currentController.lastTouchpadPosition)
-                    {
-                        Vector2 touchpadNormalized = (obj.state.touchpadPosition + Vector2.one) / 2.0f;
-
-                        currentController.touchpadTouchX.transform.localPosition = Vector3.Lerp(currentController.touchpadTouchXMin.localPosition, currentController.touchpadTouchXMax.localPosition, touchpadNormalized.x);
-                        currentController.touchpadTouchX.transform.localRotation = Quaternion.Lerp(currentController.touchpadTouchXMin.localRotation, currentController.touchpadTouchXMax.localRotation, touchpadNormalized.x);
-
-                        currentController.touchpadTouchY.transform.localPosition = Vector3.Lerp(currentController.touchpadTouchYMax.localPosition, currentController.touchpadTouchYMin.localPosition, touchpadNormalized.y);
-                        currentController.touchpadTouchY.transform.localRotation = Quaternion.Lerp(currentController.touchpadTouchYMax.localRotation, currentController.touchpadTouchYMin.localRotation, touchpadNormalized.y);
-
-                        currentController.lastTouchpadPosition = obj.state.touchpadPosition;
-                    }
+                    currentController.AnimateTouchpad(obj.state.touchpadPressed, obj.state.touchpadTouched, obj.state.touchpadPosition);
                 }
 
                 Vector3 newPosition;
-                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && newPosition != currentController.lastPosition)
+                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
                 {
                     currentController.gameObject.transform.localPosition = newPosition;
-                    currentController.lastPosition = newPosition;
                 }
 
                 Quaternion newRotation;
-                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && newRotation != currentController.lastRotation)
+                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
                 {
                     currentController.gameObject.transform.localRotation = newRotation;
-                    currentController.lastRotation = newRotation;
                 }
             }
         }
