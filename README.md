@@ -1,10 +1,21 @@
-# HoloToolkit-Unity
-This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
-The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
+# What is Mixed Reality Toolkit?
+The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of the applications targeting HoloLens and Windows Mixed Reality headsets.
+
+# Feature areas
+| ![Input](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_03.png) [Input](Assets/HoloToolkit/Input/README.md)| ![Input](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_04.png) [Sharing](Assets/HoloToolkit/Sharing/README.md)| ![Input](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_05.png) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| ![Input](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_06.png) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)|
+| :--------------------- | :----------------- | :------------------ | :------------------------ |
+| Scripts that leverage various inputs such as Gaze, Gesture, Voice and Motion controller.             | Sharing library allows apps to span multiple devices, and enables collaboration.    | Scripts and prefabs that allows applications to leverage physical space.        | Scripts that provide identified planes in the physical space. |
+
+| ![Spatial Sound](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_09.png) [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md)| ![UI Controls](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_10.png) [UI Controls](https://github.com/Microsoft/MRDesignLabs_Unity)| ![Utilities](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_11.png) [Utilities](Assets/HoloToolkit/Utilities/README.md)| ![Build](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_12.png) [Build](Assets/HoloToolkit/Build/README.md)|
+| :--------------------- | :----------------- | :------------------ | :------------------------ |
+| Scripts related to the audio features such as Audio Manager and Occluder.           | Building blocks for creating app experience such as Interactable Object.    | Useful common concepts that you can leverage in your application.      | Build and deploy automation window for Unity Editor.|
+
 
 ## Required Software
-- Unity Editor Version: [2017.1.0f3](https://unity3d.com/unity/whats-new/unity-2017.1.0)
-- Visual Studio 2017
+| ![Windows 10 Creators Update](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_17.png) [Windows 10 Creators Update](https://www.microsoft.com/software-download/windows10)| ![Unity](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_18.png) [Unity](https://unity3d.com/unity/whats-new/unity-2017.1.0)| ![Visual Studio 2017](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_19.png) [Visual Studio 2017](http://dev.windows.com/downloads)| ![Hololens Emulator(optional)](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/MRTK170802_Short_20.png) [Hololens Emulator(optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
+| :--------------------- | :----------------- | :------------------ | :------------------------ |
+| To develop the apps for mixed reality headsets, you need Creators Update.           | The Unity engine is an easy way to get started building a mixed reality app.     | Visual Studio is used for code editing, deploying and building UWP app package.       | Emulator allows you test your app without the device in simulated environment. |
+
 
 ## Contributing to this project:
 Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking.
