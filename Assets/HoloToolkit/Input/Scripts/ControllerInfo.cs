@@ -222,16 +222,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (grasp != null && graspPressed != null && graspUnpressed != null && isGrasped != wasGrasped)
             {
-                if (isGrasped)
-                {
-                    grasp.transform.localPosition = graspPressed.localPosition;
-                    grasp.transform.localRotation = graspPressed.localRotation;
-                }
-                else
-                {
-                    grasp.transform.localPosition = graspUnpressed.localPosition;
-                    grasp.transform.localRotation = graspUnpressed.localRotation;
-                }
+                SetLocalPositionAndRotation(grasp, isGrasped ? graspPressed : graspUnpressed);
                 wasGrasped = isGrasped;
             }
         }
@@ -240,16 +231,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (menu != null && menuPressed != null && menuUnpressed != null && isMenuPressed != wasMenuPressed)
             {
-                if (isMenuPressed)
-                {
-                    menu.transform.localPosition = menuPressed.localPosition;
-                    menu.transform.localRotation = menuPressed.localRotation;
-                }
-                else
-                {
-                    menu.transform.localPosition = menuUnpressed.localPosition;
-                    menu.transform.localRotation = menuUnpressed.localRotation;
-                }
+                SetLocalPositionAndRotation(menu, isMenuPressed ? menuPressed : menuUnpressed);
                 wasMenuPressed = isMenuPressed;
             }
         }
@@ -268,16 +250,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (thumbstickPress != null && thumbstickPressed != null && thumbstickUnpressed != null && isThumbstickPressed != wasThumbstickPressed)
             {
-                if (isThumbstickPressed)
-                {
-                    thumbstickPress.transform.localPosition = thumbstickPressed.localPosition;
-                    thumbstickPress.transform.localRotation = thumbstickPressed.localRotation;
-                }
-                else
-                {
-                    thumbstickPress.transform.localPosition = thumbstickUnpressed.localPosition;
-                    thumbstickPress.transform.localRotation = thumbstickUnpressed.localRotation;
-                }
+                SetLocalPositionAndRotation(thumbstickPress, isThumbstickPressed ? thumbstickPressed : thumbstickUnpressed);
                 wasThumbstickPressed = isThumbstickPressed;
             }
 
@@ -299,16 +272,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (touchpadPress != null && touchpadPressed != null && touchpadUnpressed != null && isTouchpadPressed != wasTouchpadPressed)
             {
-                if (isTouchpadPressed)
-                {
-                    touchpadPress.transform.localPosition = touchpadPressed.localPosition;
-                    touchpadPress.transform.localRotation = touchpadPressed.localRotation;
-                }
-                else
-                {
-                    touchpadPress.transform.localPosition = touchpadUnpressed.localPosition;
-                    touchpadPress.transform.localRotation = touchpadUnpressed.localRotation;
-                }
+                SetLocalPositionAndRotation(touchpadPress, isTouchpadPressed ? touchpadPressed : touchpadUnpressed);
                 wasTouchpadPressed = isTouchpadPressed;
             }
 
@@ -330,6 +294,12 @@ namespace HoloToolkit.Unity.InputModule
 
                 lastTouchpadPosition = newTouchpadPosition;
             }
+        }
+
+        private void SetLocalPositionAndRotation(GameObject buttonGameObject, Transform newTransform)
+        {
+            buttonGameObject.transform.localPosition = newTransform.localPosition;
+            buttonGameObject.transform.localRotation = newTransform.localRotation;
         }
     }
 }
