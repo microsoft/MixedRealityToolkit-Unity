@@ -91,6 +91,7 @@ namespace HoloToolkit.Unity.InputModule
                     UnityEngine.WSA.Application.InvokeOnAppThread(() =>
                     {
                         Debug.Log(source.Handedness + " Controller Detected");
+
                         // LoadControllerModel is a coroutine in order to handle/wait for async calls.
                         StartCoroutine(LoadControllerModel(controller, source));
                     }, false);
