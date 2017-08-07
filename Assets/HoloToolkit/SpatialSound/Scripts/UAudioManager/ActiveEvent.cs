@@ -104,7 +104,7 @@ namespace HoloToolkit.Unity
             };
 
             AudioEvent audioEvent = this.audioEvent;
-            switch (audioEvent.spatialization)
+            switch (audioEvent.Spatialization)
             {
                 case SpatialPositioningType.TwoD:
                     forEachSource((source) =>
@@ -128,35 +128,35 @@ namespace HoloToolkit.Unity
                     });
                     break;
                 default:
-                    Debug.LogErrorFormat("Unexpected spatialization type: {0}", audioEvent.spatialization.ToString());
+                    Debug.LogErrorFormat("Unexpected spatialization type: {0}", audioEvent.Spatialization.ToString());
                     break;
             }
 
-            if (audioEvent.spatialization == SpatialPositioningType.SpatialSound)
+            if (audioEvent.Spatialization == SpatialPositioningType.SpatialSound)
             {
                 CreateFlatSpatialRolloffCurve();
                 forEachSource((source) =>
                 {
                     source.rolloffMode = AudioRolloffMode.Custom;
                     source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, SpatialRolloff);
-                    SpatialSoundSettings.SetRoomSize(source, audioEvent.roomSize);
-                    SpatialSoundSettings.SetMinGain(source, audioEvent.minGain);
-                    SpatialSoundSettings.SetMaxGain(source, audioEvent.maxGain);
-                    SpatialSoundSettings.SetUnityGainDistance(source, audioEvent.unityGainDistance);
+                    SpatialSoundSettings.SetRoomSize(source, audioEvent.RoomSize);
+                    SpatialSoundSettings.SetMinGain(source, audioEvent.MinGain);
+                    SpatialSoundSettings.SetMaxGain(source, audioEvent.MaxGain);
+                    SpatialSoundSettings.SetUnityGainDistance(source, audioEvent.UnityGainDistance);
                 });
             }
             else
             {
                 forEachSource((source) =>
                 {
-                    if (audioEvent.spatialization == SpatialPositioningType.ThreeD)
+                    if (audioEvent.Spatialization == SpatialPositioningType.ThreeD)
                     {
                         source.rolloffMode = AudioRolloffMode.Custom;
-                        source.maxDistance = audioEvent.maxDistanceAttenuation3D;
-                        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioEvent.attenuationCurve);
-                        source.SetCustomCurve(AudioSourceCurveType.SpatialBlend, audioEvent.spatialCurve);
-                        source.SetCustomCurve(AudioSourceCurveType.Spread, audioEvent.spreadCurve);
-                        source.SetCustomCurve(AudioSourceCurveType.ReverbZoneMix, audioEvent.reverbCurve);
+                        source.maxDistance = audioEvent.MaxDistanceAttenuation3D;
+                        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioEvent.AttenuationCurve);
+                        source.SetCustomCurve(AudioSourceCurveType.SpatialBlend, audioEvent.SpatialCurve);
+                        source.SetCustomCurve(AudioSourceCurveType.Spread, audioEvent.SpreadCurve);
+                        source.SetCustomCurve(AudioSourceCurveType.ReverbZoneMix, audioEvent.ReverbCurve);
                     }
                     else
                     {
@@ -165,55 +165,55 @@ namespace HoloToolkit.Unity
                 });
             }
 
-            if (audioEvent.bus != null)
+            if (audioEvent.Bus != null)
             {
-                forEachSource((source) => source.outputAudioMixerGroup = audioEvent.bus);
+                forEachSource((source) => source.outputAudioMixerGroup = audioEvent.Bus);
             }
 
             float pitch = 1f;
 
-            if (audioEvent.pitchRandomization != 0)
+            if (audioEvent.PitchRandomization != 0)
             {
-                pitch = UnityEngine.Random.Range(audioEvent.pitchCenter - audioEvent.pitchRandomization, audioEvent.pitchCenter + audioEvent.pitchRandomization);
+                pitch = UnityEngine.Random.Range(audioEvent.PitchCenter - audioEvent.PitchRandomization, audioEvent.PitchCenter + audioEvent.PitchRandomization);
             }
             else
             {
-                pitch = audioEvent.pitchCenter;
+                pitch = audioEvent.PitchCenter;
             }
             forEachSource((source) => source.pitch = pitch);
 
             float vol = 1f;
-            if (audioEvent.fadeInTime > 0)
+            if (audioEvent.FadeInTime > 0)
             {
                 forEachSource((source) => source.volume = 0f);
-                this.currentFade = audioEvent.fadeInTime;
-                if (audioEvent.volumeRandomization != 0)
+                this.currentFade = audioEvent.FadeInTime;
+                if (audioEvent.VolumeRandomization != 0)
                 {
-                    vol = UnityEngine.Random.Range(audioEvent.volumeCenter - audioEvent.volumeRandomization, audioEvent.volumeCenter + audioEvent.volumeRandomization);
+                    vol = UnityEngine.Random.Range(audioEvent.VolumeCenter - audioEvent.VolumeRandomization, audioEvent.VolumeCenter + audioEvent.VolumeRandomization);
                 }
                 else
                 {
-                    vol = audioEvent.volumeCenter;
+                    vol = audioEvent.VolumeCenter;
                 }
                 this.volDest = vol;
             }
             else
             {
-                if (audioEvent.volumeRandomization != 0)
+                if (audioEvent.VolumeRandomization != 0)
                 {
-                    vol = UnityEngine.Random.Range(audioEvent.volumeCenter - audioEvent.volumeRandomization, audioEvent.volumeCenter + audioEvent.volumeRandomization);
+                    vol = UnityEngine.Random.Range(audioEvent.VolumeCenter - audioEvent.VolumeRandomization, audioEvent.VolumeCenter + audioEvent.VolumeRandomization);
                 }
                 else
                 {
-                    vol = audioEvent.volumeCenter;
+                    vol = audioEvent.VolumeCenter;
                 }
                 forEachSource((source) => source.volume = vol);
             }
 
-            float pan = audioEvent.panCenter;
-            if (audioEvent.panRandomization != 0)
+            float pan = audioEvent.PanCenter;
+            if (audioEvent.PanRandomization != 0)
             {
-                pan = UnityEngine.Random.Range(audioEvent.panCenter - audioEvent.panRandomization, audioEvent.panCenter + audioEvent.panRandomization);
+                pan = UnityEngine.Random.Range(audioEvent.PanCenter - audioEvent.PanRandomization, audioEvent.PanCenter + audioEvent.PanRandomization);
             }
             forEachSource((source) => source.panStereo = pan);
         }

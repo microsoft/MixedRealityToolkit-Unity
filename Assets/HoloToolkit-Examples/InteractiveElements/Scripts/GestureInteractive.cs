@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using System.Collections;
 using HoloToolkit.Unity.InputModule;
+using UnityEngine;
+using Cursor = HoloToolkit.Unity.InputModule.Cursor;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -22,14 +23,14 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Gesture Manipulation states
         /// </summary>
-        public enum GestureManipulationState { None, Start, Update, Lost };
+        public enum GestureManipulationState { None, Start, Update, Lost }
         public GestureManipulationState GestureState { get; protected set; }
 
         private IInputSource mCurrentInputSource;
         private uint mCurrentInputSourceId;
 
         [Tooltip("Sets the time before the gesture starts after a press has occured, handy when a select event is also being used")]
-        public float StartDelay = 0;
+        public float StartDelay;
         
         [Tooltip ("The GestureInteractiveControl to send gesture updates to")]
         public GestureInteractiveControl Control;
@@ -38,7 +39,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// Provide additional UI for gesture feedback.
         /// </summary>
         [Tooltip("Should this control hide the cursor during this manipulation?")]
-        public bool HideCursorOnManipulation = false;
+        public bool HideCursorOnManipulation;
 
         /// <summary>
         /// cached gesture values for computations
@@ -47,7 +48,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 mStartHeadRay;
         private Vector3 mStartHandPosition;
         private Vector3 mCurrentHandPosition;
-        private HoloToolkit.Unity.InputModule.Cursor mCursor;
+        private Cursor mCursor;
 
         private Coroutine mTicker;
         private IInputSource mTempInputSource;
@@ -276,10 +277,10 @@ namespace HoloToolkit.Examples.InteractiveElements
         private void HandleCursor(bool state)
         {
             // Hack for now.
-            // TODO: Update Cursor Modifyer to handle HideOnGesture, then calculate visibility so cursors can handle this correctly
+            // TODO: Update Cursor Modifier to handle HideOnGesture, then calculate visibility so cursors can handle this correctly
             if (state)
             {
-                mCursor = GameObject.FindObjectOfType<HoloToolkit.Unity.InputModule.Cursor>();
+                mCursor = FindObjectOfType<Cursor>();
             }
             
             if (HideCursorOnManipulation && mCursor != null)
@@ -302,7 +303,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// From Interactive, but customized for triggering gestures from keywords
         /// Handle the manipulation in the GestureInteractiveControl
@@ -312,11 +313,10 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             base.KeywordRecognizer_OnPhraseRecognized(args);
 
-            int index;
-            //base.KeywordRecognizer_OnPhraseRecognized(args);
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
             if ((!KeywordRequiresGaze || HasGaze) && mKeywordDictionary != null)
             {
+                int index;
                 if (mKeywordDictionary.TryGetValue(args.text, out index))
                 {
                     Control.setGestureValue(index);

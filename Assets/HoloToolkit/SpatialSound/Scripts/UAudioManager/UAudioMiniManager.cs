@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
         {
             if (audioEvent.primarySource == null)
             {
-                Debug.LogErrorFormat(this, "Emitter on object \"{0}\" is null! Cannot play sound.", audioEvent.name);
+                Debug.LogErrorFormat(this, "Emitter on object \"{0}\" is null! Cannot play sound.", audioEvent.Name);
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity
             {
                 if (audioEvent.secondarySource == null)
                 {
-                    Debug.LogErrorFormat(this, "Secondary emitter on event \"{0}\" is null! Cannot play continuous sound.", audioEvent.name);
+                    Debug.LogErrorFormat(this, "Secondary emitter on event \"{0}\" is null! Cannot play continuous sound.", audioEvent.Name);
                 }
             }
 

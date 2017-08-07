@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
 using UnityEngine.VR.WSA.Input;
 #endif
 
@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private uint? currentlyTrackedHand = null;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
         protected override void Awake()
         {
             base.Awake();

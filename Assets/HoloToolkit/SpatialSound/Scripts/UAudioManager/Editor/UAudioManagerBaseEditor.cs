@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity
             // Get current event's properties.
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("name"));
 
-            if (selectedEvent.name != this.eventNames[this.selectedEventIndex])
+            if (selectedEvent.Name != this.eventNames[this.selectedEventIndex])
             {
                 UpdateEventNames(EditorEvents);
             }
@@ -114,9 +114,9 @@ namespace HoloToolkit.Unity
             }
 
             // Positioning
-            selectedEvent.spatialization = (SpatialPositioningType)EditorGUILayout.Popup("Positioning", (int)selectedEvent.spatialization, this.posTypes);
+            selectedEvent.Spatialization = (SpatialPositioningType)EditorGUILayout.Popup("Positioning", (int)selectedEvent.Spatialization, this.posTypes);
 
-            if (selectedEvent.spatialization == SpatialPositioningType.SpatialSound)
+            if (selectedEvent.Spatialization == SpatialPositioningType.SpatialSound)
             {
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("roomSize"));
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("minGain"));
@@ -124,7 +124,7 @@ namespace HoloToolkit.Unity
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("unityGainDistance"));
                 EditorGUILayout.Space();
             }
-            else if (selectedEvent.spatialization == SpatialPositioningType.ThreeD)
+            else if (selectedEvent.Spatialization == SpatialPositioningType.ThreeD)
             {
                 //Quick this : needs an update or the serialized object is not saving the threeD value
                 this.serializedObject.Update();
@@ -166,7 +166,7 @@ namespace HoloToolkit.Unity
             EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("volumeCenter"));
 
             // Pan Settings
-            if (selectedEvent.spatialization == SpatialPositioningType.TwoD)
+            if (selectedEvent.Spatialization == SpatialPositioningType.TwoD)
             {
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("panCenter"));
             }
@@ -190,7 +190,7 @@ namespace HoloToolkit.Unity
             {
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.looping"));
 
-                if (selectedEvent.container.looping)
+                if (selectedEvent.Container.looping)
                 {
                     EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.loopTime"));
                 }
@@ -220,7 +220,7 @@ namespace HoloToolkit.Unity
 
         private void DrawSoundClipInspector(SerializedProperty selectedEventProperty, TEvent selectedEvent)
         {
-            bool allowLoopingClip = !selectedEvent.container.looping;
+            bool allowLoopingClip = !selectedEvent.Container.looping;
 
             if (allowLoopingClip)
             {
@@ -230,7 +230,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            for (int i = 0; i < selectedEvent.container.sounds.Length; i++)
+            for (int i = 0; i < selectedEvent.Container.sounds.Length; i++)
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
@@ -256,14 +256,14 @@ namespace HoloToolkit.Unity
                     {
                         EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].looping"));
 
-                        if (selectedEvent.container.sounds[i].looping && selectedEvent.container.containerType == AudioContainerType.Simultaneous)
+                        if (selectedEvent.Container.sounds[i].looping && selectedEvent.Container.containerType == AudioContainerType.Simultaneous)
                         {
                             allowLoopingClip = false;
                         }
                     }
                     else
                     {
-                        selectedEvent.container.sounds[i].looping = false;
+                        selectedEvent.Container.sounds[i].looping = false;
                     }
                 }
             }
@@ -275,17 +275,17 @@ namespace HoloToolkit.Unity
 
             for (int i = 0; i < EditorEvents.Length; i++)
             {
-                if (string.IsNullOrEmpty(EditorEvents[i].name))
+                if (string.IsNullOrEmpty(EditorEvents[i].Name))
                 {
-                    EditorEvents[i].name = "_NewEvent" + i.ToString();
+                    EditorEvents[i].Name = "_NewEvent" + i.ToString();
                 }
 
-                while (previousEventNames.Contains(EditorEvents[i].name))
+                while (previousEventNames.Contains(EditorEvents[i].Name))
                 {
-                    EditorEvents[i].name = "_" + EditorEvents[i].name;
+                    EditorEvents[i].Name = "_" + EditorEvents[i].Name;
                 }
 
-                this.eventNames[i] = EditorEvents[i].name;
+                this.eventNames[i] = EditorEvents[i].Name;
                 previousEventNames.Add(this.eventNames[i]);
             }
         }
@@ -293,18 +293,18 @@ namespace HoloToolkit.Unity
         private void AddSound(TEvent selectedEvent)
         {
 
-            UAudioClip[] tempClips = new UAudioClip[selectedEvent.container.sounds.Length + 1];
-            selectedEvent.container.sounds.CopyTo(tempClips, 0);
+            UAudioClip[] tempClips = new UAudioClip[selectedEvent.Container.sounds.Length + 1];
+            selectedEvent.Container.sounds.CopyTo(tempClips, 0);
             tempClips[tempClips.Length - 1] = new UAudioClip();
-            selectedEvent.container.sounds = tempClips;
+            selectedEvent.Container.sounds = tempClips;
         }
 
         private TEvent[] AddAudioEvent(TEvent[] EditorEvents)
         {
             TEvent tempEvent = new TEvent();
             TEvent[] tempEventArray = new TEvent[EditorEvents.Length + 1];
-            tempEvent.container = new AudioContainer();
-            tempEvent.container.sounds = new UAudioClip[0];
+            tempEvent.Container = new AudioContainer();
+            tempEvent.Container.sounds = new UAudioClip[0];
             EditorEvents.CopyTo(tempEventArray, 0);
             tempEventArray[EditorEvents.Length] = tempEvent;
             this.eventNames = new string[tempEventArray.Length];
