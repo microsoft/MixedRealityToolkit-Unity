@@ -152,19 +152,11 @@ namespace HoloToolkit.Unity.InputModule
             base.SetVisiblity(visible);
 
             mIsVisible = visible;
+            ElementVisibility(visible);
 
             if (visible)
             {
-                if (Light != null)
-                {
-                    Light.SetActive(visible);
-                }
-
                 OnCursorStateChange(CursorState);
-            }
-            else
-            {
-                ElementVisibility(visible);
             }
         }
 
