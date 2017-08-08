@@ -61,6 +61,11 @@ namespace HoloToolkit.Unity.InputModule
                 }
                 keywordRecognizer = new KeywordRecognizer(keywords);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+
+                if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+                {
+                    StartKeywordRecognizer();
+                }
             }
             else
             {

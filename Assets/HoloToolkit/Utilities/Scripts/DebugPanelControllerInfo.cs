@@ -50,14 +50,6 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void OnDestroy()
-        {
-            if (DebugPanel.Instance != null)
-            {
-                DebugPanel.Instance.UnregisterExternalLogCallback(GetControllerInfo);
-            }
-        }
-
         private void InteractionManager_OnSourceDetected(SourceDetectedEventArgs obj)
         {
             Debug.LogFormat("{0} {1} Detected", obj.state.handType, obj.state.source.kind);

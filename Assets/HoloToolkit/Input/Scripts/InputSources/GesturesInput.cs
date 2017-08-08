@@ -167,8 +167,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (RecognizerStart == RecognizerStartBehavior.AutoStart)
             {
-                gestureRecognizer.StartCapturingGestures();
-                navigationGestureRecognizer.StartCapturingGestures();
+                StartGestureRecognizer();
             }
         }
 
