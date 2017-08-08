@@ -90,8 +90,6 @@ namespace HoloToolkit.Unity.InputModule
                     // Since this is a Unity call and will create a GameObject, this must run on Unity's app thread.
                     UnityEngine.WSA.Application.InvokeOnAppThread(() =>
                     {
-                        Debug.Log(source.Handedness + " Controller Detected");
-
                         // LoadControllerModel is a coroutine in order to handle/wait for async calls.
                         StartCoroutine(LoadControllerModel(controller, source));
                     }, false);
@@ -216,8 +214,6 @@ namespace HoloToolkit.Unity.InputModule
                 ControllerInfo controller;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
                 {
-                    Debug.Log(obj.state.handType + " Controller Lost");
-
                     Destroy(controller.gameObject);
 
                     // After destruction, the reference can be removed from the dictionary.

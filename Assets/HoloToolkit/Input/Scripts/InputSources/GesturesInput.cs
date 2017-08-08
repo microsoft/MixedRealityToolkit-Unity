@@ -669,11 +669,11 @@ namespace HoloToolkit.Unity.InputModule
 
             sourceData.Grasp.IsSupported = interactionSourceState.source.supportsGrasp;
             sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
-            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable ? interactionSourceState.grasped : false);
+            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable && interactionSourceState.grasped);
 
             sourceData.Menu.IsSupported = interactionSourceState.source.supportsMenu;
             sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
-            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable ? interactionSourceState.menuPressed : false);
+            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable && interactionSourceState.menuPressed);
         }
 
         #region Raise GestureRecognizer Events

@@ -20,7 +20,7 @@ namespace GLTF
 
         private void Start()
         {
-            if (GLTFName.Length > 0)
+            if (!string.IsNullOrEmpty(GLTFName))
             {
                 if (File.Exists(Path.Combine(Application.streamingAssetsPath, GLTFName)))
                 {

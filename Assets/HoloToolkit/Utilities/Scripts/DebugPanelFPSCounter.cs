@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
             // calculate the fps first 
             // (Note that we might want to do this in our update loop)
             UpdateFps();
-            return string.Format("FPS: {0}", framesPerSecond);
+            return string.Format("FPS: {0}\n", framesPerSecond);
         }
 
         /// <summary>
