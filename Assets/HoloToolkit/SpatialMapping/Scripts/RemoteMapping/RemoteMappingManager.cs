@@ -32,20 +32,20 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Used for voice commands.
         /// </summary>
         private KeywordRecognizer keywordRecognizer;
-#endif
 
         /// <summary>
         /// Collection of supported keywords and their associated actions.
         /// </summary>
         private Dictionary<string, System.Action> keywordCollection;
+#endif
 
         // Use this for initialization.
         private void Start()
         {
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             // Create our keyword collection.
             keywordCollection = new Dictionary<string, System.Action> { { SendMeshesKeyword, SendMeshes } };
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
             // Tell the KeywordRecognizer about our keywords.
             keywordRecognizer = new KeywordRecognizer(keywordCollection.Keys.ToArray());
             // Register a callback for the KeywordRecognizer and start recognizing.

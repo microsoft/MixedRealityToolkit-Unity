@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using System.Text;
 using UnityEngine;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
+using System.Text;
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -17,6 +17,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class DictationInputManager : Singleton<DictationInputManager>, IInputSource
     {
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Caches the text currently being displayed in dictation display text.
         /// </summary>
@@ -47,12 +48,12 @@ namespace HoloToolkit.Unity.InputModule
         /// Audio clip of the last dictation session.
         /// </summary>
         private static AudioClip dictationAudioClip;
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-        private static DictationRecognizer dictationRecognizer;
-#endif
-        private static bool isTransitioning;
 
+        private static DictationRecognizer dictationRecognizer;
+        
+        private static bool isTransitioning;
         private static bool hasFailed;
+#endif
 
         #region Unity Methods
 
@@ -187,6 +188,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #region Dictation Recognizer Callbacks
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 
         /// <summary>
         /// This event is fired while the user is talking. As the recognizer listens, it provides text of what it's heard so far.
@@ -200,7 +202,6 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.RaiseDictationHypothesis(Instance, 0, dictationResult);
         }
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// This event is fired after the user pauses, typically at the end of a sentence. The full recognized string is returned here.
         /// </summary>
@@ -234,7 +235,6 @@ namespace HoloToolkit.Unity.InputModule
             textSoFar = null;
             dictationResult = string.Empty;
         }
-#endif
 
         /// <summary>
         /// This event is fired when an error occurs.
@@ -249,7 +249,7 @@ namespace HoloToolkit.Unity.InputModule
             textSoFar = null;
             dictationResult = string.Empty;
         }
-
+#endif
         #endregion // Dictation Recognizer Callbacks
 
         #region IInputSource Implementation
