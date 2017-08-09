@@ -1,3 +1,5 @@
+<img src="External/ReadMeImages/MRTK_Logo.png" width="350">
+
 # What is Mixed Reality Toolkit (MRTK)?
 The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 The project is aimed at reducing barriers to entry to create mixed reality applications and contribute back to the community as we all grow.
