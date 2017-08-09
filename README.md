@@ -3,26 +3,33 @@
 # What is Mixed Reality Toolkit (MRTK)?
 The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.
 The project is aimed at reducing barriers to entry to create mixed reality applications and contribute back to the community as we all grow.
-MixedRealityToolkit-Unity repository uses code from the base MixedRealityToolkit repository and makes it easier to consume in Unity.
+
+MixedRealityToolkit-Unity repository uses code from the base MixedRealityToolkit repository and makes it easier to consume in [Unity](https://unity3d.com/).
+
+TODO: Stack slide visual.
+
 Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/mixed-reality/mixed_reality).
+
+# Latest master release
+[Version v1.5.8.0 for Unity 5.6.2f1](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.5.8.0)
 
 # Feature areas
 | ![Input](External/ReadMeImages/MRTK170802_Short_03.png) [Input](Assets/HoloToolkit/Input/README.md)| ![Sharing](External/ReadMeImages/MRTK170802_Short_04.png) [Sharing](Assets/HoloToolkit/Sharing/README.md)| ![Spatial Mapping](External/ReadMeImages/MRTK170802_Short_05.png) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| ![Spatial Understanding](External/ReadMeImages/MRTK170802_Short_06.png) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)|
 | :--------------------- | :----------------- | :------------------ | :------------------------ |
 | Scripts that leverage inputs such as gaze, gesture, voice and motion controllers.             | Sharing library enables collaboration across multiple devices.  | Scripts that allow applications to bring the real world into the digital using HoloLens.        | Tailor experiences based on room semantics like couch, wall etc. |
 | ![Spatial Sound](External/ReadMeImages/MRTK170802_Short_09.png) [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md)| ![UI Controls](External/ReadMeImages/MRTK170802_Short_10.png) [UI Controls](Assets/HoloToolkit/UI/README.md)| ![Utilities](External/ReadMeImages/MRTK170802_Short_11.png) [Utilities](Assets/HoloToolkit/Utilities/README.md)| ![Build](External/ReadMeImages/MRTK170802_Short_12.png) [Build](Assets/HoloToolkit/Build/README.md)|
-| Scripts to help plug spatial audio into your application.           | Building blocks for creating good UI in your application like common controls.    | Useful helper concepts that you can leverage in your application.      | Build and deploy automation window for Unity Editor.|
+| Scripts to help plug spatial audio into your application.           | Building blocks for creating good UI in your application like common controls.    | Common helpers and tools that you can leverage in your application.      | Build and deploy automation window for Unity Editor.|
 
 
 # Required Software
-| ![Windows 10 Creators Update](External/ReadMeImages/MRTK170802_Short_17.png) [Windows 10 Creators Update](https://www.microsoft.com/software-download/windows10)| ![Unity](External/ReadMeImages/MRTK170802_Short_18.png) [Unity](https://unity3d.com/unity/whats-new/unity-2017.1.0)| ![Visual Studio 2017](External/ReadMeImages/MRTK170802_Short_19.png) [Visual Studio 2017](http://dev.windows.com/downloads)| ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802_Short_20.png) [Hololens Emulator(optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
+| ![Windows 10 Creators Update](External/ReadMeImages/MRTK170802_Short_17.png) [Windows 10 Creators Update](https://www.microsoft.com/software-download/windows10)| ![Unity](External/ReadMeImages/MRTK170802_Short_18.png) [Unity](https://unity3d.com/get-unity/download/archive?_ga=2.81762199.1436901961.1502315389-1970488254.1488922991)| ![Visual Studio 2017](External/ReadMeImages/MRTK170802_Short_19.png) [Visual Studio 2017](http://dev.windows.com/downloads)| ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802_Short_20.png) [Hololens Emulator(optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
 | :--------------------- | :----------------- | :------------------ | :------------------------ |
 | To develop apps for mixed reality headsets, you need Creators Update.           | The Unity engine is an easy way to get started building a mixed reality app.     | Visual Studio is used for code editing, deploying and building UWP app packages.       | Emulator allows you test your app without the device in a simulated environment. |
 
 # Getting started with MRTK
-| ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802c_Short_22.png) Wondering how to simply get started? | ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802c_Short_23.png) Contributing to this project |
+| ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802c_Short_22.png) Quick start | ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802c_Short_23.png) Contributing to this project |
 | :--------------------- | :----------------- |
-| Please go over the [Getting started guide](GettingStarted.md) to learn more about just getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. |
+| Please go over the [Getting started guide](GettingStarted.md) to learn more about getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. |
 
 
 # Roadmaps
@@ -34,12 +41,31 @@ Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/m
 | 2017.3.0              | End Dec 2017      | v1.2017.3.0        | - 360 video player prefabs. - Scriptable foveated rendering prefabs. |
 ### Dev_Unity_2017.2.0 branch
 
-| Target Unity release  | Release timeframe | Branch release tag | Branch pre-release features |
-| --------------------- | ----------------- | ------------------ | ------------------------ |
-| MRTP9                 | End July 2017     | v1.Dev.MRTP9       | - Windows Mixed Reality support for working on both HoloLens and immersive headsets. - Gamepad support. - Windows Mixed Reality motion controller support. |
-| MRTP13                | Early Aug 2017    | v1.Dev.MRTP13      | - Updating to MRTP13. - Windows Mixed Reality motion controller rendering with glTF format read from WU driver. |
-| 2017.2.0              | Mid Aug 2017      | v1.Dev.2017.2.0    | - Adapting to Unity's breaking changes of xR namespace and others. |
-| 2017.2.0              | End Sep 2017      | v1.Dev.2017.2.1    | - Merge branch into master. |
+| Target Unity release  | Release timeframe | Branch release tag | Branch pre-release features | Status |
+| --------------------- | ----------------- | ------------------ | --------------------------- | --------------------------- |
+| MRTP9                 | End July 2017     | v1.Dev.MRTP9       | - Windows Mixed Reality support for working on both HoloLens and immersive headsets. - Gamepad support. - Windows Mixed Reality motion controller support. | [Complete: v1.Dev.MRTP9](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP9) |
+| MRTP13                | Early Aug 2017    | v1.Dev.MRTP13      | - Updating to MRTP13. - Windows Mixed Reality motion controller rendering with glTF format read from WU driver. | [Complete: v1.Dev.MRTP13](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP13) |
+| 2017.2.0              | Mid Aug 2017      | v1.Dev.2017.2.0    | - Adapting to Unity's breaking changes of xR namespace and others. | In progress |
+| 2017.2.0              | End Sep 2017      | v1.Dev.2017.2.1    | - Merge branch into master. | Not started. |
+
+# Upcoming Breaking Changes
+
+- **Renaming HoloToolkit-Unity repository to MixedRealityToolkit-Unity** to align with product direction.
+- Technically **all your checkins and redirect links will continue to work as-is** but we wanted to give a better heads up on this.
+- All other dependent repositories will undergo a similar name change.
+- We are **not breaking toolkit folder names and namespaces at this time.**
+- Instead we are taking a staggered approach for breaking changes based on developer feedback.
+
+| Breaking change description                     | Release timeframe | Notes                    |
+| ----------------------------------------------- | ----------------- | ------------------------ |
+| Rename repository to MixedRealityToolkit-Unity. | Mid Aug 2017      | - Recommend you do: $git remote set-url origin new_url. - Recommend reading: https://help.github.com/articles/renaming-a-repository ; https://github.com/blog/1508-repository-redirects-are-here |
+| Updating toolkit namespace to MixedReality      | Nov 2017          | - Update folder names, class names and namespace names post 2017.2.0 release. |
+
+# Future work planning
+- Updating landing page for the ReadMe.md to help app developers find content better.
+- Updating API documentation using tools like Doxygen and not writing them manually. This is something we will work with all of you on.
+- Update Wiki to host API documentation instead.
+- Move reusable features from MixedReality Design Labs project into toolkit.
 
 # Release cadence
 ### Master branch
@@ -63,29 +89,6 @@ Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/m
 - Development branches might choose to mark releases on a faster cadence based on customer/project needs.
 - Recommend marking a development branch tag every 2 weeks as needed to ensure stability before making up to master.
 - Development branches might be deleted once merged into master. If more work is pending, it's ok to continue working in them.
-
-# Upcoming Breaking Changes
-
-- **Renaming HoloToolkit-Unity repository to MixedRealityToolkit-Unity** to align with product direction.
-- Technically **all your checkins and redirect links will continue to work as-is** but we wanted to give a better heads up on this.
-- All other dependent repositories will undergo a similar name change.
-- We are **not breaking toolkit folder names and namespaces at this time.**
-- Instead we are taking a staggered approach for breaking changes based on developer feedback.
-
-| Breaking change description                     | Release timeframe | Notes                    |
-| ----------------------------------------------- | ----------------- | ------------------------ |
-| Rename repository to MixedRealityToolkit-Unity. | Mid Aug 2017      | - Recommend you do: $git remote set-url origin new_url. - Recommend reading: https://help.github.com/articles/renaming-a-repository ; https://github.com/blog/1508-repository-redirects-are-here |
-| Updating toolkit namespace to MixedReality      | Nov 2017          | - Update folder names, class names and namespace names post 2017.2.0 release. |
-
-# Future work planning
-- Updating landing page for the ReadMe.md to help app developers find content better.
-- Updating API documentation using tools like Doxygen and not writing them manually. This is something we will work with all of you on.
-- Update Wiki to host API documentation instead.
-- Move reusable features from MixedReality Design Labs project into toolkit.
-
-To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
-
-To learn how to add the HoloToolkit to your project see the [Getting Started](GettingStarted.md) guide.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
