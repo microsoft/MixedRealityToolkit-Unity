@@ -94,13 +94,13 @@ namespace HoloToolkit.Unity
             string toReturn = "";
             foreach (ControllerState controllerState in controllers.Values)
             {
-                toReturn += string.Format("Hand: {0}\nPointerPosition: {1}\nPointerRotation: {2}\n" +
-                                          "GripPosition: {3}\nGripRotation: {4}\nGrasped: {5}\n" +
-                                          "MenuPressed: {6}\nSelectPressed: {7}\nSelectPressedAmount: {8}\n" +
-                                          "ThumbstickPressed: {9}\nThumbstickPosition: {10}\nTouchpadPressed: {11}\n" +
-                                          "TouchpadTouched: {12}\nTouchpadPosition: {13}\n\n",
-                                          controllerState.HandType, controllerState.PointerPosition, controllerState.PointerRotation,
-                                          controllerState.GripPosition, controllerState.GripRotation, controllerState.Grasped,
+                toReturn += string.Format("Hand: {0}\nPointer: Position: {1} Rotation: {2}\n" +
+                                          "Grip: Position: {3} Rotation: {4}\nGrasped: {5} " +
+                                          "MenuPressed: {6}\nSelect: Pressed: {7} PressedAmount: {8}\n" +
+                                          "Thumbstick: Pressed: {9} Position: {10}\nTouchpad: Pressed: {11} " +
+                                          "Touched: {12} Position: {13}\n\n",
+                                          controllerState.HandType, controllerState.PointerPosition, controllerState.PointerRotation.eulerAngles,
+                                          controllerState.GripPosition, controllerState.GripRotation.eulerAngles, controllerState.Grasped,
                                           controllerState.MenuPressed, controllerState.SelectPressed, controllerState.SelectPressedAmount,
                                           controllerState.ThumbstickPressed, controllerState.ThumbstickPosition, controllerState.TouchpadPressed,
                                           controllerState.TouchpadTouched, controllerState.TouchpadPosition);

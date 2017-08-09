@@ -96,7 +96,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private class SourceData
         {
-            public SourceData(IInputSource inputSource, InteractionSource interactionSource)
+            public SourceData(InteractionSource interactionSource)
             {
                 SourceId = interactionSource.id;
                 SourceKind = interactionSource.kind;
@@ -528,9 +528,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
-            // NOTE: We don't need to use the data here. We just need to make sure it's added if it's not available yet:
-            GetOrAddSourceData(args.state.source);
-
+            // NOTE: We update the source state data, in case an app wants to query it on source detected.
+            UpdateSourceState(args.state, GetOrAddSourceData(args.state.source));
             InputManager.Instance.RaiseSourceDetected(this, args.state.source.id);
         }
 
@@ -544,7 +543,7 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (!sourceIdToData.TryGetValue(interactionSource.id, out sourceData))
             {
-                sourceData = new SourceData(this, interactionSource);
+                sourceData = new SourceData(interactionSource);
                 sourceIdToData.Add(sourceData.SourceId, sourceData);
 
                 // TODO: robertes: whenever we end up adding, should we first synthesize a SourceDetected?  Or
