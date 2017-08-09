@@ -6,7 +6,7 @@ The project is aimed at reducing barriers to entry to create mixed reality appli
 
 MixedRealityToolkit-Unity repository uses code from the base MixedRealityToolkit repository and makes it easier to consume in [Unity](https://unity3d.com/).
 
-TODO: Stack slide visual.
+<img src="External/ReadMeImages/MixedRealityStack.png">
 
 Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/mixed-reality/mixed_reality).
 
