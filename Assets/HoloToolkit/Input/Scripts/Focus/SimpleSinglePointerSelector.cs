@@ -32,10 +32,10 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Data
 
-        private bool started = false;
+        private bool started;
 
-        private bool addedInputManagerListener = false;
-        private IPointingSource currentPointer = null;
+        private bool addedInputManagerListener;
+        private IPointingSource currentPointer;
 
         private readonly InputSourcePointer inputSourcePointer = new InputSourcePointer();
 
@@ -77,11 +77,7 @@ namespace HoloToolkit.Unity.InputModule
 
         void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
-            if (IsGazePointerActive && SupportsPointingRay(eventData.InputSource, eventData.SourceId))
-            {
-                AttachInputSourcePointer(eventData);
-                SetPointer(inputSourcePointer);
-            }
+            // Nothing to do on source detected.
         }
 
         void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
@@ -94,7 +90,8 @@ namespace HoloToolkit.Unity.InputModule
 
         void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
         {
-            HandleInputAction(eventData);
+            // This is temporary, for a bug in 2017.2.
+            //HandleInputAction(eventData);
         }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
@@ -141,7 +138,7 @@ namespace HoloToolkit.Unity.InputModule
                     GetType().Name
                     );
 
-                Cursor[] foundCursors = GameObject.FindObjectsOfType<Cursor>();
+                Cursor[] foundCursors = FindObjectsOfType<Cursor>();
 
                 if ((foundCursors == null) || (foundCursors.Length == 0))
                 {
@@ -299,7 +296,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool IsGazePointerActive
         {
-            get { return object.ReferenceEquals(currentPointer, GazeManager.Instance); }
+            get { return ReferenceEquals(currentPointer, GazeManager.Instance); }
         }
 
         #endregion
