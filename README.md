@@ -11,7 +11,7 @@ MixedRealityToolkit-Unity uses code from the base MixedRealityToolkit repository
 Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/mixed-reality/mixed_reality).
 
 [github-rel]:                 https://github.com/Microsoft/HoloToolkit-Unity/releases/latest
-[github-rel-badge]:            https://img.shields.io/github/tag/microsoft/holotoolkit-unity.svg?style=flat-square&label=release&colorB=007ec6
+[github-rel-badge]:            https://img.shields.io/github/tag/microsoft/holotoolkit-unity.svg?style=flat-square&label=latest%20master%20branch%20release&colorB=007ec6
 [![Github Release][github-rel-badge]][github-rel]
 
 # Feature areas
