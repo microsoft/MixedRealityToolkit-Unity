@@ -10,8 +10,9 @@ MixedRealityToolkit-Unity repository uses code from the base MixedRealityToolkit
 
 Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/mixed-reality/mixed_reality).
 
-# Latest master release
-[Version v1.5.8.0 for Unity 5.6.2f1](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.5.8.0)
+[github-rel]:                 https://github.com/Microsoft/HoloToolkit-Unity/releases/latest
+[github-rel-badge]:            https://img.shields.io/github/tag/microsoft/holotoolkit-unity.svg?style=flat-square&label=release&colorB=007ec6
+[![Github Release][github-rel-badge]][github-rel]
 
 # Feature areas
 | ![Input](External/ReadMeImages/MRTK170802_Short_03.png) [Input](Assets/HoloToolkit/Input/README.md)| ![Sharing](External/ReadMeImages/MRTK170802_Short_04.png) [Sharing](Assets/HoloToolkit/Sharing/README.md)| ![Spatial Mapping](External/ReadMeImages/MRTK170802_Short_05.png) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| ![Spatial Understanding](External/ReadMeImages/MRTK170802_Short_06.png) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)|
