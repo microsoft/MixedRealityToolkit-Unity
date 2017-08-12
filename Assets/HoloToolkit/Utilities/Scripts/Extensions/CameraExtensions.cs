@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public static float GetHorizontalFieldOfViewRadians(this Camera camera)
         {
-            float horizontalFovRadians = 2 * Mathf.Atan(Mathf.Tan((camera.fieldOfView * Mathf.Deg2Rad) / 2) * camera.aspect);
+            float horizontalFovRadians = 2f * Mathf.Atan(Mathf.Tan(camera.fieldOfView * Mathf.Deg2Rad * 0.5f) * camera.aspect);
             return horizontalFovRadians;
         }
 
@@ -21,8 +21,8 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public static bool IsInFOV(this Camera camera, Vector3 position)
         {
-            float verticalFovHalf = camera.fieldOfView / 2;
-            float horizontalFovHalf = camera.GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg / 2;
+            float verticalFovHalf = camera.fieldOfView * 0.5f;
+            float horizontalFovHalf = camera.GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg * 0.5f;
 
             Vector3 deltaPos = position - camera.transform.position;
             Vector3 headDeltaPos = MathUtils.TransformDirectionFromTo(null, camera.transform, deltaPos).normalized;
