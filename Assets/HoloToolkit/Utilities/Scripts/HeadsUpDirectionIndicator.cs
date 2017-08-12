@@ -92,7 +92,7 @@ namespace HoloToolkit.Unity
         // Update the direction indicator's position and orientation every frame.
         private void Update()
         {
-            if (!HasObjectsToTrack()) return;
+            if (!HasObjectsToTrack()) { return; }
 
             int currentFrameCount = Time.frameCount;
             if (currentFrameCount != frustumLastUpdated)
