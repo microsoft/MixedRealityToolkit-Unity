@@ -252,7 +252,7 @@ namespace HoloToolkit.UI.Keyboard
             // Axis Slider
             if (SliderEnabled)
             {
-                Vector3 nearPoint = Vector3.ProjectOnPlane(Camera.main.transform.forward, transform.forward);
+                Vector3 nearPoint = Vector3.ProjectOnPlane(CameraCache.main.transform.forward, transform.forward);
                 Vector3 relPos = transform.InverseTransformPoint(nearPoint);
                 InputFieldSlide.TargetPoint = relPos;
             }
@@ -361,8 +361,9 @@ namespace HoloToolkit.UI.Keyboard
         public void RepositionKeyboard(Vector3 kbPos, float verticalOffset = 0.0f)
         {
             transform.position = kbPos;
-            ScaleToSize();
-            LookAtTargetOrigin();
+            Vector3 cameraPos = CameraCache.main.transform.position;
+            ScaleToSize(cameraPos);
+            LookAtTargetOrigin(cameraPos);
         }
 
         /// <summary>
@@ -386,18 +387,18 @@ namespace HoloToolkit.UI.Keyboard
                 transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
             }
 
-
-            ScaleToSize();
-
-            LookAtTargetOrigin();
+            Vector3 cameraPos = CameraCache.main.transform.position;
+            ScaleToSize(cameraPos);
+            LookAtTargetOrigin(cameraPos);
         }
 
         /// <summary>
         /// Function to scale keyboard to the appropriate size based on distance
         /// </summary>
-        private void ScaleToSize()
+        /// <param name="cameraPos">Position of the camera</param>
+        private void ScaleToSize(Vector3 cameraPos)
         {
-            float distance = (transform.position - Camera.main.transform.position).magnitude;
+            float distance = (transform.position - cameraPos).magnitude;
             float distancePercent = (distance - m_MinDistance) / (m_MaxDistance - m_MinDistance);
             float scale = m_MinScale + (m_MaxScale - m_MinScale) * distancePercent;
 
@@ -410,9 +411,10 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Look at function to have the keyboard face the user
         /// </summary>
-        private void LookAtTargetOrigin()
+        /// <param name="cameraPos">Position of the camera</param>
+        private void LookAtTargetOrigin(Vector3 cameraPos)
         {
-            transform.LookAt(Camera.main.transform.position);
+            transform.LookAt(cameraPos);
             transform.Rotate(Vector3.up, 180.0f);
         }
 

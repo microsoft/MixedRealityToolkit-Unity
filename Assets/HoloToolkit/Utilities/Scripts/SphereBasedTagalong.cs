@@ -32,12 +32,13 @@ namespace HoloToolkit.Unity
 
         void Start()
         {
-            initialDistanceToCamera = Vector3.Distance(this.transform.position, Camera.main.transform.position);
+            initialDistanceToCamera = Vector3.Distance(this.transform.position, CameraCache.main.transform.position);
         }
 
         void Update()
         {
-            optimalPosition = Camera.main.transform.position + Camera.main.transform.forward * initialDistanceToCamera;
+            Transform cameraTransform = CameraCache.main.transform;
+            optimalPosition = cameraTransform.position + cameraTransform.forward * initialDistanceToCamera;
 
             Vector3 offsetDir = this.transform.position - optimalPosition;
             if (offsetDir.magnitude > SphereRadius)

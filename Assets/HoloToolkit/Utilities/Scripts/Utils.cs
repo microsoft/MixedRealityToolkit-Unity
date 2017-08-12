@@ -64,8 +64,9 @@ namespace HoloToolkit.Unity
         public static void MoveObjectInFrontOfUser(Transform stageTransform, Transform tran, Vector3 offset, float yawOffset)
         {
             // have obj track head position with translation offset
-            Vector3 stageHeadPos = MathUtils.TransformPointFromTo(null, stageTransform, Camera.main.transform.transform.position);
-            Vector3 stageHeadDir = MathUtils.TransformDirectionFromTo(null, stageTransform, Camera.main.transform.transform.forward);
+            Transform cameraTransform = CameraCache.main.transform;
+            Vector3 stageHeadPos = MathUtils.TransformPointFromTo(null, stageTransform, cameraTransform.position);
+            Vector3 stageHeadDir = MathUtils.TransformDirectionFromTo(null, stageTransform, cameraTransform.forward);
             stageHeadDir.y = 0.0f; // ignore head pitch - use head position to set height
             stageHeadDir.Normalize();
             Vector3 sideDir = Vector3.Cross(stageHeadDir, Vector3.up).normalized;

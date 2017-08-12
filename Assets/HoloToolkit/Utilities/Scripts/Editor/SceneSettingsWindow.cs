@@ -23,8 +23,9 @@ namespace HoloToolkit.Unity
         #region Overrides / Event Handlers
         protected override void ApplySettings()
         {
+            Camera mainCamera = CameraCache.main;
             // Ensure we have a camera
-            if (Camera.main == null)
+            if (mainCamera == null)
             {
                 Debug.LogWarning(@"Could not apply settings - no camera tagged with ""MainCamera""");
                 return;
@@ -33,20 +34,20 @@ namespace HoloToolkit.Unity
             // Apply individual settings
             if (Values[SceneSetting.CameraToOrigin])
             {
-                Camera.main.transform.position = Vector3.zero;
+                mainCamera.transform.position = Vector3.zero;
             }
             if (Values[SceneSetting.CameraClearBlack])
             {
-                Camera.main.clearFlags = CameraClearFlags.SolidColor;
-                Camera.main.backgroundColor = Color.clear;
+                mainCamera.clearFlags = CameraClearFlags.SolidColor;
+                mainCamera.backgroundColor = Color.clear;
             }
             if (Values[SceneSetting.NearClipPlane])
             {
-                Camera.main.nearClipPlane = 0.85f;
+                mainCamera.nearClipPlane = 0.85f;
             }
             if (Values[SceneSetting.FieldOfView])
             {
-                Camera.main.fieldOfView = 16.0f;
+                mainCamera.fieldOfView = 16.0f;
             }
         }
 
