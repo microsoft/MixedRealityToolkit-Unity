@@ -138,7 +138,7 @@ namespace HoloToolkit.Unity
                 {
                     return GazeManager.Instance.GazeOrigin;
                 }
-                return CameraCache.main.transform.position;
+                return CameraCache.Main.transform.position;
             }
         }
 
@@ -153,7 +153,7 @@ namespace HoloToolkit.Unity
                 {
                     return GazeManager.Instance.GazeNormal;
                 }
-                return CameraCache.main.transform.forward;
+                return CameraCache.Main.transform.forward;
             }
         }
 

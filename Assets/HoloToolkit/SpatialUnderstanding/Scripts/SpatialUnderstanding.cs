@@ -215,7 +215,7 @@ namespace HoloToolkit.Unity
                 (AllowSpatialUnderstanding))
             {
                 // Camera
-                Transform cameraTransform = CameraCache.main.transform;
+                Transform cameraTransform = CameraCache.Main.transform;
                 Vector3 camPos = cameraTransform.position;
                 Vector3 camFwd = cameraTransform.forward;
                 Vector3 camUp = cameraTransform.up;

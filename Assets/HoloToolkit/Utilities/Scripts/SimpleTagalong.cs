@@ -57,7 +57,7 @@ namespace HoloToolkit.Unity
 
         protected virtual void Update()
         {
-            Camera mainCamera = CameraCache.main;
+            Camera mainCamera = CameraCache.Main;
             // Retrieve the frustum planes from the camera.
             frustumPlanes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
 
@@ -96,7 +96,7 @@ namespace HoloToolkit.Unity
             // inside the camera's view frustum. Note, the bounds used are an Axis
             // Aligned Bounding Box (AABB).
             bool needsToMove = !GeometryUtility.TestPlanesAABB(frustumPlanes, tagalongCollider.bounds);
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
 
             // If we already know we don't need to move, bail out early.
             if (!needsToMove)

@@ -87,7 +87,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Camera reference
         /// </summary>
-        protected Camera MainCamera { get { return CameraCache.main; } }
+        protected Camera MainCamera { get { return CameraCache.Main; } }
 
         /// <summary>
         /// Orientation based on the user facing direction.

@@ -82,7 +82,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void Update()
         {
             if (!IsBeingPlaced) { return; }
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             Vector3 headPosition = cameraTransform.position;
             Vector3 gazeDirection = cameraTransform.forward;
 

@@ -30,7 +30,7 @@ namespace HoloToolkit.Examples.GazeRuler
             if (lastPoint != null && lastPoint.IsStart)
             {
                 Vector3 centerPos = (lastPoint.Position + hitPoint) * 0.5f;
-                Transform cameraTransform = CameraCache.main.transform;
+                Transform cameraTransform = CameraCache.Main.transform;
                 Vector3 directionFromCamera = centerPos - cameraTransform.position;
 
                 float distanceA = Vector3.Distance(lastPoint.Position, cameraTransform.position);

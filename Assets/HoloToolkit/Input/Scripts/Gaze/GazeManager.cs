@@ -138,7 +138,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool FindGazeTransform()
         {
-            GazeTransform = GazeTransform ?? CameraCache.main.transform;
+            GazeTransform = GazeTransform ?? CameraCache.Main.transform;
             if (GazeTransform != null) return true;
 
             Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to.");
@@ -210,7 +210,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 UnityUIPointerEvent = new PointerEventData(EventSystem.current);
             }
-            Camera mainCamera = CameraCache.main;
+            Camera mainCamera = CameraCache.Main;
 
             // 2D cursor position
             Vector2 cursorScreenPos = mainCamera.WorldToScreenPoint(HitPosition);

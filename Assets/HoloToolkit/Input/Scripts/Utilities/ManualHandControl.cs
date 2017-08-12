@@ -168,7 +168,7 @@ namespace HoloToolkit.Unity.InputModule
         private void Update()
         {
             UpdateHandVisualization();
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             float deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;

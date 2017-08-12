@@ -145,7 +145,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             // Wait a frame
             yield return null;
 
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             // Fallback, place floor (add a facing, if so)
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargestPositionsOnFloor(
                 resultsTopology.Length, resultsTopologyPtr);
@@ -308,7 +308,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 {
                     // Rotate to face the user
                     transform.position = MenuAnimatedBox.AnimPosition.Evaluate(MenuAnimatedBox.Time);
-                    Vector3 lookDirTarget = CameraCache.main.transform.position - transform.position;
+                    Vector3 lookDirTarget = CameraCache.Main.transform.position - transform.position;
                     lookDirTarget = (new Vector3(lookDirTarget.x, 0.0f, lookDirTarget.z)).normalized;
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(-lookDirTarget), Time.deltaTime * 10.0f);
                 }

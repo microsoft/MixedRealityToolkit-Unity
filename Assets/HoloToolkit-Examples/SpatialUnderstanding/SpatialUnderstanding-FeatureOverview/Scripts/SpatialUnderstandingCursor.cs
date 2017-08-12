@@ -32,7 +32,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding &&
                 SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
             {
-                Transform cameraTransform = CameraCache.main.transform;
+                Transform cameraTransform = CameraCache.Main.transform;
                 Vector3 rayPos = cameraTransform.position;
                 Vector3 rayVec = cameraTransform.forward * RayCastLength;
                 IntPtr raycastResultPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
@@ -69,7 +69,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Do the raycast
             RaycastHit hitInfo;
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             Vector3 uiRayCastOrigin = cameraTransform.position;
             Vector3 uiRayCastDirection = cameraTransform.forward;
             if (Physics.Raycast(uiRayCastOrigin, uiRayCastDirection, out hitInfo, RayCastLength, UILayerMask))
@@ -137,7 +137,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 CursorText.gameObject.SetActive(true);
                 CursorText.text = rayCastResult.SurfaceType.ToString();
 
-                Transform cameraTransform = CameraCache.main.transform;
+                Transform cameraTransform = CameraCache.Main.transform;
                 CursorText.transform.rotation = Quaternion.LookRotation(cameraTransform.forward, Vector3.up);
                 CursorText.transform.position = transform.position + cameraTransform.right * 0.05f;
             }

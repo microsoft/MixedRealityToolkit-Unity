@@ -32,12 +32,12 @@ namespace HoloToolkit.Unity
 
         void Start()
         {
-            initialDistanceToCamera = Vector3.Distance(this.transform.position, CameraCache.main.transform.position);
+            initialDistanceToCamera = Vector3.Distance(this.transform.position, CameraCache.Main.transform.position);
         }
 
         void Update()
         {
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             optimalPosition = cameraTransform.position + cameraTransform.forward * initialDistanceToCamera;
 
             Vector3 offsetDir = this.transform.position - optimalPosition;

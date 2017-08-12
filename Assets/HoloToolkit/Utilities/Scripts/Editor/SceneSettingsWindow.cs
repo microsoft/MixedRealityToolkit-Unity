@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity
         #region Overrides / Event Handlers
         protected override void ApplySettings()
         {
-            Camera mainCamera = CameraCache.main;
+            Camera mainCamera = CameraCache.Main;
             // Ensure we have a camera
             if (mainCamera == null)
             {

@@ -83,7 +83,7 @@ namespace HoloToolkit.Examples.Prototyping
         {
             if (ReferenceObject == null)
             {
-                ReferenceObject = CameraCache.main.gameObject;
+                ReferenceObject = CameraCache.Main.gameObject;
             }
         }
 
@@ -92,7 +92,7 @@ namespace HoloToolkit.Examples.Prototyping
         {
 
             if (ReferenceObject == null)
-                ReferenceObject = CameraCache.main.gameObject;
+                ReferenceObject = CameraCache.Main.gameObject;
 
             mOffsetDirection = this.transform.position - ReferenceObject.transform.position;
             mOffsetDistance = mOffsetDirection.magnitude;

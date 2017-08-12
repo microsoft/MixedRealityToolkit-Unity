@@ -114,7 +114,7 @@ namespace HoloToolkit.Unity.InputModule
             isDragging = true;
 
             Vector3 gazeHitPosition = GazeManager.Instance.HitInfo.point;
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             Vector3 handPosition;
             currentInputSource.TryGetPosition(currentInputSourceId, out handPosition);
 
@@ -180,7 +180,7 @@ namespace HoloToolkit.Unity.InputModule
         private void UpdateDragging()
         {
             Vector3 newHandPosition;
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             currentInputSource.TryGetPosition(currentInputSourceId, out newHandPosition);
 
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);

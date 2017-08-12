@@ -55,7 +55,7 @@ namespace HoloToolkit.Examples.Prototyping
 
             if (RefernceObject == null)
             {
-                RefernceObject = CameraCache.main.gameObject;
+                RefernceObject = CameraCache.Main.gameObject;
             }
         }
         

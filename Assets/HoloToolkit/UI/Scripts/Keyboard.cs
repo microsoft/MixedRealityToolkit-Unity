@@ -252,7 +252,7 @@ namespace HoloToolkit.UI.Keyboard
             // Axis Slider
             if (SliderEnabled)
             {
-                Vector3 nearPoint = Vector3.ProjectOnPlane(CameraCache.main.transform.forward, transform.forward);
+                Vector3 nearPoint = Vector3.ProjectOnPlane(CameraCache.Main.transform.forward, transform.forward);
                 Vector3 relPos = transform.InverseTransformPoint(nearPoint);
                 InputFieldSlide.TargetPoint = relPos;
             }
@@ -361,7 +361,7 @@ namespace HoloToolkit.UI.Keyboard
         public void RepositionKeyboard(Vector3 kbPos, float verticalOffset = 0.0f)
         {
             transform.position = kbPos;
-            Vector3 cameraPos = CameraCache.main.transform.position;
+            Vector3 cameraPos = CameraCache.Main.transform.position;
             ScaleToSize(cameraPos);
             LookAtTargetOrigin(cameraPos);
         }
@@ -387,7 +387,7 @@ namespace HoloToolkit.UI.Keyboard
                 transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
             }
 
-            Vector3 cameraPos = CameraCache.main.transform.position;
+            Vector3 cameraPos = CameraCache.Main.transform.position;
             ScaleToSize(cameraPos);
             LookAtTargetOrigin(cameraPos);
         }

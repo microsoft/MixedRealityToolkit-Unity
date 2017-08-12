@@ -107,7 +107,7 @@ namespace HoloToolkit.Unity
             {
                 return;
             }
-            Camera mainCamera = CameraCache.main;
+            Camera mainCamera = CameraCache.Main;
             // Direction from the Main Camera to this script's parent gameObject.
             Vector3 camToObjectDirection = gameObject.transform.position - mainCamera.transform.position;
             camToObjectDirection.Normalize();

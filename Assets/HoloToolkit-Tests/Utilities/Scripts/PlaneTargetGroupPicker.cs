@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.Tests
         {
             PlaneTargetGroup newGroup = null;
             float smallestAngle = float.PositiveInfinity;
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             // Figure out which group we're looking at
             foreach (PlaneTargetGroup group in Groups)
             {

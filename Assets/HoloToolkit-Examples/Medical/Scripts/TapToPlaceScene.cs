@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
         {
             if (Placing)
             {
-                var cameraTransform = CameraCache.main.transform;
+                var cameraTransform = CameraCache.Main.transform;
                 var headPosition = cameraTransform.position;
                 var forward = cameraTransform.forward;
                 var scenePosition = headPosition + DistanceFromHead * forward;

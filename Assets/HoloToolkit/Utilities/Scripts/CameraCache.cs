@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Returns a cached reference to the main camera and uses Camera.main if it hasn't been cached yet.
         /// </summary>
-        public static Camera main
+        public static Camera Main
         {
             get
             {

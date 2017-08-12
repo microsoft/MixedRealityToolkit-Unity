@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
         [System.Obsolete("Use CameraExtensions.GetHorizontalFieldOfViewRadians(Camera camera) instead.")]
         public static float GetHorizontalFieldOfViewRadians()
         {
-            return CameraCache.main.GetHorizontalFieldOfViewRadians();
+            return CameraCache.Main.GetHorizontalFieldOfViewRadians();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
         [System.Obsolete("Use CameraExtensions.IsInFOV(Camera camera, Vector3 position) instead.")]
         public static bool IsInFOV(Vector3 position)
         {
-            return CameraCache.main.IsInFOV(position);
+            return CameraCache.Main.IsInFOV(position);
         }
 
         /// <summary>

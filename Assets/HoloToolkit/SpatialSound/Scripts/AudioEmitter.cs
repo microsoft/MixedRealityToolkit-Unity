@@ -111,7 +111,7 @@ namespace HoloToolkit.Unity
         private List<IAudioInfluencer> GetInfluencers()
         {
             List<IAudioInfluencer> influencers = new List<IAudioInfluencer>();
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             // For influencers that take effect only when between the emitter and the user, perform a raycast
             // from the user toward the object.
             Vector3 direction = (gameObject.transform.position - cameraTransform.position).normalized;

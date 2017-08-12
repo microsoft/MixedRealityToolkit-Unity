@@ -33,7 +33,7 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
 
         private void Recognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube); // Create a cube
             cube.transform.localScale = Vector3.one * 0.3f; // Make the cube smaller
             cube.transform.position = cameraTransform.position + cameraTransform.forward; // Start to drop it in front of the camera

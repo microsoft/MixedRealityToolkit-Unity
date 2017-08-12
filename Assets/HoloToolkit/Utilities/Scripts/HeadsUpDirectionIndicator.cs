@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity
 
         private void Start()
         {
-            Camera mainCamera = CameraCache.main;
+            Camera mainCamera = CameraCache.Main;
             Depth = Mathf.Clamp(Depth, mainCamera.nearClipPlane, mainCamera.farClipPlane);
 
             if (PointerPrefab == null)
@@ -101,7 +101,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                Camera mainCamera = CameraCache.main;
+                Camera mainCamera = CameraCache.Main;
                 int currentFrameCount = UnityEngine.Time.frameCount;
                 if (currentFrameCount != frustumLastUpdated)
                 {

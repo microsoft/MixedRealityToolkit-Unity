@@ -139,7 +139,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mCurrentInputSource = mTempInputSource;
             mCurrentInputSourceId = mTempInputSourceId;
 
-            Transform cameraTransform = CameraCache.main.transform;
+            Transform cameraTransform = CameraCache.Main.transform;
             mStartHeadPosition = cameraTransform.position;
             mStartHeadRay = cameraTransform.forward;
 
