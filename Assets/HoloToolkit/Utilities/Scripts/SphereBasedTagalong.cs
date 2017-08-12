@@ -37,8 +37,7 @@ namespace HoloToolkit.Unity
 
         void Update()
         {
-            Transform cameraTransform = CameraCache.Main.transform;
-            optimalPosition = cameraTransform.position + cameraTransform.forward * initialDistanceToCamera;
+            optimalPosition = CameraCache.Main.transform.position + CameraCache.Main.transform.forward * initialDistanceToCamera;
 
             Vector3 offsetDir = this.transform.position - optimalPosition;
             if (offsetDir.magnitude > SphereRadius)

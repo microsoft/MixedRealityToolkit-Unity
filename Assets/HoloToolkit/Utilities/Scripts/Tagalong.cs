@@ -58,10 +58,9 @@ namespace HoloToolkit.Unity
             // If the specified minimum distance for the tagalong would be within the
             // camera's near clipping plane, adjust it to be 10% beyond the near
             // clipping plane.
-            Camera mainCamera = CameraCache.Main;
-            if (mainCamera.nearClipPlane > MinimumTagalongDistance)
+            if (CameraCache.Main.nearClipPlane > MinimumTagalongDistance)
             {
-                MinimumTagalongDistance = mainCamera.nearClipPlane * 1.1f;
+                MinimumTagalongDistance = CameraCache.Main.nearClipPlane * 1.1f;
             }
 
             // The EnforceDistance functionality of the SimmpleTagalong has a
@@ -86,12 +85,11 @@ namespace HoloToolkit.Unity
                 // we need to update the Tagalong's position because it is behind
                 // some other hologram or the Spatial Mapping mesh.
                 Vector3 newPosition;
-                Vector3 cameraPosition = CameraCache.Main.transform.position;
-                if (AdjustTagalongDistance(cameraPosition, out newPosition))
+                if (AdjustTagalongDistance(CameraCache.Main.transform.position, out newPosition))
                 {
                     interpolator.PositionPerSecond = DepthUpdateSpeed;
                     interpolator.SetTargetPosition(newPosition);
-                    TagalongDistance = Mathf.Min(defaultTagalongDistance, Vector3.Distance(cameraPosition, newPosition));
+                    TagalongDistance = Mathf.Min(defaultTagalongDistance, Vector3.Distance(CameraCache.Main.transform.position, newPosition));
                 }
             }
         }

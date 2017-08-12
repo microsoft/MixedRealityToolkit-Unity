@@ -32,9 +32,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding &&
                 SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
             {
-                Transform cameraTransform = CameraCache.Main.transform;
-                Vector3 rayPos = cameraTransform.position;
-                Vector3 rayVec = cameraTransform.forward * RayCastLength;
+                Vector3 rayPos = CameraCache.Main.transform.position;
+                Vector3 rayVec = CameraCache.Main.transform.forward * RayCastLength;
                 IntPtr raycastResultPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
                 SpatialUnderstandingDll.Imports.PlayspaceRaycast(
                     rayPos.x, rayPos.y, rayPos.z,
@@ -69,9 +68,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Do the raycast
             RaycastHit hitInfo;
-            Transform cameraTransform = CameraCache.Main.transform;
-            Vector3 uiRayCastOrigin = cameraTransform.position;
-            Vector3 uiRayCastDirection = cameraTransform.forward;
+            Vector3 uiRayCastOrigin = CameraCache.Main.transform.position;
+            Vector3 uiRayCastDirection = CameraCache.Main.transform.forward;
             if (Physics.Raycast(uiRayCastOrigin, uiRayCastDirection, out hitInfo, RayCastLength, UILayerMask))
             {
                 Canvas canvas = hitInfo.collider.gameObject.GetComponent<Canvas>();
@@ -137,9 +135,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 CursorText.gameObject.SetActive(true);
                 CursorText.text = rayCastResult.SurfaceType.ToString();
 
-                Transform cameraTransform = CameraCache.Main.transform;
-                CursorText.transform.rotation = Quaternion.LookRotation(cameraTransform.forward, Vector3.up);
-                CursorText.transform.position = transform.position + cameraTransform.right * 0.05f;
+                CursorText.transform.rotation = Quaternion.LookRotation(CameraCache.Main.transform.forward, Vector3.up);
+                CursorText.transform.position = transform.position + CameraCache.Main.transform.right * 0.05f;
             }
             else
             {

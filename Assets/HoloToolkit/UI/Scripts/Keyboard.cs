@@ -361,9 +361,8 @@ namespace HoloToolkit.UI.Keyboard
         public void RepositionKeyboard(Vector3 kbPos, float verticalOffset = 0.0f)
         {
             transform.position = kbPos;
-            Vector3 cameraPos = CameraCache.Main.transform.position;
-            ScaleToSize(cameraPos);
-            LookAtTargetOrigin(cameraPos);
+            ScaleToSize();
+            LookAtTargetOrigin();
         }
 
         /// <summary>
@@ -387,18 +386,16 @@ namespace HoloToolkit.UI.Keyboard
                 transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
             }
 
-            Vector3 cameraPos = CameraCache.Main.transform.position;
-            ScaleToSize(cameraPos);
-            LookAtTargetOrigin(cameraPos);
+            ScaleToSize();
+            LookAtTargetOrigin();
         }
 
         /// <summary>
         /// Function to scale keyboard to the appropriate size based on distance
         /// </summary>
-        /// <param name="cameraPos">Position of the camera</param>
-        private void ScaleToSize(Vector3 cameraPos)
+        private void ScaleToSize()
         {
-            float distance = (transform.position - cameraPos).magnitude;
+            float distance = (transform.position - CameraCache.Main.transform.position).magnitude;
             float distancePercent = (distance - m_MinDistance) / (m_MaxDistance - m_MinDistance);
             float scale = m_MinScale + (m_MaxScale - m_MinScale) * distancePercent;
 
@@ -411,10 +408,9 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Look at function to have the keyboard face the user
         /// </summary>
-        /// <param name="cameraPos">Position of the camera</param>
-        private void LookAtTargetOrigin(Vector3 cameraPos)
+        private void LookAtTargetOrigin()
         {
-            transform.LookAt(cameraPos);
+            transform.LookAt(CameraCache.Main.transform.position);
             transform.Rotate(Vector3.up, 180.0f);
         }
 

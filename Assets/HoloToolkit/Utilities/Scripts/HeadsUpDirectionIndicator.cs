@@ -61,8 +61,7 @@ namespace HoloToolkit.Unity
 
         private void Start()
         {
-            Camera mainCamera = CameraCache.Main;
-            Depth = Mathf.Clamp(Depth, mainCamera.nearClipPlane, mainCamera.farClipPlane);
+            Depth = Mathf.Clamp(Depth, CameraCache.Main.nearClipPlane, CameraCache.Main.farClipPlane);
 
             if (PointerPrefab == null)
             {
@@ -93,26 +92,23 @@ namespace HoloToolkit.Unity
         // Update the direction indicator's position and orientation every frame.
         private void Update()
         {
-            // No object to track?
-            if (TargetObject == null || pointer == null)
-            {
-                // bail out early.
-                return;
-            }
-            else
-            {
-                Camera mainCamera = CameraCache.Main;
-                int currentFrameCount = UnityEngine.Time.frameCount;
-                if (currentFrameCount != frustumLastUpdated)
-                {
-                    // Collect the updated camera information for the current frame
-                    CacheCameraTransform(mainCamera);
+            if (!HasObjectsToTrack()) return;
 
-                    frustumLastUpdated = currentFrameCount;
-                }
+            int currentFrameCount = Time.frameCount;
+            if (currentFrameCount != frustumLastUpdated)
+            {
+                // Collect the updated camera information for the current frame
+                CacheCameraTransform(CameraCache.Main);
 
-                UpdatePointerTransform(mainCamera, indicatorVolume, TargetObject.transform.position);
+                frustumLastUpdated = currentFrameCount;
             }
+
+            UpdatePointerTransform(CameraCache.Main, indicatorVolume, TargetObject.transform.position);
+        }
+
+        private bool HasObjectsToTrack()
+        {
+            return TargetObject != null && pointer != null;
         }
 
         // Cache data from the camera state that are costly to retrieve.
@@ -213,25 +209,22 @@ namespace HoloToolkit.Unity
                 if (eDistance > 0.0f)
                 {
                     return FrustumPlanes.Left;
-                }
-                else
+                } else
                 {
                     return FrustumPlanes.Bottom;
                 }
-            }
-            else
+            } else
             {
                 if (eDistance > 0.0f)
                 {
                     return FrustumPlanes.Top;
-                }
-                else
+                } else
                 {
                     return FrustumPlanes.Right;
                 }
             }
         }
- 
+
         // given a frustum wall we wish to snap the pointer to, this function returns a ray
         // along which the pointer should be placed to appear at the appropiate point along
         // the edge of the indicator field.
@@ -270,8 +263,7 @@ namespace HoloToolkit.Unity
                     (Vector3.Cross(p.normal, rNormal) * q.distance)) / det;
                 intersection = new Ray(rPoint, rNormal);
                 return true;
-            }
-            else
+            } else
             {
                 intersection = new Ray();
                 return false;
@@ -301,7 +293,7 @@ namespace HoloToolkit.Unity
                     break;
                 }
             }
-            
+
             // if the target object appears outside the indicator area...
             if (pointNotInsideIndicatorField)
             {

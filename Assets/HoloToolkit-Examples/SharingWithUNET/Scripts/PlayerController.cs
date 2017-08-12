@@ -100,9 +100,8 @@ namespace HoloToolkit.Examples.SharingWithUNET
 
             // if we are the remote player then we need to update our worldPosition and then set our 
             // local (to the shared world anchor) position for other clients to update our position in their world.
-            Transform cameraTransform = CameraCache.Main.transform;
-            transform.position = cameraTransform.position;
-            transform.rotation = cameraTransform.rotation;
+            transform.position = CameraCache.Main.transform.position;
+            transform.rotation = CameraCache.Main.transform.rotation;
 
             // Depending on if you are host or client, either setting the SyncVar (client) 
             // or calling the Cmd (host) will update the other users in the session.

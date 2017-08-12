@@ -139,9 +139,8 @@ namespace HoloToolkit.Examples.InteractiveElements
             mCurrentInputSource = mTempInputSource;
             mCurrentInputSourceId = mTempInputSourceId;
 
-            Transform cameraTransform = CameraCache.Main.transform;
-            mStartHeadPosition = cameraTransform.position;
-            mStartHeadRay = cameraTransform.forward;
+            mStartHeadPosition = CameraCache.Main.transform.position;
+            mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
             mCurrentInputSource.TryGetPosition(mCurrentInputSourceId, out handPosition);
