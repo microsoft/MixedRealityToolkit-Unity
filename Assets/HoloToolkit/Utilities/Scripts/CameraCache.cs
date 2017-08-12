@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                return cachedCamera ?? CacheMain(Camera.main);
+                return cachedCamera ?? Refresh(Camera.main);
             }
         }
 
@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="newMain">New main camera to cache</param>
         /// <returns></returns>
-        private static Camera CacheMain(Camera newMain)
+        public static Camera Refresh(Camera newMain)
         {
             return cachedCamera = newMain;
         }
