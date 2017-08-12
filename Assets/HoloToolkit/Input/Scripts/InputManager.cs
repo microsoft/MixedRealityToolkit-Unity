@@ -193,7 +193,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-#region Unity Methods
+        #region Unity Methods
 
         private void Start()
         {
@@ -222,7 +222,7 @@ namespace HoloToolkit.Unity.InputModule
             UnregisterGazeManager();
         }
 
-#endregion // Unity Methods
+        #endregion // Unity Methods
 
         public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
             where T : IEventSystemHandler
@@ -455,7 +455,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
         }
 
-#region Manipulation Events
+        #region Manipulation Events
 
         private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationStartedEventHandler =
             delegate (IManipulationHandler handler, BaseEventData eventData)
@@ -521,9 +521,9 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
         }
 
-#endregion // Manipulation Events
+        #endregion // Manipulation Events
 
-#region Hold Events
+        #region Hold Events
 
         private static readonly ExecuteEvents.EventFunction<IHoldHandler> OnHoldStartedEventHandler =
             delegate (IHoldHandler handler, BaseEventData eventData)
@@ -573,9 +573,9 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(holdEventData, OnHoldCanceledEventHandler);
         }
 
-#endregion // Hold Events
+        #endregion // Hold Events
 
-#region Navigation Events
+        #region Navigation Events
 
         private static readonly ExecuteEvents.EventFunction<INavigationHandler> OnNavigationStartedEventHandler =
             delegate (INavigationHandler handler, BaseEventData eventData)
@@ -641,10 +641,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
         }
 
-#endregion // Navigation Events
+        #endregion // Navigation Events
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-#region Speech Events
+        #region Speech Events
 
         private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
             delegate (ISpeechHandler handler, BaseEventData eventData)
@@ -669,9 +669,9 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnDictationHypothesis(casted);
             };
 
-#endregion // Speech Events
+        #endregion // Speech Events
 
-#region Dictation Events
+        #region Dictation Events
 
         public void RaiseDictationHypothesis(IInputSource source, uint sourceId, string dictationHypothesis, AudioClip dictationAudioClip = null)
         {
@@ -730,7 +730,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);
         }
 
-#endregion // Dictation Events
+        #endregion // Dictation Events
 #endif
     }
 }
