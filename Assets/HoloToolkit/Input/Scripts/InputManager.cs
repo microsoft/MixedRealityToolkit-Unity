@@ -45,8 +45,11 @@ namespace HoloToolkit.Unity.InputModule
         private ManipulationEventData manipulationEventData;
         private HoldEventData holdEventData;
         private NavigationEventData navigationEventData;
+
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
         private DictationEventData dictationEventData;
+#endif
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -184,8 +187,10 @@ namespace HoloToolkit.Unity.InputModule
             manipulationEventData = new ManipulationEventData(EventSystem.current);
             navigationEventData = new NavigationEventData(EventSystem.current);
             holdEventData = new HoldEventData(EventSystem.current);
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
+#endif
         }
 
         #region Unity Methods
