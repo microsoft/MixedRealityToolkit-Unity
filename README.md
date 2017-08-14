@@ -66,7 +66,7 @@ Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/m
 - Updating landing page for the ReadMe.md to help app developers find content better.
 - Updating API documentation using tools like Doxygen and not writing them manually. This is something we will work with all of you on.
 - Update Wiki to host API documentation instead.
-- Move reusable features from MixedReality Design Labs project into toolkit.
+- Move reusable features from [Mixed Reality Design Labs](https://github.com/Microsoft/MRDesignLabs_Unity) project into toolkit.
 
 # Release cadence
 ### Master branch
