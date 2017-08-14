@@ -86,14 +86,7 @@ namespace HoloToolkit.Unity.InputModule
             Vector3 headPosition = Camera.main.transform.position;
             Vector3 gazeDirection = Camera.main.transform.forward;
 
-            // If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
-            RaycastHit hitInfo;
-            Vector3 placementPosition = SpatialMappingManager.Instance != null &&
-                Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask)
-                    ? hitInfo.point
-                    : (GazeManager.Instance.HitObject == null
-                        ? GazeManager.Instance.GazeOrigin + GazeManager.Instance.GazeNormal * DefaultGazeDistance
-                        : GazeManager.Instance.HitPosition);
+            Vector3 placementPosition = GetPlacementPosition(headPosition, gazeDirection, DefaultGazeDistance);
 
             // Here is where you might consider adding intelligence
             // to how the object is placed.  For example, consider
@@ -110,6 +103,58 @@ namespace HoloToolkit.Unity.InputModule
 
             // Rotate this object to face the user.
             interpolator.SetTargetRotation(Quaternion.Euler(0, Camera.main.transform.localEulerAngles.y, 0));
+        }
+
+        /// <summary>
+        /// If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
+        /// </summary>
+        /// <returns></returns>
+        private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        {
+            RaycastHit hitInfo;
+            if (SpatialMappingRaycast(headPosition, gazeDirection, out hitInfo))
+            {
+                return hitInfo.point;
+            }
+            return GetGazePlacementPosition(headPosition, gazeDirection, defaultGazeDistance);
+        }
+
+        /// <summary>
+        /// Does a raycast on the spatial mapping layer to try to find a hit.
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="direction"></param>
+        /// <param name="spatialMapHit"></param>
+        /// <returns>Wheter it found a hit or not</returns>
+        private static bool SpatialMappingRaycast(Vector3 origin, Vector3 direction, out RaycastHit spatialMapHit)
+        {
+            if (SpatialMappingManager.Instance != null)
+            {
+                RaycastHit hitInfo;
+                if (Physics.Raycast(origin, direction, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask))
+                {
+                    spatialMapHit = hitInfo;
+                    return true;
+                }
+            }
+            spatialMapHit = new RaycastHit();
+            return false;
+        }
+
+        /// <summary>
+        /// Get gaze position from the GazeManagers hit or just infront of the user
+        /// </summary>
+        /// <param name="headPosition"></param>
+        /// <param name="gazeDirection"></param>
+        /// <param name="defaultGazeDistance"></param>
+        /// <returns></returns>
+        private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        {
+            if (GazeManager.Instance.HitObject != null)
+            {
+                return GazeManager.Instance.HitPosition;
+            }
+            return headPosition + gazeDirection * defaultGazeDistance;
         }
 
         public virtual void OnInputClicked(InputClickedEventData eventData)
@@ -136,8 +181,7 @@ namespace HoloToolkit.Unity.InputModule
                 //Removes existing world anchor if any exist.
                 WorldAnchorManager.Instance.RemoveAnchor(gameObject);
 #endif
-            }
-            else
+            } else
             {
                 SetLayerRecursively(transform, useDefaultLayer: true);
                 // Clear our cache in case we added or removed gameobjects between taps
@@ -167,8 +211,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Debug.LogWarning("The selected GameObject has no parent.");
                     PlaceParentOnTap = false;
-                }
-                else
+                } else
                 {
                     Debug.LogWarning("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
                     ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
@@ -191,8 +234,7 @@ namespace HoloToolkit.Unity.InputModule
                     objectToSet.gameObject.layer = defaultLayerId;
                     defaultLayersCache.Remove(objectToSet.gameObject);
                 }
-            }
-            else
+            } else
             {
                 defaultLayersCache.Add(objectToSet.gameObject, objectToSet.gameObject.layer);
 
