@@ -69,13 +69,13 @@ namespace HoloToolkit.Unity
                 tempEvent.EmitterName = currentEvent.AudioEmitter.name;
 
                 // The bus might be null, Unity defaults to Editor-hidden master bus.
-                if (currentEvent.audioEvent.Bus == null)
+                if (currentEvent.audioEvent.AudioBus == null)
                 {
                     tempEvent.BusName = "-MasterBus-";
                 }
                 else
                 {
-                    tempEvent.BusName = currentEvent.audioEvent.Bus.name;
+                    tempEvent.BusName = currentEvent.audioEvent.AudioBus.name;
                 }
 
                 currentEvents[i] = tempEvent;

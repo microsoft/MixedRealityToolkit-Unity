@@ -97,7 +97,7 @@ namespace HoloToolkit.Unity
         private void DrawEventInspector(SerializedProperty selectedEventProperty, TEvent selectedEvent, TEvent[] EditorEvents, bool showEmitters)
         {
             // Get current event's properties.
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("name"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Name"));
 
             if (selectedEvent.Name != this.eventNames[this.selectedEventIndex])
             {
@@ -106,10 +106,10 @@ namespace HoloToolkit.Unity
 
             if (showEmitters)
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("primarySource"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("PrimarySource"));
                 if (selectedEvent.IsContinuous())
                 {
-                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("secondarySource"));
+                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("SecondarySource"));
                 }
             }
 
@@ -118,10 +118,10 @@ namespace HoloToolkit.Unity
 
             if (selectedEvent.Spatialization == SpatialPositioningType.SpatialSound)
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("roomSize"));
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("minGain"));
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("maxGain"));
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("unityGainDistance"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("RoomSize"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("MinGain"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("MaxGain"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("UnityGainDistance"));
                 EditorGUILayout.Space();
             }
             else if (selectedEvent.Spatialization == SpatialPositioningType.ThreeD)
@@ -133,49 +133,49 @@ namespace HoloToolkit.Unity
                 float curveWidth = 300f;
 
                 //Simple 3D Sounds properties
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("maxDistanceAttenuation3D"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("MaxDistanceAttenuation3D"));
 
                 //volume attenuation
-                selectedEventProperty.FindPropertyRelative("attenuationCurve").animationCurveValue = EditorGUILayout.CurveField("Attenuation", selectedEventProperty.FindPropertyRelative("attenuationCurve").animationCurveValue, Color.red, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("AttenuationCurve").animationCurveValue = EditorGUILayout.CurveField("Attenuation", selectedEventProperty.FindPropertyRelative("attenuationCurve").animationCurveValue, Color.red, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //Spatial green
-                selectedEventProperty.FindPropertyRelative("spatialCurve").animationCurveValue = EditorGUILayout.CurveField("Spatial", selectedEventProperty.FindPropertyRelative("spatialCurve").animationCurveValue, Color.green, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("SpatialCurve").animationCurveValue = EditorGUILayout.CurveField("Spatial", selectedEventProperty.FindPropertyRelative("spatialCurve").animationCurveValue, Color.green, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //spread lightblue
-                selectedEventProperty.FindPropertyRelative("spreadCurve").animationCurveValue = EditorGUILayout.CurveField("Spread", selectedEventProperty.FindPropertyRelative("spreadCurve").animationCurveValue, Color.blue, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("SpreadCurve").animationCurveValue = EditorGUILayout.CurveField("Spread", selectedEventProperty.FindPropertyRelative("spreadCurve").animationCurveValue, Color.blue, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //lowpass purple
-                selectedEventProperty.FindPropertyRelative("lowPassCurve").animationCurveValue = EditorGUILayout.CurveField("LowPass", selectedEventProperty.FindPropertyRelative("lowPassCurve").animationCurveValue, Color.magenta, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("LowPassCurve").animationCurveValue = EditorGUILayout.CurveField("LowPass", selectedEventProperty.FindPropertyRelative("lowPassCurve").animationCurveValue, Color.magenta, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
                 //Yellow reverb
-                selectedEventProperty.FindPropertyRelative("reverbCurve").animationCurveValue = EditorGUILayout.CurveField("Reverb", selectedEventProperty.FindPropertyRelative("reverbCurve").animationCurveValue, Color.yellow, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+                selectedEventProperty.FindPropertyRelative("ReverbCurve").animationCurveValue = EditorGUILayout.CurveField("Reverb", selectedEventProperty.FindPropertyRelative("reverbCurve").animationCurveValue, Color.yellow, editorCurveSize, GUILayout.Height(curveHeight), GUILayout.Width(curveWidth), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
 
                 EditorGUILayout.Space();
             } 
 
-            // Bus
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("bus"));
+            // AudioBus
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("AudioBus"));
 
             // Fades
             if (!selectedEvent.IsContinuous())
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("fadeInTime"));
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("fadeOutTime"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("FadeInTime"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("FadeOutTime"));
             }
 
             // Pitch Settings
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("pitchCenter"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("PitchCenter"));
 
             // Volume settings
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("volumeCenter"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("VolumeCenter"));
 
             // Pan Settings
             if (selectedEvent.Spatialization == SpatialPositioningType.TwoD)
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("panCenter"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("PanCenter"));
             }
             // Instancing
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("instanceLimit"));
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("instanceTimeBuffer"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("InstanceLimit"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("InstanceTimeBuffer"));
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("instanceBehavior"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("AudioEventInstanceBehavior"));
 
             // Container
             EditorGUILayout.Space();
@@ -184,15 +184,15 @@ namespace HoloToolkit.Unity
         private bool DrawContainerInspector(SerializedProperty selectedEventProperty, TEvent selectedEvent)
         {
             bool addedSound = false;
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.containerType"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.containerType"));
 
             if (!selectedEvent.IsContinuous())
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.looping"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.looping"));
 
                 if (selectedEvent.Container.looping)
                 {
-                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.loopTime"));
+                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.loopTime"));
                 }
             }
 
@@ -201,7 +201,7 @@ namespace HoloToolkit.Unity
 
             if (selectedEvent.IsContinuous())
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.crossfadeTime"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.crossfadeTime"));
             }
 
             EditorGUILayout.BeginHorizontal();
@@ -234,11 +234,11 @@ namespace HoloToolkit.Unity
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].sound"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].sound"));
 
                 if (EditorGUILayoutExtensions.Button("Remove"))
                 {
-                    selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "]").DeleteCommand();
+                    selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "]").DeleteCommand();
                     break;
                 }
 
@@ -247,14 +247,14 @@ namespace HoloToolkit.Unity
                 if (!selectedEvent.IsContinuous())
                 {
                     EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].delayCenter"));
-                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].delayRandomization"));
+                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].delayCenter"));
+                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].delayRandomization"));
                     EditorGUILayout.EndHorizontal();
 
                     //Disable looping next clips in a simultaneous container only.
                     if (allowLoopingClip)
                     {
-                        EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("container.sounds.Array.data[" + i + "].looping"));
+                        EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].looping"));
 
                         if (selectedEvent.Container.sounds[i].looping && selectedEvent.Container.containerType == AudioContainerType.Simultaneous)
                         {

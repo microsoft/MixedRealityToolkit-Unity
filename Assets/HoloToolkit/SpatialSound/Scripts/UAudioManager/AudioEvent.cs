@@ -94,7 +94,7 @@ namespace HoloToolkit.Unity
         public float UnityGainDistance = SpatialSoundSettings.DefaultUnityGainDistance;
 
         [Tooltip("The AudioMixerGroup to use when playing.")]
-        public AudioMixerGroup Bus;
+        public AudioMixerGroup AudioBus;
 
         [Tooltip("The default or center pitch around which randomization can be done.")]
         [Range(-3.0f, 3.0f)]

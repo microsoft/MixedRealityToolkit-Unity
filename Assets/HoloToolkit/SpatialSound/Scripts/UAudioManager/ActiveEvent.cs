@@ -165,9 +165,9 @@ namespace HoloToolkit.Unity
                 });
             }
 
-            if (audioEvent.Bus != null)
+            if (audioEvent.AudioBus != null)
             {
-                forEachSource((source) => source.outputAudioMixerGroup = audioEvent.Bus);
+                forEachSource((source) => source.outputAudioMixerGroup = audioEvent.AudioBus);
             }
 
             float pitch = 1f;
