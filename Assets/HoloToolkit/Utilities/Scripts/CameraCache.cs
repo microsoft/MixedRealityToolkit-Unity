@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// The purpose of this class is to provide a cached reference to the main camera. Calling Camera.main
+    /// executes a FindByTag on the scene, which will get worse and worse with more tagged objects.
+    /// </summary>
     public static class CameraCache
     {
         private static Camera cachedCamera;
@@ -24,7 +28,6 @@ namespace HoloToolkit.Unity
         /// Set the cached camera to a new reference and return it
         /// </summary>
         /// <param name="newMain">New main camera to cache</param>
-        /// <returns></returns>
         public static Camera Refresh(Camera newMain)
         {
             return cachedCamera = newMain;
