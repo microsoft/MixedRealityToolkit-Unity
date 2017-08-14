@@ -158,8 +158,8 @@ namespace HoloToolkit.Unity
         /// <returns>True if this AudioEvent's container is one of the continuous types (random or sequential), otherwise false.</returns>
         public bool IsContinuous()
         {
-            return Container.containerType == AudioContainerType.ContinuousRandom ||
-                   Container.containerType == AudioContainerType.ContinuousSequence;
+            return Container.ContainerType == AudioContainerType.ContinuousRandom ||
+                   Container.ContainerType == AudioContainerType.ContinuousSequence;
         }
 
         /// <summary>

@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88e5a9c38f6989249b88204932d7884f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  events:
+  Events:
   - Name: Laser
     Spatialization: 0
     RoomSize: 0
@@ -247,16 +247,16 @@ MonoBehaviour:
     InstanceTimeBuffer: 0
     AudioEventInstanceBehavior: 0
     Container:
-      containerType: 0
-      looping: 0
-      loopTime: 0
-      sounds:
-      - sound: {fileID: 8300000, guid: 25f57a423322f5a45bf9490fe9d13300, type: 3}
-        looping: 0
-        delayCenter: 0
-        delayRandomization: 0
-      crossfadeTime: 0
-      currentClip: 0
+      ContainerType: 0
+      Looping: 0
+      LoopTime: 0
+      Sounds:
+      - Sound: {fileID: 8300000, guid: 25f57a423322f5a45bf9490fe9d13300, type: 3}
+        Looping: 0
+        DelayCenter: 0
+        DelayRandomization: 0
+      CrossfadeTime: 0
+      CurrentClip: 0
   - Name: Vocals
     Spatialization: 0
     RoomSize: 0
@@ -367,16 +367,16 @@ MonoBehaviour:
     InstanceTimeBuffer: 0
     AudioEventInstanceBehavior: 0
     Container:
-      containerType: 0
-      looping: 0
-      loopTime: 0
-      sounds:
-      - sound: {fileID: 8300000, guid: aa9275dc39fa76144bcdb5c329400abe, type: 3}
-        looping: 0
-        delayCenter: 0
-        delayRandomization: 0
-      crossfadeTime: 0
-      currentClip: 0
+      ContainerType: 0
+      Looping: 0
+      LoopTime: 0
+      Sounds:
+      - Sound: {fileID: 8300000, guid: aa9275dc39fa76144bcdb5c329400abe, type: 3}
+        Looping: 0
+        DelayCenter: 0
+        DelayRandomization: 0
+      CrossfadeTime: 0
+      CurrentClip: 0
   globalEventInstanceLimit: 0
   globalInstanceBehavior: 0
 --- !u!4 &69647939

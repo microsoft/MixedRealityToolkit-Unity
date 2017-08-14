@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity
 {
     public class UAudioManagerBaseEditor<TEvent> : Editor where TEvent : AudioEvent, new()
     {
-        protected UAudioManagerBase<TEvent> myTarget;
+        protected UAudioManagerBase<TEvent> MyTarget;
         private string[] eventNames;
         private int selectedEventIndex = 0;
         private readonly string[] posTypes = { "2D", "3D", "Spatial Sound" };
@@ -18,37 +18,37 @@ namespace HoloToolkit.Unity
         protected void SetUpEditor()
         {
             // Having a null array of events causes too many errors and should only happen on first adding anyway.
-            if (this.myTarget.EditorEvents == null)
+            if (this.MyTarget.EditorEvents == null)
             {
-                this.myTarget.EditorEvents = new TEvent[0];
+                this.MyTarget.EditorEvents = new TEvent[0];
             }
-            this.eventNames = new string[this.myTarget.EditorEvents.Length];
-            UpdateEventNames(this.myTarget.EditorEvents);
+            this.eventNames = new string[this.MyTarget.EditorEvents.Length];
+            UpdateEventNames(this.MyTarget.EditorEvents);
         }
 
         protected void DrawInspectorGUI(bool showEmitters)
         {
             this.serializedObject.Update();
             EditorGUI.BeginChangeCheck();
-            DrawEventHeader(this.myTarget.EditorEvents);
+            DrawEventHeader(this.MyTarget.EditorEvents);
 
-            if (this.myTarget.EditorEvents != null && this.myTarget.EditorEvents.Length > 0)
+            if (this.MyTarget.EditorEvents != null && this.MyTarget.EditorEvents.Length > 0)
             {
                 // Display current event in dropdown.
                 EditorGUI.indentLevel++;
                 this.selectedEventIndex = EditorGUILayout.Popup(this.selectedEventIndex, this.eventNames);
 
-                if (this.selectedEventIndex < this.myTarget.EditorEvents.Length)
+                if (this.selectedEventIndex < this.MyTarget.EditorEvents.Length)
                 {
                     TEvent selectedEvent;
 
-                    selectedEvent = this.myTarget.EditorEvents[this.selectedEventIndex];
-                    SerializedProperty selectedEventProperty = this.serializedObject.FindProperty("events.Array.data[" + this.selectedEventIndex.ToString() + "]");
+                    selectedEvent = this.MyTarget.EditorEvents[this.selectedEventIndex];
+                    SerializedProperty selectedEventProperty = this.serializedObject.FindProperty("Events.Array.data[" + this.selectedEventIndex.ToString() + "]");
                     EditorGUILayout.Space();
 
                     if (selectedEventProperty != null)
                     {
-                        DrawEventInspector(selectedEventProperty, selectedEvent, this.myTarget.EditorEvents, showEmitters);
+                        DrawEventInspector(selectedEventProperty, selectedEvent, this.MyTarget.EditorEvents, showEmitters);
                         if (!DrawContainerInspector(selectedEventProperty, selectedEvent))
                         {
                             EditorGUI.indentLevel++;
@@ -66,7 +66,7 @@ namespace HoloToolkit.Unity
 
             if (UnityEngine.GUI.changed)
             {
-                EditorUtility.SetDirty(this.myTarget);
+                EditorUtility.SetDirty(this.MyTarget);
             }
         }
 
@@ -81,13 +81,13 @@ namespace HoloToolkit.Unity
             {
                 if (EditorGUILayoutExtensions.Button("Remove"))
                 {
-                    this.myTarget.EditorEvents = RemoveAudioEvent(EditorEvents, this.selectedEventIndex);
+                    this.MyTarget.EditorEvents = RemoveAudioEvent(EditorEvents, this.selectedEventIndex);
                 }
             }
 
             if (EditorGUILayoutExtensions.Button("Add"))
             {
-                this.myTarget.EditorEvents = AddAudioEvent(EditorEvents);
+                this.MyTarget.EditorEvents = AddAudioEvent(EditorEvents);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -184,15 +184,15 @@ namespace HoloToolkit.Unity
         private bool DrawContainerInspector(SerializedProperty selectedEventProperty, TEvent selectedEvent)
         {
             bool addedSound = false;
-            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.containerType"));
+            EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.ContainerType"));
 
             if (!selectedEvent.IsContinuous())
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.looping"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.Looping"));
 
-                if (selectedEvent.Container.looping)
+                if (selectedEvent.Container.Looping)
                 {
-                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.loopTime"));
+                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.LoopTime"));
                 }
             }
 
@@ -201,7 +201,7 @@ namespace HoloToolkit.Unity
 
             if (selectedEvent.IsContinuous())
             {
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.crossfadeTime"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.CrossfadeTime"));
             }
 
             EditorGUILayout.BeginHorizontal();
@@ -220,7 +220,7 @@ namespace HoloToolkit.Unity
 
         private void DrawSoundClipInspector(SerializedProperty selectedEventProperty, TEvent selectedEvent)
         {
-            bool allowLoopingClip = !selectedEvent.Container.looping;
+            bool allowLoopingClip = !selectedEvent.Container.Looping;
 
             if (allowLoopingClip)
             {
@@ -230,15 +230,15 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            for (int i = 0; i < selectedEvent.Container.sounds.Length; i++)
+            for (int i = 0; i < selectedEvent.Container.Sounds.Length; i++)
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].sound"));
+                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.Sounds.Array.data[" + i + "].Sound"));
 
                 if (EditorGUILayoutExtensions.Button("Remove"))
                 {
-                    selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "]").DeleteCommand();
+                    selectedEventProperty.FindPropertyRelative("Container.Sounds.Array.data[" + i + "]").DeleteCommand();
                     break;
                 }
 
@@ -247,23 +247,23 @@ namespace HoloToolkit.Unity
                 if (!selectedEvent.IsContinuous())
                 {
                     EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].delayCenter"));
-                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].delayRandomization"));
+                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.Sounds.Array.data[" + i + "].DelayCenter"));
+                    EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.Sounds.Array.data[" + i + "].DelayRandomization"));
                     EditorGUILayout.EndHorizontal();
 
                     //Disable looping next clips in a simultaneous container only.
                     if (allowLoopingClip)
                     {
-                        EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.sounds.Array.data[" + i + "].looping"));
+                        EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("Container.Sounds.Array.data[" + i + "].Looping"));
 
-                        if (selectedEvent.Container.sounds[i].looping && selectedEvent.Container.containerType == AudioContainerType.Simultaneous)
+                        if (selectedEvent.Container.Sounds[i].Looping && selectedEvent.Container.ContainerType == AudioContainerType.Simultaneous)
                         {
                             allowLoopingClip = false;
                         }
                     }
                     else
                     {
-                        selectedEvent.Container.sounds[i].looping = false;
+                        selectedEvent.Container.Sounds[i].Looping = false;
                     }
                 }
             }
@@ -293,10 +293,10 @@ namespace HoloToolkit.Unity
         private void AddSound(TEvent selectedEvent)
         {
 
-            UAudioClip[] tempClips = new UAudioClip[selectedEvent.Container.sounds.Length + 1];
-            selectedEvent.Container.sounds.CopyTo(tempClips, 0);
+            UAudioClip[] tempClips = new UAudioClip[selectedEvent.Container.Sounds.Length + 1];
+            selectedEvent.Container.Sounds.CopyTo(tempClips, 0);
             tempClips[tempClips.Length - 1] = new UAudioClip();
-            selectedEvent.Container.sounds = tempClips;
+            selectedEvent.Container.Sounds = tempClips;
         }
 
         private TEvent[] AddAudioEvent(TEvent[] EditorEvents)
@@ -304,7 +304,7 @@ namespace HoloToolkit.Unity
             TEvent tempEvent = new TEvent();
             TEvent[] tempEventArray = new TEvent[EditorEvents.Length + 1];
             tempEvent.Container = new AudioContainer();
-            tempEvent.Container.sounds = new UAudioClip[0];
+            tempEvent.Container.Sounds = new UAudioClip[0];
             EditorEvents.CopyTo(tempEventArray, 0);
             tempEventArray[EditorEvents.Length] = tempEvent;
             this.eventNames = new string[tempEventArray.Length];
