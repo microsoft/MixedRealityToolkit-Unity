@@ -41,12 +41,12 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
+        private Interpolator interpolator;
+
         /// <summary>
         /// The default ignore raycast layer built into unity.
         /// </summary>
         private const int IgnoreRaycastLayer = 2;
-
-        private Interpolator interpolator;
 
         private static Dictionary<GameObject, int> defaultLayersCache = new Dictionary<GameObject, int>();
 
@@ -56,27 +56,65 @@ namespace HoloToolkit.Unity.InputModule
             if (WorldAnchorManager.Instance == null)
             {
                 Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
-            }
-
-            if (WorldAnchorManager.Instance != null)
+            } else if (!IsBeingPlaced)
             {
                 // If we are not starting out with actively placing the object, give it a World Anchor
-                if (!IsBeingPlaced)
-                {
-                    WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-                }
+                WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
             }
 
-            DetermineParent();
+            if (PlaceParentOnTap)
+            {
+                ParentGameObjectToPlace = GetParentToPlace();
+                PlaceParentOnTap = ValidateParentToPlace();
+            }
 
-            interpolator = PlaceParentOnTap
-                ? ParentGameObjectToPlace.EnsureComponent<Interpolator>()
-                : gameObject.EnsureComponent<Interpolator>();
+            interpolator = EnsureInterpolator();
 
             if (IsBeingPlaced)
             {
-                HandlePlacement();
+                StartPlacing();
             }
+        }
+
+        /// <summary>
+        /// Returns the predefined GameObject or the immediate parent when it exists
+        /// </summary>
+        /// <returns></returns>
+        private GameObject GetParentToPlace()
+        {
+            if (ParentGameObjectToPlace)
+            {
+                return ParentGameObjectToPlace;
+            }
+
+            return gameObject.transform.parent ? gameObject.transform.parent.gameObject : null;
+        }
+
+        /// <summary>
+        /// Log warnings when the parent hasn't been set up properly
+        /// </summary>
+        private bool ValidateParentToPlace()
+        {
+            if (!ParentGameObjectToPlace)
+            {
+                Debug.LogWarning("No parent has been set or found.");
+                return false;
+            }
+            //Using backups
+            if (!gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+            {
+                Debug.LogWarning("The set parent object is not a parent of this object.");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Ensures an interpolator on either the parent or on the gameobject itself and returns it.
+        /// </summary>
+        private Interpolator EnsureInterpolator()
+        {
+            var interpolatorHolder = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            return interpolatorHolder.EnsureComponent<Interpolator>();
         }
 
         protected virtual void Update()
@@ -168,60 +206,47 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (IsBeingPlaced)
             {
-                SetLayerRecursively(transform, useDefaultLayer: false);
-                InputManager.Instance.AddGlobalListener(gameObject);
-
-                // If the user is in placing mode, display the spatial mapping mesh.
-                if (AllowMeshVisualizationControl)
-                {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = true;
-                }
-#if UNITY_WSA && !UNITY_EDITOR
-
-                //Removes existing world anchor if any exist.
-                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
-#endif
+                StartPlacing();
             } else
             {
-                SetLayerRecursively(transform, useDefaultLayer: true);
-                // Clear our cache in case we added or removed gameobjects between taps
-                defaultLayersCache.Clear();
-                InputManager.Instance.RemoveGlobalListener(gameObject);
-
-                // If the user is not in placing mode, hide the spatial mapping mesh.
-                if (AllowMeshVisualizationControl)
-                {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = false;
-                }
-#if UNITY_WSA && !UNITY_EDITOR
-
-                // Add world anchor when object placement is done.
-                WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-#endif
+                StopPlacing();
             }
         }
 
-        private void DetermineParent()
+        private void StartPlacing()
         {
-            if (!PlaceParentOnTap) { return; }
+            SetLayerRecursively(transform, useDefaultLayer: false);
+            InputManager.Instance.AddGlobalListener(gameObject);
 
-            if (ParentGameObjectToPlace == null)
+            // If the user is in placing mode, display the spatial mapping mesh.
+            if (AllowMeshVisualizationControl)
             {
-                if (gameObject.transform.parent == null)
-                {
-                    Debug.LogWarning("The selected GameObject has no parent.");
-                    PlaceParentOnTap = false;
-                } else
-                {
-                    Debug.LogWarning("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
-                    ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
-                }
+                SpatialMappingManager.Instance.DrawVisualMeshes = true;
             }
+#if UNITY_WSA && !UNITY_EDITOR
 
-            if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+            //Removes existing world anchor if any exist.
+            WorldAnchorManager.Instance.RemoveAnchor(gameObject);
+#endif
+        }
+
+        private void StopPlacing()
+        {
+            SetLayerRecursively(transform, useDefaultLayer: true);
+            // Clear our cache in case we added or removed gameobjects between taps
+            defaultLayersCache.Clear();
+            InputManager.Instance.RemoveGlobalListener(gameObject);
+
+            // If the user is not in placing mode, hide the spatial mapping mesh.
+            if (AllowMeshVisualizationControl)
             {
-                Debug.LogWarning("The specified parent object is not a parent of this object.");
+                SpatialMappingManager.Instance.DrawVisualMeshes = false;
             }
+#if UNITY_WSA && !UNITY_EDITOR
+
+            // Add world anchor when object placement is done.
+            WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+#endif
         }
 
         private static void SetLayerRecursively(Transform objectToSet, bool useDefaultLayer)
