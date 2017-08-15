@@ -267,11 +267,12 @@ namespace HoloToolkit.Sharing.VoiceChat
                             cameraPosRelativeToGlobalAnchor = MathUtils.TransformPointFromTo(
                                 null,
                                 GlobalAnchorTransform,
-                                CameraCache.Main.transform.position);
+                                Camera.main.transform.position);
                             cameraDirectionRelativeToGlobalAnchor = MathUtils.TransformDirectionFromTo(
                                 null,
                                 GlobalAnchorTransform,
-                                CameraCache.Main.transform.position);
+                                Camera.main.transform.position);
+
                         }
 
                         cameraPosRelativeToGlobalAnchor.Normalize();
