@@ -48,10 +48,7 @@ namespace HoloToolkit.Unity
         /// <param name="cache">The previously set layer for each object</param>
         public static void SetLayerRecursively(this GameObject root, int layer, out Dictionary<GameObject, int> cache)
         {
-            if (root == null)
-            {
-                throw new ArgumentNullException("root", "Root transform can't be null.");
-            }
+            if (root == null) { throw new ArgumentNullException("root"); }
 
             cache = new Dictionary<GameObject, int>();
 
@@ -69,14 +66,8 @@ namespace HoloToolkit.Unity
         /// <param name="cache">The previously set layer for each object</param>
         public static void ApplyLayerCacheRecursively(this GameObject root, Dictionary<GameObject, int> cache)
         {
-            if (root == null)
-            {
-                throw new ArgumentNullException("root", "Root transform can't be null.");
-            }
-            if (cache == null)
-            {
-                throw new ArgumentNullException("cache", "Cache can't be null.");
-            }
+            if (root == null) { throw new ArgumentNullException("root"); }
+            if (cache == null) { throw new ArgumentNullException("cache"); }
 
             foreach (var child in root.transform.IterateHierarchy())
             {

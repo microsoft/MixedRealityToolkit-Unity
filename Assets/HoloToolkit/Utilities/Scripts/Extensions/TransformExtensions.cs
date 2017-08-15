@@ -43,10 +43,7 @@ namespace HoloToolkit.Unity
         /// <param name="root">Start point of the traversion set</param>
         public static IEnumerable<Transform> IterateHierarchy(this Transform root)
         {
-            if (root == null)
-            {
-                throw new ArgumentNullException("root", "Root transform can't be null");
-            }
+            if (root == null) { throw new ArgumentNullException("root"); }
             return root.IterateHierarchyCore(new List<Transform>(0));
         }
 
@@ -57,10 +54,7 @@ namespace HoloToolkit.Unity
         /// <param name="ignore">Transforms and all its children to be ignored</param>
         public static IEnumerable<Transform> IterateHierarchy(this Transform root, ICollection<Transform> ignore)
         {
-            if (root == null)
-            {
-                throw new ArgumentNullException("root", "Root transform can't be null.");
-            }
+            if (root == null) { throw new ArgumentNullException("root"); }
             if (ignore == null)
             {
                 throw new ArgumentNullException("ignore", "Ignore collection can't be null, use IterateHierarchy(root) instead.");
