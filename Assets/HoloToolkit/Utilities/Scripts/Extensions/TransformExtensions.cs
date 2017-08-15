@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -27,13 +29,70 @@ namespace HoloToolkit.Unity
             if (transform.parent == null)
             {
                 stringBuilder.Append(prefix);
-            }
-            else
+            } else
             {
                 GetFullPath(stringBuilder, transform.parent, delimiter, prefix);
                 stringBuilder.Append(delimiter);
             }
             stringBuilder.Append(transform.name);
+        }
+
+        /// <summary>
+        /// Iterates the root object and all its children, using a queue rather than recursively.
+        /// </summary>
+        /// <param name="root">Start point of the traversion set</param>
+        public static IEnumerable<Transform> IterateHierarchy(this Transform root)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException("root", "Root transform can't be null");
+            }
+            return root.IterateHierarchyCore(new List<Transform>(0));
+        }
+
+        /// <summary>
+        /// Iterates the root object and all its children except for the branches in ignore, using a queue rather than recursively.
+        /// </summary>
+        /// <param name="root">Start point of the traversion set</param>
+        /// <param name="ignore">Transforms and all its children to be ignored</param>
+        public static IEnumerable<Transform> IterateHierarchy(this Transform root, ICollection<Transform> ignore)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException("root", "Root transform can't be null.");
+            }
+            if (ignore == null)
+            {
+                throw new ArgumentNullException("ignore", "Ignore collection can't be null, use IterateHierarchy(root) instead.");
+            }
+            return root.IterateHierarchyCore(ignore);
+        }
+
+        /// <summary>
+        /// Iterates the root object and all its children except for the branches in ignore, using a queue rather than recursively.
+        /// </summary>
+        /// <param name="root">Start point of the traversion set</param>
+        /// <param name="ignore">Transforms and all its children to be ignored</param>
+        private static IEnumerable<Transform> IterateHierarchyCore(this Transform root, ICollection<Transform> ignore)
+        {
+            var parentsQueue = new Queue<Transform>();
+            parentsQueue.Enqueue(root);
+
+            while (parentsQueue.Count > 0)
+            {
+                var parent = parentsQueue.Dequeue();
+
+                if (ignore.Contains(parent)) { continue; }
+
+                foreach (Transform child in parent)
+                {
+                    if (child != null)
+                    {
+                        parentsQueue.Enqueue(child);
+                    }
+                }
+                yield return parent;
+            }
         }
     }
 }
