@@ -215,9 +215,10 @@ namespace HoloToolkit.Unity
                 (AllowSpatialUnderstanding))
             {
                 // Camera
-                Vector3 camPos = Camera.main.transform.position;
-                Vector3 camFwd = Camera.main.transform.forward;
-                Vector3 camUp = Camera.main.transform.up;
+                Transform cameraTransform = CameraCache.Main.transform;
+                Vector3 camPos = cameraTransform.position;
+                Vector3 camFwd = cameraTransform.forward;
+                Vector3 camUp = cameraTransform.up;
 
                 // If not yet initialized, do that now
                 if (ScanState == ScanStates.ReadyToScan)

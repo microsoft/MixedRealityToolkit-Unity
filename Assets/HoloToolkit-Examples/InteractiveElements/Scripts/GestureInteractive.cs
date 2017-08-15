@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using Cursor = HoloToolkit.Unity.InputModule.Cursor;
@@ -138,8 +139,8 @@ namespace HoloToolkit.Examples.InteractiveElements
             mCurrentInputSource = mTempInputSource;
             mCurrentInputSourceId = mTempInputSourceId;
 
-            mStartHeadPosition = Camera.main.transform.position;
-            mStartHeadRay = Camera.main.transform.forward;
+            mStartHeadPosition = CameraCache.Main.transform.position;
+            mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
             mCurrentInputSource.TryGetPosition(mCurrentInputSourceId, out handPosition);
