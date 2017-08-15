@@ -264,6 +264,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // Nothing to do. Keep the pointer that must have been set programmatically.
             }
+
             else if (loadPointer != null)
             {
                 Pointer = loadPointer.GetComponent<IPointingSource>();

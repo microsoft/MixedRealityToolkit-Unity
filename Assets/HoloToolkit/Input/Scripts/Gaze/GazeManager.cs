@@ -125,6 +125,7 @@ namespace HoloToolkit.Unity.InputModule
         private bool FindGazeTransform()
         {
             if (GazeTransform != null) { return true; }
+            
             if (CameraCache.Main != null)
             {
                 GazeTransform = CameraCache.Main.transform;
