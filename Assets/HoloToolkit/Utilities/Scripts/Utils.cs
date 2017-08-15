@@ -10,14 +10,10 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class Utils
     {
+        [System.Obsolete("Use GameObjectExtensions.SetLayerRecursively(gameObject, layer) instead;")]
         public static void SetLayerRecursively(GameObject gameObject, int layer)
         {
-            gameObject.layer = layer;
-
-            for (int i = 0; i < gameObject.transform.childCount; ++i)
-            {
-                SetLayerRecursively(gameObject.transform.GetChild(i).gameObject, layer);
-            }
+            gameObject.SetLayerRecursively(layer);
         }
 
         /// <summary>

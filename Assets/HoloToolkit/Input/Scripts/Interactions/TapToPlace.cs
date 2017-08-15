@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private const int IgnoreRaycastLayer = 2;
 
-        private static Dictionary<GameObject, int> defaultLayersCache = new Dictionary<GameObject, int>();
+        private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
 
         protected virtual void Start()
         {
@@ -215,7 +215,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StartPlacing()
         {
-            SetLayerRecursively(transform, useDefaultLayer: false);
+            gameObject.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
             InputManager.Instance.AddGlobalListener(gameObject);
 
             // If the user is in placing mode, display the spatial mapping mesh.
@@ -232,9 +232,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StopPlacing()
         {
-            SetLayerRecursively(transform, useDefaultLayer: true);
-            // Clear our cache in case we added or removed gameobjects between taps
-            defaultLayersCache.Clear();
+            gameObject.ApplyLayerCacheRecursively(layerCache);
             InputManager.Instance.RemoveGlobalListener(gameObject);
 
             // If the user is not in placing mode, hide the spatial mapping mesh.
@@ -247,29 +245,6 @@ namespace HoloToolkit.Unity.InputModule
             // Add world anchor when object placement is done.
             WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
 #endif
-        }
-
-        private static void SetLayerRecursively(Transform objectToSet, bool useDefaultLayer)
-        {
-            if (useDefaultLayer)
-            {
-                int defaultLayerId;
-                if (defaultLayersCache.TryGetValue(objectToSet.gameObject, out defaultLayerId))
-                {
-                    objectToSet.gameObject.layer = defaultLayerId;
-                    defaultLayersCache.Remove(objectToSet.gameObject);
-                }
-            } else
-            {
-                defaultLayersCache.Add(objectToSet.gameObject, objectToSet.gameObject.layer);
-
-                objectToSet.gameObject.layer = IgnoreRaycastLayer;
-            }
-
-            for (int i = 0; i < objectToSet.childCount; i++)
-            {
-                SetLayerRecursively(objectToSet.GetChild(i), useDefaultLayer);
-            }
         }
     }
 }

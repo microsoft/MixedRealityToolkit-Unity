@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -18,6 +20,71 @@ namespace HoloToolkit.Unity
             }
 
             return go.transform.parent.gameObject.GetFullPath() + "/" + go.name;
+        }
+
+        /// <summary>
+        /// Set the layer to the given object and the full hierarchy below it.
+        /// </summary>
+        /// <param name="root">Start point of the traverse</param>
+        /// <param name="layer">The layer to apply</param>
+        public static void SetLayerRecursively(this GameObject root, int layer)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException("root", "Root transform can't be null.");
+            }
+
+            foreach (var child in root.transform.IterateHierarchy())
+            {
+                child.gameObject.layer = layer;
+            }
+        }
+
+        /// <summary>
+        /// Set the layer to the given object and the full hierarchy below it and cache the previous layers in the out parameter.
+        /// </summary>
+        /// <param name="root">Start point of the traverse</param>
+        /// <param name="layer">The layer to apply</param>
+        /// <param name="cache">The previously set layer for each object</param>
+        public static void SetLayerRecursively(this GameObject root, int layer, out Dictionary<GameObject, int> cache)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException("root", "Root transform can't be null.");
+            }
+
+            cache = new Dictionary<GameObject, int>();
+
+            foreach (var child in root.transform.IterateHierarchy())
+            {
+                cache[child.gameObject] = child.gameObject.layer;
+                child.gameObject.layer = layer;
+            }
+        }
+
+        /// <summary>
+        /// Reapplies previously cached hierarchy layers
+        /// </summary>
+        /// <param name="root">Start point of the traverse</param>
+        /// <param name="cache">The previously set layer for each object</param>
+        public static void ApplyLayerCacheRecursively(this GameObject root, Dictionary<GameObject, int> cache)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException("root", "Root transform can't be null.");
+            }
+            if (cache == null)
+            {
+                throw new ArgumentNullException("cache", "Cache can't be null.");
+            }
+
+            foreach (var child in root.transform.IterateHierarchy())
+            {
+                int layer;
+                if (!cache.TryGetValue(child.gameObject, out layer)) continue;
+                child.gameObject.layer = layer;
+                cache.Remove(child.gameObject);
+            }
         }
     }
 }
