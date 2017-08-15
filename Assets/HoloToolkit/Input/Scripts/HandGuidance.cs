@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
+using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class HandGuidance : Singleton<HandGuidance>
     {
+#if UNITY_WSA
         [Tooltip("The Cursor object the HandGuidanceIndicator will be positioned around.")]
         public GameObject Cursor;
 
@@ -31,7 +32,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private uint? currentlyTrackedHand = null;
 
-#if UNITY_EDITOR || UNITY_WSA
         protected override void Awake()
         {
             base.Awake();

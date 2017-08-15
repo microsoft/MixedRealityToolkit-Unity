@@ -3,71 +3,72 @@
 
 using UnityEngine;
 using System.Collections;
-using HoloToolkit.Unity;
 
-public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
+namespace HoloToolkit.Unity.Tests
 {
-    [Tooltip("In degrees")]
-    public float AngleOfAcceptance = 45.0f;
-    public PlaneTargetGroup[] Groups;
-
-    public TextMesh DisplayText;
-    public float TextDisplayTime = 5.0f;
-
-    private PlaneTargetGroup currentGroup;
-
-    private Coroutine displayForSecondsCoroutine;
-
-    public void PickNewTarget()
+    public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
     {
-        PlaneTargetGroup newGroup = null;
-        float smallestAngle = float.PositiveInfinity;
+        [Tooltip("In degrees")] public float AngleOfAcceptance = 45.0f;
+        public PlaneTargetGroup[] Groups;
 
-        // Figure out which group we're looking at
-        foreach (PlaneTargetGroup group in Groups)
+        public TextMesh DisplayText;
+        public float TextDisplayTime = 5.0f;
+
+        private PlaneTargetGroup currentGroup;
+
+        private Coroutine displayForSecondsCoroutine;
+
+        public void PickNewTarget()
         {
-            Vector3 camToGroup = group.transform.position - Camera.main.transform.position;
-            float gazeObjectAngle = Vector3.Angle(camToGroup, Camera.main.transform.forward);
-            if (group.Targets.Length > 0 && gazeObjectAngle < AngleOfAcceptance && gazeObjectAngle < smallestAngle)
+            PlaneTargetGroup newGroup = null;
+            float smallestAngle = float.PositiveInfinity;
+
+            // Figure out which group we're looking at
+            foreach (PlaneTargetGroup group in Groups)
             {
-                smallestAngle = gazeObjectAngle;
-                newGroup = group;
+                Vector3 camToGroup = group.transform.position - Camera.main.transform.position;
+                float gazeObjectAngle = Vector3.Angle(camToGroup, Camera.main.transform.forward);
+                if (group.Targets.Length > 0 && gazeObjectAngle < AngleOfAcceptance && gazeObjectAngle < smallestAngle)
+                {
+                    smallestAngle = gazeObjectAngle;
+                    newGroup = group;
+                }
+            }
+
+            // Looking at a group!
+            if (newGroup != null)
+            {
+                // If we're already in this group, switch targets
+                if (newGroup == currentGroup)
+                {
+                    newGroup.PickNewTarget();
+                }
+                currentGroup = newGroup;
+                StabilizationPlaneModifier.Instance.TargetOverride = currentGroup.CurrentTarget.transform;
+                StabilizationPlaneModifier.Instance.TrackVelocity = currentGroup.UseVelocity;
+                UpdateText();
             }
         }
 
-        // Looking at a group!
-        if (newGroup != null)
+        private void UpdateText()
         {
-            // If we're already in this group, switch targets
-            if (newGroup == currentGroup)
+            DisplayText.text = StabilizationPlaneModifier.Instance.TargetOverride.name;
+            if (StabilizationPlaneModifier.Instance.TrackVelocity)
             {
-                newGroup.PickNewTarget();
+                DisplayText.text += "\r\nvelocity";
             }
-            currentGroup = newGroup;
-            StabilizationPlaneModifier.Instance.TargetOverride = currentGroup.CurrentTarget.transform;
-            StabilizationPlaneModifier.Instance.TrackVelocity = currentGroup.UseVelocity;
-            UpdateText();
-        }
-    }
 
-    private void UpdateText()
-    {
-        DisplayText.text = StabilizationPlaneModifier.Instance.TargetOverride.name;
-        if (StabilizationPlaneModifier.Instance.TrackVelocity)
+            if (displayForSecondsCoroutine != null)
+            {
+                StopCoroutine(displayForSecondsCoroutine);
+            }
+            displayForSecondsCoroutine = StartCoroutine(DisplayForSeconds(TextDisplayTime));
+        }
+
+        private IEnumerator DisplayForSeconds(float displayTime)
         {
-            DisplayText.text += "\r\nvelocity";
+            yield return new WaitForSeconds(displayTime);
+            DisplayText.text = "";
         }
-
-        if (displayForSecondsCoroutine != null)
-        {
-            StopCoroutine(displayForSecondsCoroutine);
-        }
-        displayForSecondsCoroutine = StartCoroutine(DisplayForSeconds(TextDisplayTime));
-    }
-
-    private IEnumerator DisplayForSeconds(float displayTime)
-    {
-        yield return new WaitForSeconds(displayTime);
-        DisplayText.text = "";
     }
 }

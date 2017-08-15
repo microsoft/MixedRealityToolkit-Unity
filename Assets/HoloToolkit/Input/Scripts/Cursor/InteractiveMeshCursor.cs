@@ -16,6 +16,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Inner cursor element")]
         public GameObject Dot;
 
+        [Tooltip("Point light")]
+        public GameObject Light;
+
         [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disapprear.")]
         public float DistanceScaleFactor = 0.3f;
 
@@ -110,8 +113,7 @@ namespace HoloToolkit.Unity.InputModule
             // added observation of CursorModifier
             if (TargetedCursorModifier != null && mHasHover)
             {
-                Ring.SetActive(!TargetedCursorModifier.GetCursorVisibility());
-                Dot.SetActive(!TargetedCursorModifier.GetCursorVisibility());
+                ElementVisibility(!TargetedCursorModifier.GetCursorVisibility());
             }
         }
 
@@ -150,18 +152,33 @@ namespace HoloToolkit.Unity.InputModule
             base.SetVisiblity(visible);
 
             mIsVisible = visible;
+            ElementVisibility(visible);
 
             if (visible)
             {
                 OnCursorStateChange(CursorState);
             }
-            else
+        }
+
+        /// <summary>
+        /// controls the visibility of cursor elements in one place
+        /// </summary>
+        /// <param name="visible"></param>
+        private void ElementVisibility(bool visible)
+        {
+            if (Ring != null)
             {
-                if (Ring != null && Dot != null)
-                {
-                    Ring.SetActive(visible);
-                    Dot.SetActive(visible);
-                }
+                Ring.SetActive(visible);
+            }
+
+            if (Dot != null)
+            {
+                Dot.SetActive(visible);
+            }
+
+            if (Light != null)
+            {
+                Light.SetActive(visible);
             }
         }
     }

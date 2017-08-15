@@ -6,7 +6,7 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine.XR.WSA.Input;
 
-namespace HoloToolkit.Unity.Tests
+namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class TextToSpeechOnTap : MonoBehaviour, IInputHandler
     {

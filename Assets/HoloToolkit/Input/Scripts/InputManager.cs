@@ -7,8 +7,11 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif
+
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -44,8 +47,10 @@ namespace HoloToolkit.Unity.InputModule
         private PointerSpecificEventData pointerSpecificEventData;
         private InputPositionEventData inputPositionEventData;
         private TriggerEventData triggerEventData;
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
         private DictationEventData dictationEventData;
+#endif
 
         /// <summary>
         /// List of the input sources as detected by the input manager like hands or motion controllers.
@@ -256,8 +261,10 @@ namespace HoloToolkit.Unity.InputModule
             pointerSpecificEventData = new PointerSpecificEventData(EventSystem.current);
             inputPositionEventData = new InputPositionEventData(EventSystem.current);
             triggerEventData = new TriggerEventData(EventSystem.current);
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
+#endif
         }
 
         public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
@@ -783,6 +790,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Controller Events
 
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         #region Speech Events
 
         private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
@@ -792,7 +800,6 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
-#if UNITY_EDITOR || UNITY_WSA
         public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text, object tag = null)
         {
             // Create input event
@@ -801,7 +808,6 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
         }
-#endif
 
         #endregion // Speech Events
 
@@ -872,5 +878,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion // Dictation Events
+#endif
     }
 }
