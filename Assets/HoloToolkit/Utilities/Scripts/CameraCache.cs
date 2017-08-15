@@ -20,7 +20,11 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                return cachedCamera ?? Refresh(Camera.main);
+                if (cachedCamera == null)
+                {
+                    return Refresh(Camera.main);
+                }
+                return cachedCamera;
             }
         }
 
