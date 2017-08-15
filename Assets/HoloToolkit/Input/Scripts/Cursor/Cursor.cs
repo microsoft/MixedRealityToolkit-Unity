@@ -190,7 +190,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void OnEnable()
         {
-            if (FocusManager.IsInitialized)
+            if (FocusManager.IsInitialized && Pointer != null)
             {
                 OnPointerSpecificFocusChanged(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
             }
@@ -264,6 +264,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // Nothing to do. Keep the pointer that must have been set programmatically.
             }
+
             else if (loadPointer != null)
             {
                 Pointer = loadPointer.GetComponent<IPointingSource>();
