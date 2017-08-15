@@ -1,6 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif
+
+#if !UNITY_EDITOR
+using UnityEngine.Experimental.XR;
+#endif
 
 namespace HoloToolkit.Unity.Stage
 {
