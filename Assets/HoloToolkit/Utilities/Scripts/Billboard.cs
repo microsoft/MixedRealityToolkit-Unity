@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
         {
             if (TargetTransform == null)
             {
-                TargetTransform = CameraCache.Main.transform;
+                TargetTransform = Camera.main.transform;
             }
 
             Update();

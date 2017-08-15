@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using System.Collections;
-using HoloToolkit.Unity;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -87,7 +86,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Camera reference
         /// </summary>
-        protected Camera MainCamera { get { return CameraCache.Main; } }
+        protected Camera MainCamera { get { return Camera.main; } }
 
         /// <summary>
         /// Orientation based on the user facing direction.
@@ -386,7 +385,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         protected float FlipDistanceOnFacingControl(float toFlip, Vector3 controlPosition, Vector3 controlForward)
         {
             Vector3 cameraRay = StartHeadPosition - controlPosition;
-            bool facingForward = Vector3.Dot(MainCamera.transform.forward, StartHeadRay) >= 0;
+            bool facingForward = Vector3.Dot(Camera.main.transform.forward, StartHeadRay) >= 0;
             bool facingControl = Vector3.Dot(cameraRay, controlForward) >= 0;
 
             if (!facingForward)

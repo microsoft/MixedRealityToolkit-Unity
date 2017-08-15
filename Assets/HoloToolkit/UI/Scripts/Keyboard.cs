@@ -252,7 +252,7 @@ namespace HoloToolkit.UI.Keyboard
             // Axis Slider
             if (SliderEnabled)
             {
-                Vector3 nearPoint = Vector3.ProjectOnPlane(CameraCache.Main.transform.forward, transform.forward);
+                Vector3 nearPoint = Vector3.ProjectOnPlane(Camera.main.transform.forward, transform.forward);
                 Vector3 relPos = transform.InverseTransformPoint(nearPoint);
                 InputFieldSlide.TargetPoint = relPos;
             }
@@ -386,7 +386,9 @@ namespace HoloToolkit.UI.Keyboard
                 transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
             }
 
+
             ScaleToSize();
+
             LookAtTargetOrigin();
         }
 
@@ -395,7 +397,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void ScaleToSize()
         {
-            float distance = (transform.position - CameraCache.Main.transform.position).magnitude;
+            float distance = (transform.position - Camera.main.transform.position).magnitude;
             float distancePercent = (distance - m_MinDistance) / (m_MaxDistance - m_MinDistance);
             float scale = m_MinScale + (m_MaxScale - m_MinScale) * distancePercent;
 
@@ -410,7 +412,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void LookAtTargetOrigin()
         {
-            transform.LookAt(CameraCache.Main.transform.position);
+            transform.LookAt(Camera.main.transform.position);
             transform.Rotate(Vector3.up, 180.0f);
         }
 
