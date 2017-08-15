@@ -67,19 +67,19 @@ namespace HoloToolkit.Unity
             private set;
         }
 
-        public AudioEvent audioEvent = null;
-        public bool isStoppable = true;
-        public float volDest = 1;
-        public float altVolDest = 1;
-        public float currentFade = 0;
-        public bool playingAlt = false;
-        public bool isActiveTimeComplete = false;
-        public float activeTime = 0;
-        public bool cancelEvent = false;
+        public AudioEvent AudioEvent = null;
+        public bool IsStoppable = true;
+        public float VolDest = 1;
+        public float AltVolDest = 1;
+        public float CurrentFade = 0;
+        public bool PlayingAlt = false;
+        public bool IsActiveTimeComplete = false;
+        public float ActiveTime = 0;
+        public bool CancelEvent = false;
 
         public ActiveEvent(AudioEvent audioEvent, GameObject emitter, AudioSource primarySource, AudioSource secondarySource, string messageOnAudioEnd = null)
         {
-            this.audioEvent = audioEvent;
+            this.AudioEvent = audioEvent;
             AudioEmitter = emitter;
             PrimarySource = primarySource;
             SecondarySource = secondarySource;
@@ -103,7 +103,7 @@ namespace HoloToolkit.Unity
                 }
             };
 
-            AudioEvent audioEvent = this.audioEvent;
+            AudioEvent audioEvent = this.AudioEvent;
             switch (audioEvent.Spatialization)
             {
                 case SpatialPositioningType.TwoD:
@@ -165,9 +165,9 @@ namespace HoloToolkit.Unity
                 });
             }
 
-            if (audioEvent.Bus != null)
+            if (audioEvent.AudioBus != null)
             {
-                forEachSource((source) => source.outputAudioMixerGroup = audioEvent.Bus);
+                forEachSource((source) => source.outputAudioMixerGroup = audioEvent.AudioBus);
             }
 
             float pitch = 1f;
@@ -186,7 +186,7 @@ namespace HoloToolkit.Unity
             if (audioEvent.FadeInTime > 0)
             {
                 forEachSource((source) => source.volume = 0f);
-                this.currentFade = audioEvent.FadeInTime;
+                this.CurrentFade = audioEvent.FadeInTime;
                 if (audioEvent.VolumeRandomization != 0)
                 {
                     vol = UnityEngine.Random.Range(audioEvent.VolumeCenter - audioEvent.VolumeRandomization, audioEvent.VolumeCenter + audioEvent.VolumeRandomization);
@@ -195,7 +195,7 @@ namespace HoloToolkit.Unity
                 {
                     vol = audioEvent.VolumeCenter;
                 }
-                this.volDest = vol;
+                this.VolDest = vol;
             }
             else
             {
