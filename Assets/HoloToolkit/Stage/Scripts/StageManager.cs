@@ -25,8 +25,10 @@ namespace HoloToolkit.Unity.Stage
         [Tooltip("Material used to draw bounds for the stage. Leave empty if you have not setup your space or don't want to render bounds.")]
         public Material StageBoundsMaterial;
 
+        private bool updateStageBounds = true;
+
         public List<Vector3> EditorLines;
-        List<GameObject> boundingBoxLines = new List<GameObject>();
+        private List<GameObject> boundingBoxLines = new List<GameObject>();
 
         private bool renderStage = true;
         public bool RenderStage
@@ -72,6 +74,7 @@ namespace HoloToolkit.Unity.Stage
 #if UNITY_EDITOR
                 // So the floor quad does not occlude in editor testing, draw it lower.
                 floorQuadInstance.transform.localPosition = new Vector3(0, -3, 0);
+                updateStageBounds = true;
 
                 UpdateStageBounds();
 #else
@@ -118,6 +121,7 @@ namespace HoloToolkit.Unity.Stage
                         DrawLine(start, end);
                     }
                     DrawLine(bounds[0], bounds[bounds.Count - 1]);
+                    updateStageBounds = false;
                 }
             }
         }
