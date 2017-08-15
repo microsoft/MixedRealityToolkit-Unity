@@ -27,14 +27,7 @@ namespace HoloToolkit.Unity.Tests
         [TearDown]
         public void ClearScene()
         {
-            foreach (var gameObject in Object.FindObjectsOfType<GameObject>())
-            {
-                //only destroy root objects
-                if (gameObject.transform.parent == null)
-                {
-                    Object.DestroyImmediate(gameObject);
-                }
-            }
+            EditorUtils.ClearScene();
         }
 
         [Test]
