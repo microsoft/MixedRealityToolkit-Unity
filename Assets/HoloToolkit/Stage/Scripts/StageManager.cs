@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA;
-using UnityEngine.Experimental.XR;
 
 namespace HoloToolkit.Unity.Stage
 {
@@ -18,8 +17,6 @@ namespace HoloToolkit.Unity.Stage
 
         [Tooltip("Material used to draw bounds for the stage. Leave empty if you have not setup your space or don't want to render bounds.")]
         public Material StageBoundsMaterial;
-
-        bool updateStageBounds = true;
 
         public List<Vector3> EditorLines;
         List<GameObject> boundingBoxLines = new List<GameObject>();
@@ -68,7 +65,6 @@ namespace HoloToolkit.Unity.Stage
 #if UNITY_EDITOR
                 // So the floor quad does not occlude in editor testing, draw it lower.
                 floorQuadInstance.transform.localPosition = new Vector3(0, -3, 0);
-                updateStageBounds = true;
 
                 UpdateStageBounds();
 #else
@@ -115,7 +111,6 @@ namespace HoloToolkit.Unity.Stage
                         DrawLine(start, end);
                     }
                     DrawLine(bounds[0], bounds[bounds.Count - 1]);
-                    updateStageBounds = false;
                 }
             }
         }
