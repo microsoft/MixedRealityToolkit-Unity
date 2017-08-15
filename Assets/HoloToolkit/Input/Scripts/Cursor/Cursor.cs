@@ -190,7 +190,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void OnEnable()
         {
-            if (FocusManager.IsInitialized)
+            if (FocusManager.IsInitialized && Pointer != null)
             {
                 OnPointerSpecificFocusChanged(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
             }
