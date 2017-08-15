@@ -361,7 +361,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                     new PlacementQuery(SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_RandomInAir(new Vector3(halfDimSize, halfDimSize, halfDimSize)),
                                         new List<SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule>() {
                                             SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule.Create_AwayFromOtherObjects(halfDimSize * 3.0f),
-                                            SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule.Create_AwayFromPosition(Camera.main.transform.position, 2.5f),
+                                            SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule.Create_AwayFromPosition(CameraCache.Main.transform.position, 2.5f),
                                         }));
             }
             PlaceObjectAsync("RandomInAir - AwayFromMe", placementQuery);
@@ -395,7 +395,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 placementQuery.Add(
                     new PlacementQuery(SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_OnFloor(new Vector3(halfDimSize, halfDimSize, halfDimSize)),
                                        new List<SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule>() {
-                                           SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule.Create_AwayFromPosition(Camera.main.transform.position, 2.0f),
+                                           SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule.Create_AwayFromPosition(CameraCache.Main.transform.position, 2.0f),
                                            SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule.Create_AwayFromOtherObjects(halfDimSize * 3.0f),
                                        }));
             }
@@ -414,7 +414,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                                            SpatialUnderstandingDllObjectPlacement.ObjectPlacementRule.Create_AwayFromOtherObjects(halfDimSize * 3.0f),
                                        },
                                        new List<SpatialUnderstandingDllObjectPlacement.ObjectPlacementConstraint>() {
-                                           SpatialUnderstandingDllObjectPlacement.ObjectPlacementConstraint.Create_NearPoint(Camera.main.transform.position, 0.5f, 2.0f)
+                                           SpatialUnderstandingDllObjectPlacement.ObjectPlacementConstraint.Create_NearPoint(CameraCache.Main.transform.position, 0.5f, 2.0f)
                                        }));
             }
             PlaceObjectAsync("OnFloor - NearMe", placementQuery);

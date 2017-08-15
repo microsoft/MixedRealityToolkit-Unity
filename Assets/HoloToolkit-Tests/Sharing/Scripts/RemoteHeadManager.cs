@@ -52,7 +52,7 @@ namespace HoloToolkit.Sharing.Tests
         private void Update()
         {
             // Grab the current head transform and broadcast it to all the other users in the session
-            Transform headTransform = Camera.main.transform;
+            Transform headTransform = CameraCache.Main.transform;
 
             // Transform the head position and rotation from world space into local space
             Vector3 headPosition = transform.InverseTransformPoint(headTransform.position);
