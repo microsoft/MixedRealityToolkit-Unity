@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using System.Text;
 using UnityEngine;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
+using System.Text;
 using UnityEngine.Windows.Speech;
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -18,6 +18,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class DictationInputManager : Singleton<DictationInputManager>, IInputSource
     {
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Caches the text currently being displayed in dictation display text.
         /// </summary>
@@ -29,7 +30,7 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly string DeviceName = string.Empty;
 
         /// <summary>
-        /// The device audio sammpling rate.
+        /// The device audio sampling rate.
         /// <remarks>Set by UnityEngine.Microphone.<see cref="Microphone.GetDeviceCaps"/></remarks>
         /// </summary>
         private static int samplingRate;
@@ -48,16 +49,16 @@ namespace HoloToolkit.Unity.InputModule
         /// Audio clip of the last dictation session.
         /// </summary>
         private static AudioClip dictationAudioClip;
-#if UNITY_EDITOR || UNITY_WSA
-        private static DictationRecognizer dictationRecognizer;
-#endif
-        private static bool isTransitioning;
 
+        private static DictationRecognizer dictationRecognizer;
+        
+        private static bool isTransitioning;
         private static bool hasFailed;
+#endif
 
         #region Unity Methods
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         protected override void Awake()
         {
             base.Awake();
@@ -71,7 +72,7 @@ namespace HoloToolkit.Unity.InputModule
             dictationRecognizer.DictationError += DictationRecognizer_DictationError;
 
             // Query the maximum frequency of the default microphone.
-            int minSamplingRate; // Unsued.
+            int minSamplingRate; // Not used.
             Microphone.GetDeviceCaps(DeviceName, out minSamplingRate, out samplingRate);
         }
 
@@ -109,7 +110,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns></returns>
         public static IEnumerator StartRecording(float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to start recording");
@@ -158,7 +159,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StopRecording()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (!IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to stop recording");
@@ -188,6 +189,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #region Dictation Recognizer Callbacks
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 
         /// <summary>
         /// This event is fired while the user is talking. As the recognizer listens, it provides text of what it's heard so far.
@@ -201,7 +203,6 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.RaiseDictationHypothesis(Instance, 0, dictationResult);
         }
 
-#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// This event is fired after the user pauses, typically at the end of a sentence. The full recognized string is returned here.
         /// </summary>
@@ -235,7 +236,6 @@ namespace HoloToolkit.Unity.InputModule
             textSoFar = null;
             dictationResult = string.Empty;
         }
-#endif
 
         /// <summary>
         /// This event is fired when an error occurs.
@@ -250,7 +250,7 @@ namespace HoloToolkit.Unity.InputModule
             textSoFar = null;
             dictationResult = string.Empty;
         }
-
+#endif
         #endregion // Dictation Recognizer Callbacks
 
         #region IInputSource Implementation

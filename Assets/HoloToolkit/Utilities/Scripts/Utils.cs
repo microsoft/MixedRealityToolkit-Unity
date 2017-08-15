@@ -145,7 +145,7 @@ namespace HoloToolkit.Unity
         /// <returns>true if running in editor, false if windows store app</returns>
         public static bool IsInEditor()
         {
-#if UNITY_METRO && !UNITY_EDITOR
+#if UNITY_WSA && !UNITY_EDITOR
             return false;
 #else
             return true;

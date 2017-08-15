@@ -31,7 +31,7 @@ namespace HoloToolkit.Examples.ColorPicker
 
             if (hitObject != rendererComponent.gameObject) return;
             
-            Texture2D texture = rendererComponent.material.mainTexture as Texture2D;
+            //Texture2D texture = rendererComponent.material.mainTexture as Texture2D;
 
             //TODO: Fix by adding RaycastHit properties to FocusDetails.
             //Vector2 pixelUV = hit.textureCoord;            

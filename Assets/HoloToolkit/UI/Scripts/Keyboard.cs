@@ -2,16 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
 
-#if UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
-
-using UnityEngine.EventSystems;
 
 namespace HoloToolkit.UI.Keyboard
 {
@@ -35,7 +32,7 @@ namespace HoloToolkit.UI.Keyboard
             Alpha,
             Symbol,
             URL,
-            email,
+            Email,
         }
 
         #region Callbacks
@@ -45,38 +42,38 @@ namespace HoloToolkit.UI.Keyboard
         /// cast the sender to 'Keyboard' and get the text from the TextInput field.
         /// (Cleared when keyboard is closed.)
         /// </summary>
-        public event EventHandler onTextSubmitted = delegate { };
+        public event EventHandler OnTextSubmitted = delegate { };
 
         /// <summary>
         /// Fired every time the text in the InputField changes.
         /// (Cleared when keyboard is closed.)
         /// </summary>
-        public event Action<string> onTextUpdated = delegate { };
+        public event Action<string> OnTextUpdated = delegate { };
 
         /// <summary>
         /// Fired every time the Close button is pressed.
         /// (Cleared when keyboard is closed.)
         /// </summary>
-        public event EventHandler onClosed = delegate { };
+        public event EventHandler OnClosed = delegate { };
 
         /// <summary>
         /// Sent when the 'Previous' button is pressed. Ideally you would use this event
         /// to set your targeted text input to the previous text field in your document.
         /// (Cleared when keyboard is closed.)
         /// </summary>
-        public event EventHandler onPrevious = delegate { };
+        public event EventHandler OnPrevious = delegate { };
 
         /// <summary>
         /// Sent when the 'Next' button is pressed. Ideally you would use this event
         /// to set your targeted text input to the next text field in your document.
         /// (Cleared when keyboard is closed.)
         /// </summary>
-        public event EventHandler onNext = delegate { };
+        public event EventHandler OnNext = delegate { };
 
         /// <summary>
         /// Sent when the keyboard is placed.  This allows listener to know when someone else is co-opting the keyboard.
         /// </summary>
-        public event EventHandler onPlacement = delegate { };
+        public event EventHandler OnPlacement = delegate { };
 
         #endregion Callbacks
 
@@ -85,22 +82,22 @@ namespace HoloToolkit.UI.Keyboard
         /// If you are using the Keyboard prefab you can ignore this field as it will
         /// be already assigned.
         /// </summary>
-        public InputField m_InputField = null;
+        public InputField InputField = null;
 
         /// <summary>
         /// Move the axis slider based on the camera forward and the keyboard plane projection.
         /// </summary>
-        public AxisSlider m_InputFieldSlide = null;
+        public AxisSlider InputFieldSlide = null;
 
         /// <summary>
         /// Bool for toggling the slider being enabled.
         /// </summary>
-        public bool m_SliderEnabled = true;
+        public bool SliderEnabled = true;
 
         /// <summary>
         /// Bool to flag submitting on enter
         /// </summary>
-        public bool m_SubmitOnEnter = true;
+        public bool SubmitOnEnter = true;
 
         /// <summary>
         /// The panel that contains the alpha keys.
@@ -129,10 +126,10 @@ namespace HoloToolkit.UI.Keyboard
 
         private LayoutType m_LastKeyboardLayout = LayoutType.Alpha;
 
-        [Header("Positioning")]
         /// <summary>
         /// The scale the keyboard should be at its maximum distance.
         /// </summary>
+        [Header("Positioning")]
         [SerializeField]
         private float m_MaxScale = 1.0f;
 
@@ -157,7 +154,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Event fired when shift key on keyboard is pressed.
         /// </summary>
-        public event Action<bool> onKeyboardShifted = delegate { };
+        public event Action<bool> OnKeyboardShifted = delegate { };
 
         /// <summary>
         /// Current shift state of keyboard.
@@ -190,7 +187,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private int m_CaretPosition = 0;
 
-#if UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Reference to dictation recognizer.
         /// </summary>
@@ -215,8 +212,8 @@ namespace HoloToolkit.UI.Keyboard
         {
             base.Awake();
 
-            m_StartingScale = this.transform.localScale;
-            Bounds canvasBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(this.transform);
+            m_StartingScale = transform.localScale;
+            Bounds canvasBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(transform);
 
             RectTransform rect = GetComponent<RectTransform>();
             m_ObjectBounds = new Vector3(canvasBounds.size.x * rect.localScale.x, canvasBounds.size.y * rect.localScale.y, canvasBounds.size.z * rect.localScale.z);
@@ -231,7 +228,7 @@ namespace HoloToolkit.UI.Keyboard
         private void Start()
         {
             // Delegate Subscription
-            m_InputField.onValueChanged.AddListener(new UnityEngine.Events.UnityAction<string>(DoTextUpdated));
+            InputField.onValueChanged.AddListener(DoTextUpdated);
         }
 
         /// <summary>
@@ -241,9 +238,9 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="value">String value.</param>
         private void DoTextUpdated(string value)
         {
-            if (onTextUpdated != null)
+            if (OnTextUpdated != null)
             {
-                onTextUpdated(value);
+                OnTextUpdated(value);
             }
         }
 
@@ -253,17 +250,17 @@ namespace HoloToolkit.UI.Keyboard
         private void LateUpdate()
         {
             // Axis Slider
-            if (m_SliderEnabled)
+            if (SliderEnabled)
             {
-                Vector3 nearPoint = Vector3.ProjectOnPlane(Camera.main.transform.forward, this.transform.forward);
-                Vector3 relPos = this.transform.InverseTransformPoint(nearPoint);
-                m_InputFieldSlide.TargetPoint = relPos;
+                Vector3 nearPoint = Vector3.ProjectOnPlane(Camera.main.transform.forward, transform.forward);
+                Vector3 relPos = transform.InverseTransformPoint(nearPoint);
+                InputFieldSlide.TargetPoint = relPos;
             }
         }
 
         private void UpdateCaratPosition(int newPos)
         {
-            m_InputField.caretPosition = newPos;
+            InputField.caretPosition = newPos;
         }
 
         /// <summary>
@@ -275,7 +272,7 @@ namespace HoloToolkit.UI.Keyboard
             Clear();
         }
 
-#if UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// Event fired when dictation completed.
         /// </summary>
@@ -285,8 +282,8 @@ namespace HoloToolkit.UI.Keyboard
         {
             if (text != null)
             {
-                m_InputField.text.Insert(m_InputField.caretPosition, text);
-                m_InputField.caretPosition += text.Length;
+                InputField.text.Insert(InputField.caretPosition, text);
+                InputField.caretPosition += text.Length;
             }
         }
 #endif
@@ -296,7 +293,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         protected override void OnDestroy()
         {
-#if UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             // HACK Must manually call destroy on DictationRecognizer according to the documentation.
             if (m_Dictation != null)
             {
@@ -314,12 +311,12 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void PresentKeyboard()
         {
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
             ActivateSpecificKeyboard(LayoutType.Alpha);
 
-            onPlacement(this, EventArgs.Empty);
+            OnPlacement(this, EventArgs.Empty);
 
-            m_InputField.ActivateInputField();
+            InputField.ActivateInputField();
 
         }
 
@@ -331,7 +328,7 @@ namespace HoloToolkit.UI.Keyboard
         {
             PresentKeyboard();
             Clear();
-            m_InputField.text = startText;
+            InputField.text = startText;
         }
 
         /// <summary>
@@ -359,11 +356,11 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Function to reposition the Keyboard based on target position and vertical offset 
         /// </summary>
-        /// <param name="kbPos">World position for keybaord</param>
-        /// <param name="verticalOffset">Optinoal vertical offset of keyboard</param>
+        /// <param name="kbPos">World position for keyboard</param>
+        /// <param name="verticalOffset">Optional vertical offset of keyboard</param>
         public void RepositionKeyboard(Vector3 kbPos, float verticalOffset = 0.0f)
         {
-            this.transform.position = kbPos;
+            transform.position = kbPos;
             ScaleToSize();
             LookAtTargetOrigin();
         }
@@ -376,17 +373,17 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="verticalOffset">Optional vertical offset from the target</param>
         public void RepositionKeyboard(Transform objectTransform, BoxCollider aCollider = null, float verticalOffset = 0.0f)
         {
-            this.transform.position = objectTransform.position;
+            transform.position = objectTransform.position;
 
             if (aCollider != null)
             {
                 float yTranslation = -((aCollider.bounds.size.y * 0.5f) + verticalOffset);
-                this.transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
+                transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
             }
             else
             {
                 float yTranslation = -((m_ObjectBounds.y * 0.5f) + verticalOffset);
-                this.transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
+                transform.Translate(0.0f, yTranslation, -0.6f, objectTransform);
             }
 
 
@@ -400,12 +397,12 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void ScaleToSize()
         {
-            float distance = (this.transform.position - Camera.main.transform.position).magnitude;
+            float distance = (transform.position - Camera.main.transform.position).magnitude;
             float distancePercent = (distance - m_MinDistance) / (m_MaxDistance - m_MinDistance);
             float scale = m_MinScale + (m_MaxScale - m_MinScale) * distancePercent;
 
             scale = Mathf.Clamp(scale, m_MinScale, m_MaxScale);
-            this.transform.localScale = m_StartingScale * scale;
+            transform.localScale = m_StartingScale * scale;
 
             Debug.LogFormat("Setting scale: {0} for distance: {1}", scale, distance);
         }
@@ -415,8 +412,8 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void LookAtTargetOrigin()
         {
-            this.transform.LookAt(Camera.main.transform.position);
-            this.transform.Rotate(Vector3.up, 180.0f);
+            transform.LookAt(Camera.main.transform.position);
+            transform.Rotate(Vector3.up, 180.0f);
         }
 
         /// <summary>
@@ -431,32 +428,32 @@ namespace HoloToolkit.UI.Keyboard
             switch (keyboardType)
             {
                 case LayoutType.URL:
-                {
-                    ShowAlphaKeyboard();
-                    TryToShowURLSubkeys();
-                    break;
-                }
+                    {
+                        ShowAlphaKeyboard();
+                        TryToShowURLSubkeys();
+                        break;
+                    }
 
-                case LayoutType.email:
-                {
-                    ShowAlphaKeyboard();
-                    TryToShowEmailSubkeys();
-                    break;
-                }
+                case LayoutType.Email:
+                    {
+                        ShowAlphaKeyboard();
+                        TryToShowEmailSubkeys();
+                        break;
+                    }
 
                 case LayoutType.Symbol:
-                {
-                    ShowSymbolKeyboard();
-                    break;
-                }
+                    {
+                        ShowSymbolKeyboard();
+                        break;
+                    }
 
                 case LayoutType.Alpha:
                 default:
-                {
-                    ShowAlphaKeyboard();
-                    TryToShowAlphaSubkeys();
-                    break;
-                }
+                    {
+                        ShowAlphaKeyboard();
+                        TryToShowAlphaSubkeys();
+                        break;
+                    }
             }
         }
 
@@ -469,7 +466,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void BeginDictation()
         {
-#if UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (m_Dictation == null)
             {
                 m_Dictation = new DictationRecognizer();
@@ -486,7 +483,7 @@ namespace HoloToolkit.UI.Keyboard
         /// TODO: Something needs to call this.
         public void EndDictation()
         {
-#if UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (m_Dictation.Status == SpeechSystemStatus.Running)
             {
                 m_Dictation.Stop();
@@ -499,7 +496,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Primary method for typing individual characters to a text field.
         /// </summary>
-        /// <param name="valueKey">The valuekey of the pressed key.</param>
+        /// <param name="valueKey">The valueKey of the pressed key.</param>
         public void AppendValue(KeyboardValueKey valueKey)
         {
             string value = "";
@@ -519,9 +516,9 @@ namespace HoloToolkit.UI.Keyboard
                 Shift(false);
             }
 
-            m_CaretPosition = m_InputField.caretPosition;
+            m_CaretPosition = InputField.caretPosition;
 
-            m_InputField.text = m_InputField.text.Insert(m_CaretPosition, value);
+            InputField.text = InputField.text.Insert(m_CaretPosition, value);
             m_CaretPosition += value.Length;
 
             UpdateCaratPosition(m_CaretPosition);
@@ -530,98 +527,100 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Trigger specific keyboard functionality.
         /// </summary>
-        /// <param name="functionKey">The functionkey of the pressed key.</param>
+        /// <param name="functionKey">The functionKey of the pressed key.</param>
         public void FunctionKey(KeyboardKeyFunc functionKey)
         {
             switch (functionKey.m_ButtonFunction)
             {
                 case KeyboardKeyFunc.Function.Enter:
-                {
-                    Enter();
-                    break;
-                }
+                    {
+                        Enter();
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Tab:
-                {
-                    Tab();
-                    break;
-                }
+                    {
+                        Tab();
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.ABC:
-                {
-                    ActivateSpecificKeyboard(m_LastKeyboardLayout);
-                    break;
-                }
+                    {
+                        ActivateSpecificKeyboard(m_LastKeyboardLayout);
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Symbol:
-                {
-                    ActivateSpecificKeyboard(LayoutType.Symbol);
-                    break;
-                }
+                    {
+                        ActivateSpecificKeyboard(LayoutType.Symbol);
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Previous:
-                {
-                    MoveCaretLeft();
-                    break;
-                }
+                    {
+                        MoveCaretLeft();
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Next:
-                {
-                    MoveCaretRight();
-                    break;
-                }
+                    {
+                        MoveCaretRight();
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Close:
-                {
-                    Close();
-                    break;
-                }
+                    {
+                        Close();
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Dictate:
-                {
-#if UNITY_WSA
-                    if(m_Dictation != null && m_Dictation.Status == SpeechSystemStatus.Running)
                     {
-                        EndDictation();
-                    }
-                    else
-                    {
-                        BeginDictation();
-                    }
+#if UNITY_WSA || UNITY_STANDALONE_WIN
+                        if (m_Dictation != null && m_Dictation.Status == SpeechSystemStatus.Running)
+                        {
+                            EndDictation();
+                        }
+                        else
+                        {
+                            BeginDictation();
+                        }
 #endif
-                    break;
-                }
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Shift:
-                {
-                    Shift(!m_IsShifted);
-                    break;
-                }
+                    {
+                        Shift(!m_IsShifted);
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.CapsLock:
-                {
-                    CapsLock(!m_IsCapslocked);
-                    break;
-                }
+                    {
+                        CapsLock(!m_IsCapslocked);
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Space:
-                {
-                    Space();
-                    break;
-                }
+                    {
+                        Space();
+                        break;
+                    }
 
                 case KeyboardKeyFunc.Function.Backspace:
-                {
-                    Backspace();
-                    break;
-                }
+                    {
+                        Backspace();
+                        break;
+                    }
+
+                case KeyboardKeyFunc.Function.UNDEFINED:
+                    {
+                        Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
+                        break;
+                    }
 
                 default:
-                case KeyboardKeyFunc.Function.UNDEFINED:
-                {
-                    Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
-                    break;
-                }
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -631,31 +630,31 @@ namespace HoloToolkit.UI.Keyboard
         public void Backspace()
         {
             // check if text is selected
-            if (m_InputField.selectionFocusPosition != m_InputField.caretPosition || m_InputField.selectionAnchorPosition != m_InputField.caretPosition)
+            if (InputField.selectionFocusPosition != InputField.caretPosition || InputField.selectionAnchorPosition != InputField.caretPosition)
             {
-                if (m_InputField.selectionAnchorPosition > m_InputField.selectionFocusPosition) // right to left
+                if (InputField.selectionAnchorPosition > InputField.selectionFocusPosition) // right to left
                 {
-                    m_InputField.text = m_InputField.text.Substring(0, m_InputField.selectionFocusPosition) + m_InputField.text.Substring(m_InputField.selectionAnchorPosition);
-                    m_InputField.caretPosition = m_InputField.selectionFocusPosition;
+                    InputField.text = InputField.text.Substring(0, InputField.selectionFocusPosition) + InputField.text.Substring(InputField.selectionAnchorPosition);
+                    InputField.caretPosition = InputField.selectionFocusPosition;
                 }
                 else // left to right
                 {
-                    m_InputField.text = m_InputField.text.Substring(0, m_InputField.selectionAnchorPosition) + m_InputField.text.Substring(m_InputField.selectionFocusPosition);
-                    m_InputField.caretPosition = m_InputField.selectionAnchorPosition;
+                    InputField.text = InputField.text.Substring(0, InputField.selectionAnchorPosition) + InputField.text.Substring(InputField.selectionFocusPosition);
+                    InputField.caretPosition = InputField.selectionAnchorPosition;
                 }
 
-                m_CaretPosition = m_InputField.caretPosition;
-                m_InputField.selectionAnchorPosition = m_CaretPosition;
-                m_InputField.selectionFocusPosition = m_CaretPosition;
+                m_CaretPosition = InputField.caretPosition;
+                InputField.selectionAnchorPosition = m_CaretPosition;
+                InputField.selectionFocusPosition = m_CaretPosition;
             }
             else
             {
-                m_CaretPosition = m_InputField.caretPosition;
+                m_CaretPosition = InputField.caretPosition;
 
                 if (m_CaretPosition > 0)
                 {
                     --m_CaretPosition;
-                    m_InputField.text = m_InputField.text.Remove(m_CaretPosition, 1);
+                    InputField.text = InputField.text.Remove(m_CaretPosition, 1);
                     UpdateCaratPosition(m_CaretPosition);
                 }
             }
@@ -666,7 +665,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Previous()
         {
-            onPrevious(this, EventArgs.Empty);
+            OnPrevious(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -674,7 +673,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Next()
         {
-            onNext(this, EventArgs.Empty);
+            OnNext(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -683,12 +682,12 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Enter()
         {
-           if( m_SubmitOnEnter )
+            if (SubmitOnEnter)
             {
                 // Send text entered event and close the keyboard
-                if (onTextSubmitted != null)
+                if (OnTextSubmitted != null)
                 {
-                    onTextSubmitted(this, EventArgs.Empty);
+                    OnTextSubmitted(this, EventArgs.Empty);
                 }
 
                 Close();
@@ -697,9 +696,9 @@ namespace HoloToolkit.UI.Keyboard
             {
                 string enterString = "\n";
 
-                m_CaretPosition = m_InputField.caretPosition;
+                m_CaretPosition = InputField.caretPosition;
 
-                m_InputField.text = m_InputField.text.Insert(m_CaretPosition, enterString);
+                InputField.text = InputField.text.Insert(m_CaretPosition, enterString);
                 m_CaretPosition += enterString.Length;
 
                 UpdateCaratPosition(m_CaretPosition);
@@ -714,7 +713,7 @@ namespace HoloToolkit.UI.Keyboard
         public void Shift(bool newShiftState)
         {
             m_IsShifted = newShiftState;
-            onKeyboardShifted(m_IsShifted);
+            OnKeyboardShifted(m_IsShifted);
 
             if (m_IsCapslocked && !newShiftState)
             {
@@ -723,7 +722,7 @@ namespace HoloToolkit.UI.Keyboard
         }
 
         /// <summary>
-        /// Set the keyboard to a perminant shift state.
+        /// Set the keyboard to a permanent shift state.
         /// </summary>
         /// <param name="newCapsLockState"></param>
         public void CapsLock(bool newCapsLockState)
@@ -737,8 +736,8 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Space()
         {
-            m_CaretPosition = m_InputField.caretPosition;
-            m_InputField.text = m_InputField.text.Insert(m_CaretPosition++, " ");
+            m_CaretPosition = InputField.caretPosition;
+            InputField.text = InputField.text.Insert(m_CaretPosition++, " ");
 
             UpdateCaratPosition(m_CaretPosition);
         }
@@ -750,9 +749,9 @@ namespace HoloToolkit.UI.Keyboard
         {
             string tabString = "\t";
 
-            m_CaretPosition = m_InputField.caretPosition;
+            m_CaretPosition = InputField.caretPosition;
 
-            m_InputField.text = m_InputField.text.Insert(m_CaretPosition, tabString);
+            InputField.text = InputField.text.Insert(m_CaretPosition, tabString);
             m_CaretPosition += tabString.Length;
 
             UpdateCaratPosition(m_CaretPosition);
@@ -763,7 +762,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void MoveCaretLeft()
         {
-            m_CaretPosition = m_InputField.caretPosition;
+            m_CaretPosition = InputField.caretPosition;
 
             if (m_CaretPosition > 0)
             {
@@ -777,9 +776,9 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void MoveCaretRight()
         {
-            m_CaretPosition = m_InputField.caretPosition;
+            m_CaretPosition = InputField.caretPosition;
 
-            if (m_CaretPosition < m_InputField.text.Length)
+            if (m_CaretPosition < InputField.text.Length)
             {
                 ++m_CaretPosition;
                 UpdateCaratPosition(m_CaretPosition);
@@ -792,9 +791,9 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Close()
         {
-            onClosed(this, EventArgs.Empty);
+            OnClosed(this, EventArgs.Empty);
 
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -803,14 +802,14 @@ namespace HoloToolkit.UI.Keyboard
         public void Clear()
         {
             ResetKeyboardState();
-            m_InputField.MoveTextStart(false);
-            m_InputField.text = "";
-            m_CaretPosition = m_InputField.caretPosition;
+            InputField.MoveTextStart(false);
+            InputField.text = "";
+            m_CaretPosition = InputField.caretPosition;
         }
 
-#endregion
+        #endregion
 
-#region Keyboard Layout Modes
+        #region Keyboard Layout Modes
 
         /// <summary>
         /// Enable the alpha keyboard.
@@ -847,7 +846,7 @@ namespace HoloToolkit.UI.Keyboard
             if (AlphaKeyboard.IsActive())
             {
                 AlphaMailKeys.gameObject.SetActive(true);
-                m_LastKeyboardLayout = LayoutType.email;
+                m_LastKeyboardLayout = LayoutType.Email;
                 return true;
             }
             else
@@ -883,7 +882,7 @@ namespace HoloToolkit.UI.Keyboard
         }
 
         /// <summary>
-        /// Disable gameobjects for all keyboard elements.
+        /// Disable GameObjects for all keyboard elements.
         /// </summary>
         private void DisableAllKeyboards()
         {
@@ -903,6 +902,6 @@ namespace HoloToolkit.UI.Keyboard
             CapsLock(false);
         }
 
-#endregion Keyboard Layout Modes
+        #endregion Keyboard Layout Modes
     }
 }
