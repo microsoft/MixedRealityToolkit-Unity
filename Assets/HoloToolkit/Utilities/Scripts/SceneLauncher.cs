@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,9 +9,18 @@ namespace HoloToolkit.Unity
 {
     public class SceneLauncher : MonoBehaviour
     {
+        [Serializable]
+        private class SceneMapping
+        {
+            public string ScenePath = string.Empty;
+
+            [Tooltip("This toggle enables or disables the generation of a button for this specific scene.")]
+            public bool IsButtonEnabled;
+        }
+
         [SerializeField]
-        [Tooltip("The list of scenes in the build.  Updating this list, also updates the scene build settings!")]
-        public List<string> SceneList;
+        [Tooltip("The button scene mapping to keep track of which scenes are enabled in the scene launcher.  This list of scenes is generated from the build window active scenes.")]
+        private SceneMapping[] sceneMapping;
 
         [SerializeField]
         [Tooltip("Location of the center of the grid of buttons in Unity space.")]
@@ -52,22 +60,26 @@ namespace HoloToolkit.Unity
                 sceneButtonSize = sceneButtonForSizeCollider.bounds.size;
             }
 
-            for (int sceneIndex = 0; sceneIndex < SceneList.Count; ++sceneIndex)
+            for (int sceneIndex = 0; sceneIndex < sceneMapping.Length; ++sceneIndex)
             {
-                CreateSceneButton(ButtonSpawnLocation, sceneIndex);
+                if (sceneMapping[sceneIndex].IsButtonEnabled)
+                {
+                    CreateSceneButton(ButtonSpawnLocation, sceneIndex);
+                }
             }
+
             Destroy(sceneButtonForSize.gameObject);
         }
 
         private void CreateSceneButton(GameObject buttonParent, int sceneIndex)
         {
-            string sceneName = SceneList[sceneIndex];
+            string sceneName = sceneMapping[sceneIndex].ScenePath;
             sceneName = sceneName.Substring(sceneName.LastIndexOf("/", StringComparison.Ordinal) + 1);
             sceneName = sceneName.Replace(".unity", "");
             Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
             Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
 
-            SceneLauncherButton sceneButton = Instantiate(SceneButtonPrefab, GetButtonPosition(sceneIndex, SceneList.Count), Quaternion.identity, buttonParent.transform);
+            SceneLauncherButton sceneButton = Instantiate(SceneButtonPrefab, GetButtonPosition(sceneIndex, sceneMapping.Length), Quaternion.identity, buttonParent.transform);
             sceneButton.SceneIndex = sceneIndex;
             sceneButton.SceneName = sceneName;
             sceneButton.MenuReference = ButtonSpawnLocation;

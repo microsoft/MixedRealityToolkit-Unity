@@ -276,8 +276,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d28210caf2b8340860c439c592e979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneList:
-  - Assets/HoloToolkit/Utilities/Scenes/SceneLauncher.unity
+  sceneMapping:
+  - ScenePath: Assets/HoloToolkit/Utilities/Scenes/SceneLauncher.unity
+    IsButtonEnabled: 1
   ButtonSpawnLocation: {fileID: 1899756416056624}
   SceneButtonPrefab: {fileID: 114712049552519426, guid: c943b5508bd87f347a6d36c5ca46424c,
     type: 2}

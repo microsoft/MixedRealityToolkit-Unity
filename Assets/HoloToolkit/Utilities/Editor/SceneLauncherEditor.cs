@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
@@ -8,98 +11,68 @@ namespace HoloToolkit.Unity
     [CustomEditor(typeof(SceneLauncher))]
     public class SceneLauncherEditor : Editor
     {
-        private GUIContent removeButtonContent = new GUIContent("Remove Scene");
-        private GUIContent addButtonContent = new GUIContent("Add Scene");
-        private GUILayoutOption miniButtonWidth = GUILayout.Width(120.0f);
-
-        private SceneLauncher sceneLauncher;
-        private SerializedProperty sceneListProperty;
+        private SerializedProperty sceneMappingProperty;
         private SerializedProperty buttonSpawnLocationProperty;
         private SerializedProperty buttonPrefabProperty;
         private SerializedProperty buttonRowMaxProperty;
 
         private void OnEnable()
         {
-            sceneLauncher = (SceneLauncher)target;
-            sceneListProperty = serializedObject.FindProperty("SceneList");
+            sceneMappingProperty = serializedObject.FindProperty("sceneMapping");
             buttonSpawnLocationProperty = serializedObject.FindProperty("ButtonSpawnLocation");
             buttonPrefabProperty = serializedObject.FindProperty("SceneButtonPrefab");
             buttonRowMaxProperty = serializedObject.FindProperty("MaxRows");
 
-            serializedObject.Update();
-            CheckBuildScenes(sceneListProperty);
-            serializedObject.ApplyModifiedProperties();
+            CheckBuildScenes(sceneMappingProperty);
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            ShowList(sceneListProperty);
             EditorGUILayout.PropertyField(buttonSpawnLocationProperty);
             EditorGUILayout.PropertyField(buttonPrefabProperty);
             EditorGUILayout.IntSlider(buttonRowMaxProperty, 1, 10);
+            CheckBuildScenes(sceneMappingProperty);
+            ShowSceneList(sceneMappingProperty);
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void ShowList(SerializedProperty list)
+        private void ShowSceneList(SerializedProperty sceneList)
         {
-            bool updateBuildScenes = false;
-
             // property name with expansion widget
-            EditorGUILayout.PropertyField(list);
+            EditorGUILayout.PropertyField(sceneList);
 
             if (EditorBuildSettings.scenes.Length == 0)
             {
-                list.ClearArray();
-                int index = list.arraySize;
-                list.InsertArrayElementAtIndex(index);
-                list.GetArrayElementAtIndex(index).stringValue = SceneManager.GetActiveScene().path;
-                updateBuildScenes = true;
+                sceneList.ClearArray();
+
+                int index = sceneList.arraySize;
+
+                sceneList.InsertArrayElementAtIndex(index);
+                sceneList.GetArrayElementAtIndex(index).FindPropertyRelative("ScenePath").stringValue = SceneManager.GetActiveScene().path;
+                sceneList.GetArrayElementAtIndex(index).FindPropertyRelative("IsButtonEnabled").boolValue = true;
+
+                EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(SceneManager.GetActiveScene().path, true) };
             }
 
-            if (list.isExpanded)
+            if (sceneList.isExpanded)
             {
                 EditorGUI.indentLevel++;
 
-                // add button row
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                // the add element button
-                if (GUILayout.Button(addButtonContent, EditorStyles.miniButton, miniButtonWidth))
-                {
-                    var index = list.arraySize;
-                    list.InsertArrayElementAtIndex(index);
-                    list.GetArrayElementAtIndex(index).stringValue = string.Empty;
-                }
-
-                EditorGUILayout.EndHorizontal();
-
                 // Scene rows
-                for (int index = 0; index < list.arraySize; index++)
+                for (int i = 0; i < sceneList.arraySize; i++)
                 {
-                    string path = list.GetArrayElementAtIndex(index).stringValue;
-                    var sceneAsset = AssetDatabase.LoadAssetAtPath(path, typeof(SceneAsset)) as SceneAsset;
-
                     EditorGUILayout.BeginHorizontal();
-                    GUI.enabled = index != sceneLauncher.SceneLauncherBuildIndex;
+                    // Disable the toggle if the scene is not enabled in the build settings.
+                    GUI.enabled = EditorBuildSettings.scenes[i].enabled;
 
-                    // the element
-                    var sceneObj = EditorGUILayout.ObjectField(sceneAsset, typeof(SceneAsset), false);
+                    EditorGUILayout.PropertyField(sceneList.GetArrayElementAtIndex(i).FindPropertyRelative("IsButtonEnabled"));
 
-                    if (GUI.changed)
-                    {
-                        path = sceneObj != null ? AssetDatabase.GetAssetPath(sceneObj) : string.Empty;
-                        updateBuildScenes = true;
-                    }
+                    GUI.enabled = false;
 
-                    list.GetArrayElementAtIndex(index).stringValue = path;
-
-                    // the remove element button
-                    if (GUILayout.Button(removeButtonContent, EditorStyles.miniButton, miniButtonWidth))
-                    {
-                        list.DeleteArrayElementAtIndex(index);
-                        updateBuildScenes = true;
-                    }
+                    string path = sceneList.GetArrayElementAtIndex(i).FindPropertyRelative("ScenePath").stringValue;
+                    var sceneAsset = AssetDatabase.LoadAssetAtPath(path, typeof(SceneAsset)) as SceneAsset;
+                    EditorGUILayout.ObjectField(sceneAsset, typeof(SceneAsset), false);
 
                     GUI.enabled = true;
                     EditorGUILayout.EndHorizontal();
@@ -108,46 +81,63 @@ namespace HoloToolkit.Unity
                 EditorGUI.indentLevel--;
             }
 
-            if (updateBuildScenes && list.arraySize > 0)
-            {
-                UpdateBuildSettings(list);
-            }
-
-            CheckBuildScenes(list);
         }
 
         private void CheckBuildScenes(SerializedProperty list)
         {
-            if (list.arraySize != EditorBuildSettings.scenes.Length)
+            if (EditorBuildSettings.scenes.Length == 0)
             {
+                return;
+            }
+
+            bool reBuildList = list.arraySize != EditorBuildSettings.scenes.Length;
+
+            if (!reBuildList)
+            {
+                // Check if the build settings list is the same as ours.
+                for (int i = 0; i < list.arraySize; i++)
+                {
+                    if (list.GetArrayElementAtIndex(i).FindPropertyRelative("ScenePath").stringValue != EditorBuildSettings.scenes[i].path)
+                    {
+                        reBuildList = true;
+                    }
+                }
+            }
+
+            if (reBuildList)
+            {
+                // if it's not then we need to store a copy of our mappings.
+                var oldBuildSceneMapping = new EditorBuildSettingsScene[list.arraySize];
+                for (int i = 0; i < list.arraySize; i++)
+                {
+                    oldBuildSceneMapping[i] = new EditorBuildSettingsScene
+                    {
+                        path = list.GetArrayElementAtIndex(i).FindPropertyRelative("ScenePath").stringValue,
+                        enabled = list.GetArrayElementAtIndex(i).FindPropertyRelative("IsButtonEnabled").boolValue
+                    };
+                }
+
+                // Then re assign the mapping to the right scene in the build settings window.
                 list.ClearArray();
-                for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)
+
+                for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
                 {
                     list.InsertArrayElementAtIndex(i);
-                    list.GetArrayElementAtIndex(i).stringValue = EditorBuildSettings.scenes[i].path;
+                    list.GetArrayElementAtIndex(i).FindPropertyRelative("ScenePath").stringValue = EditorBuildSettings.scenes[i].path;
+                    list.GetArrayElementAtIndex(i).FindPropertyRelative("IsButtonEnabled").boolValue = false;
+
+                    foreach (var newScene in EditorBuildSettings.scenes)
+                    {
+                        foreach (var oldScene in oldBuildSceneMapping)
+                        {
+                            if (oldScene.path == newScene.path)
+                            {
+                                list.GetArrayElementAtIndex(i).FindPropertyRelative("IsButtonEnabled").boolValue = oldScene.enabled;
+                            }
+                        }
+                    }
                 }
             }
-        }
-
-        private void UpdateBuildSettings(SerializedProperty list)
-        {
-            var sceneList = new List<string>();
-            for (int index = 0; index < list.arraySize; index++)
-            {
-                string path = list.GetArrayElementAtIndex(index).stringValue;
-                if (!string.IsNullOrEmpty(path))
-                {
-                    sceneList.Add(path);
-                }
-            }
-
-            var buildSceneList = new EditorBuildSettingsScene[sceneList.Count];
-            for (var i = 0; i < buildSceneList.Length; i++)
-            {
-                buildSceneList[i] = new EditorBuildSettingsScene(sceneList[i], true);
-            }
-
-            EditorBuildSettings.scenes = buildSceneList;
         }
     }
 }
