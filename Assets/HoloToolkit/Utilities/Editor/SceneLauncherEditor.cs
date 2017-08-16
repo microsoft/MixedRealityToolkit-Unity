@@ -48,8 +48,9 @@ namespace HoloToolkit.Unity
             // property name with expansion widget
             EditorGUILayout.PropertyField(list);
 
-            if (list.arraySize == 0)
+            if (EditorBuildSettings.scenes.Length == 0)
             {
+                list.ClearArray();
                 int index = list.arraySize;
                 list.InsertArrayElementAtIndex(index);
                 list.GetArrayElementAtIndex(index).stringValue = SceneManager.GetActiveScene().path;
@@ -109,8 +110,10 @@ namespace HoloToolkit.Unity
 
             if (updateBuildScenes && list.arraySize > 0)
             {
-                ListBuildScenes(list);
+                UpdateBuildSettings(list);
             }
+
+            CheckBuildScenes(list);
         }
 
         private void CheckBuildScenes(SerializedProperty list)
@@ -126,7 +129,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void ListBuildScenes(SerializedProperty list)
+        private void UpdateBuildSettings(SerializedProperty list)
         {
             var sceneList = new List<string>();
             for (int index = 0; index < list.arraySize; index++)
