@@ -29,6 +29,11 @@ namespace HoloToolkit.Unity
         public int SceneLauncherBuildIndex { get; private set; }
         private Vector3 sceneButtonSize = Vector3.one;
 
+        private void OnValidate()
+        {
+            Debug.Assert(SceneButtonPrefab != null, "SceneLauncher.SceneButtonPrefab is not set.");
+        }
+
         private void Start()
         {
             if (SceneButtonPrefab == null)
