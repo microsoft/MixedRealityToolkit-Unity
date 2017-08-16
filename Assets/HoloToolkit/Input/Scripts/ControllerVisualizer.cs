@@ -49,7 +49,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             controllerDictionary = new Dictionary<uint, ControllerInfo>();
 
-#if !UNITY_EDITOR && UNITY_WSA
+#if UNITY_WSA
+#if !UNITY_EDITOR
             // Since the SpatialInteractionManager exists in the current CoreWindow, this call needs to run on the UI thread.
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
@@ -59,13 +60,11 @@ namespace HoloToolkit.Unity.InputModule
                     spatialInteractionManager.SourceDetected += SpatialInteractionManager_SourceDetected;
                 }
             }, true);
-#elif UNITY_EDITOR
+#else
             // Since we're using non-Unity APIs, this will only run in a UWP app.
             Debug.Log("Running in the editor will only render the override models.");
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
 #endif
-
-#if UNITY_WSA
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
             InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
 #endif
@@ -176,6 +175,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 #endif
 
+#if UNITY_WSA
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             if (obj.state.source.kind == InteractionSourceKind.Controller)
@@ -280,6 +280,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             controllerDictionary.Add(id, newControllerInfo);
         }
+#endif
 
         public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
         {
