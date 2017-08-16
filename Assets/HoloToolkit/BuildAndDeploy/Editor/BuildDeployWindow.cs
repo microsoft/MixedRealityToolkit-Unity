@@ -285,7 +285,7 @@ namespace HoloToolkit.Unity
             string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
 
             int currentSDKVersionIndex = 0;
-            int defaultMSBuildVersionIndex = 0;
+            int defaultMSBuildVersionIndex = -1;
 
             for (var i = 0; i < windowsSdkPaths.Length; i++)
             {
