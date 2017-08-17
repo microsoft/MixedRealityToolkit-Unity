@@ -141,58 +141,6 @@ namespace HoloToolkit.Unity.InputModule
             interpolator.SetTargetRotation(Quaternion.Euler(0, cameraTransform.localEulerAngles.y, 0));
         }
 
-        /// <summary>
-        /// If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
-        /// </summary>
-        /// <returns></returns>
-        private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
-        {
-            RaycastHit hitInfo;
-            if (SpatialMappingRaycast(headPosition, gazeDirection, out hitInfo))
-            {
-                return hitInfo.point;
-            }
-            return GetGazePlacementPosition(headPosition, gazeDirection, defaultGazeDistance);
-        }
-
-        /// <summary>
-        /// Does a raycast on the spatial mapping layer to try to find a hit.
-        /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="direction"></param>
-        /// <param name="spatialMapHit"></param>
-        /// <returns>Wheter it found a hit or not</returns>
-        private static bool SpatialMappingRaycast(Vector3 origin, Vector3 direction, out RaycastHit spatialMapHit)
-        {
-            if (SpatialMappingManager.Instance != null)
-            {
-                RaycastHit hitInfo;
-                if (Physics.Raycast(origin, direction, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask))
-                {
-                    spatialMapHit = hitInfo;
-                    return true;
-                }
-            }
-            spatialMapHit = new RaycastHit();
-            return false;
-        }
-
-        /// <summary>
-        /// Get gaze position from the GazeManagers hit or just infront of the user
-        /// </summary>
-        /// <param name="headPosition"></param>
-        /// <param name="gazeDirection"></param>
-        /// <param name="defaultGazeDistance"></param>
-        /// <returns></returns>
-        private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
-        {
-            if (GazeManager.Instance.HitObject != null)
-            {
-                return GazeManager.Instance.HitPosition;
-            }
-            return headPosition + gazeDirection * defaultGazeDistance;
-        }
-
         public virtual void OnInputClicked(InputClickedEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
@@ -245,6 +193,58 @@ namespace HoloToolkit.Unity.InputModule
         private void ToggleSpatialMesh()
         {
             SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
+        }
+
+        /// <summary>
+        /// If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
+        /// </summary>
+        /// <returns></returns>
+        private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        {
+            RaycastHit hitInfo;
+            if (SpatialMappingRaycast(headPosition, gazeDirection, out hitInfo))
+            {
+                return hitInfo.point;
+            }
+            return GetGazePlacementPosition(headPosition, gazeDirection, defaultGazeDistance);
+        }
+
+        /// <summary>
+        /// Does a raycast on the spatial mapping layer to try to find a hit.
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="direction"></param>
+        /// <param name="spatialMapHit"></param>
+        /// <returns>Wheter it found a hit or not</returns>
+        private static bool SpatialMappingRaycast(Vector3 origin, Vector3 direction, out RaycastHit spatialMapHit)
+        {
+            if (SpatialMappingManager.Instance != null)
+            {
+                RaycastHit hitInfo;
+                if (Physics.Raycast(origin, direction, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask))
+                {
+                    spatialMapHit = hitInfo;
+                    return true;
+                }
+            }
+            spatialMapHit = new RaycastHit();
+            return false;
+        }
+
+        /// <summary>
+        /// Get gaze position from the GazeManagers hit or just infront of the user
+        /// </summary>
+        /// <param name="headPosition"></param>
+        /// <param name="gazeDirection"></param>
+        /// <param name="defaultGazeDistance"></param>
+        /// <returns></returns>
+        private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        {
+            if (GazeManager.Instance.HitObject != null)
+            {
+                return GazeManager.Instance.HitPosition;
+            }
+            return headPosition + gazeDirection * defaultGazeDistance;
         }
     }
 }
