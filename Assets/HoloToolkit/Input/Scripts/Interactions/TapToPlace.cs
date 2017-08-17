@@ -121,10 +121,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!IsBeingPlaced) { return; }
             Transform cameraTransform = CameraCache.Main.transform;
-            Vector3 headPosition = cameraTransform.position;
-            Vector3 gazeDirection = cameraTransform.forward;
 
-            Vector3 placementPosition = GetPlacementPosition(headPosition, gazeDirection, DefaultGazeDistance);
+            Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
 
             // Here is where you might consider adding intelligence
             // to how the object is placed.  For example, consider
