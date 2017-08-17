@@ -377,7 +377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultGazeDistance: 2
   SavedAnchorFriendlyName: 5361766564416e63686f72467269656e646c794e616d65
-  PlaceParentOnTap: 0
+  PlaceParentOnTap: 1
   ParentGameObjectToPlace: {fileID: 0}
   IsBeingPlaced: 0
   AllowMeshVisualizationControl: 1
