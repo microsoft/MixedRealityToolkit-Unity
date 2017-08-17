@@ -79,7 +79,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var root = Object.Instantiate(empty);
             var child = Object.Instantiate(empty, root.transform);
-            var grandChild = Object.Instantiate(empty, child.transform);
+            Object.Instantiate(empty, child.transform);
             var ignoreList = new List<Transform> { child.transform };
 
             foreach (var transform in root.transform.IterateHierarchy(ignoreList))
