@@ -213,15 +213,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StartPlacing()
         {
-            var target = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
-            target.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
+            var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            layerCacheTarget.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
             InputManager.Instance.PushModalInputHandler(gameObject);
 
-            // If the user is in placing mode, display the spatial mapping mesh.
-            if (AllowMeshVisualizationControl)
-            {
-                SpatialMappingManager.Instance.DrawVisualMeshes = true;
-            }
+            ToggleSpatialMesh();
 #if UNITY_WSA && !UNITY_EDITOR
 
             //Removes existing world anchor if any exist.
@@ -231,20 +227,24 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StopPlacing()
         {
-            var target = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
-            target.ApplyLayerCacheRecursively(layerCache);
+            var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            layerCacheTarget.ApplyLayerCacheRecursively(layerCache);
             InputManager.Instance.PopModalInputHandler();
 
-            // If the user is not in placing mode, hide the spatial mapping mesh.
-            if (AllowMeshVisualizationControl)
-            {
-                SpatialMappingManager.Instance.DrawVisualMeshes = false;
-            }
+            ToggleSpatialMesh();
 #if UNITY_WSA && !UNITY_EDITOR
 
             // Add world anchor when object placement is done.
             WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
 #endif
+        }
+
+        /// <summary>
+        /// If the user is in placing mode, display the spatial mapping mesh.
+        /// </summary>
+        private void ToggleSpatialMesh()
+        {
+            SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
         }
     }
 }
