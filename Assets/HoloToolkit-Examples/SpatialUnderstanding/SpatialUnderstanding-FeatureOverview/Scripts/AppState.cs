@@ -202,7 +202,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void Start()
         {
             // Default the scene & the HoloToolkit objects to the camera
-            Vector3 sceneOrigin = Camera.main.transform.position;
+            Vector3 sceneOrigin = CameraCache.Main.transform.position;
             Parent_Scene.transform.position = sceneOrigin;
             MappingObserver.SetObserverOrigin(sceneOrigin);
             InputManager.Instance.AddGlobalListener(gameObject);

@@ -22,12 +22,12 @@ namespace HoloToolkit.Unity.Tests
         {
             PlaneTargetGroup newGroup = null;
             float smallestAngle = float.PositiveInfinity;
-
+            Transform cameraTransform = CameraCache.Main.transform;
             // Figure out which group we're looking at
             foreach (PlaneTargetGroup group in Groups)
             {
-                Vector3 camToGroup = group.transform.position - Camera.main.transform.position;
-                float gazeObjectAngle = Vector3.Angle(camToGroup, Camera.main.transform.forward);
+                Vector3 camToGroup = group.transform.position - cameraTransform.position;
+                float gazeObjectAngle = Vector3.Angle(camToGroup, cameraTransform.forward);
                 if (group.Targets.Length > 0 && gazeObjectAngle < AngleOfAcceptance && gazeObjectAngle < smallestAngle)
                 {
                     smallestAngle = gazeObjectAngle;

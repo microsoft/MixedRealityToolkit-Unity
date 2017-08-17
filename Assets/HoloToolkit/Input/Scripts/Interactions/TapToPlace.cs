@@ -120,9 +120,9 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void Update()
         {
             if (!IsBeingPlaced) { return; }
-
-            Vector3 headPosition = Camera.main.transform.position;
-            Vector3 gazeDirection = Camera.main.transform.forward;
+            Transform cameraTransform = CameraCache.Main.transform;
+            Vector3 headPosition = cameraTransform.position;
+            Vector3 gazeDirection = cameraTransform.forward;
 
             Vector3 placementPosition = GetPlacementPosition(headPosition, gazeDirection, DefaultGazeDistance);
 
@@ -140,7 +140,7 @@ namespace HoloToolkit.Unity.InputModule
             interpolator.SetTargetPosition(placementPosition);
 
             // Rotate this object to face the user.
-            interpolator.SetTargetRotation(Quaternion.Euler(0, Camera.main.transform.localEulerAngles.y, 0));
+            interpolator.SetTargetRotation(Quaternion.Euler(0, cameraTransform.localEulerAngles.y, 0));
         }
 
         /// <summary>

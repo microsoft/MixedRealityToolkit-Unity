@@ -15,19 +15,19 @@ namespace HoloToolkit.Unity
     public partial class UAudioManagerBase<TEvent> : MonoBehaviour where TEvent : AudioEvent, new()
     {
         [SerializeField]
-        protected TEvent[] events = null;
+        protected TEvent[] Events = null;
 
         protected const float InfiniteLoop = -1;
-        protected List<ActiveEvent> activeEvents;
+        protected List<ActiveEvent> ActiveEvents;
 
 #if UNITY_EDITOR
-        public TEvent[] EditorEvents { get { return events; } set { events = value; } }
-        public List<ActiveEvent> ProfilerEvents { get { return activeEvents; } }
+        public TEvent[] EditorEvents { get { return Events; } set { Events = value; } }
+        public List<ActiveEvent> ProfilerEvents { get { return ActiveEvents; } }
 #endif
 
         protected void Awake()
         {
-            activeEvents = new List<ActiveEvent>();
+            ActiveEvents = new List<ActiveEvent>();
         }
 
         private void Update()
@@ -45,9 +45,9 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopAllEvents()
         {
-            for (int i = activeEvents.Count - 1; i >= 0; i--)
+            for (int i = ActiveEvents.Count - 1; i >= 0; i--)
             {
-                StopEvent(activeEvents[i]);
+                StopEvent(ActiveEvents[i]);
             }
         }
 
@@ -57,9 +57,9 @@ namespace HoloToolkit.Unity
         /// <param name="fadeTime">The amount of time, in seconds, to fade between current volume and 0.</param>
         public void StopAllEvents(float fadeTime)
         {
-            for (int i = activeEvents.Count - 1; i >= 0; i--)
+            for (int i = ActiveEvents.Count - 1; i >= 0; i--)
             {
-                StartCoroutine(StopEventWithFadeCoroutine(activeEvents[i], fadeTime));
+                StartCoroutine(StopEventWithFadeCoroutine(ActiveEvents[i], fadeTime));
             }
         }
 
@@ -68,11 +68,11 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopAllEvents(GameObject emitter)
         {
-            for (int i = activeEvents.Count - 1; i >= 0; i--)
+            for (int i = ActiveEvents.Count - 1; i >= 0; i--)
             {
-                if (activeEvents[i].AudioEmitter == emitter)
+                if (ActiveEvents[i].AudioEmitter == emitter)
                 {
-                    StopEvent(activeEvents[i]);
+                    StopEvent(ActiveEvents[i]);
                 }
             }
         }
@@ -82,11 +82,11 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopAllEvents(AudioSource emitter)
         {
-            for (int i = activeEvents.Count - 1; i >= 0; i--)
+            for (int i = ActiveEvents.Count - 1; i >= 0; i--)
             {
-                if (activeEvents[i].PrimarySource == emitter)
+                if (ActiveEvents[i].PrimarySource == emitter)
                 {
-                    StopEvent(activeEvents[i]);
+                    StopEvent(ActiveEvents[i]);
                 }
             }
         }
@@ -97,40 +97,40 @@ namespace HoloToolkit.Unity
         private void UpdateEmitterVolumes()
         {
             // Move through each active event and change the settings for the AudioSource components to smoothly fade volumes.
-            for (int i = 0; i < activeEvents.Count; i++)
+            for (int i = 0; i < ActiveEvents.Count; i++)
             {
-                ActiveEvent currentEvent = this.activeEvents[i];
+                ActiveEvent currentEvent = this.ActiveEvents[i];
 
                 // If we have a secondary source (for crossfades) adjust the volume based on the current fade time for each active event.
-                if (currentEvent.SecondarySource != null && currentEvent.SecondarySource.volume != currentEvent.altVolDest)
+                if (currentEvent.SecondarySource != null && currentEvent.SecondarySource.volume != currentEvent.AltVolDest)
                 {
-                    if (Mathf.Abs(currentEvent.altVolDest - currentEvent.SecondarySource.volume) < Time.deltaTime / currentEvent.currentFade)
+                    if (Mathf.Abs(currentEvent.AltVolDest - currentEvent.SecondarySource.volume) < Time.deltaTime / currentEvent.CurrentFade)
                     {
-                        currentEvent.SecondarySource.volume = currentEvent.altVolDest;
+                        currentEvent.SecondarySource.volume = currentEvent.AltVolDest;
                     }
                     else
                     {
-                        currentEvent.SecondarySource.volume += (currentEvent.altVolDest - currentEvent.SecondarySource.volume) * Time.deltaTime / currentEvent.currentFade;
+                        currentEvent.SecondarySource.volume += (currentEvent.AltVolDest - currentEvent.SecondarySource.volume) * Time.deltaTime / currentEvent.CurrentFade;
                     }
                 }
 
                 // Adjust the volume of the main source based on the current fade time for each active event.
-                if (currentEvent.PrimarySource != null && currentEvent.PrimarySource.volume != currentEvent.volDest)
+                if (currentEvent.PrimarySource != null && currentEvent.PrimarySource.volume != currentEvent.VolDest)
                 {
-                    if (Mathf.Abs(currentEvent.volDest - currentEvent.PrimarySource.volume) < Time.deltaTime / currentEvent.currentFade)
+                    if (Mathf.Abs(currentEvent.VolDest - currentEvent.PrimarySource.volume) < Time.deltaTime / currentEvent.CurrentFade)
                     {
-                        currentEvent.PrimarySource.volume = currentEvent.volDest;
+                        currentEvent.PrimarySource.volume = currentEvent.VolDest;
                     }
                     else
                     {
-                        currentEvent.PrimarySource.volume += (currentEvent.volDest - currentEvent.PrimarySource.volume) * Time.deltaTime / currentEvent.currentFade;
+                        currentEvent.PrimarySource.volume += (currentEvent.VolDest - currentEvent.PrimarySource.volume) * Time.deltaTime / currentEvent.CurrentFade;
                     }
                 }
 
                 // If there is no time left in the fade, make sure we are set to the destination volume.
-                if (currentEvent.currentFade > 0)
+                if (currentEvent.CurrentFade > 0)
                 {
-                    currentEvent.currentFade -= Time.deltaTime;
+                    currentEvent.CurrentFade -= Time.deltaTime;
                 }
             }
         }
@@ -141,16 +141,16 @@ namespace HoloToolkit.Unity
         /// <param name="activeEvent">The event to play.</param>
         protected void PlayContainer(ActiveEvent activeEvent)
         {
-            if (activeEvent.audioEvent.Container.sounds.Length == 0)
+            if (activeEvent.AudioEvent.Container.Sounds.Length == 0)
             {
-                Debug.LogErrorFormat(this, "Trying to play container \"{0}\" with no clips.", activeEvent.audioEvent.Container);
+                Debug.LogErrorFormat(this, "Trying to play container \"{0}\" with no clips.", activeEvent.AudioEvent.Container);
 
                 // Clean up the ActiveEvent before we discard it, so it will release its AudioSource(s).
                 activeEvent.Dispose();
                 return;
             }
 
-            switch (activeEvent.audioEvent.Container.containerType)
+            switch (activeEvent.AudioEvent.Container.ContainerType)
             {
                 case AudioContainerType.Random:
                     StartOneOffEvent(activeEvent);
@@ -165,15 +165,15 @@ namespace HoloToolkit.Unity
                     break;
 
                 case AudioContainerType.ContinuousSequence:
-                    PlayContinuousSequenceContainer(activeEvent.audioEvent.Container, activeEvent.PrimarySource, activeEvent);
+                    PlayContinuousSequenceContainer(activeEvent.AudioEvent.Container, activeEvent.PrimarySource, activeEvent);
                     break;
 
                 case AudioContainerType.ContinuousRandom:
-                    PlayContinuousRandomContainer(activeEvent.audioEvent.Container, activeEvent.PrimarySource, activeEvent);
+                    PlayContinuousRandomContainer(activeEvent.AudioEvent.Container, activeEvent.PrimarySource, activeEvent);
                     break;
 
                 default:
-                    Debug.LogErrorFormat(this, "Trying to play container \"{0}\" with an unknown AudioContainerType \"{1}\".", activeEvent.audioEvent.Container, activeEvent.audioEvent.Container.containerType);
+                    Debug.LogErrorFormat(this, "Trying to play container \"{0}\" with an unknown AudioContainerType \"{1}\".", activeEvent.AudioEvent.Container, activeEvent.AudioEvent.Container.ContainerType);
 
                     // Clean up the ActiveEvent before we discard it, so it will release its AudioSource(s).
                     activeEvent.Dispose();
@@ -186,10 +186,10 @@ namespace HoloToolkit.Unity
         /// </summary>
         private void StartOneOffEvent(ActiveEvent activeEvent)
         {
-            if (activeEvent.audioEvent.Container.looping)
+            if (activeEvent.AudioEvent.Container.Looping)
             {
                 StartCoroutine(PlayLoopingOneOffContainerCoroutine(activeEvent));
-                activeEvent.activeTime = InfiniteLoop;
+                activeEvent.ActiveTime = InfiniteLoop;
             }
             else
             {
@@ -204,18 +204,18 @@ namespace HoloToolkit.Unity
         /// </summary>
         private float PlayOneOffContainer(ActiveEvent activeEvent)
         {
-            AudioContainer currentContainer = activeEvent.audioEvent.Container;
+            AudioContainer currentContainer = activeEvent.AudioEvent.Container;
 
-            // Fading or looping overrides immediate volume settings.
-            if (activeEvent.audioEvent.FadeInTime == 0 && !activeEvent.audioEvent.Container.looping)
+            // Fading or Looping overrides immediate volume settings.
+            if (activeEvent.AudioEvent.FadeInTime == 0 && !activeEvent.AudioEvent.Container.Looping)
             {
-                activeEvent.volDest = activeEvent.PrimarySource.volume;
+                activeEvent.VolDest = activeEvent.PrimarySource.volume;
             }
 
             // Simultaneous sounds.
             float clipTime = 0;
 
-            if (currentContainer.containerType == AudioContainerType.Simultaneous)
+            if (currentContainer.ContainerType == AudioContainerType.Simultaneous)
             {
                 clipTime = PlaySimultaneousClips(currentContainer, activeEvent);
             }
@@ -225,7 +225,7 @@ namespace HoloToolkit.Unity
                 clipTime = PlaySingleClip(currentContainer, activeEvent);
             }
 
-            activeEvent.activeTime = clipTime;
+            activeEvent.ActiveTime = clipTime;
             return clipTime;
         }
 
@@ -237,18 +237,18 @@ namespace HoloToolkit.Unity
             float tempDelay = 0;
             float finalActiveTime = 0f;
 
-            if (currentContainer.looping)
+            if (currentContainer.Looping)
             {
                 finalActiveTime = InfiniteLoop;
             }
 
-            for (int i = 0; i < currentContainer.sounds.Length; i++)
+            for (int i = 0; i < currentContainer.Sounds.Length; i++)
             {
-                tempDelay = PlayClipAndGetTime(currentContainer.sounds[i], activeEvent.PrimarySource, activeEvent);
+                tempDelay = PlayClipAndGetTime(currentContainer.Sounds[i], activeEvent.PrimarySource, activeEvent);
 
                 if (finalActiveTime != InfiniteLoop)
                 {
-                    float estimatedActiveTimeNeeded = GetActiveTimeEstimate(currentContainer.sounds[i], activeEvent, tempDelay);
+                    float estimatedActiveTimeNeeded = GetActiveTimeEstimate(currentContainer.Sounds[i], activeEvent, tempDelay);
 
                     if (estimatedActiveTimeNeeded == InfiniteLoop || estimatedActiveTimeNeeded > finalActiveTime)
                     {
@@ -269,26 +269,26 @@ namespace HoloToolkit.Unity
         private float PlaySingleClip(AudioContainer currentContainer, ActiveEvent activeEvent)
         {
             float tempDelay = 0;
-            if (currentContainer.containerType == AudioContainerType.Random)
+            if (currentContainer.ContainerType == AudioContainerType.Random)
             {
-                currentContainer.currentClip = Random.Range(0, currentContainer.sounds.Length);
+                currentContainer.CurrentClip = Random.Range(0, currentContainer.Sounds.Length);
             }
-            UAudioClip currentClip = currentContainer.sounds[currentContainer.currentClip];
+            UAudioClip currentClip = currentContainer.Sounds[currentContainer.CurrentClip];
 
             // Trigger sound and save the delay (in seconds) to add to the total amount of time the event will be considered active.
             tempDelay = PlayClipAndGetTime(currentClip, activeEvent.PrimarySource, activeEvent);
 
             // Ready the next clip in the series if sequence container.
-            if (currentContainer.containerType == AudioContainerType.Sequence)
+            if (currentContainer.ContainerType == AudioContainerType.Sequence)
             {
-                currentContainer.currentClip++;
-                if (currentContainer.currentClip >= currentContainer.sounds.Length)
+                currentContainer.CurrentClip++;
+                if (currentContainer.CurrentClip >= currentContainer.Sounds.Length)
                 {
-                    currentContainer.currentClip = 0;
+                    currentContainer.CurrentClip = 0;
                 }
             }
 
-            // Return active time based on looping or clip time.
+            // Return active time based on Looping or clip time.
             return GetActiveTimeEstimate(currentClip, activeEvent, tempDelay);
         }
 
@@ -297,12 +297,12 @@ namespace HoloToolkit.Unity
         /// </summary>
         private IEnumerator PlayLoopingOneOffContainerCoroutine(ActiveEvent activeEvent)
         {
-            while (!activeEvent.cancelEvent)
+            while (!activeEvent.CancelEvent)
             {
                 float tempLoopTime = PlayOneOffContainer(activeEvent);
-                float eventLoopTime = activeEvent.audioEvent.Container.loopTime;
+                float eventLoopTime = activeEvent.AudioEvent.Container.LoopTime;
 
-                // Protect against containers looping every frame by defaulting to the length of the audio clip.
+                // Protect against containers Looping every frame by defaulting to the length of the audio clip.
                 if (eventLoopTime != 0)
                 {
                     tempLoopTime = eventLoopTime;
@@ -313,37 +313,37 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Choose a random sound from a container and play, calling the looping coroutine to constantly choose new audio clips when current clip ends.
+        /// Choose a random sound from a container and play, calling the Looping coroutine to constantly choose new audio clips when current clip ends.
         /// </summary>
         /// <param name="audioContainer">The audio container.</param>
         /// <param name="emitter">The emitter to use.</param>
         /// <param name="activeEvent">The persistent reference to the event as long as it is playing.</param>
         private void PlayContinuousRandomContainer(AudioContainer audioContainer, AudioSource emitter, ActiveEvent activeEvent)
         {
-            audioContainer.currentClip = Random.Range(0, audioContainer.sounds.Length);
-            UAudioClip tempClip = audioContainer.sounds[audioContainer.currentClip];
+            audioContainer.CurrentClip = Random.Range(0, audioContainer.Sounds.Length);
+            UAudioClip tempClip = audioContainer.Sounds[audioContainer.CurrentClip];
 
             activeEvent.PrimarySource.volume = 0f;
-            activeEvent.volDest = activeEvent.audioEvent.VolumeCenter;
-            activeEvent.altVolDest = 0f;
-            activeEvent.currentFade = audioContainer.crossfadeTime;
+            activeEvent.VolDest = activeEvent.AudioEvent.VolumeCenter;
+            activeEvent.AltVolDest = 0f;
+            activeEvent.CurrentFade = audioContainer.CrossfadeTime;
 
-            float waitTime = (tempClip.sound.length / emitter.pitch) - activeEvent.audioEvent.Container.crossfadeTime;
+            float waitTime = (tempClip.Sound.length / emitter.pitch) - activeEvent.AudioEvent.Container.CrossfadeTime;
 
             // Ignore clip delay since container is continuous.
             PlayClipAndGetTime(tempClip, emitter, activeEvent);
-            activeEvent.activeTime = InfiniteLoop;
+            activeEvent.ActiveTime = InfiniteLoop;
             StartCoroutine(RecordEventInstanceCoroutine(activeEvent));
-            audioContainer.currentClip++;
-            if (audioContainer.currentClip >= audioContainer.sounds.Length)
+            audioContainer.CurrentClip++;
+            if (audioContainer.CurrentClip >= audioContainer.Sounds.Length)
             {
-                audioContainer.currentClip = 0;
+                audioContainer.CurrentClip = 0;
             }
             StartCoroutine(ContinueRandomContainerCoroutine(audioContainer, activeEvent, waitTime));
         }
 
         /// <summary>
-        /// Coroutine for "continuous" random containers that alternates between two sources to crossfade clips for continuous playlist looping.
+        /// Coroutine for "continuous" random containers that alternates between two sources to crossfade clips for continuous playlist Looping.
         /// </summary>
         /// <param name="audioContainer">The audio container.</param>
         /// <param name="activeEvent">The persistent reference to the event as long as it is playing.</param>
@@ -351,35 +351,35 @@ namespace HoloToolkit.Unity
         /// <returns>The coroutine.</returns>
         private IEnumerator ContinueRandomContainerCoroutine(AudioContainer audioContainer, ActiveEvent activeEvent, float waitTime)
         {
-            while (!activeEvent.cancelEvent)
+            while (!activeEvent.CancelEvent)
             {
                 yield return new WaitForSeconds(waitTime);
 
-                audioContainer.currentClip = Random.Range(0, audioContainer.sounds.Length);
-                UAudioClip tempClip = audioContainer.sounds[audioContainer.currentClip];
+                audioContainer.CurrentClip = Random.Range(0, audioContainer.Sounds.Length);
+                UAudioClip tempClip = audioContainer.Sounds[audioContainer.CurrentClip];
 
                 // Play on primary source.
-                if (activeEvent.playingAlt)
+                if (activeEvent.PlayingAlt)
                 {
                     activeEvent.PrimarySource.volume = 0f;
-                    activeEvent.volDest = activeEvent.audioEvent.VolumeCenter;
-                    activeEvent.altVolDest = 0f;
-                    activeEvent.currentFade = audioContainer.crossfadeTime;
-                    waitTime = (tempClip.sound.length / activeEvent.PrimarySource.pitch) - audioContainer.crossfadeTime;
+                    activeEvent.VolDest = activeEvent.AudioEvent.VolumeCenter;
+                    activeEvent.AltVolDest = 0f;
+                    activeEvent.CurrentFade = audioContainer.CrossfadeTime;
+                    waitTime = (tempClip.Sound.length / activeEvent.PrimarySource.pitch) - audioContainer.CrossfadeTime;
                     PlayClipAndGetTime(tempClip, activeEvent.PrimarySource, activeEvent);
                 }
                 // Play on secondary source.
                 else
                 {
                     activeEvent.SecondarySource.volume = 0f;
-                    activeEvent.altVolDest = activeEvent.audioEvent.VolumeCenter;
-                    activeEvent.volDest = 0f;
-                    activeEvent.currentFade = audioContainer.crossfadeTime;
-                    waitTime = (tempClip.sound.length / activeEvent.SecondarySource.pitch) - audioContainer.crossfadeTime;
+                    activeEvent.AltVolDest = activeEvent.AudioEvent.VolumeCenter;
+                    activeEvent.VolDest = 0f;
+                    activeEvent.CurrentFade = audioContainer.CrossfadeTime;
+                    waitTime = (tempClip.Sound.length / activeEvent.SecondarySource.pitch) - audioContainer.CrossfadeTime;
                     PlayClipAndGetTime(tempClip, activeEvent.SecondarySource, activeEvent);
                 }
 
-                activeEvent.playingAlt = !activeEvent.playingAlt;
+                activeEvent.PlayingAlt = !activeEvent.PlayingAlt;
             }
         }
 
@@ -391,31 +391,31 @@ namespace HoloToolkit.Unity
         /// <param name="activeEvent">The persistent reference to the event as long as it is playing.</param>
         private void PlayContinuousSequenceContainer(AudioContainer audioContainer, AudioSource emitter, ActiveEvent activeEvent)
         {
-            UAudioClip tempClip = audioContainer.sounds[audioContainer.currentClip];
+            UAudioClip tempClip = audioContainer.Sounds[audioContainer.CurrentClip];
 
             activeEvent.PrimarySource.volume = 0f;
-            activeEvent.volDest = activeEvent.audioEvent.VolumeCenter;
-            activeEvent.altVolDest = 0f;
-            activeEvent.currentFade = audioContainer.crossfadeTime;
+            activeEvent.VolDest = activeEvent.AudioEvent.VolumeCenter;
+            activeEvent.AltVolDest = 0f;
+            activeEvent.CurrentFade = audioContainer.CrossfadeTime;
 
-            float waitTime = (tempClip.sound.length / emitter.pitch) - activeEvent.audioEvent.Container.crossfadeTime;
+            float waitTime = (tempClip.Sound.length / emitter.pitch) - activeEvent.AudioEvent.Container.CrossfadeTime;
 
             // Ignore clip delay since the container is continuous.
             PlayClipAndGetTime(tempClip, emitter, activeEvent);
-            activeEvent.activeTime = InfiniteLoop;
+            activeEvent.ActiveTime = InfiniteLoop;
             StartCoroutine(RecordEventInstanceCoroutine(activeEvent));
-            audioContainer.currentClip++;
+            audioContainer.CurrentClip++;
 
-            if (audioContainer.currentClip >= audioContainer.sounds.Length)
+            if (audioContainer.CurrentClip >= audioContainer.Sounds.Length)
             {
-                audioContainer.currentClip = 0;
+                audioContainer.CurrentClip = 0;
             }
 
             StartCoroutine(ContinueSequenceContainerCoroutine(audioContainer, activeEvent, waitTime));
         }
 
         /// <summary>
-        /// Coroutine for "continuous" sequence containers that alternates between two sources to crossfade clips for continuous playlist looping.
+        /// Coroutine for "continuous" sequence containers that alternates between two sources to crossfade clips for continuous playlist Looping.
         /// </summary>
         /// <param name="audioContainer">The audio container.</param>
         /// <param name="activeEvent">The persistent reference to the event as long as it is playing.</param>
@@ -423,64 +423,64 @@ namespace HoloToolkit.Unity
         /// <returns>The coroutine.</returns>
         private IEnumerator ContinueSequenceContainerCoroutine(AudioContainer audioContainer, ActiveEvent activeEvent, float waitTime)
         {
-            while (!activeEvent.cancelEvent)
+            while (!activeEvent.CancelEvent)
             {
                 yield return new WaitForSeconds(waitTime);
-                UAudioClip tempClip = audioContainer.sounds[audioContainer.currentClip];
-                if (tempClip.sound == null)
+                UAudioClip tempClip = audioContainer.Sounds[audioContainer.CurrentClip];
+                if (tempClip.Sound == null)
                 {
-                    Debug.LogErrorFormat(this, "Sound clip in event \"{0}\" is null!", activeEvent.audioEvent.Name);
+                    Debug.LogErrorFormat(this, "Sound clip in event \"{0}\" is null!", activeEvent.AudioEvent.Name);
                     waitTime = 0;
                 }
                 else
                 {
                     // Play on primary source.
-                    if (activeEvent.playingAlt)
+                    if (activeEvent.PlayingAlt)
                     {
                         activeEvent.PrimarySource.volume = 0f;
-                        activeEvent.volDest = activeEvent.audioEvent.VolumeCenter;
-                        activeEvent.altVolDest = 0f;
-                        activeEvent.currentFade = audioContainer.crossfadeTime;
-                        waitTime = (tempClip.sound.length / activeEvent.PrimarySource.pitch) - audioContainer.crossfadeTime;
+                        activeEvent.VolDest = activeEvent.AudioEvent.VolumeCenter;
+                        activeEvent.AltVolDest = 0f;
+                        activeEvent.CurrentFade = audioContainer.CrossfadeTime;
+                        waitTime = (tempClip.Sound.length / activeEvent.PrimarySource.pitch) - audioContainer.CrossfadeTime;
                         PlayClipAndGetTime(tempClip, activeEvent.PrimarySource, activeEvent);
                     }
                     // Play on secondary source.
                     else
                     {
                         activeEvent.SecondarySource.volume = 0f;
-                        activeEvent.altVolDest = activeEvent.audioEvent.VolumeCenter;
-                        activeEvent.volDest = 0f;
-                        activeEvent.currentFade = audioContainer.crossfadeTime;
-                        waitTime = (tempClip.sound.length / activeEvent.SecondarySource.pitch) - audioContainer.crossfadeTime;
+                        activeEvent.AltVolDest = activeEvent.AudioEvent.VolumeCenter;
+                        activeEvent.VolDest = 0f;
+                        activeEvent.CurrentFade = audioContainer.CrossfadeTime;
+                        waitTime = (tempClip.Sound.length / activeEvent.SecondarySource.pitch) - audioContainer.CrossfadeTime;
                         PlayClipAndGetTime(tempClip, activeEvent.SecondarySource, activeEvent);
                     }
                 }
 
-                audioContainer.currentClip++;
+                audioContainer.CurrentClip++;
 
-                if (audioContainer.currentClip >= audioContainer.sounds.Length)
+                if (audioContainer.CurrentClip >= audioContainer.Sounds.Length)
                 {
-                    audioContainer.currentClip = 0;
+                    audioContainer.CurrentClip = 0;
                 }
 
-                activeEvent.playingAlt = !activeEvent.playingAlt;
+                activeEvent.PlayingAlt = !activeEvent.PlayingAlt;
             }
         }
 
         /// <summary>
-        /// Play a single clip on an AudioSource; if looping forever, return InfiniteLoop for the event time.
+        /// Play a single clip on an AudioSource; if Looping forever, return InfiniteLoop for the event time.
         /// </summary>
         /// <param name="audioClip">The audio clip to play.</param>
         /// <param name="emitter">The emitter to use.</param>
         /// <param name="activeEvent">The persistent reference to the event as long as it is playing.</param>
-        /// <returns>The amount of delay, if any, we are waiting before playing the clip. A looping clip will always return InfiniteLoop.</returns>
+        /// <returns>The amount of delay, if any, we are waiting before playing the clip. A Looping clip will always return InfiniteLoop.</returns>
         private float PlayClipAndGetTime(UAudioClip audioClip, AudioSource emitter, ActiveEvent activeEvent)
         {
-            if (audioClip.delayCenter == 0)
+            if (audioClip.DelayCenter == 0)
             {
-                emitter.PlayClip(audioClip.sound, audioClip.looping);
+                emitter.PlayClip(audioClip.Sound, audioClip.Looping);
 
-                if (audioClip.looping)
+                if (audioClip.Looping)
                 {
                     return InfiniteLoop;
                 }
@@ -489,11 +489,11 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                float rndDelay = Random.Range(audioClip.delayCenter - audioClip.delayRandomization, audioClip.delayCenter + audioClip.delayRandomization);
+                float rndDelay = Random.Range(audioClip.DelayCenter - audioClip.DelayRandomization, audioClip.DelayCenter + audioClip.DelayRandomization);
 
                 StartCoroutine(PlayClipDelayedCoroutine(audioClip, emitter, rndDelay, activeEvent));
 
-                if (audioClip.looping)
+                if (audioClip.Looping)
                 {
                     return InfiniteLoop;
                 }
@@ -514,9 +514,9 @@ namespace HoloToolkit.Unity
         {
             yield return new WaitForSeconds(delay);
 
-            if (this.activeEvents.Contains(activeEvent))
+            if (this.ActiveEvents.Contains(activeEvent))
             {
-                emitter.PlayClip(audioClip.sound, audioClip.looping);
+                emitter.PlayClip(audioClip.Sound, audioClip.Looping);
             }
         }
 
@@ -536,7 +536,7 @@ namespace HoloToolkit.Unity
                 activeEvent.SecondarySource.Stop();
             }
 
-            activeEvent.cancelEvent = true;
+            activeEvent.CancelEvent = true;
             RemoveEventInstance(activeEvent);
         }
 
@@ -548,12 +548,12 @@ namespace HoloToolkit.Unity
         /// <returns>The coroutine.</returns>
         protected IEnumerator StopEventWithFadeCoroutine(ActiveEvent activeEvent, float fadeTime)
         {
-            if (activeEvent.isStoppable)
+            if (activeEvent.IsStoppable)
             {
-                activeEvent.isStoppable = false;
-                activeEvent.volDest = 0f;
-                activeEvent.altVolDest = 0f;
-                activeEvent.currentFade = fadeTime;
+                activeEvent.IsStoppable = false;
+                activeEvent.VolDest = 0f;
+                activeEvent.AltVolDest = 0f;
+                activeEvent.CurrentFade = fadeTime;
 
                 yield return new WaitForSeconds(fadeTime);
 
@@ -567,13 +567,13 @@ namespace HoloToolkit.Unity
                     activeEvent.SecondarySource.Stop();
                 }
 
-                activeEvent.cancelEvent = true;
+                activeEvent.CancelEvent = true;
                 RemoveEventInstance(activeEvent);
             }
         }
 
         /// <summary>
-        /// Keep an event in the "activeEvents" list for the amount of time we think it will be playing, plus the instance buffer.
+        /// Keep an event in the "ActiveEvents" list for the amount of time we think it will be playing, plus the instance buffer.
         /// This is mostly done for instance limiting purposes.
         /// </summary>
         /// <param name="activeEvent">The persistent reference to the event as long as it is playing.</param>
@@ -582,17 +582,17 @@ namespace HoloToolkit.Unity
         {
             // Unity has no callback for an audioclip ending, so we have to estimate it ahead of time.
             // Changing the pitch during playback will alter actual playback time.
-            activeEvents.Add(activeEvent);
+            ActiveEvents.Add(activeEvent);
 
-            // Only return active time if sound is not looping/continuous.
-            if (activeEvent.activeTime > 0)
+            // Only return active time if sound is not Looping/continuous.
+            if (activeEvent.ActiveTime > 0)
             {
-                yield return new WaitForSeconds(activeEvent.activeTime);
+                yield return new WaitForSeconds(activeEvent.ActiveTime);
 
                 // Mark this event so it no longer counts against the instance limit.
-                activeEvent.isActiveTimeComplete = true;
+                activeEvent.IsActiveTimeComplete = true;
 
-                // Since the activeTime estimate may not be enough time to complete the clip (due to pitch changes during playback, or a negative instanceBuffer value, for example)
+                // Since the ActiveTime estimate may not be enough time to complete the clip (due to pitch changes during playback, or a negative instanceBuffer value, for example)
                 // wait here until it is finished, so that we don't cut off the end.
                 if (activeEvent.IsPlaying)
                 {
@@ -605,7 +605,7 @@ namespace HoloToolkit.Unity
                 yield return null;
             }
 
-            if (activeEvent.activeTime != InfiniteLoop)
+            if (activeEvent.ActiveTime != InfiniteLoop)
             {
                 RemoveEventInstance(activeEvent);
             }
@@ -617,7 +617,7 @@ namespace HoloToolkit.Unity
         /// <param name="activeEvent">The persistent reference to the event as long as it is playing.</param>
         private void RemoveEventInstance(ActiveEvent activeEvent)
         {
-            activeEvents.Remove(activeEvent);
+            ActiveEvents.Remove(activeEvent);
 
             // Send message notifying user that sound is complete
             if (!string.IsNullOrEmpty(activeEvent.MessageOnAudioEnd))
@@ -637,11 +637,11 @@ namespace HoloToolkit.Unity
         {
             int tempInstances = 0;
 
-            for (int i = 0; i < activeEvents.Count; i++)
+            for (int i = 0; i < ActiveEvents.Count; i++)
             {
-                var eventInstance = activeEvents[i];
+                var eventInstance = ActiveEvents[i];
 
-                if (!eventInstance.isActiveTimeComplete && eventInstance.audioEvent.Name == eventName)
+                if (!eventInstance.IsActiveTimeComplete && eventInstance.AudioEvent.Name == eventName)
                 {
                     tempInstances++;
                 }
@@ -656,19 +656,19 @@ namespace HoloToolkit.Unity
         /// <param name="audioClip">The clip being played.</param>
         /// <param name="activeEvent">The event being played.</param>
         /// <param name="additionalDelay">The delay before playing in seconds.</param>
-        /// <returns>The estimated active time of the event based on looping or clip time. If looping, this will return InfiniteLoop.</returns>
+        /// <returns>The estimated active time of the event based on Looping or clip time. If Looping, this will return InfiniteLoop.</returns>
         private static float GetActiveTimeEstimate(UAudioClip audioClip, ActiveEvent activeEvent, float additionalDelay)
         {
-            if (audioClip.looping || activeEvent.audioEvent.Container.looping || additionalDelay == InfiniteLoop)
+            if (audioClip.Looping || activeEvent.AudioEvent.Container.Looping || additionalDelay == InfiniteLoop)
             {
                 return InfiniteLoop;
             }
             else
             {
-                float pitchAdjustedClipLength = activeEvent.PrimarySource.pitch != 0 ? (audioClip.sound.length / activeEvent.PrimarySource.pitch) : 0;
+                float pitchAdjustedClipLength = activeEvent.PrimarySource.pitch != 0 ? (audioClip.Sound.length / activeEvent.PrimarySource.pitch) : 0;
 
-                // Restrict non-looping ActiveTime values to be non-negative.
-                return Mathf.Max(0.0f, pitchAdjustedClipLength + activeEvent.audioEvent.InstanceTimeBuffer + additionalDelay);
+                // Restrict non-Looping ActiveTime values to be non-negative.
+                return Mathf.Max(0.0f, pitchAdjustedClipLength + activeEvent.AudioEvent.InstanceTimeBuffer + additionalDelay);
             }
         }
     }
