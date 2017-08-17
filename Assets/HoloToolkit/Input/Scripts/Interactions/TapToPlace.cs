@@ -213,7 +213,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StartPlacing()
         {
-            gameObject.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
+            var target = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            target.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             // If the user is in placing mode, display the spatial mapping mesh.
@@ -230,7 +231,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StopPlacing()
         {
-            gameObject.ApplyLayerCacheRecursively(layerCache);
+            var target = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            target.ApplyLayerCacheRecursively(layerCache);
             InputManager.Instance.PopModalInputHandler();
 
             // If the user is not in placing mode, hide the spatial mapping mesh.
