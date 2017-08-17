@@ -214,7 +214,7 @@ namespace HoloToolkit.Unity.InputModule
         private void StartPlacing()
         {
             gameObject.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.Instance.PushModalInputHandler(gameObject);
 
             // If the user is in placing mode, display the spatial mapping mesh.
             if (AllowMeshVisualizationControl)
@@ -231,7 +231,7 @@ namespace HoloToolkit.Unity.InputModule
         private void StopPlacing()
         {
             gameObject.ApplyLayerCacheRecursively(layerCache);
-            InputManager.Instance.RemoveGlobalListener(gameObject);
+            InputManager.Instance.PopModalInputHandler();
 
             // If the user is not in placing mode, hide the spatial mapping mesh.
             if (AllowMeshVisualizationControl)
