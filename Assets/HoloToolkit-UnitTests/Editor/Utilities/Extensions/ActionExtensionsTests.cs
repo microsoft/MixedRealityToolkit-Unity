@@ -18,40 +18,40 @@ namespace HoloToolkit.Unity.Tests
             arg1 = arg2 = arg3 = arg4 = null;
         }
 
-        private void Raisable()
+        private void Raiseable()
         {
             hasBeenRaised = true;
         }
 
-        private void Raisable<T1, T2, T3, T4>(T1 param1, T2 param2, T3 param3, T4 param4)
+        private void Raiseable<T1, T2, T3, T4>(T1 param1, T2 param2, T3 param3, T4 param4)
         {
-            Raisable();
+            Raiseable();
             arg1 = param1;
             arg2 = param2;
             arg3 = param3;
             arg4 = param4;
         }
 
-        private void Raisable<T1, T2, T3>(T1 param1, T2 param2, T3 param3)
+        private void Raiseable<T1, T2, T3>(T1 param1, T2 param2, T3 param3)
         {
-            Raisable(param1, param2, param3, "");
+            Raiseable(param1, param2, param3, "");
         }
 
-        private void Raisable<T1, T2>(T1 param1, T2 param2)
+        private void Raiseable<T1, T2>(T1 param1, T2 param2)
         {
-            Raisable(param1, param2, "");
+            Raiseable(param1, param2, "");
         }
 
-        private void Raisable<T>(T param1)
+        private void Raiseable<T>(T param1)
         {
-            Raisable(param1, "");
+            Raiseable(param1, "");
         }
 
 
         [Test]
         public void TestHasBeenRaisedNoArgs()
         {
-            Action action = Raisable;
+            Action action = Raiseable;
             action.RaiseEvent();
             Assert.That(hasBeenRaised, Is.True);
         }
@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void TestHasBeenRaisedOneArg()
         {
-            Action<object> action = Raisable;
+            Action<object> action = Raiseable;
             action.RaiseEvent(null);
             Assert.That(hasBeenRaised, Is.True);
         }
@@ -67,7 +67,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void TestHasBeenRaisedTwoArgs()
         {
-            Action<object, object> action = Raisable;
+            Action<object, object> action = Raiseable;
             action.RaiseEvent(null, null);
             Assert.That(hasBeenRaised, Is.True);
         }
@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void TestHasBeenRaisedThreeArgs()
         {
-            Action<object, object, object> action = Raisable;
+            Action<object, object, object> action = Raiseable;
             action.RaiseEvent(null, null, null);
             Assert.That(hasBeenRaised, Is.True);
         }
@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void TestHasBeenRaisedFourArgs()
         {
-            Action<object, object, object, object> action = Raisable;
+            Action<object, object, object, object> action = Raiseable;
             action.RaiseEvent(null, null, null, null);
             Assert.That(hasBeenRaised, Is.True);
         }
@@ -96,7 +96,7 @@ namespace HoloToolkit.Unity.Tests
 
         public void RaiseDataOneArgs(object param1)
         {
-            Action<object> action = Raisable;
+            Action<object> action = Raiseable;
             action.RaiseEvent(param1);
             Assert.That(arg1, Is.EqualTo(param1));
         }
@@ -107,7 +107,7 @@ namespace HoloToolkit.Unity.Tests
 
         public void RaiseDataTwoArgs(object param1, object param2)
         {
-            Action<object, object> action = Raisable;
+            Action<object, object> action = Raiseable;
             action.RaiseEvent(param1, param2);
             Assert.That(arg1, Is.EqualTo(param1));
             Assert.That(arg2, Is.EqualTo(param2));
@@ -119,7 +119,7 @@ namespace HoloToolkit.Unity.Tests
 
         public void RaiseDataThreeArgs(object param1, object param2, object param3)
         {
-            Action<object, object, object> action = Raisable;
+            Action<object, object, object> action = Raiseable;
             action.RaiseEvent(param1, param2, param3);
             Assert.That(arg1, Is.EqualTo(param1));
             Assert.That(arg2, Is.EqualTo(param2));
@@ -131,7 +131,7 @@ namespace HoloToolkit.Unity.Tests
 
         public void RaiseDataFourArgs(object param1, object param2, object param3, object param4)
         {
-            Action<object, object, object, object> action = Raisable;
+            Action<object, object, object, object> action = Raiseable;
             action.RaiseEvent(param1, param2, param3, param4);
             Assert.That(arg1, Is.EqualTo(param1));
             Assert.That(arg2, Is.EqualTo(param2));
