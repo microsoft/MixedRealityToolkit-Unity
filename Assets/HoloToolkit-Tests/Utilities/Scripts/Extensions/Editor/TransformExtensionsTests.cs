@@ -176,5 +176,42 @@ namespace HoloToolkit.Unity.Tests
             var hierarchyCount = root.transform.IterateHierarchy(ignoreList).Count();
             Assert.That(hierarchyCount, Is.EqualTo(root.transform.hierarchyCount - ignoreList.Count));
         }
+
+        [Test]
+        public void IterateDeleteDuring()
+        {
+            var root = Object.Instantiate(empty);
+            var parent = Object.Instantiate(empty, root.transform);
+            Object.Instantiate(empty, parent.transform);
+
+            Assert.DoesNotThrow(() => {
+
+                foreach (var transform in root.transform.IterateHierarchy())
+                {
+                    if (transform == parent.transform)
+                    {
+                        Object.DestroyImmediate(transform.gameObject);
+                    }
+                }
+            });
+        }
+
+        [Test]
+        public void IterateDeleteChildDuring()
+        {
+            var root = Object.Instantiate(empty);
+            var parent = Object.Instantiate(empty, root.transform);
+            var child = Object.Instantiate(empty, parent.transform);
+
+            Assert.DoesNotThrow(() => {
+                foreach (var transform in root.transform.IterateHierarchy())
+                {
+                    if (transform == parent.transform)
+                    {
+                        Object.DestroyImmediate(child.gameObject);
+                    }
+                }
+            });
+        }
     }
 }

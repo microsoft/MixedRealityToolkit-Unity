@@ -69,23 +69,21 @@ namespace HoloToolkit.Unity
         /// <param name="ignore">Transforms and all its children to be ignored</param>
         private static IEnumerable<Transform> IterateHierarchyCore(this Transform root, ICollection<Transform> ignore)
         {
-            var parentsQueue = new Queue<Transform>();
-            parentsQueue.Enqueue(root);
+            var transformQueue = new Queue<Transform>();
+            transformQueue.Enqueue(root);
 
-            while (parentsQueue.Count > 0)
+            while (transformQueue.Count > 0)
             {
-                var parent = parentsQueue.Dequeue();
+                var parentTransform = transformQueue.Dequeue();
 
-                if (ignore.Contains(parent)) { continue; }
+                if (!parentTransform || ignore.Contains(parentTransform)) { continue; }
 
-                foreach (Transform child in parent)
+                for (var i = 0; i < parentTransform.childCount; i++)
                 {
-                    if (child != null)
-                    {
-                        parentsQueue.Enqueue(child);
-                    }
+                    transformQueue.Enqueue(parentTransform.GetChild(i));
                 }
-                yield return parent;
+
+                yield return parentTransform;
             }
         }
     }

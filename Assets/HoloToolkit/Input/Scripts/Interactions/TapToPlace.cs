@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity.InputModule
             if (PlaceParentOnTap)
             {
                 ParentGameObjectToPlace = GetParentToPlace();
-                PlaceParentOnTap = ValidateParentToPlace();
+                PlaceParentOnTap = ParentGameObjectToPlace != null;
             }
 
             interpolator = EnsureInterpolator();
@@ -64,7 +64,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 StartPlacing();
             } else // If we are not starting out with actively placing the object, give it a World Anchor
-            { 
+            {
                 AttachWorldAnchor();
             }
         }
@@ -81,24 +81,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             return gameObject.transform.parent ? gameObject.transform.parent.gameObject : null;
-        }
-
-        /// <summary>
-        /// Log warnings when the parent hasn't been set up properly
-        /// </summary>
-        private bool ValidateParentToPlace()
-        {
-            if (!ParentGameObjectToPlace)
-            {
-                Debug.LogWarning("No parent has been set or found.");
-                return false;
-            }
-            //Using backups
-            if (!gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
-            {
-                Debug.LogWarning("The set parent object is not a parent of this object.");
-            }
-            return true;
         }
 
         /// <summary>
@@ -195,13 +177,16 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void ToggleSpatialMesh()
         {
-            SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
+            if (SpatialMappingManager.Instance != null)
+            {
+                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
+            }
         }
 
         /// <summary>
         /// If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Placement position infront of the user</returns>
         private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
             RaycastHit hitInfo;
@@ -215,9 +200,9 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Does a raycast on the spatial mapping layer to try to find a hit.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="direction"></param>
-        /// <param name="spatialMapHit"></param>
+        /// <param name="origin">Origin of the raycast</param>
+        /// <param name="direction">Direction of the raycast</param>
+        /// <param name="spatialMapHit">Result of the raycast when a hit occured</param>
         /// <returns>Wheter it found a hit or not</returns>
         private static bool SpatialMappingRaycast(Vector3 origin, Vector3 direction, out RaycastHit spatialMapHit)
         {
@@ -235,12 +220,12 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Get gaze position from the GazeManagers hit or just infront of the user
+        /// Get placement position either from GazeManager hit or infront of the user as backup
         /// </summary>
-        /// <param name="headPosition"></param>
-        /// <param name="gazeDirection"></param>
-        /// <param name="defaultGazeDistance"></param>
-        /// <returns></returns>
+        /// <param name="headPosition">Position of the users head</param>
+        /// <param name="gazeDirection">Gaze direction of the user</param>
+        /// <param name="defaultGazeDistance">Default placement distance infront of the user</param>
+        /// <returns>Placement position infront of the user</returns>
         private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
             if (GazeManager.Instance.HitObject != null)
