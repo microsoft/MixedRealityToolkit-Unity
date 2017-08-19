@@ -60,7 +60,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             // Events
             SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
-            InteractionManager.OnSourcePressed += OnAirTap;
+            InteractionManager.InteractionSourcePressed += OnAirTap;
         }
 
         protected override void OnDestroy()
@@ -69,7 +69,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
             }
-            InteractionManager.OnSourcePressed -= OnAirTap;
+            InteractionManager.InteractionSourcePressed -= OnAirTap;
 
             base.OnDestroy();
         }
@@ -170,7 +170,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             Debug.Log("PlaceMenu - InFrontOfUser");
         }
 
-        private void OnAirTap(SourcePressedEventArgs obj)
+        private void OnAirTap(InteractionSourcePressedEventArgs obj)
         {
             // Try to intersect one of the buttons
             Vector3 hitPos, hitNormal;

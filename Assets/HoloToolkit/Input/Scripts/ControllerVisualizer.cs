@@ -64,12 +64,12 @@ namespace HoloToolkit.Unity.InputModule
 #elif UNITY_EDITOR
             // Since we're using non-Unity APIs, this will only run in a UWP app.
             Debug.Log("Running in the editor will only render the override models.");
-            InteractionManager.OnSourceDetected += InteractionManager_OnSourceDetected;
+            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
 #endif
 
 #if UNITY_EDITOR || UNITY_WSA
-            InteractionManager.OnSourceLost += InteractionManager_OnSourceLost;
-            InteractionManager.OnSourceUpdated += InteractionManager_OnSourceUpdated;
+            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
 #endif
         }
 
@@ -170,18 +170,18 @@ namespace HoloToolkit.Unity.InputModule
         }
 #endif
 
-        private void InteractionManager_OnSourceDetected(SourceDetectedEventArgs obj)
+        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             if (obj.state.source.kind == InteractionSourceKind.Controller)
             {
                 if (!controllerDictionary.ContainsKey(obj.state.source.id))
                 {
                     GameObject controllerModelGO;
-                    if (obj.state.handType == InteractionSourceHandType.Left && leftControllerOverride != null)
+                    if (obj.state.source.handedness == InteractionSourceHandedness.Left && leftControllerOverride != null)
                     {
                         controllerModelGO = Instantiate(leftControllerOverride);
                     }
-                    else if (obj.state.handType == InteractionSourceHandType.Right && rightControllerOverride != null)
+                    else if (obj.state.source.handedness == InteractionSourceHandedness.Right && rightControllerOverride != null)
                     {
                         controllerModelGO = Instantiate(rightControllerOverride);
                     }
@@ -190,7 +190,7 @@ namespace HoloToolkit.Unity.InputModule
                         return;
                     }
 
-                    FinishControllerSetup(controllerModelGO, true, obj.state.handType.ToString(), obj.state.source.id);
+                    FinishControllerSetup(controllerModelGO, true, obj.state.source.handedness.ToString(), obj.state.source.id);
                 }
             }
         }
@@ -199,9 +199,8 @@ namespace HoloToolkit.Unity.InputModule
         /// When a controller is lost, the model is destroyed and the controller object
         /// is removed from the tracking dictionary.
         /// </summary>
-        /// <param name="sender">The SpatialInteractionManager which sent this event.</param>
-        /// <param name="args">The source event data to be used determine the controller model to be removed.</param>
-        private void InteractionManager_OnSourceLost(SourceLostEventArgs obj)
+        /// <param name="obj">The source event args to be used to determine the controller model to be removed.</param>
+        private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs obj)
         {
             InteractionSource source = obj.state.source;
             if (source.kind == InteractionSourceKind.Controller)
@@ -217,12 +216,12 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InteractionManager_OnSourceUpdated(SourceUpdatedEventArgs obj)
+        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
         {
             ControllerInfo currentController;
             if (controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
             {
-                if (currentController.grasp != null && obj.state.supportsGrasp)
+                if (currentController.grasp != null && obj.state.source.supportsGrasp)
                 {
                     if (obj.state.grasped != currentController.wasGrasped)
                     {
@@ -240,7 +239,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if (currentController.menu != null && obj.state.supportsMenu)
+                if (currentController.menu != null && obj.state.source.supportsMenu)
                 {
                     if (obj.state.menuPressed != currentController.wasMenuPressed)
                     {
@@ -268,7 +267,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if (currentController.thumbstickPress != null && obj.state.supportsThumbstick)
+                if (currentController.thumbstickPress != null && obj.state.source.supportsThumbstick)
                 {
                     if (obj.state.thumbstickPressed != currentController.wasThumbstickPressed)
                     {
@@ -286,7 +285,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if(currentController.thumbstickX != null && currentController.thumbstickY != null && obj.state.supportsThumbstick)
+                if(currentController.thumbstickX != null && currentController.thumbstickY != null && obj.state.source.supportsThumbstick)
                 {
                     if (obj.state.thumbstickPosition != currentController.lastThumbstickPosition)
                     {
@@ -302,7 +301,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if (currentController.touchpadPress != null && obj.state.supportsTouchpad)
+                if (currentController.touchpadPress != null && obj.state.source.supportsTouchpad)
                 {
                     if (obj.state.touchpadPressed != currentController.wasTouchpadPressed)
                     {
@@ -320,7 +319,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if (currentController.touchpadTouchX != null && currentController.touchpadTouchY != null && obj.state.supportsTouchpad)
+                if (currentController.touchpadTouchX != null && currentController.touchpadTouchY != null && obj.state.source.supportsTouchpad)
                 {
                     if (obj.state.touchpadTouched != currentController.wasTouchpadTouched)
                     {
@@ -350,14 +349,14 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 Vector3 newPosition;
-                if (obj.state.properties.location.grip.TryGetPosition(out newPosition) && newPosition != currentController.lastPosition)
+                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && newPosition != currentController.lastPosition)
                 {
                     currentController.gameObject.transform.localPosition = newPosition;
                     currentController.lastPosition = newPosition;
                 }
 
                 Quaternion newRotation;
-                if (obj.state.properties.location.grip.TryGetRotation(out newRotation) && newRotation != currentController.lastRotation)
+                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && newRotation != currentController.lastRotation)
                 {
                     currentController.gameObject.transform.localRotation = newRotation;
                     currentController.lastRotation = newRotation;
@@ -365,7 +364,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void FinishControllerSetup(GameObject controllerModelGO, bool isOverride, string handedness, uint id)
+        private void FinishControllerSetup(GameObject controllerModelGameObject, bool isOverride, string handedness, uint id)
         {
             GameObject parentGameObject = new GameObject()
             {
@@ -373,12 +372,12 @@ namespace HoloToolkit.Unity.InputModule
             };
 
             parentGameObject.transform.parent = transform;
-            controllerModelGO.transform.parent = parentGameObject.transform;
+            controllerModelGameObject.transform.parent = parentGameObject.transform;
 
             ControllerInfo newControllerInfo = parentGameObject.AddComponent<ControllerInfo>();
             if (!isOverride)
             {
-                newControllerInfo.LoadInfo(controllerModelGO.GetComponentsInChildren<Transform>(), this);
+                newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
             }
             controllerDictionary.Add(id, newControllerInfo);
         }
