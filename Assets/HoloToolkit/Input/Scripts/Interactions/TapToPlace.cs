@@ -52,16 +52,6 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void Start()
         {
-            // Make sure we have all the components in the scene we need.
-            if (WorldAnchorManager.Instance == null)
-            {
-                Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
-            } else if (!IsBeingPlaced)
-            {
-                // If we are not starting out with actively placing the object, give it a World Anchor
-                WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-            }
-
             if (PlaceParentOnTap)
             {
                 ParentGameObjectToPlace = GetParentToPlace();
@@ -73,6 +63,9 @@ namespace HoloToolkit.Unity.InputModule
             if (IsBeingPlaced)
             {
                 StartPlacing();
+            } else // If we are not starting out with actively placing the object, give it a World Anchor
+            { 
+                AttachWorldAnchor();
             }
         }
 
@@ -166,11 +159,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             ToggleSpatialMesh();
-#if UNITY_WSA && !UNITY_EDITOR
-
-            //Removes existing world anchor if any exist.
-            WorldAnchorManager.Instance.RemoveAnchor(gameObject);
-#endif
+            RemoveWorldAnchor();
         }
 
         private void StopPlacing()
@@ -180,11 +169,25 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.PopModalInputHandler();
 
             ToggleSpatialMesh();
-#if UNITY_WSA && !UNITY_EDITOR
+            AttachWorldAnchor();
+        }
 
-            // Add world anchor when object placement is done.
-            WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-#endif
+        private void AttachWorldAnchor()
+        {
+            if (WorldAnchorManager.Instance != null)
+            {
+                // Add world anchor when object placement is done.
+                WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+            }
+        }
+
+        private void RemoveWorldAnchor()
+        {
+            if (WorldAnchorManager.Instance != null)
+            {
+                //Removes existing world anchor if any exist.
+                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
+            }
         }
 
         /// <summary>
