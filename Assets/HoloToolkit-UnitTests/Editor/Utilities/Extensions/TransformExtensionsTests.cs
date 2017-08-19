@@ -213,5 +213,28 @@ namespace HoloToolkit.Unity.Tests
                 }
             });
         }
+
+        [TestCase("wah1234", "", "wah", "1234")]
+        [TestCase("-Foo", "", "-", "Foo")]
+        [TestCase("Foo", "", "", "Foo")]
+        [TestCase("/-Foo", "", "/-", "Foo")]
+        [TestCase("/Foo..Bar", "..", "/", "Foo", "Bar")]
+        [TestCase("/Foo...Bar...Baz", "...", "/", "Foo", "Bar", "Baz")]
+        [TestCase("/Foo-Bar", "-", "/", "Foo", "Bar")]
+        [TestCase("-Foo/Bar", "/", "-", "Foo", "Bar")]
+        [TestCase("/Foo.Bar.?__.ä.124", ".", "/", "Foo", "Bar", "?__", "ä", "124")]
+        public void GetFullPathTests(string result, string delimiter, string prefix, params string[] names)
+        {
+            if (names.Length == 0) { Assert.IsFalse(false, "Invalid test case"); }
+            var parent = Object.Instantiate(empty);
+            parent.name = names[0];
+            for (var i = 1; i < names.Length; i++)
+            {
+                parent = Object.Instantiate(empty, parent.transform);
+                parent.name = names[i];
+            }
+
+            Assert.That(parent.transform.GetFullPath(prefix: prefix, delimiter: delimiter), Is.EqualTo(result));
+        }
     }
 }
