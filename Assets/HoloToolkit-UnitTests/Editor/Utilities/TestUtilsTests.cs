@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.Tests
 {
-    public class EditorUtilsTests
+    public class TestUtilsTests
     {
         [Test]
         public void ClearOne()
         {
             GameObject.CreatePrimitive(PrimitiveType.Cube);
-            EditorUtils.ClearScene();
+            TestUtils.ClearScene();
             Assert.That(Object.FindObjectsOfType<GameObject>(), Is.Empty);
         }
 
@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.Tests
             {
                 GameObject.CreatePrimitive(PrimitiveType.Cube);
             }
-            EditorUtils.ClearScene();
+            TestUtils.ClearScene();
             Assert.That(Object.FindObjectsOfType<GameObject>(), Is.Empty);
         }
 
@@ -33,8 +33,16 @@ namespace HoloToolkit.Unity.Tests
             {
                 parent = Object.Instantiate(empty, parent.transform);
             }
-            EditorUtils.ClearScene();
+            TestUtils.ClearScene();
             Assert.That(Object.FindObjectsOfType<GameObject>(), Is.Empty);
+        }
+
+        [Test]
+        public void CreateMainCamera()
+        {
+            TestUtils.ClearScene();
+            var mainCamera = TestUtils.CreateMainCamera();
+            Assert.That(mainCamera, Is.EqualTo(Camera.main));
         }
     }
 }

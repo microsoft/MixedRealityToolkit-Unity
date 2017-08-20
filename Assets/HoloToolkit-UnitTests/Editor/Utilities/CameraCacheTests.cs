@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.Tests
         [SetUp]
         public void SetUpTests()
         {
-            EditorUtils.ClearScene();
+            TestUtils.ClearScene();
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.Tests
         public void GetNullCameraFromCacheAfterDelete()
         {
 
-            var mainCamera = CreateMainCamera();
+            var mainCamera = TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
             Object.DestroyImmediate(mainCamera.gameObject);
             Assert.That(CameraCache.Main, Is.Null);
@@ -30,25 +30,25 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void GetMainCameraFromCache()
         {
-            var mainCamera = CreateMainCamera();
+            var mainCamera = TestUtils.CreateMainCamera();
             Assert.That(CameraCache.Main, Is.EqualTo(mainCamera));
         }
 
         [Test]
         public void GetMainFromCacheWithMultiple()
         {
-            var mainCamera = CreateMainCamera();
+            var mainCamera = TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
-            CreateMainCamera();
+            TestUtils.CreateMainCamera();
             Assert.That(CameraCache.Main, Is.EqualTo(mainCamera));
         }
 
         [Test]
         public void GetMainFromCacheAfterDelete()
         {
-            var mainCamera = CreateMainCamera();
+            var mainCamera = TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
-            var secondMainCamera = CreateMainCamera();
+            var secondMainCamera = TestUtils.CreateMainCamera();
             Object.DestroyImmediate(mainCamera.gameObject);
             Assert.That(CameraCache.Main, Is.EqualTo(secondMainCamera));
         }
@@ -56,9 +56,9 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void ManualMainCameraRefresh()
         {
-            CreateMainCamera();
+            TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
-            var secondMainCamera = CreateMainCamera();
+            var secondMainCamera = TestUtils.CreateMainCamera();
             CameraCache.Refresh(secondMainCamera);
             Assert.That(CameraCache.Main, Is.EqualTo(secondMainCamera));
         }
@@ -66,24 +66,12 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void ManualMainCameraRefreshGetFirstAfterDelete()
         {
-            var mainCamera = CreateMainCamera();
+            var mainCamera = TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
-            var secondMainCamera = CreateMainCamera();
+            var secondMainCamera = TestUtils.CreateMainCamera();
             CameraCache.Refresh(secondMainCamera);
             Object.DestroyImmediate(secondMainCamera.gameObject);
             Assert.That(CameraCache.Main, Is.EqualTo(mainCamera));
-        }
-
-        private static Camera CreateCamera()
-        {
-            return new GameObject().AddComponent<Camera>();
-        }
-
-        private static Camera CreateMainCamera()
-        {
-            var camera = CreateCamera();
-            camera.gameObject.tag = "MainCamera";
-            return camera;
         }
     }
 }

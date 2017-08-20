@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity.Tests
         [TearDown]
         public void ClearScene()
         {
-            EditorUtils.ClearScene();
+            TestUtils.ClearScene();
         }
 
         [Test]
