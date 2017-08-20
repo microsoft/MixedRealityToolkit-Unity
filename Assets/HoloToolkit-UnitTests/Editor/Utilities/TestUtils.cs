@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -10,14 +11,54 @@ namespace HoloToolkit.Unity
     public static class TestUtils
     {
         /// <summary>
-        /// Deletes all objects in the scene
+        /// Objects created through test utils. The reason to keep them in a list is that disabled objects can't be found at all.
+        /// So to be able to clear the whole scene we need to keep references.
+        /// Instantiated disabled objects will still not be found.
+        /// </summary>
+        private static readonly List<Transform> CreatedGameObjects = new List<Transform>();
+
+        /// <summary>
+        /// Deletes all active objects in the scene
         /// </summary>
         public static void ClearScene()
+        {
+            ClearCreated();
+            ClearUnreferencedActive();
+        }
+
+        private static void ClearUnreferencedActive()
         {
             foreach (var transform in Object.FindObjectsOfType<Transform>().Select(t => t.root).Distinct().ToList())
             {
                 Object.DestroyImmediate(transform.gameObject);
             }
+        }
+
+        private static void ClearCreated()
+        {
+            foreach (var transform in CreatedGameObjects.Where(t => t).Select(t => t.root).Distinct().ToList())
+            {
+                Object.DestroyImmediate(transform.gameObject);
+            }
+        }
+
+        public static GameObject CreateGameObject()
+        {
+            var gameObject = new GameObject();
+            CreatedGameObjects.Add(gameObject.transform);
+            return gameObject;
+        }
+
+        /// <summary>
+        /// Creates a new primitive<see cref="GameObject"/> and saves a reference internally to be able to delete it in case it gets disabled.
+        /// </summary>
+        /// <param name="type">Desired type of the new object</param>
+        /// <returns>The created primitive <see cref="GameObject"/></returns>
+        public static GameObject CreatePrimitive(PrimitiveType type)
+        {
+            var gameObject = GameObject.CreatePrimitive(type);
+            CreatedGameObjects.Add(gameObject.transform);
+            return gameObject;
         }
 
         /// <summary>
@@ -26,7 +67,7 @@ namespace HoloToolkit.Unity
         /// <returns>The created camera</returns>
         public static Camera CreateMainCamera()
         {
-            var camera = new GameObject().AddComponent<Camera>();
+            var camera = CreateGameObject().AddComponent<Camera>();
             camera.gameObject.tag = "MainCamera";
             return camera;
         }

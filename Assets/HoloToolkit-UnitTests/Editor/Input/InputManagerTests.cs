@@ -12,11 +12,16 @@ namespace HoloToolkit.Unity.Tests
         private List<GameObject> receivedEventSources;
         private BaseEventData eventData;
 
+        [TearDown]
+        public void ClearScene()
+        {
+            TestUtils.ClearScene();
+        }
 
         [SetUp]
         public void SetUpTests()
         {
-            TestUtils.ClearScene();
+            ClearScene();
             receivedEventSources = new List<GameObject>();
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
@@ -222,14 +227,16 @@ namespace HoloToolkit.Unity.Tests
 
         private GameObject CreateTestHandler()
         {
-            var gameObject = new GameObject();
-            gameObject.AddComponent<TestEventHandler>().EventFiredCallback = OnEventFired;
-            return gameObject;
+            return SetTestHandler(TestUtils.CreateGameObject());
         }
 
         private GameObject CreateCubeTestHandler()
         {
-            var gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            return SetTestHandler(TestUtils.CreatePrimitive(PrimitiveType.Cube));
+        }
+
+        private GameObject SetTestHandler(GameObject gameObject)
+        {
             gameObject.AddComponent<TestEventHandler>().EventFiredCallback = OnEventFired;
             return gameObject;
         }

@@ -12,22 +12,17 @@ namespace HoloToolkit.Unity.Tests
     {
         private GameObject empty;
 
-        /// <summary>
-        /// Create empty game object for easy cloning
-        /// </summary>
-        [SetUp]
-        public void SetupTests()
-        {
-            empty = new GameObject();
-        }
-
-        /// <summary>
-        /// Delete everything between each test
-        /// </summary>
         [TearDown]
         public void ClearScene()
         {
             TestUtils.ClearScene();
+        }
+
+        [SetUp]
+        public void SetupTests()
+        {
+            ClearScene();
+            empty = TestUtils.CreateGameObject();
         }
 
         [Test]

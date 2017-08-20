@@ -6,7 +6,8 @@ namespace HoloToolkit.Unity.Tests
     public class CameraCacheTests
     {
         [SetUp]
-        public void SetUpTests()
+        [TearDown]
+        public void ClearScene()
         {
             TestUtils.ClearScene();
         }
