@@ -1,10 +1,9 @@
-# HoloToolkit-Unity
-This is effectively part of the existing HoloToolkit, but this is the repository that will contain all Unity specific components.
-The HoloToolkit is a collection of scripts and components intended to accelerate development of holographic applications targeting Windows Holographic.
+# MixedRealityToolkit Dev_Unity_2017.2.0 branch
+This is a development branch for Windows Mixed Reality immersive headset support.
 
-**Current Unity Editor Project Version: 2017.2.0b8**
-
-**Branch: HoloToolkit-Unity with Windows Mixed Reality support for immersive headsets.**
+[unity-download]:                 https://unity3d.com/unity/beta
+[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0b8-green.svg
+[![Github Release][unity-version-badge]][unity-download]
 
 ## Prerequisites:
 1. See [Development PC specs](https://developer.microsoft.com/en-us/windows/mixed-reality/install_the_tools#developing_for_immersive_headsets) for tips on developing for immersive headsets.
@@ -31,7 +30,7 @@ Press A and left joystick to trigger the navigation events.
 Press the Y button to teleport in your world.
 Press the B button to return back to your original location.
 
-**Motion Controller** support that renders a prefab where you have the Crytal Key motion controller in your hand. Refer to [MotionControllerTest.unity](https://github.com/Microsoft/HoloToolkit-Unity/blob/Dev_Unity_2017.2.0/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene for how to use the scripts.
+**Motion Controller** support that renders a prefab where you have the motion controller in your hand. Refer to [MotionControllerTest.unity](https://github.com/Microsoft/HoloToolkit-Unity/blob/Dev_Unity_2017.2.0/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene for how to use the scripts.
 
 **Teleport** capability with new prefabs like [MixedRealityCameraParent.prefab](https://github.com/Microsoft/HoloToolkit-Unity/blob/Dev_Unity_2017.2.0/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) that help you [teleport](https://github.com/Microsoft/HoloToolkit-Unity/blob/Dev_Unity_2017.2.0/Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) to different locations in your app using the gamepad.
 
@@ -44,20 +43,6 @@ Please feel free to grow all these sections. We can't wait to see your additions
 We've also done some future proofing work to add support for motion controllers. 
 However, current model is gaze and commit with your head gaze and the Xbox controller.
 
-## HoloToolkit contains the following feature areas:
-
-1. [Input](Assets/HoloToolkit/Input/README.md)
-2. [Sharing](Assets/HoloToolkit/Sharing/README.md)
-3. [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)
-4. [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)
-5. [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md)
-6. [Utilities](Assets/HoloToolkit/Utilities/README.md)
-7. [Build](Assets/HoloToolkit/Build/README.md)
-8. [Stage](Assets/HoloToolkit/Stage/README.md)
-
-To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
-
-To learn how to add the HoloToolkit to your project see the [Getting Started](GettingStarted.md) guide.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
