@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity
     {
         private class ControllerState
         {
-            public InteractionSourceHandType HandType;
+            public InteractionSourceHandedness Handedness;
             public Vector3 PointerPosition;
             public Quaternion PointerRotation;
             public Vector3 GripPosition;
@@ -35,10 +35,10 @@ namespace HoloToolkit.Unity
             controllers = new Dictionary<uint, ControllerState>();
 
 #if UNITY_WSA
-            InteractionManager.OnSourceDetected += InteractionManager_OnSourceDetected;
+            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
 
-            InteractionManager.OnSourceLost += InteractionManager_OnSourceLost;
-            InteractionManager.OnSourceUpdated += InteractionManager_OnSourceUpdated;
+            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
 #endif
         }
 
@@ -50,32 +50,32 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void InteractionManager_OnSourceDetected(SourceDetectedEventArgs obj)
+        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
-            Debug.LogFormat("{0} {1} Detected", obj.state.handType, obj.state.source.kind);
+            Debug.LogFormat("{0} {1} Detected", obj.state.source.handedness, obj.state.source.kind);
 
             if (obj.state.source.kind == InteractionSourceKind.Controller)
             {
-                controllers.Add(obj.state.source.id, new ControllerState { HandType = obj.state.handType });
+                controllers.Add(obj.state.source.id, new ControllerState { Handedness = obj.state.source.handedness });
             }
         }
 
-        private void InteractionManager_OnSourceLost(SourceLostEventArgs obj)
+        private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs obj)
         {
-            Debug.LogFormat("{0} {1} Lost", obj.state.handType, obj.state.source.kind);
+            Debug.LogFormat("{0} {1} Lost", obj.state.source.handedness, obj.state.source.kind);
 
             controllers.Remove(obj.state.source.id);
         }
 
-        private void InteractionManager_OnSourceUpdated(SourceUpdatedEventArgs obj)
+        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
         {
             ControllerState controllerState;
             if (controllers.TryGetValue(obj.state.source.id, out controllerState))
             {
-                obj.state.properties.location.pointer.TryGetPosition(out controllerState.PointerPosition);
-                obj.state.properties.location.pointer.TryGetRotation(out controllerState.PointerRotation);
-                obj.state.properties.location.grip.TryGetPosition(out controllerState.GripPosition);
-                obj.state.properties.location.grip.TryGetRotation(out controllerState.GripRotation);
+                obj.state.sourcePose.TryGetPosition(out controllerState.PointerPosition, InteractionSourceNode.Pointer);
+                obj.state.sourcePose.TryGetRotation(out controllerState.PointerRotation, InteractionSourceNode.Pointer);
+                obj.state.sourcePose.TryGetPosition(out controllerState.GripPosition, InteractionSourceNode.Grip);
+                obj.state.sourcePose.TryGetRotation(out controllerState.GripRotation, InteractionSourceNode.Grip);
 
                 controllerState.Grasped = obj.state.grasped;
                 controllerState.MenuPressed = obj.state.menuPressed;
@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity
                                           "MenuPressed: {6}\nSelect: Pressed: {7} PressedAmount: {8}\n" +
                                           "Thumbstick: Pressed: {9} Position: {10}\nTouchpad: Pressed: {11} " +
                                           "Touched: {12} Position: {13}\n\n",
-                                          controllerState.HandType, controllerState.PointerPosition, controllerState.PointerRotation.eulerAngles,
+                                          controllerState.Handedness, controllerState.PointerPosition, controllerState.PointerRotation.eulerAngles,
                                           controllerState.GripPosition, controllerState.GripRotation.eulerAngles, controllerState.Grasped,
                                           controllerState.MenuPressed, controllerState.SelectPressed, controllerState.SelectPressedAmount,
                                           controllerState.ThumbstickPressed, controllerState.ThumbstickPosition, controllerState.TouchpadPressed,
