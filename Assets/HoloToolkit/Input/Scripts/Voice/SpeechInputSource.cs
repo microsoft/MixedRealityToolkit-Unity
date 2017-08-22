@@ -185,7 +185,7 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetPointerRay(uint sourceId, out Ray pointingRay)
+        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
             pointingRay = default(Ray);
             return false;
@@ -200,12 +200,6 @@ namespace HoloToolkit.Unity.InputModule
         public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
         {
             rotation = Quaternion.identity;
-            return false;
-        }
-
-        public override bool TryGetGripRay(uint sourceId, out Ray pointingRay)
-        {
-            pointingRay = default(Ray);
             return false;
         }
 

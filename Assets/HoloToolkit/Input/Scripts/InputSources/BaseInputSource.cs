@@ -24,17 +24,20 @@ namespace HoloToolkit.Unity.InputModule
 
         public abstract bool TryGetPointerRotation(uint sourceId, out Quaternion rotation);
 
-        public abstract bool TryGetPointerRay(uint sourceId, out Ray pointerRay);
+        public abstract bool TryGetPointingRay(uint sourceId, out Ray pointingRay);
+
         public abstract bool TryGetGripPosition(uint sourceId, out Vector3 position);
 
         public abstract bool TryGetGripRotation(uint sourceId, out Quaternion rotation);
 
-        public abstract bool TryGetGripRay(uint sourceId, out Ray pointerRay);
-
         public abstract bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position);
+
         public abstract bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position);
+
         public abstract bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedValue);
+
         public abstract bool TryGetGrasp(uint sourceId, out bool isPressed);
+
         public abstract bool TryGetMenu(uint sourceId, out bool isPressed);
     }
 }

@@ -259,7 +259,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool SupportsPointingRay(IInputSource inputSource, uint sourceId)
         {
-            return inputSource.SupportsInputInfo(sourceId, SupportedInputInfo.Ray);
+            return inputSource.SupportsInputInfo(sourceId, SupportedInputInfo.Pointing);
         }
 
         private void AttachInputSourcePointer(BaseInputEventData eventData)
