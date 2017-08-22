@@ -14,7 +14,6 @@ namespace HoloToolkit.Unity.InputModule
     public class SimpleSinglePointerSelector :
         MonoBehaviour,
         ISourceStateHandler,
-        IInputClickHandler,
         IInputHandler
     {
         #region Settings
@@ -86,12 +85,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 ConnectBestAvailablePointer();
             }
-        }
-
-        void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
-        {
-            // This is temporary, for a bug in 2017.2.
-            //HandleInputAction(eventData);
         }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
