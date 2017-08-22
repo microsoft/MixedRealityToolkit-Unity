@@ -8,11 +8,11 @@ using UnityEngine.XR.WSA.Input;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Input source for gestures information from the WSA APIs, which gives access to various system-supported gestures
+    /// Input source for gestures and interaction source information from the WSA APIs, which gives access to various system-supported gestures
     /// and positional information for the various inputs that Windows gestures supports.
     /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
-    public class GesturesInput : BaseInputSource
+    public class InteractionSourceInput : BaseInputSource
     {
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
         // set up the recognizer. The first causes the recognizer to start
