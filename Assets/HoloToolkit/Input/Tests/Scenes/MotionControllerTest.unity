@@ -157,7 +157,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchSeams: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -681,8 +681,7 @@ Prefab:
         type: 2}
       propertyPath: leftControllerOverride
       value: 
-      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
-        type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
   m_IsPrefabParent: 0
