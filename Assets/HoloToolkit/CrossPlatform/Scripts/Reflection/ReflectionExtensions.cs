@@ -3,7 +3,7 @@
 
 namespace HoloToolkit
 {
-#if UNITY_METRO && !UNITY_EDITOR
+#if UNITY_WSA && !UNITY_EDITOR
 
     using System;
     using System.Collections.Generic;

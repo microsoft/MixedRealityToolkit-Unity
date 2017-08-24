@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity.InputModule
         public PointerEventData UnityUIPointerEvent { get; private set; }
 
         /// <summary>
-        /// Cached results of racast results.
+        /// Cached results of raycast results.
         /// </summary>
         private List<RaycastResult> raycastResultList = new List<RaycastResult>();
 
@@ -106,26 +106,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 RaycastLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
             }
-        }
 
-        private void Start()
-        {
-            if (GazeTransform == null)
-            {
-                if (Camera.main != null)
-                {
-                    GazeTransform = Camera.main.transform;
-                }
-                else
-                {
-                    Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to.");
-                }
-            }
+            FindGazeTransform();
         }
 
         private void Update()
         {
-            if (GazeTransform == null)
+            if (!FindGazeTransform())
             {
                 return;
             }
@@ -147,6 +134,19 @@ namespace HoloToolkit.Unity.InputModule
             {
                 FocusedObjectChanged(previousFocusObject, HitObject);
             }
+        }
+
+        private bool FindGazeTransform()
+        {
+            if (GazeTransform != null) { return true; }
+            if (CameraCache.Main != null)
+            {
+                GazeTransform = CameraCache.Main.transform;
+                return true;
+            }
+
+            Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to.");
+            return false;
         }
 
         /// <summary>
@@ -180,8 +180,7 @@ namespace HoloToolkit.Unity.InputModule
             if (RaycastLayerMasks.Length == 1)
             {
                 IsGazingAtObject = Physics.Raycast(GazeOrigin, GazeNormal, out hitInfo, MaxGazeCollisionDistance, RaycastLayerMasks[0]);
-            }
-            else
+            } else
             {
                 // Raycast across all layers and prioritize
                 RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(new Ray(GazeOrigin, GazeNormal), MaxGazeCollisionDistance, -1));
@@ -198,8 +197,7 @@ namespace HoloToolkit.Unity.InputModule
                 HitObject = HitInfo.collider.gameObject;
                 HitPosition = HitInfo.point;
                 lastHitDistance = HitInfo.distance;
-            }
-            else
+            } else
             {
                 HitObject = null;
                 HitPosition = GazeOrigin + (GazeNormal * lastHitDistance);
@@ -216,24 +214,22 @@ namespace HoloToolkit.Unity.InputModule
             {
                 UnityUIPointerEvent = new PointerEventData(EventSystem.current);
             }
+            Camera mainCamera = CameraCache.Main;
 
             // 2D cursor position
-            Vector2 cursorScreenPos = Camera.main.WorldToScreenPoint(HitPosition);
+            Vector2 cursorScreenPos = mainCamera.WorldToScreenPoint(HitPosition);
             UnityUIPointerEvent.delta = cursorScreenPos - UnityUIPointerEvent.position;
             UnityUIPointerEvent.position = cursorScreenPos;
 
             // Graphics raycast
             raycastResultList.Clear();
             EventSystem.current.RaycastAll(UnityUIPointerEvent, raycastResultList);
-            RaycastResult uiRaycastResult = FindClosestRaycastHitInLayermasks(raycastResultList, RaycastLayerMasks);
+            RaycastResult uiRaycastResult = FindClosestRaycastHitInLayerMasks(raycastResultList, RaycastLayerMasks);
             UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
 
             // If we have a raycast result, check if we need to overwrite the 3D raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                // Add the near clip distance since this is where the raycast is from
-                float uiRaycastDistance = uiRaycastResult.distance + Camera.main.nearClipPlane;
-
                 bool superseded3DObject = false;
                 if (IsGazingAtObject)
                 {
@@ -247,18 +243,16 @@ namespace HoloToolkit.Unity.InputModule
                         if (threeDLayerIndex > uiLayerIndex)
                         {
                             superseded3DObject = true;
-                        }
-                        else if (threeDLayerIndex == uiLayerIndex)
+                        } else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            if (hitInfo.distance > uiRaycastDistance)
+                            if (hitInfo.distance > uiRaycastResult.distance)
                             {
                                 superseded3DObject = true;
                             }
                         }
-                    }
-                    else
+                    } else
                     {
-                        if (hitInfo.distance > uiRaycastDistance)
+                        if (hitInfo.distance > uiRaycastResult.distance)
                         {
                             superseded3DObject = true;
                         }
@@ -269,11 +263,10 @@ namespace HoloToolkit.Unity.InputModule
                 if (!IsGazingAtObject || superseded3DObject)
                 {
                     IsGazingAtObject = true;
-                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastDistance));
-                    hitInfo = new RaycastHit()
-                    {
-                        distance = uiRaycastDistance,
-                        normal = -Camera.main.transform.forward,
+                    Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
+                    hitInfo = new RaycastHit {
+                        distance = uiRaycastResult.distance,
+                        normal = -mainCamera.transform.forward,
                         point = worldPos
                     };
 
@@ -292,7 +285,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="candidates">List of RaycastResults from a Unity UI raycast</param>
         /// <param name="layerMaskList">List of layers to support</param>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
-        private RaycastResult FindClosestRaycastHitInLayermasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
+        private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
         {
             int combinedLayerMask = 0;
             for (int i = 0; i < layerMaskList.Length; i++)
@@ -313,9 +306,9 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-             return minHit ?? new RaycastResult();
+            return minHit ?? new RaycastResult();
         }
-        
+
         /// <summary>
         /// Look through the layerMaskList and find the index in that list for which the supplied layer is part of
         /// </summary>

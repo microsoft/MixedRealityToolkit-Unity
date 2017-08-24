@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -47,8 +47,8 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("An array of string keywords and UnityEvents, to be set in the Inspector.")]
         public KeywordAndResponse[] KeywordsAndResponses;
 
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
-#if UNITY_EDITOR || UNITY_WSA
         private KeywordRecognizer keywordRecognizer;
 
         void Start()
@@ -134,7 +134,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
             UnityEvent keywordResponse;
@@ -153,7 +153,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public void StartKeywordRecognizer()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Start();
@@ -167,7 +167,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public void StopKeywordRecognizer()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Stop();
