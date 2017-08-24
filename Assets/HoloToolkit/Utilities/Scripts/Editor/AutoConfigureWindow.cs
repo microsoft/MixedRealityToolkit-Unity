@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected virtual void Awake()
         {
-            wrapStyle = new GUIStyle("label") { wordWrap = true };
+            wrapStyle = new GUIStyle() { wordWrap = true };
         }
         protected virtual void OnEnable()
         {
@@ -112,7 +112,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Gets the descriptions of the settings.
         /// </summary>
-        protected Dictionary<TSetting, string> Descriptions
+        public Dictionary<TSetting, string> Descriptions
         {
             get
             {
@@ -128,7 +128,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Gets the names of the settings.
         /// </summary>
-        protected Dictionary<TSetting, string> Names
+        public Dictionary<TSetting, string> Names
         {
             get
             {
@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Gets the values of the settings.
         /// </summary>
-        protected Dictionary<TSetting, bool> Values
+        public Dictionary<TSetting, bool> Values
         {
             get
             {
@@ -160,7 +160,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Gets or sets the status message displayed at the bottom of the window.
         /// </summary>
-        private string StatusMessage { get { return statusMessage; } set { statusMessage = value; } }
+        public string StatusMessage { get { return statusMessage; } set { statusMessage = value; } }
         #endregion // Public Properties
     }
 }
