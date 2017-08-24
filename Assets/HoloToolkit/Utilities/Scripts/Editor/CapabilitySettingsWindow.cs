@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity
     public class CapabilitySettingsWindow : AutoConfigureWindow<PlayerSettings.WSACapability>
     {
         #region Internal Methods
+
         private void ApplySetting(PlayerSettings.WSACapability setting)
         {
             PlayerSettings.WSA.SetCapability(setting, Values[setting]);
@@ -30,6 +31,8 @@ namespace HoloToolkit.Unity
             ApplySetting(PlayerSettings.WSACapability.SpatialPerception);
             ApplySetting(PlayerSettings.WSACapability.WebCam);
             ApplySetting(PlayerSettings.WSACapability.InternetClient);
+            ApplySetting(PlayerSettings.WSACapability.InternetClientServer);
+            ApplySetting(PlayerSettings.WSACapability.PrivateNetworkClientServer);
         }
 
         protected override void LoadSettings()
@@ -38,6 +41,8 @@ namespace HoloToolkit.Unity
             LoadSetting(PlayerSettings.WSACapability.SpatialPerception);
             LoadSetting(PlayerSettings.WSACapability.WebCam);
             LoadSetting(PlayerSettings.WSACapability.InternetClient);
+            LoadSetting(PlayerSettings.WSACapability.InternetClientServer);
+            LoadSetting(PlayerSettings.WSACapability.PrivateNetworkClientServer);
         }
 
         protected override void LoadStrings()
@@ -53,6 +58,12 @@ namespace HoloToolkit.Unity
 
             Names[PlayerSettings.WSACapability.InternetClient] = "Internet Client";
             Descriptions[PlayerSettings.WSACapability.InternetClient] = "Required if your application needs to access the Internet.\n\nRecommendation: Leave unchecked unless your application uses online services.";
+
+            Names[PlayerSettings.WSACapability.InternetClientServer] = "Internet Client Server";
+            Descriptions[PlayerSettings.WSACapability.InternetClientServer] = "Required if your application uses the Sharing Services.";
+
+            Names[PlayerSettings.WSACapability.PrivateNetworkClientServer] = "Private Network Client Server";
+            Descriptions[PlayerSettings.WSACapability.PrivateNetworkClientServer] = "Required if your application uses the Sharing Services.";
         }
 
         protected override void OnEnable()
@@ -61,7 +72,7 @@ namespace HoloToolkit.Unity
             base.OnEnable();
 
             // Set size
-            minSize = new Vector2(350, 255);
+            minSize = new Vector2(350, 350);
             maxSize = minSize;
         }
         #endregion // Overrides / Event Handlers
