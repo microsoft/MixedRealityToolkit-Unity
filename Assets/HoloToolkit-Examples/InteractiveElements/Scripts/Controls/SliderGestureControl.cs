@@ -151,7 +151,6 @@ namespace HoloToolkit.Examples.InteractiveElements
             
             // get the current delta
             float delta =  (CurrentDistance > 0) ? CurrentPercentage : -CurrentPercentage;
-            print(delta);
             
             // combine the delta with the current slider position so the slider does not start over every time
             mDeltaValue = Mathf.Clamp01(delta + mCachedValue);

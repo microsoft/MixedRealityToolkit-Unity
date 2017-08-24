@@ -2,26 +2,52 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ApplicationViewManagerEditButton : MonoBehaviour 
+namespace HoloToolkit.Unity.Tests
 {
-    public Text field;
-    public void StartEdit()
+    [RequireComponent(typeof(ApplicationViewManager))]
+    public class ApplicationViewManagerEditButton : MonoBehaviour
     {
-        StartCoroutine(OpenViewEdit());
-    }
-    public IEnumerator OpenViewEdit()
-    {
-        string result = null;
-        var avm = this.GetComponent<HoloToolkit.Unity.ApplicationViewManager>();
-        yield return avm.OnLaunchXamlView<string>("TestPage", s => result = s); 
-        yield return new WaitUntil(() => result != null);
-        if (field!=null)
+        public delegate void LaunchXmlView(string result);
+
+        /// <summary>
+        /// Event to subscribe to when a text result is returned from the xml view.
+        /// </summary>
+        public event LaunchXmlView OnResult;
+
+        public Text Field;
+
+        private ApplicationViewManager viewManager;
+
+        private void Awake()
         {
-            field.text = result;
+            viewManager = gameObject.EnsureComponent<ApplicationViewManager>();
+        }
+
+        public void StartEdit()
+        {
+            StartCoroutine(OpenViewEdit());
+        }
+
+        private IEnumerator OpenViewEdit()
+        {
+            string result = string.Empty;
+
+            yield return viewManager.OnLaunchXamlView<string>("TestPage", s => result = s);
+
+            yield return new WaitUntil(() => !string.IsNullOrEmpty(result));
+
+            if (OnResult != null)
+            {
+                OnResult(result);
+            }
+
+            if (Field != null)
+            {
+                Field.text = result;
+            }
         }
     }
 }

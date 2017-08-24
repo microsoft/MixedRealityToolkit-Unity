@@ -4,71 +4,74 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace HoloToolkit.UI.Keyboard
 {
     /// <summary>
     /// Class that when placed on an input field will enable keyboard on click
     /// </summary>
-    public class KeyboardInputField : UnityEngine.UI.InputField
+    public class KeyboardInputField : InputField
     {
         /// <summary>
         /// Internal field for overriding keyboard spawn point
         /// </summary>
         [Header("Keyboard Settings")]
-        public Transform m_KeyboardSpawnPoint = null;
+        public Transform KeyboardSpawnPoint;
 
         /// <summary>
         /// Internal field for overriding keyboard spawn point
         /// </summary>
         [HideInInspector]
-        public Keyboard.LayoutType m_KeyboardLayout = Keyboard.LayoutType.Alpha;
+        public Keyboard.LayoutType KeyboardLayout = Keyboard.LayoutType.Alpha;
+
+        private const float KeyBoardPositionOffset = 0.045f;
 
         /// <summary>
-        /// Override OnPointerClick to spawn keybaord
+        /// Override OnPointerClick to spawn keyboard
         /// </summary>
         public override void OnPointerClick(PointerEventData eventData)
         {
             base.OnPointerClick(eventData);
 
             Keyboard.Instance.Close();
-            Keyboard.Instance.PresentKeyboard(this.text, m_KeyboardLayout);
+            Keyboard.Instance.PresentKeyboard(text, KeyboardLayout);
 
-            if (m_KeyboardSpawnPoint != null)
+            if (KeyboardSpawnPoint != null)
             {
-                Keyboard.Instance.RepositionKeyboard(m_KeyboardSpawnPoint, null, 0.045f);
+                Keyboard.Instance.RepositionKeyboard(KeyboardSpawnPoint, null, KeyBoardPositionOffset);
             }
             else
             {
-                Keyboard.Instance.RepositionKeyboard(this.transform, null, 0.045f);
+                Keyboard.Instance.RepositionKeyboard(transform, null, KeyBoardPositionOffset);
             }
 
-            // Subscribe to keyboard delgates
-            Keyboard.Instance.onTextUpdated += this.Keyboard_onTextUpdated;
-            Keyboard.Instance.onClosed += this.Keyboard_onClosed;
+            // Subscribe to keyboard delegates
+            Keyboard.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
+            Keyboard.Instance.OnClosed += Keyboard_OnClosed;
         }
 
         /// <summary>
         /// Delegate function for getting keyboard input
         /// </summary>
         /// <param name="newText"></param>
-        private void Keyboard_onTextUpdated(string newText)
+        private void Keyboard_OnTextUpdated(string newText)
         {
             if (!string.IsNullOrEmpty(newText))
             {
-                this.text = newText;
+                text = newText;
             }
         }
- 
+
         /// <summary>
         /// Delegate function for getting keyboard input
         /// </summary>
-        /// <param name="newText"></param>
-        private void Keyboard_onClosed(object sender, EventArgs e)
+        /// <param name="sender"></param>
+        private void Keyboard_OnClosed(object sender, EventArgs e)
         {
             // Unsubscribe from delegate functions
-            Keyboard.Instance.onTextUpdated -= this.Keyboard_onTextUpdated;
-            Keyboard.Instance.onClosed -= this.Keyboard_onClosed;
+            Keyboard.Instance.OnTextUpdated -= Keyboard_OnTextUpdated;
+            Keyboard.Instance.OnClosed -= Keyboard_OnClosed;
         }
     }
 }

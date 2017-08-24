@@ -31,11 +31,12 @@ namespace HoloToolkit.Unity
         {
             if (Placing)
             {
-                var headPosition = Camera.main.transform.position;
-                var forward = Camera.main.transform.forward;
+                var cameraTransform = CameraCache.Main.transform;
+                var headPosition = cameraTransform.position;
+                var forward = cameraTransform.forward;
                 var scenePosition = headPosition + DistanceFromHead * forward;
 
-                var facingRotation = Camera.main.transform.localRotation * this.initialRotation;
+                var facingRotation = cameraTransform.localRotation * this.initialRotation;
                 //only yaw
                 facingRotation.x = 0;
                 facingRotation.z = 0;

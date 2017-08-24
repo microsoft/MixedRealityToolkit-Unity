@@ -4,7 +4,7 @@
 using UnityEngine.Events;
 using HoloToolkit.Unity.InputModule;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -13,7 +13,7 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// <summary>
     /// InteractiveToggle expands Interactive to expose selection or toggle states.
     /// 
-    /// Beyong the basic button functionality, Interactive also maintains the notion of selection and enabled, which allow for more robust UI features.
+    /// Beyond the basic button functionality, Interactive also maintains the notion of selection and enabled, which allow for more robust UI features.
     /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on
     /// individual elements of the Interactive GameObject
     /// </summary>
@@ -54,7 +54,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         /// <summary>
         /// A Read-only button or visual item. Passive mode ignores input, but updates the visuals as if it were enabled.
-        /// Good for thinkgs like dashboard lights and data visualization
+        /// Good for things like dashboard lights and data visualization
         /// </summary>
         public bool PassiveMode = false;
 
@@ -190,12 +190,11 @@ namespace HoloToolkit.Examples.InteractiveElements
             
         }
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         protected override void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
             base.KeywordRecognizer_OnPhraseRecognized(args);
             
-            //base.KeywordRecognizer_OnPhraseRecognized(args);
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
             if ((!KeywordRequiresGaze || HasGaze) && mKeywordDictionary != null)
             {

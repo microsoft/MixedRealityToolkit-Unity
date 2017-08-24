@@ -168,7 +168,7 @@ namespace HoloToolkit.Unity.InputModule
         private void Update()
         {
             UpdateHandVisualization();
-
+            Transform cameraTransform = CameraCache.Main.transform;
             float deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
@@ -219,10 +219,10 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 leftHandLocalPosition += translate;
-                LeftHandSourceState.Properties.Location.Position = Camera.main.transform.position + Camera.main.transform.TransformVector(leftHandLocalPosition);
+                LeftHandSourceState.Properties.Location.Position = cameraTransform.position + cameraTransform.TransformVector(leftHandLocalPosition);
 
                 LeftHandVisualizer.transform.position = LeftHandSourceState.Properties.Location.Position;
-                LeftHandVisualizer.transform.forward = Camera.main.transform.forward;
+                LeftHandVisualizer.transform.forward = cameraTransform.forward;
 
                 leftHandVisualPropertyBlock.SetTexture(mainTexID, LeftHandSourceState.Pressed ? HandDownTexture : HandUpTexture);
                 leftHandVisualRenderer.SetPropertyBlock(leftHandVisualPropertyBlock);
@@ -253,10 +253,10 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 rightHandLocalPosition += translate;
-                RightHandSourceState.Properties.Location.Position = Camera.main.transform.position + Camera.main.transform.TransformVector(rightHandLocalPosition);
+                RightHandSourceState.Properties.Location.Position = cameraTransform.position + cameraTransform.TransformVector(rightHandLocalPosition);
 
                 RightHandVisualizer.transform.position = RightHandSourceState.Properties.Location.Position;
-                RightHandVisualizer.transform.forward = Camera.main.transform.forward;
+                RightHandVisualizer.transform.forward = cameraTransform.forward;
                 rightHandVisualPropertyBlock.SetTexture(mainTexID, RightHandSourceState.Pressed ? HandDownTexture : HandUpTexture);
                 rightHandVisualRenderer.SetPropertyBlock(rightHandVisualPropertyBlock);
 
