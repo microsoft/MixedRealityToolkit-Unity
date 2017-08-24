@@ -39,7 +39,8 @@ namespace HoloToolkit.Unity.Tests
         public void SetLayerRecursivelyNull()
         {
 
-            Assert.Throws(typeof(System.ArgumentNullException), () => {
+            Assert.Throws(typeof(System.ArgumentNullException), () =>
+            {
                 GameObjectExtensions.SetLayerRecursively(null, waterLayer);
             });
         }
@@ -47,7 +48,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void SetLayerRecursivelyCacheNull()
         {
-            Assert.Throws(typeof(System.ArgumentNullException), () => {
+            Assert.Throws(typeof(System.ArgumentNullException), () =>
+            {
                 Dictionary<GameObject, int> layerCache;
                 GameObjectExtensions.SetLayerRecursively(null, waterLayer, out layerCache);
             });
@@ -56,7 +58,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void ApplyLayerCacheRecursivelyNull()
         {
-            Assert.Throws(typeof(System.ArgumentNullException), () => {
+            Assert.Throws(typeof(System.ArgumentNullException), () =>
+            {
                 Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
                 GameObjectExtensions.ApplyLayerCacheRecursively(null, layerCache);
             });
@@ -66,7 +69,8 @@ namespace HoloToolkit.Unity.Tests
         public void ApplyLayerCacheRecursivelyNullCache()
         {
             var parent = Object.Instantiate(empty);
-            Assert.Throws(typeof(System.ArgumentNullException), () => {
+            Assert.Throws(typeof(System.ArgumentNullException), () =>
+            {
                 parent.ApplyLayerCacheRecursively(null);
             });
         }
@@ -204,6 +208,28 @@ namespace HoloToolkit.Unity.Tests
             {
                 Assert.That(transform.gameObject.layer, Is.Not.EqualTo(waterLayer.value));
             }
+        }
+
+        [TestCase("1234", "1234")]
+        [TestCase("Foo", "Foo")]
+        [TestCase("Foo/Bar", "Foo", "Bar")]
+        [TestCase("Foo/Bar/Baz", "Foo", "Bar", "Baz")]
+        [TestCase("Foo/Bar/?__/ä/124", "Foo", "Bar", "?__", "ä", "124")]
+        public void GetFullPathTests(string result, params string[] names)
+        {
+            //TODO: Delete with GameObjectExtensions.GetFullPath
+            if (names.Length == 0) { Assert.IsFalse(false, "Invalid test case"); }
+            var parent = Object.Instantiate(empty);
+            parent.name = names[0];
+            for (var i = 1; i < names.Length; i++)
+            {
+                parent = Object.Instantiate(empty, parent.transform);
+                parent.name = names[i];
+            }
+
+#pragma warning disable 618
+            Assert.That(parent.GetFullPath(), Is.EqualTo(result));
+#pragma warning restore 618
         }
     }
 }
