@@ -71,7 +71,7 @@ namespace HoloToolkit.Unity.Boundary
             }
         }
 
-        void Start()
+        void Awake()
         {
             // Render boundary if configured.
             SetBoundaryRendering();
@@ -101,7 +101,8 @@ namespace HoloToolkit.Unity.Boundary
                 //if (UnityEngine.Experimental.XR.Boundary.configured &&
                 //    UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions))
 
-                if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions))
+                if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions, 
+                    UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                 {
                     if (dimensions != null)
                     {
@@ -151,6 +152,7 @@ namespace HoloToolkit.Unity.Boundary
             //}
 
             boundaryBounds = new Bounds();
+
             // Get all the bounds setup by the user.
             List<Vector3> boundaryGeometry = new List<Vector3>();
             if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry))
