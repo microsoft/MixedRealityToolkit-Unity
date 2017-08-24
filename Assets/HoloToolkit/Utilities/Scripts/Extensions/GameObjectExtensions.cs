@@ -72,7 +72,7 @@ namespace HoloToolkit.Unity
             foreach (var child in root.transform.EnumerateHierarchy())
             {
                 int layer;
-                if (!cache.TryGetValue(child.gameObject, out layer)) continue;
+                if (!cache.TryGetValue(child.gameObject, out layer)) { continue; }
                 child.gameObject.layer = layer;
                 cache.Remove(child.gameObject);
             }
