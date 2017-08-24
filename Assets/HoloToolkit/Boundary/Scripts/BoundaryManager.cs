@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity.Boundary
         [SerializeField]
         [Tooltip("Approximate max Y height of your space.")]
         private float boundaryHeight = 10f;        
-        private Bounds boundaryBounds = new Bounds();
+        private Bounds boundaryBounds;
 
         private bool renderFloor = true;
         public bool RenderFloor
@@ -76,6 +76,9 @@ namespace HoloToolkit.Unity.Boundary
             // Render boundary if configured.
             SetBoundaryRendering();
 
+            // Create a volume out of the specified user boundary.
+            CalculateBoundaryVolume();
+
             // Render the floor based on if you are in editor or immersive device.
             RenderFloorQuad();
         }
@@ -126,6 +129,20 @@ namespace HoloToolkit.Unity.Boundary
         /// <returns></returns>
         public bool ContainsObject(Vector3 gameObjectPosition)
         {
+            // Check if the supplied game object's position is within the bounds volume.
+            if (boundaryBounds != null && HolographicSettings.IsDisplayOpaque)
+            {
+                return boundaryBounds.Contains(gameObjectPosition);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Uses the TryGetGeomerty call and Unity Bounds to create a volume out of the setup boundary.
+        /// </summary>
+        public void CalculateBoundaryVolume()
+        {
             // TODO: BUG: Unity
             //if (!UnityEngine.Experimental.XR.Boundary.configured)
             //{
@@ -133,6 +150,7 @@ namespace HoloToolkit.Unity.Boundary
             //    return;
             //}
 
+            boundaryBounds = new Bounds();
             // Get all the bounds setup by the user.
             List<Vector3> boundaryGeometry = new List<Vector3>();
             if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry))
@@ -149,14 +167,6 @@ namespace HoloToolkit.Unity.Boundary
 
             // Ensuring that we set height of the bounds volume to be say 10 feet tall.
             boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));
-
-            // Check if the supplied game object's position is within the bounds volume.
-            if (boundaryBounds != null && HolographicSettings.IsDisplayOpaque)
-            {
-                return boundaryBounds.Contains(gameObjectPosition);
-            }
-
-            return false;
         }
     }
 }
