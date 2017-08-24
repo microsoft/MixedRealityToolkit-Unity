@@ -10,8 +10,37 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// <summary>
     /// A version of InteractiveWidget that uses an InteractiveTheme to define each state
     /// </summary>
-    public class InteractiveThemeWidget : InteractiveWidget
+    public abstract class InteractiveThemeWidget : InteractiveWidget
     {
+        // checks if the theme has changed since the last SetState was called.
+        protected bool mThemeUpdated;
+
+        /// <summary>
+        /// Sets the themes based on the Theme Tags
+        /// </summary>
+        public abstract void SetTheme();
+
+        /// <summary>
+        /// If the themes have changed since the last SetState was called, update the widget
+        /// </summary>
+        public void RefreshIfNeeded()
+        {
+            if (mThemeUpdated)
+            {
+                SetState(State);
+            }
+        }
+
+        /// <summary>
+        /// Sets the state of the widget
+        /// </summary>
+        /// <param name="state"></param>
+        public override void SetState(Interactive.ButtonStateEnum state)
+        {
+            base.SetState(state);
+            mThemeUpdated = false;
+        }
+
         /// <summary>
         /// Find a ColorInteractiveTheme by tag
         /// </summary>
@@ -29,6 +58,8 @@ namespace HoloToolkit.Examples.InteractiveElements
                 colorThemes = FindObjectsOfType<ColorInteractiveTheme>();
                 theme = FindColorTheme(colorThemes, tag);
             }
+
+            if (!mThemeUpdated) mThemeUpdated = theme != null;
 
             return theme;
         }
@@ -65,6 +96,8 @@ namespace HoloToolkit.Examples.InteractiveElements
                 theme = FindVector3Theme(vector3Themes, tag);
             }
 
+            if (!mThemeUpdated) mThemeUpdated = theme != null;
+
             return theme;
         }
 
@@ -99,6 +132,8 @@ namespace HoloToolkit.Examples.InteractiveElements
                 textureThemes = FindObjectsOfType<TextureInteractiveTheme>();
                 theme = FindTextureTheme(textureThemes, tag);
             }
+
+            if (!mThemeUpdated) mThemeUpdated = theme != null;
 
             return theme;
         }

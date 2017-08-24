@@ -1,18 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity.Tests;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
-public class GestureResponder : MonoBehaviour, IInputClickHandler
+namespace HoloToolkit.Unity.InputModule.Tests
 {
-    private void Start()
+    public class GestureResponder : MonoBehaviour, IInputClickHandler
     {
-        InputManager.Instance.PushFallbackInputHandler(gameObject);
-    }
+        private void Start()
+        {
+            InputManager.Instance.PushFallbackInputHandler(gameObject);
+        }
 
-    public void OnInputClicked(InputClickedEventData eventData)
-    {
-        PlaneTargetGroupPicker.Instance.PickNewTarget();
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            PlaneTargetGroupPicker.Instance.PickNewTarget();
+        }
     }
 }

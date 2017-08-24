@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using HoloToolkit.Unity.InputModule;
-using System.Collections;
-using System.Collections.Generic;
+using HoloToolkit.Unity;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace HoloToolkit.Examples.Prototyping
 {
@@ -85,7 +83,7 @@ namespace HoloToolkit.Examples.Prototyping
         {
             if (ReferenceObject == null)
             {
-                ReferenceObject = Camera.main.gameObject;
+                ReferenceObject = CameraCache.Main.gameObject;
             }
         }
 
@@ -94,7 +92,7 @@ namespace HoloToolkit.Examples.Prototyping
         {
 
             if (ReferenceObject == null)
-                ReferenceObject = Camera.main.gameObject;
+                ReferenceObject = CameraCache.Main.gameObject;
 
             mOffsetDirection = this.transform.position - ReferenceObject.transform.position;
             mOffsetDistance = mOffsetDirection.magnitude;

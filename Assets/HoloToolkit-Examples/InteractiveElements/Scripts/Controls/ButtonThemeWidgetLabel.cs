@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Examples.Prototyping;
+using System;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -30,6 +31,9 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         // the TextMesh
         private TextMesh mText;
+
+        private string mCheckColorThemeTag = "";
+        private string mCheckPositionThemeTag = "";
         
         /// <summary>
         /// Get the TextMesh and position animation component
@@ -46,14 +50,22 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Start()
         {
+            SetTheme();
+            RefreshIfNeeded();
+        }
+
+        public override void SetTheme()
+        {
             if (ColorThemeTag != "")
             {
                 mColorTheme = GetColorTheme(ColorThemeTag);
+                mCheckColorThemeTag = ColorThemeTag;
             }
 
             if (PositionThemeTag != "")
             {
                 mPositionTheme = GetVector3Theme(PositionThemeTag);
+                mCheckPositionThemeTag = PositionThemeTag;
             }
         }
 
@@ -103,6 +115,15 @@ namespace HoloToolkit.Examples.InteractiveElements
                 {
                     transform.localPosition = mPositionTheme.GetThemeValue(state);
                 }
+            }
+        }
+
+        private void Update()
+        {
+            if (!mCheckPositionThemeTag.Equals(PositionThemeTag) || !mCheckColorThemeTag.Equals(ColorThemeTag))
+            {
+                SetTheme();
+                RefreshIfNeeded();
             }
         }
     }

@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Examples.Prototyping;
+using System;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
@@ -28,9 +29,12 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("A color tween component : required, but could be on a different object")]
         public ColorTransition ColorBlender;
 
-        private ColorInteractiveTheme mInnterColorTheme;
+        private ColorInteractiveTheme mInnerColorTheme;
         private ColorInteractiveTheme mOuterColorTheme;
-        
+
+        private string mCheckInnerColorThemeTag = "";
+        private string mCheckOuterColorThemeTag = "";
+
         /// <summary>
         /// set the ColorBlender
         /// </summary>
@@ -53,14 +57,22 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         private void Start()
         {
+            SetTheme();
+            RefreshIfNeeded();
+        }
+
+        public override void SetTheme()
+        {
             if (InnerColorThemeTag != "")
             {
-                mInnterColorTheme = GetColorTheme(InnerColorThemeTag);
+                mInnerColorTheme = GetColorTheme(InnerColorThemeTag);
+                mCheckInnerColorThemeTag = InnerColorThemeTag;
             }
 
             if (OuterColorThemeTag != "")
             {
                 mOuterColorTheme = GetColorTheme(OuterColorThemeTag);
+                mCheckOuterColorThemeTag = OuterColorThemeTag;
             }
         }
 
@@ -72,14 +84,23 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             base.SetState(state);
 
-            if (mInnterColorTheme != null)
+            if (mInnerColorTheme != null)
             {
-                ColorBlender.StartTransition(mInnterColorTheme.GetThemeValue(state), InnerMaterial.name);
+                ColorBlender.StartTransition(mInnerColorTheme.GetThemeValue(state), InnerMaterial.name);
             }
 
             if (mOuterColorTheme != null)
             {
                 ColorBlender.StartTransition(mOuterColorTheme.GetThemeValue(state), OuterMaterial.name);
+            }
+        }
+
+        private void Update()
+        {
+            if (!mCheckOuterColorThemeTag.Equals(OuterColorThemeTag) || !mCheckInnerColorThemeTag.Equals(InnerColorThemeTag))
+            {
+                SetTheme();
+                RefreshIfNeeded();
             }
         }
     }

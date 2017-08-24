@@ -1,18 +1,23 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-[RequireComponent(typeof(TextMesh))]
-public class DebugText : MonoBehaviour
+using UnityEngine;
+
+namespace HoloToolkit.Examples
 {
-    private TextMesh mText;
-
-    private void Awake()
+    [RequireComponent(typeof(TextMesh))]
+    public class DebugText : MonoBehaviour
     {
-        mText = GetComponent<TextMesh>();
-    }
+        private TextMesh mText;
 
-    public void SetText(string text)
-    {
-        mText.text = text;
+        private void Awake()
+        {
+            mText = GetComponent<TextMesh>();
+        }
+
+        public void SetText(string text)
+        {
+            mText.text = text;
+        }
     }
 }

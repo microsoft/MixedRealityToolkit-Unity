@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
 using UnityEngine.VR.WSA.Input;
 #endif
 
@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
         public bool UseRailsNavigation = false;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
         protected GestureRecognizer gestureRecognizer;
         protected GestureRecognizer navigationGestureRecognizer;
 
@@ -127,7 +127,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public void StartGestureRecognizer()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
             if (gestureRecognizer != null && !gestureRecognizer.IsCapturingGestures())
             {
                 gestureRecognizer.StartCapturingGestures();
@@ -145,7 +145,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public void StopGestureRecognizer()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
             if (gestureRecognizer != null && gestureRecognizer.IsCapturingGestures())
             {
                 gestureRecognizer.StopCapturingGestures();
@@ -157,7 +157,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
         protected void OnTappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
             inputManager.RaiseInputClicked(this, 0, tapCount);

@@ -16,10 +16,10 @@ namespace HoloToolkit.Unity
         /// Get the horizontal FOV from the stereo camera
         /// </summary>
         /// <returns></returns>
+        [System.Obsolete("Use CameraExtensions.GetHorizontalFieldOfViewRadians(Camera camera) instead.")]
         public static float GetHorizontalFieldOfViewRadians()
         {
-            float horizontalFovRadians = 2 * Mathf.Atan(Mathf.Tan((Camera.main.fieldOfView * Mathf.Deg2Rad) / 2) * Camera.main.aspect);
-            return horizontalFovRadians;
+            return CameraCache.Main.GetHorizontalFieldOfViewRadians();
         }
 
         /// <summary>
@@ -27,18 +27,10 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
+        [System.Obsolete("Use CameraExtensions.IsInFOV(Camera camera, Vector3 position) instead.")]
         public static bool IsInFOV(Vector3 position)
         {
-            float verticalFovHalf = Camera.main.fieldOfView / 2;
-            float horizontalFovHalf = GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg / 2;
-
-            Vector3 deltaPos = position - Camera.main.transform.position;
-            Vector3 headDeltaPos = TransformDirectionFromTo(null, Camera.main.transform, deltaPos).normalized;
-
-            float yaw = Mathf.Asin(headDeltaPos.x) * Mathf.Rad2Deg;
-            float pitch = Mathf.Asin(headDeltaPos.y) * Mathf.Rad2Deg;
-
-            return (Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf);
+            return CameraCache.Main.IsInFOV(position);
         }
 
         /// <summary>

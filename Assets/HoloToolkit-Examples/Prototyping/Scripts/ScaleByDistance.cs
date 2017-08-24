@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using HoloToolkit.Unity.InputModule;
-using System.Collections;
-using System.Collections.Generic;
+using HoloToolkit.Unity;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace HoloToolkit.Examples.Prototyping
 {
@@ -57,7 +55,7 @@ namespace HoloToolkit.Examples.Prototyping
 
             if (RefernceObject == null)
             {
-                RefernceObject = Camera.main.gameObject;
+                RefernceObject = CameraCache.Main.gameObject;
             }
         }
         
