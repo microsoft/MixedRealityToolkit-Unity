@@ -12,14 +12,10 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class GameObjectExtensions
     {
+        [Obsolete("Use the more extensive TransformExtensions.GetFullPath instead.")]
         public static string GetFullPath(this GameObject go)
         {
-            if (go.transform.parent == null)
-            {
-                return go.name;
-            }
-
-            return go.transform.parent.gameObject.GetFullPath() + "/" + go.name;
+            return go.transform.GetFullPath("/", "");
         }
 
         /// <summary>
