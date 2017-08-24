@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,102 +12,39 @@ namespace HoloToolkit.Unity
 {
     public class SetIconsWindow : EditorWindow
     {
-        private const string WindowTitle = "Tile Generator";
         private const string InitialOutputDirectoryName = "TileGenerator";
         private const float GUISectionOffset = 10.0f;
         private const string GUIHorizSpacer = "     ";
-        private const string EditorPrefsKey_AppIcon = "EditorPrefsKey_AppIcon";
-        private const string EditorPrefsKey_SplashImage = "EditorPrefsKey_SplashImage";
-        private const string EditorPrefsKey_DirectoryName = "EditorPrefsKey_DirectoryName";
+        private const string EditorPrefsKey_AppIcon = "_EditorPrefsKey_AppIcon";
+        private const string EditorPrefsKey_SplashImage = "_EditorPrefsKey_SplashImage";
+        private const string EditorPrefsKey_DirectoryName = "_EditorPrefsKey_DirectoryName";
 
-        private string _outputDirectoryName;
-        private string _originalAppIconPath;
-        private string _originalSplashImagePath;
-        private Texture2D _originalAppIcon;
-        private Texture2D _originalSplashImage;
+        private static string _outputDirectoryName;
+        private static string _originalAppIconPath;
+        private static string _newAppIconPath;
+        private static string _originalSplashImagePath;
+        private static string _newSplashImagePath;
+        private static Texture2D _originalAppIcon;
+        private static Texture2D _originalSplashImage;
+        private static float defaultLabelWidth;
 
         [MenuItem("HoloToolkit/Tile Generator", false, 0)]
         private static void OpenWindow()
         {
-            SetIconsWindow window = GetWindow<SetIconsWindow>(WindowTitle) as SetIconsWindow;
-            if (window != null)
-            {
-                window.Show();
-            }
+            // Dock it next to the inspector.
+            Type inspectorType = Type.GetType("UnityEditor.InspectorWindow,UnityEditor.dll");
+            var window = GetWindow<SetIconsWindow>(inspectorType);
+            window.titleContent = new GUIContent("Tile Generator");
+            window.minSize = new Vector2(320, 256);
+            window.Show();
         }
 
         private void OnEnable()
         {
-            Setup();
-        }
-
-        private void OnDisable()
-        {
-            // Save settings
-            EditorPrefs.SetString(EditorPrefsKey_AppIcon, _originalAppIconPath);
-            EditorPrefs.SetString(EditorPrefsKey_SplashImage, _originalSplashImagePath);
-            EditorPrefs.SetString(EditorPrefsKey_DirectoryName, _outputDirectoryName);
-        }
-
-        private void OnGUI()
-        {
-            GUILayout.Space(GUISectionOffset);
-
-            // Setup
-            int buttonWidth_Full = Screen.width - 25;
-
-            // Images section
-            GUILayout.BeginVertical();
-            GUILayout.Label("Images");
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUIUtility.labelWidth = 200f;
-
-            // Inputs for images
-            _originalAppIcon = CreateImageInput("App Icon", 1240, 1240, _originalAppIcon, ref _originalAppIconPath);
-            _originalSplashImage = CreateImageInput("Splash Image", 2480, 1200, _originalSplashImage, ref _originalSplashImagePath);
-
-            // Input for directory name
-            _outputDirectoryName = EditorGUILayout.TextField(GUIHorizSpacer + "Output folder", _outputDirectoryName);
-
-            // Update Icons
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Update Icons", GUILayout.Width(buttonWidth_Full)))
-                {
-                    if (_originalAppIcon == null)
-                    {
-                        EditorUtility.DisplayDialog("App Icon not set", "Please select the App Icon first", "Ok");
-                    }
-                    else if (_originalSplashImage == null)
-                    {
-                        EditorUtility.DisplayDialog("Splash Image not set", "Please select the Splash Image first", "Ok");
-                    }
-                    else
-                    {
-                        // Resize Images
-                        EditorApplication.delayCall += () => { ResizeImages(); };
-                    }
-                }
-                GUI.enabled = true;
-            }
-
-            GUILayout.EndVertical();
-        }
-
-        private void Setup()
-        {
-            this.titleContent = new GUIContent(WindowTitle);
-            this.minSize = new Vector2(600, 200);
-
             // Load settings
-            _originalAppIconPath = EditorPrefs.GetString(EditorPrefsKey_AppIcon);
-            _originalSplashImagePath = EditorPrefs.GetString(EditorPrefsKey_SplashImage);
-            _outputDirectoryName = EditorPrefs.GetString(EditorPrefsKey_DirectoryName);
+            _originalAppIconPath = EditorPrefs.GetString(Application.productName + EditorPrefsKey_AppIcon);
+            _originalSplashImagePath = EditorPrefs.GetString(Application.productName + EditorPrefsKey_SplashImage);
+            _outputDirectoryName = EditorPrefs.GetString(Application.productName + EditorPrefsKey_DirectoryName);
 
             if (!string.IsNullOrEmpty(_originalAppIconPath))
             {
@@ -116,174 +56,240 @@ namespace HoloToolkit.Unity
             }
             if (string.IsNullOrEmpty(_outputDirectoryName))
             {
-                _outputDirectoryName = InitialOutputDirectoryName;
+                _outputDirectoryName = Application.dataPath + "/" + InitialOutputDirectoryName;
             }
+
+            defaultLabelWidth = EditorGUIUtility.labelWidth;
         }
 
-        private Texture2D CreateImageInput(string title, int width, int height, Texture2D texture, ref string path)
+        private void OnDisable()
         {
-            var newIcon = (Texture2D)EditorGUILayout.ObjectField(GUIHorizSpacer + title + " (" + width + "x" + height + ")", texture, typeof(Texture2D), false);
+            SaveSettings();
+        }
 
-            if (newIcon != null && newIcon != texture)
+        private void OnGUI()
+        {
+            GUILayout.Space(GUISectionOffset);
+
+            // Images section
+            GUILayout.Label("Images");
+
+            // Inputs for images
+            _originalAppIcon = CreateImageInput("App Icon", 1240, 1240, _originalAppIcon, ref _originalAppIconPath);
+            _originalSplashImage = CreateImageInput("Splash Image", 2480, 1200, _originalSplashImage, ref _originalSplashImagePath);
+
+            if (GUILayout.Button("Choose Output Folder"))
             {
-                int newIconWidth, newIconHeight = 0;
-                GetImageSize(newIcon, out newIconWidth, out newIconHeight);
+                _outputDirectoryName = EditorUtility.OpenFolderPanel("Output Folder", Application.dataPath, "");
+            }
 
-                if (newIconWidth != width && newIconHeight != height)
+            // Input for directory name
+            EditorGUIUtility.labelWidth = 85f;
+            EditorGUILayout.TextField("Output folder:", _outputDirectoryName);
+            EditorGUIUtility.labelWidth = defaultLabelWidth;
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            // Update Icons
+            if (GUILayout.Button("Update\nIcons", GUILayout.Height(64f), GUILayout.Width(64f)))
+            {
+                if (_originalAppIcon == null)
                 {
-                    // reset
-                    newIcon = texture;
-                    EditorUtility.DisplayDialog("Invalid Image", title + " should be an image with prefered size of " + width + " x " + height + ". Provided image was: " + newIconWidth + " x " + newIconHeight + ".", "Ok");
+                    EditorUtility.DisplayDialog("App Icon not set", "Please select the App Icon first", "Ok");
+                }
+                else if (_originalSplashImage == null)
+                {
+                    EditorUtility.DisplayDialog("Splash Image not set", "Please select the Splash Image first", "Ok");
                 }
                 else
                 {
-                    path = AssetDatabase.GetAssetPath(newIcon);
+                    EditorApplication.delayCall += ResizeImages;
                 }
+            }
+
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private static void SaveSettings()
+        {
+            EditorPrefs.SetString(Application.productName + EditorPrefsKey_AppIcon, _originalAppIconPath);
+            EditorPrefs.SetString(Application.productName + EditorPrefsKey_SplashImage, _originalSplashImagePath);
+            EditorPrefs.SetString(Application.productName + EditorPrefsKey_DirectoryName, _outputDirectoryName);
+        }
+
+        private static Texture2D CreateImageInput(string imageTitle, int width, int height, Texture2D texture, ref string path)
+        {
+            EditorGUIUtility.labelWidth = 200f;
+            var newIcon = (Texture2D)EditorGUILayout.ObjectField(GUIHorizSpacer + imageTitle + " (" + width + "x" + height + ")", texture, typeof(Texture2D), false);
+            EditorGUIUtility.labelWidth = defaultLabelWidth;
+
+            if (newIcon == null || newIcon == texture) { return newIcon; }
+
+            if (newIcon.width != width && newIcon.height != height)
+            {
+                // reset
+                newIcon = texture;
+                EditorUtility.DisplayDialog("Invalid Image",
+                    string.Format("{0} should be an image with preferred size of {1}x{2}. Provided image was: {3}x{4}.", imageTitle, width, height, newIcon.width, newIcon.height),
+                    "Ok");
+            }
+            else
+            {
+                path = AssetDatabase.GetAssetPath(newIcon);
             }
 
             return newIcon;
         }
 
-        private void ResizeImages()
+        private static void ResizeImages()
         {
             try
             {
                 EditorUtility.DisplayProgressBar("Generating images", "Checking Texture Importers", 0);
 
                 // Check if we need to reimport the original textures, for enabling reading.
-                var reimportedAppIcon = CheckTextureImporter(_originalAppIconPath);
-                var reimportedSplashImage = CheckTextureImporter(_originalSplashImagePath);
-
-                if (reimportedAppIcon || reimportedSplashImage)
+                if (CheckTextureImporter(_originalAppIconPath) || CheckTextureImporter(_originalSplashImagePath))
                 {
                     AssetDatabase.Refresh();
                 }
 
-                // Create a copy of the original images
-                string directoryPath = Application.dataPath + "/" + _outputDirectoryName;
-
-                if (!Directory.Exists(directoryPath))
+                if (!Directory.Exists(_outputDirectoryName))
                 {
-                    Directory.CreateDirectory(directoryPath);
+                    Directory.CreateDirectory(_outputDirectoryName);
+                }
+                else
+                {
+                    foreach (string file in Directory.GetFiles(_outputDirectoryName))
+                    {
+                        File.Delete(file);
+                    }
                 }
 
-                File.Copy(_originalAppIconPath, directoryPath + "/1240x1240.png");
-                File.Copy(_originalSplashImagePath, directoryPath + "/2480x1200.png");
+                // Create a copy of the original images
+                string outputDirectoryBasePath = _outputDirectoryName;
+                outputDirectoryBasePath = outputDirectoryBasePath.Replace(Application.dataPath, "Assets");
+
+                _newAppIconPath = outputDirectoryBasePath + "/BaseIcon_1240x1240.png";
+                _newSplashImagePath = outputDirectoryBasePath + "/BaseSplashImage_2480x1200.png";
+
+                AssetDatabase.CopyAsset(_originalAppIconPath, _newAppIconPath);
+                AssetDatabase.CopyAsset(_originalSplashImagePath, _newSplashImagePath);
+
+                // Set Default Icon in Player Settings (Multiple platforms, can be overridden per platform)
+                PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.Unknown, new[] { AssetDatabase.LoadAssetAtPath<Texture2D>(_newAppIconPath) });
+                PlayerSettings.virtualRealitySplashScreen = AssetDatabase.LoadAssetAtPath<Texture2D>(_newSplashImagePath);
 
                 // Loop through available types and scales for UWP
                 var types = Enum.GetValues(typeof(PlayerSettings.WSAImageType)).Cast<PlayerSettings.WSAImageType>().ToList();
                 var scales = Enum.GetValues(typeof(PlayerSettings.WSAImageScale)).Cast<PlayerSettings.WSAImageScale>().ToList();
                 float progressTotal = types.Count * scales.Count;
                 float progress = 0;
-                bool cancelled = false;
+                bool canceled = false;
 
                 foreach (var type in types)
                 {
-                    if (cancelled)
+                    if (canceled)
                     {
                         break;
                     }
 
                     foreach (var scale in scales)
                     {
-                        var texture = GetUWPImageTypeTexture(type, scale);
-                        if (texture != null)
-                        {
-                            string filename = null; //string.Format("{0}{1}.png", type, scale);
-                            CloneAndResizeToFile(texture, type, scale, ref filename);
-                            PlayerSettings.WSA.SetVisualAssetsImage(string.Format("Assets/{0}/{1}", _outputDirectoryName, filename), type, scale);
+                        PlayerSettings.WSA.SetVisualAssetsImage(CloneAndResizeToFile(type, scale), type, scale);
 
-                            progress++;
-                            cancelled = EditorUtility.DisplayCancelableProgressBar("Generating images", string.Format("Generating resized images {0} of {1}", progress, progressTotal), progress / progressTotal);
-                            if (cancelled)
-                            {
-                                break;
-                            }
+                        progress++;
+                        if (EditorUtility.DisplayCancelableProgressBar("Generating images", string.Format("Generating resized images {0} of {1}", progress, progressTotal), progress / progressTotal))
+                        {
+                            canceled = true;
+                            break;
                         }
                     }
                 }
 
-                if (!cancelled)
-                {
-                    // Set Default Icon in Player Settings (Multiple platforms, can be overridden per platform)
-                    PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.Unknown, new[] { _originalAppIcon });
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 
-                    EditorUtility.DisplayDialog("Images resized!", "All images were resized and updated in the Player Settings", "Ok");
+                if (canceled)
+                {
+                    EditorUtility.DisplayDialog("Generation canceled",
+                        string.Format("{0} Images of {1} were resized and updated in the Player Settings.", progress, progressTotal),
+                        "Ok");
                 }
                 else
                 {
-                    EditorUtility.DisplayDialog("Generation cancelled", string.Format("{0} Images of {1} were resized and updated in the Player Settings.", progress, progressTotal), "Ok");
+                    EditorUtility.DisplayDialog("Images resized!",
+                        "All images were resized and updated in the Player Settings",
+                        "Ok");
                 }
 
                 EditorUtility.ClearProgressBar();
-                AssetDatabase.Refresh();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.LogError(e.Message);
                 EditorUtility.ClearProgressBar();
             }
         }
 
-        private bool CheckTextureImporter(string assetPath)
+        private static bool CheckTextureImporter(string assetPath)
         {
             var tImporter = AssetImporter.GetAtPath(assetPath) as TextureImporter;
-            if (tImporter != null && !tImporter.isReadable)
-            {
-                tImporter.isReadable = true;
 
-                AssetDatabase.ImportAsset(assetPath);
-                return true;
-            }
-            return false;
+            if (tImporter == null || tImporter.isReadable) { return false; }
+
+            tImporter.isReadable = true;
+
+            AssetDatabase.ImportAsset(assetPath);
+            return true;
         }
 
-        private string CloneAndResizeToFile(Texture2D texture, PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale, ref string fileName)
+        private static string CloneAndResizeToFile(PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale)
         {
+            string texturePath = GetUWPImageTypeTexture(type, scale);
+
+            if (string.IsNullOrEmpty(texturePath)) { return string.Empty; }
+
             var iconSize = GetUWPImageTypeSize(type, scale);
-            if (iconSize != Vector2.zero)
-            {
-                fileName = string.Format("{0}x{1}.png", iconSize.x, iconSize.y);
-                return CloneAndResizeToFile(texture, iconSize, ref fileName);
-            }
+            if (iconSize == Vector2.zero) { return string.Empty; }
 
-            return null;
-        }
+            if (iconSize.x == 1240 && iconSize.y == 1240 || iconSize.x == 2480 && iconSize.y == 1200) { return texturePath; }
 
-        private string CloneAndResizeToFile(Texture2D texture, Vector2 iconSize, ref string fileName)
-        {
-            string directoryPath = Application.dataPath + "/" + _outputDirectoryName;
-            string filepath = directoryPath + "/" + fileName;
+            string filePath = string.Format("{0}/{1}_{2}x{3}.png", _outputDirectoryName, type.ToString(), iconSize.x, iconSize.y);
+            filePath = filePath.Replace(Application.dataPath, "Assets");
 
-            if (!((iconSize.x == 1240 && iconSize.y == 1240) || (iconSize.x == 2480 && iconSize.y == 1200)))
-            {
-
-                // Create copy of original image
-                var clone = CloneAndResizeToTexture(texture, iconSize);
-
-                // Write clone to assets folder
-                var bytes = clone.EncodeToPNG();
-                if (!Directory.Exists(directoryPath))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
-                File.WriteAllBytes(filepath, bytes);
-            }
-
-            return filepath;
-        }
-
-        private Texture2D CloneAndResizeToTexture(Texture2D texture, Vector2 iconSize)
-        {
             // Create copy of original image
-            var clone = Instantiate(texture);
+            try
+            {
+                AssetDatabase.CopyAsset(texturePath, filePath);
+                var clone = AssetDatabase.LoadAssetAtPath<Texture2D>(filePath);
 
-            // Resize clone to desired size
-            TextureScale.Bilinear(clone, (int)iconSize.x, (int)iconSize.y);
+                if (clone == null)
+                {
+                    Debug.LogError("Unable to load texture at " + filePath);
+                    return string.Empty;
+                }
 
-            return clone;
+                // Resize clone to desired size
+                TextureScale.Bilinear(clone, (int)iconSize.x, (int)iconSize.y);
+                clone.Compress(true);
+                AssetDatabase.SaveAssets();
+
+                if (clone.GetRawTextureData().Length > 204800)
+                {
+                    Debug.LogWarningFormat("{0} exceeds the minimum file size of 204,800 bytes, please use a smaller image for generating your icons.", clone.name);
+                    return string.Empty;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                return string.Empty;
+            }
+
+            return filePath;
         }
 
-        private Texture2D GetUWPImageTypeTexture(PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale)
+        private static string GetUWPImageTypeTexture(PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale)
         {
             switch (type)
             {
@@ -292,16 +298,11 @@ namespace HoloToolkit.Unity
                 case PlayerSettings.WSAImageType.StoreTileSmallLogo:
                 case PlayerSettings.WSAImageType.StoreSmallTile:
                 case PlayerSettings.WSAImageType.StoreLargeTile:
-                case PlayerSettings.WSAImageType.PhoneAppIcon:
-                case PlayerSettings.WSAImageType.PhoneSmallTile:
-                case PlayerSettings.WSAImageType.PhoneMediumTile:
-                case PlayerSettings.WSAImageType.PhoneWideTile:
-                case PlayerSettings.WSAImageType.PhoneSplashScreen:
                 case PlayerSettings.WSAImageType.UWPSquare44x44Logo:
                 case PlayerSettings.WSAImageType.UWPSquare71x71Logo:
                 case PlayerSettings.WSAImageType.UWPSquare150x150Logo:
                 case PlayerSettings.WSAImageType.UWPSquare310x310Logo:
-                    return _originalAppIcon;
+                    return _newAppIconPath;
                 case PlayerSettings.WSAImageType.SplashScreenImage:
                 case PlayerSettings.WSAImageType.StoreTileWideLogo:
                 case PlayerSettings.WSAImageType.UWPWide310x150Logo:
@@ -311,143 +312,98 @@ namespace HoloToolkit.Unity
                         scale != PlayerSettings.WSAImageScale.Target48 &&
                         scale != PlayerSettings.WSAImageScale.Target256)
                     {
-                        return _originalSplashImage;
+                        return _newSplashImagePath;
                     }
                     else
                     {
-                        break;
+                        return _newAppIconPath;
                     }
+                case PlayerSettings.WSAImageType.PhoneAppIcon:
+                case PlayerSettings.WSAImageType.PhoneSmallTile:
+                case PlayerSettings.WSAImageType.PhoneMediumTile:
+                case PlayerSettings.WSAImageType.PhoneWideTile:
+                case PlayerSettings.WSAImageType.PhoneSplashScreen:
+                    return string.Empty;
                 default:
-                    break;
+                    throw new ArgumentOutOfRangeException("type", type, null);
             }
-
-            return null;
         }
 
-        private Vector2 GetUWPImageTypeSize(PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale)
+        private static Vector2 GetUWPImageTypeSize(PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale)
         {
-            Vector2 size = Vector2.zero;
-
             switch (scale)
             {
                 case PlayerSettings.WSAImageScale.Target16:
-                    size = CreateSize(16);
-                    break;
+                    return CreateSize(16);
                 case PlayerSettings.WSAImageScale.Target24:
-                    size = CreateSize(24);
-                    break;
+                    return CreateSize(24);
                 case PlayerSettings.WSAImageScale.Target32:
-                    size = CreateSize(32);
-                    break;
+                    return CreateSize(32);
                 case PlayerSettings.WSAImageScale.Target48:
-                    size = CreateSize(48);
-                    break;
+                    return CreateSize(48);
                 case PlayerSettings.WSAImageScale.Target256:
-                    size = CreateSize(256);
-                    break;
+                    return CreateSize(256);
                 default:
-                    size = GetWSAImageTypeSize(type, scale);
-                    break;
+                    return GetWSAImageTypeSize(type, scale);
             }
-
-            return size;
         }
 
-        private Vector2 GetWSAImageTypeSize(PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale)
+        private static Vector2 GetWSAImageTypeSize(PlayerSettings.WSAImageType type, PlayerSettings.WSAImageScale scale)
         {
-            Vector2 size = Vector2.zero;
-            float scaleFactor = (float)scale / 100;
-
             switch (type)
             {
                 case PlayerSettings.WSAImageType.PackageLogo:
-                    size = CreateSize(50);
-                    break;
+                    return CreateSize(50);
                 case PlayerSettings.WSAImageType.StoreTileLogo:
-                    size = CreateSize(150);
-                    break;
+                    return CreateSize(150);
                 case PlayerSettings.WSAImageType.StoreTileSmallLogo:
-                    size = CreateSize(30);
-                    break;
+                    return CreateSize(30);
                 case PlayerSettings.WSAImageType.StoreSmallTile:
-                    size = CreateSize(70);
-                    break;
+                    return CreateSize(70);
                 case PlayerSettings.WSAImageType.StoreLargeTile:
-                    size = CreateSize(310);
-                    break;
+                    return CreateSize(310);
                 case PlayerSettings.WSAImageType.PhoneAppIcon:
-                    size = CreateSize(44);
-                    break;
+                    return CreateSize(44);
                 case PlayerSettings.WSAImageType.PhoneSmallTile:
-                    size = CreateSize(71);
-                    break;
+                    return CreateSize(71);
                 case PlayerSettings.WSAImageType.PhoneMediumTile:
-                    size = CreateSize(150);
-                    break;
-                case PlayerSettings.WSAImageType.PhoneSplashScreen:
-                    break;
+                    return CreateSize(150);
                 case PlayerSettings.WSAImageType.UWPSquare44x44Logo:
-                    size = CreateSize(44);
-                    break;
+                    return CreateSize(44);
                 case PlayerSettings.WSAImageType.UWPSquare71x71Logo:
-                    size = CreateSize(71);
-                    break;
+                    return CreateSize(71);
                 case PlayerSettings.WSAImageType.UWPSquare150x150Logo:
-                    size = CreateSize(150);
-                    break;
+                    return CreateSize(150);
                 case PlayerSettings.WSAImageType.UWPSquare310x310Logo:
-                    size = CreateSize(310);
-                    break;
+                    return CreateSize(310);
 
                 // WIDE 31:15
                 case PlayerSettings.WSAImageType.PhoneWideTile:
                 case PlayerSettings.WSAImageType.StoreTileWideLogo:
                 case PlayerSettings.WSAImageType.UWPWide310x150Logo:
-                    size = new Vector2(310, 150);
-                    break;
+                    return new Vector2(310, 150);
                 case PlayerSettings.WSAImageType.SplashScreenImage:
-                    size = new Vector2(620, 300);
-                    break;
+                    return new Vector2(620, 300);
+                case PlayerSettings.WSAImageType.PhoneSplashScreen:
                 default:
-                    break;
-            }
+                    var size = Vector2.zero;
+                    float scaleFactor = float.Parse(scale.ToString().Replace("_", "")) * 0.01f;
+                    size = size * scaleFactor;
+                    size.x = (float)Math.Ceiling(size.x);
+                    size.y = (float)Math.Ceiling(size.y);
 
-            if (size != Vector2.zero)
-            {
-                size = (size * scaleFactor);
-                size.x = (float)Math.Ceiling(size.x);
-                size.y = (float)Math.Ceiling(size.y);
+                    if (size == Vector2.zero)
+                    {
+                        Debug.LogWarningFormat("Invalid image size for {0} with scale {1}", type, scale);
+                    }
+
+                    return size;
             }
-            return size;
         }
 
-        private Vector2 CreateSize(int size)
+        private static Vector2 CreateSize(int size)
         {
             return new Vector2(size, size);
-        }
-
-        private bool GetImageSize(Texture2D asset, out int width, out int height)
-        {
-            if (asset != null)
-            {
-                string assetPath = AssetDatabase.GetAssetPath(asset);
-                TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
-
-                if (importer != null)
-                {
-                    object[] args = new object[2] { 0, 0 };
-                    MethodInfo mi = typeof(TextureImporter).GetMethod("GetWidthAndHeight", BindingFlags.NonPublic | BindingFlags.Instance);
-                    mi.Invoke(importer, args);
-
-                    width = (int)args[0];
-                    height = (int)args[1];
-
-                    return true;
-                }
-            }
-
-            height = width = 0;
-            return false;
         }
     }
 }

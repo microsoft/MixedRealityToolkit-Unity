@@ -110,12 +110,10 @@ namespace HoloToolkit.Unity
         [MenuItem("HoloToolkit/Build Window", false, 0)]
         public static void OpenWindow()
         {
-            var window = GetWindow<BuildDeployWindow>("Build Window");
-
-            if (window != null)
-            {
-                window.Show();
-            }
+            // Dock it next to the Scene View.
+            var window = GetWindow<BuildDeployWindow>(typeof(SceneView));
+            window.titleContent = new GUIContent("Build Window");
+            window.Show();
         }
 
         private void OnEnable()
