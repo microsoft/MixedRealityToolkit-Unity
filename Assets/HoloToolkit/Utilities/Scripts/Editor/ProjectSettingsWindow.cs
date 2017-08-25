@@ -203,17 +203,13 @@ namespace HoloToolkit.Unity
 
             if (Values[ProjectSetting.SharingServices])
             {
-                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
-                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, true);
             }
             else
             {
-                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, false);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, false);
-                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, false);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, false);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, false);
             }
