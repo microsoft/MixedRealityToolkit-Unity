@@ -78,12 +78,7 @@ namespace HoloToolkit.Unity
 
         protected override void ApplySettings()
         {
-            ApplySetting(PlayerSettings.WSACapability.Microphone);
-            ApplySetting(PlayerSettings.WSACapability.WebCam);
-            ApplySetting(PlayerSettings.WSACapability.SpatialPerception);
-            ApplySetting(PlayerSettings.WSACapability.InternetClient);
-            ApplySetting(PlayerSettings.WSACapability.InternetClientServer);
-            ApplySetting(PlayerSettings.WSACapability.PrivateNetworkClientServer);
+            Close();
         }
 
         protected override void LoadSettings()
@@ -98,7 +93,13 @@ namespace HoloToolkit.Unity
 
         protected override void OnGuiChanged()
         {
-            ApplySettings();
+            ApplySetting(PlayerSettings.WSACapability.Microphone);
+            ApplySetting(PlayerSettings.WSACapability.WebCam);
+            ApplySetting(PlayerSettings.WSACapability.SpatialPerception);
+            ApplySetting(PlayerSettings.WSACapability.InternetClient);
+            ApplySetting(PlayerSettings.WSACapability.InternetClientServer);
+            ApplySetting(PlayerSettings.WSACapability.PrivateNetworkClientServer);
+
             LoadSettings();
         }
 

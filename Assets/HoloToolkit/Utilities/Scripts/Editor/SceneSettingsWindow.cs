@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     public class SceneSettingsWindow : AutoConfigureWindow<SceneSettingsWindow.SceneSetting>
     {
         #region Nested Types
+
         public enum SceneSetting
         {
             CameraToOrigin,
@@ -18,12 +19,15 @@ namespace HoloToolkit.Unity
             NearClipPlane,
             FieldOfView,
         }
+
         #endregion // Nested Types
 
         #region Overrides / Event Handlers
+
         protected override void ApplySettings()
         {
             Camera mainCamera = CameraCache.Main;
+
             // Ensure we have a camera
             if (mainCamera == null)
             {
@@ -36,19 +40,24 @@ namespace HoloToolkit.Unity
             {
                 mainCamera.transform.position = Vector3.zero;
             }
+
             if (Values[SceneSetting.CameraClearBlack])
             {
                 mainCamera.clearFlags = CameraClearFlags.SolidColor;
                 mainCamera.backgroundColor = Color.clear;
             }
+
             if (Values[SceneSetting.NearClipPlane])
             {
                 mainCamera.nearClipPlane = 0.85f;
             }
+
             if (Values[SceneSetting.FieldOfView])
             {
                 mainCamera.fieldOfView = 16.0f;
             }
+
+            Close();
         }
 
         protected override void LoadSettings()
