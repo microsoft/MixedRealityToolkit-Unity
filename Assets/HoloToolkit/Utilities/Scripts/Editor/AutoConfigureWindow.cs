@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public abstract class AutoConfigureWindow<TSetting> : EditorWindow
     {
-        #region Member Variables
+        #region Member Fields
 
         private Dictionary<TSetting, bool> values = new Dictionary<TSetting, bool>();
         private Dictionary<TSetting, string> names = new Dictionary<TSetting, string>();
@@ -23,9 +23,10 @@ namespace HoloToolkit.Unity
         private Vector2 scrollPosition = Vector2.zero;
         private GUIStyle wrapStyle;
 
-        #endregion // Member Variables
+        #endregion // Member Fields
 
         #region Internal Methods
+
         private void SettingToggle(TSetting setting)
         {
             EditorGUI.BeginChangeCheck();
@@ -45,6 +46,11 @@ namespace HoloToolkit.Unity
                 Repaint();
             }
         }
+
+        /// <summary>
+        /// Gets or sets the status message displayed at the bottom of the window.
+        /// </summary>
+        private string StatusMessage { get { return statusMessage; } set { statusMessage = value; } }
 
         #endregion // Internal Methods
 
@@ -127,7 +133,7 @@ namespace HoloToolkit.Unity
 
         #endregion // Overrides / Event Handlers
 
-        #region Public Properties
+        #region Protected Properties
 
         /// <summary>
         /// Gets the descriptions of the settings.
@@ -177,11 +183,6 @@ namespace HoloToolkit.Unity
             }
         }
 
-        /// <summary>
-        /// Gets or sets the status message displayed at the bottom of the window.
-        /// </summary>
-        private string StatusMessage { get { return statusMessage; } set { statusMessage = value; } }
-
-        #endregion // Public Properties
+        #endregion // Protected Properties
     }
 }
