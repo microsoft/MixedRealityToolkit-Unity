@@ -25,7 +25,7 @@ namespace HoloToolkit.Unity
         public static string BuildDirectory
         {
             get { return GetEditorPref(EditorPrefs_BuildDir, "UWP"); }
-            set { GetEditorPref(EditorPrefs_BuildDir, value); }
+            set { SetEditorPref(EditorPrefs_BuildDir, value); }
         }
 
         public static string AbsoluteBuildDirectory
@@ -36,49 +36,59 @@ namespace HoloToolkit.Unity
         public static string MsBuildVersion
         {
             get { return GetEditorPref(EditorPrefs_MSBuildVer, BuildDeployTools.DefaultMSBuildVersion); }
-            set { GetEditorPref(EditorPrefs_MSBuildVer, value); }
+            set { SetEditorPref(EditorPrefs_MSBuildVer, value); }
         }
 
         public static string BuildConfig
         {
             get { return GetEditorPref(EditorPrefs_BuildConfig, "Debug"); }
-            set { GetEditorPref(EditorPrefs_BuildConfig, value); }
+            set { SetEditorPref(EditorPrefs_BuildConfig, value); }
         }
 
         public static bool ForceRebuild
         {
             get { return GetEditorPref(EditorPrefs_ForceRebuild, false); }
-            set { GetEditorPref(EditorPrefs_ForceRebuild, value); }
+            set { SetEditorPref(EditorPrefs_ForceRebuild, value); }
         }
 
         public static bool IncrementBuildVersion
         {
             get { return GetEditorPref(EditorPrefs_IncrementBuildVersion, true); }
-            set { GetEditorPref(EditorPrefs_IncrementBuildVersion, value); }
+            set { SetEditorPref(EditorPrefs_IncrementBuildVersion, value); }
         }
 
         public static string TargetIPs
         {
             get { return GetEditorPref(EditorPrefs_TargetIPs, "127.0.0.1"); }
-            set { GetEditorPref(EditorPrefs_TargetIPs, value); }
+            set { SetEditorPref(EditorPrefs_TargetIPs, value); }
         }
 
         public static string DeviceUser
         {
             get { return GetEditorPref(EditorPrefs_DeviceUser, ""); }
-            set { GetEditorPref(EditorPrefs_DeviceUser, value); }
+            set { SetEditorPref(EditorPrefs_DeviceUser, value); }
         }
 
         public static string DevicePassword
         {
             get { return GetEditorPref(EditorPrefs_DevicePwd, ""); }
-            set { GetEditorPref(EditorPrefs_DevicePwd, value); }
+            set { SetEditorPref(EditorPrefs_DevicePwd, value); }
         }
 
         public static bool FullReinstall
         {
             get { return GetEditorPref(EditorPrefs_FullReinstall, true); }
-            set { GetEditorPref(EditorPrefs_FullReinstall, value); }
+            set { SetEditorPref(EditorPrefs_FullReinstall, value); }
+        }
+
+        private static void SetEditorPref(string key, string value)
+        {
+            EditorPrefs.SetString(Application.productName + key, value);
+        }
+
+        private static void SetEditorPref(string key, bool value)
+        {
+            EditorPrefs.SetBool(Application.productName + key, value);
         }
 
         private static string GetEditorPref(string key, string defaultValue)
