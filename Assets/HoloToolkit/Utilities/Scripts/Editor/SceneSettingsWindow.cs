@@ -59,6 +59,10 @@ namespace HoloToolkit.Unity
             }
         }
 
+        protected override void OnGuiChanged()
+        {
+        }
+
         protected override void LoadStrings()
         {
             Names[SceneSetting.CameraToOrigin] = "Move Camera to Origin";

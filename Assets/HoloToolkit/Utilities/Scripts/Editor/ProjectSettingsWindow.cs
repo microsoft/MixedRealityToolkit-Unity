@@ -32,6 +32,8 @@ namespace HoloToolkit.Unity
         /// </summary>
         private static void EnableVirtualReality()
         {
+            // HACK: Edits ProjectSettings.asset Directly
+            // TODO: replace with friendlier version that uses built in APIs
             try
             {
                 // Grab the text from the project settings asset file
@@ -46,8 +48,8 @@ namespace HoloToolkit.Unity
                 bool foundDevices = false;
                 bool foundHoloLens = false;
 
-                StringBuilder builder = new StringBuilder(); // Used to build the final output
-                string[] lines = settings.Split(new char[] { '\n' });
+                var builder = new StringBuilder(); // Used to build the final output
+                string[] lines = settings.Split('\n');
                 for (int i = 0; i < lines.Length; ++i)
                 {
                     string line = lines[i];
@@ -158,6 +160,8 @@ namespace HoloToolkit.Unity
         /// </summary>
         private static void SetFastestDefaultQuality()
         {
+            // HACK: Edits QualitySettings.asset Directly
+            // TODO: replace with friendlier version that uses built in APIs
             try
             {
                 // Find the WSA element under the platform quality list and replace it's value with 0
@@ -201,9 +205,9 @@ namespace HoloToolkit.Unity
                 EnableVirtualReality();
             }
 
+            EditorPrefsUtility.SetEditorPref(Names[ProjectSetting.SharingServices], Values[ProjectSetting.SharingServices]);
             if (Values[ProjectSetting.SharingServices])
             {
-                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, true);
             }
@@ -214,7 +218,8 @@ namespace HoloToolkit.Unity
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, false);
             }
 
-            // Since we went behind Unity's back to tweak some settings we 
+
+            // HACK Since we went behind Unity's back to tweak some settings we
             // need to reload the project to have them take effect
             bool canReload = EditorUtility.DisplayDialog(
                 "Project reload required!",
@@ -232,28 +237,55 @@ namespace HoloToolkit.Unity
         {
             for (int i = (int)ProjectSetting.BuildWsaUwp; i <= (int)ProjectSetting.SharingServices; i++)
             {
-                Values[(ProjectSetting)i] = true;
+                switch ((ProjectSetting)i)
+                {
+                    case ProjectSetting.BuildWsaUwp:
+                    case ProjectSetting.WsaEnableVR:
+                    case ProjectSetting.WsaUwpBuildToD3D:
+                    case ProjectSetting.WsaFastestQuality:
+                        Values[(ProjectSetting)i] = true;
+                        break;
+                    case ProjectSetting.SharingServices:
+                        Values[(ProjectSetting)i] = EditorPrefsUtility.GetEditorPref(Names[(ProjectSetting)i], false);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+        }
+
+        protected override void OnGuiChanged()
+        {
         }
 
         protected override void LoadStrings()
         {
             Names[ProjectSetting.BuildWsaUwp] = "Target Windows Store and UWP";
-            Descriptions[ProjectSetting.BuildWsaUwp] = "Required\n\nSwitches the currently active target to produce a Store app targeting the Universal Windows Platform.\n\nSince HoloLens only supports Windows Store apps, this option should remain checked unless you plan to manually switch the target later before you build.";
+            Descriptions[ProjectSetting.BuildWsaUwp] = "Required\n\nSwitches the currently active target to produce a Store app targeting the Universal Windows Platform.\n\n" +
+                                                       "Since HoloLens only supports Windows Store apps, this option should remain checked unless you plan to manually switch " +
+                                                       "the target later before you build.";
 
             Names[ProjectSetting.WsaUwpBuildToD3D] = "Build for Direct3D";
-            Descriptions[ProjectSetting.WsaUwpBuildToD3D] = "Recommended\n\nProduces an app that targets Direct3D instead of Xaml.\n\nPure Direct3D apps run faster than applications that include Xaml. This option should remain checked unless you plan to overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
+            Descriptions[ProjectSetting.WsaUwpBuildToD3D] = "Recommended\n\nProduces an app that targets Direct3D instead of Xaml.\n\nPure Direct3D apps run " +
+                                                            "faster than applications that include Xaml. This option should remain checked unless you plan to " +
+                                                            "overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
 
             Names[ProjectSetting.WsaFastestQuality] = "Set Quality to Fastest";
-            Descriptions[ProjectSetting.WsaFastestQuality] = "Recommended\n\nChanges the quality settings for Windows Store apps to the 'Fastest' setting.\n\n'Fastest' is the recommended quality setting for HoloLens apps, but this option can be unchecked if you have already optimized your project for the HoloLens.";
+            Descriptions[ProjectSetting.WsaFastestQuality] = "Recommended\n\nChanges the quality settings for Windows Store apps to the 'Fastest' setting.\n\n" +
+                                                             "'Fastest' is the recommended quality setting for HoloLens apps, but this option can be unchecked " +
+                                                             "if you have already optimized your project for the HoloLens.";
 
             Names[ProjectSetting.WsaEnableVR] = "Enable VR";
-            Descriptions[ProjectSetting.WsaEnableVR] = "Required\n\nEnables VR for Windows Store apps and adds the HoloLens as a target VR device.\n\nThe application will not compile for HoloLens and tools like Holographic Remoting will not function without this enabled. Therefore this option should remain checked unless you plan to manually perform these steps later.";
+            Descriptions[ProjectSetting.WsaEnableVR] = "Required\n\nEnables VR for Windows Store apps and adds the HoloLens as a target VR device.\n\n" +
+                                                       "The application will not compile for HoloLens and tools like Holographic Remoting will not function " +
+                                                       "without this enabled. Therefore this option should remain checked unless you plan to manually " +
+                                                       "perform these steps later.";
 
             Names[ProjectSetting.SharingServices] = "Enable Sharing Services";
             Descriptions[ProjectSetting.SharingServices] = "Enables the use of the Sharing Services in your project.\n\n" +
-                "Requires the SpatialPerception, InternetClient, InternetClientServer, PrivateNetworkClientServer, and Microphone Capabilities.\n\n" +
-                "Start the Sharing Server though HoloToolkit->Sharing Service->Launch Sharing Service.";
+                                                           "Requires the SpatialPerception, InternetClient, InternetClientServer, PrivateNetworkClientServer, " +
+                                                           "and Microphone Capabilities.\n\n" +
+                                                           "Start the Sharing Server though HoloToolkit->Sharing Service->Launch Sharing Service.";
         }
 
         protected override void OnEnable()

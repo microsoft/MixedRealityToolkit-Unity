@@ -26,8 +26,14 @@ namespace HoloToolkit.Unity
         #region Internal Methods
         private void SettingToggle(TSetting setting)
         {
+            EditorGUI.BeginChangeCheck();
             // Draw and update setting flag
             values[setting] = GUILayout.Toggle(values[setting], new GUIContent(names[setting]));
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                OnGuiChanged();
+            }
 
             // If this control is the one under the mouse, update the status message
             if ((Event.current.type == EventType.Repaint) && (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition)))
@@ -53,6 +59,12 @@ namespace HoloToolkit.Unity
         /// Called when string names and descriptions should be loaded.
         /// </summary>
         protected abstract void LoadStrings();
+
+        /// <summary>
+        /// Called when a toggle has been flipped and a change has been detected.
+        /// </summary>
+        protected abstract void OnGuiChanged();
+
         #endregion // Overridables / Event Triggers
 
         #region Overrides / Event Handlers
