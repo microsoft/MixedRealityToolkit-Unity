@@ -70,17 +70,25 @@ namespace HoloToolkit.Unity
         /// </remarks>
         private static bool IsNewEditorSession()
         {
-            // Determine the last known launch date of the editor by loading it from the PlayerPrefs cache.
-            DateTime lastLaunchDate;
-            DateTime.TryParse(EditorPrefs.GetString(Application.productName + AssemblyReloadTimestampKey), out lastLaunchDate);
-
             // Determine the launch date for this editor session using the current time, and the time since startup.
             DateTime thisLaunchDate = DateTime.UtcNow.AddSeconds(-EditorApplication.timeSinceStartup);
-            EditorPrefs.SetString(Application.productName + AssemblyReloadTimestampKey, thisLaunchDate.ToString(CultureInfo.InvariantCulture));
+
+            // Determine the last known launch date of the editor by loading it from the PlayerPrefs cache.
+            // If no key exists set the time to this session.
+            string dateString = EditorPrefsUtility.GetEditorPref(AssemblyReloadTimestampKey, thisLaunchDate.ToString(CultureInfo.InvariantCulture));
+
+            DateTime lastLaunchDate;
+            DateTime.TryParse(dateString, out lastLaunchDate);
 
             // If the current session was launched later than the last known session start date, then this must be 
             // a new session, and we can display the first-time prompt.
-            return (thisLaunchDate - lastLaunchDate).Seconds > 0;
+            if ((thisLaunchDate - lastLaunchDate).Seconds > 0)
+            {
+                EditorPrefsUtility.SetEditorPref(AssemblyReloadTimestampKey, dateString);
+                return true;
+            }
+
+            return false;
         }
     }
 }

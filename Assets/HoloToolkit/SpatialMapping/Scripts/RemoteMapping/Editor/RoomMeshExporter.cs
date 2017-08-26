@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                return EditorPrefs.GetString(ExportDirectoryKey, ExportDirectoryDefault);
+                return EditorPrefsUtility.GetEditorPref(ExportDirectoryKey, ExportDirectoryDefault);
             }
             set
             {
@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity
                     value = ExportDirectoryDefault;
                 }
 
-                EditorPrefs.SetString(Application.productName + ExportDirectoryKey, value);
+                EditorPrefsUtility.SetEditorPref(ExportDirectoryKey, value);
             }
         }
 

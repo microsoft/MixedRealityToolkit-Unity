@@ -4,7 +4,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,18 +41,20 @@ namespace HoloToolkit.Unity
         private void OnEnable()
         {
             // Load settings
-            _originalAppIconPath = EditorPrefs.GetString(Application.productName + EditorPrefsKey_AppIcon);
-            _originalSplashImagePath = EditorPrefs.GetString(Application.productName + EditorPrefsKey_SplashImage);
-            _outputDirectoryName = EditorPrefs.GetString(Application.productName + EditorPrefsKey_DirectoryName);
+            _originalAppIconPath = EditorPrefsUtility.GetEditorPref(EditorPrefsKey_AppIcon, _originalAppIconPath);
+            _originalSplashImagePath = EditorPrefsUtility.GetEditorPref(EditorPrefsKey_SplashImage, _originalSplashImagePath);
+            _outputDirectoryName = EditorPrefsUtility.GetEditorPref(EditorPrefsKey_DirectoryName, _outputDirectoryName);
 
             if (!string.IsNullOrEmpty(_originalAppIconPath))
             {
                 _originalAppIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(_originalAppIconPath);
             }
+
             if (!string.IsNullOrEmpty(_originalSplashImagePath))
             {
                 _originalSplashImage = AssetDatabase.LoadAssetAtPath<Texture2D>(_originalSplashImagePath);
             }
+
             if (string.IsNullOrEmpty(_outputDirectoryName))
             {
                 _outputDirectoryName = Application.dataPath + "/" + InitialOutputDirectoryName;
@@ -112,9 +113,9 @@ namespace HoloToolkit.Unity
 
         private static void SaveSettings()
         {
-            EditorPrefs.SetString(Application.productName + EditorPrefsKey_AppIcon, _originalAppIconPath);
-            EditorPrefs.SetString(Application.productName + EditorPrefsKey_SplashImage, _originalSplashImagePath);
-            EditorPrefs.SetString(Application.productName + EditorPrefsKey_DirectoryName, _outputDirectoryName);
+            EditorPrefsUtility.SetEditorPref(EditorPrefsKey_AppIcon, _originalAppIconPath);
+            EditorPrefsUtility.SetEditorPref(EditorPrefsKey_SplashImage, _originalSplashImagePath);
+            EditorPrefsUtility.SetEditorPref(EditorPrefsKey_DirectoryName, _outputDirectoryName);
         }
 
         private static Texture2D CreateImageInput(string imageTitle, int width, int height, Texture2D texture, ref string path)
