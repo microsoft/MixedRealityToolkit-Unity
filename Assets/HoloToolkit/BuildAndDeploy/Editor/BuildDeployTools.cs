@@ -87,42 +87,20 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            // For MSBuild 15+ we should to use vswhere to give us the correct instance
-            string output = @"/C cd ""%ProgramFiles(x86)%\Microsoft Visual Studio\Installer"" && vswhere -version " + msBuildVersion + " -products * -requires Microsoft.Component.MSBuild -property installationPath";
-
-            var vswherePInfo = new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                Arguments = output
-            };
-
-            using (var vswhereP = new System.Diagnostics.Process())
-            {
-                vswhereP.StartInfo = vswherePInfo;
-                vswhereP.Start();
-                output = vswhereP.StandardOutput.ReadToEnd();
-                vswhereP.WaitForExit();
-                vswhereP.Close();
-                vswhereP.Dispose();
-            }
-
+            // For MSBuild 15+ we should to use the unity editor preference path
             string externalScriptingEditorPath = EditorPrefs.GetString("kScriptsDefaultApp");
-            string[] paths = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 0; i < paths.Length; i++)
+            var end = externalScriptingEditorPath.IndexOf("\\Common7");
+            if (end > -1)
             {
-                paths[i] = paths[i].Replace(Environment.NewLine, "");
-                if (externalScriptingEditorPath.Contains(paths[i]))
-                {
-                    return paths[i] + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe";
-                }
+                var path = externalScriptingEditorPath.Substring(0, end);
+                return path + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe";
             }
+
 
             Debug.LogError("Unable to find a valid path to Visual Studio Instance!");
             return string.Empty;
+
         }
 
         public static bool RestoreNugetPackages(string nugetPath, string storePath)
