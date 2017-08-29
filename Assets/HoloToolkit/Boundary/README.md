@@ -2,7 +2,7 @@
 
 Scripts that leverage boundary APIs in Unity.
 These are useful for rendering the floor for immersive devices.
-You can also check if a particual game object is within the established boundary or not.
+You can also check if a particular game object is within the established boundary or not.
 
 ### [Prefabs](Prefabs)
 Prefabs related to the boundary features.
@@ -14,8 +14,8 @@ A simple quad scaled up to 10x that will be rendered as the floor for an immersi
 
 #### BoundaryManager.cs
 Places a floor quad to ground the scene.
-Allows you to check if your gameobject is within setup boundary on the immersive headset.
-Boudnary can be configured via the Mixed Reality Portal.
+Allows you to check if your GameObject is within setup boundary on the immersive headset.
+Boundary can be configured via the Mixed Reality Portal.
 
 ### [Tests](Tests)
 To use the scene:
@@ -29,7 +29,7 @@ To use the scene:
 #### BoundaryTest.unity 
 Shows how to check if an object is within boundary and render a floor quad.
 
-We render the floor quad at 0,0,-3 in editor.
+We render the floor quad at (0,0,-3) in editor.
 There are 4 different cubes in the test scene which try to demonstrate if an object is within or outside the setup boundary.
 
 ####
