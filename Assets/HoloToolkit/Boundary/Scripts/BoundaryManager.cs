@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA;
@@ -121,7 +122,7 @@ namespace HoloToolkit.Unity.Boundary
                     if (dimensions != null)
                     {
                         Debug.Log("Drawing floor at dimensions Y.");
-                        // Draw the floor at boundry Y.                    
+                        // Draw the floor at boundary Y.                    
                         floorQuadInstance.transform.localPosition = new Vector3(0, dimensions.y, 0);
                     }
                 }
@@ -154,7 +155,7 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Uses the TryGetGeomerty call and Unity Bounds to create a volume out of the setup boundary.
+        /// Uses the TryGetGeometry call and Unity Bounds to create a volume out of the setup boundary.
         /// </summary>
         public void CalculateBoundaryVolume()
         {
