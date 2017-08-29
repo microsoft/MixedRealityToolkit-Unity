@@ -40,7 +40,7 @@ Prefabs help to draw the floor for immersive headsets and also allows you to che
 **External\How To** docs folder is meant to help everyone with migrating forward or any simple doubts they might have about the process.
 Please feel free to grow all these sections. We can't wait to see your additions!
 
-## HoloToolkit contains the following feature areas:
+## MixedRealityToolkit contains the following feature areas:
 
 1. [Input](Assets/HoloToolkit/Input/README.md)
 2. [Sharing](Assets/HoloToolkit/Sharing/README.md)
@@ -51,9 +51,7 @@ Please feel free to grow all these sections. We can't wait to see your additions
 7. [Build](Assets/HoloToolkit/Build/README.md)
 8. [Boundary](Assets/HoloToolkit/Boundary/README.md)
 
-To learn more about individual HoloLens feature areas, please read the [Wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) section.
-
-To learn how to add the HoloToolkit to your project see the [Getting Started](GettingStarted.md) guide.
+To learn how to add the MixedRealityToolkit to your project see the [Getting Started](GettingStarted.md) guide.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
