@@ -19,8 +19,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
 
                 for (int i = 0; i < defaultMaterials.Length; i++)
                 {
-                    // Highlight the material if object is within specified boundary.
-                    //defaultMaterials[i].SetFloat("_Highlight", 0.35f);
+                    // Color the cube green if object is within specified boundary.
                     Color highlightColor = Color.green;
                     defaultMaterials[i].SetColor("_Color", highlightColor);
                 }

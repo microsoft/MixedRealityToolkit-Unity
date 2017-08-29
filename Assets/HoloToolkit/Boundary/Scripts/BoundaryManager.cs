@@ -73,18 +73,31 @@ namespace HoloToolkit.Unity.Boundary
 
         void Awake()
         {
+            // Render the floor based on if you are in editor or immersive device.
+            RenderFloorQuad();
+
             // Render boundary if configured.
             SetBoundaryRendering();
 
             // Create a volume out of the specified user boundary.
-            CalculateBoundaryVolume();
-
-            // Render the floor based on if you are in editor or immersive device.
-            RenderFloorQuad();
+            CalculateBoundaryVolume();           
         }
 
         private void RenderFloorQuad()
         {
+            if (HolographicSettings.IsDisplayOpaque)
+            {
+                // Defaulting coordinate system to RoomScale in immersive headsets.
+                // This puts the origin 0,0,0 on the floor if a floor has been established during RunSetup via MixedRealityPortal
+                UnityEngine.XR.XRDevice.SetTrackingSpaceType(UnityEngine.XR.TrackingSpaceType.RoomScale);
+            }
+            else
+            {
+                // Defaulting coordinate system to Stationary for HoloLens.
+                // This puts the origin 0,0,0 at the first place where the user started the application.
+                UnityEngine.XR.XRDevice.SetTrackingSpaceType(UnityEngine.XR.TrackingSpaceType.Stationary);
+            }
+
             if (FloorQuad != null && HolographicSettings.IsDisplayOpaque)
             {
                 floorQuadInstance = Instantiate(FloorQuad);
@@ -96,14 +109,13 @@ namespace HoloToolkit.Unity.Boundary
 #else
                 // Inside immersive headset draw floor quad at Y value of dimensions.
                 Vector3 dimensions;
-                // TODO: BUG: Unity: configured bool always returns false.
                 // TODO: BUG: Unity: TryGetDimensions does not return true either.
-                //if (UnityEngine.Experimental.XR.Boundary.configured &&
-                //    UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions))
-
+                //if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions,
+                //UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                 if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions, 
                     UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                 {
+                    Debug.Log("Got dimensions of tracked area.");
                     if (dimensions != null)
                     {
                         Debug.Log("Drawing floor at dimensions Y.");
@@ -116,7 +128,7 @@ namespace HoloToolkit.Unity.Boundary
                     Debug.Log("Drawing floor at 0,0,0.");
                     // Draw the floor at 0,0,0.
                     floorQuadInstance.transform.localPosition = Vector3.zero;
-                }
+                }                
 #endif
                 floorQuadInstance.SetActive(true);
             }
@@ -144,15 +156,21 @@ namespace HoloToolkit.Unity.Boundary
         /// </summary>
         public void CalculateBoundaryVolume()
         {
-            // TODO: BUG: Unity
+            // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
+            // But this always returns false with b8.
             //if (!UnityEngine.Experimental.XR.Boundary.configured)
             //{
             //    Debug.Log("Boundary not configured.");
             //    return;
             //}
 
-            boundaryBounds = new Bounds();
+            if (UnityEngine.XR.XRDevice.GetTrackingSpaceType() != UnityEngine.XR.TrackingSpaceType.RoomScale)
+            {
+                Debug.Log("No boundary for stationary scale experiences.");
+                return;
+            }
 
+            boundaryBounds = new Bounds();
             // Get all the bounds setup by the user.
             List<Vector3> boundaryGeometry = new List<Vector3>();
             if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry))
