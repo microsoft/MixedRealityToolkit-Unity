@@ -6,7 +6,7 @@ namespace GLTF
 	/// A camera's projection.  A node can reference a camera to apply a transform
 	/// to place the camera in the scene
 	/// </summary>
-	public class Camera : GLTFChildOfRootProperty
+	public class GLTFCamera : GLTFChildOfRootProperty
 	{
 		/// <summary>
 		/// An orthographic camera containing properties to create an orthographic
@@ -27,9 +27,9 @@ namespace GLTF
 		/// </summary>
 		public CameraType Type;
 
-		public static Camera Deserialize(GLTFRoot root, JsonReader reader)
+		public static GLTFCamera Deserialize(GLTFRoot root, JsonReader reader)
 		{
-			var camera = new Camera();
+			var camera = new GLTFCamera();
 
 			while (reader.Read() && reader.TokenType == JsonToken.PropertyName)
 			{

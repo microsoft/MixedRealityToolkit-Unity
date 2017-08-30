@@ -120,7 +120,7 @@ namespace HoloToolkit.Unity.InputModule
                         yield break;
                     }
 
-                    // This API returns the appropriate GLTF file according to the motion controller you're currently using, if supported.
+                    // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
                     IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = controller.TryGetRenderableModelAsync();
 
                     if (modelTask == null)
