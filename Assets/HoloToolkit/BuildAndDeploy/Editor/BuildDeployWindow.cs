@@ -561,7 +561,7 @@ namespace HoloToolkit.Unity
 
                 if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(buttonWidth_Full)))
                 {
-                    Process.Start("explorer.exe", "/open," + Path.GetFullPath(curBuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
+                   Process.Start("explorer.exe", "/f /open," + Path.GetFullPath(curBuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
                 }
 
                 GUI.enabled = true;
