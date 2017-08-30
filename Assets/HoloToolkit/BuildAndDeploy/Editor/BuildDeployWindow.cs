@@ -768,7 +768,7 @@ namespace HoloToolkit.Unity
             EditorUtility.ClearProgressBar();
         }
 
-        private bool InstallApp(string buildPath, string targetDevice)
+        private static bool InstallApp(string buildPath, string targetDevice)
         {
             // Get the appx path
             FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");
