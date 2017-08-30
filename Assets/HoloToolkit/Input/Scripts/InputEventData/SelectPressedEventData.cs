@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Describes an input event that involves a trigger press.
+    /// Describes an input event that involves a select press.
     /// </summary>
     public class SelectPressedEventData : BaseInputEventData
     {
