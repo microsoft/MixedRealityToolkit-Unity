@@ -92,7 +92,7 @@ namespace HoloToolkit.Unity
             if (buildInfo.HasAnySymbols(BuildSymbolRelease))
             {
                 //Unity automatically adds the DEBUG symbol if the BuildOptions.Development flag is
-                //specified. In order to have debug symbols and the RELEASE symbole we have to
+                //specified. In order to have debug symbols and the RELEASE symbols we have to
                 //inject the symbol Unity relies on to enable the /debug+ flag of csc.exe which is "DEVELOPMENT_BUILD"
                 buildInfo.AppendSymbols("DEVELOPMENT_BUILD");
             }
