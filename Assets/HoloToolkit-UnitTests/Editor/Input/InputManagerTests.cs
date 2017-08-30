@@ -227,12 +227,12 @@ namespace HoloToolkit.Unity.Tests
 
         private GameObject CreateTestHandler()
         {
-            return SetTestHandler(TestUtils.CreateGameObject());
+            return SetTestHandler(new GameObject());
         }
 
         private GameObject CreateCubeTestHandler()
         {
-            return SetTestHandler(TestUtils.CreatePrimitive(PrimitiveType.Cube));
+            return SetTestHandler(GameObject.CreatePrimitive(PrimitiveType.Cube));
         }
 
         private GameObject SetTestHandler(GameObject gameObject)

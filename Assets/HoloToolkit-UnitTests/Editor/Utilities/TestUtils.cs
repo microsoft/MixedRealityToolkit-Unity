@@ -12,18 +12,10 @@ namespace HoloToolkit.Unity
     public static class TestUtils
     {
         /// <summary>
-        /// Objects created through test utils. The reason to keep them in a list is that disabled objects can't be found at all, or at least only in the active scene.
-        /// So to be able to clear the whole scene we need to keep references.
-        /// Instantiated disabled objects will only be found when they are in the test scene but not in the additive loaded original scene.
-        /// </summary>
-        private static readonly List<Transform> CreatedGameObjects = new List<Transform>();
-
-        /// <summary>
         /// Deletes all objects in the scene
         /// </summary>
         public static void ClearScene()
         {
-            ClearCreated();
             ClearUnreferencedActive();
             ClearUnreferencedDisabledInTestScene();
         }
@@ -37,12 +29,7 @@ namespace HoloToolkit.Unity
         {
             DestroyTransforms(Object.FindObjectsOfType<Transform>());
         }
-
-        private static void ClearCreated()
-        {
-            DestroyTransforms(CreatedGameObjects);
-        }
-
+        
         private static void DestroyTransforms(IEnumerable<Transform> transforms)
         {
             DestroyGameObjects(transforms.Where(t => t).Select(t => t.root.gameObject).Distinct());
@@ -56,32 +43,13 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public static GameObject CreateGameObject()
-        {
-            var gameObject = new GameObject();
-            CreatedGameObjects.Add(gameObject.transform);
-            return gameObject;
-        }
-
-        /// <summary>
-        /// Creates a new primitive<see cref="GameObject"/> and saves a reference internally to be able to delete it in case it gets disabled.
-        /// </summary>
-        /// <param name="type">Desired type of the new object</param>
-        /// <returns>The created primitive <see cref="GameObject"/></returns>
-        public static GameObject CreatePrimitive(PrimitiveType type)
-        {
-            var gameObject = GameObject.CreatePrimitive(type);
-            CreatedGameObjects.Add(gameObject.transform);
-            return gameObject;
-        }
-
         /// <summary>
         /// Creates a camera and adds the MainCamera tag to it
         /// </summary>
         /// <returns>The created camera</returns>
         public static Camera CreateMainCamera()
         {
-            var camera = CreateGameObject().AddComponent<Camera>();
+            var camera = new GameObject().AddComponent<Camera>();
             camera.gameObject.tag = "MainCamera";
             return camera;
         }

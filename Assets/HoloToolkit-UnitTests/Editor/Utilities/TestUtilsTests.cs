@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void ClearOne()
         {
-            TestUtils.CreateGameObject();
+            new GameObject();
             TestUtils.ClearScene();
             Assert.That(Object.FindObjectsOfType<GameObject>(), Is.Empty);
         }
@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void ClearReferencedDisabled()
         {
-            var gameObject = TestUtils.CreateGameObject();
+            var gameObject = new GameObject();
             gameObject.SetActive(false);
             TestUtils.ClearScene();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.Tests
         {
             for (var i = 0; i < 10; i++)
             {
-                TestUtils.CreateGameObject();
+                new GameObject();
             }
             TestUtils.ClearScene();
             Assert.That(Object.FindObjectsOfType<GameObject>(), Is.Empty);
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void ClearHierarchy()
         {
-            var empty = TestUtils.CreateGameObject();
+            var empty = new GameObject();
             var parent = Object.Instantiate(empty);
             for (var i = 0; i < 10; i++)
             {

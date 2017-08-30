@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void EnsureComponentNotNull()
         {
-            var gameObject = TestUtils.CreateGameObject();
+            var gameObject = new GameObject();
             gameObject.EnsureComponent<BoxCollider>();
             Assert.That(gameObject.GetComponent<BoxCollider>() == null, Is.False);
         }
@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void EnsureOnlyOneComponentWithExisting()
         {
-            var gameObject = TestUtils.CreateGameObject();
+            var gameObject = new GameObject();
             gameObject.AddComponent<BoxCollider>();
             gameObject.EnsureComponent<BoxCollider>();
             Assert.That(gameObject.GetComponents<BoxCollider>().Length, Is.EqualTo(1));
@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void EnsureReturnsSameComponentWithExisting()
         {
-            var gameObject = TestUtils.CreateGameObject();
+            var gameObject = new GameObject();
             var existingComponent = gameObject.AddComponent<BoxCollider>();
             var ensuredComponent = gameObject.EnsureComponent<BoxCollider>();
             Assert.That(ensuredComponent, Is.EqualTo(existingComponent));
@@ -41,7 +41,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void EnsureComponentOnComponent()
         {
-            var gameObject = TestUtils.CreateGameObject();
+            var gameObject = new GameObject();
             var existingComponent = gameObject.AddComponent<BoxCollider>();
             var ensuredComponent = existingComponent.EnsureComponent<SphereCollider>();
             Assert.That(ensuredComponent == null, Is.False);
