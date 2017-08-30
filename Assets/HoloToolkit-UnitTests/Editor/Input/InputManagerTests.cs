@@ -217,11 +217,12 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void FocusChangeFullIntegration()
         {
-            CreateCubeTestHandler().CallAwake().CallStart();
+            var handler = CreateCubeTestHandler().CallAwake().CallStart();
 
             GazeManager.Instance.gameObject.CallUpdate();
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
+            Assert.That(receivedEventSources[0], Is.EqualTo(handler));
         }
 
 
