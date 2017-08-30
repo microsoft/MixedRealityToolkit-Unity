@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Calls Awake on all monobehaviours on the given gameObject through reflection.
+        /// Calls Awake on all MonoBehaviours on the given gameObject through reflection.
         /// </summary>
         /// <param name="gameObject">The gameObject to be awoken</param>
         /// <returns>The given gameObject to be able to chain call</returns>
@@ -101,7 +101,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Calls Start on all monobehaviours on the given gameObject through reflection.
+        /// Calls Start on all MonoBehaviours on the given gameObject through reflection.
         /// </summary>
         /// <param name="gameObject">The gameObject to be started</param>
         /// <returns>The given gameObject to be able to chain call</returns>
@@ -115,7 +115,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Calls Update on all monobehaviours on the given gameObject through reflection.
+        /// Calls Update on all MonoBehaviours on the given gameObject through reflection.
         /// </summary>
         /// <param name="gameObject">The gameObject to be updated</param>
         /// <returns>The given gameObject to be able to chain call</returns>
