@@ -88,7 +88,15 @@ namespace HoloToolkit.Unity
             }
 
             // For MSBuild 15+ we should to use vswhere to give us the correct instance
-            string output = @"/C cd ""%ProgramFiles(x86)%\Microsoft Visual Studio\Installer"" && vswhere -version " + msBuildVersion + " -products * -requires Microsoft.Component.MSBuild -property installationPath";
+            string output = @"/C vswhere -version " + msBuildVersion + " -products * -requires Microsoft.Component.MSBuild -property installationPath";
+
+            // get the right program files path based on whether the pc is x86 or x64
+            string programFiles = @"C:\Program Files\";
+            if (System.Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE", EnvironmentVariableTarget.Machine).ToString() == "AMD64")
+            {
+                programFiles = @"C:\Program Files (x86)\";
+            }
+
 
             var vswherePInfo = new System.Diagnostics.ProcessStartInfo
             {
@@ -96,8 +104,11 @@ namespace HoloToolkit.Unity
                 CreateNoWindow = true,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
-                Arguments = output
+                RedirectStandardError = false,
+                Arguments = output,
+                WorkingDirectory = programFiles + @"Microsoft Visual Studio\Installer"
             };
+
 
             using (var vswhereP = new System.Diagnostics.Process())
             {
@@ -105,21 +116,19 @@ namespace HoloToolkit.Unity
                 vswhereP.Start();
                 output = vswhereP.StandardOutput.ReadToEnd();
                 vswhereP.WaitForExit();
-                vswhereP.Close();
-                vswhereP.Dispose();
             }
 
-            string externalScriptingEditorPath = EditorPrefs.GetString("kScriptsDefaultApp");
             string[] paths = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 0; i < paths.Length; i++)
+
+            // if there are multiple 2017 installs,
+            // prefer enterprise, then pro, then community
+            string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise")).ThenBy(p => p.ToLower().Contains("professional")).First();
+            if (File.Exists(bestPath + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe"))
             {
-                paths[i] = paths[i].Replace(Environment.NewLine, "");
-                if (externalScriptingEditorPath.Contains(paths[i]))
-                {
-                    return paths[i] + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe";
-                }
+                return bestPath + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe";
             }
+
 
             Debug.LogError("Unable to find a valid path to Visual Studio Instance!");
             return string.Empty;
