@@ -1,4 +1,6 @@
-﻿Shader "HoloToolkit/3DTextShader"
+﻿// Upgrade NOTE: replaced 'UNITY_INSTANCE_ID' with 'UNITY_VERTEX_INPUT_INSTANCE_ID'
+
+Shader "HoloToolkit/3DTextShader"
 {
     Properties
     {
@@ -55,6 +57,7 @@
                     float4 vertex : POSITION;
                     half4 color : COLOR;
                     float2 texcoord : TEXCOORD0;
+					UNITY_VERTEX_INPUT_INSTANCE_ID
                 };
 
                 struct v2f
@@ -62,6 +65,9 @@
                     float4 vertex : POSITION;
                     half4 color : COLOR;
                     float2 texcoord : TEXCOORD0;
+					UNITY_VERTEX_INPUT_INSTANCE_ID
+					UNITY_VERTEX_OUTPUT_STEREO
+
                 };
 
                 sampler2D _MainTex;
@@ -70,7 +76,10 @@
 
                 v2f vert (appdata_t v)
                 {
-                    v2f o;
+					v2f o;
+					UNITY_SETUP_INSTANCE_ID(v);
+					UNITY_TRANSFER_INSTANCE_ID(v, o);
+					UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
                     o.color = v.color;
@@ -82,6 +91,7 @@
 
                 half4 frag (v2f i) : COLOR
                 {
+					UNITY_SETUP_INSTANCE_ID(i);
                     half4 col = i.color;
                     col.a *= tex2D(_MainTex, i.texcoord).a;
                     col = col * _Color;
