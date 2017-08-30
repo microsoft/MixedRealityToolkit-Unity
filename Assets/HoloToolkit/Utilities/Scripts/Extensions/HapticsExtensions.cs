@@ -3,7 +3,6 @@
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
-using UnityEngine;
 #if !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
@@ -38,6 +37,7 @@ namespace HoloToolkit.Unity
                             if (hapticsFeedback.Waveform.Equals(0x1004))
                             {
                                 simpleHapticsController.SendHapticFeedback(hapticsFeedback, intensity);
+                                return;
                             }
                         }
                     }
@@ -49,9 +49,26 @@ namespace HoloToolkit.Unity
         public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
         {
 #if !UNITY_EDITOR
-            interactionSource.StartHaptics(intensity);
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            {
+                IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
 
-            interactionSource.StopHaptics();
+                foreach (SpatialInteractionSourceState sourceState in sources)
+                {
+                    if (sourceState.Source.Id.Equals(interactionSource.id))
+                    {
+                        SimpleHapticsController simpleHapticsController = sourceState.Source.Controller.SimpleHapticsController;
+                        foreach (SimpleHapticsControllerFeedback hapticsFeedback in simpleHapticsController.SupportedFeedback)
+                        {
+                            if (hapticsFeedback.Waveform.Equals(0x1004))
+                            {
+                                simpleHapticsController.SendHapticFeedbackForDuration(hapticsFeedback, intensity, new TimeSpan(Convert.ToInt64(durationInSeconds) * TimeSpan.TicksPerSecond));
+                                return;
+                            }
+                        }
+                    }
+                }
+            }, true);
 #endif
         }
 
