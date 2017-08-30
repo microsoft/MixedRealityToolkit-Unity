@@ -50,6 +50,7 @@ Shader "HoloToolkit/3DTextShader"
             CGPROGRAM
                 #pragma vertex vert
                 #pragma fragment frag
+				#pragma multi_compile_instancing
                 #include "UnityCG.cginc"
 
                 struct appdata_t
@@ -72,7 +73,9 @@ Shader "HoloToolkit/3DTextShader"
 
                 sampler2D _MainTex;
                 float4 _MainTex_ST;
-                fixed4 _Color;
+				UNITY_INSTANCING_CBUFFER_START(Props)
+					UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+				UNITY_INSTANCING_CBUFFER_END
 
                 v2f vert (appdata_t v)
                 {
@@ -94,7 +97,7 @@ Shader "HoloToolkit/3DTextShader"
 					UNITY_SETUP_INSTANCE_ID(i);
                     half4 col = i.color;
                     col.a *= tex2D(_MainTex, i.texcoord).a;
-                    col = col * _Color;
+                    col = col * UNITY_ACCESS_INSTANCED_PROP(_Color);
                     clip (col.a - 0.01);
                     return col;
                 }

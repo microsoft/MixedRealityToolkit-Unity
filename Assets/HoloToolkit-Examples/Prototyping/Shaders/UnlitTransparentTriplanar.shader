@@ -24,6 +24,7 @@ Shader "HoloToolkit/UnlitTransparentTriplanar"
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile_instancing
 			#include "UnityCG.cginc"
 
 			struct appdata
@@ -45,9 +46,12 @@ Shader "HoloToolkit/UnlitTransparentTriplanar"
 
 			fixed _Ambient;
 			fixed3 _LightDir;
-			fixed4 _Color;
 			float1 _LightIntensity;
 			float1 _CameraIntensity;
+			UNITY_INSTANCING_CBUFFER_START(Props)
+				UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+			UNITY_INSTANCING_CBUFFER_END
+
 
 			v2f vert(float4 pos : POSITION, float3 normal : NORMAL, appdata v)
 			{
@@ -73,7 +77,7 @@ Shader "HoloToolkit/UnlitTransparentTriplanar"
 			{
 				UNITY_SETUP_INSTANCE_ID(i);
 				// Return the color with the diffuse color.
-				return _Color * fixed4(i.diffuse, 1.0);
+				return UNITY_ACCESS_INSTANCED_PROP(_Color) * fixed4(i.diffuse, 1.0);
 			}
 			ENDCG
 		}
