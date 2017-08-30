@@ -14,6 +14,10 @@ Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/m
 [github-rel-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=latest%20master%20branch%20release&colorB=007ec6
 [![Github Release][github-rel-badge]][github-rel]
 
+[unity-download]:                 https://unity3d.com/unity/qa/patch-releases/2017.1.0p5
+[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.1.0p5-green.svg
+[![Github Release][unity-version-badge]][unity-download]
+
 # Feature areas
 | ![Input](External/ReadMeImages/MRTK170802_Short_03.png) [Input](Assets/HoloToolkit/Input/README.md)| ![Sharing](External/ReadMeImages/MRTK170802_Short_04.png) [Sharing](Assets/HoloToolkit/Sharing/README.md)| ![Spatial Mapping](External/ReadMeImages/MRTK170802_Short_05.png) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| ![Spatial Understanding](External/ReadMeImages/MRTK170802_Short_06.png) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)|
 | :--------------------- | :----------------- | :------------------ | :------------------------ |

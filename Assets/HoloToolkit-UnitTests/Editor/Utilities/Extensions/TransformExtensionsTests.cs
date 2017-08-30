@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity.Tests
         public void IterateNull()
         {
             Assert.Throws(typeof(System.ArgumentNullException), () => {
-                TransformExtensions.IterateHierarchy(null);
+                TransformExtensions.EnumerateHierarchy(null);
             });
         }
 
@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var root = Object.Instantiate(empty);
             Assert.Throws(typeof(System.ArgumentNullException), () => {
-                root.transform.IterateHierarchy(null);
+                root.transform.EnumerateHierarchy(null);
             });
         }
 
@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity.Tests
         public void IterateIgnoreNull()
         {
             Assert.Throws(typeof(System.ArgumentNullException), () => {
-                TransformExtensions.IterateHierarchy(null, new List<Transform>(0));
+                TransformExtensions.EnumerateHierarchy(null, new List<Transform>(0));
             });
         }
 
@@ -54,7 +54,7 @@ namespace HoloToolkit.Unity.Tests
         public void IterateOne()
         {
             var root = Object.Instantiate(empty);
-            Assert.That(root.transform.IterateHierarchy().First(), Is.EqualTo(root.transform));
+            Assert.That(root.transform.EnumerateHierarchy().First(), Is.EqualTo(root.transform));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.Tests
             var root = Object.Instantiate(empty);
             var ignoreList = new List<Transform> { Object.Instantiate(empty, root.transform).transform };
 
-            foreach (var transform in root.transform.IterateHierarchy(ignoreList))
+            foreach (var transform in root.transform.EnumerateHierarchy(ignoreList))
             {
                 Assert.That(transform, Is.EqualTo(root.transform));
             }
@@ -77,7 +77,7 @@ namespace HoloToolkit.Unity.Tests
             Object.Instantiate(empty, child.transform);
             var ignoreList = new List<Transform> { child.transform };
 
-            foreach (var transform in root.transform.IterateHierarchy(ignoreList))
+            foreach (var transform in root.transform.EnumerateHierarchy(ignoreList))
             {
                 Assert.That(transform, Is.EqualTo(root.transform));
             }
@@ -88,7 +88,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var root = Object.Instantiate(empty);
             var child = Object.Instantiate(empty, root.transform);
-            foreach (var transform in root.transform.IterateHierarchy())
+            foreach (var transform in root.transform.EnumerateHierarchy())
             {
                 Assert.That(transform, Is.EqualTo(root.transform).Or.EqualTo(child.transform));
             }
@@ -103,7 +103,7 @@ namespace HoloToolkit.Unity.Tests
                 Object.Instantiate(empty, root.transform);
             }
 
-            var hierarchyCount = root.transform.IterateHierarchy().Count();
+            var hierarchyCount = root.transform.EnumerateHierarchy().Count();
             Assert.That(hierarchyCount, Is.EqualTo(root.transform.hierarchyCount));
         }
 
@@ -119,7 +119,7 @@ namespace HoloToolkit.Unity.Tests
                 Object.Instantiate(empty, parent.transform);
             }
 
-            var hierarchyCount = root.transform.IterateHierarchy().Count();
+            var hierarchyCount = root.transform.EnumerateHierarchy().Count();
             Assert.That(hierarchyCount, Is.EqualTo(root.transform.hierarchyCount));
         }
 
@@ -143,7 +143,7 @@ namespace HoloToolkit.Unity.Tests
                 ignoredBranchParent = Object.Instantiate(empty, ignoredBranchParent.transform);
             }
 
-            var hierarchyCount = root.transform.IterateHierarchy(ignoreList).Count();
+            var hierarchyCount = root.transform.EnumerateHierarchy(ignoreList).Count();
             Assert.That(hierarchyCount, Is.EqualTo(unignoredHierarchyCount));
         }
 
@@ -168,7 +168,7 @@ namespace HoloToolkit.Unity.Tests
                 }
             }
 
-            var hierarchyCount = root.transform.IterateHierarchy(ignoreList).Count();
+            var hierarchyCount = root.transform.EnumerateHierarchy(ignoreList).Count();
             Assert.That(hierarchyCount, Is.EqualTo(root.transform.hierarchyCount - ignoreList.Count));
         }
 
@@ -181,7 +181,7 @@ namespace HoloToolkit.Unity.Tests
 
             Assert.DoesNotThrow(() => {
 
-                foreach (var transform in root.transform.IterateHierarchy())
+                foreach (var transform in root.transform.EnumerateHierarchy())
                 {
                     if (transform == parent.transform)
                     {
@@ -199,7 +199,7 @@ namespace HoloToolkit.Unity.Tests
             var child = Object.Instantiate(empty, parent.transform);
 
             Assert.DoesNotThrow(() => {
-                foreach (var transform in root.transform.IterateHierarchy())
+                foreach (var transform in root.transform.EnumerateHierarchy())
                 {
                     if (transform == parent.transform)
                     {

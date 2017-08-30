@@ -12,14 +12,10 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class GameObjectExtensions
     {
+        [Obsolete("Use the more extensive TransformExtensions.GetFullPath instead.")]
         public static string GetFullPath(this GameObject go)
         {
-            if (go.transform.parent == null)
-            {
-                return go.name;
-            }
-
-            return go.transform.parent.gameObject.GetFullPath() + "/" + go.name;
+            return go.transform.GetFullPath("/", "");
         }
 
         /// <summary>
@@ -34,7 +30,7 @@ namespace HoloToolkit.Unity
                 throw new ArgumentNullException("root", "Root transform can't be null.");
             }
 
-            foreach (var child in root.transform.IterateHierarchy())
+            foreach (var child in root.transform.EnumerateHierarchy())
             {
                 child.gameObject.layer = layer;
             }
@@ -52,7 +48,7 @@ namespace HoloToolkit.Unity
 
             cache = new Dictionary<GameObject, int>();
 
-            foreach (var child in root.transform.IterateHierarchy())
+            foreach (var child in root.transform.EnumerateHierarchy())
             {
                 cache[child.gameObject] = child.gameObject.layer;
                 child.gameObject.layer = layer;
@@ -69,10 +65,10 @@ namespace HoloToolkit.Unity
             if (root == null) { throw new ArgumentNullException("root"); }
             if (cache == null) { throw new ArgumentNullException("cache"); }
 
-            foreach (var child in root.transform.IterateHierarchy())
+            foreach (var child in root.transform.EnumerateHierarchy())
             {
                 int layer;
-                if (!cache.TryGetValue(child.gameObject, out layer)) continue;
+                if (!cache.TryGetValue(child.gameObject, out layer)) { continue; }
                 child.gameObject.layer = layer;
                 cache.Remove(child.gameObject);
             }
