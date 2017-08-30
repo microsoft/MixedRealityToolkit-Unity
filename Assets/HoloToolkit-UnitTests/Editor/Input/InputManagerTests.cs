@@ -104,9 +104,9 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchFocusedEvent()
         {
-            var focuedHandler = CreateTestHandler().CallAwake().CallStart();
+            var focusedHandler = CreateTestHandler().CallAwake().CallStart();
 
-            InputManager.Instance.OverrideFocusedObject = focuedHandler;
+            InputManager.Instance.OverrideFocusedObject = focusedHandler;
             FireTestEvent();
 
             Assert.That(receivedEventSources, Is.Not.Empty);
