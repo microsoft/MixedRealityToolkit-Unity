@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity
         /// <returns>The given gameObject to be able to chain call</returns>
         internal static GameObject CallAwake(this GameObject gameObject)
         {
-            foreach (var script in gameObject.GetComponents<MonoBehaviour>())
+            foreach (var script in gameObject.GetComponentsInChildren<MonoBehaviour>())
             {
                 script.Call("Awake");
             }
@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity
         /// <returns>The given gameObject to be able to chain call</returns>
         internal static GameObject CallStart(this GameObject gameObject)
         {
-            foreach (var script in gameObject.GetComponents<MonoBehaviour>())
+            foreach (var script in gameObject.GetComponentsInChildren<MonoBehaviour>())
             {
                 script.Call("Start");
             }
@@ -89,7 +89,7 @@ namespace HoloToolkit.Unity
         /// <returns>The given gameObject to be able to chain call</returns>
         internal static GameObject CallUpdate(this GameObject gameObject)
         {
-            foreach (var script in gameObject.GetComponents<MonoBehaviour>())
+            foreach (var script in gameObject.GetComponentsInChildren<MonoBehaviour>())
             {
                 script.Call("Update");
             }
