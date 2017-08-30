@@ -5,40 +5,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace HoloToolkit.Unity
 {
     public static class TestUtils
     {
         /// <summary>
-        /// Objects created through test utils. The reason to keep them in a list is that disabled objects can't be found at all.
+        /// Objects created through test utils. The reason to keep them in a list is that disabled objects can't be found at all, or at least only in the active scene.
         /// So to be able to clear the whole scene we need to keep references.
-        /// Instantiated disabled objects will still not be found.
+        /// Instantiated disabled objects will only be found when they are in the test scene but not in the additive loaded original scene.
         /// </summary>
         private static readonly List<Transform> CreatedGameObjects = new List<Transform>();
 
         /// <summary>
-        /// Deletes all active objects in the scene
+        /// Deletes all objects in the scene
         /// </summary>
         public static void ClearScene()
         {
             ClearCreated();
             ClearUnreferencedActive();
+            ClearUnreferencedDisabledInTestScene();
+        }
+
+        private static void ClearUnreferencedDisabledInTestScene()
+        {
+            DestroyGameObjects(SceneManager.GetActiveScene().GetRootGameObjects());
         }
 
         private static void ClearUnreferencedActive()
         {
-            foreach (var transform in Object.FindObjectsOfType<Transform>().Select(t => t.root).Distinct().ToList())
-            {
-                Object.DestroyImmediate(transform.gameObject);
-            }
+            DestroyTransforms(Object.FindObjectsOfType<Transform>());
         }
 
         private static void ClearCreated()
         {
-            foreach (var transform in CreatedGameObjects.Where(t => t).Select(t => t.root).Distinct().ToList())
+            DestroyTransforms(CreatedGameObjects);
+        }
+
+        private static void DestroyTransforms(IEnumerable<Transform> transforms)
+        {
+            DestroyGameObjects(transforms.Where(t => t).Select(t => t.root.gameObject).Distinct());
+        }
+
+        private static void DestroyGameObjects(IEnumerable<GameObject> gameObjects)
+        {
+            foreach (var gameObject in gameObjects)
             {
-                Object.DestroyImmediate(transform.gameObject);
+                Object.DestroyImmediate(gameObject);
             }
         }
 

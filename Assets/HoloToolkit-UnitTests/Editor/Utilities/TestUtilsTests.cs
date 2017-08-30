@@ -14,13 +14,23 @@ namespace HoloToolkit.Unity.Tests
         }
 
         [Test]
-        public void ClearDisabled()
+        public void ClearReferencedDisabled()
         {
             var gameObject = TestUtils.CreateGameObject();
             gameObject.SetActive(false);
             TestUtils.ClearScene();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             Assert.That(gameObject == null, Is.True);
+        }
+
+        [Test]
+        public void ClearUnreferencedDisabled()
+        {
+            var unreferencedGameObject = new GameObject();
+            unreferencedGameObject.SetActive(false);
+            TestUtils.ClearScene();
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            Assert.That(unreferencedGameObject == null, Is.True);
         }
 
         [Test]
