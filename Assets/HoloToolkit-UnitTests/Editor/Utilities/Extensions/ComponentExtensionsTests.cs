@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var gameObject = TestUtils.CreateGameObject();
             gameObject.EnsureComponent<BoxCollider>();
-            Assert.That(gameObject.GetComponent<BoxCollider>(), Is.Not.Null);
+            Assert.That(gameObject.GetComponent<BoxCollider>() == null, Is.False);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity.Tests
             var gameObject = TestUtils.CreateGameObject();
             var existingComponent = gameObject.AddComponent<BoxCollider>();
             var ensuredComponent = existingComponent.EnsureComponent<SphereCollider>();
-            Assert.That(ensuredComponent, Is.Not.Null);
+            Assert.That(ensuredComponent == null, Is.False);
         }
     }
 }
