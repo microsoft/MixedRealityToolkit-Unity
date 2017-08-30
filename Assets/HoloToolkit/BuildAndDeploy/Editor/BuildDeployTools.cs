@@ -4,11 +4,14 @@
 //
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
+using Microsoft.Win32;
 using UnityEditor;
 using UnityEngine;
-using System.Xml.Linq;
+using Debug = UnityEngine.Debug;
 
 namespace HoloToolkit.Unity
 {
@@ -73,8 +76,8 @@ namespace HoloToolkit.Unity
         {
             if (msBuildVersion.Equals("14.0"))
             {
-                using (Microsoft.Win32.RegistryKey key =
-                    Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                using (RegistryKey key =
+                    Registry.LocalMachine.OpenSubKey(
                         string.Format(@"Software\Microsoft\MSBuild\ToolsVersions\{0}", msBuildVersion)))
                 {
                     if (key == null)
@@ -92,13 +95,12 @@ namespace HoloToolkit.Unity
 
             // get the right program files path based on whether the pc is x86 or x64
             string programFiles = @"C:\Program Files\";
-            if (System.Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE", EnvironmentVariableTarget.Machine).ToString() == "AMD64")
+            if (Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE", EnvironmentVariableTarget.Machine) == "AMD64")
             {
                 programFiles = @"C:\Program Files (x86)\";
             }
 
-
-            var vswherePInfo = new System.Diagnostics.ProcessStartInfo
+            var vswherePInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
                 CreateNoWindow = true,
@@ -109,8 +111,7 @@ namespace HoloToolkit.Unity
                 WorkingDirectory = programFiles + @"Microsoft Visual Studio\Installer"
             };
 
-
-            using (var vswhereP = new System.Diagnostics.Process())
+            using (var vswhereP = new Process())
             {
                 vswhereP.StartInfo = vswherePInfo;
                 vswhereP.Start();
@@ -120,7 +121,6 @@ namespace HoloToolkit.Unity
 
             string[] paths = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-
             // if there are multiple 2017 installs,
             // prefer enterprise, then pro, then community
             string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise")).ThenBy(p => p.ToLower().Contains("professional")).First();
@@ -129,14 +129,13 @@ namespace HoloToolkit.Unity
                 return bestPath + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe";
             }
 
-
             Debug.LogError("Unable to find a valid path to Visual Studio Instance!");
             return string.Empty;
         }
 
         public static bool RestoreNugetPackages(string nugetPath, string storePath)
         {
-            var nugetPInfo = new System.Diagnostics.ProcessStartInfo
+            var nugetPInfo = new ProcessStartInfo
             {
                 FileName = nugetPath,
                 CreateNoWindow = true,
@@ -144,7 +143,7 @@ namespace HoloToolkit.Unity
                 Arguments = "restore \"" + storePath + "/project.json\""
             };
 
-            using (var nugetP = new System.Diagnostics.Process())
+            using (var nugetP = new Process())
             {
                 nugetP.StartInfo = nugetPInfo;
                 nugetP.Start();
@@ -214,7 +213,7 @@ namespace HoloToolkit.Unity
             }
 
             // Now do the actual build
-            var pInfo = new System.Diagnostics.ProcessStartInfo
+            var pInfo = new ProcessStartInfo
             {
                 FileName = vs,
                 CreateNoWindow = false,
@@ -227,7 +226,7 @@ namespace HoloToolkit.Unity
             // Uncomment out to debug by copying into command window
             //Debug.Log("\"" + vs + "\"" + " " + pInfo.Arguments);
 
-            var process = new System.Diagnostics.Process { StartInfo = pInfo };
+            var process = new Process { StartInfo = pInfo };
 
             try
             {
@@ -246,7 +245,7 @@ namespace HoloToolkit.Unity
                     showDialog &&
                     !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open Project Folder"))
                 {
-                    System.Diagnostics.Process.Start("explorer.exe", "/select," + storePath);
+                    Process.Start("explorer.exe", "/select," + storePath);
                 }
 
                 if (process.ExitCode != 0)
