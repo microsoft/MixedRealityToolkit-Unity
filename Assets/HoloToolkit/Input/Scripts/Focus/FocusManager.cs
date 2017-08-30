@@ -157,7 +157,12 @@ namespace HoloToolkit.Unity.InputModule
         public void RegisterPointer(IPointingSource pointingSource)
         {
             Debug.Assert(pointingSource != null);
-            Debug.Assert(TryGetPointerIndex(pointingSource) == null);
+
+            if (TryGetPointerIndex(pointingSource) != null)
+            {
+                // This pointing source is already registered and active.
+                return;
+            }
 
             PointerData pointer;
 

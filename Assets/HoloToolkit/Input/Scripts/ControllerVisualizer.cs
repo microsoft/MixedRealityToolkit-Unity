@@ -51,6 +51,18 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_WSA
 #if !UNITY_EDITOR
+            if (GLTFShader == null)
+            {
+                if (LeftControllerOverride == null && RightControllerOverride == null)
+                {
+                    Debug.Log("If using glTF, please specify a shader on " + name + ". Otherwise, please specify controller overrides.");
+                }
+                else if (LeftControllerOverride == null || RightControllerOverride == null)
+                {
+                    Debug.Log("Only one override is specified, and no shader is specified for the glTF model. Please set the shader or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
+                }
+            }
+
             // Since the SpatialInteractionManager exists in the current CoreWindow, this call needs to run on the UI thread.
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
@@ -61,8 +73,16 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }, true);
 #else
-            // Since we're using non-Unity APIs, this will only run in a UWP app.
-            Debug.Log("Running in the editor will only render the override models.");
+            // Since we're using non-Unity APIs, glTF will only load in a UWP app.
+            if (LeftControllerOverride == null && RightControllerOverride == null)
+            {
+                Debug.Log("Running in the editor won't render the glTF models, and no controller overrides are set. Please specify them on " + name + ".");
+            }
+            else if (LeftControllerOverride == null || RightControllerOverride == null)
+            {
+                Debug.Log("Running in the editor won't render the glTF models, and only one controller override is specified. Please set the " + ((LeftControllerOverride == null) ? "left" : "right") + " override on " + name + ".");
+            }
+
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
 #endif
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;

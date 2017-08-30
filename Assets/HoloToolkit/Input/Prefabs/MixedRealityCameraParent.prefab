@@ -52,7 +52,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4587520633816736}
   - component: {fileID: 20770519707920992}
-  - component: {fileID: 92551944023053704}
   - component: {fileID: 124448202808387510}
   - component: {fileID: 81867938468442352}
   - component: {fileID: 114061490341948574}
@@ -581,13 +580,6 @@ AudioListener:
   m_GameObject: {fileID: 1372541880982678}
   m_Enabled: 1
   m_ExtensionPropertyValues: []
---- !u!92 &92551944023053704
-Behaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1372541880982678}
-  m_Enabled: 1
 --- !u!114 &114029515443702222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -788,7 +780,7 @@ MonoBehaviour:
   LeftControllerOverride: {fileID: 0}
   RightControllerOverride: {fileID: 0}
   TouchpadTouchedOverride: {fileID: 0}
-  GLTFShader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
+  GLTFShader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!114 &114755176645041546
 MonoBehaviour:
   m_ObjectHideFlags: 1
