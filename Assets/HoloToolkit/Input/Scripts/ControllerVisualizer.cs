@@ -267,13 +267,13 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 Vector3 newPosition;
-                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
+                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Pointer))
                 {
                     currentController.gameObject.transform.localPosition = newPosition;
                 }
 
                 Quaternion newRotation;
-                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
+                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Pointer))
                 {
                     currentController.gameObject.transform.localRotation = newRotation;
                 }
