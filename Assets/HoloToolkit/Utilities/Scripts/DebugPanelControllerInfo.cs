@@ -54,7 +54,7 @@ namespace HoloToolkit.Unity
         {
             Debug.LogFormat("{0} {1} Detected", obj.state.source.handedness, obj.state.source.kind);
 
-            if (obj.state.source.kind == InteractionSourceKind.Controller)
+            if (obj.state.source.kind == InteractionSourceKind.Controller && !controllers.ContainsKey(obj.state.source.id))
             {
                 controllers.Add(obj.state.source.id, new ControllerState { Handedness = obj.state.source.handedness });
             }

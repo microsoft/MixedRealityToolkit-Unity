@@ -198,26 +198,23 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
-            if (obj.state.source.kind == InteractionSourceKind.Controller)
+            if (obj.state.source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(obj.state.source.id))
             {
-                if (!controllerDictionary.ContainsKey(obj.state.source.id))
+                GameObject controllerModelGameObject;
+                if (obj.state.source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
                 {
-                    GameObject controllerModelGameObject;
-                    if (obj.state.source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
-                    {
-                        controllerModelGameObject = Instantiate(LeftControllerOverride);
-                    }
-                    else if (obj.state.source.handedness == InteractionSourceHandedness.Right && RightControllerOverride != null)
-                    {
-                        controllerModelGameObject = Instantiate(RightControllerOverride);
-                    }
-                    else // InteractionSourceHandedness.Unknown || both overrides are null
-                    {
-                        return;
-                    }
-
-                    FinishControllerSetup(controllerModelGameObject, true, obj.state.source.handedness.ToString(), obj.state.source.id);
+                    controllerModelGameObject = Instantiate(LeftControllerOverride);
                 }
+                else if (obj.state.source.handedness == InteractionSourceHandedness.Right && RightControllerOverride != null)
+                {
+                    controllerModelGameObject = Instantiate(RightControllerOverride);
+                }
+                else // InteractionSourceHandedness.Unknown || both overrides are null
+                {
+                    return;
+                }
+
+                FinishControllerSetup(controllerModelGameObject, true, obj.state.source.handedness.ToString(), obj.state.source.id);
             }
         }
 
