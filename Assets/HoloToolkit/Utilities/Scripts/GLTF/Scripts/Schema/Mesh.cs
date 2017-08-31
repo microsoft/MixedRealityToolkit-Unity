@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using GLTF.JsonExtensions;
-using UnityEngine;
 
 namespace GLTF
 {

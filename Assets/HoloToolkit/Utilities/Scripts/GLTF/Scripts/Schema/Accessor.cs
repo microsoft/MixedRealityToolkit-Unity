@@ -94,8 +94,6 @@ namespace GLTF
 		/// </summary>
 		public AccessorSparse Sparse;
 
-		public NumericArray Contents;
-
 		public static Accessor Deserialize(GLTFRoot root, JsonReader reader)
 		{
 			var accessor = new Accessor();
@@ -200,371 +198,452 @@ namespace GLTF
 			writer.WriteEndObject();
 		}
 
-		private static unsafe int GetByteElement(byte[] buffer, int byteOffset)
+		public int[] AsIntArray(byte[] bufferData)
 		{
-			fixed (byte* offsetBuffer = &buffer[byteOffset])
-			{
-				return *((sbyte*)offsetBuffer);
-			}
-		}
+			var arr = new int[Count];
+			var totalByteOffset = BufferView.Value.ByteOffset + ByteOffset;
+			var stride = 0;
 
-		private static unsafe int GetUByteElement(byte[] buffer, int byteOffset)
-		{
-			fixed (byte* offsetBuffer = &buffer[byteOffset])
-			{
-				return *((byte*)offsetBuffer);
-			}
-		}
-
-		private static unsafe int GetShortElement(byte[] buffer, int byteOffset)
-		{
-			fixed (byte* offsetBuffer = &buffer[byteOffset])
-			{
-				return *((short*)offsetBuffer);
-			}
-		}
-
-		private static unsafe int GetUShortElement(byte[] buffer, int byteOffset)
-		{
-			fixed (byte* offsetBuffer = &buffer[byteOffset])
-			{
-				return *((ushort*)offsetBuffer);
-			}
-		}
-
-		private static unsafe int GetUIntElement(byte[] buffer, int byteOffset)
-		{
-			fixed (byte* offsetBuffer = &buffer[byteOffset])
-			{
-				return (int) *((uint*)offsetBuffer);
-			}
-		}
-
-		private static unsafe float GetFloatElement(byte[] buffer, int byteOffset)
-		{
-			fixed (byte* offsetBuffer = &buffer[byteOffset])
-			{
-				return *((float*)offsetBuffer);
-			}
-		}
-
-		private static void GetTypeDetails(GLTFComponentType type, out int componentSize, out float maxValue,
-			out Func<byte[], int, int> discreteFunc, out Func<byte[], int, float> continuousFunc)
-		{
-			componentSize = 1;
-			maxValue = byte.MaxValue;
-			discreteFunc = GetUByteElement;
-			continuousFunc = GetFloatElement;
-
-			switch (type)
+			switch (ComponentType)
 			{
 				case GLTFComponentType.Byte:
-					discreteFunc = GetByteElement;
-					componentSize = sizeof(sbyte);
-					maxValue = sbyte.MaxValue;
+					stride = BufferView.Value.ByteStride + sizeof(sbyte);
+					for (var idx = 0; idx < Count; idx++)
+					{
+						arr[idx] = (sbyte)bufferData[totalByteOffset + (idx * stride)];
+					}
 					break;
 				case GLTFComponentType.UnsignedByte:
-					discreteFunc = GetUByteElement;
-					componentSize = sizeof(byte);
-					maxValue = byte.MaxValue;
+					stride = BufferView.Value.ByteStride + sizeof(byte);
+					for (var idx = 0; idx < Count; idx++)
+					{
+						arr[idx] = bufferData[totalByteOffset + (idx * stride)];
+					}
 					break;
 				case GLTFComponentType.Short:
-					discreteFunc = GetShortElement;
-					componentSize = sizeof(short);
-					maxValue = short.MaxValue;
+					stride = BufferView.Value.ByteStride + sizeof(short);
+					for (var idx = 0; idx < Count; idx++)
+					{
+						arr[idx] = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride));
+					}
 					break;
 				case GLTFComponentType.UnsignedShort:
-					discreteFunc = GetUShortElement;
-					componentSize = sizeof(ushort);
-					maxValue = ushort.MaxValue;
+					if (BufferView.Value.ByteStride == 0)
+					{
+						var intermediateArr = new ushort[Count];
+						System.Buffer.BlockCopy(bufferData, totalByteOffset, intermediateArr, 0, Count * sizeof(ushort));
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = (int)intermediateArr[idx];
+						}
+					}
+					else
+					{
+						stride = BufferView.Value.ByteStride + sizeof(ushort);
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride));
+						}
+					}
 					break;
 				case GLTFComponentType.UnsignedInt:
-					discreteFunc = GetUIntElement;
-					componentSize = sizeof(uint);
-					maxValue = uint.MaxValue;
+					if (BufferView.Value.ByteStride == 0)
+					{
+						var intermediateArr = new uint[Count];
+						System.Buffer.BlockCopy(bufferData, totalByteOffset, intermediateArr, 0, Count * sizeof(uint));
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = (int)intermediateArr[idx];
+						}
+					}
+					else
+					{
+						stride = BufferView.Value.ByteStride + sizeof(uint);
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = (int)BitConverter.ToUInt32(bufferData, totalByteOffset + (idx * stride));
+						}
+					}
 					break;
 				case GLTFComponentType.Float:
-					continuousFunc = GetFloatElement;
-					componentSize = sizeof(float);
-					maxValue = float.MaxValue;
+					if (BufferView.Value.ByteStride == 0)
+					{
+						var intermediateArr = new int[Count];
+						System.Buffer.BlockCopy(bufferData, totalByteOffset, intermediateArr, 0, Count * sizeof(float));
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = intermediateArr[idx];
+						}
+					}
+					else
+					{
+						stride = BufferView.Value.ByteStride + sizeof(float);
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = (int)BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride));
+						}
+					}
 					break;
 				default:
 					throw new Exception("Unsupported component type.");
 			}
-		}
 
-		public int[] AsIntArray()
-		{
-			if (Contents.AsInts != null) return Contents.AsInts;
-
-			if (Type != GLTFAccessorAttributeType.SCALAR) return null;
-
-			var arr = new int[Count];
-			var totalByteOffset = BufferView.Value.ByteOffset + ByteOffset;
-			var bufferData = BufferView.Value.Buffer.Value.Contents;
-
-			int componentSize;
-			float maxValue;
-			Func<byte[], int, int> getDiscreteElement;
-			Func<byte[], int, float> getContinuousElement;
-			GetTypeDetails(ComponentType, out componentSize, out maxValue, out getDiscreteElement, out getContinuousElement);
-
-			var stride = BufferView.Value.ByteStride > 0 ? BufferView.Value.ByteStride : componentSize;
-
-			for (var idx = 0; idx < Count; idx++)
-			{
-				if(ComponentType == GLTFComponentType.Float)
-					arr[idx] = Mathf.FloorToInt(getContinuousElement(bufferData, totalByteOffset + idx * stride));
-				else
-					arr[idx] = getDiscreteElement(bufferData, totalByteOffset + idx*stride);
-			}
-
-			Contents.AsInts = arr;
 			return arr;
 		}
 
-		public Vector2[] AsVector2Array(bool normalizeIntValues = true)
+		public Vector2[] AsVector2Array(byte[] bufferData)
 		{
-			if (Contents.AsVec2s != null) return Contents.AsVec2s;
-
-			if (Type != GLTFAccessorAttributeType.VEC2) return null;
-
 			var arr = new Vector2[Count];
 			var totalByteOffset = BufferView.Value.ByteOffset + ByteOffset;
-			var bufferData = BufferView.Value.Buffer.Value.Contents;
+			var stride = 0;
+			const int numComponents = 2;
 
-			int componentSize;
-			float maxValue;
-			Func<byte[], int, int> getDiscreteElement;
-			Func<byte[], int, float> getContinuousElement;
-			GetTypeDetails(ComponentType, out componentSize, out maxValue, out getDiscreteElement, out getContinuousElement);
-
-			var stride = BufferView.Value.ByteStride > 0 ? BufferView.Value.ByteStride : componentSize * 2;
-			if (normalizeIntValues) maxValue = 1;
-
-			for (var idx = 0; idx < Count; idx++)
+			switch (ComponentType)
 			{
-				if (ComponentType == GLTFComponentType.Float)
-				{
-					arr[idx].x = getContinuousElement(bufferData, totalByteOffset + idx*stride + componentSize * 0);
-					arr[idx].y = getContinuousElement(bufferData, totalByteOffset + idx*stride + componentSize * 1);
-				}
-				else
-				{
-					arr[idx].x = getDiscreteElement(bufferData, totalByteOffset + idx*stride + componentSize * 0) / maxValue;
-					arr[idx].y = getDiscreteElement(bufferData, totalByteOffset + idx*stride + componentSize * 1) / maxValue;
-				}
+				case GLTFComponentType.Byte:
+					stride = numComponents * sizeof(sbyte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = (sbyte)bufferData[totalByteOffset + (idx * stride)];
+						var y = (sbyte)bufferData[totalByteOffset + (idx * stride) + sizeof(sbyte)];
+						arr[idx] = new Vector2(x, -y);
+					}
+					break;
+				case GLTFComponentType.UnsignedByte:
+					stride = numComponents * sizeof(byte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = bufferData[totalByteOffset + (idx * stride)];
+						var y = bufferData[totalByteOffset + (idx * stride) + sizeof(byte)];
+						arr[idx] = new Vector2(x, -y);
+					}
+					break;
+				case GLTFComponentType.Short:
+					stride = numComponents * sizeof(short) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride));
+						float y = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(short));
+						arr[idx] = new Vector2(x, -y);
+					}
+					break;
+				case GLTFComponentType.UnsignedShort:
+					stride = numComponents * sizeof(ushort) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride));
+						var y = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(ushort));
+						arr[idx] = new Vector2(x, -y);
+					}
+					break;
+				case GLTFComponentType.UnsignedInt:
+					stride = numComponents * sizeof(uint) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = BitConverter.ToUInt32(bufferData, totalByteOffset + (idx * stride));
+						var y = BitConverter.ToUInt32(bufferData, totalByteOffset + (idx * stride) + sizeof(uint));
+						arr[idx] = new Vector2(x, -y);
+					}
+					break;
+				case GLTFComponentType.Float:
+					if (BufferView.Value.ByteStride == 0)
+					{
+						var totalComponents = Count * 2;
+						var intermediateArr = new float[totalComponents];
+						System.Buffer.BlockCopy(bufferData, totalByteOffset, intermediateArr, 0, totalComponents * sizeof(float));
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = new Vector2(
+								intermediateArr[idx * 2],
+								-intermediateArr[idx * 2 + 1]
+							);
+						}
+					}
+					else
+					{
+						stride = numComponents * sizeof(float) + BufferView.Value.ByteStride;
+						for (var idx = 0; idx < Count; idx++)
+						{
+							var x = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride));
+							var y = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + sizeof(float));
+							arr[idx] = new Vector2(x, -y);
+						}
+					}
+					break;
+				default:
+					throw new Exception("Unsupported component type.");
 			}
 
-			Contents.AsVec2s = arr;
 			return arr;
 		}
 
-		public Vector3[] AsVector3Array(bool normalizeIntValues = true)
+		public Vector3[] AsVector3Array(byte[] bufferData)
 		{
-			if (Contents.AsVec3s != null) return Contents.AsVec3s;
-
-			if (Type != GLTFAccessorAttributeType.VEC3) return null;
-
 			var arr = new Vector3[Count];
 			var totalByteOffset = BufferView.Value.ByteOffset + ByteOffset;
-			var bufferData = BufferView.Value.Buffer.Value.Contents;
+			int stride;
+			const int numComponents = 3;
 
-			int componentSize;
-			float maxValue;
-			Func<byte[], int, int> getDiscreteElement;
-			Func<byte[], int, float> getContinuousElement;
-			GetTypeDetails(ComponentType, out componentSize, out maxValue, out getDiscreteElement, out getContinuousElement);
-
-			var stride = BufferView.Value.ByteStride > 0 ? BufferView.Value.ByteStride : componentSize * 3;
-			if (normalizeIntValues) maxValue = 1;
-
-			for (var idx = 0; idx < Count; idx++)
+			switch (ComponentType)
 			{
-				if (ComponentType == GLTFComponentType.Float)
-				{
-					arr[idx].x = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 0);
-					arr[idx].y = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 1);
-					arr[idx].z = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 2);
-				}
-				else
-				{
-					arr[idx].x = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 0) / maxValue;
-					arr[idx].y = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 1) / maxValue;
-					arr[idx].z = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 2) / maxValue;
-				}
+				case GLTFComponentType.Byte:
+					stride = numComponents * sizeof(sbyte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						float x = (sbyte)bufferData[totalByteOffset + (idx * stride)];
+						float y = (sbyte)bufferData[totalByteOffset + (idx * stride) + sizeof(sbyte)];
+						float z = (sbyte)bufferData[totalByteOffset + (idx * stride) + (2 * sizeof(sbyte))];
+						arr[idx] = new Vector3(x, y, -z);
+					}
+					break;
+				case GLTFComponentType.UnsignedByte:
+					stride = numComponents * sizeof(byte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						float x = bufferData[totalByteOffset + (idx * stride)];
+						float y = bufferData[totalByteOffset + (idx * stride) + sizeof(byte)];
+						float z = bufferData[totalByteOffset + (idx * stride) + (2 * sizeof(byte))];
+						arr[idx] = new Vector3(x, y, -z);
+					}
+					break;
+				case GLTFComponentType.Short:
+					stride = numComponents * sizeof(short) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						float x = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride));
+						float y = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(short));
+						float z = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(short)));
+						arr[idx] = new Vector3(x, y, -z);
+					}
+					break;
+				case GLTFComponentType.UnsignedShort:
+					stride = numComponents * sizeof(ushort) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						float x = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride));
+						float y = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(ushort));
+						float z = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(ushort)));
+						arr[idx] = new Vector3(x, y, -z);
+					}
+					break;
+				case GLTFComponentType.UnsignedInt:
+					stride = numComponents * sizeof(uint) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						float x = BitConverter.ToUInt32(bufferData, totalByteOffset + (idx * stride));
+						float y = BitConverter.ToUInt32(bufferData, totalByteOffset + (idx * stride) + sizeof(uint));
+						float z = BitConverter.ToUInt32(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(uint)));
+						arr[idx] = new Vector3(x, y, -z);
+					}
+					break;
+				case GLTFComponentType.Float:
+					if (BufferView.Value.ByteStride == 0)
+					{
+						var totalComponents = Count * 3;
+						var intermediateArr = new float[totalComponents];
+						System.Buffer.BlockCopy(bufferData, totalByteOffset, intermediateArr, 0, totalComponents * sizeof(float));
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = new Vector3(
+							   intermediateArr[idx * 3],
+							   intermediateArr[idx * 3 + 1],
+							   -intermediateArr[idx * 3 + 2]
+							);
+						}
+					}
+					else
+					{
+						stride = numComponents * sizeof(float) + BufferView.Value.ByteStride;
+						for (var idx = 0; idx < Count; idx++)
+						{
+							var x = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride));
+							var y = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + sizeof(float));
+							var z = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(float)));
+							arr[idx] = new Vector3(x, y, -z);
+						}
+					}
+					break;
+				default:
+					throw new Exception("Unsupported component type.");
 			}
 
-			Contents.AsVec3s = arr;
 			return arr;
 		}
 
-		public Vector4[] AsVector4Array(bool normalizeIntValues = true)
+		public Vector4[] AsVector4Array(byte[] bufferData)
 		{
-			if (Contents.AsVec4s != null) return Contents.AsVec4s;
-
-			if (Type != GLTFAccessorAttributeType.VEC4) return null;
-
 			var arr = new Vector4[Count];
 			var totalByteOffset = BufferView.Value.ByteOffset + ByteOffset;
-			var bufferData = BufferView.Value.Buffer.Value.Contents;
+			int stride;
+			const int numComponents = 4;
 
-			int componentSize;
-			float maxValue;
-			Func<byte[], int, int> getDiscreteElement;
-			Func<byte[], int, float> getContinuousElement;
-			GetTypeDetails(ComponentType, out componentSize, out maxValue, out getDiscreteElement, out getContinuousElement);
-
-			var stride = BufferView.Value.ByteStride > 0 ? BufferView.Value.ByteStride : componentSize * 4;
-			if (normalizeIntValues) maxValue = 1;
-
-			for (var idx = 0; idx < Count; idx++)
+			switch (ComponentType)
 			{
-				if (ComponentType == GLTFComponentType.Float)
-				{
-					arr[idx].x = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 0);
-					arr[idx].y = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 1);
-					arr[idx].z = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 2);
-					arr[idx].w = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 3);
-				}
-				else
-				{
-					arr[idx].x = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 0) / maxValue;
-					arr[idx].y = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 1) / maxValue;
-					arr[idx].z = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 2) / maxValue;
-					arr[idx].w = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 3) / maxValue;
-				}
+				case GLTFComponentType.Byte:
+					stride = numComponents * sizeof(sbyte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = (sbyte)bufferData[totalByteOffset + (idx * stride)];
+						var y = (sbyte)bufferData[totalByteOffset + (idx * stride) + sizeof(sbyte)];
+						var z = (sbyte)bufferData[totalByteOffset + (idx * stride) + (2 * sizeof(sbyte))];
+						var w = (sbyte)bufferData[totalByteOffset + (idx * stride) + (3 * sizeof(sbyte))];
+						arr[idx] = new Vector4(x, y, z, -w);
+					}
+					break;
+				case GLTFComponentType.UnsignedByte:
+					stride = numComponents * sizeof(byte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = bufferData[totalByteOffset + (idx * stride)];
+						var y = bufferData[totalByteOffset + (idx * stride) + sizeof(byte)];
+						var z = bufferData[totalByteOffset + (idx * stride) + (2 * sizeof(byte))];
+						var w = bufferData[totalByteOffset + (idx * stride) + (3 * sizeof(byte))];
+						arr[idx] = new Vector4(x, y, z, -w);
+					}
+					break;
+				case GLTFComponentType.Short:
+					stride = numComponents * sizeof(short) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride));
+						var y = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(short));
+						var z = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(short)));
+						var w = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + (3 * sizeof(short)));
+						arr[idx] = new Vector4(x, y, z, -w);
+					}
+					break;
+				case GLTFComponentType.UnsignedShort:
+					stride = numComponents * sizeof(ushort) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var x = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride));
+						var y = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(ushort));
+						var z = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(ushort)));
+						var w = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + (3 * sizeof(ushort)));
+						arr[idx] = new Vector4(x, y, z, -w);
+					}
+					break;
+				case GLTFComponentType.Float:
+					if (BufferView.Value.ByteStride == 0)
+					{
+						var totalComponents = Count * 4;
+						var intermediateArr = new float[totalComponents];
+						System.Buffer.BlockCopy(bufferData, totalByteOffset, intermediateArr, 0, totalComponents * sizeof(float));
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = new Vector4(
+								intermediateArr[idx * 4],
+								intermediateArr[idx * 4 + 1],
+								intermediateArr[idx * 4 + 2],
+								-intermediateArr[idx * 4 + 3]
+							);
+						}
+					}
+					else
+					{
+						stride = numComponents * sizeof(float) + BufferView.Value.ByteStride;
+						for (var idx = 0; idx < Count; idx++)
+						{
+							var x = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride));
+							var y = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + sizeof(float));
+							var z = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(float)));
+							var w = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + (3 * sizeof(float)));
+							arr[idx] = new Vector4(x, y, z, -w);
+						}
+					}
+					break;
+				default:
+					throw new Exception("Unsupported component type.");
 			}
 
-			Contents.AsVec4s = arr;
 			return arr;
 		}
 
-		public Color[] AsColorArray()
+		public Color[] AsColorArray(byte[] bufferData)
 		{
-			if (Contents.AsColors != null) return Contents.AsColors;
-
-			if (Type != GLTFAccessorAttributeType.VEC3 && Type != GLTFAccessorAttributeType.VEC4)
-				return null;
-
 			var arr = new Color[Count];
 			var totalByteOffset = BufferView.Value.ByteOffset + ByteOffset;
-			var bufferData = BufferView.Value.Buffer.Value.Contents;
+			int stride;
+			const int numComponents = 4;
 
-			int componentSize;
-			float maxValue;
-			Func<byte[], int, int> getDiscreteElement;
-			Func<byte[], int, float> getContinuousElement;
-			GetTypeDetails(ComponentType, out componentSize, out maxValue, out getDiscreteElement, out getContinuousElement);
-
-			var stride = BufferView.Value.ByteStride > 0 ? BufferView.Value.ByteStride : componentSize * (Type == GLTFAccessorAttributeType.VEC3 ? 3 : 4);
-
-			for (var idx = 0; idx < Count; idx++)
+			switch (ComponentType)
 			{
-				if (ComponentType == GLTFComponentType.Float)
-				{
-					arr[idx].r = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 0);
-					arr[idx].g = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 1);
-					arr[idx].b = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 2);
-					if(Type == GLTFAccessorAttributeType.VEC4)
-						arr[idx].a = getContinuousElement(bufferData, totalByteOffset + idx * stride + componentSize * 3);
+				case GLTFComponentType.Byte:
+					stride = numComponents * sizeof(sbyte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var r = (sbyte)bufferData[totalByteOffset + (idx * stride)];
+						var g = (sbyte)bufferData[totalByteOffset + (idx * stride) + sizeof(sbyte)];
+						var b = (sbyte)bufferData[totalByteOffset + (idx * stride) + (2 * sizeof(sbyte))];
+						var a = (sbyte)bufferData[totalByteOffset + (idx * stride) + (3 * sizeof(sbyte))];
+						arr[idx] = new Color(r, g, b, a);
+					}
+					break;
+				case GLTFComponentType.UnsignedByte:
+					stride = numComponents * sizeof(byte) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var r = bufferData[totalByteOffset + (idx * stride)];
+						var g = bufferData[totalByteOffset + (idx * stride) + sizeof(byte)];
+						var b = bufferData[totalByteOffset + (idx * stride) + (2 * sizeof(byte))];
+						var a = bufferData[totalByteOffset + (idx * stride) + (3 * sizeof(byte))];
+						arr[idx] = new Color(r, g, b, a);
+					}
+					break;
+				case GLTFComponentType.Short:
+					stride = numComponents * sizeof(short) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var r = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride));
+						var g = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(short));
+						var b = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(short)));
+						var a = BitConverter.ToInt16(bufferData, totalByteOffset + (idx * stride) + (3 * sizeof(short)));
+						arr[idx] = new Color(r, g, b, a);
+					}
+					break;
+				case GLTFComponentType.UnsignedShort:
+					stride = numComponents * sizeof(ushort) + BufferView.Value.ByteStride;
+					for (var idx = 0; idx < Count; idx++)
+					{
+						var r = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride));
+						var g = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + sizeof(ushort));
+						var b = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(ushort)));
+						var a = BitConverter.ToUInt16(bufferData, totalByteOffset + (idx * stride) + (3 * sizeof(ushort)));
+						arr[idx] = new Color(r, g, b, a);
+					}
+					break;
+				case GLTFComponentType.Float:
+					if (BufferView.Value.ByteStride == 0)
+					{
+						var totalComponents = Count * 4;
+						var intermediateArr = new float[totalComponents];
+						System.Buffer.BlockCopy(bufferData, totalByteOffset, intermediateArr, 0, totalComponents * sizeof(float));
+						for (var idx = 0; idx < Count; idx++)
+						{
+							arr[idx] = new Color(
+								intermediateArr[idx * 4],
+								intermediateArr[idx * 4 + 1],
+								intermediateArr[idx * 4 + 2],
+								intermediateArr[idx * 4 + 3]
+							);
+						}
+					}
 					else
-						arr[idx].a = 1;
-				}
-				else
-				{
-					arr[idx].r = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 0) / maxValue;
-					arr[idx].g = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 1) / maxValue;
-					arr[idx].b = getDiscreteElement(bufferData, totalByteOffset + idx * stride + componentSize * 2) / maxValue;
-					if (Type == GLTFAccessorAttributeType.VEC4)
-						arr[idx].a = getDiscreteElement(bufferData, totalByteOffset + idx*stride + componentSize * 3) / maxValue;
-					else
-						arr[idx].a = 1;
-				}
+					{
+						stride = numComponents * sizeof(float) + BufferView.Value.ByteStride;
+						for (var idx = 0; idx < Count; idx++)
+						{
+							var r = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride));
+							var g = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + sizeof(float));
+							var b = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + (2 * sizeof(float)));
+							var a = BitConverter.ToSingle(bufferData, totalByteOffset + (idx * stride) + (3 * sizeof(float)));
+							arr[idx] = new Color(r, g, b, a);
+						}
+					}
+					break;
+				default:
+					throw new Exception("Unsupported component type.");
 			}
-
-			Contents.AsColors = arr;
-			return arr;
-		}
-
-		public Vector2[] AsTexcoordArray()
-		{
-			if (Contents.AsTexcoords != null) return Contents.AsTexcoords;
-
-			var arr = AsVector2Array();
-			for (var i=0; i<arr.Length; i++)
-			{
-				arr[i].y *= -1;
-			}
-
-			Contents.AsTexcoords = arr;
-			Contents.AsVec2s = null;
-
-			return arr;
-		}
-
-		public Vector3[] AsVertexArray()
-		{
-			if (Contents.AsVertices != null) return Contents.AsVertices;
-
-			var arr = AsVector3Array();
-			for (var i = 0; i < arr.Length; i++)
-			{
-				arr[i].z *= -1;
-			}
-
-			Contents.AsVertices = arr;
-			Contents.AsVec3s = null;
-
-			return arr;
-		}
-
-		public Vector3[] AsNormalArray()
-		{
-			if (Contents.AsNormals != null) return Contents.AsNormals;
-
-			var arr = AsVector3Array();
-			for (var i = 0; i < arr.Length; i++)
-			{
-				arr[i].z *= -1;
-			}
-
-			Contents.AsNormals = arr;
-			Contents.AsVec3s = null;
-
-			return arr;
-		}
-
-		public Vector4[] AsTangentArray()
-		{
-			if (Contents.AsTangents != null) return Contents.AsTangents;
-
-			var arr = AsVector4Array();
-			for (var i = 0; i < arr.Length; i++)
-			{
-				arr[i].w *= -1;
-			}
-
-			Contents.AsTangents = arr;
-			Contents.AsVec4s = null;
-
-			return arr;
-		}
-
-		public int[] AsTriangles()
-		{
-			if (Contents.AsTriangles != null) return Contents.AsTriangles;
-
-			var arr = AsIntArray();
-			for (var i = 0; i < arr.Length; i+=3)
-			{
-				var temp = arr[i];
-				arr[i] = arr[i + 2];
-				arr[i + 2] = temp;
-			}
-
-			Contents.AsTriangles = arr;
-			Contents.AsInts = null;
 
 			return arr;
 		}
@@ -589,19 +668,5 @@ namespace GLTF
 		MAT2,
 		MAT3,
 		MAT4
-	}
-
-	public struct NumericArray
-	{
-		public int[] AsInts;
-		public Vector2[] AsVec2s;
-		public Vector3[] AsVec3s;
-		public Vector4[] AsVec4s;
-		public Color[] AsColors;
-		public Vector2[] AsTexcoords;
-		public Vector3[] AsVertices;
-		public Vector3[] AsNormals;
-		public Vector4[] AsTangents;
-		public int[] AsTriangles;
 	}
 }

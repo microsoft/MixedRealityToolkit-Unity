@@ -48,88 +48,92 @@ namespace GLTF
 		/// TODO: Make dictionary key enums?
 		public List<Dictionary<string, AccessorId>> Targets;
 
-		public UnityEngine.Mesh Contents;
-
-		public void BuildMeshAttributes()
+		public MeshPrimitiveAttributes BuildMeshAttributes(Dictionary<Buffer, byte[]> bufferCache)
 		{
+			var attributes = new MeshPrimitiveAttributes();
+
 			if (Attributes.ContainsKey(SemanticProperties.POSITION))
 			{
 				var accessor = Attributes[SemanticProperties.POSITION].Value;
-				accessor.AsVertexArray();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Vertices = accessor.AsVector3Array(bufferData);
 			}
 
 			if (Indices != null) {
 				var accessor = Indices.Value;
-				accessor.AsTriangles();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				var unflippedTriangles = accessor.AsIntArray(bufferData);
+				var triangles = new int[unflippedTriangles.Length];
+				for (int i = 0; i < unflippedTriangles.Length; i += 3)
+				{
+					triangles[i + 2] = unflippedTriangles[i];
+					triangles[i + 1] = unflippedTriangles[i + 1];
+					triangles[i] = unflippedTriangles[i + 2];
+				}
+				attributes.Triangles = triangles;
+			}
+			else
+			{
+				var triangles = new int[attributes.Vertices.Length];
+				for (int i = 0; i < triangles.Length; i += 3)
+				{
+					triangles[i + 2] = i;
+					triangles[i + 1] = i + 1;
+					triangles[i] = i + 2;
+				}
+				attributes.Triangles = triangles;
 			}
 
 			if (Attributes.ContainsKey(SemanticProperties.NORMAL))
 			{
 				var accessor = Attributes[SemanticProperties.NORMAL].Value;
-				accessor.AsNormalArray();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Normals = accessor.AsVector3Array(bufferData);
 			}
 			if (Attributes.ContainsKey(SemanticProperties.TexCoord(0)))
 			{
 				var accessor = Attributes[SemanticProperties.TexCoord(0)].Value;
-				accessor.AsTexcoordArray();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Uv = accessor.AsVector2Array(bufferData);
 			}
 			if (Attributes.ContainsKey(SemanticProperties.TexCoord(1)))
 			{
 				var accessor = Attributes[SemanticProperties.TexCoord(1)].Value;
-				accessor.AsTexcoordArray();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Uv2 = accessor.AsVector2Array(bufferData);
 			}
 			if (Attributes.ContainsKey(SemanticProperties.TexCoord(2)))
 			{
 				var accessor = Attributes[SemanticProperties.TexCoord(2)].Value;
-				accessor.AsTexcoordArray();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Uv3 = accessor.AsVector2Array(bufferData);
 			}
 			if (Attributes.ContainsKey(SemanticProperties.TexCoord(3)))
 			{
 				var accessor = Attributes[SemanticProperties.TexCoord(3)].Value;
-				accessor.AsTexcoordArray();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Uv4 = accessor.AsVector2Array(bufferData);
 			}
 			if (Attributes.ContainsKey(SemanticProperties.Color(0)))
 			{
 				var accessor = Attributes[SemanticProperties.Color(0)].Value;
-				accessor.AsColorArray();
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Colors = accessor.AsColorArray(bufferData);
 			}
 			if (Attributes.ContainsKey(SemanticProperties.TANGENT))
 			{
 				var accessor = Attributes[SemanticProperties.TANGENT].Value;
-				accessor.AsTangentArray();
-			}
-		}
-
-		public static int[] GenerateTriangles(int vertCount)
-		{
-			var arr = new int[vertCount];
-			for (var i = 0; i < vertCount; i+=3)
-			{
-				arr[i] = i + 2;
-				arr[i + 1] = i + 1;
-				arr[i + 2] = i;
+				var bufferData = bufferCache[accessor.BufferView.Value.Buffer.Value];
+				attributes.Tangents = accessor.AsVector4Array(bufferData);
 			}
 
-			return arr;
-		}
-
-		public MeshPrimitive Clone()
-		{
-			return new MeshPrimitive
-			{
-				Attributes = Attributes,
-				Indices = Indices,
-				Material = Material,
-				Mode = Mode,
-				Targets = Targets,
-				Contents = Contents
-			};
+			return attributes;
 		}
 
 		// Taken from: http://answers.unity3d.com/comments/190515/view.html
 		// Official support for Mesh.RecalculateTangents should be coming in 5.6
 		// https://feedback.unity3d.com/suggestions/recalculatetangents
-		/*private MeshPrimitiveAttributes CalculateAndSetTangents(MeshPrimitiveAttributes attributes)
+		private MeshPrimitiveAttributes CalculateAndSetTangents(MeshPrimitiveAttributes attributes)
 		{
 			var triangleCount = attributes.Triangles.Length;
 			var vertexCount = attributes.Vertices.Length;
@@ -195,7 +199,7 @@ namespace GLTF
 			}
 
 			return attributes;
-		}*/
+		}
 
 		public static MeshPrimitive Deserialize(GLTFRoot root, JsonReader reader)
 		{
@@ -295,6 +299,19 @@ namespace GLTF
 
 			writer.WriteEndObject();
 		}
+	}
+
+	public struct MeshPrimitiveAttributes
+	{
+		public Vector3[] Vertices;
+		public Vector3[] Normals;
+		public Vector2[] Uv;
+		public Vector2[] Uv2;
+		public Vector2[] Uv3;
+		public Vector2[] Uv4;
+		public Color[] Colors;
+		public int[] Triangles;
+		public Vector4[] Tangents;
 	}
 
 	public static class SemanticProperties

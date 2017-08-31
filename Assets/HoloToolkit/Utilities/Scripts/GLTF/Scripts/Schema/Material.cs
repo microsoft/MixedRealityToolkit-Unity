@@ -79,14 +79,6 @@ namespace GLTF
 		/// </summary>
 		public bool DoubleSided;
 
-		public UnityEngine.Material ContentsWithoutVC;
-		public UnityEngine.Material ContentsWithVC;
-
-		public UnityEngine.Material GetContents(bool useVertexColors)
-		{
-			return useVertexColors ? ContentsWithVC : ContentsWithoutVC;
-		}
-
 		public static Material Deserialize(GLTFRoot root, JsonReader reader)
 		{
 			var material = new Material();

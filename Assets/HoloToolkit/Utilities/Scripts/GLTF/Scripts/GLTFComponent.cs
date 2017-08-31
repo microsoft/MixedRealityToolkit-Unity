@@ -1,32 +1,34 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using System.Threading;
 using UnityEngine.Networking;
 
-namespace GLTF {
+namespace GLTF
+{
+    class GLTFComponent : MonoBehaviour
+    {
+        public string Url;
+        public bool Multithreaded = true;
 
-	class GLTFComponent : MonoBehaviour
-	{
-		public string Url;
-		public bool Multithreaded = true;
+        public int MaximumLod = 300;
 
-		public int MaximumLod = 300;
+        public Shader GLTFStandard;
+        public Shader GLTFConstant;
 
-		public Shader GLTFStandard;
-		public Shader GLTFConstant;
+        IEnumerator Start()
+        {
+            UnityWebRequest www = UnityWebRequest.Get(Url);
+            yield return www.SendWebRequest();
+            byte[] gltfData = www.downloadHandler.data;
 
-		IEnumerator Start()
-		{
-			var loader = new GLTFLoader(
-				Url,
-				gameObject.transform
-			);
-			loader.SetShaderForMaterialType(GLTFLoader.MaterialType.PbrMetallicRoughness, GLTFStandard);
-			loader.SetShaderForMaterialType(GLTFLoader.MaterialType.CommonConstant, GLTFConstant);
-			loader.Multithreaded = Multithreaded;
-			loader.MaximumLod = MaximumLod;
-			yield return loader.Load();
-		}
-	}
+            var loader = new GLTFLoader(
+                gltfData,
+                gameObject.transform
+            );
+            loader.SetShaderForMaterialType(GLTFLoader.MaterialType.PbrMetallicRoughness, GLTFStandard);
+            loader.SetShaderForMaterialType(GLTFLoader.MaterialType.CommonConstant, GLTFConstant);
+            loader.Multithreaded = Multithreaded;
+            loader.MaximumLod = MaximumLod;
+            yield return loader.Load();
+        }
+    }
 }
