@@ -79,7 +79,6 @@ namespace HoloToolkit.Unity
 
                 EditorGUI.indentLevel--;
             }
-
         }
 
         private void CheckBuildScenes(SerializedProperty list)
@@ -125,14 +124,11 @@ namespace HoloToolkit.Unity
                     list.GetArrayElementAtIndex(i).FindPropertyRelative("ScenePath").stringValue = EditorBuildSettings.scenes[i].path;
                     list.GetArrayElementAtIndex(i).FindPropertyRelative("IsButtonEnabled").boolValue = false;
 
-                    foreach (var newScene in EditorBuildSettings.scenes)
+                    for (var j = 0; j < oldBuildSceneMapping.Length; j++)
                     {
-                        foreach (var oldScene in oldBuildSceneMapping)
+                        if (oldBuildSceneMapping[j].path == EditorBuildSettings.scenes[i].path)
                         {
-                            if (oldScene.path == newScene.path)
-                            {
-                                list.GetArrayElementAtIndex(i).FindPropertyRelative("IsButtonEnabled").boolValue = oldScene.enabled;
-                            }
+                            list.GetArrayElementAtIndex(i).FindPropertyRelative("IsButtonEnabled").boolValue = oldBuildSceneMapping[j].enabled;
                         }
                     }
                 }
