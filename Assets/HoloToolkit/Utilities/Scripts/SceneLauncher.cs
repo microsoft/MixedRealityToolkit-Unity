@@ -22,19 +22,16 @@ namespace HoloToolkit.Unity
         [Tooltip("The button scene mapping to keep track of which scenes are enabled in the scene launcher.  This list of scenes is generated from the build window active scenes.")]
         private SceneMapping[] sceneMapping;
 
-        [SerializeField]
         [Tooltip("Location of the center of the grid of buttons in Unity space.")]
         public GameObject ButtonSpawnLocation;
 
-        [SerializeField]
         [Tooltip("Prefab used as a button for each scene.")]
         public SceneLauncherButton SceneButtonPrefab;
 
-        [SerializeField]
         [Tooltip("Number of rows in the grid of buttons. As more scenes are added, they will spread out horizontally using this number of rows.")]
         public int MaxRows = 5;
 
-        public int SceneLauncherBuildIndex { get; private set; }
+        private int SceneLauncherBuildIndex { get; set; }
         private Vector3 sceneButtonSize = Vector3.one;
 
         private void OnValidate()
