@@ -11,55 +11,53 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ControllerInfo : MonoBehaviour
     {
-        public GameObject home;
-        public Transform homePressed;
-        public Transform homeUnpressed;
-        public GameObject menu;
-        public Transform menuPressed;
-        public Transform menuUnpressed;
-        public GameObject grasp;
-        public Transform graspPressed;
-        public Transform graspUnpressed;
-        public GameObject thumbstickPress;
-        public Transform thumbstickPressed;
-        public Transform thumbstickUnpressed;
-        public GameObject thumbstickX;
-        public Transform thumbstickXMin;
-        public Transform thumbstickXMax;
-        public GameObject thumbstickY;
-        public Transform thumbstickYMin;
-        public Transform thumbstickYMax;
-        public GameObject select;
-        public Transform selectPressed;
-        public Transform selectUnpressed;
-        public GameObject touchpadPress;
-        public Transform touchpadPressed;
-        public Transform touchpadUnpressed;
-        public GameObject touchpadPressX;
-        public Transform touchpadPressXMin;
-        public Transform touchpadPressXMax;
-        public GameObject touchpadPressY;
-        public Transform touchpadPressYMin;
-        public Transform touchpadPressYMax;
-        public GameObject touchpadTouchX;
-        public Transform touchpadTouchXMin;
-        public Transform touchpadTouchXMax;
-        public GameObject touchpadTouchY;
-        public Transform touchpadTouchYMin;
-        public Transform touchpadTouchYMax;
-        public GameObject touchpadTouchVisualizer;
+        private GameObject home;
+        private Transform homePressed;
+        private Transform homeUnpressed;
+        private GameObject menu;
+        private Transform menuPressed;
+        private Transform menuUnpressed;
+        private GameObject grasp;
+        private Transform graspPressed;
+        private Transform graspUnpressed;
+        private GameObject thumbstickPress;
+        private Transform thumbstickPressed;
+        private Transform thumbstickUnpressed;
+        private GameObject thumbstickX;
+        private Transform thumbstickXMin;
+        private Transform thumbstickXMax;
+        private GameObject thumbstickY;
+        private Transform thumbstickYMin;
+        private Transform thumbstickYMax;
+        private GameObject select;
+        private Transform selectPressed;
+        private Transform selectUnpressed;
+        private GameObject touchpadPress;
+        private Transform touchpadPressed;
+        private Transform touchpadUnpressed;
+        private GameObject touchpadPressX;
+        private Transform touchpadPressXMin;
+        private Transform touchpadPressXMax;
+        private GameObject touchpadPressY;
+        private Transform touchpadPressYMin;
+        private Transform touchpadPressYMax;
+        private GameObject touchpadTouchX;
+        private Transform touchpadTouchXMin;
+        private Transform touchpadTouchXMax;
+        private GameObject touchpadTouchY;
+        private Transform touchpadTouchYMin;
+        private Transform touchpadTouchYMax;
+        private GameObject touchpadTouchVisualizer;
 
         // These bools and doubles are used to determine if a button's state has changed.
-        public bool wasGrasped;
-        public bool wasMenuPressed;
-        public bool wasThumbstickPressed;
-        public bool wasTouchpadPressed;
-        public bool wasTouchpadTouched;
-        public Vector2 lastThumbstickPosition;
-        public Vector2 lastTouchpadPosition;
-        public double lastSelectPressedAmount;
-        public Vector3 lastPosition;
-        public Quaternion lastRotation;
+        private bool wasGrasped;
+        private bool wasMenuPressed;
+        private bool wasThumbstickPressed;
+        private bool wasTouchpadPressed;
+        private bool wasTouchpadTouched;
+        private Vector2 lastThumbstickPosition;
+        private Vector2 lastTouchpadPosition;
+        private double lastSelectPressedAmount;
 
         /// <summary>
         /// Iterates through the Transform array to find specifically named GameObjects.
@@ -218,6 +216,90 @@ namespace HoloToolkit.Unity.InputModule
                         break;
                 }
             }
+        }
+
+        public void AnimateGrasp(bool isGrasped)
+        {
+            if (grasp != null && graspPressed != null && graspUnpressed != null && isGrasped != wasGrasped)
+            {
+                SetLocalPositionAndRotation(grasp, isGrasped ? graspPressed : graspUnpressed);
+                wasGrasped = isGrasped;
+            }
+        }
+
+        public void AnimateMenu(bool isMenuPressed)
+        {
+            if (menu != null && menuPressed != null && menuUnpressed != null && isMenuPressed != wasMenuPressed)
+            {
+                SetLocalPositionAndRotation(menu, isMenuPressed ? menuPressed : menuUnpressed);
+                wasMenuPressed = isMenuPressed;
+            }
+        }
+
+        public void AnimateSelect(float newSelectPressedAmount)
+        {
+            if (select != null && selectPressed != null && selectUnpressed != null && newSelectPressedAmount != lastSelectPressedAmount)
+            {
+                select.transform.localPosition = Vector3.Lerp(selectUnpressed.localPosition, selectPressed.localPosition, newSelectPressedAmount);
+                select.transform.localRotation = Quaternion.Lerp(selectUnpressed.localRotation, selectPressed.localRotation, newSelectPressedAmount);
+                lastSelectPressedAmount = newSelectPressedAmount;
+            }
+        }
+
+        public void AnimateThumbstick(bool isThumbstickPressed, Vector2 newThumbstickPosition)
+        {
+            if (thumbstickPress != null && thumbstickPressed != null && thumbstickUnpressed != null && isThumbstickPressed != wasThumbstickPressed)
+            {
+                SetLocalPositionAndRotation(thumbstickPress, isThumbstickPressed ? thumbstickPressed : thumbstickUnpressed);
+                wasThumbstickPressed = isThumbstickPressed;
+            }
+
+            if (thumbstickX != null && thumbstickY != null && thumbstickXMin != null && thumbstickXMax != null && thumbstickYMin != null && thumbstickYMax != null && newThumbstickPosition != lastThumbstickPosition)
+            {
+                Vector2 thumbstickNormalized = (newThumbstickPosition + Vector2.one) / 2.0f;
+
+                thumbstickX.transform.localPosition = Vector3.Lerp(thumbstickXMin.localPosition, thumbstickXMax.localPosition, thumbstickNormalized.x);
+                thumbstickX.transform.localRotation = Quaternion.Lerp(thumbstickXMin.localRotation, thumbstickXMax.localRotation, thumbstickNormalized.x);
+
+                thumbstickY.transform.localPosition = Vector3.Lerp(thumbstickYMax.localPosition, thumbstickYMin.localPosition, thumbstickNormalized.y);
+                thumbstickY.transform.localRotation = Quaternion.Lerp(thumbstickYMax.localRotation, thumbstickYMin.localRotation, thumbstickNormalized.y);
+
+                lastThumbstickPosition = newThumbstickPosition;
+            }
+        }
+
+        public void AnimateTouchpad(bool isTouchpadPressed, bool isTouchpadTouched, Vector2 newTouchpadPosition)
+        {
+            if (touchpadPress != null && touchpadPressed != null && touchpadUnpressed != null && isTouchpadPressed != wasTouchpadPressed)
+            {
+                SetLocalPositionAndRotation(touchpadPress, isTouchpadPressed ? touchpadPressed : touchpadUnpressed);
+                wasTouchpadPressed = isTouchpadPressed;
+            }
+
+            if (touchpadTouchVisualizer != null && isTouchpadTouched != wasTouchpadTouched)
+            {
+                touchpadTouchVisualizer.SetActive(isTouchpadTouched);
+                wasTouchpadTouched = isTouchpadTouched;
+            }
+
+            if (touchpadTouchX != null && touchpadTouchY != null && touchpadTouchXMin != null && touchpadTouchXMax != null && touchpadTouchYMin != null && touchpadTouchYMax != null && newTouchpadPosition != lastTouchpadPosition)
+            {
+                Vector2 touchpadNormalized = (newTouchpadPosition + Vector2.one) / 2.0f;
+
+                touchpadTouchX.transform.localPosition = Vector3.Lerp(touchpadTouchXMin.localPosition, touchpadTouchXMax.localPosition, touchpadNormalized.x);
+                touchpadTouchX.transform.localRotation = Quaternion.Lerp(touchpadTouchXMin.localRotation, touchpadTouchXMax.localRotation, touchpadNormalized.x);
+
+                touchpadTouchY.transform.localPosition = Vector3.Lerp(touchpadTouchYMax.localPosition, touchpadTouchYMin.localPosition, touchpadNormalized.y);
+                touchpadTouchY.transform.localRotation = Quaternion.Lerp(touchpadTouchYMax.localRotation, touchpadTouchYMin.localRotation, touchpadNormalized.y);
+
+                lastTouchpadPosition = newTouchpadPosition;
+            }
+        }
+
+        private void SetLocalPositionAndRotation(GameObject buttonGameObject, Transform newTransform)
+        {
+            buttonGameObject.transform.localPosition = newTransform.localPosition;
+            buttonGameObject.transform.localRotation = newTransform.localRotation;
         }
     }
 }

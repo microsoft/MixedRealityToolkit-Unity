@@ -73,9 +73,9 @@ namespace GLTF
 		}
 	}
 
-	public class CameraId : GLTFId<Camera>
+	public class CameraId : GLTFId<GLTFCamera>
 	{
-		public override Camera Value
+		public override GLTFCamera Value
 		{
 			get { return Root.Cameras[Id]; }
 		}

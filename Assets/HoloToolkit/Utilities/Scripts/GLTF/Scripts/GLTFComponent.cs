@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace GLTF
 {
     class GLTFComponent : MonoBehaviour
     {
-        private byte[] GLTFData;
+        public string Url;
         public bool Multithreaded = true;
 
         public int MaximumLod = 300;
@@ -13,10 +14,14 @@ namespace GLTF
         public Shader GLTFStandard;
         public Shader GLTFConstant;
 
-        public IEnumerator LoadModel()
+        IEnumerator Start()
         {
+            UnityWebRequest www = UnityWebRequest.Get(Url);
+            yield return www.SendWebRequest();
+            byte[] gltfData = www.downloadHandler.data;
+
             var loader = new GLTFLoader(
-                GLTFData,
+                gltfData,
                 gameObject.transform
             );
             loader.SetShaderForMaterialType(GLTFLoader.MaterialType.PbrMetallicRoughness, GLTFStandard);
@@ -24,11 +29,6 @@ namespace GLTF
             loader.Multithreaded = Multithreaded;
             loader.MaximumLod = MaximumLod;
             yield return loader.Load();
-        }
-
-        public void SetData(byte[] newData)
-        {
-            GLTFData = newData;
         }
     }
 }

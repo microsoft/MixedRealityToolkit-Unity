@@ -30,7 +30,7 @@ namespace GLTF
 		/// <summary>
 		/// An array of keyframe animations.
 		/// </summary>
-		public List<Animation> Animations;
+		public List<GLTFAnimation> Animations;
 
 		/// <summary>
 		/// Metadata about the glTF asset.
@@ -51,7 +51,7 @@ namespace GLTF
 		/// <summary>
 		/// An array of cameras. A camera defines a projection matrix.
 		/// </summary>
-		public List<Camera> Cameras;
+		public List<GLTFCamera> Cameras;
 
 		/// <summary>
 		/// An array of images. An image defines data used to create a texture.
@@ -142,7 +142,7 @@ namespace GLTF
 						root.Accessors = reader.ReadList(() => Accessor.Deserialize(root, reader));
 						break;
 					case "animations":
-						root.Animations = reader.ReadList(() => Animation.Deserialize(root, reader));
+						root.Animations = reader.ReadList(() => GLTFAnimation.Deserialize(root, reader));
 						break;
 					case "asset":
 						root.Asset = Asset.Deserialize(root, reader);
@@ -154,7 +154,7 @@ namespace GLTF
 						root.BufferViews = reader.ReadList(() => BufferView.Deserialize(root, reader));
 						break;
 					case "cameras":
-						root.Cameras = reader.ReadList(() => Camera.Deserialize(root, reader));
+						root.Cameras = reader.ReadList(() => GLTFCamera.Deserialize(root, reader));
 						break;
 					case "images":
 						root.Images = reader.ReadList(() => Image.Deserialize(root, reader));
