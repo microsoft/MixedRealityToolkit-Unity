@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/HoloToolkit/Utilities/Scenes/HeadsetAdjustment.unity
+    guid: 6328c96cc619a8b41a866766f9513e17
+  - enabled: 1
+    path: Assets/HoloToolkit/Utilities/Scenes/SceneLauncher.unity
+    guid: fd656d2febd0dea46b3825b704706806

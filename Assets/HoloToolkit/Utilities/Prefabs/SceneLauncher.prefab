@@ -263,7 +263,7 @@ MonoBehaviour:
   PersistentKeywords: 1
   RecognizerStart: 0
   Keywords:
-  - Keyword: Scene Loader
+  - Keyword: Scene Launcher
     KeyCode: 8
 --- !u!114 &114669922776097872
 MonoBehaviour:
@@ -277,6 +277,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneMapping:
+  - ScenePath: Assets/HoloToolkit/Utilities/Scenes/HeadsetAdjustment.unity
+    IsButtonEnabled: 1
   - ScenePath: Assets/HoloToolkit/Utilities/Scenes/SceneLauncher.unity
     IsButtonEnabled: 1
   ButtonSpawnLocation: {fileID: 1899756416056624}

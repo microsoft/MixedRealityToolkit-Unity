@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace HoloToolkit.Unity
 {
-    public class SceneLauncher : MonoBehaviour
+    public class SceneLauncher : Singleton<SceneLauncher>
     {
         [Serializable]
         private class SceneMapping
@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
         }
 
         [SerializeField]
-        [Tooltip("The button scene mapping to keep track of which scenes are enabled in the scene launcher.  This list of scenes is generated from the build window active scenes.")]
+        [Tooltip("The button scene mapping to keep track of which scenes are enabled in the scene launcher.  This list of scenes is generated from the build window's active scenes.")]
         private SceneMapping[] sceneMapping;
 
         [Tooltip("Location of the center of the grid of buttons in Unity space.")]
@@ -39,6 +39,20 @@ namespace HoloToolkit.Unity
             Debug.Assert(SceneButtonPrefab != null, "SceneLauncher.SceneButtonPrefab is not set.");
         }
 
+        protected override void Awake()
+        {
+            // If we have already initialized,
+            // then we've created a second one.
+            if (IsInitialized)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                base.Awake();
+            }
+        }
+
         private void Start()
         {
             if (SceneButtonPrefab == null)
@@ -49,7 +63,7 @@ namespace HoloToolkit.Unity
             SceneLauncherBuildIndex = SceneManager.GetActiveScene().buildIndex;
 
             // Determine the size of the buttons. Instantiate one of them so that we can check its bounds.
-            SceneLauncherButton sceneButtonForSize = Instantiate(SceneButtonPrefab);
+            var sceneButtonForSize = Instantiate(SceneButtonPrefab);
             var sceneButtonForSizeCollider = sceneButtonForSize.GetComponent<Collider>();
 
             if (sceneButtonForSizeCollider != null)
@@ -73,10 +87,10 @@ namespace HoloToolkit.Unity
             string sceneName = sceneMapping[sceneIndex].ScenePath;
             sceneName = sceneName.Substring(sceneName.LastIndexOf("/", StringComparison.Ordinal) + 1);
             sceneName = sceneName.Replace(".unity", "");
-            Scene scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
+            var scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
             Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
 
-            SceneLauncherButton sceneButton = Instantiate(SceneButtonPrefab, GetButtonPosition(sceneIndex, sceneMapping.Length), Quaternion.identity, buttonParent.transform);
+            var sceneButton = Instantiate(SceneButtonPrefab, GetButtonPosition(sceneIndex, sceneMapping.Length), Quaternion.identity, buttonParent.transform);
             sceneButton.SceneIndex = sceneIndex;
             sceneButton.SceneName = sceneName;
             sceneButton.MenuReference = ButtonSpawnLocation;
@@ -92,10 +106,10 @@ namespace HoloToolkit.Unity
 
             // Center a grid of cells in a grid.
             // The top-left corner is shifted .5 cell widths for every row/column after the first one.
-            Vector3 topLeft = new Vector3((xCount - 1) * -0.5f, (yCount - 1) * 0.5f, 0.0f);
-            Vector3 cellFromTopLeft = new Vector3(x, -y, 0.0f);
+            var topLeft = new Vector3((xCount - 1) * -0.5f, (yCount - 1) * 0.5f, 0.0f);
+            var cellFromTopLeft = new Vector3(x, -y, 0.0f);
             // Scale by size of the button.
-            Vector3 positionOffset = Vector3.Scale(topLeft + cellFromTopLeft, new Vector3(sceneButtonSize.x, sceneButtonSize.y, 1.0f));
+            var positionOffset = Vector3.Scale(topLeft + cellFromTopLeft, new Vector3(sceneButtonSize.x, sceneButtonSize.y, 1.0f));
 
             return ButtonSpawnLocation.transform.position + positionOffset;
         }
