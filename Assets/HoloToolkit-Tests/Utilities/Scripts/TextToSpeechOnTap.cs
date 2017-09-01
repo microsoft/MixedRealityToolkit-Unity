@@ -3,9 +3,8 @@
 
 using System;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity.Tests
+namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class TextToSpeechOnTap : MonoBehaviour, IInputClickHandler
     {

@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
 using Windows.Foundation;
 using Windows.Media.SpeechSynthesis;
 using Windows.Storage.Streams;
@@ -62,7 +62,7 @@ namespace HoloToolkit.Unity
         private TextToSpeechVoice voice;
 
         // Member Variables
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
         private SpeechSynthesizer synthesizer;
         private VoiceInformation voiceInfo;
         private bool speechTextInQueue = false;
@@ -82,7 +82,7 @@ namespace HoloToolkit.Unity
         /// <returns>
         /// The converted float.
         /// </returns>
-        static private float BytesToFloat(byte firstByte, byte secondByte)
+        private static float BytesToFloat(byte firstByte, byte secondByte)
         {
             // Convert two bytes to one short (little endian)
             short s = (short)((secondByte << 8) | firstByte);
@@ -103,7 +103,7 @@ namespace HoloToolkit.Unity
         /// <returns>
         /// The converted int.
         /// </returns>
-        static private int BytesToInt(byte[] bytes, int offset = 0)
+        private static int BytesToInt(byte[] bytes, int offset = 0)
         {
             int value = 0;
             for (int i = 0; i < 4; i++)
@@ -131,7 +131,7 @@ namespace HoloToolkit.Unity
         /// <returns>
         /// The <see cref="AudioClip"/>.
         /// </returns>
-        static private AudioClip ToClip(string name, float[] audioData, int sampleCount, int frequency)
+        private static AudioClip ToClip(string name, float[] audioData, int sampleCount, int frequency)
         {
             // Create the audio clip
             var clip = AudioClip.Create(name, sampleCount, 1, frequency, false);
@@ -158,7 +158,7 @@ namespace HoloToolkit.Unity
         /// <returns>
         /// The Unity formatted audio data.
         /// </returns>
-        static private float[] ToUnityAudio(byte[] wavAudio, out int sampleCount, out int frequency)
+        private static float[] ToUnityAudio(byte[] wavAudio, out int sampleCount, out int frequency)
         {
             // Determine if mono or stereo
             int channelCount = wavAudio[22];     // Speech audio data is always mono but read actual header value for processing
@@ -216,7 +216,7 @@ namespace HoloToolkit.Unity
             Debug.LogFormat("Speech not supported in editor. \"{0}\"", text);
         }
 
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
         /// <summary>
         /// Executes a function that generates a speech stream and then converts and plays it in Unity.
         /// </summary>
@@ -334,7 +334,7 @@ namespace HoloToolkit.Unity
                 }
                 else
                 {
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
                     synthesizer = new SpeechSynthesizer();
 #endif
                 }
@@ -360,7 +360,7 @@ namespace HoloToolkit.Unity
             if (string.IsNullOrEmpty(ssml)) { return; }
 
             // Pass to helper method
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
             PlaySpeech(ssml, () => synthesizer.SynthesizeSsmlToStreamAsync(ssml));
 #else
             LogSpeech(ssml);
@@ -379,7 +379,7 @@ namespace HoloToolkit.Unity
             if (string.IsNullOrEmpty(text)) { return; }
 
             // Pass to helper method
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
             PlaySpeech(text, ()=> synthesizer.SynthesizeTextToStreamAsync(text));
 #else
             LogSpeech(text);
@@ -394,7 +394,7 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public bool SpeechTextInQueue()
         {
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
             return speechTextInQueue;
 #else
             return false;

@@ -25,12 +25,12 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Reference to child text element.
         /// </summary>
-        private Text m_text;
+        private Text m_Text;
 
         /// <summary>
-        /// Reference to the gameobject's Button component.
+        /// Reference to the GameObject's Button component.
         /// </summary>
-        private Button m_Button = null;
+        private Button m_Button;
 
         /// <summary>
         /// Get the button component.
@@ -45,13 +45,13 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void Start()
         {
-            m_text = gameObject.GetComponentInChildren<Text>();
-            m_text.text = Value;
+            m_Text = gameObject.GetComponentInChildren<Text>();
+            m_Text.text = Value;
 
             m_Button.onClick.RemoveAllListeners();
-            m_Button.onClick.AddListener(new UnityEngine.Events.UnityAction(FireAppendValue));
+            m_Button.onClick.AddListener(FireAppendValue);
 
-            Keyboard.Instance.onKeyboardShifted += Shift;
+            Keyboard.Instance.OnKeyboardShifted += Shift;
         }
 
         /// <summary>
@@ -71,11 +71,11 @@ namespace HoloToolkit.UI.Keyboard
             // Shift value should only be applied if a shift value is present.
             if (isShifted && !string.IsNullOrEmpty(ShiftValue))
             {
-                m_text.text = ShiftValue;
+                m_Text.text = ShiftValue;
             }
             else
             {
-                m_text.text = Value;
+                m_Text.text = Value;
             }
         }
     }

@@ -128,8 +128,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 }
 
                 // Calc the forward distance for the animation start point
-                Vector3 rayPos = Camera.main.transform.position;
-                Vector3 rayVec = Camera.main.transform.forward * InitialPositionForwardMaxDistance;
+                Vector3 rayPos = CameraCache.Main.transform.position;
+                Vector3 rayVec = CameraCache.Main.transform.forward * InitialPositionForwardMaxDistance;
                 IntPtr raycastResultPtr = HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
                 HoloToolkit.Unity.SpatialUnderstandingDll.Imports.PlayspaceRaycast(
                     rayPos.x, rayPos.y, rayPos.z, rayVec.x, rayVec.y, rayVec.z,
