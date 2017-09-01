@@ -52,10 +52,10 @@ Shader "HoloToolkit/3DTextShader"
         Pass
         {
             CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+			#pragma vertex vert
+			#pragma fragment frag
 			#pragma multi_compile_instancing
-            #include "UnityCG.cginc"
+			#include "UnityCG.cginc"
 
             struct appdata_t
             {
