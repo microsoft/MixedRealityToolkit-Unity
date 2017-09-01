@@ -20,7 +20,6 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                // ReSharper disable once ConvertIfStatementToReturnStatement
                 if (cachedCamera == null)
                 {
                     return Refresh(Camera.main);
