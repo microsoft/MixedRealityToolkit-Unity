@@ -12,16 +12,10 @@ namespace HoloToolkit.Unity.Tests
     {
         private GameObject empty;
 
-        [TearDown]
-        public void ClearScene()
-        {
-            TestUtils.ClearScene();
-        }
-
         [SetUp]
         public void SetupTests()
         {
-            ClearScene();
+            TestUtils.ClearScene();
             empty = new GameObject();
         }
 

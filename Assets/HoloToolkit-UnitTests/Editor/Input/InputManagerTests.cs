@@ -12,16 +12,10 @@ namespace HoloToolkit.Unity.Tests
         private List<GameObject> receivedEventSources;
         private BaseEventData eventData;
 
-        [TearDown]
-        public void ClearScene()
-        {
-            TestUtils.ClearScene();
-        }
-
         [SetUp]
         public void SetUpTests()
         {
-            ClearScene();
+            TestUtils.ClearScene();
             receivedEventSources = new List<GameObject>();
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;

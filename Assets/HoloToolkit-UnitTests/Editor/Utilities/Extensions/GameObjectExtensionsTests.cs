@@ -14,19 +14,13 @@ namespace HoloToolkit.Unity.Tests
         private LayerMask uiLayer;
         private LayerMask transparentFxLayer;
 
-        [TearDown]
-        public void ClearScene()
-        {
-            TestUtils.ClearScene();
-        }
-
         /// <summary>
         /// Create empty game object for easy cloning
         /// </summary>
         [SetUp]
         public void SetupTests()
         {
-            ClearScene();
+            TestUtils.ClearScene();
             empty = new GameObject();
             waterLayer = LayerMask.NameToLayer("Water");
             uiLayer = LayerMask.NameToLayer("UI");

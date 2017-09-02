@@ -6,7 +6,6 @@ namespace HoloToolkit.Unity.Tests
     public class ComponentExtensionsTests
     {
         [SetUp]
-        [TearDown]
         public void ClearScene()
         {
             TestUtils.ClearScene();
