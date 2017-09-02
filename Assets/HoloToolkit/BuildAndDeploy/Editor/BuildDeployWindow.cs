@@ -110,12 +110,10 @@ namespace HoloToolkit.Unity
         [MenuItem("HoloToolkit/Build Window", false, 0)]
         public static void OpenWindow()
         {
-            var window = GetWindow<BuildDeployWindow>("Build Window");
-
-            if (window != null)
-            {
-                window.Show();
-            }
+            // Dock it next to the Scene View.
+            var window = GetWindow<BuildDeployWindow>(typeof(SceneView));
+            window.titleContent = new GUIContent("Build Window");
+            window.Show();
         }
 
         private void OnEnable()
@@ -563,7 +561,7 @@ namespace HoloToolkit.Unity
 
                 if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(buttonWidth_Full)))
                 {
-                    Process.Start("explorer.exe", "/open," + Path.GetFullPath(curBuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
+                    Process.Start("explorer.exe", "/f /open," + Path.GetFullPath(curBuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
                 }
 
                 GUI.enabled = true;
@@ -770,7 +768,7 @@ namespace HoloToolkit.Unity
             EditorUtility.ClearProgressBar();
         }
 
-        private bool InstallApp(string buildPath, string targetDevice)
+        private static bool InstallApp(string buildPath, string targetDevice)
         {
             // Get the appx path
             FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");

@@ -1,19 +1,22 @@
-﻿
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Threading;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
-    public class TextureScale
+    public static class TextureScale
     {
         private class ThreadData
         {
-            public int start;
-            public int end;
+            public readonly int Start;
+            public readonly int End;
+
             public ThreadData(int s, int e)
             {
-                start = s;
-                end = e;
+                Start = s;
+                End = e;
             }
         }
 
@@ -47,8 +50,8 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                ratioX = ((float)tex.width) / newWidth;
-                ratioY = ((float)tex.height) / newHeight;
+                ratioX = (float)tex.width / newWidth;
+                ratioY = (float)tex.height / newHeight;
             }
             w = tex.width;
             w2 = newWidth;
@@ -56,21 +59,25 @@ namespace HoloToolkit.Unity
             var slice = newHeight / cores;
 
             finishCount = 0;
+
             if (mutex == null)
             {
                 mutex = new Mutex(false);
             }
+
             if (cores > 1)
             {
-                int i = 0;
+                int i;
                 ThreadData threadData;
+
                 for (i = 0; i < cores - 1; i++)
                 {
                     threadData = new ThreadData(slice * i, slice * (i + 1));
-                    ParameterizedThreadStart ts = useBilinear ? new ParameterizedThreadStart(BilinearScale) : new ParameterizedThreadStart(PointScale);
-                    Thread thread = new Thread(ts);
+                    ParameterizedThreadStart ts = useBilinear ? BilinearScale : new ParameterizedThreadStart(PointScale);
+                    var thread = new Thread(ts);
                     thread.Start(threadData);
                 }
+
                 threadData = new ThreadData(slice * i, newHeight);
                 if (useBilinear)
                 {
@@ -80,6 +87,7 @@ namespace HoloToolkit.Unity
                 {
                     PointScale(threadData);
                 }
+
                 while (finishCount < cores)
                 {
                     Thread.Sleep(1);
@@ -87,7 +95,8 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                ThreadData threadData = new ThreadData(0, newHeight);
+                var threadData = new ThreadData(0, newHeight);
+
                 if (useBilinear)
                 {
                     BilinearScale(threadData);
@@ -106,10 +115,10 @@ namespace HoloToolkit.Unity
             newColors = null;
         }
 
-        public static void BilinearScale(System.Object obj)
+        public static void BilinearScale(object obj)
         {
-            ThreadData threadData = (ThreadData)obj;
-            for (var y = threadData.start; y < threadData.end; y++)
+            var threadData = (ThreadData)obj;
+            for (var y = threadData.Start; y < threadData.End; y++)
             {
                 int yFloor = (int)Mathf.Floor(y * ratioY);
                 var y1 = yFloor * w;
@@ -131,10 +140,10 @@ namespace HoloToolkit.Unity
             mutex.ReleaseMutex();
         }
 
-        public static void PointScale(System.Object obj)
+        public static void PointScale(object obj)
         {
-            ThreadData threadData = (ThreadData)obj;
-            for (var y = threadData.start; y < threadData.end; y++)
+            var threadData = (ThreadData)obj;
+            for (var y = threadData.Start; y < threadData.End; y++)
             {
                 var thisY = (int)(ratioY * y) * w;
                 var yw = y * w2;
