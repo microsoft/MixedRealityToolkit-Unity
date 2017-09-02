@@ -64,5 +64,62 @@ namespace HoloToolkit.Unity.Tests
             var mainCamera = TestUtils.CreateMainCamera();
             Assert.That(mainCamera, Is.EqualTo(Camera.main));
         }
+
+        [Test]
+        public void CallAwakeTest()
+        {
+            var gameObject = new GameObject();
+            var reflectionTest = gameObject.AddComponent<ReflectionTestBehaviour>();
+            gameObject.CallAwake();
+            Assert.That(reflectionTest.AwakeCalled, Is.True);
+        }
+
+        [Test]
+        public void CallStartTest()
+        {
+            var gameObject = new GameObject();
+            var reflectionTest = gameObject.AddComponent<ReflectionTestBehaviour>();
+            gameObject.CallStart();
+            Assert.That(reflectionTest.StartCalled, Is.True);
+        }
+
+        [Test]
+        public void CallUpdateTest()
+        {
+            var gameObject = new GameObject();
+            var reflectionTest = gameObject.AddComponent<ReflectionTestBehaviour>();
+            gameObject.CallUpdate();
+            gameObject.CallUpdate();
+            Assert.That(reflectionTest.UpdateCallCount, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void CallGenericPrivateMethodTest()
+        {
+            var gameObject = new GameObject();
+            var reflectionTest = gameObject.AddComponent<ReflectionTestBehaviour>();
+            gameObject.CallAllMonoBehaviours("GenericPrivateMethod");
+            Assert.That(reflectionTest.GenericPrivateMethodCalled, Is.True);
+        }
+
+        [Test]
+        public void CallGenericPublicMethodTest()
+        {
+            var gameObject = new GameObject();
+            var reflectionTest = gameObject.AddComponent<ReflectionTestBehaviour>();
+            gameObject.CallAllMonoBehaviours("GenericPublicMethod");
+            Assert.That(reflectionTest.GenericPublicMethodCalled, Is.True);
+        }
+
+        [Test]
+        public void CallGenericMultipleComponentsTest()
+        {
+            var gameObject = new GameObject();
+            var reflectionTest1 = gameObject.AddComponent<ReflectionTestBehaviour>();
+            var reflectionTest2 = gameObject.AddComponent<ReflectionTestBehaviour>();
+            gameObject.CallAllMonoBehaviours("GenericPrivateMethod");
+            Assert.That(reflectionTest1.GenericPrivateMethodCalled, Is.True);
+            Assert.That(reflectionTest2.GenericPrivateMethodCalled, Is.True);
+        }
     }
 }
