@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace HoloToolkit.Unity
 {
-        public static class TestUtils
+    public static class TestUtils
     {
         /// <summary>
         /// Deletes all objects in the scene
@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
         {
             DestroyTransforms(Object.FindObjectsOfType<Transform>());
         }
-        
+
         private static void DestroyTransforms(IEnumerable<Transform> transforms)
         {
             DestroyGameObjects(transforms.Where(t => t).Select(t => t.root.gameObject).Distinct());
