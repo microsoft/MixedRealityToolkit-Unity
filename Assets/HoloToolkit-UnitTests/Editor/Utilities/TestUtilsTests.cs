@@ -94,6 +94,16 @@ namespace HoloToolkit.Unity.Tests
         }
 
         [Test]
+        public void CallAwakeUpdateChainTest()
+        {
+            var gameObject = new GameObject();
+            var reflectionTest = gameObject.AddComponent<ReflectionTestBehaviour>();
+            gameObject.CallAwake().CallStart();
+            Assert.That(reflectionTest.AwakeCalled, Is.True);
+            Assert.That(reflectionTest.StartCalled, Is.True);
+        }
+
+        [Test]
         public void CallGenericPrivateMethodTest()
         {
             var gameObject = new GameObject();
