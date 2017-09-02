@@ -61,11 +61,7 @@ namespace HoloToolkit.Unity
         /// <returns>The given gameObject to be able to chain call</returns>
         internal static GameObject CallAwake(this GameObject gameObject)
         {
-            foreach (var script in gameObject.GetComponentsInChildren<MonoBehaviour>())
-            {
-                script.Call("Awake");
-            }
-            return gameObject;
+            return gameObject.Call("Awake");
         }
 
         /// <summary>
@@ -75,11 +71,7 @@ namespace HoloToolkit.Unity
         /// <returns>The given gameObject to be able to chain call</returns>
         internal static GameObject CallStart(this GameObject gameObject)
         {
-            foreach (var script in gameObject.GetComponentsInChildren<MonoBehaviour>())
-            {
-                script.Call("Start");
-            }
-            return gameObject;
+            return gameObject.Call("Start");
         }
 
         /// <summary>
@@ -89,9 +81,21 @@ namespace HoloToolkit.Unity
         /// <returns>The given gameObject to be able to chain call</returns>
         internal static GameObject CallUpdate(this GameObject gameObject)
         {
+            return gameObject.Call("Update");
+        }
+
+
+        /// <summary>
+        /// Calls the given method on all MonoBehaviours on the given gameObject through reflection.
+        /// </summary>
+        /// <param name="gameObject">The gameObject that contains the monoBehaviour</param>
+        /// <param name="methodName">The method to call</param>
+        /// <returns>The given gameObject to be able to chain call</returns>
+        internal static GameObject Call(this GameObject gameObject, string methodName)
+        {
             foreach (var script in gameObject.GetComponentsInChildren<MonoBehaviour>())
             {
-                script.Call("Update");
+                script.Call(methodName);
             }
             return gameObject;
         }
@@ -101,7 +105,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="obj">Object to call the method on</param>
         /// <param name="methodName">The method that should be called</param>
-        private static void Call(this object obj, string methodName)
+        internal static void Call(this object obj, string methodName)
         {
             const BindingFlags findFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
             var methodInfo = obj.GetType().GetMethod(methodName, findFlags);
