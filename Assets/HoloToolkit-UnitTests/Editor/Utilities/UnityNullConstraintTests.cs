@@ -17,14 +17,27 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void TestObjectUsingUnityIsDirect()
         {
-            var obj = CreateDestroyedObject();
-            Assert.That(obj, Is.UnityNull);
+            var gameObject = new GameObject();
+            Object.DestroyImmediate(gameObject);
+            Assert.That(gameObject, Is.UnityNull);
         }
 
         [Test]
         public void TestNotUnityNull()
         {
             Assert.That(new GameObject(), Is.Not.UnityNull());
+        }
+
+        [Test]
+        public void TestActualNull()
+        {
+            Assert.That(null, Is.UnityNull);
+        }
+
+        [Test]
+        public void TestNullCheckFailWithNormalObjects()
+        {
+            Assert.That(new object(), Is.UnityNull);
         }
 
         [Test]

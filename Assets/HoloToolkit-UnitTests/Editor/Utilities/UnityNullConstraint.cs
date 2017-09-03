@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.Tests
             }
         }
     }
-    
+
     /// <summary>
     /// Unity classes behave differently when compared to null so the normal Is.Null does not work
     /// </summary>
@@ -32,9 +32,16 @@ namespace HoloToolkit.Unity.Tests
 
         public override ConstraintResult ApplyTo(object actual)
         {
-            var unityObject = actual as Object;
-            var result = unityObject == null;
-            return new ConstraintResult(this, unityObject, result);
+            var result = false;
+            if (actual == null)
+            {
+                result = true;
+            }
+            else if (actual as Object == null)
+            {
+                result = true;
+            }
+            return new ConstraintResult(this, actual, result);
         }
     }
 
