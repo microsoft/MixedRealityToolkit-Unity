@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void TestNullCheckFailWithNormalObjects()
         {
-            Assert.That(new object(), Is.UnityNull);
+            Assert.That(new object(), Is.Not.UnityNull());
         }
 
         [Test]

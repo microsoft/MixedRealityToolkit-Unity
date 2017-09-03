@@ -32,7 +32,16 @@ namespace HoloToolkit.Unity.Tests
 
         public override ConstraintResult ApplyTo(object actual)
         {
-            var result = actual == null || actual as Object == null;
+            var result = false;
+            if (actual == null)
+            {
+                result = true;
+            }
+            else if (actual is Object && actual as Object == null)
+            {
+                //Visual studio is wrong about this part not being reachable, but it will never be true while debugging
+                result = true;
+            }
             return new ConstraintResult(this, actual, result);
         }
     }
