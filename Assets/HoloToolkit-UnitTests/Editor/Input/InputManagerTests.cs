@@ -84,6 +84,7 @@ namespace HoloToolkit.Unity.Tests
 
             FireTestEvent();
 
+            Assert.That(receivedEventSources.Count, Is.EqualTo(2));
         }
 
         [Test]
