@@ -32,15 +32,7 @@ namespace HoloToolkit.Unity.Tests
 
         public override ConstraintResult ApplyTo(object actual)
         {
-            var result = false;
-            if (actual == null)
-            {
-                result = true;
-            }
-            else if (actual as Object == null)
-            {
-                result = true;
-            }
+            var result = actual == null || actual as Object == null;
             return new ConstraintResult(this, actual, result);
         }
     }
