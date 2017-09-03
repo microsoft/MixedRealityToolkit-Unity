@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
         {
             if (property.propertyType != SerializedPropertyType.String)
             {
-                throw new ArgumentException() { };
+                throw new ArgumentException();
             }
 
             position.width -= 30;
@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity
                 if (path.StartsWith(Application.dataPath))
                 {
                     path = path.Substring(Application.dataPath.Length);
-                    path.Replace("/", "\\");
+                    path = path.Replace("/", "\\");
                 }
 
                 property.stringValue = path;

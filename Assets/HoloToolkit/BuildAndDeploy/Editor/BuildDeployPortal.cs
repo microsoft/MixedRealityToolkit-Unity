@@ -3,11 +3,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
-using UnityEngine;
-using System.Net;
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Threading;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace HoloToolkit.Unity
 {
@@ -21,12 +25,12 @@ namespace HoloToolkit.Unity
         public const int TimeoutMS = (int)(TimeOut * 1000.0f);
         public const float MaxWaitTime = 20.0f;
 
-        public static readonly string kAPI_ProcessQuery = @"http://{0}/api/resourcemanager/processes";
-        public static readonly string kAPI_PackagesQuery = @"http://{0}/api/appx/packagemanager/packages";
-        public static readonly string kAPI_InstallQuery = @"http://{0}/api/app/packagemanager/package";
-        public static readonly string kAPI_InstallStatusQuery = @"http://{0}/api/app/packagemanager/state";
-        public static readonly string kAPI_AppQuery = @"http://{0}/api/taskmanager/app";
-        public static readonly string kAPI_FileQuery = @"http://{0}/api/filesystem/apps/file";
+        public static readonly string API_ProcessQuery = @"http://{0}/api/resourcemanager/processes";
+        public static readonly string API_PackagesQuery = @"http://{0}/api/appx/packagemanager/packages";
+        public static readonly string API_InstallQuery = @"http://{0}/api/app/packagemanager/package";
+        public static readonly string API_InstallStatusQuery = @"http://{0}/api/app/packagemanager/state";
+        public static readonly string API_AppQuery = @"http://{0}/api/taskmanager/app";
+        public static readonly string API_FileQuery = @"http://{0}/api/filesystem/apps/file";
 
         // Enums
         public enum AppInstallStatus
@@ -79,11 +83,13 @@ namespace HoloToolkit.Unity
             public int VirtualSize;
             public int WorkingSetSize;
         }
+
         [Serializable]
         public class ProcessList
         {
             public ProcessDesc[] Processes;
         }
+
         [Serializable]
         public class InstallStatus
         {
@@ -92,18 +98,24 @@ namespace HoloToolkit.Unity
             public string Reason;
             public bool Success;
         }
+
         [Serializable]
         public class Response
         {
             public string Reason;
         }
+
         private class TimeoutWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri uri)
             {
                 WebRequest lWebRequest = base.GetWebRequest(uri);
-                lWebRequest.Timeout = BuildDeployPortal.TimeoutMS;
-                ((HttpWebRequest)lWebRequest).ReadWriteTimeout = BuildDeployPortal.TimeoutMS;
+
+                if (lWebRequest == null) { return null; }
+
+                lWebRequest.Timeout = TimeoutMS;
+                ((HttpWebRequest)lWebRequest).ReadWriteTimeout = TimeoutMS;
+
                 return lWebRequest;
             }
         }
@@ -120,19 +132,21 @@ namespace HoloToolkit.Unity
             using (var client = new TimeoutWebClient())
             {
                 client.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
-                string query = string.Format(kAPI_ProcessQuery, connectInfo.IP);
-                string procListJSON = client.DownloadString(query);
+                string query = string.Format(API_ProcessQuery, connectInfo.IP);
+                string downloadString = client.DownloadString(query);
 
-                ProcessList procList = JsonUtility.FromJson<ProcessList>(procListJSON);
-                for (int i = 0; i < procList.Processes.Length; ++i)
+                var processList = JsonUtility.FromJson<ProcessList>(downloadString);
+                for (int i = 0; i < processList.Processes.Length; ++i)
                 {
-                    string procName = procList.Processes[i].ImageName;
-                    if (procName.Contains(appName))
+                    string processName = processList.Processes[i].ImageName;
+
+                    if (processName.Contains(appName))
                     {
                         return true;
                     }
                 }
             }
+
             return false;
         }
 
@@ -141,19 +155,23 @@ namespace HoloToolkit.Unity
             using (var client = new TimeoutWebClient())
             {
                 client.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
-                string query = string.Format(kAPI_InstallStatusQuery, connectInfo.IP);
+                string query = string.Format(API_InstallStatusQuery, connectInfo.IP);
                 string statusJSON = client.DownloadString(query);
-                InstallStatus status = JsonUtility.FromJson<InstallStatus>(statusJSON);
+                var status = JsonUtility.FromJson<InstallStatus>(statusJSON);
 
                 if (status == null)
                 {
                     return AppInstallStatus.Installing;
                 }
-                else if (status.Success == false)
+
+                Debug.LogFormat("Install Status: {0}|{1}|{2}|{3}", status.Code, status.CodeText, status.Reason, status.Success);
+
+                if (status.Success == false)
                 {
                     Debug.LogError(status.Reason + "(" + status.CodeText + ")");
                     return AppInstallStatus.InstallFail;
                 }
+
                 return AppInstallStatus.InstallSuccess;
             }
         }
@@ -163,10 +181,10 @@ namespace HoloToolkit.Unity
             using (var client = new TimeoutWebClient())
             {
                 client.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
-                string query = string.Format(kAPI_PackagesQuery, connectInfo.IP);
+                string query = string.Format(API_PackagesQuery, connectInfo.IP);
                 string appListJSON = client.DownloadString(query);
 
-                AppList appList = JsonUtility.FromJson<AppList>(appListJSON);
+                var appList = JsonUtility.FromJson<AppList>(appListJSON);
                 for (int i = 0; i < appList.InstalledPackages.Length; ++i)
                 {
                     string thisAppName = appList.InstalledPackages[i].PackageFamilyName;
@@ -176,6 +194,7 @@ namespace HoloToolkit.Unity
                     }
                 }
             }
+
             return null;
         }
 
@@ -190,11 +209,11 @@ namespace HoloToolkit.Unity
                 string depPath = Path.GetDirectoryName(appFullPath) + @"\Dependencies\x86\";
 
                 // Post it using the REST API
-                WWWForm form = new WWWForm();
+                var form = new WWWForm();
 
                 // APPX file
-                FileStream stream = new FileStream(appFullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                BinaryReader reader = new BinaryReader(stream);
+                var stream = new FileStream(appFullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                var reader = new BinaryReader(stream);
                 form.AddBinaryData(fileName, reader.ReadBytes((int)reader.BaseStream.Length), fileName);
                 stream.Close();
 
@@ -226,18 +245,19 @@ namespace HoloToolkit.Unity
                 }
 
                 // Query
-                string query = string.Format(kAPI_InstallQuery, connectInfo.IP);
+                string query = string.Format(API_InstallQuery, connectInfo.IP);
                 query += "?package=" + WWW.EscapeURL(fileName);
-                WWW www = new WWW(query, form.data, headers);
+
+                var www = new WWW(query, form.data, headers);
                 DateTime queryStartTime = DateTime.Now;
-                while (!www.isDone &&
-                       ((DateTime.Now - queryStartTime).TotalSeconds < TimeOut))
+
+                while (!www.isDone && (DateTime.Now - queryStartTime).TotalSeconds < TimeOut)
                 {
-                    System.Threading.Thread.Sleep(10);
+                    Thread.Sleep(10);
                 }
 
                 // Give it a short time before checking
-                System.Threading.Thread.Sleep(250);
+                Thread.Sleep(250);
 
                 // Report
                 if (www.isDone)
@@ -258,8 +278,7 @@ namespace HoloToolkit.Unity
 
                 // Wait for done (if requested)
                 DateTime waitStartTime = DateTime.Now;
-                while (waitForDone &&
-                    ((DateTime.Now - waitStartTime).TotalSeconds < MaxWaitTime))
+                while (waitForDone && (DateTime.Now - waitStartTime).TotalSeconds < MaxWaitTime)
                 {
                     AppInstallStatus status = GetInstallStatus(connectInfo);
                     if (status == AppInstallStatus.InstallSuccess)
@@ -267,17 +286,17 @@ namespace HoloToolkit.Unity
                         Debug.Log("Install Successful!");
                         break;
                     }
-                    else if (status == AppInstallStatus.InstallFail)
+                    if (status == AppInstallStatus.InstallFail)
                     {
                         Debug.LogError("Install Failed!");
                         break;
                     }
 
                     // Wait a bit and we'll ask again
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Debug.LogError(ex.ToString());
                 return false;
@@ -299,21 +318,21 @@ namespace HoloToolkit.Unity
                 }
 
                 // Setup the command
-                string query = string.Format(kAPI_InstallQuery, connectInfo.IP);
+                string query = string.Format(API_InstallQuery, connectInfo.IP);
                 query += "?package=" + WWW.EscapeURL(appDetails.PackageFullName);
 
                 // Use HttpWebRequest for a delete query
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(query);
+                var request = (HttpWebRequest)WebRequest.Create(query);
                 request.Timeout = TimeoutMS;
                 request.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
                 request.Method = "DELETE";
-                using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
+                using (var httpResponse = (HttpWebResponse)request.GetResponse())
                 {
                     Debug.Log("Response = " + httpResponse.StatusDescription);
                     httpResponse.Close();
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Debug.LogError(ex.ToString());
                 return false;
@@ -328,23 +347,23 @@ namespace HoloToolkit.Unity
             AppDetails appDetails = QueryAppDetails(packageFamilyName, connectInfo);
             if (appDetails == null)
             {
-                Debug.LogError("Appliation not found");
+                Debug.LogError("Application not found");
                 return false;
             }
 
             // Setup the command
-            string query = string.Format(kAPI_AppQuery, connectInfo.IP);
+            string query = string.Format(API_AppQuery, connectInfo.IP);
             query += "?appid=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageRelativeId));
-            query += "&package=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageFamilyName));
+            query += "&package=" + WWW.EscapeURL(appDetails.PackageFullName);
 
             // Use HttpWebRequest
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(query);
+            var request = (HttpWebRequest)WebRequest.Create(query);
             request.Timeout = TimeoutMS;
             request.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
             request.Method = "POST";
 
             // Query
-            using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
+            using (var httpResponse = (HttpWebResponse)request.GetResponse())
             {
                 Debug.Log("Response = " + httpResponse.StatusDescription);
                 httpResponse.Close();
@@ -361,26 +380,26 @@ namespace HoloToolkit.Unity
                 AppDetails appDetails = QueryAppDetails(packageFamilyName, connectInfo);
                 if (appDetails == null)
                 {
-                    Debug.LogError("Appliation not found");
+                    Debug.LogError("Application not found");
                     return false;
                 }
 
                 // Setup the command
-                string query = string.Format(kAPI_AppQuery, connectInfo.IP);
+                string query = string.Format(API_AppQuery, connectInfo.IP);
                 query += "?package=" + WWW.EscapeURL(EncodeTo64(appDetails.PackageFullName));
 
                 // And send it across
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(query);
+                var request = (HttpWebRequest)WebRequest.Create(query);
                 request.Timeout = TimeoutMS;
                 request.Credentials = new NetworkCredential(connectInfo.User, connectInfo.Password);
                 request.Method = "DELETE";
-                using (HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse())
+                using (var httpResponse = (HttpWebResponse)request.GetResponse())
                 {
                     Debug.Log("Response = " + httpResponse.StatusDescription);
                     httpResponse.Close();
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Debug.LogError(ex.ToString());
                 return false;
@@ -408,7 +427,7 @@ namespace HoloToolkit.Unity
                     }
 
                     // Download the file
-                    string query = string.Format(kAPI_FileQuery, connectInfo.IP);
+                    string query = string.Format(API_FileQuery, connectInfo.IP);
                     query += "?knownfolderid=LocalAppData";
                     query += "&filename=UnityPlayer.log";
                     query += "&packagefullname=" + appDetails.PackageFullName;
@@ -416,7 +435,7 @@ namespace HoloToolkit.Unity
                     client.DownloadFile(query, logFile);
 
                     // Open it up in default text editor
-                    System.Diagnostics.Process.Start(logFile);
+                    Process.Start(logFile);
                 }
                 catch (Exception ex)
                 {
@@ -429,16 +448,17 @@ namespace HoloToolkit.Unity
         }
 
         // Helpers
-        static string EncodeTo64(string toEncode)
+        private static string EncodeTo64(string toEncode)
         {
-            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
-            string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
+            byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes(toEncode);
+            string returnValue = Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
-        static string DecodeFrom64(string encodedData)
+
+        private static string DecodeFrom64(string encodedData)
         {
-            byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedData);
-            string returnValue = System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
+            byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
+            string returnValue = Encoding.ASCII.GetString(encodedDataAsBytes);
             return returnValue;
         }
     }
