@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void GetNullCameraFromCache()
         {
-            Assert.That(CameraCache.Main == null, Is.True);
+            Assert.That(CameraCache.Main, Is.UnityNull);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.Tests
             var mainCamera = TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
             Object.DestroyImmediate(mainCamera.gameObject);
-            Assert.That(CameraCache.Main == null, Is.True);
+            Assert.That(CameraCache.Main, Is.UnityNull);
         }
 
         [Test]

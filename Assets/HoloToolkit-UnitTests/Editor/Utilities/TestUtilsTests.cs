@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.Tests
             gameObject.SetActive(false);
             TestUtils.ClearScene();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            Assert.That(gameObject == null, Is.True);
+            Assert.That(gameObject, Is.UnityNull);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.Tests
             unreferencedGameObject.SetActive(false);
             TestUtils.ClearScene();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            Assert.That(unreferencedGameObject == null, Is.True);
+            Assert.That(unreferencedGameObject, Is.UnityNull);
         }
 
         [Test]
