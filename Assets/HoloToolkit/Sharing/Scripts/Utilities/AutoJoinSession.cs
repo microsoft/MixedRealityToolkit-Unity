@@ -31,7 +31,13 @@ namespace HoloToolkit.Sharing.Utilities
             if (SharingStage.Instance != null && SharingStage.Instance.Manager != null)
             {
                 sessionsTracker = SharingStage.Instance.SessionsTracker;
+                sessionsTracker.ServerDisconnected += OnServerDisconnected;
             }
+        }
+
+        private void OnServerDisconnected()
+        {
+            sessionCreationRequested = false;
         }
 
         private void Update()
