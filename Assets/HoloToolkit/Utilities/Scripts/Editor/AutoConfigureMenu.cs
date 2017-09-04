@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -10,8 +11,11 @@ namespace HoloToolkit.Unity
     /// Configuration options derived from here: 
     /// https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens
     /// </summary>
-    public class AutoConfigureMenu : MonoBehaviour
+    public class AutoConfigureMenu : IActiveBuildTargetChanged
     {
+        public delegate void BuildTargetArgs(BuildTarget newTarget);
+        public static event BuildTargetArgs ActiveBuildTargetChanged;
+
         /// <summary>
         /// Displays a help page for the HoloToolkit.
         /// </summary>
@@ -25,9 +29,9 @@ namespace HoloToolkit.Unity
         /// Applies recommended scene settings to the current scenes
         /// </summary>
         [MenuItem("HoloToolkit/Configure/Apply HoloLens Scene Settings", false, 1)]
-        public static void ApplySceneSettings()
+        public static void ShowSceneSettingsWindow()
         {
-            SceneSettingsWindow window = (SceneSettingsWindow)EditorWindow.GetWindow(typeof(SceneSettingsWindow), true, "Apply HoloLens Scene Settings");
+            var window = (SceneSettingsWindow)EditorWindow.GetWindow(typeof(SceneSettingsWindow), true, "Apply HoloLens Scene Settings");
             window.Show();
         }
 
@@ -35,9 +39,9 @@ namespace HoloToolkit.Unity
         /// Applies recommended project settings to the current project
         /// </summary>
         [MenuItem("HoloToolkit/Configure/Apply HoloLens Project Settings", false, 1)]
-        public static void ApplyProjectSettings()
+        public static void ShowProjectSettingsWindow()
         {
-            ProjectSettingsWindow window = (ProjectSettingsWindow)EditorWindow.GetWindow(typeof(ProjectSettingsWindow), true, "Apply HoloLens Project Settings");
+            var window = (ProjectSettingsWindow)EditorWindow.GetWindow(typeof(ProjectSettingsWindow), true, "Apply HoloLens Project Settings");
             window.Show();
         }
 
@@ -45,10 +49,20 @@ namespace HoloToolkit.Unity
         /// Applies recommended capability settings to the current project
         /// </summary>
         [MenuItem("HoloToolkit/Configure/Apply HoloLens Capability Settings", false, 2)]
-        static void ApplyHoloLensCapabilitySettings()
+        public static void ShowCapabilitySettingsWindow()
         {
-            CapabilitySettingsWindow window = (CapabilitySettingsWindow)EditorWindow.GetWindow(typeof(CapabilitySettingsWindow), true, "Apply HoloLens Capability Settings");
+            var window = (CapabilitySettingsWindow)EditorWindow.GetWindow(typeof(CapabilitySettingsWindow), true, "Apply HoloLens Capability Settings");
             window.Show();
+        }
+
+        public int callbackOrder { get; private set; }
+
+        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
+        {
+            if (ActiveBuildTargetChanged != null)
+            {
+                ActiveBuildTargetChanged.Invoke(newTarget);
+            }
         }
     }
 }

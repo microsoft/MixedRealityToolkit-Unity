@@ -9,25 +9,28 @@ namespace HoloToolkit.Unity.InputModule
     [CustomEditor(typeof(SpeechInputSource))]
     public class SpeechInputSourceEditor : Editor
     {
-        private SerializedProperty recognizerStart;
-        private SerializedProperty keywordsAndKeys;
         private SerializedProperty persistentKeywordsProperty;
+        private SerializedProperty recognizerStart;
+        private SerializedProperty confidenceLevel;
+        private SerializedProperty keywordsAndKeys;
 
         private void OnEnable()
         {
-            recognizerStart = serializedObject.FindProperty("RecognizerStart");
-            keywordsAndKeys = serializedObject.FindProperty("Keywords");
             persistentKeywordsProperty = serializedObject.FindProperty("PersistentKeywords");
+            recognizerStart = serializedObject.FindProperty("RecognizerStart");
+            confidenceLevel = serializedObject.FindProperty("RecognitionConfidenceLevel");
+            keywordsAndKeys = serializedObject.FindProperty("Keywords");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
+            // Recognizer options
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
-
-            // the RecognizerStart field
             EditorGUILayout.PropertyField(recognizerStart);
+            EditorGUILayout.PropertyField(confidenceLevel);
+            
             // the Keywords field
             ShowList(keywordsAndKeys);
             serializedObject.ApplyModifiedProperties();

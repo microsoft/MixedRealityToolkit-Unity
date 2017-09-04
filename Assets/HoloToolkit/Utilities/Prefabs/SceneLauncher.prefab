@@ -262,6 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PersistentKeywords: 1
   RecognizerStart: 0
+  RecognitionConfidenceLevel: 1
   Keywords:
   - Keyword: Scene Launcher
     KeyCode: 8
