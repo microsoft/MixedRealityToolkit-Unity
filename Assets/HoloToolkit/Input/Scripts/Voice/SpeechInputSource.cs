@@ -39,6 +39,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Whether the recognizer should be activated on start.")]
         public RecognizerStartBehavior RecognizerStart;
 
+        [Tooltip("The confidence level for the keyword recognizer.")]
+        public ConfidenceLevel RecognitionConfidenceLevel;
+
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndKeyCode[] Keywords;
 
@@ -59,8 +62,8 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     keywords[index] = Keywords[index].Keyword;
                 }
-
-                keywordRecognizer = new KeywordRecognizer(keywords);
+                                
+                keywordRecognizer = new KeywordRecognizer(keywords, RecognitionConfidenceLevel);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                 if (RecognizerStart == RecognizerStartBehavior.AutoStart)
@@ -114,7 +117,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (Input.GetKeyDown(Keywords[index].KeyCode))
                 {
-                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
+                    OnPhraseRecognized(RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }
             }
         }
