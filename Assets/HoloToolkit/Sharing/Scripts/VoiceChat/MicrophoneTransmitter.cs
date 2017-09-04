@@ -271,9 +271,9 @@ namespace HoloToolkit.Sharing.VoiceChat
             msg.Write(cameraPosRelativeToGlobalAnchor.z);
 
             // HRTF direction bits
-            msg.Write(cameraDirectionRelativeToGlobalAnchor.x);
-            msg.Write(cameraDirectionRelativeToGlobalAnchor.y);
-            msg.Write(cameraDirectionRelativeToGlobalAnchor.z);
+            //msg.Write(cameraDirectionRelativeToGlobalAnchor.x);
+            //msg.Write(cameraDirectionRelativeToGlobalAnchor.y);
+            //msg.Write(cameraDirectionRelativeToGlobalAnchor.z);
 
             msg.WriteArray(data, (uint)dataCountFloats * 4);
 

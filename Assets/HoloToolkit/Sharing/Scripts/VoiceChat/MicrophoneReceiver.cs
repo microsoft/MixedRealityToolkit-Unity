@@ -329,7 +329,7 @@ namespace HoloToolkit.Sharing.VoiceChat
 
                         if (hrtfSourceID > 0)
                         {
-                            // hrtf processing here
+                            // TODO hrtf processing here
                         }
 
                         circularBuffer.Write(networkPacketBufferBytes, 0, networkPacketBufferBytes.Length);
