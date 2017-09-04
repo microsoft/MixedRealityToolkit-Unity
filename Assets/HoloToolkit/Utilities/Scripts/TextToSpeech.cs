@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// The well-know voices that can be used by <see cref="TextToSpeechManager"/>.
+    /// The well-know voices that can be used by <see cref="TextToSpeech"/>.
     /// </summary>
     public enum TextToSpeechVoice
     {
@@ -50,38 +50,39 @@ namespace HoloToolkit.Unity
     /// GameObject that is a child of Main Camera and position it approximately 0.6 units above the 
     /// camera. This orientation will sound similar to Cortana's speech in the OS.
     /// </remarks>
-    public class TextToSpeechManager : MonoBehaviour
+    [RequireComponent(typeof(AudioSource))]
+    public class TextToSpeech : MonoBehaviour
     {
-        // Inspector Variables
         [Tooltip("The audio source where speech will be played.")]
         [SerializeField]
         private AudioSource audioSource;
+
+        /// <summary>
+        /// Gets or sets the audio source where speech will be played.
+        /// </summary>
+        public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
+
+        /// <summary>
+        /// Gets or sets the voice that will be used to generate speech.
+        /// </summary>
+        public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
 
         [Tooltip("The voice that will be used to generate speech.")]
         [SerializeField]
         private TextToSpeechVoice voice;
 
-        // Member Variables
 #if !UNITY_EDITOR && UNITY_WSA
         private SpeechSynthesizer synthesizer;
         private VoiceInformation voiceInfo;
         private bool speechTextInQueue = false;
 #endif
 
-        // Static Helper Methods
-
         /// <summary>
-        /// Converts two bytes to one float in the range -1 to 1 
+        /// Converts two bytes to one float in the range -1 to 1.
         /// </summary>
-        /// <param name="firstByte">
-        /// The first byte.
-        /// </param>
-        /// <param name="secondByte">
-        /// The second byte.
-        /// </param>
-        /// <returns>
-        /// The converted float.
-        /// </returns>
+        /// <param name="firstByte">The first byte.</param>
+        /// <param name="secondByte"> The second byte.</param>
+        /// <returns>The converted float.</returns>
         private static float BytesToFloat(byte firstByte, byte secondByte)
         {
             // Convert two bytes to one short (little endian)
@@ -94,15 +95,9 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Converts an array of bytes to an integer.
         /// </summary>
-        /// <param name="bytes">
-        /// The byte array.
-        /// </param>
-        /// <param name="offset">
-        /// An offset to read from.
-        /// </param>
-        /// <returns>
-        /// The converted int.
-        /// </returns>
+        /// <param name="bytes"> The byte array.</param>
+        /// <param name="offset"> An offset to read from.</param>
+        /// <returns>The converted int.</returns>
         private static int BytesToInt(byte[] bytes, int offset = 0)
         {
             int value = 0;
@@ -116,58 +111,35 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Dynamically creates an <see cref="AudioClip"/> that represents raw Unity audio data.
         /// </summary>
-        /// <param name="name">
-        /// The name of the dynamically generated clip.
-        /// </param>
-        /// <param name="audioData">
-        /// Raw Unity audio data.
-        /// </param>
-        /// <param name="sampleCount">
-        /// The number of samples in the audio data.
-        /// </param>
-        /// <param name="frequency">
-        /// The frequency of the audio data.
-        /// </param>
-        /// <returns>
-        /// The <see cref="AudioClip"/>.
-        /// </returns>
+        /// <param name="name"> The name of the dynamically generated clip.</param>
+        /// <param name="audioData">Raw Unity audio data.</param>
+        /// <param name="sampleCount">The number of samples in the audio data.</param>
+        /// <param name="frequency">The frequency of the audio data.</param>
+        /// <returns>The <see cref="AudioClip"/>.</returns>
         private static AudioClip ToClip(string name, float[] audioData, int sampleCount, int frequency)
         {
-            // Create the audio clip
             var clip = AudioClip.Create(name, sampleCount, 1, frequency, false);
-
-            // Set the data
             clip.SetData(audioData, 0);
-
-            // Done
             return clip;
         }
 
         /// <summary>
         /// Converts raw WAV data into Unity formatted audio data.
         /// </summary>
-        /// <param name="wavAudio">
-        /// The raw WAV data.
-        /// </param>
-        /// <param name="sampleCount">
-        /// The number of samples in the audio data.
-        /// </param>
-        /// <param name="frequency">
-        /// The frequency of the audio data.
-        /// </param>
-        /// <returns>
-        /// The Unity formatted audio data.
-        /// </returns>
+        /// <param name="wavAudio">The raw WAV data.</param>
+        /// <param name="sampleCount">The number of samples in the audio data.</param>
+        /// <param name="frequency">The frequency of the audio data.</param>
+        /// <returns>The Unity formatted audio data. </returns>
         private static float[] ToUnityAudio(byte[] wavAudio, out int sampleCount, out int frequency)
         {
             // Determine if mono or stereo
-            int channelCount = wavAudio[22];     // Speech audio data is always mono but read actual header value for processing
+            int channelCount = wavAudio[22];  // Speech audio data is always mono but read actual header value for processing
 
             // Get the frequency
             frequency = BytesToInt(wavAudio, 24);
 
             // Get past all the other sub chunks to get to the data subchunk:
-            int pos = 12;   // First subchunk ID from 12 to 16
+            int pos = 12; // First subchunk ID from 12 to 16
 
             // Keep iterating until we find the data chunk (i.e. 64 61 74 61 ...... (i.e. 100 97 116 97 in decimal))
             while (!(wavAudio[pos] == 100 && wavAudio[pos + 1] == 97 && wavAudio[pos + 2] == 116 && wavAudio[pos + 3] == 97))
@@ -179,11 +151,11 @@ namespace HoloToolkit.Unity
             pos += 8;
 
             // Pos is now positioned to start of actual sound data.
-            sampleCount = (wavAudio.Length - pos) / 2;     // 2 bytes per sample (16 bit sound mono)
-            if (channelCount == 2) sampleCount /= 2;      // 4 bytes per sample (16 bit stereo)
+            sampleCount = (wavAudio.Length - pos) / 2;  // 2 bytes per sample (16 bit sound mono)
+            if (channelCount == 2) { sampleCount /= 2; }  // 4 bytes per sample (16 bit stereo)
 
             // Allocate memory (supporting left channel only)
-            float[] unityData = new float[sampleCount];
+            var unityData = new float[sampleCount];
 
             // Write to double array/s:
             int i = 0;
@@ -198,22 +170,7 @@ namespace HoloToolkit.Unity
                 i++;
             }
 
-            // Done
             return unityData;
-        }
-
-
-        // Internal Methods
-
-        /// <summary>
-        /// Logs speech text that normally would have been played.
-        /// </summary>
-        /// <param name="text">
-        /// The speech text.
-        /// </param>
-        private void LogSpeech(string text)
-        {
-            Debug.LogFormat("Speech not supported in editor. \"{0}\"", text);
         }
 
 #if !UNITY_EDITOR && UNITY_WSA
@@ -323,26 +280,21 @@ namespace HoloToolkit.Unity
         }
 #endif
 
-        // MonoBehaviour Methods
-        void Start()
+        private void Awake()
         {
             try
             {
                 if (audioSource == null)
                 {
-                    Debug.LogError("An AudioSource is required and should be assigned to 'Audio Source' in the inspector.");
+                    audioSource = GetComponent<AudioSource>();
                 }
-                else
-                {
 #if !UNITY_EDITOR && UNITY_WSA
-                    synthesizer = new SpeechSynthesizer();
+                synthesizer = new SpeechSynthesizer();
 #endif
-                }
             }
             catch (Exception ex)
             {
-                Debug.LogError("Could not start Speech Synthesis");
-                Debug.LogException(ex);
+                Debug.LogError("Could not start Speech Synthesis: " + ex.Message);
             }
         }
 
@@ -351,9 +303,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Speaks the specified SSML markup using text-to-speech.
         /// </summary>
-        /// <param name="ssml">
-        /// The SSML markup to speak.
-        /// </param>
+        /// <param name="ssml">The SSML markup to speak.</param>
         public void SpeakSsml(string ssml)
         {
             // Make sure there's something to speak
@@ -363,17 +313,15 @@ namespace HoloToolkit.Unity
 #if !UNITY_EDITOR && UNITY_WSA
             PlaySpeech(ssml, () => synthesizer.SynthesizeSsmlToStreamAsync(ssml));
 #else
-            LogSpeech(ssml);
+            Debug.LogWarningFormat("Text to Speech not supported in editor.\n\"{0}\"", ssml);
 #endif
         }
 
         /// <summary>
         /// Speaks the specified text using text-to-speech.
         /// </summary>
-        /// <param name="text">
-        /// The text to speak.
-        /// </param>
-        public void SpeakText(string text)
+        /// <param name="text">The text to speak.</param>
+        public void StartSpeaking(string text)
         {
             // Make sure there's something to speak
             if (string.IsNullOrEmpty(text)) { return; }
@@ -382,7 +330,7 @@ namespace HoloToolkit.Unity
 #if !UNITY_EDITOR && UNITY_WSA
             PlaySpeech(text, ()=> synthesizer.SynthesizeTextToStreamAsync(text));
 #else
-            LogSpeech(text);
+            Debug.LogWarningFormat("Text to Speech not supported in editor.\n\"{0}\"", text);
 #endif
         }
 
@@ -427,15 +375,5 @@ namespace HoloToolkit.Unity
                 audioSource.Stop();
             }
         }
-
-        /// <summary>
-        /// Gets or sets the audio source where speech will be played.
-        /// </summary>
-        public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
-
-        /// <summary>
-        /// Gets or sets the voice that will be used to generate speech.
-        /// </summary>
-        public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
     }
 }
