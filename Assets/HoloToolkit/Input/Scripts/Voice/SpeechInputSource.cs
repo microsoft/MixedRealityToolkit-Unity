@@ -62,7 +62,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     keywords[index] = Keywords[index].Keyword;
                 }
-                                
+
                 keywordRecognizer = new KeywordRecognizer(keywords, RecognitionConfidenceLevel);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
