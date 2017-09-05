@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR
 using UnityEngine.Windows.Speech;
 #endif
 
