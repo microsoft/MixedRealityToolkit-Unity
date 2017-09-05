@@ -11,10 +11,12 @@ namespace HoloToolkit.Unity.InputModule
     {
         private SerializedProperty recognizerStart;
         private SerializedProperty keywordsAndKeys;
+        private SerializedProperty confidenceLevel;
 
         private void OnEnable()
         {
             recognizerStart = serializedObject.FindProperty("RecognizerStart");
+            confidenceLevel = serializedObject.FindProperty("RecognitionConfidenceLevel");
             keywordsAndKeys = serializedObject.FindProperty("Keywords");
         }
 
@@ -23,6 +25,7 @@ namespace HoloToolkit.Unity.InputModule
             serializedObject.Update();
             // the RecognizerStart field
             EditorGUILayout.PropertyField(recognizerStart);
+            EditorGUILayout.PropertyField(confidenceLevel);
             // the Keywords field
             ShowList(keywordsAndKeys);
             serializedObject.ApplyModifiedProperties();

@@ -41,59 +41,63 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
+        private Interpolator interpolator;
+
         /// <summary>
         /// The default ignore raycast layer built into unity.
         /// </summary>
         private const int IgnoreRaycastLayer = 2;
 
-        private Interpolator interpolator;
-
-        private static Dictionary<GameObject, int> defaultLayersCache = new Dictionary<GameObject, int>();
+        private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
 
         protected virtual void Start()
         {
-            // Make sure we have all the components in the scene we need.
-            if (WorldAnchorManager.Instance == null)
+            if (PlaceParentOnTap)
             {
-                Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
+                ParentGameObjectToPlace = GetParentToPlace();
+                PlaceParentOnTap = ParentGameObjectToPlace != null;
             }
 
-            if (WorldAnchorManager.Instance != null)
-            {
-                // If we are not starting out with actively placing the object, give it a World Anchor
-                if (!IsBeingPlaced)
-                {
-                    WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-                }
-            }
-
-            DetermineParent();
-
-            interpolator = PlaceParentOnTap
-                ? ParentGameObjectToPlace.EnsureComponent<Interpolator>()
-                : gameObject.EnsureComponent<Interpolator>();
+            interpolator = EnsureInterpolator();
 
             if (IsBeingPlaced)
             {
-                HandlePlacement();
+                StartPlacing();
+            } else // If we are not starting out with actively placing the object, give it a World Anchor
+            {
+                AttachWorldAnchor();
             }
+        }
+
+        /// <summary>
+        /// Returns the predefined GameObject or the immediate parent when it exists
+        /// </summary>
+        /// <returns></returns>
+        private GameObject GetParentToPlace()
+        {
+            if (ParentGameObjectToPlace)
+            {
+                return ParentGameObjectToPlace;
+            }
+
+            return gameObject.transform.parent ? gameObject.transform.parent.gameObject : null;
+        }
+
+        /// <summary>
+        /// Ensures an interpolator on either the parent or on the gameobject itself and returns it.
+        /// </summary>
+        private Interpolator EnsureInterpolator()
+        {
+            var interpolatorHolder = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            return interpolatorHolder.EnsureComponent<Interpolator>();
         }
 
         protected virtual void Update()
         {
             if (!IsBeingPlaced) { return; }
             Transform cameraTransform = CameraCache.Main.transform;
-            Vector3 headPosition = cameraTransform.position;
-            Vector3 gazeDirection = cameraTransform.forward;
 
-            // If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
-            RaycastHit hitInfo;
-            Vector3 placementPosition = SpatialMappingManager.Instance != null &&
-                Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask)
-                    ? hitInfo.point
-                    : (GazeManager.Instance.HitObject == null
-                        ? GazeManager.Instance.GazeOrigin + GazeManager.Instance.GazeNormal * DefaultGazeDistance
-                        : GazeManager.Instance.HitPosition);
+            Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
 
             // Here is where you might consider adding intelligence
             // to how the object is placed.  For example, consider
@@ -123,86 +127,112 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (IsBeingPlaced)
             {
-                SetLayerRecursively(transform, useDefaultLayer: false);
-                InputManager.Instance.AddGlobalListener(gameObject);
-
-                // If the user is in placing mode, display the spatial mapping mesh.
-                if (AllowMeshVisualizationControl)
-                {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = true;
-                }
-#if UNITY_WSA && !UNITY_EDITOR
-
-                //Removes existing world anchor if any exist.
-                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
-#endif
-            }
-            else
+                StartPlacing();
+            } else
             {
-                SetLayerRecursively(transform, useDefaultLayer: true);
-                // Clear our cache in case we added or removed gameobjects between taps
-                defaultLayersCache.Clear();
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                StopPlacing();
+            }
+        }
 
-                // If the user is not in placing mode, hide the spatial mapping mesh.
-                if (AllowMeshVisualizationControl)
-                {
-                    SpatialMappingManager.Instance.DrawVisualMeshes = false;
-                }
-#if UNITY_WSA && !UNITY_EDITOR
+        private void StartPlacing()
+        {
+            var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            layerCacheTarget.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
+            InputManager.Instance.PushModalInputHandler(gameObject);
 
+            ToggleSpatialMesh();
+            RemoveWorldAnchor();
+        }
+
+        private void StopPlacing()
+        {
+            var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
+            layerCacheTarget.ApplyLayerCacheRecursively(layerCache);
+            InputManager.Instance.PopModalInputHandler();
+
+            ToggleSpatialMesh();
+            AttachWorldAnchor();
+        }
+
+        private void AttachWorldAnchor()
+        {
+            if (WorldAnchorManager.Instance != null)
+            {
                 // Add world anchor when object placement is done.
                 WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-#endif
             }
         }
 
-        private void DetermineParent()
+        private void RemoveWorldAnchor()
         {
-            if (!PlaceParentOnTap) { return; }
-
-            if (ParentGameObjectToPlace == null)
+            if (WorldAnchorManager.Instance != null)
             {
-                if (gameObject.transform.parent == null)
-                {
-                    Debug.LogWarning("The selected GameObject has no parent.");
-                    PlaceParentOnTap = false;
-                }
-                else
-                {
-                    Debug.LogWarning("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
-                    ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
-                }
-            }
-
-            if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
-            {
-                Debug.LogWarning("The specified parent object is not a parent of this object.");
+                //Removes existing world anchor if any exist.
+                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
             }
         }
 
-        private static void SetLayerRecursively(Transform objectToSet, bool useDefaultLayer)
+        /// <summary>
+        /// If the user is in placing mode, display the spatial mapping mesh.
+        /// </summary>
+        private void ToggleSpatialMesh()
         {
-            if (useDefaultLayer)
+            if (SpatialMappingManager.Instance != null)
             {
-                int defaultLayerId;
-                if (defaultLayersCache.TryGetValue(objectToSet.gameObject, out defaultLayerId))
+                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
+            }
+        }
+
+        /// <summary>
+        /// If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
+        /// </summary>
+        /// <returns>Placement position infront of the user</returns>
+        private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        {
+            RaycastHit hitInfo;
+            if (SpatialMappingRaycast(headPosition, gazeDirection, out hitInfo))
+            {
+                return hitInfo.point;
+            }
+            return GetGazePlacementPosition(headPosition, gazeDirection, defaultGazeDistance);
+        }
+
+        /// <summary>
+        /// Does a raycast on the spatial mapping layer to try to find a hit.
+        /// </summary>
+        /// <param name="origin">Origin of the raycast</param>
+        /// <param name="direction">Direction of the raycast</param>
+        /// <param name="spatialMapHit">Result of the raycast when a hit occured</param>
+        /// <returns>Wheter it found a hit or not</returns>
+        private static bool SpatialMappingRaycast(Vector3 origin, Vector3 direction, out RaycastHit spatialMapHit)
+        {
+            if (SpatialMappingManager.Instance != null)
+            {
+                RaycastHit hitInfo;
+                if (Physics.Raycast(origin, direction, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask))
                 {
-                    objectToSet.gameObject.layer = defaultLayerId;
-                    defaultLayersCache.Remove(objectToSet.gameObject);
+                    spatialMapHit = hitInfo;
+                    return true;
                 }
             }
-            else
-            {
-                defaultLayersCache.Add(objectToSet.gameObject, objectToSet.gameObject.layer);
+            spatialMapHit = new RaycastHit();
+            return false;
+        }
 
-                objectToSet.gameObject.layer = IgnoreRaycastLayer;
-            }
-
-            for (int i = 0; i < objectToSet.childCount; i++)
+        /// <summary>
+        /// Get placement position either from GazeManager hit or infront of the user as backup
+        /// </summary>
+        /// <param name="headPosition">Position of the users head</param>
+        /// <param name="gazeDirection">Gaze direction of the user</param>
+        /// <param name="defaultGazeDistance">Default placement distance infront of the user</param>
+        /// <returns>Placement position infront of the user</returns>
+        private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        {
+            if (GazeManager.Instance.HitObject != null)
             {
-                SetLayerRecursively(objectToSet.GetChild(i), useDefaultLayer);
+                return GazeManager.Instance.HitPosition;
             }
+            return headPosition + gazeDirection * defaultGazeDistance;
         }
     }
 }
