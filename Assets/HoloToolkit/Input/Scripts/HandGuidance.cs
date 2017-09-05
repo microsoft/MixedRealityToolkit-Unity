@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
-#if UNITY_WSA
 using UnityEngine;
+#if UNITY_WSA
 using UnityEngine.VR.WSA.Input;
 #endif
 
