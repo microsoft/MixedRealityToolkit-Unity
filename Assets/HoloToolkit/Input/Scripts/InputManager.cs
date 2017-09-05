@@ -209,7 +209,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Raise the event OnFocusExit to the game object when focus exists it.
         /// </summary>
-        /// <param name="focusedObject"></param>
+        /// <param name="defocusedObject"></param>
         public void RaiseFocusExit(GameObject defocusedObject)
         {
             ExecuteEvents.ExecuteHierarchy(defocusedObject, null, OnFocusExitEventHandler);
@@ -511,10 +511,10 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnManipulationStarted(casted);
             };
 
-        public void RaiseManipulationStarted(IInputSource source, uint sourceId, Vector3 cumulativeDelta, object tag = null)
+        public void RaiseManipulationStarted(IInputSource source, uint sourceId, object tag = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, tag, cumulativeDelta);
+            manipulationEventData.Initialize(source, sourceId, tag, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
@@ -559,10 +559,10 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnManipulationCanceled(casted);
             };
 
-        public void RaiseManipulationCanceled(IInputSource source, uint sourceId, Vector3 cumulativeDelta, object tag = null)
+        public void RaiseManipulationCanceled(IInputSource source, uint sourceId, object tag = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, tag, cumulativeDelta);
+            manipulationEventData.Initialize(source, sourceId, tag, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
@@ -631,10 +631,10 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnNavigationStarted(casted);
             };
 
-        public void RaiseNavigationStarted(IInputSource source, uint sourceId, Vector3 normalizedOffset, object tag = null)
+        public void RaiseNavigationStarted(IInputSource source, uint sourceId, object tag = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, tag, normalizedOffset);
+            navigationEventData.Initialize(source, sourceId, tag, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
@@ -679,10 +679,10 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnNavigationCanceled(casted);
             };
 
-        public void RaiseNavigationCanceled(IInputSource source, uint sourceId, Vector3 normalizedOffset, object tag = null)
+        public void RaiseNavigationCanceled(IInputSource source, uint sourceId, object tag = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, tag, normalizedOffset);
+            navigationEventData.Initialize(source, sourceId, tag, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);

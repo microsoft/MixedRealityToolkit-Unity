@@ -1,1 +1,1 @@
-m_EditorVersion: 2017.2.0b6
+m_EditorVersion: 2017.2.0b10

@@ -238,7 +238,7 @@ MonoBehaviour:
   - serializedVersion: 2
     m_Bits: 4294967291
   autoRegisteredPointers: []
-  autoRegisterGazePointerIfNoPointersRegistered: 0
+  autoRegisterGazePointerIfNoPointersRegistered: 1
   autoRegisteredPointableCanvases: []
   DebugDrawPointingRays: 0
   DebugDrawPointingRayColors: []

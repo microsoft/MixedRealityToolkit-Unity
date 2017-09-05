@@ -16,22 +16,22 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
     public class DropCube : MonoBehaviour
     {
 #if UNITY_EDITOR || UNITY_WSA
-        GestureRecognizer recognizer;
+        private GestureRecognizer recognizer;
 
         private void Start()
         {
             recognizer = new GestureRecognizer();
             recognizer.SetRecognizableGestures(GestureSettings.Tap);
-            recognizer.OnTappedEvent += Recognizer_OnTappedEvent;
+            recognizer.Tapped += Recognizer_Tapped;
             recognizer.StartCapturingGestures();
         }
 
         private void OnDestroy()
         {
-            recognizer.OnTappedEvent -= Recognizer_OnTappedEvent;
+            recognizer.Tapped -= Recognizer_Tapped;
         }
 
-        private void Recognizer_OnTappedEvent(TappedEventArgs obj)
+        private void Recognizer_Tapped(TappedEventArgs obj)
         {
             // Create a cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

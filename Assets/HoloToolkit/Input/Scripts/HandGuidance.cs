@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("GameObject to display when your hand is about to lose tracking.")]
         public GameObject HandGuidanceIndicator;
-        private GameObject handGuidanceIndicatorGameObject = null;
+        private GameObject handGuidanceIndicatorGameObject;
 
         // Hand source loss risk to start showing a hand indicator.
         // As the source loss risk approaches 1, the hand is closer to being out of view.
@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private Quaternion defaultHandGuidanceRotation;
 
-        private uint? currentlyTrackedHand = null;
+        private uint? currentlyTrackedHand;
 
         protected override void Awake()
         {
@@ -58,9 +58,9 @@ namespace HoloToolkit.Unity.InputModule
 
             // Register for hand and finger events to know where your hand
             // is being tracked and what state it is in.
-            InteractionManager.OnSourceLost += InteractionManager_OnSourceLost;
-            InteractionManager.OnSourceUpdated += InteractionManager_OnSourceUpdated;
-            InteractionManager.OnSourceReleased += InteractionManager_OnSourceReleased;
+            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
         }
 
         private void ShowHandGuidanceIndicator(InteractionSourceState hand)
@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity.InputModule
             rotation = Quaternion.LookRotation(CameraCache.Main.transform.forward, hand.properties.sourceLossMitigationDirection);
         }
 
-        private void InteractionManager_OnSourceUpdated(SourceUpdatedEventArgs obj)
+        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
         {
             if (obj.state.source.kind == InteractionSourceKind.Hand)
             {
@@ -143,7 +143,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InteractionManager_OnSourceReleased(SourceReleasedEventArgs obj)
+        private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
         {
             if (obj.state.source.kind == InteractionSourceKind.Hand)
             {
@@ -152,7 +152,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InteractionManager_OnSourceLost(SourceLostEventArgs obj)
+        private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs obj)
         {
             if (obj.state.source.kind == InteractionSourceKind.Hand)
             {
@@ -174,9 +174,9 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void OnDestroy()
         {
-            InteractionManager.OnSourceLost -= InteractionManager_OnSourceLost;
-            InteractionManager.OnSourceUpdated -= InteractionManager_OnSourceUpdated;
-            InteractionManager.OnSourceReleased -= InteractionManager_OnSourceReleased;
+            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
+            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
 
             base.OnDestroy();
         }
