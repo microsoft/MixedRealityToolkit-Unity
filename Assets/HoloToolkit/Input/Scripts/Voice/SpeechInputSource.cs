@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
     /// </summary>
-    public partial class SpeechInputSource : BaseInputSource
+    public class SpeechInputSource : BaseInputSource
     {
         [Serializable]
         public struct KeywordAndKeyCode
@@ -48,11 +48,8 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private KeywordRecognizer keywordRecognizer;
 
-
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
-
             int keywordCount = Keywords.Length;
             if (keywordCount > 0)
             {
