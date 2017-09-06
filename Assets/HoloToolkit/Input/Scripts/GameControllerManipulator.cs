@@ -8,7 +8,6 @@ namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Allows the user to place and rotate GameObjects using a game controller.
-    /// TODO This should be converted to an input source.
     /// </summary>
     /// <remarks>Make sure to enable the HumanInterfaceDevice capability before using.</remarks>
     [Obsolete]

@@ -9,6 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Xbox Controller support.
     /// <remarks>Only supports one connected device at a time.</remarks>
+    /// <remarks>Make sure to enable the <see cref="HumanInterfaceDevice"/> capability before using.</remarks>
     /// </summary>
     public class XboxControllerInputSource : GamePadInputSource
     {
