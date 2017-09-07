@@ -98,12 +98,12 @@ namespace HoloToolkit.Unity.InputModule
         {
             public SourceData(InteractionSource interactionSource)
             {
-                this.interactionSource = interactionSource;
+                Source = interactionSource;
             }
 
-            public uint SourceId { get { return interactionSource.id; } }
-            public InteractionSourceKind SourceKind { get { return interactionSource.kind; } }
-            public readonly InteractionSource interactionSource;
+            public uint SourceId { get { return Source.id; } }
+            public InteractionSourceKind SourceKind { get { return Source.kind; } }
+            public readonly InteractionSource Source;
             public SourceCapability<Vector3> PointerPosition;
             public SourceCapability<Quaternion> PointerRotation;
             public SourceCapability<Ray> PointerRay;
@@ -505,7 +505,7 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
-                sourceData.interactionSource.StartHaptics(intensity);
+                sourceData.Source.StartHaptics(intensity);
             }
         }
 
@@ -514,7 +514,7 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
-                sourceData.interactionSource.StartHaptics(intensity, durationInSeconds);
+                sourceData.Source.StartHaptics(intensity, durationInSeconds);
             }
         }
 
@@ -523,7 +523,7 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
-                sourceData.interactionSource.StopHaptics();
+                sourceData.Source.StopHaptics();
             }
         }
 

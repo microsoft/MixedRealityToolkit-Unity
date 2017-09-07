@@ -19,31 +19,13 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class HapticsExtensions
     {
+        // This value is standardized according to www.usb.org/developers/hidpage/HUTRR63b_-_Haptics_Page_Redline.pdf
+        private const ushort ContinuousBuzzWaveform = 0x1004;
+
 #if UNITY_WSA
         public static void StartHaptics(this InteractionSource interactionSource, float intensity)
         {
-#if !UNITY_EDITOR
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-            {
-                IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-
-                foreach (SpatialInteractionSourceState sourceState in sources)
-                {
-                    if (sourceState.Source.Id.Equals(interactionSource.id))
-                    {
-                        SimpleHapticsController simpleHapticsController = sourceState.Source.Controller.SimpleHapticsController;
-                        foreach (SimpleHapticsControllerFeedback hapticsFeedback in simpleHapticsController.SupportedFeedback)
-                        {
-                            if (hapticsFeedback.Waveform.Equals(0x1004))
-                            {
-                                simpleHapticsController.SendHapticFeedback(hapticsFeedback, intensity);
-                                return;
-                            }
-                        }
-                    }
-                }
-            }, true);
-#endif
+            interactionSource.StartHaptics(intensity, float.MaxValue);
         }
 
         public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
@@ -60,9 +42,16 @@ namespace HoloToolkit.Unity
                         SimpleHapticsController simpleHapticsController = sourceState.Source.Controller.SimpleHapticsController;
                         foreach (SimpleHapticsControllerFeedback hapticsFeedback in simpleHapticsController.SupportedFeedback)
                         {
-                            if (hapticsFeedback.Waveform.Equals(0x1004))
+                            if (hapticsFeedback.Waveform.Equals(ContinuousBuzzWaveform))
                             {
-                                simpleHapticsController.SendHapticFeedbackForDuration(hapticsFeedback, intensity, new TimeSpan(Convert.ToInt64(durationInSeconds) * TimeSpan.TicksPerSecond));
+                                if (durationInSeconds.Equals(float.MaxValue))
+                                {
+                                    simpleHapticsController.SendHapticFeedback(hapticsFeedback, intensity);
+                                }
+                                else
+                                {
+                                    simpleHapticsController.SendHapticFeedbackForDuration(hapticsFeedback, intensity, new TimeSpan(Convert.ToInt64(durationInSeconds) * TimeSpan.TicksPerSecond));
+                                }
                                 return;
                             }
                         }
