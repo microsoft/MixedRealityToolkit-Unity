@@ -98,12 +98,12 @@ namespace HoloToolkit.Unity.InputModule
         {
             public SourceData(InteractionSource interactionSource)
             {
-                SourceId = interactionSource.id;
-                SourceKind = interactionSource.kind;
+                Source = interactionSource;
             }
 
-            public readonly uint SourceId;
-            public readonly InteractionSourceKind SourceKind;
+            public uint SourceId { get { return Source.id; } }
+            public InteractionSourceKind SourceKind { get { return Source.kind; } }
+            public readonly InteractionSource Source;
             public SourceCapability<Vector3> PointerPosition;
             public SourceCapability<Quaternion> PointerRotation;
             public SourceCapability<Ray> PointerRay;
@@ -499,6 +499,33 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion
+
+        public void StartHaptics(uint sourceId, float intensity)
+        {
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                sourceData.Source.StartHaptics(intensity);
+            }
+        }
+
+        public void StartHaptics(uint sourceId, float intensity, float durationInSeconds)
+        {
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                sourceData.Source.StartHaptics(intensity, durationInSeconds);
+            }
+        }
+
+        public void StopHaptics(uint sourceId)
+        {
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                sourceData.Source.StopHaptics();
+            }
+        }
 
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
         {
