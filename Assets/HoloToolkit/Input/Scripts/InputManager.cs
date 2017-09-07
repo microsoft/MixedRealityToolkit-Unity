@@ -19,13 +19,13 @@ namespace HoloToolkit.Unity.InputModule
         public event Action InputEnabled;
         public event Action InputDisabled;
 
-        private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
-        private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
         /// <summary>
         /// Global listeners listen to all events and ignore the fact that other components might have consumed them.
         /// </summary>
         private readonly List<GameObject> globalListeners = new List<GameObject>();
+        private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
+        private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
         private int disabledRefCount;
 
@@ -40,7 +40,9 @@ namespace HoloToolkit.Unity.InputModule
         private PointerSpecificEventData pointerSpecificEventData;
         private InputPositionEventData inputPositionEventData;
         private TriggerEventData triggerEventData;
-        
+        private GamePadEventData gamePadEventData;
+        private XboxControllerEventData xboxControllerEventData;
+
         /// <summary>
         /// List of the input sources as detected by the input manager like hands or motion controllers.
         /// </summary>
@@ -250,6 +252,8 @@ namespace HoloToolkit.Unity.InputModule
             pointerSpecificEventData = new PointerSpecificEventData(EventSystem.current);
             inputPositionEventData = new InputPositionEventData(EventSystem.current);
             triggerEventData = new TriggerEventData(EventSystem.current);
+            gamePadEventData = new GamePadEventData(EventSystem.current);
+            xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
         }
 
         public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
@@ -758,5 +762,60 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
         }
+        #region GamePad Events
+
+        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadDetectedEventHandler =
+            delegate (IGamePadHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
+                handler.OnGamePadDetected(casted);
+            };
+
+        public void RaiseGamePadDetected(IInputSource source, uint sourceId, string gamePadName, object tag = null)
+        {
+            // Create input event
+            gamePadEventData.Initialize(source, sourceId, gamePadName, tag);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(gamePadEventData, OnGamePadDetectedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadLostEventHandler =
+            delegate (IGamePadHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
+                handler.OnGamePadLost(casted);
+            };
+
+        public void RaiseGamePadLost(IInputSource source, uint sourceId, string gamePadName, object tag = null)
+        {
+            // Create input event
+            gamePadEventData.Initialize(source, sourceId, gamePadName, tag);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(gamePadEventData, OnGamePadLostEventHandler);
+        }
+
+        #region Xbox Controller Events
+
+        private static readonly ExecuteEvents.EventFunction<IXboxControllerHandler> OnXboxAxisUpdateHandler =
+            delegate (IXboxControllerHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<XboxControllerEventData>(eventData);
+                handler.OnXboxAxisUpdate(casted);
+            };
+
+        public void RaiseXboxInputUpdate(IInputSource source, uint sourceId, XboxControllerData inputData, object tag = null)
+        {
+            // Create input event
+            xboxControllerEventData.Initialize(source, sourceId, inputData, tag);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(xboxControllerEventData, OnXboxAxisUpdateHandler);
+        }
+
+        #endregion //Xbox Controller Events
+
+        #endregion // GamePad Events
     }
 }
