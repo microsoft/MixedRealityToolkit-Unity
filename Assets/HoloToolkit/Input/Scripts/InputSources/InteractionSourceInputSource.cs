@@ -8,11 +8,11 @@ using UnityEngine.XR.WSA.Input;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Input source for gestures information from the WSA APIs, which gives access to various system-supported gestures
+    /// Input source for gestures and interaction source information from the WSA APIs, which gives access to various system-supported gestures
     /// and positional information for the various inputs that Windows gestures supports.
     /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
-    public class GesturesInput : BaseInputSource
+    public class InteractionSourceInputSource : BaseInputSource
     {
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
         // set up the recognizer. The first causes the recognizer to start
@@ -101,20 +101,36 @@ namespace HoloToolkit.Unity.InputModule
                 Source = interactionSource;
             }
 
+            public void ResetUpdatedBooleans()
+            {
+                ThumbstickPositionUpdated = false;
+                TouchpadPositionUpdated = false;
+                TouchpadTouchedUpdated = false;
+                PositionUpdated = false;
+                RotationUpdated = false;
+                SelectPressedAmountUpdated = false;
+            }
+
             public uint SourceId { get { return Source.id; } }
             public InteractionSourceKind SourceKind { get { return Source.kind; } }
             public readonly InteractionSource Source;
             public SourceCapability<Vector3> PointerPosition;
             public SourceCapability<Quaternion> PointerRotation;
-            public SourceCapability<Ray> PointerRay;
+            public SourceCapability<Ray> PointingRay;
             public SourceCapability<Vector3> GripPosition;
             public SourceCapability<Quaternion> GripRotation;
-            public SourceCapability<Ray> GripRay;
             public SourceCapability<AxisButton2D> Thumbstick;
             public SourceCapability<TouchpadData> Touchpad;
             public SourceCapability<AxisButton1D> Select;
             public SourceCapability<bool> Grasp;
             public SourceCapability<bool> Menu;
+
+            public bool ThumbstickPositionUpdated;
+            public bool TouchpadPositionUpdated;
+            public bool TouchpadTouchedUpdated;
+            public bool PositionUpdated;
+            public bool RotationUpdated;
+            public bool SelectPressedAmountUpdated;
         }
 
         /// <summary>
@@ -124,10 +140,10 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion
 
-        protected override void Start()
-        {
-            base.Start();
+        #region MonoBehaviour Functions
 
+        private void Awake()
+        {
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.Tapped += GestureRecognizer_Tapped;
 
@@ -164,15 +180,18 @@ namespace HoloToolkit.Unity.InputModule
                                                                     GestureSettings.NavigationY |
                                                                     GestureSettings.NavigationZ);
             }
-
-            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
-            {
-                StartGestureRecognizer();
-            }
         }
 
         protected virtual void OnDestroy()
         {
+            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
+
+            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
+            InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
+
+            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
+            InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
+
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.Tapped -= GestureRecognizer_Tapped;
@@ -206,7 +225,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (RecognizerStart == RecognizerStartBehavior.AutoStart)
             {
-                StartGestureRecognizer();
+                StartGestureRecognizers();
             }
 
             foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
@@ -226,7 +245,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void OnDisableAfterStart()
         {
-            StopGestureRecognizer();
+            StopGestureRecognizers();
 
             InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
 
@@ -246,7 +265,9 @@ namespace HoloToolkit.Unity.InputModule
             base.OnDisableAfterStart();
         }
 
-        public void StartGestureRecognizer()
+        #endregion MonoBehaviour Functions
+
+        public void StartGestureRecognizers()
         {
             if (gestureRecognizer != null)
             {
@@ -259,7 +280,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public void StopGestureRecognizer()
+        public void StopGestureRecognizers()
         {
             if (gestureRecognizer != null)
             {
@@ -283,7 +304,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 retVal |= GetSupportFlag(sourceData.PointerPosition, SupportedInputInfo.Position);
                 retVal |= GetSupportFlag(sourceData.PointerRotation, SupportedInputInfo.Rotation);
-                retVal |= GetSupportFlag(sourceData.PointerRay, SupportedInputInfo.Ray);
+                retVal |= GetSupportFlag(sourceData.PointingRay, SupportedInputInfo.Pointing);
                 retVal |= GetSupportFlag(sourceData.Thumbstick, SupportedInputInfo.Thumbstick);
                 retVal |= GetSupportFlag(sourceData.Touchpad, SupportedInputInfo.Touchpad);
                 retVal |= GetSupportFlag(sourceData.Select, SupportedInputInfo.Select);
@@ -337,16 +358,16 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public override bool TryGetPointerRay(uint sourceId, out Ray pointerRay)
+        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
             SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.PointerRay, out pointerRay))
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.PointingRay, out pointingRay))
             {
                 return true;
             }
             else
             {
-                pointerRay = default(Ray);
+                pointingRay = default(Ray);
                 return false;
             }
         }
@@ -375,20 +396,6 @@ namespace HoloToolkit.Unity.InputModule
             else
             {
                 rotation = default(Quaternion);
-                return false;
-            }
-        }
-
-        public override bool TryGetGripRay(uint sourceId, out Ray gripRay)
-        {
-            SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.GripRay, out gripRay))
-            {
-                return true;
-            }
-            else
-            {
-                gripRay = default(Ray);
                 return false;
             }
         }
@@ -527,12 +534,52 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        #region InteractionManager Events
+
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
         {
-            UpdateSourceState(args.state, GetOrAddSourceData(args.state.source));
+            SourceData sourceData = GetOrAddSourceData(args.state.source);
 
-            // TODO: robertes: raise update events?  Perhaps part of UpdateSourceState and have UpdateSourceState measure deltas and raise events iff changed... rename it to UpdateSourceStateAndRaiseUpdateEvents? ... and don't forget the TouchpadTouched events.
-            // TODO: robertes: We should call UpdateSourceState in other handlers, too, right?  All handlers?
+            sourceData.ResetUpdatedBooleans();
+
+            UpdateSourceData(args.state, sourceData);
+
+            if (sourceData.PositionUpdated)
+            {
+                InputManager.Instance.RaiseSourcePositionChanged(this, sourceData.SourceId, sourceData.PointerPosition.CurrentReading, sourceData.GripPosition.CurrentReading);
+            }
+
+            if (sourceData.RotationUpdated)
+            {
+                InputManager.Instance.RaiseSourceRotationChanged(this, sourceData.SourceId, sourceData.PointerRotation.CurrentReading, sourceData.GripRotation.CurrentReading);
+            }
+
+            if (sourceData.ThumbstickPositionUpdated)
+            {
+                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, InteractionSourcePressType.Thumbstick, sourceData.Thumbstick.CurrentReading.Position);
+            }
+
+            if (sourceData.TouchpadPositionUpdated)
+            {
+                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, InteractionSourcePressType.Touchpad, sourceData.Touchpad.CurrentReading.AxisButton.Position);
+            }
+
+            if (sourceData.TouchpadTouchedUpdated)
+            {
+                if (sourceData.Touchpad.CurrentReading.Touched)
+                {
+                    InputManager.Instance.RaiseTouchpadTouched(this, sourceData.SourceId);
+                }
+                else
+                {
+                    InputManager.Instance.RaiseTouchpadReleased(this, sourceData.SourceId);
+                }
+            }
+
+            if (sourceData.SelectPressedAmountUpdated)
+            {
+                InputManager.Instance.RaiseSelectPressedAmountChanged(this, sourceData.SourceId, sourceData.Select.CurrentReading.PressedAmount);
+            }
         }
 
         private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
@@ -556,9 +603,12 @@ namespace HoloToolkit.Unity.InputModule
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            UpdateSourceState(args.state, GetOrAddSourceData(args.state.source));
+            UpdateSourceData(args.state, GetOrAddSourceData(args.state.source));
+
             InputManager.Instance.RaiseSourceDetected(this, args.state.source.id);
         }
+
+        #endregion InteractionManager Events
 
         /// <summary>
         /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
@@ -573,7 +623,7 @@ namespace HoloToolkit.Unity.InputModule
                 sourceData = new SourceData(interactionSource);
                 sourceIdToData.Add(sourceData.SourceId, sourceData);
 
-                // TODO: robertes: whenever we end up adding, should we first synthesize a SourceDetected?  Or
+                // TODO: robertes: whenever we end up adding, should we first synthesize a SourceDetected? Or
                 //       perhaps if we keep strict track of all sources, we should never need to just-in-time add anymore.
             }
 
@@ -585,7 +635,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="interactionSourceState">Interaction source to use to update the source information.</param>
         /// <param name="sourceData">SourceData structure to update.</param>
-        private void UpdateSourceState(InteractionSourceState interactionSourceState, SourceData sourceData)
+        private void UpdateSourceData(InteractionSourceState interactionSourceState, SourceData sourceData)
         {
             Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
             Debug.Assert(interactionSourceState.source.kind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
@@ -602,13 +652,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (sourceData.PointerPosition.IsAvailable || sourceData.GripPosition.IsAvailable)
             {
-                if (!(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition)))
-                {
-                    // TODO: Raising events here may cause reentrancy complexity. Consider delaying all event-raising till
-                    //       after all updates are stored. Alternatively, consider switching from polling to responding to
-                    //       InteractionManager events.
-                    InputManager.Instance.RaiseSourcePositionChanged(this, sourceData.SourceId, newPointerPosition, newGripPosition);
-                }
+                sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
             }
             sourceData.PointerPosition.CurrentReading = newPointerPosition;
             sourceData.GripPosition.CurrentReading = newGripPosition;
@@ -624,31 +668,22 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
             if (sourceData.PointerRotation.IsAvailable || sourceData.GripRotation.IsAvailable)
             {
-                if (!(sourceData.PointerRotation.CurrentReading.Equals(newPointerRotation) && sourceData.GripRotation.CurrentReading.Equals(newGripRotation)))
-                {
-                    InputManager.Instance.RaiseSourceRotationChanged(this, sourceData.SourceId, newPointerRotation, newGripRotation);
-                }
+                sourceData.RotationUpdated = !(sourceData.PointerRotation.CurrentReading.Equals(newPointerRotation) && sourceData.GripRotation.CurrentReading.Equals(newGripRotation));
             }
             sourceData.PointerRotation.CurrentReading = newPointerRotation;
             sourceData.GripRotation.CurrentReading = newGripRotation;
 
-            Vector3 pointerForward = Vector3.zero, gripForward = Vector3.zero;
-            sourceData.PointerRay.IsSupported = sourceData.GripRay.IsSupported = interactionSourceState.source.supportsPointing;
-            sourceData.PointerRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
-            sourceData.PointerRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
-
-            sourceData.GripRay.IsAvailable = sourceData.GripPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out gripForward, InteractionSourceNode.Grip);
-            sourceData.GripRay.CurrentReading = new Ray(sourceData.GripPosition.CurrentReading, gripForward);
+            Vector3 pointerForward = Vector3.zero;
+            sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
+            sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+            sourceData.PointingRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
 
             sourceData.Thumbstick.IsSupported = interactionSourceState.source.supportsThumbstick;
             sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
             if (sourceData.Thumbstick.IsAvailable)
             {
                 AxisButton2D newThumbstick = AxisButton2D.GetThumbstick(interactionSourceState);
-                if (sourceData.Thumbstick.CurrentReading.Position != newThumbstick.Position)
-                {
-                    InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, InteractionSourcePressType.Thumbstick, newThumbstick.Position);
-                }
+                sourceData.ThumbstickPositionUpdated = sourceData.Thumbstick.CurrentReading.Position != newThumbstick.Position;
                 sourceData.Thumbstick.CurrentReading = newThumbstick;
             }
             else
@@ -661,21 +696,8 @@ namespace HoloToolkit.Unity.InputModule
             if (sourceData.Touchpad.IsAvailable)
             {
                 TouchpadData newTouchpad = TouchpadData.GetTouchpad(interactionSourceState);
-                if (sourceData.Touchpad.CurrentReading.AxisButton.Position != newTouchpad.AxisButton.Position)
-                {
-                    InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, InteractionSourcePressType.Touchpad, newTouchpad.AxisButton.Position);
-                }
-                if (sourceData.Touchpad.CurrentReading.Touched != newTouchpad.Touched)
-                {
-                    if (newTouchpad.Touched)
-                    {
-                        InputManager.Instance.RaiseTouchpadTouched(this, sourceData.SourceId);
-                    }
-                    else
-                    {
-                        InputManager.Instance.RaiseTouchpadReleased(this, sourceData.SourceId);
-                    }
-                }
+                sourceData.TouchpadPositionUpdated = !sourceData.Touchpad.CurrentReading.AxisButton.Position.Equals(newTouchpad.AxisButton.Position);
+                sourceData.TouchpadTouchedUpdated = !sourceData.Touchpad.CurrentReading.Touched.Equals(newTouchpad.Touched);
                 sourceData.Touchpad.CurrentReading = newTouchpad;
             }
             else
@@ -686,10 +708,7 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.Select.IsSupported = true; // All input mechanisms support "select".
             sourceData.Select.IsAvailable = sourceData.Select.IsSupported;
             AxisButton1D newSelect = AxisButton1D.GetSelect(interactionSourceState);
-            if (sourceData.Select.CurrentReading.PressedAmount != newSelect.PressedAmount)
-            {
-                InputManager.Instance.RaiseSelectPressedValueChanged(this, sourceData.SourceId, newSelect.PressedAmount);
-            }
+            sourceData.SelectPressedAmountUpdated = !sourceData.Select.CurrentReading.PressedAmount.Equals(newSelect.PressedAmount);
             sourceData.Select.CurrentReading = newSelect;
 
             sourceData.Grasp.IsSupported = interactionSourceState.source.supportsGrasp;

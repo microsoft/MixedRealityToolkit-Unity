@@ -46,9 +46,9 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Ray));
+                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing));
 
-                InputSource.TryGetPointerRay(InputSourceId, out rawRay);
+                InputSource.TryGetPointingRay(InputSourceId, out rawRay);
             }
 
             if (RayStabilizer != null)
