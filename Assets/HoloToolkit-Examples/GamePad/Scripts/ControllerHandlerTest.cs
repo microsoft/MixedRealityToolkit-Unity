@@ -54,10 +54,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     eventData.XboxRightStickHorizontalAxis, eventData.XboxRightStickVerticalAxis,
                     eventData.XboxDpadHorizontalAxis, eventData.XboxDpadVerticalAxis,
                     eventData.XboxLeftTriggerAxis, eventData.XboxRightTriggerAxis, eventData.XboxSharedTriggerAxis,
-                    eventData.XboxA, eventData.XboxB, eventData.XboxX, eventData.XboxY,
-                    eventData.XboxLeftBumper, eventData.XboxRightBumper,
-                    eventData.XboxLeftStickClick, eventData.XboxRightStickClick,
-                    eventData.XboxView, eventData.XboxMenu,
+                    eventData.XboxA_Pressed, eventData.XboxB_Pressed, eventData.XboxX_Pressed, eventData.XboxY_Pressed,
+                    eventData.XboxLeftBumper_Pressed, eventData.XboxRightBumper_Pressed,
+                    eventData.XboxLeftStick_Pressed, eventData.XboxRightStick_Pressed,
+                    eventData.XboxView_Pressed, eventData.XboxMenu_Pressed,
                     gamePadName);
         }
     }

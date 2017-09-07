@@ -33,16 +33,38 @@ namespace HoloToolkit.Unity.InputModule
             controllerData.XboxRightTriggerAxis = Input.GetAxis("XBOX_RIGHT_TRIGGER");
             controllerData.XboxSharedTriggerAxis = Input.GetAxis("XBOX_TRIGGER_SHARED");
 
-            controllerData.XboxA = Input.GetButton("XBOX_A");
-            controllerData.XboxB = Input.GetButton("XBOX_B");
-            controllerData.XboxX = Input.GetButton("XBOX_X");
-            controllerData.XboxY = Input.GetButton("XBOX_Y");
-            controllerData.XboxLeftBumper = Input.GetButton("XBOX_LEFT_BUMPER");
-            controllerData.XboxRightBumper = Input.GetButton("XBOX_RIGHT_BUMPER");
-            controllerData.XboxLeftStickClick = Input.GetButton("XBOX_LEFT_STICK_CLICK");
-            controllerData.XboxRightStickClick = Input.GetButton("XBOX_RIGHT_STICK_CLICK");
-            controllerData.XboxView = Input.GetButton("XBOX_VIEW");
-            controllerData.XboxMenu = Input.GetButton("XBOX_MENU");
+            controllerData.XboxA_Down = Input.GetButtonDown("XBOX_A");
+            controllerData.XboxB_Down = Input.GetButtonDown("XBOX_B");
+            controllerData.XboxX_Down = Input.GetButtonDown("XBOX_X");
+            controllerData.XboxY_Down = Input.GetButtonDown("XBOX_Y");
+            controllerData.XboxLeftBumper_Down = Input.GetButtonDown("XBOX_LEFT_BUMPER");
+            controllerData.XboxRightBumper_Down = Input.GetButtonDown("XBOX_RIGHT_BUMPER");
+            controllerData.XboxLeftStick_Down = Input.GetButtonDown("XBOX_LEFT_STICK_CLICK");
+            controllerData.XboxRightStick_Down = Input.GetButtonDown("XBOX_RIGHT_STICK_CLICK");
+            controllerData.XboxView_Down = Input.GetButtonDown("XBOX_VIEW");
+            controllerData.XboxMenu_Down = Input.GetButtonDown("XBOX_MENU");
+
+            controllerData.XboxA_Pressed = Input.GetButton("XBOX_A");
+            controllerData.XboxB_Pressed = Input.GetButton("XBOX_B");
+            controllerData.XboxX_Pressed = Input.GetButton("XBOX_X");
+            controllerData.XboxY_Pressed = Input.GetButton("XBOX_Y");
+            controllerData.XboxLeftBumper_Pressed = Input.GetButton("XBOX_LEFT_BUMPER");
+            controllerData.XboxRightBumper_Pressed = Input.GetButton("XBOX_RIGHT_BUMPER");
+            controllerData.XboxLeftStick_Pressed = Input.GetButton("XBOX_LEFT_STICK_CLICK");
+            controllerData.XboxRightStick_Pressed = Input.GetButton("XBOX_RIGHT_STICK_CLICK");
+            controllerData.XboxView_Pressed = Input.GetButton("XBOX_VIEW");
+            controllerData.XboxMenu_Pressed = Input.GetButton("XBOX_MENU");
+
+            controllerData.XboxA_Up = Input.GetButtonUp("XBOX_A");
+            controllerData.XboxB_Up = Input.GetButtonUp("XBOX_B");
+            controllerData.XboxX_Up = Input.GetButtonUp("XBOX_X");
+            controllerData.XboxY_Up = Input.GetButtonUp("XBOX_Y");
+            controllerData.XboxLeftBumper_Up = Input.GetButtonUp("XBOX_LEFT_BUMPER");
+            controllerData.XboxRightBumper_Up = Input.GetButtonUp("XBOX_RIGHT_BUMPER");
+            controllerData.XboxLeftStick_Up = Input.GetButtonUp("XBOX_LEFT_STICK_CLICK");
+            controllerData.XboxRightStick_Up = Input.GetButtonUp("XBOX_RIGHT_STICK_CLICK");
+            controllerData.XboxView_Up = Input.GetButtonUp("XBOX_VIEW");
+            controllerData.XboxMenu_Up = Input.GetButtonUp("XBOX_MENU");
 
             InputManager.Instance.RaiseXboxInputUpdate(this, sourceId, controllerData);
         }
