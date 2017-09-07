@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// and positional information for the various inputs that Windows gestures supports.
     /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
-    public class InteractionSourceInput : BaseInputSource
+    public class InteractionSourceInputSource : BaseInputSource
     {
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
         // set up the recognizer. The first causes the recognizer to start
@@ -142,7 +142,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region MonoBehaviour Functions
 
-        protected override void Start()
+        private void Awake()
         {
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.Tapped += GestureRecognizer_Tapped;
@@ -180,8 +180,6 @@ namespace HoloToolkit.Unity.InputModule
                                                                     GestureSettings.NavigationY |
                                                                     GestureSettings.NavigationZ);
             }
-
-            base.Start();
         }
 
         protected virtual void OnDestroy()
