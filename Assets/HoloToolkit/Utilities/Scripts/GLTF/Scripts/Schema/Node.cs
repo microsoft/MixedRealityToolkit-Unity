@@ -108,17 +108,7 @@ namespace GLTF
 				mat.GetColumn(2).magnitude
 			);
 
-			var w = Mathf.Sqrt(1.0f + mat.m00 + mat.m11 + mat.m22) / 2.0f;
-			var w4 = 4.0f * w;
-			var x = (mat.m21 - mat.m12) / w4;
-			var y = (mat.m02 - mat.m20) / w4;
-			var z = (mat.m10 - mat.m01) / w4;
-
-			x = float.IsNaN(x) ? 0 : x;
-			y = float.IsNaN(y) ? 0 : y;
-			z = float.IsNaN(z) ? 0 : z;
-
-			rotation = new Quaternion(x, y, z, w);
+			rotation = mat.rotation;
 		}
 
 		public static Node Deserialize(GLTFRoot root, JsonReader reader)

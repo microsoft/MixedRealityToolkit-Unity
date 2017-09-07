@@ -121,15 +121,15 @@ namespace HoloToolkit.Unity.InputModule
             bool isOverride;
             if (controllerDictionary != null && !controllerDictionary.ContainsKey(source.Id))
             {
-                GameObject controllerModelGO;
+                GameObject controllerModelGameObject;
                 if (source.Handedness == SpatialInteractionSourceHandedness.Left && LeftControllerOverride != null)
                 {
-                    controllerModelGO = Instantiate(LeftControllerOverride);
+                    controllerModelGameObject = Instantiate(LeftControllerOverride);
                     isOverride = true;
                 }
                 else if (source.Handedness == SpatialInteractionSourceHandedness.Right && RightControllerOverride != null)
                 {
-                    controllerModelGO = Instantiate(RightControllerOverride);
+                    controllerModelGameObject = Instantiate(RightControllerOverride);
                     isOverride = true;
                 }
                 else
@@ -182,15 +182,16 @@ namespace HoloToolkit.Unity.InputModule
                         reader.ReadBytes(fileBytes);
                     }
 
-                    controllerModelGO = new GameObject();
-                    GLTFComponentStreamingAssets gltfScript = controllerModelGO.AddComponent<GLTFComponentStreamingAssets>();
+                    controllerModelGameObject = new GameObject();
+                    GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
                     gltfScript.GLTFStandard = GLTFShader;
                     gltfScript.GLTFData = fileBytes;
+
                     yield return gltfScript.LoadModel();
                     isOverride = false;
                 }
 
-                FinishControllerSetup(controllerModelGO, isOverride, source.Handedness.ToString(), source.Id);
+                FinishControllerSetup(controllerModelGameObject, isOverride, source.Handedness.ToString(), source.Id);
             }
         }
 #endif
@@ -267,13 +268,13 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 Vector3 newPosition;
-                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Pointer))
+                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
                 {
                     currentController.gameObject.transform.localPosition = newPosition;
                 }
 
                 Quaternion newRotation;
-                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Pointer))
+                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
                 {
                     currentController.gameObject.transform.localRotation = newRotation;
                 }
