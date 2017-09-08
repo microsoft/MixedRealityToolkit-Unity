@@ -39,7 +39,6 @@ namespace HoloToolkit.Unity.InputModule
         private NavigationEventData navigationEventData;
         private PointerSpecificEventData pointerSpecificEventData;
         private InputPositionEventData inputPositionEventData;
-        private TriggerEventData triggerEventData;
         private GamePadEventData gamePadEventData;
         private XboxControllerEventData xboxControllerEventData;
 
@@ -253,7 +252,6 @@ namespace HoloToolkit.Unity.InputModule
             holdEventData = new HoldEventData(EventSystem.current);
             pointerSpecificEventData = new PointerSpecificEventData(EventSystem.current);
             inputPositionEventData = new InputPositionEventData(EventSystem.current);
-            triggerEventData = new TriggerEventData(EventSystem.current);
             gamePadEventData = new GamePadEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
             selectPressedEventData = new SelectPressedEventData(EventSystem.current);

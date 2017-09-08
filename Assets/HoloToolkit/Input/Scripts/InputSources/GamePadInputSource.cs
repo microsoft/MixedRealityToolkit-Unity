@@ -57,17 +57,17 @@ namespace HoloToolkit.Unity.InputModule
             throw new System.NotImplementedException();
         }
 
+        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
             throw new System.NotImplementedException();
         }
 
         public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool TryGetGripRay(uint sourceId, out Ray pointerRay)
         {
             throw new System.NotImplementedException();
         }
@@ -98,11 +98,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool TryGetPointerRay(uint sourceId, out Ray pointerRay)
         {
             throw new System.NotImplementedException();
         }
