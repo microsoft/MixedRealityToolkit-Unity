@@ -21,6 +21,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Update();
 
+            // We will only register the first device we find.  Input is taken from joystick 1.
             if (gamePadInputDatas.Count != 1) { return; }
 
             controllerData.XboxLeftStickHorizontalAxis = Input.GetAxis("XBOX_LEFT_STICK_HORIZONTAL");
@@ -89,8 +90,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (string.IsNullOrEmpty(joystickNames[i]) || gamePadInputDatas.ContainsKey((uint)i)) { continue; }
 
-                if (joystickNames[i].Contains("Xbox Bluetooth Gamepad"))
+                if (joystickNames[i].Contains("Xbox Bluetooth Gamepad") || joystickNames[i].Contains("Xbox Wireless Controller") || joystickNames[i].Contains("Xbox Controller"))
                 {
+                    // We will only register the first device we find.  Input is taken from joystick 1.
+                    if (gamePadInputDatas.Count != 0) { return; }
+
                     sourceId = (uint)i;
                     controllerData = new XboxControllerData();
                     gamePadInputDatas.Add(sourceId, controllerData);
