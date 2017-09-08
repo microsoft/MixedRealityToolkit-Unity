@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,13 +15,20 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class XboxControllerInputSource : GamePadInputSource
     {
+        [Serializable]
+        private class MappingEntry
+        {
+            public XboxControllerMappingTypes Type = 0;
+            public string Value = string.Empty;
+        }
+
         private const string XboxController = "Xbox Controller";
         private const string XboxBluetoothGamePad = "Xbox Bluetooth Gamepad";
         private const string XboxWirelessController = "Xbox Wireless Controller";
 
-        private uint sourceId;
         private readonly Dictionary<uint, XboxControllerData> gamePadInputDatas = new Dictionary<uint, XboxControllerData>(0);
 
+        private uint sourceId;
         private XboxControllerData controllerData;
         private StandaloneInputModule inputModule;
         private string previousHorizontalAxis;
@@ -30,7 +38,7 @@ namespace HoloToolkit.Unity.InputModule
         private bool previousForceActiveState;
 
         [SerializeField]
-        private XboxControllerMappingTypes horizontalAxis = XboxControllerMappingTypes.XboxDpadVertical;
+        private XboxControllerMappingTypes horizontalAxis = XboxControllerMappingTypes.XboxDpadHorizontal;
 
         [SerializeField]
         private XboxControllerMappingTypes verticalAxis = XboxControllerMappingTypes.XboxDpadVertical;
@@ -41,6 +49,9 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.XboxB;
 
+        [SerializeField]
+        private MappingEntry[] mapping;
+
         protected virtual void Awake()
         {
             inputModule = FindObjectOfType<StandaloneInputModule>();
@@ -50,6 +61,11 @@ namespace HoloToolkit.Unity.InputModule
                 Debug.LogError("Missing Standalone Input Module for Xbox Controller Source!\n" +
                                "Ensure you have an Event System in your scene.");
                 return;
+            }
+
+            for (var i = 0; i < Enum.GetNames(typeof(XboxControllerMappingTypes)).Length; i++)
+            {
+                XboxControllerMapping.SetMapping((XboxControllerMappingTypes)i, mapping[i].Value);
             }
 
             previousForceActiveState = inputModule.forceModuleActive;
