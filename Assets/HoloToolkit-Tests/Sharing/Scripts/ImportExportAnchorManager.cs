@@ -616,7 +616,7 @@ namespace HoloToolkit.Sharing.Tests
             {
                 // Extract the name of the anchor.
                 XString storedAnchorString = currentRoom.GetAnchorName(0);
-                string storedAnchorName = storedAnchorString.GetString();
+                string storedAnchorName = storedAnchorString.GetMapping();
 
                 // Attempt to attach to the anchor in our local anchor store.
                 if (AttachToCachedAnchor(storedAnchorName) == false)
