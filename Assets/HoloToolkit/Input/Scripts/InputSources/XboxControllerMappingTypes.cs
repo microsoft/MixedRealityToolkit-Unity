@@ -26,6 +26,6 @@ namespace HoloToolkit.Unity.InputModule
         XboxLeftBumper = 15,
         XboxRightBumper = 16,
         XboxLeftStickClick = 17,
-        XboxRightStickClick = 18,
+        XboxRightStickClick = 18
     }
 }

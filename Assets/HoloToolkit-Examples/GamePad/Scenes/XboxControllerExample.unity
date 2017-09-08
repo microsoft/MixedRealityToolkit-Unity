@@ -781,3 +781,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeviceRefreshInterval: 3
+  horizontalAxis: 5
+  verticalAxis: 5
+  submitButton: 9
+  cancelButton: 10
+  useCustomMapping: 0
+  customMappings: []
