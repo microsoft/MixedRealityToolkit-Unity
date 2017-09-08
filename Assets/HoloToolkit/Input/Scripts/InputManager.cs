@@ -43,6 +43,8 @@ namespace HoloToolkit.Unity.InputModule
         private GamePadEventData gamePadEventData;
         private XboxControllerEventData xboxControllerEventData;
 
+        private SelectPressedEventData selectPressedEventData;
+        
         /// <summary>
         /// List of the input sources as detected by the input manager like hands or motion controllers.
         /// </summary>
@@ -254,6 +256,7 @@ namespace HoloToolkit.Unity.InputModule
             triggerEventData = new TriggerEventData(EventSystem.current);
             gamePadEventData = new GamePadEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
+            selectPressedEventData = new SelectPressedEventData(EventSystem.current);
         }
 
         public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
@@ -667,7 +670,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IControllerInputHandler> OnInputXYChangedEventHandler =
+        private static readonly ExecuteEvents.EventFunction<IControllerInputHandler> OnInputPositionChangedEventHandler =
             delegate (IControllerInputHandler handler, BaseEventData eventData)
             {
                 InputPositionEventData casted = ExecuteEvents.ValidateEventData<InputPositionEventData>(eventData);
@@ -680,23 +683,23 @@ namespace HoloToolkit.Unity.InputModule
             inputPositionEventData.Initialize(source, sourceId, pressType, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputPositionEventData, OnInputXYChangedEventHandler);
+            HandleEvent(inputPositionEventData, OnInputPositionChangedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IControllerInputHandler> OnTriggerPressedValueChangedEventHandler =
+        private static readonly ExecuteEvents.EventFunction<IControllerInputHandler> OnSelectPressedAmountChangedEventHandler =
             delegate (IControllerInputHandler handler, BaseEventData eventData)
             {
-                TriggerEventData casted = ExecuteEvents.ValidateEventData<TriggerEventData>(eventData);
-                handler.OnTriggerPressedValueChanged(casted);
+                SelectPressedEventData casted = ExecuteEvents.ValidateEventData<SelectPressedEventData>(eventData);
+                handler.OnSelectPressedAmountChanged(casted);
             };
 
-        public void RaiseSelectPressedValueChanged(IInputSource source, uint sourceId, double pressedValue, object tag = null)
+        public void RaiseSelectPressedAmountChanged(IInputSource source, uint sourceId, double pressedAmount, object tag = null)
         {
             // Create input event
-            triggerEventData.Initialize(source, sourceId, tag, pressedValue);
+            selectPressedEventData.Initialize(source, sourceId, tag, pressedAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(triggerEventData, OnTriggerPressedValueChangedEventHandler);
+            HandleEvent(selectPressedEventData, OnSelectPressedAmountChangedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IControllerTouchpadHandler> OnTouchpadTouchedEventHandler =
