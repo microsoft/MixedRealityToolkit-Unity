@@ -6,7 +6,6 @@ using UnityEditor;
 
 namespace HoloToolkit.Unity.InputModule
 {
-
     [CustomEditor(typeof(XboxControllerInputSource))]
     public class XboxControllerInputSourceEditor : Editor
     {
