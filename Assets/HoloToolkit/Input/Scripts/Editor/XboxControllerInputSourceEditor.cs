@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Reflection.Emit;
 using UnityEditor;
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -29,15 +31,23 @@ namespace HoloToolkit.Unity.InputModule
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Event System Overrides", new GUIStyle("Label") { fontStyle = FontStyle.Bold });
+
+            EditorGUI.indentLevel++;
 
             EditorGUILayout.PropertyField(horizontalAxisProperty);
             EditorGUILayout.PropertyField(verticalAxisProperty);
             EditorGUILayout.PropertyField(submitButtonProperty);
             EditorGUILayout.PropertyField(cancelButtonProperty);
 
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Space();
+
             EditorGUI.BeginChangeCheck();
 
-            useCustomMapping = EditorGUILayout.Toggle("Enable Custom Mapping", useCustomMapping);
+            useCustomMapping = EditorGUILayout.Toggle("Use Custom Mapping", useCustomMapping);
 
             if (EditorGUI.EndChangeCheck())
             {
