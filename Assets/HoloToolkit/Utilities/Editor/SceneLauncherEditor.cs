@@ -31,6 +31,7 @@ namespace HoloToolkit.Unity
             EditorGUILayout.PropertyField(buttonSpawnLocationProperty);
             EditorGUILayout.PropertyField(buttonPrefabProperty);
             EditorGUILayout.IntSlider(buttonRowMaxProperty, 1, 10);
+            EditorGUILayout.HelpBox("To add scenes to the Scene Mapper by adding scenes in the build window.", MessageType.Info);
             CheckBuildScenes(sceneMappingProperty);
             ShowSceneList(sceneMappingProperty);
             serializedObject.ApplyModifiedProperties();
