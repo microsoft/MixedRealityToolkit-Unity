@@ -248,16 +248,16 @@ namespace HoloToolkit.Sharing.VoiceChat
                     float averageAmplitude = message.ReadFloat();
                     UInt32 hrtfSourceID = (UInt32)message.ReadInt32();
                     Vector3 hrtfPosition = new Vector3();
-                    //Vector3 hrtfDirection = new Vector3();
+                    Vector3 hrtfDirection = new Vector3();
                     if (hrtfSourceID != 0)
                     {
                         hrtfPosition.x = message.ReadFloat();
                         hrtfPosition.y = message.ReadFloat();
                         hrtfPosition.z = message.ReadFloat();
 
-                        //hrtfDirection.x = message.ReadFloat();
-                        //hrtfDirection.y = message.ReadFloat();
-                        //hrtfDirection.z = message.ReadFloat();
+                        hrtfDirection.x = message.ReadFloat();
+                        hrtfDirection.y = message.ReadFloat();
+                        hrtfDirection.z = message.ReadFloat();
 
                         Vector3 cameraPosRelativeToGlobalAnchor = Vector3.zero;
                         Vector3 cameraDirectionRelativeToGlobalAnchor = Vector3.zero;
