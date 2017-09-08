@@ -172,8 +172,8 @@ namespace HoloToolkit.Sharing
             {
                 if (Sessions[i].GetName().ToString().Equals(session.GetName().ToString()))
                 {
-                    SessionClosed.RaiseEvent(session);
-                    Sessions.Remove(session);
+                    SessionClosed.RaiseEvent(Sessions[i]);
+                    Sessions.Remove(Sessions[i]);
                 }
             }
         }
