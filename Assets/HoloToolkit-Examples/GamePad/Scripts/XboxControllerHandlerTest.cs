@@ -2,19 +2,21 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class ControllerHandlerTest : MonoBehaviour, IXboxControllerHandler
+    public class XboxControllerHandlerTest : MonoBehaviour, IXboxControllerHandler
     {
         [SerializeField]
         [Tooltip("Is Gaze required for controller input?")]
         private bool isGlobalListener = true;
 
         public Text DebugText;
-
         private string gamePadName;
+
+        private StandaloneInputModule inputModule;
 
         private void Awake()
         {
@@ -22,12 +24,24 @@ namespace HoloToolkit.Unity.InputModule.Tests
             {
                 InputManager.Instance.AddGlobalListener(gameObject);
             }
+
+            inputModule = FindObjectOfType<StandaloneInputModule>();
+
+            if (inputModule == null)
+            {
+                Debug.LogError("Missing Standalone Input Module for Xbox Controller Handler!");
+            }
         }
 
         public void OnGamePadDetected(GamePadEventData eventData)
         {
             Debug.LogFormat("Joystick \"{0}\" Connected with id: {1}", eventData.GamePadName, eventData.SourceId);
             gamePadName = eventData.GamePadName;
+            inputModule.forceModuleActive = true;
+            inputModule.verticalAxis = "XBOX_DPAD_VERTICAL";
+            inputModule.horizontalAxis = "XBOX_DPAD_HORIZONTAL";
+            inputModule.submitButton = "XBOX_A";
+            inputModule.cancelButton = "XBOX_B";
         }
 
         public void OnGamePadLost(GamePadEventData eventData)
@@ -35,6 +49,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("Joystick \"{0}\" Disconnected with id: {1}", eventData.GamePadName, eventData.SourceId);
             gamePadName = string.Empty;
             DebugText.text = "No Controller Connected";
+            inputModule.forceModuleActive = false;
+            inputModule.verticalAxis = "Horizontal";
+            inputModule.horizontalAxis = "Vertical";
+            inputModule.submitButton = "Submit";
+            inputModule.cancelButton = "Cancel";
         }
 
         public void OnXboxAxisUpdate(XboxControllerEventData eventData)
