@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
     /// </summary>
-    public class SpeechInputSource : BaseInputSource
+    public partial class SpeechInputSource : BaseInputSource
     {
         [Serializable]
         public struct KeywordAndKeyCode
@@ -39,13 +39,13 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Whether the recognizer should be activated on start.")]
         public RecognizerStartBehavior RecognizerStart;
 
-        [Tooltip("The confidence level for the keyword recognizer.")]
-        public ConfidenceLevel RecognitionConfidenceLevel = ConfidenceLevel.Medium;
-
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndKeyCode[] Keywords;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
+        [SerializeField]
+        [Tooltip("The confidence level for the keyword recognizer.")]
+        private ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium;
         private KeywordRecognizer keywordRecognizer;
 
         protected virtual void Start()
@@ -60,7 +60,7 @@ namespace HoloToolkit.Unity.InputModule
                     keywords[index] = Keywords[index].Keyword;
                 }
 
-                keywordRecognizer = new KeywordRecognizer(keywords, RecognitionConfidenceLevel);
+                keywordRecognizer = new KeywordRecognizer(keywords, recognitionConfidenceLevel);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                 if (RecognizerStart == RecognizerStartBehavior.AutoStart)
@@ -114,7 +114,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (Input.GetKeyDown(Keywords[index].KeyCode))
                 {
-                    OnPhraseRecognized(RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
+                    OnPhraseRecognized(recognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }
             }
         }
