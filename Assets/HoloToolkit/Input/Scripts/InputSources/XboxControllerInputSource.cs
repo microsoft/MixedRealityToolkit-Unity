@@ -13,6 +13,10 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class XboxControllerInputSource : GamePadInputSource
     {
+        private const string XboxController = "Xbox Controller";
+        private const string XboxBluetoothGamePad = "Xbox Bluetooth Gamepad";
+        private const string XboxWirelessController = "Xbox Wireless Controller";
+
         private uint sourceId;
         private readonly Dictionary<uint, XboxControllerData> gamePadInputDatas = new Dictionary<uint, XboxControllerData>(0);
         private XboxControllerData controllerData;
@@ -90,7 +94,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (string.IsNullOrEmpty(joystickNames[i]) || gamePadInputDatas.ContainsKey((uint)i)) { continue; }
 
-                if (joystickNames[i].Contains("Xbox Bluetooth Gamepad") || joystickNames[i].Contains("Xbox Wireless Controller") || joystickNames[i].Contains("Xbox Controller"))
+                if (joystickNames[i].Contains(XboxBluetoothGamePad) || joystickNames[i].Contains(XboxWirelessController) || joystickNames[i].Contains(XboxController))
                 {
                     // We will only register the first device we find.  Input is taken from joystick 1.
                     if (gamePadInputDatas.Count != 0) { return; }
