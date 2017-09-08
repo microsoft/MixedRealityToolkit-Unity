@@ -104,7 +104,6 @@ namespace HoloToolkit.Unity.Boundary
             if (FloorQuad != null && HolographicSettings.IsDisplayOpaque)
             {
                 floorQuadInstance = Instantiate(FloorQuad);
-                floorQuadInstance.transform.SetParent(gameObject.transform.parent);
 
 #if UNITY_EDITOR
                 // So the floor quad does not occlude in editor testing, draw it lower.
@@ -115,14 +114,14 @@ namespace HoloToolkit.Unity.Boundary
                 // TODO: BUG: Unity: TryGetDimensions does not return true either.
                 //if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions,
                 //UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
-                if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions, 
+                if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions,
                     UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                 {
                     Debug.Log("Got dimensions of tracked area.");
                     if (dimensions != null)
                     {
                         Debug.Log("Drawing floor at dimensions Y.");
-                        // Draw the floor at boundary Y.                    
+                        // Draw the floor at boundary Y.
                         floorQuadInstance.transform.localPosition = new Vector3(0, dimensions.y, 0);
                     }
                 }
@@ -131,7 +130,7 @@ namespace HoloToolkit.Unity.Boundary
                     Debug.Log("Drawing floor at 0,0,0.");
                     // Draw the floor at 0,0,0.
                     floorQuadInstance.transform.localPosition = Vector3.zero;
-                }                
+                }
 #endif
                 floorQuadInstance.SetActive(true);
             }
