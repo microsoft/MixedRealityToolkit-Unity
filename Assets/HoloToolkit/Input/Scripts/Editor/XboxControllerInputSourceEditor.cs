@@ -13,8 +13,9 @@ namespace HoloToolkit.Unity.InputModule
         private SerializedProperty verticalAxisProperty;
         private SerializedProperty submitButtonProperty;
         private SerializedProperty cancelButtonProperty;
-        private SerializedProperty useCustomMappingProperty;
         private SerializedProperty customMappingsProperty;
+
+        private static bool useCustomMapping;
 
         private void OnEnable()
         {
@@ -22,8 +23,7 @@ namespace HoloToolkit.Unity.InputModule
             verticalAxisProperty = serializedObject.FindProperty("verticalAxis");
             submitButtonProperty = serializedObject.FindProperty("submitButton");
             cancelButtonProperty = serializedObject.FindProperty("cancelButton");
-            useCustomMappingProperty = serializedObject.FindProperty("useCustomMapping");
-            customMappingsProperty = serializedObject.FindProperty("customMappings");
+            customMappingsProperty = serializedObject.FindProperty("mapping");
         }
 
         public override void OnInspectorGUI()
@@ -36,16 +36,21 @@ namespace HoloToolkit.Unity.InputModule
             EditorGUILayout.PropertyField(cancelButtonProperty);
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(useCustomMappingProperty);
+
+            useCustomMapping = EditorGUILayout.Toggle("Enable Custom Mapping", useCustomMapping);
 
             if (EditorGUI.EndChangeCheck())
             {
-                customMappingsProperty.arraySize = useCustomMappingProperty.boolValue
-                    ? Enum.GetNames(typeof(XboxControllerMappingTypes)).Length
-                    : 0;
+                customMappingsProperty.arraySize = Enum.GetNames(typeof(XboxControllerMappingTypes)).Length;
+
+                for (int i = 0; i < customMappingsProperty.arraySize; i++)
+                {
+                    customMappingsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Type").enumValueIndex = i;
+                    customMappingsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Value").stringValue = string.Empty;
+                }
             }
 
-            if (useCustomMappingProperty.boolValue)
+            if (useCustomMapping)
             {
                 ShowList(customMappingsProperty);
             }

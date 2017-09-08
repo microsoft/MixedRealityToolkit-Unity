@@ -15,6 +15,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public Text DebugText;
         private string gamePadName;
         private Vector3 newPosition;
+        private Vector3 newRotation;
 
         private void Awake()
         {
@@ -40,12 +41,17 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnXboxAxisUpdate(XboxControllerEventData eventData)
         {
             newPosition = Vector3.zero;
+            newRotation = Vector3.zero;
 
             newPosition.x += eventData.XboxLeftStickHorizontalAxis;
-            newPosition.z += eventData.XboxDpadVerticalAxis;
+            newPosition.z += eventData.XboxLeftStickVerticalAxis;
             newPosition.y += eventData.XboxSharedTriggerAxis;
 
             transform.position = newPosition;
+
+            newRotation.y += eventData.XboxRightStickHorizontalAxis;
+
+            transform.rotation *= Quaternion.Euler(newRotation);
 
             DebugText.text =
                 string.Format(

@@ -16,10 +16,10 @@ namespace HoloToolkit.Unity.InputModule
     public class XboxControllerInputSource : GamePadInputSource
     {
         [Serializable]
-        private class CustomMappingEntry
+        private class MappingEntry
         {
-            public XboxControllerMappingTypes Type = XboxControllerMappingTypes.XboxLeftStickHorizontal;
-            public string Value = "";
+            public XboxControllerMappingTypes Type = 0;
+            public string Value = string.Empty;
         }
 
         private const string XboxController = "Xbox Controller";
@@ -50,10 +50,7 @@ namespace HoloToolkit.Unity.InputModule
         private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.XboxB;
 
         [SerializeField]
-        private bool useCustomMapping;
-
-        [SerializeField]
-        private CustomMappingEntry[] customMappings = null;
+        private MappingEntry[] mapping;
 
         protected virtual void Awake()
         {
@@ -66,12 +63,9 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            if (useCustomMapping && customMappings != null)
+            for (var i = 0; i < Enum.GetNames(typeof(XboxControllerMappingTypes)).Length; i++)
             {
-                for (var i = 0; i < customMappings.Length; i++)
-                {
-                    XboxControllerMapping.SetMapping(customMappings[i].Type, customMappings[i].Value);
-                }
+                XboxControllerMapping.SetMapping((XboxControllerMappingTypes)i, mapping[i].Value);
             }
 
             previousForceActiveState = inputModule.forceModuleActive;
