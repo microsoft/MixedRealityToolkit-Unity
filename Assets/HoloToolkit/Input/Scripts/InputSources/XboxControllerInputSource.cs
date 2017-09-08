@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.InputModule
         private bool previousForceActiveState;
 
         [SerializeField]
-        private XboxControllerMappingTypes horizontalAxis = XboxControllerMappingTypes.XboxDpadVertical;
+        private XboxControllerMappingTypes horizontalAxis = XboxControllerMappingTypes.XboxDpadHorizontal;
 
         [SerializeField]
         private XboxControllerMappingTypes verticalAxis = XboxControllerMappingTypes.XboxDpadVertical;
