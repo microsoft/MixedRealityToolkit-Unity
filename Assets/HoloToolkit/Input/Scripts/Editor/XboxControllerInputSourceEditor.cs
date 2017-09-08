@@ -3,10 +3,10 @@
 
 using System;
 using UnityEditor;
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
-
     [CustomEditor(typeof(XboxControllerInputSource))]
     public class XboxControllerInputSourceEditor : Editor
     {
@@ -14,8 +14,9 @@ namespace HoloToolkit.Unity.InputModule
         private SerializedProperty verticalAxisProperty;
         private SerializedProperty submitButtonProperty;
         private SerializedProperty cancelButtonProperty;
-        private SerializedProperty useCustomMappingProperty;
         private SerializedProperty customMappingsProperty;
+
+        private static bool useCustomMapping;
 
         private void OnEnable()
         {
@@ -23,30 +24,42 @@ namespace HoloToolkit.Unity.InputModule
             verticalAxisProperty = serializedObject.FindProperty("verticalAxis");
             submitButtonProperty = serializedObject.FindProperty("submitButton");
             cancelButtonProperty = serializedObject.FindProperty("cancelButton");
-            useCustomMappingProperty = serializedObject.FindProperty("useCustomMapping");
-            customMappingsProperty = serializedObject.FindProperty("customMappings");
+            customMappingsProperty = serializedObject.FindProperty("mapping");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Event System Overrides", new GUIStyle("Label") { fontStyle = FontStyle.Bold });
+
+            EditorGUI.indentLevel++;
 
             EditorGUILayout.PropertyField(horizontalAxisProperty);
             EditorGUILayout.PropertyField(verticalAxisProperty);
             EditorGUILayout.PropertyField(submitButtonProperty);
             EditorGUILayout.PropertyField(cancelButtonProperty);
 
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Space();
+
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(useCustomMappingProperty);
+
+            useCustomMapping = EditorGUILayout.Toggle("Use Custom Mapping", useCustomMapping);
 
             if (EditorGUI.EndChangeCheck())
             {
-                customMappingsProperty.arraySize = useCustomMappingProperty.boolValue
-                    ? Enum.GetNames(typeof(XboxControllerMappingTypes)).Length
-                    : 0;
+                customMappingsProperty.arraySize = Enum.GetNames(typeof(XboxControllerMappingTypes)).Length;
+
+                for (int i = 0; i < customMappingsProperty.arraySize; i++)
+                {
+                    customMappingsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Type").enumValueIndex = i;
+                    customMappingsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Value").stringValue = string.Empty;
+                }
             }
 
-            if (useCustomMappingProperty.boolValue)
+            if (useCustomMapping)
             {
                 ShowList(customMappingsProperty);
             }
