@@ -85,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1177239735944006}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.217, y: 0.23, z: 0}
+  m_LocalPosition: {x: -0.217, y: 0.25, z: 0}
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
   m_Children: []
   m_Father: {fileID: 4663534091094826}
@@ -113,7 +113,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1289556740807306}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.26, z: 0}
+  m_LocalPosition: {x: 0, y: 0.28, z: 0}
   m_LocalScale: {x: 0.005, y: 0.005000004, z: 0.005000003}
   m_Children: []
   m_Father: {fileID: 4663534091094826}
@@ -225,13 +225,20 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1177239735944006}
-  m_Text: "Air tap a scene to load it.\nWhen finished with a scene, say \"Scene Launcher\"\nor
-    press the Backspace key to return the this scene list.\n\nEdit the scenes in this
-    list in Unity > File > Build Settings > Scenes in Build.\n\nIf you would like
-    to use all scenes in the project, search for t:Scene in the \nProject tab, select
-    all, and drag all scenes into Scenes in Build.\n\nAfter adding scenes to the build,
-    you can use the Scene Mapping setting\nin the SceneLauncher prefab to control
-    which scenes are included or not\nincluded in the SceneLauncher menu."
+  m_Text: 'Air tap a scene to load it.
+
+    When finished with a scene, say "Scene Launcher" or press the Backspace key to
+    return the this scene list.
+
+    Edit the scenes in this list in Unity > File > Build Settings > Scenes in Build.
+
+    If you would like to use all scenes in the project, search for t:Scene in the
+    Project tab, select all, and drag all scenes into Scenes in Build.
+
+
+    After adding scenes to the build, you can use the Scene Mapping setting in the
+    SceneLauncher prefab to control which scenes are included or notincluded in the
+    SceneLauncher menu.'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
