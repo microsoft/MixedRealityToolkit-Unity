@@ -41,9 +41,3 @@ obj/
 
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
-
-# ============================= #
-# Custom Project Specific Paths #
-# ============================= #
-/Assets/HoloToolkit-Examples/FastConfigurableShader/Scenes/FastConfigurableTest
-/Assets/HoloToolkit-Examples/SharingWithUNET/Scenes/sharingwithunet
