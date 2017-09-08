@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -13,9 +14,50 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class XboxControllerInputSource : GamePadInputSource
     {
+        private const string XboxController = "Xbox Controller";
+        private const string XboxBluetoothGamePad = "Xbox Bluetooth Gamepad";
+        private const string XboxWirelessController = "Xbox Wireless Controller";
+
         private uint sourceId;
         private readonly Dictionary<uint, XboxControllerData> gamePadInputDatas = new Dictionary<uint, XboxControllerData>(0);
+
         private XboxControllerData controllerData;
+        private StandaloneInputModule inputModule;
+        private string previousHorizontalAxis;
+        private string previousVerticalAxis;
+        private string previousSubmitButton;
+        private string previousCancelButton;
+        private bool previousForceActiveState;
+
+        [SerializeField]
+        private XboxControllerMappingTypes horizontalAxis = XboxControllerMappingTypes.XboxDpadVertical;
+
+        [SerializeField]
+        private XboxControllerMappingTypes verticalAxis = XboxControllerMappingTypes.XboxDpadVertical;
+
+        [SerializeField]
+        private XboxControllerMappingTypes submitButton = XboxControllerMappingTypes.XboxA;
+
+        [SerializeField]
+        private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.XboxB;
+
+        protected virtual void Awake()
+        {
+            inputModule = FindObjectOfType<StandaloneInputModule>();
+
+            if (inputModule == null)
+            {
+                Debug.LogError("Missing Standalone Input Module for Xbox Controller Source!\n" +
+                               "Ensure you have an Event System in your scene.");
+                return;
+            }
+
+            previousForceActiveState = inputModule.forceModuleActive;
+            previousHorizontalAxis = inputModule.horizontalAxis;
+            previousVerticalAxis = inputModule.verticalAxis;
+            previousSubmitButton = inputModule.submitButton;
+            previousCancelButton = inputModule.cancelButton;
+        }
 
         protected override void Update()
         {
@@ -24,48 +66,48 @@ namespace HoloToolkit.Unity.InputModule
             // We will only register the first device we find.  Input is taken from joystick 1.
             if (gamePadInputDatas.Count != 1) { return; }
 
-            controllerData.XboxLeftStickHorizontalAxis = Input.GetAxis("XBOX_LEFT_STICK_HORIZONTAL");
-            controllerData.XboxLeftStickVerticalAxis = Input.GetAxis("XBOX_LEFT_STICK_VERTICAL");
-            controllerData.XboxRightStickHorizontalAxis = Input.GetAxis("XBOX_RIGHT_STICK_HORIZONTAL");
-            controllerData.XboxRightStickVerticalAxis = Input.GetAxis("XBOX_RIGHT_STICK_VERTICAL");
-            controllerData.XboxDpadHorizontalAxis = Input.GetAxis("XBOX_DPAD_HORIZONTAL");
-            controllerData.XboxDpadVerticalAxis = Input.GetAxis("XBOX_DPAD_VERTICAL");
-            controllerData.XboxLeftTriggerAxis = Input.GetAxis("XBOX_LEFT_TRIGGER");
-            controllerData.XboxRightTriggerAxis = Input.GetAxis("XBOX_RIGHT_TRIGGER");
-            controllerData.XboxSharedTriggerAxis = Input.GetAxis("XBOX_TRIGGER_SHARED");
+            controllerData.XboxLeftStickHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickHorizontal);
+            controllerData.XboxLeftStickVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickVertical);
+            controllerData.XboxRightStickHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxRightStickHorizontal);
+            controllerData.XboxRightStickVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxRightStickVertical);
+            controllerData.XboxDpadHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxDpadHorizontal);
+            controllerData.XboxDpadVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxDpadVertical);
+            controllerData.XboxLeftTriggerAxis = Input.GetAxis(XboxControllerMapping.XboxLeftTrigger);
+            controllerData.XboxRightTriggerAxis = Input.GetAxis(XboxControllerMapping.XboxRightTrigger);
+            controllerData.XboxSharedTriggerAxis = Input.GetAxis(XboxControllerMapping.XboxSharedTrigger);
 
-            controllerData.XboxA_Down = Input.GetButtonDown("XBOX_A");
-            controllerData.XboxB_Down = Input.GetButtonDown("XBOX_B");
-            controllerData.XboxX_Down = Input.GetButtonDown("XBOX_X");
-            controllerData.XboxY_Down = Input.GetButtonDown("XBOX_Y");
-            controllerData.XboxLeftBumper_Down = Input.GetButtonDown("XBOX_LEFT_BUMPER");
-            controllerData.XboxRightBumper_Down = Input.GetButtonDown("XBOX_RIGHT_BUMPER");
-            controllerData.XboxLeftStick_Down = Input.GetButtonDown("XBOX_LEFT_STICK_CLICK");
-            controllerData.XboxRightStick_Down = Input.GetButtonDown("XBOX_RIGHT_STICK_CLICK");
-            controllerData.XboxView_Down = Input.GetButtonDown("XBOX_VIEW");
-            controllerData.XboxMenu_Down = Input.GetButtonDown("XBOX_MENU");
+            controllerData.XboxA_Down = Input.GetButtonDown(XboxControllerMapping.XboxA);
+            controllerData.XboxB_Down = Input.GetButtonDown(XboxControllerMapping.XboxB);
+            controllerData.XboxX_Down = Input.GetButtonDown(XboxControllerMapping.XboxX);
+            controllerData.XboxY_Down = Input.GetButtonDown(XboxControllerMapping.XboxY);
+            controllerData.XboxView_Down = Input.GetButtonDown(XboxControllerMapping.XboxView);
+            controllerData.XboxMenu_Down = Input.GetButtonDown(XboxControllerMapping.XboxMenu);
+            controllerData.XboxLeftBumper_Down = Input.GetButtonDown(XboxControllerMapping.XboxLeftBumper);
+            controllerData.XboxRightBumper_Down = Input.GetButtonDown(XboxControllerMapping.XboxRightBumper);
+            controllerData.XboxLeftStick_Down = Input.GetButtonDown(XboxControllerMapping.XboxLeftStickClick);
+            controllerData.XboxRightStick_Down = Input.GetButtonDown(XboxControllerMapping.XboxRightStickClick);
 
-            controllerData.XboxA_Pressed = Input.GetButton("XBOX_A");
-            controllerData.XboxB_Pressed = Input.GetButton("XBOX_B");
-            controllerData.XboxX_Pressed = Input.GetButton("XBOX_X");
-            controllerData.XboxY_Pressed = Input.GetButton("XBOX_Y");
-            controllerData.XboxLeftBumper_Pressed = Input.GetButton("XBOX_LEFT_BUMPER");
-            controllerData.XboxRightBumper_Pressed = Input.GetButton("XBOX_RIGHT_BUMPER");
-            controllerData.XboxLeftStick_Pressed = Input.GetButton("XBOX_LEFT_STICK_CLICK");
-            controllerData.XboxRightStick_Pressed = Input.GetButton("XBOX_RIGHT_STICK_CLICK");
-            controllerData.XboxView_Pressed = Input.GetButton("XBOX_VIEW");
-            controllerData.XboxMenu_Pressed = Input.GetButton("XBOX_MENU");
+            controllerData.XboxA_Pressed = Input.GetButton(XboxControllerMapping.XboxA);
+            controllerData.XboxB_Pressed = Input.GetButton(XboxControllerMapping.XboxB);
+            controllerData.XboxX_Pressed = Input.GetButton(XboxControllerMapping.XboxX);
+            controllerData.XboxY_Pressed = Input.GetButton(XboxControllerMapping.XboxY);
+            controllerData.XboxView_Pressed = Input.GetButton(XboxControllerMapping.XboxView);
+            controllerData.XboxMenu_Pressed = Input.GetButton(XboxControllerMapping.XboxMenu);
+            controllerData.XboxLeftBumper_Pressed = Input.GetButton(XboxControllerMapping.XboxLeftBumper);
+            controllerData.XboxRightBumper_Pressed = Input.GetButton(XboxControllerMapping.XboxRightBumper);
+            controllerData.XboxLeftStick_Pressed = Input.GetButton(XboxControllerMapping.XboxLeftStickClick);
+            controllerData.XboxRightStick_Pressed = Input.GetButton(XboxControllerMapping.XboxRightStickClick);
 
-            controllerData.XboxA_Up = Input.GetButtonUp("XBOX_A");
-            controllerData.XboxB_Up = Input.GetButtonUp("XBOX_B");
-            controllerData.XboxX_Up = Input.GetButtonUp("XBOX_X");
-            controllerData.XboxY_Up = Input.GetButtonUp("XBOX_Y");
-            controllerData.XboxLeftBumper_Up = Input.GetButtonUp("XBOX_LEFT_BUMPER");
-            controllerData.XboxRightBumper_Up = Input.GetButtonUp("XBOX_RIGHT_BUMPER");
-            controllerData.XboxLeftStick_Up = Input.GetButtonUp("XBOX_LEFT_STICK_CLICK");
-            controllerData.XboxRightStick_Up = Input.GetButtonUp("XBOX_RIGHT_STICK_CLICK");
-            controllerData.XboxView_Up = Input.GetButtonUp("XBOX_VIEW");
-            controllerData.XboxMenu_Up = Input.GetButtonUp("XBOX_MENU");
+            controllerData.XboxA_Up = Input.GetButtonUp(XboxControllerMapping.XboxA);
+            controllerData.XboxB_Up = Input.GetButtonUp(XboxControllerMapping.XboxB);
+            controllerData.XboxX_Up = Input.GetButtonUp(XboxControllerMapping.XboxX);
+            controllerData.XboxY_Up = Input.GetButtonUp(XboxControllerMapping.XboxY);
+            controllerData.XboxView_Up = Input.GetButtonUp(XboxControllerMapping.XboxView);
+            controllerData.XboxMenu_Up = Input.GetButtonUp(XboxControllerMapping.XboxMenu);
+            controllerData.XboxLeftBumper_Up = Input.GetButtonUp(XboxControllerMapping.XboxLeftBumper);
+            controllerData.XboxRightBumper_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightBumper);
+            controllerData.XboxLeftStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxLeftStickClick);
+            controllerData.XboxRightStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightStickClick);
 
             InputManager.Instance.RaiseXboxInputUpdate(this, sourceId, controllerData);
         }
@@ -80,6 +122,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 foreach (var gamePadInputSource in gamePadInputDatas)
                 {
+                    // Reset our input module to it's previous state.
+                    inputModule.forceModuleActive = previousForceActiveState;
+                    inputModule.verticalAxis = previousVerticalAxis;
+                    inputModule.horizontalAxis = previousHorizontalAxis;
+                    inputModule.submitButton = previousSubmitButton;
+                    inputModule.cancelButton = previousCancelButton;
+
                     InputManager.Instance.RaiseGamePadLost(this, gamePadInputSource.Key, LastDeviceList[gamePadInputSource.Key]);
                 }
 
@@ -90,7 +139,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (string.IsNullOrEmpty(joystickNames[i]) || gamePadInputDatas.ContainsKey((uint)i)) { continue; }
 
-                if (joystickNames[i].Contains("Xbox Bluetooth Gamepad") || joystickNames[i].Contains("Xbox Wireless Controller") || joystickNames[i].Contains("Xbox Controller"))
+                if (joystickNames[i].Contains(XboxBluetoothGamePad) || joystickNames[i].Contains(XboxWirelessController) || joystickNames[i].Contains(XboxController))
                 {
                     // We will only register the first device we find.  Input is taken from joystick 1.
                     if (gamePadInputDatas.Count != 0) { return; }
@@ -98,6 +147,14 @@ namespace HoloToolkit.Unity.InputModule
                     sourceId = (uint)i;
                     controllerData = new XboxControllerData();
                     gamePadInputDatas.Add(sourceId, controllerData);
+
+                    // Setup the Input Module to use our custom axis settings.
+                    inputModule.forceModuleActive = true;
+                    inputModule.verticalAxis = XboxControllerMapping.GetMapping(verticalAxis);
+                    inputModule.horizontalAxis = XboxControllerMapping.GetMapping(horizontalAxis);
+                    inputModule.submitButton = XboxControllerMapping.GetMapping(submitButton);
+                    inputModule.cancelButton = XboxControllerMapping.GetMapping(cancelButton);
+
                     InputManager.Instance.RaiseGamePadDetected(this, sourceId, joystickNames[i]);
                 }
                 else
