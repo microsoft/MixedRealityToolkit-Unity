@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 
 namespace GLTF
 {
-    public class GLTFLoader
+	public class GLTFLoader
 	{
 		public enum MaterialType
 		{
@@ -28,6 +28,8 @@ namespace GLTF
 
 		public bool Multithreaded = true;
 		public int MaximumLod = 300;
+		public UnityEngine.Material ColorMaterial;
+		public UnityEngine.Material NoColorMaterial;
 		private readonly byte[] _gltfData;
 		private GLTFRoot _root;
 		private GameObject _lastLoadedScene;
@@ -43,7 +45,7 @@ namespace GLTF
 
 		public GLTFLoader(byte[] gltfData, Transform parent = null)
 		{
-            _gltfData = gltfData;
+			_gltfData = gltfData;
 			_sceneParent = parent;
 			asyncAction = new AsyncAction();
 		}
@@ -316,34 +318,9 @@ namespace GLTF
 
 		private UnityEngine.Material CreateMaterial(Material def, bool useVertexColors)
 		{
-			Shader shader;
+			UnityEngine.Material material = new UnityEngine.Material(useVertexColors ? ColorMaterial : NoColorMaterial);
 
-			// get the shader to use for this material
-			try
-			{
-				if (def.PbrMetallicRoughness != null)
-					shader = _shaderCache[MaterialType.PbrMetallicRoughness];
-				else if (_root.ExtensionsUsed != null && _root.ExtensionsUsed.Contains("KHR_materials_common")
-					&& def.CommonConstant != null)
-					shader = _shaderCache[MaterialType.CommonConstant];
-				else
-				{
-					//throw new NotImplementedException(def.Name + " uses unimplemented material model");
-					shader = _shaderCache[MaterialType.PbrMetallicRoughness];
-				}
-			}
-			catch (KeyNotFoundException e)
-			{
-				Debug.LogWarningFormat("No shader supplied for type of glTF material {0}, using PBR fallback", def.Name);
-				if (!_shaderCache.TryGetValue(MaterialType.PbrMetallicRoughness, out shader))
-				{
-					throw new ShaderNotFoundException("No fallback shader supplied", e);
-				}
-			}
-
-			shader.maximumLOD = MaximumLod;
-
-			var material = new UnityEngine.Material(shader);
+			material.shader.maximumLOD = MaximumLod;
 
 			if (def.AlphaMode == AlphaMode.MASK)
 			{
@@ -388,8 +365,6 @@ namespace GLTF
 			{
 				material.SetInt("_Cull", (int)CullMode.Back);
 			}
-
-
 
 			if (useVertexColors)
 			{
@@ -438,8 +413,14 @@ namespace GLTF
 			if (def.NormalTexture != null)
 			{
 				var texture = def.NormalTexture.Index.Value;
+				material.EnableKeyword("_NORMALMAP");
 				material.SetTexture("_BumpMap", _imageCache[texture.Source.Value]);
 				material.SetFloat("_BumpScale", (float)def.NormalTexture.Scale);
+			}
+			else
+			{
+				material.SetTexture("_BumpMap", null);
+				material.DisableKeyword("_NORMALMAP");
 			}
 
 			if (def.OcclusionTexture != null)
@@ -462,6 +443,7 @@ namespace GLTF
 			if (def.EmissiveTexture != null)
 			{
 				var texture = def.EmissiveTexture.Index.Value;
+				material.EnableKeyword("_EMISSION");
 				material.EnableKeyword("EMISSION_MAP_ON");
 				material.SetTexture("_EmissionMap", _imageCache[texture.Source.Value]);
 				material.SetInt("_EmissionUV", def.EmissiveTexture.TexCoord);

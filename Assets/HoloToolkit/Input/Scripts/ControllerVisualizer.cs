@@ -24,6 +24,9 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ControllerVisualizer : MonoBehaviour
     {
+        [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
+        public bool AnimateControllerModel = true;
+
         [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform left controller model.")]
         [SerializeField]
         protected GameObject LeftControllerOverride;
@@ -34,8 +37,9 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         protected GameObject TouchpadTouchedOverride;
 
-        [Tooltip("This shader will be used on the loaded GLTF controller model. This does not affect the above overrides.")]
-        public Shader GLTFShader;
+        [Tooltip("This material will be used on the loaded glTF controller model. This does not affect the above overrides.")]
+        [SerializeField]
+        protected UnityEngine.Material GLTFMaterial;
 
 #if !UNITY_EDITOR && UNITY_WSA
         // This is used to get the renderable controller model, since Unity does not expose this API.
@@ -51,15 +55,15 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_WSA
 #if !UNITY_EDITOR
-            if (GLTFShader == null)
+            if (GLTFMaterial == null)
             {
                 if (LeftControllerOverride == null && RightControllerOverride == null)
                 {
-                    Debug.Log("If using glTF, please specify a shader on " + name + ". Otherwise, please specify controller overrides.");
+                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
                 }
                 else if (LeftControllerOverride == null || RightControllerOverride == null)
                 {
-                    Debug.Log("Only one override is specified, and no shader is specified for the glTF model. Please set the shader or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
+                    Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
                 }
             }
 
@@ -118,25 +122,22 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator LoadControllerModel(SpatialInteractionController controller, SpatialInteractionSource source)
         {
-            bool isOverride;
             if (controllerDictionary != null && !controllerDictionary.ContainsKey(source.Id))
             {
                 GameObject controllerModelGameObject;
                 if (source.Handedness == SpatialInteractionSourceHandedness.Left && LeftControllerOverride != null)
                 {
                     controllerModelGameObject = Instantiate(LeftControllerOverride);
-                    isOverride = true;
                 }
                 else if (source.Handedness == SpatialInteractionSourceHandedness.Right && RightControllerOverride != null)
                 {
                     controllerModelGameObject = Instantiate(RightControllerOverride);
-                    isOverride = true;
                 }
                 else
                 {
-                    if (GLTFShader == null)
+                    if (GLTFMaterial == null)
                     {
-                        Debug.Log("If using glTF, please specify a shader on " + name + ".");
+                        Debug.Log("If using glTF, please specify a material on " + name + ".");
                         yield break;
                     }
 
@@ -184,14 +185,14 @@ namespace HoloToolkit.Unity.InputModule
 
                     controllerModelGameObject = new GameObject();
                     GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
-                    gltfScript.GLTFStandard = GLTFShader;
+                    gltfScript.ColorMaterial = GLTFMaterial;
+                    gltfScript.NoColorMaterial = GLTFMaterial;
                     gltfScript.GLTFData = fileBytes;
 
                     yield return gltfScript.LoadModel();
-                    isOverride = false;
                 }
 
-                FinishControllerSetup(controllerModelGameObject, isOverride, source.Handedness.ToString(), source.Id);
+                FinishControllerSetup(controllerModelGameObject, source.Handedness.ToString(), source.Id);
             }
         }
 #endif
@@ -215,7 +216,7 @@ namespace HoloToolkit.Unity.InputModule
                     return;
                 }
 
-                FinishControllerSetup(controllerModelGameObject, true, obj.state.source.handedness.ToString(), obj.state.source.id);
+                FinishControllerSetup(controllerModelGameObject, obj.state.source.handedness.ToString(), obj.state.source.id);
             }
         }
 
@@ -281,7 +282,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void FinishControllerSetup(GameObject controllerModelGameObject, bool isOverride, string handedness, uint id)
+        private void FinishControllerSetup(GameObject controllerModelGameObject, string handedness, uint id)
         {
             var parentGameObject = new GameObject
             {
@@ -292,7 +293,7 @@ namespace HoloToolkit.Unity.InputModule
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
             var newControllerInfo = parentGameObject.AddComponent<ControllerInfo>();
-            if (!isOverride)
+            if (AnimateControllerModel)
             {
                 newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
             }
@@ -311,7 +312,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 touchVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 touchVisualizer.transform.localScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
-                touchVisualizer.GetComponent<Renderer>().material.shader = GLTFShader;
+                touchVisualizer.GetComponent<Renderer>().material = GLTFMaterial;
             }
             Destroy(touchVisualizer.GetComponent<Collider>());
             touchVisualizer.transform.parent = parentTransform;
