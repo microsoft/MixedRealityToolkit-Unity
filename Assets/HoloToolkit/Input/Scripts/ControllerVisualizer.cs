@@ -105,7 +105,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             SpatialInteractionSource source = args.State.Source;
             // We only want to attempt loading a model if this source is actually a controller.
-            if (source.Kind == SpatialInteractionSourceKind.Controller)
+            if (source.Kind == SpatialInteractionSourceKind.Controller && controllerDictionary != null && !controllerDictionary.ContainsKey(source.Id))
             {
                 SpatialInteractionController controller = source.Controller;
                 if (controller != null)
@@ -122,85 +122,82 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator LoadControllerModel(SpatialInteractionController controller, SpatialInteractionSource source)
         {
-            if (controllerDictionary != null && !controllerDictionary.ContainsKey(source.Id))
+            GameObject controllerModelGameObject;
+            if (source.Handedness == SpatialInteractionSourceHandedness.Left && LeftControllerOverride != null)
             {
-                GameObject controllerModelGameObject;
-                if (source.Handedness == SpatialInteractionSourceHandedness.Left && LeftControllerOverride != null)
+                controllerModelGameObject = Instantiate(LeftControllerOverride);
+            }
+            else if (source.Handedness == SpatialInteractionSourceHandedness.Right && RightControllerOverride != null)
+            {
+                controllerModelGameObject = Instantiate(RightControllerOverride);
+            }
+            else
+            {
+                if (GLTFMaterial == null)
                 {
-                    controllerModelGameObject = Instantiate(LeftControllerOverride);
+                    Debug.Log("If using glTF, please specify a material on " + name + ".");
+                    yield break;
                 }
-                else if (source.Handedness == SpatialInteractionSourceHandedness.Right && RightControllerOverride != null)
+
+                // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
+                IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = controller.TryGetRenderableModelAsync();
+
+                if (modelTask == null)
                 {
-                    controllerModelGameObject = Instantiate(RightControllerOverride);
+                    Debug.Log("Model task is null.");
+                    yield break;
                 }
-                else
+
+                while (modelTask.Status == AsyncStatus.Started)
                 {
-                    if (GLTFMaterial == null)
-                    {
-                        Debug.Log("If using glTF, please specify a material on " + name + ".");
-                        yield break;
-                    }
+                    yield return null;
+                }
 
-                    // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
-                    IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = controller.TryGetRenderableModelAsync();
+                IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
 
-                    if (modelTask == null)
-                    {
-                        Debug.Log("Model task is null.");
-                        yield break;
-                    }
+                if (modelStream == null)
+                {
+                    Debug.Log("Model stream is null.");
+                    yield break;
+                }
 
-                    while (modelTask.Status == AsyncStatus.Started)
+                if (modelStream.Size == 0)
+                {
+                    Debug.Log("Model stream is empty.");
+                    yield break;
+                }
+
+                byte[] fileBytes = new byte[modelStream.Size];
+
+                using (DataReader reader = new DataReader(modelStream))
+                {
+                    DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
+
+                    while (loadModelOp.Status == AsyncStatus.Started)
                     {
                         yield return null;
                     }
 
-                    IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
-
-                    if (modelStream == null)
-                    {
-                        Debug.Log("Model stream is null.");
-                        yield break;
-                    }
-
-                    if (modelStream.Size == 0)
-                    {
-                        Debug.Log("Model stream is empty.");
-                        yield break;
-                    }
-
-                    byte[] fileBytes = new byte[modelStream.Size];
-
-                    using (DataReader reader = new DataReader(modelStream))
-                    {
-                        DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
-
-                        while (loadModelOp.Status == AsyncStatus.Started)
-                        {
-                            yield return null;
-                        }
-
-                        reader.ReadBytes(fileBytes);
-                    }
-
-                    controllerModelGameObject = new GameObject();
-                    GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
-                    gltfScript.ColorMaterial = GLTFMaterial;
-                    gltfScript.NoColorMaterial = GLTFMaterial;
-                    gltfScript.GLTFData = fileBytes;
-
-                    yield return gltfScript.LoadModel();
+                    reader.ReadBytes(fileBytes);
                 }
 
-                FinishControllerSetup(controllerModelGameObject, source.Handedness.ToString(), source.Id);
+                controllerModelGameObject = new GameObject();
+                GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
+                gltfScript.ColorMaterial = GLTFMaterial;
+                gltfScript.NoColorMaterial = GLTFMaterial;
+                gltfScript.GLTFData = fileBytes;
+
+                yield return gltfScript.LoadModel();
             }
+
+            FinishControllerSetup(controllerModelGameObject, source.Handedness.ToString(), source.Id);
         }
 #endif
 
 #if UNITY_WSA
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
-            if (obj.state.source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(obj.state.source.id))
+            if (obj.state.source.kind == InteractionSourceKind.Controller && controllerDictionary != null && !controllerDictionary.ContainsKey(obj.state.source.id))
             {
                 GameObject controllerModelGameObject;
                 if (obj.state.source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
@@ -233,10 +230,9 @@ namespace HoloToolkit.Unity.InputModule
                 ControllerInfo controller;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
                 {
-                    Destroy(controller);
-
-                    // After destruction, the reference can be removed from the dictionary.
                     controllerDictionary.Remove(source.id);
+
+                    Destroy(controller);
                 }
             }
         }
