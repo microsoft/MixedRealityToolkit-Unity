@@ -20,19 +20,11 @@ namespace HoloToolkit.Unity.Tests
         [SetUp]
         public void SetupTests()
         {
+            TestUtils.ClearScene();
             empty = new GameObject();
             waterLayer = LayerMask.NameToLayer("Water");
             uiLayer = LayerMask.NameToLayer("UI");
             transparentFxLayer = LayerMask.NameToLayer("TransparentFX");
-        }
-
-        /// <summary>
-        /// Delete everything between each test
-        /// </summary>
-        [TearDown]
-        public void ClearScene()
-        {
-            EditorUtils.ClearScene();
         }
 
         [Test]
