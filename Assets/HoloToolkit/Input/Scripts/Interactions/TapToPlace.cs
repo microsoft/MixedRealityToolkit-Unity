@@ -41,8 +41,6 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
-        private bool initialMeshVisualizationSetting = false;
-
         private Interpolator interpolator;
 
         /// <summary>
@@ -58,11 +56,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 ParentGameObjectToPlace = GetParentToPlace();
                 PlaceParentOnTap = ParentGameObjectToPlace != null;
-            }
-
-            if (SpatialMappingManager.Instance != null && AllowMeshVisualizationControl)
-            {
-                initialMeshVisualizationSetting = SpatialMappingManager.Instance.DrawVisualMeshes;
             }
             
 
@@ -185,7 +178,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void ToggleSpatialMesh()
         {
-            if (SpatialMappingManager.Instance != null && initialMeshVisualizationSetting == false && AllowMeshVisualizationControl)
+            if (SpatialMappingManager.Instance != null && AllowMeshVisualizationControl)
             {
                 SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced;
             }
