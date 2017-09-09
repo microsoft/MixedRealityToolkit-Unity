@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity
             BuildWsaUwp,
             WsaEnableVR,
             WsaUwpBuildToD3D,
-            WsaVeryLowQuality,
+            WsaFastestQuality,
             SharingServices
         }
 
@@ -56,7 +56,7 @@ namespace HoloToolkit.Unity
                     case ProjectSetting.BuildWsaUwp:
                     case ProjectSetting.WsaEnableVR:
                     case ProjectSetting.WsaUwpBuildToD3D:
-                    case ProjectSetting.WsaVeryLowQuality:
+                    case ProjectSetting.WsaFastestQuality:
                         Values[(ProjectSetting)i] = true;
                         break;
                     case ProjectSetting.SharingServices:
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity
                 ? WSAUWPBuildType.D3D
                 : WSAUWPBuildType.XAML;
 
-            if (Values[ProjectSetting.WsaVeryLowQuality])
+            if (Values[ProjectSetting.WsaFastestQuality])
             {
                 int settingId = -1;
                 for (var i = 0; i < QualitySettings.names.Length; i++)
@@ -91,7 +91,7 @@ namespace HoloToolkit.Unity
 
                 if (settingId < 0)
                 {
-                    Debug.LogWarning("Failed to find Quality Setting 'Very Low' or 'Fastest'");
+                    Debug.LogWarning("Failed to find Quality Setting 'Fastest'");
                 }
             }
 
@@ -140,9 +140,9 @@ namespace HoloToolkit.Unity
                                                             "faster than applications that include Xaml. This option should remain checked unless you plan to " +
                                                             "overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
 
-            Names[ProjectSetting.WsaVeryLowQuality] = "Set Quality to Very Low(or Fastest)";
-            Descriptions[ProjectSetting.WsaVeryLowQuality] = "Recommended\n\nChanges the quality settings for Windows Store apps to the 'Very Low'(or 'Fastest') setting.\n\n" +
-                                                             "'Very Low'(or 'Fastest') is the recommended quality setting for HoloLens apps, but this option can be unchecked " +
+            Names[ProjectSetting.WsaFastestQuality] = "Set Quality to Fastest";
+            Descriptions[ProjectSetting.WsaFastestQuality] = "Recommended\n\nChanges the quality settings for Windows Store apps to the 'Fastest' setting.\n\n" +
+                                                             "'Fastest' is the recommended quality setting for HoloLens apps, but this option can be unchecked " +
                                                              "if you have already optimized your project for the HoloLens.";
 
             Names[ProjectSetting.SharingServices] = "Enable Sharing Services";
