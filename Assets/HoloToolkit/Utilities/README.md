@@ -29,12 +29,12 @@ Creates a menu allowing you to jump to any scene in your project.
 
 To run the SceneLauncher:
 
-1) In Unity > File  Build Settings > Scenes in Build, drag in the scene files that you would like to run.
+1. In Unity > File  Build Settings > Scenes in Build, drag in the scene files that you would like to run.
     *  If you would like to use all scenes in the project, search for t:Scene in the Project tab, select all, and drag all scenes into Scenes in Build.
-2) Make sure that SceneLauncher is the first scene (#0).
-3) Build and run your project. (Or open the SceneLauncher scene and hit Play in the Unity editor.) A grid will be created with a button for each of your scenes.
-4) Air tap a scene to load it.
-5) When finished with a scene, say "Scene Launcher" or press the Backspace key to return the the scene list.
+2. After adding scenes to the build, you can use the Scene Mapping setting in the SceneLauncher prefab to control which scenes are included or not included in the SceneLauncher menu.
+3. Build and run your project. (Or open the SceneLauncher scene and hit Play in the Unity editor.) A grid will be created with a button for each of your scenes.
+4. Air tap a scene to load it.
+5. When finished with a scene, say "Scene Launcher" or press the Backspace key to return the the scene list.
 
 ### [Scripts](Scripts)
 ---
