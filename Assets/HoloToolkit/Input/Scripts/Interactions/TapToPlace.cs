@@ -18,8 +18,7 @@ namespace HoloToolkit.Unity.InputModule
     [RequireComponent(typeof(Interpolator))]
     public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
-        [Tooltip("Distance from camera to keep the object while placing it.")]
-        public float DefaultGazeDistance = 2.0f;
+        [Tooltip("Distance from camera to keep the object while placing it.")]        public float DefaultGazeDistance = 2.0f;
 
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
