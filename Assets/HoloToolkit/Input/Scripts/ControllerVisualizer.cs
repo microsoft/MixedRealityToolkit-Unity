@@ -233,7 +233,7 @@ namespace HoloToolkit.Unity.InputModule
                 ControllerInfo controller;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
                 {
-                    Destroy(controller.gameObject);
+                    Destroy(controller);
 
                     // After destruction, the reference can be removed from the dictionary.
                     controllerDictionary.Remove(source.id);
@@ -244,7 +244,7 @@ namespace HoloToolkit.Unity.InputModule
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
         {
             ControllerInfo currentController;
-            if (controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
+            if (AnimateControllerModel && controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
             {
                 currentController.AnimateSelect(obj.state.selectPressedAmount);
 
