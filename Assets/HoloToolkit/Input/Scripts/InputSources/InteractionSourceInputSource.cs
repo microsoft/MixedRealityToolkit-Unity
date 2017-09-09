@@ -113,6 +113,7 @@ namespace HoloToolkit.Unity.InputModule
 
             public uint SourceId { get { return Source.id; } }
             public InteractionSourceKind SourceKind { get { return Source.kind; } }
+            public InteractionSourceHandedness Handedness { get { return Source.handedness; } }
             public readonly InteractionSource Source;
             public SourceCapability<Vector3> PointerPosition;
             public SourceCapability<Quaternion> PointerRotation;

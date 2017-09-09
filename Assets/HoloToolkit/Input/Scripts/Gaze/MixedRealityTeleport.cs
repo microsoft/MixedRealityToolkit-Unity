@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
@@ -6,14 +7,8 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Script teleports the user to the location being gazed at when Y was pressed on a Gamepad.
     /// </summary>
-    public class MixedRealityTeleport : Singleton<MixedRealityTeleport>
+    public class MixedRealityTeleport : Singleton<MixedRealityTeleport>, IControllerInputHandler
     {
-        [Tooltip("Game pad button to press for teleporting or jump.")]
-        public string TeleportButtonName = "Jump";
-
-        [Tooltip("Game pad button to press for going back to a state.")]
-        public string GoBackButtonName = "Fire2";
-
         [Tooltip("Name of the joystick axis to move along X.")]
         public string LeftJoystickX = "ControllerLeftStickX";
 
@@ -26,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public float SpeedScale { get; set; }
 
-        public float BumperRotationSize = 30.0f;
+        public float BumperRotationSize = 45.0f;
 
         public GameObject TeleportMarker;
         private Animator animationController;
@@ -61,76 +56,10 @@ namespace HoloToolkit.Unity.InputModule
 
         void Update()
         {
-            HandleTeleport();
-            HandleGoBackPressed();
             HandleJoystickMovement();
             if (InteractionManager.numSourceStates == 0)
             {
                 HandleBumperRotation();
-            }
-        }
-
-        private void HandleTeleport()
-        {
-            if (EnableTeleport)
-            {
-                if (teleporting)
-                {
-                    if (Input.GetButtonUp(TeleportButtonName))
-                    {
-                        teleporting = false;
-                        if (teleportValid)
-                        {
-                            positionBeforeJump = transform.position;
-                            float verticalOffset;
-                            RaycastHit hitInfo;
-                            if (Physics.Raycast(Camera.main.transform.position, Vector3.down, out hitInfo, 5.0f))
-                            {
-                                verticalOffset = hitInfo.distance;
-                            }
-                            else
-                            {
-                                verticalOffset = 2.6f;
-                            }
-
-                            Vector3 hitPos = teleportMarker.transform.position + Vector3.up * verticalOffset;
-
-                            fadeControl.DoFade(0.25f, 0.5f, () =>
-                            {
-                                SetWorldPosition(hitPos);
-                            }, null);
-                        }
-
-                        DisableMarker();
-                    }
-                    else
-                    {
-                        PositionMarker();
-                    }
-                }
-                else
-                {
-                    if (fadeControl.Busy == false && Input.GetButtonDown(TeleportButtonName))
-                    {
-                        teleporting = true;
-                        EnableMarker();
-                        PositionMarker();
-                    }
-                }
-            }
-        }
-
-        private void HandleGoBackPressed()
-        {
-            if (EnableTeleport && Input.GetButtonDown(GoBackButtonName))
-            {
-                Vector3 oldPositionBeforeJump = positionBeforeJump;
-                positionBeforeJump = transform.position;
-
-                fadeControl.DoFade(0.25f, 0.5f, () =>
-                {
-                    SetWorldPosition(oldPositionBeforeJump);
-                }, null);
             }
         }
 
@@ -221,7 +150,12 @@ namespace HoloToolkit.Unity.InputModule
             if (Vector3.Dot(hitNormal, Vector3.up) > 0.90f)
             {
                 teleportValid = true;
-                teleportMarker.transform.position = gazeManager.HitPosition;
+
+                IPointingSource pointingSource;
+                if (FocusManager.Instance.TryGetSinglePointer(out pointingSource))
+                {
+                    teleportMarker.transform.position = FocusManager.Instance.GetFocusDetails(pointingSource).Point;
+                }
             }
             else
             {
@@ -234,11 +168,70 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 HitNormal()
         {
             Vector3 retval = Vector3.zero;
-            if (gazeManager.HitObject != null)
+
+            IPointingSource pointingSource;
+            if (FocusManager.Instance.TryGetSinglePointer(out pointingSource))
             {
-                retval = gazeManager.HitNormal;
+                FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(pointingSource);
+
+                if (focusDetails.Object != null)
+                {
+                    retval = focusDetails.Normal;
+                }
             }
+            
             return retval;
+        }
+
+        void IControllerInputHandler.OnSelectPressedAmountChanged(SelectPressedEventData eventData)
+        {
+        }
+
+        void IControllerInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
+        {
+            if(EnableTeleport)
+            {
+                if (fadeControl.Busy == false && teleporting == false && eventData.PressType == InteractionSourcePressType.Thumbstick && Math.Abs(1.0 - eventData.Position.y) < 0.2 && Math.Abs(eventData.Position.x) < 0.1)
+                {
+                    teleporting = true;
+                    EnableMarker();
+                    PositionMarker();
+                }
+                else if (teleporting)
+                {
+                    if (eventData.PressType == InteractionSourcePressType.Thumbstick && eventData.Position.magnitude < 0.1)
+                    {
+                        teleporting = false;
+                        if (teleportValid)
+                        {
+                            positionBeforeJump = transform.position;
+                            float verticalOffset;
+                            RaycastHit hitInfo;
+                            if (Physics.Raycast(Camera.main.transform.position, Vector3.down, out hitInfo, 5.0f))
+                            {
+                                verticalOffset = hitInfo.distance;
+                            }
+                            else
+                            {
+                                verticalOffset = 2.6f;
+                            }
+
+                            Vector3 hitPos = teleportMarker.transform.position + Vector3.up * verticalOffset;
+
+                            fadeControl.DoFade(0.25f, 0.5f, () =>
+                            {
+                                SetWorldPosition(hitPos);
+                            }, null);
+                        }
+
+                        DisableMarker();
+                    }
+                    else
+                    {
+                        PositionMarker();
+                    }
+                }
+            }
         }
     }
 }

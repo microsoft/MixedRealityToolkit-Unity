@@ -271,8 +271,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // For backward-compatibility, if a pointer wasn't specified, but there's exactly one
                 // pointer currently registered with FocusManager, we use it.
-
-                Pointer = FocusManager.Instance.TryGetSinglePointer();
+                IPointingSource pointingSource;
+                if (FocusManager.Instance.TryGetSinglePointer(out pointingSource))
+                {
+                    Pointer = pointingSource;
+                }
             }
             else
             {
