@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity
             SceneLauncherBuildIndex = SceneManager.GetActiveScene().buildIndex;
 
             // Determine the size of the buttons. Instantiate one of them so that we can check its bounds.
-            var sceneButtonForSize = Instantiate(SceneButtonPrefab);
+            SceneLauncherButton sceneButtonForSize = Instantiate(SceneButtonPrefab);
             var sceneButtonForSizeCollider = sceneButtonForSize.GetComponent<Collider>();
 
             if (sceneButtonForSizeCollider != null)
@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity
             var scene = SceneManager.GetSceneByBuildIndex(sceneIndex);
             Debug.Assert(SceneManager.GetSceneByName(sceneName) == scene);
 
-            var sceneButton = Instantiate(SceneButtonPrefab, GetButtonPosition(sceneIndex, sceneMapping.Length), Quaternion.identity, buttonParent.transform);
+            SceneLauncherButton sceneButton = Instantiate(SceneButtonPrefab, GetButtonPosition(sceneIndex, sceneMapping.Length), Quaternion.identity, buttonParent.transform);
             sceneButton.SceneIndex = sceneIndex;
             sceneButton.SceneName = sceneName;
             sceneButton.MenuReference = ButtonSpawnLocation;
