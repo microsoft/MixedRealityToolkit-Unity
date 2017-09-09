@@ -14,18 +14,21 @@ namespace HoloToolkit.Unity.InputModule
         private SerializedProperty keywordsProperty;
         private string[] registeredKeywords;
         private SerializedProperty isGlobalListenerProperty;
+        private SerializedProperty persistentKeywordsProperty;
 
         private void OnEnable()
         {
             keywordsProperty = serializedObject.FindProperty("Keywords");
             registeredKeywords = RegisteredKeywords().Distinct().ToArray();
             isGlobalListenerProperty = serializedObject.FindProperty("IsGlobalListener");
+            persistentKeywordsProperty = serializedObject.FindProperty("PersistentKeywords");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
             EditorGUILayout.PropertyField(isGlobalListenerProperty);
+            EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
             ShowList(keywordsProperty);
             serializedObject.ApplyModifiedProperties();
