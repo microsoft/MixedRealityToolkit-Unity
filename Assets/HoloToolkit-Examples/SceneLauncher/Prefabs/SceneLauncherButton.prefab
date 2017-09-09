@@ -149,3 +149,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HighlightedTextColor: {r: 0.9607843, g: 0.9607843, b: 0, a: 1}
+  MenuReference: {fileID: 0}
+  EnableDebug: 0
