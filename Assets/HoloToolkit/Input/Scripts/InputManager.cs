@@ -679,8 +679,8 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputPositionEventData, OnInputPositionChangedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IControllerInputHandler> OnSelectPressedAmountChangedEventHandler =
-            delegate (IControllerInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<ISelectHandler> OnSelectPressedAmountChangedEventHandler =
+            delegate (ISelectHandler handler, BaseEventData eventData)
             {
                 SelectPressedEventData casted = ExecuteEvents.ValidateEventData<SelectPressedEventData>(eventData);
                 handler.OnSelectPressedAmountChanged(casted);

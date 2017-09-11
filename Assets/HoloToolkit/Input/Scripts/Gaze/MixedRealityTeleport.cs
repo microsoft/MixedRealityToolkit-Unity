@@ -183,10 +183,6 @@ namespace HoloToolkit.Unity.InputModule
             return retval;
         }
 
-        void IControllerInputHandler.OnSelectPressedAmountChanged(SelectPressedEventData eventData)
-        {
-        }
-
         void IControllerInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
         {
             if(EnableTeleport)
