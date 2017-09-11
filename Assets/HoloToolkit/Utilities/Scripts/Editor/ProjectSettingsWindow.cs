@@ -81,7 +81,7 @@ namespace HoloToolkit.Unity
                 int settingId = -1;
                 for (var i = 0; i < QualitySettings.names.Length; i++)
                 {
-                    if (QualitySettings.names[i].Equals("Fastest"))
+                    if (QualitySettings.names[i].Equals("Very Low") || QualitySettings.names[i].Equals("Fastest"))
                     {
                         QualitySettings.SetQualityLevel(i);
                         settingId = i;
