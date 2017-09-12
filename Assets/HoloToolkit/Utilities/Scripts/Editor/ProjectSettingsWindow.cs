@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity
                 // See: http://answers.unity3d.com/questions/886160/how-do-i-change-qualitysetting-for-my-platform-fro.html
                 try
                 {
-                    // Find the WSA element under the platform quality list and replace it's value with 0
+                    // Find the WSA element under the platform quality list and replace it's value with the current level.
                     string settingsPath = "ProjectSettings/QualitySettings.asset";
                     string matchPattern = @"(m_PerPlatformDefaultQuality.*Windows Store Apps:) (\d+)";
                     string replacePattern = @"$1 " + currentQualityLevel;
