@@ -263,9 +263,24 @@ namespace HoloToolkit.Unity.InputModule
         {
             FocusDetails? details = TryGetFocusDetails(eventData);
 
-            return (details == null)
-                ? null
-                : details.Value.Object;
+            return (details == null) ? null : details.Value.Object;
+        }
+
+        public bool TryGetPointingSource(BaseEventData eventData, out IPointingSource pointingSource)
+        {
+            for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
+            {
+                PointerData pointer = pointers[iPointer];
+
+                if (pointer.PointingSource.OwnsInput(eventData))
+                {
+                    pointingSource = pointer.PointingSource;
+                    return true;
+                }
+            }
+
+            pointingSource = null;
+            return false;
         }
 
         public FocusDetails GetFocusDetails(IPointingSource pointingSource)
@@ -315,7 +330,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 Clear(uiRaycastPointerInputData);
             }
-            
+
             return uiRaycastPointerInputData;
         }
 
