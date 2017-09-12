@@ -13,19 +13,27 @@ namespace HoloToolkit.Unity.InputModule
     {
         [Tooltip("The near clipping plane distance for an opaque display.")]
         public float NearClipPlane_OpaqueDisplay = 0.3f;
+
         [Tooltip("Values for Camera.clearFlags, determining what to clear when rendering a Camera for an opaque display.")]
         public CameraClearFlags CameraClearFlags_OpaqueDisplay = CameraClearFlags.Skybox;
+
+        [Tooltip("Background color for a transparent display.")]
+        public Color BackgroundColor_OpaqueDisplay = Color.black;
+
         [Tooltip("Set the desired quality for your application for opaque display.")]
-        public QualityLevel OpaqueQualityLevel;
+        public int OpaqueQualityLevel;
 
         [Tooltip("The near clipping plane distance for a transparent display.")]
         public float NearClipPlane_TransparentDisplay = 0.85f;
+
         [Tooltip("Values for Camera.clearFlags, determining what to clear when rendering a Camera for an opaque display.")]
         public CameraClearFlags CameraClearFlags_TransparentDisplay = CameraClearFlags.SolidColor;
+
         [Tooltip("Background color for a transparent display.")]
         public Color BackgroundColor_TransparentDisplay = Color.clear;
+
         [Tooltip("Set the desired quality for your application for HoloLens.")]
-        public QualityLevel HoloLensQualityLevel;
+        public int HoloLensQualityLevel;
 
         public enum DisplayType
         {
@@ -42,7 +50,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public event DisplayEventHandler OnDisplayDetected;
 
-        void Start()
+        private void Start()
         {
             if (HolographicSettings.IsDisplayOpaque)
             {
@@ -69,6 +77,7 @@ namespace HoloToolkit.Unity.InputModule
             Debug.Log("Display is Opaque");
             Camera.main.clearFlags = CameraClearFlags_OpaqueDisplay;
             Camera.main.nearClipPlane = NearClipPlane_OpaqueDisplay;
+            Camera.main.backgroundColor = BackgroundColor_OpaqueDisplay;
             SetQuality(OpaqueQualityLevel);
         }
 
@@ -81,19 +90,9 @@ namespace HoloToolkit.Unity.InputModule
             SetQuality(HoloLensQualityLevel);
         }
 
-        private void SetQuality(QualityLevel level)
+        private static void SetQuality(int level)
         {
-            string levelString = level.ToString();
-            for (int index = 0; index < QualitySettings.names.Length; index++)
-            {
-                if (levelString == QualitySettings.names[index])
-                {
-                    QualitySettings.SetQualityLevel(index, false);
-                    return;
-                }
-            }
-
-            Debug.Log("Didn't find quality level " + levelString);
+            QualitySettings.SetQualityLevel(level, false);
         }
     }
 }
