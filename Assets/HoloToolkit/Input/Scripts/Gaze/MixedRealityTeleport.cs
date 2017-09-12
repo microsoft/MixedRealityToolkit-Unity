@@ -148,7 +148,15 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            if (EnableRotation && !teleporting)
+            if (EnableStrafe && !teleporting && !fadeControl.Busy)
+            {
+                if (obj.state.thumbstickPosition.y < -0.8 && Math.Abs(obj.state.thumbstickPosition.x) < 0.2)
+                {
+                    DoStrafe(Vector3.back * StrafeAmount);
+                }
+            }
+
+            if (EnableRotation && !teleporting && !fadeControl.Busy)
             {
                 if (obj.state.thumbstickPosition.x < -0.8 && Math.Abs(obj.state.thumbstickPosition.y) < 0.2)
                 {
@@ -215,6 +223,8 @@ namespace HoloToolkit.Unity.InputModule
                     0.25f, // Fade in time
                     () => // Action after fade out
                     {
+                        Transform transformToRotate = Camera.main.transform;
+                        transformToRotate.rotation = Quaternion.Euler(0, transformToRotate.rotation.eulerAngles.y, 0);
                         transform.Translate(strafeAmount, Camera.main.transform);
                     }, null); // Action after fade in
             }
