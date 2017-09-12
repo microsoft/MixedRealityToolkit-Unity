@@ -509,29 +509,35 @@ namespace HoloToolkit.Unity.InputModule
 
         public void StartHaptics(uint sourceId, float intensity)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceData.Source.StartHaptics(intensity);
             }
+#endif
         }
 
         public void StartHaptics(uint sourceId, float intensity, float durationInSeconds)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceData.Source.StartHaptics(intensity, durationInSeconds);
             }
+#endif
         }
 
         public void StopHaptics(uint sourceId)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceData.Source.StopHaptics();
             }
+#endif
         }
 
         #region InteractionManager Events
