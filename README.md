@@ -2,7 +2,7 @@
 This is a development branch for Windows Mixed Reality immersive headset support.
 
 [unity-download]:                 https://unity3d.com/unity/beta
-[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0b10-green.svg
+[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0b11-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 ## Prerequisites:
