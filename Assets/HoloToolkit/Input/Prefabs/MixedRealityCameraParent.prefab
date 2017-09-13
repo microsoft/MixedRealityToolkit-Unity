@@ -530,7 +530,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!23 &23322403167181422
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -739,7 +738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09147e2b1429c9428010f6aa89f91c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NearClipPlane_OpaqueDisplay: 0.3
+  NearClipPlane_OpaqueDisplay: 0.1
   CameraClearFlags_OpaqueDisplay: 1
   OpaqueQualityLevel: 5
   NearClipPlane_TransparentDisplay: 0.85
@@ -777,10 +776,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnimateControllerModel: 1
   LeftControllerOverride: {fileID: 0}
   RightControllerOverride: {fileID: 0}
   TouchpadTouchedOverride: {fileID: 0}
-  GLTFShader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  GLTFMaterial: {fileID: 2100000, guid: 2ac78523d661e954c83d799f582b22e8, type: 2}
 --- !u!114 &114755176645041546
 MonoBehaviour:
   m_ObjectHideFlags: 1

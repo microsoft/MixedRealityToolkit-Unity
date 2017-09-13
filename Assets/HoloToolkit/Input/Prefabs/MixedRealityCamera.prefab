@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4543495872665798}
   - component: {fileID: 20398397884145480}
-  - component: {fileID: 92627437589219448}
   - component: {fileID: 124268468487872672}
   - component: {fileID: 81159208133050278}
   - component: {fileID: 114065736676316334}
@@ -404,12 +403,11 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!81 &81159208133050278
 AudioListener:
   m_ObjectHideFlags: 1
@@ -417,13 +415,7 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1208988342737728}
   m_Enabled: 1
---- !u!92 &92627437589219448
-Behaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1208988342737728}
-  m_Enabled: 1
+  m_ExtensionPropertyValues: []
 --- !u!114 &114065736676316334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -519,7 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09147e2b1429c9428010f6aa89f91c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NearClipPlane_OpaqueDisplay: 0.3
+  NearClipPlane_OpaqueDisplay: 0.1
   CameraClearFlags_OpaqueDisplay: 1
   OpaqueQualityLevel: 5
   NearClipPlane_TransparentDisplay: 0.85

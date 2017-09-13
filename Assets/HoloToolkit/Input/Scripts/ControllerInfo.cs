@@ -301,5 +301,15 @@ namespace HoloToolkit.Unity.InputModule
             buttonGameObject.transform.localPosition = newTransform.localPosition;
             buttonGameObject.transform.localRotation = newTransform.localRotation;
         }
+
+        private void OnDestroy()
+        {
+            if (touchpadTouchVisualizer != null)
+            {
+                Destroy(touchpadTouchVisualizer.GetComponent<Renderer>().material);
+            }
+
+            Destroy(gameObject);
+        }
     }
 }
