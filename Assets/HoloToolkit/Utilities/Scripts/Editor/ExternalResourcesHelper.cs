@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
 
                     if (Directory.Exists(dirPath + "/External"))
                     {
-                        Debug.LogWarning("Sucessfully unpacked External Resources to " + dirPath + "\\External");
+                        Debug.LogWarning("Successfully unpacked External Resources to " + dirPath + "\\External");
                     }
                 }
                 else
@@ -68,7 +68,7 @@ namespace HoloToolkit.Unity
                     foreach (string file in Directory.GetFiles(directory, "*.zip"))
                     {
                         string ext = Path.GetExtension(file);
-                        if (ext != null && (ext.Equals(".zip")))
+                        if (ext.Equals(".zip"))
                         {
                             if (file.Contains("External"))
                             {
@@ -76,6 +76,7 @@ namespace HoloToolkit.Unity
                             }
                         }
                     }
+
                     string results = SearchDir(directory);
                     if (!string.IsNullOrEmpty(results))
                     {

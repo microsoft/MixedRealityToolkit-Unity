@@ -121,6 +121,8 @@ namespace HoloToolkit.Unity
             EditorPrefsUtility.SetEditorPref(Names[ProjectSetting.SharingServices], Values[ProjectSetting.SharingServices]);
             if (Values[ProjectSetting.SharingServices])
             {
+                ExternalResourcesHelper.UpdateExternalResources();
+
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, true);
             }
@@ -163,8 +165,7 @@ namespace HoloToolkit.Unity
 
             Names[ProjectSetting.SharingServices] = "Enable Sharing Services";
             Descriptions[ProjectSetting.SharingServices] = "Enables the use of the Sharing Services in your project.\n\n" +
-                                                           "Requires the SpatialPerception, InternetClient, InternetClientServer, PrivateNetworkClientServer, " +
-                                                           "and Microphone Capabilities.\n\n" +
+                                                           "Requires the InternetClientServer and PrivateNetworkClientServer.\n\n" +
                                                            "Start the Sharing Server though HoloToolkit->Sharing Service->Launch Sharing Service.";
         }
 
