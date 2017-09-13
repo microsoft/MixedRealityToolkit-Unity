@@ -89,6 +89,12 @@ namespace HoloToolkit.Unity.SpatialMapping
                     // Pass the data to the mesh serializer. 
                     List<Mesh> meshes = new List<Mesh>(SimpleMeshSerializer.Deserialize(dataBuffer));
 
+                    if (meshes.Count > 0)
+                    {
+                        // Use the network-based mapping source to receive meshes in the Unity editor.
+                        SpatialMappingManager.Instance.SetSpatialMappingSource(this);
+                    }
+
                     // For each mesh, create a GameObject to render it.
                     for (int index = 0; index < meshes.Count; index++)
                     {
