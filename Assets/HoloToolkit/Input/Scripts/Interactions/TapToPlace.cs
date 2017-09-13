@@ -21,9 +21,6 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
 
-        [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
-        public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
-
         [Tooltip("Place parent on tap instead of current game object.")]
         public bool PlaceParentOnTap;
 
@@ -63,7 +60,8 @@ namespace HoloToolkit.Unity.InputModule
             if (IsBeingPlaced)
             {
                 StartPlacing();
-            } else // If we are not starting out with actively placing the object, give it a World Anchor
+            }
+            else // If we are not starting out with actively placing the object, give it a World Anchor
             {
                 AttachWorldAnchor();
             }
@@ -128,12 +126,12 @@ namespace HoloToolkit.Unity.InputModule
             if (IsBeingPlaced)
             {
                 StartPlacing();
-            } else
+            }
+            else
             {
                 StopPlacing();
             }
         }
-
         private void StartPlacing()
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
@@ -159,7 +157,7 @@ namespace HoloToolkit.Unity.InputModule
             if (WorldAnchorManager.Instance != null)
             {
                 // Add world anchor when object placement is done.
-                WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                WorldAnchorManager.Instance.AttachAnchor(PlaceParentOnTap ? ParentGameObjectToPlace : gameObject);
             }
         }
 
@@ -168,7 +166,7 @@ namespace HoloToolkit.Unity.InputModule
             if (WorldAnchorManager.Instance != null)
             {
                 //Removes existing world anchor if any exist.
-                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
+                WorldAnchorManager.Instance.RemoveAnchor(PlaceParentOnTap ? ParentGameObjectToPlace : gameObject);
             }
         }
 
@@ -177,9 +175,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void ToggleSpatialMesh()
         {
-            if (SpatialMappingManager.Instance != null)
+            if (SpatialMappingManager.Instance != null && AllowMeshVisualizationControl)
             {
-                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
+                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced;
             }
         }
 

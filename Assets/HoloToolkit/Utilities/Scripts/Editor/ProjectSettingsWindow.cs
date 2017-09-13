@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -78,21 +80,35 @@ namespace HoloToolkit.Unity
 
             if (Values[ProjectSetting.WsaFastestQuality])
             {
-                int settingId = -1;
                 for (var i = 0; i < QualitySettings.names.Length; i++)
                 {
-                    if (QualitySettings.names[i].Equals("Fastest"))
-                    {
-                        QualitySettings.SetQualityLevel(i);
-                        settingId = i;
-                        break;
-                    }
+                    QualitySettings.DecreaseLevel(true);
                 }
 
-                if (settingId < 0)
+                int currentQualityLevel = QualitySettings.GetQualityLevel();
+                Debug.Log("Current Quality Level: " + currentQualityLevel);
+
+                // HACK: Edits QualitySettings.asset Directly
+                // TODO: replace with friendlier version that uses built in APIs when Unity fixes or makes available.
+                // See: http://answers.unity3d.com/questions/886160/how-do-i-change-qualitysetting-for-my-platform-fro.html
+                try
                 {
-                    Debug.LogWarning("Failed to find Quality Setting 'Fastest'");
+                    // Find the WSA element under the platform quality list and replace it's value with the current level.
+                    string settingsPath = "ProjectSettings/QualitySettings.asset";
+                    string matchPattern = @"(m_PerPlatformDefaultQuality.*Windows Store Apps:) (\d+)";
+                    string replacePattern = @"$1 " + currentQualityLevel;
+
+                    string settings = File.ReadAllText(settingsPath);
+                    settings = Regex.Replace(settings, matchPattern, replacePattern, RegexOptions.Singleline);
+
+                    File.WriteAllText(settingsPath, settings);
                 }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+
+                AssetDatabase.Refresh();
             }
 
             UnityEditorInternal.VR.VREditor.SetVREnabledOnTargetGroup(BuildTargetGroup.WSA, Values[ProjectSetting.WsaEnableVR]);

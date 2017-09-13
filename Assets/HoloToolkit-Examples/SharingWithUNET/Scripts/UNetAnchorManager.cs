@@ -2,15 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.Networking;
-using HoloToolkit.Unity;
-using System;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
+using System;
+using System.Collections.Generic;
 using UnityEngine.VR.WSA.Sharing;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
+using HoloToolkit.Unity;
 #endif
 
 namespace HoloToolkit.Examples.SharingWithUNET
@@ -39,21 +39,10 @@ namespace HoloToolkit.Examples.SharingWithUNET
         }
 
         /// <summary>
-        /// Sometimes we'll see a really small anchor blob get generated.
-        /// These tend to not work, so we have a minimum trustable size.
-        /// </summary>
-        private const uint minTrustworthySerializedAnchorDataSize = 500000;
-
-        /// <summary>
         /// Keeps track of the name of the world anchor to use.
         /// </summary>
         [SyncVar]
         public string AnchorName = "";
-
-        /// <summary>
-        /// List of bytes that represent the anchor data to export.
-        /// </summary>
-        private List<byte> exportingAnchorBytes = new List<byte>();
 
         /// <summary>
         /// The UNet network manager in the scene.
@@ -65,15 +54,27 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         private GenericNetworkTransmitter networkTransmitter;
 
-        /// <summary>
-        /// Keeps track of if we created the anchor.
-        /// </summary>
-        private bool createdAnchor = false;
-
+#if UNITY_WSA
         /// <summary>
         /// The object to attach the anchor to when created or imported.
         /// </summary>
         private GameObject objectToAnchor;
+
+        /// <summary>
+        /// Sometimes we'll see a really small anchor blob get generated.
+        /// These tend to not work, so we have a minimum trustworthy size.
+        /// </summary>
+        private const uint MinTrustworthySerializedAnchorDataSize = 500000;
+
+        /// <summary>
+        /// List of bytes that represent the anchor data to export.
+        /// </summary>
+        private List<byte> exportingAnchorBytes = new List<byte>(0);
+
+        /// <summary>
+        /// Keeps track of if we created the anchor.
+        /// </summary>
+        private bool createdAnchor = false;
 
         /// <summary>
         /// Previous anchor name.
@@ -95,6 +96,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         private string exportingAnchorName;
 
+#endif
         /// <summary>
         /// Tracks if we have a shared anchor established
         /// </summary>
@@ -135,10 +137,10 @@ namespace HoloToolkit.Examples.SharingWithUNET
                 Debug.Log("No SharedCollection found in scene");
                 return false;
             }
-            else
-            {
+
+#if UNITY_WSA
                 objectToAnchor = SharedCollection.Instance.gameObject;
-            }
+#endif
 
             return true;
         }
@@ -152,7 +154,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
                 return;
             }
 
-            networkTransmitter.dataReadyEvent += NetworkTransmitter_dataReadyEvent;
+            networkTransmitter.DataReadyEvent += NetworkTransmitter_dataReadyEvent;
         }
 
         /// <summary>
@@ -161,11 +163,13 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// <param name="data">The data blob to import.</param>
         private void NetworkTransmitter_dataReadyEvent(byte[] data)
         {
+#if UNITY_WSA
             Debug.Log("Anchor data arrived.");
             anchorData = data;
             Debug.Log(data.Length);
             DownloadingAnchor = false;
             gotOne = true;
+#endif
         }
 
         /// <summary>
@@ -173,7 +177,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         public void CreateAnchor()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
             objectToAnchor = SharedCollection.Instance.gameObject;
             WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
             WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
@@ -202,15 +206,15 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// Attempts to attach to  an anchor by anchorName in the local store..
         /// </summary>
         /// <returns>True if it attached, false if it could not attach</returns>
-        private bool AttachToCachedAnchor(string AnchorName)
+        private bool AttachToCachedAnchor(string anchorName)
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
             WorldAnchorStore anchorStore = WorldAnchorManager.Instance.AnchorStore;
-            Debug.Log("Looking for " + AnchorName);
+            Debug.Log("Looking for " + anchorName);
             string[] ids = anchorStore.GetAllIds();
             for (int index = 0; index < ids.Length; index++)
             {
-                if (ids[index] == AnchorName)
+                if (ids[index] == anchorName)
                 {
                     Debug.Log("Using what we have");
                     anchorStore.Load(ids[index], objectToAnchor);
@@ -223,6 +227,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
             return false;
         }
 
+#if UNITY_WSA
         /// <summary>
         /// Called as anchor data becomes available to export
         /// </summary>
@@ -232,7 +237,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
             exportingAnchorBytes.AddRange(data);
         }
 
-#if UNITY_EDITOR || UNITY_WSA
         private void Update()
         {
             if (gotOne)
@@ -293,7 +297,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// <param name="status">If the serialization succeeded.</param>
         private void ExportComplete(SerializationCompletionReason status)
         {
-            if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > minTrustworthySerializedAnchorDataSize)
+            if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > MinTrustworthySerializedAnchorDataSize)
             {
                 AnchorName = exportingAnchorName;
                 anchorData = exportingAnchorBytes.ToArray();

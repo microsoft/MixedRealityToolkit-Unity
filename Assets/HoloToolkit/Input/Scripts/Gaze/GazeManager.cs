@@ -180,7 +180,8 @@ namespace HoloToolkit.Unity.InputModule
             if (RaycastLayerMasks.Length == 1)
             {
                 IsGazingAtObject = Physics.Raycast(GazeOrigin, GazeNormal, out hitInfo, MaxGazeCollisionDistance, RaycastLayerMasks[0]);
-            } else
+            }
+            else
             {
                 // Raycast across all layers and prioritize
                 RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(new Ray(GazeOrigin, GazeNormal), MaxGazeCollisionDistance, -1));
@@ -197,7 +198,8 @@ namespace HoloToolkit.Unity.InputModule
                 HitObject = HitInfo.collider.gameObject;
                 HitPosition = HitInfo.point;
                 lastHitDistance = HitInfo.distance;
-            } else
+            }
+            else
             {
                 HitObject = null;
                 HitPosition = GazeOrigin + (GazeNormal * lastHitDistance);
@@ -214,6 +216,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 UnityUIPointerEvent = new PointerEventData(EventSystem.current);
             }
+
             Camera mainCamera = CameraCache.Main;
 
             // 2D cursor position
@@ -243,14 +246,16 @@ namespace HoloToolkit.Unity.InputModule
                         if (threeDLayerIndex > uiLayerIndex)
                         {
                             superseded3DObject = true;
-                        } else if (threeDLayerIndex == uiLayerIndex)
+                        }
+                        else if (threeDLayerIndex == uiLayerIndex)
                         {
                             if (hitInfo.distance > uiRaycastResult.distance)
                             {
                                 superseded3DObject = true;
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         if (hitInfo.distance > uiRaycastResult.distance)
                         {
@@ -264,9 +269,10 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     IsGazingAtObject = true;
                     Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
-                    hitInfo = new RaycastHit {
+                    hitInfo = new RaycastHit
+                    {
                         distance = uiRaycastResult.distance,
-                        normal = -mainCamera.transform.forward,
+                        normal = -uiRaycastResult.gameObject.transform.forward,
                         point = worldPos
                     };
 
