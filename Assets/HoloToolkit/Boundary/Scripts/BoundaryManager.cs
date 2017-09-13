@@ -3,14 +3,14 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.XR.WSA;
-using UnityEngine.Experimental.XR;
 
 namespace HoloToolkit.Unity.Boundary
 {
     /// <summary>
     /// Places a floor quad to ground the scene.
-    /// Allows you to check if your gameobject is within setup boundary on the immersive headset.
+    /// Allows you to check if your GameObject is within setup boundary on the immersive headset.
     /// </summary>
     public class BoundaryManager : SingleInstance<BoundaryManager>
     {
@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.Boundary
 
         [SerializeField]
         [Tooltip("Approximate max Y height of your space.")]
-        private float boundaryHeight = 10f;        
+        private float boundaryHeight = 10f;
         private Bounds boundaryBounds;
 
         private bool renderFloor = true;
@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity.Boundary
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             // Render the floor based on if you are in editor or immersive device.
             RenderFloorQuad();
@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity.Boundary
             SetBoundaryRendering();
 
             // Create a volume out of the specified user boundary.
-            CalculateBoundaryVolume();           
+            CalculateBoundaryVolume();
         }
 
         private void RenderFloorQuad()
@@ -92,13 +92,13 @@ namespace HoloToolkit.Unity.Boundary
             {
                 // Defaulting coordinate system to RoomScale in immersive headsets.
                 // This puts the origin 0,0,0 on the floor if a floor has been established during RunSetup via MixedRealityPortal
-                UnityEngine.XR.XRDevice.SetTrackingSpaceType(UnityEngine.XR.TrackingSpaceType.RoomScale);
+                XRDevice.SetTrackingSpaceType(TrackingSpaceType.RoomScale);
             }
             else
             {
                 // Defaulting coordinate system to Stationary for HoloLens.
                 // This puts the origin 0,0,0 at the first place where the user started the application.
-                UnityEngine.XR.XRDevice.SetTrackingSpaceType(UnityEngine.XR.TrackingSpaceType.Stationary);
+                XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
             }
 
             if (FloorQuad != null && HolographicSettings.IsDisplayOpaque)
@@ -141,12 +141,12 @@ namespace HoloToolkit.Unity.Boundary
         /// Pass in the game object's position to check if it's within 
         /// the specified boundary space.
         /// </summary>
-        /// <param name="gameObject"></param>
+        /// <param name="gameObjectPosition"></param>
         /// <returns></returns>
         public bool ContainsObject(Vector3 gameObjectPosition)
         {
             // Check if the supplied game object's position is within the bounds volume.
-            if (boundaryBounds != null && HolographicSettings.IsDisplayOpaque)
+            if (HolographicSettings.IsDisplayOpaque)
             {
                 return boundaryBounds.Contains(gameObjectPosition);
             }
@@ -167,7 +167,7 @@ namespace HoloToolkit.Unity.Boundary
             //    return;
             //}
 
-            if (UnityEngine.XR.XRDevice.GetTrackingSpaceType() != UnityEngine.XR.TrackingSpaceType.RoomScale)
+            if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
             {
                 Debug.Log("No boundary for stationary scale experiences.");
                 return;
@@ -175,10 +175,10 @@ namespace HoloToolkit.Unity.Boundary
 
             boundaryBounds = new Bounds();
             // Get all the bounds setup by the user.
-            List<Vector3> boundaryGeometry = new List<Vector3>();
+            var boundaryGeometry = new List<Vector3>(0);
             if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry))
             {
-                if (boundaryGeometry != null)
+                if (boundaryGeometry.Count > 0)
                 {
                     // Create a UnityEngine.Bounds volume with those values.
                     foreach (Vector3 boundaryGeo in boundaryGeometry)
