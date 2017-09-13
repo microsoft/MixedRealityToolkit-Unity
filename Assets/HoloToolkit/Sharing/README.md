@@ -101,11 +101,8 @@ Ensure you have the Sharing Service Feature enabled in `HoloToolkit -> Configure
 
 Enabling the Sharing Service will also enable these UWP capabilities:
 
-1. SpatialPerception
-2. InternetClient
-3. InternetClientServer
-4. PrivateNetworkClientServer
-5. Microphone capabilities
+1. InternetClientServer
+2. PrivateNetworkClientServer
 
 Enabling the Sharing Service will also uppack a new directory in your projects root folder named `External`.
 
