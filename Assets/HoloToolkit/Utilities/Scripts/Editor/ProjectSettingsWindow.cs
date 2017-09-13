@@ -36,7 +36,11 @@ namespace HoloToolkit.Unity
             {
                 if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
                 {
+#if UNITY_2017_OR_NEWER
                     EditorUserBuildSettings.SwitchActiveBuildTargetAsync(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
+#else
+                    EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
+#endif
                 }
                 else
                 {
