@@ -124,9 +124,9 @@ namespace HoloToolkit.Unity.InputModule
         {
             foreach (SpeechInputSource source in FindObjectsOfType<SpeechInputSource>())
             {
-                foreach (SpeechInputSource.KeywordAndKeyCode keywordAndKeyCode in source.Keywords)
+                for (var i = 0; i < source.Keywords.Length; i++)
                 {
-                    yield return keywordAndKeyCode.Keyword;
+                    yield return source.Keywords[i].Keyword;
                 }
             }
         }
