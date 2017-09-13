@@ -18,10 +18,10 @@ namespace HoloToolkit.Examples.SharingWithUNET
     public class NetworkDiscoveryWithAnchors : NetworkDiscovery
     {
         /// <summary>
-        /// This flag gets set when we recieve a broadcast.
+        /// This flag gets set when we receive a broadcast.
         /// if this flag is set then we should not create a server.
         /// </summary>
-        public bool receivedBroadcast { get; private set; }
+        public bool ReceivedBroadcast { get; private set; }
 
         /// <summary>
         /// Controls how often a broadcast should be sent to clients
@@ -79,8 +79,8 @@ namespace HoloToolkit.Examples.SharingWithUNET
             // We randomize how long we wait so that we reduce the chances that everyone joins at
             // once and decides that they are the server.  
             // An alternative would be to create UI for managing who hosts.
-            float InvokeWaitTime = 3 * BroadcastInterval + Random.value * 3 * BroadcastInterval;
-            Invoke("MaybeInitAsServer", InvokeWaitTime * 0.001f);
+            float invokeWaitTime = 3 * BroadcastInterval + Random.value * 3 * BroadcastInterval;
+            Invoke("MaybeInitAsServer", invokeWaitTime * 0.001f);
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         private void MaybeInitAsServer()
         {
-            // If we Recieved a broadcast then we should not start as a server.
-            if (receivedBroadcast)
+            // If we receive a broadcast then we should not start as a server.
+            if (ReceivedBroadcast)
             {
                 return;
             }
@@ -134,18 +134,18 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         /// <param name="fromAddress">When the broadcast came from</param>
         /// <param name="data">The data in the broad cast. Not currently used, but could
-        /// be used for differntiating rooms or similar.</param>
+        /// be used for differentiating rooms or similar.</param>
         public override void OnReceivedBroadcast(string fromAddress, string data)
         {
-            // If we've already recieved a broadcast then we've already set everything up.
-            if (receivedBroadcast)
+            // If we've already received a broadcast then we've already set everything up.
+            if (ReceivedBroadcast)
             {
                 return;
             }
 
             Debug.Log("Acting as client");
 
-            receivedBroadcast = true;
+            ReceivedBroadcast = true;
 
             // Stop listening for more broadcasts.
             StopBroadcast();
@@ -158,9 +158,9 @@ namespace HoloToolkit.Examples.SharingWithUNET
 
 #if !UNITY_EDITOR
             // Tell the network transmitter the IP to request anchor data from if needed.
-            GenericNetworkTransmitter.Instance.SetServerIP(ServerIp);
+            GenericNetworkTransmitter.Instance.SetServerIp(ServerIp);
 #else
-        Debug.LogWarning("This script will need modification to work in the Unity Editor");
+            Debug.LogWarning("This script will need modification to work in the Unity Editor");
 #endif
             // And join the networked experience as a client.
             NetworkManager.singleton.StartClient();
