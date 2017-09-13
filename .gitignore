@@ -5,9 +5,7 @@ Temp/
 Obj/
 Bin/
 Builds/
-UnityGenerated/
 Library/
-Assets/AssetStoreTools*
 App/
 UWP/
 project.json
@@ -32,7 +30,6 @@ obj/
 *.ipch
 *.opensdf
 *.sdf
-*.obj
 *.tlog
 *.log
 *.idb
