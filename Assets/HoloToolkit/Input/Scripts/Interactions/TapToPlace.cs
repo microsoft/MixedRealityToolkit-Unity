@@ -175,9 +175,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void ToggleSpatialMesh()
         {
-            if (SpatialMappingManager.Instance != null)
+            if (SpatialMappingManager.Instance != null && AllowMeshVisualizationControl)
             {
-                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
+                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced;
             }
         }
 
