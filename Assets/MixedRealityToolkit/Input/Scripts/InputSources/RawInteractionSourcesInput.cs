@@ -18,9 +18,9 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     /// <remarks>
     /// This input source only triggers SourceUp/SourceDown and SourceDetected/SourceLost.
-    /// Everything else is handled by GesturesInputSource.
+    /// Everything else is handled by GesturesInput.
     /// </remarks>
-    public class RawInteractionInputSource : BaseInputSource
+    public class RawInteractionSourcesInput : BaseInputSource
     {
         /// <summary>
         /// Data for an interaction source.
@@ -209,11 +209,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (sourceData.IsSourceDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, sourceData.SourceId);
+                    inputManager.RaiseSourceDown(this, sourceData.SourceId);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, sourceData.SourceId);
+                    inputManager.RaiseSourceUp(this, sourceData.SourceId);
                 }
             }
         }
@@ -226,7 +226,7 @@ namespace HoloToolkit.Unity.InputModule
             // Send event for new sources that were added
             foreach (uint newSource in newSources)
             {
-                InputManager.Instance.RaiseSourceDetected(this, newSource);
+                inputManager.RaiseSourceDetected(this, newSource);
             }
 
             // Send event for sources that are no longer visible and remove them from our dictionary
@@ -235,7 +235,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (!currentSources.Contains(existingSource))
                 {
                     pendingSourceIdDeletes.Add(existingSource);
-                    InputManager.Instance.RaiseSourceLost(this, existingSource);
+                    inputManager.RaiseSourceLost(this, existingSource);
                 }
             }
 

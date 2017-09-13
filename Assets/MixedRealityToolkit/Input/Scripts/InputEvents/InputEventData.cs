@@ -6,11 +6,13 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Describes an source state event that has a source id. 
+    /// Describes an input event that has a source id. 
     /// </summary>
-    public class SourceStateEventData : BaseInputEventData
+    public class InputEventData : BaseInputEventData
     {
-        public SourceStateEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public InputEventData(EventSystem eventSystem) : base(eventSystem)
+        {
+        }
 
         public void Initialize(IInputSource inputSource, uint sourceId)
         {
