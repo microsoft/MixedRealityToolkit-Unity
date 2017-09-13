@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
 using System;
 using System.Collections.Generic;
 using UnityEngine.VR.WSA.Sharing;
@@ -62,14 +62,14 @@ namespace HoloToolkit.Examples.SharingWithUNET
 
         /// <summary>
         /// Sometimes we'll see a really small anchor blob get generated.
-        /// These tend to not work, so we have a minimum trustable size.
+        /// These tend to not work, so we have a minimum trustworthy size.
         /// </summary>
-        private const uint minTrustworthySerializedAnchorDataSize = 500000;
+        private const uint MinTrustworthySerializedAnchorDataSize = 500000;
 
         /// <summary>
         /// List of bytes that represent the anchor data to export.
         /// </summary>
-        private List<byte> exportingAnchorBytes = new List<byte>();
+        private List<byte> exportingAnchorBytes = new List<byte>(0);
 
         /// <summary>
         /// Keeps track of if we created the anchor.
@@ -154,7 +154,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
                 return;
             }
 
-            networkTransmitter.dataReadyEvent += NetworkTransmitter_dataReadyEvent;
+            networkTransmitter.DataReadyEvent += NetworkTransmitter_dataReadyEvent;
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// <param name="status">If the serialization succeeded.</param>
         private void ExportComplete(SerializationCompletionReason status)
         {
-            if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > minTrustworthySerializedAnchorDataSize)
+            if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > MinTrustworthySerializedAnchorDataSize)
             {
                 AnchorName = exportingAnchorName;
                 anchorData = exportingAnchorBytes.ToArray();

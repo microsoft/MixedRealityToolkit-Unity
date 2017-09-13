@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
+using System;
+using System.Collections.Generic;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
-#endif
-
-#if !UNITY_EDITOR && UNITY_WSA
+#if !UNITY_EDITOR
 using HoloToolkit.Unity.SpatialMapping;
 #endif
+#endif
+
 
 namespace HoloToolkit.Unity
 {
@@ -21,6 +21,10 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
+        /// <summary>
+        /// Debug text for displaying information.
+        /// </summary>
+        public TextMesh AnchorDebugText;
 #if UNITY_WSA
         /// <summary>
         /// To prevent initializing too many anchors at once
@@ -55,11 +59,6 @@ namespace HoloToolkit.Unity
         /// The queue for local device anchor operations.
         /// </summary>
         protected Queue<AnchorAttachmentInfo> LocalAnchorOperations = new Queue<AnchorAttachmentInfo>();
-
-        /// <summary>
-        /// Debug text for displaying information.
-        /// </summary>
-        public TextMesh AnchorDebugText;
 
         /// <summary>
         /// Enables detailed logs in console window.
