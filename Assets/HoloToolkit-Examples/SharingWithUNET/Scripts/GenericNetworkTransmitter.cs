@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using HoloToolkit.Unity;
 
@@ -20,7 +21,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
     /// </summary>
     public class GenericNetworkTransmitter : Singleton<GenericNetworkTransmitter>
     {
-
         [Tooltip("The connection port on the machine to use.")]
         public int SendConnectionPort = 11000;
 
@@ -29,12 +29,12 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         /// <param name="data">The data that arrived.</param>
         public delegate void OnDataReady(byte[] data);
-        public event OnDataReady dataReadyEvent;
+        public event OnDataReady DataReadyEvent;
 
         /// <summary>
         /// The server to connect to when data is needed.
         /// </summary>
-        private string serverIP;
+        private string serverIp = string.Empty;
 
         /// <summary>
         /// Tracks if we have a connection request outstanding.
@@ -58,10 +58,10 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// <summary>
         /// Tells us who to contact if we need data.
         /// </summary>
-        /// <param name="ServerIP"></param>
-        public void SetServerIP(string ServerIP)
+        /// <param name="_serverIp"></param>
+        public void SetServerIp(string _serverIp)
         {
-            serverIP = ServerIP.Trim();
+            serverIp = _serverIp.Trim();
         }
 
         /// <summary>
@@ -193,12 +193,6 @@ namespace HoloToolkit.Examples.SharingWithUNET
             else
             {
                 Debug.Log("Failed to establish connection for rcv. Error Code: " + asyncInfo.ErrorCode);
-                // In the failure case we'll requeue the data and wait before trying again.
-
-
-                // And set the defer time so the update loop can do the 'Unity things' 
-                // on the main Unity thread.
-                Invoke("RequestAndGetAnchor", timeToDeferFailedConnections);
             }
 
             networkConnection.Dispose();
@@ -210,7 +204,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
     {
         Debug.Log("This script is not intended to be run from the Unity Editor");
         // In order to avoid compiler warnings in the Unity Editor we have to access a few of our fields.
-        Debug.Log(string.Format("serverIP = {0} waitingForConnection = {1} mostRecentDataBuffer = {2}", serverIP, waitingForConnection, mostRecentDataBuffer == null ? "No there" : "there"));
+        Debug.Log(string.Format("serverIP = {0} waitingForConnection = {1} mostRecentDataBuffer = {2}", serverIp, waitingForConnection, mostRecentDataBuffer == null ? "No there" : "there"));
     }
     private void ConnectListener() {}
 #endif

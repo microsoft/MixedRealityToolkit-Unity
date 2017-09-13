@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 using HoloToolkit.Unity;
 using System;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
 using UnityEngine.VR.WSA.Sharing;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
@@ -152,7 +152,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
                 return;
             }
 
-            networkTransmitter.dataReadyEvent += NetworkTransmitter_dataReadyEvent;
+            networkTransmitter.DataReadyEvent += NetworkTransmitter_dataReadyEvent;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         public void CreateAnchor()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
             objectToAnchor = SharedCollection.Instance.gameObject;
             WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
             WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
@@ -202,15 +202,15 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// Attempts to attach to  an anchor by anchorName in the local store..
         /// </summary>
         /// <returns>True if it attached, false if it could not attach</returns>
-        private bool AttachToCachedAnchor(string AnchorName)
+        private bool AttachToCachedAnchor(string anchorName)
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
             WorldAnchorStore anchorStore = WorldAnchorManager.Instance.AnchorStore;
-            Debug.Log("Looking for " + AnchorName);
+            Debug.Log("Looking for " + anchorName);
             string[] ids = anchorStore.GetAllIds();
             for (int index = 0; index < ids.Length; index++)
             {
-                if (ids[index] == AnchorName)
+                if (ids[index] == anchorName)
                 {
                     Debug.Log("Using what we have");
                     anchorStore.Load(ids[index], objectToAnchor);
@@ -232,7 +232,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
             exportingAnchorBytes.AddRange(data);
         }
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
         private void Update()
         {
             if (gotOne)
