@@ -21,7 +21,7 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// This flag gets set when we receive a broadcast.
         /// if this flag is set then we should not create a server.
         /// </summary>
-        public bool receivedBroadcast { get; private set; }
+        public bool ReceivedBroadcast { get; private set; }
 
         /// <summary>
         /// Controls how often a broadcast should be sent to clients
@@ -79,8 +79,8 @@ namespace HoloToolkit.Examples.SharingWithUNET
             // We randomize how long we wait so that we reduce the chances that everyone joins at
             // once and decides that they are the server.  
             // An alternative would be to create UI for managing who hosts.
-            float InvokeWaitTime = 3 * BroadcastInterval + Random.value * 3 * BroadcastInterval;
-            Invoke("MaybeInitAsServer", InvokeWaitTime * 0.001f);
+            float invokeWaitTime = 3 * BroadcastInterval + Random.value * 3 * BroadcastInterval;
+            Invoke("MaybeInitAsServer", invokeWaitTime * 0.001f);
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace HoloToolkit.Examples.SharingWithUNET
         /// </summary>
         private void MaybeInitAsServer()
         {
-            // If we Received a broadcast then we should not start as a server.
-            if (receivedBroadcast)
+            // If we receive a broadcast then we should not start as a server.
+            if (ReceivedBroadcast)
             {
                 return;
             }
@@ -138,14 +138,14 @@ namespace HoloToolkit.Examples.SharingWithUNET
         public override void OnReceivedBroadcast(string fromAddress, string data)
         {
             // If we've already received a broadcast then we've already set everything up.
-            if (receivedBroadcast)
+            if (ReceivedBroadcast)
             {
                 return;
             }
 
             Debug.Log("Acting as client");
 
-            receivedBroadcast = true;
+            ReceivedBroadcast = true;
 
             // Stop listening for more broadcasts.
             StopBroadcast();
