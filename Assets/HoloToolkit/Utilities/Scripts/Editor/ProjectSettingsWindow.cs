@@ -177,7 +177,9 @@ namespace HoloToolkit.Unity
             // Pass to base first
             base.OnEnable();
 
+#if UNITY_2017_1_OR_NEWER
             AutoConfigureMenu.ActiveBuildTargetChanged += UpdateSettings;
+#endif
 
             // Set size
             minSize = new Vector2(350, 350);

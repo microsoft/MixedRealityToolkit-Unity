@@ -16,8 +16,10 @@ namespace HoloToolkit.Unity
         : IActiveBuildTargetChanged
 #endif
     {
+#if UNITY_2017_1_OR_NEWER
         public delegate void BuildTargetArgs(BuildTarget newTarget);
         public static event BuildTargetArgs ActiveBuildTargetChanged;
+#endif
 
         /// <summary>
         /// Displays a help page for the HoloToolkit.
