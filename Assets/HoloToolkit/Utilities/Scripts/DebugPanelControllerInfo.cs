@@ -28,6 +28,35 @@ namespace HoloToolkit.Unity
             public Vector2 TouchpadPosition;
         }
 
+        // Text display label game objects
+        [SerializeField]
+        public GameObject leftInfoTextPointerPosition;
+        public GameObject leftInfoTextPointerRotation;
+        public GameObject leftInfoTextGripPosition;
+        public GameObject leftInfoTextGripRotation;
+        public GameObject leftInfoTextGripGrasped;
+        public GameObject leftInfoTextMenuPressed;
+        public GameObject leftInfoTextTriggerPressed;
+        public GameObject leftInfoTextTriggerPressedAmount;
+        public GameObject leftInfoTextThumbstickPressed;
+        public GameObject leftInfoTextThumbstickPosition;
+        public GameObject leftInfoTextTouchpadPressed;
+        public GameObject leftInfoTextTouchpadTouched;
+        public GameObject leftInfoTextTouchpadPosition;
+        public GameObject rightInfoTextPointerPosition;
+        public GameObject rightInfoTextPointerRotation;
+        public GameObject rightInfoTextGripPosition;
+        public GameObject rightInfoTextGripRotation;
+        public GameObject rightInfoTextGripGrasped;
+        public GameObject rightInfoTextMenuPressed;
+        public GameObject rightInfoTextTriggerPressed;
+        public GameObject rightInfoTextTriggerPressedAmount;
+        public GameObject rightInfoTextThumbstickPressed;
+        public GameObject rightInfoTextThumbstickPosition;
+        public GameObject rightInfoTextTouchpadPressed;
+        public GameObject rightInfoTextTouchpadTouched;
+        public GameObject rightInfoTextTouchpadPosition;
+
         private Dictionary<uint, ControllerState> controllers;
 
         private void Awake()
@@ -94,6 +123,7 @@ namespace HoloToolkit.Unity
             string toReturn = "";
             foreach (ControllerState controllerState in controllers.Values)
             {
+                // Debug message
                 toReturn += string.Format("Hand: {0}\nPointer: Position: {1} Rotation: {2}\n" +
                                           "Grip: Position: {3} Rotation: {4}\nGrasped: {5} " +
                                           "MenuPressed: {6}\nSelect: Pressed: {7} PressedAmount: {8}\n" +
@@ -104,6 +134,40 @@ namespace HoloToolkit.Unity
                                           controllerState.MenuPressed, controllerState.SelectPressed, controllerState.SelectPressedAmount,
                                           controllerState.ThumbstickPressed, controllerState.ThumbstickPosition, controllerState.TouchpadPressed,
                                           controllerState.TouchpadTouched, controllerState.TouchpadPosition);
+
+                // Text label display
+                if(controllerState.Handedness.ToString().Equals("Left"))
+                {
+                    leftInfoTextPointerPosition.GetComponent<TextMesh>().text = controllerState.Handedness.ToString();
+                    leftInfoTextPointerRotation.GetComponent<TextMesh>().text = controllerState.PointerRotation.ToString();
+                    leftInfoTextGripPosition.GetComponent<TextMesh>().text = controllerState.GripPosition.ToString();
+                    leftInfoTextGripRotation.GetComponent<TextMesh>().text = controllerState.GripRotation.ToString();
+                    leftInfoTextGripGrasped.GetComponent<TextMesh>().text = controllerState.Grasped.ToString();
+                    leftInfoTextMenuPressed.GetComponent<TextMesh>().text = controllerState.MenuPressed.ToString();
+                    leftInfoTextTriggerPressed.GetComponent<TextMesh>().text = controllerState.SelectPressed.ToString();
+                    leftInfoTextTriggerPressedAmount.GetComponent<TextMesh>().text = controllerState.SelectPressedAmount.ToString();
+                    leftInfoTextThumbstickPressed.GetComponent<TextMesh>().text = controllerState.ThumbstickPressed.ToString();
+                    leftInfoTextThumbstickPosition.GetComponent<TextMesh>().text = controllerState.ThumbstickPosition.ToString();
+                    leftInfoTextTouchpadPressed.GetComponent<TextMesh>().text = controllerState.TouchpadPressed.ToString();
+                    leftInfoTextTouchpadTouched.GetComponent<TextMesh>().text = controllerState.TouchpadTouched.ToString();
+                    leftInfoTextTouchpadPosition.GetComponent<TextMesh>().text = controllerState.TouchpadPosition.ToString();
+                }
+                else if (controllerState.Handedness.ToString().Equals("Right"))
+                {
+                    rightInfoTextPointerPosition.GetComponent<TextMesh>().text = controllerState.PointerPosition.ToString();
+                    rightInfoTextPointerRotation.GetComponent<TextMesh>().text = controllerState.PointerRotation.ToString();
+                    rightInfoTextGripPosition.GetComponent<TextMesh>().text = controllerState.GripPosition.ToString();
+                    rightInfoTextGripRotation.GetComponent<TextMesh>().text = controllerState.GripRotation.ToString();
+                    rightInfoTextGripGrasped.GetComponent<TextMesh>().text = controllerState.Grasped.ToString();
+                    rightInfoTextMenuPressed.GetComponent<TextMesh>().text = controllerState.MenuPressed.ToString();
+                    rightInfoTextTriggerPressed.GetComponent<TextMesh>().text = controllerState.SelectPressed.ToString();
+                    rightInfoTextTriggerPressedAmount.GetComponent<TextMesh>().text = controllerState.SelectPressedAmount.ToString();
+                    rightInfoTextThumbstickPressed.GetComponent<TextMesh>().text = controllerState.ThumbstickPressed.ToString();
+                    rightInfoTextThumbstickPosition.GetComponent<TextMesh>().text = controllerState.ThumbstickPosition.ToString();
+                    rightInfoTextTouchpadPressed.GetComponent<TextMesh>().text = controllerState.TouchpadPressed.ToString();
+                    rightInfoTextTouchpadTouched.GetComponent<TextMesh>().text = controllerState.TouchpadTouched.ToString();
+                    rightInfoTextTouchpadPosition.GetComponent<TextMesh>().text = controllerState.TouchpadPosition.ToString();
+                }
             }
             return toReturn.Substring(0, Math.Max(0, toReturn.Length - 2));
         }

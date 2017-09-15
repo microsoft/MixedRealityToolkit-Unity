@@ -11,6 +11,7 @@ Material:
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _EMISSION
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -77,7 +78,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.69225776, g: 0.88096607, b: 0.9705882, a: 1}
+    - _Color: {r: 0, g: 0.6780009, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HighlightColor: {r: 0.5050635, g: 0.4674524, b: 0.9632353, a: 1}
+    - _HighlightColor: {r: 1, g: 0.68742394, b: 0.014705896, a: 1}
     - _Specular: {r: 0.08, g: 0.075, b: 0.065, a: 1}
