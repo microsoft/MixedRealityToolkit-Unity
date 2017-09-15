@@ -784,7 +784,7 @@ GameObject:
   - component: {fileID: 165011954}
   - component: {fileID: 165011953}
   m_Layer: 0
-  m_Name: Plate
+  m_Name: NoticePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4504,7 +4504,7 @@ GameObject:
   - component: {fileID: 1304828855}
   - component: {fileID: 1304828854}
   m_Layer: 0
-  m_Name: Notice (1)
+  m_Name: '!'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7103,7 +7103,14 @@ Prefab:
         type: 2}
       propertyPath: LeftControllerOverride
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
+        type: 2}
+    - target: {fileID: 114710303647202208, guid: d29bc40b7f3df26479d6a0aac211c355,
+        type: 2}
+      propertyPath: RightControllerOverride
+      value: 
+      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
   m_IsPrefabParent: 0
