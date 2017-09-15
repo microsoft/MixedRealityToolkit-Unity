@@ -88,13 +88,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4931155170010354}
   - component: {fileID: 114710303647202208}
+  - component: {fileID: 114242765888384988}
+  - component: {fileID: 114557166510994172}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1498836839153776
 GameObject:
   m_ObjectHideFlags: 1
@@ -696,6 +698,17 @@ MonoBehaviour:
   Axis0Destination: 0
   Axis1Destination: 2
   Axis2Destination: 6
+--- !u!114 &114242765888384988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1493965172262900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f70d42c5aa30ffb4e9cd9116a13bd2b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114244653559405336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -740,11 +753,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NearClipPlane_OpaqueDisplay: 0.1
   CameraClearFlags_OpaqueDisplay: 1
+  BackgroundColor_OpaqueDisplay: {r: 0, g: 0, b: 0, a: 1}
   OpaqueQualityLevel: 5
   NearClipPlane_TransparentDisplay: 0.85
   CameraClearFlags_TransparentDisplay: 2
   BackgroundColor_TransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
   HoloLensQualityLevel: 0
+--- !u!114 &114557166510994172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1493965172262900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae8f3c88e9704a4393cb8d904b62372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114690106885971528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -777,7 +802,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimateControllerModel: 1
-  LeftControllerOverride: {fileID: 0}
+  LeftControllerOverride: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
+    type: 2}
   RightControllerOverride: {fileID: 0}
   TouchpadTouchedOverride: {fileID: 0}
   GLTFMaterial: {fileID: 2100000, guid: 2ac78523d661e954c83d799f582b22e8, type: 2}

@@ -3932,32 +3932,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284b08eb4d5b2e94eaee64fdd58a0f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftInfoTextPointerPosition: {fileID: 1006059212}
-  leftInfoTextPointerRotation: {fileID: 1638332239}
-  leftInfoTextGripPosition: {fileID: 490909064}
-  leftInfoTextGripRotation: {fileID: 1532227919}
-  leftInfoTextGripGrasped: {fileID: 1189094552}
-  leftInfoTextMenuPressed: {fileID: 450980094}
-  leftInfoTextTriggerPressed: {fileID: 725953016}
-  leftInfoTextTriggerPressedAmount: {fileID: 2013764877}
-  leftInfoTextThumbstickPressed: {fileID: 663988537}
-  leftInfoTextThumbstickPosition: {fileID: 1392344361}
-  leftInfoTextTouchpadPressed: {fileID: 108314623}
-  leftInfoTextTouchpadTouched: {fileID: 1604613831}
-  leftInfoTextTouchpadPosition: {fileID: 438125172}
-  rightInfoTextPointerPosition: {fileID: 1488963450}
-  rightInfoTextPointerRotation: {fileID: 1916783701}
-  rightInfoTextGripPosition: {fileID: 364914276}
-  rightInfoTextGripRotation: {fileID: 70240089}
-  rightInfoTextGripGrasped: {fileID: 1872168389}
-  rightInfoTextMenuPressed: {fileID: 1361861880}
-  rightInfoTextTriggerPressed: {fileID: 630688235}
-  rightInfoTextTriggerPressedAmount: {fileID: 405520248}
-  rightInfoTextThumbstickPressed: {fileID: 835910003}
-  rightInfoTextThumbstickPosition: {fileID: 59102045}
-  rightInfoTextTouchpadPressed: {fileID: 1914582923}
-  rightInfoTextTouchpadTouched: {fileID: 13818378}
-  rightInfoTextTouchpadPosition: {fileID: 1306325248}
+  LeftInfoTextPointerPosition: {fileID: 1006059212}
+  LeftInfoTextPointerRotation: {fileID: 1638332239}
+  LeftInfoTextGripPosition: {fileID: 490909064}
+  LeftInfoTextGripRotation: {fileID: 1532227919}
+  LeftInfoTextGripGrasped: {fileID: 1189094552}
+  LeftInfoTextMenuPressed: {fileID: 450980094}
+  LeftInfoTextTriggerPressed: {fileID: 725953016}
+  LeftInfoTextTriggerPressedAmount: {fileID: 2013764877}
+  LeftInfoTextThumbstickPressed: {fileID: 663988537}
+  LeftInfoTextThumbstickPosition: {fileID: 1392344361}
+  LeftInfoTextTouchpadPressed: {fileID: 108314623}
+  LeftInfoTextTouchpadTouched: {fileID: 1604613831}
+  LeftInfoTextTouchpadPosition: {fileID: 438125172}
+  RightInfoTextPointerPosition: {fileID: 1488963450}
+  RightInfoTextPointerRotation: {fileID: 1916783701}
+  RightInfoTextGripPosition: {fileID: 364914276}
+  RightInfoTextGripRotation: {fileID: 70240089}
+  RightInfoTextGripGrasped: {fileID: 1872168389}
+  RightInfoTextMenuPressed: {fileID: 1361861880}
+  RightInfoTextTriggerPressed: {fileID: 630688235}
+  RightInfoTextTriggerPressedAmount: {fileID: 405520248}
+  RightInfoTextThumbstickPressed: {fileID: 835910003}
+  RightInfoTextThumbstickPosition: {fileID: 59102045}
+  RightInfoTextTouchpadPressed: {fileID: 1914582923}
+  RightInfoTextTouchpadTouched: {fileID: 13818378}
+  RightInfoTextTouchpadPosition: {fileID: 1306325248}
 --- !u!1 &1110346489
 GameObject:
   m_ObjectHideFlags: 0
@@ -6023,33 +6023,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1662233528}
   m_Script: {fileID: 11500000, guid: afa1ae235bc6cfa43addd1435e2fd822, type: 3}
---- !u!1 &1738618829 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1493965172262900, guid: d29bc40b7f3df26479d6a0aac211c355,
-    type: 2}
-  m_PrefabInternal: {fileID: 1996766209}
---- !u!114 &1738618830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1738618829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f70d42c5aa30ffb4e9cd9116a13bd2b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1738618831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1738618829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cae8f3c88e9704a4393cb8d904b62372, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1741479576
 GameObject:
   m_ObjectHideFlags: 0
@@ -7095,22 +7068,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 1493965172262900, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114710303647202208, guid: d29bc40b7f3df26479d6a0aac211c355,
-        type: 2}
-      propertyPath: LeftControllerOverride
-      value: 
-      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
-        type: 2}
-    - target: {fileID: 114710303647202208, guid: d29bc40b7f3df26479d6a0aac211c355,
-        type: 2}
-      propertyPath: RightControllerOverride
-      value: 
-      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
   m_IsPrefabParent: 0
