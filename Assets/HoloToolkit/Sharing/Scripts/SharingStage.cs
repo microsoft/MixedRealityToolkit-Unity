@@ -482,6 +482,7 @@ namespace HoloToolkit.Sharing
 
         public void ConnectToServer()
         {
+            SessionsTracker.LeaveCurrentSession();
             Manager.SetServerConnectionInfo(ServerAddress, (uint)ServerPort);
         }
     }
