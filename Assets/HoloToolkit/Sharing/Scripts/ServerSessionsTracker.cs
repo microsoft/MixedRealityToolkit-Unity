@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using HoloToolkit.Unity;
 
 namespace HoloToolkit.Sharing
