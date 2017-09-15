@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 064cf2adabde05941a372e975e563706, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.50217825, g: 0.5020953, b: 0.5018046, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -3932,32 +3932,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284b08eb4d5b2e94eaee64fdd58a0f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftInfoTextPointerPosition: {fileID: 1006059210}
-  leftInfoTextPointerRotation: {fileID: 1638332237}
-  leftInfoTextGripPosition: {fileID: 490909062}
-  leftInfoTextGripRotation: {fileID: 1532227917}
-  leftInfoTextGripGrasped: {fileID: 1189094550}
-  leftInfoTextMenuPressed: {fileID: 450980092}
-  leftInfoTextTriggerPressed: {fileID: 725953014}
-  leftInfoTextTriggerPressedAmount: {fileID: 2013764875}
-  leftInfoTextThumbstickPressed: {fileID: 663988535}
-  leftInfoTextThumbstickPosition: {fileID: 1392344359}
-  leftInfoTextTouchpadPressed: {fileID: 108314621}
-  leftInfoTextTouchpadTouched: {fileID: 1604613829}
-  leftInfoTextTouchpadPosition: {fileID: 438125170}
-  rightInfoTextPointerPosition: {fileID: 1488963448}
-  rightInfoTextPointerRotation: {fileID: 1916783699}
-  rightInfoTextGripPosition: {fileID: 364914274}
-  rightInfoTextGripRotation: {fileID: 70240087}
-  rightInfoTextGripGrasped: {fileID: 1872168387}
-  rightInfoTextMenuPressed: {fileID: 1361861878}
-  rightInfoTextTriggerPressed: {fileID: 630688233}
-  rightInfoTextTriggerPressedAmount: {fileID: 405520246}
-  rightInfoTextThumbstickPressed: {fileID: 835910001}
-  rightInfoTextThumbstickPosition: {fileID: 59102043}
-  rightInfoTextTouchpadPressed: {fileID: 1914582921}
-  rightInfoTextTouchpadTouched: {fileID: 13818376}
-  rightInfoTextTouchpadPosition: {fileID: 1306325246}
+  leftInfoTextPointerPosition: {fileID: 1006059212}
+  leftInfoTextPointerRotation: {fileID: 1638332239}
+  leftInfoTextGripPosition: {fileID: 490909064}
+  leftInfoTextGripRotation: {fileID: 1532227919}
+  leftInfoTextGripGrasped: {fileID: 1189094552}
+  leftInfoTextMenuPressed: {fileID: 450980094}
+  leftInfoTextTriggerPressed: {fileID: 725953016}
+  leftInfoTextTriggerPressedAmount: {fileID: 2013764877}
+  leftInfoTextThumbstickPressed: {fileID: 663988537}
+  leftInfoTextThumbstickPosition: {fileID: 1392344361}
+  leftInfoTextTouchpadPressed: {fileID: 108314623}
+  leftInfoTextTouchpadTouched: {fileID: 1604613831}
+  leftInfoTextTouchpadPosition: {fileID: 438125172}
+  rightInfoTextPointerPosition: {fileID: 1488963450}
+  rightInfoTextPointerRotation: {fileID: 1916783701}
+  rightInfoTextGripPosition: {fileID: 364914276}
+  rightInfoTextGripRotation: {fileID: 70240089}
+  rightInfoTextGripGrasped: {fileID: 1872168389}
+  rightInfoTextMenuPressed: {fileID: 1361861880}
+  rightInfoTextTriggerPressed: {fileID: 630688235}
+  rightInfoTextTriggerPressedAmount: {fileID: 405520248}
+  rightInfoTextThumbstickPressed: {fileID: 835910003}
+  rightInfoTextThumbstickPosition: {fileID: 59102045}
+  rightInfoTextTouchpadPressed: {fileID: 1914582923}
+  rightInfoTextTouchpadTouched: {fileID: 13818378}
+  rightInfoTextTouchpadPosition: {fileID: 1306325248}
 --- !u!1 &1110346489
 GameObject:
   m_ObjectHideFlags: 0
@@ -7103,8 +7103,7 @@ Prefab:
         type: 2}
       propertyPath: LeftControllerOverride
       value: 
-      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
-        type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
   m_IsPrefabParent: 0
