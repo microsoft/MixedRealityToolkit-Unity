@@ -3,6 +3,9 @@
 
 namespace HoloToolkit.Unity.InputModule
 {
+    /// <summary>
+    /// Data class that carries the input data for the event handler.
+    /// </summary>
     public struct XboxControllerData
     {
         public float XboxLeftStickHorizontalAxis { get; set; }

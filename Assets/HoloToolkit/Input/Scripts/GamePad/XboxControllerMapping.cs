@@ -5,6 +5,9 @@ using System;
 
 namespace HoloToolkit.Unity.InputModule
 {
+    /// <summary>
+    /// Defines the controller mapping for the input source.
+    /// </summary>
     public static class XboxControllerMapping
     {
         public static string XboxLeftStickHorizontal { get; private set; }
