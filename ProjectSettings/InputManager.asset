@@ -310,7 +310,7 @@ InputManager:
     axis: 1
     joyNum: 0
   - serializedVersion: 3
-    m_Name: XBOX_TRIGGER_SHARED
+    m_Name: XBOX_SHARED_TRIGGER
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 

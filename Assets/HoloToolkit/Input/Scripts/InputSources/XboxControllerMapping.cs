@@ -103,7 +103,7 @@ namespace HoloToolkit.Unity.InputModule
                     XboxRightTrigger = string.IsNullOrEmpty(value) ? "XBOX_RIGHT_TRIGGER" : value;
                     break;
                 case XboxControllerMappingTypes.XboxSharedTrigger:
-                    XboxSharedTrigger = string.IsNullOrEmpty(value) ? "XBOX_TRIGGER_SHARED" : value;
+                    XboxSharedTrigger = string.IsNullOrEmpty(value) ? "XBOX_SHARED_TRIGGER" : value;
                     break;
                 case XboxControllerMappingTypes.XboxA:
                     XboxA = string.IsNullOrEmpty(value) ? "XBOX_A" : value;
