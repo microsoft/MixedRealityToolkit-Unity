@@ -42,6 +42,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         [Tooltip("The confidence level for the keyword recognizer.")]
         //The serialized data of this field will be lost when switching between platforms and re-serializing this class.
+        [SerializeField]
         private ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium;
 
         private KeywordRecognizer keywordRecognizer;
