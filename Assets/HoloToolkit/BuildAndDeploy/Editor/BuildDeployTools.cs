@@ -80,13 +80,11 @@ namespace HoloToolkit.Unity
                     Registry.LocalMachine.OpenSubKey(
                         string.Format(@"Software\Microsoft\MSBuild\ToolsVersions\{0}", msBuildVersion)))
                 {
-                    if (key == null)
+                    if (key != null)
                     {
-                        return null;
+                        var msBuildBinFolder = (string) key.GetValue("MSBuildToolsPath");
+                        return Path.Combine(msBuildBinFolder, "msbuild.exe");
                     }
-
-                    var msBuildBinFolder = (string)key.GetValue("MSBuildToolsPath");
-                    return Path.Combine(msBuildBinFolder, "msbuild.exe");
                 }
             }
 
