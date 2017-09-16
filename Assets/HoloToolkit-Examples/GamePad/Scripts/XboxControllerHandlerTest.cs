@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private Vector3 newPosition;
         private Vector3 newRotation;
 
-        private void Awake()
+        private void Start()
         {
             if (isGlobalListener)
             {
