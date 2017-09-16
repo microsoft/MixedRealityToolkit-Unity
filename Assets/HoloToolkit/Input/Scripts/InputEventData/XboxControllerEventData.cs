@@ -7,48 +7,48 @@ namespace HoloToolkit.Unity.InputModule
 {
     public class XboxControllerEventData : GamePadEventData
     {
-        public float XboxLeftStickHorizontalAxis { get; set; }
-        public float XboxLeftStickVerticalAxis { get; set; }
-        public float XboxRightStickHorizontalAxis { get; set; }
-        public float XboxRightStickVerticalAxis { get; set; }
-        public float XboxDpadHorizontalAxis { get; set; }
-        public float XboxDpadVerticalAxis { get; set; }
-        public float XboxLeftTriggerAxis { get; set; }
-        public float XboxRightTriggerAxis { get; set; }
-        public float XboxSharedTriggerAxis { get; set; }
+        public float XboxLeftStickHorizontalAxis { get; private set; }
+        public float XboxLeftStickVerticalAxis { get; private set; }
+        public float XboxRightStickHorizontalAxis { get; private set; }
+        public float XboxRightStickVerticalAxis { get; private set; }
+        public float XboxDpadHorizontalAxis { get; private set; }
+        public float XboxDpadVerticalAxis { get; private set; }
+        public float XboxLeftTriggerAxis { get; private set; }
+        public float XboxRightTriggerAxis { get; private set; }
+        public float XboxSharedTriggerAxis { get; private set; }
 
-        public bool XboxA_Pressed { get; set; }
-        public bool XboxB_Pressed { get; set; }
-        public bool XboxX_Pressed { get; set; }
-        public bool XboxY_Pressed { get; set; }
-        public bool XboxLeftBumper_Pressed { get; set; }
-        public bool XboxRightBumper_Pressed { get; set; }
-        public bool XboxLeftStick_Pressed { get; set; }
-        public bool XboxRightStick_Pressed { get; set; }
-        public bool XboxView_Pressed { get; set; }
-        public bool XboxMenu_Pressed { get; set; }
+        public bool XboxA_Pressed { get; private set; }
+        public bool XboxB_Pressed { get; private set; }
+        public bool XboxX_Pressed { get; private set; }
+        public bool XboxY_Pressed { get; private set; }
+        public bool XboxLeftBumper_Pressed { get; private set; }
+        public bool XboxRightBumper_Pressed { get; private set; }
+        public bool XboxLeftStick_Pressed { get; private set; }
+        public bool XboxRightStick_Pressed { get; private set; }
+        public bool XboxView_Pressed { get; private set; }
+        public bool XboxMenu_Pressed { get; private set; }
 
-        public bool XboxA_Up { get; set; }
-        public bool XboxB_Up { get; set; }
-        public bool XboxX_Up { get; set; }
-        public bool XboxY_Up { get; set; }
-        public bool XboxLeftBumper_Up { get; set; }
-        public bool XboxRightBumper_Up { get; set; }
-        public bool XboxLeftStick_Up { get; set; }
-        public bool XboxRightStick_Up { get; set; }
-        public bool XboxView_Up { get; set; }
-        public bool XboxMenu_Up { get; set; }
+        public bool XboxA_Up { get; private set; }
+        public bool XboxB_Up { get; private set; }
+        public bool XboxX_Up { get; private set; }
+        public bool XboxY_Up { get; private set; }
+        public bool XboxLeftBumper_Up { get; private set; }
+        public bool XboxRightBumper_Up { get; private set; }
+        public bool XboxLeftStick_Up { get; private set; }
+        public bool XboxRightStick_Up { get; private set; }
+        public bool XboxView_Up { get; private set; }
+        public bool XboxMenu_Up { get; private set; }
 
-        public bool XboxA_Down { get; set; }
-        public bool XboxB_Down { get; set; }
-        public bool XboxX_Down { get; set; }
-        public bool XboxY_Down { get; set; }
-        public bool XboxLeftBumper_Down { get; set; }
-        public bool XboxRightBumper_Down { get; set; }
-        public bool XboxLeftStick_Down { get; set; }
-        public bool XboxRightStick_Down { get; set; }
-        public bool XboxView_Down { get; set; }
-        public bool XboxMenu_Down { get; set; }
+        public bool XboxA_Down { get; private set; }
+        public bool XboxB_Down { get; private set; }
+        public bool XboxX_Down { get; private set; }
+        public bool XboxY_Down { get; private set; }
+        public bool XboxLeftBumper_Down { get; private set; }
+        public bool XboxRightBumper_Down { get; private set; }
+        public bool XboxLeftStick_Down { get; private set; }
+        public bool XboxRightStick_Down { get; private set; }
+        public bool XboxView_Down { get; private set; }
+        public bool XboxMenu_Down { get; private set; }
 
         public XboxControllerEventData(EventSystem eventSystem) : base(eventSystem) { }
 

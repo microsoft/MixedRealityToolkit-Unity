@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,13 +19,19 @@ namespace HoloToolkit.Unity.InputModule.Tests
         [SerializeField]
         private float rotationSpeedMultiplier = 1f;
 
+        [SerializeField]
+        private XboxControllerMappingTypes resetButton = XboxControllerMappingTypes.XboxY;
+
         public Text DebugText;
         private string gamePadName;
+        private Vector3 initialPosition;
         private Vector3 newPosition;
         private Vector3 newRotation;
 
         private void Start()
         {
+            initialPosition = transform.position;
+
             if (isGlobalListener)
             {
                 InputManager.Instance.AddGlobalListener(gameObject);
@@ -59,6 +66,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             transform.rotation *= Quaternion.Euler(newRotation);
 
+            if (OnButton_Up(resetButton, eventData))
+            {
+                transform.position = initialPosition;
+            }
+
             DebugText.text =
                 string.Format(
                     "{19}\n" +
@@ -79,6 +91,35 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     eventData.XboxLeftStick_Pressed, eventData.XboxRightStick_Pressed,
                     eventData.XboxView_Pressed, eventData.XboxMenu_Pressed,
                     gamePadName);
+        }
+
+        private static bool OnButton_Up(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
+        {
+            switch (buttonType)
+            {
+                case XboxControllerMappingTypes.XboxA:
+                    return eventData.XboxA_Up;
+                case XboxControllerMappingTypes.XboxB:
+                    return eventData.XboxB_Up;
+                case XboxControllerMappingTypes.XboxX:
+                    return eventData.XboxX_Up;
+                case XboxControllerMappingTypes.XboxY:
+                    return eventData.XboxY_Up;
+                case XboxControllerMappingTypes.XboxView:
+                    return eventData.XboxView_Up;
+                case XboxControllerMappingTypes.XboxMenu:
+                    return eventData.XboxMenu_Up;
+                case XboxControllerMappingTypes.XboxLeftBumper:
+                    return eventData.XboxLeftBumper_Up;
+                case XboxControllerMappingTypes.XboxRightBumper:
+                    return eventData.XboxRightBumper_Up;
+                case XboxControllerMappingTypes.XboxLeftStickClick:
+                    return eventData.XboxLeftStick_Up;
+                case XboxControllerMappingTypes.XboxRightStickClick:
+                    return eventData.XboxRightStick_Up;
+                default:
+                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
+            }
         }
     }
 }
