@@ -23,6 +23,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         private const string XboxController = "Xbox Controller";
+        private const string XboxOneForWindows = "Xbox One For Windows";
         private const string XboxBluetoothGamePad = "Xbox Bluetooth Gamepad";
         private const string XboxWirelessController = "Xbox Wireless Controller";
 
@@ -155,7 +156,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (string.IsNullOrEmpty(joystickNames[i]) || gamePadInputDatas.ContainsKey((uint)i)) { continue; }
 
-                if (joystickNames[i].Contains(XboxBluetoothGamePad) || joystickNames[i].Contains(XboxWirelessController) || joystickNames[i].Contains(XboxController))
+                if (joystickNames[i].Contains(XboxController) ||
+                    joystickNames[i].Contains(XboxOneForWindows) ||
+                    joystickNames[i].Contains(XboxBluetoothGamePad) ||
+                    joystickNames[i].Contains(XboxWirelessController))
                 {
                     // We will only register the first device we find.  Input is taken from joystick 1.
                     if (gamePadInputDatas.Count != 0) { return; }
