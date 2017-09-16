@@ -12,6 +12,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
         [Tooltip("Is Gaze required for controller input?")]
         private bool isGlobalListener = true;
 
+        [SerializeField]
+        private float movementSpeedMultiplier = 1f;
+
+        [SerializeField]
+        private float rotationSpeedMultiplier = 1f;
+
         public Text DebugText;
         private string gamePadName;
         private Vector3 newPosition;
@@ -43,13 +49,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
             newPosition = Vector3.zero;
             newRotation = Vector3.zero;
 
-            newPosition.x += eventData.XboxLeftStickHorizontalAxis;
-            newPosition.z += eventData.XboxLeftStickVerticalAxis;
-            newPosition.y += eventData.XboxSharedTriggerAxis;
+            newPosition.x += eventData.XboxLeftStickHorizontalAxis * movementSpeedMultiplier;
+            newPosition.z += eventData.XboxLeftStickVerticalAxis * movementSpeedMultiplier;
+            newPosition.y += eventData.XboxSharedTriggerAxis * movementSpeedMultiplier;
 
-            transform.position = newPosition;
+            transform.position += newPosition;
 
-            newRotation.y += eventData.XboxRightStickHorizontalAxis;
+            newRotation.y += eventData.XboxRightStickHorizontalAxis * rotationSpeedMultiplier;
 
             transform.rotation *= Quaternion.Euler(newRotation);
 

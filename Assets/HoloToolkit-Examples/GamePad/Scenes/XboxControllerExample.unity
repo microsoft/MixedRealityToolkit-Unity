@@ -253,6 +253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGlobalListener: 1
+  movementSpeedMultiplier: 0.01
+  rotationSpeedMultiplier: 1
   DebugText: {fileID: 1246058048}
 --- !u!23 &473449479
 MeshRenderer:
@@ -634,9 +636,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SphereRadius: 1
   MoveSpeed: 2
-  UseUnscaledTime: 1
-  DebugDisplaySphere: 0
-  DebugDisplayTargetPosition: 0
+  useUnscaledTime: 1
+  hideOnStart: 0
+  debugDisplaySphere: 0
+  debugDisplayTargetPosition: 0
 --- !u!114 &1246058047
 MonoBehaviour:
   m_ObjectHideFlags: 0

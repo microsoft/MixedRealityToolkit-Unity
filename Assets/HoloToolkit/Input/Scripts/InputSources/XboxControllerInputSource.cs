@@ -135,7 +135,24 @@ namespace HoloToolkit.Unity.InputModule
 
             if (joystickNames.Length <= 0) { return; }
 
-            if (LastDeviceList != null && (joystickNames.Length != LastDeviceUpdateCount || string.IsNullOrEmpty(joystickNames[0])))
+            bool devicesChanged = LastDeviceList == null;
+
+            if (LastDeviceList != null && joystickNames.Length == LastDeviceList.Length)
+            {
+                for (int i = 0; i < LastDeviceList.Length; i++)
+                {
+                    if (!joystickNames[i].Equals(LastDeviceList[i]))
+                    {
+                        devicesChanged = true;
+                        if (LastDeviceList == null)
+                        {
+                            LastDeviceList = joystickNames;
+                        }
+                    }
+                }
+            }
+
+            if (LastDeviceList != null && devicesChanged)
             {
                 foreach (var gamePadInputSource in gamePadInputDatas)
                 {
@@ -161,7 +178,7 @@ namespace HoloToolkit.Unity.InputModule
                     joystickNames[i].Contains(XboxBluetoothGamePad) ||
                     joystickNames[i].Contains(XboxWirelessController))
                 {
-                    // We will only register the first device we find.  Input is taken from joystick 1.
+                    // We will only register the first device we find.  Input is taken from all joysticks.
                     if (gamePadInputDatas.Count != 0) { return; }
 
                     sourceId = (uint)i;
