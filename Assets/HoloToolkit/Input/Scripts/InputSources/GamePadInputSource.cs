@@ -52,6 +52,15 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void RefreshDevices()
         {
+            var joystickNames = Input.GetJoystickNames();
+
+            if (joystickNames.Length <= 0) { return; }
+
+
+            for (var i = 0; i < joystickNames.Length; i++)
+            {
+                Debug.LogWarningFormat("Joystick \"{0}\" has not been setup with the input manager.Create a new class that inherits from \"GamePadInputSource\" and implement it.", joystickNames[i]);
+            }
         }
     }
 }
