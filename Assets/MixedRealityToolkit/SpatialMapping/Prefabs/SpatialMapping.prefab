@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000010302963436}
+  m_IsPrefabParent: 1
+--- !u!1 &1000010302963436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000013298573622}
+  - 114: {fileID: 114000012698980792}
+  - 114: {fileID: 114000011154029958}
+  - 114: {fileID: 114000012149591842}
+  m_Layer: 0
+  m_Name: SpatialMapping
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000013298573622
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010302963436}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114000011154029958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010302963436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d587b71ba3b55e44f9654cec8898c32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PhysicsLayer: 31
+  surfaceMaterial: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
+  autoStartObserver: 1
+  drawVisualMeshes: 1
+  castShadows: 0
+--- !u!114 &114000012149591842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010302963436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d883c0118351e4890753200e0ac916, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomModel: {fileID: 0}
+--- !u!114 &114000012698980792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010302963436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a98b181acba5549af3d852c7664623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TrianglesPerCubicMeter: 500
+  Extents: {x: 10, y: 10, z: 10}
+  TimeBetweenUpdates: 3.5
