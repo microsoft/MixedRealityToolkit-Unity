@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             cachedMaterial.SetColor("_Color", defaultColor);
         }
 
-        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             ChangeColor(eventData.RecognizedText);
         }
