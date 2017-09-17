@@ -85,7 +85,11 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected virtual void Awake()
         {
-            wrapStyle = new GUIStyle("label") { wordWrap = true };
+            wrapStyle = new GUIStyle("label")
+            {
+                wordWrap = true,
+                richText = true
+            };
         }
 
         protected virtual void OnEnable()
