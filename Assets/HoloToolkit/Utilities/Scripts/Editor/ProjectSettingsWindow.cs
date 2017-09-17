@@ -159,8 +159,6 @@ namespace HoloToolkit.Unity
 
                 if (userPermission)
                 {
-                    // TODO Rename the old input manager asset with .old suffix and download the new input manager asset?
-
                     try
                     {
                         using (var webRequest = UnityWebRequest.Get(InputManagerAssetURL)
