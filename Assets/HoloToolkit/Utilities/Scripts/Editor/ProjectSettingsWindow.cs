@@ -130,7 +130,7 @@ namespace HoloToolkit.Unity
                     EditorUtility.DisplayDialog("Attention!",
                         "You're missing the Sharing Service Executable in your project.\n\n" +
                         "Would you like to download the missing files from GitHub?\n\n" +
-                        "Alternatively, you can download yourself.",
+                        "Alternatively, you can download it yourself.",
                         "Yes", "Cancel"))
                 {
                     try
