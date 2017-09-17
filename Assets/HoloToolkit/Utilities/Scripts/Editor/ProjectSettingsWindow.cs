@@ -185,7 +185,6 @@ namespace HoloToolkit.Unity
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, false);
             }
 
-
             Close();
         }
 
