@@ -161,7 +161,7 @@ A basic wire frame shader that can be used for rendering spatial mapping meshes.
 #### SpatialMappingTap.shader
 Draws a ring originating from a location in space. Useful for showing where a user tapped. Requires a component to drive it's radius and set the tap location in world space.
 
-### [Tests Scenes](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/SpatialMapping/Scenes)
+### [Tests Scenes](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/SpatialMapping/Scenes)
 
 #### PlaneFinding.unity
 To use this sample code, load the PlaneFinding scene and hit Play. The PlaneFinding algorithm will run in a loop. Switch to the scene view to see a visualization of the planes found.
@@ -178,7 +178,7 @@ Once you are confident that you have a good mesh, say the 'Send Meshes' (SendMes
 Press the 'S' key (SaveFileKey) to save the mesh to your PC. Press the 'play' button to stop the app from running in the Unity editor. Now, press 'play' one more time to restart the app. This time, press the 'L' key (LoadFileKey) to load the mesh that you previously saved into the Editor.
 
 #### SpatialProcessing.unity
-The SpatialProcessing scene tests the two processing scripts available in HoloToolkit: SufraceMeshesToPlanes and RemoveSurfaceVertices. 
+The SpatialProcessing scene tests the two processing scripts available in MixedRelityToolkit: SufraceMeshesToPlanes and RemoveSurfaceVertices. 
 If running in the Editor, the ObjectSurfaceObserver will load the SRMesh.obj file set in the SpatialMapping object of the scene. If you don't already have a file, you can capture one from the '3D View' page of the Windows Device Portal.  If running on the HoloLens, real-world surfaces will be scanned. After 15 seconds, the meshes will be converted to planes. If a floor plane is found, the test will remove vertices from surface meshes that fall within the bounds of any active plane.
 
 #### TapToPlace.unity

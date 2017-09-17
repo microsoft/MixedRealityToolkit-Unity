@@ -1,7 +1,7 @@
 ## [Spatial Understanding]()
 Scripts, Prefabs, and Test Scenes that leverage Spatial Understanding related features.
 
-See the [HoloToolkit Spatial Mapping](../SpatialMapping) documentation to ensure your project is set up correctly.
+See the [MixedRelityToolkit Spatial Mapping](../SpatialMapping) documentation to ensure your project is set up correctly.
 
 **IMPORTANT**: Please make sure to add the Spatial Perception capability in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
@@ -9,7 +9,7 @@ or in your Visual Studio Package.appxmanifest capabilities.
 
 ### Microsoft HoloLens Documentation
 - [Spatial Mapping In Unity](https://developer.microsoft.com/en-us/windows/mixed-reality/spatial_mapping_in_unity)
-- [Spatial Understanding In Unity](https://developer.microsoft.com/en-us/windows/mixed-reality/spatial_mapping_in_unity#holotoolkit.spatialunderstanding)
+- [Spatial Understanding In Unity](https://developer.microsoft.com/en-us/windows/mixed-reality/spatial_mapping_in_unity#MixedRelityToolkit.spatialunderstanding)
 
 ### Case studies
 - [Expanding the spatial mapping capabilities of HoloLens](https://developer.microsoft.com/en-us/windows/mixed-reality/case_study_-_expanding_the_spatial_mapping_capabilities_of_hololens)

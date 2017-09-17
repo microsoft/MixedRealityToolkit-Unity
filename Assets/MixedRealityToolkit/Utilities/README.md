@@ -51,7 +51,7 @@ Configuration options derived from Microsoft Documentation [Configuring a Unity 
 Base class for auto configuration build windows.
 
 ##### CapabilitySettingsWindow.cs
-Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Capability Settings.
+Renders the UI and handles update logic for MixedRelityToolkit/Configure/Apply HoloLens Capability Settings.
 
 ##### EditorGUIExtensions.cs
 Extensions for the UnityEnditor.EditorGUI class.
@@ -60,7 +60,7 @@ Extensions for the UnityEnditor.EditorGUI class.
 Extensions for the UnityEditor.EditorGUILayout class.
 
 ##### EnforceEditorSettings.cs
-Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.
+Sets Force Text Serialization and visible meta files in all projects that use the MixedRelityToolkit.
 
 ##### ExternalProcess.cs
 Helper class for launching external processes inside of the unity editor.
@@ -69,10 +69,10 @@ Helper class for launching external processes inside of the unity editor.
 Extensions for the UnityEngine.LayerMask class.
 
 ##### ProjectSettingsWindow.cs
-Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Project Settings.
+Renders the UI and handles update logic for MixedRelityToolkit/Configure/Apply HoloLens Project Settings.
 
 ##### SceneSettingsWindow.cs
-Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Scene Settings.
+Renders the UI and handles update logic for MixedRelityToolkit/Configure/Apply HoloLens Scene Settings.
 
 #### [Extensions](Scripts/Extensions)
 
@@ -215,7 +215,7 @@ Wrapper around world anchor store to streamline some of the persistence api busy
 #### macro.cginc
 Preprocessor macros to support shaders
 
-#### HoloToolkitCommon.cginc
+#### MixedRelityToolkitCommon.cginc
 Common shader functionality
 
 #### FastConfigurable.shader
@@ -227,7 +227,7 @@ Similar attributes for FastConfigurable with the benefit of 2 sides!
 #### WindowOcclusion.shader
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
-### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Utilities/Scenes)
+### [Tests](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/Utilities/Scenes)
 ---
 Tests related to the utilities features. To use the scene:
 

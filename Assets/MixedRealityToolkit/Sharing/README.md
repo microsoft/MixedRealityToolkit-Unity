@@ -1,7 +1,7 @@
 ## [Sharing]()
-The HoloToolkit.Sharing library allows applications to span multiple devices, and enables holographic collaboration.  
+The MixedRelityToolkit.Sharing library allows applications to span multiple devices, and enables holographic collaboration.  
 
-Originally developed for OnSight, a collaboration between SOTA (a Microsoft studio) and NASA to enhance their existing Mars rover planning tool with HoloLens, HoloToolkit.Sharing enables users to use multiple devices for a task by allowing the apps running on each device communicate and stay in sync seamlessly in real time.  
+Originally developed for OnSight, a collaboration between SOTA (a Microsoft studio) and NASA to enhance their existing Mars rover planning tool with HoloLens, MixedRelityToolkit.Sharing enables users to use multiple devices for a task by allowing the apps running on each device communicate and stay in sync seamlessly in real time.  
 
 Users can also collaborate with other users (who are also using multiple devices) who may be in the same room or working remotely.
 
@@ -52,11 +52,11 @@ Connect devices just by looking at them
 * Can also detect location in 3D space using built-in fiducial marker support
 
 #### Profiler
-Profiling and debugging an experience that spans multiple devices is challenging.  So HoloToolkit.Sharing provides an app that can connect to multiple devices at once and aggregates their timings and debug output in a single place
+Profiling and debugging an experience that spans multiple devices is challenging.  So MixedRelityToolkit.Sharing provides an app that can connect to multiple devices at once and aggregates their timings and debug output in a single place
 
 #### Sync Model
 
-HoloToolkit.Sharing has the ability to synchronize data across any application connected to a given session. Conflict resolution is automatically handled by the framework, at whichever level the conflict occurs.
+MixedRelityToolkit.Sharing has the ability to synchronize data across any application connected to a given session. Conflict resolution is automatically handled by the framework, at whichever level the conflict occurs.
 
 ##### Primitive Types
 The following primitives are natively supported by the sync system. The C# class that corresponds to each primitive is written in parentheses.
@@ -93,7 +93,7 @@ For any type inheriting from SyncObject, you can easily add new children primiti
 		public SyncFloat FloatValue;
 	}
 
-Any SyncPrimitive tagged with the [SyncData] attribute will automatically be added to the data model and synced in the current HoloToolkit.Sharing session.
+Any SyncPrimitive tagged with the [SyncData] attribute will automatically be added to the data model and synced in the current MixedRelityToolkit.Sharing session.
 
 ### Configuration
 ---
@@ -123,12 +123,12 @@ Please sync to latest XTools
 ***************************************************************
 ```
 
-- Ensure you're using the latest binaries of the sharing service found at `HoloToolkit-Unity\External\HoloToolkit\Sharing\Server`.
+- Ensure you're using the latest binaries of the sharing service found at `MixedRelityToolkit-Unity\External\MixedRelityToolkit\Sharing\Server`.
 
 ### [Plugins](Plugins)
 ---
 Contains compiled architecture specific binaries for SharingClient.dll which are required by the Unity application for accessing sharing APIs.
-Binaries are compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing).
+Binaries are compiled from the native [MixedRelityToolkit\Sharing](https://github.com/Microsoft/MixedRelityToolkit/tree/master/Sharing).
 
 ### [Prefabs](Prefabs)
 ---
@@ -139,7 +139,7 @@ Prefabs related to the sharing and networking features.
 2. Allows you to communicate between a Windows and non-Windows device.
 
 **SharingStage.cs** allows you to be a Primary Client (typical case).
-**Server Address** is the IP address of the machine running the HoloToolkit -> Launch Sharing Service.
+**Server Address** is the IP address of the machine running the MixedRelityToolkit -> Launch Sharing Service.
 **Server Port** displays the port being used for communicating.
 
 **AutoJoinSession.cs** creates a shared session with Session Name 'Default' which is customizable.
@@ -154,14 +154,14 @@ Scripts related to the sharing and networking features.
 Scripts for in editor use only.
 
 ##### SharingMenu.cs
-Enables users to start the Sharing Service, Sharing Manager, and Profiler from the Unity Editor via the HoloToolkit Menu.
+Enables users to start the Sharing Service, Sharing Manager, and Profiler from the Unity Editor via the MixedRelityToolkit Menu.
 
 ##### SharingStageEditor.cs
 Draws the default Sharing Stage Inspector and adds the SyncRoot Hierarchy view so users can quickly verify Sync Object updates.
 
 #### [SDK](Scripts/SDK)
 ---
-Contains scripts compiled from the native [HoloToolkit\Sharing](https://github.com/Microsoft/HoloToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.
+Contains scripts compiled from the native [MixedRelityToolkit\Sharing](https://github.com/Microsoft/MixedRelityToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.
 
 #### [Spawning](Scripts/Spawning)
 ---
@@ -287,12 +287,12 @@ A Singleton behaviour that is in charge of managing the core networking layer fo
 Root of the synchronized data model, under which every element of the model should be located. The SharingStage will automatically create and initialize the SyncRoot at application startup.
 
 #### SyncSettings.cs
-Collection of sharing sync settings, used by the HoloToolkit Sharing sync system to figure out which data model classes need to be instantiated when receiving data that inherits from SyncObject.
+Collection of sharing sync settings, used by the MixedRelityToolkit Sharing sync system to figure out which data model classes need to be instantiated when receiving data that inherits from SyncObject.
 
 #### SyncStateListener.cs
 C# wrapper for the Sharing SyncListener, making changes available through the Action class.
 
-### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Prefabs)
+### [Test Prefabs](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/Sharing/Prefabs)
 ---
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
@@ -303,7 +303,7 @@ Simple Cube prefab with a Transform, Mesh Filter, Box Collider, Mesh Renderer, a
 A simple Sphere prefab with a Transform, Mesh Filter, Sphere Collider, and Mesh Renderer components.
 Purposefully missing Default Sync Model Accessor component for SharingSpawnTest.
 
-### [Test Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Scripts)
+### [Test Scripts](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/Sharing/Scripts)
 ---
 Test Scripts.
 
@@ -334,7 +334,7 @@ Class that demonstrates a custom class using sync model attributes.
 #### UserNotifications.cs
 Used to demonstrate how to get notifications when users leave and enter room.
 
-### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Sharing/Scenes)
+### [Tests](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/Sharing/Scenes)
 ---
 Tests related to the sharing features. To use the each scene:
 
@@ -349,7 +349,7 @@ Tests related to the sharing features. To use the each scene:
 This test demonstrates how to use the Sharing prefabs for networking and sharing custom messages with clients. 
 It also demonstrates how to share world anchors between clients to establish a shared space.
 
-1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
+1. Ensure to launch the sharing service using: MixedRelityToolkit -> Launch Sharing service
 2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
 3. **CustomMessages.cs** shows how to communicate specific information across clients.
 4. **ImportExportAnchorManager.cs** shows how to create anchors and share them with other clients using the sharing service.
@@ -359,14 +359,14 @@ It also demonstrates how to share world anchors between clients to establish a s
 This test demonstrates how to create new rooms and anchors inside your application.
 It also demonstrates how to upload and download new anchors.
 
-1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
+1. Ensure to launch the sharing service using: MixedRelityToolkit -> Launch Sharing service
 2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
 3. **RoomTest.cs** shows how to create, join, and leave rooms; also shows how to create and download anchors.
 
 #### SharingSpawnTest.unity
 This test demonstrates how to spawn and delete sync objects in your scene and across your networked clients.
 
-1. Ensure to launch the sharing service using: HoloToolkit -> Launch Sharing service
+1. Ensure to launch the sharing service using: MixedRelityToolkit -> Launch Sharing service
 2. Enter the IP address displayed in the console window into the Server Address of the Sharing object.
 3. **PrefabSpawnManager.cs** enables you to store prefab references to use when spawning.
 4. **SyncObjectSpawner.cs** demonstrates how to spawn and delete sync objects, as well as custom class types.

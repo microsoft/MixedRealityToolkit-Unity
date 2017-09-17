@@ -296,7 +296,7 @@ Used to assign a Unity Event to a keyword stored in the SpeechInputSource compon
 ##### TriggerButton.cs
 Very simple class that implements basic logic for a trigger button.
 
-### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Prefabs)
+### [Test Prefabs](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/Input/Prefabs)
 
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
@@ -308,7 +308,7 @@ You can simply drop this into your scene and be able to send arbitrary messages 
 Keyword manager pre-wired to send messages to object being currently selected via SelectedObjectMessageSender component.
 You can simply drop this into your scene and be able to send arbitrary messages to currently selected object.
 
-### [Test Scripts](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Scripts)
+### [Test Scripts](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/Input/Scripts)
 #### FocusedObjectMessageSender.cs
 Sends Unity message to currently focused object.
 FocusedObjectMessageSender.SendMessageToFocusedObject needs to be registered as a response in KeywordManager
@@ -338,7 +338,7 @@ It highlights the object being gazed at.
 This class implements IInputClickHandler to handle the tap gesture.
 It increases the scale of the object when tapped.
 
-### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Scenes)
+### [Tests](https://github.com/Microsoft/MixedRelityToolkit-Unity/tree/master/Assets/MixedRelityToolkit-Tests/Input/Scenes)
 Tests related to the input features. To use the scene:
 
 1. Navigate to the Tests folder.
