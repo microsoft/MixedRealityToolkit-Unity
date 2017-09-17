@@ -7,21 +7,21 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class DisplaySpeechKeywords : MonoBehaviour
     {
-        public SpeechInputSource speechInputSource;
-        public TextMesh textMesh;
+        public SpeechInputSource SpeechInputSource;
+        public TextMesh TextMesh;
 
         private void Start()
         {
-            if (speechInputSource == null || textMesh == null)
+            if (SpeechInputSource == null || TextMesh == null)
             {
                 Debug.Log("Please check the variables in the Inspector on DisplaySpeechKeywords.cs on" + name + ".");
                 return;
             }
 
-            textMesh.text = "Try saying:\n";
-            foreach (SpeechInputSource.KeywordAndKeyCode item in speechInputSource.Keywords)
+            TextMesh.text = "Try saying:\n";
+            for (var i = 0; i < SpeechInputSource.Keywords.Length; i++)
             {
-                textMesh.text += " " + item.Keyword + "\n";
+                TextMesh.text += " " + SpeechInputSource.Keywords[i].Keyword + "\n";
             }
         }
     }
