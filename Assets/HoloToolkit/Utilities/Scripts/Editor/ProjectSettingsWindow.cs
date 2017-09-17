@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace HoloToolkit.Unity
 {
@@ -14,6 +15,8 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
     {
+        private const string SharingServiceURL = "https://raw.githubusercontent.com/Microsoft/MixedRealityToolkit-Unity/master/External/HoloToolkit/Sharing/Server/SharingService.exe";
+
         #region Nested Types
 
         public enum ProjectSetting
@@ -121,7 +124,52 @@ namespace HoloToolkit.Unity
             EditorPrefsUtility.SetEditorPref(Names[ProjectSetting.SharingServices], Values[ProjectSetting.SharingServices]);
             if (Values[ProjectSetting.SharingServices])
             {
-                ExternalResourcesHelper.UpdateExternalResources();
+                string sharingServiceDirectory = Directory.GetParent(Path.GetFullPath(Application.dataPath)).FullName + "\\External\\HoloToolkit\\Sharing\\Server";
+                string sharingServicePath = sharingServiceDirectory + "\\SharingService.exe";
+                if (!File.Exists(sharingServicePath) &&
+                    EditorUtility.DisplayDialog("Attention!",
+                        "You're missing the Sharing Service Executable in your project.\n\n" +
+                        "Would you like to download the missing files from GitHub?\n\n" +
+                        "Alternatively, you can download yourself.",
+                        "Yes", "Cancel"))
+                {
+                    try
+                    {
+                        using (var webRequest = UnityWebRequest.Get(SharingServiceURL))
+                        {
+                            webRequest.Send();
+
+                            while (!webRequest.isDone)
+                            {
+                                if (webRequest.downloadProgress != -1)
+                                {
+                                    EditorUtility.DisplayProgressBar(
+                                        "Downloading the SharingService executable from GitHub",
+                                        "Progress...", webRequest.downloadProgress);
+                                }
+                            }
+                            EditorUtility.ClearProgressBar();
+
+                            if (webRequest.isNetworkError || webRequest.isHttpError)
+                            {
+                                throw new UnityException("Network Error: " + webRequest.error);
+                            }
+
+                            byte[] sharingServiceData = webRequest.downloadHandler.data;
+                            Directory.CreateDirectory(sharingServiceDirectory);
+                            File.WriteAllBytes(sharingServicePath, sharingServiceData);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Close();
+                        throw;
+                    }
+                }
+                else
+                {
+                    Debug.LogFormat("Alternatively, you can download from this link: {0}", SharingServiceURL);
+                }
 
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, true);
@@ -132,6 +180,7 @@ namespace HoloToolkit.Unity
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, false);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, false);
             }
+
 
             Close();
         }
