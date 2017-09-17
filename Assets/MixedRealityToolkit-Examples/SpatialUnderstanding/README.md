@@ -13,4 +13,4 @@ This sample demonstrates many of the features of the Spatial Understanding addon
 ## SETUP
 1. Import the MixedRelityToolkit into the project
 2. Open "SpatialUnderstanding-FeatureOverview\Scenes\SpatialUnderstandingExample.unity"
-3. Run the scene on HoloLens, in the editor using [holographic remoting](https://developer.microsoft.com/en-us/windows/holographic/unity_play_mode), or in the editor with the ObjectSurfaceObserver's room mesh.
+3. Run the scene on HoloLens, in the editor using [holographic remoting](https://developer.microsoft.com/en-us/windows/mixed-reality/unity_play_mode), or in the editor with the ObjectSurfaceObserver's room mesh.
