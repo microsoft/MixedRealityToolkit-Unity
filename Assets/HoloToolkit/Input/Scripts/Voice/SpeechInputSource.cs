@@ -2,9 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
@@ -24,15 +22,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public partial class SpeechInputSource : BaseInputSource
     {
-        [Serializable]
-        public struct KeywordAndKeyCode
-        {
-            [Tooltip("The keyword to recognize.")]
-            public string Keyword;
-            [Tooltip("The KeyCode to recognize.")]
-            public KeyCode KeyCode;
-        }
-
         /// <summary>
         /// Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.
         /// </summary>
@@ -42,7 +31,7 @@ namespace HoloToolkit.Unity.InputModule
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
         // set up the recognizer and add all keywords. The first causes the recognizer to start
         // immediately. The second allows the recognizer to be manually started at a later time.
-        public enum RecognizerStartBehavior { AutoStart, ManualStart };
+        public enum RecognizerStartBehavior { AutoStart, ManualStart }
 
         [Tooltip("Whether the recognizer should be activated on start.")]
         public RecognizerStartBehavior RecognizerStart;
@@ -53,16 +42,15 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         [Tooltip("The confidence level for the keyword recognizer.")]
         //The serialized data of this field will be lost when switching between platforms and re-serializing this class.
-        public ConfidenceLevel RecognitionConfidenceLevel;
+        [SerializeField]
+        private ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium;
 
         private KeywordRecognizer keywordRecognizer;
 
         #region Unity Methods
 
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
-
             if (PersistentKeywords)
             {
                 DontDestroyOnLoad(gameObject);
@@ -78,7 +66,7 @@ namespace HoloToolkit.Unity.InputModule
                     keywords[index] = Keywords[index].Keyword;
                 }
 
-                keywordRecognizer = new KeywordRecognizer(keywords, RecognitionConfidenceLevel);
+                keywordRecognizer = new KeywordRecognizer(keywords, recognitionConfidenceLevel);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                 if (RecognizerStart == RecognizerStartBehavior.AutoStart)
@@ -155,7 +143,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (Input.GetKeyDown(Keywords[index].KeyCode))
                 {
-                    OnPhraseRecognized(RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
+                    OnPhraseRecognized(recognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }
             }
         }
