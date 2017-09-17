@@ -688,7 +688,7 @@ namespace HoloToolkit.Unity
             return mostRecentBuild;
         }
 
-        private string CalcPackageFamilyName()
+        private static string CalcPackageFamilyName()
         {
             // Find the manifest
             string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
@@ -696,7 +696,7 @@ namespace HoloToolkit.Unity
             if (manifests.Length == 0)
             {
                 Debug.LogError("Unable to find manifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
-                return "";
+                return string.Empty;
             }
 
             string manifest = manifests[0];
@@ -726,7 +726,7 @@ namespace HoloToolkit.Unity
             }
 
             Debug.LogError("Unable to find PackageFamilyName in manifest file (" + manifest + ")");
-            return "";
+            return string.Empty;
         }
 
         private void InstallAppOnDevicesList(string buildPath, string[] targetList)
@@ -745,7 +745,7 @@ namespace HoloToolkit.Unity
                     bool completedUninstall = false;
                     string ip = FinalizeIP(targetList[i]);
                     if (BuildDeployPrefs.FullReinstall &&
-                        BuildDeployPortal.IsAppInstalled(packageFamilyName, new BuildDeployPortal.ConnectInfo(ip, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)))
+                        BuildDeployPortal.IsAppInstalled(packageFamilyName, ip))
                     {
                         EditorUtility.DisplayProgressBar("Installing on devices", "Uninstall (" + ip + ")", i / (float)targetList.Length);
                         if (!UninstallApp(packageFamilyName, ip))
@@ -781,7 +781,7 @@ namespace HoloToolkit.Unity
             }
 
             // Connection info
-            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
+            var connectInfo = new ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
 
             // Kick off the install
             Debug.Log("Installing build on: " + targetDevice);
@@ -814,14 +814,10 @@ namespace HoloToolkit.Unity
             EditorUtility.ClearProgressBar();
         }
 
-        private bool UninstallApp(string packageFamilyName, string targetDevice)
+        private static bool UninstallApp(string packageFamilyName, string targetIp)
         {
-            // Connection info
-            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
-
-            // Kick off the install
-            Debug.Log("Uninstall build: " + targetDevice);
-            return BuildDeployPortal.UninstallApp(packageFamilyName, connectInfo);
+            Debug.Log("Uninstall build: " + targetIp);
+            return BuildDeployPortal.UninstallApp(packageFamilyName, targetIp);
         }
 
         private void UpdateBuilds()
@@ -909,9 +905,7 @@ namespace HoloToolkit.Unity
             if (ipList.Length > 0)
             {
                 string targetIP = FinalizeIP(ipList[0]);
-                return BuildDeployPortal.IsAppRunning(
-                    appName,
-                    new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                return BuildDeployPortal.IsAppRunning(appName, targetIP);
             }
 
             return false;
@@ -934,7 +928,7 @@ namespace HoloToolkit.Unity
                 Debug.Log("Launch app on: " + targetIP);
                 BuildDeployPortal.LaunchApp(
                     packageFamilyName,
-                    new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                    new ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
             }
         }
 
@@ -953,9 +947,7 @@ namespace HoloToolkit.Unity
             {
                 string targetIP = FinalizeIP(ipList[i]);
                 Debug.Log("Kill app on: " + targetIP);
-                BuildDeployPortal.KillApp(
-                    packageFamilyName,
-                    new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                BuildDeployPortal.KillApp(packageFamilyName, targetIP);
             }
         }
 
@@ -972,10 +964,7 @@ namespace HoloToolkit.Unity
 
             for (int i = 0; i < ipList.Length; i++)
             {
-                // Use the Device Portal REST API
-                BuildDeployPortal.DeviceLogFile_View(
-                    packageFamilyName,
-                    new BuildDeployPortal.ConnectInfo(FinalizeIP(ipList[i]), BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                BuildDeployPortal.DeviceLogFile_View(packageFamilyName, FinalizeIP(ipList[i]));
             }
         }
 
