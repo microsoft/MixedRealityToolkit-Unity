@@ -80,13 +80,11 @@ namespace HoloToolkit.Unity
                     Registry.LocalMachine.OpenSubKey(
                         string.Format(@"Software\Microsoft\MSBuild\ToolsVersions\{0}", msBuildVersion)))
                 {
-                    if (key == null)
+                    if (key != null)
                     {
-                        return null;
+                        var msBuildBinFolder = (string) key.GetValue("MSBuildToolsPath");
+                        return Path.Combine(msBuildBinFolder, "msbuild.exe");
                     }
-
-                    var msBuildBinFolder = (string)key.GetValue("MSBuildToolsPath");
-                    return Path.Combine(msBuildBinFolder, "msbuild.exe");
                 }
             }
 
@@ -121,12 +119,17 @@ namespace HoloToolkit.Unity
 
             string[] paths = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            // if there are multiple 2017 installs,
-            // prefer enterprise, then pro, then community
-            string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise")).ThenBy(p => p.ToLower().Contains("professional")).First();
-            if (File.Exists(bestPath + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe"))
+            if (paths.Length > 0)
             {
-                return bestPath + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe";
+                // if there are multiple 2017 installs,
+                // prefer enterprise, then pro, then community
+                string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
+                                        .ThenBy(p => p.ToLower().Contains("professional"))
+                                        .ThenBy(p => p.ToLower().Contains("community")).First();
+                if (File.Exists(bestPath + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe"))
+                {
+                    return bestPath + @"\MSBuild\" + msBuildVersion + @"\Bin\MSBuild.exe";
+                }
             }
 
             Debug.LogError("Unable to find a valid path to Visual Studio Instance!");
