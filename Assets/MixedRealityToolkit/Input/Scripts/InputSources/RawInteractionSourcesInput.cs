@@ -209,11 +209,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (sourceData.IsSourceDown)
                 {
-                    inputManager.RaiseSourceDown(this, sourceData.SourceId);
+                    InputManager.Instance.RaiseSourceDown(this, sourceData.SourceId);
                 }
                 else
                 {
-                    inputManager.RaiseSourceUp(this, sourceData.SourceId);
+                    InputManager.Instance.RaiseSourceUp(this, sourceData.SourceId);
                 }
             }
         }
@@ -226,7 +226,7 @@ namespace HoloToolkit.Unity.InputModule
             // Send event for new sources that were added
             foreach (uint newSource in newSources)
             {
-                inputManager.RaiseSourceDetected(this, newSource);
+                InputManager.Instance.RaiseSourceDetected(this, newSource);
             }
 
             // Send event for sources that are no longer visible and remove them from our dictionary
@@ -235,7 +235,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (!currentSources.Contains(existingSource))
                 {
                     pendingSourceIdDeletes.Add(existingSource);
-                    inputManager.RaiseSourceLost(this, existingSource);
+                    InputManager.Instance.RaiseSourceLost(this, existingSource);
                 }
             }
 

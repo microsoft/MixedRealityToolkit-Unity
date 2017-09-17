@@ -30,10 +30,8 @@ namespace HoloToolkit.Unity.InputModule
         protected GestureRecognizer gestureRecognizer;
         protected GestureRecognizer navigationGestureRecognizer;
 
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
-
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.TappedEvent += OnTappedEvent;
             
@@ -160,62 +158,62 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA
         protected void OnTappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
-            inputManager.RaiseInputClicked(this, 0, tapCount);
+            InputManager.Instance.RaiseInputClicked(this, 0, tapCount);
         }
 
         protected void OnHoldStartedEvent(InteractionSourceKind source, Ray headray)
         {
-            inputManager.RaiseHoldStarted(this, 0);
+            InputManager.Instance.RaiseHoldStarted(this, 0);
         }
 
         protected void OnHoldCanceledEvent(InteractionSourceKind source, Ray headray)
         {
-            inputManager.RaiseHoldCanceled(this, 0);
+            InputManager.Instance.RaiseHoldCanceled(this, 0);
         }
 
         protected void OnHoldCompletedEvent(InteractionSourceKind source, Ray headray)
         {
-            inputManager.RaiseHoldCompleted(this, 0);
+            InputManager.Instance.RaiseHoldCompleted(this, 0);
         }
 
         protected void OnManipulationStartedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            inputManager.RaiseManipulationStarted(this, 0, cumulativeDelta);
+            InputManager.Instance.RaiseManipulationStarted(this, 0, cumulativeDelta);
         }
 
         protected void OnManipulationUpdatedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            inputManager.RaiseManipulationUpdated(this, 0, cumulativeDelta);
+            InputManager.Instance.RaiseManipulationUpdated(this, 0, cumulativeDelta);
         }
 
         protected void OnManipulationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            inputManager.RaiseManipulationCompleted(this, 0, cumulativeDelta);
+            InputManager.Instance.RaiseManipulationCompleted(this, 0, cumulativeDelta);
         }
 
         protected void OnManipulationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
         {
-            inputManager.RaiseManipulationCanceled(this, 0, cumulativeDelta);
+            InputManager.Instance.RaiseManipulationCanceled(this, 0, cumulativeDelta);
         }
 
         protected void OnNavigationStartedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            inputManager.RaiseNavigationStarted(this, 0, normalizedOffset);
+            InputManager.Instance.RaiseNavigationStarted(this, 0, normalizedOffset);
         }
 
         protected void OnNavigationUpdatedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            inputManager.RaiseNavigationUpdated(this, 0, normalizedOffset);
+            InputManager.Instance.RaiseNavigationUpdated(this, 0, normalizedOffset);
         }
 
         protected void OnNavigationCompletedEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            inputManager.RaiseNavigationCompleted(this, 0, normalizedOffset);
+            InputManager.Instance.RaiseNavigationCompleted(this, 0, normalizedOffset);
         }
 
         protected void OnNavigationCanceledEvent(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
         {
-            inputManager.RaiseNavigationCanceled(this, 0, normalizedOffset);
+            InputManager.Instance.RaiseNavigationCanceled(this, 0, normalizedOffset);
         }
 #endif
 
