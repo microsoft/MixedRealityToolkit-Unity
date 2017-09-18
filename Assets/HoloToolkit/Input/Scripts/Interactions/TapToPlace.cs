@@ -38,6 +38,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
+        [Tooltip("Amount model should be offset from the placement position.")]
+        public Vector3 centerOffset;
+
         private Interpolator interpolator;
 
         /// <summary>
@@ -96,6 +99,7 @@ namespace HoloToolkit.Unity.InputModule
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
+            placementPosition += centerOffset;
 
             // Here is where you might consider adding intelligence
             // to how the object is placed.  For example, consider
