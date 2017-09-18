@@ -49,13 +49,18 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            if (!XRDevice.isPresent)
+            fadeControl = FadeScript.Instance;
+
+            if (!XRDevice.isPresent || fadeControl == null)
             {
+                if (fadeControl == null)
+                {
+                    Debug.LogError("The MixedRealityTeleport script on " + name + " requires a FadeScript object.");
+                }
+
                 Destroy(this);
                 return;
             }
-
-            fadeControl = FadeScript.Instance;
 
             teleportMarker = Instantiate(TeleportMarker);
             teleportMarker.SetActive(false);
@@ -247,7 +252,7 @@ namespace HoloToolkit.Unity.InputModule
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
             // we need to set it relative to the user's head in the scene so they are looking/standing where 
             // we expect.
-            transform.position = worldPosition - Camera.main.transform.localPosition;
+            transform.position = worldPosition - (Camera.main.transform.position - transform.position);
         }
 
         private void EnableMarker()
