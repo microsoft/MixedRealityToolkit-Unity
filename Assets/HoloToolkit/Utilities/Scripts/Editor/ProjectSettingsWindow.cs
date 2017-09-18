@@ -176,7 +176,11 @@ namespace HoloToolkit.Unity
                             }
                             EditorUtility.ClearProgressBar();
 
+#if UNITY_2017_1_OR_NEWER
                             if (webRequest.isNetworkError || webRequest.isHttpError)
+#else
+                            if (webRequest.isError)
+#endif
                             {
                                 throw new UnityException("Network Error: " + webRequest.error);
                             }
