@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity.InputModule
         private const int IgnoreRaycastLayer = 2;
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
-        private Vector3 PlacementPosOffset;
+        public Vector3 PlacementPosOffset;
 
         protected virtual void Start()
         {
@@ -195,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void CalculateColliderOffset()
+        public void CalculateColliderOffset()
         {
             Collider[] colliders = GetComponentsInChildren<Collider>();
             Bounds bounds = colliders[0].bounds;
