@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity.InputModule
         private const int IgnoreRaycastLayer = 2;
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
-
+        private Vector3 PlacementPosOffset;
 
         protected virtual void Start()
         {
@@ -69,6 +69,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 AttachWorldAnchor();
             }
+        }
+
+        private void OnEnable()
+        {
+            CalculateColliderOffset();
         }
 
         /// <summary>
@@ -100,10 +105,10 @@ namespace HoloToolkit.Unity.InputModule
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
+
             if (UseColliderCenter)
             {
-                Bounds bounds = CalculateAllColliderBounds();
-                placementPosition += (transform.position - bounds.center);
+                placementPosition += PlacementPosOffset;
             }
 
             // Here is where you might consider adding intelligence
@@ -190,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private Bounds CalculateAllColliderBounds()
+        private void CalculateColliderOffset()
         {
             Collider[] colliders = GetComponentsInChildren<Collider>();
             Bounds bounds = colliders[0].bounds;
@@ -199,7 +204,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 bounds.Encapsulate(colliders[i].bounds);
             }
-            return bounds;
+            PlacementPosOffset = transform.position - bounds.center;
         }
 
         /// <summary>
