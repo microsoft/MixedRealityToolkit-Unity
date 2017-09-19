@@ -50,7 +50,7 @@ namespace HoloToolkit.Unity
                                 }
                                 else
                                 {
-                                    simpleHapticsController.SendHapticFeedbackForDuration(hapticsFeedback, intensity, new TimeSpan(Convert.ToInt64(durationInSeconds) * TimeSpan.TicksPerSecond));
+                                    simpleHapticsController.SendHapticFeedbackForDuration(hapticsFeedback, intensity, TimeSpan.FromSeconds(durationInSeconds));
                                 }
                                 return;
                             }
