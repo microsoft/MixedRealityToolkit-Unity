@@ -38,8 +38,8 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
-        [Tooltip("Amount model should be offset from the placement position.")]
-        public Vector3 centerOffset;
+        [Tooltip("Should the center of the Collider be used instead of the gameObjects world transform.")]
+        public bool UseColliderCenter;
 
         private Interpolator interpolator;
 
@@ -49,6 +49,7 @@ namespace HoloToolkit.Unity.InputModule
         private const int IgnoreRaycastLayer = 2;
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
+
 
         protected virtual void Start()
         {
@@ -99,7 +100,11 @@ namespace HoloToolkit.Unity.InputModule
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
-            placementPosition += centerOffset;
+            if (UseColliderCenter)
+            {
+                Bounds bounds = CalculateAllColliderBounds();
+                placementPosition += (transform.position - bounds.center);
+            }
 
             // Here is where you might consider adding intelligence
             // to how the object is placed.  For example, consider
@@ -183,6 +188,18 @@ namespace HoloToolkit.Unity.InputModule
             {
                 SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced;
             }
+        }
+
+        private Bounds CalculateAllColliderBounds()
+        {
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            Bounds bounds = colliders[0].bounds;
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                bounds.Encapsulate(colliders[i].bounds);
+            }
+            return bounds;
         }
 
         /// <summary>
