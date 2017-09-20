@@ -169,8 +169,8 @@ Event data for an event that represents an input source being detected or lost.
 ##### SpeechEventData.cs
 Event data for an event coming from the speech keyword source.
 
-##### XboxControllerEVentData.cs
-Event data for an event coming from an xbox controller source.
+##### XboxControllerEventData.cs
+Event data for an event coming from an Xbox controller source.
 
 #### InputHandlers
 

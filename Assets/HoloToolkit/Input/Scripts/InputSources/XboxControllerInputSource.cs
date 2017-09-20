@@ -38,6 +38,11 @@ namespace HoloToolkit.Unity.InputModule
         private string previousCancelButton;
         private bool previousForceActiveState;
 
+        public XboxControllerMappingTypes HorizontalAxis { get { return horizontalAxis; } }
+        public XboxControllerMappingTypes VerticalAxis { get { return verticalAxis; } }
+        public XboxControllerMappingTypes CancelButton { get { return cancelButton; } }
+        public XboxControllerMappingTypes SubmitButton { get { return submitButton; } }
+
         [SerializeField]
         private XboxControllerMappingTypes horizontalAxis = XboxControllerMappingTypes.XboxDpadHorizontal;
 
@@ -45,10 +50,10 @@ namespace HoloToolkit.Unity.InputModule
         private XboxControllerMappingTypes verticalAxis = XboxControllerMappingTypes.XboxDpadVertical;
 
         [SerializeField]
-        private XboxControllerMappingTypes submitButton = XboxControllerMappingTypes.XboxA;
+        private XboxControllerMappingTypes submitButton = XboxControllerMappingTypes.None;
 
         [SerializeField]
-        private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.XboxB;
+        private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.None;
 
         [SerializeField]
         private MappingEntry[] mapping;
@@ -70,10 +75,26 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             previousForceActiveState = inputModule.forceModuleActive;
-            previousHorizontalAxis = inputModule.horizontalAxis;
-            previousVerticalAxis = inputModule.verticalAxis;
-            previousSubmitButton = inputModule.submitButton;
-            previousCancelButton = inputModule.cancelButton;
+
+            if (horizontalAxis != XboxControllerMappingTypes.None)
+            {
+                previousHorizontalAxis = inputModule.horizontalAxis;
+            }
+
+            if (verticalAxis != XboxControllerMappingTypes.None)
+            {
+                previousVerticalAxis = inputModule.verticalAxis;
+            }
+
+            if (submitButton != XboxControllerMappingTypes.None)
+            {
+                previousSubmitButton = inputModule.submitButton;
+            }
+
+            if (cancelButton != XboxControllerMappingTypes.None)
+            {
+                previousCancelButton = inputModule.cancelButton;
+            }
         }
 
         protected override void Update()
