@@ -38,9 +38,8 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
-        public enum PlacePositionCenter { GameObjectTransform, GameObjectCollider, GameObjectAndChildrenColliders };
         [Tooltip("Should the center of the Collider be used instead of the gameObjects world transform.")]
-        public PlacePositionCenter PlacementPositionCenter;
+        public bool UseColliderCenter;
 
         private Interpolator interpolator;
 
@@ -50,7 +49,6 @@ namespace HoloToolkit.Unity.InputModule
         private const int IgnoreRaycastLayer = 2;
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
-
         private Vector3 PlacementPosOffset;
 
         protected virtual void Start()
@@ -108,8 +106,7 @@ namespace HoloToolkit.Unity.InputModule
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
 
-            if (PlacementPositionCenter == PlacePositionCenter.GameObjectAndChildrenColliders ||
-                PlacementPositionCenter == PlacePositionCenter.GameObjectCollider)
+            if (UseColliderCenter)
             {
                 placementPosition += PlacementPosOffset;
             }
@@ -200,17 +197,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void CalculateColliderOffset()
         {
-            Collider[] colliders;
-            if (PlacementPositionCenter == PlacePositionCenter.GameObjectAndChildrenColliders)
-            {
-                colliders = GetComponentsInChildren<Collider>();
-
-            }
-            else
-            {
-                colliders = GetComponents<Collider>();
-
-            }
+            Collider[] colliders = GetComponentsInChildren<Collider>();
             Bounds bounds = colliders[0].bounds;
 
             for (int i = 0; i < colliders.Length; i++)
