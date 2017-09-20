@@ -165,13 +165,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 473449477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03fe91f227bf8af44afc939d2303cbb0, type: 3}
+  m_Script: {fileID: 11500000, guid: cb5262a7d5364684cabe7028282d34e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGlobalListener: 1
+  IsGlobalListener: 1
   movementSpeedMultiplier: 0.01
   rotationSpeedMultiplier: 1
-  resetButton: 12
+  resetButton: 13
   DebugText: {fileID: 1246058048}
 --- !u!23 &473449479
 MeshRenderer:

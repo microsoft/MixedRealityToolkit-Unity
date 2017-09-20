@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity.InputModule
 
             for (var i = 0; i < joystickNames.Length; i++)
             {
-                Debug.LogWarningFormat("Joystick \"{0}\" has not been setup with the input manager.Create a new class that inherits from \"GamePadInputSource\" and implement it.", joystickNames[i]);
+                Debug.LogWarningFormat("Joystick \"{0}\" has not been setup with the input manager.  Create a new class that inherits from \"GamePadInputSource\" and implement it.", joystickNames[i]);
             }
         }
     }
