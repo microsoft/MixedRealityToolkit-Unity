@@ -200,7 +200,7 @@ namespace HoloToolkit.Unity.InputModule
             Collider[] colliders = GetComponentsInChildren<Collider>();
             Bounds bounds = colliders[0].bounds;
 
-            for (int i = 0; i < colliders.Length; i++)
+            for (int i = 1; i < colliders.Length; i++)
             {
                 bounds.Encapsulate(colliders[i].bounds);
             }
