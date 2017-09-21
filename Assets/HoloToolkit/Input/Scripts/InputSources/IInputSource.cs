@@ -67,18 +67,9 @@ namespace HoloToolkit.Unity.InputModule
         /// Not all input sources support pointing information, and those that do may not always have it available.
         /// </summary>
         /// <param name="sourceId">ID of the source for which the pointing ray should be retrieved.</param>
-        /// <param name="pointerRay">Out parameter filled with the pointing ray if available.</param>
+        /// <param name="pointingRay">Out parameter filled with the pointing ray if available.</param>
         /// <returns>True if a pointing ray was retrieved, false if not.</returns>
-        bool TryGetPointerRay(uint sourceId, out Ray pointerRay);
-       
-        /// <summary>
-        /// Returns the pointing ray of the input source, if available.
-        /// Not all input sources support pointing information, and those that do may not always have it available.
-        /// </summary>
-        /// <param name="sourceId">ID of the source for which the pointing ray should be retrieved.</param>
-        /// <param name="gripRay">Out parameter filled with the pointing ray if available.</param>
-        /// <returns>True if a pointing ray was retrieved, false if not.</returns>
-        bool TryGetGripRay(uint sourceId, out Ray gripRay);
+        bool TryGetPointingRay(uint sourceId, out Ray pointingRay);
 
         bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position);
         bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position);

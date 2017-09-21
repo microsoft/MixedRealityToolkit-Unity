@@ -24,6 +24,9 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ControllerVisualizer : MonoBehaviour
     {
+        [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
+        public bool AnimateControllerModel = true;
+
         [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform left controller model.")]
         [SerializeField]
         protected GameObject LeftControllerOverride;
@@ -34,8 +37,9 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         protected GameObject TouchpadTouchedOverride;
 
-        [Tooltip("This shader will be used on the loaded GLTF controller model. This does not affect the above overrides.")]
-        public Shader GLTFShader;
+        [Tooltip("This material will be used on the loaded glTF controller model. This does not affect the above overrides.")]
+        [SerializeField]
+        protected UnityEngine.Material GLTFMaterial;
 
 #if !UNITY_EDITOR && UNITY_WSA
         // This is used to get the renderable controller model, since Unity does not expose this API.
@@ -51,15 +55,15 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_WSA
 #if !UNITY_EDITOR
-            if (GLTFShader == null)
+            if (GLTFMaterial == null)
             {
                 if (LeftControllerOverride == null && RightControllerOverride == null)
                 {
-                    Debug.Log("If using glTF, please specify a shader on " + name + ". Otherwise, please specify controller overrides.");
+                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
                 }
                 else if (LeftControllerOverride == null || RightControllerOverride == null)
                 {
-                    Debug.Log("Only one override is specified, and no shader is specified for the glTF model. Please set the shader or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
+                    Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
                 }
             }
 
@@ -101,7 +105,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             SpatialInteractionSource source = args.State.Source;
             // We only want to attempt loading a model if this source is actually a controller.
-            if (source.Kind == SpatialInteractionSourceKind.Controller)
+            if (source.Kind == SpatialInteractionSourceKind.Controller && controllerDictionary != null && !controllerDictionary.ContainsKey(source.Id))
             {
                 SpatialInteractionController controller = source.Controller;
                 if (controller != null)
@@ -118,87 +122,82 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator LoadControllerModel(SpatialInteractionController controller, SpatialInteractionSource source)
         {
-            bool isOverride;
-            if (controllerDictionary != null && !controllerDictionary.ContainsKey(source.Id))
+            GameObject controllerModelGameObject;
+            if (source.Handedness == SpatialInteractionSourceHandedness.Left && LeftControllerOverride != null)
             {
-                GameObject controllerModelGO;
-                if (source.Handedness == SpatialInteractionSourceHandedness.Left && LeftControllerOverride != null)
+                controllerModelGameObject = Instantiate(LeftControllerOverride);
+            }
+            else if (source.Handedness == SpatialInteractionSourceHandedness.Right && RightControllerOverride != null)
+            {
+                controllerModelGameObject = Instantiate(RightControllerOverride);
+            }
+            else
+            {
+                if (GLTFMaterial == null)
                 {
-                    controllerModelGO = Instantiate(LeftControllerOverride);
-                    isOverride = true;
+                    Debug.Log("If using glTF, please specify a material on " + name + ".");
+                    yield break;
                 }
-                else if (source.Handedness == SpatialInteractionSourceHandedness.Right && RightControllerOverride != null)
+
+                // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
+                IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = controller.TryGetRenderableModelAsync();
+
+                if (modelTask == null)
                 {
-                    controllerModelGO = Instantiate(RightControllerOverride);
-                    isOverride = true;
+                    Debug.Log("Model task is null.");
+                    yield break;
                 }
-                else
+
+                while (modelTask.Status == AsyncStatus.Started)
                 {
-                    if (GLTFShader == null)
-                    {
-                        Debug.Log("If using glTF, please specify a shader on " + name + ".");
-                        yield break;
-                    }
+                    yield return null;
+                }
 
-                    // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
-                    IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = controller.TryGetRenderableModelAsync();
+                IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
 
-                    if (modelTask == null)
-                    {
-                        Debug.Log("Model task is null.");
-                        yield break;
-                    }
+                if (modelStream == null)
+                {
+                    Debug.Log("Model stream is null.");
+                    yield break;
+                }
 
-                    while (modelTask.Status == AsyncStatus.Started)
+                if (modelStream.Size == 0)
+                {
+                    Debug.Log("Model stream is empty.");
+                    yield break;
+                }
+
+                byte[] fileBytes = new byte[modelStream.Size];
+
+                using (DataReader reader = new DataReader(modelStream))
+                {
+                    DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
+
+                    while (loadModelOp.Status == AsyncStatus.Started)
                     {
                         yield return null;
                     }
 
-                    IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
-
-                    if (modelStream == null)
-                    {
-                        Debug.Log("Model stream is null.");
-                        yield break;
-                    }
-
-                    if (modelStream.Size == 0)
-                    {
-                        Debug.Log("Model stream is empty.");
-                        yield break;
-                    }
-
-                    byte[] fileBytes = new byte[modelStream.Size];
-
-                    using (DataReader reader = new DataReader(modelStream))
-                    {
-                        DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
-
-                        while (loadModelOp.Status == AsyncStatus.Started)
-                        {
-                            yield return null;
-                        }
-
-                        reader.ReadBytes(fileBytes);
-                    }
-
-                    controllerModelGO = new GameObject();
-                    GLTFComponentStreamingAssets gltfScript = controllerModelGO.AddComponent<GLTFComponentStreamingAssets>();
-                    gltfScript.GLTFStandard = GLTFShader;
-                    gltfScript.GLTFData = fileBytes;
-                    yield return gltfScript.LoadModel();
-                    isOverride = false;
+                    reader.ReadBytes(fileBytes);
                 }
 
-                FinishControllerSetup(controllerModelGO, isOverride, source.Handedness.ToString(), source.Id);
+                controllerModelGameObject = new GameObject();
+                GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
+                gltfScript.ColorMaterial = GLTFMaterial;
+                gltfScript.NoColorMaterial = GLTFMaterial;
+                gltfScript.GLTFData = fileBytes;
+
+                yield return gltfScript.LoadModel();
             }
+
+            FinishControllerSetup(controllerModelGameObject, source.Handedness.ToString(), source.Id);
         }
 #endif
 
 #if UNITY_WSA
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
-            if (obj.state.source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(obj.state.source.id))
+            if (obj.state.source.kind == InteractionSourceKind.Controller && controllerDictionary != null && !controllerDictionary.ContainsKey(obj.state.source.id))
             {
                 GameObject controllerModelGameObject;
                 if (obj.state.source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
@@ -214,7 +213,7 @@ namespace HoloToolkit.Unity.InputModule
                     return;
                 }
 
-                FinishControllerSetup(controllerModelGameObject, true, obj.state.source.handedness.ToString(), obj.state.source.id);
+                FinishControllerSetup(controllerModelGameObject, obj.state.source.handedness.ToString(), obj.state.source.id);
             }
         }
 
@@ -231,10 +230,9 @@ namespace HoloToolkit.Unity.InputModule
                 ControllerInfo controller;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
                 {
-                    Destroy(controller.gameObject);
-
-                    // After destruction, the reference can be removed from the dictionary.
                     controllerDictionary.Remove(source.id);
+
+                    Destroy(controller);
                 }
             }
         }
@@ -242,7 +240,7 @@ namespace HoloToolkit.Unity.InputModule
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
         {
             ControllerInfo currentController;
-            if (controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
+            if (AnimateControllerModel && controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
             {
                 currentController.AnimateSelect(obj.state.selectPressedAmount);
 
@@ -267,20 +265,20 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 Vector3 newPosition;
-                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Pointer))
+                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
                 {
                     currentController.gameObject.transform.localPosition = newPosition;
                 }
 
                 Quaternion newRotation;
-                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Pointer))
+                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
                 {
                     currentController.gameObject.transform.localRotation = newRotation;
                 }
             }
         }
 
-        private void FinishControllerSetup(GameObject controllerModelGameObject, bool isOverride, string handedness, uint id)
+        private void FinishControllerSetup(GameObject controllerModelGameObject, string handedness, uint id)
         {
             var parentGameObject = new GameObject
             {
@@ -291,7 +289,7 @@ namespace HoloToolkit.Unity.InputModule
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
             var newControllerInfo = parentGameObject.AddComponent<ControllerInfo>();
-            if (!isOverride)
+            if (AnimateControllerModel)
             {
                 newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
             }
@@ -310,7 +308,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 touchVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 touchVisualizer.transform.localScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
-                touchVisualizer.GetComponent<Renderer>().material.shader = GLTFShader;
+                touchVisualizer.GetComponent<Renderer>().material = GLTFMaterial;
             }
             Destroy(touchVisualizer.GetComponent<Collider>());
             touchVisualizer.transform.parent = parentTransform;

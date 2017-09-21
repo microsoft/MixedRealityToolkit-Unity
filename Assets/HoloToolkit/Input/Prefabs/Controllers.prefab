@@ -51,7 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnimateControllerModel: 1
   LeftControllerOverride: {fileID: 0}
   RightControllerOverride: {fileID: 0}
   TouchpadTouchedOverride: {fileID: 0}
-  GLTFShader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
+  GLTFMaterial: {fileID: 2100000, guid: 2ac78523d661e954c83d799f582b22e8, type: 2}

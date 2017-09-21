@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity.InputModule
 
         /// <summary>
         /// Iterates through the Transform array to find specifically named GameObjects.
-        /// These GameObjects specifiy the animation bounds and the GameObject to modify for button,
+        /// These GameObjects specify the animation bounds and the GameObject to modify for button,
         /// thumbstick, and touchpad animation.
         /// </summary>
         /// <param name="childTransforms">The transforms of the glTF model.</param>
@@ -256,7 +256,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (thumbstickX != null && thumbstickY != null && thumbstickXMin != null && thumbstickXMax != null && thumbstickYMin != null && thumbstickYMax != null && newThumbstickPosition != lastThumbstickPosition)
             {
-                Vector2 thumbstickNormalized = (newThumbstickPosition + Vector2.one) / 2.0f;
+                Vector2 thumbstickNormalized = (newThumbstickPosition + Vector2.one) * 0.5f;
 
                 thumbstickX.transform.localPosition = Vector3.Lerp(thumbstickXMin.localPosition, thumbstickXMax.localPosition, thumbstickNormalized.x);
                 thumbstickX.transform.localRotation = Quaternion.Lerp(thumbstickXMin.localRotation, thumbstickXMax.localRotation, thumbstickNormalized.x);
@@ -284,7 +284,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (touchpadTouchX != null && touchpadTouchY != null && touchpadTouchXMin != null && touchpadTouchXMax != null && touchpadTouchYMin != null && touchpadTouchYMax != null && newTouchpadPosition != lastTouchpadPosition)
             {
-                Vector2 touchpadNormalized = (newTouchpadPosition + Vector2.one) / 2.0f;
+                Vector2 touchpadNormalized = (newTouchpadPosition + Vector2.one) * 0.5f;
 
                 touchpadTouchX.transform.localPosition = Vector3.Lerp(touchpadTouchXMin.localPosition, touchpadTouchXMax.localPosition, touchpadNormalized.x);
                 touchpadTouchX.transform.localRotation = Quaternion.Lerp(touchpadTouchXMin.localRotation, touchpadTouchXMax.localRotation, touchpadNormalized.x);
@@ -300,6 +300,16 @@ namespace HoloToolkit.Unity.InputModule
         {
             buttonGameObject.transform.localPosition = newTransform.localPosition;
             buttonGameObject.transform.localRotation = newTransform.localRotation;
+        }
+
+        private void OnDestroy()
+        {
+            if (touchpadTouchVisualizer != null)
+            {
+                Destroy(touchpadTouchVisualizer.GetComponent<Renderer>().material);
+            }
+
+            Destroy(gameObject);
         }
     }
 }
