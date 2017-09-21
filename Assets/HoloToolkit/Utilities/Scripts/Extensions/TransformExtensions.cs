@@ -86,5 +86,22 @@ namespace HoloToolkit.Unity
                 yield return parentTransform;
             }
         }
+
+        /// <summary>
+        /// Calculates the bounds of all the colliders attached to this gameObject and all it's children
+        /// </summary>
+        /// <param name="transform">Transform of root GameObject the colliders are attached to </param>
+        /// <returns></returns>
+        public static Bounds GetColliderBounds(this Transform transform)
+        {
+            Collider[] colliders = transform.GetComponentsInChildren<Collider>();
+            Bounds bounds = colliders[0].bounds;
+
+            for (int i = 1; i < colliders.Length; i++)
+            {
+                bounds.Encapsulate(colliders[i].bounds);
+            }
+            return bounds;
+        }
     }
 }

@@ -73,7 +73,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnEnable()
         {
-            CalculateColliderOffset();
+            Bounds bounds = transform.GetColliderBounds();
+            PlacementPosOffset = transform.position - bounds.center;
         }
 
         /// <summary>
@@ -193,18 +194,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced;
             }
-        }
-
-        public void CalculateColliderOffset()
-        {
-            Collider[] colliders = GetComponentsInChildren<Collider>();
-            Bounds bounds = colliders[0].bounds;
-
-            for (int i = 1; i < colliders.Length; i++)
-            {
-                bounds.Encapsulate(colliders[i].bounds);
-            }
-            PlacementPosOffset = transform.position - bounds.center;
         }
 
         /// <summary>
