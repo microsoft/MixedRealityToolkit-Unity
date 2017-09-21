@@ -74,6 +74,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (spatialInteractionManager != null)
                 {
                     spatialInteractionManager.SourceDetected += SpatialInteractionManager_SourceDetected;
+                    spatialInteractionManager.SourceLost += SpatialInteractionManager_SourceLost;
                 }
             }, true);
 #else
@@ -88,8 +89,8 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-#endif
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+#endif
             InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
 #endif
         }
@@ -115,6 +116,24 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         // LoadControllerModel is a coroutine in order to handle/wait for async calls.
                         StartCoroutine(LoadControllerModel(controller, source));
+                    }, false);
+                }
+            }
+        }
+
+        private void SpatialInteractionManager_SourceLost(SpatialInteractionManager sender, SpatialInteractionSourceEventArgs args)
+        {
+            SpatialInteractionSource source = args.State.Source;
+            if (source.Kind == SpatialInteractionSourceKind.Controller)
+            {
+                ControllerInfo controller;
+                if (controllerDictionary != null && controllerDictionary.TryGetValue(source.Id, out controller))
+                {
+                    controllerDictionary.Remove(source.Id);
+
+                    UnityEngine.WSA.Application.InvokeOnAppThread(() =>
+                    {
+                        Destroy(controller);
                     }, false);
                 }
             }
