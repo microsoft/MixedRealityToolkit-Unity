@@ -1,17 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class XboxControllerHandlerTest : MonoBehaviour, IXboxControllerHandler
+    public class XboxControllerHandlerTest : XboxControllerHandlerBase
     {
-        [SerializeField]
-        [Tooltip("Is Gaze required for controller input?")]
-        private bool isGlobalListener = true;
 
         [SerializeField]
         private float movementSpeedMultiplier = 1f;
@@ -23,36 +19,32 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private XboxControllerMappingTypes resetButton = XboxControllerMappingTypes.XboxY;
 
         public Text DebugText;
-        private string gamePadName;
         private Vector3 initialPosition;
         private Vector3 newPosition;
         private Vector3 newRotation;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             initialPosition = transform.position;
-
-            if (isGlobalListener)
-            {
-                InputManager.Instance.AddGlobalListener(gameObject);
-            }
         }
 
-        public void OnGamePadDetected(GamePadEventData eventData)
+        public override void OnGamePadDetected(GamePadEventData eventData)
         {
+            base.OnGamePadDetected(eventData);
             Debug.LogFormat("Joystick \"{0}\" Connected with id: {1}", eventData.GamePadName, eventData.SourceId);
-            gamePadName = eventData.GamePadName;
         }
 
-        public void OnGamePadLost(GamePadEventData eventData)
+        public override void OnGamePadLost(GamePadEventData eventData)
         {
+            base.OnGamePadLost(eventData);
             Debug.LogFormat("Joystick \"{0}\" Disconnected with id: {1}", eventData.GamePadName, eventData.SourceId);
-            gamePadName = string.Empty;
             DebugText.text = "No Controller Connected";
         }
 
-        public void OnXboxAxisUpdate(XboxControllerEventData eventData)
+        public override void OnXboxAxisUpdate(XboxControllerEventData eventData)
         {
+            base.OnXboxAxisUpdate(eventData);
             newPosition = Vector3.zero;
             newRotation = Vector3.zero;
 
@@ -90,36 +82,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     eventData.XboxLeftBumper_Pressed, eventData.XboxRightBumper_Pressed,
                     eventData.XboxLeftStick_Pressed, eventData.XboxRightStick_Pressed,
                     eventData.XboxView_Pressed, eventData.XboxMenu_Pressed,
-                    gamePadName);
-        }
-
-        private static bool OnButton_Up(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
-        {
-            switch (buttonType)
-            {
-                case XboxControllerMappingTypes.XboxA:
-                    return eventData.XboxA_Up;
-                case XboxControllerMappingTypes.XboxB:
-                    return eventData.XboxB_Up;
-                case XboxControllerMappingTypes.XboxX:
-                    return eventData.XboxX_Up;
-                case XboxControllerMappingTypes.XboxY:
-                    return eventData.XboxY_Up;
-                case XboxControllerMappingTypes.XboxView:
-                    return eventData.XboxView_Up;
-                case XboxControllerMappingTypes.XboxMenu:
-                    return eventData.XboxMenu_Up;
-                case XboxControllerMappingTypes.XboxLeftBumper:
-                    return eventData.XboxLeftBumper_Up;
-                case XboxControllerMappingTypes.XboxRightBumper:
-                    return eventData.XboxRightBumper_Up;
-                case XboxControllerMappingTypes.XboxLeftStickClick:
-                    return eventData.XboxLeftStick_Up;
-                case XboxControllerMappingTypes.XboxRightStickClick:
-                    return eventData.XboxRightStick_Up;
-                default:
-                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
-            }
+                    GamePadName);
         }
     }
 }
