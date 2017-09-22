@@ -1,11 +1,23 @@
 ## [Input]()
-Input System Diagrams:
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Input System Diagrams](#input-system-diagrams)
+- [Input Module Design](#input-module-design)
+- [Prefabs](#prefabs)
+- [Scripts](#scripts)
+- [Test Prefabs](#test-prefabs)
+- [Test Scripts](#test-scripts)
+- [Tests](#tests)
+
+## Overview
+
+This contains a fully-featured **input system**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a few example cursors, similar to the HoloLens shell cursor, that fully leverages the Unity's animation system.  This input system uses Unity's default **EventSystem** and there's no need for a custom **input module**.  The default **Standalone Input Module** works with this input system.
+
+## Input System Diagrams:
 ![alt text](/External/ReadMeImages/InputSystemDiagram.png)
 ![alt text](/External/ReadMeImages/CursorSystemDiagram.PNG)
-
-## Scripts that leverage HoloLens input features namely Gaze, Gesture and Voice.
-
-This contains a fully-featured **input module**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a **cursor** similar to the HoloLens shell cursor that fully leverages the Unity's animation system.
 
 ### Input Module Design
 The input module is designed to be extensible: it could support various input mechanisms and various types of gazers.
@@ -23,12 +35,14 @@ Game objects that want to consume input events can implement one or many **input
 - **ISourceStateHandler** for the source detected and source lost events.
 - **ISpeechHandler** for voice commands.
 - **IDictationHandler** for speech to text dictation.
+- **IGamePadHandler** for generic gamepad events.
+- **IXboxControllerHandler** for Xbox One Controller events.
 
 The **input manager** listens to the various events coming from the input sources, and also takes into account the gaze. Currently, that gaze is always coming from the GazeManager class, but this could be extended to support multiple gaze sources if the need arises.
 
 By default, input events are sent to the currently focused game object, if that object implements the appropriate interface. Modals input handlers can also be added to the input manager: these modal handlers will take priority over the currently focused object Fallback handlers can also be defined, so that the application can react to global inputs that aren't targeting a specific element. Any event sent by the input manager always bubbles up from the object to its ancestors. 
 
-In recap, the input manager forwards the various input sources events to the appropriate game object, using the following order:
+In recap, the **input manager** forwards the various input sources events to the appropriate game object, using the following order:
 
 1. The registered modal input handlers, in LIFO (Last-In First-Out) order of registration
 2. The currently focused object
@@ -66,6 +80,7 @@ This also includes a fake input source that allows you to simulate hand input wh
 Scripts related to the input features.
 
 #### Cursor
+
 ##### AnimatedCursor.cs
 Animated cursor is a cursor driven using an animator to inject state information and animate accordingly.
 
@@ -93,7 +108,19 @@ Cursor whose states are represented by one or many game objects.
 ##### SpriteCursor.cs
 Cursor whose states are represented by colored sprites.
 
+#### GamePad
+
+##### XboxControllerData.cs
+Data class that carries the input data for the event handler.
+
+##### XboxControllerMapping.cs
+Defines the controller mapping for the input source.
+
+##### XboxControllerMappingTypes.cs
+Controller axis and button types.
+
 #### Gaze
+
 ##### BaseRayStabilizer.cs
 A base abstract class for a stabilizer that takes as input position and orientation, and performs operations on them to stabilize or smooth that data.
 
@@ -110,30 +137,22 @@ Stabilize the user's gaze to account for head jitter.
 
 - **StoredStabilitySamples** Number of samples that you want to iterate on.  A larger number will be more stable.
 
-#### InputEvents
+#### InputEventData
+
 ##### BaseInputEventData.cs
 Base class for all input event data. An input event data is what is sent as a parameter to all input events.
+
+##### DictationEventData.cs
+Event data for an event coming from dictation.
+
+##### GamePadEventData.cs
+Event data for an event coming from a generic gamepad.
 
 ##### HoldEventData.cs
 Event data for an event coming from the hold gesture.
 
-##### IFocusable.cs
-Interface that a game object can implement to react to focus enter/exit.
-
-##### IHoldHandler.cs
-Interface that a game object can implement to react to hold gestures.
-
-##### IInputHandler.cs
-Interface that a game object can implement to react to simple pointer-like inputs.
-
-##### IManipulationHandler.cs
-Interface that a game object can implement to react to manipulation gestures.
-
-##### INavigationHandler.cs
-Interface that a game object can implement to react to navigation gestures.
-
-##### ISourceStateHandler.cs
-Interface that a game object can implement to react to source state changes, such as when an input source is detected or lost.
+##### InputClickedEventData.cs
+Event data for a simple tap / click.
 
 ##### InputEventData.cs
 Event data for an event that represents an input interaction such as a tap / click.
@@ -147,13 +166,68 @@ Event data for an event coming from the navigation gesture.
 ##### SourceStateEventData.cs
 Event data for an event that represents an input source being detected or lost.
 
+##### SpeechEventData.cs
+Event data for an event coming from the speech keyword source.
+
+##### XboxControllerEventData.cs
+Event data for an event coming from an Xbox controller source.
+
+#### InputHandlers
+
+##### IDictationHandler.cs
+Interface that a game object can implement to react to dictations.
+
+##### IFocusable.cs
+Interface that a game object can implement to react to focus enter/exit.
+
+#### IGamePadHandler.cs
+Interface that a game object can implement to react to gamepad events.
+
+##### IHoldHandler.cs
+Interface that a game object can implement to react to hold gestures.
+
+##### IInputClickHandler.cs
+Interface that a game object can implement to react to taps / clicks.
+
+##### IInputHandler.cs
+Interface that a game object can implement to react to simple pointer-like inputs.
+
+##### IManipulationHandler.cs
+Interface that a game object can implement to react to manipulation gestures.
+
+##### INavigationHandler.cs
+Interface that a game object can implement to react to navigation gestures.
+
+##### ISourceStateHandler.cs
+Interface that a game object can implement to react to source state changes, such as when an input source is detected or lost.
+
+##### ISpeechHandler.cs
+Interface that a game object can implement to react to speech keywords.
+
+##### IXboxControllerHandler.cs
+Interface that a game object can implement to react to Xbox Controller events.
+
 #### InputSources
 
 ##### BaseInputSource.cs
 Abstract base class for an input source that implements IInputSource. Defines the various abstract functions that any input source needs to implement, and provides some default implementations.
 
+##### DictationInputManager.cs
+Singleton class that implements  the DictationRecognizer to convert the user's speech to text. The DictationRecognizer exposes dictation functionality and supports registering and listening for hypothesis and phrase completed events.
+
+**IMPORTANT**: Please make sure to add the Microphone capabilities in your app, in Unity under  
+Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
+or in your Visual Studio Package.appxmanifest capabilities.
+
+- **InitialSilenceTimeout** :  The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
+- **AutoSilenceTimeout** : The time length in seconds before dictation recognizer session ends due to lack of audio input.
+- **RecordingTime** : Length in seconds for the manager to listen.
+
 ##### EditorHandsInput.cs
 Input source for fake hands information, which can be used to simulate hands input in the Unity editor.
+
+##### GamePadInputSource.cs
+Base class that all gamepad input sources should inherit from.
 
 ##### GesturesInput.cs
 Input source for gestures information from the WSA APIs, which gives access to various system supported gestures.
@@ -164,30 +238,46 @@ Interface for an input source. An input source is any input mechanism that can b
 ##### RawInteractionSourcesInput.cs
 Input source for raw interactions sources information, which gives finer details about current source state and position than the standard GestureRecognizer.
 
-#### Interactions Scripts
-##### HandDraggable.cs
-Allows dragging an object in space with your hand on HoloLens. Just attach the script to a game object to make it movable.
-
-#### Microphone
-
-##### MicStream.cs
-Lets you access beam-formed microphone streams from the HoloLens to optimize voice and/or room captures, which is impossible to do with Unity's Microphone object. Takes the data and inserts it into Unity's AudioSource object for easy handling. Also lets you record indeterminate-length audio files from the Microphone to your device's Music Library, also using beam-forming.
-
-Check out Assets/HoloToolkit/Input/Tests/Scripts/MicStreamDemo.cs for an example of implementing these features, which is used in the demo scene at Assets/HoloToolkit/Input/Tests/MicrophoneStream.unity.
-
-**IMPORTANT**: Please make sure to add the Microphone and Music Library capabilities in your app, in Unity under  
-Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
-or in your Visual Studio Package.appxmanifest capabilities.
-
-**_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
-
-**RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
-
-#### Voice
+##### SpeechInputSource.cs
+Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.  You can utilize keywords with the SpeechInputHandler component by assigning game objects and specifying a Unity Event trigger.
 
 **IMPORTANT**: Please make sure to add the Microphone capabilities in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
 or in your Visual Studio Package.appxmanifest capabilities.
+
+**Persistent Keywords** Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.
+
+**RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+
+**KeywordsAndKeys** Set the size as the number of keywords you'd like to listen for, then specify the keywords to complete the array.
+
+**RecognitionConfidenceLevel** The confidence level for the keyword recognizer.
+
+##### SupportedInputInfo.cs
+Enumeration of the supported input infor for Unity WSA APIs.
+
+##### XboxControllerInputSource.cs
+Allows you to specity **EventSystem** axis and button overrides and custom controller mappings.
+
+**Horizontal Axis** Sets the horizontal axis override.
+**Vertical Axis** Sets the vertical axis override.
+**Submit Button** Sets the submit button override.
+**Cancel Button** Sets the cancel button override.
+
+**Use Custom Mapping** Enables custom mapping for your controller.  Strings should match the input mapping from `Edit/Project Settings/Input`.
+
+#### Microphone
+
+##### KeyworkdAndKeyCode.cs
+Struct that facilitates the storage of keyword and keycode pairs.
+
+#### Utilities
+
+##### HandDraggable.cs
+Allows dragging an object in space with your hand on HoloLens. Just attach the script to a game object to make it movable.
+
+##### TapToPlace.cs
+Allows users to tap on an object to move it's position.
 
 ##### KeywordManager.cs (_Depreciated_)
 Please use SpeechInputSource and SpeechInputHandler instead.
@@ -197,27 +287,14 @@ Allows you to specify keywords and methods in the Unity Inspector, instead of re
 
 **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
-##### SpeechInputSource.cs
-Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.  You can utilize keywords with the SpeechInputHandler component by assigning game objects and specifying a Unity Event trigger.
-
-Check out Assets/HoloToolkit/Input/Tests/Scripts/SphereKeywords.cs and Assets/HoloToolkit/Input/Tests/Scripts/SphereGlobalKeywords.cs for an example of implementing these features, which is used in the demo scene at Assets/HoloToolkit/Input/Tests/SpeechInputSource.unity.
-
-**_KeywordsAndKeys_** Set the size as the number of keywords you'd like to listen for, then specify the keywords to complete the array.
-
-**RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
+##### SetGlobalListener.cs
+Used to register the GameObject on the InputManager as a global listener.
 
 ##### SpeechInputHandler.cs
 Used to assign a Unity Event to a keyword stored in the SpeechInputSource component.
 
-##### ISpeechHandler.cs
-Interface that a game object can implement to react to speech keywords.
-
-##### DictationInputManager.cs
-Singleton class that implements  the DictationRecognizer to convert the user's speech to text. The DictationRecognizer exposes dictation functionality and supports registering and listening for hypothesis and phrase completed events.
-
-- **InitialSilenceTimeout** :  The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
-- **AutoSilenceTimeout** : The time length in seconds before dictation recognizer session ends due to lack of audio input.
-- **RecordingTime** : Length in seconds for the manager to listen.
+##### TriggerButton.cs
+Very simple class that implements basic logic for a trigger button.
 
 ### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Prefabs)
 
@@ -236,6 +313,9 @@ You can simply drop this into your scene and be able to send arbitrary messages 
 Sends Unity message to currently focused object.
 FocusedObjectMessageSender.SendMessageToFocusedObject needs to be registered as a response in KeywordManager
 to enable arbitrary messages to be sent to currently focused object.
+
+#### MicStream.cs
+Lets you access beam-formed microphone streams from the HoloLens to optimize voice and/or room captures, which is impossible to do with Unity's Microphone object. Takes the data and inserts it into Unity's AudioSource object for easy handling. Also lets you record indeterminate-length audio files from the Microphone to your device's Music Library, also using beam-forming.
 
 #### SelectedObjectMessageSender.cs
 Sends Unity message to currently selected object.
@@ -326,5 +406,6 @@ When you start the scene, your keywords will automatically be registered on a Ke
 #### 
 
 ---
-##### [Go back up to the table of contents.](../../../README.md)
+##### [Go back up to the table of contents](#table-of-contents)
+##### [Go back to the main page.](../../../README.md)
 ---
