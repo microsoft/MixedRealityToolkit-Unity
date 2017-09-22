@@ -88,10 +88,10 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Calculates the bounds of all the colliders attached to this game object and all it's children
+        /// Calculates the bounds of all the colliders attached to this GameObject and all it's children
         /// </summary>
         /// <param name="transform">Transform of root GameObject the colliders are attached to </param>
-        /// <returns>The total bounds of all colliders attached to this game object. 
+        /// <returns>The total bounds of all colliders attached to this GameObject. 
         /// If no colliders attached, returns a bounds of center and extents 0</returns>
         public static Bounds GetColliderBounds(this Transform transform)
         {
