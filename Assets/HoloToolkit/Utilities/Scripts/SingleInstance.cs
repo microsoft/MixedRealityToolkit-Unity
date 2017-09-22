@@ -32,7 +32,12 @@ namespace HoloToolkit.Unity
             }
         }
 
-        protected void OnDestroy()
+        /// <summary>
+        /// Called by Unity when destroying a MonoBehaviour. Scripts that extend
+        /// SingleInstance should be sure to call base.OnDestroy() to ensure the
+        /// underlying static _Instance reference is properly cleaned up.
+        /// </summary>
+        protected virtual void OnDestroy()
         {
             _Instance = null;
         }
