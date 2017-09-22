@@ -25,6 +25,20 @@ namespace HoloToolkit.Unity
         /// Debug text for displaying information.
         /// </summary>
         public TextMesh AnchorDebugText;
+
+        /// <summary>
+        /// Enables detailed logs in console window.
+        /// </summary>
+        /// <remarks>If the Sharing Service is used, it will inherit the log settings.</remarks>
+        [Tooltip("Enables detailed logs in console window.  If the Sharing Service is used, it will inherit the log settings.")]
+        public bool ShowDetailedLogs;
+
+        /// <summary>
+        /// Enables anchors to be stored from subsequent game sessions.
+        /// </summary>
+        [Tooltip("Enables anchors to be stored from subsequent game sessions.")]
+        public bool PersistentAnchors;
+
 #if UNITY_WSA
         /// <summary>
         /// To prevent initializing too many anchors at once
@@ -59,19 +73,6 @@ namespace HoloToolkit.Unity
         /// The queue for local device anchor operations.
         /// </summary>
         protected Queue<AnchorAttachmentInfo> LocalAnchorOperations = new Queue<AnchorAttachmentInfo>();
-
-        /// <summary>
-        /// Enables detailed logs in console window.
-        /// </summary>
-        /// <remarks>If the Sharing Service is used, it will inherit the log settings.</remarks>
-        [Tooltip("Enables detailed logs in console window.  If the Sharing Service is used, it will inherit the log settings.")]
-        public bool ShowDetailedLogs;
-
-        /// <summary>
-        /// Enables anchors to be stored from subsequent game sessions.
-        /// </summary>
-        [Tooltip("Enables anchors to be stored from subsequent game sessions.")]
-        public bool PersistentAnchors;
 
         /// <summary>
         /// The WorldAnchorStore for the current application.
