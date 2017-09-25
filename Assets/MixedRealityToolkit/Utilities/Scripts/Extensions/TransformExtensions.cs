@@ -29,7 +29,8 @@ namespace HoloToolkit.Unity
             if (transform.parent == null)
             {
                 stringBuilder.Append(prefix);
-            } else
+            }
+            else
             {
                 GetFullPath(stringBuilder, transform.parent, delimiter, prefix);
                 stringBuilder.Append(delimiter);
@@ -96,21 +97,14 @@ namespace HoloToolkit.Unity
         public static Bounds GetColliderBounds(this Transform transform)
         {
             Collider[] colliders = transform.GetComponentsInChildren<Collider>();
-            if (colliders.Length != 0)
-            {
-                Bounds bounds = colliders[0].bounds;
+            if (colliders.Length == 0) { return new Bounds(); }
 
-                for (int i = 1; i < colliders.Length; i++)
-                {
-                    bounds.Encapsulate(colliders[i].bounds);
-                }
-                return bounds;
-            }
-            else
+            Bounds bounds = colliders[0].bounds;
+            for (int i = 1; i < colliders.Length; i++)
             {
-                Debug.LogWarningFormat("No Colliders attached to '{0}'", transform.name);
-                return new Bounds();
+                bounds.Encapsulate(colliders[i].bounds);
             }
+            return bounds;
         }
     }
 }
