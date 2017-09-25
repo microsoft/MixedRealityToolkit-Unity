@@ -11,8 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Class implementing IPointingSource to demonstrate how to create a pointing source.
     /// This is consumed by SimpleSinglePointerSelector.
     /// </summary>
-    public class InputSourcePointer :
-        IPointingSource
+    public class InputSourcePointer : IPointingSource
     {
         public IInputSource InputSource { get; set; }
 
@@ -69,8 +68,7 @@ namespace HoloToolkit.Unity.InputModule
 
             return (inputData != null)
                 && (inputData.InputSource == InputSource)
-                && (inputData.SourceId == InputSourceId)
-                ;
+                && (inputData.SourceId == InputSourceId);
         }
     }
 }

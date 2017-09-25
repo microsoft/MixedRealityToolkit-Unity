@@ -64,7 +64,7 @@ namespace HoloToolkit.Unity.InputModule
             if (inputManager == null)
             {
                 Debug.LogError("Ensure your scene has the InputManager prefab.");
-                gameObject.SetActive(false);
+                Destroy(this);
             }
         }
 
@@ -156,7 +156,6 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     case GestureState.NavigationStarted:
                         navigationCompleted = true;
-                        Debug.Log("Gamepad: Navigation Completed");
                         CancelInvoke("HandleHoldStarted");
                         CancelInvoke("HandleHoldCompleted");
                         inputManager.RaiseNavigationCompleted(this, GamePadId, Vector3.zero);
@@ -164,14 +163,12 @@ namespace HoloToolkit.Unity.InputModule
                         break;
 
                     case GestureState.HoldStarted:
-                        Debug.Log("Gamepad: Hold Canceled");
                         CancelInvoke("HandleHoldCompleted");
                         inputManager.RaiseHoldCanceled(this, GamePadId);
                         Reset();
                         break;
 
                     case GestureState.HoldCompleted:
-                        Debug.Log("Gamepad: Hold Completed");
                         inputManager.RaiseHoldCompleted(this, GamePadId);
                         Reset();
                         break;
@@ -179,7 +176,6 @@ namespace HoloToolkit.Unity.InputModule
                     default:
                         CancelInvoke("HandleHoldStarted");
                         CancelInvoke("HandleHoldCompleted");
-                        Debug.Log("Gamepad: Tap");
                         inputManager.RaiseInputClicked(this, GamePadId, InteractionSourcePressType.Select, 1);
                         Reset();
                         break;
@@ -205,7 +201,6 @@ namespace HoloToolkit.Unity.InputModule
             holdStarted = true;
 
             currentGestureState = GestureState.HoldStarted;
-            Debug.Log("Gamepad: Hold Started");
             inputManager.RaiseHoldStarted(this, GamePadId);
             raiseOnce = true;
 
