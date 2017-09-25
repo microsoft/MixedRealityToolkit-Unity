@@ -6,10 +6,10 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Interface to implement to react to controller input changes.
+    /// Interface to implement to react to select pressed changes.
     /// </summary>
-    public interface IControllerInputHandler : IEventSystemHandler
+    public interface ISelectHandler : IEventSystemHandler
     {
-        void OnInputPositionChanged(InputPositionEventData eventData);
+        void OnSelectPressedAmountChanged(SelectPressedEventData eventData);
     }
 }

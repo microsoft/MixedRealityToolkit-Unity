@@ -118,6 +118,7 @@ namespace HoloToolkit.Unity.InputModule
 
             public uint SourceId { get { return Source.id; } }
             public InteractionSourceKind SourceKind { get { return Source.kind; } }
+            public InteractionSourceHandedness Handedness { get { return Source.handedness; } }
             public readonly InteractionSource Source;
             public SourceCapability<Vector3> PointerPosition;
             public SourceCapability<Quaternion> PointerRotation;
@@ -665,6 +666,12 @@ namespace HoloToolkit.Unity.InputModule
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripPosition.IsSupported |= sourceData.GripPosition.IsAvailable;
 
+            if (Camera.main.transform.parent != null)
+            {
+                newPointerPosition = Camera.main.transform.parent.TransformPoint(newPointerPosition);
+                newGripPosition = Camera.main.transform.parent.TransformPoint(newGripPosition);
+            }
+
             if (sourceData.PointerPosition.IsAvailable || sourceData.GripPosition.IsAvailable)
             {
                 sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
@@ -681,6 +688,13 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
+
+            if (Camera.main.transform.parent != null)
+            {
+                newPointerRotation.eulerAngles = Camera.main.transform.parent.TransformDirection(newPointerRotation.eulerAngles);
+                newGripRotation.eulerAngles = Camera.main.transform.parent.TransformDirection(newGripRotation.eulerAngles);
+            }
+
             if (sourceData.PointerRotation.IsAvailable || sourceData.GripRotation.IsAvailable)
             {
                 sourceData.RotationUpdated = !(sourceData.PointerRotation.CurrentReading.Equals(newPointerRotation) && sourceData.GripRotation.CurrentReading.Equals(newGripRotation));
@@ -691,6 +705,12 @@ namespace HoloToolkit.Unity.InputModule
             Vector3 pointerForward = Vector3.zero;
             sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
             sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+
+            if (Camera.main.transform.parent != null)
+            {
+                pointerForward = Camera.main.transform.parent.TransformDirection(pointerForward);
+            }
+
             sourceData.PointingRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
 
             sourceData.Thumbstick.IsSupported = interactionSourceState.source.supportsThumbstick;

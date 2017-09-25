@@ -86,7 +86,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        new void OnDestroy()
+        protected override void OnDestroy()
         {
             if (fadeMaterial != null)
             {

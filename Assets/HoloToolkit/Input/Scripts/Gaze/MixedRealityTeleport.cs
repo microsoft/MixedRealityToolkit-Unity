@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+
+using System;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
@@ -9,27 +12,27 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Script teleports the user to the location being gazed at when Y was pressed on a Gamepad.
     /// </summary>
-    public class MixedRealityTeleport : Singleton<MixedRealityTeleport>
+    [RequireComponent(typeof(SetGlobalListener))]
+    public class MixedRealityTeleport : Singleton<MixedRealityTeleport>, IControllerInputHandler
     {
-        [Tooltip("Game pad button to press for teleporting or jump.")]
-        public string TeleportButtonName = "Jump";
+        [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
+        public string LeftThumbstickX = "ControllerLeftStickX";
 
-        [Tooltip("Game pad button to press for going back to a state.")]
-        public string GoBackButtonName = "Fire2";
+        [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
+        public string LeftThumbstickY = "ControllerLeftStickY";
 
-        [Tooltip("Name of the joystick axis to move along X.")]
-        public string LeftJoystickX = "ControllerLeftStickX";
+        [Tooltip("Name of the thumbstick axis to check for rotation.")]
+        public string RightThumbstickX = "ControllerRightStickX";
 
-        [Tooltip("Name of the joystick axis to move along Y.")]
-        public string LeftJoystickY = "ControllerLeftStickY";
+        [Tooltip("Name of the thumbstick axis to check for rotation.")]
+        public string RightThumbstickY = "ControllerRightStickY";
 
         public bool EnableTeleport = true;
+        public bool EnableRotation = true;
+        public bool EnableStrafe = true;
 
-        public bool EnableJoystickMovement = false;
-
-        public float SpeedScale { get; set; }
-
-        public float BumperRotationSize = 30.0f;
+        public float RotationSize = 45.0f;
+        public float StrafeAmount = 0.5f;
 
         public GameObject TeleportMarker;
         private Animator animationController;
@@ -40,17 +43,25 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private FadeScript fadeControl;
 
-        private GazeManager gazeManager;
-        private Vector3 positionBeforeJump = Vector3.zero;
         private GameObject teleportMarker;
-        private bool teleportValid;
-        private bool teleporting;
+        private bool isTeleportValid;
+        private IPointingSource currentPointingSource;
+        private uint currentSourceId;
 
         private void Start()
         {
-            gazeManager = GazeManager.Instance;
             fadeControl = FadeScript.Instance;
-            SpeedScale = 0.6f;
+
+            if (!XRDevice.isPresent || fadeControl == null)
+            {
+                if (fadeControl == null)
+                {
+                    Debug.LogError("The MixedRealityTeleport script on " + name + " requires a FadeScript object.");
+                }
+
+                Destroy(this);
+                return;
+            }
 
             teleportMarker = Instantiate(TeleportMarker);
             teleportMarker.SetActive(false);
@@ -64,125 +75,171 @@ namespace HoloToolkit.Unity.InputModule
 
         void Update()
         {
-            HandleTeleport();
-            HandleGoBackPressed();
-            HandleJoystickMovement();
             if (InteractionManager.numSourceStates == 0)
             {
-                HandleBumperRotation();
+                HandleGamepad();
+            }
+
+            if (currentPointingSource != null)
+            {
+                PositionMarker();
             }
         }
 
-        private void HandleTeleport()
+        private void HandleGamepad()
         {
-            if (EnableTeleport)
+            if (EnableTeleport && !fadeControl.Busy)
             {
-                if (teleporting)
+                float leftX = Input.GetAxis(LeftThumbstickX);
+                float leftY = Input.GetAxis(LeftThumbstickY);
+
+                if (currentPointingSource == null && leftY > 0.8 && Math.Abs(leftX) < 0.3)
                 {
-                    if (Input.GetButtonUp(TeleportButtonName))
+                    if (FocusManager.Instance.TryGetSinglePointer(out currentPointingSource))
                     {
-                        teleporting = false;
-                        if (teleportValid)
+                        StartTeleport();
+                    }
+                }
+                else if (currentPointingSource != null && new Vector2(leftX, leftY).magnitude < 0.2)
+                {
+                    FinishTeleport();
+                }
+            }
+
+            if (EnableStrafe && currentPointingSource == null && !fadeControl.Busy)
+            {
+                float leftX = Input.GetAxis(LeftThumbstickX);
+                float leftY = Input.GetAxis(LeftThumbstickY);
+
+                if (leftX < -0.8 && Math.Abs(leftY) < 0.3)
+                {
+                    DoStrafe(Vector3.left * StrafeAmount);
+                }
+                else if (leftX > 0.8 && Math.Abs(leftY) < 0.3)
+                {
+                    DoStrafe(Vector3.right * StrafeAmount);
+                }
+                else if (leftY < -0.8 && Math.Abs(leftX) < 0.3)
+                {
+                    DoStrafe(Vector3.back * StrafeAmount);
+                }
+            }
+
+            if (EnableRotation && currentPointingSource == null && !fadeControl.Busy)
+            {
+                float rightX = Input.GetAxis(RightThumbstickX);
+                float rightY = Input.GetAxis(RightThumbstickY);
+
+                if (rightX < -0.8 && Math.Abs(rightY) < 0.3)
+                {
+                    DoRotation(-RotationSize);
+                }
+                else if (rightX > 0.8 && Math.Abs(rightY) < 0.3)
+                {
+                    DoRotation(RotationSize);
+                }
+            }
+        }
+
+        void IControllerInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
+        {
+            if (eventData.PressType == InteractionSourcePressType.Thumbstick)
+            {
+                if (EnableTeleport)
+                {
+                    if (currentPointingSource == null && eventData.Position.y > 0.8 && Math.Abs(eventData.Position.x) < 0.3)
+                    {
+                        if (FocusManager.Instance.TryGetPointingSource(eventData, out currentPointingSource))
                         {
-                            positionBeforeJump = transform.position;
-                            float verticalOffset;
-                            RaycastHit hitInfo;
-                            if (Physics.Raycast(Camera.main.transform.position, Vector3.down, out hitInfo, 5.0f))
-                            {
-                                verticalOffset = hitInfo.distance;
-                            }
-                            else
-                            {
-                                verticalOffset = 2.6f;
-                            }
-
-                            Vector3 hitPos = teleportMarker.transform.position + Vector3.up * verticalOffset;
-
-                            fadeControl.DoFade(0.25f, 0.5f, () =>
-                            {
-                                SetWorldPosition(hitPos);
-                            }, null);
+                            currentSourceId = eventData.SourceId;
+                            StartTeleport();
                         }
-
-                        DisableMarker();
                     }
-                    else
+                    else if (currentPointingSource != null && currentSourceId == eventData.SourceId && eventData.Position.magnitude < 0.2)
                     {
-                        PositionMarker();
+                        FinishTeleport();
                     }
                 }
-                else
+
+                if (EnableStrafe && currentPointingSource == null)
                 {
-                    if (fadeControl.Busy == false && Input.GetButtonDown(TeleportButtonName))
+                    if (eventData.Position.y < -0.8 && Math.Abs(eventData.Position.x) < 0.3)
                     {
-                        teleporting = true;
-                        EnableMarker();
-                        PositionMarker();
+                        DoStrafe(Vector3.back * StrafeAmount);
+                    }
+                }
+
+                if (EnableRotation && currentPointingSource == null)
+                {
+                    if (eventData.Position.x < -0.8 && Math.Abs(eventData.Position.y) < 0.3)
+                    {
+                        DoRotation(-RotationSize);
+                    }
+                    else if (eventData.Position.x > 0.8 && Math.Abs(eventData.Position.y) < 0.3)
+                    {
+                        DoRotation(RotationSize);
                     }
                 }
             }
         }
 
-        private void HandleGoBackPressed()
+        public void StartTeleport()
         {
-            if (EnableTeleport && Input.GetButtonDown(GoBackButtonName))
+            if (currentPointingSource != null && !fadeControl.Busy)
             {
-                Vector3 oldPositionBeforeJump = positionBeforeJump;
-                positionBeforeJump = transform.position;
-
-                fadeControl.DoFade(0.25f, 0.5f, () =>
-                {
-                    SetWorldPosition(oldPositionBeforeJump);
-                }, null);
+                EnableMarker();
+                PositionMarker();
             }
         }
 
-        private void HandleJoystickMovement()
+        private void FinishTeleport()
         {
-            if (EnableJoystickMovement)
+            if (currentPointingSource != null)
             {
-                float forwardAmount = Input.GetAxis(LeftJoystickY) * -1;
-                float strafeAmount = Input.GetAxis(LeftJoystickX);
+                currentPointingSource = null;
 
-                Vector3 forwardDirection = Camera.main.transform.forward;
-                Vector3 rightDirection = Camera.main.transform.right;
-
-                Vector3 startPos = transform.position;
-                transform.position += forwardDirection * (forwardAmount * SpeedScale * Time.deltaTime);
-                transform.position += rightDirection * (strafeAmount * SpeedScale * Time.deltaTime);
-
-                if (Physics.BoxCast(Camera.main.transform.position, Vector3.one * 0.2f, transform.position - startPos, Quaternion.identity, 0.2f))
+                if (isTeleportValid)
                 {
-                    transform.position = startPos;
+                    RaycastHit hitInfo;
+                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(Camera.main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
+
+                    fadeControl.DoFade(0.25f, 0.5f, () =>
+                    {
+                        SetWorldPosition(hitPos);
+                    }, null);
                 }
+
+                DisableMarker();
             }
         }
 
-        private void HandleBumperRotation()
+        public void DoRotation(float rotationAmount)
         {
-            // Check bumpers for coarse rotation
-            float bumperRot = 0;
-
-            if (Input.GetButtonUp("LeftBumper"))
-            {
-                bumperRot = -BumperRotationSize;
-            }
-
-            if (Input.GetButtonUp("RightBumper"))
-            {
-                bumperRot = BumperRotationSize;
-            }
-
-            if (bumperRot != 0)
+            if (rotationAmount != 0 && !fadeControl.Busy)
             {
                 fadeControl.DoFade(
                     0.25f, // Fade out time
                     0.25f, // Fade in time
                     () => // Action after fade out
                     {
-                        transform.RotateAround(Camera.main.transform.position, Vector3.up, bumperRot);
-                    },
-                    null); // Action after fade in
+                        transform.RotateAround(Camera.main.transform.position, Vector3.up, rotationAmount);
+                    }, null); // Action after fade in
+            }
+        }
+
+        public void DoStrafe(Vector3 strafeAmount)
+        {
+            if (strafeAmount.magnitude != 0 && !fadeControl.Busy)
+            {
+                fadeControl.DoFade(
+                    0.25f, // Fade out time
+                    0.25f, // Fade in time
+                    () => // Action after fade out
+                    {
+                        Transform transformToRotate = Camera.main.transform;
+                        transformToRotate.rotation = Quaternion.Euler(0, transformToRotate.rotation.eulerAngles.y, 0);
+                        transform.Translate(strafeAmount, Camera.main.transform);
+                    }, null); // Action after fade in
             }
         }
 
@@ -196,7 +253,7 @@ namespace HoloToolkit.Unity.InputModule
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
             // we need to set it relative to the user's head in the scene so they are looking/standing where 
             // we expect.
-            transform.position = worldPosition - Camera.main.transform.localPosition;
+            transform.position = worldPosition - (Camera.main.transform.position - transform.position);
         }
 
         private void EnableMarker()
@@ -219,29 +276,20 @@ namespace HoloToolkit.Unity.InputModule
 
         private void PositionMarker()
         {
-            Vector3 hitNormal = HitNormal();
-            print(hitNormal);
-            if (Vector3.Dot(hitNormal, Vector3.up) > 0.90f)
+            FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(currentPointingSource);
+
+            if (focusDetails.Object != null && (Vector3.Dot(focusDetails.Normal, Vector3.up) > 0.90f))
             {
-                teleportValid = true;
-                teleportMarker.transform.position = gazeManager.HitPosition;
+                isTeleportValid = true;
+
+                teleportMarker.transform.position = focusDetails.Point;
             }
             else
             {
-                teleportValid = false;
+                isTeleportValid = false;
             }
 
-            animationController.speed = teleportValid ? 1 : 0;
-        }
-
-        private Vector3 HitNormal()
-        {
-            Vector3 retval = Vector3.zero;
-            if (gazeManager.HitObject != null)
-            {
-                retval = gazeManager.HitNormal;
-            }
-            return retval;
+            animationController.speed = isTeleportValid ? 1 : 0;
         }
     }
 }
