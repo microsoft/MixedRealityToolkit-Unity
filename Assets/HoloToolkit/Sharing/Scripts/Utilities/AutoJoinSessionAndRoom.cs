@@ -18,6 +18,11 @@ namespace HoloToolkit.Sharing.Utilities
         /// </summary>
         private long roomID = 1;
 
+        /// <summary>
+        /// Time to wait before attempting to reconnect.
+        /// </summary>
+        public float Timeout = 1f;
+
         private static bool ShouldLocalUserCreateRoom
         {
             get
@@ -103,6 +108,8 @@ namespace HoloToolkit.Sharing.Utilities
                 Debug.Log("[AutoJoinSessionAndRoom] Attempting to connect...");
             }
 
+            yield return new WaitForSeconds(Timeout);
+
             if (!SharingStage.Instance.SessionsTracker.IsServerConnected)
             {
                 if (SharingStage.Instance.ShowDetailedLogs)
@@ -135,8 +142,7 @@ namespace HoloToolkit.Sharing.Utilities
 
             for (int i = 0; i < SharingStage.Instance.SessionsTracker.Sessions.Count; ++i)
             {
-                if (SharingStage.Instance.SessionsTracker.Sessions[i].GetName().GetString() ==
-                    SharingStage.Instance.SessionName)
+                if (SharingStage.Instance.SessionsTracker.Sessions[i].GetName().GetString() == SharingStage.Instance.SessionName)
                 {
                     sessionExists = true;
                     if (SharingStage.Instance.ShowDetailedLogs)
@@ -158,7 +164,10 @@ namespace HoloToolkit.Sharing.Utilities
                     Debug.LogFormat("[AutoJoinSessionAndRoom] Didn't find session {0}, making a new one...", SharingStage.Instance.SessionName);
                 }
 
-                yield return SharingStage.Instance.SessionsTracker.CreateSession(SharingStage.Instance.SessionName);
+                if (!SharingStage.Instance.SessionsTracker.CreateSession(SharingStage.Instance.SessionName))
+                {
+                    yield break;
+                }
 
                 yield return new WaitForEndOfFrame();
 
