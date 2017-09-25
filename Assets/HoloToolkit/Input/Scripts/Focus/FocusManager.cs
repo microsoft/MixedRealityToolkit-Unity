@@ -263,9 +263,24 @@ namespace HoloToolkit.Unity.InputModule
         {
             FocusDetails? details = TryGetFocusDetails(eventData);
 
-            return (details == null)
-                ? null
-                : details.Value.Object;
+            return (details == null) ? null : details.Value.Object;
+        }
+
+        public bool TryGetPointingSource(BaseEventData eventData, out IPointingSource pointingSource)
+        {
+            for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
+            {
+                PointerData pointer = pointers[iPointer];
+
+                if (pointer.PointingSource.OwnsInput(eventData))
+                {
+                    pointingSource = pointer.PointingSource;
+                    return true;
+                }
+            }
+
+            pointingSource = null;
+            return false;
         }
 
         public FocusDetails GetFocusDetails(IPointingSource pointingSource)
@@ -282,13 +297,18 @@ namespace HoloToolkit.Unity.InputModule
         /// Checks if exactly one pointer is registered and returns it if so.
         /// </summary>
         /// <returns>The registered pointer if exactly one is registered, null otherwise.</returns>
-        public IPointingSource TryGetSinglePointer()
+        public bool TryGetSinglePointer(out IPointingSource pointingSource)
         {
-            IPointingSource singlePointer = (pointers.Count == 1)
-                ? pointers[0].PointingSource
-                : null;
-
-            return singlePointer;
+            if (pointers.Count == 1)
+            {
+                pointingSource = pointers[0].PointingSource;
+                return true;
+            }
+            else
+            {
+                pointingSource = null;
+                return false;
+            }
         }
 
         public delegate void FocusEnteredMethod(GameObject focusedObject);
@@ -310,7 +330,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 Clear(uiRaycastPointerInputData);
             }
-            
+
             return uiRaycastPointerInputData;
         }
 
