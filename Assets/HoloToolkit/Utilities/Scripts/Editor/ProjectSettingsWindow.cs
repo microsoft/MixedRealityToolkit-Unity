@@ -149,7 +149,7 @@ namespace HoloToolkit.Unity
                     {
                         using (var webRequest = UnityWebRequest.Get(SharingServiceURL))
                         {
-                            webRequest.Send();
+                            webRequest.SendWebRequest();
 
                             while (!webRequest.isDone)
                             {
@@ -216,7 +216,7 @@ namespace HoloToolkit.Unity
                         using (var webRequest = UnityWebRequest.Get(InputManagerAssetURL)
                         )
                         {
-                            webRequest.Send();
+                            webRequest.SendWebRequest();
 
                             while (!webRequest.isDone)
                             {
