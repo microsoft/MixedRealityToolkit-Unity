@@ -3,15 +3,15 @@
 
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.ObjectModel;
 
 #if UNITY_WSA
-using HoloToolkit.Unity.SpatialMapping;
 using System;
 using System.Collections.Generic;
-using UnityEngine.XR.WSA.Sharing;
+using System.Collections.ObjectModel;
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
+using UnityEngine.XR.WSA.Sharing;
+using HoloToolkit.Unity.SpatialMapping;
 #endif
 
 namespace HoloToolkit.Unity.SharingWithUNET
@@ -21,8 +21,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
     /// </summary>
     public class UNetAnchorManager : NetworkBehaviour
     {
-        const string SavedAnchorKey = "SavedAnchorName";
-
         /// <summary>
         ///  Since we aren't a MonoBehavior we can't just use the singleton class
         ///  so we'll reroll it as a one off here.
@@ -48,6 +46,21 @@ namespace HoloToolkit.Unity.SharingWithUNET
         public string AnchorName = "";
 
         /// <summary>
+        /// Tracks if we have a shared anchor established
+        /// </summary>
+        public bool AnchorEstablished { get; set; }
+
+        /// <summary>
+        /// Tracks if an import is in flight.
+        /// </summary>
+        public bool ImportInProgress { get; private set; }
+
+        /// <summary>
+        /// Tracks if a download is in flight.
+        /// </summary>
+        public bool DownloadingAnchor { get; private set; }
+
+        /// <summary>
         /// The UNet network manager in the scene.
         /// </summary>
         private NetworkManager networkManager;
@@ -57,12 +70,14 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         private GenericNetworkTransmitter networkTransmitter;
 
+#if UNITY_WSA
+        const string SavedAnchorKey = "SavedAnchorName";
+
         /// <summary>
         /// Tracks if we had to manually start the observer so we should turn it off when we don't need it.
         /// </summary>
         private bool StartedObserver = false;
 
-#if UNITY_WSA
         /// <summary>
         /// While seeking a good place to put an anchor, we use spatial mapping;
         /// </summary>
@@ -111,21 +126,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #endif
 
         /// <summary>
-        /// Tracks if we have a shared anchor established
-        /// </summary>
-        public bool AnchorEstablished { get; set; }
-
-        /// <summary>
-        /// Tracks if an import is in flight.
-        /// </summary>
-        public bool ImportInProgress { get; private set; }
-
-        /// <summary>
-        /// Tracks if a download is in flight.
-        /// </summary>
-        public bool DownloadingAnchor { get; private set; }
-
-        /// <summary>
         /// Ensures that the scene has what we need to continue.
         /// </summary>
         /// <returns>True if we can proceed, false otherwise.</returns>
@@ -153,13 +153,13 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
 #if UNITY_WSA
             objectToAnchor = SharedCollection.Instance.gameObject;
-#endif
 
             spatialMapping = SpatialMappingManager.Instance;
             if (spatialMapping == null)
             {
                 Debug.Log("Spatial mapping not found in scene. Better anchor locations can be found if a SpatialMappingManager is in the scene");
             }
+#endif
 
             return true;
         }
@@ -173,6 +173,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 return;
             }
 
+#if UNITY_WSA
             if (HolographicSettings.IsDisplayOpaque)
             {
                 AnchorEstablished = true;
@@ -181,6 +182,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
             {
                 networkTransmitter.DataReadyEvent += NetworkTransmitter_DataReadyEvent;
             }
+#else
+            AnchorEstablished = true;
+#endif
 
             // If we have a debug panel, then we have debug data for the panel. 
             DebugPanel debugPanel = DebugPanel.Instance;
@@ -192,7 +196,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         private void Update()
         {
-#if WINDOWS_UWP
+#if UNITY_WSA
             if (HolographicSettings.IsDisplayOpaque)
             {
                 return;
@@ -221,8 +225,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
                     WaitForAnchor();
                 }
             }
-#else
-            return;
 #endif
         }
 
@@ -232,12 +234,16 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <returns>The calculated string</returns>
         private string GenerateDebugData()
         {
+#if UNITY_WSA
             return string.Format("Anchor Name: {0}\nAnchor Size: {1}\nAnchor Established?: {2}\nImporting?: {3}\nDownloading? {4}\n",
                 AnchorName,
                 anchorData == null ? exportingAnchorBytes.Count : anchorData.Length,
                 AnchorEstablished.ToString(),
                 ImportInProgress.ToString(),
                 DownloadingAnchor.ToString());
+#else
+            return "No Anchor data";
+#endif
         }
 
         /// <summary>
@@ -253,6 +259,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #endif
         }
 
+#if UNITY_WSA
         /// <summary>
         /// Finds a good position to set the anchor.
         /// 1. If we have an anchor stored in the player prefs/ anchor store, use that
@@ -410,7 +417,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         private void ExportAnchor()
         {
-#if UNITY_WSA
             WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
             WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
             watb.AddWorldAnchor(exportingAnchorName, worldAnchor);
@@ -423,7 +429,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 spatialMapping.StopObserver();
                 StartedObserver = false;
             }
-#endif
         }
 
         /// <summary>
@@ -444,7 +449,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <returns>True if it attached, false if it could not attach</returns>
         private bool AttachToCachedAnchor(string cachedAnchorName)
         {
-#if UNITY_WSA
             if (string.IsNullOrEmpty(cachedAnchorName))
             {
                 Debug.Log("Ignoring empty name");
@@ -464,7 +468,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
                     return true;
                 }
             }
-#endif
 
             // Didn't find the anchor.
             return false;
@@ -476,13 +479,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <param name="data">The data blob to import.</param>
         private void NetworkTransmitter_DataReadyEvent(byte[] data)
         {
-#if UNITY_WSA
             Debug.Log("Anchor data arrived.");
             anchorData = data;
             Debug.Log(data.Length);
             DownloadingAnchor = false;
             gotOne = true;
-#endif
         }
 
         /// <summary>
@@ -529,7 +530,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
-#if UNITY_WSA
         /// <summary>
         /// Called as anchor data becomes available to export
         /// </summary>
