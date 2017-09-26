@@ -10,9 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class SourceStateEventData : BaseInputEventData
     {
-        public SourceStateEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
+        public SourceStateEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(IInputSource inputSource, uint sourceId, object tag)
         {

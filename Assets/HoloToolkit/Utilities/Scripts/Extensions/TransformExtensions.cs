@@ -29,7 +29,8 @@ namespace HoloToolkit.Unity
             if (transform.parent == null)
             {
                 stringBuilder.Append(prefix);
-            } else
+            }
+            else
             {
                 GetFullPath(stringBuilder, transform.parent, delimiter, prefix);
                 stringBuilder.Append(delimiter);
@@ -85,6 +86,25 @@ namespace HoloToolkit.Unity
 
                 yield return parentTransform;
             }
+        }
+
+        /// <summary>
+        /// Calculates the bounds of all the colliders attached to this GameObject and all it's children
+        /// </summary>
+        /// <param name="transform">Transform of root GameObject the colliders are attached to </param>
+        /// <returns>The total bounds of all colliders attached to this GameObject. 
+        /// If no colliders attached, returns a bounds of center and extents 0</returns>
+        public static Bounds GetColliderBounds(this Transform transform)
+        {
+            Collider[] colliders = transform.GetComponentsInChildren<Collider>();
+            if (colliders.Length == 0) { return new Bounds(); }
+
+            Bounds bounds = colliders[0].bounds;
+            for (int i = 1; i < colliders.Length; i++)
+            {
+                bounds.Encapsulate(colliders[i].bounds);
+            }
+            return bounds;
         }
     }
 }

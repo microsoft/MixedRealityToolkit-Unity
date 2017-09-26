@@ -29,15 +29,6 @@ namespace HoloToolkit.Sharing.Tests
             SharingStage.Instance.SharingManagerConnected -= Connected;
 
             usersTracker = SharingStage.Instance.SessionUsersTracker;
-            string users = string.Empty;
-
-            for (int i = 0; i < usersTracker.CurrentUsers.Count; i++)
-            {
-                users += "\n" + usersTracker.CurrentUsers[i].GetName();
-            }
-
-            Debug.LogFormat("User Notifications: {0} users in room.{1}", usersTracker.CurrentUsers.Count, users);
-
             localUser = SharingStage.Instance.Manager.GetLocalUser();
 
             usersTracker.UserJoined += NotifyUserJoined;
@@ -48,7 +39,7 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (user.IsValid() && localUser != user)
             {
-                Debug.LogFormat("User Notifications: User {0} has joined the room.", user.GetName());
+                Debug.LogFormat("[User Notifications] User {0} has joined the room.", user.GetName());
             }
         }
 
@@ -56,7 +47,7 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (user.IsValid() && localUser != user)
             {
-                Debug.LogFormat("User Notifications: User {0} has left the room.", user.GetName());
+                Debug.LogFormat("[User Notifications] User {0} has left the room.", user.GetName());
             }
         }
 

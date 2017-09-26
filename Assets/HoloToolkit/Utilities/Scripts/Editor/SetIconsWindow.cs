@@ -129,10 +129,10 @@ namespace HoloToolkit.Unity
             if (newIcon.width != width && newIcon.height != height)
             {
                 // reset
-                newIcon = texture;
                 EditorUtility.DisplayDialog("Invalid Image",
                     string.Format("{0} should be an image with preferred size of {1}x{2}. Provided image was: {3}x{4}.", imageTitle, width, height, newIcon.width, newIcon.height),
                     "Ok");
+                newIcon = texture;
             }
             else
             {
