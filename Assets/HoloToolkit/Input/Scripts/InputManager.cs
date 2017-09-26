@@ -26,13 +26,19 @@ namespace HoloToolkit.Unity.InputModule
         public event Action InputEnabled;
         public event Action InputDisabled;
 
+        /// <summary>
+        /// Global listeners listen to all events and ignore the fact that other components might have consumed them.
+        /// </summary>
+        private readonly List<GameObject> globalListeners = new List<GameObject>(0);
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
         /// <summary>
-        /// Global listeners listen to all events and ignore the fact that other components might have consumed them.
+        /// To tap on a hologram even when not focused on,
+        /// set OverrideFocusedObject to desired game object.
+        /// If it's null, then focused object will be used.
         /// </summary>
-        private readonly List<GameObject> globalListeners = new List<GameObject>();
+        public GameObject OverrideFocusedObject { get; set; }
 
         private int disabledRefCount;
 
@@ -47,6 +53,8 @@ namespace HoloToolkit.Unity.InputModule
         private PointerSpecificEventData pointerSpecificEventData;
         private InputPositionEventData inputPositionEventData;
         private SelectPressedEventData selectPressedEventData;
+        private GamePadEventData gamePadEventData;
+        private XboxControllerEventData xboxControllerEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
         private DictationEventData dictationEventData;
@@ -191,6 +199,33 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            InitializeEventDatas();
+        }
+
+        private void InitializeEventDatas()
+        {
+            inputEventData = new InputEventData(EventSystem.current);
+            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
+            sourceStateEventData = new SourceStateEventData(EventSystem.current);
+            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
+            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
+            manipulationEventData = new ManipulationEventData(EventSystem.current);
+            navigationEventData = new NavigationEventData(EventSystem.current);
+            holdEventData = new HoldEventData(EventSystem.current);
+            pointerSpecificEventData = new PointerSpecificEventData(EventSystem.current);
+            inputPositionEventData = new InputPositionEventData(EventSystem.current);
+            selectPressedEventData = new SelectPressedEventData(EventSystem.current);
+            gamePadEventData = new GamePadEventData(EventSystem.current);
+            xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
+#if UNITY_WSA || UNITY_STANDALONE_WIN
+            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
+            dictationEventData = new DictationEventData(EventSystem.current);
+#endif
+        }
+
         /// <summary>
         /// Raise the event OnFocusEnter to the game object when focus enters it.
         /// </summary>
@@ -242,31 +277,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
-            InitializeEventDatas();
-        }
-
-        private void InitializeEventDatas()
-        {
-            inputEventData = new InputEventData(EventSystem.current);
-            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
-            sourceStateEventData = new SourceStateEventData(EventSystem.current);
-            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
-            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
-            manipulationEventData = new ManipulationEventData(EventSystem.current);
-            navigationEventData = new NavigationEventData(EventSystem.current);
-            holdEventData = new HoldEventData(EventSystem.current);
-            pointerSpecificEventData = new PointerSpecificEventData(EventSystem.current);
-            inputPositionEventData = new InputPositionEventData(EventSystem.current);
-            selectPressedEventData = new SelectPressedEventData(EventSystem.current);
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
-            dictationEventData = new DictationEventData(EventSystem.current);
-#endif
-        }
-
         public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
             where T : IEventSystemHandler
         {
@@ -276,7 +286,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             Debug.Assert(!eventData.used);
-            GameObject focusedObject = FocusManager.Instance.TryGetFocusedObject(eventData);
+
+            // Use focused object when OverrideFocusedObject is null.
+            GameObject focusedObject = (OverrideFocusedObject == null) ? FocusManager.Instance.TryGetFocusedObject(eventData) : OverrideFocusedObject;
 
             // Send the event to global listeners
             for (int i = 0; i < globalListeners.Count; i++)
@@ -339,6 +351,8 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        #region Focus Events
+
         private static readonly ExecuteEvents.EventFunction<IFocusable> OnFocusEnterEventHandler =
             delegate (IFocusable handler, BaseEventData eventData)
             {
@@ -365,10 +379,14 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnFocusExit(casted);
             };
 
+        #endregion // Focus Events
+
+        #region Generic Input Events
+
         private static readonly ExecuteEvents.EventFunction<IInputClickHandler> OnInputClickedEventHandler =
             delegate (IInputClickHandler handler, BaseEventData eventData)
             {
-                InputClickedEventData casted = ExecuteEvents.ValidateEventData<InputClickedEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputClickedEventData>(eventData);
                 handler.OnInputClicked(casted);
             };
 
@@ -386,7 +404,7 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IInputHandler> OnSourceUpEventHandler =
             delegate (IInputHandler handler, BaseEventData eventData)
             {
-                InputEventData casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 handler.OnInputUp(casted);
             };
 
@@ -413,7 +431,7 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IInputHandler> OnSourceDownEventHandler =
             delegate (IInputHandler handler, BaseEventData eventData)
             {
-                InputEventData casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 handler.OnInputDown(casted);
             };
 
@@ -443,10 +461,14 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        #endregion // Generic Input Events
+
+        #region Source State Events
+
         private static readonly ExecuteEvents.EventFunction<ISourceStateHandler> OnSourceDetectedEventHandler =
             delegate (ISourceStateHandler handler, BaseEventData eventData)
             {
-                SourceStateEventData casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
                 handler.OnSourceDetected(casted);
             };
 
@@ -479,7 +501,7 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<ISourceStateHandler> OnSourceLostEventHandler =
             delegate (ISourceStateHandler handler, BaseEventData eventData)
             {
-                SourceStateEventData casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
                 handler.OnSourceLost(casted);
             };
 
@@ -501,6 +523,8 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
         }
+
+        #endregion
 
         #region Manipulation Events
 
@@ -790,6 +814,62 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Controller Events
 
+        #region GamePad Events
+
+        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadDetectedEventHandler =
+            delegate (IGamePadHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
+                handler.OnGamePadDetected(casted);
+            };
+
+        public void RaiseGamePadDetected(IInputSource source, uint sourceId, string gamePadName)
+        {
+            // Create input event
+            gamePadEventData.Initialize(source, sourceId, gamePadName);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(gamePadEventData, OnGamePadDetectedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadLostEventHandler =
+            delegate (IGamePadHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
+                handler.OnGamePadLost(casted);
+            };
+
+        public void RaiseGamePadLost(IInputSource source, uint sourceId, string gamePadName)
+        {
+            // Create input event
+            gamePadEventData.Initialize(source, sourceId, gamePadName);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(gamePadEventData, OnGamePadLostEventHandler);
+        }
+
+        #region Xbox Controller Events
+
+        private static readonly ExecuteEvents.EventFunction<IXboxControllerHandler> OnXboxAxisUpdateHandler =
+            delegate (IXboxControllerHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<XboxControllerEventData>(eventData);
+                handler.OnXboxAxisUpdate(casted);
+            };
+
+        public void RaiseXboxInputUpdate(IInputSource source, uint sourceId, XboxControllerData inputData)
+        {
+            // Create input event
+            xboxControllerEventData.Initialize(source, sourceId, inputData);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(xboxControllerEventData, OnXboxAxisUpdateHandler);
+        }
+
+        #endregion // Xbox Controller Events
+
+        #endregion // GamePad Events
+
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         #region Speech Events
 
@@ -808,10 +888,6 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
         }
-
-        #endregion // Speech Events
-
-        #region Dictation Events
 
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationHypothesisEventHandler =
             delegate (IDictationHandler handler, BaseEventData eventData)
@@ -877,7 +953,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);
         }
 
-        #endregion // Dictation Events
+        #endregion // Speech Events
 #endif
     }
 }

@@ -11,10 +11,15 @@ namespace HoloToolkit.Unity
     /// Configuration options derived from here: 
     /// https://developer.microsoft.com/en-us/windows/mixed-reality/unity_development_overview#Configuring_a_Unity_project_for_HoloLens
     /// </summary>
-    public class AutoConfigureMenu : IActiveBuildTargetChanged
+    public class AutoConfigureMenu
+#if UNITY_2017_1_OR_NEWER
+        : IActiveBuildTargetChanged
+#endif
     {
+#if UNITY_2017_1_OR_NEWER
         public delegate void BuildTargetArgs(BuildTarget newTarget);
         public static event BuildTargetArgs ActiveBuildTargetChanged;
+#endif
 
         /// <summary>
         /// Displays a help page for the HoloToolkit.
@@ -55,6 +60,7 @@ namespace HoloToolkit.Unity
             window.Show();
         }
 
+#if UNITY_2017_1_OR_NEWER
         public int callbackOrder { get; private set; }
 
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
@@ -64,5 +70,6 @@ namespace HoloToolkit.Unity
                 ActiveBuildTargetChanged.Invoke(newTarget);
             }
         }
+#endif
     }
 }

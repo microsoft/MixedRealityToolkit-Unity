@@ -145,7 +145,7 @@ namespace HoloToolkit.Sharing.Tests
 
         /// <summary>
         /// Sometimes we'll see a really small anchor blob get generated.
-        /// These tend to not work, so we have a minimum trustable size.
+        /// These tend to not work, so we have a minimum trustworthy size.
         /// </summary>
         private const uint MinTrustworthySerializedAnchorDataSize = 100000;
 
@@ -303,7 +303,7 @@ namespace HoloToolkit.Sharing.Tests
         /// Called when the sharing stage connects to a server.
         /// </summary>
         /// <param name="sender">Sender.</param>
-        /// <param name="e">Events Arguements.</param>
+        /// <param name="e">Events Arguments.</param>
         private void Connected(object sender = null, EventArgs e = null)
         {
             SharingStage.Instance.SharingManagerConnected -= Connected;
@@ -344,12 +344,12 @@ namespace HoloToolkit.Sharing.Tests
 
                 if (SharingStage.Instance.ShowDetailedLogs)
                 {
-                    Debug.Log("Anchor Manager: Sucessfully uploaded anchor");
+                    Debug.Log("Anchor Manager: Successfully uploaded anchor");
                 }
 
                 if (AnchorDebugText != null)
                 {
-                    AnchorDebugText.text += "\nSucessfully uploaded anchor";
+                    AnchorDebugText.text += "\nSuccessfully uploaded anchor";
                 }
 
                 currentState = ImportExportState.AnchorEstablished;
@@ -379,21 +379,21 @@ namespace HoloToolkit.Sharing.Tests
             // If we downloaded anchor data successfully we should import the data.
             if (successful)
             {
-                int datasize = request.GetDataSize();
+                int dataSize = request.GetDataSize();
 
                 if (SharingStage.Instance.ShowDetailedLogs)
                 {
-                    Debug.LogFormat("Anchor Manager: Anchor size: {0} bytes.", datasize.ToString());
+                    Debug.LogFormat("Anchor Manager: Anchor size: {0} bytes.", dataSize.ToString());
                 }
 
                 if (AnchorDebugText != null)
                 {
-                    AnchorDebugText.text += string.Format("\nAnchor size: {0} bytes.", datasize.ToString());
+                    AnchorDebugText.text += string.Format("\nAnchor size: {0} bytes.", dataSize.ToString());
                 }
 
-                rawAnchorData = new byte[datasize];
+                rawAnchorData = new byte[dataSize];
 
-                request.GetData(rawAnchorData, datasize);
+                request.GetData(rawAnchorData, dataSize);
                 currentState = ImportExportState.DataReady;
             }
             else
@@ -837,12 +837,12 @@ namespace HoloToolkit.Sharing.Tests
 
                     if (SharingStage.Instance.ShowDetailedLogs)
                     {
-                        Debug.Log("Anchor Manager: Sucessfully imported anchor " + first);
+                        Debug.Log("Anchor Manager: Successfully imported anchor " + first);
                     }
 
                     if (AnchorDebugText != null)
                     {
-                        AnchorDebugText.text += string.Format("\nSucessfully imported anchor " + first);
+                        AnchorDebugText.text += string.Format("\nSuccessfully imported anchor " + first);
                     }
 
                     WorldAnchor anchor = anchorBatch.LockObject(first, gameObject);

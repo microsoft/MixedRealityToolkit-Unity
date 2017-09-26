@@ -15,24 +15,27 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private Animator rootAnimator = null;
 
         [SerializeField]
-        private bool isModal = false;
+        private bool isModal;
 
         [SerializeField]
-        private bool closeOnNonTargetedTap = false;
+        private bool closeOnNonTargetedTap;
 
-        private Action activatedCallback;   // called when 'place' is selected
-        private Action cancelledCallback;   // called when 'back' or 'hide' is selected
-        private Action deactivatedCallback;   // called when the user clicks outside of the menu
+        /// <summary>
+        /// alled when 'place' is selected
+        /// </summary>
+        private Action activatedCallback;
+
+        /// <summary>
+        /// Called when 'back' or 'hide' is selected
+        /// </summary>
+        private Action cancelledCallback;
+
+        /// <summary>
+        /// Called when the user clicks outside of the menu
+        /// </summary>
+        private Action deactivatedCallback;
 
         public PopupState CurrentPopupState = PopupState.Closed;
-
-        public GameObject RootObject
-        {
-            get
-            {
-                return this.gameObject;
-            }
-        }
 
         public enum PopupState { Open, Closed }
 
@@ -77,9 +80,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
 
             // the visual was activated via an interaction outside of the menu, let anyone who cares know
-            if (this.activatedCallback != null)
+            if (activatedCallback != null)
             {
-                this.activatedCallback();
+                activatedCallback();
             }
         }
 
@@ -88,16 +91,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// </summary>
         public void Dismiss()
         {
-            // Deactivates the game object
-            if (rootAnimator.isInitialized)
-            {
-                rootAnimator.SetTrigger("Dehydrate");
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
-
             if (deactivatedCallback != null)
             {
                 deactivatedCallback();
@@ -122,6 +115,16 @@ namespace HoloToolkit.Unity.InputModule.Tests
             if (cancelButton)
             {
                 cancelButton.Selected = false;
+            }
+
+            // Deactivates the game object
+            if (rootAnimator.isInitialized)
+            {
+                rootAnimator.SetTrigger("Dehydrate");
+            }
+            else
+            {
+                gameObject.SetActive(false);
             }
         }
 

@@ -21,9 +21,6 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
 
-        [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
-        public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
-
         [Tooltip("Place parent on tap instead of current game object.")]
         public bool PlaceParentOnTap;
 
@@ -41,6 +38,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
+        [Tooltip("Should the center of the Collider be used instead of the gameObjects world transform.")]
+        public bool UseColliderCenter;
+
         private Interpolator interpolator;
 
         /// <summary>
@@ -49,6 +49,7 @@ namespace HoloToolkit.Unity.InputModule
         private const int IgnoreRaycastLayer = 2;
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
+        private Vector3 PlacementPosOffset;
 
         protected virtual void Start()
         {
@@ -63,10 +64,17 @@ namespace HoloToolkit.Unity.InputModule
             if (IsBeingPlaced)
             {
                 StartPlacing();
-            } else // If we are not starting out with actively placing the object, give it a World Anchor
+            }
+            else // If we are not starting out with actively placing the object, give it a World Anchor
             {
                 AttachWorldAnchor();
             }
+        }
+
+        private void OnEnable()
+        {
+            Bounds bounds = transform.GetColliderBounds();
+            PlacementPosOffset = transform.position - bounds.center;
         }
 
         /// <summary>
@@ -99,6 +107,11 @@ namespace HoloToolkit.Unity.InputModule
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
 
+            if (UseColliderCenter)
+            {
+                placementPosition += PlacementPosOffset;
+            }
+
             // Here is where you might consider adding intelligence
             // to how the object is placed.  For example, consider
             // placing based on the bottom of the object's
@@ -128,12 +141,12 @@ namespace HoloToolkit.Unity.InputModule
             if (IsBeingPlaced)
             {
                 StartPlacing();
-            } else
+            }
+            else
             {
                 StopPlacing();
             }
         }
-
         private void StartPlacing()
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
@@ -159,7 +172,7 @@ namespace HoloToolkit.Unity.InputModule
             if (WorldAnchorManager.Instance != null)
             {
                 // Add world anchor when object placement is done.
-                WorldAnchorManager.Instance.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+                WorldAnchorManager.Instance.AttachAnchor(PlaceParentOnTap ? ParentGameObjectToPlace : gameObject);
             }
         }
 
@@ -168,7 +181,7 @@ namespace HoloToolkit.Unity.InputModule
             if (WorldAnchorManager.Instance != null)
             {
                 //Removes existing world anchor if any exist.
-                WorldAnchorManager.Instance.RemoveAnchor(gameObject);
+                WorldAnchorManager.Instance.RemoveAnchor(PlaceParentOnTap ? ParentGameObjectToPlace : gameObject);
             }
         }
 
@@ -177,9 +190,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void ToggleSpatialMesh()
         {
-            if (SpatialMappingManager.Instance != null)
+            if (SpatialMappingManager.Instance != null && AllowMeshVisualizationControl)
             {
-                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced && AllowMeshVisualizationControl;
+                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced;
             }
         }
 

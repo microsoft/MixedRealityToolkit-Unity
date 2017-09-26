@@ -8,8 +8,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 #if WINDOWS_UWP
-using Windows.Networking.Connectivity;
 using Windows.Networking;
+using Windows.Networking.Connectivity;
 #endif
 
 namespace HoloToolkit.Unity.SharingWithUNET
@@ -61,11 +61,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
         {
             get
             {
-                // we are connected if we are the server or if we aren't running discovery
+                // We are connected if we are the server or if we aren't running discovery
                 return (isServer || !running);
             }
         }
-
 
         /// <summary>
         /// Event raised when the list of sessions changes.
@@ -127,7 +126,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         {
 #if WINDOWS_UWP
             // Find our local IP
-            foreach (Windows.Networking.HostName hostName in Windows.Networking.Connectivity.NetworkInformation.GetHostNames())
+            foreach (HostName hostName in NetworkInformation.GetHostNames())
             {
                 if (hostName.DisplayName.Split(".".ToCharArray()).Length == 4)
                 {
@@ -168,7 +167,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private string GetLocalComputerName()
         {
 #if WINDOWS_UWP
-            foreach (Windows.Networking.HostName hostName in Windows.Networking.Connectivity.NetworkInformation.GetHostNames())
+            foreach (HostName hostName in NetworkInformation.GetHostNames())
             {
                 if (hostName.Type == HostNameType.DomainName)
                 {
@@ -233,10 +232,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         /// <param name="fromAddress">When the broadcast came from</param>
         /// <param name="data">The data in the broad cast. Not currently used, but could
-        /// be used for differntiating rooms or similar.</param>
+        /// be used for differentiating rooms or similar.</param>
         public override void OnReceivedBroadcast(string fromAddress, string data)
         {
-
             ServerIp = fromAddress.Substring(fromAddress.LastIndexOf(':') + 1);
             SessionInfo sessionInfo;
             if (remoteSessions.TryGetValue(ServerIp, out sessionInfo) == false)
@@ -279,9 +277,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
             NetworkManager.singleton.networkAddress = ServerIp;
 #if !UNITY_EDITOR
             // Tell the network transmitter the IP to request anchor data from if needed.
-            GenericNetworkTransmitter.Instance.SetServerIP(ServerIp);
+            GenericNetworkTransmitter.Instance.SetServerIp(ServerIp);
 #else
-        Debug.LogWarning("This script will need modification to work in the Unity Editor");
+            Debug.LogWarning("This script will need modification to work in the Unity Editor");
 #endif
             // And join the networked experience as a client.
             NetworkManager.singleton.StartClient();

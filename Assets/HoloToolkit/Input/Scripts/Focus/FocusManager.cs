@@ -580,7 +580,7 @@ namespace HoloToolkit.Unity.InputModule
                         + " instead of our fill in."
                         );
 
-                    patchedUiHit.worldNormal = (-pointingRay.direction);
+                    patchedUiHit.worldNormal = (-patchedUiHit.gameObject.transform.forward);
 
                     uiHit = patchedUiHit;
                 }
