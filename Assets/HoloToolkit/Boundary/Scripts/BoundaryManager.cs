@@ -121,7 +121,7 @@ namespace HoloToolkit.Unity.Boundary
                         UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                     {
                         Debug.Log("Got dimensions of tracked area.");
-                        if (dimensions != null)
+                        if (dimensions != Vector3.zero)
                         {
                             Debug.Log("Drawing floor at dimensions Y.");
                             // Draw the floor at boundary Y.
