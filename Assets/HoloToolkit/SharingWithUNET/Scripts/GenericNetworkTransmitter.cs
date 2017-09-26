@@ -6,7 +6,7 @@ using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA 
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.Networking;
@@ -78,9 +78,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         private void Update()
         {
-            lock(DeferredActionQueue)
+            lock (DeferredActionQueue)
             {
-                while(DeferredActionQueue.Count > 0)
+                while (DeferredActionQueue.Count > 0)
                 {
                     DeferredActionQueue.Dequeue()();
                 }
@@ -88,7 +88,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         // A lot of the work done in this class can only be done in UWP. The editor is not a UWP app.
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
         private void RequestDataRetry()
         {
             if (!RequestAndGetData())
@@ -234,14 +234,14 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
 #else
-    public void ConfigureAsServer()
-    {
-        Debug.Log("This script is not intended to be run from the Unity Editor");
-        // In order to avoid compiler warnings in the Unity Editor we have to access a few of our fields.
-        Debug.Log(string.Format("serverIP = {0} waitingForConnection = {1} mostRecentDataBuffer = {2}", serverIP, waitingForConnection, mostRecentDataBuffer == null ? "No there" : "there"));
-    }
-	
-    private bool ConnectListener() { return false; }
+        public void ConfigureAsServer()
+        {
+            Debug.Log("This script is not intended to be run from the Unity Editor");
+            // In order to avoid compiler warnings in the Unity Editor we have to access a few of our fields.
+            Debug.Log(string.Format("serverIP = {0} waitingForConnection = {1} mostRecentDataBuffer = {2}", serverIP, waitingForConnection, mostRecentDataBuffer == null ? "No there" : "there"));
+        }
+
+        private bool ConnectListener() { return false; }
 #endif
     }
 }

@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity
         {
             // Calculate the XYZ ratios for the transform's localScale over its
             // initial distance from the camera.
-            startingDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
+            startingDistance = Vector3.Distance(CameraCache.Main.transform.position, transform.position);
             startingScale = transform.localScale;
 
             SetSizeRatio(SizeRatio);
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            float distanceToHologram = Vector3.Distance(Camera.main.transform.position, transform.position);
+            float distanceToHologram = Vector3.Distance(CameraCache.Main.transform.position, transform.position);
             // create an offset ratio based on the starting position. This value creates a new angle that pivots
             // on the starting position that is more or less drastic than the normal scale ratio.
             float curvedRatio = 1 - startingDistance * SizeRatio;

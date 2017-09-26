@@ -65,17 +65,17 @@ namespace HoloToolkit.Unity
             {
                 ActiveEvent currentEvent = activeEvents[i];
                 ProfilerEvent tempEvent = new ProfilerEvent();
-                tempEvent.EventName = currentEvent.audioEvent.name;
+                tempEvent.EventName = currentEvent.AudioEvent.Name;
                 tempEvent.EmitterName = currentEvent.AudioEmitter.name;
 
                 // The bus might be null, Unity defaults to Editor-hidden master bus.
-                if (currentEvent.audioEvent.bus == null)
+                if (currentEvent.AudioEvent.AudioBus == null)
                 {
                     tempEvent.BusName = "-MasterBus-";
                 }
                 else
                 {
-                    tempEvent.BusName = currentEvent.audioEvent.bus.name;
+                    tempEvent.BusName = currentEvent.AudioEvent.AudioBus.name;
                 }
 
                 currentEvents[i] = tempEvent;

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 using System.Net;
 using System.Net.Sockets;
 #endif
@@ -25,7 +25,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         [Tooltip("The connection port on the machine to use.")]
         public int ConnectionPort = 11000;
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
         /// <summary>
         /// Listens for network connections over TCP.
         /// </summary> 

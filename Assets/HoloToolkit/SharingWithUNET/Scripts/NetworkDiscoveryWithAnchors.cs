@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.Generic;
-using System;
+
 #if WINDOWS_UWP
 using Windows.Networking.Connectivity;
 using Windows.Networking;
@@ -135,7 +137,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 }
             }
 #else
-            LocalIp = "editor"+UnityEngine.Random.Range(0, 999999).ToString();;
+            LocalIp = "editor" + UnityEngine.Random.Range(0, 999999).ToString(); ;
 #endif
         }
 
@@ -153,8 +155,8 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
             broadcastInterval = BroadcastInterval;
             // Add our computer name to the broadcast data for use in the session name.
-            broadcastData = GetLocalComputerName()+'\0';
-            
+            broadcastData = GetLocalComputerName() + '\0';
+
             // Start listening for broadcasts.
             StartAsClient();
         }
@@ -187,6 +189,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         private void MaybeInitAsServer()
         {
+            StartCoroutine(InitAsServer());
+        }
+
+        private IEnumerator InitAsServer()
+        {
             Debug.Log("Acting as host");
 #if WINDOWS_UWP
             NetworkManager.singleton.serverBindToIP = true;
@@ -196,11 +203,19 @@ namespace HoloToolkit.Unity.SharingWithUNET
             // StopBroadcast will also 'StopListening'
             StopBroadcast();
 
+            // Work-around when building to the HoloLens with "Compile with .NET Native tool chain".
+            // Need a frame of delay after StopBroadcast() otherwise clients won't connect.
+            yield return null;
+
             // Starting as a 'host' makes us both a client and a server.
             // There are nuances to this in UNet's sync system, so do make sure
             // to test behavior of your networked objects on both a host and a client 
             // device.
             NetworkManager.singleton.StartHost();
+
+            // Work-around when building to the HoloLens with "Compile with .NET Native tool chain".
+            // Need a frame of delay between StartHost() and StartAsServer() otherwise clients won't connect.
+            yield return null;
 
             // Start broadcasting for other clients.
             StartAsServer();
@@ -209,7 +224,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             // Start creating an anchor.
             UNetAnchorManager.Instance.CreateAnchor();
 #else
-        Debug.LogWarning("This script will need modification to work in the Unity Editor");
+            Debug.LogWarning("This script will need modification to work in the Unity Editor");
 #endif
         }
 
@@ -221,7 +236,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// be used for differntiating rooms or similar.</param>
         public override void OnReceivedBroadcast(string fromAddress, string data)
         {
-            
+
             ServerIp = fromAddress.Substring(fromAddress.LastIndexOf(':') + 1);
             SessionInfo sessionInfo;
             if (remoteSessions.TryGetValue(ServerIp, out sessionInfo) == false)

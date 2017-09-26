@@ -57,8 +57,9 @@ namespace HoloToolkit.Unity
 
         protected virtual void Update()
         {
+            Camera mainCamera = CameraCache.Main;
             // Retrieve the frustum planes from the camera.
-            frustumPlanes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+            frustumPlanes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
 
             // Determine if the Tagalong needs to move based on whether its
             // BoxCollider is in or out of the camera's view frustum.
@@ -77,7 +78,7 @@ namespace HoloToolkit.Unity
                 // If the Tagalong is inside the camera's view frustum, and it is
                 // supposed to stay a fixed distance from the camera, force the
                 // tagalong to that location (without using the Interpolator).
-                Ray ray = new Ray(Camera.main.transform.position, transform.position - Camera.main.transform.position);
+                Ray ray = new Ray(mainCamera.transform.position, transform.position - mainCamera.transform.position);
                 transform.position = ray.GetPoint(TagalongDistance);
             }
         }
@@ -95,6 +96,7 @@ namespace HoloToolkit.Unity
             // inside the camera's view frustum. Note, the bounds used are an Axis
             // Aligned Bounding Box (AABB).
             bool needsToMove = !GeometryUtility.TestPlanesAABB(frustumPlanes, tagalongCollider.bounds);
+            Transform cameraTransform = CameraCache.Main.transform;
 
             // If we already know we don't need to move, bail out early.
             if (!needsToMove)
@@ -105,7 +107,7 @@ namespace HoloToolkit.Unity
 
             // Calculate a default position where the Tagalong should go. In this
             // case TagalongDistance from the camera along the gaze vector.
-            toPosition = Camera.main.transform.position + Camera.main.transform.forward * TagalongDistance;
+            toPosition = cameraTransform.position + cameraTransform.forward * TagalongDistance;
 
             // Create a Ray and set it's origin to be the default toPosition that
             // was calculated above.
@@ -125,14 +127,14 @@ namespace HoloToolkit.Unity
                 // our Ray's direction to point towards that plane (remember the
                 // Ray's origin is already inside the view frustum.
                 plane = frustumPlanes[frustumLeft];
-                ray.direction = -Camera.main.transform.right;
+                ray.direction = -cameraTransform.right;
             }
             else if (moveLeft)
             {
                 // Apply similar logic to above for the case where the Tagalong
                 // needs to move to the left.
                 plane = frustumPlanes[frustumRight];
-                ray.direction = Camera.main.transform.right;
+                ray.direction = cameraTransform.right;
             }
             if (moveRight || moveLeft)
             {
@@ -152,12 +154,12 @@ namespace HoloToolkit.Unity
             if (moveDown)
             {
                 plane = frustumPlanes[frustumTop];
-                ray.direction = Camera.main.transform.up;
+                ray.direction = cameraTransform.up;
             }
             else if (moveUp)
             {
                 plane = frustumPlanes[frustumBottom];
-                ray.direction = -Camera.main.transform.up;
+                ray.direction = -cameraTransform.up;
             }
             if (moveUp || moveDown)
             {
@@ -167,7 +169,7 @@ namespace HoloToolkit.Unity
 
             // Create a ray that starts at the camera and points in the direction
             // of the calculated toPosition.
-            ray = new Ray(Camera.main.transform.position, toPosition - Camera.main.transform.position);
+            ray = new Ray(cameraTransform.position, toPosition - cameraTransform.position);
 
             // Find the point along that ray that is the right distance away and
             // update the calculated toPosition to be that point.

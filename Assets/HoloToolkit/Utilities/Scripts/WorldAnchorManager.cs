@@ -4,14 +4,16 @@
 using HoloToolkit.Unity.SpatialMapping;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
+#endif
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Wrapper around world anchor store to streamline some of the
-    /// persistence api busy work.
+    /// Wrapper around world anchor store to streamline some of the persistence API busy work.
     /// </summary>
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
@@ -40,6 +42,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         private Queue<AnchorAttachmentInfo> anchorOperations = new Queue<AnchorAttachmentInfo>();
 
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// The WorldAnchorStore for the current application.
         /// Can be null when the application starts.
@@ -54,6 +57,7 @@ namespace HoloToolkit.Unity
         {
             AnchorStore = anchorStore;
         }
+#endif
 
         /// <summary>
         /// When the app starts grab the anchor store immediately.
@@ -62,15 +66,25 @@ namespace HoloToolkit.Unity
         {
             base.Awake();
 
+#if UNITY_EDITOR || UNITY_WSA
             AnchorStore = null;
-            
+
+    #if UNITY_EDITOR
+            Debug.LogWarning("World Anchor Manager does not work in the editor. Anchor Store will never be ready.");
+    #endif
+
+#endif
         }
 
         private void Start()
         {
+
+#if UNITY_EDITOR || UNITY_WSA
             WorldAnchorStore.GetAsync(AnchorStoreReady);
+#endif
         }
 
+#if UNITY_WSA
         /// <summary>
         /// Each frame see if there is work to do and if we can do a unit, do it.
         /// </summary>
@@ -81,6 +95,7 @@ namespace HoloToolkit.Unity
                 DoAnchorOperation(anchorOperations.Dequeue());
             }
         }
+#endif
 
         /// <summary>
         /// Attaches an anchor to the game object.  If the anchor store has
@@ -91,10 +106,7 @@ namespace HoloToolkit.Unity
         /// <param name="anchorName">Name of the anchor.</param>
         public void AttachAnchor(GameObject gameObjectToAnchor, string anchorName)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
+#if UNITY_WSA
             if (gameObjectToAnchor == null)
             {
                 Debug.LogError("Must pass in a valid gameObject");
@@ -114,7 +126,7 @@ namespace HoloToolkit.Unity
                     AnchorName = anchorName,
                     Operation = AnchorOperation.Create
                 });
-#pragma warning restore 0162
+#endif
         }
 
         /// <summary>
@@ -124,11 +136,7 @@ namespace HoloToolkit.Unity
         /// <param name="gameObjectToUnanchor">gameObject to remove the anchor from.</param>
         public void RemoveAnchor(GameObject gameObjectToUnanchor)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
-
+#if UNITY_WSA
             if (gameObjectToUnanchor == null)
             {
                 Debug.LogError("Invalid GameObject");
@@ -142,6 +150,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
+
             anchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
@@ -149,6 +158,7 @@ namespace HoloToolkit.Unity
                     AnchorName = string.Empty,
                     Operation = AnchorOperation.Delete
                 });
+#endif
         }
 
         /// <summary>
@@ -156,6 +166,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void RemoveAllAnchors()
         {
+#if UNITY_WSA
             SpatialMappingManager spatialMappingManager = SpatialMappingManager.Instance;
 
             // This case is unexpected, but just in case.
@@ -183,7 +194,7 @@ namespace HoloToolkit.Unity
                     }
                 }
             }
-#pragma warning restore 0162
+#endif
         }
 
         /// <summary>
@@ -192,6 +203,7 @@ namespace HoloToolkit.Unity
         /// <param name="anchorAttachmentInfo">Parameters for attaching the anchor.</param>
         private void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
         {
+#if UNITY_WSA
             switch (anchorAttachmentInfo.Operation)
             {
                 case AnchorOperation.Create:
@@ -243,6 +255,7 @@ namespace HoloToolkit.Unity
 
                     break;
             }
+#endif
         }
 
         /// <summary>
@@ -252,11 +265,8 @@ namespace HoloToolkit.Unity
         /// <param name="anchorName">The name to give to the anchor.</param>
         private void CreateAnchor(GameObject gameObjectToAnchor, string anchorName)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
-            WorldAnchor anchor = gameObjectToAnchor.AddComponent<WorldAnchor>();
+#if UNITY_WSA
+            var anchor = gameObjectToAnchor.AddComponent<WorldAnchor>();
             anchor.name = anchorName;
 
             // Sometimes the anchor is located immediately. In that case it can be saved immediately.
@@ -269,9 +279,10 @@ namespace HoloToolkit.Unity
                 // Other times we must wait for the tracking system to locate the world.
                 anchor.OnTrackingChanged += Anchor_OnTrackingChanged;
             }
-#pragma warning restore 0162
+#endif
         }
 
+#if UNITY_WSA
         /// <summary>
         /// When an anchor isn't located immediately we subscribe to this event so
         /// we can save the anchor when it is finally located.
@@ -301,10 +312,6 @@ namespace HoloToolkit.Unity
         /// <param name="anchor"></param>
         private void SaveAnchor(WorldAnchor anchor)
         {
-#if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable 0162
             // Save the anchor to persist holograms across sessions.
             if (AnchorStore.Save(anchor.name, anchor))
             {
@@ -314,7 +321,7 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogError(gameObject.name + " : World anchor save failed.");
             }
-#pragma warning restore 0162
         }
+#endif
     }
 }

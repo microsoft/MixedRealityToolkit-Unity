@@ -47,6 +47,7 @@ namespace HoloToolkit.Unity
                 return true;
             }
         }
+
         /// <summary>
         /// Reference to the SpatialUnderstandingDLL class (wraps the understanding dll functions).
         /// </summary>
@@ -97,7 +98,14 @@ namespace HoloToolkit.Unity
             }
         }
 
+        public delegate void OnScanDoneDelegate();
+
         // Events
+        /// <summary>
+        /// Event indicating that the scan is done
+        /// </summary>
+        public event OnScanDoneDelegate OnScanDone;
+
         /// <summary>
         /// Event indicating that the scan state has changed
         /// </summary>
@@ -207,9 +215,10 @@ namespace HoloToolkit.Unity
                 (AllowSpatialUnderstanding))
             {
                 // Camera
-                Vector3 camPos = Camera.main.transform.position;
-                Vector3 camFwd = Camera.main.transform.forward;
-                Vector3 camUp = Camera.main.transform.up;
+                Transform cameraTransform = CameraCache.Main.transform;
+                Vector3 camPos = cameraTransform.position;
+                Vector3 camFwd = cameraTransform.forward;
+                Vector3 camUp = cameraTransform.up;
 
                 // If not yet initialized, do that now
                 if (ScanState == ScanStates.ReadyToScan)
@@ -247,7 +256,7 @@ namespace HoloToolkit.Unity
 
             // If it's done, finish up
             if ((ScanState == ScanStates.Finishing) &&
-                (scanDone) && 
+                (scanDone) &&
                 (!UnderstandingCustomMesh.IsImportActive) &&
                 (UnderstandingCustomMesh != null))
             {
@@ -256,6 +265,7 @@ namespace HoloToolkit.Unity
 
                 // Mark it
                 ScanState = ScanStates.Done;
+                if (OnScanDone != null) OnScanDone.Invoke();
             }
         }
     }

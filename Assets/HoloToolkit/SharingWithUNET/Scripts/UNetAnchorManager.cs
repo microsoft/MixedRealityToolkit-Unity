@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using HoloToolkit.Unity.SpatialMapping;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Networking;
+using HoloToolkit.Unity.SpatialMapping;
+
+#if UNITY_EDITOR || UNITY_WSA
+using UnityEngine.XR.WSA.Sharing;
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
-using UnityEngine.XR.WSA.Sharing;
+#endif
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
@@ -182,7 +185,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             DebugPanel debugPanel = DebugPanel.Instance;
             if (debugPanel != null)
             {
-                DebugPanel.Instance.RegisterExternalLogCallback(GenearteDebugData);
+                DebugPanel.Instance.RegisterExternalLogCallback(GenerateDebugData);
             }
         }
 
@@ -196,7 +199,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
             if (gotOne)
             {
-                Debug.Log("importing");
+                Debug.Log("Importing");
                 gotOne = false;
                 ImportInProgress = true;
                 WorldAnchorTransferBatch.ImportAsync(anchorData, ImportComplete);
@@ -208,12 +211,12 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 oldAnchorName = AnchorName;
                 if (string.IsNullOrEmpty(AnchorName))
                 {
-                    Debug.Log("anchor is empty");
+                    Debug.Log("Anchor is empty");
                     AnchorEstablished = false;
                 }
                 else if (!AttachToCachedAnchor(AnchorName))
                 {
-                    Debug.Log("requesting download of anchor data");
+                    Debug.Log("Requesting download of anchor data");
                     WaitForAnchor();
                 }
             }
@@ -223,10 +226,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         /// <summary>
-        ///  creates a debug string with information about the anchor state.
+        /// Creates a debug string with information about the anchor state.
         /// </summary>
         /// <returns>The calculated string</returns>
-        private string GenearteDebugData()
+        private string GenerateDebugData()
         {
             return string.Format("Anchor Name: {0}\nAnchor Size: {1}\nAnchor Established?: {2}\nImporting?: {3}\nDownloading? {4}\n",
                 AnchorName,
@@ -405,6 +408,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         private void ExportAnchor()
         {
+#if UNITY_EDITOR || UNITY_WSA
             WorldAnchorTransferBatch watb = new WorldAnchorTransferBatch();
             WorldAnchor worldAnchor = objectToAnchor.GetComponent<WorldAnchor>();
             watb.AddWorldAnchor(exportingAnchorName, worldAnchor);
@@ -417,6 +421,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 spatialMapping.StopObserver();
                 StartedObserver = false;
             }
+#endif
         }
 
         /// <summary>
@@ -437,6 +442,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <returns>True if it attached, false if it could not attach</returns>
         private bool AttachToCachedAnchor(string CachedAnchorName)
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (string.IsNullOrEmpty(CachedAnchorName))
             {
                 Debug.Log("Ignoring empty name");
@@ -456,6 +462,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                     return true;
                 }
             }
+#endif
 
             // Didn't find the anchor.
             return false;
@@ -527,6 +534,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             exportingAnchorBytes.AddRange(data);
         }
 
+#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// Called when serializing an anchor is complete.
         /// </summary>
@@ -589,5 +597,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
             // and then go to create the anchor.
             CreateAnchor();
         }
+#endif
     }
 }

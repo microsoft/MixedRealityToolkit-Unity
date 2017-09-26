@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity;
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using UnityEngine.Networking;
-using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
@@ -254,8 +255,8 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
             // if we are the remote player then we need to update our worldPosition and then set our 
             // local (to the shared world anchor) position for other clients to update our position in their world.
-            transform.position = Camera.main.transform.position;
-            transform.rotation = Camera.main.transform.rotation;
+            transform.position = CameraCache.Main.transform.position;
+            transform.rotation = CameraCache.Main.transform.rotation;
 
             // For UNET we use a command to signal the host to update our local position
             // and rotation

@@ -8,33 +8,26 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Register this game object on the InputManager as a global listener.
     /// </summary>
-    public class SetGlobalListener : MonoBehaviour
+    public class SetGlobalListener : StartAwareBehaviour
     {
-        private bool started = false;
-
-        private void Start()
+        protected override void OnEnableAfterStart()
         {
-            started = true;
+            base.OnEnableAfterStart();
+
             if (InputManager.IsInitialized)
             {
                 InputManager.Instance.AddGlobalListener(gameObject);
             }
         }
 
-        private void OnEnable()
-        {
-            if (started && InputManager.IsInitialized)
-            {
-                InputManager.Instance.AddGlobalListener(gameObject);
-            }
-        }
-
-        private void OnDisable()
+        protected override void OnDisableAfterStart()
         {
             if (InputManager.IsInitialized)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
+
+            base.OnDisableAfterStart();
         }
 
         private void OnDestroy()

@@ -4,8 +4,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -21,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public partial class SpeechInputSource : BaseInputSource
     {
-        [System.Serializable]
+        [Serializable]
         public struct KeywordAndKeyCode
         {
             [Tooltip("The keyword to recognize.")]
@@ -38,9 +41,13 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Whether the recognizer should be activated on start.")]
         public RecognizerStartBehavior RecognizerStart;
 
+        [Tooltip("The confidence level for the keyword recognizer.")]
+        public ConfidenceLevel RecognitionConfidenceLevel;
+
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         public KeywordAndKeyCode[] Keywords;
 
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         private KeywordRecognizer keywordRecognizer;
 
         private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
@@ -55,11 +62,13 @@ namespace HoloToolkit.Unity.InputModule
             if (keywordCount > 0)
             {
                 string[] keywords = new string[keywordCount];
+
                 for (int index = 0; index < keywordCount; index++)
                 {
                     keywords[index] = Keywords[index].Keyword;
                 }
-                keywordRecognizer = new KeywordRecognizer(keywords);
+
+                keywordRecognizer = new KeywordRecognizer(keywords, RecognitionConfidenceLevel);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                 if (RecognizerStart == RecognizerStartBehavior.AutoStart)
@@ -114,7 +123,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (Input.GetKeyDown(Keywords[index].KeyCode))
                 {
-                    OnPhraseRecognized(ConfidenceLevel.High, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
+                    OnPhraseRecognized(RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }
             }
         }
@@ -172,6 +181,7 @@ namespace HoloToolkit.Unity.InputModule
             sourceKind = InteractionSourceKind.Voice;
             return true;
         }
+#endif
 
         public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {

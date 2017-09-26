@@ -10,6 +10,7 @@ Library/
 Assets/AssetStoreTools*
 App/
 UWP/
+/WindowsStoreApp
 project.json
 project.lock.json
 
@@ -39,3 +40,5 @@ obj/
 *.opendb
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
+
+!*SRMesh.obj
