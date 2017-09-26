@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity.InputModule
         private static AudioClip dictationAudioClip;
 
         private static DictationRecognizer dictationRecognizer;
-
+        
         private static bool isTransitioning;
         private static bool hasFailed;
 #endif
@@ -293,12 +293,6 @@ namespace HoloToolkit.Unity.InputModule
         public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
         {
             rotation = Quaternion.identity;
-            return false;
-        }
-
-        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        {
-            pointingRay = default(Ray);
             return false;
         }
 
