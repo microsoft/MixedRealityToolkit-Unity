@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+//#if UNITY_WSA
+//#endif
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-#if UNITY_WSA
+//TODO wrap XR.WSA namespace.
 using UnityEngine.XR.WSA.Input;
-#endif
-
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -334,7 +334,6 @@ namespace HoloToolkit.Unity.InputModule
                 GameObject fallbackInput = fallbackInputStack.Peek();
                 if (ExecuteEvents.ExecuteHierarchy(fallbackInput, eventData, eventHandler) && eventData.used)
                 {
-                    return;
                 }
             }
         }
