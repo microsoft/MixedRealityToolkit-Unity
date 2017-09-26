@@ -296,6 +296,12 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
+        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        {
+            pointingRay = default(Ray);
+            return false;
+        }
+
         public bool TryGetGripRay(uint sourceId, out Ray pointingRay)
         {
             pointingRay = default(Ray);
