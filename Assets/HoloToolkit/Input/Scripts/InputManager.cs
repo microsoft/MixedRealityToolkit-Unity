@@ -7,9 +7,8 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-#if UNITY_WSA
+// TODO Wrap this for cross platform
 using UnityEngine.XR.WSA.Input;
-#endif
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
