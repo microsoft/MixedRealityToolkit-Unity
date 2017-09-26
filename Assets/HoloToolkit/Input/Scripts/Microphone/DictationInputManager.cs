@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity.InputModule
         private static AudioClip dictationAudioClip;
 
         private static DictationRecognizer dictationRecognizer;
-        
+
         private static bool isTransitioning;
         private static bool hasFailed;
 #endif
