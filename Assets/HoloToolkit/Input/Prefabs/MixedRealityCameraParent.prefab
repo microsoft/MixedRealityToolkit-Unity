@@ -732,6 +732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NearClipPlane_OpaqueDisplay: 0.1
   CameraClearFlags_OpaqueDisplay: 1
+  BackgroundColor_OpaqueDisplay: {r: 0, g: 0, b: 0, a: 1}
   OpaqueQualityLevel: 5
   NearClipPlane_TransparentDisplay: 0.85
   CameraClearFlags_TransparentDisplay: 2
@@ -804,12 +805,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc175d33f66e6647aabac1b65e7e632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftJoystickX: ControllerLeftStickX
-  LeftJoystickY: ControllerLeftStickY
+  LeftThumbstickX: CONTROLLER_LEFT_STICK_HORIZONTAL
+  LeftThumbstickY: CONTROLLER_LEFT_STICK_VERTICAL
+  RightThumbstickX: CONTROLLER_RIGHT_STICK_HORIZONTAL
+  RightThumbstickY: CONTROLLER_RIGHT_STICK_VERTICAL
   EnableTeleport: 1
   EnableRotation: 1
   EnableStrafe: 1
-  EnableJoystickMovement: 0
   RotationSize: 45
   StrafeAmount: 0.5
   TeleportMarker: {fileID: 1503526479864244, guid: 10d95b99055c6ad40b735cc8b3593745,
