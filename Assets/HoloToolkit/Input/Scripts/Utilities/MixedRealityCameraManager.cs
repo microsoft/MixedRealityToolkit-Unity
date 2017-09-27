@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -52,23 +55,24 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            if (HolographicSettings.IsDisplayOpaque)
-            {
-                CurrentDisplayType = DisplayType.Opaque;
-                ApplySettingsForOpaqueDisplay();
-                if (OnDisplayDetected != null)
-                {
-                    OnDisplayDetected(DisplayType.Opaque);
-                }
-            }
-            else
+#if UNITY_WSA
+            if (!HolographicSettings.IsDisplayOpaque)
             {
                 CurrentDisplayType = DisplayType.Transparent;
                 ApplySettingsForTransparentDisplay();
                 if (OnDisplayDetected != null)
                 {
                     OnDisplayDetected(DisplayType.Transparent);
+                    return; ;
                 }
+            }
+#endif
+
+            CurrentDisplayType = DisplayType.Opaque;
+            ApplySettingsForOpaqueDisplay();
+            if (OnDisplayDetected != null)
+            {
+                OnDisplayDetected(DisplayType.Opaque);
             }
         }
 

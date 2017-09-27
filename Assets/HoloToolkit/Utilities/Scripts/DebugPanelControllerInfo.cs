@@ -4,7 +4,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity
 {
@@ -12,7 +15,9 @@ namespace HoloToolkit.Unity
     {
         private class ControllerState
         {
+#if UNITY_WSA
             public InteractionSourceHandedness Handedness;
+#endif
             public Vector3 PointerPosition;
             public Quaternion PointerRotation;
             public Vector3 GripPosition;
@@ -78,6 +83,7 @@ namespace HoloToolkit.Unity
             }
         }
 
+#if UNITY_WSA
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             Debug.LogFormat("{0} {1} Detected", obj.state.source.handedness, obj.state.source.kind);
@@ -116,10 +122,12 @@ namespace HoloToolkit.Unity
                 controllerState.TouchpadPosition = obj.state.touchpadPosition;
             }
         }
+#endif
 
         private string GetControllerInfo()
         {
             string toReturn = "";
+#if UNITY_WSA
             foreach (ControllerState controllerState in controllers.Values)
             {
                 // Debug message
@@ -135,7 +143,7 @@ namespace HoloToolkit.Unity
                                           controllerState.TouchpadTouched, controllerState.TouchpadPosition);
 
                 // Text label display
-                if(controllerState.Handedness.Equals(InteractionSourceHandedness.Left))
+                if (controllerState.Handedness.Equals(InteractionSourceHandedness.Left))
                 {
                     LeftInfoTextPointerPosition.text = controllerState.Handedness.ToString();
                     LeftInfoTextPointerRotation.text = controllerState.PointerRotation.ToString();
@@ -168,6 +176,7 @@ namespace HoloToolkit.Unity
                     RightInfoTextTouchpadPosition.text = controllerState.TouchpadPosition.ToString();
                 }
             }
+#endif
             return toReturn.Substring(0, Math.Max(0, toReturn.Length - 2));
         }
     }

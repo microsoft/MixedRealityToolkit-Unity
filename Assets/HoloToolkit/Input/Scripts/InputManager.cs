@@ -9,8 +9,6 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-//TODO wrap XR.WSA namespace.
-using UnityEngine.XR.WSA.Input;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -56,7 +54,7 @@ namespace HoloToolkit.Unity.InputModule
         private GamePadEventData gamePadEventData;
         private XboxControllerEventData xboxControllerEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-        private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
+        private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
 #endif
 
@@ -229,7 +227,7 @@ namespace HoloToolkit.Unity.InputModule
             gamePadEventData = new GamePadEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
+            speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 #endif
         }
@@ -398,7 +396,7 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnInputClicked(casted);
             };
 
-        public void RaiseInputClicked(IInputSource source, uint sourceId, InteractionSourcePressType pressType, int tapCount, object tag = null)
+        public void RaiseInputClicked(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, int tapCount, object tag = null)
         {
             // Create input event
             sourceClickedEventData.Initialize(source, sourceId, tag, pressType, tapCount);
@@ -416,7 +414,7 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnInputUp(casted);
             };
 
-        public void RaiseSourceUp(IInputSource source, uint sourceId, InteractionSourcePressType pressType, object tag = null)
+        public void RaiseSourceUp(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, object tag = null)
         {
             // Create input event
             inputEventData.Initialize(source, sourceId, tag, pressType);
@@ -425,7 +423,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputEventData, OnSourceUpEventHandler);
 
             // UI events
-            if (ShouldSendUnityUiEvents && (pressType == InteractionSourcePressType.Select))
+            if (ShouldSendUnityUiEvents && pressType == InteractionSourcePressInfo.Select)
             {
                 PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
                 pointerInputEventData.InputSource = source;
@@ -443,7 +441,7 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnInputDown(casted);
             };
 
-        public void RaiseSourceDown(IInputSource source, uint sourceId, InteractionSourcePressType pressType, object tag = null)
+        public void RaiseSourceDown(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, object tag = null)
         {
             // Create input event
             inputEventData.Initialize(source, sourceId, tag, pressType);
@@ -452,7 +450,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputEventData, OnSourceDownEventHandler);
 
             // UI events
-            if (ShouldSendUnityUiEvents && (pressType == InteractionSourcePressType.Select))
+            if (ShouldSendUnityUiEvents && pressType == InteractionSourcePressInfo.Select)
             {
                 PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
                 pointerInputEventData.InputSource = source;
@@ -731,7 +729,7 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnInputPositionChanged(casted);
             };
 
-        public void RaiseInputPositionChanged(IInputSource source, uint sourceId, InteractionSourcePressType pressType, Vector2 position, object tag = null)
+        public void RaiseInputPositionChanged(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, Vector2 position, object tag = null)
         {
             // Create input event
             inputPositionEventData.Initialize(source, sourceId, tag, pressType, position);
@@ -766,7 +764,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseTouchpadTouched(IInputSource source, uint sourceId, object tag = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, tag, InteractionSourcePressType.Touchpad);
+            inputEventData.Initialize(source, sourceId, tag, InteractionSourcePressInfo.Touchpad);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnTouchpadTouchedEventHandler);
@@ -782,7 +780,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseTouchpadReleased(IInputSource source, uint sourceId, object tag = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, tag, InteractionSourcePressType.Touchpad);
+            inputEventData.Initialize(source, sourceId, tag, InteractionSourcePressInfo.Touchpad);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnTouchpadReleasedEventHandler);
@@ -884,17 +882,17 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
             delegate (ISpeechHandler handler, BaseEventData eventData)
             {
-                SpeechKeywordRecognizedEventData casted = ExecuteEvents.ValidateEventData<SpeechKeywordRecognizedEventData>(eventData);
+                SpeechEventData casted = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
         public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text, object tag = null)
         {
             // Create input event
-            speechKeywordRecognizedEventData.Initialize(source, sourceId, tag, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            speechEventData.Initialize(source, sourceId, tag, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
+            HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationHypothesisEventHandler =

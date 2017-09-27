@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
+using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.Tests
 {
@@ -17,10 +16,10 @@ namespace HoloToolkit.Unity.Tests
             {
                 switch (eventData.PressType)
                 {
-                    case InteractionSourcePressType.Grasp:
+                    case InteractionSourcePressInfo.Grasp:
                         inputSource.StartHaptics(eventData.SourceId, 1.0f);
                         return;
-                    case InteractionSourcePressType.Menu:
+                    case InteractionSourcePressInfo.Menu:
                         inputSource.StartHaptics(eventData.SourceId, 1.0f, 1.0f);
                         return;
                 }
@@ -32,7 +31,7 @@ namespace HoloToolkit.Unity.Tests
             InteractionSourceInputSource inputSource = eventData.InputSource as InteractionSourceInputSource;
             if (inputSource != null)
             {
-                if (eventData.PressType == InteractionSourcePressType.Grasp)
+                if (eventData.PressType == InteractionSourcePressInfo.Grasp)
                 {
                     inputSource.StopHaptics(eventData.SourceId);
                 }
