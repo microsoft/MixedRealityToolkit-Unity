@@ -18,6 +18,7 @@ If you're looking for **Controller models**:
     * GLTFComponentStreamingAssets.cs
     * The entire Utilities\Scripts\GLTF folder.
 * **IMPORTANT** You will also need a recent Windows Insider SDK installed, or you will not be able to build these scripts. Please install the SDK found [here](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
+* **IMPORTANT** Currently, motion controller's GLTF 3D model is only visible when you deploy through Visual Studio. In Unity's game mode, you should assign override model. <img src="External/ReadMeImages/MotionControllerTest_ModelOverride.png" width="700px">
 
 If you're looking for **teleporting**:
 * See the [**MotionControllerTest**](Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene.
