@@ -19,13 +19,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
         void Start()
         {
             networkDiscovery = NetworkDiscoveryWithAnchors.Instance;
-#if !UNITY_EDITOR
-            if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+            if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque && !Application.isEditor)
             {
                 Debug.Log("Only hololens can host for now");
                 Destroy(this.gameObject);
             }
-#endif
         }
 
         /// <summary>
@@ -39,12 +37,13 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 // Only let hololens host
                 // We are also allowing the editor to host for testing purposes, but shared anchors
                 // will currently not work in this mode.
-#if !UNITY_EDITOR
-                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
-#else
-                Debug.Log("Unity editor can host, but World Anchors will not be shared");
-#endif
+                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque || Application.isEditor)
                 {
+                    if (Application.isEditor)
+                    {
+                        Debug.Log("Unity editor can host, but World Anchors will not be shared");
+                    }
+
                     networkDiscovery.StartHosting("DefaultName");
                     eventData.Use();
                 }
