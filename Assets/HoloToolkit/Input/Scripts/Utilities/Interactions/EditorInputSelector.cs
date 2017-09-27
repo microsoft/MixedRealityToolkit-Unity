@@ -29,15 +29,19 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-#if UNITY_EDITOR
-            if (UnityEngine.XR.XRDevice.isPresent)
+            if (Application.isEditor)
             {
-#endif
-                Destroy(gameObject);
-                return;
-#if UNITY_EDITOR
+                if (UnityEngine.XR.XRDevice.isPresent)
+                {
+                    Destroy(this);
+                    return;
+                }
             }
-#endif
+            else
+            {
+                Destroy(this);
+                return;
+            }
 
             Inputs = new List<GameObject>();
 

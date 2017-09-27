@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
+using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -13,11 +13,10 @@ namespace HoloToolkit.Unity
 {
     public class DebugPanelControllerInfo : MonoBehaviour
     {
+#if UNITY_WSA
         private class ControllerState
         {
-#if UNITY_WSA
             public InteractionSourceHandedness Handedness;
-#endif
             public Vector3 PointerPosition;
             public Quaternion PointerRotation;
             public Vector3 GripPosition;
@@ -32,6 +31,9 @@ namespace HoloToolkit.Unity
             public bool TouchpadTouched;
             public Vector2 TouchpadPosition;
         }
+
+        private Dictionary<uint, ControllerState> controllers;
+#endif
 
         // Text display label game objects
         public TextMesh LeftInfoTextPointerPosition;
@@ -61,13 +63,11 @@ namespace HoloToolkit.Unity
         public TextMesh RightInfoTextTouchpadTouched;
         public TextMesh RightInfoTextTouchpadPosition;
 
-        private Dictionary<uint, ControllerState> controllers;
-
         private void Awake()
         {
+#if UNITY_WSA
             controllers = new Dictionary<uint, ControllerState>();
 
-#if UNITY_WSA
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
 
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
@@ -126,7 +126,7 @@ namespace HoloToolkit.Unity
 
         private string GetControllerInfo()
         {
-            string toReturn = "";
+            string toReturn = string.Empty;
 #if UNITY_WSA
             foreach (ControllerState controllerState in controllers.Values)
             {
