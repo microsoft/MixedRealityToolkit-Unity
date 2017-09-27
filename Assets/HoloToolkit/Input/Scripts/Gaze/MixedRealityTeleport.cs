@@ -5,7 +5,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.XR;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -73,12 +76,14 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        void Update()
+        private void Update()
         {
+#if UNITY_WSA
             if (InteractionManager.numSourceStates == 0)
             {
                 HandleGamepad();
             }
+#endif
 
             if (currentPointingSource != null)
             {
@@ -143,7 +148,7 @@ namespace HoloToolkit.Unity.InputModule
 
         void IControllerInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
         {
-            if (eventData.PressType == InteractionSourcePressType.Thumbstick)
+            if (eventData.PressType == InteractionSourcePressInfo.Thumbstick)
             {
                 if (EnableTeleport)
                 {

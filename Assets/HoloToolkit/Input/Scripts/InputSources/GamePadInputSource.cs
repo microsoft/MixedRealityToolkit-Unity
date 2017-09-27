@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -45,9 +44,9 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Base Input Source Methods
 
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            sourceKind = InteractionSourceKind.Voice;
+            sourceKind = InteractionSourceInfo.Voice;
             return true;
         }
 

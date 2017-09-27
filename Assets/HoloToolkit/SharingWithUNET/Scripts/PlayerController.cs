@@ -32,6 +32,8 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         public GameObject bullet;
 
+        public bool CanShareAnchors;
+
         /// <summary>
         /// The transform of the shared world anchor.
         /// </summary>
@@ -276,9 +278,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 Debug.LogFormat("Set local player name {0} ip {1}", networkDiscovery.broadcastData, networkDiscovery.LocalIp);
                 CmdSetPlayerName(networkDiscovery.broadcastData);
                 CmdSetPlayerIp(networkDiscovery.LocalIp);
-                bool opaqueDisplay = UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
-                Debug.LogFormat("local player {0} share anchors ", (opaqueDisplay ? "does not" : "does"));
-                CmdSetCanShareAnchors(!opaqueDisplay);
+#if UNITY_WSA
+                CanShareAnchors = !UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
+#endif
+                Debug.LogFormat("local player {0} share anchors ", (CanShareAnchors ? "does not" : "does"));
+                CmdSetCanShareAnchors(CanShareAnchors);
             }
         }
 

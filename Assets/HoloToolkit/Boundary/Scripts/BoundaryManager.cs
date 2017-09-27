@@ -4,7 +4,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif
 
 namespace HoloToolkit.Unity.Boundary
 {
@@ -73,7 +76,7 @@ namespace HoloToolkit.Unity.Boundary
                 UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
             }
         }
-
+#if UNITY_WSA
         private void Awake()
         {
             // Render the floor based on if you are in editor or immersive device.
@@ -193,5 +196,6 @@ namespace HoloToolkit.Unity.Boundary
             // Ensuring that we set height of the bounds volume to be say 10 feet tall.
             boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));
         }
+#endif
     }
 }

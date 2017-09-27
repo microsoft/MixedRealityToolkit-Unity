@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
-using HoloToolkit.Unity;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
@@ -26,7 +25,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         /// <summary>
         /// Keeps track of the current index that is the 'top' of the UI list
-        /// to enable scolling.
+        /// to enable scrolling.
         /// </summary>
         private int SessionIndex = 0;
 
@@ -43,10 +42,12 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private void Start()
         {
             // On the immersive device the UI is best placed a little closer than on a HoloLens
-            if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque == true)
+#if UNITY_WSA
+            if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
             {
                 gameObject.GetComponent<SimpleTagalong>().TagalongDistance = 1;
             }
+#endif
 
             // Register for events when sessions are found / joined.
             networkDiscovery = NetworkDiscoveryWithAnchors.Instance;
@@ -100,7 +101,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         /// <summary>
         /// Updates which session is the 'top' session in the list, and sets the 
-        /// session buttons accordinglingly
+        /// session buttons accordingly
         /// </summary>
         /// <param name="Direction">are we scrolling up, down, or not scrolling</param>
         public void ScrollSessions(int Direction)

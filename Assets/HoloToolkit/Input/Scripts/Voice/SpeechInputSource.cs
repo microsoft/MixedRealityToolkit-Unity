@@ -7,7 +7,6 @@ using UnityEngine.EventSystems;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
-using UnityEngine.XR.WSA.Input;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -49,7 +48,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private KeywordRecognizer keywordRecognizer;
 
-        private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
+        private SpeechEventData speechEventData;
 
         #region Unity Methods
 
@@ -60,7 +59,7 @@ namespace HoloToolkit.Unity.InputModule
                 DontDestroyOnLoad(gameObject);
             }
 
-            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
+            speechEventData = new SpeechEventData(EventSystem.current);
 
             int keywordCount = Keywords.Length;
             if (keywordCount > 0)
@@ -167,7 +166,7 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
             delegate (ISpeechHandler handler, BaseEventData eventData)
             {
-                SpeechKeywordRecognizedEventData casted = ExecuteEvents.ValidateEventData<SpeechKeywordRecognizedEventData>(eventData);
+                SpeechEventData casted = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
@@ -177,19 +176,19 @@ namespace HoloToolkit.Unity.InputModule
             object tag = null;
 
             // Create input event
-            speechKeywordRecognizedEventData.Initialize(this, sourceId, tag, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            speechEventData.Initialize(this, sourceId, tag, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            InputManager.Instance.HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
+            InputManager.Instance.HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
         }
 
 #endif
 
         #region Base Input Source Methods
 
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            sourceKind = InteractionSourceKind.Voice;
+            sourceKind = InteractionSourceInfo.Voice;
             return true;
         }
 
