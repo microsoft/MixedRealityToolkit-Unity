@@ -1,13 +1,15 @@
 # MixedRealityToolkit Dev_Unity_2017.2.0 branch
 This is a development branch for Windows Mixed Reality immersive headset support.
 
-**IMPORTANT** You will also need a recent Windows Insider SDK installed, or you will not be able to build this branch. Please install the SDK found [here](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
+**IMPORTANT** You will also need a recent [Windows Insider SDK Preview](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK) installed, or you will not be able to build this branch. 
 
 [unity-download]:                 https://unity3d.com/unity/beta/archive
 [unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f1-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 ## New Features!
+<img src="External/ReadMeImages/MotionControllerTest_Teleport.png" width="700px">
+
 If you're looking for **Controller models**:
 * See the [**MotionControllerTest**](Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene.
 * See:
@@ -19,7 +21,7 @@ If you're looking for **Controller models**:
 
 If you're looking for **teleporting**:
 * See the [**MotionControllerTest**](Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene.
-* Controls are the same as the Cliff House, using either an Xbox controller or motion controllers.
+* Controls are the same as the Cliff House, using either an Xbox controller or motion controllers. Thumbstick up for teleport, down for backup, left/right for rotation.
 * See:
     * MixedRealityTeleport.cs
     * MixedRealityCameraParent.prefab
