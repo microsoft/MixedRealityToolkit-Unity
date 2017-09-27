@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.Tests
     public class InputManagerTests
     {
         private List<GameObject> receivedEventSources;
-        private BaseEventData eventData;
+        private EventSystem eventSystem;
 
         [SetUp]
         public void SetUpTests()
@@ -23,9 +23,9 @@ namespace HoloToolkit.Unity.Tests
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
             inputManagerContainer.AddComponent<InputManager>();
+            inputManagerContainer.AddComponent<FocusManager>();
             inputManagerContainer.AddComponent<GazeManager>();
-            var eventSystem = inputManagerContainer.AddComponent<EventSystem>();
-            eventData = new BaseEventData(eventSystem);
+            eventSystem = inputManagerContainer.AddComponent<EventSystem>();
 
             inputManagerContainer.transform.position = inputManagerContainer.transform.forward * -5;
             //call awake and start 
@@ -224,37 +224,52 @@ namespace HoloToolkit.Unity.Tests
         }
 
 
-        private GameObject CreateTestHandler()
+        private GameObject CreateTestHandler(bool useEventData = true)
         {
-            return SetTestHandler(new GameObject());
+            return SetTestHandler(new GameObject(), useEventData);
         }
 
         private GameObject CreateCubeTestHandler()
         {
-            return SetTestHandler(GameObject.CreatePrimitive(PrimitiveType.Cube));
+            return SetTestHandler(GameObject.CreatePrimitive(PrimitiveType.Cube), false);
         }
 
-        private GameObject SetTestHandler(GameObject gameObject)
+        private GameObject SetTestHandler(GameObject gameObject, bool useEventData)
         {
-            gameObject.AddComponent<TestEventHandler>().EventFiredCallback = OnEventFired;
+            if (useEventData)
+            {
+                gameObject.AddComponent<TestEventHandler>().EventFiredCallback = OnEventFiredUseEventData;
+            }
+            else
+            {
+                gameObject.AddComponent<TestEventHandler>().EventFiredCallback = OnEventFired;
+            }
             return gameObject;
         }
 
-
         private GameObject CreateGlobalTestHandler()
         {
-            return CreateTestHandler().AddComponent<SetGlobalListener>().gameObject;
+            return CreateTestHandler(false).AddComponent<SetGlobalListener>().gameObject;
         }
 
         private void FireTestEvent()
         {
             receivedEventSources = new List<GameObject>();
-            InputManager.Instance.HandleEvent(eventData, TestEventHandler.OnTestHandler);
+            InputManager.Instance.HandleEvent(new BaseEventData(eventSystem), TestEventHandler.OnTestHandler);
         }
 
-        private void OnEventFired(GameObject source)
+        private void OnEventFired(GameObject source, BaseEventData eventData)
         {
             receivedEventSources.Add(source);
+        }
+
+        private void OnEventFiredUseEventData(GameObject source, BaseEventData eventData)
+        {
+            receivedEventSources.Add(source);
+            if (eventData != null)
+            {
+                eventData.Use();
+            }
         }
     }
 }
