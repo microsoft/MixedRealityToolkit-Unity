@@ -7,13 +7,13 @@ namespace GLTF
     class GLTFComponentStreamingAssets : MonoBehaviour
     {
         [Tooltip("This file should be in the StreamingAssets folder. Please include the file extension.")]
-        public string GLTFName;
+        public string GLTFName = string.Empty;
         public bool Multithreaded = true;
 
         public int MaximumLod = 300;
 
-        public UnityEngine.Material ColorMaterial;
-        public UnityEngine.Material NoColorMaterial;
+        public UnityEngine.Material ColorMaterial = null;
+        public UnityEngine.Material NoColorMaterial = null;
 
         [HideInInspector]
         public byte[] GLTFData;
