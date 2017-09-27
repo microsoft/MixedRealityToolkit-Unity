@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using UnityEngine.Networking;
+using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
@@ -14,7 +13,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
     [NetworkSettings(sendInterval = 0.033f)]
     public class PlayerController : NetworkBehaviour, IInputClickHandler
     {
-	    private static PlayerController _Instance = null;
+        private static PlayerController _Instance = null;
         /// <summary>
         /// Instance of the PlayerController that represents the local player.
         /// </summary>
@@ -25,7 +24,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 return _Instance;
             }
         }
-		
+
         /// <summary>
         /// The game object that represents the 'bullet' for 
         /// this player. Must exist in the spawnable prefabs on the
@@ -85,7 +84,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
             if (Established && SharesSpatialAnchors && !isLocalPlayer)
             {
                 Debug.Log("remote device likes the anchor");
+#if UNITY_WSA
                 anchorManager.AnchorFoundRemotely();
+#endif
             }
         }
 
@@ -98,7 +99,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             Debug.LogFormat("AnchorEstablished for {0} was {1} is now {2}", PlayerName, AnchorEstablished, update);
             AnchorEstablished = update;
             // only draw the mesh for the player if the anchor is found.
-            GetComponentInChildren<MeshRenderer>().enabled = update;            
+            GetComponentInChildren<MeshRenderer>().enabled = update;
         }
 
         /// <summary>
@@ -211,13 +212,13 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 // If we are the local player then we want to have airtaps 
                 // sent to this object so that projeciles can be spawned.
                 InputManager.Instance.AddGlobalListener(gameObject);
-				InitializeLocalPlayer();
+                InitializeLocalPlayer();
             }
             else
             {
                 Debug.Log("remote player");
                 GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-				AnchorEstablishedChanged(AnchorEstablished);
+                AnchorEstablishedChanged(AnchorEstablished);
                 SharesAnchorsChanged(SharesSpatialAnchors);
             }
 
@@ -280,7 +281,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 CmdSetCanShareAnchors(!opaqueDisplay);
             }
         }
-		
+
         private void OnDestroy()
         {
             if (isLocalPlayer)
@@ -325,15 +326,15 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 CmdFire();
             }
         }
-		
-		 [Command]
+
+        [Command]
         private void CmdSendSharedTransform(GameObject target, Vector3 pos, Quaternion rot)
         {
             UNetSharedHologram ush = target.GetComponent<UNetSharedHologram>();
             ush.CmdTransform(pos, rot);
         }
-		
-		 /// <summary>
+
+        /// <summary>
         /// For sending transforms for holograms which do not frequently change.
         /// </summary>
         /// <param name="target">The shared hologram</param>

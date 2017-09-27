@@ -19,7 +19,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
         {
             if (NetworkDiscoveryWithAnchors.Instance.isServer)
             {
+#if UNITY_WSA
                 UNetAnchorManager.Instance.MakeNewAnchor();
+#endif
                 eventData.Use();
             }
             else
