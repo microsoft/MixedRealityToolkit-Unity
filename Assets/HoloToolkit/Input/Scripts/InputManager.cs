@@ -203,6 +203,14 @@ namespace HoloToolkit.Unity.InputModule
             InitializeEventDatas();
         }
 
+        private void Start()
+        {
+            if (!FocusManager.IsInitialized)
+            {
+                Debug.LogError("InputManager requires an active FocusManager in the scene");
+            }
+        }
+
         private void InitializeEventDatas()
         {
             inputEventData = new InputEventData(EventSystem.current);
