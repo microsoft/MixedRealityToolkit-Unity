@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
             {
                 if (_Instance == null)
                 {
-                    T[] objects = FindObjectsOfType<T>();
+                    T[] objects = Resources.FindObjectsOfTypeAll<T>();
                     if (objects.Length != 1)
                     {
                         Debug.LogErrorFormat("Expected exactly 1 {0} but found {1}", typeof(T).ToString(), objects.Length);
