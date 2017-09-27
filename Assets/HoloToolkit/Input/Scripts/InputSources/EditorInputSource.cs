@@ -451,7 +451,7 @@ namespace HoloToolkit.Unity.InputModule
                             CurrentButtonStates.HoldInProgress = false;
                         }
 
-                        InputManager.Instance.RaiseManipulationStarted(this, controllerId, CurrentButtonStates.CumulativeDelta);
+                        InputManager.Instance.RaiseManipulationStarted(this, controllerId);
                         CurrentButtonStates.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.

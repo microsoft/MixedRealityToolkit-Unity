@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity.InputModule
                     currentGestureState = GestureState.NavigationStarted;
                     navigationStarted = true;
                     // Raise navigation started event.
-                    inputManager.RaiseNavigationStarted(this, GamePadId, normalizedOffset);
+                    inputManager.RaiseNavigationStarted(this, GamePadId);
                 }
 
                 // Raise navigation updated event.
