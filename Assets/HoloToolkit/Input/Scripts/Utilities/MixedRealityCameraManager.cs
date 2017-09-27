@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (OnDisplayDetected != null)
                 {
                     OnDisplayDetected(DisplayType.Transparent);
-                    return; ;
+                    return;
                 }
             }
 #endif
