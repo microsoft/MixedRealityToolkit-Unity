@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     public class GamePadInputSource : BaseInputSource
     {
         [SerializeField]
-        [Tooltip("Time in secords to determine if an Input Device has been connected or disconnected")]
+        [Tooltip("Time in seconds to determine if an Input Device has been connected or disconnected")]
         protected float DeviceRefreshInterval = 3.0f;
         protected float DeviceRefreshTimer;
         protected int LastDeviceUpdateCount;
@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            sourceKind = InteractionSourceInfo.Voice;
+            sourceKind = InteractionSourceInfo.Controller;
             return true;
         }
 
