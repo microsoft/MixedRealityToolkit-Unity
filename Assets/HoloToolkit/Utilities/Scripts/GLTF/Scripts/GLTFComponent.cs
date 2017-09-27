@@ -6,13 +6,13 @@ namespace GLTF
 {
     class GLTFComponent : MonoBehaviour
     {
-        public string Url;
+        public string Url = string.Empty;
         public bool Multithreaded = true;
 
         public int MaximumLod = 300;
 
-        public Shader GLTFStandard;
-        public Shader GLTFConstant;
+        public Shader GLTFStandard = null;
+        public Shader GLTFConstant = null;
 
         IEnumerator Start()
         {

@@ -123,18 +123,12 @@ namespace HoloToolkit.Unity.Boundary
                     if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions,
                         UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                     {
-                        Debug.Log("Got dimensions of tracked area.");
-                        if (dimensions != null)
-                        {
-                            Debug.Log("Drawing floor at dimensions Y.");
-                            // Draw the floor at boundary Y.
-                            floorQuadInstance.transform.localPosition = new Vector3(0, dimensions.y, 0);
-                        }
+                        Debug.Log("Got dimensions of tracked area.  Drawing floor at height offset: " + dimensions.y);
+                        floorQuadInstance.transform.localPosition = new Vector3(0, dimensions.y, 0);
                     }
                     else
                     {
                         Debug.Log("Drawing floor at 0,0,0.");
-                        // Draw the floor at 0,0,0.
                         floorQuadInstance.transform.localPosition = Vector3.zero;
                     }
                 }
