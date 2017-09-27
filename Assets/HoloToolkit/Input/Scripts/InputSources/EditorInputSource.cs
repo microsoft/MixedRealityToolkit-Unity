@@ -251,16 +251,18 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-#if !UNITY_EDITOR
-            Destroy(gameObject);
-#else
+            if (Application.isEditor)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             manualController = GetComponent<EditorInputControl>();
 
             CurrentButtonStates = new ButtonStates();
             currentlyVisible = false;
             visibilityChanged = false;
             controllerId = (uint)Random.value;
-#endif
         }
 
 #if UNITY_EDITOR
