@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Extends its behaviour from BaseThrowable. This is a non-abstract script that's actually attached to throwable object
-/// This script will not work without a grab script attached to the same gameObject
-/// </summary>
-
-public class ThrowableObject : BaseThrowable
+namespace MRTK.Grabbables
 {
-    public override void Throw(GameObject grabber)
-    {
-        base.Throw(grabber);
-        GetComponent<Rigidbody>().velocity = MotionControllerInfoTemp.GetVelocity(grabber)* grabber.GetComponent<Grabber>().Strength * ThrowMultiplier; 
-        //GetComponent<Rigidbody>().velocity = -MotionControllerInfoTemp.AngularVelocity(grabber.transform.rotation.eulerAngles);
+    /// <summary>
+    /// Extends its behaviour from BaseThrowable. This is a non-abstract script that's actually attached to throwable object
+    /// This script will not work without a grab script attached to the same gameObject
+    /// </summary>
 
-        if (GetComponent<BaseThrowable>().ZeroGravityThrow)
+    public class ThrowableObject : BaseThrowable
+    {
+        public override void Throw(BaseGrabbable grabbable)
         {
-            GetComponent<Rigidbody>().useGravity = false;
+            base.Throw(grabbable);
+            GetComponent<Rigidbody>().velocity = MotionControllerInfoTemp.GetVelocity(grabbable.GrabberPrimary) * grabbable.GrabberPrimary.Strength * ThrowMultiplier;
+            //GetComponent<Rigidbody>().velocity = -MotionControllerInfoTemp.AngularVelocity(grabber.transform.rotation.eulerAngles);
+
+            if (ZeroGravityThrow)
+            {
+                GetComponent<Rigidbody>().useGravity = false;
+            }
         }
     }
-
 }

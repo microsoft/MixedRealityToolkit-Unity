@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -166,6 +166,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 93203be7a7d93e54bbf0a9f5b8fda3fd, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &19218550 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1512360943673714, guid: 93203be7a7d93e54bbf0a9f5b8fda3fd,
+    type: 2}
+  m_PrefabInternal: {fileID: 19218549}
+--- !u!114 &19218551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 19218550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!4 &38770094 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4119929437350726, guid: 8497e1771119cf843a137c11f50cbdf4,
@@ -222,6 +245,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8497e1771119cf843a137c11f50cbdf4, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &84458283 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1884745418454534, guid: 8497e1771119cf843a137c11f50cbdf4,
+    type: 2}
+  m_PrefabInternal: {fileID: 84458282}
+--- !u!114 &84458284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 84458283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!1 &105760549
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +450,7 @@ GameObject:
   - component: {fileID: 191035803}
   - component: {fileID: 191035802}
   - component: {fileID: 191035801}
+  - component: {fileID: 191035807}
   m_Layer: 0
   m_Name: FixedJointSample
   m_TagString: Untagged
@@ -423,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd6834f9d99b79644b294f1e3a31d910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TouchColor: {r: 0.986207, g: 1, b: 0, a: 0}
+  grabSpot: {fileID: 0}
   breakForce: 100
   breakTorque: 100
   tolerance: 0.001
@@ -517,6 +564,24 @@ Transform:
   m_Father: {fileID: 810663116}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0.45900002, y: -143.24301, z: 0.88900006}
+--- !u!114 &191035807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 191035800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!1001 &209386956
 Prefab:
   m_ObjectHideFlags: 0
@@ -718,6 +783,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 133fc5a3f78368b418380475c982b2af, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &403533898 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1160495150711044, guid: 133fc5a3f78368b418380475c982b2af,
+    type: 2}
+  m_PrefabInternal: {fileID: 403533897}
+--- !u!114 &403533899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 403533898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!1 &459227680
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,6 +934,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ed4339889c32f24798ec1f74ea09462, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &687194871 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1443997611059632, guid: 5ed4339889c32f24798ec1f74ea09462,
+    type: 2}
+  m_PrefabInternal: {fileID: 687194870}
+--- !u!114 &687194872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 687194871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!4 &727213712 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4794880575525426, guid: 569e6e7d4dff2314dad9c83b1bf21a9f,
@@ -1068,6 +1179,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e03dafa1c3802246aeb94b8c9bd157e, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1054589804 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1711969711886590, guid: 8e03dafa1c3802246aeb94b8c9bd157e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1054589803}
+--- !u!114 &1054589805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1054589804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!1001 &1144309396
 Prefab:
   m_ObjectHideFlags: 0
@@ -1118,6 +1252,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 648afe975c1928a449f6fe22c847e9d4, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1144309397 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1060161738127550, guid: 648afe975c1928a449f6fe22c847e9d4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1144309396}
+--- !u!114 &1144309398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1144309397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!4 &1191366232 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4591266121987726, guid: 20e083692ef96a4408cb22926070e054,
@@ -1165,6 +1322,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1835dba728c6131409573120a3822449, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1235647069 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1172440619654688, guid: 1835dba728c6131409573120a3822449,
+    type: 2}
+  m_PrefabInternal: {fileID: 1235647068}
+--- !u!114 &1235647070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1235647069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!4 &1317806054 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4790005928100498, guid: 93203be7a7d93e54bbf0a9f5b8fda3fd,
@@ -1589,6 +1769,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f04969aeafe8c464f84748b730c616f2, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1602731318 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1558738065822038, guid: f04969aeafe8c464f84748b730c616f2,
+    type: 2}
+  m_PrefabInternal: {fileID: 1602731317}
+--- !u!114 &1602731319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1602731318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!1001 &1636109217
 Prefab:
   m_ObjectHideFlags: 0
@@ -1639,6 +1842,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 569e6e7d4dff2314dad9c83b1bf21a9f, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1636109218 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1782292157101262, guid: 569e6e7d4dff2314dad9c83b1bf21a9f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1636109217}
+--- !u!114 &1636109219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1636109218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!1 &1730328486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,6 +1991,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 450e66a117a91604b8dff4f23018518d, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2046888041 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1860702527024010, guid: 450e66a117a91604b8dff4f23018518d,
+    type: 2}
+  m_PrefabInternal: {fileID: 2046888040}
+--- !u!114 &2046888042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2046888041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!1001 &2065730248
 Prefab:
   m_ObjectHideFlags: 0
@@ -1807,6 +2056,29 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ad56cdfae0f9dc64fb10061a01ab3249, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2065730249 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1775908317404484, guid: ad56cdfae0f9dc64fb10061a01ab3249,
+    type: 2}
+  m_PrefabInternal: {fileID: 2065730248}
+--- !u!114 &2065730250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2065730249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e18b96baa53ff4b8aabb378bd52d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorOnContactSingle: {r: 0, g: 0, b: 1, a: 1}
+  colorOnContactMulti: {r: 0, g: 1, b: 1, a: 1}
+  colorOnGrabSingle: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorOnGrabMulti: {r: 1, g: 0, b: 0, a: 1}
+  colorOnUse: {r: 1, g: 0, b: 1, a: 1}
+  targetRenderer: {fileID: 0}
+  grabbable: {fileID: 0}
 --- !u!4 &2103405542 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4787718754823836, guid: 7db50d6a2ae788242bfd6600c73c063d,
