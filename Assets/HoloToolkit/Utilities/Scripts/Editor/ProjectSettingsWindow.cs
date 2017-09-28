@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
+                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
             }
         }
 
@@ -102,11 +102,7 @@ namespace HoloToolkit.Unity
                 {
                     using (var webRequest = UnityWebRequest.Get(SharingServiceURL))
                     {
-#if UNITY_2017_2_OR_NEWER
-                        webRequest.SendWebRequest();
-#else
                         webRequest.Send();
-#endif
 
                         while (!webRequest.isDone)
                         {
@@ -153,7 +149,6 @@ namespace HoloToolkit.Unity
 
             var inputManagerPath = Directory.GetParent(Path.GetFullPath(Application.dataPath)).FullName + "\\ProjectSettings\\InputManager.asset";
             bool userPermission = Values[ProjectSetting.XboxControllerSupport];
-            bool previouslySupported = userPermission;
 
             if (userPermission)
             {
@@ -167,11 +162,7 @@ namespace HoloToolkit.Unity
                 {
                     using (var webRequest = UnityWebRequest.Get(InputManagerAssetURL))
                     {
-#if UNITY_2017_2_OR_NEWER
-                        webRequest.SendWebRequest();
-#else
                         webRequest.Send();
-#endif
 
                         while (!webRequest.isDone)
                         {
@@ -210,7 +201,7 @@ namespace HoloToolkit.Unity
                     File.Delete(inputManagerPath + ".old");
                     Debug.Log("Previous Input Mapping Restored.");
                 }
-                else if (previouslySupported)
+                else
                 {
                     Debug.LogWarning("No old Input Mapping found!");
                 }
@@ -290,44 +281,10 @@ namespace HoloToolkit.Unity
 
             EditorPrefsUtility.SetEditorPref(Names[ProjectSetting.TargetOccludedDevices], Values[ProjectSetting.TargetOccludedDevices]);
 
-            if (BuildDeployTools.Il2CppAvailable() || BuildDeployTools.DotNetAvailable())
-            {
-
-                if (Values[ProjectSetting.DotNetScriptingBackend])
-                {
-                    if (!BuildDeployTools.DotNetAvailable())
-                    {
-                        Values[ProjectSetting.DotNetScriptingBackend] = false;
-                        EditorUtility.DisplayDialog("Attention!",
-                            "Hi there, we noticed that you've enabled the .Net scripting backend, but you haven't installed the required Module.\n\n" +
-                            "You'll need to use the Unity Installer to get the module for your version of the Editor.\n\n",
-                            "OK");
-                    }
-                }
-                else
-                {
-                    if (!BuildDeployTools.Il2CppAvailable())
-                    {
-                        Values[ProjectSetting.DotNetScriptingBackend] = true;
-                        EditorUtility.DisplayDialog("Attention!",
-                            "Hi there, we noticed that you've enabled the il2cpp scripting backend, but you haven't installed the required Module.\n\n" +
-                            "You'll need to use the Unity Installer to get the module for your version of the Editor.\n\n",
-                            "OK");
-                    }
-                }
-
-                PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA,
-                    Values[ProjectSetting.DotNetScriptingBackend]
-                        ? ScriptingImplementation.WinRTDotNET
-                        : ScriptingImplementation.IL2CPP);
-            }
-            else
-            {
-                EditorUtility.DisplayDialog("Attention!",
-                    "Hi there, we noticed that you haven't installed the required modules for Mixed Reality Applications.\n\n" +
-                    "You'll need to use the Unity Installer to get the modules for your version of the Editor.\n\n",
-                    "OK");
-            }
+            PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA,
+                Values[ProjectSetting.DotNetScriptingBackend]
+                    ? ScriptingImplementation.WinRTDotNET
+                    : ScriptingImplementation.IL2CPP);
 
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             Close();
@@ -339,12 +296,12 @@ namespace HoloToolkit.Unity
 
         protected override void LoadStrings()
         {
-            Names[ProjectSetting.BuildWsaUwp] = "Target Universal Windows Platform";
+            Names[ProjectSetting.BuildWsaUwp] = "Target Windows Universal UWP";
             Descriptions[ProjectSetting.BuildWsaUwp] =
                 "<b>Required</b>\n\n" +
-                "Switches the currently active target to produce a Universal Windows Platform application.\n\n" +
-                "<color=#ffff00ff><b>Note:</b></color> Cross platform development can be done with this toolkit, but many tools and" +
-                "features will not work if the build target is a different platform.";
+                "Switches the currently active target to produce a Store app targeting the Universal Windows Platform.\n\n" +
+                "<color=#ffff00ff><b>Note:</b></color> Cross platform development can be done with this toolkit, but many features and" +
+                "tools will not work if the build target is not Windows Universal.";
 
             Names[ProjectSetting.WsaEnableXR] = "Enable XR";
             Descriptions[ProjectSetting.WsaEnableXR] =
