@@ -13,7 +13,7 @@ public static class MotionControllerInfoTemp  {
         current = grabber.GetCurrentPosition();
         previous = grabber.GetPreviousPosition();
         var velocity = (current - previous) / Time.deltaTime;
-        Debug.Log("Controller Velocity is: " + velocity);
+        //Debug.Log("Controller Velocity is: " + velocity);
         return velocity;
     }
 

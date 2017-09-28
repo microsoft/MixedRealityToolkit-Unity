@@ -19,13 +19,11 @@ public enum ButtonChoice
 /// Intended usage: scripts that inherit from this can be attached to the controller, or any object with a collider 
 /// that needs to grabbing or carrying other objects. 
 /// </summary>
-
 public abstract class BaseGrabber : MonoBehaviour
 {
     public Transform GrabHandle { get { return grabAttachSpot; } set { grabAttachSpot = value; } }
     public bool GrabActive { get { return grabActive; } set { grabActive = value; } }
     public GameObject HeldObject { get { return heldObject; } set { heldObject = value; } }
-    public Vector3 Velocity { get { return velocity; } set { velocity = value; } }
     public float Strength { get { return strength; } set { strength = value; } }
 
     ///Subscribe GrabStart and GrabEnd to InputEvents for GripPressed
@@ -102,7 +100,6 @@ public abstract class BaseGrabber : MonoBehaviour
 
     //for scaling
     private Rigidbody rb;
-    private Vector3 velocity;
     private GameObject myGrabbedObject;
     private float scaleMulitplier;
     private Vector3 attachPoint;

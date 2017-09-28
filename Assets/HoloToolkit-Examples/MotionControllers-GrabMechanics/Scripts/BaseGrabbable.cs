@@ -47,14 +47,14 @@ public abstract class BaseGrabbable : MonoBehaviour
         if (grabber.GrabActive && !held)
         {
             held = true;
-            Debug.Log("Held is set to : " + held);
             myGrabber = grabber;
             grabber.HeldObject = gameObject;
-            if (GetComponent<BaseScalable>())
-            {
-                GrabStarted(grabber.gameObject);
-            }
             StartCoroutine(StayGrab(grabber));
+        }
+        if (GetComponent<BaseScalable>())
+        {
+            GrabStarted(grabber.gameObject);
+            Debug.Log("Firing the grab start event from StartGrab ->>> BaseScalable");
         }
     }
 
@@ -92,6 +92,7 @@ public abstract class BaseGrabbable : MonoBehaviour
         if (GetComponent<BaseThrowable>())
         {
             GetComponent<BaseThrowable>().Throw(grabber.gameObject);
+            Debug.Log("For Some reason I'm throwing...");
         }
     }
 
@@ -103,7 +104,7 @@ public abstract class BaseGrabbable : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Grabber>() && !held)
+        if (other.GetComponent<Grabber>())
         {
             Grabber grbr = other.GetComponent<Grabber>();
             if (grbr.GrabActive)
@@ -116,7 +117,7 @@ public abstract class BaseGrabbable : MonoBehaviour
 
     protected virtual void OnTriggerStay(Collider other)
     {
-        if (other.GetComponent<Grabber>() && !held)
+        if (other.GetComponent<Grabber>() && !held && !GetComponent<BaseScalable>())
         {
             Grabber grbr = other.GetComponent<Grabber>();
             if (grbr.GrabActive)
@@ -130,7 +131,7 @@ public abstract class BaseGrabbable : MonoBehaviour
     }
 
     /// <summary>
-    /// The trigger exit function on this base script looks like it is empty but it is overriden by scripts that inherit from this
+    /// The trigger exit function on this base script is overriden by scripts that inherit 
     /// </summary>
     /// <param name="other"></param>
     protected virtual void OnTriggerExit(Collider other)

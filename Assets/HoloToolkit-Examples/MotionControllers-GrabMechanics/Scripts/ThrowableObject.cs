@@ -9,6 +9,7 @@ public class ThrowableObject : BaseThrowable
 {
     public override void Throw(GameObject grabber)
     {
+        base.Throw(grabber);
         if (GetComponent<BaseThrowable>() != null)
         {
             ///////////////VRTK////////////////////////GetComponent<Rigidbody>().velocity = (VRTK_DeviceFinder.GetControllerVelocity(grabber.gameObject)) * grabber.Strength * GetComponent<OC_ThrowableObject>().ThrowMultiplier;

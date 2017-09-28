@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// class responsible for grabbers that can scale a gameObject
+/// class responsible for two hand scale. Objects with a child of this class attached 
 /// </summary>
 
 public abstract class BaseScalable : MonoBehaviour
 {
     //keeps track of all grabbers attached to this object
     public List<GameObject> ScalarsAttachedList { get { return scalarsAttachedList; } set { scalarsAttachedList = value; } }
-
 
     /// <summary>
     /// scale needs to subscribe to grab events in order to add more scalars to the list of scalars
@@ -25,7 +24,6 @@ public abstract class BaseScalable : MonoBehaviour
     {
         BaseGrabbable.GrabStarted -= ScalarAdd;
         BaseGrabbable.GrabEnded -= ScalarRemove;
-
     }
 
     /// <summary>
@@ -42,30 +40,34 @@ public abstract class BaseScalable : MonoBehaviour
     /// </summary>
     public void AttemptScale()
     {
+        Debug.Log("Running attempt scale");
         if (scalarsAttachedList.Count >= minScalarNumForScale)
         {
             //Velocity
             //Multiply scale of this scalable object by the velocity of scalar1 and scalar2 (or however many)
             if (scaleByVelocity)
             {
+                int i = 0;
                 foreach (GameObject sclr in scalarsAttachedList)
                 {
-                    Debug.Log("Velocity of scalar obj " + sclr.GetComponent<BaseGrabber>().Velocity.ToString());
+                    Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(scalarsAttachedList[i].GetComponent<Grabber>()));
+                    i++;
                 }
             }
 
             //Distance
-            //snapshot a standard distance that the controls are when grip is pressed
-            //That standard distance between controller corresponds to the localScale * scaleMultiplier
+            //snapshot a standard distance that the controls are when the scalable object is engaged
+            //That standard distance between controllers corresponds to the localScale * scaleMultiplier
             if (scaleByDistance)
             {
                 if (scalarsAttachedList.Count == 2)
                 {
                     float dist = Vector3.Distance(scalarsAttachedList[0].transform.position, scalarsAttachedList[1].transform.position);
                     snapShotDistance = dist;
-                    snapShotOfScaleFloat = transform.localScale.x;
+                    snapShotOfScale = transform.localScale.x;
                     currentlyScaling = true;
                     StartCoroutine(PerformScaling());
+                    Debug.Log("We should be performing the SCALE");
                 }
             }
         }
@@ -78,13 +80,17 @@ public abstract class BaseScalable : MonoBehaviour
 
     public void ScalarAdd(GameObject grabber)
     {
+        Debug.Log("inside of scalar add");
         if (!scalarsAttachedList.Contains(grabber))
         {
-            if (grabber.Equals(GetComponent<BaseGrabbable>().MyGrabber.gameObject))
-            {
+            Debug.Log("the scalar list does not contain this grabber named "+grabber.name);
+            Debug.Log("grabber.gameObject.id = " + grabber.gameObject.GetInstanceID() + " WHILST GetComponent<BaseGrabbable>().MyGrabber.gameObject = " + GetComponent<BaseGrabbable>().MyGrabber.gameObject.GetInstanceID());
+            //if (grabber.Equals(GetComponent<BaseGrabbable>().MyGrabber.gameObject))
+            //{
                 scalarsAttachedList.Add(grabber);
                 AttemptScale();
-            }
+                Debug.Log("Adding another scalar. Num scalars = " + scalarsAttachedList.Count);
+            //}
         }
     }
 
@@ -95,6 +101,7 @@ public abstract class BaseScalable : MonoBehaviour
     /// <param name="grabber"></param>
     public virtual void ScalarRemove(GameObject grabber)
     {
+        Debug.Log("ran SCALAR REMOVE");
         if (scalarsAttachedList.Contains(grabber))
         {
             scalarsAttachedList.Remove(grabber);
@@ -107,7 +114,6 @@ public abstract class BaseScalable : MonoBehaviour
     /// (For example, an object that is further away might scale up more because it is further away from the user)
     /// </summary>
     /// <returns></returns>
-
     public virtual IEnumerator PerformScaling()
     {
         while (currentlyScaling)
@@ -115,13 +121,13 @@ public abstract class BaseScalable : MonoBehaviour
             if (scalarsAttachedList.Count == minScalarNumForScale)
             {
                 float currDistance = Vector3.Distance(scalarsAttachedList[0].transform.position, scalarsAttachedList[1].transform.position);
-                transform.localScale = Vector3.one * ((currDistance / snapShotDistance) * snapShotOfScaleFloat) /*multiplier * distFromUser*/;
+                transform.localScale = Vector3.one * ((currDistance / snapShotDistance) * snapShotOfScale) /*multiplier * distFromUser*/;
             }
             yield return 0;
         }
+        currentlyScaling = false;
         yield return null;
     }
-
 
     [Range(1, 5)]
     private float scaleMultiplier = 1.0f;
@@ -131,7 +137,7 @@ public abstract class BaseScalable : MonoBehaviour
     private bool scaleByDistance = true;
     private bool readyToScale;
     private Vector3 snapShotOfScaleVec;
-    private float snapShotOfScaleFloat;
+    private float snapShotOfScale;
     private int minScalarNumForScale = 2;
     private bool currentlyScaling;
     private float snapShotDistance;
