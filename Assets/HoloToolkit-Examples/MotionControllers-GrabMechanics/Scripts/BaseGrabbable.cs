@@ -158,7 +158,7 @@ namespace MRTK.Grabbables
 
             // Attach ourselves to this grabber
             AttachToGrabber(grabber);
-
+            
             if (OnGrabbed != null)
                 OnGrabbed(this);
         }
@@ -221,7 +221,19 @@ namespace MRTK.Grabbables
         /// </summary>
         protected Stack<BaseGrabber> activeGrabbers = new Stack<BaseGrabber>();
 
+        protected virtual void Update()
+        {
+            if (prevGrabState != GrabState && OnGrabStateChange != null)
+                OnGrabStateChange(this);
+
+            if (prevContactState != ContactState && OnContactStateChange != null)
+                OnContactStateChange(this);
+
+            prevGrabState = GrabState;
+            prevContactState = ContactState;
+        }
+
         private GrabStateEnum prevGrabState = GrabStateEnum.Inactive;
-        private GrabStateEnum prevHoverState = GrabStateEnum.Inactive;
+        private GrabStateEnum prevContactState = GrabStateEnum.Inactive;
     }
 }
