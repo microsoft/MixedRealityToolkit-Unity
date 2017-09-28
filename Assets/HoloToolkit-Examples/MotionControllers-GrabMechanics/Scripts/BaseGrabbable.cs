@@ -54,7 +54,6 @@ public abstract class BaseGrabbable : MonoBehaviour
         if (GetComponent<BaseScalable>())
         {
             GrabStarted(grabber.gameObject);
-            Debug.Log("Firing the grab start event from StartGrab ->>> BaseScalable");
         }
     }
 
@@ -91,8 +90,8 @@ public abstract class BaseGrabbable : MonoBehaviour
         }
         if (GetComponent<BaseThrowable>())
         {
+            //Throw should really be an event that the base throw script subscribes to
             GetComponent<BaseThrowable>().Throw(grabber.gameObject);
-            Debug.Log("For Some reason I'm throwing...");
         }
     }
 
@@ -110,7 +109,6 @@ public abstract class BaseGrabbable : MonoBehaviour
             if (grbr.GrabActive)
             {
                 StartGrab(grbr);
-                Debug.Log("Firing start grab from TRIGGER ENTER");
             }
         }
     }
@@ -122,7 +120,6 @@ public abstract class BaseGrabbable : MonoBehaviour
             Grabber grbr = other.GetComponent<Grabber>();
             if (grbr.GrabActive)
             {
-                Debug.Log("Firing start grab from TRIGGER STAY");
                 StartGrab(grbr);
             }
             else

@@ -66,7 +66,6 @@ public class GrabbableSpringJoint : BaseGrabbable
         base.EndGrab(grabber);
         if (GetComponent<SpringJoint>())
         {
-            Debug.Log("Trying to destroy this JOINT");
             GetComponent<SpringJoint>().connectedBody = null;
             Destroy(gameObject.GetComponent<SpringJoint>());
         }

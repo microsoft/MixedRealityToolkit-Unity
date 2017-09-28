@@ -10,19 +10,12 @@ public class ThrowableObject : BaseThrowable
     public override void Throw(GameObject grabber)
     {
         base.Throw(grabber);
-        if (GetComponent<BaseThrowable>() != null)
+        GetComponent<Rigidbody>().velocity = MotionControllerInfoTemp.GetVelocity(grabber)* grabber.GetComponent<Grabber>().Strength * ThrowMultiplier; 
+        //GetComponent<Rigidbody>().velocity = -MotionControllerInfoTemp.AngularVelocity(grabber.transform.rotation.eulerAngles);
+
+        if (GetComponent<BaseThrowable>().ZeroGravityThrow)
         {
-            ///////////////VRTK////////////////////////GetComponent<Rigidbody>().velocity = (VRTK_DeviceFinder.GetControllerVelocity(grabber.gameObject)) * grabber.Strength * GetComponent<OC_ThrowableObject>().ThrowMultiplier;
-            ///////////////VRTK/////////////////////*GetComponent<Rigidbody>().angularVelocity = VRTK_DeviceFinder.GetControllerAngularVelocity(grabber.gameObject);*/
-            GetComponent<Rigidbody>().velocity = MotionControllerInfoTemp.GetVelocity(grabber.GetComponent<Grabber>());
-            //GetComponent<Rigidbody>().velocity = - MotionControllerInfoTemp.AngularVelocity (grabber.transform.rotation.eulerAngles);
-
-            if (GetComponent<BaseThrowable>().ZeroGravityThrow)
-            {
-                GetComponent<Rigidbody>().useGravity = false;
-            }
-
-            Debug.Log("THROWING. Veloctiy = " + GetComponent<Rigidbody>().velocity);
+            GetComponent<Rigidbody>().useGravity = false;
         }
     }
 

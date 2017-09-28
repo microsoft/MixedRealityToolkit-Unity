@@ -37,7 +37,6 @@ public class GrabbableFixedJoint : BaseGrabbable
     /// <param name="grabber1"></param>
     protected override void CreateTempJoint(Grabber grabber1)
     {
-        Debug.Log("creating a temp fixed joint");
         if (!GetComponent<FixedJoint>())
         {
             gameObject.AddComponent<FixedJoint>();

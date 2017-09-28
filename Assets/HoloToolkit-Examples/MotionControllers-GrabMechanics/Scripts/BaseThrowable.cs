@@ -17,7 +17,6 @@ public abstract class BaseThrowable : MonoBehaviour
     protected virtual void OnEnable()
     {
         BaseGrabbable.GrabEnded += Throw;
-        Debug.Log("Throw script present somewhere");
     }
 
     protected virtual void OnDisable()

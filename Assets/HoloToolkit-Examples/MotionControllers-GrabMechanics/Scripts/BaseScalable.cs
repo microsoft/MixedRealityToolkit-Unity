@@ -40,7 +40,6 @@ public abstract class BaseScalable : MonoBehaviour
     /// </summary>
     public void AttemptScale()
     {
-        Debug.Log("Running attempt scale");
         if (scalarsAttachedList.Count >= minScalarNumForScale)
         {
             //Velocity
@@ -50,7 +49,7 @@ public abstract class BaseScalable : MonoBehaviour
                 int i = 0;
                 foreach (GameObject sclr in scalarsAttachedList)
                 {
-                    Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(scalarsAttachedList[i].GetComponent<Grabber>()));
+                    Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(scalarsAttachedList[i]));
                     i++;
                 }
             }
@@ -67,7 +66,6 @@ public abstract class BaseScalable : MonoBehaviour
                     snapShotOfScale = transform.localScale.x;
                     currentlyScaling = true;
                     StartCoroutine(PerformScaling());
-                    Debug.Log("We should be performing the SCALE");
                 }
             }
         }
@@ -80,16 +78,12 @@ public abstract class BaseScalable : MonoBehaviour
 
     public void ScalarAdd(GameObject grabber)
     {
-        Debug.Log("inside of scalar add");
         if (!scalarsAttachedList.Contains(grabber))
         {
-            Debug.Log("the scalar list does not contain this grabber named "+grabber.name);
-            Debug.Log("grabber.gameObject.id = " + grabber.gameObject.GetInstanceID() + " WHILST GetComponent<BaseGrabbable>().MyGrabber.gameObject = " + GetComponent<BaseGrabbable>().MyGrabber.gameObject.GetInstanceID());
             //if (grabber.Equals(GetComponent<BaseGrabbable>().MyGrabber.gameObject))
             //{
                 scalarsAttachedList.Add(grabber);
                 AttemptScale();
-                Debug.Log("Adding another scalar. Num scalars = " + scalarsAttachedList.Count);
             //}
         }
     }
@@ -101,7 +95,6 @@ public abstract class BaseScalable : MonoBehaviour
     /// <param name="grabber"></param>
     public virtual void ScalarRemove(GameObject grabber)
     {
-        Debug.Log("ran SCALAR REMOVE");
         if (scalarsAttachedList.Contains(grabber))
         {
             scalarsAttachedList.Remove(grabber);

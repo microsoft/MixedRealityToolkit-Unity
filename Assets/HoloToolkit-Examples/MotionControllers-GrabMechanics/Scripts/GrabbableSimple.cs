@@ -18,22 +18,23 @@ public class GrabbableSimple : BaseGrabbable
     /// <summary>
     /// Specify the target and turn off gravity. Otherwise gravity will interfere with desired grab effect
     /// </summary>
-    protected override void StartGrab(Grabber grabber1)
+    protected override void StartGrab(Grabber grabber)
     {
-        base.StartGrab(grabber1);
+        base.StartGrab(grabber);
         if (rb)
             rb.useGravity = false;
-        Debug.Log("Grabbable Simple knows that it's being grabbed");
     }
 
     /// <summary>
     /// On release turn garvity back on the so the object falls and set the target back to null
     /// </summary>
-    protected override void EndGrab(Grabber grabber1)
+    protected override void EndGrab(Grabber grabber)
     {
-        base.EndGrab(grabber1);
+        base.EndGrab(grabber);
         if (rb)
+        {
             rb.useGravity = true;
+        }
     }
 
     private void Update()

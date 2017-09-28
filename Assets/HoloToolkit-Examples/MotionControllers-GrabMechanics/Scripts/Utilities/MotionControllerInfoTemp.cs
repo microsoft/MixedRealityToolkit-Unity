@@ -8,12 +8,15 @@ public static class MotionControllerInfoTemp  {
     private static Vector3 current;
     private static Vector3 previous;
 
-    public static Vector3 GetVelocity(Grabber grabber)
+    public static Vector3 GetVelocity(GameObject go)
     {
-        current = grabber.GetCurrentPosition();
-        previous = grabber.GetPreviousPosition();
-        var velocity = (current - previous) / Time.deltaTime;
-        //Debug.Log("Controller Velocity is: " + velocity);
+        var velocity = Vector3.zero;
+        if (go.GetComponent<BaseGrabber>())
+        {
+            current = go.GetComponent<BaseGrabber>().GetCurrentPosition();
+            previous = go.GetComponent<BaseGrabber>().GetPreviousPosition();
+            velocity = (current - previous) / Time.deltaTime;            
+        }
         return velocity;
     }
 
