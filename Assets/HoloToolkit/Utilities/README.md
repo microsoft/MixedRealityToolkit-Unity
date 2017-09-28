@@ -14,6 +14,28 @@ A drop in direction indicator that stays in the users view at all times.
 #### HeadsUpDirectionIndicatorPointer.prefab
 A quad based pointer to be used with the HeadsUpDirectionIndicator prefab to create an out of box direction indicator.
 
+### [Scenes](Scenes)
+---
+
+#### HeadsetAdjustment.unity
+Helps the user adjust the headset so that he/she gets the full experience in demo scenarios. 
+
+When demoing an app, it is important to ensure that the user has the headset on properly. This scene shows a border at the edge of the user's field of view and instructs him/her to adjust the headset until all four edges are visible. The user (or the demonstrator) can then air-tap or say "I'm ready" to proceed to the actual experience. 
+
+This scene is designed to be the first scene the user sees, once the experience is ready to begin. Once the user is ready, it loads either the next scene in the sequence or a scene specified by the NextSceneName property of the HeadsetAdjustment script.
+
+#### SceneLauncher.unity
+Creates a menu allowing you to jump to any scene in your project.
+
+To run the SceneLauncher:
+
+1. In Unity > File  Build Settings > Scenes in Build, drag in the scene files that you would like to run.
+    *  If you would like to use all scenes in the project, search for t:Scene in the Project tab, select all, and drag all scenes into Scenes in Build.
+2. After adding scenes to the build, you can use the Scene Mapping setting in the SceneLauncher prefab to control which scenes are included or not included in the SceneLauncher menu.
+3. Build and run your project. (Or open the SceneLauncher scene and hit Play in the Unity editor.) A grid will be created with a button for each of your scenes.
+4. Air tap a scene to load it.
+5. When finished with a scene, say "Scene Launcher" or press the Backspace key to return the the scene list.
+
 ### [Scripts](Scripts)
 ---
 Utilitiy Scripts.
@@ -23,7 +45,7 @@ Utilitiy Scripts.
 Editor Specific Scripts.
 
 ##### AutoConfigureMenu.cs
-Configuration options derived from Microsoft Documentation [Configuring a Unity Project for HoloLens](https://developer.microsoft.com/en-us/windows/holographic/unity_development_overview#Configuring_a_Unity_project_for_HoloLens).
+Configuration options derived from Microsoft Documentation [Configuring a Unity Project for HoloLens](https://developer.microsoft.com/en-us/windows/mixed-reality/unity_development_overview#Configuring_a_Unity_project_for_HoloLens).
 
 ##### AutoConfigureWindow.cs
 Base class for auto configuration build windows.
@@ -101,6 +123,9 @@ TODO: Remove if reduncatnt to InterpolatedVector3.cs
 
 ---
 
+#### ApplicationViewManager.cs
+Switchs app to a XAML page view, and waits for a return value from it.
+
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
 
@@ -145,7 +170,7 @@ A MonoBehaviour that interpolates a transform's position, rotation or scale.
 Math Utilities class.
 
 #### NearPlaneFade.cs
-Updates the shader parameters for use in near plade fading.
+Updates the shader parameters for use in near plane fading.
 
 #### PriorityQueue.cs
 Min-heap priority queue. In other words, lower priorities will be removed from the queue first.
@@ -190,52 +215,22 @@ Wrapper around world anchor store to streamline some of the persistence api busy
 ### [Shaders](Shaders)
 ---
 
-#### FastConfigurable.shader
-Very fast shader that uses the Unity light system.  Compiles down to only performing the operations you're actually using.  Uses material property drawers rather than a custom editor for ease of maintenance.
+#### macro.cginc
+Preprocessor macros to support shaders
 
 #### HoloToolkitCommon.cginc
 Common shader functionality
 
-#### LambertianConfigurable.cginc
-Code shared between LambertianConfigurable.shader and LambertianConfigurableTransparent.shader.
+#### FastConfigurable.shader
+Very fast shader that uses the Unity light system.  Compiles down to only performing the operations you're actually using.  Uses material property drawers rather than a custom editor for ease of maintenance.
 
-#### LambertianConfigurable.shader
-Feature configurable per-pixel lambertian shader.  Use when higher quality lighting is desired, but specular highlights are not needed.
-
-#### LambertianConfigurableTransparent.shader
-Feature configurable per-pixel lambertian transparent shader.  Use when higher quality lighting and transparency are desired, but specular highlights are not needed.
-
-#### macro.cginc
-Preprocessor macros to support shaders
-
-#### StandardFast.shader
-Higher performance drop-in replacement for the Unity Standard Shader.  Use when very high quality lighting (including reflections) is needed.
-
-#### UnlitConfigurable.cginc
-Code shared between UnlitConfigurable.shader and UnlitConfigurableTransparent.shader.
-
-#### UnlitConfigurable.shader
-Feature configurable unlit shader.  Use when no lighting is desired.
-
-#### UnlitConfigurableTransparent.shader
-Feature configurable unlit transparent shader.  Use when transparency and no lighting are desired.
-
-#### UnlitNoDepthTest.shader
-Render with a single texture but ignore depth test resuls so object always appears on top.
-
-#### VertexLitConfigurable.cginc
-Code shared between VertexLitConfigurable.shader and VertexLitConfigurableTransparent.shader.
-
-#### VertexLitConfigurable.shader
-Feature configurable vertex lit shader.  Use when a higher performance but lower precision lighting trade-off is acceptable.
-
-#### VertexLitConfigurableTransparent.shader
-Feature configurable vertex lit transparent shader.  Use when a higher performance but lower precision lighting trade-off is acceptable, and transparency is needed.
+#### FastConfigurable2Sided.shader
+Similar attributes for FastConfigurable with the benefit of 2 sides!
 
 #### WindowOcclusion.shader
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
-### [Tests](Tests)
+### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Utilities/Scenes)
 ---
 Tests related to the utilities features. To use the scene:
 

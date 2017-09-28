@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.Networking;
@@ -21,7 +21,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
     /// </summary>
     public class GenericNetworkTransmitter : Singleton<GenericNetworkTransmitter>
     {
-
         [Tooltip("The connection port on the machine to use.")]
         public int SendConnectionPort = 11000;
 
@@ -30,12 +29,12 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         /// <param name="data">The data that arrived.</param>
         public delegate void OnDataReady(byte[] data);
-        public event OnDataReady dataReadyEvent;
+        public event OnDataReady DataReadyEvent;
 
         /// <summary>
         /// The server to connect to when data is needed.
         /// </summary>
-        private string serverIP;
+        private string serverIp;
 
         /// <summary>
         /// Tracks if we have a connection request outstanding.
@@ -46,6 +45,23 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// Keeps the most recent data buffer.
         /// </summary>
         private byte[] mostRecentDataBuffer;
+
+#if !UNITY_EDITOR && UNITY_WSA
+        /// <summary>
+        /// Tracks the network connection to the remote machine we are sending meshes to.
+        /// </summary>
+        private StreamSocket networkConnection;
+
+        /// <summary>
+        /// If we are running as the server, this is the listener the server will use.
+        /// </summary>
+        private StreamSocketListener networkListener;
+
+        /// <summary>
+        /// If we cannot connect to the server, this is how long we will wait before retrying.
+        /// </summary>
+        private float timeToDeferFailedConnections = 10.0f;
+#endif
 
         /// <summary>
         /// If someone connects to us, this is the data we will send them.
@@ -59,10 +75,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <summary>
         /// Tells us who to contact if we need data.
         /// </summary>
-        /// <param name="ServerIP"></param>
-        public void SetServerIP(string ServerIP)
+        /// <param name="newServerIp"></param>
+        public void SetServerIp(string newServerIp)
         {
-            serverIP = ServerIP.Trim();
+            serverIp = newServerIp.Trim();
         }
 
         /// <summary>
@@ -78,9 +94,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         private void Update()
         {
-            lock(DeferredActionQueue)
+            lock (DeferredActionQueue)
             {
-                while(DeferredActionQueue.Count > 0)
+                while (DeferredActionQueue.Count > 0)
                 {
                     DeferredActionQueue.Dequeue()();
                 }
@@ -88,7 +104,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         // A lot of the work done in this class can only be done in UWP. The editor is not a UWP app.
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
         private void RequestDataRetry()
         {
             if (!RequestAndGetData())
@@ -96,27 +112,14 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 Invoke("RequestDataRetry", timeToDeferFailedConnections);
             }
         }
-
-        /// <summary>
-        /// Tracks the network connection to the remote machine we are sending meshes to.
-        /// </summary>
-        private StreamSocket networkConnection;
-
-        /// <summary>
-        /// If we are running as the server, this is the listener the server will use.
-        /// </summary>
-        private StreamSocketListener networkListener;
-
-        /// <summary>
-        /// If we cannot connect to the server, this is how long we will wait before retrying.
-        /// </summary>
-        private float timeToDeferFailedConnections = 10.0f;
+#endif
 
         /// <summary>
         /// Configures the network transmitter as the source.
         /// </summary>
         public void ConfigureAsServer()
         {
+#if !UNITY_EDITOR && UNITY_WSA
             Task t = new Task(() =>
             {
                 networkListener = new StreamSocketListener();
@@ -125,8 +128,40 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
                 );
             t.Start();
+#else
+            Debug.Log("This script is not intended to be run from the Unity Editor");
+            // In order to avoid compiler warnings in the Unity Editor we have to access a few of our fields.
+            Debug.Log(string.Format("serverIP = {0} waitingForConnection = {1} mostRecentDataBuffer = {2}", serverIp, waitingForConnection, mostRecentDataBuffer == null ? "No there" : "there"));
+#endif
         }
 
+        /// <summary>
+        /// Connects to the server and requests data.
+        /// </summary>
+        private bool ConnectListener()
+        {
+#if !UNITY_EDITOR && UNITY_WSA
+            if (waitingForConnection)
+            {
+                Debug.Log("Not a good time to connect listener");
+                return false;
+            }
+
+            waitingForConnection = true;
+            Debug.Log("Connecting to " + serverIp);
+            HostName networkHost = new HostName(serverIp);
+            networkConnection = new StreamSocket();
+
+            IAsyncAction outstandingAction = networkConnection.ConnectAsync(networkHost, SendConnectionPort.ToString());
+            AsyncActionCompletedHandler aach = new AsyncActionCompletedHandler(RcvNetworkConnectedHandler);
+            outstandingAction.Completed = aach;
+
+            return true;
+#endif
+            return false;
+        }
+
+#if !UNITY_EDITOR && UNITY_WSA
         /// <summary>
         /// When a connection is made to us, this call back gets called and
         /// we send our data.
@@ -151,29 +186,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
             {
                 Debug.LogError("No data to send but we've been connected to.  This is unexpected.");
             }
-        }
-
-        /// <summary>
-        /// Connects to the server and requests data.
-        /// </summary>
-        private bool ConnectListener()
-        {
-            if (waitingForConnection)
-            {
-                Debug.Log("Not a good time to connect listener");
-                return false;
-            }
-
-            Debug.Log("Connecting to " + serverIP);
-            waitingForConnection = true;
-            HostName networkHost = new HostName(serverIP);
-            networkConnection = new StreamSocket();
-
-            IAsyncAction outstandingAction = networkConnection.ConnectAsync(networkHost, SendConnectionPort.ToString());
-            AsyncActionCompletedHandler aach = new AsyncActionCompletedHandler(RcvNetworkConnectedHandler);
-            outstandingAction.Completed = aach;
-
-            return true;
         }
 
         /// <summary>
@@ -212,7 +224,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                     networkDataReader.ReadBytes(mostRecentDataBuffer);
 
                     // And fire our data ready event.
-                    dataReadyEvent?.Invoke(mostRecentDataBuffer);
+                    DataReadyEvent?.Invoke(mostRecentDataBuffer);
                 }
             }
             else
@@ -224,24 +236,14 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 // And set the defer time so the update loop can do the 'Unity things' 
                 // on the main Unity thread.
                 DeferredActionQueue.Enqueue(() =>
-              {
-                  Invoke("RequestDataRetry", timeToDeferFailedConnections);
-              });
+                {
+                    Invoke("RequestDataRetry", timeToDeferFailedConnections);
+                });
             }
 
             networkConnection.Dispose();
             waitingForConnection = false;
         }
-
-#else
-    public void ConfigureAsServer()
-    {
-        Debug.Log("This script is not intended to be run from the Unity Editor");
-        // In order to avoid compiler warnings in the Unity Editor we have to access a few of our fields.
-        Debug.Log(string.Format("serverIP = {0} waitingForConnection = {1} mostRecentDataBuffer = {2}", serverIP, waitingForConnection, mostRecentDataBuffer == null ? "No there" : "there"));
-    }
-	
-    private bool ConnectListener() { return false; }
 #endif
     }
 }

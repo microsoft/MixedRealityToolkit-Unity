@@ -1,15 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Allows the user to place and rotate GameObjects using a game controller.
-    /// For a more completed game pad control script refer to GamepadInput.cs and MixedRealityTeleport.cs
+    /// For a more complete gamepad control script refer to GamepadInput.cs and MixedRealityTeleport.cs
     /// </summary>
-    /// <remarks>Make sure to enable the HumanInterfaceDevice capability before using.</remarks>
+    /// <remarks>Make sure to enable the <see cref="HumanInterfaceDevice"/> capability on HoloLens Platform ONLY.  Enabling this capability on the PC or Xbox targets will break input.</remarks>
+    [Obsolete("Please use XboxControllerInputSource")]
     public class GameControllerManipulator : MonoBehaviour
     {
         [Tooltip("Name of the joystick axis that moves the object along X as set in InputManager")]
@@ -73,7 +75,7 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            var cameraTransform = Camera.main.transform;
+            var cameraTransform = CameraCache.Main.transform;
 
             //Rotate
             var noRotateModifier = string.IsNullOrEmpty(RotateModifierButtonName);

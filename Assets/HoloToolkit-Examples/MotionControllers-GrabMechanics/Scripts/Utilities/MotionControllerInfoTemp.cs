@@ -2,25 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class MotionControllerInfoTemp  {
-
-
-    private static Vector3 current;
-    private static Vector3 previous;
-
-    public static Vector3 GetVelocity(GameObject go)
+namespace MRTK.Grabbables {
+    public static class MotionControllerInfoTemp
     {
-        var velocity = Vector3.zero;
-        if (go.GetComponent<BaseGrabber>())
+
+
+        private static Vector3 current;
+        private static Vector3 previous;
+
+        public static Vector3 GetVelocity(BaseGrabber grabbable)
         {
-            current = go.GetComponent<BaseGrabber>().GetCurrentPosition();
-            previous = go.GetComponent<BaseGrabber>().GetPreviousPosition();
-            velocity = (current - previous) / Time.deltaTime;            
+            var velocity = Vector3.zero;
+            current = grabbable.GetCurrentPosition();
+            previous = grabbable.GetPreviousPosition();
+            velocity = (current - previous) / Time.deltaTime;
+            return velocity;
         }
-        return velocity;
     }
-
-
-
-
 }

@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif
 
 public class DisplayDependentObjectActivator : MonoBehaviour
 {

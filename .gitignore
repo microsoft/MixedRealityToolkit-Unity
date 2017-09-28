@@ -1,15 +1,16 @@
 # =============== #
 # Unity generated #
 # =============== #
-Temp/
-Obj/
-Bin/
-Builds/
-UnityGenerated/
-Library/
-Assets/AssetStoreTools*
-App/
+[Tt]emp/
+[Oo]bj/
+[Bb]in/
+[Bb]uilds/
+[Bb]uild/
+[Ll]ibrary/
+[Aa]pp/
 UWP/
+WindowsStoreApp/
+UnityGenerated/
 project.json
 project.lock.json
 
@@ -32,10 +33,10 @@ obj/
 *.ipch
 *.opensdf
 *.sdf
-*.obj
 *.tlog
 *.log
 *.idb
 *.opendb
+
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta

@@ -267,12 +267,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef7d866386841064db13b68ce22de4d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GamePadButtonA: Fire1
+  GamePadButtonA: XBOX_A
   GamePadId: 50000
   HoldStartedInterval: 2
   HoldCompletedInterval: 3
-  NavigateAroundXAxisName: ControllerLeftStickX
-  NavigateAroundYAxisName: ControllerLeftStickY
+  NavigateAroundXAxisName: CONTROLLER_LEFT_STICK_HORIZONTAL
+  NavigateAroundYAxisName: CONTROLLER_RIGHT_STICK_HORIZONTAL
 --- !u!114 &114950568511066590
 MonoBehaviour:
   m_ObjectHideFlags: 1

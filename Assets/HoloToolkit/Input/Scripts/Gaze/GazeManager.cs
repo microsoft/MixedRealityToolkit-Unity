@@ -105,29 +105,35 @@ namespace HoloToolkit.Unity.InputModule
             {
                 RaycastLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
             }
-        }
 
-        private void Start()
-        {
-            if (GazeTransform == null)
-            {
-                if (Camera.main != null)
-                {
-                    GazeTransform = Camera.main.transform;
-                }
-                else
-                {
-                    Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to.");
-                }
-            }
+            FindGazeTransform();
         }
 
         private void Update()
         {
+            if (!FindGazeTransform())
+            {
+                return;
+            }
+
             if (DebugDrawRay)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
+        }
+
+        private bool FindGazeTransform()
+        {
+            if (GazeTransform != null) { return true; }
+            
+            if (CameraCache.Main != null)
+            {
+                GazeTransform = CameraCache.Main.transform;
+                return true;
+            }
+
+            Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to.");
+            return false;
         }
 
         /// <summary>

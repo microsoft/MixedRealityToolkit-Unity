@@ -3,7 +3,10 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif 
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -25,8 +28,10 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
         public bool UseRailsNavigation = false;
 
+#if UNITY_EDITOR || UNITY_WSA
         protected GestureRecognizer gestureRecognizer;
         protected GestureRecognizer navigationGestureRecognizer;
+#endif
 
         #region IInputSource Capabilities and SourceData
 
@@ -113,6 +118,7 @@ namespace HoloToolkit.Unity.InputModule
 
             public uint SourceId { get { return Source.id; } }
             public InteractionSourceKind SourceKind { get { return Source.kind; } }
+            public InteractionSourceHandedness Handedness { get { return Source.handedness; } }
             public readonly InteractionSource Source;
             public SourceCapability<Vector3> PointerPosition;
             public SourceCapability<Quaternion> PointerRotation;
@@ -269,6 +275,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void StartGestureRecognizers()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.StartCapturingGestures();
@@ -278,10 +285,12 @@ namespace HoloToolkit.Unity.InputModule
             {
                 navigationGestureRecognizer.StartCapturingGestures();
             }
+#endif
         }
 
         public void StopGestureRecognizers()
         {
+#if UNITY_EDITOR || UNITY_WSA
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.StopCapturingGestures();
@@ -291,6 +300,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 navigationGestureRecognizer.StopCapturingGestures();
             }
+#endif
         }
 
         #region BaseInputSource implementations
@@ -656,6 +666,12 @@ namespace HoloToolkit.Unity.InputModule
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripPosition.IsSupported |= sourceData.GripPosition.IsAvailable;
 
+            if (Camera.main.transform.parent != null)
+            {
+                newPointerPosition = Camera.main.transform.parent.TransformPoint(newPointerPosition);
+                newGripPosition = Camera.main.transform.parent.TransformPoint(newGripPosition);
+            }
+
             if (sourceData.PointerPosition.IsAvailable || sourceData.GripPosition.IsAvailable)
             {
                 sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
@@ -672,6 +688,13 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
+
+            if (Camera.main.transform.parent != null)
+            {
+                newPointerRotation.eulerAngles = Camera.main.transform.parent.TransformDirection(newPointerRotation.eulerAngles);
+                newGripRotation.eulerAngles = Camera.main.transform.parent.TransformDirection(newGripRotation.eulerAngles);
+            }
+
             if (sourceData.PointerRotation.IsAvailable || sourceData.GripRotation.IsAvailable)
             {
                 sourceData.RotationUpdated = !(sourceData.PointerRotation.CurrentReading.Equals(newPointerRotation) && sourceData.GripRotation.CurrentReading.Equals(newGripRotation));
@@ -682,6 +705,12 @@ namespace HoloToolkit.Unity.InputModule
             Vector3 pointerForward = Vector3.zero;
             sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
             sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+
+            if (Camera.main.transform.parent != null)
+            {
+                pointerForward = Camera.main.transform.parent.TransformDirection(pointerForward);
+            }
+
             sourceData.PointingRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
 
             sourceData.Thumbstick.IsSupported = interactionSourceState.source.supportsThumbstick;
@@ -728,6 +757,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Raise GestureRecognizer Events
 
+#if UNITY_EDITOR || UNITY_WSA
         // TODO: robertes: Should these also cause source state data to be stored/updated? What about SourceDetected synthesized events?
 
         protected void GestureRecognizer_Tapped(TappedEventArgs obj)
@@ -789,6 +819,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             InputManager.Instance.RaiseNavigationCanceled(this, obj.source.id);
         }
+
+#endif
 
         #endregion
     }

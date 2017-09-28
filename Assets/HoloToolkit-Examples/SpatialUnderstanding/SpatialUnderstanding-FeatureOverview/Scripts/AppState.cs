@@ -8,7 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -192,13 +195,14 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private string spaceQueryDescription;
         private string objectPlacementDescription;
         private uint trackedHandsCount = 0;
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         private KeywordRecognizer keywordRecognizer;
 
         // Functions
         private void Start()
         {
             // Default the scene & the HoloToolkit objects to the camera
-            Vector3 sceneOrigin = Camera.main.transform.position;
+            Vector3 sceneOrigin = CameraCache.Main.transform.position;
             Parent_Scene.transform.position = sceneOrigin;
             MappingObserver.SetObserverOrigin(sceneOrigin);
             InputManager.Instance.AddGlobalListener(gameObject);
@@ -214,6 +218,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             keywordRecognizer.OnPhraseRecognized += args => keywordsToActions[args.text].Invoke();
             keywordRecognizer.Start();
         }
+#endif
 
         protected override void OnDestroy()
         {
@@ -263,7 +268,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void Update()
         {
-            // Updates
             Update_DebugDisplay(Time.deltaTime);
             Update_KeyboardInput(Time.deltaTime);
         }

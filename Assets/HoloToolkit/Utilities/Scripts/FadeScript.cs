@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
+
+#if UNITY_EDITOR || UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif
 
 namespace HoloToolkit.Unity
 {
@@ -83,7 +86,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        new void OnDestroy()
+        protected override void OnDestroy()
         {
             if (fadeMaterial != null)
             {
