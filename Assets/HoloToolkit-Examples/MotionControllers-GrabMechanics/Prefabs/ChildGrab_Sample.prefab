@@ -31,56 +31,56 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1297597803420636
+--- !u!1 &1810039612852762
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4203940665368460}
-  - component: {fileID: 23241431837278008}
-  - component: {fileID: 102580667934162574}
+  - component: {fileID: 4746843711828204}
+  - component: {fileID: 23570670097813318}
+  - component: {fileID: 102818688501850328}
   m_Layer: 0
-  m_Name: New Text
+  m_Name: 3DTextPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4203940665368460
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1297597803420636}
-  m_LocalRotation: {x: -0, y: 0.57164466, z: -0, w: 0.8205013}
-  m_LocalPosition: {x: -0.607, y: 1.117, z: 0.207}
-  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
-  m_Children: []
-  m_Father: {fileID: 4358759536277694}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 69.73, z: 0}
 --- !u!4 &4358759536277694
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1060161738127550}
-  m_LocalRotation: {x: -0.007624152, y: -0.9978537, z: 0.015663093, w: -0.0631238}
-  m_LocalPosition: {x: -0.535, y: 1.38, z: -0.202}
-  m_LocalScale: {x: 0.17403021, y: 0.17403007, z: 0.17403007}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.865, y: 0.181, z: -1.436}
+  m_LocalScale: {x: 0.1740303, y: 0.17403007, z: 0.1740301}
   m_Children:
-  - {fileID: 4203940665368460}
+  - {fileID: 4746843711828204}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 1.8460001, y: -187.22699, z: 0.75900006}
---- !u!23 &23241431837278008
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!4 &4746843711828204
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1810039612852762}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.391, y: 0.12, z: -0.518}
+  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
+  m_Children: []
+  m_Father: {fileID: 4358759536277694}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23570670097813318
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1297597803420636}
+  m_GameObject: {fileID: 1810039612852762}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -89,7 +89,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2a056e2bb89e0134daaf49e5f183e5dc, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -177,27 +177,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!102 &102580667934162574
+--- !u!102 &102818688501850328
 TextMesh:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1297597803420636}
-  m_Text: Grab via Parenting
+  m_GameObject: {fileID: 1810039612852762}
+  m_Text: 'Grab
+
+    via
+
+    Parenting'
   m_OffsetZ: 0
-  m_CharacterSize: 15.6
+  m_CharacterSize: 1
   m_LineSpacing: 1
-  m_Anchor: 1
-  m_Alignment: 1
+  m_Anchor: 3
+  m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 0
-  m_FontStyle: 1
+  m_FontSize: 328
+  m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: 2a056e2bb89e0134daaf49e5f183e5dc, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190335
+    rgba: 4294967295
 --- !u!114 &114173040487030064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,4 +213,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b67ce99e42abe04eb41d69d5bd3eb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TouchColor: {r: 1, g: 0.8896551, b: 0, a: 0}
+  TouchColor: {r: 0, g: 0.6689658, b: 1, a: 0}
