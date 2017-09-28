@@ -61,7 +61,6 @@ public abstract class BaseGrabber : MonoBehaviour
     protected virtual void GrabStart(InteractionSourcePressedEventArgs obj)
     {
         grabActive = true;
-        Debug.Log("Grab Initiated.");
     }
 
     /// <summary>
@@ -71,7 +70,6 @@ public abstract class BaseGrabber : MonoBehaviour
     protected virtual void GrabEnd(InteractionSourceReleasedEventArgs obj)
     {
         grabActive = false;
-        Debug.Log("Grab Ended.");
     }
 
     public Vector3 GetCurrentPosition()

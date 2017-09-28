@@ -44,15 +44,18 @@ public abstract class BaseGrabbable : MonoBehaviour
     protected virtual void CreateTempJoint(Grabber grabber) { }
     protected virtual void StartGrab(Grabber grabber)
     {
-        held = true;
-        Debug.Log("Start Grab -- from grabbbable");
-        myGrabber = grabber;
-        grabber.HeldObject = gameObject;
-        if (GetComponent<BaseScalable>())
+        if (grabber.GrabActive && !held)
         {
-            GrabStarted(grabber.gameObject);
+            held = true;
+            Debug.Log("Held is set to : " + held);
+            myGrabber = grabber;
+            grabber.HeldObject = gameObject;
+            if (GetComponent<BaseScalable>())
+            {
+                GrabStarted(grabber.gameObject);
+            }
+            StartCoroutine(StayGrab(grabber));
         }
-        StartCoroutine(StayGrab(grabber));
     }
 
     /// <summary>
@@ -61,20 +64,19 @@ public abstract class BaseGrabbable : MonoBehaviour
     /// </summary>
     /// <param name="grabber"></param>
     /// <returns></returns>
-
     protected virtual IEnumerator StayGrab(Grabber grabber)
     {
         while (grabber.GrabActive)
-        {
-            yield return null;
-        }
+            {
+                yield return null;
+            }
         EndGrab(grabber);
         yield return null;
     }
 
     /// <summary>
     /// Grab end fires off a GrabEnded event, but also cleans up some of the variables associated with an active grab, such
-    /// as which grabber was grabbing this object and sod forth. 
+    /// as which grabber was grabbing this object and so forth. 
     /// </summary>
     /// <param name="grabber"></param>
     protected virtual void EndGrab(Grabber grabber)
@@ -82,6 +84,7 @@ public abstract class BaseGrabbable : MonoBehaviour
         held = false;
         myGrabber = null;
         grabber.HeldObject = null;
+        ///TODO: The grab script should be completely ignorant of scale, rotate, throw or any other script components attached to a grabbable object
         if (GetComponent<BaseScalable>())
         {
             GrabEnded(grabber.gameObject);
@@ -90,25 +93,39 @@ public abstract class BaseGrabbable : MonoBehaviour
         {
             GetComponent<BaseThrowable>().Throw(grabber.gameObject);
         }
-        Debug.Log("End Grab -- from grabbable");
     }
 
     /// <summary>
     /// The combination of trigger enter and a "GrabActive" bool (attached to the grabber) provide all the necessary information
-    /// about what is grabbing and what is being grabbed.
-    /// Event fires.
+    /// about what is grabbing and what is being grabbed. StartGrab event fires.
     /// </summary>
     /// <param name="other"></param>
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        Debug.Log("trigger Enter");
-        if (other.GetComponent<Grabber>())
+        if (other.GetComponent<Grabber>() && !held)
         {
-            Debug.Log("Our other is a grabber");
             Grabber grbr = other.GetComponent<Grabber>();
             if (grbr.GrabActive)
+            {
                 StartGrab(grbr);
+                Debug.Log("Firing start grab from TRIGGER ENTER");
+            }
+        }
+    }
+
+    protected virtual void OnTriggerStay(Collider other)
+    {
+        if (other.GetComponent<Grabber>() && !held)
+        {
+            Grabber grbr = other.GetComponent<Grabber>();
+            if (grbr.GrabActive)
+            {
+                Debug.Log("Firing start grab from TRIGGER STAY");
+                StartGrab(grbr);
+            }
+            else
+                EndGrab(grbr);
         }
     }
 
