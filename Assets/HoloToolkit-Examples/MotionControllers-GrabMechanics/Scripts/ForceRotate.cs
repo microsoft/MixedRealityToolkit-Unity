@@ -29,7 +29,7 @@ namespace MRTK.Grabbables
 
         private IEnumerator MakeRotate( )
         {
-            while (UseState == UseStateEnum.Active) {
+            while (UseState == UseStateEnum.Active) {                
                 //transform.Rotate(obj.state.thumbstickPosition.x, obj.state.thumbstickPosition.y, 0.01f);
                 yield return 0;
             }
