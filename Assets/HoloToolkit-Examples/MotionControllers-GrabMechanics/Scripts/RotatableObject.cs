@@ -10,8 +10,22 @@ namespace MRTK.Grabbables
     /// pick up (grabbed) and is then "usable"
     /// </summary>
 
-    public class ForceRotate : BaseUsable
+    public class RotatableObject : BaseUsable
     {
+        private Vector3 touchPositionFromController;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
+        }
+
         /// <summary>
         /// In the BaseUsable class that this class inherits from, UseStarted begins checking for usage
         /// after the object is grabbed/picked up
@@ -29,11 +43,17 @@ namespace MRTK.Grabbables
 
         private IEnumerator MakeRotate( )
         {
-            while (UseState == UseStateEnum.Active) {                
-                //transform.Rotate(obj.state.thumbstickPosition.x, obj.state.thumbstickPosition.y, 0.01f);
+            while (UseState == UseStateEnum.Active) {
+                transform.Rotate(touchPositionFromController);
                 yield return 0;
             }
             yield return null;
         }
+
+        private void GetTouchPadPosition(InteractionSourceUpdatedEventArgs obj)
+        {
+            touchPositionFromController = obj.state.touchpadPosition;
+        }
+
     }
 }
