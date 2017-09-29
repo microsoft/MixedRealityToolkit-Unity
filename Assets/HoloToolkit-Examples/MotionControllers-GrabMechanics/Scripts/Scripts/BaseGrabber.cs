@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MRTK.Grabbables
@@ -9,6 +10,9 @@ namespace MRTK.Grabbables
     /// </summary>
     public abstract class BaseGrabber : MonoBehaviour
     {
+        public Action<BaseGrabber> OnGrabStateChange;
+        public Action<BaseGrabber> OnContactStateChange;
+
         public GrabStateEnum GrabState
         {
             get
@@ -22,7 +26,7 @@ namespace MRTK.Grabbables
             }
         }
 
-        public GrabStateEnum HoverState
+        public GrabStateEnum ContactState
         {
             get
             {
@@ -32,14 +36,6 @@ namespace MRTK.Grabbables
                     return GrabStateEnum.Single;
                 else
                     return GrabStateEnum.Inactive;
-            }
-        }
-
-        public BaseGrabbable GrabbedObjectPrimary
-        {
-            get
-            {
-                return (grabbedObjects.Count > 0) ? grabbedObjects.Peek() : null;
             }
         }
 
@@ -54,11 +50,25 @@ namespace MRTK.Grabbables
             }
         }
 
-        public float Strength { get { return strength; } set { strength = value; } }
+        public float Strength { get { return strength; } }
 
         public bool IsGrabbing (BaseGrabbable grabbable)
         {
             return grabbedObjects.Contains(grabbable);
+        }
+
+        /// <summary>
+        /// Attempts to transfer ownership of grabbable object to another grabber
+        /// Can override to 'lock' objects to a grabber, if desired
+        /// </summary>
+        /// <param name="baseGrabbable"></param>
+        /// <param name="grabber"></param>
+        /// <returns></returns>
+        public virtual bool CanTransferOwnershipTo(BaseGrabbable grabbable, BaseGrabber otherGrabber)
+        {
+            Debug.Log("Transferring ownership of " + grabbable.name + " to grabber " + otherGrabber.name);
+            grabbedObjects.Remove(grabbable);
+            return true;
         }
 
         /// <summary>
@@ -80,9 +90,9 @@ namespace MRTK.Grabbables
                 // Sort by distance and try to grab the closest
                 SortAvailable();
                 BaseGrabbable closestAvailable = contactObjects[0];
-                if (closestAvailable.TryToGrabWith(this))
+                if (closestAvailable.TryGrabWith(this))
                 {
-                    grabbedObjects.Push(contactObjects[0]);
+                    grabbedObjects.Add(contactObjects[0]);
                 }
             }
         }
@@ -92,7 +102,7 @@ namespace MRTK.Grabbables
         /// Grab behaviour depends on the combination of grabactive being true, and a grabbable trigger entered
         /// </summary>
         protected virtual void GrabEnd()
-        {
+        {            
             grabbedObjects.Clear();
         }
 
@@ -113,7 +123,10 @@ namespace MRTK.Grabbables
         protected void AddContact(BaseGrabbable availableObject)
         {
             if (!contactObjects.Contains(availableObject))
+            {
                 contactObjects.Add(availableObject);
+                availableObject.AddContact(this);
+            }
         }
 
         /// <summary>
@@ -124,6 +137,12 @@ namespace MRTK.Grabbables
         protected void RemoveContact (BaseGrabbable availableObject)
         {
             contactObjects.Remove(availableObject);
+            availableObject.RemoveContact(this);
+
+            if (contactObjects.Contains (availableObject))
+            {
+
+            }
         }
 
         /// <summary>
@@ -148,7 +167,41 @@ namespace MRTK.Grabbables
 
         void Update()
         {
+            #if UNITY_EDITOR
+            if (UnityEditor.Selection.activeGameObject == gameObject)
+            {
+                if (Input.GetKeyDown(KeyCode.G))
+                {
+                    if (GrabState == GrabStateEnum.Inactive)
+                    {
+                        Debug.Log("Grab start");
+                        GrabStart();
+                    }
+                    else
+                    {
+                        Debug.Log("Grab end");
+                        GrabEnd();
+                    }
+                }
+            }
+            #endif
+
             currPos = transform.position;
+
+            if (prevGrabState != GrabState && OnGrabStateChange != null)
+            {
+                Debug.Log("Calling on grab change in grabber");
+                OnGrabStateChange(this);
+            }
+
+            if (prevContactState != ContactState && OnContactStateChange != null)
+            {
+                Debug.Log("Calling on contact change in grabber");
+                OnContactStateChange(this);
+            }
+
+            prevGrabState = GrabState;
+            prevContactState = ContactState;
         }
 
         void LateUpdate()
@@ -159,17 +212,16 @@ namespace MRTK.Grabbables
         //variable declaration
         [SerializeField]
         protected Transform grabAttachSpot;
+        [SerializeField]
+        protected float strength = 1.0f;
+        
+        protected HashSet<BaseGrabbable> grabbedObjects = new HashSet<BaseGrabbable>();
+        protected List<BaseGrabbable> contactObjects = new List<BaseGrabbable>();
+
         protected float grabForgivenessRadius;
 
-        private Stack<BaseGrabbable> grabbedObjects = new Stack<BaseGrabbable>();
-        private List<BaseGrabbable> contactObjects = new List<BaseGrabbable>();
-
-        private Rigidbody rb;
-        private GameObject myGrabbedObject;
-        private float scaleMulitplier;
-        private Vector3 attachPoint;
-        [SerializeField]
-        private float strength = 1.0f;
+        private GrabStateEnum prevGrabState = GrabStateEnum.Inactive;
+        private GrabStateEnum prevContactState = GrabStateEnum.Inactive;               
         private Vector3 currPos;
         private Vector3 prevPos;
     }

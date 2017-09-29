@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 namespace MRTK.Grabbables
 {
     /// <summary>
@@ -23,20 +24,18 @@ namespace MRTK.Grabbables
         [SerializeField]
         protected float maxDistance;
 
-
         protected override void AttachToGrabber(BaseGrabber grabber)
         {
             base.AttachToGrabber(grabber);
             FixedJoint joint = GetComponent<FixedJoint>();
             if (joint == null)
             {
-                gameObject.AddComponent<FixedJoint>();
-                joint = gameObject.GetComponent<FixedJoint>();
-                joint.connectedBody = grabber.GetComponent<Rigidbody>();
-                joint.anchor = joint_anchor;
-                joint.breakForce = breakForce;
-                joint.breakTorque = breakTorque;
+                joint = gameObject.AddComponent<FixedJoint>();
             }
+            joint.connectedBody = grabber.GetComponent<Rigidbody>();
+            joint.anchor = joint_anchor;
+            joint.breakForce = breakForce;
+            joint.breakTorque = breakTorque;
         }
 
         protected override void DetachFromGrabber(BaseGrabber grabber)
@@ -46,8 +45,16 @@ namespace MRTK.Grabbables
             if (joint != null)
             {
                 joint.connectedBody = null;
-                Destroy(joint);
+                //Destroy(joint);
+                StartCoroutine(DestroyJointAfterDelay(joint));
             }
+        }
+
+        protected IEnumerator DestroyJointAfterDelay(FixedJoint joint)
+        {
+            yield return null;
+            if (GrabState == GrabStateEnum.Inactive)
+                Destroy(joint);
         }
     }
 }

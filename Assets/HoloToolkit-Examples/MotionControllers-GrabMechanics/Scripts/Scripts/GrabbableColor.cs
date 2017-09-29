@@ -15,45 +15,47 @@ namespace MRTK.Grabbables
                 grabbable = GetComponent<BaseGrabbable>();
             if (targetRenderer == null)
                 targetRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
-            
-            grabbable.OnContactStateChange += OnContactStateChange;
-            grabbable.OnGrabStateChange += OnGrabStateChange;
+
+            originalColor = targetRenderer.material.color;
+            grabbable.OnContactStateChange += RefreshColor;
+            grabbable.OnGrabStateChange += RefreshColor;
         }
 
-        private void OnContactStateChange (BaseGrabbable g)
+        private void RefreshColor(BaseGrabbable g)
         {
+            Color finalColor = originalColor;
+
             switch (g.ContactState)
             {
                 case GrabStateEnum.Inactive:
-                    targetRenderer.material.color = originalColor;
+                default:
                     break;
 
                 case GrabStateEnum.Multi:
-                    targetRenderer.material.color = colorOnContactMulti;
+                    finalColor = colorOnContactMulti;
                     break;
 
                 case GrabStateEnum.Single:
-                    targetRenderer.material.color = colorOnContactSingle;
+                    finalColor = colorOnContactSingle;
                     break;
             }
-        }
 
-        private void OnGrabStateChange(BaseGrabbable g)
-        {
             switch (g.GrabState)
             {
                 case GrabStateEnum.Inactive:
-                    targetRenderer.material.color = originalColor;
+                default:
                     break;
 
                 case GrabStateEnum.Multi:
-                    targetRenderer.material.color = colorOnGrabMulti;
+                    finalColor = colorOnGrabMulti;
                     break;
 
                 case GrabStateEnum.Single:
-                    targetRenderer.material.color = colorOnGrabSingle;
+                    finalColor = colorOnGrabSingle;
                     break;
             }
+
+            targetRenderer.material.color = finalColor;
         }
 
         [Header("Colors")]

@@ -10,17 +10,6 @@ using UnityEngine.XR.WSA.Input;
 
 namespace MRTK.Grabbables
 {
-    /// <summary>
-    /// Which button is associated with grabbing behaviour
-    /// </summary>
-    public enum ButtonChoice
-    {
-        None,
-        Trigger,
-        Grip,
-        Touchpad
-    }
-
     public class Grabber : BaseGrabber
     {
         ///Subscribe GrabStart and GrabEnd to InputEvents for GripPressed
@@ -40,21 +29,29 @@ namespace MRTK.Grabbables
 
         private void InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
         {
-            GrabStart();
+            if (obj.pressType == pressType && obj.state.source.handedness == handedness)
+            {
+                GrabStart();
+            }
         }
 
         private void InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
         {
-            GrabEnd();
+            if (obj.pressType == pressType && obj.state.source.handedness == handedness)
+            {
+                GrabEnd();
+            }
         }
 
         /// <summary>
-        /// Controller grabbers find available grabbable objects via collider/triggers
+        /// Controller grabbers find available grabbable objects via triggers
         /// </summary>
         /// <param name="other"></param>
         protected virtual void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Trigger enter --Grabber");
+            Debug.Log("Entered trigger with " + other.name);
+            if (((1 << other.gameObject.layer) & grabbableLayers.value) == 0)
+                return;
 
             BaseGrabbable bg = other.GetComponent<BaseGrabbable>();
             if (bg == null && other.attachedRigidbody != null)
@@ -63,14 +60,15 @@ namespace MRTK.Grabbables
             if (bg == null)
                 return;
 
+            Debug.Log("Adding contact");
+
             AddContact(bg);
-            Debug.Log("Trigger Enter hit end");
         }
 
         protected virtual void OnTriggerExit(Collider other)
         {
-            Debug.Log("Trigger exit --Grabber");
-            if (other.gameObject.layer != grabbableLayers.value)
+            Debug.Log("Exited trigger with " + other.name);
+            if (((1 << other.gameObject.layer) & grabbableLayers.value) == 0)
                 return;
 
             BaseGrabbable bg = other.GetComponent<BaseGrabbable>();
@@ -80,11 +78,16 @@ namespace MRTK.Grabbables
             if (bg == null)
                 return;
 
+            Debug.Log("Removing contact");
+
             RemoveContact(bg);
-            Debug.Log("Trigger Exit hit end");
         }
 
         [SerializeField]
         private LayerMask grabbableLayers = ~0;
+        [SerializeField]
+        private InteractionSourceHandedness handedness;
+        [SerializeField]
+        private InteractionSourcePressType pressType;
     }
 }

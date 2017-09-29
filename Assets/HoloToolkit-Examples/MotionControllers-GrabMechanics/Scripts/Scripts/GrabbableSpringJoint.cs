@@ -35,15 +35,15 @@ namespace MRTK.Grabbables
             if (joint == null)
             {
                 joint = gameObject.AddComponent<SpringJoint>();
-                joint.connectedBody = grabber.GetComponent<Rigidbody>();
-                joint.anchor = new Vector3(0, 0.01f, 0.01f);
-                joint.tolerance = tolerance;
-                joint.breakForce = breakForce;
-                joint.breakTorque = breakTorque;
-                joint.spring = spring;
-                joint.damper = damper;
-                Debug.Log("Just CREATED a temp JOINT");
             }
+            joint.connectedBody = grabber.GetComponent<Rigidbody>();
+            joint.anchor = new Vector3(0, 0.01f, 0.01f);
+            joint.tolerance = tolerance;
+            joint.breakForce = breakForce;
+            joint.breakTorque = breakTorque;
+            joint.spring = spring;
+            joint.damper = damper;
+            Debug.Log("Just CREATED a temp JOINT");
         }
 
         protected override void DetachFromGrabber(BaseGrabber grabber)
@@ -53,8 +53,16 @@ namespace MRTK.Grabbables
             if (joint != null)
             {
                 joint.connectedBody = null;
-                Destroy(joint);
+                //Destroy(joint);
+                StartCoroutine(DestroyJointAfterDelay(joint));
             }
+        }
+
+        protected IEnumerator DestroyJointAfterDelay (SpringJoint joint)
+        {
+            yield return null;
+            if (GrabState == GrabStateEnum.Inactive)
+                Destroy(joint);
         }
     }
 }

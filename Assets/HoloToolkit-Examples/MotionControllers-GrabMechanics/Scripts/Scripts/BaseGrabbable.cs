@@ -19,6 +19,12 @@ namespace MRTK.Grabbables
         Multi,
     }
 
+    public enum GrabStyleEnum
+    {
+        Exclusive,
+        Multi
+    }
+
     public abstract class BaseGrabbable : MonoBehaviour
     {
         public Action<BaseGrabbable> OnGrabStateChange;
@@ -30,14 +36,7 @@ namespace MRTK.Grabbables
         {
             get
             {
-                return activeGrabbers.Count > 0 ? activeGrabbers.Peek() : null;
-            }
-            set
-            {
-                if (!activeGrabbers.Contains(value))
-                {
-                    activeGrabbers.Push(value);
-                }
+                return activeGrabbers.Count > 0 ? activeGrabbers[activeGrabbers.Count - 1] : null;
             }
         }
 
@@ -97,38 +96,52 @@ namespace MRTK.Grabbables
             }
         }
 
-        public virtual bool TryToGrabWith (BaseGrabber grabber)
+        public virtual bool TryGrabWith (BaseGrabber grabber)
         {
             // TODO error checking, mult-grab checking
             if (GrabState != GrabStateEnum.Inactive)
-                return false;
+            {
+                switch (grabStyle)
+                {
+                    case GrabStyleEnum.Exclusive:
+                        // Try to transfer ownership of grabbed object
+                        BaseGrabber primary = GrabberPrimary;
+                        if (GrabberPrimary.CanTransferOwnershipTo(this, grabber))
+                        {
+                            // Remove from grabbable list and detatch
+                            activeGrabbers.Remove(primary);
+                            DetachFromGrabber(primary);
+                        } else {
+                            // If we can't, it's a no-go
+                            return false;
+                        }
+                        break;
 
-            activeGrabbers.Push(grabber);
+                    default:
+                        break;
+                }
+            }
+
             StartGrab(grabber);
             return true;
         }
 
-        //left protected unless we have the occasion to use them publicly, then switch to public properties
-        [SerializeField]
-        protected Transform grabSpot;
-        protected Transform myOriginalParent;
-        protected bool multiGrabAvailable;
-        protected bool AwaitingGrab;
-        protected Texture AwaitingGrabVisual;
-        protected bool grabbable;
-        protected bool StayAttachedOnTeleport;
-
-        //these events for GrabStarted and GrabEnded are subscribed to by scalable, rotatable, and throwable scripts
-        /*public delegate void GrabActive(GameObject grabber);
-        public static event GrabActive GrabStarted;
-
-        public delegate void GrabFalse(GameObject grabber);
-        public static event GrabFalse GrabEnded;*/
-        
-        protected virtual void Start() {
-
+        /// <summary>
+        /// Adds a grabber object to the list of available grabbers
+        /// </summary>
+        public void AddContact(BaseGrabber availableObject)
+        {
+            availableGrabbers.Add(availableObject);
         }
-        
+
+        /// <summary>
+        /// Removes a grabber object from the list of available grabbers
+        /// </summary>
+        public void RemoveContact(BaseGrabber availableObject)
+        {
+            availableGrabbers.Remove(availableObject);
+        }
+
         //the next three functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
         protected virtual void AttachToGrabber(BaseGrabber grabber)
         {
@@ -144,16 +157,19 @@ namespace MRTK.Grabbables
 
         protected virtual void StartGrab(BaseGrabber grabber)
         {
+            Debug.Log("Start grab");
             if (GrabState == GrabStateEnum.Inactive)
             {
+                Debug.Log("State is inactive");
                 // If we're not already updating our grab state, start now
-                activeGrabbers.Push(grabber);
+                activeGrabbers.Add(grabber);
                 StartCoroutine(StayGrab());
             }
             else
             {
+                Debug.Log("State is not inactive");
                 // Otherwise just push the grabber
-                activeGrabbers.Push(grabber);
+                activeGrabbers.Add(grabber);
             }
 
             // Attach ourselves to this grabber
@@ -170,30 +186,31 @@ namespace MRTK.Grabbables
         /// <param name="grabber"></param>
         /// <returns></returns>
         protected virtual IEnumerator StayGrab()
-        {            
+        {
+            yield return null;
+
             // While grabbers are grabbing
             while (GrabState != GrabStateEnum.Inactive)
             {
                 // Call on grab stay in case this grabbable wants to update itself
                 OnGrabStay();
-
-                // Check to make sure these grabbers actually exist
-                while (activeGrabbers.Peek() == null || !activeGrabbers.Peek().IsGrabbing(this))
+                for (int i = activeGrabbers.Count - 1; i >= 0; i--)
                 {
-                    BaseGrabber grabber = activeGrabbers.Pop();
-                    if (grabber != null)
-                        DetachFromGrabber(grabber);
+                    if (activeGrabbers[i] == null || !activeGrabbers[i].IsGrabbing(this))
+                    {
+                        Debug.Log("no longer being grabbed by active grabber");
+                        if (activeGrabbers[i] != null)
+                            DetachFromGrabber(activeGrabbers[i]);
+                        activeGrabbers.RemoveAt(i);
+                    }
                 }
                 yield return null;
             }
-
             EndGrab();
-            yield return null;
         }
-
         /// <summary>
         /// Grab end fires off a GrabEnded event, but also cleans up some of the variables associated with an active grab, such
-        /// as which grabber was grabbing this object and others
+        /// as which grabber was grabbing this object and so forth. 
         /// </summary>
         /// <param name="grabber"></param>
         protected virtual void EndGrab()
@@ -210,6 +227,28 @@ namespace MRTK.Grabbables
 
         }
 
+        protected virtual void Start()
+        {
+
+        }
+
+        protected virtual void Update()
+        {
+            if (prevGrabState != GrabState && OnGrabStateChange != null) {
+                Debug.Log("Calling on grab change in grabbable");
+                OnGrabStateChange(this);
+            }
+
+            if (prevContactState != ContactState && OnContactStateChange != null)
+            {
+                Debug.Log("Calling on contact change in grabbable");
+                OnContactStateChange(this);
+            }
+
+            prevGrabState = GrabState;
+            prevContactState = ContactState;
+        }
+
         /// <summary>
         /// Grabbers that could potentially grab this object
         /// This list is maintained by the grabbers
@@ -219,21 +258,15 @@ namespace MRTK.Grabbables
         /// Grabbers that are currently grabbing this object
         /// The top-most grabber is the primary grabber
         /// </summary>
-        protected Stack<BaseGrabber> activeGrabbers = new Stack<BaseGrabber>();
+        protected List<BaseGrabber> activeGrabbers = new List<BaseGrabber>();
 
-        protected virtual void Update()
-        {
-            if (prevGrabState != GrabState && OnGrabStateChange != null)
-                OnGrabStateChange(this);
-
-            if (prevContactState != ContactState && OnContactStateChange != null)
-                OnContactStateChange(this);
-
-            prevGrabState = GrabState;
-            prevContactState = ContactState;
-        }
+        //left protected unless we have the occasion to use them publicly, then switch to public access
+        [SerializeField]
+        protected Transform grabSpot;
+        [SerializeField]
+        protected GrabStyleEnum grabStyle = GrabStyleEnum.Exclusive;
 
         private GrabStateEnum prevGrabState = GrabStateEnum.Inactive;
-        private GrabStateEnum prevContactState = GrabStateEnum.Inactive;
+        private GrabStateEnum prevContactState = GrabStateEnum.Inactive;        
     }
 }
