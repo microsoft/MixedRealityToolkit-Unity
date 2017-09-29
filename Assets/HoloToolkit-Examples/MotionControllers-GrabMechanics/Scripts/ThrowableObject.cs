@@ -13,12 +13,25 @@ namespace MRTK.Grabbables
         {
             base.Throw(grabbable);
             GetComponent<Rigidbody>().velocity = MotionControllerInfoTemp.GetVelocity(grabbable.GrabberPrimary) * grabbable.GrabberPrimary.Strength * ThrowMultiplier;
-            //GetComponent<Rigidbody>().velocity = -MotionControllerInfoTemp.AngularVelocity(grabber.transform.rotation.eulerAngles);
 
             if (ZeroGravityThrow)
             {
                 GetComponent<Rigidbody>().useGravity = false;
             }
         }
+
+        private void Update()
+        {
+            if (Thrown)
+            {
+                f += 0.01f;
+                if (f < 1)
+                {
+                    //GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity + new Vector3((1.1f * LeftRightCurveOverTime.Evaluate(f)), (1.1f * UpDownCurveOverTime.Evaluate(f)), (1.1f * LeftRightCurveOverTime.Evaluate(f)));
+                }
+            }
+        }
+
+        private float f = 0;
     }
 }

@@ -1138,6 +1138,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1394125675}
     m_Modifications:
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
+      propertyPath: upDownCurveOverTime.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4119929437350726, guid: 8497e1771119cf843a137c11f50cbdf4, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0.413
@@ -1184,6 +1189,36 @@ Prefab:
         type: 2}
       propertyPath: TouchColor.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
+      propertyPath: upDownCurveOverTime.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
+      propertyPath: upDownCurveOverTime.m_Curve.Array.data[1].value
+      value: 0.1006279
+      objectReference: {fileID: 0}
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
+      propertyPath: upDownCurveOverTime.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
+      propertyPath: upDownCurveOverTime.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
+      propertyPath: upDownCurveOverTime.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
+      propertyPath: upDownCurveOverTime.m_Curve.Array.data[0].value
+      value: 0.1006279
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8497e1771119cf843a137c11f50cbdf4, type: 2}

@@ -45,7 +45,6 @@ namespace MRTK.Grabbables
         {
             while (UseState == UseStateEnum.Active) {
                 transform.Rotate(touchPositionFromController);
-                Debug.Log("should be updating rotation");
                 yield return 0;
             }
             yield return null;
@@ -54,7 +53,6 @@ namespace MRTK.Grabbables
         private void GetTouchPadPosition(InteractionSourceUpdatedEventArgs obj)
         {
             touchPositionFromController = obj.state.touchpadPosition;
-            //Debug.Log("touchPos from controller = " + touchPositionFromController);
         }
 
     }
