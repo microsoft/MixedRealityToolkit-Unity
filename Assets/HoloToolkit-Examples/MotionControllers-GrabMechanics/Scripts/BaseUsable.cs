@@ -39,12 +39,20 @@ namespace MRTK.Grabbables
             InteractionManager.InteractionSourceReleased -= UseInputEnd;
         }
 
+        protected void Awake()
+        {
+           // handedness
+        }
+
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
-            if (obj.pressType == pressType && obj.state.source.handedness == handedness)
+            Debug.Log("attempting to start USING. Handedness is : "+obj.state.source.handedness);
+            /*&& (obj.state.source.handedness == handedness || obj.state.source.handedness == InteractionSourceHandedness.Unknown)*/
+            if (obj.pressType == pressType && (obj.state.source.handedness.Equals(InteractionSourceHandedness.Left) || obj.state.source.handedness.Equals(InteractionSourceHandedness.Right)))
             {
                 state = UseStateEnum.Active;
                 UseStart();
+                Debug.Log("firing USE START");
             }
         }
 
