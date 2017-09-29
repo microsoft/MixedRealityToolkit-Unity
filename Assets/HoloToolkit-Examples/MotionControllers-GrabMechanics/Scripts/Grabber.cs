@@ -49,13 +49,12 @@ namespace MRTK.Grabbables
         }
 
         /// <summary>
-        /// Controller grabbers find available grabbable objects via triggers
+        /// Controller grabbers find available grabbable objects via collider/triggers
         /// </summary>
         /// <param name="other"></param>
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.layer != grabbableLayers.value)
-                return;
+            Debug.Log("Trigger enter --Grabber");
 
             BaseGrabbable bg = other.GetComponent<BaseGrabbable>();
             if (bg == null && other.attachedRigidbody != null)
@@ -65,10 +64,12 @@ namespace MRTK.Grabbables
                 return;
 
             AddContact(bg);
+            Debug.Log("Trigger Enter hit end");
         }
 
         protected virtual void OnTriggerExit(Collider other)
         {
+            Debug.Log("Trigger exit --Grabber");
             if (other.gameObject.layer != grabbableLayers.value)
                 return;
 
@@ -80,6 +81,7 @@ namespace MRTK.Grabbables
                 return;
 
             RemoveContact(bg);
+            Debug.Log("Trigger Exit hit end");
         }
 
         [SerializeField]

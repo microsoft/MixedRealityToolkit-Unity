@@ -108,7 +108,7 @@ namespace MRTK.Grabbables
             return true;
         }
 
-        //left protected unless we have the occasion to use them publicly, then switch to public access
+        //left protected unless we have the occasion to use them publicly, then switch to public properties
         [SerializeField]
         protected Transform grabSpot;
         protected Transform myOriginalParent;
@@ -193,7 +193,7 @@ namespace MRTK.Grabbables
 
         /// <summary>
         /// Grab end fires off a GrabEnded event, but also cleans up some of the variables associated with an active grab, such
-        /// as which grabber was grabbing this object and so forth. 
+        /// as which grabber was grabbing this object and others
         /// </summary>
         /// <param name="grabber"></param>
         protected virtual void EndGrab()

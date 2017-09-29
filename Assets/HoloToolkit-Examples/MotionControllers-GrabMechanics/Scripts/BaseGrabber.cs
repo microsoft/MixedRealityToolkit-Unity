@@ -164,7 +164,6 @@ namespace MRTK.Grabbables
         private Stack<BaseGrabbable> grabbedObjects = new Stack<BaseGrabbable>();
         private List<BaseGrabbable> contactObjects = new List<BaseGrabbable>();
 
-        //for scaling
         private Rigidbody rb;
         private GameObject myGrabbedObject;
         private float scaleMulitplier;

@@ -53,6 +53,7 @@ namespace MRTK.Grabbables
                     {
                         int i = 0;
                         Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(grabber));
+                        //Add Velocity scale functionality here
                         i++;
                     }
 
@@ -111,7 +112,7 @@ namespace MRTK.Grabbables
                 if (activeGrabbers.Length >= minScalarNumForScale)
                 {
                     float currDistance = Vector3.Distance(activeGrabbers[0].GrabHandle.position, activeGrabbers[1].GrabHandle.position);
-                    transform.localScale = Vector3.one * ((currDistance / snapShotDistance) * snapShotOfScale) /*multiplier * distFromUser*/;
+                    transform.localScale = Vector3.one * ((currDistance / snapShotDistance) * snapShotOfScale) /*scaleMultiplier * distFromUser*/;
                 }
                 yield return 0;
             }

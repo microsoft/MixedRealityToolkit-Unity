@@ -3,7 +3,7 @@ using UnityEngine;
 namespace MRTK.Grabbables
 {
     /// <summary>
-    /// This type of grab makes the grabbed object follow the position and rotation of the grabber, but does not create a parent child relationship
+    /// This type of grab makes the grabbed object follow the position and rotation of the grabber (exactly/wo lag), but does not create a parent child relationship
     /// </summary>
 
     public class GrabbableSimple : BaseGrabbable
