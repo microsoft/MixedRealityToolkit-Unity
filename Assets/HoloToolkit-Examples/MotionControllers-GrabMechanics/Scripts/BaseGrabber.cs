@@ -155,16 +155,6 @@ namespace MRTK.Grabbables
             });
         }
 
-        public Vector3 GetCurrentPosition()
-        {
-            return currPos;
-        }
-
-        public Vector3 GetPreviousPosition()
-        {
-            return prevPos;
-        }
-
         void Update()
         {
             #if UNITY_EDITOR
@@ -186,7 +176,6 @@ namespace MRTK.Grabbables
             }
             #endif
 
-            currPos = transform.position;
 
             if (prevGrabState != GrabState && OnGrabStateChange != null)
             {
@@ -202,11 +191,30 @@ namespace MRTK.Grabbables
 
             prevGrabState = GrabState;
             prevContactState = ContactState;
+
+
+
+            currPos = transform.position;
+            GetVelocity();
+            //Debug.Log("Velocity on Grabber = " + GetVelocity());
+            if (frameCounter % 2 == 1)
+            {
+                prevPos = currPos;
+            }
+            frameCounter++;
+
         }
 
         void LateUpdate()
         {
-            prevPos = transform.position;
+
+        }
+
+        public Vector3 GetVelocity()
+        {
+            var velocity = Vector3.zero;
+            velocity = (currPos - prevPos) / Time.deltaTime;
+            return velocity;
         }
 
         //variable declaration
@@ -224,5 +232,6 @@ namespace MRTK.Grabbables
         private GrabStateEnum prevContactState = GrabStateEnum.Inactive;               
         private Vector3 currPos;
         private Vector3 prevPos;
+        private int frameCounter;
     }
 }

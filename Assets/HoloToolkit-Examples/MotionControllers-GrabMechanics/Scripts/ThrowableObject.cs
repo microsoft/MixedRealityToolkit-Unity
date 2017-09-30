@@ -11,13 +11,20 @@ namespace MRTK.Grabbables
     {
         public override void Throw(BaseGrabbable grabbable)
         {
+            ////////////// Debug.Log("Grabbable object velocity just before BASE throw " + grabbable.AAAAvgVelocity);
+            Debug.Log("Grabbable object velocity just before BASE throw " + grabbable.GetAverageVelocity());
             base.Throw(grabbable);
-            GetComponent<Rigidbody>().velocity = MotionControllerInfoTemp.GetVelocity(grabbable.GrabberPrimary) * grabbable.GrabberPrimary.Strength * ThrowMultiplier;
-
+            Debug.Log("Grabbable object velocity just before throw "+ grabbable.GetAverageVelocity());
+            //GetComponent<Rigidbody>().velocity = grabbable.GrabberPrimary.GetVelocity();
+            //GetComponent<Rigidbody>().velocity = grabbable.GrabberPrimary.GetVelocity() * grabbable.GrabberPrimary.Strength * ThrowMultiplier; 
+            GetComponent<Rigidbody>().velocity = grabbable.GetAverageVelocity() * ThrowMultiplier;
+            Debug.Log("We're throwing : " + grabbable.GetAverageVelocity());
+            //GetComponent<BaseGrabbable>().AvgVelocity = Vector3.zero;
             if (ZeroGravityThrow)
             {
                 GetComponent<Rigidbody>().useGravity = false;
             }
+            //Debug.Break();
         }
 
         private void Update()

@@ -40,6 +40,8 @@ namespace MRTK.Grabbables
             }
         }
 
+        public Vector3 AAAAvgVelocity { get { return averageVelocity; } set { averageVelocity = value; } }
+
         public BaseGrabber[] ActiveGrabbers
         {
             get
@@ -216,7 +218,9 @@ namespace MRTK.Grabbables
         protected virtual void EndGrab()
         {
             if (OnReleased != null)
+            {
                 OnReleased(this);
+            }
         }
 
         /// <summary>
@@ -247,6 +251,34 @@ namespace MRTK.Grabbables
 
             prevGrabState = GrabState;
             prevContactState = ContactState;
+
+            //if (GrabberPrimary)
+            /////////////////averageVelocity = GetAverageVelocity();
+            ///////////////////////Debug.Log("AvGG Velocity  = " + AAAAvgVelocity);
+            currPos = transform.position;
+            GetAverageVelocity();
+            //Debug.Log("Velocity on Grabber = " + GetVelocity());
+            //if (frameCounter % 2 == 1)
+            //{
+            //    prevPos = currPos;
+            //}
+            //frameCounter++;
+        }
+
+        private void LateUpdate()
+        {
+            prevPos = currPos;
+        }
+
+        public Vector3 GetAverageVelocity()
+        {
+
+
+            var velocity = Vector3.zero;
+            velocity = (currPos - prevPos) / Time.deltaTime;
+            Debug.Log("velocity on grabbable SELF CONTAINED " + velocity+ " "+gameObject.name);
+            return velocity;
+
         }
 
         /// <summary>
@@ -267,6 +299,11 @@ namespace MRTK.Grabbables
         protected GrabStyleEnum grabStyle = GrabStyleEnum.Exclusive;
 
         private GrabStateEnum prevGrabState = GrabStateEnum.Inactive;
-        private GrabStateEnum prevContactState = GrabStateEnum.Inactive;        
+        private GrabStateEnum prevContactState = GrabStateEnum.Inactive;   
+        private Vector3 velocity;
+        private Vector3 averageVelocity;
+        private Vector3 currPos;
+        private Vector3 prevPos;
+        private int frameCounter;
     }
 }

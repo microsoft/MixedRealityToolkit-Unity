@@ -52,7 +52,7 @@ namespace MRTK.Grabbables
                     foreach (BaseGrabber grabber in grabbable.ActiveGrabbers)
                     {
                         int i = 0;
-                        Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(grabber));
+                        //Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(grabber));
                         i++;
                     }
 

@@ -186,6 +186,10 @@ Prefab:
       propertyPath: handedness
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1558738065822038, guid: f04969aeafe8c464f84748b730c616f2, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f04969aeafe8c464f84748b730c616f2, type: 2}
   m_IsPrefabParent: 0
@@ -285,7 +289,12 @@ Prefab:
       propertyPath: TouchColor.b
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1711969711886590, guid: 8e03dafa1c3802246aeb94b8c9bd157e, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114045696239875748, guid: 8e03dafa1c3802246aeb94b8c9bd157e, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8e03dafa1c3802246aeb94b8c9bd157e, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &105760549
@@ -536,6 +545,10 @@ Prefab:
     - target: {fileID: 4024710373016872, guid: 9df45f4aad97bf04086c8056dd6aa0fb, type: 2}
       propertyPath: m_LocalScale.z
       value: 0.08330064
+      objectReference: {fileID: 0}
+    - target: {fileID: 1496899869897664, guid: 9df45f4aad97bf04086c8056dd6aa0fb, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9df45f4aad97bf04086c8056dd6aa0fb, type: 2}
@@ -910,6 +923,10 @@ Prefab:
       propertyPath: TouchColor.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1172440619654688, guid: 1835dba728c6131409573120a3822449, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1835dba728c6131409573120a3822449, type: 2}
   m_IsPrefabParent: 0
@@ -947,7 +964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &810663116
 Transform:
   m_ObjectHideFlags: 0
@@ -1103,6 +1120,20 @@ MonoBehaviour:
   colorOnUse: {r: 1, g: 0, b: 1, a: 1}
   targetRenderer: {fileID: 0}
   grabbable: {fileID: 0}
+--- !u!114 &873402252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 873402250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b59a12d22fe33345b5322d938cb016c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabSpot: {fileID: 0}
+  grabStyle: 1
+  blendSpeed: 10
 --- !u!1 &922573938 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1958886789475364, guid: 20e083692ef96a4408cb22926070e054,
@@ -1141,7 +1172,7 @@ Prefab:
     - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
         type: 2}
       propertyPath: upDownCurveOverTime.m_Curve.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4119929437350726, guid: 8497e1771119cf843a137c11f50cbdf4, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1192,6 +1223,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
         type: 2}
+      propertyPath: upDownCurveOverTime.m_Curve.Array.data[0].value
+      value: 0.1006279
+      objectReference: {fileID: 0}
+    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
+        type: 2}
       propertyPath: upDownCurveOverTime.m_Curve.Array.data[1].time
       value: 1
       objectReference: {fileID: 0}
@@ -1202,23 +1238,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
         type: 2}
-      propertyPath: upDownCurveOverTime.m_Curve.Array.data[1].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
-        type: 2}
-      propertyPath: upDownCurveOverTime.m_Curve.Array.data[1].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
-        type: 2}
       propertyPath: upDownCurveOverTime.m_RotationOrder
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114709565821758750, guid: 8497e1771119cf843a137c11f50cbdf4,
-        type: 2}
-      propertyPath: upDownCurveOverTime.m_Curve.Array.data[0].value
-      value: 0.1006279
+    - target: {fileID: 1884745418454534, guid: 8497e1771119cf843a137c11f50cbdf4, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8497e1771119cf843a137c11f50cbdf4, type: 2}
@@ -1419,6 +1444,10 @@ Prefab:
         type: 2}
       propertyPath: TouchColor.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1860702527024010, guid: 450e66a117a91604b8dff4f23018518d, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 450e66a117a91604b8dff4f23018518d, type: 2}
@@ -1914,6 +1943,10 @@ Prefab:
       propertyPath: TouchColor.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1775908317404484, guid: ad56cdfae0f9dc64fb10061a01ab3249, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ad56cdfae0f9dc64fb10061a01ab3249, type: 2}
   m_IsPrefabParent: 0
@@ -1975,6 +2008,16 @@ Prefab:
         type: 2}
       propertyPath: TouchColor.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114367358137399604, guid: 133fc5a3f78368b418380475c982b2af,
+        type: 2}
+      propertyPath: throwMultiplier
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114367358137399604, guid: 133fc5a3f78368b418380475c982b2af,
+        type: 2}
+      propertyPath: zeroGravityThrow
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 133fc5a3f78368b418380475c982b2af, type: 2}
@@ -2134,6 +2177,10 @@ Prefab:
     - target: {fileID: 4787718754823836, guid: 7db50d6a2ae788242bfd6600c73c063d, type: 2}
       propertyPath: m_LocalScale.z
       value: 0.1048898
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062935423772478, guid: 7db50d6a2ae788242bfd6600c73c063d, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7db50d6a2ae788242bfd6600c73c063d, type: 2}
