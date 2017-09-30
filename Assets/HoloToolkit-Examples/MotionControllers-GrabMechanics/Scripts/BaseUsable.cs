@@ -46,7 +46,6 @@ namespace MRTK.Grabbables
 
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
-            Debug.Log("attempting to start USING. Handedness is : "+obj.state.source.handedness);
             if (obj.pressType == pressType && (handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness))
             {
                 state = UseStateEnum.Active;

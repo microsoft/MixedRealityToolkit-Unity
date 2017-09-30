@@ -40,6 +40,7 @@ namespace MRTK.Grabbables
             if (obj.pressType == pressType && obj.state.source.handedness == handedness)
             {
                 GrabEnd();
+                
             }
         }
 

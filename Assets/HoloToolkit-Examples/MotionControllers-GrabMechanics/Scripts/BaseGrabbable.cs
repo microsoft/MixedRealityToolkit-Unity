@@ -40,7 +40,6 @@ namespace MRTK.Grabbables
             }
         }
 
-        public Vector3 AAAAvgVelocity { get { return averageVelocity; } set { averageVelocity = value; } }
 
         public BaseGrabber[] ActiveGrabbers
         {
@@ -251,18 +250,14 @@ namespace MRTK.Grabbables
 
             prevGrabState = GrabState;
             prevContactState = ContactState;
-
-            //if (GrabberPrimary)
-            /////////////////averageVelocity = GetAverageVelocity();
-            ///////////////////////Debug.Log("AvGG Velocity  = " + AAAAvgVelocity);
             currPos = transform.position;
             GetAverageVelocity();
-            //Debug.Log("Velocity on Grabber = " + GetVelocity());
-            //if (frameCounter % 2 == 1)
-            //{
-            //    prevPos = currPos;
-            //}
-            //frameCounter++;
+
+            if(GetComponent<Rigidbody>() == null)
+            {
+                Debug.Log("NULL RIGIDBODY");
+            }
+
         }
 
         private void LateUpdate()
@@ -272,11 +267,8 @@ namespace MRTK.Grabbables
 
         public Vector3 GetAverageVelocity()
         {
-
-
             var velocity = Vector3.zero;
             velocity = (currPos - prevPos) / Time.deltaTime;
-            //Debug.Log("velocity on grabbable SELF CONTAINED " + velocity+ " "+gameObject.name);
             return velocity;
 
         }
