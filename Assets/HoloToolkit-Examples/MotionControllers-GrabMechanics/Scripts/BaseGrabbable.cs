@@ -276,7 +276,7 @@ namespace MRTK.Grabbables
 
             var velocity = Vector3.zero;
             velocity = (currPos - prevPos) / Time.deltaTime;
-            Debug.Log("velocity on grabbable SELF CONTAINED " + velocity+ " "+gameObject.name);
+            //Debug.Log("velocity on grabbable SELF CONTAINED " + velocity+ " "+gameObject.name);
             return velocity;
 
         }

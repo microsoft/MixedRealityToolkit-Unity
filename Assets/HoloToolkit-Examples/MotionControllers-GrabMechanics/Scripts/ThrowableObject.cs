@@ -15,14 +15,19 @@ namespace MRTK.Grabbables
             Debug.Log("Grabbable object velocity just before BASE throw " + grabbable.GetAverageVelocity());
             base.Throw(grabbable);
             Debug.Log("Grabbable object velocity just before throw "+ grabbable.GetAverageVelocity());
-            //GetComponent<Rigidbody>().velocity = grabbable.GrabberPrimary.GetVelocity();
-            //GetComponent<Rigidbody>().velocity = grabbable.GrabberPrimary.GetVelocity() * grabbable.GrabberPrimary.Strength * ThrowMultiplier; 
             GetComponent<Rigidbody>().velocity = grabbable.GetAverageVelocity() * ThrowMultiplier;
             Debug.Log("We're throwing : " + grabbable.GetAverageVelocity());
             //GetComponent<BaseGrabbable>().AvgVelocity = Vector3.zero;
             if (ZeroGravityThrow)
             {
-                GetComponent<Rigidbody>().useGravity = false;
+                Debug.Log("This is a zero gravity throw");
+                //grabbable.GetComponent<Rigidbody>().useGravity = false;
+
+
+
+                grabbable.GetComponent<Rigidbody>().useGravity = false;
+                Debug.Log("grabbable ------GRAVITY : " + GetComponent<Rigidbody>().useGravity);
+                //Debug.Break();
             }
             //Debug.Break();
         }
