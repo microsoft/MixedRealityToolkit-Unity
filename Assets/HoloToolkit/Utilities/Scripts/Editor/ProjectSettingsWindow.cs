@@ -296,12 +296,12 @@ namespace HoloToolkit.Unity
 
         protected override void LoadStrings()
         {
-            Names[ProjectSetting.BuildWsaUwp] = "Target Windows Universal UWP";
+            Names[ProjectSetting.BuildWsaUwp] = "Target Universal Windows Platform";
             Descriptions[ProjectSetting.BuildWsaUwp] =
                 "<b>Required</b>\n\n" +
-                "Switches the currently active target to produce a Store app targeting the Universal Windows Platform.\n\n" +
-                "<color=#ffff00ff><b>Note:</b></color> Cross platform development can be done with this toolkit, but many features and" +
-                "tools will not work if the build target is not Windows Universal.";
+                "Switches the currently active target to produce a Universal Windows Platform application.\n\n" +
+                "<color=#ffff00ff><b>Note:</b></color> Cross platform development can be done with this toolkit, but many tools and" +
+                "features will not work if the build target is a different platform.";
 
             Names[ProjectSetting.WsaEnableXR] = "Enable XR";
             Descriptions[ProjectSetting.WsaEnableXR] =
