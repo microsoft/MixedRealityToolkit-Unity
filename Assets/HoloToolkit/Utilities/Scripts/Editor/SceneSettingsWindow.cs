@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity
     public class SceneSettingsWindow : AutoConfigureWindow<SceneSettingsWindow.SceneSetting>
     {
         /// <summary>
-        /// Can be found in the meta file of the camera prefab.  We use the GUID instead of a path in case people move the toolkit folders & assets around in their own projects.
+        /// Can be found in the meta file of the camera prefab.  We use the GUID in case people move the toolkit folders & assets around in their own projects.
         /// TODO: Update prefab GUID to point to MixedRealityCamera.
         /// </summary>
         private const string CameraPrefabGUID = "d379ed0a5618c9f479f58bd83a2d0ad3";
@@ -33,10 +33,7 @@ namespace HoloToolkit.Unity
         {
             if (Values[SceneSetting.AddMixedRealityCamera])
             {
-                DestroyImmediate(Camera.main.gameObject);
-                PrefabUtility.InstantiatePrefab(
-                    AssetDatabase.LoadAssetAtPath<GameObject>(
-                        AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
+                Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
             }
 
             var mainCamera = CameraCache.Refresh(Camera.main);
@@ -58,7 +55,7 @@ namespace HoloToolkit.Unity
 
         protected override void LoadSettings()
         {
-            for (int i = 0; i <= (int)SceneSetting.CameraToOrigin; i++)
+            for (int i = (int)SceneSetting.CameraToOrigin; i <= (int)SceneSetting.CameraToOrigin; i++)
             {
                 Values[(SceneSetting)i] = true;
             }
@@ -73,9 +70,8 @@ namespace HoloToolkit.Unity
             Names[SceneSetting.AddMixedRealityCamera] = "Add the Mixed Reality Camera Prefab";
             Descriptions[SceneSetting.AddMixedRealityCamera] =
                 "Recommended\n\n" +
-                "Adds the Mixed Reality Camera Prefab to the scene. This prefab comes preset with all the components and options for automatically handling Occluded and Transparent " +
-                "Mixed Reality Applications.\n\n" +
-                "<color=#ff0000ff><b>Warning!</b></color> This will delete any existing cameras in your scene with the \"<b>Main Camera</b>\" tag!";
+                "Adds the Mixed Reality Camera Prefab to the scene.\n\n" +
+                "The prefab comes preset with all the components and options for automatically handling Occluded and Transparent Mixed Reality Applications.";
 
             Names[SceneSetting.CameraToOrigin] = "Move Camera to Origin";
             Descriptions[SceneSetting.CameraToOrigin] =
