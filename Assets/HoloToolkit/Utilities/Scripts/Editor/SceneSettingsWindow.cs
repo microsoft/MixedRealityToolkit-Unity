@@ -13,9 +13,8 @@ namespace HoloToolkit.Unity
     {
         /// <summary>
         /// Can be found in the meta file of the camera prefab.  We use the GUID instead of a path in case people move the toolkit folders & assets around in their own projects.
-        /// TODO: Update prefab GUID to point to MixedRealityCamera.
         /// </summary>
-        private const string CameraPrefabGUID = "d379ed0a5618c9f479f58bd83a2d0ad3";
+        private const string CameraPrefabGUID = "f46f9eddea7bd4d4e813283cdc60cb96";
 
         #region Nested Types
 
