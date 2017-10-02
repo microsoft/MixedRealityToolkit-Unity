@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
         // Constants
         private const string EditorPrefs_BuildDir = "_BuildDeployWindow_BuildDir";
         private const string EditorPrefs_BuildConfig = "_BuildDeployWindow_BuildConfig";
+        private const string EditorPrefs_BuildPlatform = "_BuildDeployWindow_BuildPlatform";
         private const string EditorPrefs_ForceRebuild = "_BuildDeployWindow_ForceBuild";
         private const string EditorPrefs_IncrementBuildVersion = "_BuildDeployWindow_IncrementBuildVersion";
         private const string EditorPrefs_MSBuildVer = "_BuildDeployWindow_MSBuildVer";
@@ -40,6 +41,12 @@ namespace HoloToolkit.Unity
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_BuildConfig, "Debug"); }
             set { EditorPrefsUtility.SetEditorPref(EditorPrefs_BuildConfig, value); }
+        }
+
+        public static string BuildPlatform
+        {
+            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_BuildPlatform, "Any CPU"); }
+            set { EditorPrefsUtility.SetEditorPref(EditorPrefs_BuildPlatform, value); }
         }
 
         public static bool ForceRebuild
