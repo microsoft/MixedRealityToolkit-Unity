@@ -496,7 +496,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Sends the events for hand visibility changes & controller connect/disconnect.
+        /// Sends the events for hand visibility changes &amp; controller connect/disconnect.
         /// </summary>
         private void SendControllerVisibilityEvents()
         {
