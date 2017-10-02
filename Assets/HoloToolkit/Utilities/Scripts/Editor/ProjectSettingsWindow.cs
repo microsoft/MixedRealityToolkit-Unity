@@ -102,7 +102,11 @@ namespace HoloToolkit.Unity
                 {
                     using (var webRequest = UnityWebRequest.Get(SharingServiceURL))
                     {
+#if UNITY_2017_2_OR_NEWER
+                        webRequest.SendWebRequest();
+#else
                         webRequest.Send();
+#endif
 
                         while (!webRequest.isDone)
                         {
@@ -149,6 +153,7 @@ namespace HoloToolkit.Unity
 
             var inputManagerPath = Directory.GetParent(Path.GetFullPath(Application.dataPath)).FullName + "\\ProjectSettings\\InputManager.asset";
             bool userPermission = Values[ProjectSetting.XboxControllerSupport];
+            bool previouslySupported = userPermission;
 
             if (userPermission)
             {
@@ -162,7 +167,11 @@ namespace HoloToolkit.Unity
                 {
                     using (var webRequest = UnityWebRequest.Get(InputManagerAssetURL))
                     {
+#if UNITY_2017_2_OR_NEWER
+                        webRequest.SendWebRequest();
+#else
                         webRequest.Send();
+#endif
 
                         while (!webRequest.isDone)
                         {
@@ -201,7 +210,7 @@ namespace HoloToolkit.Unity
                     File.Delete(inputManagerPath + ".old");
                     Debug.Log("Previous Input Mapping Restored.");
                 }
-                else
+                else if (previouslySupported)
                 {
                     Debug.LogWarning("No old Input Mapping found!");
                 }
@@ -281,10 +290,44 @@ namespace HoloToolkit.Unity
 
             EditorPrefsUtility.SetEditorPref(Names[ProjectSetting.TargetOccludedDevices], Values[ProjectSetting.TargetOccludedDevices]);
 
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA,
-                Values[ProjectSetting.DotNetScriptingBackend]
-                    ? ScriptingImplementation.WinRTDotNET
-                    : ScriptingImplementation.IL2CPP);
+            if (BuildDeployTools.Il2CppAvailable() || BuildDeployTools.DotNetAvailable())
+            {
+
+                if (Values[ProjectSetting.DotNetScriptingBackend])
+                {
+                    if (!BuildDeployTools.DotNetAvailable())
+                    {
+                        Values[ProjectSetting.DotNetScriptingBackend] = false;
+                        EditorUtility.DisplayDialog("Attention!",
+                            "Hi there, we noticed that you've enabled the .Net scripting backend, but you haven't installed the required Module.\n\n" +
+                            "You'll need to use the Unity Installer to get the module for your version of the Editor.\n\n",
+                            "OK");
+                    }
+                }
+                else
+                {
+                    if (!BuildDeployTools.Il2CppAvailable())
+                    {
+                        Values[ProjectSetting.DotNetScriptingBackend] = true;
+                        EditorUtility.DisplayDialog("Attention!",
+                            "Hi there, we noticed that you've enabled the il2cpp scripting backend, but you haven't installed the required Module.\n\n" +
+                            "You'll need to use the Unity Installer to get the module for your version of the Editor.\n\n",
+                            "OK");
+                    }
+                }
+
+                PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA,
+                    Values[ProjectSetting.DotNetScriptingBackend]
+                        ? ScriptingImplementation.WinRTDotNET
+                        : ScriptingImplementation.IL2CPP);
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Attention!",
+                    "Hi there, we noticed that you haven't installed the required modules for Mixed Reality Applications.\n\n" +
+                    "You'll need to use the Unity Installer to get the modules for your version of the Editor.\n\n",
+                    "OK");
+            }
 
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             Close();
