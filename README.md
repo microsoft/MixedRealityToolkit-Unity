@@ -4,7 +4,7 @@ This is a development branch for Windows Mixed Reality immersive headset support
 **IMPORTANT** You will also need a recent [Windows Insider SDK Preview](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK) installed, or you will not be able to build this branch. 
 
 [unity-download]:                 http://beta.unity3d.com/download/b9a6355603bd/download.html
-[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f2-MRTP-green.svg
+[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f2%20MRTP-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 ## New Features!
