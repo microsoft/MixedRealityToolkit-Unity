@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity.InputModule
         [Serializable]
         private class MappingEntry
         {
-            public XboxControllerMappingTypes Type = 0;
+            public XboxControllerMappingTypes Type = XboxControllerMappingTypes.None;
             public string Value = string.Empty;
         }
 
