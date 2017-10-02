@@ -29,11 +29,11 @@ namespace MRTK.Grabbables
         /// </summary>
         protected override void EndGrab()
         {
-            base.EndGrab();
             if (rb)
             {
                 rb.useGravity = true;
             }
+            base.EndGrab();
         }
 
         protected override void OnGrabStay()

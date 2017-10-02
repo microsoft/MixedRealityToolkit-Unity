@@ -17,9 +17,9 @@ namespace MRTK.Grabbables
 
         protected override void EndGrab()
         {
-            base.EndGrab();
             transform.SetParent(null);
             gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            base.EndGrab();
         }
     }
 }

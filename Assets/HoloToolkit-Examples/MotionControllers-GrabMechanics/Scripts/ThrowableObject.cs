@@ -17,7 +17,6 @@ namespace MRTK.Grabbables
             {
                 grabbable.GetComponent<Rigidbody>().useGravity = false;
                 GetComponent<Rigidbody>().useGravity = false;
-                gravUpdate = true;
             }
             
         }
@@ -41,6 +40,5 @@ namespace MRTK.Grabbables
         }
 
         private float f = 0;
-        public bool gravUpdate;
     }
 }

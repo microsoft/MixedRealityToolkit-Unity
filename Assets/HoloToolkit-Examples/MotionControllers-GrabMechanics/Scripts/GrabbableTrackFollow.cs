@@ -9,6 +9,7 @@ namespace MRTK.Grabbables
 
     public class GrabbableTrackFollow : BaseGrabbable
     {
+        [Range(1, 10)]
         public float lagAmount = 5;
         public float rotationSpeed = 5;
         private Rigidbody rb;
@@ -34,6 +35,7 @@ namespace MRTK.Grabbables
         protected override void OnGrabStay()
         {
             base.OnGrabStay();
+            //TODO: Time.time should not be in here. this means that the amount of lag would be dependent on the amount of time spent in the level...
             transform.position = Vector3.Lerp(transform.position, GrabberPrimary.GrabHandle.position, Time.time / (lagAmount * 1000));
         }
     }
