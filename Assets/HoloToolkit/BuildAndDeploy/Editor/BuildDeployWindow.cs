@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity
 
         private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
 
-        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) && !string.IsNullOrEmpty(PlayerSettings.WSA.certificatePath); } }
+        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) && !string.IsNullOrEmpty(PlayerSettings.WSA.certificatePath) && BuildDeployTools.CanBuild(); } }
 
         private bool ShouldBuildAppxBeEnabled
         {
@@ -177,11 +177,18 @@ namespace HoloToolkit.Unity
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
+
                 GUI.enabled = ShouldBuildSLNBeEnabled;
 
-                if (GUILayout.Button((!locatorIsSearching && locatorHasData || HoloLensUsbConnected)
+                string buttonTitle = !locatorIsSearching && locatorHasData || HoloLensUsbConnected
                     ? "Build SLN, Build APPX, then Install"
-                    : "Build SLN, Build APPX",
+                    : "Build SLN, Build APPX";
+
+                string buttonTooltip = !BuildDeployTools.CanBuild()
+                    ? "Required Module not installed!"
+                    : "";
+
+                if (GUILayout.Button(new GUIContent(buttonTitle, buttonTooltip),
                     GUILayout.Width(buttonWidth_Half - 20)))
                 {
                     // Build SLN
@@ -283,7 +290,11 @@ namespace HoloToolkit.Unity
 
                 GUI.enabled = ShouldBuildSLNBeEnabled;
 
-                if (GUILayout.Button("Build Unity Project", GUILayout.Width(buttonWidth_Half)))
+                string buttonTooltip = !BuildDeployTools.CanBuild()
+                    ? "Required Module not installed!"
+                    : "";
+
+                if (GUILayout.Button(new GUIContent("Build Unity Project", buttonTooltip), GUILayout.Width(buttonWidth_Half)))
                 {
                     // Build SLN
                     EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(curBuildDirectory); };
@@ -335,12 +346,38 @@ namespace HoloToolkit.Unity
             }
 
             string newMSBuildVer = currentSDKVersionIndex <= defaultMSBuildVersionIndex ? BuildDeployTools.DefaultMSBuildVersion : "15.0";
-            EditorGUILayout.LabelField(GUIHorizontalSpacer + "MS Build Version", newMSBuildVer);
 
             if (!newMSBuildVer.Equals(curMSBuildVer))
             {
                 BuildDeployPrefs.MsBuildVersion = newMSBuildVer;
                 curMSBuildVer = newMSBuildVer;
+            }
+
+            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
+                GUIHorizontalSpacer + "Scripting Backend",
+                (int)curScriptingBackend,
+                new[] { ".NET", "IL2CPP" },
+                new[] { (int)ScriptingImplementation.WinRTDotNET, (int)ScriptingImplementation.IL2CPP });
+
+            if (newScriptingBackend != curScriptingBackend)
+            {
+                PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, newScriptingBackend);
+                if (newScriptingBackend == ScriptingImplementation.WinRTDotNET && !BuildDeployTools.DotNetAvailable())
+                {
+                    EditorUtility.DisplayDialog("Attention!",
+                        "Hi there, we noticed that you've enabled the .Net scripting backend, but you haven't installed the required Module.\n\n" +
+                        "You'll need to use the Unity Installer to get the module for your version of the Editor.\n\n",
+                        "OK");
+                }
+
+                if (newScriptingBackend == ScriptingImplementation.IL2CPP && !BuildDeployTools.Il2CppAvailable())
+                {
+                    EditorUtility.DisplayDialog("Attention!",
+                        "Hi there, we noticed that you've enabled the il2cpp scripting backend, but you haven't installed the required Module.\n\n" +
+                        "You'll need to use the Unity Installer to get the module for your version of the Editor.\n\n",
+                        "OK");
+                }
             }
 
             GUILayout.EndHorizontal();
@@ -450,7 +487,11 @@ namespace HoloToolkit.Unity
                 // Build APPX
                 GUI.enabled = ShouldBuildAppxBeEnabled;
 
-                if (GUILayout.Button("Build APPX", GUILayout.Width(buttonWidth_Half)))
+                string buttonTooltip = !BuildDeployTools.CanBuild()
+                    ? "Required Module not installed!"
+                    : "";
+
+                if (GUILayout.Button(new GUIContent("Build APPX", buttonTooltip), GUILayout.Width(buttonWidth_Half)))
                 {
                     // Open SLN
                     string slnFilename = Path.Combine(curBuildDirectory, PlayerSettings.productName + ".sln");
