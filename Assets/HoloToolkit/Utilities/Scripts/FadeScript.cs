@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif
 
@@ -36,12 +36,14 @@ namespace HoloToolkit.Unity
 
         void Start()
         {
+#if UNITY_WSA
             if (!HolographicSettings.IsDisplayOpaque)
             {
                 GetComponentInChildren<MeshRenderer>().enabled = false;
                 Debug.Log("Removing unnecessary full screen effect from HoloLens");
                 return;
             }
+#endif
 
             currentState = FadeState.idle;
             fadeMaterial = GetComponentInChildren<MeshRenderer>().material;
