@@ -20,6 +20,26 @@ namespace HoloToolkit.Unity
     {
         public static readonly string DefaultMSBuildVersion = "14.0";
 
+        public static bool CanBuild()
+        {
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP && Il2CppAvailable())
+            {
+                return true;
+            }
+
+            return PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET && DotNetAvailable();
+        }
+
+        public static bool DotNetAvailable()
+        {
+            return Directory.Exists(EditorApplication.applicationContentsPath + "\\PlaybackEngines\\MetroSupport\\Managed\\UAP");
+        }
+
+        public static bool Il2CppAvailable()
+        {
+            return Directory.Exists(EditorApplication.applicationContentsPath + "\\PlaybackEngines\\MetroSupport\\Managed\\il2cpp");
+        }
+
         public static bool BuildSLN(string buildDirectory, bool showDialog = true)
         {
             // Use BuildSLNUtilities to create the SLN
