@@ -4,7 +4,7 @@
 using HoloToolkit.Unity;
 using UnityEngine;
 
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -15,7 +15,7 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
     /// </summary>
     public class DropCube : MonoBehaviour
     {
-#if UNITY_EDITOR || UNITY_WSA
+#if UNITY_WSA
         private GestureRecognizer recognizer;
 
         private void Start()
