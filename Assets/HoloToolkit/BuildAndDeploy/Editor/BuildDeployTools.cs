@@ -42,10 +42,31 @@ namespace HoloToolkit.Unity
             return Directory.Exists(EditorApplication.applicationContentsPath + "\\PlaybackEngines\\MetroSupport\\Managed\\il2cpp");
         }
 
+        /// <summary>
+        /// Displays a dialog if no scenes are present in the build and returns true if build can proceed.
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckBuildScenes()
+        {
+            if (EditorBuildSettings.scenes.Length == 0)
+            {
+                return EditorUtility.DisplayDialog("Attention!",
+                    "No scenes are present in the build settings!\n\n Do you want to cancel and add one?",
+                    "Continue Anyway", "Cancel Build");
+            }
+
+            return true;
+        }
+
         public static bool BuildSLN(string buildDirectory, bool showDialog = true)
         {
             // Use BuildSLNUtilities to create the SLN
             bool buildSuccess = false;
+
+            if (CheckBuildScenes() == false)
+            {
+                return false;
+            }
 
             var buildInfo = new BuildInfo
             {

@@ -327,6 +327,18 @@ namespace HoloToolkit.Unity
 
             currentSDKVersionIndex = EditorGUILayout.Popup(GUIHorizontalSpacer + "SDK Version", currentSDKVersionIndex, windowsSdkPaths);
 
+            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
+                "Scripting Backend",
+                (int)curScriptingBackend,
+                new[] { "IL2CPP", ".NET" },
+                new[] { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET });
+
+            if (newScriptingBackend != curScriptingBackend)
+            {
+                PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, newScriptingBackend);
+            }
+
             string newSDKVersion = windowsSdkPaths[currentSDKVersionIndex];
 
             if (!newSDKVersion.Equals(currentSDKVersion))
@@ -335,7 +347,6 @@ namespace HoloToolkit.Unity
             }
 
             string newMSBuildVer = currentSDKVersionIndex <= defaultMSBuildVersionIndex ? BuildDeployTools.DefaultMSBuildVersion : "15.0";
-            EditorGUILayout.LabelField(GUIHorizontalSpacer + "MS Build Version", newMSBuildVer);
 
             if (!newMSBuildVer.Equals(curMSBuildVer))
             {
