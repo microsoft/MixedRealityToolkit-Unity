@@ -207,9 +207,6 @@ namespace MRTK.Grabbables
                 prevPos = currPos;
             }
             frameCounter++;
-
-            //AlignControllerRotation();
-
         }
 
         void LateUpdate()

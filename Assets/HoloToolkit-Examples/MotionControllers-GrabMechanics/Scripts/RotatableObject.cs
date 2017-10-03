@@ -63,12 +63,14 @@ namespace MRTK.Grabbables
             //{
             //    Debug.Log("Event!~ " + obj.state.source.handedness);
             //}
-            
-            if (obj.state.source.handedness == GetComponent<BaseGrabbable>().GrabberPrimary.Handedness)
+            if (GetComponent<BaseGrabbable>().GrabberPrimary != null)
             {
-                if (obj.state.touchpadTouched)
+                if (obj.state.source.handedness == GetComponent<BaseGrabbable>().GrabberPrimary.Handedness)
                 {
-                    touchPositionFromController = obj.state.touchpadPosition;
+                    if (obj.state.touchpadTouched)
+                    {
+                        touchPositionFromController = obj.state.touchpadPosition;
+                    }
                 }
             }
         }
