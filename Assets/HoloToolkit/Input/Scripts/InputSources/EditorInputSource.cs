@@ -251,7 +251,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-            if (Application.isEditor)
+            if (!Application.isEditor)
             {
                 Destroy(gameObject);
                 return;
