@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private NetworkDiscoveryWithAnchors networkDiscovery;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             networkDiscovery = NetworkDiscoveryWithAnchors.Instance;
 
