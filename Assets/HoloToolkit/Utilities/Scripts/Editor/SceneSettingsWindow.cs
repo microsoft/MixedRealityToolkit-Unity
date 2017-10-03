@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity
 
         protected override void LoadSettings()
         {
-            for (int i = (int)SceneSetting.CameraToOrigin; i <= (int)SceneSetting.CameraToOrigin; i++)
+            for (int i = 0; i <= (int)SceneSetting.CameraToOrigin; i++)
             {
                 Values[(SceneSetting)i] = true;
             }
