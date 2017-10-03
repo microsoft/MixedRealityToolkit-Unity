@@ -236,7 +236,7 @@ namespace HoloToolkit.Unity
 
             if (GUILayout.Button("Open Build Directory"))
             {
-                Process.Start("explorer.exe", "/f /open," + BuildDeployPrefs.AbsoluteBuildDirectory);
+                Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
             }
 
             GUI.enabled = true;
@@ -375,8 +375,8 @@ namespace HoloToolkit.Unity
 
             // Build Platform (and save setting, if it's changed)
             string curBuildPlatformString = BuildDeployPrefs.BuildPlatform;
-
             BuildPlatformEnum buildPlatformOption;
+
             if (curBuildPlatformString.ToLower().Equals("x86"))
             {
                 buildPlatformOption = BuildPlatformEnum.x86;

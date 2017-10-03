@@ -24,20 +24,20 @@ namespace HoloToolkit.Unity
 
         public static bool CanBuild()
         {
-            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP && Il2CppAvailable())
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP && IsIl2CppAvailable())
             {
                 return true;
             }
 
-            return PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET && DotNetAvailable();
+            return PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET && IsDotNetAvailable();
         }
 
-        public static bool DotNetAvailable()
+        public static bool IsDotNetAvailable()
         {
             return Directory.Exists(EditorApplication.applicationContentsPath + "\\PlaybackEngines\\MetroSupport\\Managed\\UAP");
         }
 
-        public static bool Il2CppAvailable()
+        public static bool IsIl2CppAvailable()
         {
             return Directory.Exists(EditorApplication.applicationContentsPath + "\\PlaybackEngines\\MetroSupport\\Managed\\il2cpp");
         }
