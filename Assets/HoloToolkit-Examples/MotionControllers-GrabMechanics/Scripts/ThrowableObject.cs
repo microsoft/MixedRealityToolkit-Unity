@@ -20,25 +20,5 @@ namespace MRTK.Grabbables
             }
             
         }
-
-        private void Update()
-        {
-            if (Thrown)
-            {
-                f += 0.01f;
-                if (f < 1)
-                {
-                    //GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity + new Vector3((1.1f * LeftRightCurveOverTime.Evaluate(f)), (1.1f * UpDownCurveOverTime.Evaluate(f)), (1.1f * LeftRightCurveOverTime.Evaluate(f)));
-                }
-            }
-        }
-
-        private void LateUpdate()
-        {
-            //if(gravUpdate)
-                //Debug.Break();
-        }
-
-        private float f = 0;
     }
 }

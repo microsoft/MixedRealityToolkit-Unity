@@ -125,8 +125,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabAttachSpot: {fileID: 0}
   strength: 1
+  handedness: 2
   grabbableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  handedness: 2
   pressType: 3

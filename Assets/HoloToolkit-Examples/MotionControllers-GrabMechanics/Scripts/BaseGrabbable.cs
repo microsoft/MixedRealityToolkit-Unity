@@ -173,11 +173,8 @@ namespace MRTK.Grabbables
                 // Otherwise just push the grabber
                 activeGrabbers.Add(grabber);
             }
-            Debug.Log("Number of grabbers in activeGrabbers BEFORE calling AttachToGrabber "+ activeGrabbers.Count);
             // Attach ourselves to this grabber
             AttachToGrabber(grabber);
-            Debug.Log("Number of grabbers in activeGrabbers AFTER calling AttachToGrabber "+ activeGrabbers.Count);
-            Debug.Log("Number of grabbers in activeGrabbers WHEN ABOUT TO FIRE ONGRABBED "+ activeGrabbers.Count);
 
             if (OnGrabbed != null)
                 OnGrabbed(this);
@@ -219,7 +216,6 @@ namespace MRTK.Grabbables
         /// <param name="grabber"></param>
         protected virtual void EndGrab()
         {
-            Debug.Log("REMOVE GRABBBB");
             if (OnReleased != null)
             {
                 OnReleased(this);
@@ -256,9 +252,6 @@ namespace MRTK.Grabbables
             prevContactState = ContactState;
             currPos = transform.position;
             GetAverageVelocity();
-
-            Debug.Log("GrabActiveList has = " + ActiveGrabbers.Length);
-
         }
 
         private void LateUpdate()
@@ -268,7 +261,7 @@ namespace MRTK.Grabbables
 
         public Vector3 GetAverageVelocity()
         {
-            //eventually this will be updated to be an average the amoutn of force exerted on it by each grabber
+            //eventually this will be updated to be an average the amount of force exerted on it by each grabber
             var velocity = Vector3.zero;
             velocity = (currPos - prevPos) / Time.deltaTime;
             return velocity;
@@ -298,6 +291,5 @@ namespace MRTK.Grabbables
         private Vector3 averageVelocity;
         private Vector3 currPos;
         private Vector3 prevPos;
-        private int frameCounter;
     }
 }

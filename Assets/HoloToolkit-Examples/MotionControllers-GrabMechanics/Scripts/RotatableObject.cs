@@ -17,13 +17,13 @@ namespace MRTK.Grabbables
         protected override void OnEnable()
         {
             base.OnEnable();
-            InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
+            //InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
+           // InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
         }
 
         /// <summary>
@@ -31,14 +31,21 @@ namespace MRTK.Grabbables
         /// after the object is grabbed/picked up
         /// </summary>
         /// <param name="obj"></param>
+        /// 
+
+        protected void Start()
+        {
+        }
+
         protected override void UseStart()
         {
+            InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
             StartCoroutine(MakeRotate( ));
         }
 
         protected override void UseEnd()
         {
-            // Nothing
+            InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
         }
 
         private IEnumerator MakeRotate( )
@@ -52,8 +59,18 @@ namespace MRTK.Grabbables
 
         private void GetTouchPadPosition(InteractionSourceUpdatedEventArgs obj)
         {
-            touchPositionFromController = obj.state.touchpadPosition;
+            if (obj.state.touchpadPressed)
+            {
+                Debug.Log("Event!~ " + obj.state.source.handedness);
+            }
+            
+            if (obj.state.source.handedness == GetComponent<BaseGrabbable>().GrabberPrimary.Handedness)
+            {
+                if (obj.state.touchpadTouched)
+                {
+                    touchPositionFromController = obj.state.touchpadPosition;
+                }
+            }
         }
-
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.WSA.Input;
+
 
 namespace MRTK.Grabbables
 {
@@ -12,6 +14,9 @@ namespace MRTK.Grabbables
     {
         public Action<BaseGrabber> OnGrabStateChange;
         public Action<BaseGrabber> OnContactStateChange;
+
+        public InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
+
 
         public GrabStateEnum GrabState
         {
@@ -234,5 +239,7 @@ namespace MRTK.Grabbables
         private Vector3 currPos;
         private Vector3 prevPos;
         private int frameCounter;
+        [SerializeField]
+        protected InteractionSourceHandedness handedness;
     }
 }

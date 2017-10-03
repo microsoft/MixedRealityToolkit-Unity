@@ -27,6 +27,8 @@ namespace MRTK.Grabbables
             InteractionManager.InteractionSourceReleased -= InteractionSourceReleased;
         }
 
+
+
         private void InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
         {
             if (obj.pressType == pressType && obj.state.source.handedness == handedness)
@@ -86,8 +88,7 @@ namespace MRTK.Grabbables
 
         [SerializeField]
         private LayerMask grabbableLayers = ~0;
-        [SerializeField]
-        private InteractionSourceHandedness handedness;
+
         [SerializeField]
         private InteractionSourcePressType pressType;
     }
