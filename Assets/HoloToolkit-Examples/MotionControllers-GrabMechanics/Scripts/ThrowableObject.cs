@@ -16,7 +16,6 @@ namespace MRTK.Grabbables
             if (ZeroGravityThrow)
             {
                 grabbable.GetComponent<Rigidbody>().useGravity = false;
-                GetComponent<Rigidbody>().useGravity = false;
             }
             
         }
