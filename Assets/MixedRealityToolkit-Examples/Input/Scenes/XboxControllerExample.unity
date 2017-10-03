@@ -701,10 +701,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeviceRefreshInterval: 3
-  horizontalAxis: 4
-  verticalAxis: 5
-  submitButton: 9
-  cancelButton: 10
+  horizontalAxis: 3
+  verticalAxis: 4
+  submitButton: 10
+  cancelButton: 11
   mapping:
   - Type: 0
     Value: 
@@ -743,4 +743,6 @@ MonoBehaviour:
   - Type: 17
     Value: 
   - Type: 18
+    Value: 
+  - Type: 19
     Value: 

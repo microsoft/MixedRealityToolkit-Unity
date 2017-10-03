@@ -62,8 +62,10 @@ namespace HoloToolkit.Sharing
 
         #region Unity Methods
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             if (SharingStage.Instance != null)
             {
                 ShowDetailedLogs = SharingStage.Instance.ShowDetailedLogs;
