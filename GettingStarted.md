@@ -7,7 +7,7 @@ Be sure to enable Developer mode for Windows 10 via:
 
 ![Enable Developer Mode](/External/ReadMeImages/EnableDevModeWin10.PNG "Enable Developer Mode for Windows 10")
 
-Be sure to download and install [Visual Studio 2017](https://www.visualstudio.com/vs/) and these required componenets:
+Be sure to download and install [Visual Studio 2017](https://www.visualstudio.com/vs/) and these required components:
 
 ![Visual Studio Components](/External/ReadMeImages/VisualStudioComponents.PNG)
 
@@ -76,5 +76,5 @@ Optionally, you can use the [default build steps if needed](https://docs.unity3d
  1. Navigate to the Build WInodw: `HoloToolkit -> Build Window`.
  2. Press `Open SLN`.
  3. Select **x86** in your build configuration options.
- 4. In the debug toolbar, Select the emulator or the device that you're using.
+ 4. In the debug toolbar, select the emulator or the device that you're using.
  5. Run the app using the debug toolbar.
