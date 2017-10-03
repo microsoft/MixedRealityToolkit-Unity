@@ -21,7 +21,7 @@ namespace MRTK.Grabbables {
         }
 
         /// <summary>
-        /// throw needs to subscribe to grab events in order to track the speed/velocity/position of the grabber that has it
+        /// throw needs to subscribe to grab events to know when to apply the appropriate force to an object
         /// </summary>
         protected virtual void OnEnable()
         {

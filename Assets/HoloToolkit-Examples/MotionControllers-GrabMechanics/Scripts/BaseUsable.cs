@@ -43,8 +43,11 @@ namespace MRTK.Grabbables
         {
             if (obj.pressType == pressType && (handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness))
             {
-                state = UseStateEnum.Active;
-                UseStart();
+                if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
+                {
+                    state = UseStateEnum.Active;
+                    UseStart();
+                }
             }
         }
 

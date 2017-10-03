@@ -201,12 +201,14 @@ namespace MRTK.Grabbables
 
             currPos = transform.position;
             GetVelocity();
-            //Debug.Log("Velocity on Grabber = " + GetVelocity());
+
             if (frameCounter % 2 == 1)
             {
                 prevPos = currPos;
             }
             frameCounter++;
+
+            //AlignControllerRotation();
 
         }
 
