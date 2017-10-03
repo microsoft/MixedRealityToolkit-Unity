@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 ///
-///  Simple vertex shader that blends static lighting and camera lighting.
+/// Simple vertex shader that blends static lighting and camera lighting.
 ///
-Shader "HoloToolkit/Examples/UnlitTriplanar"
+Shader "MixedRealityToolkit/Examples/UnlitTriplanar"
 {
 	Properties
 	{
