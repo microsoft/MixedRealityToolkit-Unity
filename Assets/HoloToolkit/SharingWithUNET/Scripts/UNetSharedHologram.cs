@@ -1,20 +1,19 @@
-﻿using HoloToolkit.Unity.InputModule;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
+using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
     public class UNetSharedHologram : NetworkBehaviour, IInputClickHandler
     {
-
         /// <summary>
         /// The position relative to the shared world anchor.
         /// </summary>
         [SyncVar(hook = "xformchange")]
         private Vector3 localPosition;
 
-        void xformchange(Vector3 update)
+        private void xformchange(Vector3 update)
         {
             Debug.Log(localPosition + " xform change " + update);
             localPosition = update;
@@ -41,16 +40,18 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
-        bool Moving = false;
-        int layerMask;
-        InputManager inputManager;
+        private bool Moving = false;
+        private int layerMask;
+        private InputManager inputManager;
         public Vector3 movementOffset = Vector3.zero;
-        bool isOpaque;
+        private bool isOpaque;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
+#if UNITY_WSA
             isOpaque = UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
+#endif
             transform.SetParent(SharedCollection.Instance.transform, true);
             if (isServer)
             {
@@ -64,7 +65,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
 
             if (Moving)
@@ -79,7 +80,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
-        Vector3 ProposeTransformPosition()
+        private Vector3 ProposeTransformPosition()
         {
             // Put the model 3m in front of the user.
             Vector3 retval = Camera.main.transform.position + Camera.main.transform.forward * 3 + movementOffset;

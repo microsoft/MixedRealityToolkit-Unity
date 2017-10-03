@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -18,7 +17,7 @@ namespace HoloToolkit.Unity.InputModule
             return ((GetSupportedInputInfo(sourceId) & inputInfo) == inputInfo);
         }
 
-        public abstract bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind);
+        public abstract bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind);
 
         public abstract bool TryGetPointerPosition(uint sourceId, out Vector3 position);
 

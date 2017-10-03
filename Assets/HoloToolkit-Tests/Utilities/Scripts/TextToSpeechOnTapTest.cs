@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -19,7 +18,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.
-            if (textToSpeech != null && eventData.PressType == InteractionSourcePressType.Select)
+            if (textToSpeech != null && eventData.PressType == InteractionSourcePressInfo.Select)
             {
                 // Create message
                 var msg = string.Format(

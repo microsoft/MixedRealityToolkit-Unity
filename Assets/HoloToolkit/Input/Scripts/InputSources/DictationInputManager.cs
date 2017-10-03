@@ -7,7 +7,6 @@ using UnityEngine;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using System.Text;
 using UnityEngine.Windows.Speech;
-using UnityEngine.XR.WSA.Input;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -255,9 +254,9 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IInputSource Implementation
 
-        public bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        public bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            sourceKind = InteractionSourceKind.Voice;
+            sourceKind = InteractionSourceInfo.Voice;
             return true;
         }
 

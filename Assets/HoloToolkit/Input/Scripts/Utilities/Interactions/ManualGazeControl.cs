@@ -34,15 +34,19 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-#if UNITY_EDITOR
-            if (UnityEngine.XR.XRDevice.isPresent)
+            if (Application.isEditor)
             {
-#endif
+                if (UnityEngine.XR.XRDevice.isPresent)
+                {
+                    Destroy(this);
+                    return;
+                }
+            }
+            else
+            {
                 Destroy(this);
                 return;
-#if UNITY_EDITOR
             }
-#endif
 
             cameraTransform = GetComponent<Camera>().transform;
             if (cameraTransform == null)

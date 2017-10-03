@@ -7,10 +7,11 @@ namespace HoloToolkit.Unity.Boundary.Tests
 {
     public class BoundaryTest : MonoBehaviour
     {
-        private Material[] defaultMaterials;
+        private Material[] defaultMaterials = null;
 
         private void Start()
         {
+#if UNITY_WSA
             BoundaryManager.Instance.RenderBoundary = true;
             BoundaryManager.Instance.RenderFloor = true;
 
@@ -26,6 +27,18 @@ namespace HoloToolkit.Unity.Boundary.Tests
                     Color highlightColor = Color.green;
                     defaultMaterials[i].SetColor("_Color", highlightColor);
                 }
+            }
+#else
+            BoundaryManager.Instance.RenderBoundary = false;
+            BoundaryManager.Instance.RenderFloor = false;
+#endif
+        }
+
+        private void OnDestroy()
+        {
+            for (int i = 0; i < defaultMaterials.Length; i++)
+            {
+                Destroy(defaultMaterials[i]);
             }
         }
     }

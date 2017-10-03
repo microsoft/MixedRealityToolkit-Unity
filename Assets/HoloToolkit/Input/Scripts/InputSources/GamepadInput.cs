@@ -3,7 +3,10 @@
 
 using System;
 using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -13,6 +16,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Gamepad button A pressed maps to hold started, completed, canceled gesture.
     /// Gamepad button A pressed plus left joystick rotate maps to navigation gesture.
     /// </summary>
+    [Obsolete("Please use GamePadInputSource or XboxControllerInputSource")]
     public class GamepadInput : BaseInputSource
     {
         [Tooltip("Game pad button to press for air tap.")]
@@ -60,7 +64,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 inputManager = InputManager.Instance;
             }
-            
+
             if (inputManager == null)
             {
                 Debug.LogError("Ensure your scene has the InputManager prefab.");
@@ -70,10 +74,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Update()
         {
+#if UNITY_WSA
             if (InteractionManager.numSourceStates > 0)
             {
                 return;
             }
+#endif
 
             HandleGamepadAPressed();
         }
@@ -83,7 +89,7 @@ namespace HoloToolkit.Unity.InputModule
             // TODO: Should this handle Submit from Edit > ProjectSettings > Input ?
             if (Input.GetButtonDown(GamePadButtonA))
             {
-                inputManager.RaiseSourceDown(this, GamePadId, InteractionSourcePressType.Select);
+                inputManager.RaiseSourceDown(this, GamePadId, InteractionSourcePressInfo.Select);
                 isAPressed = true;
                 navigationCompleted = false;
                 currentGestureState = GestureState.APressed;
@@ -138,7 +144,7 @@ namespace HoloToolkit.Unity.InputModule
                     currentGestureState = GestureState.NavigationStarted;
                     navigationStarted = true;
                     // Raise navigation started event.
-                    inputManager.RaiseNavigationStarted(this, GamePadId, normalizedOffset);
+                    inputManager.RaiseNavigationStarted(this, GamePadId);
                 }
 
                 // Raise navigation updated event.
@@ -150,7 +156,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (Input.GetButtonUp(GamePadButtonA))
             {
-                inputManager.RaiseSourceUp(this, GamePadId, InteractionSourcePressType.Select);
+                inputManager.RaiseSourceUp(this, GamePadId, InteractionSourcePressInfo.Select);
 
                 switch (currentGestureState)
                 {
@@ -176,7 +182,7 @@ namespace HoloToolkit.Unity.InputModule
                     default:
                         CancelInvoke("HandleHoldStarted");
                         CancelInvoke("HandleHoldCompleted");
-                        inputManager.RaiseInputClicked(this, GamePadId, InteractionSourcePressType.Select, 1);
+                        inputManager.RaiseInputClicked(this, GamePadId, InteractionSourcePressInfo.Select, 1);
                         Reset();
                         break;
                 }
@@ -249,9 +255,9 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            sourceKind = InteractionSourceKind.Controller;
+            sourceKind = InteractionSourceInfo.Controller;
             return true;
         }
 

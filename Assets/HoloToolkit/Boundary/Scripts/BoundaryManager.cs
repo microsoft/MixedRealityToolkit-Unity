@@ -1,10 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
+
+#if UNITY_WSA
+using System.Collections.Generic;
 using UnityEngine.XR.WSA;
+using UnityEngine.XR;
+#endif
 
 namespace HoloToolkit.Unity.Boundary
 {
@@ -18,10 +21,12 @@ namespace HoloToolkit.Unity.Boundary
         public GameObject FloorQuad;
         private GameObject floorQuadInstance;
 
+#if UNITY_WSA
         [SerializeField]
         [Tooltip("Approximate max Y height of your space.")]
         private float boundaryHeight = 10f;
         private Bounds boundaryBounds;
+#endif
 
         private bool renderFloor = true;
         public bool RenderFloor
@@ -74,6 +79,7 @@ namespace HoloToolkit.Unity.Boundary
             }
         }
 
+#if UNITY_WSA
         private void Awake()
         {
             // Render the floor based on if you are in editor or immersive device.
@@ -187,5 +193,6 @@ namespace HoloToolkit.Unity.Boundary
             // Ensuring that we set height of the bounds volume to be say 10 feet tall.
             boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));
         }
+#endif
     }
 }
