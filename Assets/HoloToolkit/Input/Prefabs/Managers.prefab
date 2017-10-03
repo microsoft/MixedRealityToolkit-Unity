@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4275426119395772}
   - component: {fileID: 114915899085195412}
+  - component: {fileID: 114209566806921312}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -235,8 +236,26 @@ MonoBehaviour:
   GamePadId: 50000
   HoldStartedInterval: 2
   HoldCompletedInterval: 3
-  NavigateAroundXAxisName: ControllerLeftStickX
-  NavigateAroundYAxisName: ControllerLeftStickY
+  NavigateAroundXAxisName: CONTROLLER_LEFT_STICK_HORIZONTAL
+  NavigateAroundYAxisName: CONTROLLER_RIGHT_STICK_HORIZONTAL
+--- !u!114 &114209566806921312
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1172620179631984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!114 &114340833638015514
 MonoBehaviour:
   m_ObjectHideFlags: 1
