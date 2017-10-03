@@ -45,15 +45,6 @@ namespace MRTK.Grabbables
         {
             get
             {
-                //List<BaseGrabber> activeGrabbersList = new List<BaseGrabber>();
-                //foreach (BaseGrabber activeGrabber in activeGrabbers)
-                //{
-                //    if (activeGrabber != null && activeGrabber.IsGrabbing(this))
-                //    {
-                //        activeGrabbersList.Add(activeGrabber);
-                //    }
-                //}
-                //return activeGrabbersList.ToArray();
                 return activeGrabbers.ToArray();
             }
         }
@@ -175,7 +166,6 @@ namespace MRTK.Grabbables
             }
             // Attach ourselves to this grabber
             AttachToGrabber(grabber);
-
             if (OnGrabbed != null)
                 OnGrabbed(this);
         }
