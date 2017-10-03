@@ -34,6 +34,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             switch (type)
             {
+                case XboxControllerMappingTypes.None:
+                    return string.Empty;
                 case XboxControllerMappingTypes.XboxLeftStickHorizontal:
                     return XboxLeftStickHorizontal;
                 case XboxControllerMappingTypes.XboxLeftStickVertical:
@@ -81,6 +83,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             switch (type)
             {
+                case XboxControllerMappingTypes.None:
+                    return;
                 case XboxControllerMappingTypes.XboxLeftStickHorizontal:
                     XboxLeftStickHorizontal = string.IsNullOrEmpty(value) ? "XBOX_LEFT_STICK_HORIZONTAL" : value;
                     break;

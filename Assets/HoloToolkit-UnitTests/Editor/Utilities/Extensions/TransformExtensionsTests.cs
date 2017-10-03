@@ -22,7 +22,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void IterateNull()
         {
-            Assert.Throws(typeof(System.ArgumentNullException), () => {
+            Assert.Throws(typeof(System.ArgumentNullException), () =>
+            {
                 TransformExtensions.EnumerateHierarchy(null);
             });
         }
@@ -31,7 +32,8 @@ namespace HoloToolkit.Unity.Tests
         public void IterateNullIgnore()
         {
             var root = Object.Instantiate(empty);
-            Assert.Throws(typeof(System.ArgumentNullException), () => {
+            Assert.Throws(typeof(System.ArgumentNullException), () =>
+            {
                 root.transform.EnumerateHierarchy(null);
             });
         }
@@ -39,7 +41,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void IterateIgnoreNull()
         {
-            Assert.Throws(typeof(System.ArgumentNullException), () => {
+            Assert.Throws(typeof(System.ArgumentNullException), () =>
+            {
                 TransformExtensions.EnumerateHierarchy(null, new List<Transform>(0));
             });
         }
@@ -156,7 +159,8 @@ namespace HoloToolkit.Unity.Tests
                 if (i % 2 == 0)
                 {
                     ignoreList.Add(Object.Instantiate(empty, parent.transform).transform);
-                } else
+                }
+                else
                 {
                     Object.Instantiate(empty, parent.transform);
                 }
@@ -173,7 +177,8 @@ namespace HoloToolkit.Unity.Tests
             var parent = Object.Instantiate(empty, root.transform);
             Object.Instantiate(empty, parent.transform);
 
-            Assert.DoesNotThrow(() => {
+            Assert.DoesNotThrow(() =>
+            {
 
                 foreach (var transform in root.transform.EnumerateHierarchy())
                 {
@@ -192,7 +197,8 @@ namespace HoloToolkit.Unity.Tests
             var parent = Object.Instantiate(empty, root.transform);
             var child = Object.Instantiate(empty, parent.transform);
 
-            Assert.DoesNotThrow(() => {
+            Assert.DoesNotThrow(() =>
+            {
                 foreach (var transform in root.transform.EnumerateHierarchy())
                 {
                     if (transform == parent.transform)
@@ -224,6 +230,70 @@ namespace HoloToolkit.Unity.Tests
             }
 
             Assert.That(parent.transform.GetFullPath(prefix: prefix, delimiter: delimiter), Is.EqualTo(result));
+        }
+
+        [Test]
+        public void BoundsColliderEmpty()
+        {
+            var sut = new GameObject().transform.GetColliderBounds();
+            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.zero)));
+        }
+
+        [Test]
+        public void BoundsColliderSimple()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            var sut = cube.transform.GetColliderBounds();
+            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
+        }
+
+        [Test]
+        public void BoundsColliderChild()
+        {
+            var parent = new GameObject();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.SetParent(parent.transform);
+
+            var sut = parent.transform.GetColliderBounds();
+            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
+        }
+
+        [Test]
+        public void BoundsColliderGrandChild()
+        {
+            var parent = new GameObject();
+            var child = Object.Instantiate(empty, parent.transform);
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.SetParent(child.transform);
+
+            var sut = parent.transform.GetColliderBounds();
+            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
+        }
+
+        [Test]
+        public void BoundsColliderTwoChildren()
+        {
+            var parent = new GameObject();
+            var cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube1.transform.SetParent(parent.transform);
+            cube1.transform.localPosition = Vector3.one * 0.5f;
+            var cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube2.transform.SetParent(parent.transform);
+            cube2.transform.localPosition = Vector3.one * -0.5f;
+
+            var sut = parent.transform.GetColliderBounds();
+            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one * 2)));
+        }
+
+        [Test]
+        public void BoundsColliderExcludeOrigin()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.localPosition = Vector3.one * 2;
+
+            var sut = cube.transform.GetColliderBounds();
+            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.one * 2, Vector3.one)));
         }
     }
 }

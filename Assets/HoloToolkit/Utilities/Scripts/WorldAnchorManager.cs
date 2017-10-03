@@ -17,7 +17,7 @@ using HoloToolkit.Unity.SpatialMapping;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Wrapper around world anchor store to streamline some of the persistence api busy work.
+    /// Wrapper around world anchor store to streamline some of the persistence API busy work.
     /// </summary>
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
@@ -91,6 +91,10 @@ namespace HoloToolkit.Unity
         {
             base.Awake();
             AnchorStore = null;
+        }
+
+        protected virtual void Start()
+        {
             WorldAnchorStore.GetAsync(AnchorStoreReady);
         }
 
