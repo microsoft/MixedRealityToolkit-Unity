@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity
         private static Texture2D _originalSplashImage;
         private static float defaultLabelWidth;
 
-        [MenuItem("HoloToolkit/Tile Generator", false, 0)]
+        [MenuItem("Mixed Reality Toolkit/Tile Generator", false, 0)]
         private static void OpenWindow()
         {
             // Dock it next to the inspector.
