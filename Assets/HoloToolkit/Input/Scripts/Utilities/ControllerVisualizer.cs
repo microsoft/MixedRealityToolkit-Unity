@@ -51,51 +51,109 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
+            Application.onBeforeRender += Application_onBeforeRender;
+
             controllerDictionary = new Dictionary<uint, ControllerInfo>();
 
 #if UNITY_WSA
-#if !UNITY_EDITOR
-            if (GLTFMaterial == null)
+            if (!Application.isEditor)
             {
+                if (GLTFMaterial == null)
+                {
+                    if (LeftControllerOverride == null && RightControllerOverride == null)
+                    {
+                        Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
+                    }
+                    else if (LeftControllerOverride == null || RightControllerOverride == null)
+                    {
+                        Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
+                    }
+                }
+
+#if !UNITY_EDITOR
+                // Since the SpatialInteractionManager exists in the current CoreWindow, this call needs to run on the UI thread.
+                UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+                {
+                    spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
+                    if (spatialInteractionManager != null)
+                    {
+                        spatialInteractionManager.SourceDetected += SpatialInteractionManager_SourceDetected;
+                        spatialInteractionManager.SourceLost += SpatialInteractionManager_SourceLost;
+                    }
+                }, true);
+#endif
+            }
+            else
+            {
+                // Since we're using non-Unity APIs, glTF will only load in a UWP app.
                 if (LeftControllerOverride == null && RightControllerOverride == null)
                 {
-                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
+                    Debug.Log("Running in the editor won't render the glTF models, and no controller overrides are set. Please specify them on " + name + ".");
                 }
                 else if (LeftControllerOverride == null || RightControllerOverride == null)
                 {
-                    Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
+                    Debug.Log("Running in the editor won't render the glTF models, and only one controller override is specified. Please set the " + ((LeftControllerOverride == null) ? "left" : "right") + " override on " + name + ".");
                 }
-            }
 
-            // Since the SpatialInteractionManager exists in the current CoreWindow, this call needs to run on the UI thread.
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-            {
-                spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
-                if (spatialInteractionManager != null)
-                {
-                    spatialInteractionManager.SourceDetected += SpatialInteractionManager_SourceDetected;
-                    spatialInteractionManager.SourceLost += SpatialInteractionManager_SourceLost;
-                }
-            }, true);
-#else
-            // Since we're using non-Unity APIs, glTF will only load in a UWP app.
-            if (LeftControllerOverride == null && RightControllerOverride == null)
-            {
-                Debug.Log("Running in the editor won't render the glTF models, and no controller overrides are set. Please specify them on " + name + ".");
+                InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
+                InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
             }
-            else if (LeftControllerOverride == null || RightControllerOverride == null)
-            {
-                Debug.Log("Running in the editor won't render the glTF models, and only one controller override is specified. Please set the " + ((LeftControllerOverride == null) ? "left" : "right") + " override on " + name + ".");
-            }
-
-            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
-#endif
-            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
 #endif
         }
 
-#if !UNITY_EDITOR && UNITY_WSA
+        private void Application_onBeforeRender()
+        {
+#if UNITY_WSA
+            // NOTE: This work is being done here to present the most correct rendered location of the controller each frame.
+            // Any app logic depending on the controller state should happen in Update() or using InteractionManager's events.
+            foreach (var sourceState in InteractionManager.GetCurrentReading())
+            {
+                ControllerInfo currentController;
+                if (controllerDictionary != null && sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(sourceState.source.id, out currentController))
+                {
+                    if (AnimateControllerModel)
+                    {
+                        currentController.AnimateSelect(sourceState.selectPressedAmount);
+
+                        if (sourceState.source.supportsGrasp)
+                        {
+                            currentController.AnimateGrasp(sourceState.grasped);
+                        }
+
+                        if (sourceState.source.supportsMenu)
+                        {
+                            currentController.AnimateMenu(sourceState.menuPressed);
+                        }
+
+                        if (sourceState.source.supportsThumbstick)
+                        {
+                            currentController.AnimateThumbstick(sourceState.thumbstickPressed, sourceState.thumbstickPosition);
+                        }
+
+                        if (sourceState.source.supportsTouchpad)
+                        {
+                            currentController.AnimateTouchpad(sourceState.touchpadPressed, sourceState.touchpadTouched, sourceState.touchpadPosition);
+                        }
+                    }
+
+                    Vector3 newPosition;
+                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
+                    {
+                        currentController.gameObject.transform.localPosition = newPosition;
+                    }
+
+                    Quaternion newRotation;
+                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
+                    {
+                        currentController.gameObject.transform.localRotation = newRotation;
+                    }
+                }
+            }
+#endif
+        }
+
+#if UNITY_WSA
+#if !UNITY_EDITOR
         /// <summary>
         /// When a controller is detected, the model is spawned and the controller object
         /// is added to the tracking dictionary.
@@ -213,7 +271,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 #endif
 
-#if UNITY_WSA
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             if (obj.state.source.kind == InteractionSourceKind.Controller && controllerDictionary != null && !controllerDictionary.ContainsKey(obj.state.source.id))
@@ -255,47 +312,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
-
-        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
-        {
-            ControllerInfo currentController;
-            if (AnimateControllerModel && controllerDictionary != null && controllerDictionary.TryGetValue(obj.state.source.id, out currentController))
-            {
-                currentController.AnimateSelect(obj.state.selectPressedAmount);
-
-                if (obj.state.source.supportsGrasp)
-                {
-                    currentController.AnimateGrasp(obj.state.grasped);
-                }
-
-                if (obj.state.source.supportsMenu)
-                {
-                    currentController.AnimateMenu(obj.state.menuPressed);
-                }
-
-                if (obj.state.source.supportsThumbstick)
-                {
-                    currentController.AnimateThumbstick(obj.state.thumbstickPressed, obj.state.thumbstickPosition);
-                }
-
-                if (obj.state.source.supportsTouchpad)
-                {
-                    currentController.AnimateTouchpad(obj.state.touchpadPressed, obj.state.touchpadTouched, obj.state.touchpadPosition);
-                }
-
-                Vector3 newPosition;
-                if (obj.state.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
-                {
-                    currentController.gameObject.transform.localPosition = newPosition;
-                }
-
-                Quaternion newRotation;
-                if (obj.state.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
-                {
-                    currentController.gameObject.transform.localRotation = newRotation;
-                }
-            }
-        }
+#endif
 
         private void FinishControllerSetup(GameObject controllerModelGameObject, string handedness, uint id)
         {
@@ -314,7 +331,6 @@ namespace HoloToolkit.Unity.InputModule
             }
             controllerDictionary.Add(id, newControllerInfo);
         }
-#endif
 
         public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
         {

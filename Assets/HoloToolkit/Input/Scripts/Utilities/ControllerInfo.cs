@@ -11,10 +11,9 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class ControllerInfo : MonoBehaviour
     {
-        // TODO: Implement all controller components.
-        //private GameObject home;
-        //private Transform homePressed;
-        //private Transform homeUnpressed;
+        private GameObject home;
+        private Transform homePressed;
+        private Transform homeUnpressed;
         private GameObject menu;
         private Transform menuPressed;
         private Transform menuUnpressed;
@@ -36,12 +35,6 @@ namespace HoloToolkit.Unity.InputModule
         private GameObject touchpadPress;
         private Transform touchpadPressed;
         private Transform touchpadUnpressed;
-        //private GameObject touchpadPressX;
-        //private Transform touchpadPressXMin;
-        //private Transform touchpadPressXMax;
-        //private GameObject touchpadPressY;
-        //private Transform touchpadPressYMin;
-        //private Transform touchpadPressYMax;
         private GameObject touchpadTouchX;
         private Transform touchpadTouchXMin;
         private Transform touchpadTouchXMax;
@@ -50,9 +43,10 @@ namespace HoloToolkit.Unity.InputModule
         private Transform touchpadTouchYMax;
         private GameObject touchpadTouchVisualizer;
 
-        // These bools and doubles are used to determine if a button's state has changed.
+        // These values are used to determine if a button's state has changed.
         private bool wasGrasped;
         private bool wasMenuPressed;
+        private bool wasHomePressed;
         private bool wasThumbstickPressed;
         private bool wasTouchpadPressed;
         private bool wasTouchpadTouched;
@@ -83,7 +77,7 @@ namespace HoloToolkit.Unity.InputModule
                         switch (child.parent.name.ToLower())
                         {
                             case "home":
-                                //homePressed = child;
+                                homePressed = child;
                                 break;
                             case "menu":
                                 menuPressed = child;
@@ -106,7 +100,7 @@ namespace HoloToolkit.Unity.InputModule
                         switch (child.parent.name.ToLower())
                         {
                             case "home":
-                                //homeUnpressed = child;
+                                homeUnpressed = child;
                                 break;
                             case "menu":
                                 menuUnpressed = child;
@@ -134,12 +128,6 @@ namespace HoloToolkit.Unity.InputModule
                             case "thumbstick_y":
                                 thumbstickYMin = child;
                                 break;
-                            case "touchpad_press_x":
-                                //touchpadPressXMin = child;
-                                break;
-                            case "touchpad_press_y":
-                                //touchpadPressYMin = child;
-                                break;
                             case "touchpad_touch_x":
                                 touchpadTouchXMin = child;
                                 break;
@@ -157,12 +145,6 @@ namespace HoloToolkit.Unity.InputModule
                             case "thumbstick_y":
                                 thumbstickYMax = child;
                                 break;
-                            case "touchpad_press_x":
-                                //touchpadPressXMax = child;
-                                break;
-                            case "touchpad_press_y":
-                                //touchpadPressYMax = child;
-                                break;
                             case "touchpad_touch_x":
                                 touchpadTouchXMax = child;
                                 break;
@@ -175,7 +157,7 @@ namespace HoloToolkit.Unity.InputModule
                         switch (child.parent.name.ToLower())
                         {
                             case "home":
-                                //home = child.gameObject;
+                                home = child.gameObject;
                                 break;
                             case "menu":
                                 menu = child.gameObject;
@@ -197,12 +179,6 @@ namespace HoloToolkit.Unity.InputModule
                                 break;
                             case "touchpad_press":
                                 touchpadPress = child.gameObject;
-                                break;
-                            case "touchpad_press_x":
-                                //touchpadPressX = child.gameObject;
-                                break;
-                            case "touchpad_press_y":
-                                //touchpadPressY = child.gameObject;
                                 break;
                             case "touchpad_touch_x":
                                 touchpadTouchX = child.gameObject;
@@ -234,6 +210,15 @@ namespace HoloToolkit.Unity.InputModule
             {
                 SetLocalPositionAndRotation(menu, isMenuPressed ? menuPressed : menuUnpressed);
                 wasMenuPressed = isMenuPressed;
+            }
+        }
+
+        public void AnimateHome(bool isHomePressed)
+        {
+            if (home != null && homePressed != null && homeUnpressed != null && isHomePressed != wasHomePressed)
+            {
+                SetLocalPositionAndRotation(home, isHomePressed ? homePressed : homeUnpressed);
+                wasHomePressed = isHomePressed;
             }
         }
 
