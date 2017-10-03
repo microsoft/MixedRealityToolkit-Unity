@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity
             AnchorStore = null;
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             WorldAnchorStore.GetAsync(AnchorStoreReady);
         }
