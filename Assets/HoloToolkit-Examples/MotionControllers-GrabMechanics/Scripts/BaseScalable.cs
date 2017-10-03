@@ -42,8 +42,10 @@ namespace MRTK.Grabbables
         /// </summary>
         public void AttemptScale()
         {
-            BaseGrabber[] activeGrabbers = grabbable.ActiveGrabbers;
-            if (activeGrabbers.Length >= minScalarNumForScale)
+
+            BaseGrabber[] activeGrabbers = GetComponent<BaseGrabbable>().ActiveGrabbers;
+
+            if (GetComponent<BaseGrabbable>().ActiveGrabbers.Length >= minScalarNumForScale)
             {
                 //Velocity
                 //Multiply scale of this scalable object by the velocity of scalar1 and scalar2 (or however many)
@@ -54,21 +56,22 @@ namespace MRTK.Grabbables
                         int i = 0;
                         //Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(grabber));
                         i++;
-                    }
-
-                    //Distance
-                    //snapshot a standard distance that the controls are when the scalable object is engaged
-                    //That standard distance between controllers corresponds to the localScale * scaleMultiplier
-                    if (scaleByDistance)
+                    }           
+                }
+                //Distance
+                //snapshot a standard distance that the controls are when the scalable object is engaged
+                //That standard distance between controllers corresponds to the localScale * scaleMultiplier
+                if (scaleByDistance)
+                {
+                    Debug.Log("We're scaling by distance");
+                    if (activeGrabbers.Length == minScalarNumForScale)
                     {
-                        if (activeGrabbers.Length == 2)
-                        {
-                            float dist = Vector3.Distance(activeGrabbers[0].GrabHandle.position, activeGrabbers[1].GrabHandle.position);
-                            snapShotDistance = dist;
-                            snapShotOfScale = transform.localScale.x;
-                            currentlyScaling = true;
-                            StartCoroutine(PerformScaling());
-                        }
+                        //later this should be average distance between all controllers attached.
+                        float dist = Vector3.Distance(activeGrabbers[0].GrabHandle.position, activeGrabbers[1].GrabHandle.position);
+                        snapShotDistance = dist;
+                        snapShotOfScale = transform.localScale.x;
+                        currentlyScaling = true;
+                        StartCoroutine(PerformScaling());
                     }
                 }
             }

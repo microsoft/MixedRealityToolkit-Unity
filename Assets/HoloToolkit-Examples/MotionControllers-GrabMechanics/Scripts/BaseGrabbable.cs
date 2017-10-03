@@ -45,15 +45,16 @@ namespace MRTK.Grabbables
         {
             get
             {
-                List<BaseGrabber> activeGrabbersList = new List<BaseGrabber>();
-                foreach (BaseGrabber activeGrabber in activeGrabbers)
-                {
-                    if (activeGrabber != null && activeGrabber.IsGrabbing(this))
-                    {
-                        activeGrabbersList.Add(activeGrabber);
-                    }
-                }
-                return activeGrabbersList.ToArray();
+                //List<BaseGrabber> activeGrabbersList = new List<BaseGrabber>();
+                //foreach (BaseGrabber activeGrabber in activeGrabbers)
+                //{
+                //    if (activeGrabber != null && activeGrabber.IsGrabbing(this))
+                //    {
+                //        activeGrabbersList.Add(activeGrabber);
+                //    }
+                //}
+                //return activeGrabbersList.ToArray();
+                return activeGrabbers.ToArray();
             }
         }
 
@@ -172,10 +173,12 @@ namespace MRTK.Grabbables
                 // Otherwise just push the grabber
                 activeGrabbers.Add(grabber);
             }
-
+            Debug.Log("Number of grabbers in activeGrabbers BEFORE calling AttachToGrabber "+ activeGrabbers.Count);
             // Attach ourselves to this grabber
             AttachToGrabber(grabber);
-            
+            Debug.Log("Number of grabbers in activeGrabbers AFTER calling AttachToGrabber "+ activeGrabbers.Count);
+            Debug.Log("Number of grabbers in activeGrabbers WHEN ABOUT TO FIRE ONGRABBED "+ activeGrabbers.Count);
+
             if (OnGrabbed != null)
                 OnGrabbed(this);
         }
@@ -216,6 +219,7 @@ namespace MRTK.Grabbables
         /// <param name="grabber"></param>
         protected virtual void EndGrab()
         {
+            Debug.Log("REMOVE GRABBBB");
             if (OnReleased != null)
             {
                 OnReleased(this);
@@ -253,10 +257,7 @@ namespace MRTK.Grabbables
             currPos = transform.position;
             GetAverageVelocity();
 
-            if(GetComponent<Rigidbody>() == null)
-            {
-                Debug.Log("NULL RIGIDBODY");
-            }
+            Debug.Log("GrabActiveList has = " + ActiveGrabbers.Length);
 
         }
 
@@ -267,6 +268,7 @@ namespace MRTK.Grabbables
 
         public Vector3 GetAverageVelocity()
         {
+            //eventually this will be updated to be an average the amoutn of force exerted on it by each grabber
             var velocity = Vector3.zero;
             velocity = (currPos - prevPos) / Time.deltaTime;
             return velocity;

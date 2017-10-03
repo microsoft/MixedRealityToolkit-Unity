@@ -81,7 +81,8 @@ namespace MRTK.Grabbables
             // Clean out the list of available objects list
             for (int i = contactObjects.Count - 1; i >= 0; i--)
             {
-                if (contactObjects[i] == null || !contactObjects[i].isActiveAndEnabled)
+                Debug.Log("GrabbedObjectsList COUNT is : " + grabbedObjects.Count);
+                if ((contactObjects[i] == null || !contactObjects[i].isActiveAndEnabled) && !grabbedObjects.Contains(contactObjects[i]))
                     contactObjects.RemoveAt(i);
             }
             // If there are any left after pruning

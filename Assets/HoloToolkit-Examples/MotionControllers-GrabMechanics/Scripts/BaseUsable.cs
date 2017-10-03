@@ -50,7 +50,6 @@ namespace MRTK.Grabbables
             {
                 state = UseStateEnum.Active;
                 UseStart();
-                Debug.Log("firing USE START");
             }
         }
 

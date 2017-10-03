@@ -9,7 +9,7 @@ namespace MRTK.Grabbables
         protected override void OnGrabStay()
         {
             base.OnGrabStay();
-
+            //GetComponent<Rigidbody>().isKinematic = true;
             Vector3 averagePosition = transform.position;
             Quaternion averageRotation = transform.rotation;
             int numGrabbers = activeGrabbers.Count;
@@ -25,7 +25,28 @@ namespace MRTK.Grabbables
             transform.rotation = Quaternion.Lerp(transform.rotation, averageRotation, Time.deltaTime * blendSpeed);
         }
 
+        //the next three functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
+        protected override void AttachToGrabber(BaseGrabber grabber)
+        {
+            GetComponent<Rigidbody>().isKinematic = true;
+            if(!activeGrabbers.Contains(grabber))
+                activeGrabbers.Add(grabber);
+        }
+
+        protected override void DetachFromGrabber(BaseGrabber grabber)
+        {
+            Debug.Log("Detaching form grabber");
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().useGravity = true;
+        }
+
+
         [SerializeField]
         private float blendSpeed = 10f;
+
+
     }
+
+
+
 }
