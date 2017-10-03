@@ -102,8 +102,11 @@ namespace HoloToolkit.Unity
                 {
                     using (var webRequest = UnityWebRequest.Get(SharingServiceURL))
                     {
+#if UNITY_2017_2_OR_NEWER
+                        webRequest.SendRequest();
+#else
                         webRequest.Send();
-
+#endif
                         while (!webRequest.isDone)
                         {
                             if (webRequest.downloadProgress != -1)
@@ -162,7 +165,11 @@ namespace HoloToolkit.Unity
                 {
                     using (var webRequest = UnityWebRequest.Get(InputManagerAssetURL))
                     {
+#if UNITY_2017_2_OR_NEWER
+                        webRequest.SendRequest();
+#else
                         webRequest.Send();
+#endif
 
                         while (!webRequest.isDone)
                         {
@@ -227,6 +234,7 @@ namespace HoloToolkit.Unity
                 EditorUserBuildSettings.wsaSubtarget = WSASubtarget.AnyDevice;
                 UnityEditorInternal.VR.VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "None" });
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, false);
+                BuildDeployPrefs.BuildPlatform = "Any CPU";
             }
             else
             {
@@ -238,6 +246,7 @@ namespace HoloToolkit.Unity
                     EditorUserBuildSettings.wsaSubtarget = WSASubtarget.HoloLens;
                     UnityEditorInternal.VR.VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "HoloLens" });
                     PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, Values[ProjectSetting.XboxControllerSupport]);
+                    BuildDeployPrefs.BuildPlatform = "x86";
 
                     for (var i = 0; i < QualitySettings.names.Length; i++)
                     {
@@ -249,6 +258,7 @@ namespace HoloToolkit.Unity
                     EditorUserBuildSettings.wsaSubtarget = WSASubtarget.PC;
                     UnityEditorInternal.VR.VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "stereo" });
                     PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, false);
+                    BuildDeployPrefs.BuildPlatform = "x64";
 
                     for (var i = 0; i < QualitySettings.names.Length; i++)
                     {

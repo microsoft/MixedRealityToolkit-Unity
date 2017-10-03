@@ -329,7 +329,7 @@ namespace HoloToolkit.Unity
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
-                "Scripting Backend",
+                GUIHorizontalSpacer + "Scripting Backend",
                 (int)curScriptingBackend,
                 new[] { "IL2CPP", ".NET" },
                 new[] { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET });
