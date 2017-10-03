@@ -22,6 +22,26 @@ namespace HoloToolkit.Unity
     {
         public static readonly string DefaultMSBuildVersion = "14.0";
 
+        public static bool CanBuild()
+        {
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP && IsIl2CppAvailable())
+            {
+                return true;
+            }
+
+            return PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET && IsDotNetAvailable();
+        }
+
+        public static bool IsDotNetAvailable()
+        {
+            return Directory.Exists(EditorApplication.applicationContentsPath + "\\PlaybackEngines\\MetroSupport\\Managed\\UAP");
+        }
+
+        public static bool IsIl2CppAvailable()
+        {
+            return Directory.Exists(EditorApplication.applicationContentsPath + "\\PlaybackEngines\\MetroSupport\\Managed\\il2cpp");
+        }
+
         public static bool BuildSLN(string buildDirectory, bool showDialog = true)
         {
             // Use BuildSLNUtilities to create the SLN
@@ -55,6 +75,7 @@ namespace HoloToolkit.Unity
                                     BuildDeployPrefs.MsBuildVersion,
                                     BuildDeployPrefs.ForceRebuild,
                                     BuildDeployPrefs.BuildConfig,
+                                    BuildDeployPrefs.BuildPlatform,
                                     BuildDeployPrefs.BuildDirectory,
                                     BuildDeployPrefs.IncrementBuildVersion);
                             }
@@ -82,7 +103,7 @@ namespace HoloToolkit.Unity
                 {
                     if (key != null)
                     {
-                        var msBuildBinFolder = (string) key.GetValue("MSBuildToolsPath");
+                        var msBuildBinFolder = (string)key.GetValue("MSBuildToolsPath");
                         return Path.Combine(msBuildBinFolder, "msbuild.exe");
                     }
                 }
@@ -158,7 +179,7 @@ namespace HoloToolkit.Unity
             return File.Exists(storePath + "\\project.lock.json");
         }
 
-        public static bool BuildAppxFromSLN(string productName, string msBuildVersion, bool forceRebuildAppx, string buildConfig, string buildDirectory, bool incrementVersion, bool showDialog = true)
+        public static bool BuildAppxFromSLN(string productName, string msBuildVersion, bool forceRebuildAppx, string buildConfig, string buildPlatform, string buildDirectory, bool incrementVersion, bool showDialog = true)
         {
             EditorUtility.DisplayProgressBar("Build AppX", "Building AppX Package...", 0);
             string slnFilename = Path.Combine(buildDirectory, PlayerSettings.productName + ".sln");
@@ -220,10 +241,11 @@ namespace HoloToolkit.Unity
             {
                 FileName = vs,
                 CreateNoWindow = false,
-                Arguments = string.Format("\"{0}\" /t:{2} /p:Configuration={1} /p:Platform=x86 /verbosity:m",
+                Arguments = string.Format("\"{0}\" /t:{1} /p:Configuration={2} /p:Platform={3} /verbosity:m",
                     solutionProjectPath,
+                    forceRebuildAppx ? "Rebuild" : "Build",
                     buildConfig,
-                    forceRebuildAppx ? "Rebuild" : "Build")
+                    buildPlatform)
             };
 
             // Uncomment out to debug by copying into command window
