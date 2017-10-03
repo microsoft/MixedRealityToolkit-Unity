@@ -415,7 +415,6 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1208988342737728}
   m_Enabled: 1
-  m_ExtensionPropertyValues: []
 --- !u!114 &114065736676316334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -513,6 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NearClipPlane_OpaqueDisplay: 0.1
   CameraClearFlags_OpaqueDisplay: 1
+  BackgroundColor_OpaqueDisplay: {r: 0, g: 0, b: 0, a: 1}
   OpaqueQualityLevel: 5
   NearClipPlane_TransparentDisplay: 0.85
   CameraClearFlags_TransparentDisplay: 2
@@ -573,8 +573,8 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: ControllerTriggerAxis
-  InputManagerVerticalAxisName: ControllerTriggerAxis
+  InputManagerHorizontalAxisName: CONTROLLER_LEFT_TRIGGER
+  InputManagerVerticalAxisName: CONTROLLER_RIGHT_TRIGGER
   Axis0Destination: 2
   Axis1Destination: 2
   Axis2Destination: 6
@@ -613,8 +613,8 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: ControllerLeftStickX
-  InputManagerVerticalAxisName: ControllerLeftStickY
+  InputManagerHorizontalAxisName: CONTROLLER_LEFT_STICK_HORIZONTAL
+  InputManagerVerticalAxisName: CONTROLLER_LEFT_STICK_VERTICAL
   Axis0Destination: 0
   Axis1Destination: 5
   Axis2Destination: 6
@@ -653,8 +653,8 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: ControllerRightStickX
-  InputManagerVerticalAxisName: ControllerRightStickY
+  InputManagerHorizontalAxisName: CONTROLLER_RIGHT_STICK_HORIZONTAL
+  InputManagerVerticalAxisName: CONTROLLER_RIGHT_STICK_VERTICAL
   Axis0Destination: 2
   Axis1Destination: 0
   Axis2Destination: 6
