@@ -101,6 +101,57 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
+        private void Update()
+        {
+#if UNITY_WSA
+            // NOTE: The controller's state is being updated here in order to provide a good position and rotation
+            // for any child GameObjects that might want to raycast or otherwise reason about their location in the world.
+            foreach (var sourceState in InteractionManager.GetCurrentReading())
+            {
+                MotionControllerInfo currentController;
+                if (controllerDictionary != null && sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(sourceState.source.id, out currentController))
+                {
+                    if (AnimateControllerModel)
+                    {
+                        currentController.AnimateSelect(sourceState.selectPressedAmount);
+
+                        if (sourceState.source.supportsGrasp)
+                        {
+                            currentController.AnimateGrasp(sourceState.grasped);
+                        }
+
+                        if (sourceState.source.supportsMenu)
+                        {
+                            currentController.AnimateMenu(sourceState.menuPressed);
+                        }
+
+                        if (sourceState.source.supportsThumbstick)
+                        {
+                            currentController.AnimateThumbstick(sourceState.thumbstickPressed, sourceState.thumbstickPosition);
+                        }
+
+                        if (sourceState.source.supportsTouchpad)
+                        {
+                            currentController.AnimateTouchpad(sourceState.touchpadPressed, sourceState.touchpadTouched, sourceState.touchpadPosition);
+                        }
+                    }
+
+                    Vector3 newPosition;
+                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
+                    {
+                        currentController.gameObject.transform.localPosition = newPosition;
+                    }
+
+                    Quaternion newRotation;
+                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
+                    {
+                        currentController.gameObject.transform.localRotation = newRotation;
+                    }
+                }
+            }
+#endif
+        }
+
         private void OnDestroy()
         {
             Application.onBeforeRender -= Application_onBeforeRender;
