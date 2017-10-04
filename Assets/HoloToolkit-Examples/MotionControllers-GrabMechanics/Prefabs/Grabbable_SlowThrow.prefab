@@ -70,7 +70,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1849064027400676}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.348, y: 0.22335768, z: -1.01}
+  m_LocalPosition: {x: 0.261, y: 0.22335768, z: -1.277}
   m_LocalScale: {x: 0.16504839, y: 0.16504839, z: 0.16504839}
   m_Children:
   - {fileID: 4050821590397094}
@@ -264,3 +264,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  ThrowObject: {fileID: 1858218633888666, guid: 1d38a18755808db488ac7aacd9df3e3d,
+    type: 2}

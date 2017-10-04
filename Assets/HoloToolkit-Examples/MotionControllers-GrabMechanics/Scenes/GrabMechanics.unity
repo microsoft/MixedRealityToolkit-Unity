@@ -116,7 +116,7 @@ NavMeshSettings:
 Transform:
   m_PrefabParentObject: {fileID: 4647506227354428, guid: 1d38a18755808db488ac7aacd9df3e3d,
     type: 2}
-  m_PrefabInternal: {fileID: 2041028281}
+  m_PrefabInternal: {fileID: 2132282819}
 --- !u!1001 &49427802
 Prefab:
   m_ObjectHideFlags: 0
@@ -1873,7 +1873,7 @@ Prefab:
     - target: {fileID: 54251469248757502, guid: 8e03dafa1c3802246aeb94b8c9bd157e,
         type: 2}
       propertyPath: m_Constraints
-      value: 0
+      value: 112
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e03dafa1c3802246aeb94b8c9bd157e, type: 2}
@@ -2008,7 +2008,17 @@ Transform:
   m_PrefabParentObject: {fileID: 4409242262092556, guid: f04969aeafe8c464f84748b730c616f2,
     type: 2}
   m_PrefabInternal: {fileID: 1721693543}
---- !u!1001 &2041028281
+--- !u!4 &2103405542 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4176025311283842, guid: 1835b93e431513349a040fe99c8901d5,
+    type: 2}
+  m_PrefabInternal: {fileID: 1866637531}
+--- !u!54 &2131419153 stripped
+Rigidbody:
+  m_PrefabParentObject: {fileID: 54753601420314534, guid: 185cbc64b95076149af85f84872cb62b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1601117858}
+--- !u!1001 &2132282819
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -2047,20 +2057,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 1858218633888666, guid: 1d38a18755808db488ac7aacd9df3e3d, type: 2}
-      propertyPath: m_Name
-      value: GrabbableThrow
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1d38a18755808db488ac7aacd9df3e3d, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &2103405542 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4176025311283842, guid: 1835b93e431513349a040fe99c8901d5,
-    type: 2}
-  m_PrefabInternal: {fileID: 1866637531}
---- !u!54 &2131419153 stripped
-Rigidbody:
-  m_PrefabParentObject: {fileID: 54753601420314534, guid: 185cbc64b95076149af85f84872cb62b,
-    type: 2}
-  m_PrefabInternal: {fileID: 1601117858}

@@ -23,8 +23,8 @@ GameObject:
   - component: {fileID: 65957302616041754}
   - component: {fileID: 23365057681536444}
   - component: {fileID: 54123541730737446}
-  - component: {fileID: 114558875794066834}
   - component: {fileID: 114299893090924640}
+  - component: {fileID: 114189691247274860}
   m_Layer: 0
   m_Name: Grabbable_NoThrow
   m_TagString: Untagged
@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1107048291401930}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.374, y: 0.22335768, z: -1.511}
+  m_LocalPosition: {x: 0.3, y: 0.22335768, z: -0.722}
   m_LocalScale: {x: 0.16504839, y: 0.16504839, z: 0.16504839}
   m_Children:
   - {fileID: 4925589270801682}
@@ -201,6 +201,19 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &114189691247274860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1107048291401930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28c65dcfa65feae40be7f8ffb4d972d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabSpot: {fileID: 0}
+  grabStyle: 0
 --- !u!114 &114299893090924640
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,22 +232,3 @@ MonoBehaviour:
   colorOnUse: {r: 1, g: 0, b: 1, a: 1}
   targetRenderer: {fileID: 0}
   grabbable: {fileID: 0}
---- !u!114 &114558875794066834
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1107048291401930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd6834f9d99b79644b294f1e3a31d910, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grabSpot: {fileID: 0}
-  grabStyle: 0
-  breakForce: 100
-  breakTorque: 100
-  tolerance: 0.001
-  joint_anchor: {x: 0, y: 0, z: 0}
-  minDistance: 0
-  maxDistance: 0
