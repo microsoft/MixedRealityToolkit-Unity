@@ -69,7 +69,7 @@ namespace HoloToolkit.Unity
 
         private bool ShouldLogViewBeEnabled
         {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
 
         private bool LocalIPsOnly { get { return true; } }
@@ -683,12 +683,31 @@ namespace HoloToolkit.Unity
             // Log file
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLogViewBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
+                string localLogPath = string.Empty;
+                bool localLogExists = false;
+
+                bool remoteDeviceDetected = !locatorIsSearching && locatorHasData || HoloLensUsbConnected && !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs);
+                bool isLocalBuild = BuildDeployPrefs.BuildPlatform == BuildPlatformEnum.x64.ToString();
+                if (!remoteDeviceDetected)
+                {
+                    localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
+                    localLogExists = File.Exists(localLogPath);
+                }
+
+                GUI.enabled = ShouldLogViewBeEnabled && (remoteDeviceDetected || isLocalBuild && localLogExists);
                 GUILayout.FlexibleSpace();
+
 
                 if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
                 {
-                    OpenLogFileForIPs(curTargetIps);
+                    if (remoteDeviceDetected)
+                    {
+                        OpenLogFileForIPs(curTargetIps);
+                    }
+                    else
+                    {
+                        Process.Start(localLogPath);
+                    }
                 }
 
                 GUI.enabled = true;
