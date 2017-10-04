@@ -23,7 +23,9 @@ GameObject:
   - component: {fileID: 65957302616041754}
   - component: {fileID: 23365057681536444}
   - component: {fileID: 54123541730737446}
+  - component: {fileID: 114547182181813204}
   - component: {fileID: 114299893090924640}
+  - component: {fileID: 114918539871768754}
   - component: {fileID: 114189691247274860}
   m_Layer: 0
   m_Name: Grabbable_NoThrow
@@ -56,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1107048291401930}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0.22335768, z: -0.722}
+  m_LocalPosition: {x: 0.424, y: 0.22335768, z: -1.555}
   m_LocalScale: {x: 0.16504839, y: 0.16504839, z: 0.16504839}
   m_Children:
   - {fileID: 4925589270801682}
@@ -70,7 +72,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1525906702853636}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.555, y: 0.222, z: 0.416}
+  m_LocalPosition: {x: -0.546, y: 0.091, z: 0.406}
   m_LocalScale: {x: 0.0052711857, y: 0.0052711805, z: 0.0052711857}
   m_Children: []
   m_Father: {fileID: 4849268863190318}
@@ -185,7 +187,9 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1525906702853636}
-  m_Text: 'No
+  m_Text: 'Zero
+
+    Gravity
 
     Throw'
   m_OffsetZ: 0
@@ -232,3 +236,46 @@ MonoBehaviour:
   colorOnUse: {r: 1, g: 0, b: 1, a: 1}
   targetRenderer: {fileID: 0}
   grabbable: {fileID: 0}
+--- !u!114 &114547182181813204
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1107048291401930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f998b0e84ebe41240abe525ad28ce99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwMultiplier: 2
+  zeroGravityThrow: 1
+  velocityOverTime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  upDownCurveOverTime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  leftRightCurveOverTime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &114918539871768754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1107048291401930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3043a3a8d2a591d45a667cf1fd61d529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThrowObject: {fileID: 0}

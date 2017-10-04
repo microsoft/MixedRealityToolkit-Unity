@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 114402820253742850}
   - component: {fileID: 114364975473900614}
   - component: {fileID: 114345258802425366}
+  - component: {fileID: 114099977653505882}
   m_Layer: 0
   m_Name: GrabbableThrow
   m_TagString: Untagged
@@ -202,6 +203,18 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &114099977653505882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858218633888666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3043a3a8d2a591d45a667cf1fd61d529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThrowObject: {fileID: 0}
 --- !u!114 &114345258802425366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -251,7 +264,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ThrowObject: {fileID: 1858218633888666}
 --- !u!114 &114402820253742850
 MonoBehaviour:
   m_ObjectHideFlags: 1

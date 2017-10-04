@@ -8,7 +8,7 @@ namespace MRTK.Grabbables
 {
     /// <summary>
     /// Intended usage: scripts that inherit from this can be attached to the controller, or any object with a collider 
-    /// that needs to grabbing or carrying other objects. 
+    /// that needs to be grabbing or carrying other objects. 
     /// </summary>
     public abstract class BaseGrabber : MonoBehaviour
     {
@@ -196,17 +196,6 @@ namespace MRTK.Grabbables
 
             prevGrabState = GrabState;
             prevContactState = ContactState;
-
-
-
-            currPos = transform.position;
-            GetVelocity();
-
-            if (frameCounter % 2 == 1)
-            {
-                prevPos = currPos;
-            }
-            frameCounter++;
         }
 
         void LateUpdate()
@@ -214,12 +203,6 @@ namespace MRTK.Grabbables
 
         }
 
-        public Vector3 GetVelocity()
-        {
-            var velocity = Vector3.zero;
-            velocity = (currPos - prevPos) / Time.deltaTime;
-            return velocity;
-        }
 
         //variable declaration
         [SerializeField]
@@ -234,9 +217,6 @@ namespace MRTK.Grabbables
 
         private GrabStateEnum prevGrabState = GrabStateEnum.Inactive;
         private GrabStateEnum prevContactState = GrabStateEnum.Inactive;               
-        private Vector3 currPos;
-        private Vector3 prevPos;
-        private int frameCounter;
         [SerializeField]
         protected InteractionSourceHandedness handedness;
     }

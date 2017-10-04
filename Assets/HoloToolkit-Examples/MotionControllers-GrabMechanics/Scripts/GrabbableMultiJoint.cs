@@ -9,7 +9,6 @@ namespace MRTK.Grabbables
         protected override void OnGrabStay()
         {
             base.OnGrabStay();
-            //GetComponent<Rigidbody>().isKinematic = true;
             Vector3 averagePosition = transform.position;
             Quaternion averageRotation = transform.rotation;
             int numGrabbers = activeGrabbers.Count;

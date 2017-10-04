@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114916819447044276}
   - component: {fileID: 54022861835207336}
   - component: {fileID: 114532797544390676}
+  - component: {fileID: 114738645350274188}
   - component: {fileID: 114058917906754942}
   m_Layer: 0
   m_Name: Grabbable_SlowThrow
@@ -233,6 +234,18 @@ MonoBehaviour:
   colorOnUse: {r: 1, g: 0, b: 1, a: 1}
   targetRenderer: {fileID: 0}
   grabbable: {fileID: 0}
+--- !u!114 &114738645350274188
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849064027400676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3043a3a8d2a591d45a667cf1fd61d529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThrowObject: {fileID: 0}
 --- !u!114 &114916819447044276
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -264,5 +277,3 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ThrowObject: {fileID: 1858218633888666, guid: 1d38a18755808db488ac7aacd9df3e3d,
-    type: 2}

@@ -241,7 +241,6 @@ namespace MRTK.Grabbables
             prevGrabState = GrabState;
             prevContactState = ContactState;
             currPos = transform.position;
-            GetAverageVelocity();
         }
 
         private void LateUpdate()
@@ -251,7 +250,7 @@ namespace MRTK.Grabbables
 
         public Vector3 GetAverageVelocity()
         {
-            //eventually this will be updated to be an average the amount of force exerted on it by each grabber
+            //eventually this will be updated to be an average the amount of force exerted on it by each grabber attached
             var velocity = Vector3.zero;
             velocity = (currPos - prevPos) / Time.deltaTime;
             return velocity;
