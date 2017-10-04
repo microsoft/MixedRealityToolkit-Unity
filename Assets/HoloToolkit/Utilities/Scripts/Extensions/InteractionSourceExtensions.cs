@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Extensions for the InteractionSource class to add haptics.
     /// </summary>
-    public static class HapticsExtensions
+    public static class InteractionSourceExtensions
     {
         // This value is standardized according to www.usb.org/developers/hidpage/HUTRR63b_-_Haptics_Page_Redline.pdf
         private const ushort ContinuousBuzzWaveform = 0x1004;
