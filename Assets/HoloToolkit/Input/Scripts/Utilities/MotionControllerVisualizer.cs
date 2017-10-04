@@ -101,6 +101,11 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
+        private void OnDestroy()
+        {
+            Application.onBeforeRender -= Application_onBeforeRender;
+        }
+
         private void Application_onBeforeRender()
         {
 #if UNITY_WSA
