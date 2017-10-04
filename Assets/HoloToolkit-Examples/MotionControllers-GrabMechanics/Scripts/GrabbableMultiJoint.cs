@@ -23,7 +23,6 @@ namespace MRTK.Grabbables
 
             transform.position = Vector3.Lerp(transform.position, averagePosition, Time.deltaTime * blendSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, averageRotation, Time.deltaTime * blendSpeed);
-            //GetComponent<Rigidbody>().isKinematic = false;
         }
 
         //the next three functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
