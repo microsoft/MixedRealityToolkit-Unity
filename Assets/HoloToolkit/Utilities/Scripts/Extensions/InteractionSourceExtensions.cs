@@ -1,4 +1,4 @@
-﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
@@ -7,7 +7,9 @@ using UnityEngine.XR.WSA.Input;
 using System;
 using System.Collections.Generic;
 using Windows.Devices.Haptics;
+using Windows.Foundation;
 using Windows.Perception;
+using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
 #endif
 #endif
@@ -15,7 +17,7 @@ using Windows.UI.Input.Spatial;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Extensions for the InteractionSource class to add haptics.
+    /// Extensions for the InteractionSource class to add haptics and expose the renderable model.
     /// </summary>
     public static class InteractionSourceExtensions
     {
@@ -78,6 +80,28 @@ namespace HoloToolkit.Unity
             }, true);
 #endif
         }
+
+#if !UNITY_EDITOR
+        public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
+        {
+            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
+
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            {
+                IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+
+                foreach (SpatialInteractionSourceState sourceState in sources)
+                {
+                    if (sourceState.Source.Id.Equals(interactionSource.id))
+                    {
+                        returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
+                    }
+                }
+            }, true);
+
+            return returnValue;
+        }
+#endif
 #endif
     }
 }
