@@ -697,7 +697,6 @@ namespace HoloToolkit.Unity
                 GUI.enabled = ShouldLogViewBeEnabled && (remoteDeviceDetected || isLocalBuild && localLogExists);
                 GUILayout.FlexibleSpace();
 
-
                 if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
                 {
                     if (remoteDeviceDetected)
