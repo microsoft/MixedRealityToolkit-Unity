@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// This script keeps track of the GameObjects for each button on the controller.
     /// It also keeps track of the animation Transforms in order to properly animate according to user input.
     /// </summary>
-    public class ControllerInfo : MonoBehaviour
+    public class MotionControllerInfo : MonoBehaviour
     {
         private GameObject home;
         private Transform homePressed;
@@ -61,7 +61,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="childTransforms">The transforms of the glTF model.</param>
         /// <param name="visualizerScript">The script containing references to any objects to spawn.</param>
-        public void LoadInfo(Transform[] childTransforms, ControllerVisualizer visualizerScript)
+        public void LoadInfo(Transform[] childTransforms, MotionControllerVisualizer visualizerScript)
         {
             foreach (Transform child in childTransforms)
             {

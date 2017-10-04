@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
     /// and animates the controller position, rotation, button presses, and
     /// thumbstick/touchpad interactions, where applicable.
     /// </summary>
-    public class ControllerVisualizer : MonoBehaviour
+    public class MotionControllerVisualizer : MonoBehaviour
     {
         [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
         public bool AnimateControllerModel = true;
@@ -47,13 +47,13 @@ namespace HoloToolkit.Unity.InputModule
 #endif
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
-        private Dictionary<uint, ControllerInfo> controllerDictionary;
+        private Dictionary<uint, MotionControllerInfo> controllerDictionary;
 
         private void Start()
         {
             Application.onBeforeRender += Application_onBeforeRender;
 
-            controllerDictionary = new Dictionary<uint, ControllerInfo>();
+            controllerDictionary = new Dictionary<uint, MotionControllerInfo>();
 
 #if UNITY_WSA
             if (!Application.isEditor)
@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity.InputModule
             // Any app logic depending on the controller state should happen in Update() or using InteractionManager's events.
             foreach (var sourceState in InteractionManager.GetCurrentReading())
             {
-                ControllerInfo currentController;
+                MotionControllerInfo currentController;
                 if (controllerDictionary != null && sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(sourceState.source.id, out currentController))
                 {
                     if (AnimateControllerModel)
@@ -184,7 +184,7 @@ namespace HoloToolkit.Unity.InputModule
             SpatialInteractionSource source = args.State.Source;
             if (source.Kind == SpatialInteractionSourceKind.Controller)
             {
-                ControllerInfo controller;
+                MotionControllerInfo controller;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(source.Id, out controller))
                 {
                     controllerDictionary.Remove(source.Id);
@@ -303,7 +303,7 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSource source = obj.state.source;
             if (source.kind == InteractionSourceKind.Controller)
             {
-                ControllerInfo controller;
+                MotionControllerInfo controller;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
                 {
                     controllerDictionary.Remove(source.id);
@@ -324,7 +324,7 @@ namespace HoloToolkit.Unity.InputModule
             parentGameObject.transform.parent = transform;
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
-            var newControllerInfo = parentGameObject.AddComponent<ControllerInfo>();
+            var newControllerInfo = parentGameObject.AddComponent<MotionControllerInfo>();
             if (AnimateControllerModel)
             {
                 newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
