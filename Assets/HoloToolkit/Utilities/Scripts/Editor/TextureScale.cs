@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+// See http://wiki.unity3d.com/index.php/TextureScale
 
 using System.Threading;
 using UnityEngine;
@@ -107,7 +108,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            tex.Resize(newWidth, newHeight, TextureFormat.RGB24, false);
+            tex.Resize(newWidth, newHeight, TextureFormat.ARGB32, false);
             tex.SetPixels(newColors);
             tex.Apply();
 

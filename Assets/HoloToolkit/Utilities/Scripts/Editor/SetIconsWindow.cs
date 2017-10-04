@@ -272,13 +272,19 @@ namespace HoloToolkit.Unity
 
                 // Resize clone to desired size
                 TextureScale.Bilinear(clone, (int)iconSize.x, (int)iconSize.y);
-                clone.Compress(true);
-                AssetDatabase.SaveAssets();
 
-                if (clone.GetRawTextureData().Length > 204800)
+                // Crop
+                Color[] pix = clone.GetPixels(0, 0, (int)iconSize.x, (int)iconSize.y);
+                clone = new Texture2D((int)iconSize.x, (int)iconSize.y, TextureFormat.ARGB32, false);
+                clone.SetPixels(pix);
+                clone.Apply();
+
+                var rawData = clone.EncodeToPNG();
+                File.WriteAllBytes(filePath, rawData);
+
+                if (rawData.Length > 204800)
                 {
                     Debug.LogWarningFormat("{0} exceeds the minimum file size of 204,800 bytes, please use a smaller image for generating your icons.", clone.name);
-                    return string.Empty;
                 }
             }
             catch (Exception e)
