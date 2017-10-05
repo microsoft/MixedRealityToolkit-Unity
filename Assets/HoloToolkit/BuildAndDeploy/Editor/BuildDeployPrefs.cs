@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity
 
         public static string BuildPlatform
         {
-            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_BuildPlatform, "Any CPU"); }
+            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_BuildPlatform, "x86"); }
             set { EditorPrefsUtility.SetEditorPref(EditorPrefs_BuildPlatform, value); }
         }
 
