@@ -332,8 +332,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 touchVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 touchVisualizer.transform.localScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
-                touchVisualizer.GetComponent<Renderer>().material = GLTFMaterial;
+                touchVisualizer.GetComponent<Renderer>().sharedMaterial = GLTFMaterial;
             }
+
             Destroy(touchVisualizer.GetComponent<Collider>());
             touchVisualizer.transform.parent = parentTransform;
             touchVisualizer.transform.localPosition = Vector3.zero;
