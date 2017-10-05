@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Class for manually controlling the hand(s) when not running on HoloLens (in editor).
     /// </summary>
-    public class ManualHandControl : MonoBehaviour
+    public class EditorInputControl : MonoBehaviour
     {
         public float HandReturnFactor = 0.25f;  /// [0.0,1.0] the closer this is to one the faster it brings the hand back to center
         public float HandTimeBeforeReturn = 0.5f;

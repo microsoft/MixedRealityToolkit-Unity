@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     /// than the standard GestureRecognizer.
     /// </summary>
     /// <remarks>This input source only triggers SourceUp and SourceDown for the hands. Everything else is handled by InteractionInputSource.</remarks>
-    [RequireComponent(typeof(ManualHandControl))]
+    [RequireComponent(typeof(EditorInputControl))]
     public class EditorHandsInputSource : BaseInputSource
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule
             public Vector3 CumulativeDelta;
         }
 
-        private ManualHandControl manualHandControl;
+        private EditorInputControl editorInputControl;
 
         /// <summary>
         /// Dispatched each frame that a hand is moving.
@@ -182,7 +182,7 @@ namespace HoloToolkit.Unity.InputModule
 #if !UNITY_EDITOR
             Destroy(this);
 #else
-            manualHandControl = GetComponent<ManualHandControl>();
+            editorInputControl = GetComponent<EditorInputControl>();
             for (uint i = 0; i < editorHandsData.Length; i++)
             {
                 editorHandsData[i] = new EditorHandData(i);
@@ -209,7 +209,7 @@ namespace HoloToolkit.Unity.InputModule
             float time;
             float deltaTime;
 
-            if (manualHandControl.UseUnscaledTime)
+            if (editorInputControl.UseUnscaledTime)
             {
                 time = Time.unscaledTime;
                 deltaTime = Time.unscaledDeltaTime;
@@ -220,19 +220,19 @@ namespace HoloToolkit.Unity.InputModule
                 deltaTime = Time.deltaTime;
             }
 
-            if (manualHandControl.LeftHandInView)
+            if (editorInputControl.LeftHandInView)
             {
                 GetOrAddHandData(0);
                 currentHands.Add(0);
 
-                UpdateHandState(manualHandControl.LeftHandSourceState, editorHandsData[0], deltaTime, time);
+                UpdateHandState(editorInputControl.LeftHandSourceState, editorHandsData[0], deltaTime, time);
             }
 
-            if (manualHandControl.RightHandInView)
+            if (editorInputControl.RightHandInView)
             {
                 GetOrAddHandData(1);
                 currentHands.Add(1);
-                UpdateHandState(manualHandControl.RightHandSourceState, editorHandsData[1], deltaTime, time);
+                UpdateHandState(editorInputControl.RightHandSourceState, editorHandsData[1], deltaTime, time);
             }
         }
 
