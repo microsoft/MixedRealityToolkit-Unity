@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d22ffd4cdba2b42a1584afdc5589a3, type: 3}
+  m_Name: DefaultButtonIconProfileFont
+  m_EditorClassIdentifier: Assembly-CSharp:HUX.Buttons:ButtonIconProfileFont
+  _IconNotFound_: {fileID: 2800000, guid: 2adc8135dd936004db37d5cead85f951, type: 3}
+  AlphaTransitionSpeed: 0.16
+  IconMaterial: {fileID: 2100000, guid: 98cc92d28255c914ab0d0be3fedc8ae9, type: 2}
+  IconMesh: {fileID: 4300010, guid: c68a88ae5c5b91f41b94c83aa4c4196e, type: 3}
+  AlphaColorProperty: _Color
+  OSFontName: Segoe MDL2 Assets
+  RendererScale: 0.00675
+  FontScaleFactor: 16
+  iconFont: {fileID: 12800000, guid: 1c23dd197fee40242837e153e2466621, type: 3}
