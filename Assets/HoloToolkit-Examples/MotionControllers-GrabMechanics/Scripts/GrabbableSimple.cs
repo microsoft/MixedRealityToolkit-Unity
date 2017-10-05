@@ -38,9 +38,18 @@ namespace MRTK.Grabbables
 
         protected override void OnGrabStay()
         {
-            transform.position = GrabberPrimary.GrabHandle.position;
+            if(matchPosition)
+                transform.position = GrabberPrimary.GrabHandle.position;
+
+            if (matchRotation)
+                transform.rotation = GrabberPrimary.GrabHandle.rotation;
         }
 
         private Rigidbody rb;
+
+        [SerializeField]
+        private bool matchPosition = true;
+        [SerializeField]
+        private bool matchRotation = false;
     }
 }
