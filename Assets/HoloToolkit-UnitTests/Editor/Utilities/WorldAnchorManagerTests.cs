@@ -6,6 +6,14 @@ namespace HoloToolkit.Unity.Tests
 {
     public class WorldAnchorManagerTests
     {
+        [SetUp]
+        public void ClearScene()
+        {
+            TestUtils.ClearScene();
+            var managers = new GameObject("Managers");
+            managers.AddComponent<WorldAnchorManager>();
+        }
+
         [Test]
         public void TestGenerateAnchorNameFromGameObject()
         {
