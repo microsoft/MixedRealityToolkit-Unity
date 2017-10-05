@@ -23,7 +23,7 @@ Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/m
 | :--------------------- | :----------------- | :------------------ | :------------------------ |
 | Scripts that leverage inputs such as gaze, gesture, voice and motion controllers.             | Sharing library enables collaboration across multiple devices.  | Scripts that allow applications to bring the real world into the digital using HoloLens.        | Tailor experiences based on room semantics like couch, wall etc. |
 | ![Audio](External/ReadMeImages/MRTK170802_Short_09.png) [Audio](Assets/HoloToolkit/Audio/README.md)| ![UX Controls](External/ReadMeImages/MRTK170802_Short_10.png) [UX Controls](Assets/HoloToolkit/UX/README.md)| ![Utilities](External/ReadMeImages/MRTK170802_Short_11.png) [Utilities](Assets/HoloToolkit/Utilities/README.md)| ![Build](External/ReadMeImages/MRTK170802_Short_12.png) [Build](Assets/HoloToolkit/BuildAndDeploy/README.md)|
-| Scripts to help plug spatial audio into your application.           | Building blocks for creating good UI in your application like common controls.    | Common helpers and tools that you can leverage in your application.      | Build and deploy automation window for Unity Editor.|
+| Scripts to help plug spatial audio into your application.           | Building blocks for creating good UX in your application like common controls.    | Common helpers and tools that you can leverage in your application.      | Build and deploy automation window for Unity Editor.|
 
 
 # Required Software
