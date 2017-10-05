@@ -69,7 +69,7 @@ namespace HoloToolkit.Unity
 
         private bool ShouldLogViewBeEnabled
         {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
 
         private bool LocalIPsOnly { get { return true; } }
@@ -327,6 +327,18 @@ namespace HoloToolkit.Unity
 
             currentSDKVersionIndex = EditorGUILayout.Popup(GUIHorizontalSpacer + "SDK Version", currentSDKVersionIndex, windowsSdkPaths);
 
+            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
+                GUIHorizontalSpacer + "Scripting Backend",
+                (int)curScriptingBackend,
+                new[] { "IL2CPP", ".NET" },
+                new[] { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET });
+
+            if (newScriptingBackend != curScriptingBackend)
+            {
+                PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, newScriptingBackend);
+            }
+
             string newSDKVersion = windowsSdkPaths[currentSDKVersionIndex];
 
             if (!newSDKVersion.Equals(currentSDKVersion))
@@ -335,7 +347,6 @@ namespace HoloToolkit.Unity
             }
 
             string newMSBuildVer = currentSDKVersionIndex <= defaultMSBuildVersionIndex ? BuildDeployTools.DefaultMSBuildVersion : "15.0";
-            EditorGUILayout.LabelField(GUIHorizontalSpacer + "MS Build Version", newMSBuildVer);
 
             if (!newMSBuildVer.Equals(curMSBuildVer))
             {
@@ -672,12 +683,30 @@ namespace HoloToolkit.Unity
             // Log file
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUI.enabled = ShouldLogViewBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
+                string localLogPath = string.Empty;
+                bool localLogExists = false;
+
+                bool remoteDeviceDetected = !locatorIsSearching && locatorHasData || HoloLensUsbConnected && !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs);
+                bool isLocalBuild = BuildDeployPrefs.BuildPlatform == BuildPlatformEnum.x64.ToString();
+                if (!remoteDeviceDetected)
+                {
+                    localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
+                    localLogExists = File.Exists(localLogPath);
+                }
+
+                GUI.enabled = ShouldLogViewBeEnabled && (remoteDeviceDetected || isLocalBuild && localLogExists);
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
                 {
-                    OpenLogFileForIPs(curTargetIps);
+                    if (remoteDeviceDetected)
+                    {
+                        OpenLogFileForIPs(curTargetIps);
+                    }
+                    else
+                    {
+                        Process.Start(localLogPath);
+                    }
                 }
 
                 GUI.enabled = true;

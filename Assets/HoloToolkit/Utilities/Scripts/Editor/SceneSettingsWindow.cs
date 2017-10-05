@@ -33,7 +33,8 @@ namespace HoloToolkit.Unity
         {
             if (Values[SceneSetting.AddMixedRealityCamera])
             {
-                Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
+                DestroyImmediate(Camera.main.gameObject.GetParentRoot());
+                PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
             }
 
             var mainCamera = CameraCache.Refresh(Camera.main);
@@ -55,7 +56,7 @@ namespace HoloToolkit.Unity
 
         protected override void LoadSettings()
         {
-            for (int i = (int)SceneSetting.CameraToOrigin; i <= (int)SceneSetting.CameraToOrigin; i++)
+            for (int i = 0; i <= (int)SceneSetting.CameraToOrigin; i++)
             {
                 Values[(SceneSetting)i] = false;
             }

@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Applies recommended project settings to the current project
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Configure/Apply Mixed Reality Project Settings", false, 1)]
+        [MenuItem("Mixed Reality Toolkit/Configure/Apply Mixed Reality Project Settings", false, 0)]
         public static void ShowProjectSettingsWindow()
         {
             var window = (ProjectSettingsWindow)EditorWindow.GetWindow(typeof(ProjectSettingsWindow), true, "Apply Mixed Reality Project Settings");
