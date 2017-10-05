@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.Tests
     {
         void IInputHandler.OnInputDown(InputEventData eventData)
         {
-            InteractionSourceInputSource inputSource = eventData.InputSource as InteractionSourceInputSource;
+            InteractionInputSource inputSource = eventData.InputSource as InteractionInputSource;
             if (inputSource != null)
             {
                 switch (eventData.PressType)
@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity.Tests
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            InteractionSourceInputSource inputSource = eventData.InputSource as InteractionSourceInputSource;
+            InteractionInputSource inputSource = eventData.InputSource as InteractionInputSource;
             if (inputSource != null)
             {
                 if (eventData.PressType == InteractionSourcePressInfo.Grasp)
