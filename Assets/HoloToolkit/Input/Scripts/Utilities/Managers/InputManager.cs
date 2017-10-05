@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule
         private GamePadEventData gamePadEventData;
         private XboxControllerEventData xboxControllerEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-        private SpeechKeywordRecognizedEventData speechKeywordRecognizedEventData;
+        private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
 #endif
 
@@ -190,7 +190,7 @@ namespace HoloToolkit.Unity.InputModule
             gamePadEventData = new GamePadEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-            speechKeywordRecognizedEventData = new SpeechKeywordRecognizedEventData(EventSystem.current);
+            speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 #endif
         }
@@ -719,17 +719,17 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
             delegate (ISpeechHandler handler, BaseEventData eventData)
             {
-                SpeechKeywordRecognizedEventData casted = ExecuteEvents.ValidateEventData<SpeechKeywordRecognizedEventData>(eventData);
+                SpeechEventData casted = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
         public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
             // Create input event
-            speechKeywordRecognizedEventData.Initialize(source, sourceId, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            speechEventData.Initialize(source, sourceId, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(speechKeywordRecognizedEventData, OnSpeechKeywordRecognizedEventHandler);
+            HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationHypothesisEventHandler =

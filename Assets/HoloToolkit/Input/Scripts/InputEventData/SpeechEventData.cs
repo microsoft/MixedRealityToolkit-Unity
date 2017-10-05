@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Describes an input event that involves keyword recognition.
     /// </summary>
-    public class SpeechKeywordRecognizedEventData : InputEventData
+    public class SpeechEventData : InputEventData
     {
         /// <summary>
         /// The time it took for the phrase to be uttered.
@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public string RecognizedText { get; private set; }
 
-        public SpeechKeywordRecognizedEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
