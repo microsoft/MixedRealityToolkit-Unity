@@ -276,7 +276,7 @@ namespace HoloToolkit.Unity
                 // Use scenes from the editor build settings.
                 Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
 
-                // Configure a post build action to throw appropreate error code.
+                // Configure a post build action to throw appropriate error code.
                 PostBuildAction = (innerBuildInfo, buildError) =>
                 {
                     if (!string.IsNullOrEmpty(buildError))
