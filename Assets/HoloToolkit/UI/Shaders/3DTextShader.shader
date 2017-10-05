@@ -4,7 +4,7 @@
 ///
 /// Basic 3D Text shader with proper z-shorting
 ///
-Shader "HoloToolkit/3DTextShader"
+Shader "MixedRealityToolkit/3DTextShader"
 {
     Properties
     {
