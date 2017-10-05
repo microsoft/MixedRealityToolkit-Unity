@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Input source for fake hands information, which gives finer details about current hand state and position
     /// than the standard GestureRecognizer.
     /// </summary>
-    /// <remarks>This input source only triggers SourceUp and SourceDown for the hands. Everything else is handled by GesturesInputSource.</remarks>
+    /// <remarks>This input source only triggers SourceUp and SourceDown for the hands. Everything else is handled by InteractionInputSource.</remarks>
     [RequireComponent(typeof(ManualHandControl))]
     public class EditorHandsInputSource : BaseInputSource
     {
