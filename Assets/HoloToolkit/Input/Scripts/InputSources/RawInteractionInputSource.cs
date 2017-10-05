@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     /// <remarks>
     /// This input source only triggers SourceUp/SourceDown and SourceDetected/SourceLost.
-    /// Everything else is handled by GesturesInputSource.
+    /// Everything else is handled by InteractionInputSource.
     /// </remarks>
     public class RawInteractionInputSource : BaseInputSource
     {

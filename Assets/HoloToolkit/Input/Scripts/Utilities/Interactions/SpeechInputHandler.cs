@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        void ISpeechHandler.OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
+        void ISpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             UnityEvent keywordResponse;
 

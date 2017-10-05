@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Input source for gestures information from the WSA APIs, which gives access to various system-supported gestures.
     /// This is a wrapper on top of GestureRecognizer.
     /// </summary>
-    public class GesturesInputSource : BaseInputSource
+    public class InteractionInputSource : BaseInputSource
     {
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
         // set up the recognizer. The first causes the recognizer to start
@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             gestureRecognizer = new GestureRecognizer();
             gestureRecognizer.TappedEvent += OnTappedEvent;
-            
+
             gestureRecognizer.HoldStartedEvent += OnHoldStartedEvent;
             gestureRecognizer.HoldCompletedEvent += OnHoldCompletedEvent;
             gestureRecognizer.HoldCanceledEvent += OnHoldCanceledEvent;
@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity.InputModule
             gestureRecognizer.ManipulationCompletedEvent += OnManipulationCompletedEvent;
             gestureRecognizer.ManipulationCanceledEvent += OnManipulationCanceledEvent;
 
-            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap | 
+            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap |
                                                       GestureSettings.ManipulationTranslate |
                                                       GestureSettings.Hold);
 

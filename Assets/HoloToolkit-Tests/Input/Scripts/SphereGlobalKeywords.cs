@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             switch (eventData.RecognizedText.ToLower())
             {
