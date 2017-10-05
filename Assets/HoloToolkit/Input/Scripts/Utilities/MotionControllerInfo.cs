@@ -9,8 +9,10 @@ namespace HoloToolkit.Unity.InputModule
     /// This script keeps track of the GameObjects for each button on the controller.
     /// It also keeps track of the animation Transforms in order to properly animate according to user input.
     /// </summary>
-    public class MotionControllerInfo : MonoBehaviour
+    public class MotionControllerInfo
     {
+        public GameObject ControllerParent;
+
         private GameObject home;
         private Transform homePressed;
         private Transform homeUnpressed;
@@ -286,16 +288,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             buttonGameObject.transform.localPosition = newTransform.localPosition;
             buttonGameObject.transform.localRotation = newTransform.localRotation;
-        }
-
-        private void OnDestroy()
-        {
-            if (touchpadTouchVisualizer != null)
-            {
-                Destroy(touchpadTouchVisualizer.GetComponent<Renderer>().material);
-            }
-
-            Destroy(gameObject);
         }
     }
 }

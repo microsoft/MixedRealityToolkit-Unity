@@ -11,7 +11,6 @@ using UnityEngine.XR.WSA.Input;
 using GLTF;
 using Windows.Foundation;
 using Windows.Storage.Streams;
-using Windows.UI.Input.Spatial;
 #endif
 #endif
 
@@ -40,11 +39,6 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("This material will be used on the loaded glTF controller model. This does not affect the above overrides.")]
         [SerializeField]
         protected UnityEngine.Material GLTFMaterial;
-
-#if !UNITY_EDITOR && UNITY_WSA
-        // This is used to get the renderable controller model, since Unity does not expose this API.
-        private SpatialInteractionManager spatialInteractionManager;
-#endif
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<uint, MotionControllerInfo> controllerDictionary;
@@ -126,13 +120,13 @@ namespace HoloToolkit.Unity.InputModule
                     Vector3 newPosition;
                     if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
                     {
-                        currentController.gameObject.transform.localPosition = newPosition;
+                        currentController.ControllerParent.transform.localPosition = newPosition;
                     }
 
                     Quaternion newRotation;
                     if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
                     {
-                        currentController.gameObject.transform.localRotation = newRotation;
+                        currentController.ControllerParent.transform.localRotation = newRotation;
                     }
                 }
             }
@@ -182,13 +176,13 @@ namespace HoloToolkit.Unity.InputModule
                     Vector3 newPosition;
                     if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
                     {
-                        currentController.gameObject.transform.localPosition = newPosition;
+                        currentController.ControllerParent.transform.localPosition = newPosition;
                     }
 
                     Quaternion newRotation;
                     if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
                     {
-                        currentController.gameObject.transform.localRotation = newRotation;
+                        currentController.ControllerParent.transform.localRotation = newRotation;
                     }
                 }
             }
@@ -220,7 +214,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     controllerDictionary.Remove(source.id);
 
-                    Destroy(controller);
+                    Destroy(controller.ControllerParent);
                 }
             }
         }
@@ -313,7 +307,7 @@ namespace HoloToolkit.Unity.InputModule
             parentGameObject.transform.parent = transform;
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
-            var newControllerInfo = parentGameObject.AddComponent<MotionControllerInfo>();
+            var newControllerInfo = new MotionControllerInfo() { ControllerParent = parentGameObject };
             if (AnimateControllerModel)
             {
                 newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
