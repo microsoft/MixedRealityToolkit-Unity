@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule
     /// and positional information for the various inputs that Windows gestures supports.
     /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
-    public class InteractionSourceInputSource : BaseInputSource
+    public class InteractionInputSource : BaseInputSource
     {
         // This enumeration gives the manager two different ways to handle the recognizer. Both will
         // set up the recognizer. The first causes the recognizer to start
