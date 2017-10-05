@@ -2,7 +2,7 @@
 
 Useful scripts and examples for implementing various types of grab interaction with Windows Mixed Reality motion controller.
 
-![Default Font material vs 3DTextSegoeUI material](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions06.png)
+![](/External/ReadMeImages/MRTK_MotionController_GrabMechanics.jpg)
 
 # Basic Architecture
  
