@@ -34,9 +34,7 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 - Follow position (set to true by default)  
 - Follow rotation (set to true by default)   
 ### ScalableObject - Allows user to scale an object with two hands
-- Scale Multiplier (amplify or dampen the amount of scaling) 
-- Adjust for Distance (Coming Soon! - if something is far away, scale it up more) 
-- Scale by Distance/Velocity (Coming Soon! - scales based on either distance between the two grabbers or scale by velocity) 
+- Scale Multiplier (amplify or dampen the amount of scaling)
 ### ThrowableObject 
 - Throw Multiplier (amplify or dampen the throw velocity)  
 - Throw Curves (Coming Soon! - Adjust curvature of the throw over time on x, y, z axis)  
@@ -57,7 +55,7 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 - Controller raw data reports that the Grab Button is pressed (see subscription to InteractionSourcePressed or InteractionSourceUpdated) 
 - GrabStart() subscribes to the above, and fires 
 - TryGrabWith (on BaseGrabbable) gets called to check for success 
-- If successful^^^, add the proposed grabbable object to the grabber’s grabbedObjectList 
+- If successful, add the proposed grabbable object to the grabber’s grabbedObjectList 
 - If grabbedObjectList > 0 change this Grabber’s GrabState to single or multi 
   
 ### Grabbable Object 
@@ -85,7 +83,9 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 # Proposed Future Updates 
 - Write joint system to move away from Unity-based joints. This should help with two hand grab objects that currently rely on spring joints.  
 - Add Throw modifiers to allow devs to adjust the curvature of a thrown object over time 
-- In this readme, add a chart of recommended combinations (i.e. "GrabSimple works well with ThrowableObject") 
+- In this readme, add a chart of recommended combinations (e.g "GrabSimple works well with ThrowableObject") 
+- ScalableObject adjust for Distance - if something is far away, scale it up more.
+- ScalableObject scale by Distance/Velocity - scales based on either distance between the two grabbers or scale by velocity.
  
 # Known Bugs 
 - On the touch rotate example, the Rotatable Object seems to only respond to the left touchpad, despite checks for "handedness" associated with the grabbing controller 
