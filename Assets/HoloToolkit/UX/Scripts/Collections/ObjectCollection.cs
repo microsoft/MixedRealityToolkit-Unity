@@ -3,7 +3,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -16,54 +15,7 @@ namespace HoloToolkit.Unity.Collections
     /// </summary>
     public class ObjectCollection : MonoBehaviour
     {
-        /// <summary>
-        /// The type of surface to map the collect to.
-        /// </summary>
         #region public members
-        public enum SurfaceTypeEnum
-        {
-            Cylinder,
-            Plane,
-            Sphere,
-            Scatter,
-        }
-
-        public enum SortTypeEnum
-        {
-            None,                   // Don't sort, just display in order received
-            Transform,              // Sort by transform order
-            Alphabetical,           // Sort by transform name
-            TransformReversed,      // Sort by transform order reversed
-            AlphabeticalReversed,   // Sort by transform name reversed
-        }
-
-        public enum OrientTypeEnum
-        {
-            None,                   // Don't rotate at all
-            FaceOrigin,             // Rotate towards the origin
-            FaceOriginReversed,     // Rotate towards the origin + 180 degrees
-            FaceFoward,             // Zero rotation
-            FaceForwardReversed,    // Zero rotation + 180 degrees
-        }
-
-        public enum LayoutTypeEnum
-        {
-            ColumnThenRow,          // Sort by column, then by row
-            RowThenColumn,          // Sort by row, then by column
-        }
-    
-        /// <summary>
-        /// Collection node is a data storage class for individual data about an object in the collection.
-        /// </summary>
-        [System.Serializable]
-        public class CollectionNode
-        {
-            public string Name;
-            public Vector2 Offset;
-            public float Radius;
-            public Transform transform;
-        }
-
         /// <summary>
         /// Action called when collection is updated
         /// </summary>
@@ -115,7 +67,7 @@ namespace HoloToolkit.Unity.Collections
         /// Number of rows per column, column number is automatically determined
         /// </summary>
         [Tooltip("Number of rows per column")]
-	    public int Rows = 3;
+        public int Rows = 3;
 
         /// <summary>
         /// Width of the cell per object in the collection.
@@ -147,7 +99,7 @@ namespace HoloToolkit.Unity.Collections
         private int _columns;
         private float _width;
         private float _height;
-        private float _circ;
+        private float _circumference;
         private Vector2 _halfCell;
         #endregion
 
@@ -179,9 +131,9 @@ namespace HoloToolkit.Unity.Collections
             }
 
             // Now delete the empty nodes
-            foreach (CollectionNode node in emptyNodes)
+            for (int i = 0; i < emptyNodes.Count; i++)
             {
-                NodeList.Remove(node);
+                NodeList.Remove(emptyNodes[i]);
             }
 
             emptyNodes.Clear();
@@ -195,7 +147,6 @@ namespace HoloToolkit.Unity.Collections
                 {
                     CollectionNode node = new CollectionNode();
 
-                    // TODO MICROSOFT: Initial offset
                     node.Name = child.name;
                     node.transform = child;
                     NodeList.Add(node);
@@ -226,12 +177,11 @@ namespace HoloToolkit.Unity.Collections
                     break;
             }
 
-            _columns = Mathf.CeilToInt((float)NodeList.Count / (float)Rows);
+            _columns = Mathf.CeilToInt(NodeList.Count / Rows);
             _width = _columns * CellWidth;
             _height = Rows * CellHeight;
             _halfCell = new Vector2(CellWidth / 2f, CellHeight / 2f);
-
-            _circ = 2f * Mathf.PI * Radius;
+            _circumference = 2f * Mathf.PI * Radius;
 
             LayoutChildren();
 
@@ -245,17 +195,18 @@ namespace HoloToolkit.Unity.Collections
         /// Internal function for laying out all the children when UpdateCollection is called.
         /// </summary>
         private void LayoutChildren() {
-		
-		    int cellCounter = 0;
-		    float startOffsetX, startOffsetY;
+        
+            int cellCounter = 0;
+            float startOffsetX;
+            float startOffsetY;
 
             Vector3[] nodeGrid = new Vector3[NodeList.Count];
             Vector3 newPos = Vector3.zero;
             Vector3 newRot = Vector3.zero;
 
             // Now lets lay out the grid
-            startOffsetX = ((float)_columns / 2.0f) * CellWidth;
-            startOffsetY = ((float)Rows / 2.0f) * CellHeight;
+            startOffsetX = (_columns / 2.0f) * CellWidth;
+            startOffsetY = (Rows / 2.0f) * CellHeight;
 
             cellCounter = 0;
             
@@ -270,7 +221,7 @@ namespace HoloToolkit.Unity.Collections
                         {
                             if (cellCounter < NodeList.Count)
                             {
-                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + _halfCell.x, -(r * CellHeight) + startOffsetY - _halfCell.y, 0f) + (Vector3)((CollectionNode)(NodeList[cellCounter])).Offset;
+                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + _halfCell.x, -(r * CellHeight) + startOffsetY - _halfCell.y, 0f) + (Vector3)((NodeList[cellCounter])).Offset;
                             }
                             cellCounter++;
                         }
@@ -284,7 +235,7 @@ namespace HoloToolkit.Unity.Collections
                         {
                             if (cellCounter < NodeList.Count)
                             {
-                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + _halfCell.x, -(r * CellHeight) + startOffsetY - _halfCell.y, 0f) + (Vector3)((CollectionNode)(NodeList[cellCounter])).Offset;
+                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + _halfCell.x, -(r * CellHeight) + startOffsetY - _halfCell.y, 0f) + (Vector3)((NodeList[cellCounter])).Offset;
                             }
                             cellCounter++;
                         }
@@ -301,11 +252,6 @@ namespace HoloToolkit.Unity.Collections
                         NodeList[i].transform.localPosition = newPos;
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.None:
-                            default:
-                                // Don't apply any rotation
-                                break;
-
                             case OrientTypeEnum.FaceOrigin:
                             case OrientTypeEnum.FaceFoward:
                                 NodeList[i].transform.forward = transform.forward;
@@ -317,6 +263,12 @@ namespace HoloToolkit.Unity.Collections
                                 NodeList[i].transform.forward = transform.forward;
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
+
+                            case OrientTypeEnum.None:
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
                         }
                     }
                     break;
@@ -326,11 +278,6 @@ namespace HoloToolkit.Unity.Collections
                         newPos = CylindricalMapping(nodeGrid[i], Radius);
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.None:
-                            default:
-                                // Don't apply any rotation
-                                break;
-
                             case OrientTypeEnum.FaceOrigin:
                                 newRot = new Vector3(newPos.x, 0.0f, newPos.z);
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
@@ -350,6 +297,12 @@ namespace HoloToolkit.Unity.Collections
                                 NodeList[i].transform.forward = transform.forward;
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
+
+                            case OrientTypeEnum.None:
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
                         }
                         NodeList[i].transform.localPosition = newPos;
                     }
@@ -361,11 +314,6 @@ namespace HoloToolkit.Unity.Collections
                         newPos = SphericalMapping(nodeGrid[i], Radius);
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.None:
-                            default:
-                                // Don't apply any rotation
-                                break;
-
                             case OrientTypeEnum.FaceOrigin:
                                 newRot = newPos;
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
@@ -385,13 +333,18 @@ namespace HoloToolkit.Unity.Collections
                                 NodeList[i].transform.forward = transform.forward;
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
+
+                            case OrientTypeEnum.None:
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
                         }
                         NodeList[i].transform.localPosition = newPos;
                     }
                     break;
 
                 case SurfaceTypeEnum.Scatter:
-					// TODO fix this rough first commit! Magic numbers galore!
                     // Get randomized planar mapping
                     // Calculate radius of each node while we're here
                     // Then use the packer function to shift them into place
@@ -404,7 +357,8 @@ namespace HoloToolkit.Unity.Collections
                             // Make the radius the largest of the object's dimensions to avoid overlap
                             Bounds bounds = nodeCollider.bounds;
                             NodeList[i].Radius = Mathf.Max (Mathf.Max(bounds.size.x, bounds.size.y), bounds.size.z) / 2;
-                        } else
+                        }
+                        else
                         {
                             // Make the radius a default value
                             // TODO move this into a public field ?
@@ -413,23 +367,22 @@ namespace HoloToolkit.Unity.Collections
                         NodeList[i].transform.localPosition = newPos;
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.None:
-                            default:
-                                // Don't apply any rotation
-                                break;
-
                             case OrientTypeEnum.FaceOrigin:
                             case OrientTypeEnum.FaceFoward:
-                                newRot = Vector3.zero;
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 break;
 
                             case OrientTypeEnum.FaceOriginReversed:
                             case OrientTypeEnum.FaceForwardReversed:
-                                newRot = Vector3.zero;
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
+
+                            case OrientTypeEnum.None:
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
                         }
                     }
 
@@ -451,10 +404,11 @@ namespace HoloToolkit.Unity.Collections
         /// <returns></returns>
         private Vector3 SphericalMapping(Vector3 source, float radius)
         {
+            Radius = radius >= 0 ? Radius : radius;
             Vector3 newPos = new Vector3(0f, 0f, Radius);
 
-            float xAngle = (source.x / _circ) * 360f;
-            float yAngle = -(source.y / _circ) * 360f;
+            float xAngle = (source.x / _circumference) * 360f;
+            float yAngle = -(source.y / _circumference) * 360f;
 
             Quaternion rot = Quaternion.Euler(yAngle, xAngle, 0.0f);
             newPos = rot * newPos;
@@ -470,9 +424,10 @@ namespace HoloToolkit.Unity.Collections
         /// <returns></returns>
         private Vector3 CylindricalMapping(Vector3 source, float radius)
         {
+            Radius = radius >= 0 ? Radius : radius;
             Vector3 newPos = new Vector3(0f, source.y, Radius);
 
-            float xAngle = (source.x / _circ) * 360f;
+            float xAngle = (source.x / _circumference) * 360f;
 
             Quaternion rot = Quaternion.Euler(0.0f, xAngle, 0.0f);
             newPos = rot * newPos;
@@ -487,12 +442,15 @@ namespace HoloToolkit.Unity.Collections
         /// <returns></returns>
         private bool ContainsNode(Transform node)
         {
-            foreach (CollectionNode cn in NodeList)
+            for (int i = 0; i < NodeList.Count; i++)
             {
-        	    if (cn != null) {
-	                if (cn.transform == node)
-	                    return true;
-	            }
+                if (NodeList[i] != null)
+                {
+                    if (NodeList[i].transform == node)
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }
@@ -520,20 +478,20 @@ namespace HoloToolkit.Unity.Collections
         {
             // Sort by closest to center (don't worry about z axis)
             // Use the position of the collection as the packing center
-            // TODO make it possible to specify?
             nodes.Sort(delegate (CollectionNode circle1, CollectionNode circle2) {
                 float distance1 = (circle1.transform.localPosition).sqrMagnitude;
                 float distance2 = (circle2.transform.localPosition).sqrMagnitude;
                 return distance1.CompareTo(distance2);
             });
             
-            Vector3 difference = Vector3.zero;
-            Vector2 difference2D = Vector2.zero;
+            Vector3 difference;
+            Vector2 difference2D;
 
            // Move them closer together
            float radiusPaddingSquared = Mathf.Pow(radiusPadding, 2f);
-            for (int i = 0; i < nodes.Count - 1; i++)
-            {
+
+           for (int i = 0; i < nodes.Count - 1; i++)
+           {
                 for (int j = i + 1; j < nodes.Count; j++)
                 {
                     if (i != j)

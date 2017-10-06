@@ -26,28 +26,28 @@ namespace HoloToolkit.Unity.Collections
         /// Extends collection node class to include stored local position / rotation data
         /// </summary>
         [Serializable]
-        public class CollectionNodeDynamic : ObjectCollection.CollectionNode
+        public class CollectionNodeDynamic : CollectionNode
         {
-            public CollectionNodeDynamic(ObjectCollection.CollectionNode node)
+            public CollectionNodeDynamic(CollectionNode node)
             {
-                this.transform = node.transform;
-                this.Name = node.Name;
-                this.Offset = node.Offset;
-                this.Radius = node.Radius;
+                transform = node.transform;
+                Name = node.Name;
+                Offset = node.Offset;
+                Radius = node.Radius;
 
-                this.localPositionOnStartup = transform.localPosition;
-                this.localEulerAnglesOnStartup = transform.localEulerAngles;
+                localPositionOnStartup = transform.localPosition;
+                localEulerAnglesOnStartup = transform.localEulerAngles;
             }
 
             public CollectionNodeDynamic (Transform nodeTransform)
             {
-                this.transform = nodeTransform;
-                this.Name = nodeTransform.name;
-                this.Offset = Vector2.zero;
-                this.Radius = 0f;
+                transform = nodeTransform;
+                Name = nodeTransform.name;
+                Offset = Vector2.zero;
+                Radius = 0f;
 
-                this.localPositionOnStartup = transform.localPosition;
-                this.localEulerAnglesOnStartup = transform.localEulerAngles;
+                localPositionOnStartup = transform.localPosition;
+                localEulerAnglesOnStartup = transform.localEulerAngles;
             }
 
             public Vector3 localPositionOnStartup;
@@ -110,7 +110,7 @@ namespace HoloToolkit.Unity.Collections
             }
             else
             {
-                foreach (ObjectCollection.CollectionNode node in collection.NodeList)
+                foreach (CollectionNode node in collection.NodeList)
                 {
                     DynamicNodeList.Add(new CollectionNodeDynamic(node));
                 }
