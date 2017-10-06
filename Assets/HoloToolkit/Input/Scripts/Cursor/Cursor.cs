@@ -54,6 +54,16 @@ namespace HoloToolkit.Unity.InputModule
         public CursorStateEnum CursorState { get { return cursorState; } }
         private CursorStateEnum cursorState = CursorStateEnum.None;
 
+        [Tooltip("Set this in the editor to an object with a component that implements IPointerSource to tell this"
+            + " cursor which pointer to follow. To set the pointer programmatically, set Pointer directly.")]
+        [SerializeField]
+        protected GameObject loadPointer;
+
+        /// <summary>
+        /// The pointer that this cursor should follow and process input from.
+        /// </summary>
+        public IPointingSource Pointer { get; set; }
+
         /// <summary>
         /// Minimum distance for cursor if nothing is hit
         /// </summary>
@@ -135,8 +145,6 @@ namespace HoloToolkit.Unity.InputModule
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
 
-        private GazeManager gazeManager;
-
         /// <summary>
         /// Position, scale and rotational goals for cursor
         /// </summary>
@@ -167,8 +175,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            gazeManager = GazeManager.Instance;
             RegisterManagers();
+            TryLoadPointerIfNeeded();
         }
 
         private void Update()
@@ -182,9 +190,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void OnEnable()
         {
-            if (gazeManager)
+            if (FocusManager.IsInitialized && Pointer != null)
             {
-                OnFocusedObjectChanged(null, gazeManager.HitObject);
+                OnPointerSpecificFocusChanged(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
             }
             OnCursorStateChange(CursorStateEnum.None);
         }
@@ -213,9 +221,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void RegisterManagers()
         {
-            // Register to gaze events
-            gazeManager.FocusedObjectChanged += OnFocusedObjectChanged;
-
             // Register the cursor as a global listener, so that it can always get input events it cares about
             InputManager.Instance.AddGlobalListener(gameObject);
 
@@ -231,6 +236,8 @@ namespace HoloToolkit.Unity.InputModule
 
             InputManager.Instance.InputEnabled += OnInputEnabled;
             InputManager.Instance.InputDisabled += OnInputDisabled;
+
+            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -238,16 +245,51 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            if (gazeManager != null)
+            if (InputManager.IsInitialized)
             {
-                gazeManager.FocusedObjectChanged -= OnFocusedObjectChanged;
-            }
-
-            if (InputManager.Instance != null)
-            {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
                 InputManager.Instance.InputEnabled -= OnInputEnabled;
                 InputManager.Instance.InputDisabled -= OnInputDisabled;
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
+
+            if (FocusManager.IsInitialized)
+            {
+                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
+            }
+        }
+
+        private void TryLoadPointerIfNeeded()
+        {
+            if (Pointer != null)
+            {
+                // Nothing to do. Keep the pointer that must have been set programmatically.
+            }
+
+            else if (loadPointer != null)
+            {
+                Pointer = loadPointer.GetComponent<IPointingSource>();
+
+                if (Pointer == null)
+                {
+                    Debug.LogErrorFormat("Load pointer object \"{0}\" is missing its {1} component.",
+                        loadPointer.name,
+                        typeof(IPointingSource).Name
+                        );
+                }
+            }
+            else if (FocusManager.IsInitialized)
+            {
+                // For backward-compatibility, if a pointer wasn't specified, but there's exactly one
+                // pointer currently registered with FocusManager, we use it.
+                IPointingSource pointingSource;
+                if (FocusManager.Instance.TryGetSinglePointer(out pointingSource))
+                {
+                    Pointer = pointingSource;
+                }
+            }
+            else
+            {
+                // No options available, so we leave Pointer unset. It will need to be set programmatically later.
             }
         }
 
@@ -255,14 +297,20 @@ namespace HoloToolkit.Unity.InputModule
         /// Updates the currently targeted object and cursor modifier upon getting
         /// an event indicating that the focused object has changed.
         /// </summary>
-        /// <param name="previousObject">Object that was previously being focused.</param>
-        /// <param name="newObject">New object being focused.</param>
-        protected virtual void OnFocusedObjectChanged(GameObject previousObject, GameObject newObject)
+        /// <param name="pointer">The pointer associated with this focus change.</param>
+        /// <param name="oldFocusedObject">Object that was previously being focused.</param>
+        /// <param name="newFocusedObject">New object being focused.</param>
+        protected virtual void OnPointerSpecificFocusChanged(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
-            TargetedObject = newObject;
-            if (newObject != null)
+            if (pointer == Pointer)
             {
-                OnActiveModifier(newObject.GetComponent<CursorModifier>());
+                TargetedObject = newFocusedObject;
+
+                CursorModifier newModifier = (newFocusedObject == null)
+                    ? null
+                    : newFocusedObject.GetComponent<CursorModifier>();
+
+                OnActiveModifier(newModifier);
             }
         }
 
@@ -280,12 +328,11 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-            // Get the necessary info from the gaze source
-            RaycastHit hitResult = gazeManager.HitInfo;
-            GameObject newTargetedObject = gazeManager.HitObject;
+            FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(Pointer);
+            GameObject newTargetedObject = focusDetails.Object;
 
-            // Get the forward vector looking back at camera
-            Vector3 lookForward = -gazeManager.GazeNormal;
+            // Get the forward vector looking back along the pointing ray.
+            Vector3 lookForward = -Pointer.Ray.direction;
 
             // Normalize scale on before update
             targetScale = Vector3.one;
@@ -295,13 +342,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 this.TargetedObject = null;
                 this.TargetedCursorModifier = null;
-                targetPosition = gazeManager.GazeOrigin + gazeManager.GazeNormal * DefaultCursorDistance;
+                targetPosition = Pointer.Ray.origin + Pointer.Ray.direction * DefaultCursorDistance;
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else
             {
                 // Update currently targeted object
-                this.TargetedObject = newTargetedObject;
+                TargetedObject = newTargetedObject;
 
                 if (TargetedCursorModifier != null)
                 {
@@ -310,8 +357,8 @@ namespace HoloToolkit.Unity.InputModule
                 else
                 {
                     // If no modifier is on the target, just use the hit result to set cursor position
-                    targetPosition = hitResult.point + (lookForward * SurfaceCursorDistance);
-                    targetRotation = Quaternion.LookRotation(Vector3.Lerp(hitResult.normal, lookForward, LookRotationBlend), Vector3.up);
+                    targetPosition = focusDetails.Point + (lookForward * SurfaceCursorDistance);
+                    targetRotation = Quaternion.LookRotation(Vector3.Lerp(focusDetails.Normal, lookForward, LookRotationBlend), Vector3.up);
                 }
             }
 
@@ -362,7 +409,10 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnInputUp(InputEventData eventData)
         {
-            IsInputSourceDown = false;
+            if (Pointer.OwnsInput(eventData))
+            {
+                IsInputSourceDown = false;
+            }
         }
 
         /// <summary>
@@ -371,7 +421,10 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnInputDown(InputEventData eventData)
         {
-            IsInputSourceDown = true;
+            if (Pointer.OwnsInput(eventData))
+            {
+                IsInputSourceDown = true;
+            }
         }
 
         /// <summary>
@@ -390,8 +443,11 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            visibleHandsCount++;
-            IsHandVisible = true;
+            if (Pointer.OwnsInput(eventData))
+            {
+                visibleHandsCount++;
+                IsHandVisible = true;
+            }
         }
 
 
@@ -401,11 +457,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            visibleHandsCount--;
-            if (visibleHandsCount == 0)
+            if (Pointer.OwnsInput(eventData))
             {
-                IsHandVisible = false;
-                IsInputSourceDown = false;
+                visibleHandsCount--;
+                if (visibleHandsCount == 0)
+                {
+                    IsHandVisible = false;
+                    IsInputSourceDown = false;
+                }
             }
         }
 

@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     /// <remarks>This input source only triggers SourceUp and SourceDown for the hands. Everything else is handled by InteractionInputSource.</remarks>
     [RequireComponent(typeof(EditorInputControl))]
+    [Obsolete("Will be removed in a future release")]
     public class EditorHandsInputSource : BaseInputSource
     {
         /// <summary>
@@ -94,6 +95,11 @@ namespace HoloToolkit.Unity.InputModule
             return SupportedInputInfo.Position;
         }
 
+        public override bool TryGetMenu(uint sourceId, out bool isPressed)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool TryGetPosition(uint sourceId, out Vector3 position)
         {
             if (sourceId >= editorHandsData.Length)
@@ -111,6 +117,56 @@ namespace HoloToolkit.Unity.InputModule
             // Orientation is not supported by hands.
             orientation = Quaternion.identity;
             return false;
+        }
+
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetGrasp(uint sourceId, out bool isPressed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -316,7 +372,7 @@ namespace HoloToolkit.Unity.InputModule
                 // New down presses are straightforward - fire input down and be on your way.
                 if (editorHandData.IsFingerDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, editorHandData.HandId);
+                    InputManager.Instance.RaiseSourceDown(this, editorHandData.HandId, InteractionSourcePressInfo.Select);
                     editorHandData.CumulativeDelta = Vector3.zero;
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
@@ -337,10 +393,10 @@ namespace HoloToolkit.Unity.InputModule
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, editorHandData.HandId, 1);
+                        InputManager.Instance.RaiseInputClicked(this, editorHandData.HandId, InteractionSourcePressInfo.Select, 1);
                     }
 
-                    InputManager.Instance.RaiseSourceUp(this, editorHandData.HandId);
+                    InputManager.Instance.RaiseSourceUp(this, editorHandData.HandId, InteractionSourcePressInfo.Select);
                 }
             }
             // If the finger state hasn't changed, and the finger is down, that means if calculations need to be done
@@ -361,7 +417,7 @@ namespace HoloToolkit.Unity.InputModule
                             editorHandData.HoldInProgress = false;
                         }
 
-                        InputManager.Instance.RaiseManipulationStarted(this, editorHandData.HandId, editorHandData.CumulativeDelta);
+                        InputManager.Instance.RaiseManipulationStarted(this, editorHandData.HandId);
                         editorHandData.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.

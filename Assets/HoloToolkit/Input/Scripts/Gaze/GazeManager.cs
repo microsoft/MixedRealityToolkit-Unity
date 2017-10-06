@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,20 +11,44 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
-    public class GazeManager : Singleton<GazeManager>
+    public class GazeManager : Singleton<GazeManager>, IPointingSource
     {
+        [Obsolete]
         public delegate void FocusedChangedDelegate(GameObject previousObject, GameObject newObject);
 
         /// <summary>
         /// Indicates whether the user is currently gazing at an object.
         /// </summary>
+        [Obsolete]
         public bool IsGazingAtObject { get; private set; }
 
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.
         /// </summary>
+        [Obsolete]
         public RaycastHit HitInfo { get { return hitInfo; } }
         private RaycastHit hitInfo;
+
+        /// <summary>
+        /// Dispatched when focus shifts to a new object, or focus on current object
+        /// is lost.
+        /// </summary>
+        [Obsolete]
+        public event FocusedChangedDelegate FocusedObjectChanged;
+
+        /// <summary>
+        /// Unity UI pointer event.  This will be null if the EventSystem is not defined in the scene.
+        /// </summary>
+        [Obsolete]
+        public PointerEventData UnityUIPointerEvent { get; private set; }
+
+        /// <summary>
+        /// Cached results of raycast results.
+        /// </summary>
+        [Obsolete]
+        private List<RaycastResult> raycastResultList = new List<RaycastResult>();
+
+
 
         /// <summary>
         /// The game object that is currently being gazed at, if any.
@@ -37,18 +62,31 @@ namespace HoloToolkit.Unity.InputModule
         public Vector3 HitPosition { get; private set; }
 
         /// <summary>
+        /// Normal of the point at which the gaze manager hit an object.
+        /// If no object is currently being hit, this will return the previous normal.
+        /// </summary>
+        public Vector3 HitNormal { get; private set; }
+
+        /// <summary>
         /// Origin of the gaze.
         /// </summary>
-        public Vector3 GazeOrigin { get; private set; }
+        public Vector3 GazeOrigin
+        {
+            get { return Ray.origin; }
+        }
 
         /// <summary>
         /// Normal of the gaze.
         /// </summary>
-        public Vector3 GazeNormal { get; private set; }
+        public Vector3 GazeNormal
+        {
+            get { return Ray.direction; }
+        }
 
         /// <summary>
         /// Maximum distance at which the gaze can collide with an object.
         /// </summary>
+        [Tooltip("Maximum distance at which the gaze can collide with an object.")]
         public float MaxGazeCollisionDistance = 10.0f;
 
         /// <summary>
@@ -73,29 +111,28 @@ namespace HoloToolkit.Unity.InputModule
         public BaseRayStabilizer Stabilizer = null;
 
         /// <summary>
-        /// Transform that should be used as the source of the gaze position and orientation.
+        /// Transform that should be used as the source of the gaze position and rotation.
         /// Defaults to the main camera.
         /// </summary>
-        [Tooltip("Transform that should be used to represent the gaze position and orientation. Defaults to Camera.Main")]
+        [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to CameraCache.Main")]
         public Transform GazeTransform;
 
-        /// <summary>
-        /// Dispatched when focus shifts to a new object, or focus on current object
-        /// is lost.
-        /// </summary>
-        public event FocusedChangedDelegate FocusedObjectChanged;
+        [Tooltip("True to draw a debug view of the ray.")]
+        public bool DebugDrawRay;
+
+        public Ray Ray { get; private set; }
+
+        public float? ExtentOverride
+        {
+            get { return MaxGazeCollisionDistance; }
+        }
+
+        public IList<LayerMask> PrioritizedLayerMasksOverride
+        {
+            get { return RaycastLayerMasks; }
+        }
 
         private float lastHitDistance = 2.0f;
-
-        /// <summary>
-        /// Unity UI pointer event.  This will be null if the EventSystem is not defined in the scene.
-        /// </summary>
-        public PointerEventData UnityUIPointerEvent { get; private set; }
-
-        /// <summary>
-        /// Cached results of raycast results.
-        /// </summary>
-        private List<RaycastResult> raycastResultList = new List<RaycastResult>();
 
         protected override void Awake()
         {
@@ -139,6 +176,7 @@ namespace HoloToolkit.Unity.InputModule
         private bool FindGazeTransform()
         {
             if (GazeTransform != null) { return true; }
+            
             if (CameraCache.Main != null)
             {
                 GazeTransform = CameraCache.Main.transform;
@@ -154,24 +192,68 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void UpdateGazeInfo()
         {
-            Vector3 newGazeOrigin = GazeTransform.position;
-            Vector3 newGazeNormal = GazeTransform.forward;
-
-            // Update gaze info from stabilizer
-            if (Stabilizer != null)
+            if (GazeTransform == null)
             {
-                Stabilizer.UpdateStability(newGazeOrigin, GazeTransform.rotation);
-                newGazeOrigin = Stabilizer.StablePosition;
-                newGazeNormal = Stabilizer.StableRay.direction;
+                Ray = default(Ray);
+            }
+            else
+            {
+                Vector3 newGazeOrigin = GazeTransform.position;
+                Vector3 newGazeNormal = GazeTransform.forward;
+
+                // Update gaze info from stabilizer
+                if (Stabilizer != null)
+                {
+                    Stabilizer.UpdateStability(newGazeOrigin, GazeTransform.rotation);
+                    newGazeOrigin = Stabilizer.StablePosition;
+                    newGazeNormal = Stabilizer.StableRay.direction;
+                }
+
+                Ray = new Ray(newGazeOrigin, newGazeNormal);
             }
 
-            GazeOrigin = newGazeOrigin;
-            GazeNormal = newGazeNormal;
+            UpdateHitPosition();
+        }
+
+        public void UpdatePointer()
+        {
+            UpdateGazeInfo();
+        }
+
+        public bool OwnsInput(BaseEventData eventData)
+        {
+            // NOTE: This is a simple pointer and not meant to be used simultaneously with others.
+            return true;
+        }
+
+        /// <summary>
+        /// Notifies this gaze manager of its new hit details.
+        /// </summary>
+        /// <param name="focusDetails">Details of the current hit (focus).</param>
+        /// <param name="isRegisteredForFocus">Whether or not this gaze manager is registered as a focus pointer.</param>
+        public void UpdateHitDetails(FocusDetails focusDetails, bool isRegisteredForFocus)
+        {
+            HitObject = isRegisteredForFocus
+                ? focusDetails.Object
+                : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.
+
+            if (focusDetails.Object != null)
+            {
+                lastHitDistance = (focusDetails.Point - Ray.origin).magnitude;
+                UpdateHitPosition();
+                HitNormal = focusDetails.Normal;
+            }
+        }
+
+        private void UpdateHitPosition()
+        {
+            HitPosition = (Ray.origin + (lastHitDistance * Ray.direction));
         }
 
         /// <summary>
         /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
+        [Obsolete]
         private GameObject RaycastPhysics()
         {
             GameObject previousFocusObject = HitObject;
@@ -210,6 +292,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Perform a Unity UI Raycast, compare with the latest 3D raycast, and overwrite the hit object info if the UI gets focus
         /// </summary>
+        [Obsolete]
         private void RaycastUnityUI()
         {
             if (UnityUIPointerEvent == null)
@@ -291,6 +374,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="candidates">List of RaycastResults from a Unity UI raycast</param>
         /// <param name="layerMaskList">List of layers to support</param>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
+        [Obsolete]
         private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
         {
             int combinedLayerMask = 0;
@@ -321,6 +405,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="layer">Layer to search for</param>
         /// <param name="layerMaskList">List of LayerMasks to search</param>
         /// <returns>LayerMaskList index, or -1 for not found</returns>
+        [Obsolete]
         private int FindLayerListIndex(int layer, LayerMask[] layerMaskList)
         {
             for (int i = 0; i < layerMaskList.Length; i++)
@@ -334,11 +419,13 @@ namespace HoloToolkit.Unity.InputModule
             return -1;
         }
 
+        [Obsolete]
         private bool IsLayerInLayerMask(int layer, int layerMask)
         {
             return ((1 << layer) & layerMask) != 0;
         }
 
+        [Obsolete]
         private RaycastHit? PrioritizeHits(RaycastHit[] hits)
         {
             if (hits.Length == 0)

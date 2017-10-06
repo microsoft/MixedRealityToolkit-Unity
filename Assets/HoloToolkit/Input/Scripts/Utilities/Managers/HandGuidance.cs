@@ -27,12 +27,11 @@ namespace HoloToolkit.Unity.InputModule
         public float HandGuidanceThreshold = 0.5f;
 
 #if UNITY_WSA
-
-        private GameObject handGuidanceIndicatorGameObject = null;
+        private GameObject handGuidanceIndicatorGameObject;
 
         private Quaternion defaultHandGuidanceRotation;
 
-        private uint? currentlyTrackedHand = null;
+        private uint? currentlyTrackedHand;
 
         protected override void Awake()
         {
@@ -50,7 +49,7 @@ namespace HoloToolkit.Unity.InputModule
             if (HandGuidanceIndicator != null)
             {
                 // Cache the initial rotation of the HandGuidanceIndicator so future rotations 
-                // can be done with respect to this orientation.
+                // can be done with respect to this rotation.
                 defaultHandGuidanceRotation = HandGuidanceIndicator.transform.rotation;
             }
 

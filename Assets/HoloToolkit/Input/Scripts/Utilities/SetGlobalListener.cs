@@ -10,14 +10,28 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class SetGlobalListener : MonoBehaviour
     {
-        private void Start()
+        private void OnEnable()
         {
-            InputManager.Instance.AddGlobalListener(gameObject);
+            if (InputManager.IsInitialized)
+            {
+                InputManager.Instance.AddGlobalListener(gameObject);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (InputManager.IsInitialized)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
         }
 
         private void OnDestroy()
         {
-            InputManager.Instance.RemoveGlobalListener(gameObject);
+            if (InputManager.IsInitialized)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
         }
     }
 }
