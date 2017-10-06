@@ -34,6 +34,7 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 
 # How do I Make My Own?
 - Add a Grabber.cs script to an object that does the grabbing. (This is often a controller, but may sometimes be a cursor or pointer object.) Make sure to add a RigidBody and a collider to this same object. Set the trigger to true.
+- In the hierarchy, go into the [MRTK]MixedRealityCameraParent dropdown, and find a child called Controllers. This gameObject has a script attached called ControllerVisualizer.cs. Make sure your controller prefab is dragged into the public variable for Left Controller Override and Right Controller Override.   
 - Add a Grabbable_[X].cs script to the object that will be picked up. Make sure to also add a Rigidbody and Collider to this object. 
 - On the grabbable object, you can also add ScalableObject.cs, ThrowableObject.cs and UsableObject.cs (as needed). See chart for recommended combinations.
 
