@@ -72,7 +72,7 @@ namespace HoloToolkit.Unity.Buttons
             {
                 if(ButtonStates[i].Prefab != null)
                 {
-                    if(StaticExtensions.IsPrefab(ButtonStates[i].Prefab))
+                    if(ButtonStates[i].Prefab.scene.IsValid())
                     {
                         ButtonStates[i].Instance = Instantiate(ButtonStates[i].Prefab, this.transform.position, this.transform.rotation) as GameObject;
                         ButtonStates[i].Instance.transform.parent = this.transform;
