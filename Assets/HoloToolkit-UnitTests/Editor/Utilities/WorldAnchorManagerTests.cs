@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using NUnit.Framework;
-using HoloToolkit.Unity.Tests.Extensions;
 
 namespace HoloToolkit.Unity.Tests
 {
@@ -10,8 +9,6 @@ namespace HoloToolkit.Unity.Tests
         public void ClearScene()
         {
             TestUtils.ClearScene();
-            var managers = new GameObject("Managers");
-            managers.AddComponent<WorldAnchorManager>();
         }
 
         [Test]
@@ -19,7 +16,7 @@ namespace HoloToolkit.Unity.Tests
         {
             const string expected = "AnchorName";
             var gameObject = new GameObject(expected);
-            var result = WorldAnchorManager.Instance.GenerateAnchorName(gameObject);
+            var result = WorldAnchorManager.GenerateAnchorName(gameObject);
             Assert.That(result, Is.EqualTo(expected));
         }
 
@@ -28,7 +25,7 @@ namespace HoloToolkit.Unity.Tests
         {
             const string expected = "AnchorName";
             var gameObject = new GameObject();
-            var result = WorldAnchorManager.Instance.GenerateAnchorName(gameObject, expected);
+            var result = WorldAnchorManager.GenerateAnchorName(gameObject, expected);
             Assert.That(result, Is.EqualTo(expected));
         }
     }
