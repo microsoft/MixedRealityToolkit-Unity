@@ -18,39 +18,6 @@ namespace HoloToolkit.Unity.Buttons
     public class MeshButton : Button
     {
         /// <summary>
-        /// Mesh Button State Data Set
-        /// </summary>
-        [Serializable]
-        public class MeshButtonDatum
-        {
-            /// <summary>
-            /// Constructor for mesh button datum
-            /// </summary>
-            public MeshButtonDatum(ButtonStateEnum state) { this.ActiveState = state; this.Name = state.ToString(); }
-
-            /// <summary>
-            /// Name string for datum entry
-            /// </summary>
-            public string Name;
-            /// <summary>
-            /// Button state the datum is active in
-            /// </summary>
-            public ButtonStateEnum ActiveState = ButtonStateEnum.Observation;
-            /// <summary>
-            /// Button mesh color to use in active state
-            /// </summary>
-            public Color StateColor = Color.white;
-            /// <summary>
-            /// Offset to translate mesh to in active state.
-            /// </summary>
-            public Vector3 Offset;
-            /// <summary>
-            /// Scale for mesh button in active state
-            /// </summary>
-            public Vector3 Scale;
-        }
-
-        /// <summary>
         /// If true then use the 
         /// </summary>
         public bool UseAnimator = false;

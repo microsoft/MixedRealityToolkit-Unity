@@ -16,13 +16,6 @@ namespace HoloToolkit.Unity.Buttons
     [RequireComponent(typeof(CompoundButton))]
     public class CompoundButtonToggle : MonoBehaviour
     {
-        public enum ToggleBehaviorEnum
-        {
-            Manual,     // Toggle manually by changing the State property
-            OnTapped,   // Toggle automatically when button is tapped
-            OnFocus,    // Toggle automatically when button focus is entered;
-        }
-
         /// <summary>
         /// Toggle behavior
         /// </summary>
@@ -87,8 +80,8 @@ namespace HoloToolkit.Unity.Buttons
         /// Handle button pressed callback from button
         /// </summary>
         /// <param name="buttonObj"></param>
-        public void ButtonStateChange(Button.ButtonStateEnum newState) {
-            if(newState == Button.ButtonStateEnum.Pressed)
+        public void ButtonStateChange(ButtonStateEnum newState) {
+            if(newState == ButtonStateEnum.Pressed)
             {
                 switch (Behavior)
                 {
@@ -101,7 +94,7 @@ namespace HoloToolkit.Unity.Buttons
 
                 }
             }
-            else if(newState == Button.ButtonStateEnum.ObservationTargeted || newState == Button.ButtonStateEnum.Targeted)
+            else if(newState == ButtonStateEnum.ObservationTargeted || newState == ButtonStateEnum.Targeted)
             {
                 switch (Behavior)
                 {

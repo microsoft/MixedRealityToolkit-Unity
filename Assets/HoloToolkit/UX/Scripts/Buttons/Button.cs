@@ -16,34 +16,6 @@ namespace HoloToolkit.Unity.Buttons
     {
         #region Public Members
 
-        public enum ButtonStateEnum
-        {
-            /// <summary>
-            /// Looking at and Pressed
-            /// </summary>
-            Pressed,
-            /// <summary>
-            /// Looking at and finger up
-            /// </summary>
-            Targeted,
-            /// <summary>
-            /// Not looking at it and finger is up
-            /// </summary>
-            Interactive,
-            /// <summary>
-            /// Looking at button finger down
-            /// </summary> 
-            ObservationTargeted,
-            /// <summary>
-            /// Not looking at it and finger down
-            /// </summary>
-            Observation,
-            /// <summary>
-            /// Button in a disabled state
-            /// </summary>
-            Disabled,
-        }
-
         /// <summary>
         /// Current Button State
         /// </summary>

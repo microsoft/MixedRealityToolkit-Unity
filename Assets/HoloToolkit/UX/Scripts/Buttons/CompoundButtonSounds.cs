@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity.Buttons
         private AudioSource audioSource;
         private static string lastClipName; 
         private static float lastClipTime;
-        private Button.ButtonStateEnum lastState = Button.ButtonStateEnum.Disabled;
+        private ButtonStateEnum lastState = ButtonStateEnum.Disabled;
 
         private void Start ()
         {
@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity.Buttons
             audioSource = GetComponent<AudioSource>();
         }
 
-        private void StateChange(Button.ButtonStateEnum newState)
+        private void StateChange(ButtonStateEnum newState)
         {
             // Don't play the same state multiple times
             if (lastState == newState)
@@ -52,15 +52,15 @@ namespace HoloToolkit.Unity.Buttons
 
             switch (newState)
             {
-                case Button.ButtonStateEnum.Observation:
+                case ButtonStateEnum.Observation:
                     PlayClip(Profile.ButtonObservation, Profile.ButtonObservationVolume);
                     break;
 
-                case Button.ButtonStateEnum.ObservationTargeted:
+                case ButtonStateEnum.ObservationTargeted:
                     PlayClip(Profile.ButtonObservationTargeted, Profile.ButtonObservationTargetedVolume);
                     break;
 
-                case Button.ButtonStateEnum.Targeted:
+                case ButtonStateEnum.Targeted:
                     PlayClip(Profile.ButtonTargeted, Profile.ButtonTargetedVolume);
                     break;
 

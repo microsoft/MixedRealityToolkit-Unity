@@ -13,18 +13,6 @@ namespace HoloToolkit.Unity.Buttons
     [RequireComponent(typeof(CompoundButton))]
     public class CompoundButtonAnim : MonoBehaviour
     {
-        [Serializable]
-        public struct AnimatorControllerAction
-        {
-            public Button.ButtonStateEnum ButtonState;
-            public string ParamName;
-            public AnimatorControllerParameterType ParamType;
-            public bool BoolValue;
-            public int IntValue;
-            public float FloatValue;
-            public bool InvalidParam;
-        }
-
         /// <summary>
         /// List of animation actions
         /// </summary>
@@ -48,7 +36,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// State change
         /// </summary>
-        void StateChange(Button.ButtonStateEnum newState)
+        void StateChange(ButtonStateEnum newState)
         {
             if (TargetAnimator == null)
             {

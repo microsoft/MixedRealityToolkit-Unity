@@ -16,6 +16,69 @@ namespace HoloToolkit.Unity.Buttons
     /// </summary>
     public class ButtonIconProfileTexture : ButtonIconProfile
     {
+        /// <summary>
+        /// Navigation icons
+        /// </summary>
+        public Texture2D GlobalNavButton;
+        public Texture2D ChevronUp;
+        public Texture2D ChevronDown;
+        public Texture2D ChevronLeft;
+        public Texture2D ChevronRight;
+        public Texture2D Forward;
+        public Texture2D Back;
+        public Texture2D PageLeft;
+        public Texture2D PageRight;
+
+        /// <summary>
+        /// Common action icons
+        /// </summary>
+        public Texture2D Add;
+        public Texture2D Remove;
+        public Texture2D Clear;
+        public Texture2D Cancel;
+        public Texture2D Zoom;
+        public Texture2D Refresh;
+        public Texture2D Lock;
+        public Texture2D Accept;
+        public Texture2D OpenInNewWindow;
+
+        /// <summary>
+        /// Common notification icons
+        /// </summary>
+        public Texture2D Completed;
+        public Texture2D Error;
+
+        /// <summary>
+        /// Common object icons
+        /// </summary>
+        public Texture2D Contact;
+        public Texture2D Volume;
+        public Texture2D KeyboardClassic;
+        public Texture2D Camera;
+        public Texture2D Video;
+        public Texture2D Microphone;
+
+        /// <summary>
+        /// Common gesture icons
+        /// </summary>
+        public Texture2D Ready;
+        public Texture2D AirTap;
+        public Texture2D PressHold;
+        public Texture2D Drag;
+        public Texture2D TapToPlaceArt;
+        public Texture2D AdjustWithHand;
+        public Texture2D AdjustHologram;
+        public Texture2D RemoveHologram;
+
+        /// <summary>
+        /// Custom icons - these will override common icons by name
+        /// </summary>
+        public Texture2D[] CustomIcons;
+
+        private bool initialized;
+        private List<string> iconKeys;
+        private Dictionary<string, Texture2D> iconLookup;
+
         public override bool GetIcon(string iconName, MeshRenderer targetRenderer, MeshFilter targetMesh, bool useDefaultIfNotFound)
         {
             Initialize();
@@ -91,69 +154,6 @@ namespace HoloToolkit.Unity.Buttons
                 }
             }
         }
-
-        /// <summary>
-        /// Navigation icons
-        /// </summary>
-        public Texture2D GlobalNavButton;
-        public Texture2D ChevronUp;
-        public Texture2D ChevronDown;
-        public Texture2D ChevronLeft;
-        public Texture2D ChevronRight;
-        public Texture2D Forward;
-        public Texture2D Back;
-        public Texture2D PageLeft;
-        public Texture2D PageRight;
-
-        /// <summary>
-        /// Common action icons
-        /// </summary>
-        public Texture2D Add;
-        public Texture2D Remove;
-        public Texture2D Clear;
-        public Texture2D Cancel;
-        public Texture2D Zoom;
-        public Texture2D Refresh;
-        public Texture2D Lock;
-        public Texture2D Accept;
-        public Texture2D OpenInNewWindow;
-
-        /// <summary>
-        /// Common notification icons
-        /// </summary>
-        public Texture2D Completed;
-        public Texture2D Error;
-
-        /// <summary>
-        /// Common object icons
-        /// </summary>
-        public Texture2D Contact;
-        public Texture2D Volume;
-        public Texture2D KeyboardClassic;
-        public Texture2D Camera;
-        public Texture2D Video;
-        public Texture2D Microphone;
-
-        /// <summary>
-        /// Common gesture icons
-        /// </summary>
-        public Texture2D Ready;
-        public Texture2D AirTap;
-        public Texture2D PressHold;
-        public Texture2D Drag;
-        public Texture2D TapToPlaceArt;
-        public Texture2D AdjustWithHand;
-        public Texture2D AdjustHologram;
-        public Texture2D RemoveHologram;
-
-        /// <summary>
-        /// Custom icons - these will override common icons by name
-        /// </summary>
-        public Texture2D[] CustomIcons;
-
-        private bool initialized;
-        private List<string> iconKeys;
-        private Dictionary<string, Texture2D> iconLookup;
 
 #if UNITY_EDITOR
         public override string DrawIconSelectField(string iconName)

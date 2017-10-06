@@ -13,18 +13,6 @@ namespace HoloToolkit.Unity.Buttons
     [RequireComponent(typeof(Animator))]
     public class AnimControllerButton : Button
     {
-        [Serializable]
-        public struct AnimatorControllerAction
-        {
-            public ButtonStateEnum ButtonState;
-            public string ParamName;
-            public AnimatorControllerParameterType ParamType;
-            public bool BoolValue;
-            public int IntValue;
-            public float FloatValue;
-            public bool InvalidParam;
-        }
-
         /// <summary>
         /// List of animation actions
         /// </summary>

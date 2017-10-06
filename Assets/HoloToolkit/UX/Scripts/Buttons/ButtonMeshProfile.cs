@@ -39,8 +39,8 @@ namespace HoloToolkit.Unity.Buttons
         [Range(0.01f, 1f)]
         public float AnimationSpeed = 1f;
 
-        public CompoundButtonMesh.MeshButtonDatum[] ButtonStates = new CompoundButtonMesh.MeshButtonDatum[]{ new CompoundButtonMesh.MeshButtonDatum((Button.ButtonStateEnum)0), new CompoundButtonMesh.MeshButtonDatum((Button.ButtonStateEnum)1),
-            new CompoundButtonMesh.MeshButtonDatum((Button.ButtonStateEnum)2), new CompoundButtonMesh.MeshButtonDatum((Button.ButtonStateEnum)3),
-            new CompoundButtonMesh.MeshButtonDatum((Button.ButtonStateEnum)4), new CompoundButtonMesh.MeshButtonDatum((Button.ButtonStateEnum)5) };
+        public CompoundButtonMesh.MeshButtonDatum[] ButtonStates = new CompoundButtonMesh.MeshButtonDatum[]{ new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)0), new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)1),
+            new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)2), new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)3),
+            new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)4), new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)5) };
     }
 }

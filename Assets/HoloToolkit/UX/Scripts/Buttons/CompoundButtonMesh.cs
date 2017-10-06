@@ -39,7 +39,7 @@ namespace HoloToolkit.Unity.Buttons
             /// <summary>
             /// Constructor for mesh button datum
             /// </summary>
-            public MeshButtonDatum(Button.ButtonStateEnum state) { this.ActiveState = state; this.Name = state.ToString(); }
+            public MeshButtonDatum(ButtonStateEnum state) { this.ActiveState = state; this.Name = state.ToString(); }
 
             /// <summary>
             /// Name string for datum entry
@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.Buttons
             /// <summary>
             /// Button state the datum is active in
             /// </summary>
-            public Button.ButtonStateEnum ActiveState;
+            public ButtonStateEnum ActiveState;
             /// <summary>
             /// Button mesh color to use in active state
             /// </summary>
@@ -118,16 +118,16 @@ namespace HoloToolkit.Unity.Buttons
             // Disable this script if we're not using smooth changes
             enabled = Profile.SmoothStateChanges;
             // Set the current datum so our first state is activated
-            currentDatum = Profile.ButtonStates[(int)Button.ButtonStateEnum.Observation];
+            currentDatum = Profile.ButtonStates[(int)ButtonStateEnum.Observation];
             UpdateButtonProperties(false);
         }
 
         /// <summary>
         /// On state change swap out the active mesh based on the state
         /// </summary>
-        protected void StateChange(Button.ButtonStateEnum newState)
+        protected void StateChange(ButtonStateEnum newState)
         {
-            if (newState == Button.ButtonStateEnum.Pressed)
+            if (newState == ButtonStateEnum.Pressed)
             {
                 lastTimePressed = Time.time;
             }
@@ -163,7 +163,7 @@ namespace HoloToolkit.Unity.Buttons
 
         protected void OnDisable()
         {
-            StateChange(Button.ButtonStateEnum.Disabled);
+            StateChange(ButtonStateEnum.Disabled);
             UpdateButtonProperties(false);
         }
 
@@ -191,7 +191,7 @@ namespace HoloToolkit.Unity.Buttons
             // If we're using sticky events, and we're still not past the 'sticky' pressed time, use that datum
             if (Profile.StickyPressedEvents && Time.time < lastTimePressed + Profile.StickyPressedTime)
             {
-                datum = Profile.ButtonStates[(int)Button.ButtonStateEnum.Pressed];
+                datum = Profile.ButtonStates[(int)ButtonStateEnum.Pressed];
             }
 
             if (TargetTransform != null)

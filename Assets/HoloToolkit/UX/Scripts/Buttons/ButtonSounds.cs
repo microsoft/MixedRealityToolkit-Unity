@@ -41,19 +41,19 @@ namespace HoloToolkit.Unity.Buttons
             audioSource = GetComponent<AudioSource>();
         }
 
-        void StateChange(Button.ButtonStateEnum newState)
+        void StateChange(ButtonStateEnum newState)
         {
             switch (newState)
             {
-                case Button.ButtonStateEnum.Observation:
+                case ButtonStateEnum.Observation:
                     PlayClip(ButtonObservation);
                     break;
 
-                case Button.ButtonStateEnum.ObservationTargeted:
+                case ButtonStateEnum.ObservationTargeted:
                     PlayClip(ButtonObservationTargeted);
                     break;
 
-                case Button.ButtonStateEnum.Targeted:
+                case ButtonStateEnum.Targeted:
                     PlayClip(ButtonTargeted);
                     break;
 

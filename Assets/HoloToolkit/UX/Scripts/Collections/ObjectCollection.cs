@@ -205,8 +205,8 @@ namespace HoloToolkit.Unity.Collections
             Vector3 newRot = Vector3.zero;
 
             // Now lets lay out the grid
-            startOffsetX = (_columns / 2.0f) * CellWidth;
-            startOffsetY = (Rows / 2.0f) * CellHeight;
+            startOffsetX = (_columns * 0.5f) * CellWidth;
+            startOffsetY = (Rows * 0.5f) * CellHeight;
 
             cellCounter = 0;
             
