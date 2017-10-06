@@ -3,18 +3,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 using UnityEngine;
-using System;
-using System.Collections;
 
 namespace HoloToolkit.Unity.Buttons
 {
     /// <summary> 
-    /// Mesh button is a mesh renderer interactible with state data for button state
+    /// Mesh button is a mesh renderer interactable with state data for button state
     /// </summary>
     [RequireComponent(typeof(Animator))]
     public class AnimButton : Button
     {
-
         /// <summary>
         /// Mesh filter object for mesh button.
         /// </summary>
@@ -26,7 +23,9 @@ namespace HoloToolkit.Unity.Buttons
         public override void OnStateChange(ButtonStateEnum newState)
         {
             if (_animator == null)
+            {
                 _animator = this.GetComponent<Animator>();
+            }
 
             _animator.SetInteger("State", (int)newState);
 

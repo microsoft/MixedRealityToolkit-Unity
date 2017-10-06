@@ -9,17 +9,17 @@ using HoloToolkit.Unity.InputModule;
 namespace HoloToolkit.Unity.Receivers
 {
     /// <summary>
-    /// An interaction receiver is simply a component that attached to a list of interactible objects and does something
-    /// based on events from those interactible objects.  This is the base abstact class to extend from.
+    /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
+    /// based on events from those interactable objects.  This is the base abstact class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : MonoBehaviour
     {
         #region Public Members
         /// <summary>
-        /// List of linked interactible objects to receive events for
+        /// List of linked interactable objects to receive events for
         /// </summary>
-        [Tooltip("Target Interactible Object to receive events for")]
-        public List<GameObject> Interactibles = new List<GameObject>();
+        [Tooltip("Target interactable Object to receive events for")]
+        public List<GameObject> interactables = new List<GameObject>();
 
         /// <summary>
         /// List of linked targets that the receiver affects
@@ -57,7 +57,7 @@ namespace HoloToolkit.Unity.Receivers
         #endregion
 
         /// <summary>
-        /// On enable subscrible to all interaction events on elements in the interactibles list.
+        /// On enable subscrible to all interaction events on elements in the interactables list.
         /// </summary>
         public virtual void OnEnable()
         {
@@ -73,28 +73,28 @@ namespace HoloToolkit.Unity.Receivers
         }
 
         /// <summary>
-        /// Register an interactible with this receiver.
+        /// Register an interactable with this receiver.
         /// </summary>
-        /// <param name="interactible">takes a GameObject as the interactible to register.</param>
-        public virtual void RegisterInteractible(GameObject interactible)
+        /// <param name="interactable">takes a GameObject as the interactable to register.</param>
+        public virtual void Registerinteractable(GameObject interactable)
         {
-            if (interactible == null || Interactibles.Contains(interactible))
+            if (interactable == null || interactables.Contains(interactable))
             {
                 return;
             }
 
-            Interactibles.Add(interactible);
+            interactables.Add(interactable);
         }
 
 #if UNITY_EDITOR
         /// <summary>
-        /// When selected draw lines to all linked interactibles
+        /// When selected draw lines to all linked interactables
         /// </summary>
         protected virtual void OnDrawGizmosSelected()
         {
-            if (this.Interactibles.Count > 0)
+            if (this.interactables.Count > 0)
             {
-                GameObject[] bioList = this.Interactibles.ToArray();
+                GameObject[] bioList = this.interactables.ToArray();
 
                 for (int i = 0; i < bioList.Length; i++)
                 {
@@ -132,38 +132,38 @@ namespace HoloToolkit.Unity.Receivers
 #endif
 
         /// <summary>
-        /// Function to remove an interactible from the linked list.
+        /// Function to remove an interactable from the linked list.
         /// </summary>
-        /// <param name="interactible"></param>
-        public virtual void RemoveInteractible(GameObject interactible)
+        /// <param name="interactable"></param>
+        public virtual void Removeinteractable(GameObject interactable)
         {
-            if (interactible != null && Interactibles.Contains(interactible))
+            if (interactable != null && interactables.Contains(interactable))
             {
-                Interactibles.Remove(interactible);
+                interactables.Remove(interactable);
             }
         }
 
         /// <summary>
-        /// Clear the interactibles list and unregister them
+        /// Clear the interactables list and unregister them
         /// </summary>
-        public virtual void ClearInteractibles()
+        public virtual void Clearinteractables()
         {
-            GameObject[] _intList = Interactibles.ToArray();
+            GameObject[] _intList = interactables.ToArray();
 
             for (int i = 0; i < _intList.Length; i++)
             {
-                this.RemoveInteractible(_intList[i]);
+                this.Removeinteractable(_intList[i]);
             }
         }
 
         /// <summary>
-        /// Is the game object interactible in our list of interactibles
+        /// Is the game object interactable in our list of interactables
         /// </summary>
-        /// <param name="interactible"></param>
+        /// <param name="interactable"></param>
         /// <returns></returns>
-        protected bool IsInteractible(GameObject interactible)
+        protected bool Isinteractable(GameObject interactable)
         {
-            return (Interactibles != null && Interactibles.Contains(interactible));
+            return (interactables != null && interactables.Contains(interactable));
         }
 
         private void CheckLockFocus(IPointingSource focuser)
@@ -197,7 +197,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnFocusEnter(PointerSpecificEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 FocusEnter(eventData.selectedObject, eventData);
             }
@@ -205,7 +205,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 FocusExit(eventData.selectedObject, eventData);
             }
@@ -213,7 +213,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnInputDown(InputEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 InputDown(eventData.selectedObject, eventData);
             }
@@ -221,7 +221,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnInputUp(InputEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 InputUp(eventData.selectedObject, eventData);
             }
@@ -229,7 +229,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnHoldStarted(HoldEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 HoldStarted(eventData.selectedObject, eventData);
             }
@@ -237,7 +237,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnHoldCompleted(HoldEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 HoldCompleted(eventData.selectedObject, eventData);
             }
@@ -245,7 +245,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnHoldCanceled(HoldEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 HoldCanceled(eventData.selectedObject, eventData);
             }
@@ -253,7 +253,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnManipulationStarted(ManipulationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 ManipulationStarted(eventData.selectedObject, eventData);
             }
@@ -261,7 +261,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnManipulationUpdated(ManipulationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 ManipulationUpdated(eventData.selectedObject, eventData);
             }
@@ -269,7 +269,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnManipulationCompleted(ManipulationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 ManipulationCompleted(eventData.selectedObject, eventData);
             }
@@ -277,7 +277,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnManipulationCanceled(ManipulationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 ManipulationCanceled(eventData.selectedObject, eventData);
             }
@@ -285,7 +285,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnNavigationStarted(NavigationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 NavigationStarted(eventData.selectedObject, eventData);
             }
@@ -293,7 +293,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnNavigationUpdated(NavigationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 NavigationUpdated(eventData.selectedObject, eventData);
             }
@@ -301,7 +301,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnNavigationCompleted(NavigationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 NavigationCompleted(eventData.selectedObject, eventData);
             }
@@ -309,7 +309,7 @@ namespace HoloToolkit.Unity.Receivers
 
         public void OnNavigationCanceled(NavigationEventData eventData)
         {
-            if (IsInteractible(eventData.selectedObject))
+            if (Isinteractable(eventData.selectedObject))
             {
                 NavigationCanceled(eventData.selectedObject, eventData);
             }

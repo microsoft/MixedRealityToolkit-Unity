@@ -4,7 +4,6 @@
 //
 using UnityEngine;
 using System;
-using System.Collections;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -43,11 +42,12 @@ namespace HoloToolkit.Unity.Buttons
         public override void OnStateChange(ButtonStateEnum newState)
         {
             if (_animator == null)
+            {
                 _animator = this.GetComponent<Animator>();
+            }
 
             if (AnimActions == null)
             {
-                //TODO error?
                 base.OnStateChange(newState);
                 return;
             }
@@ -61,21 +61,17 @@ namespace HoloToolkit.Unity.Buttons
                         case AnimatorControllerParameterType.Bool:
                             _animator.SetBool(AnimActions[i].ParamName, AnimActions[i].BoolValue);
                             break;
-
                         case AnimatorControllerParameterType.Float:
                             _animator.SetFloat(AnimActions[i].ParamName, AnimActions[i].FloatValue);
                             break;
-
                         case AnimatorControllerParameterType.Int:
                             _animator.SetInteger(AnimActions[i].ParamName, AnimActions[i].IntValue);
                             break;
-
                         case AnimatorControllerParameterType.Trigger:
                             _animator.SetTrigger(AnimActions[i].ParamName);
                             break;
-
                         default:
-                            break;
+                            throw new ArgumentOutOfRangeException();
                     }
                     break;
                 }

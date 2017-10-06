@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.Buttons
         const float MinTimeBetweenSameClip = 0.1f;
 
         // Direct interaction clips
-        public AudioClip ButtonCancelled;
+        public AudioClip ButtonCanceled;
         public AudioClip ButtonHeld;
         public AudioClip ButtonPressed;
         public AudioClip ButtonReleased;
@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity.Buttons
         void Start ()
         {
             Button button = GetComponent<Button>();
-            button.OnButtonCancelled += OnButtonCancelled;
+            button.OnButtonCanceled += OnButtonCanceled;
             button.OnButtonHeld += OnButtonHeld;
             button.OnButtonPressed += OnButtonPressed;
             button.OnButtonReleased += OnButtonReleased;
@@ -62,9 +62,9 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        void OnButtonCancelled(GameObject go)
+        void OnButtonCanceled(GameObject go)
         {
-            PlayClip(ButtonCancelled);
+            PlayClip(ButtonCanceled);
         }
 
         void OnButtonHeld(GameObject go)

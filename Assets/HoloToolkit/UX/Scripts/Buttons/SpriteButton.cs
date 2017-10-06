@@ -9,7 +9,7 @@ using System.Collections;
 namespace HoloToolkit.Unity.Buttons
 {
     /// <summary>
-    /// Sprite button is a sprite renderer interactible with state data for button state
+    /// Sprite button is a sprite renderer interactable with state data for button state
     /// </summary>
     [RequireComponent(typeof(SpriteRenderer))]
     public class SpriteButton : Button

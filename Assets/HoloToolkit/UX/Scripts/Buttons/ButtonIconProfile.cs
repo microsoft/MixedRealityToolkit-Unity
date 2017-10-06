@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// The icon returned when a requested icon is not found
         /// </summary>
-        public Texture2D _IconNotFound_;
+        public Texture2D _IconNotFound;
 
         /// <summary>
         /// How quickly to animate changing icon alpha at runtime
@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.Buttons
 
         /// <summary>
         /// Property used to modify icon alpha
-        /// If this is null alpha will not be appiled
+        /// If this is null alpha will not be applied
         /// </summary>
         public string AlphaColorProperty = "_Color";
 

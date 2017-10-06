@@ -16,14 +16,14 @@ namespace HoloToolkit.Unity.Buttons
         
         [SerializeField]
         private AudioSource audioSource;
-        private static string lastClipName = string.Empty;
-        private static float lastClipTime = 0f;
+        private static string lastClipName; 
+        private static float lastClipTime;
         private Button.ButtonStateEnum lastState = Button.ButtonStateEnum.Disabled;
 
-        void Start ()
+        private void Start ()
         {
             Button button = GetComponent<Button>();
-            button.OnButtonCancelled += OnButtonCancelled;
+            button.OnButtonCanceled += OnButtonCanceled;
             button.OnButtonHeld += OnButtonHeld;
             button.OnButtonPressed += OnButtonPressed;
             button.OnButtonReleased += OnButtonReleased;
@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity.Buttons
             audioSource = GetComponent<AudioSource>();
         }
 
-        void StateChange(Button.ButtonStateEnum newState)
+        private void StateChange(Button.ButtonStateEnum newState)
         {
             // Don't play the same state multiple times
             if (lastState == newState)
@@ -69,33 +69,35 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        void OnButtonCancelled(GameObject go)
+        private void OnButtonCanceled(GameObject go)
         {
-            PlayClip(Profile.ButtonCancelled, Profile.ButtonCancelledVolume);
+            PlayClip(Profile.ButtonCanceled, Profile.ButtonCanceledVolume);
         }
 
-        void OnButtonHeld(GameObject go)
+        private void OnButtonHeld(GameObject go)
         {
             PlayClip(Profile.ButtonHeld, Profile.ButtonHeldVolume);
         }
 
-        void OnButtonPressed(GameObject go)
+        private void OnButtonPressed(GameObject go)
         {
             PlayClip(Profile.ButtonPressed, Profile.ButtonPressedVolume);
         }
 
-        void OnButtonReleased (GameObject go)
+        private void OnButtonReleased (GameObject go)
         {
             PlayClip(Profile.ButtonReleased, Profile.ButtonReleasedVolume);
         }
 
-        void PlayClip (AudioClip clip, float volume)
+        private void PlayClip (AudioClip clip, float volume)
         {
             if (clip != null)
             {
                 // Don't play the clip if we're spamming it
-                if (clip.name == lastClipName && Time.realtimeSinceStartup < MinTimeBetweenSameClip)
+                if (clip.name == lastClipName && (Time.realtimeSinceStartup - lastClipTime) < MinTimeBetweenSameClip)
+                {
                     return;
+                }
 
                 lastClipName = clip.name;
                 lastClipTime = Time.realtimeSinceStartup;

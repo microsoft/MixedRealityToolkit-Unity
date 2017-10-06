@@ -58,7 +58,7 @@ namespace HoloToolkit.Unity.Buttons
         public InteractionSourcePressInfo ButtonPressFilter = InteractionSourcePressInfo.Select;
 
         /// <summary>
-        /// If true the interactible will unselect when you look off of the object
+        /// If true the interactable will unselect when you look off of the object
         /// </summary>
         [Tooltip("If RequireGaze then looking away will unselect object")]
         public bool RequireGaze = true;
@@ -89,9 +89,9 @@ namespace HoloToolkit.Unity.Buttons
         public event Action<GameObject> OnButtonHeld;
 
         /// <summary>
-        /// Event fired when hold interaction cancelled.
+        /// Event fired when hold interaction canceled.
         /// </summary>
-        public event Action<GameObject> OnButtonCancelled;
+        public event Action<GameObject> OnButtonCanceled;
 
         #endregion
 
@@ -99,37 +99,37 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// Internal protected member for our default gizmo icon
         /// </summary>
-        protected string _gizmoIconDefault = "HUX/hux_button_icon.png";
+        protected const string _GizmoIconDefault = "HUX/hux_button_icon.png";
 
         /// <summary>
         /// Internal protected member for our gizmo selected icon
         /// </summary>
-        protected string _gizmoIconSelected = "HUX/hux_button_icon_selected.png";
+        protected const string _GizmoIconSelected = "HUX/hux_button_icon_selected.png";
 
         /// <summary>
         /// Protected string for the current active gizmo icon
         /// </summary>
-        protected string _gizmoIcon;
+        protected string _GizmoIcon;
 
         /// <summary>
         /// Last state of hands being visible
         /// </summary>
-        private bool m_bLastHandVisible = false;
+        private bool _bLastHandVisible = false;
 
         /// <summary>
         /// State of hands being visible
         /// </summary>
-        private bool m_bHandVisible = false;
+        private bool _bHandVisible = false;
 
         /// <summary>
         /// State of hands being visible
         /// </summary>
-        private bool m_bFocused = false;
+        private bool _bFocused = false;
 
         /// <summary>
         /// Count of visible hands
         /// </summary>
-        private int m_HandCount = 0;
+        private int _handCount = 0;
 
         /// <summary>
         /// Check for disabled state or disabled behavior
@@ -150,8 +150,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// Handle input down events from IInputSource.
         /// </summary>
-        /// <param name="args"></param>
-        /// 
+        /// <param name="eventData"></param>
         public void OnInputDown(InputEventData eventData)
         {
             if (enabled)
@@ -234,7 +233,7 @@ namespace HoloToolkit.Unity.Buttons
         {
             if (!m_disabled && ButtonState == ButtonStateEnum.Pressed)
             {
-                DoButtonCancelled();
+                DoButtonCanceled();
                 // Unset state from pressed.
 
                 ButtonStateEnum newState = ButtonStateEnum.Targeted;
@@ -249,10 +248,10 @@ namespace HoloToolkit.Unity.Buttons
         {
             if (!m_disabled)
             {
-                ButtonStateEnum newState = m_bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+                ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
                 this.OnStateChange(newState);
 
-                m_bFocused = true;
+                _bFocused = true;
             }
         }
 
@@ -265,22 +264,22 @@ namespace HoloToolkit.Unity.Buttons
             {
                 if (ButtonState == ButtonStateEnum.Pressed)
                 {
-                    DoButtonCancelled();
+                    DoButtonCanceled();
                 }
 
-                ButtonStateEnum newState = m_bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+                ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
 
                 if (RequireGaze || ButtonState != ButtonStateEnum.Pressed)
                 {
                     this.OnStateChange(newState);
                 }
 
-                m_bFocused = false;
+                _bFocused = false;
             }
         }
 
         /// <summary>
-        /// On Source detected see if it is a hand and increment hand count and set visiblity
+        /// On Source detected see if it is a hand and increment hand count and set visibility
         /// </summary>
         /// <param name="eventData"></param>
         public void OnSourceDetected(SourceStateEventData eventData)
@@ -290,8 +289,8 @@ namespace HoloToolkit.Unity.Buttons
             {
                 if (sourceInfo == InteractionSourceInfo.Hand)
                 {
-                    m_HandCount++;
-                    m_bHandVisible = true;
+                    _handCount++;
+                    _bHandVisible = true;
                 }
             }
         }
@@ -307,8 +306,8 @@ namespace HoloToolkit.Unity.Buttons
             {
                 if (sourceInfo == InteractionSourceInfo.Hand)
                 {
-                    m_HandCount--;
-                    m_bHandVisible = m_HandCount <= 0;
+                    _handCount--;
+                    _bHandVisible = _handCount <= 0;
                 }
             }
         }
@@ -329,7 +328,7 @@ namespace HoloToolkit.Unity.Buttons
 
             if (bRelease)
             {
-                StartCoroutine("DelayedRelease", 0.2f);
+                StartCoroutine(DelayedRelease(0.2f));
             }
         }
 
@@ -340,13 +339,13 @@ namespace HoloToolkit.Unity.Buttons
         {
             ButtonStateEnum newState;
 
-            if(m_bFocused)
+            if(_bFocused)
             {
-                newState = m_bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+                newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
             }
             else
             {
-                newState = m_bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+                newState = _bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
             }
 
             this.OnStateChange(newState);
@@ -382,11 +381,11 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// Called when something interrupts the button pressed state.
         /// </summary>
-        protected void DoButtonCancelled()
+        protected void DoButtonCanceled()
         {
-            if (OnButtonCancelled != null)
+            if (OnButtonCanceled != null)
             {
-                OnButtonCancelled(gameObject);
+                OnButtonCanceled(gameObject);
             }
         }
 
@@ -395,9 +394,9 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         public void LateUpdate()
         {
-            if (!m_disabled && m_bLastHandVisible != m_bHandVisible)
+            if (!m_disabled && _bLastHandVisible != _bHandVisible)
             {
-                OnHandVisibleChange(m_bHandVisible);
+                OnHandVisibleChange(_bHandVisible);
             }
         }
 
@@ -407,7 +406,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="visible"></param>
         public virtual void OnHandVisibleChange(bool visible)
         {
-            m_bLastHandVisible = visible;
+            _bLastHandVisible = visible;
 
             ButtonStateEnum newState = ButtonState;
 
@@ -418,25 +417,21 @@ namespace HoloToolkit.Unity.Buttons
                     newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
                     break;
                 }
-
                 case ButtonStateEnum.Targeted:
                 {
                     newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
                     break;
                 }
-
                 case ButtonStateEnum.Observation:
                 {
                     newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
                     break;
                 }
-
                 case ButtonStateEnum.ObservationTargeted:
                 {
                     newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
                     break;
                 }
-
             }
 
             OnStateChange(newState);
@@ -464,11 +459,12 @@ namespace HoloToolkit.Unity.Buttons
             ButtonState = newState;
 
             // Send out the action/event for the statechange
-            if (this.StateChange != null)
-                this.StateChange(newState);
+            if (StateChange != null)
+            {
+                StateChange(newState);
+            }
         }
 
-#if UNITY_EDITOR
         /// <summary>
         /// On draw gizmo shows the icon for the object in the editor 
         /// </summary>
@@ -478,11 +474,10 @@ namespace HoloToolkit.Unity.Buttons
             Collider collider = this.GetComponent<Collider>();
             if (collider != null)
             {
-                _gizmoIcon = UnityEditor.Selection.activeGameObject == this.gameObject ? _gizmoIconSelected : _gizmoIconDefault;
-                Gizmos.DrawIcon(this.transform.position, _gizmoIcon, false);
-                Gizmos.DrawIcon(collider.bounds.center + (collider.bounds.size.y * Vector3.up), _gizmoIcon, false);
+                _GizmoIcon = UnityEditor.Selection.activeGameObject == this.gameObject ? _GizmoIconSelected : _GizmoIconDefault;
+                Gizmos.DrawIcon(this.transform.position, _GizmoIcon, false);
+                Gizmos.DrawIcon(collider.bounds.center + (collider.bounds.size.y * Vector3.up), _GizmoIcon, false);
             }
         }
-#endif
     }
 }

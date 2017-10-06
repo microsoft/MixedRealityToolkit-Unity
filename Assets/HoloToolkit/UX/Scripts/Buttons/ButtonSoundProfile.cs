@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.Buttons
     public class ButtonSoundProfile : ButtonProfile
     {
         // Direct interaction clips
-        public AudioClip ButtonCancelled;
+        public AudioClip ButtonCanceled;
         public AudioClip ButtonHeld;
         public AudioClip ButtonPressed;
         public AudioClip ButtonReleased;
@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.Buttons
         public AudioClip ButtonTargeted;
 
         // Volumes
-        public float ButtonCancelledVolume = 1f;
+        public float ButtonCanceledVolume = 1f;
         public float ButtonHeldVolume = 1f;
         public float ButtonPressedVolume = 1f;
         public float ButtonReleasedVolume = 1f;

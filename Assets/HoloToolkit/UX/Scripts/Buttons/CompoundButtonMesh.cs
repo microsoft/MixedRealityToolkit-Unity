@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.Buttons
 {
     /// <summary>
-    /// Mesh button is a mesh renderer interactible with state data for button state
+    /// Mesh button is a mesh renderer interactable with state data for button state
     /// </summary>
     [RequireComponent(typeof(CompoundButton))]
     public class CompoundButtonMesh : ProfileButtonBase<ButtonMeshProfile>

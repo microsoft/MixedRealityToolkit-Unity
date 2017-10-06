@@ -2,13 +2,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-#if UNITY_WINRT && !UNITY_EDITOR
-#define USE_WINRT
-#endif
-
-using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if ENABLE_WINMD_SUPPORT && !UNITY_EDITOR
+using System.Reflection;
+#endif
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -24,7 +23,7 @@ namespace HoloToolkit.Unity.Buttons
             Texture2D icon = null;
             if (useDefaultIfNotFound)
             {
-                icon = _IconNotFound_;
+                icon = _IconNotFound;
             }
             if (!string.IsNullOrEmpty(iconName))
             {
@@ -34,7 +33,7 @@ namespace HoloToolkit.Unity.Buttons
                     // Substitute the default icon
                     if (useDefaultIfNotFound)
                     {
-                        icon = _IconNotFound_;
+                        icon = _IconNotFound;
                     }
                 }
             }
@@ -45,7 +44,9 @@ namespace HoloToolkit.Unity.Buttons
             return icon != null;
         }
 
+        /// <summary>
         /// (Icons starting with '_' will not be included in icon list)
+        /// </summary>
         public override List<string> GetIconKeys()
         {
             Initialize();
@@ -61,8 +62,8 @@ namespace HoloToolkit.Unity.Buttons
             iconLookup = new Dictionary<string, Texture2D>();
             iconKeys = new List<string>();
 
-// Store all icons in iconLookup via reflection
-#if USE_WINRT
+            // Store all icons in iconLookup via reflection
+#if ENABLE_WINMD_SUPPORT && !UNITY_EDITOR
 		    var fields = GetType().GetTypeInfo().DeclaredFields;
 #else
             var fields = this.GetType().GetFields();

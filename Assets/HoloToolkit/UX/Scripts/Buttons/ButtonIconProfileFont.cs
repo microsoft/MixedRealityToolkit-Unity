@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.Buttons
         const int FontSize = 75;
 
         /// <summary>
-        /// Default is set to the default range of usable characters for the hololens font
+        /// Default is set to the default range of usable characters for the HoloLens font
         /// </summary>
         public static string[] UnicodeKeys = new string[] {
             "E700","E70D","E70E","E710","E711","E71E","E720",
@@ -60,51 +60,6 @@ namespace HoloToolkit.Unity.Buttons
             get
             {
                 return iconFont;
-
-                // If our OS font name is null, nuke the generated font
-                /*if (string.IsNullOrEmpty(OSFontName))
-                {
-                    if (iconFont != null)
-                    {
-                        // Destroy to prevent leaks
-                        if (Application.isPlaying)
-                            GameObject.Destroy(iconFont);
-                        else
-                            GameObject.DestroyImmediate(iconFont);
-
-                        iconFont = null;
-                    }
-                }
-                else
-                {
-                    // Check to see if our font has been outdated
-                    if (iconFont != null)
-                    {
-                        // If it's been outdated, destroy the font
-                        if (iconFont.name != OSFontName || iconFont.fontSize != FontSize)
-                        {
-                            // Destroy to prevent leaks
-                            if (Application.isPlaying)
-                                GameObject.Destroy(iconFont);
-                            else
-                                GameObject.DestroyImmediate(iconFont);
-
-                            iconFont = null;
-                        }
-                    }
-
-                    if (iconFont == null)
-                    {
-                        Initialize();
-                        // If it's null at this point, generate it now
-                        iconFont = Font.CreateDynamicFontFromOSFont(OSFontName, FontSize);
-                        iconFont.name = OSFontName;
-                        // Pre-load the values set in the profile
-                        iconFont.RequestCharactersInTexture(charactersInFont);
-                    }
-                }
-
-                return iconFont;*/
             }
             set
             {
@@ -136,7 +91,7 @@ namespace HoloToolkit.Unity.Buttons
             Texture2D icon = null;
             if (useDefaultIfNotFound)
             {
-                icon = _IconNotFound_;
+                icon = _IconNotFound;
             }
 
             bool useDefaultMesh = true;
@@ -149,13 +104,11 @@ namespace HoloToolkit.Unity.Buttons
                     {
                         if (useDefaultIfNotFound)
                         {
-                            icon = _IconNotFound_;
+                            icon = _IconNotFound;
                         }
                         return icon != null;
                     }
                     string textValue = GetCharStringFromHex(iconName);
-                    // If we've gotten this far, there's no need to use a default mesh
-                    useDefaultMesh = true;
 
                     if (!string.IsNullOrEmpty(textValue))
                     {
@@ -204,18 +157,22 @@ namespace HoloToolkit.Unity.Buttons
         private void Initialize()
         {
             if (initialized)
+            {
                 return;
+            }
 
-            // Get our requested characters
-            List<string> iconKeysList = new List<string>();
             StringBuilder charsInFontString = new StringBuilder();
-            foreach (string hexString in UnicodeKeys) {
+            foreach (string hexString in UnicodeKeys)
+            {
                 charsInFontString.Append(GetCharStringFromHex(hexString));
-            }            
+            }
+            
             charactersInFont = charsInFontString.ToString();
 
             if (iconFont == null)
+            {
                 return;
+            }
 
             // Make sure we have all the characters we need
             iconFont.RequestCharactersInTexture(charactersInFont, FontSize, FontStyle.Normal);
@@ -223,11 +180,11 @@ namespace HoloToolkit.Unity.Buttons
             initialized = true;
         }
 
-        private void CreateMeshFromGenerator(TextGenerator gen, ref Mesh targetmesh)
+        private void CreateMeshFromGenerator(TextGenerator gen, ref Mesh targetMesh)
         {
-            if (targetmesh == null)
+            if (targetMesh == null)
             {
-                targetmesh = new Mesh();
+                targetMesh = new Mesh();
             }
 
             int vertSize = gen.vertexCount;
@@ -246,11 +203,13 @@ namespace HoloToolkit.Unity.Buttons
             // Possibly an empty character
             // Don't assign anything
             if (tempVerts.Length == 0)
+            {
                 return;
+            }
 
-            targetmesh.vertices = tempVerts;
-            targetmesh.colors32 = tempColours;
-            targetmesh.uv = tempUvs;
+            targetMesh.vertices = tempVerts;
+            targetMesh.colors32 = tempColours;
+            targetMesh.uv = tempUvs;
 
             int characterCount = vertSize / 4;
             int[] tempIndices = new int[characterCount * 6];
@@ -265,20 +224,20 @@ namespace HoloToolkit.Unity.Buttons
                 tempIndices[trianglesIndexStart++] = vertIndexStart + 2;
                 tempIndices[trianglesIndexStart] = vertIndexStart + 3;
             }
-            targetmesh.triangles = tempIndices;
-            targetmesh.RecalculateBounds();
+            targetMesh.triangles = tempIndices;
+            targetMesh.RecalculateBounds();
         }
 
         private static int GetIntValueFromHex(string hexString)
         {
-            int code = 0;
+            int code;
             int.TryParse(hexString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code);
             return code;
         }
 
         private static string GetCharStringFromHex(string hexString)
         {
-            int code = 0;
+            int code;
             if (int.TryParse(hexString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code))
             {
                 return char.ConvertFromUtf32(code);

@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// <summary>
         /// Called when 'back' or 'hide' is selected
         /// </summary>
-        private Action cancelledCallback;
+        private Action canceledCallback;
 
         /// <summary>
         /// Called when the user clicks outside of the menu
@@ -60,10 +60,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void Show(Action _activatedCallback = null, Action _cancelledCallback = null, Action _deactivatedCallback = null)
+        public void Show(Action _activatedCallback = null, Action _canceledCallback = null, Action _deactivatedCallback = null)
         {
             activatedCallback = _activatedCallback;
-            cancelledCallback = _cancelledCallback;
+            canceledCallback = _canceledCallback;
             deactivatedCallback = _deactivatedCallback;
 
             gameObject.SetActive(true);
@@ -109,7 +109,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             CurrentPopupState = PopupState.Closed;
 
             activatedCallback = null;
-            cancelledCallback = null;
+            canceledCallback = null;
             deactivatedCallback = null;
 
             if (cancelButton)
@@ -130,9 +130,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void OnCancelPressed(TestButton source)
         {
-            if (cancelledCallback != null)
+            if (canceledCallback != null)
             {
-                cancelledCallback();
+                canceledCallback();
             }
 
             Dismiss();
