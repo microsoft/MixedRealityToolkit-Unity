@@ -3,8 +3,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 using UnityEngine;
-using System.Collections;
-using System;
 using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.Receivers

@@ -37,6 +37,23 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
+        [SerializeField]
+        private Texture2D iconOverride;
+
+        [SerializeField]
+        private string iconName;
+
+        [SerializeField]
+        private float alpha = 1f;
+
+        [SerializeField]
+        private MeshRenderer targetIconRenderer;
+
+        private Material instantiatedMaterial;
+        private Mesh instantiatedMesh;
+        private bool updatingAlpha = false;
+        private float alphaTarget = 1f;
+
         /// <summary>
         /// Property to use in IconMaterial for alpha control
         /// Useful for animating icon transparency
@@ -88,7 +105,8 @@ namespace HoloToolkit.Unity.Buttons
             get
             {
                 return targetIconRenderer;
-            } set
+            }
+            set
             {
                 targetIconRenderer = value;
             }
@@ -98,11 +116,7 @@ namespace HoloToolkit.Unity.Buttons
         {
             get
             {
-                if (IconRenderer != null)
-                {
-                    return IconRenderer.GetComponent<MeshFilter>();
-                }
-                return null;
+                return IconRenderer != null ? IconRenderer.GetComponent<MeshFilter>() : null;
             }
         }
         
@@ -136,10 +150,14 @@ namespace HoloToolkit.Unity.Buttons
         {
             // Avoid exploding if possible
             if (Profile == null)
+            {
                 return;
+            }
 
             if (IconRenderer == null)
+            {
                 return;
+            }
 
             if (DisableIcon)
             {
@@ -148,7 +166,9 @@ namespace HoloToolkit.Unity.Buttons
             }
 
             if (Profile.IconMaterial == null || Profile.IconMesh == null)
+            {
                 return;
+            }
 
             // Instantiate our local material now, if we don't have one
             if (instantiatedMaterial == null)
@@ -161,7 +181,7 @@ namespace HoloToolkit.Unity.Buttons
             // Instantiate our local mesh now, if we don't have one
             if (instantiatedMesh == null)
             {
-                instantiatedMesh = Mesh.Instantiate (Profile.IconMesh) as Mesh;
+                instantiatedMesh = Instantiate(Profile.IconMesh);
                 instantiatedMesh.name = Profile.IconMesh.name;
             }
             IconMeshFilter.sharedMesh = instantiatedMesh;
@@ -234,18 +254,26 @@ namespace HoloToolkit.Unity.Buttons
             if (instantiatedMaterial != null)
             {
                 if (Application.isPlaying)
-                    GameObject.Destroy(instantiatedMaterial);
+                {
+                    Destroy(instantiatedMaterial);
+                }
                 else
-                    GameObject.DestroyImmediate(instantiatedMaterial);
+                {
+                    DestroyImmediate(instantiatedMaterial);
+                }
 
                 instantiatedMaterial = null;
             }
             if (instantiatedMesh != null)
             {
                 if (Application.isPlaying)
-                    GameObject.Destroy(instantiatedMesh);
+                {
+                    Destroy(instantiatedMesh);
+                }
                 else
-                    GameObject.DestroyImmediate(instantiatedMesh);
+                {
+                    DestroyImmediate(instantiatedMesh);
+                }
 
                 instantiatedMesh = null;
             }
@@ -272,11 +300,13 @@ namespace HoloToolkit.Unity.Buttons
             float startTime = Time.time;
             Color color = Color.white;
             string alphaColorProperty = string.IsNullOrEmpty(Profile.AlphaColorProperty) ? "_Color" : Profile.AlphaColorProperty;
+
             if (instantiatedMaterial != null)
             {
                 color = instantiatedMaterial.GetColor(alphaColorProperty);
                 color.a = alpha;
             }
+
             while (Time.time < startTime + Profile.AlphaTransitionSpeed)
             {
                 alpha = Mathf.Lerp(alpha, alphaTarget, (Time.time - startTime) / Profile.AlphaTransitionSpeed);
@@ -290,24 +320,6 @@ namespace HoloToolkit.Unity.Buttons
             alpha = alphaTarget;
             RefreshAlpha();
             updatingAlpha = false;
-            yield break;
         }
-
-        [SerializeField]
-        private Texture2D iconOverride;
-
-        [SerializeField]
-        private string iconName;
-
-        [SerializeField]
-        private float alpha = 1f;
-
-        [SerializeField]
-        private MeshRenderer targetIconRenderer;
-
-        private Material instantiatedMaterial;
-        private Mesh instantiatedMesh;
-        private bool updatingAlpha = false;
-        private float alphaTarget = 1f;
     }
 }

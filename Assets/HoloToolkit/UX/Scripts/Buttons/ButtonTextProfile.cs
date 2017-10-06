@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.Buttons
@@ -16,6 +17,19 @@ namespace HoloToolkit.Unity.Buttons
         public Color Color = Color.white;
         public Font Font;
 
+        // Used to reposition the text mesh object in addition to setting its anchor
+        // This is useful when button text position will change dramatically based on the presence of other elements
+        // eg, bottom anchor will move the text out of the way of an icon
+        public Vector3 AnchorLowerCenterOffset = Vector3.zero;
+        public Vector3 AnchorLowerLeftOffset = Vector3.zero;
+        public Vector3 AnchorLowerRightOffset = Vector3.zero;
+        public Vector3 AnchorMiddleCenterOffset = Vector3.zero;
+        public Vector3 AnchorMiddleLeftOffset = Vector3.zero;
+        public Vector3 AnchorMiddleRightOffset = Vector3.zero;
+        public Vector3 AnchorUpperCenterOffset = Vector3.zero;
+        public Vector3 AnchorUpperLeftOffset = Vector3.zero;
+        public Vector3 AnchorUpperRightOffset = Vector3.zero;
+
         /// <summary>
         /// Convenience function for getting the offset from an anchor setting
         /// </summary>
@@ -23,7 +37,8 @@ namespace HoloToolkit.Unity.Buttons
         /// <returns></returns>
         public Vector3 GetOffset (TextAnchor anchor)
         {
-            Vector3 offset = Vector3.zero;
+            Vector3 offset;
+
             switch (anchor)
             {
                 case TextAnchor.LowerCenter:
@@ -39,7 +54,6 @@ namespace HoloToolkit.Unity.Buttons
                     break;
 
                 case TextAnchor.MiddleCenter:
-                default:
                     offset = AnchorMiddleCenterOffset;
                     break;
 
@@ -62,21 +76,12 @@ namespace HoloToolkit.Unity.Buttons
                 case TextAnchor.UpperRight:
                     offset = AnchorUpperRightOffset;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException("anchor", anchor, null);
             }
+
             return offset;
         }
-
-        // Used to reposition the text mesh object in addition to setting its anchor
-        // This is useful when button text position will change dramatically based on the presence of other elements
-        // eg, bottom anchor will move the text out of the way of an icon
-        public Vector3 AnchorLowerCenterOffset = Vector3.zero;
-        public Vector3 AnchorLowerLeftOffset = Vector3.zero;
-        public Vector3 AnchorLowerRightOffset = Vector3.zero;
-        public Vector3 AnchorMiddleCenterOffset = Vector3.zero;
-        public Vector3 AnchorMiddleLeftOffset = Vector3.zero;
-        public Vector3 AnchorMiddleRightOffset = Vector3.zero;
-        public Vector3 AnchorUpperCenterOffset = Vector3.zero;
-        public Vector3 AnchorUpperLeftOffset = Vector3.zero;
-        public Vector3 AnchorUpperRightOffset = Vector3.zero;
     }
 }

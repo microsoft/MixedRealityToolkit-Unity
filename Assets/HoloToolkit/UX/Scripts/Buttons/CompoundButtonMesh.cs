@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.Buttons
             /// <summary>
             /// Button state the datum is active in
             /// </summary>
-            public Button.ButtonStateEnum ActiveState = Button.ButtonStateEnum.Observation;
+            public Button.ButtonStateEnum ActiveState;
             /// <summary>
             /// Button mesh color to use in active state
             /// </summary>
@@ -79,7 +79,10 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         private Material sharedMaterial;
 
-        #if UNITY_EDITOR
+
+        private float lastTimePressed = 0f;
+
+#if UNITY_EDITOR
         /// <summary>
         /// Called by CompoundButtonSaveInterceptor
         /// Prevents saving a scene with instanced materials
@@ -96,8 +99,8 @@ namespace HoloToolkit.Unity.Buttons
 
         protected void Start ()
         {
-            Button b = GetComponent<Button>();
-            if (b == null)
+            Button button = GetComponent<Button>();
+            if (button == null)
             {
                 Debug.LogError("No button attached to CompoundButtonMesh in " + name);
                 enabled = false;
@@ -111,7 +114,7 @@ namespace HoloToolkit.Unity.Buttons
                 return;
             }
 
-            b.StateChange += StateChange;
+            button.StateChange += StateChange;
             // Disable this script if we're not using smooth changes
             enabled = Profile.SmoothStateChanges;
             // Set the current datum so our first state is activated
@@ -165,9 +168,9 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         protected void OnEnable() {
-            Button b = GetComponent<Button>();
-            if (b != null) {
-                StateChange(b.ButtonState);
+            Button button = GetComponent<Button>();
+            if (button != null) {
+                StateChange(button.ButtonState);
             }
         }
 
@@ -179,7 +182,9 @@ namespace HoloToolkit.Unity.Buttons
         protected void UpdateButtonProperties(bool smooth)
         {
             if (currentDatum == null)
+            {
                 return;
+            }
 
             MeshButtonDatum datum = currentDatum;
 
@@ -247,9 +252,6 @@ namespace HoloToolkit.Unity.Buttons
                     }
                 }
             }
-
         }
-
-        private float lastTimePressed = 0f;
     }
 }

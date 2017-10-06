@@ -4,7 +4,6 @@
 //
 using UnityEngine;
 using System;
-using System.Collections;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -37,7 +36,7 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         public Animator TargetAnimator;
 
-        void Awake ()
+        private void Awake ()
         {
             GetComponent<Button>().StateChange += StateChange;
             if (TargetAnimator == null)
@@ -58,7 +57,6 @@ namespace HoloToolkit.Unity.Buttons
 
             if (AnimActions == null)
             {
-                //TODO error?
                 return;
             }
             
@@ -85,7 +83,7 @@ namespace HoloToolkit.Unity.Buttons
                             break;
 
                         default:
-                            break;
+                            throw new ArgumentOutOfRangeException();
                     }
                     break;
                 }

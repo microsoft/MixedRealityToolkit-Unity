@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.Receivers
 {
     /// <summary>
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
-    /// based on events from those interactable objects.  This is the base abstact class to extend from.
+    /// based on events from those interactable objects.  This is the base abstract class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : MonoBehaviour
     {
@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity.Receivers
         /// Flag for locking focus while selected
         /// </summary>
         [Tooltip("If true, this object will remain the prime focus while select is held")]
-        public bool bLockFocus;
+        public bool _LockFocus;
         #endregion
 
         #region Private and Protected Members
@@ -57,7 +57,7 @@ namespace HoloToolkit.Unity.Receivers
         #endregion
 
         /// <summary>
-        /// On enable subscrible to all interaction events on elements in the interactables list.
+        /// On enable subscribe to all interaction events on elements in the interactables list.
         /// </summary>
         public virtual void OnEnable()
         {
@@ -168,7 +168,7 @@ namespace HoloToolkit.Unity.Receivers
 
         private void CheckLockFocus(IPointingSource focuser)
         {
-            if (bLockFocus)
+            if (_LockFocus)
             {
                 //LockFocus(focuser);
             }
