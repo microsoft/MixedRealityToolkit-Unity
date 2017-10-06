@@ -23,9 +23,9 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 
 
 # Expectations for Extending or Adding to the Grab Family  
-- To create a new script for this family, you usually want to extend from a Base script of a similar category. For example, for a new type of grabbing script, extend from the BaseGrabbable class and add the special functionality in the new script. This way you can ensure that the new grab mechanism will work neatly with the grabbers and other types of scripts that depend on it 
+- To create a new script for this family, you will typically want to extend from a Base[X] script of a similar category. For example, for a new type of grabbing script, extend from the BaseGrabbable class and add the special functionality in the new script. This way you can ensure that the new grab mechanism will work neatly with the grabbers and other classes that depend on it 
 - There are several basic events (or Actions) that are fired from existing scripts. Some examples include OnGrabStart, OnRelease, OnContact, and OnGrabStateChange) Subscribe to the action to create functionality that is cued at a particular moment. 
-- Check to make sure every new item you add works with every other item in the grab family. For example, if you add a new type of throwing script, make sure it extends from BaseThrowable, and also works with each type of grabbing script, like Grab via child and GrabFixedJoint 
+- Check to make sure every new item you add works with every other item in the grab family. For example, if you add a new type of throwing script, make sure it extends from BaseThrowable, and also works with each type of grabbing script, such as GrabbableChild and GrabbableFixedJoint 
 
 # Critical Sequence for Grab and UnGrab 
 
@@ -42,8 +42,8 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 - Write joint system to move away from Unity-based joints. This should help with two hand grab objects that currently rely on spring joints.  
 - Add Throw modifiers to allow devs to adjust the curvature of a thrown object over time 
 - In this readme, add a chart of recommended combinations (e.g "GrabSimple works well with ThrowableObject") 
-- ScalableObject adjust for Distance - if something is far away, scale it up more.
-- ScalableObject scale by Distance/Velocity - scales based on either distance between the two grabbers or scale by velocity.
+- ScalableObject will soon adjust for Distance (for example, if something is far away, scale it up more).
+- ScalableObject will soon scale by Distance OR Velocity 
  
 # Known Bugs 
 - On the touch rotate example, the Rotatable Object seems to only respond to the left touchpad, despite checks for "handedness" associated with the grabbing controller 
