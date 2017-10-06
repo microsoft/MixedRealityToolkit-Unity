@@ -17,14 +17,7 @@ The Grab family consists of these categories of scripts:
 ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable script attached to the same Game Object, but a Grabbable script is completely independent and indifferent about any other script attached to the same Game Object.  
 
 
-
-
-
-
-/////////////////All of this below should be in a diagram/////////////////////////////////
-
-
-# Types of Scripts in the Grab Family and their Main Options 
+# Class and Inheritance Overview 
  
 ////////////////////[Replace all text in this section with Class and Inheritance Overview diagram]//////////////////
 
@@ -36,9 +29,13 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 
 # Critical Sequence for Grab and UnGrab 
 
-[Replace everything in What Happens when we grab an object with Lar's diagram]
+//////////////////////[Replace everything in What Happens when we grab an object with Lar's diagram]///////////////////
 
 
+# How do I Make My Own?
+- Add a Grabber.cs script to an object that does the grabbing. (This is often a controller, but may sometimes be a cursor or pointer object.) Make sure to add a RigidBody and a collider to this same object. Set the trigger to true.
+- Add a Grabbable_[X].cs script to the object that will be picked up. Make sure to also add a Rigidbody and Collider to this object. 
+- On the grabbable object, you can also add ScalableObject.cs, ThrowableObject.cs and UsableObject.cs (as needed). See chart for recommended combinations.
 
 
 # Proposed Future Updates 
