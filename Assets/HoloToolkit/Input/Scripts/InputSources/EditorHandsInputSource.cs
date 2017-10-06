@@ -321,7 +321,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             // Update hand position.
             Vector3 handPosition;
-            if (handSource.Properties.Location.TryGetPosition(out handPosition))
+            if (handSource.SourcePose.TryGetPosition(out handPosition))
             {
                 editorHandData.HandDelta = handPosition - editorHandData.HandPosition;
                 editorHandData.HandPosition = handPosition;

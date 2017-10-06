@@ -24,11 +24,11 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public struct DebugInteractionSourceState
     {
-        public bool pressed;
-        public bool grasped;
-        public bool menuPressed;
-        public bool selectPressed;
-        public DebugInteractionSourcePose sourcePose;
+        public bool Pressed;
+        public bool Grasped;
+        public bool MenuPressed;
+        public bool SelectPressed;
+        public DebugInteractionSourcePose SourcePose;
     }
 
     /// <summary>
@@ -154,12 +154,12 @@ namespace HoloToolkit.Unity.InputModule
 
         public Vector3 InitialPosition;
 
-        private Vector3 LocalPosition;
-        private Vector3 LocalRotation;
+        private Vector3 localPosition;
+        private Vector3 localRotation;
 
-        private Renderer VisualRenderer;
-        private MaterialPropertyBlock VisualPropertyBlock;
-        private int mainTexID;
+        private Renderer visualRenderer;
+        private MaterialPropertyBlock visualPropertyBlock;
+        private int mainTexId;
 
         private float timeBeforeReturn;
 
@@ -170,24 +170,24 @@ namespace HoloToolkit.Unity.InputModule
                 Destroy(gameObject);
             }
 
-            mainTexID = Shader.PropertyToID("_MainTex");
+            mainTexId = Shader.PropertyToID("_MainTex");
 
-            ControllerSourceState.pressed = false;
-            ControllerSourceState.grasped = false;
-            ControllerSourceState.menuPressed = false;
-            ControllerSourceState.selectPressed = false;
-            ControllerSourceState.sourcePose = new DebugInteractionSourcePose();
-            ControllerSourceState.sourcePose.IsPositionAvailable = false;
-            ControllerSourceState.sourcePose.IsRotationAvailable = false;
+            ControllerSourceState.Pressed = false;
+            ControllerSourceState.Grasped = false;
+            ControllerSourceState.MenuPressed = false;
+            ControllerSourceState.SelectPressed = false;
+            ControllerSourceState.SourcePose = new DebugInteractionSourcePose();
+            ControllerSourceState.SourcePose.IsPositionAvailable = false;
+            ControllerSourceState.SourcePose.IsRotationAvailable = false;
 
-            LocalPosition = ControllerVisualizer.transform.position;
-            InitialPosition = LocalPosition;
-            ControllerSourceState.sourcePose.Position = LocalPosition;
-            ControllerSourceState.sourcePose.Rotation = ControllerVisualizer.transform.rotation;
+            localPosition = ControllerVisualizer.transform.position;
+            InitialPosition = localPosition;
+            ControllerSourceState.SourcePose.Position = localPosition;
+            ControllerSourceState.SourcePose.Rotation = ControllerVisualizer.transform.rotation;
 
-            VisualRenderer = ControllerVisualizer.GetComponent<Renderer>();
-            VisualPropertyBlock = new MaterialPropertyBlock();
-            VisualRenderer.SetPropertyBlock(VisualPropertyBlock);
+            visualRenderer = ControllerVisualizer.GetComponent<Renderer>();
+            visualPropertyBlock = new MaterialPropertyBlock();
+            visualRenderer.SetPropertyBlock(visualPropertyBlock);
         }
 
         private void Update()
@@ -205,28 +205,28 @@ namespace HoloToolkit.Unity.InputModule
                 timeBeforeReturn = Mathf.Clamp(timeBeforeReturn - deltaTime, 0.0f, ControllerTimeBeforeReturn);
             }
 
-            ControllerSourceState.selectPressed = SelectButtonControl.Pressed();
-            ControllerSourceState.pressed = ControllerSourceState.selectPressed;
+            ControllerSourceState.SelectPressed = SelectButtonControl.Pressed();
+            ControllerSourceState.Pressed = ControllerSourceState.SelectPressed;
 
             if (MenuButtonControl)
             {
-                ControllerSourceState.menuPressed = MenuButtonControl.Pressed();
+                ControllerSourceState.MenuPressed = MenuButtonControl.Pressed();
             }
 
             if (GraspControl)
             {
-                ControllerSourceState.grasped = GraspControl.Pressed();
+                ControllerSourceState.Grasped = GraspControl.Pressed();
             }
 
-            if (ControllerSourceState.pressed)
+            if (ControllerSourceState.Pressed)
             {
                 timeBeforeReturn = ControllerTimeBeforeReturn;
             }
 
             if (timeBeforeReturn <= 0.0f)
             {
-                LocalPosition = Vector3.Slerp(LocalPosition, InitialPosition, smoothingFactor);
-                if (LocalPosition == InitialPosition)
+                localPosition = Vector3.Slerp(localPosition, InitialPosition, smoothingFactor);
+                if (localPosition == InitialPosition)
                 {
                     ControllerInView = false;
                 }
@@ -239,7 +239,7 @@ namespace HoloToolkit.Unity.InputModule
                 translate = PrimaryAxisTranslateControl.GetDisplacementVector3() +
                     SecondaryAxisTranslateControl.GetDisplacementVector3();
 
-                ControllerSourceState.sourcePose.IsPositionAvailable = true;
+                ControllerSourceState.SourcePose.IsPositionAvailable = true;
             }
 
             Vector3 rotate = Vector3.zero;
@@ -254,8 +254,8 @@ namespace HoloToolkit.Unity.InputModule
                     (SecondaryAxisRotateControl.axisType != AxisController.AxisType.None && SecondaryAxisRotateControl.ShouldControl()) ||
                     (TertiaryAxisRotateControl.axisType != AxisController.AxisType.None && TertiaryAxisRotateControl.ShouldControl()))
                 {
-                    ControllerSourceState.sourcePose.IsRotationAvailable = true;
-                    LocalRotation += rotate;
+                    ControllerSourceState.SourcePose.IsRotationAvailable = true;
+                    localRotation += rotate;
                 }
             }
 
@@ -265,38 +265,38 @@ namespace HoloToolkit.Unity.InputModule
                 (SecondaryAxisTranslateControl.axisType == AxisController.AxisType.Mouse && SecondaryAxisTranslateControl.buttonType != ButtonController.ButtonType.None && SecondaryAxisTranslateControl.ShouldControl());
 
             if (controllerTranslateActive ||
-                ControllerSourceState.selectPressed ||
-                ControllerSourceState.menuPressed ||
-                ControllerSourceState.grasped ||
-                ControllerSourceState.sourcePose.IsRotationAvailable)
+                ControllerSourceState.SelectPressed ||
+                ControllerSourceState.MenuPressed ||
+                ControllerSourceState.Grasped ||
+                ControllerSourceState.SourcePose.IsRotationAvailable)
             {
                 timeBeforeReturn = ControllerTimeBeforeReturn;
                 ControllerInView = true;
             }
 
-            LocalPosition += translate;
-            ControllerSourceState.sourcePose.Position = CameraCache.Main.transform.position + CameraCache.Main.transform.TransformVector(LocalPosition);
+            localPosition += translate;
+            ControllerSourceState.SourcePose.Position = CameraCache.Main.transform.position + CameraCache.Main.transform.TransformVector(localPosition);
 
-            ControllerVisualizer.transform.position = ControllerSourceState.sourcePose.Position;
+            ControllerVisualizer.transform.position = ControllerSourceState.SourcePose.Position;
             ControllerVisualizer.transform.forward = CameraCache.Main.transform.forward;
 
-            ControllerVisualizer.transform.Rotate(LocalRotation);
+            ControllerVisualizer.transform.Rotate(localRotation);
 
-            ControllerSourceState.sourcePose.Rotation = ControllerVisualizer.transform.rotation;
+            ControllerSourceState.SourcePose.Rotation = ControllerVisualizer.transform.rotation;
 
-            VisualPropertyBlock.SetTexture(mainTexID, ControllerSourceState.pressed ? HandDownTexture : HandUpTexture);
-            VisualRenderer.SetPropertyBlock(VisualPropertyBlock);
+            visualPropertyBlock.SetTexture(mainTexId, ControllerSourceState.Pressed ? HandDownTexture : HandUpTexture);
+            visualRenderer.SetPropertyBlock(visualPropertyBlock);
 
-            ControllerSourceState.sourcePose.TryGetFunctionsReturnTrue = ControllerInView;
+            ControllerSourceState.SourcePose.TryGetFunctionsReturnTrue = ControllerInView;
 
-            if (ControllerInView && ControllerSourceState.sourcePose.IsRotationAvailable && ControllerSourceState.sourcePose.IsPositionAvailable)
+            if (ControllerInView && ControllerSourceState.SourcePose.IsRotationAvailable && ControllerSourceState.SourcePose.IsPositionAvailable)
             {
                 // Draw ray
                 Vector3 up = ControllerVisualizer.transform.TransformDirection(Vector3.up);
-                ControllerSourceState.sourcePose.PointerRay = new Ray(ControllerVisualizer.transform.position, up);
+                ControllerSourceState.SourcePose.PointerRay = new Ray(ControllerVisualizer.transform.position, up);
 
                 Ray newRay;
-                if (ControllerSourceState.sourcePose.TryGetPointerRay(out newRay))
+                if (ControllerSourceState.SourcePose.TryGetPointerRay(out newRay))
                 {
                     if (ShowPointingRay && Physics.Raycast(newRay))
                     {
@@ -307,13 +307,13 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                ControllerSourceState.sourcePose.PointerRay = null;
+                ControllerSourceState.SourcePose.PointerRay = null;
             }
         }
 
         private void UpdateControllerVisualization()
         {
-             VisualRenderer.material.SetColor("_Color", ControllerInView ? ActiveControllerColor : DroppedControllerColor);
+             visualRenderer.material.SetColor("_Color", ControllerInView ? ActiveControllerColor : DroppedControllerColor);
 
             if (ControllerVisualizer.activeSelf != VisualizeController)
             {
