@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -293,26 +294,25 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
         private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
         {
-            int combinedLayerMask = 0;
-            for (int i = 0; i < layerMaskList.Length; i++)
-            {
-                combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
-            }
+            var combinedLayerMask = layerMaskList.Aggregate(0, (current, mask) => current | mask.value);
 
-            RaycastResult? minHit = null;
-            for (var i = 0; i < candidates.Count; ++i)
-            {
-                if (candidates[i].gameObject == null || !IsLayerInLayerMask(candidates[i].gameObject.layer, combinedLayerMask))
-                {
-                    continue;
-                }
-                if (minHit == null || candidates[i].distance < minHit.Value.distance)
-                {
-                    minHit = candidates[i];
-                }
-            }
+            candidates = candidates
+                .Where(c => c.gameObject != null)
+                .Where(c => IsLayerInLayerMask(c.gameObject.layer, combinedLayerMask))
+                .ToList();
+            candidates.Sort(CompareCanvasUiHits);
+            return candidates.DefaultIfEmpty(new RaycastResult()).FirstOrDefault();
+        }
 
-            return minHit ?? new RaycastResult();
+        private static int CompareCanvasUiHits(RaycastResult result1, RaycastResult result2)
+        {
+            var canvas1 = result1.gameObject.GetComponentInParent<Canvas>();
+            var canvas2 = result2.gameObject.GetComponentInParent<Canvas>();
+            if (canvas1 != null && canvas2 != null && canvas1.rootCanvas == canvas2.rootCanvas)
+            {
+                return result2.depth.CompareTo(result1.depth);
+            }
+            return result1.distance.CompareTo(result2.distance);
         }
 
         /// <summary>
