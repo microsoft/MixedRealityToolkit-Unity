@@ -8,25 +8,21 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// A MonoBehaviour which automatically scales an object for better usability across different devices.
     /// </summary>
-    public class UsabilityScaler : StartAwareBehaviour
+    public class UsabilityScaler : MonoBehaviour
     {
         private Vector3 baseScale;
 
-        protected override void OnEnableAfterStart()
+        private void OnEnable()
         {
-            base.OnEnableAfterStart();
-
             baseScale = transform.localScale;
             float usabilityScaleFactor = UsabilityUtilities.GetUsabilityScaleFactor(Camera.main);
 
             transform.localScale = (baseScale * usabilityScaleFactor);
         }
 
-        protected override void OnDisableAfterStart()
+        private void OnDisable()
         {
             transform.localScale = baseScale;
-
-            base.OnDisableAfterStart();
         }
     }
 }

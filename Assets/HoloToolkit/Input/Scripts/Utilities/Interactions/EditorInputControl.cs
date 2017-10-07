@@ -154,9 +154,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-#if !UNITY_EDITOR
-            Destroy(gameObject);
-#endif
+            if (!Application.isEditor)
+            {
+                Destroy(gameObject);
+            }
 
             mainTexID = Shader.PropertyToID("_MainTex");
 
@@ -263,10 +264,10 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             LocalPosition += translate;
-            ControllerSourceState.sourcePose.Position = Camera.main.transform.position + Camera.main.transform.TransformVector(LocalPosition);
+            ControllerSourceState.sourcePose.Position = CameraCache.Main.transform.position + CameraCache.Main.transform.TransformVector(LocalPosition);
 
             ControllerVisualizer.transform.position = ControllerSourceState.sourcePose.Position;
-            ControllerVisualizer.transform.forward = Camera.main.transform.forward;
+            ControllerVisualizer.transform.forward = CameraCache.Main.transform.forward;
 
             ControllerVisualizer.transform.Rotate(LocalRotation);
 
@@ -309,5 +310,4 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
     }
-
 }

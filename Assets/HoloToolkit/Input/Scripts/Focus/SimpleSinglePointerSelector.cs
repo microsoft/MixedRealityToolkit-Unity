@@ -46,10 +46,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             started = true;
 
-            InputManager.AssertIsInitialized();
-            GazeManager.AssertIsInitialized();
-            FocusManager.AssertIsInitialized();
-
             AddInputManagerListenerIfNeeded();
             FindCursorIfNeeded();
             ConnectBestAvailablePointer();

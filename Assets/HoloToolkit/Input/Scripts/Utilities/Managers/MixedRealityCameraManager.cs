@@ -79,18 +79,18 @@ namespace HoloToolkit.Unity.InputModule
         public void ApplySettingsForOpaqueDisplay()
         {
             Debug.Log("Display is Opaque");
-            Camera.main.clearFlags = CameraClearFlags_OpaqueDisplay;
-            Camera.main.nearClipPlane = NearClipPlane_OpaqueDisplay;
-            Camera.main.backgroundColor = BackgroundColor_OpaqueDisplay;
+            CameraCache.Main.clearFlags = CameraClearFlags_OpaqueDisplay;
+            CameraCache.Main.nearClipPlane = NearClipPlane_OpaqueDisplay;
+            CameraCache.Main.backgroundColor = BackgroundColor_OpaqueDisplay;
             SetQuality(OpaqueQualityLevel);
         }
 
         public void ApplySettingsForTransparentDisplay()
         {
             Debug.Log("Display is Transparent");
-            Camera.main.clearFlags = CameraClearFlags_TransparentDisplay;
-            Camera.main.backgroundColor = BackgroundColor_TransparentDisplay;
-            Camera.main.nearClipPlane = NearClipPlane_TransparentDisplay;
+            CameraCache.Main.clearFlags = CameraClearFlags_TransparentDisplay;
+            CameraCache.Main.backgroundColor = BackgroundColor_TransparentDisplay;
+            CameraCache.Main.nearClipPlane = NearClipPlane_TransparentDisplay;
             SetQuality(HoloLensQualityLevel);
         }
 

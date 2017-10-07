@@ -129,5 +129,4 @@ namespace HoloToolkit.Unity.InputModule
             cameraTransform.Translate(this.lastTrackerToUnityTranslation, Space.World);
         }
     }
-
 }

@@ -272,18 +272,14 @@ namespace HoloToolkit.Unity.InputModule
             SendControllerVisibilityEvents();
         }
 
-        protected override void OnEnableAfterStart()
+        private void OnEnable()
         {
-            base.OnEnableAfterStart();
-
             ConnectController();
         }
 
-        protected override void OnDisableAfterStart()
+        private void OnDisable()
         {
             DisconnectController();
-
-            base.OnDisableAfterStart();
         }
 #endif
 
