@@ -9,8 +9,6 @@ namespace HoloToolkit.Unity
 {
     public struct CanvasRaycastResult : IComparable<CanvasRaycastResult>
     {
-        public static CanvasRaycastResult Empty = new CanvasRaycastResult(new RaycastResult());
-
         public readonly RaycastResult RaycastResult;
         public readonly Canvas Canvas;
 

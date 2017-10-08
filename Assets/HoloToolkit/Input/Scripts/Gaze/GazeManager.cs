@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -300,14 +299,16 @@ namespace HoloToolkit.Unity.InputModule
                 combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
             }
 
-            var canvasCandidates = candidates.Where(c => c.gameObject != null)
-                .Where(c => IsLayerInLayerMask(c.gameObject.layer, combinedLayerMask))
-                .Select(c => new CanvasRaycastResult(c))
-                .DefaultIfEmpty(CanvasRaycastResult.Empty)
-                .ToList();
-
+            var canvasCandidates = new List<CanvasRaycastResult>();
+            for (var i = 0; i < candidates.Count; i++)
+            {
+                var candidate = candidates[i];
+                if (!candidate.gameObject) { continue; }
+                if (!IsLayerInLayerMask(candidate.gameObject.layer, combinedLayerMask)) { continue; }
+                canvasCandidates.Add(new CanvasRaycastResult(candidate));
+            }
             canvasCandidates.Sort();
-            return canvasCandidates.FirstOrDefault().RaycastResult;
+            return canvasCandidates.Count > 0 ? canvasCandidates[0].RaycastResult : new RaycastResult();
         }
 
         /// <summary>
