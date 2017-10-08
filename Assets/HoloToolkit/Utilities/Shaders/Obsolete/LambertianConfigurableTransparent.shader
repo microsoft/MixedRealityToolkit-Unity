@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 // Very fast shader that uses the Unity lighting model.
 // Compiles down to only performing the operations you're actually using.
 // Uses material property drawers rather than a custom editor for ease of maintenance.
 
-Shader "HoloToolkit/Obsolete/Lambertian Configurable Transparent"
+Shader "MixedRealityToolkit/Obsolete/Lambertian Configurable Transparent"
 {
     Properties
     {

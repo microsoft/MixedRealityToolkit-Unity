@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity
             return true;
         }
 
-        [MenuItem("HoloToolkit/Export/Export Room (.room) To Wavefront (.obj)...")]
+        [MenuItem("Mixed Reality Toolkit/Export/Export Room (.room) To Wavefront (.obj)...")]
         public static void ExportRoomToWavefront()
         {
             string selectedFile = EditorUtility.OpenFilePanelWithFilters("Select Room File", MeshSaver.MeshFolderName, new string[] { "Room", "room" });
@@ -78,7 +78,7 @@ namespace HoloToolkit.Unity
             System.Diagnostics.Process.Start(ExportDirectory);
         }
 
-        [MenuItem("HoloToolkit/Export/Export Selection To Wavefront (.obj)")]
+        [MenuItem("Mixed Reality Toolkit/Export/Export Selection To Wavefront (.obj)")]
         public static void ExportSelectionToWavefront()
         {
             Transform[] selectedTransforms = Selection.transforms;
