@@ -294,25 +294,38 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
         private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
         {
-            var combinedLayerMask = layerMaskList.Aggregate(0, (current, mask) => current | mask.value);
+            int combinedLayerMask = 0;
+            for (var i = 0; i < layerMaskList.Length; i++)
+            {
+                combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
+            }
 
-            candidates = candidates
-                .Where(c => c.gameObject != null)
-                .Where(c => IsLayerInLayerMask(c.gameObject.layer, combinedLayerMask))
-                .ToList();
-            candidates.Sort(CompareCanvasUiHits);
+            candidates = candidates.Where(c => c.gameObject != null).Where(c => IsLayerInLayerMask(c.gameObject.layer, combinedLayerMask)).ToList();
+            candidates.Sort(CompareRaycasts);
             return candidates.DefaultIfEmpty(new RaycastResult()).FirstOrDefault();
         }
 
-        private static int CompareCanvasUiHits(RaycastResult result1, RaycastResult result2)
+        private static int CompareRaycasts(RaycastResult left, RaycastResult right)
         {
-            var canvas1 = result1.gameObject.GetComponentInParent<Canvas>();
-            var canvas2 = result2.gameObject.GetComponentInParent<Canvas>();
+            var result = CompareRaycastsByCanvasDepth(left, right);
+            if (result != 0) { return result; }
+            return CompareRaycastsByDistance(left, right);
+        }
+
+        private static int CompareRaycastsByCanvasDepth(RaycastResult left, RaycastResult right)
+        {
+            var canvas1 = left.gameObject.GetComponentInParent<Canvas>();
+            var canvas2 = right.gameObject.GetComponentInParent<Canvas>();
             if (canvas1 != null && canvas2 != null && canvas1.rootCanvas == canvas2.rootCanvas)
             {
-                return result2.depth.CompareTo(result1.depth);
+                return right.depth.CompareTo(left.depth);
             }
-            return result1.distance.CompareTo(result2.distance);
+            return 0;
+        }
+
+        private static int CompareRaycastsByDistance(RaycastResult left, RaycastResult right)
+        {
+            return left.distance.CompareTo(right.distance);
         }
 
         /// <summary>
