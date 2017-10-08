@@ -96,6 +96,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Cached results of raycast results.
         /// </summary>
         private List<RaycastResult> raycastResultList = new List<RaycastResult>();
+        private List<CanvasRaycastResult> canvasRaycastResultList = new List<CanvasRaycastResult>();
 
         protected override void Awake()
         {
@@ -298,17 +299,17 @@ namespace HoloToolkit.Unity.InputModule
             {
                 combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
             }
-
-            var canvasCandidates = new List<CanvasRaycastResult>();
+            
+            canvasRaycastResultList.Clear();
             for (var i = 0; i < candidates.Count; i++)
             {
                 var candidate = candidates[i];
                 if (!candidate.gameObject) { continue; }
                 if (!IsLayerInLayerMask(candidate.gameObject.layer, combinedLayerMask)) { continue; }
-                canvasCandidates.Add(new CanvasRaycastResult(candidate));
+                canvasRaycastResultList.Add(new CanvasRaycastResult(candidate));
             }
-            canvasCandidates.Sort();
-            return canvasCandidates.Count > 0 ? canvasCandidates[0].RaycastResult : new RaycastResult();
+            canvasRaycastResultList.Sort();
+            return canvasRaycastResultList.Count > 0 ? canvasRaycastResultList[0].RaycastResult : new RaycastResult();
         }
 
         /// <summary>
