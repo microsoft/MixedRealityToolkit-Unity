@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
         public CanvasRaycastResult(RaycastResult raycastResult)
         {
             RaycastResult = raycastResult;
-            Canvas = raycastResult.gameObject ? raycastResult.gameObject.GetComponentInParent<Canvas>() : null;
+            Canvas = raycastResult.gameObject != null ? raycastResult.gameObject.GetComponentInParent<Canvas>() : null;
         }
 
         public int CompareTo(CanvasRaycastResult other)
