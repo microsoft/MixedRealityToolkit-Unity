@@ -300,32 +300,14 @@ namespace HoloToolkit.Unity.InputModule
                 combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
             }
 
-            candidates = candidates.Where(c => c.gameObject != null).Where(c => IsLayerInLayerMask(c.gameObject.layer, combinedLayerMask)).ToList();
-            candidates.Sort(CompareRaycasts);
-            return candidates.DefaultIfEmpty(new RaycastResult()).FirstOrDefault();
-        }
+            var canvasCandidates = candidates.Where(c => c.gameObject != null)
+                .Where(c => IsLayerInLayerMask(c.gameObject.layer, combinedLayerMask))
+                .Select(c => new CanvasRaycastResult(c))
+                .DefaultIfEmpty(CanvasRaycastResult.Empty)
+                .ToList();
 
-        private static int CompareRaycasts(RaycastResult left, RaycastResult right)
-        {
-            var result = CompareRaycastsByCanvasDepth(left, right);
-            if (result != 0) { return result; }
-            return CompareRaycastsByDistance(left, right);
-        }
-
-        private static int CompareRaycastsByCanvasDepth(RaycastResult left, RaycastResult right)
-        {
-            var canvas1 = left.gameObject.GetComponentInParent<Canvas>();
-            var canvas2 = right.gameObject.GetComponentInParent<Canvas>();
-            if (canvas1 != null && canvas2 != null && canvas1.rootCanvas == canvas2.rootCanvas)
-            {
-                return right.depth.CompareTo(left.depth);
-            }
-            return 0;
-        }
-
-        private static int CompareRaycastsByDistance(RaycastResult left, RaycastResult right)
-        {
-            return left.distance.CompareTo(right.distance);
+            canvasCandidates.Sort();
+            return canvasCandidates.FirstOrDefault().RaycastResult;
         }
 
         /// <summary>
