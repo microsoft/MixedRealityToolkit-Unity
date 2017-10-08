@@ -369,7 +369,7 @@ namespace HoloToolkit.Unity.InputModule
         #region Helpers
 
         /// <summary>
-        /// Find the closest raycast hit in the list of RaycastResults that is also included in the LayerMask list.  
+        /// Find the closest raycast hit in the list of RaycastResults that is also included in the LayerMask list.
         /// </summary>
         /// <param name="candidates">List of RaycastResults from a Unity UI raycast</param>
         /// <param name="layerMaskList">List of layers to support</param>

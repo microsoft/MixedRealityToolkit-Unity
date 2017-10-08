@@ -8,9 +8,9 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor 
+    /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor
     /// or pointing ray enabled motion controllers.
-    /// If you dont have pointing ray enabled controllers, it defaults to GazeManager.    
+    /// If you don't have pointing ray enabled controllers, it defaults to GazeManager.
     /// </summary>
     public class FocusManager : Singleton<FocusManager>
     {
@@ -151,7 +151,6 @@ namespace HoloToolkit.Unity.InputModule
         public bool IsUnityUiFocusable
         {
             get { return (pointableCanvases.Count > 0); }
-
         }
 
         public void RegisterPointer(IPointingSource pointingSource)
@@ -328,7 +327,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                Clear(uiRaycastPointerInputData);
+                Clear();
             }
 
             return uiRaycastPointerInputData;
@@ -524,10 +523,9 @@ namespace HoloToolkit.Unity.InputModule
                     // Don't waste performance rendering anything.
                     uiRaycastCamera.enabled = false;
 
-
-                    foreach (Canvas canvas in pointableCanvases)
+                    for (var i = 0; i < pointableCanvases.Count; i++)
                     {
-                        canvas.worldCamera = uiRaycastCamera;
+                        pointableCanvases[i].worldCamera = uiRaycastCamera;
                     }
 
                     if (uiRaycastPointerInputData == null)
@@ -543,16 +541,16 @@ namespace HoloToolkit.Unity.InputModule
                 Debug.Assert(uiRaycastPointerInputData != null);
                 Debug.Assert(uiRaycastResults != null);
 
-                foreach (Canvas canvas in pointableCanvases)
+                for (var i = 0; i < pointableCanvases.Count; i++)
                 {
-                    Debug.Assert(canvas.worldCamera == uiRaycastCamera);
+                    Debug.Assert(pointableCanvases[i].worldCamera == uiRaycastCamera);
                 }
 
                 uiRaycastCamera.transform.position = pointingRay.origin;
                 uiRaycastCamera.transform.forward = pointingRay.direction;
 
-                Clear(uiRaycastPointerInputData);
-                uiRaycastPointerInputData.position = new Vector2((uiRaycastCamera.pixelWidth / 2), (uiRaycastCamera.pixelHeight / 2));
+                Clear();
+                uiRaycastPointerInputData.position = new Vector2(uiRaycastCamera.pixelWidth * 0.5f, uiRaycastCamera.pixelHeight * 0.5f);
 
                 uiRaycastResults.Clear();
 
@@ -585,7 +583,6 @@ namespace HoloToolkit.Unity.InputModule
                     uiHit = patchedUiHit;
                 }
             }
-
 
             if ((physicsHit != null) && (uiHit != null))
             {
@@ -887,8 +884,8 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     continue;
                 }
-                Debug.Assert(hit.distance == preferred.Value.distance);
 
+                Debug.Assert(hit.distance == preferred.Value.distance);
 
                 // Then by order in hits list, which seems to break the tie correctly for UI layered flat on
                 // the same canvas. By virtue of letting the loop continue here without updating preferred,
@@ -926,7 +923,7 @@ namespace HoloToolkit.Unity.InputModule
             return combined;
         }
 
-        private void Clear(PointerEventData pointerEventData)
+        private void Clear()
         {
             uiRaycastPointerInputData.Reset();
 

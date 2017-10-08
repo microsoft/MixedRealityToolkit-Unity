@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -9,8 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Script to register a Canvas component so it's capable of being focused at for 'point and commit' scenarios.
     /// </summary>
-    public class RegisterPointableCanvas :
-        MonoBehaviour
+    public class RegisterPointableCanvas : MonoBehaviour
     {
         private void Start()
         {
