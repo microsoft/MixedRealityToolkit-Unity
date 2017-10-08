@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.Tests
 {
-
     public class RotateMinMax : MonoBehaviour
     {
         [SerializeField] private float _minAngle;
