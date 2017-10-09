@@ -48,8 +48,6 @@ namespace HoloToolkit.Unity.InputModule
         [Obsolete]
         private List<RaycastResult> raycastResultList = new List<RaycastResult>();
 
-
-
         /// <summary>
         /// The game object that is currently being gazed at, if any.
         /// </summary>
@@ -101,7 +99,7 @@ namespace HoloToolkit.Unity.InputModule
         /// GazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
         /// </summary>
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.\n\nExample Usage:\n\n// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)\n\nint sr = LayerMask.GetMask(\"SR\");\nint nonSR = Physics.DefaultRaycastLayers & ~sr;\nGazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };")]
-        public LayerMask[] RaycastLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
+        public LayerMask[] RaycastLayerMasks = { Physics.DefaultRaycastLayers };
 
         /// <summary>
         /// Current stabilization method, used to smooth out the gaze ray data.
@@ -154,29 +152,34 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            UpdateGazeInfo();
-
-            // Perform raycast to determine gazed object
-            GameObject previousFocusObject = RaycastPhysics();
-
-            // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
-            if (EventSystem.current != null)
+            if (DebugDrawRay)
             {
-                // NOTE: We need to do this AFTER we set the HitPosition and HitObject since we need to use HitPosition to perform the correct 2D UI Raycast.
-                RaycastUnityUI();
+                Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
 
-            // Dispatch changed event if focus is different
-            if (previousFocusObject != HitObject && FocusedObjectChanged != null)
-            {
-                FocusedObjectChanged(previousFocusObject, HitObject);
-            }
+            //UpdateGazeInfo();
+
+            //// Perform raycast to determine gazed object
+            //GameObject previousFocusObject = RaycastPhysics();
+
+            //// If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+            //if (EventSystem.current != null)
+            //{
+            //    // NOTE: We need to do this AFTER we set the HitPosition and HitObject since we need to use HitPosition to perform the correct 2D UI Raycast.
+            //    RaycastUnityUI();
+            //}
+
+            //// Dispatch changed event if focus is different
+            //if (previousFocusObject != HitObject && FocusedObjectChanged != null)
+            //{
+            //    FocusedObjectChanged(previousFocusObject, HitObject);
+            //}
         }
 
         private bool FindGazeTransform()
         {
             if (GazeTransform != null) { return true; }
-            
+
             if (CameraCache.Main != null)
             {
                 GazeTransform = CameraCache.Main.transform;

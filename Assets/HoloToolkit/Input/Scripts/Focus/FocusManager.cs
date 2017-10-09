@@ -20,44 +20,96 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Awake();
 
-            AwakePointing();
+            if (registeredPointers != null)
+            {
+                for (int iPointer = 0; iPointer < registeredPointers.Length; iPointer++)
+                {
+                    GameObject owner = registeredPointers[iPointer];
+
+                    if (owner == null)
+                    {
+                        Debug.LogError("AutoRegisteredPointers contains a null (\"None\") object.");
+                        break;
+                    }
+
+                    IPointingSource pointingSource = owner.GetComponent<IPointingSource>();
+
+                    if (pointingSource == null)
+                    {
+                        Debug.LogErrorFormat("AutoRegisteredPointers contains object \"{0}\" which is missing its {1} component.",
+                            owner.name,
+                            typeof(IPointingSource).Name
+                        );
+                        break;
+                    }
+
+                    RegisterPointer(pointingSource);
+                }
+            }
         }
 
         private void Start()
         {
-            StartPointing();
+            if (gazeManagerPointingData == null)
+            {
+                if (GazeManager.IsInitialized)
+                {
+                    gazeManagerPointingData = new PointerData(GazeManager.Instance);
+                }
+            }
+            else
+            {
+                Debug.Assert(ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
+            }
+
+            if ((pointers.Count == 0) && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
+            {
+                RegisterPointer(GazeManager.Instance);
+            }
         }
 
         private void Update()
         {
-            UpdatePointing();
-            UpdateFocus();
+            UpdatePointers();
+            UpdateFocusedObjects();
         }
 
         #endregion
 
         #region Settings
 
+        /// <summary>
+        /// Maximum distance at which the pointer can collide with an object.
+        /// </summary>
         [SerializeField]
         private float pointingExtent = 10f;
 
+        /// <summary>
+        /// The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.
+        ///
+        /// Example Usage:
+        ///
+        /// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
+        ///
+        /// int sr = LayerMask.GetMask("SR");
+        /// int nonSR = Physics.DefaultRaycastLayers &amp; ~sr;
+        /// GazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
+        /// </summary>
         [SerializeField]
-        private LayerMask[] pointingPrioritizedLayerMasks = CreateDefaultPointingPrioritizedLayerMasks();
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.")]
+        private LayerMask[] pointingRaycastLayerMasks = { Physics.DefaultRaycastLayers };
 
         [SerializeField]
-        private GameObject[] autoRegisteredPointers = null;
+        private GameObject[] registeredPointers = null;
 
         [SerializeField]
         private bool autoRegisterGazePointerIfNoPointersRegistered = true;
 
         [SerializeField]
-        private Canvas[] autoRegisteredPointableCanvases = null;
+        private bool debugDrawPointingRays = false;
 
         [SerializeField]
-        private bool DebugDrawPointingRays = false;
-
-        [SerializeField]
-        private Color[] DebugDrawPointingRayColors = null;
+        private Color[] debugDrawPointingRayColors = null;
 
         #endregion
 
@@ -129,16 +181,15 @@ namespace HoloToolkit.Unity.InputModule
 
         private readonly List<PointerData> pointers = new List<PointerData>();
 
-        // GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
-        // of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
-        // to do a gaze raycast even if gaze isn't used for focus.
+        /// <summary>
+        /// GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
+        /// of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
+        /// to do a gaze raycast even if gaze isn't used for focus.
+        /// </summary>
         private PointerData gazeManagerPointingData;
 
-        private readonly List<Canvas> pointableCanvases = new List<Canvas>();
-
-        private Camera uiRaycastCamera;
-        private PointerInputEventData uiRaycastPointerInputData;
-        private List<RaycastResult> uiRaycastResults;
+        public PointerInputEventData UnityUIPointerEvent { get; private set; }
+        private List<RaycastResult> uiRaycastResults = new List<RaycastResult>(0);
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -147,11 +198,6 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
         #region Accessors
-
-        public bool IsUnityUiFocusable
-        {
-            get { return (pointableCanvases.Count > 0); }
-        }
 
         public void RegisterPointer(IPointingSource pointingSource)
         {
@@ -186,7 +232,7 @@ namespace HoloToolkit.Unity.InputModule
             pointers.Add(pointer);
         }
 
-        public void UnregisterPointer(IPointingSource pointingSource)
+        public void UnRegisterPointer(IPointingSource pointingSource)
         {
             Debug.Assert(pointingSource != null);
 
@@ -201,13 +247,13 @@ namespace HoloToolkit.Unity.InputModule
 
             if (pointer.End.Object != null)
             {
-                GameObject defocusedObject = pointer.End.Object;
+                GameObject deFocusedObject = pointer.End.Object;
 
                 bool objectIsStillFocusedByOtherPointer = false;
 
                 for (int iOther = 0; iOther < pointers.Count; iOther++)
                 {
-                    if (pointers[iOther].End.Object == defocusedObject)
+                    if (pointers[iOther].End.Object == deFocusedObject)
                     {
                         objectIsStillFocusedByOtherPointer = true;
                         break;
@@ -216,31 +262,11 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
-                    RaiseFocusExitedEvents(defocusedObject);
+                    RaiseFocusExitedEvents(deFocusedObject);
                 }
 
-                RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, defocusedObject, null);
+                RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, deFocusedObject, null);
             }
-        }
-
-        public void RegisterPointableCanvas(Canvas canvas)
-        {
-            Debug.Assert(canvas != null);
-            Debug.Assert(TryGetPointableCanvasIndex(canvas) == null);
-
-            canvas.worldCamera = uiRaycastCamera;
-            pointableCanvases.Add(canvas);
-        }
-
-        public void UnregisterPointableCanvas(Canvas canvas)
-        {
-            Debug.Assert(canvas != null);
-
-            int? iCanvas = TryGetPointableCanvasIndex(canvas);
-            Debug.Assert(iCanvas != null);
-
-            pointableCanvases.RemoveAt(iCanvas.Value);
-            canvas.worldCamera = null;
         }
 
         public FocusDetails? TryGetFocusDetails(BaseEventData eventData)
@@ -303,34 +329,32 @@ namespace HoloToolkit.Unity.InputModule
                 pointingSource = pointers[0].PointingSource;
                 return true;
             }
-            else
-            {
-                pointingSource = null;
-                return false;
-            }
+
+            pointingSource = null;
+            return false;
         }
 
         public delegate void FocusEnteredMethod(GameObject focusedObject);
         public event FocusEnteredMethod FocusEntered;
 
-        public delegate void FocusExitedMethod(GameObject defocusedObject);
+        public delegate void FocusExitedMethod(GameObject deFocusedObject);
         public event FocusExitedMethod FocusExited;
 
         public delegate void PointerSpecificFocusChangedMethod(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
         public event PointerSpecificFocusChangedMethod PointerSpecificFocusChanged;
 
-        public PointerInputEventData BorrowPointerEventData()
+        public PointerInputEventData GetPointerEventData()
         {
-            if (uiRaycastPointerInputData == null)
+            if (UnityUIPointerEvent == null)
             {
-                uiRaycastPointerInputData = new PointerInputEventData(EventSystem.current);
+                UnityUIPointerEvent = new PointerInputEventData(EventSystem.current);
             }
             else
             {
-                Clear();
+                UnityUIPointerEvent.Clear();
             }
 
-            return uiRaycastPointerInputData;
+            return UnityUIPointerEvent;
         }
 
         public float GetPointingExtent(IPointingSource pointingSource)
@@ -342,92 +366,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Utilities
 
-        private void AwakePointing()
-        {
-            if ((pointingPrioritizedLayerMasks == null) || (pointingPrioritizedLayerMasks.Length == 0))
-            {
-                pointingPrioritizedLayerMasks = CreateDefaultPointingPrioritizedLayerMasks();
-            }
-
-            AutoRegisterPointers();
-            AutoRegisterPointableCanvases();
-        }
-
-        private void StartPointing()
-        {
-            if (gazeManagerPointingData == null)
-            {
-                if (GazeManager.IsInitialized)
-                {
-                    gazeManagerPointingData = new PointerData(GazeManager.Instance);
-                }
-            }
-            else
-            {
-                Debug.Assert(object.ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
-            }
-
-            if ((pointers.Count == 0) && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
-            {
-                RegisterPointer(GazeManager.Instance);
-            }
-        }
-
-        private static LayerMask[] CreateDefaultPointingPrioritizedLayerMasks()
-        {
-            return new LayerMask[] { Physics.DefaultRaycastLayers };
-        }
-
-        private void AutoRegisterPointers()
-        {
-            if (autoRegisteredPointers != null)
-            {
-                for (int iPointer = 0; iPointer < autoRegisteredPointers.Length; iPointer++)
-                {
-                    GameObject owner = autoRegisteredPointers[iPointer];
-
-                    if (owner == null)
-                    {
-                        Debug.LogError("AutoRegisteredPointers contains a null (\"None\") object.");
-                        break;
-                    }
-
-                    IPointingSource pointingSource = owner.GetComponent<IPointingSource>();
-
-                    if (pointingSource == null)
-                    {
-                        Debug.LogErrorFormat("AutoRegisteredPointers contains object \"{0}\" which is missing its {1} component.",
-                            owner.name,
-                            typeof(IPointingSource).Name
-                            );
-                        break;
-                    }
-
-                    RegisterPointer(pointingSource);
-                }
-            }
-        }
-
-        private void AutoRegisterPointableCanvases()
-        {
-            if (autoRegisteredPointableCanvases != null)
-            {
-                for (int iCanvas = 0; iCanvas < autoRegisteredPointableCanvases.Length; iCanvas++)
-                {
-                    Canvas canvas = autoRegisteredPointableCanvases[iCanvas];
-
-                    if (canvas == null)
-                    {
-                        Debug.LogError("AutoRegisteredPointableCanvases contains a null (\"None\") component.");
-                        break;
-                    }
-
-                    RegisterPointableCanvas(canvas);
-                }
-            }
-        }
-
-        private void UpdatePointing()
+        private void UpdatePointers()
         {
             bool gazeManagerIsRegistered = false;
 
@@ -440,15 +379,15 @@ namespace HoloToolkit.Unity.InputModule
                     gazeManagerIsRegistered = true;
                 }
 
-                UpdatePointing(pointer);
+                UpdatePointer(pointer);
 
-                if (DebugDrawPointingRays)
+                if (debugDrawPointingRays)
                 {
                     Color rayColor;
 
-                    if ((DebugDrawPointingRayColors != null) && (DebugDrawPointingRayColors.Length > 0))
+                    if ((debugDrawPointingRayColors != null) && (debugDrawPointingRayColors.Length > 0))
                     {
-                        rayColor = DebugDrawPointingRayColors[iPointer % DebugDrawPointingRayColors.Length];
+                        rayColor = debugDrawPointingRayColors[iPointer % debugDrawPointingRayColors.Length];
                     }
                     else
                     {
@@ -465,20 +404,20 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (!gazeManagerIsRegistered)
                 {
-                    UpdatePointing(gazeManagerPointingData);
+                    UpdatePointer(gazeManagerPointingData);
                 }
 
                 GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerIsRegistered);
             }
         }
 
-        private void UpdatePointing(PointerData pointer)
+        private void UpdatePointer(PointerData pointer)
         {
             pointer.PointingSource.UpdatePointer();
 
             Ray pointingRay = pointer.PointingSource.Ray;
             float extent = GetPointingExtent(pointer);
-            IList<LayerMask> prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingPrioritizedLayerMasks);
+            var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
 
             LayerMask combinedLayerMasks = GetCombinedLayerMask(prioritizedLayerMasks);
 
@@ -500,68 +439,30 @@ namespace HoloToolkit.Unity.InputModule
                     : null;
             }
 
-            if ((pointableCanvases.Count == 0) || (EventSystem.current == null))
+            if (EventSystem.current == null)
             {
                 uiHit = null;
             }
             else
             {
-                if (uiRaycastCamera == null)
-                {
-                    uiRaycastCamera = new GameObject("UI Raycast Camera").AddComponent<Camera>();
-                    uiRaycastCamera.transform.parent = transform;
+                GetPointerEventData();
 
-                    // Make sure the raycast starts as close the the camera as possible. Ideally, this would
-                    // be 0, but as of Unity 5.5, setting it to 0 causes the raycast to complain that the
-                    // screen point isn't in the camera's view frustum.
-                    uiRaycastCamera.nearClipPlane = 0.01f;
+                Camera mainCamera = CameraCache.Main;
 
-                    // Make sure the camera's pixel rect is large enough for raycasting to work as desired. As
-                    // of Unity 5.5, setting it much smaller than this makes the raycast miss things.
-                    uiRaycastCamera.pixelRect = new Rect(0, 0, 100, 100);
-
-                    // Don't waste performance rendering anything.
-                    uiRaycastCamera.enabled = false;
-
-                    for (var i = 0; i < pointableCanvases.Count; i++)
-                    {
-                        pointableCanvases[i].worldCamera = uiRaycastCamera;
-                    }
-
-                    if (uiRaycastPointerInputData == null)
-                    {
-                        uiRaycastPointerInputData = new PointerInputEventData(EventSystem.current);
-                    }
-
-                    Debug.Assert(uiRaycastResults == null);
-                    uiRaycastResults = new List<RaycastResult>();
-                }
-
-                Debug.Assert(uiRaycastCamera != null);
-                Debug.Assert(uiRaycastPointerInputData != null);
-                Debug.Assert(uiRaycastResults != null);
-
-                for (var i = 0; i < pointableCanvases.Count; i++)
-                {
-                    Debug.Assert(pointableCanvases[i].worldCamera == uiRaycastCamera);
-                }
-
-                uiRaycastCamera.transform.position = pointingRay.origin;
-                uiRaycastCamera.transform.forward = pointingRay.direction;
-
-                Clear();
-                uiRaycastPointerInputData.position = new Vector2(uiRaycastCamera.pixelWidth * 0.5f, uiRaycastCamera.pixelHeight * 0.5f);
+                // 2D cursor position
+                Vector2 cursorScreenPos = mainCamera.WorldToScreenPoint(physicsHit.Value.point);
+                UnityUIPointerEvent.delta = cursorScreenPos - UnityUIPointerEvent.position;
+                UnityUIPointerEvent.position = cursorScreenPos;
 
                 uiRaycastResults.Clear();
-
-                EventSystem.current.RaycastAll(uiRaycastPointerInputData, uiRaycastResults);
+                EventSystem.current.RaycastAll(UnityUIPointerEvent, uiRaycastResults);
                 uiHit = TryGetPreferredHit(uiRaycastResults, prioritizedLayerMasks);
 
                 if (uiHit != null)
                 {
                     RaycastResult patchedUiHit = uiHit.Value;
 
-                    float totalDistance = (patchedUiHit.distance + uiRaycastCamera.nearClipPlane);
+                    float totalDistance = (patchedUiHit.distance + CameraCache.Main.nearClipPlane);
 
                     patchedUiHit.distance = totalDistance;
 
@@ -642,7 +543,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void UpdateFocus()
+        private void UpdateFocusedObjects()
         {
             Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -711,13 +612,13 @@ namespace HoloToolkit.Unity.InputModule
             pendingPointerSpecificFocusChange.Clear();
         }
 
-        private void RaiseFocusExitedEvents(GameObject defocusedObject)
+        private void RaiseFocusExitedEvents(GameObject deFocusedObject)
         {
-            InputManager.Instance.RaiseFocusExit(defocusedObject);
+            InputManager.Instance.RaiseFocusExit(deFocusedObject);
 
             if (FocusExited != null)
             {
-                FocusExited(defocusedObject);
+                FocusExited(deFocusedObject);
             }
         }
 
@@ -745,7 +646,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             int? iPointer = TryGetPointerIndex(pointingSource);
             Debug.Assert(iPointer != null);
-
             return pointers[iPointer.Value];
         }
 
@@ -756,22 +656,6 @@ namespace HoloToolkit.Unity.InputModule
             for (int i = 0; i < pointers.Count; i++)
             {
                 if (pointers[i].PointingSource == pointingSource)
-                {
-                    found = i;
-                    break;
-                }
-            }
-
-            return found;
-        }
-
-        private int? TryGetPointableCanvasIndex(Canvas canvas)
-        {
-            int? found = null;
-
-            for (int i = 0; i < pointableCanvases.Count; i++)
-            {
-                if (pointableCanvases[i] == canvas)
                 {
                     found = i;
                     break;
@@ -895,13 +779,13 @@ namespace HoloToolkit.Unity.InputModule
             return preferred;
         }
 
-        private int GetLayerMaskIndex(GameObject gameObject, IList<LayerMask> prioritizedLayerMasks)
+        private int GetLayerMaskIndex(GameObject objectToCheck, IList<LayerMask> prioritizedLayerMasks)
         {
             Debug.Assert(prioritizedLayerMasks != null);
 
             for (int iMask = 0; iMask < prioritizedLayerMasks.Count; iMask++)
             {
-                if (gameObject.IsInLayerMask(prioritizedLayerMasks[iMask]))
+                if (objectToCheck.IsInLayerMask(prioritizedLayerMasks[iMask]))
                 {
                     return iMask;
                 }
@@ -921,32 +805,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             return combined;
-        }
-
-        private void Clear()
-        {
-            uiRaycastPointerInputData.Reset();
-
-            uiRaycastPointerInputData.button = PointerEventData.InputButton.Left;
-            uiRaycastPointerInputData.clickCount = 0;
-            uiRaycastPointerInputData.clickTime = 0;
-            uiRaycastPointerInputData.delta = Vector2.zero;
-            uiRaycastPointerInputData.dragging = false;
-            uiRaycastPointerInputData.eligibleForClick = false;
-            uiRaycastPointerInputData.pointerCurrentRaycast = default(RaycastResult);
-            uiRaycastPointerInputData.pointerDrag = null;
-            uiRaycastPointerInputData.pointerEnter = null;
-            uiRaycastPointerInputData.pointerId = 0;
-            uiRaycastPointerInputData.pointerPress = null;
-            uiRaycastPointerInputData.pointerPressRaycast = default(RaycastResult);
-            uiRaycastPointerInputData.position = Vector2.zero;
-            uiRaycastPointerInputData.pressPosition = Vector2.zero;
-            uiRaycastPointerInputData.rawPointerPress = null;
-            uiRaycastPointerInputData.scrollDelta = Vector2.zero;
-            uiRaycastPointerInputData.selectedObject = null;
-            uiRaycastPointerInputData.useDragThreshold = false;
-            uiRaycastPointerInputData.InputSource = null;
-            uiRaycastPointerInputData.SourceId = 0;
         }
 
         #endregion

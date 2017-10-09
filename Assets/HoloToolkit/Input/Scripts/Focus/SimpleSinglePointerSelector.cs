@@ -156,7 +156,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentPointer != null)
                 {
-                    FocusManager.Instance.UnregisterPointer(currentPointer);
+                    FocusManager.Instance.UnRegisterPointer(currentPointer);
                 }
 
                 currentPointer = newPointer;
