@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.4964127, b: 0.5748172, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -777,20 +777,6 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -1449,8 +1435,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2116398419}
-  - component: {fileID: 2116398418}
   - component: {fileID: 2116398420}
+  - component: {fileID: 2116398421}
+  - component: {fileID: 2116398418}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1466,13 +1453,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2116398417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f2795b3e072e1745a4f8c670d64284f, type: 3}
+  m_Script: {fileID: 11500000, guid: e7d6513c2cdf97f409654a2a4114d9b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RecognizerStart: 0
-  KeywordsAndResponses:
+  Keywords:
   - Keyword: slice x on
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1490,7 +1475,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: slice x off
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1508,7 +1492,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: slice y on
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1526,7 +1509,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: slice y off
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1544,7 +1526,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: slice z on
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1562,7 +1543,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: slice z off
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1580,7 +1560,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: thick slices on
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1598,7 +1577,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: thick slices off
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1616,7 +1594,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   - Keyword: place
-    KeyCode: 0
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1633,6 +1610,8 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
+  IsGlobalListener: 1
+  PersistentKeywords: 0
 --- !u!4 &2116398419
 Transform:
   m_ObjectHideFlags: 0
@@ -1658,3 +1637,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f122ca4ae6b527e4798205becf9a0550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnchorDebugText: {fileID: 0}
+  ShowDetailedLogs: 0
+  PersistentAnchors: 0
+--- !u!114 &2116398421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2116398417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c62fd7a55ba7458499b69cae18f83806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PersistentKeywords: 1
+  RecognizerStart: 0
+  Keywords:
+  - Keyword: slice x on
+    KeyCode: 0
+  - Keyword: slice x off
+    KeyCode: 0
+  - Keyword: slice y on
+    KeyCode: 0
+  - Keyword: slice y off
+    KeyCode: 0
+  - Keyword: slice z on
+    KeyCode: 0
+  - Keyword: slice z off
+    KeyCode: 0
+  - Keyword: thick slices on
+    KeyCode: 0
+  - Keyword: thick slices off
+    KeyCode: 0
+  - Keyword: place
+    KeyCode: 0
+  recognitionConfidenceLevel: 1
