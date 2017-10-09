@@ -9,8 +9,8 @@ namespace HoloToolkit.Unity
 {
     public static class EventSystemExtensions
     {
-        private static readonly List<RaycastResult> RaycastResultList = new List<RaycastResult>();
-        private static readonly List<CanvasRaycastResult> CanvasRaycastResultList = new List<CanvasRaycastResult>();
+        private static readonly List<RaycastResult> RaycastResults = new List<RaycastResult>();
+        private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         /// <summary>
         /// Executes a raycast all and returns the closest element. Fixes the current issue with Unitys raycast sorting which does not 
@@ -19,8 +19,8 @@ namespace HoloToolkit.Unity
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
         public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, IEnumerable<LayerMask> layerMasks)
         {
-            RaycastResultList.Clear();
-            eventSystem.RaycastAll(pointerEventData, RaycastResultList);
+            RaycastResults.Clear();
+            eventSystem.RaycastAll(pointerEventData, RaycastResults);
             return FindClosestRaycastHitInLayerMasks(layerMasks);
         }
 
@@ -33,16 +33,30 @@ namespace HoloToolkit.Unity
         {
             int combinedLayerMask = layerMaskList.Combine();
 
-            CanvasRaycastResultList.Clear();
-            for (var i = 0; i < RaycastResultList.Count; i++)
+            for (var i = RaycastResults.Count - 1; i >= 0; i--)
             {
-                var candidate = RaycastResultList[i];
-                if (!candidate.gameObject) { continue; }
-                if (!candidate.gameObject.layer.IsInLayerMask(combinedLayerMask)) { continue; }
-                CanvasRaycastResultList.Add(new CanvasRaycastResult(candidate));
+                var candidate = RaycastResults[i];
+                if (candidate.gameObject && candidate.gameObject.layer.IsInLayerMask(combinedLayerMask)) continue;
+                RaycastResults.Remove(candidate);
             }
-            CanvasRaycastResultList.Sort();
-            return CanvasRaycastResultList.Count > 0 ? CanvasRaycastResultList[0].RaycastResult : default(RaycastResult);
+            ;
+            return RaycastResults.Count > 0 ? GetClosestRaycast() : default(RaycastResult);
         }
+
+        private static RaycastResult GetClosestRaycast()
+        {
+            var max = RaycastResults[0];
+
+            for (var i = 1; i < RaycastResults.Count; i++)
+            {
+                if (RaycastResultComparer.Compare(max, RaycastResults[i]) < 0)
+                {
+                    max = RaycastResults[i];
+                }
+            }
+
+            return max;
+        }
+
     }
 }
