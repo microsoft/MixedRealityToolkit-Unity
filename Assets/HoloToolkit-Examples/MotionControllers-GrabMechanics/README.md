@@ -19,7 +19,7 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 
 # Class and Inheritance Overview 
  
-////////////////////[Replace all text in this section with Class and Inheritance Overview diagram]//////////////////
+![](/External/ReadMeImages/MRTK_MotionController_GrabMechanicsDiagram.jpg)
 
 
 # Expectations for Extending or Adding to the Grab Family  
@@ -29,7 +29,7 @@ ScalableObject, ThrowableObject and UsableObject rely on having a Grabbable scri
 
 # Critical Sequence for Grab and UnGrab 
 
-//////////////////////[Replace everything in What Happens when we grab an object with Lar's diagram]///////////////////
+![](/External/ReadMeImages/MRTK_MotionController_GrabMechanicsDiagram2.jpg)
 
 
 # How do I Make My Own?
