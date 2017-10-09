@@ -1655,21 +1655,21 @@ MonoBehaviour:
   RecognizerStart: 0
   Keywords:
   - Keyword: slice x on
-    KeyCode: 257
+    KeyCode: 49
   - Keyword: slice x off
-    KeyCode: 258
+    KeyCode: 50
   - Keyword: slice y on
-    KeyCode: 259
+    KeyCode: 51
   - Keyword: slice y off
-    KeyCode: 260
+    KeyCode: 52
   - Keyword: slice z on
-    KeyCode: 260
+    KeyCode: 53
   - Keyword: slice z off
-    KeyCode: 261
+    KeyCode: 54
   - Keyword: thick slices on
-    KeyCode: 262
+    KeyCode: 55
   - Keyword: thick slices off
-    KeyCode: 263
+    KeyCode: 56
   - Keyword: place
-    KeyCode: 264
+    KeyCode: 57
   recognitionConfidenceLevel: 1
