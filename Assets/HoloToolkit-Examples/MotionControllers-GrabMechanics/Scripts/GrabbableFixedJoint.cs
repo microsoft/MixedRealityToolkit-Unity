@@ -12,13 +12,13 @@ namespace MRTK.Grabbables
         //expose the joint variables here for editing because the joint is added/destroyed at runtime
         // to understand how these variables work in greater depth see documentation for spring joint and fixed joint
         [SerializeField]
-        protected float breakForce;
+        protected float breakForce = 20;
         [SerializeField]
-        protected float breakTorque;
+        protected float breakTorque = 20;
         [SerializeField]
-        protected float tolerance;
+        protected float tolerance = 0.01f;
         [SerializeField]
-        protected Vector3 joint_anchor;
+        protected Vector3 jointAnchor;
         [SerializeField]
         protected float minDistance;
         [SerializeField]
@@ -33,7 +33,7 @@ namespace MRTK.Grabbables
                 joint = gameObject.AddComponent<FixedJoint>();
             }
             joint.connectedBody = grabber.GetComponent<Rigidbody>();
-            joint.anchor = joint_anchor;
+            joint.anchor = jointAnchor;
             joint.breakForce = breakForce;
             joint.breakTorque = breakTorque;
         }
@@ -52,6 +52,8 @@ namespace MRTK.Grabbables
 
         protected IEnumerator DestroyJointAfterDelay(FixedJoint joint)
         {
+            //Debug.Log("Destroy Joint after delay is being called ");
+            //Debug.Break();
             yield return null;
             if (GrabState == GrabStateEnum.Inactive)
                 Destroy(joint);

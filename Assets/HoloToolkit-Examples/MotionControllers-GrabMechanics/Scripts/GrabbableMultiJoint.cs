@@ -42,10 +42,5 @@ namespace MRTK.Grabbables
 
         [SerializeField]
         private float blendSpeed = 10f;
-
-
     }
-
-
-
 }

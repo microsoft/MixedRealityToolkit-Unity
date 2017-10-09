@@ -66,7 +66,7 @@ namespace MRTK.Grabbables {
         private BaseGrabbable grabbable;
 
         [SerializeField]
-        private float throwMultiplier;
+        private float throwMultiplier = 1.0f;
 
         [SerializeField]
         private bool zeroGravityThrow;

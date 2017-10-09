@@ -42,29 +42,21 @@ namespace MRTK.Grabbables
         /// </summary>
         public void AttemptScale()
         {
-
+            Debug.Log("Attempt scale");
             BaseGrabber[] activeGrabbers = GetComponent<BaseGrabbable>().ActiveGrabbers;
 
+            Debug.Log("We're scaling by distance. ActiveGrabbers Length " + activeGrabbers.Length);
+            //Debug.Break();
             if (GetComponent<BaseGrabbable>().ActiveGrabbers.Length >= minScalarNumForScale)
             {
-                //Velocity
-                //Multiply scale of this scalable object by the velocity of scalar1 and scalar2 (or however many)
-                if (scaleByVelocity)
-                {
-                    foreach (BaseGrabber grabber in grabbable.ActiveGrabbers)
-                    {
-                        int i = 0;
-                        //Debug.Log("Velocity of scalar obj " + MotionControllerInfoTemp.GetVelocity(grabber));
-                        i++;
-                    }           
-                }
+
                 //Distance
                 //snapshot a standard distance that the controls are when the scalable object is engaged
                 //That standard distance between controllers corresponds to the localScale * scaleMultiplier
                 if (scaleByDistance)
                 {
-                    Debug.Log("We're scaling by distance");
-                    if (activeGrabbers.Length == minScalarNumForScale)
+                    Debug.Log("We're scaling by distance "+activeGrabbers.Length);
+                    if (activeGrabbers.Length >= minScalarNumForScale)
                     {
                         //later this should be average distance between all controllers attached.
                         float dist = Vector3.Distance(activeGrabbers[0].GrabHandle.position, activeGrabbers[1].GrabHandle.position);
@@ -101,7 +93,7 @@ namespace MRTK.Grabbables
 
             while (currentlyScaling)
             {
-                // Whoops, we've been let go
+                //  let go
                 if (grabbable.GrabState == GrabStateEnum.Inactive)
                 {
                     currentlyScaling = false;
@@ -124,8 +116,6 @@ namespace MRTK.Grabbables
 
         [Range(1, 5)]
         private float scaleMultiplier = 1.0f;
-        [SerializeField]
-        public bool scaleByVelocity = false;
         [SerializeField]
         private bool scaleByDistance = true;
         private bool readyToScale;

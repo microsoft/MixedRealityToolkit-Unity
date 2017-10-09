@@ -59,10 +59,6 @@ namespace MRTK.Grabbables
 
         private void GetTouchPadPosition(InteractionSourceUpdatedEventArgs obj)
         {
-            //if (obj.state.touchpadPressed)
-            //{
-            //    Debug.Log("Event!~ " + obj.state.source.handedness);
-            //}
             if (GetComponent<BaseGrabbable>().GrabberPrimary != null)
             {
                 if (obj.state.source.handedness == GetComponent<BaseGrabbable>().GrabberPrimary.Handedness)

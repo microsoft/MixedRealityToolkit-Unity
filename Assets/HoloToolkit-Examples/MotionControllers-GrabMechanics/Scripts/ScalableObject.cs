@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 namespace MRTK.Grabbables
 {
     /// <summary>
@@ -7,6 +9,6 @@ namespace MRTK.Grabbables
     /// </summary>
     public class ScalableObject : BaseScalable
     {
-        
+
     }
 }

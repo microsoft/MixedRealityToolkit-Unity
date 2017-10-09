@@ -11,14 +11,17 @@ namespace MRTK.Grabbables
 
     public class UsableObject : BaseUsable
     {
-        protected override void UseEnd()
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected override void UseStart()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Do something here with the usable object...");
+            Debug.LogWarning("Do something here with the usable object...");
+        }
+
+        protected override void UseEnd()
+        {
+            Debug.Log("End of Use on UsableObject...");
+            Debug.LogWarning("End of use on usable object...");
+
         }
     }
 }

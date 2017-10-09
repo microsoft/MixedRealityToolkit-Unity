@@ -164,6 +164,7 @@ namespace MRTK.Grabbables
                 // Otherwise just push the grabber
                 activeGrabbers.Add(grabber);
             }
+            Debug.Log("Attach to grabber is SHOULD BE FIRING NOOWWW.");
             // Attach ourselves to this grabber
             AttachToGrabber(grabber);
             if (OnGrabbed != null)
