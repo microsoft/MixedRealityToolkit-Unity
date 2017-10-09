@@ -120,37 +120,42 @@ namespace HoloToolkit.Unity.InputModule
             public readonly IPointingSource PointingSource;
 
             public Vector3 StartPoint { get; private set; }
+
             public FocusDetails End { get; private set; }
+
             public GameObject PreviousEndObject { get; private set; }
+
+            public RaycastHit LastRaycastHit { get; private set; }
 
             public PointerData(IPointingSource pointingSource)
             {
                 PointingSource = pointingSource;
             }
 
-            public void UpdateHit(RaycastHit physicsHit)
+            public void UpdateHit(RaycastHit hit)
             {
+                LastRaycastHit = hit;
                 PreviousEndObject = End.Object;
 
                 StartPoint = PointingSource.Ray.origin;
                 End = new FocusDetails
                 {
-                    Point = physicsHit.point,
-                    Normal = physicsHit.normal,
-                    Object = physicsHit.transform.gameObject,
+                    Point = hit.point,
+                    Normal = hit.normal,
+                    Object = hit.transform.gameObject,
                 };
             }
 
-            public void UpdateHit(RaycastResult uiHit)
+            public void UpdateHit(RaycastResult hit)
             {
                 PreviousEndObject = End.Object;
 
                 StartPoint = PointingSource.Ray.origin;
                 End = new FocusDetails
                 {
-                    Point = uiHit.worldPosition,
-                    Normal = uiHit.worldNormal,
-                    Object = uiHit.gameObject,
+                    Point = hit.worldPosition,
+                    Normal = hit.worldNormal,
+                    Object = hit.gameObject,
                 };
             }
 
@@ -414,133 +419,148 @@ namespace HoloToolkit.Unity.InputModule
         private void UpdatePointer(PointerData pointer)
         {
             pointer.PointingSource.UpdatePointer();
-
-            Ray pointingRay = pointer.PointingSource.Ray;
-            float extent = GetPointingExtent(pointer);
             var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
 
-            LayerMask combinedLayerMasks = GetCombinedLayerMask(prioritizedLayerMasks);
+            // Perform raycast to determine focused object
+            RaycastPhysics(pointer, prioritizedLayerMasks);
 
-            RaycastHit? physicsHit;
-            RaycastResult? uiHit;
-
-            if (prioritizedLayerMasks.Count > 1)
+            // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+            if (EventSystem.current != null)
             {
-                RaycastHit[] hits = Physics.RaycastAll(pointingRay, extent, combinedLayerMasks);
+                // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                RaycastUnityUI(pointer, prioritizedLayerMasks);
+            }
+        }
 
-                physicsHit = TryGetPreferredHit(hits, prioritizedLayerMasks);
+        /// <summary>
+        /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
+        /// </summary>
+        private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        {
+            bool isHit;
+            RaycastHit physicsHit = default(RaycastHit);
+            float extent = GetPointingExtent(pointer);
+
+            // If there is only one priority, don't prioritize
+            if (prioritizedLayerMasks.Length == 1)
+            {
+                isHit = Physics.Raycast(pointer.PointingSource.Ray, out physicsHit, extent, prioritizedLayerMasks[0]);
             }
             else
             {
-                RaycastHit hit;
+                // Raycast across all layers and prioritize
+                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(pointer.PointingSource.Ray, extent, /*All layers*/ -1), prioritizedLayerMasks);
+                isHit = hit.HasValue;
 
-                physicsHit = Physics.Raycast(pointingRay, out hit, extent, combinedLayerMasks)
-                    ? (RaycastHit?)hit
-                    : null;
-            }
-
-            if (EventSystem.current == null)
-            {
-                uiHit = null;
-            }
-            else
-            {
-                GetPointerEventData();
-
-                Camera mainCamera = CameraCache.Main;
-
-                // 2D cursor position
-                Vector2 cursorScreenPos = mainCamera.WorldToScreenPoint(physicsHit.Value.point);
-                UnityUIPointerEvent.delta = cursorScreenPos - UnityUIPointerEvent.position;
-                UnityUIPointerEvent.position = cursorScreenPos;
-
-                uiRaycastResults.Clear();
-                EventSystem.current.RaycastAll(UnityUIPointerEvent, uiRaycastResults);
-                uiHit = TryGetPreferredHit(uiRaycastResults, prioritizedLayerMasks);
-
-                if (uiHit != null)
+                if (isHit)
                 {
-                    RaycastResult patchedUiHit = uiHit.Value;
-
-                    float totalDistance = (patchedUiHit.distance + CameraCache.Main.nearClipPlane);
-
-                    patchedUiHit.distance = totalDistance;
-
-                    Debug.Assert((patchedUiHit.worldPosition == Vector3.zero), "As of Unity 5.5, UI Raycasts always"
-                        + " return worldPosition (0,0,0), so we'll fill it in here with the correct value. If this"
-                        + " assertion fires, see what data is available, and consider using it instead of our fill in."
-                        );
-
-                    patchedUiHit.worldPosition = (pointingRay.origin + (totalDistance * pointingRay.direction));
-
-                    Debug.Assert((patchedUiHit.worldNormal == Vector3.zero), "As of Unity 5.5, UI Raycasts always"
-                        + " return worldNormal (0,0,0), so we'll fill it in here with something incorrect, but"
-                        + " reasonable. If this assertion fires, see what data is available, and consider using it"
-                        + " instead of our fill in."
-                        );
-
-                    patchedUiHit.worldNormal = (-patchedUiHit.gameObject.transform.forward);
-
-                    uiHit = patchedUiHit;
+                    physicsHit = hit.Value;
                 }
             }
 
-            if ((physicsHit != null) && (uiHit != null))
+            if (isHit)
             {
-                for (int iMask = 0; iMask < prioritizedLayerMasks.Count; iMask++)
+                pointer.UpdateHit(physicsHit);
+            }
+            else
+            {
+                pointer.UpdateHit(GetPointingExtent(pointer));
+            }
+        }
+
+        private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        {
+            GetPointerEventData();
+
+            Camera mainCamera = CameraCache.Main;
+
+            // 2D cursor position
+            Vector2 cursorScreenPos = mainCamera.WorldToScreenPoint(pointer.End.Point);
+            UnityUIPointerEvent.delta = cursorScreenPos - UnityUIPointerEvent.position;
+            UnityUIPointerEvent.position = cursorScreenPos;
+
+            // Graphics raycast
+            uiRaycastResults.Clear();
+            EventSystem.current.RaycastAll(UnityUIPointerEvent, uiRaycastResults);
+            RaycastResult uiRaycastResult = FindClosestRaycastHitInLayerMasks(uiRaycastResults, prioritizedLayerMasks);
+            UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
+
+            // If we have a raycast result, check if we need to overwrite the 3D raycast info
+            if (uiRaycastResult.gameObject != null)
+            {
+                bool superseded3DObject = false;
+                if (pointer.End.Object != null)
                 {
-                    LayerMask mask = prioritizedLayerMasks[iMask];
-
-                    bool physicsIsInMask = physicsHit.Value.transform.gameObject.IsInLayerMask(mask);
-                    bool uiIsInMask = uiHit.Value.gameObject.IsInLayerMask(mask);
-
-                    if (physicsIsInMask && uiIsInMask)
+                    // Check layer prioritization
+                    if (prioritizedLayerMasks.Length > 1)
                     {
-                        // In the case of tie in priority and distance, we give preference to the UI,
-                        // assuming that if people stick UI on top of 3D objects, they probably want
-                        // the UI to take the pointer.
+                        // Get the index in the prioritized layer masks
+                        int uiLayerIndex = FindLayerListIndex(uiRaycastResult.gameObject.layer, prioritizedLayerMasks);
+                        int threeDLayerIndex = FindLayerListIndex(pointer.LastRaycastHit.collider.gameObject.layer, prioritizedLayerMasks);
 
-                        if (uiHit.Value.distance <= physicsHit.Value.distance)
+                        if (threeDLayerIndex > uiLayerIndex)
                         {
-                            pointer.UpdateHit(uiHit.Value);
-                            break;
+                            superseded3DObject = true;
                         }
-                        else
+                        else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            pointer.UpdateHit(physicsHit.Value);
-                            break;
+                            if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
+                            {
+                                superseded3DObject = true;
+                            }
                         }
-                    }
-                    else if (physicsIsInMask)
-                    {
-                        pointer.UpdateHit(physicsHit.Value);
-                        break;
-                    }
-                    else if (uiIsInMask)
-                    {
-                        pointer.UpdateHit(uiHit.Value);
-                        break;
                     }
                     else
                     {
-                        // Nothing... keep searching for a mask that contains at least one of the hits.
+                        if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
+                        {
+                            superseded3DObject = true;
+                        }
                     }
                 }
 
-                Debug.Assert(pointer.End.Object != null);
+                // Check if we need to overwrite the 3D raycast info
+                if (pointer.End.Object == null || superseded3DObject)
+                {
+                    pointer.UpdateHit(uiRaycastResult);
+                }
             }
-            else if (physicsHit != null)
+        }
+        private int FindLayerListIndex(int layer, LayerMask[] layerMaskList)
+        {
+            for (int i = 0; i < layerMaskList.Length; i++)
             {
-                pointer.UpdateHit(physicsHit.Value);
+                if (IsLayerInLayerMask(layer, layerMaskList[i].value))
+                {
+                    return i;
+                }
             }
-            else if (uiHit != null)
+
+            return -1;
+        }
+
+        private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
+        {
+            int combinedLayerMask = 0;
+            for (int i = 0; i < layerMaskList.Length; i++)
             {
-                pointer.UpdateHit(uiHit.Value);
+                combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
             }
-            else
+
+            RaycastResult? minHit = null;
+            for (var i = 0; i < candidates.Count; ++i)
             {
-                pointer.UpdateHit(extent);
+                if (candidates[i].gameObject == null || !IsLayerInLayerMask(candidates[i].gameObject.layer, combinedLayerMask))
+                {
+                    continue;
+                }
+                if (minHit == null || candidates[i].distance < minHit.Value.distance)
+                {
+                    minHit = candidates[i];
+                }
             }
+
+            return minHit ?? new RaycastResult();
         }
 
         private void UpdateFocusedObjects()
@@ -697,114 +717,41 @@ namespace HoloToolkit.Unity.InputModule
             return null;
         }
 
-        private RaycastResult? TryGetPreferredHit(IList<RaycastResult> semiOrderedHits, IList<LayerMask> prioritizedLayerMasks)
+        private bool IsLayerInLayerMask(int layer, int layerMask)
         {
-            Debug.Assert(semiOrderedHits != null);
-            Debug.Assert(prioritizedLayerMasks != null);
-
-            RaycastResult? preferred = null;
-            int preferredLayerMaskIndex = int.MaxValue;
-
-            for (int iHit = 0; iHit < semiOrderedHits.Count; iHit++)
-            {
-                RaycastResult hit = semiOrderedHits[iHit];
-                int hitLayerMaskIndex = GetLayerMaskIndex(hit.gameObject, prioritizedLayerMasks);
-
-
-                // First, prefer by order in priority layer masks list:
-
-                if ((preferred == null) || (hitLayerMaskIndex < preferredLayerMaskIndex))
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hitLayerMaskIndex > preferredLayerMaskIndex)
-                {
-                    continue;
-                }
-                Debug.Assert(hitLayerMaskIndex == preferredLayerMaskIndex);
-
-
-                // Then by biggest sorting layer:
-
-                if (hit.sortingLayer > preferred.Value.sortingLayer)
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hit.sortingLayer < preferred.Value.sortingLayer)
-                {
-                    continue;
-                }
-                Debug.Assert(hit.sortingLayer == preferred.Value.sortingLayer);
-
-
-                // Then by biggest order in layer:
-
-                if (hit.sortingOrder > preferred.Value.sortingOrder)
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hit.sortingOrder < preferred.Value.sortingOrder)
-                {
-                    continue;
-                }
-                Debug.Assert(hit.sortingOrder == preferred.Value.sortingOrder);
-
-
-                // Then by smallest distance:
-
-                if (hit.distance < preferred.Value.distance)
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hit.distance > preferred.Value.distance)
-                {
-                    continue;
-                }
-
-                Debug.Assert(hit.distance == preferred.Value.distance);
-
-                // Then by order in hits list, which seems to break the tie correctly for UI layered flat on
-                // the same canvas. By virtue of letting the loop continue here without updating preferred,
-                // we break the tie with the order in hits list.
-            }
-
-            return preferred;
+            return ((1 << layer) & layerMask) != 0;
         }
 
-        private int GetLayerMaskIndex(GameObject objectToCheck, IList<LayerMask> prioritizedLayerMasks)
+        private RaycastHit? PrioritizeHits(RaycastHit[] hits, LayerMask[] layerMasks)
         {
-            Debug.Assert(prioritizedLayerMasks != null);
-
-            for (int iMask = 0; iMask < prioritizedLayerMasks.Count; iMask++)
+            if (hits.Length == 0)
             {
-                if (objectToCheck.IsInLayerMask(prioritizedLayerMasks[iMask]))
+                return null;
+            }
+
+            // Return the minimum distance hit within the first layer that has hits.
+            // In other words, sort all hit objects first by layerMask, then by distance.
+            for (int layerMaskIdx = 0; layerMaskIdx < layerMasks.Length; layerMaskIdx++)
+            {
+                RaycastHit? minHit = null;
+
+                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
                 {
-                    return iMask;
+                    RaycastHit hit = hits[hitIdx];
+                    if (IsLayerInLayerMask(hit.transform.gameObject.layer, layerMasks[layerMaskIdx]) &&
+                        (minHit == null || hit.distance < minHit.Value.distance))
+                    {
+                        minHit = hit;
+                    }
+                }
+
+                if (minHit != null)
+                {
+                    return minHit;
                 }
             }
 
-            Debug.Assert(false);
-            return int.MaxValue;
-        }
-
-        private LayerMask GetCombinedLayerMask(IList<LayerMask> toCombine)
-        {
-            int combined = 0;
-
-            for (int i = 0; i < toCombine.Count; i++)
-            {
-                combined |= toCombine[i];
-            }
-
-            return combined;
+            return null;
         }
 
         #endregion
