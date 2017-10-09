@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Transform that should be used as the source of the gaze position and rotation.
         /// Defaults to the main camera.
         /// </summary>
-        [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to Camera.Main")]
+        [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to CameraCache.Main")]
         public Transform GazeTransform;
 
         [Tooltip("True to draw a debug view of the ray.")]
