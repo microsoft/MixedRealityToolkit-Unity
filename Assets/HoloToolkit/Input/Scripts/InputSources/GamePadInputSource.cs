@@ -119,16 +119,6 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetPosition(uint sourceId, out Vector3 position)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
-        {
-            throw new System.NotImplementedException();
-        }
-
         #endregion // Base Input Source Methods
     }
 }

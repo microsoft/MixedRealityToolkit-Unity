@@ -32,8 +32,8 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         [Tooltip("Sets the time before the gesture starts after a press has occured, handy when a select event is also being used")]
         public float StartDelay;
-        
-        [Tooltip ("The GestureInteractiveControl to send gesture updates to")]
+
+        [Tooltip("The GestureInteractiveControl to send gesture updates to")]
         public GestureInteractiveControl Control;
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 HandleStartGesture();
             }
         }
-        
+
         // Makes sure when a gesture interactive gets cleared the input source gets the gesture lost event.
         public static void ClearGestureModalInput(GameObject source)
         {
@@ -143,7 +143,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
-            mCurrentInputSource.TryGetPosition(mCurrentInputSourceId, out handPosition);
+            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
 
             mStartHandPosition = handPosition;
             mCurrentHandPosition = handPosition;
@@ -209,15 +209,15 @@ namespace HoloToolkit.Examples.InteractiveElements
             mTempInputSource = null;
 
             Vector3 handPosition;
-            mCurrentInputSource.TryGetPosition(mCurrentInputSourceId, out handPosition);
+            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
 
             mCurrentHandPosition = handPosition;
             Control.ManipulationUpdate(
-				mStartHandPosition, 
-				mCurrentHandPosition, 
-				mStartHeadPosition, 
-				mStartHeadRay, 
-				lost ? GestureManipulationState.Lost : GestureManipulationState.None);
+                mStartHandPosition,
+                mCurrentHandPosition,
+                mStartHeadPosition,
+                mStartHeadRay,
+                lost ? GestureManipulationState.Lost : GestureManipulationState.None);
 
             InputManager.Instance.ClearModalInputStack();
 
@@ -266,7 +266,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
-            mCurrentInputSource.TryGetPosition(mCurrentInputSourceId, out handPosition);
+            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
 
             return handPosition;
         }
@@ -283,7 +283,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             {
                 mCursor = FindObjectOfType<Cursor>();
             }
-            
+
             if (HideCursorOnManipulation && mCursor != null)
             {
                 mCursor.SetVisibility(!state);

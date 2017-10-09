@@ -119,9 +119,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnNavigationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
                 eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+                eventData.NormalizedOffset.x,
+                eventData.NormalizedOffset.y,
+                eventData.NormalizedOffset.z);
         }
 
         public void OnNavigationUpdated(NavigationEventData eventData)
@@ -131,9 +131,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 Debug.LogFormat("OnNavigationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                     eventData.InputSource,
                     eventData.SourceId,
-                    eventData.CumulativeDelta.x,
-                    eventData.CumulativeDelta.y,
-                    eventData.CumulativeDelta.z);
+                    eventData.NormalizedOffset.x,
+                    eventData.NormalizedOffset.y,
+                    eventData.NormalizedOffset.z);
             }
         }
 
@@ -142,9 +142,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnNavigationCompleted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
                 eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+                eventData.NormalizedOffset.x,
+                eventData.NormalizedOffset.y,
+                eventData.NormalizedOffset.z);
         }
 
         public void OnNavigationCanceled(NavigationEventData eventData)
@@ -152,9 +152,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.LogFormat("OnNavigationCanceled\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
                 eventData.SourceId,
-                eventData.CumulativeDelta.x,
-                eventData.CumulativeDelta.y,
-                eventData.CumulativeDelta.z);
+                eventData.NormalizedOffset.x,
+                eventData.NormalizedOffset.y,
+                eventData.NormalizedOffset.z);
         }
     }
 }

@@ -76,25 +76,5 @@ namespace HoloToolkit.Unity.InputModule
         bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedValue);
         bool TryGetGrasp(uint sourceId, out bool isPressed);
         bool TryGetMenu(uint sourceId, out bool isPressed);
-
-        /// <summary>
-        /// Returns the position of the input source, if available.
-        /// Not all input sources have positional information.
-        /// </summary>
-        /// <param name="sourceId">ID of the source for which the position should be retrieved.</param>
-        /// <param name="position">Out parameter filled with the position if available, otherwise the zero vector.</param>
-        /// <returns>True if a position was retrieved, false if not.</returns>
-        [Obsolete]
-        bool TryGetPosition(uint sourceId, out Vector3 position);
-
-        /// <summary>
-        /// Returns the orientation of the input source, if available.
-        /// Not all input sources have orientation information.
-        /// </summary>
-        /// <param name="sourceId">ID of the source for which the position should be retrieved.</param>
-        /// <param name="orientation">Out parameter filled with the orientation if available, otherwise the zero vector.</param>
-        /// <returns>True if an orientation was retrieved, false if not.</returns>
-        [Obsolete]
-        bool TryGetOrientation(uint sourceId, out Quaternion orientation);
     }
 }

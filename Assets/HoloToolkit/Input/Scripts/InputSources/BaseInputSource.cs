@@ -18,12 +18,6 @@ namespace HoloToolkit.Unity.InputModule
             return ((GetSupportedInputInfo(sourceId) & inputInfo) == inputInfo);
         }
 
-        [Obsolete("Use TryGetPointerPosition")]
-        public abstract bool TryGetPosition(uint sourceId, out Vector3 position);
-
-        [Obsolete("Use TryGetPointerRotation")]
-        public abstract bool TryGetOrientation(uint sourceId, out Quaternion orientation);
-
         public abstract bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind);
 
         public abstract bool TryGetPointerPosition(uint sourceId, out Vector3 position);

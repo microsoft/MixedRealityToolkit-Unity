@@ -81,16 +81,6 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The total amount of input source movement that needs to happen to signal intent to start a manipulation. This is a distance, but not a distance in any one direction.")]
         private float manipulationStartMovementThreshold = 0.03f;
 
-        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool TryGetPosition(uint sourceId, out Vector3 position)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");

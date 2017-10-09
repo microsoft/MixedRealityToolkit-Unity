@@ -374,16 +374,6 @@ namespace HoloToolkit.Unity.InputModule
 
         #region BaseInputSource implementations
 
-        public override bool TryGetPosition(uint sourceId, out Vector3 position)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             var retVal = SupportedInputInfo.None;

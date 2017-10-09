@@ -89,7 +89,7 @@ namespace HoloToolkit.Unity.InputModule
             throw new NotImplementedException();
         }
 
-        public override bool TryGetPosition(uint sourceId, out Vector3 position)
+        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
@@ -106,7 +106,7 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        public override bool TryGetPointerRotation(uint sourceId, out Quaternion orientation)
         {
             // Orientation is not supported by any Windows interaction sources
             orientation = Quaternion.identity;
@@ -114,11 +114,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             throw new NotImplementedException();
         }
@@ -149,11 +144,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         public override bool TryGetGrasp(uint sourceId, out bool isPressed)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
             throw new NotImplementedException();
         }
