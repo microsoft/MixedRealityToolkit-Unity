@@ -146,16 +146,16 @@ namespace HoloToolkit.Unity.InputModule
                 };
             }
 
-            public void UpdateHit(RaycastResult hit)
+            public void UpdateHit(RaycastResult result)
             {
                 PreviousEndObject = End.Object;
 
                 StartPoint = PointingSource.Ray.origin;
                 End = new FocusDetails
                 {
-                    Point = hit.worldPosition,
-                    Normal = hit.worldNormal,
-                    Object = hit.gameObject,
+                    Point = result.worldPosition,
+                    Normal = result.worldNormal,
+                    Object = result.gameObject,
                 };
             }
 
@@ -184,7 +184,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private readonly List<PointerData> pointers = new List<PointerData>();
+        private readonly List<PointerData> pointers = new List<PointerData>(0);
 
         /// <summary>
         /// GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
