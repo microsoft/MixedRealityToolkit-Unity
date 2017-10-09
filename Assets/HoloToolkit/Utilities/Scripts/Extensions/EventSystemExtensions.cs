@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity
     public static class EventSystemExtensions
     {
         private static readonly List<RaycastResult> RaycastResults = new List<RaycastResult>();
+        private static readonly List<ComparableRaycastResult> ComparableRaycastResults = new List<ComparableRaycastResult>();
         private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         /// <summary>
@@ -17,46 +18,24 @@ namespace HoloToolkit.Unity
         /// consider separate canvases.
         /// </summary>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
-        public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, IEnumerable<LayerMask> layerMasks)
+        public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
         {
             RaycastResults.Clear();
             eventSystem.RaycastAll(pointerEventData, RaycastResults);
-            return FindClosestRaycastHitInLayerMasks(layerMasks);
+            return PrioritizeRaycastResult(layerMasks);
         }
 
-        /// <summary>
-        /// Find the closest raycast hit in the list of RaycastResults that is also included in the LayerMask list.  
-        /// </summary>
-        /// <param name="layerMaskList">List of layers to support</param>
-        /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
-        private static RaycastResult FindClosestRaycastHitInLayerMasks(IEnumerable<LayerMask> layerMaskList)
+        private static RaycastResult PrioritizeRaycastResult(LayerMask[] layerMaskPrio)
         {
-            int combinedLayerMask = layerMaskList.Combine();
-
-            for (var i = RaycastResults.Count - 1; i >= 0; i--)
+            ComparableRaycastResults.Clear();
+            foreach (var raycastResult in RaycastResults)
             {
-                var candidate = RaycastResults[i];
-                if (candidate.gameObject && candidate.gameObject.layer.IsInLayerMask(combinedLayerMask)) continue;
-                RaycastResults.Remove(candidate);
+                if (raycastResult.gameObject == null) { continue; }
+                var layerMaskIndex = raycastResult.gameObject.layer.FindLayerListIndex(layerMaskPrio);
+                if (layerMaskIndex == -1) { continue; }
+                ComparableRaycastResults.Add(new ComparableRaycastResult(raycastResult, layerMaskIndex));
             }
-            ;
-            return RaycastResults.Count > 0 ? GetClosestRaycast() : default(RaycastResult);
+            return ComparableRaycastResults.MaxOrDefault(RaycastResultComparer).RaycastResult;
         }
-
-        private static RaycastResult GetClosestRaycast()
-        {
-            var max = RaycastResults[0];
-
-            for (var i = 1; i < RaycastResults.Count; i++)
-            {
-                if (RaycastResultComparer.Compare(max, RaycastResults[i]) > 0)
-                {
-                    max = RaycastResults[i];
-                }
-            }
-
-            return max;
-        }
-
     }
 }

@@ -7,17 +7,30 @@ using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity
 {
-    public class RaycastResultComparer : IComparer<RaycastResult>
+    public struct ComparableRaycastResult
     {
-        private static readonly List<Func<RaycastResult, RaycastResult, int>> Comparers = new List<Func<RaycastResult, RaycastResult, int>>
+        public readonly int LayerMaskIndex;
+        public readonly RaycastResult RaycastResult;
+
+        public ComparableRaycastResult(RaycastResult raycastResult, int layerMaskIndex = 0)
         {
+            RaycastResult = raycastResult;
+            LayerMaskIndex = layerMaskIndex;
+        }
+    }
+
+    public class RaycastResultComparer : IComparer<ComparableRaycastResult>
+    {
+        private static readonly List<Func<ComparableRaycastResult, ComparableRaycastResult, int>> Comparers = new List<Func<ComparableRaycastResult, ComparableRaycastResult, int>>
+        {
+            CompareRaycastsByLayerMaskPrioritization,
             CompareRaycastsBySortingLayer,
             CompareRaycastsBySortingOrder,
             CompareRaycastsByCanvasDepth,
             CompareRaycastsByDistance,
         };
 
-        public int Compare(RaycastResult left, RaycastResult right)
+        public int Compare(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             for (var i = 0; i < Comparers.Count; i++)
             {
@@ -30,33 +43,39 @@ namespace HoloToolkit.Unity
             return 0;
         }
 
-        private static int CompareRaycastsBySortingOrder(RaycastResult left, RaycastResult right)
+        private static int CompareRaycastsByLayerMaskPrioritization(ComparableRaycastResult left, ComparableRaycastResult right)
         {
-            //Higher is better
-            return right.sortingOrder.CompareTo(left.sortingOrder);
+            //Lower is better, -1 is not relevant
+            return right.LayerMaskIndex.CompareTo(left.LayerMaskIndex);
         }
 
-        private static int CompareRaycastsBySortingLayer(RaycastResult left, RaycastResult right)
+        private static int CompareRaycastsBySortingLayer(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             //Higher is better
-            return right.sortingLayer.CompareTo(left.sortingLayer);
+            return left.RaycastResult.sortingLayer.CompareTo(right.RaycastResult.sortingLayer);
         }
 
-        private static int CompareRaycastsByCanvasDepth(RaycastResult left, RaycastResult right)
+        private static int CompareRaycastsBySortingOrder(ComparableRaycastResult left, ComparableRaycastResult right)
+        {
+            //Higher is better
+            return left.RaycastResult.sortingOrder.CompareTo(right.RaycastResult.sortingOrder);
+        }
+
+        private static int CompareRaycastsByCanvasDepth(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             //Module is the graphic raycaster on the canvases.
-            if (left.module.transform.IsParentOrChildOf(right.module.transform))
+            if (left.RaycastResult.module.transform.IsParentOrChildOf(right.RaycastResult.module.transform))
             {
                 //Higher is better
-                return right.depth.CompareTo(left.depth);
+                return left.RaycastResult.depth.CompareTo(right.RaycastResult.depth);
             }
             return 0;
         }
 
-        private static int CompareRaycastsByDistance(RaycastResult left, RaycastResult right)
+        private static int CompareRaycastsByDistance(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             //Lower is better
-            return left.distance.CompareTo(right.distance);
+            return right.RaycastResult.distance.CompareTo(left.RaycastResult.distance);
         }
     }
 }
