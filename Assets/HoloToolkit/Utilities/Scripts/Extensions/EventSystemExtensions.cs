@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
 
             for (var i = 1; i < RaycastResults.Count; i++)
             {
-                if (RaycastResultComparer.Compare(max, RaycastResults[i]) < 0)
+                if (RaycastResultComparer.Compare(max, RaycastResults[i]) > 0)
                 {
                     max = RaycastResults[i];
                 }

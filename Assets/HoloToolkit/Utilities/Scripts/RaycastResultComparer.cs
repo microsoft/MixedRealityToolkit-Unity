@@ -20,14 +20,14 @@ namespace HoloToolkit.Unity
             //Module is the graphic raycaster on the canvases.
             if (left.module.transform.IsParentOrChildOf(right.module.transform))
             {
-                return left.depth.CompareTo(right.depth);
+                return right.depth.CompareTo(left.depth);
             }
             return 0;
         }
 
         private static int CompareRaycastsByDistance(RaycastResult left, RaycastResult right)
         {
-            return right.distance.CompareTo(left.distance);
+            return left.distance.CompareTo(right.distance);
         }
     }
 }
