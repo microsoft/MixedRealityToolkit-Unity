@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 47967672}
   - component: {fileID: 47967671}
   m_Layer: 5
-  m_Name: CanvasBackNested
+  m_Name: CanvasFrontNested
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 160117910}
   - component: {fileID: 160117909}
   m_Layer: 5
-  m_Name: CanvasBack
+  m_Name: CanvasMiddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2105,7 +2105,7 @@ GameObject:
   - component: {fileID: 1745901963}
   - component: {fileID: 1745901962}
   m_Layer: 4
-  m_Name: CanvasFrontNested
+  m_Name: CanvasBackNested
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2389,7 +2389,7 @@ GameObject:
   - component: {fileID: 1781874041}
   - component: {fileID: 1781874040}
   m_Layer: 5
-  m_Name: CanvasTargetNested
+  m_Name: CanvasMiddleNested
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
