@@ -22,9 +22,15 @@ namespace MRTK.Grabbables
             get { return state; }
         }
 
-        protected abstract void UseStart();
+        protected virtual void UseStart()
+        {
+            //Child do something
+        }
 
-        protected abstract void UseEnd();
+        protected virtual void UseEnd()
+        {
+            //Child do something
+        }
 
         //Subscribe GrabStart and GrabEnd to InputEvents for Grip
         protected virtual void OnEnable()
@@ -41,13 +47,16 @@ namespace MRTK.Grabbables
 
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
+            Debug.Log("Base Usable input start");
             if (obj.pressType == pressType && (handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness))
             {
-                if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
-                {
+                Debug.Log("Base Usable one step deeper");
+
+                //if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
+               // {
                     state = UseStateEnum.Active;
                     UseStart();
-                }
+               // }
             }
         }
 

@@ -11,6 +11,17 @@ namespace MRTK.Grabbables
 
     public class UsableObject : BaseUsable
     {
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+        }
+
+
         protected override void UseStart()
         {
             Debug.Log("Do something here with the usable object...");
