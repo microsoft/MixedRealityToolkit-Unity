@@ -12,10 +12,10 @@ namespace HoloToolkit.Unity
     public class SceneSettingsWindow : AutoConfigureWindow<SceneSettingsWindow.SceneSetting>
     {
         /// <summary>
-        /// Can be found in the meta file of the camera prefab.  We use the GUID in case people move the toolkit folders & assets around in their own projects.
-        /// TODO: Update prefab GUID to point to MixedRealityCamera.
+        /// Can be found in the meta file of the camera prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
+        /// <remarks>Currently points to the MixedRealityCameraParent.prefab</remarks>
         /// </summary>
-        private const string CameraPrefabGUID = "d379ed0a5618c9f479f58bd83a2d0ad3";
+        private const string CameraPrefabGUID = "d29bc40b7f3df26479d6a0aac211c355";
 
         #region Nested Types
 
