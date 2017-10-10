@@ -31,10 +31,6 @@ namespace MRTK.Grabbables
         /// <param name="obj"></param>
         /// 
 
-        protected void Start()
-        {
-        }
-
         protected override void UseStart()
         {
             StartCoroutine(MakeRotate( ));
