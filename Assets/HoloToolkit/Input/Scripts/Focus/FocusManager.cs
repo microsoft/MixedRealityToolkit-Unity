@@ -523,18 +523,6 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
-        private int FindLayerListIndex(int layer, LayerMask[] layerMaskList)
-        {
-            for (int i = 0; i < layerMaskList.Length; i++)
-            {
-                if (IsLayerInLayerMask(layer, layerMaskList[i].value))
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
 
         private void UpdateFocusedObjects()
         {
@@ -661,38 +649,6 @@ namespace HoloToolkit.Unity.InputModule
         private float GetPointingExtent(PointerData pointer)
         {
             return (pointer.PointingSource.ExtentOverride ?? pointingExtent);
-        }
-
-        private RaycastHit? TryGetPreferredHit(IList<RaycastHit> orderedHits, IList<LayerMask> prioritizedLayerMasks)
-        {
-            Debug.Assert(orderedHits != null);
-            Debug.Assert(prioritizedLayerMasks != null);
-
-            // These hits are preferred based on:
-            //   1. order in priority layer masks list.
-            //   2. order in hits list, which should correspond to smallest distance.
-
-            for (int iMask = 0; iMask < prioritizedLayerMasks.Count; iMask++)
-            {
-                LayerMask mask = prioritizedLayerMasks[iMask];
-
-                for (int iHit = 0; iHit < orderedHits.Count; iHit++)
-                {
-                    RaycastHit hit = orderedHits[iHit];
-
-                    if (hit.transform.gameObject.IsInLayerMask(mask))
-                    {
-                        return hit;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private bool IsLayerInLayerMask(int layer, int layerMask)
-        {
-            return ((1 << layer) & layerMask) != 0;
         }
 
         private RaycastHit? PrioritizeHits(RaycastHit[] hits, LayerMask[] layerMasks)
