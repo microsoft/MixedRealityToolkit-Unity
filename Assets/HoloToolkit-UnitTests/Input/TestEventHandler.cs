@@ -15,6 +15,8 @@ namespace HoloToolkit.Unity.Tests
 
     public class TestEventHandler : MonoBehaviour, ITestEventSystemHandler, IFocusable
     {
+        public bool IsGlobal;
+
         public static readonly ExecuteEvents.EventFunction<ITestEventSystemHandler> OnTestHandler =
         delegate (ITestEventSystemHandler handler, BaseEventData eventData)
         {
@@ -25,6 +27,10 @@ namespace HoloToolkit.Unity.Tests
 
         public void OnTest(BaseEventData eventData)
         {
+            if (!IsGlobal)
+            {
+                eventData.Use();
+            }
             EventFiredCallback(gameObject, eventData);
         }
 

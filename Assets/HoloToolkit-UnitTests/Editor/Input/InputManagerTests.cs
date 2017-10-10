@@ -13,7 +13,6 @@ namespace HoloToolkit.Unity.Tests
     public class InputManagerTests
     {
         private List<GameObject> receivedEventSources;
-        private BaseEventData eventData;
 
         [SetUp]
         public void SetUpTests()
@@ -25,8 +24,7 @@ namespace HoloToolkit.Unity.Tests
             inputManagerContainer.AddComponent<InputManager>();
             inputManagerContainer.AddComponent<GazeManager>();
             inputManagerContainer.AddComponent<FocusManager>();
-            var eventSystem = inputManagerContainer.AddComponent<EventSystem>();
-            eventData = new BaseEventData(eventSystem);
+            inputManagerContainer.AddComponent<EventSystem>();
 
             inputManagerContainer.transform.position = inputManagerContainer.transform.forward * -5;
             //call awake and start 
@@ -244,13 +242,16 @@ namespace HoloToolkit.Unity.Tests
 
         private GameObject CreateGlobalTestHandler()
         {
-            return CreateTestHandler().AddComponent<SetGlobalListener>().gameObject;
+            var testHandler = CreateTestHandler();
+            testHandler.GetComponent<TestEventHandler>().IsGlobal = true;
+            testHandler.AddComponent<SetGlobalListener>();
+            return testHandler;
         }
 
         private void FireTestEvent()
         {
             receivedEventSources = new List<GameObject>();
-            InputManager.Instance.HandleEvent(eventData, TestEventHandler.OnTestHandler);
+            InputManager.Instance.HandleEvent(new BaseEventData(EventSystem.current), TestEventHandler.OnTestHandler);
         }
 
         private void OnEventFired(GameObject source, BaseEventData baseEventData)
