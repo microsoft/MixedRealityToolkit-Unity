@@ -33,7 +33,11 @@ namespace HoloToolkit.Unity
         {
             if (Values[SceneSetting.AddMixedRealityCamera])
             {
-                DestroyImmediate(CameraCache.Main.gameObject.GetParentRoot());
+                if (CameraCache.Main != null)
+                {
+                    DestroyImmediate(CameraCache.Main.gameObject.GetParentRoot());
+                }
+
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
             }
 

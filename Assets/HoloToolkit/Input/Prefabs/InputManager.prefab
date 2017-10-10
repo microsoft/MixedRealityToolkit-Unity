@@ -57,7 +57,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010261267946}
   - component: {fileID: 114000012864906760}
-  - component: {fileID: 114902642943532050}
   m_Layer: 0
   m_Name: GesturesInput
   m_TagString: Untagged
@@ -234,14 +233,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointingExtent: 10
-  pointingPrioritizedLayerMasks:
+  pointingRaycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291
-  autoRegisteredPointers: []
+  registeredPointers: []
   autoRegisterGazePointerIfNoPointersRegistered: 1
-  autoRegisteredPointableCanvases: []
-  DebugDrawPointingRays: 0
-  DebugDrawPointingRayColors: []
+  debugDrawPointingRays: 0
+  debugDrawPointingRayColors: []
 --- !u!114 &114742747811649402
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -256,23 +254,6 @@ MonoBehaviour:
   ControllerPointerStabilizer: {fileID: 114345042324023316}
   Cursor: {fileID: 0}
   SearchForCursorIfUnset: 1
---- !u!114 &114902642943532050
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012616863954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef7d866386841064db13b68ce22de4d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GamePadButtonA: XBOX_A
-  GamePadId: 50000
-  HoldStartedInterval: 2
-  HoldCompletedInterval: 3
-  NavigateAroundXAxisName: CONTROLLER_LEFT_STICK_HORIZONTAL
-  NavigateAroundYAxisName: CONTROLLER_RIGHT_STICK_HORIZONTAL
 --- !u!114 &114950568511066590
 MonoBehaviour:
   m_ObjectHideFlags: 1
