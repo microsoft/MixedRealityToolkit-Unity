@@ -316,7 +316,8 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     // If no modifier is on the target, just use the hit result to set cursor position
                     targetPosition = focusDetails.Point + (lookForward * SurfaceCursorDistance);
-                    targetRotation = Quaternion.LookRotation(Vector3.Lerp(focusDetails.Normal, lookForward, LookRotationBlend), Vector3.up);
+                    Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, LookRotationBlend);
+                    targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
                 }
             }
 

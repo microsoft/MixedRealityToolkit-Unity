@@ -595,76 +595,107 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0decd33ba8702954885a62b5bc1a778e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadPointer: {fileID: 0}
+  LoadPointer: {fileID: 0}
   MinCursorDistance: 1
   DefaultCursorDistance: 2
   SurfaceCursorDistance: 0.02
+  UseUnscaledTime: 1
   PositionLerpTime: 0.01
   ScaleLerpTime: 0.01
   RotationLerpTime: 0.01
-  LookRotationBlend: 0.5
+  LookRotationBlend: 0
   PrimaryCursorVisual: {fileID: 4000014090385390}
   CursorStateData:
   - Name: Observe
     CursorState: 0
     Parameter:
-      type: 3
-      defaultInt: 0
-      defaultFloat: 0
-      defaultBool: 0
-      name: CursorState
+      Type: 3
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: CursorState
+    AnimInputType: 0
+    AnimParameterName: 
+    AnimBoolValue: 0
+    AnimIntValue: 0
+    AnimFloatValue: 0
   - Name: ObserveHover
     CursorState: 1
     Parameter:
-      type: 3
-      defaultInt: 1
-      defaultFloat: 0
-      defaultBool: 0
-      name: CursorState
+      Type: 3
+      DefaultInt: 1
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: CursorState
+    AnimInputType: 0
+    AnimParameterName: 
+    AnimBoolValue: 0
+    AnimIntValue: 0
+    AnimFloatValue: 0
   - Name: Interact
     CursorState: 2
     Parameter:
-      type: 3
-      defaultInt: 2
-      defaultFloat: 0
-      defaultBool: 0
-      name: CursorState
+      Type: 3
+      DefaultInt: 2
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: CursorState
+    AnimInputType: 0
+    AnimParameterName: 
+    AnimBoolValue: 0
+    AnimIntValue: 0
+    AnimFloatValue: 0
   - Name: InteractHover
     CursorState: 3
     Parameter:
-      type: 3
-      defaultInt: 3
-      defaultFloat: 0
-      defaultBool: 0
-      name: CursorState
+      Type: 3
+      DefaultInt: 3
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: CursorState
+    AnimInputType: 0
+    AnimParameterName: 
+    AnimBoolValue: 0
+    AnimIntValue: 0
+    AnimFloatValue: 0
   - Name: Select
     CursorState: 4
     Parameter:
-      type: 3
-      defaultInt: 4
-      defaultFloat: 0
-      defaultBool: 0
-      name: CursorState
+      Type: 3
+      DefaultInt: 4
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: CursorState
+    AnimInputType: 0
+    AnimParameterName: 
+    AnimBoolValue: 0
+    AnimIntValue: 0
+    AnimFloatValue: 0
   - Name: Release
     CursorState: 5
     Parameter:
-      type: 3
-      defaultInt: 5
-      defaultFloat: 0
-      defaultBool: 0
-      name: CursorState
+      Type: 3
+      DefaultInt: 5
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: CursorState
+    AnimInputType: 0
+    AnimParameterName: 
+    AnimBoolValue: 0
+    AnimIntValue: 0
+    AnimFloatValue: 0
   InputEnabledParameter:
-    type: 4
-    defaultInt: 0
-    defaultFloat: 0
-    defaultBool: 0
-    name: Waiting
+    Type: 4
+    DefaultInt: 0
+    DefaultFloat: 0
+    DefaultBool: 0
+    Name: Waiting
   InputDisabledParameter:
-    type: 4
-    defaultInt: 0
-    defaultFloat: 0
-    defaultBool: 1
-    name: Waiting
+    Type: 4
+    DefaultInt: 0
+    DefaultFloat: 0
+    DefaultBool: 1
+    Name: Waiting
   CursorAnimator: {fileID: 95274710619506266}
 --- !u!137 &137000012128918204
 SkinnedMeshRenderer:
