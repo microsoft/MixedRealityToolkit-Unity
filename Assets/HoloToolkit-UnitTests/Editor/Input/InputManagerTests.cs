@@ -253,7 +253,7 @@ namespace HoloToolkit.Unity.Tests
             InputManager.Instance.HandleEvent(eventData, TestEventHandler.OnTestHandler);
         }
 
-        private void OnEventFired(GameObject source)
+        private void OnEventFired(GameObject source, BaseEventData baseEventData)
         {
             receivedEventSources.Add(source);
         }
