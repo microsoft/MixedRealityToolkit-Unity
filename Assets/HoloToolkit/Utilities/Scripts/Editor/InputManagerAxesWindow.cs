@@ -7,33 +7,32 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
-    public class InputManagerAxesWindow : AutoConfigureWindow<InputManagerAxesWindow.AxisNames>
+    public class InputManagerAxesWindow : AutoConfigureWindow<string>
     {
         private static List<string> axisNames = new List<string>();
 
-        public enum AxisNames
+        private InputManagerAxis[] newInputAxes =
         {
-            CONTROLLER_LEFT_STICK_HORIZONTAL,
-            CONTROLLER_LEFT_STICK_VERTICAL,
-            CONTROLLER_LEFT_STICK_CLICK,
-            CONTROLLER_RIGHT_STICK_HORIZONTAL,
-            CONTROLLER_RIGHT_STICK_VERTICAL,
-            CONTROLLER_RIGHT_STICK_CLICK,
-            CONTROLLER_LEFT_TRIGGER,
-            CONTROLLER_RIGHT_TRIGGER,
-            XBOX_SHARED_TRIGGER,
-            XBOX_LEFT_BUMPER,
-            XBOX_RIGHT_BUMPER,
-            XBOX_A,
-            XBOX_B,
-            XBOX_X,
-            XBOX_Y,
-            XBOX_VIEW,
-            XBOX_MENU,
-            XBOX_DPAD_HORIZONTAL,
-            XBOX_DPAD_VERTICAL,
-            MAX // Always leave at the end when adding new axes!
-        }
+            new InputManagerAxis() { name = "CONTROLLER_LEFT_STICK_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 1 },
+            new InputManagerAxis() { name = "CONTROLLER_LEFT_STICK_VERTICAL", dead = 0.19f, sensitivity = 1, invert = true, type = AxisType.JoystickAxis, axis = 2 },
+            new InputManagerAxis() { name = "CONTROLLER_LEFT_STICK_CLICK", positiveButton = "joystick button 8", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 4 },
+            new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_VERTICAL", dead = 0.19f, sensitivity = 1, invert = true, type = AxisType.JoystickAxis, axis = 5 },
+            new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_CLICK", positiveButton = "joystick button 9", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "CONTROLLER_LEFT_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 9 },
+            new InputManagerAxis() { name = "CONTROLLER_RIGHT_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 10 },
+            new InputManagerAxis() { name = "XBOX_SHARED_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 3 },
+            new InputManagerAxis() { name = "XBOX_LEFT_BUMPER", positiveButton = "joystick button 4", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_RIGHT_BUMPER", positiveButton = "joystick button 5", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_A", positiveButton = "joystick button 0", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_B", positiveButton = "joystick button 1", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_X", positiveButton = "joystick button 2", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_Y", positiveButton = "joystick button 3", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_VIEW", positiveButton = "joystick button 6", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_MENU", positiveButton = "joystick button 7", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "XBOX_DPAD_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 6 },
+            new InputManagerAxis() { name = "XBOX_DPAD_VERTICAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 7 }
+        };
 
         public enum AxisType
         {
@@ -42,7 +41,7 @@ namespace HoloToolkit.Unity
             JoystickAxis = 2
         };
 
-        public class InputAxis
+        public class InputManagerAxis
         {
             public string name;
             public string descriptiveName;
@@ -67,114 +66,114 @@ namespace HoloToolkit.Unity
 
         protected override void ApplySettings()
         {
-            foreach(AxisNames axisName in Values.Keys)
+            foreach (InputManagerAxis axis in newInputAxes)
             {
-                if (Values[axisName] && !DoesAxisNameExist(axisName.ToString()))
+                if (Values[axis.name] && !DoesAxisNameExist(axis.name))
                 {
-                    AddAxis(new InputAxis() { name = axisName.ToString(), snap = true });
+                    AddAxis(axis);
                 }
             }
 
             Close();
         }
 
-        private void LoadSetting(AxisNames setting)
+        private void LoadSetting(InputManagerAxis axis)
         {
-            Values[setting] = DoesAxisNameExist(setting.ToString());
+            Values[axis.name] = DoesAxisNameExist(axis.name);
         }
 
         protected override void LoadSettings()
         {
-            for (int i = 0; i < (int)AxisNames.MAX; i++)
+            for (int i = 0; i < newInputAxes.Length; i++)
             {
-                LoadSetting((AxisNames)i);
+                LoadSetting(newInputAxes[i]);
             }
         }
 
         protected override void LoadStrings()
         {
-            Names[AxisNames.CONTROLLER_LEFT_STICK_HORIZONTAL] = "CONTROLLER_LEFT_STICK_HORIZONTAL";
-            Descriptions[AxisNames.CONTROLLER_LEFT_STICK_HORIZONTAL] =
-                "Recommended\n\n";
+            Names["CONTROLLER_LEFT_STICK_HORIZONTAL"] = "CONTROLLER_LEFT_STICK_HORIZONTAL";
+            Descriptions["CONTROLLER_LEFT_STICK_HORIZONTAL"] =
+                "Recommended\n\nUse this to get the left thumbstick's X axis, from -1 to 1 going left to right. This is used for teleporting.";
 
-            Names[AxisNames.CONTROLLER_LEFT_STICK_VERTICAL] = "CONTROLLER_LEFT_STICK_VERTICAL";
-            Descriptions[AxisNames.CONTROLLER_LEFT_STICK_VERTICAL] =
-                "Recommended\n\n";
+            Names["CONTROLLER_LEFT_STICK_VERTICAL"] = "CONTROLLER_LEFT_STICK_VERTICAL";
+            Descriptions["CONTROLLER_LEFT_STICK_VERTICAL"] =
+                "Recommended\n\nUse this to get the left thumbstick's Y axis, from -1 to 1 going bottom to top. This is used for teleporting.";
 
-            Names[AxisNames.CONTROLLER_LEFT_STICK_CLICK] = "CONTROLLER_LEFT_STICK_CLICK";
-            Descriptions[AxisNames.CONTROLLER_LEFT_STICK_CLICK] =
-                "Recommended\n\n";
+            Names["CONTROLLER_LEFT_STICK_CLICK"] = "CONTROLLER_LEFT_STICK_CLICK";
+            Descriptions["CONTROLLER_LEFT_STICK_CLICK"] =
+                "Recommended\n\nUse this to get the left thumbstick's clicked state.";
 
-            Names[AxisNames.CONTROLLER_RIGHT_STICK_HORIZONTAL] = "CONTROLLER_RIGHT_STICK_HORIZONTAL";
-            Descriptions[AxisNames.CONTROLLER_RIGHT_STICK_HORIZONTAL] =
-                "Recommended\n\n";
+            Names["CONTROLLER_RIGHT_STICK_HORIZONTAL"] = "CONTROLLER_RIGHT_STICK_HORIZONTAL";
+            Descriptions["CONTROLLER_RIGHT_STICK_HORIZONTAL"] =
+                "Recommended\n\nUse this to get the right thumbstick's X axis, from -1 to 1 going left to right. This is used for teleporting.";
 
-            Names[AxisNames.CONTROLLER_RIGHT_STICK_VERTICAL] = "CONTROLLER_RIGHT_STICK_VERTICAL";
-            Descriptions[AxisNames.CONTROLLER_RIGHT_STICK_VERTICAL] =
-                "Recommended\n\n";
+            Names["CONTROLLER_RIGHT_STICK_VERTICAL"] = "CONTROLLER_RIGHT_STICK_VERTICAL";
+            Descriptions["CONTROLLER_RIGHT_STICK_VERTICAL"] =
+                "Recommended\n\nUse this to get the right thumbstick's Y axis, from -1 to 1 going bottom to top. This is used for teleporting.";
 
-            Names[AxisNames.CONTROLLER_RIGHT_STICK_CLICK] = "CONTROLLER_RIGHT_STICK_CLICK";
-            Descriptions[AxisNames.CONTROLLER_RIGHT_STICK_CLICK] =
-                "Recommended\n\n";
+            Names["CONTROLLER_RIGHT_STICK_CLICK"] = "CONTROLLER_RIGHT_STICK_CLICK";
+            Descriptions["CONTROLLER_RIGHT_STICK_CLICK"] =
+                "Recommended\n\nUse this to get the right thumbstick's clicked state.";
 
-            Names[AxisNames.CONTROLLER_LEFT_TRIGGER] = "CONTROLLER_LEFT_TRIGGER";
-            Descriptions[AxisNames.CONTROLLER_LEFT_TRIGGER] =
-                "Recommended\n\n";
+            Names["CONTROLLER_LEFT_TRIGGER"] = "CONTROLLER_LEFT_TRIGGER";
+            Descriptions["CONTROLLER_LEFT_TRIGGER"] =
+                "Recommended\n\nUse this to get the pressed state of the left trigger, from 0 to 1 as it's pressed.";
 
-            Names[AxisNames.CONTROLLER_RIGHT_TRIGGER] = "CONTROLLER_RIGHT_TRIGGER";
-            Descriptions[AxisNames.CONTROLLER_RIGHT_TRIGGER] =
-                "Recommended\n\n";
+            Names["CONTROLLER_RIGHT_TRIGGER"] = "CONTROLLER_RIGHT_TRIGGER";
+            Descriptions["CONTROLLER_RIGHT_TRIGGER"] =
+                "Recommended\n\nUse this to get the pressed state of the right trigger, from 0 to 1 as it's pressed.";
 
-            Names[AxisNames.XBOX_SHARED_TRIGGER] = "XBOX_SHARED_TRIGGER";
-            Descriptions[AxisNames.XBOX_SHARED_TRIGGER] =
-                "Recommended\n\n";
+            Names["XBOX_SHARED_TRIGGER"] = "XBOX_SHARED_TRIGGER";
+            Descriptions["XBOX_SHARED_TRIGGER"] =
+                "Recommended\n\nUse this to get the pressed state of the both triggers, the average of two numbers: from 0 to -1 as the left trigger is pressed and from 0 to 1 as the right trigger is pressed.";
 
-            Names[AxisNames.XBOX_LEFT_BUMPER] = "XBOX_LEFT_BUMPER";
-            Descriptions[AxisNames.XBOX_LEFT_BUMPER] =
-                "Recommended\n\n";
+            Names["XBOX_LEFT_BUMPER"] = "XBOX_LEFT_BUMPER";
+            Descriptions["XBOX_LEFT_BUMPER"] =
+                "Recommended\n\nUse this to get the pressed state of the left bumper, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_RIGHT_BUMPER] = "XBOX_RIGHT_BUMPER";
-            Descriptions[AxisNames.XBOX_RIGHT_BUMPER] =
-                "Recommended\n\n";
+            Names["XBOX_RIGHT_BUMPER"] = "XBOX_RIGHT_BUMPER";
+            Descriptions["XBOX_RIGHT_BUMPER"] =
+                "Recommended\n\nUse this to get the pressed state of the right bumper, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_A] = "XBOX_A";
-            Descriptions[AxisNames.XBOX_A] =
-                "Recommended\n\n";
+            Names["XBOX_A"] = "XBOX_A";
+            Descriptions["XBOX_A"] =
+                "Recommended\n\nUse this to get the pressed state of the A button, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_B] = "XBOX_B";
-            Descriptions[AxisNames.XBOX_B] =
-                "Recommended\n\n";
+            Names["XBOX_B"] = "XBOX_B";
+            Descriptions["XBOX_B"] =
+                "Recommended\n\nUse this to get the pressed state of the B button, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_X] = "XBOX_X";
-            Descriptions[AxisNames.XBOX_X] =
-                "Recommended\n\n";
+            Names["XBOX_X"] = "XBOX_X";
+            Descriptions["XBOX_X"] =
+                "Recommended\n\nUse this to get the pressed state of the X button, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_Y] = "XBOX_Y";
-            Descriptions[AxisNames.XBOX_Y] =
-                "Recommended\n\n";
+            Names["XBOX_Y"] = "XBOX_Y";
+            Descriptions["XBOX_Y"] =
+                "Recommended\n\nUse this to get the pressed state of the Y button, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_VIEW] = "XBOX_VIEW";
-            Descriptions[AxisNames.XBOX_VIEW] =
-                "Recommended\n\n";
+            Names["XBOX_VIEW"] = "XBOX_VIEW";
+            Descriptions["XBOX_VIEW"] =
+                "Recommended\n\nUse this to get the pressed state of the view button or the menu button on the left motion controller, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_MENU] = "XBOX_MENU";
-            Descriptions[AxisNames.XBOX_MENU] =
-                "Recommended\n\n";
+            Names["XBOX_MENU"] = "XBOX_MENU";
+            Descriptions["XBOX_MENU"] =
+                "Recommended\n\nUse this to get the pressed state of the menu button or the menu button on the right motion controller, 0 or 1 if it's pressed.";
 
-            Names[AxisNames.XBOX_DPAD_HORIZONTAL] = "XBOX_DPAD_HORIZONTAL";
-            Descriptions[AxisNames.XBOX_DPAD_HORIZONTAL] =
-                "Recommended\n\n";
+            Names["XBOX_DPAD_HORIZONTAL"] = "XBOX_DPAD_HORIZONTAL";
+            Descriptions["XBOX_DPAD_HORIZONTAL"] =
+                "Recommended\n\nUse this to get the pressed state of the X axis of the D-pad: -1 for the left side pressed, 1 for the right side pressed, 0 for neither pressed.";
 
-            Names[AxisNames.XBOX_DPAD_VERTICAL] = "XBOX_DPAD_VERTICAL";
-            Descriptions[AxisNames.XBOX_DPAD_VERTICAL] =
-                "Recommended\n\n";
+            Names["XBOX_DPAD_VERTICAL"] = "XBOX_DPAD_VERTICAL";
+            Descriptions["XBOX_DPAD_VERTICAL"] =
+                "Recommended\n\nUse this to get the pressed state of the Y axis of the D-pad: -1 for the bottom side pressed, 1 for the top side pressed, 0 for neither pressed.";
         }
 
         protected override void OnGuiChanged()
         {
         }
 
-        private static void AddAxis(InputAxis axis)
+        private static void AddAxis(InputManagerAxis axis)
         {
             SerializedObject inputManagerAsset = new SerializedObject(AssetDatabase.LoadAssetAtPath("ProjectSettings/InputManager.asset", typeof(Object)));
             SerializedProperty axesProperty = inputManagerAsset.FindProperty("m_Axes");
