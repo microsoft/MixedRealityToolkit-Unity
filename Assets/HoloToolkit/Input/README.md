@@ -318,6 +318,7 @@ Interface that a game object can implement to react to a keyword being recognize
 Interface that a game object can implement to react to Xbox Controller events.
 
 #### InputSources
+
 ##### BaseInputSource.cs
 Abstract base class for an input source that implements IInputSource. Defines the various abstract functions that any input source needs to implement, and provides some default implementations.
 
@@ -341,18 +342,11 @@ Base class that all gamepad input sources should inherit from.
 ##### GesturesInput.cs
 Input source for gestures information from the WSA APIs, which gives access to various system supported gestures.
 
-##### GamepadInput.cs
-GamepadInput class maps Xbox gamepad buttons to the GestureRecognizer.
-Gamepad button A press and release maps to tap gesture.
-Gamepad button A pressed longer maps to hold started, completed, canceled gesture.
-Gamepad button A pressed plus left joystick rotate maps to navigation gesture.
-
 ##### IInputSource.cs
 Interface for an input source. An input source is any input mechanism that can be used as the source of user interactions.
 
 ##### SpeechInputSource.cs
 Allows you to specify keywords and keyboard shortcuts in the Unity Inspector, instead of registering them explicitly in code. Keywords are handled by scripts that implement ISpeechHandler.cs.  You can utilize keywords with the SpeechInputHandler component by assigning game objects and specifying a Unity Event trigger.
-
 
 **IMPORTANT**: Please make sure to add the Microphone capabilities in your app, in Unity under  
 Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities  
@@ -407,16 +401,15 @@ or in your Visual Studio Package.appxmanifest capabilities.
 ##### KeywordAndKeyCode.cs
 Struct that facilitates the storage of keyword and keycode pairs.
 
-##### KeywordManager.cs (_Deprecated_)
-Please use SpeechInputSource and SpeechInputHandler instead.
-Allows you to specify keywords and methods in the Unity Inspector, instead of registering them explicitly in code.  
-
 - **_KeywordsAndResponses_** Set the size as the number of keywords you'd like to listen for, then specify the keywords and method responses to complete the array.
 
 - **RecognizerStart** Set this to determine whether the keyword recognizer will start immediately or if it should wait for your code to tell it to start.
 
 ##### SpeechInputHandler.cs
 Used to assign a Unity Event to a keyword stored in the SpeechInputSource component.
+
+##### TriggerButton.cs
+Very simple class that implements basic logic for a trigger button.
 
 ### [Test Prefabs](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Input/Prefabs)
 
