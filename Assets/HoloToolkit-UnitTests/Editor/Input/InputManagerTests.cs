@@ -13,7 +13,6 @@ namespace HoloToolkit.Unity.Tests
     public class InputManagerTests
     {
         private List<GameObject> receivedEventSources;
-        private BaseEventData eventData;
 
         [SetUp]
         public void SetUpTests()
@@ -25,18 +24,17 @@ namespace HoloToolkit.Unity.Tests
             inputManagerContainer.AddComponent<InputManager>();
             inputManagerContainer.AddComponent<GazeManager>();
             inputManagerContainer.AddComponent<FocusManager>();
-            var eventSystem = inputManagerContainer.AddComponent<EventSystem>();
-            eventData = new BaseEventData(eventSystem);
+            inputManagerContainer.AddComponent<EventSystem>();
 
             inputManagerContainer.transform.position = inputManagerContainer.transform.forward * -5;
             //call awake and start 
-            inputManagerContainer.CallAwake().CallStart();
+            inputManagerContainer.CallInitialization();
         }
 
         [Test]
         public void DisableInputManagerRefCountNoEventCaught()
         {
-            CreateGlobalTestHandler().CallAwake().CallStart();
+            CreateGlobalTestHandler().CallInitialization();
 
             InputManager.Instance.PushInputDisable();
             FireTestEvent();
@@ -48,7 +46,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void DisableInputManagerScriptNoEventCaught()
         {
-            CreateGlobalTestHandler().CallAwake().CallStart();
+            CreateGlobalTestHandler().CallInitialization();
 
             InputManager.Instance.enabled = false;
             FireTestEvent();
@@ -60,7 +58,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchSingleGlobalEvent()
         {
-            CreateGlobalTestHandler().CallAwake().CallStart();
+            CreateGlobalTestHandler().CallInitialization();
 
             FireTestEvent();
 
@@ -70,7 +68,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchSingleGlobalEventCheckSource()
         {
-            var globalHandler = CreateGlobalTestHandler().CallAwake().CallStart();
+            var globalHandler = CreateGlobalTestHandler().CallInitialization();
 
             FireTestEvent();
 
@@ -80,8 +78,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchDoubleGlobalEvent()
         {
-            CreateGlobalTestHandler().CallAwake().CallStart();
-            CreateGlobalTestHandler().CallAwake().CallStart();
+            CreateGlobalTestHandler().CallInitialization();
+            CreateGlobalTestHandler().CallInitialization();
 
             FireTestEvent();
 
@@ -91,8 +89,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchDoubleGlobalEventCheckSource()
         {
-            var globalHandler1 = CreateGlobalTestHandler().CallAwake().CallStart();
-            var globalHandler2 = CreateGlobalTestHandler().CallAwake().CallStart();
+            var globalHandler1 = CreateGlobalTestHandler().CallInitialization();
+            var globalHandler2 = CreateGlobalTestHandler().CallInitialization();
 
             FireTestEvent();
 
@@ -103,7 +101,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchFocusedEvent()
         {
-            var focusedHandler = CreateTestHandler().CallAwake().CallStart();
+            var focusedHandler = CreateTestHandler().CallInitialization();
 
             InputManager.Instance.OverrideFocusedObject = focusedHandler;
             FireTestEvent();
@@ -114,7 +112,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchModalEvent()
         {
-            var modalHandler = CreateTestHandler().CallAwake().CallStart();
+            var modalHandler = CreateTestHandler().CallInitialization();
 
             InputManager.Instance.PushModalInputHandler(modalHandler);
             FireTestEvent();
@@ -126,8 +124,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchOneModalEventAndCheckSource()
         {
-            var modalHandler1 = CreateTestHandler().CallAwake().CallStart();
-            var modalHandler2 = CreateTestHandler().CallAwake().CallStart();
+            var modalHandler1 = CreateTestHandler().CallInitialization();
+            var modalHandler2 = CreateTestHandler().CallInitialization();
 
             InputManager.Instance.PushModalInputHandler(modalHandler1);
             InputManager.Instance.PushModalInputHandler(modalHandler2);
@@ -142,7 +140,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchFallbackEvent()
         {
-            var fallbackHandler = CreateTestHandler().CallAwake().CallStart();
+            var fallbackHandler = CreateTestHandler().CallInitialization();
 
             InputManager.Instance.PushFallbackInputHandler(fallbackHandler);
             FireTestEvent();
@@ -154,8 +152,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchModalEventOverFocusedEvent()
         {
-            var focusedHandler = CreateTestHandler().CallAwake().CallStart();
-            var modalHandler = CreateTestHandler().CallAwake().CallStart();
+            var focusedHandler = CreateTestHandler().CallInitialization();
+            var modalHandler = CreateTestHandler().CallInitialization();
 
             InputManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushModalInputHandler(modalHandler);
@@ -169,8 +167,8 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchModalFocusedChildEvent()
         {
-            var focusedHandler = CreateTestHandler().CallAwake().CallStart();
-            var modalHandler = CreateTestHandler().CallAwake().CallStart();
+            var focusedHandler = CreateTestHandler().CallInitialization();
+            var modalHandler = CreateTestHandler().CallInitialization();
             focusedHandler.transform.SetParent(modalHandler.transform);
 
             InputManager.Instance.OverrideFocusedObject = focusedHandler;
@@ -185,11 +183,11 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void CatchMultipleEventSources()
         {
-            var globalHandler1 = CreateGlobalTestHandler().CallAwake().CallStart();
-            var globalHandler2 = CreateGlobalTestHandler().CallAwake().CallStart();
-            var focusedHandler = CreateTestHandler().CallAwake().CallStart();
-            var modalHandler = CreateTestHandler().CallAwake().CallStart();
-            var fallbackHandler = CreateTestHandler().CallAwake().CallStart();
+            var globalHandler1 = CreateGlobalTestHandler().CallInitialization();
+            var globalHandler2 = CreateGlobalTestHandler().CallInitialization();
+            var focusedHandler = CreateTestHandler().CallInitialization();
+            var modalHandler = CreateTestHandler().CallInitialization();
+            var fallbackHandler = CreateTestHandler().CallInitialization();
 
             InputManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushFallbackInputHandler(fallbackHandler);
@@ -216,7 +214,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void FocusChangeFullIntegration()
         {
-            var handler = CreateCubeTestHandler().CallAwake().CallStart();
+            var handler = CreateCubeTestHandler().CallInitialization();
 
             GazeManager.Instance.gameObject.CallUpdate();
 
@@ -244,13 +242,16 @@ namespace HoloToolkit.Unity.Tests
 
         private GameObject CreateGlobalTestHandler()
         {
-            return CreateTestHandler().AddComponent<SetGlobalListener>().gameObject;
+            var testHandler = CreateTestHandler();
+            testHandler.GetComponent<TestEventHandler>().IsGlobal = true;
+            testHandler.AddComponent<SetGlobalListener>();
+            return testHandler;
         }
 
         private void FireTestEvent()
         {
             receivedEventSources = new List<GameObject>();
-            InputManager.Instance.HandleEvent(eventData, TestEventHandler.OnTestHandler);
+            InputManager.Instance.HandleEvent(new BaseEventData(EventSystem.current), TestEventHandler.OnTestHandler);
         }
 
         private void OnEventFired(GameObject source, BaseEventData baseEventData)
