@@ -164,7 +164,6 @@ namespace MRTK.Grabbables
                 // Otherwise just push the grabber
                 activeGrabbers.Add(grabber);
             }
-            Debug.Log("Attach to grabber is SHOULD BE FIRING NOOWWW.");
             // Attach ourselves to this grabber
             AttachToGrabber(grabber);
             if (OnGrabbed != null)
@@ -242,19 +241,24 @@ namespace MRTK.Grabbables
             prevGrabState = GrabState;
             prevContactState = ContactState;
             currPos = transform.position;
+            if (prevPos != currPos)
+                previousVel = (currPos - prevPos) / Time.deltaTime;
         }
 
         private void LateUpdate()
         {
             prevPos = currPos;
+
         }
 
         public Vector3 GetAverageVelocity()
         {
-            //eventually this will be updated to be an average the amount of force exerted on it by each grabber attached
+            //this is called GetAverageVelocity because it will be updated to be an average the amount of force exerted on it by *all* grabber attached
             var velocity = Vector3.zero;
+            Debug.Log("prevPos = " + prevPos + " currsPos " + currPos);
+            Debug.Log("previousVelocity = " + previousVel);
             velocity = (currPos - prevPos) / Time.deltaTime;
-            return velocity;
+            return velocity != Vector3.zero ? velocity : previousVel;
 
         }
 
@@ -281,5 +285,6 @@ namespace MRTK.Grabbables
         private Vector3 averageVelocity;
         private Vector3 currPos;
         private Vector3 prevPos;
+        private Vector3 previousVel;
     }
 }

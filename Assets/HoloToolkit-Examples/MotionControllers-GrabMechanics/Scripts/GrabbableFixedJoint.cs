@@ -36,6 +36,11 @@ namespace MRTK.Grabbables
             joint.anchor = jointAnchor;
             joint.breakForce = breakForce;
             joint.breakTorque = breakTorque;
+
+            //Debug.Log("Attaching to Grabber --from Grabbable Simple");
+            //GetComponent<Rigidbody>().isKinematic = true;
+            //if (!activeGrabbers.Contains(grabber))
+            //    activeGrabbers.Add(grabber);
         }
 
         protected override void DetachFromGrabber(BaseGrabber grabber)
@@ -45,18 +50,29 @@ namespace MRTK.Grabbables
             if (joint != null)
             {
                 joint.connectedBody = null;
-                //Destroy(joint);
+                //DestroyImmediate(joint);
                 StartCoroutine(DestroyJointAfterDelay(joint));
             }
+
+            Debug.Log("Detaching form grabber -- from GrabbableFIXEDJOINT");
+            //GetComponent<Rigidbody>().isKinematic = false;
+            //GetComponent<Rigidbody>().useGravity = true;
         }
 
         protected IEnumerator DestroyJointAfterDelay(FixedJoint joint)
         {
-            //Debug.Log("Destroy Joint after delay is being called ");
-            //Debug.Break();
+
             yield return null;
             if (GrabState == GrabStateEnum.Inactive)
-                Destroy(joint);
+            {
+                DestroyImmediate(joint);
+                if (!GetComponent<Joint>())
+                {
+                    Debug.Log("Joint Check says joint is DESTROYED OFFICIALLY -- GrabbableFixedJoint ");
+                }
+            }
+            yield return null;
         }
+
     }
 }
