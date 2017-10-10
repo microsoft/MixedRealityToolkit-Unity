@@ -25,15 +25,18 @@ namespace HoloToolkit.Unity.InputModule
         /// HitInfo property gives access to information at the object being gazed at, if any.
         /// </summary>
         [Obsolete("Use FocusManager.TryGetFocusDetails")]
-        public RaycastHit HitInfo { get { return hitInfo; } }
-        private RaycastHit hitInfo;
+        public RaycastHit HitInfo { get { return default(RaycastHit); } }
 
         /// <summary>
         /// Dispatched when focus shifts to a new object, or focus on current object
         /// is lost.
         /// </summary>
         [Obsolete("Use FocusManager.PointerSpecificFocusChanged")]
+#pragma warning disable 618
+#pragma warning disable 67
         public event FocusedChangedDelegate FocusedObjectChanged;
+#pragma warning restore 67
+#pragma warning restore 618
 
         /// <summary>
         /// Unity UI pointer event.  This will be null if the EventSystem is not defined in the scene.
