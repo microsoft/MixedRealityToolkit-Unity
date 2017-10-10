@@ -39,7 +39,9 @@ namespace MRTK.Grabbables
 
         private void InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
         {
-            if (obj.pressType == pressType && obj.state.source.handedness == handedness)
+            if (
+                
+                obj.pressType == pressType && obj.state.source.handedness == handedness)
             {
                 GrabEnd();
                 

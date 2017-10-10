@@ -77,8 +77,7 @@ namespace MRTK.Grabbables
         }
 
         /// <summary>
-        /// If the correct grabbing button is pressed, we set the GrabActive to true.
-        /// Grab behaviour depends on the combination of grabactive being true, and a grabbable trigger entered
+        /// If the correct grabbing button is pressed, we add to grabbedObjects.
         /// </summary>
         /// <param name="obj"></param>
         protected virtual void GrabStart()
@@ -103,8 +102,8 @@ namespace MRTK.Grabbables
         }
 
         /// <summary>
-        /// If the correct grabbing button is pressed, we set the GrabActive to true.
-        /// Grab behaviour depends on the combination of grabactive being true, and a grabbable trigger entered
+        /// If the correct grabbing button is pressed, we set the GrabState.
+        /// Grab behaviour depends on the combination of GrabState, and a grabbable trigger entered
         /// </summary>
         protected virtual void GrabEnd()
         {            
@@ -196,11 +195,6 @@ namespace MRTK.Grabbables
 
             prevGrabState = GrabState;
             prevContactState = ContactState;
-        }
-
-        void LateUpdate()
-        {
-
         }
 
 

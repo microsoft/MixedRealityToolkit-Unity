@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MRTK.Grabbables
 {
     /// <summary>
-    /// Extends its behaviour from BaseThrowable. This is a non-abstract script that's actually attached to throwable object
+    /// Extends its behaviour from BaseThrowable. This is a non-abstract script that can be attached to throwable object
     /// This script will not work without a grab script attached to the same gameObject
     /// </summary>
 
@@ -15,7 +15,6 @@ namespace MRTK.Grabbables
         {
             base.Throw(grabbable);
             Vector3 vel = grabbable.GetAverageVelocity();
-            Debug.Log("Velocity for GRAB = beofre throw is: " + vel);
             if (GetComponent<GrabbableFixedJoint>() || GetComponent<GrabbableSpringJoint>()) {
                 StartCoroutine(ThrowDelay(vel, grabbable));
             }
@@ -26,9 +25,7 @@ namespace MRTK.Grabbables
                 {
                     grabbable.GetComponent<Rigidbody>().useGravity = false;
                 }
-                Debug.Log("Throw happened (no coroutine) ************** OFFICIALLY " + vel * ThrowMultiplier);
             }
-
         }
 
 
@@ -40,8 +37,6 @@ namespace MRTK.Grabbables
             {
                 grabbable.GetComponent<Rigidbody>().useGravity = false;
             }
-            Debug.Log("Throw happened via COROUTINE  ************** OFFICIALLY " + vel *ThrowMultiplier);
-            //yield return null;
         }
     }
 }

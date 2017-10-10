@@ -171,8 +171,8 @@ namespace MRTK.Grabbables
         }
 
         /// <summary>
-        /// As long as the grabber script (usually attached to the controller, but not always) reports GrabActive as true,
-        /// we stay inside of StayGrab. If the grabactive is false, then we transition into GrabEnd baheviour.
+        /// As long as the grabber script (usually attached to the controller, but not always) reports more than one grabber,
+        /// we stay inside of StayGrab. 
         /// </summary>
         /// <param name="grabber"></param>
         /// <returns></returns>

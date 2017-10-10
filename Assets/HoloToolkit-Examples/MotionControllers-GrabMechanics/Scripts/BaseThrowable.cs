@@ -11,6 +11,8 @@ namespace MRTK.Grabbables {
         public float ThrowMultiplier { get { return throwMultiplier; } set { throwMultiplier = value; } }
         public bool ZeroGravityThrow { get { return zeroGravityThrow; } set { zeroGravityThrow = value; } }
         public bool Thrown { get { return thrown; } set { thrown = value; }  }
+
+        //not implemented yet. lower priority
         public AnimationCurve VelocityOverTime { get { return velocityOverTime; } set { velocityOverTime = value; } }
         public AnimationCurve UpDownCurveOverTime { get { return upDownCurveOverTime; } set { upDownCurveOverTime = value; } }
         public AnimationCurve LeftRightCurveOverTime { get { return leftRightCurveOverTime; } set { leftRightCurveOverTime = value; } }
