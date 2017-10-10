@@ -142,20 +142,21 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = hit.point,
                     Normal = hit.normal,
-                    Object = hit.transform.gameObject,
+                    Object = hit.transform.gameObject
                 };
             }
 
-            public void UpdateHit(RaycastResult result)
+            public void UpdateHit(RaycastResult result, RaycastHit hit)
             {
-                PreviousEndObject = End.Object;
+                // We do not update the PreviousEndObject here because
+                // it's already been updated in the first physics raycast.
 
                 StartPoint = PointingSource.Ray.origin;
                 End = new FocusDetails
                 {
-                    Point = result.worldPosition,
-                    Normal = result.worldNormal,
-                    Object = result.gameObject,
+                    Point = hit.point,
+                    Normal = hit.normal,
+                    Object = result.gameObject
                 };
             }
 
@@ -168,7 +169,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = (StartPoint + (extent * PointingSource.Ray.direction)),
                     Normal = (-PointingSource.Ray.direction),
-                    Object = null,
+                    Object = null
                 };
             }
 
@@ -179,7 +180,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = End.Point,
                     Normal = End.Normal,
-                    Object = null,
+                    Object = null
                 };
             }
         }
@@ -517,7 +518,15 @@ namespace HoloToolkit.Unity.InputModule
                 // Check if we need to overwrite the physics raycast info
                 if (pointer.End.Object == null || overridePhysicsRaycast)
                 {
-                    pointer.UpdateHit(uiRaycastResult);
+                    Vector3 worldPos = CameraCache.Main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
+                    var hitInfo = new RaycastHit
+                    {
+                        distance = uiRaycastResult.distance,
+                        normal = -uiRaycastResult.gameObject.transform.forward,
+                        point = worldPos
+                    };
+
+                    pointer.UpdateHit(uiRaycastResult, hitInfo);
                 }
             }
         }
@@ -555,8 +564,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            // ... but now we trim out objects whose overall focus was maintained the same by
-            // a different pointer:
+            // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
             for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
             {
@@ -594,7 +602,7 @@ namespace HoloToolkit.Unity.InputModule
         private void RaiseFocusExitedEvents(GameObject deFocusedObject)
         {
             InputManager.Instance.RaiseFocusExit(deFocusedObject);
-
+            //Debug.Log("Focus Exit: " + deFocusedObject.name);
             if (FocusExited != null)
             {
                 FocusExited(deFocusedObject);
@@ -604,7 +612,7 @@ namespace HoloToolkit.Unity.InputModule
         private void RaiseFocusEnteredEvents(GameObject focusedObject)
         {
             InputManager.Instance.RaiseFocusEnter(focusedObject);
-
+            //Debug.Log("Focus Enter: " + focusedObject.name);
             if (FocusEntered != null)
             {
                 FocusEntered(focusedObject);
