@@ -412,7 +412,7 @@ namespace HoloToolkit.Unity.InputModule
                     UpdatePointer(gazeManagerPointingData);
                 }
 
-                GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerIsRegistered);
+                GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerPointingData.LastRaycastHit, gazeManagerIsRegistered);
             }
         }
 

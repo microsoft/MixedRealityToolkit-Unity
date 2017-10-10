@@ -24,8 +24,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.
         /// </summary>
-        [Obsolete("Use FocusManager.TryGetFocusDetails")]
-        public RaycastHit HitInfo { get { return default(RaycastHit); } }
+        public RaycastHit HitInfo { get; private set; }
 
         /// <summary>
         /// Dispatched when focus shifts to a new object, or focus on current object
@@ -210,10 +209,12 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Notifies this gaze manager of its new hit details.
         /// </summary>
-        /// <param name="focusDetails">Details of the current hit (focus).</param>
+        /// <param name="focusDetails">Details of the current focus.</param>
+        /// <param name="hitInfo">Details of the focus raycast hit.</param>
         /// <param name="isRegisteredForFocus">Whether or not this gaze manager is registered as a focus pointer.</param>
-        public void UpdateHitDetails(FocusDetails focusDetails, bool isRegisteredForFocus)
+        public void UpdateHitDetails(FocusDetails focusDetails, RaycastHit hitInfo, bool isRegisteredForFocus)
         {
+            HitInfo = hitInfo;
             HitObject = isRegisteredForFocus
                 ? focusDetails.Object
                 : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.
