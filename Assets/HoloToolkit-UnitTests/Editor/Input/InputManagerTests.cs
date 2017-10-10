@@ -24,6 +24,7 @@ namespace HoloToolkit.Unity.Tests
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
             inputManagerContainer.AddComponent<InputManager>();
             inputManagerContainer.AddComponent<GazeManager>();
+            inputManagerContainer.AddComponent<FocusManager>();
             var eventSystem = inputManagerContainer.AddComponent<EventSystem>();
             eventData = new BaseEventData(eventSystem);
 
