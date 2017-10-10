@@ -92,11 +92,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public PointerEventData UnityUIPointerEvent { get; private set; }
 
-        /// <summary>
-        /// Cached results of raycast results.
-        /// </summary>
-        private List<RaycastResult> raycastResultList = new List<RaycastResult>();
-
         protected override void Awake()
         {
             base.Awake();
@@ -225,9 +220,7 @@ namespace HoloToolkit.Unity.InputModule
             UnityUIPointerEvent.position = cursorScreenPos;
 
             // Graphics raycast
-            raycastResultList.Clear();
-            EventSystem.current.RaycastAll(UnityUIPointerEvent, raycastResultList);
-            RaycastResult uiRaycastResult = FindClosestRaycastHitInLayerMasks(raycastResultList, RaycastLayerMasks);
+            RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, RaycastLayerMasks);
             UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
 
             // If we have a raycast result, check if we need to overwrite the 3D raycast info
@@ -240,8 +233,8 @@ namespace HoloToolkit.Unity.InputModule
                     if (RaycastLayerMasks.Length > 1)
                     {
                         // Get the index in the prioritized layer masks
-                        int uiLayerIndex = FindLayerListIndex(uiRaycastResult.gameObject.layer, RaycastLayerMasks);
-                        int threeDLayerIndex = FindLayerListIndex(hitInfo.collider.gameObject.layer, RaycastLayerMasks);
+                        int uiLayerIndex = uiRaycastResult.gameObject.layer.FindLayerListIndex(RaycastLayerMasks);
+                        int threeDLayerIndex = hitInfo.collider.gameObject.layer.FindLayerListIndex(RaycastLayerMasks);
 
                         if (threeDLayerIndex > uiLayerIndex)
                         {
@@ -285,60 +278,6 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Helpers
 
-        /// <summary>
-        /// Find the closest raycast hit in the list of RaycastResults that is also included in the LayerMask list.  
-        /// </summary>
-        /// <param name="candidates">List of RaycastResults from a Unity UI raycast</param>
-        /// <param name="layerMaskList">List of layers to support</param>
-        /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
-        private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
-        {
-            int combinedLayerMask = 0;
-            for (int i = 0; i < layerMaskList.Length; i++)
-            {
-                combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
-            }
-
-            RaycastResult? minHit = null;
-            for (var i = 0; i < candidates.Count; ++i)
-            {
-                if (candidates[i].gameObject == null || !IsLayerInLayerMask(candidates[i].gameObject.layer, combinedLayerMask))
-                {
-                    continue;
-                }
-                if (minHit == null || candidates[i].distance < minHit.Value.distance)
-                {
-                    minHit = candidates[i];
-                }
-            }
-
-            return minHit ?? new RaycastResult();
-        }
-
-        /// <summary>
-        /// Look through the layerMaskList and find the index in that list for which the supplied layer is part of
-        /// </summary>
-        /// <param name="layer">Layer to search for</param>
-        /// <param name="layerMaskList">List of LayerMasks to search</param>
-        /// <returns>LayerMaskList index, or -1 for not found</returns>
-        private int FindLayerListIndex(int layer, LayerMask[] layerMaskList)
-        {
-            for (int i = 0; i < layerMaskList.Length; i++)
-            {
-                if (IsLayerInLayerMask(layer, layerMaskList[i].value))
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        private bool IsLayerInLayerMask(int layer, int layerMask)
-        {
-            return ((1 << layer) & layerMask) != 0;
-        }
-
         private RaycastHit? PrioritizeHits(RaycastHit[] hits)
         {
             if (hits.Length == 0)
@@ -355,7 +294,7 @@ namespace HoloToolkit.Unity.InputModule
                 for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
                 {
                     RaycastHit hit = hits[hitIdx];
-                    if (IsLayerInLayerMask(hit.transform.gameObject.layer, RaycastLayerMasks[layerMaskIdx]) &&
+                    if (hit.transform.gameObject.layer.IsInLayerMask(RaycastLayerMasks[layerMaskIdx]) &&
                         (minHit == null || hit.distance < minHit.Value.distance))
                     {
                         minHit = hit;
