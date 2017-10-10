@@ -471,12 +471,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             GetPointerEventData();
 
-            Camera mainCamera = CameraCache.Main;
-
-            // 2D cursor position
-            Vector2 cursorScreenPos = mainCamera.WorldToScreenPoint(pointer.End.Point);
-            UnityUIPointerEvent.delta = cursorScreenPos - UnityUIPointerEvent.position;
-            UnityUIPointerEvent.position = cursorScreenPos;
+            // 2D pointer position
+            UnityUIPointerEvent.position = CameraCache.Main.WorldToScreenPoint(pointer.End.Point);
 
             // Graphics raycast
             RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
