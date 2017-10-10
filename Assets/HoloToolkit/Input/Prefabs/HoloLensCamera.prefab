@@ -438,8 +438,8 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: XBOX_LEFT_TRIGGER
-  InputManagerVerticalAxisName: XBOX_RIGHT_TRIGGER
+  InputManagerHorizontalAxisName: CONTROLLER_LEFT_TRIGGER
+  InputManagerVerticalAxisName: CONTROLLER_RIGHT_TRIGGER
   Axis0Destination: 2
   Axis1Destination: 3
   Axis2Destination: 6
@@ -458,8 +458,8 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: XBOX_RIGHT_STICK_HORIZONTAL
-  InputManagerVerticalAxisName: XBOX_RIGHT_STICK_VERTICAL
+  InputManagerHorizontalAxisName: CONTROLLER_RIGHT_STICK_HORIZONTAL
+  InputManagerVerticalAxisName: CONTROLLER_RIGHT_STICK_VERTICAL
   Axis0Destination: 0
   Axis1Destination: 4
   Axis2Destination: 6
@@ -582,8 +582,8 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: XBOX_LEFT_STICK_HORIZONTAL
-  InputManagerVerticalAxisName: XBOX_LEFT_STICK_VERTICAL
+  InputManagerHorizontalAxisName: CONTROLLER_LEFT_STICK_HORIZONTAL
+  InputManagerVerticalAxisName: CONTROLLER_LEFT_STICK_VERTICAL
   Axis0Destination: 2
   Axis1Destination: 0
   Axis2Destination: 6
