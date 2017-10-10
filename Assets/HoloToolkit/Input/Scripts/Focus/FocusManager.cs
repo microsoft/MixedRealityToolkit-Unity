@@ -194,7 +194,6 @@ namespace HoloToolkit.Unity.InputModule
         private PointerData gazeManagerPointingData;
 
         public PointerInputEventData UnityUIPointerEvent { get; private set; }
-        private List<RaycastResult> uiRaycastResults = new List<RaycastResult>(0);
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -480,9 +479,7 @@ namespace HoloToolkit.Unity.InputModule
             UnityUIPointerEvent.position = cursorScreenPos;
 
             // Graphics raycast
-            uiRaycastResults.Clear();
-            EventSystem.current.RaycastAll(UnityUIPointerEvent, uiRaycastResults);
-            RaycastResult uiRaycastResult = FindClosestRaycastHitInLayerMasks(uiRaycastResults, prioritizedLayerMasks);
+            RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
             UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
 
             // If we have a raycast result, check if we need to overwrite the 3D raycast info
@@ -495,8 +492,8 @@ namespace HoloToolkit.Unity.InputModule
                     if (prioritizedLayerMasks.Length > 1)
                     {
                         // Get the index in the prioritized layer masks
-                        int uiLayerIndex = FindLayerListIndex(uiRaycastResult.gameObject.layer, prioritizedLayerMasks);
-                        int threeDLayerIndex = FindLayerListIndex(pointer.LastRaycastHit.collider.gameObject.layer, prioritizedLayerMasks);
+                        int uiLayerIndex = uiRaycastResult.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                        int threeDLayerIndex = pointer.LastRaycastHit.collider.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
 
                         if (threeDLayerIndex > uiLayerIndex)
                         {
@@ -537,30 +534,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             return -1;
-        }
-
-        private RaycastResult FindClosestRaycastHitInLayerMasks(List<RaycastResult> candidates, LayerMask[] layerMaskList)
-        {
-            int combinedLayerMask = 0;
-            for (int i = 0; i < layerMaskList.Length; i++)
-            {
-                combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
-            }
-
-            RaycastResult? minHit = null;
-            for (var i = 0; i < candidates.Count; ++i)
-            {
-                if (candidates[i].gameObject == null || !IsLayerInLayerMask(candidates[i].gameObject.layer, combinedLayerMask))
-                {
-                    continue;
-                }
-                if (minHit == null || candidates[i].distance < minHit.Value.distance)
-                {
-                    minHit = candidates[i];
-                }
-            }
-
-            return minHit ?? new RaycastResult();
         }
 
         private void UpdateFocusedObjects()
@@ -738,7 +711,7 @@ namespace HoloToolkit.Unity.InputModule
                 for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
                 {
                     RaycastHit hit = hits[hitIdx];
-                    if (IsLayerInLayerMask(hit.transform.gameObject.layer, layerMasks[layerMaskIdx]) &&
+                    if (hit.transform.gameObject.layer.IsInLayerMask(layerMasks[layerMaskIdx]) &&
                         (minHit == null || hit.distance < minHit.Value.distance))
                     {
                         minHit = hit;
