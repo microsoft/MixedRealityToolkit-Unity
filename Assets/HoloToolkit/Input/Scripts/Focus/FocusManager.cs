@@ -471,6 +471,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             GetPointerEventData();
 
+            Debug.Assert(pointer.End.Point != Vector3.zero);
+
             // 2D pointer position
             UnityUIPointerEvent.position = CameraCache.Main.WorldToScreenPoint(pointer.End.Point);
 
@@ -478,10 +480,10 @@ namespace HoloToolkit.Unity.InputModule
             RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
             UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
 
-            // If we have a raycast result, check if we need to overwrite the 3D raycast info
+            // If we have a raycast result, check if we need to overwrite the physics raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                bool superseded3DObject = false;
+                bool overridePhysicsRaycast = false;
                 if (pointer.End.Object != null)
                 {
                     // Check layer prioritization
@@ -493,13 +495,13 @@ namespace HoloToolkit.Unity.InputModule
 
                         if (threeDLayerIndex > uiLayerIndex)
                         {
-                            superseded3DObject = true;
+                            overridePhysicsRaycast = true;
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
                             if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
                             {
-                                superseded3DObject = true;
+                                overridePhysicsRaycast = true;
                             }
                         }
                     }
@@ -507,13 +509,13 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
                         {
-                            superseded3DObject = true;
+                            overridePhysicsRaycast = true;
                         }
                     }
                 }
 
-                // Check if we need to overwrite the 3D raycast info
-                if (pointer.End.Object == null || superseded3DObject)
+                // Check if we need to overwrite the physics raycast info
+                if (pointer.End.Object == null || overridePhysicsRaycast)
                 {
                     pointer.UpdateHit(uiRaycastResult);
                 }
