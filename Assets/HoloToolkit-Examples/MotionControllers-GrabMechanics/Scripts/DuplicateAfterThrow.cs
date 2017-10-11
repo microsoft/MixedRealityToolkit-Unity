@@ -10,6 +10,7 @@ namespace MRTK.Grabbables
 
         public GameObject ThrowObject;
         private Vector3 startPos;
+        private Quaternion startRot;
         private Color startColor;
 
         protected virtual void OnEnable()
@@ -29,6 +30,7 @@ namespace MRTK.Grabbables
         private void Start()
         {
             startPos = transform.position;
+            startRot = transform.rotation;
             startColor = GetComponent<Renderer>().material.color;
             ThrowObject = gameObject;
         }
@@ -44,6 +46,8 @@ namespace MRTK.Grabbables
             thrwn.GetComponent<ThrowableObject>().ZeroGravityThrow = GetComponent<BaseThrowable>().ZeroGravityThrow;
             thrwn.GetComponent<ThrowableObject>().ThrowMultiplier = GetComponent<BaseThrowable>().ThrowMultiplier;
             thrwn.GetComponent<Renderer>().material.color = startColor;
+            thrwn.GetComponent<Rigidbody>().useGravity = true;
+            thrwn.transform.rotation = startRot;
         }
 
         private BaseGrabbable grabbable;

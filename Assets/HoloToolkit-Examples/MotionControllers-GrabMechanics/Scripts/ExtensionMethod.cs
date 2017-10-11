@@ -20,7 +20,7 @@ public static class ExtensionMethods  {
         float dist = Vector3.Distance(centerOfMassOfRigidbody, controllerPos);
 
         //vel = velocityOfController + angularVelOfController * distBetween grabbable center of mass and controllerPos;
-        //setVel = controllerVelocity + controllerAngularVelocity; //+ (controllerAngularVelocity /* *-1*/) * dist;
+        //setVel = controllerVelocity + controllerAngularVelocity + (controllerAngularVelocity *-1) * dist;
         setVel = controllerVelocity;
         Debug.Log(" SetVal = ControllerVelocity ( " + controllerVelocity + ") controllerAngVel ((" + controllerAngularVelocity + ") * -1 )" + "  * dist (" + dist+")");
 
