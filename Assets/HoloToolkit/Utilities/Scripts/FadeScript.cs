@@ -9,10 +9,13 @@ namespace HoloToolkit.Unity
 {
     public class FadeScript : Singleton<FadeScript>
     {
-        Material fadeMaterial;
-        Color fadeColor = Color.black;
+        [Tooltip("If true, the FadeScript will update the shared material. Useful for fading multiple cameras that each render different layers.")]
+        public bool FadeSharedMaterial;
 
-        enum FadeState
+        private Material fadeMaterial;
+        private Color fadeColor = Color.black;
+
+        private enum FadeState
         {
             idle = 0,
             fadingOut,
@@ -27,14 +30,14 @@ namespace HoloToolkit.Unity
             }
         }
 
-        FadeState currentState;
-        float startTime;
-        float fadeOutTime;
-        Action fadeOutAction;
-        float fadeInTime;
-        Action fadeInAction;
+        private FadeState currentState;
+        private float startTime;
+        private float fadeOutTime;
+        private Action fadeOutAction;
+        private float fadeInTime;
+        private Action fadeInAction;
 
-        void Start()
+        private void Start()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (!HolographicSettings.IsDisplayOpaque)
@@ -46,10 +49,12 @@ namespace HoloToolkit.Unity
 #endif
 
             currentState = FadeState.idle;
-            fadeMaterial = GetComponentInChildren<MeshRenderer>().material;
+            fadeMaterial = FadeSharedMaterial
+                ? GetComponentInChildren<MeshRenderer>().sharedMaterial
+                : GetComponentInChildren<MeshRenderer>().material;
         }
 
-        void Update()
+        private void Update()
         {
             if (Busy)
             {
@@ -62,7 +67,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        void CalculateFade()
+        private void CalculateFade()
         {
             float actionTime = currentState == FadeState.fadingOut ? fadeOutTime : fadeInTime;
             float timeBusy = Time.realtimeSinceStartup - startTime;
@@ -90,7 +95,7 @@ namespace HoloToolkit.Unity
 
         protected override void OnDestroy()
         {
-            if (fadeMaterial != null)
+            if (fadeMaterial != null && !FadeSharedMaterial)
             {
                 Destroy(fadeMaterial);
             }
@@ -98,7 +103,7 @@ namespace HoloToolkit.Unity
             base.OnDestroy();
         }
 
-        public bool DoFade(float fadeOutTime, float fadeInTime, Action FadedOutAction, Action FadedInAction)
+        public bool DoFade(float _fadeOutTime, float _fadeInTime, Action _fadedOutAction, Action _fadedInAction)
         {
             if (Busy)
             {
@@ -106,10 +111,10 @@ namespace HoloToolkit.Unity
                 return false;
             }
 
-            this.fadeOutTime = fadeOutTime;
-            fadeOutAction = FadedOutAction;
-            this.fadeInTime = fadeInTime;
-            fadeInAction = FadedInAction;
+            fadeOutTime = _fadeOutTime;
+            fadeOutAction = _fadedOutAction;
+            fadeInTime = _fadeInTime;
+            fadeInAction = _fadedInAction;
 
             startTime = Time.realtimeSinceStartup;
             currentState = FadeState.fadingOut;
