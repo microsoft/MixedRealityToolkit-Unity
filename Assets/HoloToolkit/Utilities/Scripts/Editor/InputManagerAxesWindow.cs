@@ -7,11 +7,24 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Renders the UI and handles update logic for Mixed Reality Toolkit/Configure/Add Input Manager Axes.
+    /// </summary>
     public class InputManagerAxesWindow : AutoConfigureWindow<string>
     {
+        /// <summary>
+        /// This is used to keep a local list of axis names, so we don't have to keep iterating through each SerializedProperty.
+        /// </summary>
         private static List<string> axisNames = new List<string>();
+
+        /// <summary>
+        /// This is used to keep a single reference to InputManager.asset, refreshed when necessary.
+        /// </summary>
         private static SerializedObject inputManagerAsset;
 
+        /// <summary>
+        /// Define new axes here adding a new InputManagerAxis to the array.
+        /// </summary>
         private InputManagerAxis[] newInputAxes =
         {
             new InputManagerAxis() { name = "CONTROLLER_LEFT_STICK_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 1 },
@@ -35,13 +48,19 @@ namespace HoloToolkit.Unity
             new InputManagerAxis() { name = "XBOX_DPAD_VERTICAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 7 }
         };
 
+        /// <summary>
+        /// Used to map AxisType from a useful name to the int value the InputManager wants.
+        /// </summary>
         public enum AxisType
         {
-            KeyOrMouseButton = 0,
-            MouseMovement = 1,
-            JoystickAxis = 2
+            KeyOrMouseButton,
+            MouseMovement,
+            JoystickAxis
         };
 
+        /// <summary>
+        /// Used to define an entire InputManagerAxis, with each variable defined by the same term the Inspector shows.
+        /// </summary>
         public class InputManagerAxis
         {
             public string name;
@@ -65,6 +84,7 @@ namespace HoloToolkit.Unity
         {
             base.Awake();
 
+            // Grabs the actual asset file into a SerializedObject, so we can iterate through it and edit it.
             inputManagerAsset = new SerializedObject(AssetDatabase.LoadAssetAtPath("ProjectSettings/InputManager.asset", typeof(Object)));
             RefreshLocalAxesList();
         }
@@ -78,6 +98,8 @@ namespace HoloToolkit.Unity
                     AddAxis(axis);
                 }
             }
+
+            inputManagerAsset.ApplyModifiedProperties();
 
             Close();
         }
@@ -182,11 +204,13 @@ namespace HoloToolkit.Unity
         {
             SerializedProperty axesProperty = inputManagerAsset.FindProperty("m_Axes");
 
+            // Creates a new axis by incrementing the size of the m_Axes array.
             axesProperty.arraySize++;
-            inputManagerAsset.ApplyModifiedProperties();
 
+            // Get the new axis be querying for the last array element.
             SerializedProperty axisProperty = axesProperty.GetArrayElementAtIndex(axesProperty.arraySize - 1);
 
+            // Iterate through all the properties of the new axis.
             while (axisProperty.Next(true))
             {
                 switch (axisProperty.name)
@@ -238,12 +262,11 @@ namespace HoloToolkit.Unity
                         break;
                 }
             }
-
-            inputManagerAsset.ApplyModifiedProperties();
-
-            axisNames.Add(axis.name.ToLower());
         }
 
+        /// <summary>
+        /// Checks our local cache of axis names to see if an axis exists. This cache is refreshed if it's empty or if InputManager.asset has been changed.
+        /// </summary>
         private static bool DoesAxisNameExist(string axisName)
         {
             if (axisNames.Count == 0 || inputManagerAsset.UpdateIfRequiredOrScript())
@@ -254,17 +277,18 @@ namespace HoloToolkit.Unity
             return axisNames.Contains(axisName.ToLower());
         }
 
+        /// <summary>
+        /// Clears our local cache, then refills it by iterating through the m_Axes arrays and storing the display names.
+        /// </summary>
         private static void RefreshLocalAxesList()
         {
             axisNames.Clear();
 
             SerializedProperty axesProperty = inputManagerAsset.FindProperty("m_Axes");
 
-            axesProperty.Next(true);
-            axesProperty.Next(true);
-            while (axesProperty.Next(false))
+            for (int i = 0; i < axesProperty.arraySize; i++)
             {
-                axisNames.Add(axesProperty.displayName.ToLower());
+                axisNames.Add(axesProperty.GetArrayElementAtIndex(i).displayName.ToLower());
             }
         }
     }
