@@ -45,8 +45,6 @@ namespace MRTK.Grabbables
             Debug.Log("Attempt scale");
             BaseGrabber[] activeGrabbers = GetComponent<BaseGrabbable>().ActiveGrabbers;
 
-            Debug.Log("We're scaling by distance. ActiveGrabbers Length " + activeGrabbers.Length);
-            //Debug.Break();
             if (GetComponent<BaseGrabbable>().ActiveGrabbers.Length >= minScalarNumForScale)
             {
 
@@ -55,7 +53,6 @@ namespace MRTK.Grabbables
                 //That standard distance between controllers corresponds to the localScale * scaleMultiplier
                 if (scaleByDistance)
                 {
-                    Debug.Log("We're scaling by distance "+activeGrabbers.Length);
                     if (activeGrabbers.Length >= minScalarNumForScale)
                     {
                         //later this should be average distance between all controllers attached.

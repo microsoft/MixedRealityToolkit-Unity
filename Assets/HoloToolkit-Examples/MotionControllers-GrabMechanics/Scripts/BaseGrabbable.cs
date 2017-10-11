@@ -255,8 +255,6 @@ namespace MRTK.Grabbables
         {
             //this is called GetAverageVelocity because it will be updated to be an average the amount of force exerted on it by *all* grabber attached
             var velocity = Vector3.zero;
-            Debug.Log("prevPos = " + prevPos + " currsPos " + currPos);
-            Debug.Log("previousVelocity = " + previousVel);
             velocity = (currPos - prevPos) / Time.deltaTime;
             return velocity != Vector3.zero ? velocity : previousVel;
 

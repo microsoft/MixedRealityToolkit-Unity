@@ -48,7 +48,6 @@ namespace MRTK.Grabbables
         //the next three functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
         protected override void AttachToGrabber(BaseGrabber grabber)
         {
-            Debug.Log("Attaching to Grabber --from Grabbable Simple");
             GetComponent<Rigidbody>().isKinematic = true;
             if (!activeGrabbers.Contains(grabber))
                 activeGrabbers.Add(grabber);
@@ -56,7 +55,6 @@ namespace MRTK.Grabbables
 
         protected override void DetachFromGrabber(BaseGrabber grabber)
         {
-            Debug.Log("Detaching form grabber -- from Grabbable Simple");
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Rigidbody>().useGravity = true;
         }

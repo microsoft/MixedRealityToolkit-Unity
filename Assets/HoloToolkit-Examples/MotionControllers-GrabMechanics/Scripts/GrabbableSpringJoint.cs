@@ -43,7 +43,6 @@ namespace MRTK.Grabbables
             joint.breakTorque = breakTorque;
             joint.spring = spring;
             joint.damper = damper;
-            Debug.Log("Just CREATED a temp JOINT");
         }
 
         protected override void DetachFromGrabber(BaseGrabber grabber)

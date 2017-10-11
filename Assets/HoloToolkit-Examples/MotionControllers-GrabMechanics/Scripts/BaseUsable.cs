@@ -47,10 +47,8 @@ namespace MRTK.Grabbables
 
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
-            Debug.Log("Base Usable input start");
             if (obj.pressType == pressType && (handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness))
             {
-                Debug.Log("Base Usable one step deeper");
 
                 //if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
                // {
