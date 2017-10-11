@@ -6,6 +6,19 @@ using UnityEngine.XR.WSA.Input;
 
 namespace MRTK.Grabbables
 {
+    public struct ControllerReleaseData
+    {
+        Vector3 vel;
+        Vector3 angVel;
+
+        public ControllerReleaseData(Vector3 _vel, Vector3 _angVel)
+        {
+            vel = _vel;
+            angVel = _angVel;
+        }
+    }
+
+
     /// <summary>
     /// Intended usage: scripts that inherit from this can be attached to the controller, or any object with a collider 
     /// that needs to be grabbing or carrying other objects. 
@@ -16,6 +29,8 @@ namespace MRTK.Grabbables
         public Action<BaseGrabber> OnContactStateChange;
 
         public InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
+
+        public List<BaseGrabbable> GrabbedObjects { get { return new List<BaseGrabbable>(grabbedObjects); } }
 
 
         public GrabStateEnum GrabState
@@ -213,5 +228,8 @@ namespace MRTK.Grabbables
         private GrabStateEnum prevContactState = GrabStateEnum.Inactive;               
         [SerializeField]
         protected InteractionSourceHandedness handedness;
+
+
+
     }
 }

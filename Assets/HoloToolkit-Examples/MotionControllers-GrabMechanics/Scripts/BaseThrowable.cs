@@ -12,6 +12,10 @@ namespace MRTK.Grabbables {
         public bool ZeroGravityThrow { get { return zeroGravityThrow; } set { zeroGravityThrow = value; } }
         public bool Thrown { get { return thrown; } set { thrown = value; }  }
 
+        //To get velocity info straight from controller
+        public Vector3 LatestControllerThrowVelocity { get; set; }
+        public Vector3 LatestControllerThrowAngularVelocity { get; set; }
+
         //not implemented yet. lower priority
         public AnimationCurve VelocityOverTime { get { return velocityOverTime; } set { velocityOverTime = value; } }
         public AnimationCurve UpDownCurveOverTime { get { return upDownCurveOverTime; } set { upDownCurveOverTime = value; } }
