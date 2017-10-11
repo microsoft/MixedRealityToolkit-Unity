@@ -54,7 +54,13 @@ namespace HoloToolkit.Unity
                 HasData = false;
                 GuestIpAddress = IPAddress.None;
 
-                var internalSwitchAddressInfo = GetInternalSwitchAddressInfo();
+                var internalSwitchAddressInfo = null;
+                try {
+                    internalSwitchAddressInfo = GetInternalSwitchAddressInfo();
+                } catch(Exception e) {
+                    UnityEngine.Debug.LogError("Failed to locate internal switch adapter");
+                }
+                
                 if (internalSwitchAddressInfo != null)
                 {
                     using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
