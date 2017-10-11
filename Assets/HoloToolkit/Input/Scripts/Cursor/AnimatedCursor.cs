@@ -138,6 +138,5 @@ namespace HoloToolkit.Unity.InputModule
                     break;
             }
         }
-
     }
 }

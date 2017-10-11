@@ -80,8 +80,10 @@ namespace HoloToolkit.Unity.Boundary
         }
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             // Render the floor based on if you are in editor or immersive device.
             RenderFloorQuad();
 
