@@ -66,13 +66,16 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            teleportMarker = Instantiate(TeleportMarker);
-            teleportMarker.SetActive(false);
-
-            animationController = teleportMarker.GetComponentInChildren<Animator>();
-            if (animationController != null)
+            if (TeleportMarker != null)
             {
-                animationController.StopPlayback();
+                teleportMarker = Instantiate(TeleportMarker);
+                teleportMarker.SetActive(false);
+
+                animationController = teleportMarker.GetComponentInChildren<Animator>();
+                if (animationController != null)
+                {
+                    animationController.StopPlayback();
+                }
             }
         }
 
