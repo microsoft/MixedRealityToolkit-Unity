@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity
     public class InputManagerAxesWindow : AutoConfigureWindow<string>
     {
         private static List<string> axisNames = new List<string>();
+        private static SerializedObject inputManagerAsset;
 
         private InputManagerAxis[] newInputAxes =
         {
@@ -50,18 +51,22 @@ namespace HoloToolkit.Unity
             public string positiveButton;
             public string altNegativeButton;
             public string altPositiveButton;
-
             public float gravity;
             public float dead;
             public float sensitivity;
-
             public bool snap = false;
             public bool invert = false;
-
             public AxisType type;
-
             public int axis;
             public int joyNum;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            inputManagerAsset = new SerializedObject(AssetDatabase.LoadAssetAtPath("ProjectSettings/InputManager.asset", typeof(Object)));
+            RefreshLocalAxesList();
         }
 
         protected override void ApplySettings()
@@ -175,7 +180,6 @@ namespace HoloToolkit.Unity
 
         private static void AddAxis(InputManagerAxis axis)
         {
-            SerializedObject inputManagerAsset = new SerializedObject(AssetDatabase.LoadAssetAtPath("ProjectSettings/InputManager.asset", typeof(Object)));
             SerializedProperty axesProperty = inputManagerAsset.FindProperty("m_Axes");
 
             axesProperty.arraySize++;
@@ -233,7 +237,6 @@ namespace HoloToolkit.Unity
                         axisProperty.intValue = axis.joyNum;
                         break;
                 }
-
             }
 
             inputManagerAsset.ApplyModifiedProperties();
@@ -243,20 +246,26 @@ namespace HoloToolkit.Unity
 
         private static bool DoesAxisNameExist(string axisName)
         {
-            if (axisNames.Count == 0)
+            if (axisNames.Count == 0 || inputManagerAsset.UpdateIfRequiredOrScript())
             {
-                SerializedObject inputManagerAsset = new SerializedObject(AssetDatabase.LoadAssetAtPath("ProjectSettings/InputManager.asset", typeof(Object)));
-                SerializedProperty axes = inputManagerAsset.FindProperty("m_Axes");
-
-                axes.Next(true);
-                axes.Next(true);
-                while (axes.Next(false))
-                {
-                    axisNames.Add(axes.displayName.ToLower());
-                }
+                RefreshLocalAxesList();
             }
 
             return axisNames.Contains(axisName.ToLower());
+        }
+
+        private static void RefreshLocalAxesList()
+        {
+            axisNames.Clear();
+
+            SerializedProperty axesProperty = inputManagerAsset.FindProperty("m_Axes");
+
+            axesProperty.Next(true);
+            axesProperty.Next(true);
+            while (axesProperty.Next(false))
+            {
+                axisNames.Add(axesProperty.displayName.ToLower());
+            }
         }
     }
 }
