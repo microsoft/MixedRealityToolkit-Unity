@@ -86,16 +86,16 @@ namespace HoloToolkit.Unity.InputModule
                 case XboxControllerMappingTypes.None:
                     return;
                 case XboxControllerMappingTypes.XboxLeftStickHorizontal:
-                    XboxLeftStickHorizontal = string.IsNullOrEmpty(value) ? "XBOX_LEFT_STICK_HORIZONTAL" : value;
+                    XboxLeftStickHorizontal = string.IsNullOrEmpty(value) ? "CONTROLLER_LEFT_STICK_HORIZONTAL" : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftStickVertical:
-                    XboxLeftStickVertical = string.IsNullOrEmpty(value) ? "XBOX_LEFT_STICK_VERTICAL" : value;
+                    XboxLeftStickVertical = string.IsNullOrEmpty(value) ? "CONTROLLER_LEFT_STICK_VERTICAL" : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightStickHorizontal:
-                    XboxRightStickHorizontal = string.IsNullOrEmpty(value) ? "XBOX_RIGHT_STICK_HORIZONTAL" : value;
+                    XboxRightStickHorizontal = string.IsNullOrEmpty(value) ? "CONTROLLER_RIGHT_STICK_HORIZONTAL" : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightStickVertical:
-                    XboxRightStickVertical = string.IsNullOrEmpty(value) ? "XBOX_RIGHT_STICK_VERTICAL" : value;
+                    XboxRightStickVertical = string.IsNullOrEmpty(value) ? "CONTROLLER_RIGHT_STICK_VERTICAL" : value;
                     break;
                 case XboxControllerMappingTypes.XboxDpadHorizontal:
                     XboxDpadHorizontal = string.IsNullOrEmpty(value) ? "XBOX_DPAD_HORIZONTAL" : value;
@@ -104,10 +104,10 @@ namespace HoloToolkit.Unity.InputModule
                     XboxDpadVertical = string.IsNullOrEmpty(value) ? "XBOX_DPAD_VERTICAL" : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftTrigger:
-                    XboxLeftTrigger = string.IsNullOrEmpty(value) ? "XBOX_LEFT_TRIGGER" : value;
+                    XboxLeftTrigger = string.IsNullOrEmpty(value) ? "CONTROLLER_LEFT_TRIGGER" : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightTrigger:
-                    XboxRightTrigger = string.IsNullOrEmpty(value) ? "XBOX_RIGHT_TRIGGER" : value;
+                    XboxRightTrigger = string.IsNullOrEmpty(value) ? "CONTROLLER_RIGHT_TRIGGER" : value;
                     break;
                 case XboxControllerMappingTypes.XboxSharedTrigger:
                     XboxSharedTrigger = string.IsNullOrEmpty(value) ? "XBOX_SHARED_TRIGGER" : value;
@@ -128,7 +128,7 @@ namespace HoloToolkit.Unity.InputModule
                     XboxView = string.IsNullOrEmpty(value) ? "XBOX_VIEW" : value;
                     break;
                 case XboxControllerMappingTypes.XboxMenu:
-                    XboxMenu = string.IsNullOrEmpty(value) ? "XBOX_MENU" : value;
+                    XboxMenu = string.IsNullOrEmpty(value) ? "CONTROLLER_MENU" : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftBumper:
                     XboxLeftBumper = string.IsNullOrEmpty(value) ? "XBOX_LEFT_BUMPER" : value;
@@ -137,10 +137,10 @@ namespace HoloToolkit.Unity.InputModule
                     XboxRightBumper = string.IsNullOrEmpty(value) ? "XBOX_RIGHT_BUMPER" : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftStickClick:
-                    XboxLeftStickClick = string.IsNullOrEmpty(value) ? "XBOX_LEFT_STICK_CLICK" : value;
+                    XboxLeftStickClick = string.IsNullOrEmpty(value) ? "CONTROLLER_LEFT_STICK_CLICK" : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightStickClick:
-                    XboxRightStickClick = string.IsNullOrEmpty(value) ? "XBOX_RIGHT_STICK_CLICK" : value;
+                    XboxRightStickClick = string.IsNullOrEmpty(value) ? "CONTROLLER_RIGHT_STICK_CLICK" : value;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("type", type, null);

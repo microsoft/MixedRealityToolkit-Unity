@@ -22,11 +22,6 @@ namespace HoloToolkit.Unity.InputModule
         public bool IsGazingAtObject { get; private set; }
 
         /// <summary>
-        /// HitInfo property gives access to information at the object being gazed at, if any.
-        /// </summary>
-        public RaycastHit HitInfo { get; private set; }
-
-        /// <summary>
         /// Dispatched when focus shifts to a new object, or focus on current object
         /// is lost.
         /// </summary>
@@ -42,6 +37,11 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         [Obsolete("Use FocusManager.UnityUIPointerEvent")]
         public PointerEventData UnityUIPointerEvent { get; private set; }
+
+        /// <summary>
+        /// HitInfo property gives access to information at the object being gazed at, if any.
+        /// </summary>
+        public RaycastHit HitInfo { get; private set; }
 
         /// <summary>
         /// The game object that is currently being gazed at, if any.
