@@ -293,7 +293,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             FocusDetails? details = TryGetFocusDetails(eventData);
 
-            return (details == null) ? null : details.Value.Object;
+            if (details == null)
+            {
+                return null;
+            }
+
+            var pointer = GetPointerEventData();
+            pointer.selectedObject = details.Value.Object;
+            return details.Value.Object;
         }
 
         public bool TryGetPointingSource(BaseEventData eventData, out IPointingSource pointingSource)
