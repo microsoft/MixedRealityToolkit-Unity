@@ -99,13 +99,15 @@ namespace HoloToolkit.Unity
 
             if (Values[SceneSetting.AddDefaultCursor])
             {
-                var currentSceneCursors = FindObjectsOfType<Cursor>();
-                foreach (var cursor in currentSceneCursors)
+                var cursors = FindObjectsOfType<Cursor>();
+                foreach (var cursor in cursors)
                 {
                     DestroyImmediate(cursor.gameObject.GetParentRoot());
                 }
 
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(DefaultCursorPrefabGUID)));
+
+                FindObjectOfType<InputManager>().GetComponent<SimpleSinglePointerSelector>().Cursor = FindObjectOfType<Cursor>();
             }
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
