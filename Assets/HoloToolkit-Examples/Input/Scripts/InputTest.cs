@@ -9,16 +9,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// Test behaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
-    public class InputTest : MonoBehaviour, 
-                             IInputHandler,
-                             IInputClickHandler,
-                             IFocusable, 
-                             ISourceStateHandler,
-                             IHoldHandler,
-                             IManipulationHandler,
-                             INavigationHandler
+    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler
     {
-        [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance." )]
+        [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
 
         public void OnInputUp(InputEventData eventData)
@@ -73,9 +66,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnManipulationStarted(ManipulationEventData eventData)
         {
-            Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}", 
-                eventData.InputSource, 
-                eventData.SourceId, 
+            Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+                eventData.InputSource,
+                eventData.SourceId,
                 eventData.CumulativeDelta.x,
                 eventData.CumulativeDelta.y,
                 eventData.CumulativeDelta.z);
