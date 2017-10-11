@@ -117,12 +117,6 @@ For a production envionment, follow the instructions from the main HoloToolkit: 
 - Make sure all devices are connected to the same Wireless Local Area Network.
 - Ensure all firewall settings are correct.  Windows firewall gives you options to enable/disable by network type (private, public, home), make sure you're enabling the firewall for your connection's type.
 
-### Troubleshooting
----
-- Double check the Server Address on your sharing stage component in your scene matches the address shown in the sharing service console.
-- Make sure all devices are connected to the same Wireless Local Area Network.
-- Ensure all firewall settings are correct.  Windows firewall gives you options to enable/disable by network type (private, public, home), make sure you're enabling the firewall for your connection's type.
-
 #### Invalid Schema Version
 
 ```
