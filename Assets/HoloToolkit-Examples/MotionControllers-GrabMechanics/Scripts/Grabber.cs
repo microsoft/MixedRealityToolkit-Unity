@@ -49,7 +49,7 @@ namespace MRTK.Grabbables
                 Debug.Log("Source Pose data returns TryGetVelocity ............ " + velocity.ToString());
                 Debug.Log("Source Pose data returns TryGetANGULARVelocity (bool) ............ " + obj.state.sourcePose.TryGetVelocity(out velocity).ToString());
                 Debug.Log("Source Pose data returns TryGetAngularVelocity ............ " + angularVelocity.ToString());
-                TrySetThrowableObject(velocity, angularVelocity, GrabbedObjects.Count > 0? GrabbedObjects[0]: null);
+                TrySetThrowableObject(GrabbedObjects.Count > 0? GrabbedObjects[0]: null, obj.state.sourcePose);
                 GrabEnd();
 
             }
@@ -95,15 +95,26 @@ namespace MRTK.Grabbables
             RemoveContact(bg);
         }
 
-        public bool TrySetThrowableObject(Vector3 vel, Vector3 angVel, BaseGrabbable grabbable)
+        public bool TrySetThrowableObject(BaseGrabbable grabbable, InteractionSourcePose poseInfo)
         {
             if (grabbable == null)
                 return false;
 
             if (!grabbable.GetComponent<BaseThrowable>())
                 return false;
-            grabbable.GetComponent<BaseThrowable>().LatestControllerThrowVelocity = vel;
-            grabbable.GetComponent<BaseThrowable>().LatestControllerThrowAngularVelocity = vel;
+
+            if (!grabbable.GetComponent<Rigidbody>())
+                return false;
+
+            Rigidbody rb = grabbable.GetComponent<Rigidbody>();
+            Debug.Log("name of our rb.center of mass ========= " + rb.name);
+            ControllerReleaseData contrlReleaseData = grabbable.GetComponent<Rigidbody>().GetThrowReleasedVelocityAndAngularVelocity(rb.centerOfMass, poseInfo);
+
+            //grabbable.GetComponent<BaseThrowable>().LatestControllerThrowVelocity = vel;
+            //grabbable.GetComponent<BaseThrowable>().LatestControllerThrowAngularVelocity = vel;
+
+            grabbable.GetComponent<BaseThrowable>().LatestControllerThrowVelocity = contrlReleaseData.vel;
+            grabbable.GetComponent<BaseThrowable>().LatestControllerThrowAngularVelocity = contrlReleaseData.angVel;
             return true;
         }
 

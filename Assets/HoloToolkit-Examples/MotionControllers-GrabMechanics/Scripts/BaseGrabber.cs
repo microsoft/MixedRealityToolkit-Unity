@@ -8,8 +8,8 @@ namespace MRTK.Grabbables
 {
     public struct ControllerReleaseData
     {
-        Vector3 vel;
-        Vector3 angVel;
+        public Vector3 vel;
+        public Vector3 angVel;
 
         public ControllerReleaseData(Vector3 _vel, Vector3 _angVel)
         {
