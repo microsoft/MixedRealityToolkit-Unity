@@ -106,5 +106,14 @@ namespace HoloToolkit.Unity
             }
             return bounds;
         }
+
+        /// <summary>
+        /// Checks if the provided transforms are child/parent related.
+        /// </summary>
+        /// <returns>True if either transform is the parent of the other or if they are the same</returns>
+        public static bool IsParentOrChildOf(this Transform transform1, Transform transform2)
+        {
+            return transform1.IsChildOf(transform2) || transform2.IsChildOf(transform1);
+        }
     }
 }

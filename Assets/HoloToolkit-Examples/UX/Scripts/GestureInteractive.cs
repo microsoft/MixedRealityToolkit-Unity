@@ -286,7 +286,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             
             if (HideCursorOnManipulation && mCursor != null)
             {
-                mCursor.SetVisiblity(!state);
+                mCursor.SetVisibility(!state);
             }
         }
 
