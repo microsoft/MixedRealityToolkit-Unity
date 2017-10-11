@@ -44,7 +44,7 @@ Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade G
 | Target Unity release  | Release timeframe | Master release tag | Toolkit release features |
 | --------------------- | ----------------- | ------------------ | ------------------------ |
 | 2017.1.0              | Early Aug 2017    | v1.2017.1.0        | <ul><li>Updating to Unity's beta build.</li><li>3D Keyboard for text entry.</li></ul>|
-| 2017.2.0              | End Sep 2017      | v1.2017.2.0        | <ul><li>Updating master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
+| 2017.2.0              | End Oct 2017      | v1.2017.2.0        | <ul><li>Updating master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
 | 2017.3.0              | End Dec 2017      | v1.2017.3.0        | <ul><li>360 video player prefabs.</li><li>Scriptable foveated rendering prefabs.</li></ul>|
 ### Dev_Unity_2017.2.0 branch
 
@@ -52,8 +52,8 @@ Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade G
 | --------------------- | ----------------- | ------------------ | --------------------------- | --------------------------- |
 | MRTP9                 | End July 2017     | v1.Dev.MRTP9       | <ul><li>Windows Mixed Reality support for working on both HoloLens and immersive headsets.</li><li>Gamepad support.</li><li>Windows Mixed Reality motion controller support.</li></ul>| [Complete: v1.Dev.MRTP9](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP9) |
 | MRTP13                | Early Aug 2017    | v1.Dev.MRTP13      | <ul><li>Updating to MRTP13.</li><li>Windows Mixed Reality motion controller rendering with glTF format read from WU driver.</li></ul>| [Complete: v1.Dev.MRTP13](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP13) |
-| 2017.2.0              | Mid Aug 2017      | v1.Dev.2017.2.0    | <ul><li>Adapting to Unity's breaking changes of xR namespace and others.</li></ul>| In progress |
-| 2017.2.0              | End Sep 2017      | v1.Dev.2017.2.1    | <ul><li>Merge branch into master.</li></ul>| Not started. |
+| 2017.2.0              | Early Oct 2017      | v1.Dev.2017.2.0    | <ul><li>Adapting to Unity's breaking changes of xR namespace and others.</li></ul>| Complete |
+| 2017.2.0              | End Oct 2017      | v1.Dev.2017.2.1    | <ul><li>Merge branch into master.</li></ul>| In Progress |
 
 # Upcoming Breaking Changes
 
