@@ -9,6 +9,8 @@ namespace HoloToolkit.Unity
 {
     public class FadeScript : SingleInstance<FadeScript>
     {
+        [Tooltip("If true, the FadeScript will update the shared material. Useful for fading multiple cameras that each render different layers.")]
+        public bool FadeSharedMaterial = false;
         Material fadeMaterial;
         Color fadeColor = Color.black;
 
@@ -46,7 +48,14 @@ namespace HoloToolkit.Unity
 #endif
 
             currentState = FadeState.idle;
-            fadeMaterial = GetComponentInChildren<MeshRenderer>().material;
+            if (FadeSharedMaterial)
+            {
+                fadeMaterial = GetComponentInChildren<MeshRenderer>().sharedMaterial;
+            }
+            else
+            {
+                fadeMaterial = GetComponentInChildren<MeshRenderer>().material;
+            }
         }
 
         void Update()
@@ -90,7 +99,7 @@ namespace HoloToolkit.Unity
 
         protected override void OnDestroy()
         {
-            if (fadeMaterial != null)
+            if (fadeMaterial != null && !FadeSharedMaterial)
             {
                 Destroy(fadeMaterial);
             }
