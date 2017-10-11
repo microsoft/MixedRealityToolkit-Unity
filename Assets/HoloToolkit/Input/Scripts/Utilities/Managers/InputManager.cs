@@ -36,7 +36,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public GameObject OverrideFocusedObject { get; set; }
 
-        private bool isRegisteredToGazeChanges;
         private int disabledRefCount;
 
         private InputEventData inputEventData;
@@ -79,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Should the Unity UI events be fired?
         /// </summary>
-        public bool ShouldSendUnityUiEvents { get { return FocusManager.Instance.IsUnityUiFocusable; } }
+        public bool ShouldSendUnityUiEvents { get { return FocusManager.Instance.UnityUIPointerEvent != null && EventSystem.current != null; } }
 
         /// <summary>
         /// Push a game object into the modal input stack. Any input handlers
@@ -245,7 +244,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (ShouldSendUnityUiEvents)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
                 ExecuteEvents.ExecuteHierarchy(focusedObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
             }
         }
@@ -253,15 +252,15 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Raise the event OnFocusExit to the game object when focus exists it.
         /// </summary>
-        /// <param name="defocusedObject"></param>
-        public void RaiseFocusExit(GameObject defocusedObject)
+        /// <param name="deFocusedObject"></param>
+        public void RaiseFocusExit(GameObject deFocusedObject)
         {
-            ExecuteEvents.ExecuteHierarchy(defocusedObject, null, OnFocusExitEventHandler);
+            ExecuteEvents.ExecuteHierarchy(deFocusedObject, null, OnFocusExitEventHandler);
 
             if (ShouldSendUnityUiEvents)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
-                ExecuteEvents.ExecuteHierarchy(defocusedObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
+                ExecuteEvents.ExecuteHierarchy(deFocusedObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
             }
         }
 
@@ -286,8 +285,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
-            where T : IEventSystemHandler
+        public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             if (!Instance.enabled || disabledRefCount > 0)
             {
@@ -407,7 +405,7 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceClickedEventData, OnInputClickedEventHandler);
 
-            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have SourceUp call the pointerClickHandler.
+            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaiseSourceUp call the pointerClickHandler.
         }
 
         private static readonly ExecuteEvents.EventFunction<IInputHandler> OnSourceUpEventHandler =
@@ -428,7 +426,7 @@ namespace HoloToolkit.Unity.InputModule
             // UI events
             if (ShouldSendUnityUiEvents && pressType == InteractionSourcePressInfo.Select)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
 
@@ -455,7 +453,7 @@ namespace HoloToolkit.Unity.InputModule
             // UI events
             if (ShouldSendUnityUiEvents && pressType == InteractionSourcePressInfo.Select)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
 

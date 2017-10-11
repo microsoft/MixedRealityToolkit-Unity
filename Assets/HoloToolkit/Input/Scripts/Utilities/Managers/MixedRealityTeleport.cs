@@ -66,7 +66,7 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            if (TeleportMarker != null)
+            if (teleportMarker != null)
             {
                 teleportMarker = Instantiate(TeleportMarker);
                 teleportMarker.SetActive(false);

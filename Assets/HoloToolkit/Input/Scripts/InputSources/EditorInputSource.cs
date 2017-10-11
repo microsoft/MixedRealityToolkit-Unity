@@ -349,10 +349,10 @@ namespace HoloToolkit.Unity.InputModule
                 time = Time.time;
             }
 
-            CurrentButtonStates.SelectButtonStateChanged = (CurrentButtonStates.IsSelectButtonDown != source.selectPressed);
-            CurrentButtonStates.IsSelectButtonDown = source.selectPressed;
+            CurrentButtonStates.SelectButtonStateChanged = (CurrentButtonStates.IsSelectButtonDown != source.SelectPressed);
+            CurrentButtonStates.IsSelectButtonDown = source.SelectPressed;
 
-            if (CurrentButtonStates.SelectButtonStateChanged && source.selectPressed)
+            if (CurrentButtonStates.SelectButtonStateChanged && source.SelectPressed)
             {
                 CurrentButtonStates.SelectDownStartTime = time;
                 CurrentButtonStates.CumulativeDelta = Vector3.zero;
@@ -361,7 +361,7 @@ namespace HoloToolkit.Unity.InputModule
             if (SupportsPosition)
             {
                 Vector3 controllerPosition;
-                if (source.sourcePose.TryGetPosition(out controllerPosition))
+                if (source.SourcePose.TryGetPosition(out controllerPosition))
                 {
                     CurrentButtonStates.CumulativeDelta += controllerPosition - ControllerPosition;
                     ControllerPosition = controllerPosition;
@@ -371,7 +371,7 @@ namespace HoloToolkit.Unity.InputModule
             if (SupportsRotation)
             {
                 Quaternion controllerRotation;
-                if (source.sourcePose.TryGetRotation(out controllerRotation))
+                if (source.SourcePose.TryGetRotation(out controllerRotation))
                 {
                     ControllerRotation = controllerRotation;
                 }
@@ -379,19 +379,19 @@ namespace HoloToolkit.Unity.InputModule
 
             if (SupportsRay)
             {
-                PointingRay = source.sourcePose.PointerRay;
+                PointingRay = source.SourcePose.PointerRay;
             }
 
             if (SupportsMenuButton)
             {
-                CurrentButtonStates.MenuButtonStateChanged = (CurrentButtonStates.IsMenuButtonDown != source.menuPressed);
-                CurrentButtonStates.IsMenuButtonDown = source.menuPressed;
+                CurrentButtonStates.MenuButtonStateChanged = (CurrentButtonStates.IsMenuButtonDown != source.MenuPressed);
+                CurrentButtonStates.IsMenuButtonDown = source.MenuPressed;
             }
 
             if (SupportsGrasp)
             {
-                CurrentButtonStates.GraspStateChanged = (CurrentButtonStates.IsGrasped != source.grasped);
-                CurrentButtonStates.IsGrasped = source.grasped;
+                CurrentButtonStates.GraspStateChanged = (CurrentButtonStates.IsGrasped != source.Grasped);
+                CurrentButtonStates.IsGrasped = source.Grasped;
             }
 
             SendControllerStateEvents(time);

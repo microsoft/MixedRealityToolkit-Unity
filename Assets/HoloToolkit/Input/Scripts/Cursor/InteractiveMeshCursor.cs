@@ -147,9 +147,9 @@ namespace HoloToolkit.Unity.InputModule
         /// override the base class for custom visibility
         /// </summary>
         /// <param name="visible"></param>
-        public override void SetVisiblity(bool visible)
+        public override void SetVisibility(bool visible)
         {
-            base.SetVisiblity(visible);
+            base.SetVisibility(visible);
 
             mIsVisible = visible;
             ElementVisibility(visible);

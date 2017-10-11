@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,6 +12,11 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GazeManager : Singleton<GazeManager>, IPointingSource
     {
+        /// <summary>
+        /// HitInfo property gives access to information at the object being gazed at, if any.
+        /// </summary>
+        public RaycastHit HitInfo { get; private set; }
+
         /// <summary>
         /// The game object that is currently being gazed at, if any.
         /// </summary>
@@ -89,7 +94,7 @@ namespace HoloToolkit.Unity.InputModule
             get { return MaxGazeCollisionDistance; }
         }
 
-        public IList<LayerMask> PrioritizedLayerMasksOverride
+        public LayerMask[] PrioritizedLayerMasksOverride
         {
             get { return RaycastLayerMasks; }
         }
@@ -125,7 +130,7 @@ namespace HoloToolkit.Unity.InputModule
         private bool FindGazeTransform()
         {
             if (GazeTransform != null) { return true; }
-            
+
             if (CameraCache.Main != null)
             {
                 GazeTransform = CameraCache.Main.transform;
@@ -178,10 +183,12 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Notifies this gaze manager of its new hit details.
         /// </summary>
-        /// <param name="focusDetails">Details of the current hit (focus).</param>
+        /// <param name="focusDetails">Details of the current focus.</param>
+        /// <param name="hitInfo">Details of the focus raycast hit.</param>
         /// <param name="isRegisteredForFocus">Whether or not this gaze manager is registered as a focus pointer.</param>
-        public void UpdateHitDetails(FocusDetails focusDetails, bool isRegisteredForFocus)
+        public void UpdateHitDetails(FocusDetails focusDetails, RaycastHit hitInfo, bool isRegisteredForFocus)
         {
+            HitInfo = hitInfo;
             HitObject = isRegisteredForFocus
                 ? focusDetails.Object
                 : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.

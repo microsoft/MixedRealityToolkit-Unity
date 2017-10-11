@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
@@ -55,18 +58,21 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
+            if (!Application.isEditor)
+            {
 #if UNITY_WSA
             if (!HolographicSettings.IsDisplayOpaque)
-            {
-                CurrentDisplayType = DisplayType.Transparent;
-                ApplySettingsForTransparentDisplay();
-                if (OnDisplayDetected != null)
                 {
-                    OnDisplayDetected(DisplayType.Transparent);
+                    CurrentDisplayType = DisplayType.Transparent;
+                    ApplySettingsForTransparentDisplay();
+                    if (OnDisplayDetected != null)
+                    {
+                        OnDisplayDetected(DisplayType.Transparent);
+                    }
                     return;
                 }
-            }
 #endif
+            }
 
             CurrentDisplayType = DisplayType.Opaque;
             ApplySettingsForOpaqueDisplay();
