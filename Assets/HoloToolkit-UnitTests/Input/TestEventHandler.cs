@@ -10,33 +10,38 @@ namespace HoloToolkit.Unity.Tests
 {
     public interface ITestEventSystemHandler : IEventSystemHandler
     {
-        void OnTest();
+        void OnTest(BaseEventData eventData);
     }
 
     public class TestEventHandler : MonoBehaviour, ITestEventSystemHandler, IFocusable
     {
+        public bool IsGlobal;
+
         public static readonly ExecuteEvents.EventFunction<ITestEventSystemHandler> OnTestHandler =
         delegate (ITestEventSystemHandler handler, BaseEventData eventData)
         {
-            handler.OnTest();
+            handler.OnTest(eventData);
         };
 
+        public Action<GameObject, BaseEventData> EventFiredCallback;
 
-        public Action<GameObject> EventFiredCallback;
-
-        public void OnTest()
+        public void OnTest(BaseEventData eventData)
         {
-            EventFiredCallback(gameObject);
+            if (!IsGlobal)
+            {
+                eventData.Use();
+            }
+            EventFiredCallback(gameObject, eventData);
         }
 
         public void OnFocusEnter()
         {
-            EventFiredCallback(gameObject);
+            EventFiredCallback(gameObject, null);
         }
 
         public void OnFocusExit()
         {
-            EventFiredCallback(gameObject);
+            EventFiredCallback(gameObject, null);
         }
     }
 }

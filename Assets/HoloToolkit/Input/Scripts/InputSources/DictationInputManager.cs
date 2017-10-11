@@ -50,7 +50,7 @@ namespace HoloToolkit.Unity.InputModule
         private static AudioClip dictationAudioClip;
 
         private static DictationRecognizer dictationRecognizer;
-        
+
         private static bool isTransitioning;
         private static bool hasFailed;
 #endif
@@ -254,9 +254,10 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IInputSource Implementation
 
-        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        public bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            return SupportedInputInfo.None;
+            sourceKind = InteractionSourceInfo.Voice;
+            return true;
         }
 
         public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
@@ -264,15 +265,72 @@ namespace HoloToolkit.Unity.InputModule
             return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;
         }
 
-        public bool TryGetPosition(uint sourceId, out Vector3 position)
+        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             position = Vector3.zero;
             return false;
         }
 
-        public bool TryGetOrientation(uint sourceId, out Quaternion orientation)
+        public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
-            orientation = Quaternion.identity;
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        {
+            pointingRay = default(Ray);
+            return false;
+        }
+
+        public bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        {
+            return SupportedInputInfo.None;
+        }
+
+        public bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
+        {
+            isPressed = false;
+            position = Vector2.zero;
+            return false;
+        }
+
+        public bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
+        {
+            isPressed = false;
+            isTouched = false;
+            position = Vector2.zero;
+            return false;
+        }
+
+        public bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
+        {
+            isPressed = false;
+            pressedAmount = 0.0;
+            return false;
+        }
+
+        public bool TryGetGrasp(uint sourceId, out bool isPressed)
+        {
+            isPressed = false;
+            return false;
+        }
+
+        public bool TryGetMenu(uint sourceId, out bool isPressed)
+        {
+            isPressed = false;
             return false;
         }
 

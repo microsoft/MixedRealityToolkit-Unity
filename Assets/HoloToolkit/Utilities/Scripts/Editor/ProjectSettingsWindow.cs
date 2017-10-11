@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Project Settings.
+    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Project Settings.
     /// </summary>
     public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
     {

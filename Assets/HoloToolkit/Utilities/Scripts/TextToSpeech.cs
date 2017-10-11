@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// The well-know voices that can be used by <see cref="TextToSpeech"/>.
+    /// The well-known voices that can be used by <see cref="TextToSpeech"/>.
     /// </summary>
     public enum TextToSpeechVoice
     {

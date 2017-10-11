@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Very simple class that implements basic logic for a trigger button.
     /// </summary>
-    public class TriggerButton : MonoBehaviour, IInputClickHandler
+    public class TriggerButton : MonoBehaviour, IInputHandler
     {
         /// <summary>
         /// Indicates whether the button is clickable or not.
@@ -30,11 +30,17 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        void IInputHandler.OnInputDown(InputEventData eventData)
         {
-            if (IsEnabled)
+            // Nothing.
+        }
+
+        void IInputHandler.OnInputUp(InputEventData eventData)
+        {
+            if (IsEnabled && eventData.PressType == InteractionSourcePressInfo.Select)
             {
                 ButtonPressed.RaiseEvent();
+                eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
             }
         }
     }

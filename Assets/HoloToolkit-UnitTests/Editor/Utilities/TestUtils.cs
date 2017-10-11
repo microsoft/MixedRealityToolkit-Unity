@@ -55,6 +55,16 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Calls Awake, OnEnable and Start on all MonoBehaviours on the given gameObject through reflection.
+        /// </summary>
+        /// <param name="gameObject">The gameObject to be initialized</param>
+        /// <returns>The given gameObject to be able to chain call</returns>
+        internal static GameObject CallInitialization(this GameObject gameObject)
+        {
+            return gameObject.CallAwake().CallOnEnable().CallStart();
+        }
+
+        /// <summary>
         /// Calls Awake on all MonoBehaviours on the given gameObject through reflection.
         /// </summary>
         /// <param name="gameObject">The gameObject to be awoken</param>
@@ -62,6 +72,16 @@ namespace HoloToolkit.Unity
         internal static GameObject CallAwake(this GameObject gameObject)
         {
             return gameObject.CallAllMonoBehaviours("Awake");
+        }
+
+        /// <summary>
+        /// Calls OnEnable on all MonoBehaviours on the given gameObject through reflection.
+        /// </summary>
+        /// <param name="gameObject">The gameObject to be enabled</param>
+        /// <returns>The given gameObject to be able to chain call</returns>
+        internal static GameObject CallOnEnable(this GameObject gameObject)
+        {
+            return gameObject.CallAllMonoBehaviours("OnEnable");
         }
 
         /// <summary>
