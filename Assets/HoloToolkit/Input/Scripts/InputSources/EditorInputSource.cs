@@ -3,10 +3,6 @@
 
 using UnityEngine;
 
-#if UNITY_WSA
-using UnityEngine.VR.WSA.Input;
-#endif
-
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -403,18 +399,11 @@ namespace HoloToolkit.Unity.InputModule
         private void SendControllerStateEvents(float time)
         {
             // TODO: Send other new input manager events relating to source updates.
-#if UNITY_WSA
             if (CurrentButtonStates.SelectButtonStateChanged)
             {
                 if (CurrentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Select
-#else
-                        InteractionSourcePressInfo.Select
-#endif
-                        );
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Select);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -434,21 +423,9 @@ namespace HoloToolkit.Unity.InputModule
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Select,
-#else
-                            InteractionSourcePressInfo.Select,
-#endif
-                            1);
+                        InputManager.Instance.RaiseInputClicked(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Select, 1);
                     }
-                    InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Select
-#else
-                        InteractionSourcePressInfo.Select
-#endif
-                        );
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Select);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -487,23 +464,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Menu
-#else
-                        InteractionSourcePressInfo.Menu
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Menu);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Menu
-#else
-                        InteractionSourcePressInfo.Menu
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Menu);
                 }
             }
 
@@ -511,26 +476,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Grasp
-#else
-                        InteractionSourcePressInfo.Grasp
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Grasp);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Grasp
-#else
-                        InteractionSourcePressInfo.Grasp
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Grasp);
                 }
             }
-#endif
         }
 
         /// <summary>

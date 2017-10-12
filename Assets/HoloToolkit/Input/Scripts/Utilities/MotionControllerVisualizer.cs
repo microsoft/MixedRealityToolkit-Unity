@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("This material will be used on the loaded glTF controller model. This does not affect the above overrides.")]
         [SerializeField]
-        protected Material GLTFMaterial;
+        protected UnityEngine.Material GLTFMaterial;
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);

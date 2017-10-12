@@ -32,10 +32,7 @@ namespace HoloToolkit.Unity
 
         public static void AssertIsInitialized()
         {
-            if (!IsInitialized)
-            {
-                Debug.LogAssertionFormat("The {0} singleton is required.", typeof(T).Name);
-            }
+            Debug.Assert(IsInitialized, string.Format("The {0} singleton has not been initialized.", typeof(T).Name));
         }
 
         /// <summary>

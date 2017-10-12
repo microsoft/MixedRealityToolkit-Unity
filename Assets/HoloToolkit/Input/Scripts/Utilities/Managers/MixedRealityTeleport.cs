@@ -37,7 +37,8 @@ namespace HoloToolkit.Unity.InputModule
         public float RotationSize = 45.0f;
         public float StrafeAmount = 0.5f;
 
-        public GameObject TeleportMarker;
+        [SerializeField]
+        private GameObject teleportMarker;
         private Animator animationController;
 
         /// <summary>
@@ -46,7 +47,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private FadeScript fadeControl;
 
-        private GameObject teleportMarker;
         private bool isTeleportValid;
         private IPointingSource currentPointingSource;
         private uint currentSourceId;
@@ -68,7 +68,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (teleportMarker != null)
             {
-                teleportMarker = Instantiate(TeleportMarker);
+                teleportMarker = Instantiate(teleportMarker);
                 teleportMarker.SetActive(false);
 
                 animationController = teleportMarker.GetComponentInChildren<Animator>();
@@ -209,7 +209,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (isTeleportValid)
                 {
                     RaycastHit hitInfo;
-                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(Camera.main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
+                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
 
                     fadeControl.DoFade(0.25f, 0.5f, () =>
                     {
