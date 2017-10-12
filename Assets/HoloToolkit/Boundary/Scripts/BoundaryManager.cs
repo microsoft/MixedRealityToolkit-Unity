@@ -72,11 +72,13 @@ namespace HoloToolkit.Unity.Boundary
 
         private void SetBoundaryRendering()
         {
+#if UNITY_2017_2_OR_NEWER
             // TODO: BUG: Unity: configured bool always returns false.
             if (UnityEngine.Experimental.VR.Boundary.configured)
             {
                 UnityEngine.Experimental.VR.Boundary.visible = renderBoundary;
             }
+#endif
         }
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
