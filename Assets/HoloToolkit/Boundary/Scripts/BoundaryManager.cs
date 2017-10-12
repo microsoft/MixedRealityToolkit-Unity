@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using System.Collections.Generic;
 using UnityEngine.XR.WSA;
 using UnityEngine.XR;
@@ -15,13 +15,13 @@ namespace HoloToolkit.Unity.Boundary
     /// Places a floor quad to ground the scene.
     /// Allows you to check if your GameObject is within setup boundary on the immersive headset.
     /// </summary>
-    public class BoundaryManager : SingleInstance<BoundaryManager>
+    public class BoundaryManager : Singleton<BoundaryManager>
     {
         [Tooltip("Quad prefab to display as the floor.")]
         public GameObject FloorQuad;
         private GameObject floorQuadInstance;
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         [SerializeField]
         [Tooltip("Approximate max Y height of your space.")]
         private float boundaryHeight = 10f;
@@ -72,16 +72,20 @@ namespace HoloToolkit.Unity.Boundary
 
         private void SetBoundaryRendering()
         {
+#if UNITY_2017_2_OR_NEWER
             // TODO: BUG: Unity: configured bool always returns false.
             if (UnityEngine.Experimental.XR.Boundary.configured)
             {
                 UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
             }
+#endif
         }
 
-#if UNITY_WSA
-        private void Awake()
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        protected override void Awake()
         {
+            base.Awake();
+
             // Render the floor based on if you are in editor or immersive device.
             RenderFloorQuad();
 

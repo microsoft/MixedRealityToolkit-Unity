@@ -698,6 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 794a5a07720daf4479efca14d8ba4297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FadeSharedMaterial: 0
 --- !u!114 &114465015496195000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -813,7 +814,7 @@ MonoBehaviour:
   EnableStrafe: 1
   RotationSize: 45
   StrafeAmount: 0.5
-  TeleportMarker: {fileID: 1503526479864244, guid: 10d95b99055c6ad40b735cc8b3593745,
+  teleportMarker: {fileID: 1503526479864244, guid: 10d95b99055c6ad40b735cc8b3593745,
     type: 2}
 --- !u!114 &114828096048444974
 MonoBehaviour:

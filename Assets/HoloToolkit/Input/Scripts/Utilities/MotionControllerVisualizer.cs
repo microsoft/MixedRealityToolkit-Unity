@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using System.Collections;
 using UnityEngine.XR.WSA.Input;
 #if !UNITY_EDITOR
@@ -41,15 +41,13 @@ namespace HoloToolkit.Unity.InputModule
         protected UnityEngine.Material GLTFMaterial;
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
-        private Dictionary<uint, MotionControllerInfo> controllerDictionary;
+        private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
 
         private void Start()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             Application.onBeforeRender += Application_onBeforeRender;
 
-            controllerDictionary = new Dictionary<uint, MotionControllerInfo>();
-
-#if UNITY_WSA
             if (!Application.isEditor)
             {
                 if (GLTFMaterial == null)
@@ -84,7 +82,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Update()
         {
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // NOTE: The controller's state is being updated here in order to provide a good position and rotation
             // for any child GameObjects that might want to raycast or otherwise reason about their location in the world.
             foreach (var sourceState in InteractionManager.GetCurrentReading())
@@ -135,12 +133,14 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnDestroy()
         {
+#if UNITY_2017_2_OR_NEWER
             Application.onBeforeRender -= Application_onBeforeRender;
+#endif
         }
 
         private void Application_onBeforeRender()
         {
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // NOTE: This work is being done here to present the most correct rendered location of the controller each frame.
             // Any app logic depending on the controller state should happen in Update() or using InteractionManager's events.
             foreach (var sourceState in InteractionManager.GetCurrentReading())
@@ -189,7 +189,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             // We only want to attempt loading a model if this source is actually a controller.

@@ -35,5 +35,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 defaultMaterials[i].SetFloat("_Highlight", 0f);
             }
         }
+
+        private void OnDestroy()
+        {
+            foreach (var material in defaultMaterials)
+            {
+                Destroy(material);
+            }
+        }
     }
 }

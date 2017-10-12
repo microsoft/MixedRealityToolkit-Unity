@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Base class for an input source.
     /// </summary>
-    public abstract class BaseInputSource : StartAwareBehaviour, IInputSource
+    public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
         public abstract SupportedInputInfo GetSupportedInputInfo(uint sourceId);
 

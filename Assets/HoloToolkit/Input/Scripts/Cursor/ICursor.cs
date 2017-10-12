@@ -34,6 +34,6 @@ namespace HoloToolkit.Unity.InputModule
         /// Sets the visibility of the cursor.
         /// </summary>
         /// <param name="visible">True if cursor should be visible, false if not.</param>
-        void SetVisiblity(bool visible);
+        void SetVisibility(bool visible);
     }
 }

@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Describes an input event that involves content navigation.
     /// </summary>
-    public class NavigationEventData : BaseInputEventData
+    public class NavigationEventData : InputEventData
     {
         /// <summary>
         /// The amount of manipulation that has occurred. Sent in the form of

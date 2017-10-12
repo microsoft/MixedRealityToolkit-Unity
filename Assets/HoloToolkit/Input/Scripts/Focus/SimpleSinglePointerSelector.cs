@@ -11,10 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// This class uses the InputSourcePointer to define the rules of stealing focus when a pointing ray is detected
     /// with a motion controller that supports pointing.
     /// </summary>
-    public class SimpleSinglePointerSelector :
-        MonoBehaviour,
-        ISourceStateHandler,
-        IInputHandler
+    public class SimpleSinglePointerSelector : MonoBehaviour, ISourceStateHandler, IInputHandler
     {
         #region Settings
 
@@ -45,10 +42,6 @@ namespace HoloToolkit.Unity.InputModule
         private void Start()
         {
             started = true;
-
-            InputManager.AssertIsInitialized();
-            GazeManager.AssertIsInitialized();
-            FocusManager.AssertIsInitialized();
 
             AddInputManagerListenerIfNeeded();
             FindCursorIfNeeded();
@@ -160,7 +153,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentPointer != null)
                 {
-                    FocusManager.Instance.UnregisterPointer(currentPointer);
+                    FocusManager.Instance.UnRegisterPointer(currentPointer);
                 }
 
                 currentPointer = newPointer;
