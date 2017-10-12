@@ -1,153 +1,299 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity.SpatialMapping;
 
-#if UNITY_EDITOR || UNITY_WSA
-using UnityEngine.VR.WSA.Persistence;
+#if UNITY_WSA
+using System;
+using System.Collections.Generic;
 using UnityEngine.VR.WSA;
+using UnityEngine.VR.WSA.Persistence;
+#if !UNITY_EDITOR
+using HoloToolkit.Unity.SpatialMapping;
 #endif
+#endif
+
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Wrapper around world anchor store to streamline some of the persistence api busy work.
+    /// Wrapper around world anchor store to streamline some of the persistence API busy work.
     /// </summary>
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
         /// <summary>
+        /// Debug text for displaying information.
+        /// </summary>
+        public TextMesh AnchorDebugText;
+
+        /// <summary>
+        /// Enables detailed logs in console window.
+        /// </summary>
+        /// <remarks>If the Sharing Service is used, it will inherit the log settings.</remarks>
+        [Tooltip("Enables detailed logs in console window.  If the Sharing Service is used, it will inherit the log settings.")]
+        public bool ShowDetailedLogs;
+
+        /// <summary>
+        /// Enables anchors to be stored from subsequent game sessions.
+        /// </summary>
+        [Tooltip("Enables anchors to be stored from subsequent game sessions.")]
+        public bool PersistentAnchors;
+
+#if UNITY_WSA
+        /// <summary>
         /// To prevent initializing too many anchors at once
-        /// and to allow for the WorldAnchorStore to load asyncronously
+        /// and to allow for the WorldAnchorStore to load asynchronously
         /// without callers handling the case where the store isn't loaded yet
         /// we'll setup a queue of anchor attachment operations.  
         /// The AnchorAttachmentInfo struct has the data needed to do this.
         /// </summary>
-        private struct AnchorAttachmentInfo
+        protected struct AnchorAttachmentInfo
         {
-            public GameObject GameObjectToAnchor { get; set; }
+            public GameObject AnchoredGameObject { get; set; }
             public string AnchorName { get; set; }
             public AnchorOperation Operation { get; set; }
         }
 
-        private enum AnchorOperation
+        /// <summary>
+        /// The data structure for anchor operations.
+        /// </summary>
+        protected enum AnchorOperation
         {
-            Create,
+            /// <summary>
+            /// Save anchor to anchor store.  Creates anchor if none exists.
+            /// </summary>
+            Save,
+            /// <summary>
+            /// Deletes anchor from anchor store.
+            /// </summary>
             Delete
         }
 
         /// <summary>
-        /// The queue mentioned above.
+        /// The queue for local device anchor operations.
         /// </summary>
-        private Queue<AnchorAttachmentInfo> anchorOperations = new Queue<AnchorAttachmentInfo>();
+        protected Queue<AnchorAttachmentInfo> LocalAnchorOperations = new Queue<AnchorAttachmentInfo>();
 
-#if UNITY_EDITOR || UNITY_WSA
         /// <summary>
         /// The WorldAnchorStore for the current application.
         /// Can be null when the application starts.
         /// </summary>
-        public WorldAnchorStore AnchorStore { get; private set; }
+        public WorldAnchorStore AnchorStore { get; protected set; }
+
+        /// <summary>
+        /// Internal list of anchors and their GameObject references.
+        /// </summary>
+        protected Dictionary<string, GameObject> AnchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
+
+        #region Unity Methods
+
+        protected override void Awake()
+        {
+            base.Awake();
+            AnchorStore = null;
+        }
+
+        protected virtual void Start()
+        {
+            WorldAnchorStore.GetAsync(AnchorStoreReady);
+        }
+
+        protected virtual void Update()
+        {
+            if (AnchorStore == null) { return; }
+
+            if (LocalAnchorOperations.Count > 0)
+            {
+                DoAnchorOperation(LocalAnchorOperations.Dequeue());
+            }
+        }
+
+        #endregion // Unity Methods
+
+        #region Event Callbacks
 
         /// <summary>
         /// Callback function that contains the WorldAnchorStore object.
         /// </summary>
         /// <param name="anchorStore">The WorldAnchorStore to cache.</param>
-        private void AnchorStoreReady(WorldAnchorStore anchorStore)
+        protected virtual void AnchorStoreReady(WorldAnchorStore anchorStore)
         {
             AnchorStore = anchorStore;
-        }
-#endif
 
-        /// <summary>
-        /// When the app starts grab the anchor store immediately.
-        /// </summary>
-        protected override void Awake()
-        {
-            base.Awake();
-
-#if UNITY_EDITOR
-            Debug.LogWarning("World Anchor Manager does not work in the editor. Anchor Store will never be ready.");
-#endif
-#if UNITY_EDITOR || UNITY_WSA
-            AnchorStore = null;
-            WorldAnchorStore.GetAsync(AnchorStoreReady);
-#endif
-        }
-
-#if UNITY_EDITOR || UNITY_WSA
-        /// <summary>
-        /// Each frame see if there is work to do and if we can do a unit, do it.
-        /// </summary>
-        private void Update()
-        {
-            if (AnchorStore != null && anchorOperations.Count > 0)
+            if (!PersistentAnchors)
             {
-                DoAnchorOperation(anchorOperations.Dequeue());
+                AnchorStore.Clear();
             }
         }
-#endif
 
         /// <summary>
-        /// Attaches an anchor to the game object.  If the anchor store has
-        /// an anchor with the specified name it will load the acnhor, otherwise
-        /// a new anchor will be saved under the specified name.
+        /// Called when tracking changes for a 'cached' anchor.  
+        /// When an anchor isn't located immediately we subscribe to this event so
+        /// we can save the anchor when it is finally located or downloaded.
         /// </summary>
-        /// <param name="gameObjectToAnchor">The Gameobject to attach the anchor to.</param>
-        /// <param name="anchorName">Name of the anchor.</param>
-        public void AttachAnchor(GameObject gameObjectToAnchor, string anchorName)
+        /// <param name="anchor">The anchor that is reporting a tracking changed event.</param>
+        /// <param name="located">Indicates if the anchor is located or not located.</param>
+        private void Anchor_OnTrackingChanged(WorldAnchor anchor, bool located)
         {
+            if (located && SaveAnchor(anchor))
+            {
+                if (ShowDetailedLogs)
+                {
+                    Debug.LogFormat("[WorldAnchorManager] Successfully updated cached anchor \"{0}\".", anchor.name);
+                }
+
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nSuccessfully updated cached anchor \"{0}\".", anchor.name);
+                }
+            }
+            else
+            {
+                if (ShowDetailedLogs)
+                {
+                    Debug.LogFormat("[WorldAnchorManager] Failed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
+                }
+
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nFailed to locate cached anchor \"{0}\", attempting to acquire anchor again.", anchor.name);
+                }
+
+                GameObject anchoredObject;
+                AnchorGameObjectReferenceList.TryGetValue(anchor.name, out anchoredObject);
+                AnchorGameObjectReferenceList.Remove(anchor.name);
+                AttachAnchor(anchoredObject, anchor.name);
+            }
+
+            anchor.OnTrackingChanged -= Anchor_OnTrackingChanged;
+        }
+
+        #endregion // Event Callbacks
+#endif
+        /// <summary>
+        /// Generates the name for the anchor.
+        /// If no anchor name was specified, the name of the anchor will be the same as the GameObject's name.
+        /// </summary>
+        /// <param name="gameObjectToAnchor">The GameObject to attach the anchor to.</param>
+        /// <param name="proposedAnchorname">Name of the anchor. If none provided, the name of the GameObject will be used.</param>
+        /// <returns>The name of the newly attached anchor.</returns>
+        public static string GenerateAnchorName(GameObject gameObjectToAnchor, string proposedAnchorname = null)
+        {
+            return string.IsNullOrEmpty(proposedAnchorname) ? gameObjectToAnchor.name : proposedAnchorname;
+        }
+
+        /// <summary>
+        /// Attaches an anchor to the GameObject.  
+        /// If the anchor store has an anchor with the specified name it will load the anchor, 
+        /// otherwise a new anchor will be saved under the specified name.  
+        /// If no anchor name is provided, the name of the anchor will be the same as the GameObject.
+        /// </summary>
+        /// <param name="gameObjectToAnchor">The GameObject to attach the anchor to.</param>
+        /// <param name="anchorName">Name of the anchor.  If none provided, the name of the GameObject will be used.</param>
+        /// <returns>The name of the newly attached anchor.</returns>
+        public string AttachAnchor(GameObject gameObjectToAnchor, string anchorName = null)
+        {
+#if !UNITY_WSA || UNITY_EDITOR
+            Debug.LogWarning("World Anchor Manager does not work for this build. AttachAnchor will not be called.");
+            return null;
+#else
             if (gameObjectToAnchor == null)
             {
-                Debug.LogError("Must pass in a valid gameObject");
-                return;
+                Debug.LogError("[WorldAnchorManager] Must pass in a valid gameObject");
+                return null;
             }
 
-            if (string.IsNullOrEmpty(anchorName))
+            // This case is unexpected, but just in case.
+            if (AnchorStore == null)
             {
-                Debug.LogError("Must supply an AnchorName.");
-                return;
+                Debug.LogWarning("[WorldAnchorManager] AttachAnchor called before anchor store is ready.");
             }
 
-            anchorOperations.Enqueue(
+            anchorName = GenerateAnchorName(gameObjectToAnchor, anchorName);
+
+            LocalAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
-                    GameObjectToAnchor = gameObjectToAnchor,
+                    AnchoredGameObject = gameObjectToAnchor,
                     AnchorName = anchorName,
-                    Operation = AnchorOperation.Create
+                    Operation = AnchorOperation.Save
                 }
             );
+
+            return anchorName;
+#endif
+        }
+
+        /// <summary>
+        /// Removes the anchor component from the GameObject and deletes the anchor from the anchor store.
+        /// </summary>
+        /// <param name="gameObjectToUnanchor">The GameObject reference with valid anchor to remove from the anchor store.</param>
+        public void RemoveAnchor(GameObject gameObjectToUnanchor)
+        {
+            if (gameObjectToUnanchor == null)
+            {
+                Debug.LogError("[WorldAnchorManager] Invalid GameObject! Try removing anchor by name.");
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += "\nInvalid GameObject! Try removing anchor by name.";
+                }
+                return;
+            }
+
+            RemoveAnchor(string.Empty, gameObjectToUnanchor);
+        }
+
+        /// <summary>
+        /// Removes the anchor from the anchor store, without a GameObject reference.  
+        /// If a GameObject reference can be found, the anchor component will be removed.
+        /// </summary>
+        /// <param name="anchorName">The name of the anchor to remove from the anchor store.</param>
+        public void RemoveAnchor(string anchorName)
+        {
+            if (string.IsNullOrEmpty(anchorName))
+            {
+                Debug.LogErrorFormat("[WorldAnchorManager] Invalid anchor \"{0}\"! Try removing anchor by GameObject.", anchorName);
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nInvalid anchor \"{0}\"! Try removing anchor by GameObject.", anchorName);
+                }
+                return;
+            }
+
+            RemoveAnchor(anchorName, null);
         }
 
         /// <summary>
         /// Removes the anchor from the game object and deletes the anchor
         /// from the anchor store.
         /// </summary>
-        /// <param name="gameObjectToUnanchor">gameObject to remove the anchor from.</param>
-        public void RemoveAnchor(GameObject gameObjectToUnanchor)
+        /// <param name="anchorName">Name of the anchor to remove from the anchor store.</param>
+        /// <param name="gameObjectToUnanchor">GameObject to remove the anchor from.</param>
+        private void RemoveAnchor(string anchorName, GameObject gameObjectToUnanchor)
         {
-            if (gameObjectToUnanchor == null)
+            if (string.IsNullOrEmpty(anchorName) && gameObjectToUnanchor == null)
             {
-                Debug.LogError("Invalid GameObject");
+                Debug.LogWarning("Invalid Remove Anchor Request!");
                 return;
             }
 
-#if UNITY_EDITOR || UNITY_WSA
+#if !UNITY_WSA || UNITY_EDITOR
+            Debug.LogWarning("World Anchor Manager does not work for this build. RemoveAnchor will not be called.");
+#else
             // This case is unexpected, but just in case.
             if (AnchorStore == null)
             {
-                Debug.LogError("remove anchor called before anchor store is ready.");
-                return;
+                Debug.LogWarning("[WorldAnchorManager] RemoveAnchor called before anchor store is ready.");
             }
-#endif
 
-            anchorOperations.Enqueue(
+            LocalAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
-                    GameObjectToAnchor = gameObjectToUnanchor,
-                    AnchorName = string.Empty,
+                    AnchoredGameObject = gameObjectToUnanchor,
+                    AnchorName = anchorName,
                     Operation = AnchorOperation.Delete
                 });
+#endif
         }
 
         /// <summary>
@@ -155,96 +301,172 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void RemoveAllAnchors()
         {
-#if UNITY_EDITOR || UNITY_WSA
+#if !UNITY_WSA || UNITY_EDITOR
+            Debug.LogWarning("World Anchor Manager does not work for this build. RemoveAnchor will not be called.");
+#else
             SpatialMappingManager spatialMappingManager = SpatialMappingManager.Instance;
 
             // This case is unexpected, but just in case.
             if (AnchorStore == null)
             {
-                Debug.LogError("remove all anchors called before anchor store is ready.");
+                Debug.LogWarning("[WorldAnchorManager] RemoveAllAnchors called before anchor store is ready.");
             }
 
-            WorldAnchor[] anchors = FindObjectsOfType<WorldAnchor>();
+            var anchors = FindObjectsOfType<WorldAnchor>();
 
-            if (anchors != null)
+            if (anchors == null) { return; }
+
+            for (var i = 0; i < anchors.Length; i++)
             {
-                foreach (WorldAnchor anchor in anchors)
+                // Don't remove SpatialMapping anchors if exists
+                if (spatialMappingManager != null && anchors[i].gameObject.transform.parent.gameObject == spatialMappingManager.gameObject)
+                { continue; }
+
+                // Let's check to see if there are anchors we weren't accounting for.
+                // Maybe they were created without using the WorldAnchorManager.
+                if (!AnchorGameObjectReferenceList.ContainsKey(anchors[i].name))
                 {
-                    // Don't remove SpatialMapping anchors if exists
-                    if (spatialMappingManager == null ||
-                        anchor.gameObject.transform.parent.gameObject != spatialMappingManager.gameObject)
+                    Debug.LogWarning("[WorldAnchorManager] Removing an anchor that was created outside of the WorldAnchorManager.  Please use the WorldAnchorManager to create or delete anchors.");
+                    if (AnchorDebugText != null)
                     {
-                        anchorOperations.Enqueue(new AnchorAttachmentInfo()
-                        {
-                            AnchorName = anchor.name,
-                            GameObjectToAnchor = anchor.gameObject,
-                            Operation = AnchorOperation.Delete
-                        });
+                        AnchorDebugText.text += string.Format("\nRemoving an anchor that was created outside of the WorldAnchorManager.  Please use the WorldAnchorManager to create or delete anchors.");
                     }
                 }
+
+                LocalAnchorOperations.Enqueue(new AnchorAttachmentInfo
+                {
+                    AnchorName = anchors[i].name,
+                    AnchoredGameObject = anchors[i].gameObject,
+                    Operation = AnchorOperation.Delete
+                });
             }
 #endif
         }
 
+#if UNITY_WSA
         /// <summary>
-        /// Function that actually adds the anchor to the game object.
+        /// Executes the anchor operations from the localAnchorOperations queue.
         /// </summary>
         /// <param name="anchorAttachmentInfo">Parameters for attaching the anchor.</param>
-        private void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
+        protected void DoAnchorOperation(AnchorAttachmentInfo anchorAttachmentInfo)
         {
-#if UNITY_EDITOR || UNITY_WSA
+            string anchorId = anchorAttachmentInfo.AnchorName;
+            GameObject anchoredGameObject = anchorAttachmentInfo.AnchoredGameObject;
+
             switch (anchorAttachmentInfo.Operation)
             {
-                case AnchorOperation.Create:
-                    string anchorName = anchorAttachmentInfo.AnchorName;
-                    GameObject gameObjectToAnchor = anchorAttachmentInfo.GameObjectToAnchor;
-
-                    if (gameObjectToAnchor == null)
+                case AnchorOperation.Save:
+                    if (anchoredGameObject == null)
                     {
-                        Debug.LogError("GameObject must have been destroyed before we got a chance to anchor it.");
+                        Debug.LogError("[WorldAnchorManager] The GameObject referenced must have been destroyed before we got a chance to anchor it.");
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += "\nThe GameObject referenced must have been destroyed before we got a chance to anchor it.";
+                        }
                         break;
                     }
 
+                    if (string.IsNullOrEmpty(anchorId))
+                    {
+                        anchorId = anchoredGameObject.name;
+                    }
+
                     // Try to load a previously saved world anchor.
-                    WorldAnchor savedAnchor = AnchorStore.Load(anchorName, gameObjectToAnchor);
+                    WorldAnchor savedAnchor = AnchorStore.Load(anchorId, anchoredGameObject);
+
                     if (savedAnchor == null)
                     {
-                        // Either world anchor was not saved / does not exist or has a different name.
-                        Debug.LogWarning(gameObjectToAnchor.name + " : World anchor could not be loaded for this game object. Creating a new anchor.");
+                        // Check if we need to import the anchor.
+                        if (ImportAnchor(anchorId, anchoredGameObject) == false)
+                        {
+                            if (ShowDetailedLogs)
+                            {
+                                Debug.LogFormat("[WorldAnchorManager] Anchor could not be loaded for \"{0}\". Creating a new anchor.", anchoredGameObject.name);
+                            }
 
-                        // Create anchor since one does not exist.
-                        CreateAnchor(gameObjectToAnchor, anchorName);
+                            if (AnchorDebugText != null)
+                            {
+                                AnchorDebugText.text += string.Format("\nAnchor could not be loaded for \"{0}\". Creating a new anchor.", anchoredGameObject.name);
+                            }
+
+                            // Create anchor since one does not exist.
+                            CreateAnchor(anchoredGameObject, anchorId);
+                        }
                     }
                     else
                     {
-                        savedAnchor.name = anchorName;
-                        Debug.Log(gameObjectToAnchor.name + " : World anchor loaded from anchor store and updated for this game object.");
+                        savedAnchor.name = anchorId;
+                        if (ShowDetailedLogs)
+                        {
+                            Debug.LogFormat("[WorldAnchorManager] Anchor loaded from anchor store and updated for \"{0}\".", anchoredGameObject.name);
+                        }
+
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += string.Format("\nAnchor loaded from anchor store and updated for \"{0}\".", anchoredGameObject.name);
+                        }
                     }
 
+                    AnchorGameObjectReferenceList.Add(anchorId, anchoredGameObject);
                     break;
                 case AnchorOperation.Delete:
                     if (AnchorStore == null)
                     {
-                        Debug.LogError("Remove anchor called before anchor store is ready.");
+                        Debug.LogError("[WorldAnchorManager] Remove anchor called before anchor store is ready.");
                         break;
                     }
 
-                    GameObject gameObjectToUnanchor = anchorAttachmentInfo.GameObjectToAnchor;
-                    var anchor = gameObjectToUnanchor.GetComponent<WorldAnchor>();
-
-                    if (anchor != null)
+                    // If we don't have a GameObject reference, let's try to get the GameObject reference from our dictionary.
+                    if (!string.IsNullOrEmpty(anchorId) && anchoredGameObject == null)
                     {
-                        AnchorStore.Delete(anchor.name);
-                        DestroyImmediate(anchor);
+                        AnchorGameObjectReferenceList.TryGetValue(anchorId, out anchoredGameObject);
+                    }
+
+                    if (anchoredGameObject != null)
+                    {
+                        var anchor = anchoredGameObject.GetComponent<WorldAnchor>();
+
+                        if (anchor != null)
+                        {
+                            anchorId = anchor.name;
+                            DestroyImmediate(anchor);
+                        }
+                        else
+                        {
+                            Debug.LogErrorFormat("[WorldAnchorManager] Unable remove WorldAnchor from {0}!", anchoredGameObject.name);
+                            if (AnchorDebugText != null)
+                            {
+                                AnchorDebugText.text += string.Format("\nUnable remove WorldAnchor from {0}!", anchoredGameObject.name);
+                            }
+                        }
                     }
                     else
                     {
-                        Debug.LogError("Cannot get anchor while deleting");
+                        Debug.LogError("[WorldAnchorManager] Unable find a GameObject to remove an anchor from!");
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += "\nUnable find a GameObject to remove an anchor from!";
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(anchorId))
+                    {
+                        AnchorGameObjectReferenceList.Remove(anchorId);
+                        DeleteAnchor(anchorId);
+                    }
+                    else
+                    {
+                        Debug.LogError("[WorldAnchorManager] Unable find an anchor to delete!");
+                        if (AnchorDebugText != null)
+                        {
+                            AnchorDebugText.text += "\nUnable find an anchor to delete!";
+                        }
                     }
 
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-#endif
         }
 
         /// <summary>
@@ -254,8 +476,7 @@ namespace HoloToolkit.Unity
         /// <param name="anchorName">The name to give to the anchor.</param>
         private void CreateAnchor(GameObject gameObjectToAnchor, string anchorName)
         {
-#if UNITY_EDITOR || UNITY_WSA
-            var anchor = gameObjectToAnchor.AddComponent<WorldAnchor>();
+            var anchor = gameObjectToAnchor.EnsureComponent<WorldAnchor>();
             anchor.name = anchorName;
 
             // Sometimes the anchor is located immediately. In that case it can be saved immediately.
@@ -268,49 +489,87 @@ namespace HoloToolkit.Unity
                 // Other times we must wait for the tracking system to locate the world.
                 anchor.OnTrackingChanged += Anchor_OnTrackingChanged;
             }
-#endif
-        }
-
-#if UNITY_EDITOR || UNITY_WSA
-        /// <summary>
-        /// When an anchor isn't located immediately we subscribe to this event so
-        /// we can save the anchor when it is finally located.
-        /// </summary>
-        /// <param name="self">The anchor that is reporting a tracking changed event.</param>
-        /// <param name="located">Indicates if the anchor is located or not located.</param>
-        private void Anchor_OnTrackingChanged(WorldAnchor self, bool located)
-        {
-            if (located)
-            {
-                Debug.Log(gameObject.name + " : World anchor located successfully.");
-
-                SaveAnchor(self);
-
-                // Once the anchor is located we can unsubscribe from this event.
-                self.OnTrackingChanged -= Anchor_OnTrackingChanged;
-            }
-            else
-            {
-                Debug.LogError(gameObject.name + " : World anchor failed to locate.");
-            }
         }
 
         /// <summary>
         /// Saves the anchor to the anchor store.
         /// </summary>
-        /// <param name="anchor"></param>
-        private void SaveAnchor(WorldAnchor anchor)
+        /// <param name="anchor">Anchor.</param>
+        private bool SaveAnchor(WorldAnchor anchor)
         {
             // Save the anchor to persist holograms across sessions.
             if (AnchorStore.Save(anchor.name, anchor))
             {
-                Debug.Log(gameObject.name + " : World anchor saved successfully.");
+                if (ShowDetailedLogs)
+                {
+                    Debug.LogFormat("[WorldAnchorManager] Successfully saved anchor \"{0}\".", anchor.name);
+                }
+
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nSuccessfully saved anchor \"{0}\".", anchor.name);
+                }
+
+                ExportAnchor(anchor);
+
+                return true;
+            }
+
+            Debug.LogErrorFormat("[WorldAnchorManager] Failed to save anchor \"{0}\"!", anchor.name);
+
+            if (AnchorDebugText != null)
+            {
+                AnchorDebugText.text += string.Format("\nFailed to save anchor \"{0}\"!", anchor.name);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Deletes the anchor from the Anchor Store.
+        /// </summary>
+        /// <param name="anchorId">The anchor id.</param>
+        private void DeleteAnchor(string anchorId)
+        {
+            if (AnchorStore.Delete(anchorId))
+            {
+                Debug.LogFormat("[WorldAnchorManager] Anchor {0} deleted successfully.", anchorId);
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nAnchor {0} deleted successfully.", anchorId);
+                }
             }
             else
             {
-                Debug.LogError(gameObject.name + " : World anchor save failed.");
+                if (string.IsNullOrEmpty(anchorId))
+                {
+                    anchorId = "NULL";
+                }
+
+                Debug.LogErrorFormat("[WorldAnchorManager] Failed to delete \"{0}\".", anchorId);
+                if (AnchorDebugText != null)
+                {
+                    AnchorDebugText.text += string.Format("\nFailed to delete \"{0}\".", anchorId);
+                }
             }
         }
+
+        /// <summary>
+        /// Called before creating anchor.  Used to check if import required.
+        /// </summary>
+        /// <param name="anchorId">Name of the anchor to import.</param>
+        /// <param name="objectToAnchor">GameObject to anchor.</param>
+        /// <returns>Success.</returns>
+        protected virtual bool ImportAnchor(string anchorId, GameObject objectToAnchor)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Called after creating a new anchor.
+        /// </summary>
+        /// <param name="anchor">The anchor to export.</param>
+        /// <returns>Success.</returns>
+        protected virtual void ExportAnchor(WorldAnchor anchor) { }
 #endif
     }
 }

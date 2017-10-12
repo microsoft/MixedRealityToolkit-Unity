@@ -11,6 +11,11 @@ namespace HoloToolkit.Unity.InputModule
     public interface ICursor : IInputHandler, IInputClickHandler, ISourceStateHandler
     {
         /// <summary>
+        /// The pointer this cursor is associated with.
+        /// </summary>
+        IPointingSource Pointer { get; }
+
+        /// <summary>
         /// Position of the cursor.
         /// </summary>
         Vector3 Position { get; }
@@ -29,6 +34,6 @@ namespace HoloToolkit.Unity.InputModule
         /// Sets the visibility of the cursor.
         /// </summary>
         /// <param name="visible">True if cursor should be visible, false if not.</param>
-        void SetVisiblity(bool visible);
+        void SetVisibility(bool visible);
     }
 }

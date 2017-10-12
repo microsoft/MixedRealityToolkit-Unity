@@ -94,7 +94,7 @@ namespace HoloToolkit.Unity
         public float UnityGainDistance = SpatialSoundSettings.DefaultUnityGainDistance;
 
         [Tooltip("The AudioMixerGroup to use when playing.")]
-        public AudioMixerGroup Bus;
+        public AudioMixerGroup AudioBus;
 
         [Tooltip("The default or center pitch around which randomization can be done.")]
         [Range(-3.0f, 3.0f)]
@@ -158,8 +158,8 @@ namespace HoloToolkit.Unity
         /// <returns>True if this AudioEvent's container is one of the continuous types (random or sequential), otherwise false.</returns>
         public bool IsContinuous()
         {
-            return Container.containerType == AudioContainerType.ContinuousRandom ||
-                   Container.containerType == AudioContainerType.ContinuousSequence;
+            return Container.ContainerType == AudioContainerType.ContinuousRandom ||
+                   Container.ContainerType == AudioContainerType.ContinuousSequence;
         }
 
         /// <summary>
