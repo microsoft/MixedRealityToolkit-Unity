@@ -37,7 +37,8 @@ namespace HoloToolkit.Unity.InputModule
         public float RotationSize = 45.0f;
         public float StrafeAmount = 0.5f;
 
-        public GameObject TeleportMarker { get; private set; }
+        [SerializeField]
+        private GameObject teleportMarker;
         private Animator animationController;
 
         /// <summary>
@@ -65,12 +66,12 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            if (TeleportMarker != null)
+            if (teleportMarker != null)
             {
-                TeleportMarker = Instantiate(TeleportMarker);
-                TeleportMarker.SetActive(false);
+                teleportMarker = Instantiate(teleportMarker);
+                teleportMarker.SetActive(false);
 
-                animationController = TeleportMarker.GetComponentInChildren<Animator>();
+                animationController = teleportMarker.GetComponentInChildren<Animator>();
                 if (animationController != null)
                 {
                     animationController.StopPlayback();
@@ -208,7 +209,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (isTeleportValid)
                 {
                     RaycastHit hitInfo;
-                    Vector3 hitPos = TeleportMarker.transform.position + Vector3.up * (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
+                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
 
                     fadeControl.DoFade(0.25f, 0.5f, () =>
                     {
@@ -265,7 +266,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void EnableMarker()
         {
-            TeleportMarker.SetActive(true);
+            teleportMarker.SetActive(true);
             if (animationController != null)
             {
                 animationController.StartPlayback();
@@ -278,7 +279,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 animationController.StopPlayback();
             }
-            TeleportMarker.SetActive(false);
+            teleportMarker.SetActive(false);
         }
 
         private void PositionMarker()
@@ -289,7 +290,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 isTeleportValid = true;
 
-                TeleportMarker.transform.position = focusDetails.Point;
+                teleportMarker.transform.position = focusDetails.Point;
             }
             else
             {
