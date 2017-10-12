@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -59,13 +58,8 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// List of the input sources as detected by the input manager like hands or motion controllers.
         /// </summary>
-        private readonly List<InputSourceInfo> detectedInputSources = new List<InputSourceInfo>();
-        public readonly ReadOnlyCollection<InputSourceInfo> DetectedInputSources;
-
-        public InputManager()
-        {
-            DetectedInputSources = new ReadOnlyCollection<InputSourceInfo>(detectedInputSources);
-        }
+        private readonly List<InputSourceInfo> detectedInputSources = new List<InputSourceInfo>(0);
+        public List<InputSourceInfo> DetectedInputSources { get { return detectedInputSources; } }
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
