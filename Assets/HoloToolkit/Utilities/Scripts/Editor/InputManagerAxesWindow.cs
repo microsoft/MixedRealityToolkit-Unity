@@ -33,6 +33,8 @@ namespace HoloToolkit.Unity
             new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 4 },
             new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_VERTICAL", dead = 0.19f, sensitivity = 1, invert = true, type = AxisType.JoystickAxis, axis = 5 },
             new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_CLICK", positiveButton = "joystick button 9", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "CONTROLLER_LEFT_MENU", positiveButton = "joystick button 6", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
+            new InputManagerAxis() { name = "CONTROLLER_RIGHT_MENU", positiveButton = "joystick button 7", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
             new InputManagerAxis() { name = "CONTROLLER_LEFT_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 9 },
             new InputManagerAxis() { name = "CONTROLLER_RIGHT_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 10 },
             new InputManagerAxis() { name = "XBOX_SHARED_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 3 },
@@ -42,8 +44,6 @@ namespace HoloToolkit.Unity
             new InputManagerAxis() { name = "XBOX_B", positiveButton = "joystick button 1", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
             new InputManagerAxis() { name = "XBOX_X", positiveButton = "joystick button 2", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
             new InputManagerAxis() { name = "XBOX_Y", positiveButton = "joystick button 3", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_VIEW", positiveButton = "joystick button 6", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_MENU", positiveButton = "joystick button 7", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
             new InputManagerAxis() { name = "XBOX_DPAD_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 6 },
             new InputManagerAxis() { name = "XBOX_DPAD_VERTICAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 7 }
         };
@@ -151,6 +151,14 @@ namespace HoloToolkit.Unity
             Descriptions["CONTROLLER_RIGHT_TRIGGER"] =
                 "Recommended\n\nUse this to get the pressed state of the right trigger, from 0 to 1 as it's pressed.";
 
+            Names["CONTROLLER_LEFT_MENU"] = "CONTROLLER_LEFT_MENU";
+            Descriptions["CONTROLLER_LEFT_MENU"] =
+                "Recommended\n\nUse this to get the pressed state of the view button or the menu button on the left motion controller, 0 or 1 if it's pressed.";
+
+            Names["CONTROLLER_RIGHT_MENU"] = "CONTROLLER_RIGHT_MENU";
+            Descriptions["CONTROLLER_RIGHT_MENU"] =
+                "Recommended\n\nUse this to get the pressed state of the menu button or the menu button on the right motion controller, 0 or 1 if it's pressed.";
+
             Names["XBOX_SHARED_TRIGGER"] = "XBOX_SHARED_TRIGGER";
             Descriptions["XBOX_SHARED_TRIGGER"] =
                 "Recommended\n\nUse this to get the pressed state of the both triggers, the average of two numbers: from 0 to -1 as the left trigger is pressed and from 0 to 1 as the right trigger is pressed.";
@@ -178,14 +186,6 @@ namespace HoloToolkit.Unity
             Names["XBOX_Y"] = "XBOX_Y";
             Descriptions["XBOX_Y"] =
                 "Recommended\n\nUse this to get the pressed state of the Y button, 0 or 1 if it's pressed.";
-
-            Names["XBOX_VIEW"] = "XBOX_VIEW";
-            Descriptions["XBOX_VIEW"] =
-                "Recommended\n\nUse this to get the pressed state of the view button or the menu button on the left motion controller, 0 or 1 if it's pressed.";
-
-            Names["XBOX_MENU"] = "XBOX_MENU";
-            Descriptions["XBOX_MENU"] =
-                "Recommended\n\nUse this to get the pressed state of the menu button or the menu button on the right motion controller, 0 or 1 if it's pressed.";
 
             Names["XBOX_DPAD_HORIZONTAL"] = "XBOX_DPAD_HORIZONTAL";
             Descriptions["XBOX_DPAD_HORIZONTAL"] =
