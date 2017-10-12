@@ -265,8 +265,6 @@ namespace MRTK.Grabbables
         private GrabStateEnum prevContactState = GrabStateEnum.Inactive;   
         private Vector3 velocity;
         private Vector3 averageVelocity;
-       // private Vector3 currPos;
-       // private Vector3 prevPos;
         private Vector3 previousVel;
     }
 }
