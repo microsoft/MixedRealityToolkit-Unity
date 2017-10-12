@@ -927,10 +927,10 @@ namespace HoloToolkit.Unity
             try
             {
                 var appPackageDirectories = new List<string>();
-                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory);
+                string[] buildList = Directory.GetDirectories(Path.Combine(BuildDeployPrefs.AbsoluteBuildDirectory, "AppPackages"));
                 foreach (string appBuild in buildList)
                 {
-                    string appPackageDirectory = appBuild + @"\AppPackages";
+                    string appPackageDirectory = appBuild;
                     if (Directory.Exists(appPackageDirectory))
                     {
                         appPackageDirectories.AddRange(Directory.GetDirectories(appPackageDirectory));
