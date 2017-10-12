@@ -43,12 +43,10 @@ namespace HoloToolkit.Examples.InteractiveElements
                 {
                     Interactives[i].AllowDeselect = false;
                 }
-                if (SelectedIndices.Contains(i))
-                {
-                    HandleOnSelection(i);
-                }
+                Interactives[i].HasSelection = SelectedIndices.Contains(i);
             }
-            
+            OnSelectionEvents.Invoke();
+
         }
 
         /// <summary>
