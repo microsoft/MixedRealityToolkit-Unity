@@ -5502,10 +5502,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c87b4a5817577d54fa5c9451215f893b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InputField: {fileID: 114302835711036314}
-  m_InputFieldSlide: {fileID: 11448462}
-  m_SliderEnabled: 1
-  m_SubmitOnEnter: 1
+  InputField: {fileID: 114302835711036314}
+  InputFieldSlide: {fileID: 11448462}
+  SliderEnabled: 1
+  SubmitOnEnter: 1
   AlphaKeyboard: {fileID: 11451576}
   SymbolKeyboard: {fileID: 11428666}
   AlphaSubKeys: {fileID: 11429994}
