@@ -1,2 +1,34 @@
-# 2017.2 Upgrade Guide for Window Mixed Reality
+# General Release Guidelines for upgrading
 
+When updating the Mixed Reality Toolkit for Unity in your project always be sure to completely remove all the folders and assets of the toolkit before importing the unity package.  Unity does not handle assets that have been deleted, removed, or renamed.
+
+General releases will list breaking changes in their descriptions.
+
+## 2017.2 Upgrade Guide for Window Mixed Reality
+
+### What you'll need
+
+- Unity Editor 2017.2.0f3 MRTP or later
+- Running the Windows Insider Preview Build 1709
+- Visual Studio 2017 build 15.3 or later
+- Window 10 SDK 10.0.16267.0 or later
+
+### List of breaking changes
+- None to date.  See Unity's upgrade guide for Unity Specific changes.
+
+## 2017.1 Upgrade Guide
+
+### What you'll need
+
+- Unity Editor 2017.1.2f1 or later
+- Visual Studio 2015 or later
+- Windows 10 SDKs 10.0.10240.0 though 10.0.15063.0
+
+### List of braking changes
+- `TryGetPosition` is now `TryGetPointerPosition`
+- `TryGetOrientation` is now `TryGetPointerRotation`
+- All other changes should throw `Obsolete` warnings with suggested updates.
+- Renamed feature folders
+- Merged Test and Example folders
+- Removed `MicStream` scripts and libraries until they pass WACK
+- `GameObjects` that utilize the `WorldAnchorStore` need to have unique names.
