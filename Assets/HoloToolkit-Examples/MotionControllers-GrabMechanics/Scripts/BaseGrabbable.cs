@@ -240,25 +240,9 @@ namespace MRTK.Grabbables
 
             prevGrabState = GrabState;
             prevContactState = ContactState;
-            currPos = transform.position;
-            if (prevPos != currPos)
-                previousVel = (currPos - prevPos) / Time.deltaTime;
-        }
-
-        private void LateUpdate()
-        {
-            prevPos = currPos;
 
         }
 
-        public Vector3 GetAverageVelocity()
-        {
-            //this is called GetAverageVelocity because it will be updated to be an average the amount of force exerted on it by *all* grabber attached
-            var velocity = Vector3.zero;
-            velocity = (currPos - prevPos) / Time.deltaTime;
-            return velocity != Vector3.zero ? velocity : previousVel;
-
-        }
 
         /// <summary>
         /// Grabbers that could potentially grab this object
@@ -281,8 +265,8 @@ namespace MRTK.Grabbables
         private GrabStateEnum prevContactState = GrabStateEnum.Inactive;   
         private Vector3 velocity;
         private Vector3 averageVelocity;
-        private Vector3 currPos;
-        private Vector3 prevPos;
+       // private Vector3 currPos;
+       // private Vector3 prevPos;
         private Vector3 previousVel;
     }
 }
