@@ -47,20 +47,20 @@ namespace MRTK.Grabbables
 
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
-            if (obj.pressType == pressType && (handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness))
+            if (/*obj.pressType == pressType && (*/handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness)
             {
 
-                //if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
-               // {
+                if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
+                {
                     state = UseStateEnum.Active;
                     UseStart();
-               // }
+                }
             }
         }
 
         private void UseInputEnd(InteractionSourceReleasedEventArgs obj)
         {
-            if (obj.pressType == pressType && obj.state.source.handedness == handedness)
+            if (/*obj.pressType == pressType && */obj.state.source.handedness == handedness)
             {
                 state = UseStateEnum.Inactive;
                 UseEnd();

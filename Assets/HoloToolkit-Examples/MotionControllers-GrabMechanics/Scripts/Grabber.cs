@@ -44,11 +44,6 @@ namespace MRTK.Grabbables
                 
                 Vector3 velocity = default(Vector3);
                 Vector3 angularVelocity = default(Vector3);
-                Debug.Log("Source Pose data returns ............ " + obj.state.sourcePose.ToString());
-                Debug.Log("Source Pose data returns TryGetVelocity (bool) ............ "+obj.state.sourcePose.TryGetVelocity(out velocity).ToString());
-                Debug.Log("Source Pose data returns TryGetVelocity ............ " + velocity.ToString());
-                Debug.Log("Source Pose data returns TryGetANGULARVelocity (bool) ............ " + obj.state.sourcePose.TryGetVelocity(out velocity).ToString());
-                Debug.Log("Source Pose data returns TryGetAngularVelocity ............ " + angularVelocity.ToString());
                 TrySetThrowableObject(GrabbedObjects.Count > 0? GrabbedObjects[0]: null, obj.state.sourcePose);
                 GrabEnd();
 

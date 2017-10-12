@@ -17,11 +17,15 @@ namespace MRTK.Grabbables
         protected override void OnEnable()
         {
             base.OnEnable();
+            InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
+
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+            InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
+
         }
 
         /// <summary>
@@ -33,23 +37,20 @@ namespace MRTK.Grabbables
 
         protected override void UseStart()
         {
-            StartCoroutine(MakeRotate( ));
-            InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
-
-        }
-
-        protected override void UseEnd()
-        {
-            InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
+            if (GetComponent<BaseGrabbable>().GrabberPrimary != null)
+            {
+                StartCoroutine(MakeRotate());
+            }
 
         }
 
         private IEnumerator MakeRotate( )
         {
-            while (UseState == UseStateEnum.Active) {
+            while (UseState == UseStateEnum.Active && GetComponent<BaseGrabbable>().GrabberPrimary && touchPadPressed) {
                 transform.Rotate(touchPositionFromController);
                 yield return 0;
             }
+            GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             yield return null;
         }
 
@@ -57,14 +58,21 @@ namespace MRTK.Grabbables
         {
             if (GetComponent<BaseGrabbable>().GrabberPrimary != null)
             {
+                Debug.Log( " obj.state.source.handedness =====" + obj.state.source.handedness+ "   **** GrabberPriumary Handedness === " + GetComponent<BaseGrabbable>().GrabberPrimary.Handedness);
                 if (obj.state.source.handedness == GetComponent<BaseGrabbable>().GrabberPrimary.Handedness)
                 {
                     if (obj.state.touchpadTouched)
                     {
                         touchPositionFromController = obj.state.touchpadPosition;
+                        touchPadPressed = true;
+                    } else
+                    {
+                        touchPadPressed = false;
                     }
                 }
             }
         }
+
+        private bool touchPadPressed;
     }
 }

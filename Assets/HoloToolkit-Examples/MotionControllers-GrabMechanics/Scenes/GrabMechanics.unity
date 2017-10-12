@@ -1802,7 +1802,7 @@ Prefab:
     - target: {fileID: 114433858398636630, guid: f04969aeafe8c464f84748b730c616f2,
         type: 2}
       propertyPath: handedness
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114433858398636630, guid: f04969aeafe8c464f84748b730c616f2,
         type: 2}
