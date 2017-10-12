@@ -67,8 +67,6 @@ namespace MRTK.Grabbables
         private Color colorOnGrabSingle = Color.yellow;
         [SerializeField]
         private Color colorOnGrabMulti = Color.red;
-        [SerializeField]
-        private Color colorOnUse = Color.magenta;
 
         [Header("Objects")]
         [SerializeField]

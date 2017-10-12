@@ -29,14 +29,6 @@ namespace MRTK.Grabbables
         }
 
         /// <summary>
-        /// Taking a snap shot of scale at the moment of grab is important so that we can perform the scale relative to the original size of the game object
-        /// </summary>
-        protected virtual void SnapShotOfScale()
-        {
-            snapShotOfScaleVec = transform.localScale;
-        }
-
-        /// <summary>
         /// We have two options when we attempt to scale: the first is by velocity and the second is based on the distance between the 
         /// two+ grabbers
         /// </summary>
@@ -58,6 +50,7 @@ namespace MRTK.Grabbables
                         //later this should be average distance between all controllers attached.
                         float dist = Vector3.Distance(activeGrabbers[0].GrabHandle.position, activeGrabbers[1].GrabHandle.position);
                         snapShotDistance = dist;
+                        //TODO: scale should not be recorded from x axis alone
                         snapShotOfScale = transform.localScale.x;
                         currentlyScaling = true;
                         StartCoroutine(PerformScaling());
@@ -103,20 +96,17 @@ namespace MRTK.Grabbables
                 if (activeGrabbers.Length >= minScalarNumForScale)
                 {
                     float currDistance = Vector3.Distance(activeGrabbers[0].GrabHandle.position, activeGrabbers[1].GrabHandle.position);
-                    transform.localScale = Vector3.one * ((currDistance / snapShotDistance) * snapShotOfScale) /*multiplier * distFromUser*/;
+                    transform.localScale = Vector3.one * ((currDistance / snapShotDistance) * snapShotOfScale)  /*scaleMultiplier */ /* distFromUser*/;
+
                 }
                 yield return 0;
             }
             currentlyScaling = false;
             yield return null;
         }
-
-        [Range(1, 5)]
-        private float scaleMultiplier = 1.0f;
         [SerializeField]
         private bool scaleByDistance = true;
         private bool readyToScale;
-        private Vector3 snapShotOfScaleVec;
         private float snapShotOfScale;
         private int minScalarNumForScale = 2;
         private bool currentlyScaling;
