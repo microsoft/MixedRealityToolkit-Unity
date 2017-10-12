@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 539682495}
   - component: {fileID: 539682494}
   m_Layer: 0
-  m_Name: MessageInputField
+  m_Name: EmailInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,7 +361,7 @@ RectTransform:
   - {fileID: 232095427}
   - {fileID: 1294239076}
   m_Father: {fileID: 1483467052}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -689,9 +689,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 104892084}
-  - {fileID: 2080611748}
-  - {fileID: 1083211977}
   - {fileID: 539682493}
+  - {fileID: 1083211977}
+  - {fileID: 2080611748}
   m_Father: {fileID: 1748392383}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1098,7 +1098,7 @@ GameObject:
   - component: {fileID: 2080611750}
   - component: {fileID: 2080611749}
   m_Layer: 0
-  m_Name: EmailInputField
+  m_Name: MessageInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1117,7 +1117,7 @@ RectTransform:
   - {fileID: 445236683}
   - {fileID: 1555344819}
   m_Father: {fileID: 1483467052}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
