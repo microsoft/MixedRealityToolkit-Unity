@@ -3,15 +3,15 @@ This is a development branch for Windows Mixed Reality immersive headset support
 
 **IMPORTANT** You will also need a recent [Windows Insider SDK Preview](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK) installed, or you will not be able to build this branch. 
 
-[unity-download]:                 https://unity3d.com/unity/beta/archive
-[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f1-green.svg
+[unity-download]:                 http://beta.unity3d.com/download/b9a6355603bd/download.html
+[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f2%20MRTP-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 ## New Features!
 <img src="External/ReadMeImages/MotionControllerTest_Teleport.png" width="700px">
 
 If you're looking for **Controller models**:
-* See the [**MotionControllerTest**](Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene.
+* See the [**MotionControllerTest**](Assets/HoloToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
 * See:
     * ControllerVisualizer.cs
     * ControllerInfo.cs
@@ -21,7 +21,7 @@ If you're looking for **Controller models**:
 * **IMPORTANT** Currently, motion controller's GLTF 3D model is only visible when you deploy through Visual Studio. In Unity's game mode, you should assign override model. <img src="External/ReadMeImages/MotionControllerTest_ModelOverride.png" width="700px">
 
 If you're looking for **teleporting**:
-* See the [**MotionControllerTest**](Assets/HoloToolkit/Input/Tests/Scenes/MotionControllerTest.unity) scene.
+* See the [**MotionControllerTest**](Assets/HoloToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
 * Controls are the same as the Cliff House, using either an Xbox controller or motion controllers. Thumbstick up for teleport, down for backup, left/right for rotation.
 * See:
     * MixedRealityTeleport.cs
@@ -29,7 +29,7 @@ If you're looking for **teleporting**:
     * TeleportMarker.prefab
     
 If you're looking for **Xbox controller input** via the MixedRealityToolkit's InputManager:
-* See the [**InputTapTest**](Assets/HoloToolkit/Input/Tests/Scenes/InputTapTest.unity) scene.
+* See the [**InputTapTest**](Assets/HoloToolkit-Examples/Input/Scenes/InputTapTest.unity) scene.
 * You can use the Xbox controller A to tap.
 * Press A and hold to do hold started, canceled and completed.
 * Press A and left joystick to trigger the navigation events.
@@ -37,7 +37,7 @@ If you're looking for **Xbox controller input** via the MixedRealityToolkit's In
     * GamepadInput.cs
     
 If you're looking for **Boundary** tools:
-* See the [**BoundaryTest**](Assets/HoloToolkit/Boundary/Tests/Scenes/BoundaryTest.unity) scene.
+* See the [**BoundaryTest**](Assets/HoloToolkit-Examples/Boundary/Scenes/BoundaryTest.unity) scene.
 * The **Boundary** folder has the scripts that support defining the floor for your immersive applications.
 * The scripts help to draw the floor for immersive headsets and also allows you to check if an object is within those bounds.
 * See:

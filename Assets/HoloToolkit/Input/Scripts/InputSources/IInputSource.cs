@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -24,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="inputInfo">Input info type that we want to get information about.</param>
         bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo);
 
-        bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind);
+        bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind);
 
         /// <summary>
         /// Returns the position of the input source, if available.

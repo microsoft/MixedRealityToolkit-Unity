@@ -24,16 +24,16 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Displays a help page for the HoloToolkit.
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Show Help", false, 3)]
+        [MenuItem("Mixed Reality Toolkit/Configure/Show Help", false, 3)]
         public static void ShowHelp()
         {
-            Application.OpenURL("https://github.com/Microsoft/HoloToolkit-Unity/wiki");
+            Application.OpenURL("https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki");
         }
 
         /// <summary>
         /// Applies recommended scene settings to the current scenes
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply Mixed Reality Scene Settings", false, 1)]
+        [MenuItem("Mixed Reality Toolkit/Configure/Apply Mixed Reality Scene Settings", false, 1)]
         public static void ShowSceneSettingsWindow()
         {
             var window = (SceneSettingsWindow)EditorWindow.GetWindow(typeof(SceneSettingsWindow), true, "Apply Mixed Reality Scene Settings");
@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Applies recommended project settings to the current project
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply Mixed Reality Project Settings", false, 1)]
+        [MenuItem("Mixed Reality Toolkit/Configure/Apply Mixed Reality Project Settings", false, 0)]
         public static void ShowProjectSettingsWindow()
         {
             var window = (ProjectSettingsWindow)EditorWindow.GetWindow(typeof(ProjectSettingsWindow), true, "Apply Mixed Reality Project Settings");
@@ -53,10 +53,10 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Applies recommended capability settings to the current project
         /// </summary>
-        [MenuItem("HoloToolkit/Configure/Apply Mixed Reality Capability Settings", false, 2)]
+        [MenuItem("Mixed Reality Toolkit/Configure/Apply UWP Capability Settings", false, 2)]
         public static void ShowCapabilitySettingsWindow()
         {
-            var window = (CapabilitySettingsWindow)EditorWindow.GetWindow(typeof(CapabilitySettingsWindow), true, "Apply Mixed Reality Capability Settings");
+            var window = (CapabilitySettingsWindow)EditorWindow.GetWindow(typeof(CapabilitySettingsWindow), true, "Apply UWP Capability Settings");
             window.Show();
         }
 

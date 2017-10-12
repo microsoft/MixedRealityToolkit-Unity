@@ -73,5 +73,17 @@ namespace HoloToolkit.Unity
                 cache.Remove(child.gameObject);
             }
         }
+
+        public static GameObject GetParentRoot(this GameObject child)
+        {
+            if (child.transform.parent == null)
+            {
+                return child;
+            }
+            else
+            {
+                return GetParentRoot(child.transform.parent.gameObject);
+            }
+        }
     }
 }

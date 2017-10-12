@@ -2,14 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
     public class GamePadInputSource : BaseInputSource
     {
         [SerializeField]
-        [Tooltip("Time in secords to determine if an Input Device has been connected or disconnected")]
+        [Tooltip("Time in seconds to determine if an Input Device has been connected or disconnected")]
         protected float DeviceRefreshInterval = 3.0f;
         protected float DeviceRefreshTimer;
         protected int LastDeviceUpdateCount;
@@ -45,9 +44,9 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Base Input Source Methods
 
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            sourceKind = InteractionSourceKind.Voice;
+            sourceKind = InteractionSourceInfo.Controller;
             return true;
         }
 

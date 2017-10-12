@@ -408,7 +408,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!81 &81000013783107718
 AudioListener:
   m_ObjectHideFlags: 1
@@ -438,10 +437,10 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: ControllerTriggerAxis
-  InputManagerVerticalAxisName: ControllerTriggerAxis
+  InputManagerHorizontalAxisName: CONTROLLER_LEFT_TRIGGER
+  InputManagerVerticalAxisName: CONTROLLER_RIGHT_TRIGGER
   Axis0Destination: 2
-  Axis1Destination: 2
+  Axis1Destination: 3
   Axis2Destination: 6
 --- !u!114 &114000011221680894
 MonoBehaviour:
@@ -458,10 +457,10 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: ControllerLeftStickX
-  InputManagerVerticalAxisName: ControllerLeftStickY
+  InputManagerHorizontalAxisName: CONTROLLER_RIGHT_STICK_HORIZONTAL
+  InputManagerVerticalAxisName: CONTROLLER_RIGHT_STICK_VERTICAL
   Axis0Destination: 0
-  Axis1Destination: 5
+  Axis1Destination: 4
   Axis2Destination: 6
 --- !u!114 &114000011359953050
 MonoBehaviour:
@@ -582,8 +581,8 @@ MonoBehaviour:
   UseUnscaledTime: 1
   axisType: 0
   buttonType: 21
-  InputManagerHorizontalAxisName: ControllerRightStickX
-  InputManagerVerticalAxisName: ControllerRightStickY
+  InputManagerHorizontalAxisName: CONTROLLER_LEFT_STICK_HORIZONTAL
+  InputManagerVerticalAxisName: CONTROLLER_LEFT_STICK_VERTICAL
   Axis0Destination: 2
   Axis1Destination: 0
   Axis2Destination: 6

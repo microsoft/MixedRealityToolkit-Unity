@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 ///
 /// Basic occlusion shader that can be used with spatial mapping meshes.
 /// No pixels will be rendered at the object's location.
 ///
-Shader "HoloToolkit/Occlusion"
+Shader "MixedRealityToolkit/Occlusion"
 {
     Properties
     {

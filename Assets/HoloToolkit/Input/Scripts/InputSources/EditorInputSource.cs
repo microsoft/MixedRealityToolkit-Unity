@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -53,7 +56,7 @@ namespace HoloToolkit.Unity.InputModule
         public bool SupportsMenuButton;
         public bool SupportsGrasp;
         public bool RaiseEventsBasedOnVisibility;
-        public InteractionSourceKind SourceKind;
+        public InteractionSourceInfo SourceKind;
 
         public Vector3 ControllerPosition;
         public Quaternion ControllerRotation;
@@ -74,7 +77,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private const float MaxClickDuration = 0.5f;
 
-        [SerializeField] 
+        [SerializeField]
         [Tooltip("The total amount of input source movement that needs to happen to signal intent to start a manipulation. This is a distance, but not a distance in any one direction.")]
         private float manipulationStartMovementThreshold = 0.03f;
 
@@ -112,11 +115,11 @@ namespace HoloToolkit.Unity.InputModule
             return supportedInputInfo;
         }
 
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            sourceKind = this.SourceKind;
+            sourceKind = SourceKind;
             return true;
         }
 
@@ -248,16 +251,18 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-#if !UNITY_EDITOR
-            Destroy(gameObject);
-#else
+            if (!Application.isEditor)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             manualController = GetComponent<EditorInputControl>();
 
             CurrentButtonStates = new ButtonStates();
             currentlyVisible = false;
             visibilityChanged = false;
             controllerId = (uint)Random.value;
-#endif
         }
 
 #if UNITY_EDITOR
@@ -402,12 +407,12 @@ namespace HoloToolkit.Unity.InputModule
         private void SendControllerStateEvents(float time)
         {
             // TODO: Send other new input manager events relating to source updates.
-
+#if UNITY_WSA
             if (CurrentButtonStates.SelectButtonStateChanged)
             {
                 if (CurrentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressType.Select);
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Select);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -427,9 +432,9 @@ namespace HoloToolkit.Unity.InputModule
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, controllerId, InteractionSourcePressType.Select, 1);
+                        InputManager.Instance.RaiseInputClicked(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Select, 1);
                     }
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressType.Select);
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Select);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -448,7 +453,7 @@ namespace HoloToolkit.Unity.InputModule
                             CurrentButtonStates.HoldInProgress = false;
                         }
 
-                        InputManager.Instance.RaiseManipulationStarted(this, controllerId, CurrentButtonStates.CumulativeDelta);
+                        InputManager.Instance.RaiseManipulationStarted(this, controllerId);
                         CurrentButtonStates.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.
@@ -468,11 +473,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressType.Menu);
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Menu);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressType.Menu);
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Menu);
                 }
             }
 
@@ -480,17 +485,18 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressType.Grasp);
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Grasp);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressType.Grasp);
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, (InteractionSourcePressInfo)InteractionSourcePressType.Grasp);
                 }
             }
+#endif
         }
 
         /// <summary>
-        /// Sends the events for hand visibility changes & controller connect/disocnnect.
+        /// Sends the events for hand visibility changes &amp; controller connect/disconnect.
         /// </summary>
         private void SendControllerVisibilityEvents()
         {

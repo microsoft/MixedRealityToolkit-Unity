@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity
             AnchorStore = null;
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             WorldAnchorStore.GetAsync(AnchorStoreReady);
         }
@@ -178,7 +178,7 @@ namespace HoloToolkit.Unity
         /// If no anchor name is provided, the name of the anchor will be the same as the GameObject.
         /// </summary>
         /// <param name="gameObjectToAnchor">The GameObject to attach the anchor to.</param>
-        /// <param name="anchorName">Name of the anchor.  If none provided a GUID is generated for you.</param>
+        /// <param name="anchorName">Name of the anchor.  If none provided, the name of the GameObject will be used.</param>
         /// <returns>The name of the newly attached anchor.</returns>
         public string AttachAnchor(GameObject gameObjectToAnchor, string anchorName = null)
         {
@@ -198,7 +198,7 @@ namespace HoloToolkit.Unity
                 Debug.LogWarning("[WorldAnchorManager] AttachAnchor called before anchor store is ready.");
             }
 
-            anchorName = string.IsNullOrEmpty(anchorName) ? anchorName : gameObjectToAnchor.name;
+            anchorName = string.IsNullOrEmpty(anchorName) ? gameObjectToAnchor.name : anchorName;
 
             LocalAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo

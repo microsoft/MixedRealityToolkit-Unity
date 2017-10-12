@@ -2,14 +2,18 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_WSA
+using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity
 {
     public class DebugPanelControllerInfo : MonoBehaviour
     {
+#if UNITY_WSA
         private class ControllerState
         {
             public InteractionSourceHandedness Handedness;
@@ -27,6 +31,9 @@ namespace HoloToolkit.Unity
             public bool TouchpadTouched;
             public Vector2 TouchpadPosition;
         }
+
+        private Dictionary<uint, ControllerState> controllers;
+#endif
 
         // Text display label game objects
         public TextMesh LeftInfoTextPointerPosition;
@@ -56,13 +63,11 @@ namespace HoloToolkit.Unity
         public TextMesh RightInfoTextTouchpadTouched;
         public TextMesh RightInfoTextTouchpadPosition;
 
-        private Dictionary<uint, ControllerState> controllers;
-
         private void Awake()
         {
+#if UNITY_WSA
             controllers = new Dictionary<uint, ControllerState>();
 
-#if UNITY_WSA
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
 
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
@@ -78,6 +83,7 @@ namespace HoloToolkit.Unity
             }
         }
 
+#if UNITY_WSA
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             Debug.LogFormat("{0} {1} Detected", obj.state.source.handedness, obj.state.source.kind);
@@ -116,10 +122,12 @@ namespace HoloToolkit.Unity
                 controllerState.TouchpadPosition = obj.state.touchpadPosition;
             }
         }
+#endif
 
         private string GetControllerInfo()
         {
-            string toReturn = "";
+            string toReturn = string.Empty;
+#if UNITY_WSA
             foreach (ControllerState controllerState in controllers.Values)
             {
                 // Debug message
@@ -135,7 +143,7 @@ namespace HoloToolkit.Unity
                                           controllerState.TouchpadTouched, controllerState.TouchpadPosition);
 
                 // Text label display
-                if(controllerState.Handedness.Equals(InteractionSourceHandedness.Left))
+                if (controllerState.Handedness.Equals(InteractionSourceHandedness.Left))
                 {
                     LeftInfoTextPointerPosition.text = controllerState.Handedness.ToString();
                     LeftInfoTextPointerRotation.text = controllerState.PointerRotation.ToString();
@@ -168,6 +176,7 @@ namespace HoloToolkit.Unity
                     RightInfoTextTouchpadPosition.text = controllerState.TouchpadPosition.ToString();
                 }
             }
+#endif
             return toReturn.Substring(0, Math.Max(0, toReturn.Length - 2));
         }
     }
