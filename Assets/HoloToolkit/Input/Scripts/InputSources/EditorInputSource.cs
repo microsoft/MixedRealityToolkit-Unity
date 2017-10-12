@@ -403,13 +403,12 @@ namespace HoloToolkit.Unity.InputModule
         private void SendControllerStateEvents(float time)
         {
             // TODO: Send other new input manager events relating to source updates.
-#if UNITY_WSA
             if (CurrentButtonStates.SelectButtonStateChanged)
             {
                 if (CurrentButtonStates.IsSelectButtonDown)
                 {
                     InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER && UNITY_WSA
                         (InteractionSourcePressInfo)InteractionSourcePressType.Select
 #else
                         InteractionSourcePressInfo.Select
@@ -435,7 +434,7 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         // We currently only support single taps in editor.
                         InputManager.Instance.RaiseInputClicked(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER && UNITY_WSA
                         (InteractionSourcePressInfo)InteractionSourcePressType.Select,
 #else
                             InteractionSourcePressInfo.Select,
@@ -443,7 +442,7 @@ namespace HoloToolkit.Unity.InputModule
                             1);
                     }
                     InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER && UNITY_WSA
                         (InteractionSourcePressInfo)InteractionSourcePressType.Select
 #else
                         InteractionSourcePressInfo.Select
@@ -488,7 +487,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (CurrentButtonStates.IsMenuButtonDown)
                 {
                     InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER && UNITY_WSA
                         (InteractionSourcePressInfo)InteractionSourcePressType.Menu
 #else
                         InteractionSourcePressInfo.Menu
@@ -498,7 +497,7 @@ namespace HoloToolkit.Unity.InputModule
                 else
                 {
                     InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER && UNITY_WSA
                         (InteractionSourcePressInfo)InteractionSourcePressType.Menu
 #else
                         InteractionSourcePressInfo.Menu
@@ -512,7 +511,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (CurrentButtonStates.IsGrasped)
                 {
                     InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER && UNITY_WSA
                         (InteractionSourcePressInfo)InteractionSourcePressType.Grasp
 #else
                         InteractionSourcePressInfo.Grasp
@@ -522,7 +521,7 @@ namespace HoloToolkit.Unity.InputModule
                 else
                 {
                     InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER && UNITY_WSA
                         (InteractionSourcePressInfo)InteractionSourcePressType.Grasp
 #else
                         InteractionSourcePressInfo.Grasp
@@ -530,7 +529,6 @@ namespace HoloToolkit.Unity.InputModule
                     );
                 }
             }
-#endif
         }
 
         /// <summary>
