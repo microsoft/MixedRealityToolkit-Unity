@@ -81,7 +81,7 @@ namespace HoloToolkit.Unity
 #endif
         }
 
-#if !UNITY_EDITOR&& UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
