@@ -1,4 +1,4 @@
-# General Release Guidelines for upgrading projects with MRTK
+# General Release Guidelines
 
 When updating the Mixed Reality Toolkit for Unity in your project always be sure to completely remove all the folders and assets of the toolkit before importing the unity package.  Unity does not handle assets that have been deleted, removed, or renamed.
 
