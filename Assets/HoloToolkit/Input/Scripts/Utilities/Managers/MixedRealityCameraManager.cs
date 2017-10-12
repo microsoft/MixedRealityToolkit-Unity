@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
@@ -55,18 +58,21 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
+            if (!Application.isEditor)
+            {
 #if UNITY_WSA
             if (!HolographicSettings.IsDisplayOpaque)
-            {
-                CurrentDisplayType = DisplayType.Transparent;
-                ApplySettingsForTransparentDisplay();
-                if (OnDisplayDetected != null)
                 {
-                    OnDisplayDetected(DisplayType.Transparent);
+                    CurrentDisplayType = DisplayType.Transparent;
+                    ApplySettingsForTransparentDisplay();
+                    if (OnDisplayDetected != null)
+                    {
+                        OnDisplayDetected(DisplayType.Transparent);
+                    }
                     return;
                 }
-            }
 #endif
+            }
 
             CurrentDisplayType = DisplayType.Opaque;
             ApplySettingsForOpaqueDisplay();
@@ -79,18 +85,18 @@ namespace HoloToolkit.Unity.InputModule
         public void ApplySettingsForOpaqueDisplay()
         {
             Debug.Log("Display is Opaque");
-            Camera.main.clearFlags = CameraClearFlags_OpaqueDisplay;
-            Camera.main.nearClipPlane = NearClipPlane_OpaqueDisplay;
-            Camera.main.backgroundColor = BackgroundColor_OpaqueDisplay;
+            CameraCache.Main.clearFlags = CameraClearFlags_OpaqueDisplay;
+            CameraCache.Main.nearClipPlane = NearClipPlane_OpaqueDisplay;
+            CameraCache.Main.backgroundColor = BackgroundColor_OpaqueDisplay;
             SetQuality(OpaqueQualityLevel);
         }
 
         public void ApplySettingsForTransparentDisplay()
         {
             Debug.Log("Display is Transparent");
-            Camera.main.clearFlags = CameraClearFlags_TransparentDisplay;
-            Camera.main.backgroundColor = BackgroundColor_TransparentDisplay;
-            Camera.main.nearClipPlane = NearClipPlane_TransparentDisplay;
+            CameraCache.Main.clearFlags = CameraClearFlags_TransparentDisplay;
+            CameraCache.Main.backgroundColor = BackgroundColor_TransparentDisplay;
+            CameraCache.Main.nearClipPlane = NearClipPlane_TransparentDisplay;
             SetQuality(HoloLensQualityLevel);
         }
 

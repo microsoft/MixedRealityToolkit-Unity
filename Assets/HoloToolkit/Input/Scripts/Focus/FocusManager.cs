@@ -8,9 +8,9 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor 
+    /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor
     /// or pointing ray enabled motion controllers.
-    /// If you dont have pointing ray enabled controllers, it defaults to GazeManager.    
+    /// If you don't have pointing ray enabled controllers, it defaults to GazeManager.
     /// </summary>
     public class FocusManager : Singleton<FocusManager>
     {
@@ -20,44 +20,96 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Awake();
 
-            AwakePointing();
+            if (registeredPointers != null)
+            {
+                for (int iPointer = 0; iPointer < registeredPointers.Length; iPointer++)
+                {
+                    GameObject owner = registeredPointers[iPointer];
+
+                    if (owner == null)
+                    {
+                        Debug.LogError("AutoRegisteredPointers contains a null (\"None\") object.");
+                        break;
+                    }
+
+                    IPointingSource pointingSource = owner.GetComponent<IPointingSource>();
+
+                    if (pointingSource == null)
+                    {
+                        Debug.LogErrorFormat("AutoRegisteredPointers contains object \"{0}\" which is missing its {1} component.",
+                            owner.name,
+                            typeof(IPointingSource).Name
+                        );
+                        break;
+                    }
+
+                    RegisterPointer(pointingSource);
+                }
+            }
         }
 
         private void Start()
         {
-            StartPointing();
+            if (gazeManagerPointingData == null)
+            {
+                if (GazeManager.IsInitialized)
+                {
+                    gazeManagerPointingData = new PointerData(GazeManager.Instance);
+                }
+            }
+            else
+            {
+                Debug.Assert(ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
+            }
+
+            if ((pointers.Count == 0) && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
+            {
+                RegisterPointer(GazeManager.Instance);
+            }
         }
 
         private void Update()
         {
-            UpdatePointing();
-            UpdateFocus();
+            UpdatePointers();
+            UpdateFocusedObjects();
         }
 
         #endregion
 
         #region Settings
 
+        /// <summary>
+        /// Maximum distance at which the pointer can collide with an object.
+        /// </summary>
         [SerializeField]
         private float pointingExtent = 10f;
 
+        /// <summary>
+        /// The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.
+        ///
+        /// Example Usage:
+        ///
+        /// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
+        ///
+        /// int sr = LayerMask.GetMask("SR");
+        /// int nonSR = Physics.DefaultRaycastLayers &amp; ~sr;
+        /// GazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
+        /// </summary>
         [SerializeField]
-        private LayerMask[] pointingPrioritizedLayerMasks = CreateDefaultPointingPrioritizedLayerMasks();
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.")]
+        private LayerMask[] pointingRaycastLayerMasks = { Physics.DefaultRaycastLayers };
 
         [SerializeField]
-        private GameObject[] autoRegisteredPointers = null;
+        private GameObject[] registeredPointers = null;
 
         [SerializeField]
         private bool autoRegisterGazePointerIfNoPointersRegistered = true;
 
         [SerializeField]
-        private Canvas[] autoRegisteredPointableCanvases = null;
+        private bool debugDrawPointingRays = false;
 
         [SerializeField]
-        private bool DebugDrawPointingRays = false;
-
-        [SerializeField]
-        private Color[] DebugDrawPointingRayColors = null;
+        private Color[] debugDrawPointingRayColors = null;
 
         #endregion
 
@@ -68,37 +120,43 @@ namespace HoloToolkit.Unity.InputModule
             public readonly IPointingSource PointingSource;
 
             public Vector3 StartPoint { get; private set; }
+
             public FocusDetails End { get; private set; }
+
             public GameObject PreviousEndObject { get; private set; }
+
+            public RaycastHit LastRaycastHit { get; private set; }
 
             public PointerData(IPointingSource pointingSource)
             {
                 PointingSource = pointingSource;
             }
 
-            public void UpdateHit(RaycastHit physicsHit)
+            public void UpdateHit(RaycastHit hit)
             {
+                LastRaycastHit = hit;
                 PreviousEndObject = End.Object;
 
                 StartPoint = PointingSource.Ray.origin;
                 End = new FocusDetails
                 {
-                    Point = physicsHit.point,
-                    Normal = physicsHit.normal,
-                    Object = physicsHit.transform.gameObject,
+                    Point = hit.point,
+                    Normal = hit.normal,
+                    Object = hit.transform.gameObject
                 };
             }
 
-            public void UpdateHit(RaycastResult uiHit)
+            public void UpdateHit(RaycastResult result, RaycastHit hit)
             {
-                PreviousEndObject = End.Object;
+                // We do not update the PreviousEndObject here because
+                // it's already been updated in the first physics raycast.
 
                 StartPoint = PointingSource.Ray.origin;
                 End = new FocusDetails
                 {
-                    Point = uiHit.worldPosition,
-                    Normal = uiHit.worldNormal,
-                    Object = uiHit.gameObject,
+                    Point = hit.point,
+                    Normal = hit.normal,
+                    Object = result.gameObject
                 };
             }
 
@@ -111,7 +169,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = (StartPoint + (extent * PointingSource.Ray.direction)),
                     Normal = (-PointingSource.Ray.direction),
-                    Object = null,
+                    Object = null
                 };
             }
 
@@ -122,23 +180,21 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = End.Point,
                     Normal = End.Normal,
-                    Object = null,
+                    Object = null
                 };
             }
         }
 
-        private readonly List<PointerData> pointers = new List<PointerData>();
+        private readonly List<PointerData> pointers = new List<PointerData>(0);
 
-        // GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
-        // of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
-        // to do a gaze raycast even if gaze isn't used for focus.
+        /// <summary>
+        /// GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
+        /// of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
+        /// to do a gaze raycast even if gaze isn't used for focus.
+        /// </summary>
         private PointerData gazeManagerPointingData;
 
-        private readonly List<Canvas> pointableCanvases = new List<Canvas>();
-
-        private Camera uiRaycastCamera;
-        private PointerInputEventData uiRaycastPointerInputData;
-        private List<RaycastResult> uiRaycastResults;
+        public PointerInputEventData UnityUIPointerEvent { get; private set; }
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -147,12 +203,6 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
         #region Accessors
-
-        public bool IsUnityUiFocusable
-        {
-            get { return (pointableCanvases.Count > 0); }
-
-        }
 
         public void RegisterPointer(IPointingSource pointingSource)
         {
@@ -187,7 +237,7 @@ namespace HoloToolkit.Unity.InputModule
             pointers.Add(pointer);
         }
 
-        public void UnregisterPointer(IPointingSource pointingSource)
+        public void UnRegisterPointer(IPointingSource pointingSource)
         {
             Debug.Assert(pointingSource != null);
 
@@ -202,13 +252,13 @@ namespace HoloToolkit.Unity.InputModule
 
             if (pointer.End.Object != null)
             {
-                GameObject defocusedObject = pointer.End.Object;
+                GameObject deFocusedObject = pointer.End.Object;
 
                 bool objectIsStillFocusedByOtherPointer = false;
 
                 for (int iOther = 0; iOther < pointers.Count; iOther++)
                 {
-                    if (pointers[iOther].End.Object == defocusedObject)
+                    if (pointers[iOther].End.Object == deFocusedObject)
                     {
                         objectIsStillFocusedByOtherPointer = true;
                         break;
@@ -217,31 +267,11 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
-                    RaiseFocusExitedEvents(defocusedObject);
+                    RaiseFocusExitedEvents(deFocusedObject);
                 }
 
-                RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, defocusedObject, null);
+                RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, deFocusedObject, null);
             }
-        }
-
-        public void RegisterPointableCanvas(Canvas canvas)
-        {
-            Debug.Assert(canvas != null);
-            Debug.Assert(TryGetPointableCanvasIndex(canvas) == null);
-
-            canvas.worldCamera = uiRaycastCamera;
-            pointableCanvases.Add(canvas);
-        }
-
-        public void UnregisterPointableCanvas(Canvas canvas)
-        {
-            Debug.Assert(canvas != null);
-
-            int? iCanvas = TryGetPointableCanvasIndex(canvas);
-            Debug.Assert(iCanvas != null);
-
-            pointableCanvases.RemoveAt(iCanvas.Value);
-            canvas.worldCamera = null;
         }
 
         public FocusDetails? TryGetFocusDetails(BaseEventData eventData)
@@ -263,7 +293,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             FocusDetails? details = TryGetFocusDetails(eventData);
 
-            return (details == null) ? null : details.Value.Object;
+            if (details == null)
+            {
+                return null;
+            }
+
+            var pointer = GetPointerEventData();
+            pointer.selectedObject = details.Value.Object;
+            return details.Value.Object;
         }
 
         public bool TryGetPointingSource(BaseEventData eventData, out IPointingSource pointingSource)
@@ -304,34 +341,32 @@ namespace HoloToolkit.Unity.InputModule
                 pointingSource = pointers[0].PointingSource;
                 return true;
             }
-            else
-            {
-                pointingSource = null;
-                return false;
-            }
+
+            pointingSource = null;
+            return false;
         }
 
         public delegate void FocusEnteredMethod(GameObject focusedObject);
         public event FocusEnteredMethod FocusEntered;
 
-        public delegate void FocusExitedMethod(GameObject defocusedObject);
+        public delegate void FocusExitedMethod(GameObject deFocusedObject);
         public event FocusExitedMethod FocusExited;
 
         public delegate void PointerSpecificFocusChangedMethod(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
         public event PointerSpecificFocusChangedMethod PointerSpecificFocusChanged;
 
-        public PointerInputEventData BorrowPointerEventData()
+        public PointerInputEventData GetPointerEventData()
         {
-            if (uiRaycastPointerInputData == null)
+            if (UnityUIPointerEvent == null)
             {
-                uiRaycastPointerInputData = new PointerInputEventData(EventSystem.current);
+                UnityUIPointerEvent = new PointerInputEventData(EventSystem.current);
             }
             else
             {
-                Clear(uiRaycastPointerInputData);
+                UnityUIPointerEvent.Clear();
             }
 
-            return uiRaycastPointerInputData;
+            return UnityUIPointerEvent;
         }
 
         public float GetPointingExtent(IPointingSource pointingSource)
@@ -343,92 +378,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Utilities
 
-        private void AwakePointing()
-        {
-            if ((pointingPrioritizedLayerMasks == null) || (pointingPrioritizedLayerMasks.Length == 0))
-            {
-                pointingPrioritizedLayerMasks = CreateDefaultPointingPrioritizedLayerMasks();
-            }
-
-            AutoRegisterPointers();
-            AutoRegisterPointableCanvases();
-        }
-
-        private void StartPointing()
-        {
-            if (gazeManagerPointingData == null)
-            {
-                if (GazeManager.IsInitialized)
-                {
-                    gazeManagerPointingData = new PointerData(GazeManager.Instance);
-                }
-            }
-            else
-            {
-                Debug.Assert(object.ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
-            }
-
-            if ((pointers.Count == 0) && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
-            {
-                RegisterPointer(GazeManager.Instance);
-            }
-        }
-
-        private static LayerMask[] CreateDefaultPointingPrioritizedLayerMasks()
-        {
-            return new LayerMask[] { Physics.DefaultRaycastLayers };
-        }
-
-        private void AutoRegisterPointers()
-        {
-            if (autoRegisteredPointers != null)
-            {
-                for (int iPointer = 0; iPointer < autoRegisteredPointers.Length; iPointer++)
-                {
-                    GameObject owner = autoRegisteredPointers[iPointer];
-
-                    if (owner == null)
-                    {
-                        Debug.LogError("AutoRegisteredPointers contains a null (\"None\") object.");
-                        break;
-                    }
-
-                    IPointingSource pointingSource = owner.GetComponent<IPointingSource>();
-
-                    if (pointingSource == null)
-                    {
-                        Debug.LogErrorFormat("AutoRegisteredPointers contains object \"{0}\" which is missing its {1} component.",
-                            owner.name,
-                            typeof(IPointingSource).Name
-                            );
-                        break;
-                    }
-
-                    RegisterPointer(pointingSource);
-                }
-            }
-        }
-
-        private void AutoRegisterPointableCanvases()
-        {
-            if (autoRegisteredPointableCanvases != null)
-            {
-                for (int iCanvas = 0; iCanvas < autoRegisteredPointableCanvases.Length; iCanvas++)
-                {
-                    Canvas canvas = autoRegisteredPointableCanvases[iCanvas];
-
-                    if (canvas == null)
-                    {
-                        Debug.LogError("AutoRegisteredPointableCanvases contains a null (\"None\") component.");
-                        break;
-                    }
-
-                    RegisterPointableCanvas(canvas);
-                }
-            }
-        }
-
-        private void UpdatePointing()
+        private void UpdatePointers()
         {
             bool gazeManagerIsRegistered = false;
 
@@ -441,15 +391,15 @@ namespace HoloToolkit.Unity.InputModule
                     gazeManagerIsRegistered = true;
                 }
 
-                UpdatePointing(pointer);
+                UpdatePointer(pointer);
 
-                if (DebugDrawPointingRays)
+                if (debugDrawPointingRays)
                 {
                     Color rayColor;
 
-                    if ((DebugDrawPointingRayColors != null) && (DebugDrawPointingRayColors.Length > 0))
+                    if ((debugDrawPointingRayColors != null) && (debugDrawPointingRayColors.Length > 0))
                     {
-                        rayColor = DebugDrawPointingRayColors[iPointer % DebugDrawPointingRayColors.Length];
+                        rayColor = debugDrawPointingRayColors[iPointer % debugDrawPointingRayColors.Length];
                     }
                     else
                     {
@@ -466,186 +416,129 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (!gazeManagerIsRegistered)
                 {
-                    UpdatePointing(gazeManagerPointingData);
+                    UpdatePointer(gazeManagerPointingData);
                 }
 
-                GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerIsRegistered);
+                GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerPointingData.LastRaycastHit, gazeManagerIsRegistered);
             }
         }
 
-        private void UpdatePointing(PointerData pointer)
+        private void UpdatePointer(PointerData pointer)
         {
             pointer.PointingSource.UpdatePointer();
+            var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
 
-            Ray pointingRay = pointer.PointingSource.Ray;
+            // Perform raycast to determine focused object
+            RaycastPhysics(pointer, prioritizedLayerMasks);
+
+            // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+            if (EventSystem.current != null)
+            {
+                // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                RaycastUnityUI(pointer, prioritizedLayerMasks);
+            }
+        }
+
+        /// <summary>
+        /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
+        /// </summary>
+        private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        {
+            bool isHit;
+            RaycastHit physicsHit = default(RaycastHit);
             float extent = GetPointingExtent(pointer);
-            IList<LayerMask> prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingPrioritizedLayerMasks);
 
-            LayerMask combinedLayerMasks = GetCombinedLayerMask(prioritizedLayerMasks);
-
-            RaycastHit? physicsHit;
-            RaycastResult? uiHit;
-
-            if (prioritizedLayerMasks.Count > 1)
+            // If there is only one priority, don't prioritize
+            if (prioritizedLayerMasks.Length == 1)
             {
-                RaycastHit[] hits = Physics.RaycastAll(pointingRay, extent, combinedLayerMasks);
-
-                physicsHit = TryGetPreferredHit(hits, prioritizedLayerMasks);
+                isHit = Physics.Raycast(pointer.PointingSource.Ray, out physicsHit, extent, prioritizedLayerMasks[0]);
             }
             else
             {
-                RaycastHit hit;
+                // Raycast across all layers and prioritize
+                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(pointer.PointingSource.Ray, extent, /*All layers*/ -1), prioritizedLayerMasks);
+                isHit = hit.HasValue;
 
-                physicsHit = Physics.Raycast(pointingRay, out hit, extent, combinedLayerMasks)
-                    ? (RaycastHit?)hit
-                    : null;
+                if (isHit)
+                {
+                    physicsHit = hit.Value;
+                }
             }
 
-            if ((pointableCanvases.Count == 0) || (EventSystem.current == null))
+            if (isHit)
             {
-                uiHit = null;
+                pointer.UpdateHit(physicsHit);
             }
             else
             {
-                if (uiRaycastCamera == null)
-                {
-                    uiRaycastCamera = new GameObject("UI Raycast Camera").AddComponent<Camera>();
-                    uiRaycastCamera.transform.parent = transform;
-
-                    // Make sure the raycast starts as close the the camera as possible. Ideally, this would
-                    // be 0, but as of Unity 5.5, setting it to 0 causes the raycast to complain that the
-                    // screen point isn't in the camera's view frustum.
-                    uiRaycastCamera.nearClipPlane = 0.01f;
-
-                    // Make sure the camera's pixel rect is large enough for raycasting to work as desired. As
-                    // of Unity 5.5, setting it much smaller than this makes the raycast miss things.
-                    uiRaycastCamera.pixelRect = new Rect(0, 0, 100, 100);
-
-                    // Don't waste performance rendering anything.
-                    uiRaycastCamera.enabled = false;
-
-
-                    foreach (Canvas canvas in pointableCanvases)
-                    {
-                        canvas.worldCamera = uiRaycastCamera;
-                    }
-
-                    if (uiRaycastPointerInputData == null)
-                    {
-                        uiRaycastPointerInputData = new PointerInputEventData(EventSystem.current);
-                    }
-
-                    Debug.Assert(uiRaycastResults == null);
-                    uiRaycastResults = new List<RaycastResult>();
-                }
-
-                Debug.Assert(uiRaycastCamera != null);
-                Debug.Assert(uiRaycastPointerInputData != null);
-                Debug.Assert(uiRaycastResults != null);
-
-                foreach (Canvas canvas in pointableCanvases)
-                {
-                    Debug.Assert(canvas.worldCamera == uiRaycastCamera);
-                }
-
-                uiRaycastCamera.transform.position = pointingRay.origin;
-                uiRaycastCamera.transform.forward = pointingRay.direction;
-
-                Clear(uiRaycastPointerInputData);
-                uiRaycastPointerInputData.position = new Vector2((uiRaycastCamera.pixelWidth / 2), (uiRaycastCamera.pixelHeight / 2));
-
-                uiRaycastResults.Clear();
-
-                EventSystem.current.RaycastAll(uiRaycastPointerInputData, uiRaycastResults);
-                uiHit = TryGetPreferredHit(uiRaycastResults, prioritizedLayerMasks);
-
-                if (uiHit != null)
-                {
-                    RaycastResult patchedUiHit = uiHit.Value;
-
-                    float totalDistance = (patchedUiHit.distance + uiRaycastCamera.nearClipPlane);
-
-                    patchedUiHit.distance = totalDistance;
-
-                    Debug.Assert((patchedUiHit.worldPosition == Vector3.zero), "As of Unity 5.5, UI Raycasts always"
-                        + " return worldPosition (0,0,0), so we'll fill it in here with the correct value. If this"
-                        + " assertion fires, see what data is available, and consider using it instead of our fill in."
-                        );
-
-                    patchedUiHit.worldPosition = (pointingRay.origin + (totalDistance * pointingRay.direction));
-
-                    Debug.Assert((patchedUiHit.worldNormal == Vector3.zero), "As of Unity 5.5, UI Raycasts always"
-                        + " return worldNormal (0,0,0), so we'll fill it in here with something incorrect, but"
-                        + " reasonable. If this assertion fires, see what data is available, and consider using it"
-                        + " instead of our fill in."
-                        );
-
-                    patchedUiHit.worldNormal = (-patchedUiHit.gameObject.transform.forward);
-
-                    uiHit = patchedUiHit;
-                }
+                pointer.UpdateHit(GetPointingExtent(pointer));
             }
+        }
 
+        private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        {
+            GetPointerEventData();
 
-            if ((physicsHit != null) && (uiHit != null))
+            Debug.Assert(pointer.End.Point != Vector3.zero);
+
+            // 2D pointer position
+            UnityUIPointerEvent.position = CameraCache.Main.WorldToScreenPoint(pointer.End.Point);
+
+            // Graphics raycast
+            RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
+            UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
+
+            // If we have a raycast result, check if we need to overwrite the physics raycast info
+            if (uiRaycastResult.gameObject != null)
             {
-                for (int iMask = 0; iMask < prioritizedLayerMasks.Count; iMask++)
+                bool overridePhysicsRaycast = false;
+                if (pointer.End.Object != null)
                 {
-                    LayerMask mask = prioritizedLayerMasks[iMask];
-
-                    bool physicsIsInMask = physicsHit.Value.transform.gameObject.IsInLayerMask(mask);
-                    bool uiIsInMask = uiHit.Value.gameObject.IsInLayerMask(mask);
-
-                    if (physicsIsInMask && uiIsInMask)
+                    // Check layer prioritization
+                    if (prioritizedLayerMasks.Length > 1)
                     {
-                        // In the case of tie in priority and distance, we give preference to the UI,
-                        // assuming that if people stick UI on top of 3D objects, they probably want
-                        // the UI to take the pointer.
+                        // Get the index in the prioritized layer masks
+                        int uiLayerIndex = uiRaycastResult.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                        int threeDLayerIndex = pointer.LastRaycastHit.collider.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
 
-                        if (uiHit.Value.distance <= physicsHit.Value.distance)
+                        if (threeDLayerIndex > uiLayerIndex)
                         {
-                            pointer.UpdateHit(uiHit.Value);
-                            break;
+                            overridePhysicsRaycast = true;
                         }
-                        else
+                        else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            pointer.UpdateHit(physicsHit.Value);
-                            break;
+                            if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
+                            {
+                                overridePhysicsRaycast = true;
+                            }
                         }
-                    }
-                    else if (physicsIsInMask)
-                    {
-                        pointer.UpdateHit(physicsHit.Value);
-                        break;
-                    }
-                    else if (uiIsInMask)
-                    {
-                        pointer.UpdateHit(uiHit.Value);
-                        break;
                     }
                     else
                     {
-                        // Nothing... keep searching for a mask that contains at least one of the hits.
+                        if (pointer.LastRaycastHit.distance > uiRaycastResult.distance)
+                        {
+                            overridePhysicsRaycast = true;
+                        }
                     }
                 }
 
-                Debug.Assert(pointer.End.Object != null);
-            }
-            else if (physicsHit != null)
-            {
-                pointer.UpdateHit(physicsHit.Value);
-            }
-            else if (uiHit != null)
-            {
-                pointer.UpdateHit(uiHit.Value);
-            }
-            else
-            {
-                pointer.UpdateHit(extent);
+                // Check if we need to overwrite the physics raycast info
+                if (pointer.End.Object == null || overridePhysicsRaycast)
+                {
+                    Vector3 worldPos = CameraCache.Main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
+                    var hitInfo = new RaycastHit
+                    {
+                        distance = uiRaycastResult.distance,
+                        normal = -uiRaycastResult.gameObject.transform.forward,
+                        point = worldPos
+                    };
+
+                    pointer.UpdateHit(uiRaycastResult, hitInfo);
+                }
             }
         }
 
-        private void UpdateFocus()
+        private void UpdateFocusedObjects()
         {
             Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -678,8 +571,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            // ... but now we trim out objects whose overall focus was maintained the same by
-            // a different pointer:
+            // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
             for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
             {
@@ -714,20 +606,20 @@ namespace HoloToolkit.Unity.InputModule
             pendingPointerSpecificFocusChange.Clear();
         }
 
-        private void RaiseFocusExitedEvents(GameObject defocusedObject)
+        private void RaiseFocusExitedEvents(GameObject deFocusedObject)
         {
-            InputManager.Instance.RaiseFocusExit(defocusedObject);
-
+            InputManager.Instance.RaiseFocusExit(deFocusedObject);
+            //Debug.Log("Focus Exit: " + deFocusedObject.name);
             if (FocusExited != null)
             {
-                FocusExited(defocusedObject);
+                FocusExited(deFocusedObject);
             }
         }
 
         private void RaiseFocusEnteredEvents(GameObject focusedObject)
         {
             InputManager.Instance.RaiseFocusEnter(focusedObject);
-
+            //Debug.Log("Focus Enter: " + focusedObject.name);
             if (FocusEntered != null)
             {
                 FocusEntered(focusedObject);
@@ -748,7 +640,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             int? iPointer = TryGetPointerIndex(pointingSource);
             Debug.Assert(iPointer != null);
-
             return pointers[iPointer.Value];
         }
 
@@ -768,188 +659,41 @@ namespace HoloToolkit.Unity.InputModule
             return found;
         }
 
-        private int? TryGetPointableCanvasIndex(Canvas canvas)
-        {
-            int? found = null;
-
-            for (int i = 0; i < pointableCanvases.Count; i++)
-            {
-                if (pointableCanvases[i] == canvas)
-                {
-                    found = i;
-                    break;
-                }
-            }
-
-            return found;
-        }
-
         private float GetPointingExtent(PointerData pointer)
         {
             return (pointer.PointingSource.ExtentOverride ?? pointingExtent);
         }
 
-        private RaycastHit? TryGetPreferredHit(IList<RaycastHit> orderedHits, IList<LayerMask> prioritizedLayerMasks)
+        private RaycastHit? PrioritizeHits(RaycastHit[] hits, LayerMask[] layerMasks)
         {
-            Debug.Assert(orderedHits != null);
-            Debug.Assert(prioritizedLayerMasks != null);
-
-            // These hits are preferred based on:
-            //   1. order in priority layer masks list.
-            //   2. order in hits list, which should correspond to smallest distance.
-
-            for (int iMask = 0; iMask < prioritizedLayerMasks.Count; iMask++)
+            if (hits.Length == 0)
             {
-                LayerMask mask = prioritizedLayerMasks[iMask];
+                return null;
+            }
 
-                for (int iHit = 0; iHit < orderedHits.Count; iHit++)
+            // Return the minimum distance hit within the first layer that has hits.
+            // In other words, sort all hit objects first by layerMask, then by distance.
+            for (int layerMaskIdx = 0; layerMaskIdx < layerMasks.Length; layerMaskIdx++)
+            {
+                RaycastHit? minHit = null;
+
+                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
                 {
-                    RaycastHit hit = orderedHits[iHit];
-
-                    if (hit.transform.gameObject.IsInLayerMask(mask))
+                    RaycastHit hit = hits[hitIdx];
+                    if (hit.transform.gameObject.layer.IsInLayerMask(layerMasks[layerMaskIdx]) &&
+                        (minHit == null || hit.distance < minHit.Value.distance))
                     {
-                        return hit;
+                        minHit = hit;
                     }
+                }
+
+                if (minHit != null)
+                {
+                    return minHit;
                 }
             }
 
             return null;
-        }
-
-        private RaycastResult? TryGetPreferredHit(IList<RaycastResult> semiOrderedHits, IList<LayerMask> prioritizedLayerMasks)
-        {
-            Debug.Assert(semiOrderedHits != null);
-            Debug.Assert(prioritizedLayerMasks != null);
-
-            RaycastResult? preferred = null;
-            int preferredLayerMaskIndex = int.MaxValue;
-
-            for (int iHit = 0; iHit < semiOrderedHits.Count; iHit++)
-            {
-                RaycastResult hit = semiOrderedHits[iHit];
-                int hitLayerMaskIndex = GetLayerMaskIndex(hit.gameObject, prioritizedLayerMasks);
-
-
-                // First, prefer by order in priority layer masks list:
-
-                if ((preferred == null) || (hitLayerMaskIndex < preferredLayerMaskIndex))
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hitLayerMaskIndex > preferredLayerMaskIndex)
-                {
-                    continue;
-                }
-                Debug.Assert(hitLayerMaskIndex == preferredLayerMaskIndex);
-
-
-                // Then by biggest sorting layer:
-
-                if (hit.sortingLayer > preferred.Value.sortingLayer)
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hit.sortingLayer < preferred.Value.sortingLayer)
-                {
-                    continue;
-                }
-                Debug.Assert(hit.sortingLayer == preferred.Value.sortingLayer);
-
-
-                // Then by biggest order in layer:
-
-                if (hit.sortingOrder > preferred.Value.sortingOrder)
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hit.sortingOrder < preferred.Value.sortingOrder)
-                {
-                    continue;
-                }
-                Debug.Assert(hit.sortingOrder == preferred.Value.sortingOrder);
-
-
-                // Then by smallest distance:
-
-                if (hit.distance < preferred.Value.distance)
-                {
-                    preferred = hit;
-                    preferredLayerMaskIndex = hitLayerMaskIndex;
-                    continue;
-                }
-                else if (hit.distance > preferred.Value.distance)
-                {
-                    continue;
-                }
-                Debug.Assert(hit.distance == preferred.Value.distance);
-
-
-                // Then by order in hits list, which seems to break the tie correctly for UI layered flat on
-                // the same canvas. By virtue of letting the loop continue here without updating preferred,
-                // we break the tie with the order in hits list.
-            }
-
-            return preferred;
-        }
-
-        private int GetLayerMaskIndex(GameObject gameObject, IList<LayerMask> prioritizedLayerMasks)
-        {
-            Debug.Assert(prioritizedLayerMasks != null);
-
-            for (int iMask = 0; iMask < prioritizedLayerMasks.Count; iMask++)
-            {
-                if (gameObject.IsInLayerMask(prioritizedLayerMasks[iMask]))
-                {
-                    return iMask;
-                }
-            }
-
-            Debug.Assert(false);
-            return int.MaxValue;
-        }
-
-        private LayerMask GetCombinedLayerMask(IList<LayerMask> toCombine)
-        {
-            int combined = 0;
-
-            for (int i = 0; i < toCombine.Count; i++)
-            {
-                combined |= toCombine[i];
-            }
-
-            return combined;
-        }
-
-        private void Clear(PointerEventData pointerEventData)
-        {
-            uiRaycastPointerInputData.Reset();
-
-            uiRaycastPointerInputData.button = PointerEventData.InputButton.Left;
-            uiRaycastPointerInputData.clickCount = 0;
-            uiRaycastPointerInputData.clickTime = 0;
-            uiRaycastPointerInputData.delta = Vector2.zero;
-            uiRaycastPointerInputData.dragging = false;
-            uiRaycastPointerInputData.eligibleForClick = false;
-            uiRaycastPointerInputData.pointerCurrentRaycast = default(RaycastResult);
-            uiRaycastPointerInputData.pointerDrag = null;
-            uiRaycastPointerInputData.pointerEnter = null;
-            uiRaycastPointerInputData.pointerId = 0;
-            uiRaycastPointerInputData.pointerPress = null;
-            uiRaycastPointerInputData.pointerPressRaycast = default(RaycastResult);
-            uiRaycastPointerInputData.position = Vector2.zero;
-            uiRaycastPointerInputData.pressPosition = Vector2.zero;
-            uiRaycastPointerInputData.rawPointerPress = null;
-            uiRaycastPointerInputData.scrollDelta = Vector2.zero;
-            uiRaycastPointerInputData.selectedObject = null;
-            uiRaycastPointerInputData.useDragThreshold = false;
-            uiRaycastPointerInputData.InputSource = null;
-            uiRaycastPointerInputData.SourceId = 0;
         }
 
         #endregion
