@@ -3,7 +3,7 @@
 
 #if UNITY_WSA
 using UnityEngine.VR.WSA.Input;
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
 using System;
 using System.Collections.Generic;
 using Windows.Devices.Haptics;
@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity
 
         public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
         {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity
 
         public static void StopHaptics(this InteractionSource interactionSource)
         {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -81,7 +81,7 @@ namespace HoloToolkit.Unity
 #endif
         }
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR&& UNITY_2017_2_OR_NEWER
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;

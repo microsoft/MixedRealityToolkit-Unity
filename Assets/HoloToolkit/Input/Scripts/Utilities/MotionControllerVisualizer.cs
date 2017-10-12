@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA&& UNITY_2017_2_OR_NEWER
 using System.Collections;
 using UnityEngine.VR.WSA.Input;
 #if !UNITY_EDITOR
