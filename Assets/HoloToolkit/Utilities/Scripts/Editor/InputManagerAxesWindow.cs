@@ -153,11 +153,11 @@ namespace HoloToolkit.Unity
 
             Names["CONTROLLER_LEFT_MENU"] = "CONTROLLER_LEFT_MENU";
             Descriptions["CONTROLLER_LEFT_MENU"] =
-                "Recommended\n\nUse this to get the pressed state of the view button or the menu button on the left motion controller, 0 or 1 if it's pressed.";
+                "Recommended\n\nUse this to get the pressed state of the view button on an Xbox controller or the menu button on the left motion controller, 0 or 1 if it's pressed.";
 
             Names["CONTROLLER_RIGHT_MENU"] = "CONTROLLER_RIGHT_MENU";
             Descriptions["CONTROLLER_RIGHT_MENU"] =
-                "Recommended\n\nUse this to get the pressed state of the menu button or the menu button on the right motion controller, 0 or 1 if it's pressed.";
+                "Recommended\n\nUse this to get the pressed state of the menu button on an Xbox controller or the menu button on the right motion controller, 0 or 1 if it's pressed.";
 
             Names["XBOX_SHARED_TRIGGER"] = "XBOX_SHARED_TRIGGER";
             Descriptions["XBOX_SHARED_TRIGGER"] =
