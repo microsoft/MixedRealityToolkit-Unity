@@ -75,13 +75,12 @@ namespace HoloToolkit.UI.Keyboard
             UpdateLayout();
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
+            if (!Application.isEditor) { return; }
             CollectItems();
             UpdateLayout();
         }
-#endif
 
         /// <summary>
         /// Adds a UI element to the collection. This will cause the collection
