@@ -6,7 +6,7 @@ using UnityEngine;
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 using System.Collections.Generic;
-#endif 
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -29,8 +29,8 @@ namespace HoloToolkit.Unity.InputModule
         public bool UseRailsNavigation = false;
 
 #if UNITY_WSA
-        protected GestureRecognizer gestureRecognizer;
-        protected GestureRecognizer navigationGestureRecognizer;
+        protected GestureRecognizer GestureRecognizer;
+        protected GestureRecognizer NavigationGestureRecognizer;
 #endif
 
         #region IInputSource Capabilities and SourceData
@@ -119,7 +119,9 @@ namespace HoloToolkit.Unity.InputModule
 
             public uint SourceId { get { return Source.id; } }
             public InteractionSourceKind SourceKind { get { return Source.kind; } }
+#if UNITY_2017_2_OR_NEWER
             public InteractionSourceHandedness Handedness { get { return Source.handedness; } }
+#endif
             public readonly InteractionSource Source;
             public SourceCapability<Vector3> PointerPosition;
             public SourceCapability<Quaternion> PointerRotation;
@@ -147,128 +149,98 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         #endregion IInputSource Capabilities and SourceData
 
-        #region MonoBehaviour Functions
+        #region MonoBehaviour APIs
 
-        private void Awake()
+        protected virtual void OnEnable()
         {
-#if UNITY_WSA
-            gestureRecognizer = new GestureRecognizer();
-            gestureRecognizer.Tapped += GestureRecognizer_Tapped;
-
-            gestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
-            gestureRecognizer.HoldCompleted += GestureRecognizer_HoldCompleted;
-            gestureRecognizer.HoldCanceled += GestureRecognizer_HoldCanceled;
-
-            gestureRecognizer.ManipulationStarted += GestureRecognizer_ManipulationStarted;
-            gestureRecognizer.ManipulationUpdated += GestureRecognizer_ManipulationUpdated;
-            gestureRecognizer.ManipulationCompleted += GestureRecognizer_ManipulationCompleted;
-            gestureRecognizer.ManipulationCanceled += GestureRecognizer_ManipulationCanceled;
-
-            gestureRecognizer.SetRecognizableGestures(GestureSettings.Tap |
-                                                      GestureSettings.ManipulationTranslate |
-                                                      GestureSettings.Hold);
-
-            // We need a separate gesture recognizer for navigation, since it isn't compatible with manipulation
-            navigationGestureRecognizer = new GestureRecognizer();
-
-            navigationGestureRecognizer.NavigationStarted += NavigationGestureRecognizer_NavigationStarted;
-            navigationGestureRecognizer.NavigationUpdated += NavigationGestureRecognizer_NavigationUpdated;
-            navigationGestureRecognizer.NavigationCompleted += NavigationGestureRecognizer_NavigationCompleted;
-            navigationGestureRecognizer.NavigationCanceled += NavigationGestureRecognizer_NavigationCanceled;
-
-            if (UseRailsNavigation)
-            {
-                navigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationRailsX |
-                                                                    GestureSettings.NavigationRailsY |
-                                                                    GestureSettings.NavigationRailsZ);
-            }
-            else
-            {
-                navigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationX |
-                                                                    GestureSettings.NavigationY |
-                                                                    GestureSettings.NavigationZ);
-            }
-#endif
-        }
-
-        protected virtual void OnDestroy()
-        {
-#if UNITY_WSA
-            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
-
-            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
-            InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
-
-            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
-            InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
-
-            if (gestureRecognizer != null)
-            {
-                gestureRecognizer.Tapped -= GestureRecognizer_Tapped;
-
-                gestureRecognizer.HoldStarted -= GestureRecognizer_HoldStarted;
-                gestureRecognizer.HoldCompleted -= GestureRecognizer_HoldCompleted;
-                gestureRecognizer.HoldCanceled -= GestureRecognizer_HoldCanceled;
-
-                gestureRecognizer.ManipulationStarted -= GestureRecognizer_ManipulationStarted;
-                gestureRecognizer.ManipulationUpdated -= GestureRecognizer_ManipulationUpdated;
-                gestureRecognizer.ManipulationCompleted -= GestureRecognizer_ManipulationCompleted;
-                gestureRecognizer.ManipulationCanceled -= GestureRecognizer_ManipulationCanceled;
-
-                gestureRecognizer.Dispose();
-            }
-
-            if (navigationGestureRecognizer != null)
-            {
-                navigationGestureRecognizer.NavigationStarted -= NavigationGestureRecognizer_NavigationStarted;
-                navigationGestureRecognizer.NavigationUpdated -= NavigationGestureRecognizer_NavigationUpdated;
-                navigationGestureRecognizer.NavigationCompleted -= NavigationGestureRecognizer_NavigationCompleted;
-                navigationGestureRecognizer.NavigationCanceled -= NavigationGestureRecognizer_NavigationCanceled;
-
-                navigationGestureRecognizer.Dispose();
-            }
-#endif
-        }
-
-        protected override void OnEnableAfterStart()
-        {
-            base.OnEnableAfterStart();
-
 #if UNITY_WSA
             if (RecognizerStart == RecognizerStartBehavior.AutoStart)
             {
-                StartGestureRecognizers();
+                StartGestureRecognizer();
             }
 
-            foreach (InteractionSourceState state in InteractionManager.GetCurrentReading())
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            for (var i = 0; i < states.Length; i++)
             {
-                GetOrAddSourceData(state.source);
-                InputManager.Instance.RaiseSourceDetected(this, state.source.id);
+                GetOrAddSourceData(states[i].source);
+                InputManager.Instance.RaiseSourceDetected(this, states[i].source.id);
             }
 
-            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
-
-            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
-            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
-
-            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
+            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 #else
             RecognizerStart = RecognizerStartBehavior.ManualStart;
 #endif
         }
 
-        protected override void OnDisableAfterStart()
+        protected virtual void Start()
         {
-            StopGestureRecognizers();
 #if UNITY_WSA
-            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
+            GestureRecognizer = new GestureRecognizer();
+            GestureRecognizer.Tapped += GestureRecognizer_Tapped;
 
-            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
-            InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
+            GestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
+            GestureRecognizer.HoldCompleted += GestureRecognizer_HoldCompleted;
+            GestureRecognizer.HoldCanceled += GestureRecognizer_HoldCanceled;
 
-            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
+            GestureRecognizer.ManipulationStarted += GestureRecognizer_ManipulationStarted;
+            GestureRecognizer.ManipulationUpdated += GestureRecognizer_ManipulationUpdated;
+            GestureRecognizer.ManipulationCompleted += GestureRecognizer_ManipulationCompleted;
+            GestureRecognizer.ManipulationCanceled += GestureRecognizer_ManipulationCanceled;
+
+            GestureRecognizer.SetRecognizableGestures(GestureSettings.Tap |
+                                                      GestureSettings.ManipulationTranslate |
+                                                      GestureSettings.Hold);
+
+            // We need a separate gesture recognizer for navigation, since it isn't compatible with manipulation
+            NavigationGestureRecognizer = new GestureRecognizer();
+
+            NavigationGestureRecognizer.NavigationStarted += NavigationGestureRecognizer_NavigationStarted;
+            NavigationGestureRecognizer.NavigationUpdated += NavigationGestureRecognizer_NavigationUpdated;
+            NavigationGestureRecognizer.NavigationCompleted += NavigationGestureRecognizer_NavigationCompleted;
+            NavigationGestureRecognizer.NavigationCanceled += NavigationGestureRecognizer_NavigationCanceled;
+
+            if (UseRailsNavigation)
+            {
+                NavigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationRailsX |
+                                                                    GestureSettings.NavigationRailsY |
+                                                                    GestureSettings.NavigationRailsZ);
+            }
+            else
+            {
+                NavigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationX |
+                                                                    GestureSettings.NavigationY |
+                                                                    GestureSettings.NavigationZ);
+            }
+
+            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+            {
+                GestureRecognizer.StartCapturingGestures();
+                NavigationGestureRecognizer.StartCapturingGestures();
+            }
+#endif
+        }
+
+        protected virtual void OnDisable()
+        {
+#if UNITY_WSA
+            StopGestureRecognizer();
+
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
+            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
+
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            for (var i = 0; i < states.Length; i++)
+            {
+                GetOrAddSourceData(states[i].source);
+                InputManager.Instance.RaiseSourceLost(this, states[i].source.id);
+            }
 
             foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
             {
@@ -277,38 +249,106 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.RaiseSourceLost(this, iss.source.id);
             }
 #endif
-
-            base.OnDisableAfterStart();
         }
 
-        #endregion MonoBehaviour Functions
-
-        public void StartGestureRecognizers()
+        protected virtual void OnDestroy()
         {
 #if UNITY_WSA
-            if (gestureRecognizer != null)
+            if (GestureRecognizer != null)
             {
-                gestureRecognizer.StartCapturingGestures();
+                GestureRecognizer.Tapped -= GestureRecognizer_Tapped;
+
+                GestureRecognizer.HoldStarted -= GestureRecognizer_HoldStarted;
+                GestureRecognizer.HoldCompleted -= GestureRecognizer_HoldCompleted;
+                GestureRecognizer.HoldCanceled -= GestureRecognizer_HoldCanceled;
+
+                GestureRecognizer.ManipulationStarted -= GestureRecognizer_ManipulationStarted;
+                GestureRecognizer.ManipulationUpdated -= GestureRecognizer_ManipulationUpdated;
+                GestureRecognizer.ManipulationCompleted -= GestureRecognizer_ManipulationCompleted;
+                GestureRecognizer.ManipulationCanceled -= GestureRecognizer_ManipulationCanceled;
+
+                GestureRecognizer.Dispose();
             }
 
-            if (navigationGestureRecognizer != null)
+            if (NavigationGestureRecognizer != null)
             {
-                navigationGestureRecognizer.StartCapturingGestures();
+                NavigationGestureRecognizer.NavigationStarted -= NavigationGestureRecognizer_NavigationStarted;
+                NavigationGestureRecognizer.NavigationUpdated -= NavigationGestureRecognizer_NavigationUpdated;
+                NavigationGestureRecognizer.NavigationCompleted -= NavigationGestureRecognizer_NavigationCompleted;
+                NavigationGestureRecognizer.NavigationCanceled -= NavigationGestureRecognizer_NavigationCanceled;
+
+                NavigationGestureRecognizer.Dispose();
             }
 #endif
         }
 
-        public void StopGestureRecognizers()
+        #endregion MonoBehaviour APIs
+
+        /// <summary>
+        /// Make sure the gesture recognizer is off, then start it.
+        /// Otherwise, leave it alone because it's already in the desired state.
+        /// </summary>
+        public void StartGestureRecognizer()
         {
 #if UNITY_WSA
-            if (gestureRecognizer != null)
+            if (GestureRecognizer != null && !GestureRecognizer.IsCapturingGestures())
             {
-                gestureRecognizer.StopCapturingGestures();
+                GestureRecognizer.StartCapturingGestures();
             }
-
-            if (navigationGestureRecognizer != null)
+            if (NavigationGestureRecognizer != null && !NavigationGestureRecognizer.IsCapturingGestures())
             {
-                navigationGestureRecognizer.StopCapturingGestures();
+                NavigationGestureRecognizer.StartCapturingGestures();
+            }
+#endif
+        }
+
+        /// <summary>
+        /// Make sure the gesture recognizer is on, then stop it.
+        /// Otherwise, leave it alone because it's already in the desired state.
+        /// </summary>
+        public void StopGestureRecognizer()
+        {
+#if UNITY_WSA
+            if (GestureRecognizer != null && GestureRecognizer.IsCapturingGestures())
+            {
+                GestureRecognizer.StopCapturingGestures();
+            }
+            if (NavigationGestureRecognizer != null && NavigationGestureRecognizer.IsCapturingGestures())
+            {
+                NavigationGestureRecognizer.StopCapturingGestures();
+            }
+#endif
+        }
+
+        public void StartHaptics(uint sourceId, float intensity)
+        {
+#if UNITY_WSA
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                sourceData.Source.StartHaptics(intensity);
+            }
+#endif
+        }
+
+        public void StartHaptics(uint sourceId, float intensity, float durationInSeconds)
+        {
+#if UNITY_WSA
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                sourceData.Source.StartHaptics(intensity, durationInSeconds);
+            }
+#endif
+        }
+
+        public void StopHaptics(uint sourceId)
+        {
+#if UNITY_WSA
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                sourceData.Source.StopHaptics();
             }
 #endif
         }
@@ -526,40 +566,137 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         #endregion
 
-        public void StartHaptics(uint sourceId, float intensity)
-        {
 #if UNITY_WSA
+
+        /// <summary>
+        /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
+        /// </summary>
+        /// <param name="interactionSource">Interaction source for which data should be retrieved.</param>
+        /// <returns>The source data requested.</returns>
+        private SourceData GetOrAddSourceData(InteractionSource interactionSource)
+        {
             SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            if (!sourceIdToData.TryGetValue(interactionSource.id, out sourceData))
             {
-                sourceData.Source.StartHaptics(intensity);
+                sourceData = new SourceData(interactionSource);
+                sourceIdToData.Add(sourceData.SourceId, sourceData);
+
+                // TODO: robertes: whenever we end up adding, should we first synthesize a SourceDetected? Or
+                //       perhaps if we keep strict track of all sources, we should never need to just-in-time add anymore.
             }
-#endif
+
+            return sourceData;
         }
 
-        public void StartHaptics(uint sourceId, float intensity, float durationInSeconds)
+        /// <summary>
+        /// Updates the source information.
+        /// </summary>
+        /// <param name="interactionSourceState">Interaction source to use to update the source information.</param>
+        /// <param name="sourceData">SourceData structure to update.</param>
+        private void UpdateSourceData(InteractionSourceState interactionSourceState, SourceData sourceData)
         {
-#if UNITY_WSA
-            SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
+            Debug.Assert(interactionSourceState.source.kind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
+
+            Vector3 newPointerPosition;
+            sourceData.PointerPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
+            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
+            sourceData.PointerPosition.IsSupported |= sourceData.PointerPosition.IsAvailable;
+
+            Vector3 newGripPosition;
+            sourceData.GripPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newGripPosition, InteractionSourceNode.Grip);
+            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
+            sourceData.GripPosition.IsSupported |= sourceData.GripPosition.IsAvailable;
+
+            if (CameraCache.Main.transform.parent != null)
             {
-                sourceData.Source.StartHaptics(intensity, durationInSeconds);
+                newPointerPosition = CameraCache.Main.transform.parent.TransformPoint(newPointerPosition);
+                newGripPosition = CameraCache.Main.transform.parent.TransformPoint(newGripPosition);
             }
-#endif
+
+            if (sourceData.PointerPosition.IsAvailable || sourceData.GripPosition.IsAvailable)
+            {
+                sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
+            }
+            sourceData.PointerPosition.CurrentReading = newPointerPosition;
+            sourceData.GripPosition.CurrentReading = newGripPosition;
+
+            Quaternion newPointerRotation;
+            sourceData.PointerRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newPointerRotation, InteractionSourceNode.Pointer);
+            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
+            sourceData.PointerRotation.IsSupported |= sourceData.PointerRotation.IsAvailable;
+
+            Quaternion newGripRotation;
+            sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
+            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
+            sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
+
+            if (CameraCache.Main.transform.parent != null)
+            {
+                newPointerRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(newPointerRotation.eulerAngles);
+                newGripRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(newGripRotation.eulerAngles);
+            }
+
+            if (sourceData.PointerRotation.IsAvailable || sourceData.GripRotation.IsAvailable)
+            {
+                sourceData.RotationUpdated = !(sourceData.PointerRotation.CurrentReading.Equals(newPointerRotation) && sourceData.GripRotation.CurrentReading.Equals(newGripRotation));
+            }
+            sourceData.PointerRotation.CurrentReading = newPointerRotation;
+            sourceData.GripRotation.CurrentReading = newGripRotation;
+
+            Vector3 pointerForward = Vector3.zero;
+            sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
+            sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+
+            if (CameraCache.Main.transform.parent != null)
+            {
+                pointerForward = CameraCache.Main.transform.parent.TransformDirection(pointerForward);
+            }
+
+            sourceData.PointingRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
+
+            sourceData.Thumbstick.IsSupported = interactionSourceState.source.supportsThumbstick;
+            sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
+            if (sourceData.Thumbstick.IsAvailable)
+            {
+                AxisButton2D newThumbstick = AxisButton2D.GetThumbstick(interactionSourceState);
+                sourceData.ThumbstickPositionUpdated = sourceData.Thumbstick.CurrentReading.Position != newThumbstick.Position;
+                sourceData.Thumbstick.CurrentReading = newThumbstick;
+            }
+            else
+            {
+                sourceData.Thumbstick.CurrentReading = default(AxisButton2D);
+            }
+
+            sourceData.Touchpad.IsSupported = interactionSourceState.source.supportsTouchpad;
+            sourceData.Touchpad.IsAvailable = sourceData.Touchpad.IsSupported;
+            if (sourceData.Touchpad.IsAvailable)
+            {
+                TouchpadData newTouchpad = TouchpadData.GetTouchpad(interactionSourceState);
+                sourceData.TouchpadPositionUpdated = !sourceData.Touchpad.CurrentReading.AxisButton.Position.Equals(newTouchpad.AxisButton.Position);
+                sourceData.TouchpadTouchedUpdated = !sourceData.Touchpad.CurrentReading.Touched.Equals(newTouchpad.Touched);
+                sourceData.Touchpad.CurrentReading = newTouchpad;
+            }
+            else
+            {
+                sourceData.Touchpad.CurrentReading = default(TouchpadData);
+            }
+
+            sourceData.Select.IsSupported = true; // All input mechanisms support "select".
+            sourceData.Select.IsAvailable = sourceData.Select.IsSupported;
+            AxisButton1D newSelect = AxisButton1D.GetSelect(interactionSourceState);
+            sourceData.SelectPressedAmountUpdated = !sourceData.Select.CurrentReading.PressedAmount.Equals(newSelect.PressedAmount);
+            sourceData.Select.CurrentReading = newSelect;
+
+            sourceData.Grasp.IsSupported = interactionSourceState.source.supportsGrasp;
+            sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
+            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable && interactionSourceState.grasped);
+
+            sourceData.Menu.IsSupported = interactionSourceState.source.supportsMenu;
+            sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
+            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable && interactionSourceState.menuPressed);
         }
 
-        public void StopHaptics(uint sourceId)
-        {
-#if UNITY_WSA
-            SourceData sourceData;
-            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
-            {
-                sourceData.Source.StopHaptics();
-            }
-#endif
-        }
-
-#if UNITY_WSA
         #region InteractionManager Events
 
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
@@ -635,135 +772,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion InteractionManager Events
-
-        /// <summary>
-        /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
-        /// </summary>
-        /// <param name="interactionSource">Interaction source for which data should be retrieved.</param>
-        /// <returns>The source data requested.</returns>
-        private SourceData GetOrAddSourceData(InteractionSource interactionSource)
-        {
-            SourceData sourceData;
-            if (!sourceIdToData.TryGetValue(interactionSource.id, out sourceData))
-            {
-                sourceData = new SourceData(interactionSource);
-                sourceIdToData.Add(sourceData.SourceId, sourceData);
-
-                // TODO: robertes: whenever we end up adding, should we first synthesize a SourceDetected? Or
-                //       perhaps if we keep strict track of all sources, we should never need to just-in-time add anymore.
-            }
-
-            return sourceData;
-        }
-
-        /// <summary>
-        /// Updates the source information.
-        /// </summary>
-        /// <param name="interactionSourceState">Interaction source to use to update the source information.</param>
-        /// <param name="sourceData">SourceData structure to update.</param>
-        private void UpdateSourceData(InteractionSourceState interactionSourceState, SourceData sourceData)
-        {
-            Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
-            Debug.Assert(interactionSourceState.source.kind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
-
-            Vector3 newPointerPosition;
-            sourceData.PointerPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
-            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
-            sourceData.PointerPosition.IsSupported |= sourceData.PointerPosition.IsAvailable;
-
-            Vector3 newGripPosition;
-            sourceData.GripPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newGripPosition, InteractionSourceNode.Grip);
-            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
-            sourceData.GripPosition.IsSupported |= sourceData.GripPosition.IsAvailable;
-
-            if (Camera.main.transform.parent != null)
-            {
-                newPointerPosition = Camera.main.transform.parent.TransformPoint(newPointerPosition);
-                newGripPosition = Camera.main.transform.parent.TransformPoint(newGripPosition);
-            }
-
-            if (sourceData.PointerPosition.IsAvailable || sourceData.GripPosition.IsAvailable)
-            {
-                sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
-            }
-            sourceData.PointerPosition.CurrentReading = newPointerPosition;
-            sourceData.GripPosition.CurrentReading = newGripPosition;
-
-            Quaternion newPointerRotation;
-            sourceData.PointerRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newPointerRotation, InteractionSourceNode.Pointer);
-            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
-            sourceData.PointerRotation.IsSupported |= sourceData.PointerRotation.IsAvailable;
-
-            Quaternion newGripRotation;
-            sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
-            // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
-            sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
-
-            if (Camera.main.transform.parent != null)
-            {
-                newPointerRotation.eulerAngles = Camera.main.transform.parent.TransformDirection(newPointerRotation.eulerAngles);
-                newGripRotation.eulerAngles = Camera.main.transform.parent.TransformDirection(newGripRotation.eulerAngles);
-            }
-
-            if (sourceData.PointerRotation.IsAvailable || sourceData.GripRotation.IsAvailable)
-            {
-                sourceData.RotationUpdated = !(sourceData.PointerRotation.CurrentReading.Equals(newPointerRotation) && sourceData.GripRotation.CurrentReading.Equals(newGripRotation));
-            }
-            sourceData.PointerRotation.CurrentReading = newPointerRotation;
-            sourceData.GripRotation.CurrentReading = newGripRotation;
-
-            Vector3 pointerForward = Vector3.zero;
-            sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
-            sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
-
-            if (Camera.main.transform.parent != null)
-            {
-                pointerForward = Camera.main.transform.parent.TransformDirection(pointerForward);
-            }
-
-            sourceData.PointingRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
-
-            sourceData.Thumbstick.IsSupported = interactionSourceState.source.supportsThumbstick;
-            sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
-            if (sourceData.Thumbstick.IsAvailable)
-            {
-                AxisButton2D newThumbstick = AxisButton2D.GetThumbstick(interactionSourceState);
-                sourceData.ThumbstickPositionUpdated = sourceData.Thumbstick.CurrentReading.Position != newThumbstick.Position;
-                sourceData.Thumbstick.CurrentReading = newThumbstick;
-            }
-            else
-            {
-                sourceData.Thumbstick.CurrentReading = default(AxisButton2D);
-            }
-
-            sourceData.Touchpad.IsSupported = interactionSourceState.source.supportsTouchpad;
-            sourceData.Touchpad.IsAvailable = sourceData.Touchpad.IsSupported;
-            if (sourceData.Touchpad.IsAvailable)
-            {
-                TouchpadData newTouchpad = TouchpadData.GetTouchpad(interactionSourceState);
-                sourceData.TouchpadPositionUpdated = !sourceData.Touchpad.CurrentReading.AxisButton.Position.Equals(newTouchpad.AxisButton.Position);
-                sourceData.TouchpadTouchedUpdated = !sourceData.Touchpad.CurrentReading.Touched.Equals(newTouchpad.Touched);
-                sourceData.Touchpad.CurrentReading = newTouchpad;
-            }
-            else
-            {
-                sourceData.Touchpad.CurrentReading = default(TouchpadData);
-            }
-
-            sourceData.Select.IsSupported = true; // All input mechanisms support "select".
-            sourceData.Select.IsAvailable = sourceData.Select.IsSupported;
-            AxisButton1D newSelect = AxisButton1D.GetSelect(interactionSourceState);
-            sourceData.SelectPressedAmountUpdated = !sourceData.Select.CurrentReading.PressedAmount.Equals(newSelect.PressedAmount);
-            sourceData.Select.CurrentReading = newSelect;
-
-            sourceData.Grasp.IsSupported = interactionSourceState.source.supportsGrasp;
-            sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
-            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable && interactionSourceState.grasped);
-
-            sourceData.Menu.IsSupported = interactionSourceState.source.supportsMenu;
-            sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
-            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable && interactionSourceState.menuPressed);
-        }
 
         #region Raise GestureRecognizer Events
 

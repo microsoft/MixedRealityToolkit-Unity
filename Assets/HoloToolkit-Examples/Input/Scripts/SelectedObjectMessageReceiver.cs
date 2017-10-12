@@ -6,11 +6,10 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     /// <summary>
-    /// SelectedObjectMessageReceiver class shows how to handle messages sent by SelectedObjectMessageSender.
-    /// This particular implementatoin controls object appearance by changing its color when selected.
+    /// This particular implementation controls object appearance by changing its color when selected.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
-    public class SelectedObjectMessageReceiver : MonoBehaviour
+    public class SelectedObjectMessageReceiver : MonoBehaviour, IInputClickHandler
     {
         [Tooltip("Object color changes to this when selected.")]
         public Color SelectedColor = Color.red;
@@ -37,6 +36,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private void OnDestroy()
         {
             DestroyImmediate(cachedMaterial);
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            OnClearSelection();
+            if (eventData.selectedObject == gameObject)
+            {
+                OnSelectObject();
+            }
         }
     }
 }

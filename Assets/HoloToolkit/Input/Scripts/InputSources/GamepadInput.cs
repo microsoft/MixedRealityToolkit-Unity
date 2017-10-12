@@ -56,10 +56,8 @@ namespace HoloToolkit.Unity.InputModule
 
         GestureState currentGestureState;
 
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
-
             if (InputManager.IsInitialized)
             {
                 inputManager = InputManager.Instance;

@@ -295,5 +295,44 @@ namespace HoloToolkit.Unity.Tests
             var sut = cube.transform.GetColliderBounds();
             Assert.That(sut, Is.EqualTo(new Bounds(Vector3.one * 2, Vector3.one)));
         }
+
+        [Test]
+        public void TestUnrelatedParentChild()
+        {
+            var transform1 = new GameObject().transform;
+            var transform2 = new GameObject().transform;
+
+            Assert.That(transform1.IsParentOrChildOf(transform2), Is.False);
+            Assert.That(transform2.IsParentOrChildOf(transform1), Is.False);
+        }
+
+        [Test]
+        public void TestRelatedParentChild()
+        {
+            var transform1 = new GameObject().transform;
+            var transform2 = Object.Instantiate(empty, transform1).transform;
+
+            Assert.That(transform1.IsParentOrChildOf(transform2), Is.True);
+            Assert.That(transform2.IsParentOrChildOf(transform1), Is.True);
+        }
+
+        [Test]
+        public void TestNestedRelatedParentChild()
+        {
+            var root = new GameObject().transform;
+            var transform2 = Object.Instantiate(empty, root).transform;
+            var transform3 = Object.Instantiate(empty, transform2).transform;
+
+            Assert.That(transform2.IsParentOrChildOf(transform3), Is.True);
+            Assert.That(transform3.IsParentOrChildOf(transform2), Is.True);
+        }
+
+        [Test]
+        public void TestEqualParentChild()
+        {
+            var root = new GameObject().transform;
+
+            Assert.That(root.IsParentOrChildOf(root), Is.True);
+        }
     }
 }

@@ -8,81 +8,151 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: hand_down
   m_Shader: {fileID: 4800000, guid: 17b35d8a8e5e92d4ebcf1933bf853497, type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _ALPHAPREMULTIPLY_ON _EMISSION
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
     RenderType: Transparent
-  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 3
+    serializedVersion: 2
     m_TexEnvs:
-    - _BumpMap:
+    - first:
+        name: _BumpMap
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
+    - first:
+        name: _DetailAlbedoMap
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DetailMask:
+    - first:
+        name: _DetailMask
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
+    - first:
+        name: _DetailNormalMap
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DetailTex:
+    - first:
+        name: _DetailTex
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
+    - first:
+        name: _EmissionMap
+      second:
         m_Texture: {fileID: 2800000, guid: d84aac8e3bc8fe344b50dab1e7382ad7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MainTex:
+    - first:
+        name: _MainTex
+      second:
         m_Texture: {fileID: 2800000, guid: d84aac8e3bc8fe344b50dab1e7382ad7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
+    - first:
+        name: _MetallicGlossMap
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
+    - first:
+        name: _OcclusionMap
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
+    - first:
+        name: _ParallaxMap
+      second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - PixelSnap: 0
-    - _Brightness: 6
-    - _BumpScale: 1
-    - _ColorMask: 15
-    - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 10
-    - _Glossiness: 1
-    - _Metallic: 0
-    - _Mode: 3
-    - _OcclusionStrength: 1
-    - _Opacity: 1
-    - _Parallax: 0.02
-    - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _Strength: 0.2
-    - _UVSec: 0
-    - _UseUIAlphaClip: 0
-    - _ZWrite: 0
+    - first:
+        name: PixelSnap
+      second: 0
+    - first:
+        name: _Brightness
+      second: 6
+    - first:
+        name: _BumpScale
+      second: 1
+    - first:
+        name: _ColorMask
+      second: 15
+    - first:
+        name: _Cutoff
+      second: 0.5
+    - first:
+        name: _DetailNormalMapScale
+      second: 1
+    - first:
+        name: _DstBlend
+      second: 10
+    - first:
+        name: _Glossiness
+      second: 1
+    - first:
+        name: _Metallic
+      second: 0
+    - first:
+        name: _Mode
+      second: 3
+    - first:
+        name: _OcclusionStrength
+      second: 1
+    - first:
+        name: _Opacity
+      second: 1
+    - first:
+        name: _Parallax
+      second: 0.02
+    - first:
+        name: _SrcBlend
+      second: 1
+    - first:
+        name: _Stencil
+      second: 0
+    - first:
+        name: _StencilComp
+      second: 8
+    - first:
+        name: _StencilOp
+      second: 0
+    - first:
+        name: _StencilReadMask
+      second: 255
+    - first:
+        name: _StencilWriteMask
+      second: 255
+    - first:
+        name: _Strength
+      second: 0.2
+    - first:
+        name: _UVSec
+      second: 0
+    - first:
+        name: _UseUIAlphaClip
+      second: 0
+    - first:
+        name: _ZWrite
+      second: 0
     m_Colors:
-    - _Color: {r: 0.3254902, g: 0.3764706, b: 0.92941177, a: 1}
-    - _EmissionColor: {r: 0.3254902, g: 0.3764706, b: 0.92941177, a: 1}
-    - _Tint: {r: 0.3254902, g: 0.3764706, b: 0.92941177, a: 1}
+    - first:
+        name: _Color
+      second: {r: 0.3254902, g: 0.3764706, b: 0.92941177, a: 1}
+    - first:
+        name: _EmissionColor
+      second: {r: 0.3254902, g: 0.3764706, b: 0.92941177, a: 1}
+    - first:
+        name: _Tint
+      second: {r: 0.3254902, g: 0.3764706, b: 0.92941177, a: 1}

@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-//#if UNITY_WSA
-//#endif
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,16 +41,16 @@ namespace HoloToolkit.Unity.InputModule
         private InputEventData inputEventData;
         private InputClickedEventData sourceClickedEventData;
         private SourceStateEventData sourceStateEventData;
-        private SourceRotationEventData sourceRotationEventData;
-        private SourcePositionEventData sourcePositionEventData;
         private ManipulationEventData manipulationEventData;
         private HoldEventData holdEventData;
         private NavigationEventData navigationEventData;
+        private GamePadEventData gamePadEventData;
+        private XboxControllerEventData xboxControllerEventData;
+        private SourceRotationEventData sourceRotationEventData;
+        private SourcePositionEventData sourcePositionEventData;
         private PointerSpecificEventData pointerSpecificEventData;
         private InputPositionEventData inputPositionEventData;
         private SelectPressedEventData selectPressedEventData;
-        private GamePadEventData gamePadEventData;
-        private XboxControllerEventData xboxControllerEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
@@ -80,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Should the Unity UI events be fired?
         /// </summary>
-        public bool ShouldSendUnityUiEvents { get { return FocusManager.Instance.IsUnityUiFocusable; } }
+        public bool ShouldSendUnityUiEvents { get { return FocusManager.Instance.UnityUIPointerEvent != null && EventSystem.current != null; } }
 
         /// <summary>
         /// Push a game object into the modal input stack. Any input handlers
@@ -197,6 +195,29 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        private void InitializeEventDatas()
+        {
+            inputEventData = new InputEventData(EventSystem.current);
+            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
+            sourceStateEventData = new SourceStateEventData(EventSystem.current);
+            manipulationEventData = new ManipulationEventData(EventSystem.current);
+            navigationEventData = new NavigationEventData(EventSystem.current);
+            holdEventData = new HoldEventData(EventSystem.current);
+            pointerSpecificEventData = new PointerSpecificEventData(EventSystem.current);
+            inputPositionEventData = new InputPositionEventData(EventSystem.current);
+            selectPressedEventData = new SelectPressedEventData(EventSystem.current);
+            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
+            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
+            gamePadEventData = new GamePadEventData(EventSystem.current);
+            xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
+#if UNITY_WSA || UNITY_STANDALONE_WIN
+            speechEventData = new SpeechEventData(EventSystem.current);
+            dictationEventData = new DictationEventData(EventSystem.current);
+#endif
+        }
+
+        #region Unity APIs
+
         protected override void Awake()
         {
             base.Awake();
@@ -211,26 +232,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InitializeEventDatas()
-        {
-            inputEventData = new InputEventData(EventSystem.current);
-            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
-            sourceStateEventData = new SourceStateEventData(EventSystem.current);
-            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
-            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
-            manipulationEventData = new ManipulationEventData(EventSystem.current);
-            navigationEventData = new NavigationEventData(EventSystem.current);
-            holdEventData = new HoldEventData(EventSystem.current);
-            pointerSpecificEventData = new PointerSpecificEventData(EventSystem.current);
-            inputPositionEventData = new InputPositionEventData(EventSystem.current);
-            selectPressedEventData = new SelectPressedEventData(EventSystem.current);
-            gamePadEventData = new GamePadEventData(EventSystem.current);
-            xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-            speechEventData = new SpeechEventData(EventSystem.current);
-            dictationEventData = new DictationEventData(EventSystem.current);
-#endif
-        }
+        #endregion // Unity APIs
 
         /// <summary>
         /// Raise the event OnFocusEnter to the game object when focus enters it.
@@ -242,7 +244,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (ShouldSendUnityUiEvents)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
                 ExecuteEvents.ExecuteHierarchy(focusedObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
             }
         }
@@ -250,15 +252,15 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Raise the event OnFocusExit to the game object when focus exists it.
         /// </summary>
-        /// <param name="defocusedObject"></param>
-        public void RaiseFocusExit(GameObject defocusedObject)
+        /// <param name="deFocusedObject"></param>
+        public void RaiseFocusExit(GameObject deFocusedObject)
         {
-            ExecuteEvents.ExecuteHierarchy(defocusedObject, null, OnFocusExitEventHandler);
+            ExecuteEvents.ExecuteHierarchy(deFocusedObject, null, OnFocusExitEventHandler);
 
             if (ShouldSendUnityUiEvents)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
-                ExecuteEvents.ExecuteHierarchy(defocusedObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
+                ExecuteEvents.ExecuteHierarchy(deFocusedObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
             }
         }
 
@@ -283,8 +285,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
-            where T : IEventSystemHandler
+        public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             if (!Instance.enabled || disabledRefCount > 0)
             {
@@ -404,7 +405,7 @@ namespace HoloToolkit.Unity.InputModule
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceClickedEventData, OnInputClickedEventHandler);
 
-            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have SourceUp call the pointerClickHandler.
+            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaiseSourceUp call the pointerClickHandler.
         }
 
         private static readonly ExecuteEvents.EventFunction<IInputHandler> OnSourceUpEventHandler =
@@ -425,7 +426,7 @@ namespace HoloToolkit.Unity.InputModule
             // UI events
             if (ShouldSendUnityUiEvents && pressType == InteractionSourcePressInfo.Select)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
 
@@ -452,7 +453,7 @@ namespace HoloToolkit.Unity.InputModule
             // UI events
             if (ShouldSendUnityUiEvents && pressType == InteractionSourcePressInfo.Select)
             {
-                PointerInputEventData pointerInputEventData = FocusManager.Instance.BorrowPointerEventData();
+                PointerInputEventData pointerInputEventData = FocusManager.Instance.GetPointerEventData();
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
 
@@ -895,6 +896,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
         }
 
+        #endregion // Speech Events
+
+        #region Dictation Events
+
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationHypothesisEventHandler =
             delegate (IDictationHandler handler, BaseEventData eventData)
             {
@@ -959,7 +964,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);
         }
 
-        #endregion // Speech Events
+        #endregion // Dictation Events
 #endif
     }
 }
