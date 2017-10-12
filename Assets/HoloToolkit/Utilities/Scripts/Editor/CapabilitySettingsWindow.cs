@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Capability Settings.
+    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Capability Settings.
     /// </summary>
     public class CapabilitySettingsWindow : AutoConfigureWindow<PlayerSettings.WSACapability>
     {

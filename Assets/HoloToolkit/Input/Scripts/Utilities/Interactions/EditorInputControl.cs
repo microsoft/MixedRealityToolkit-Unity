@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -24,45 +25,46 @@ namespace HoloToolkit.Unity.InputModule
     public struct DebugInteractionSourceState
     {
         public bool Pressed;
-        public DebugInteractionSourceProperties Properties;
+        public bool Grasped;
+        public bool MenuPressed;
+        public bool SelectPressed;
+        public DebugInteractionSourcePose SourcePose;
     }
 
     /// <summary>
-    /// Since the InteractionSourceProperties is internal to UnityEngine.VR.WSA.Input,
-    /// this is a fake SourceProperties structure to keep the test code consistent.
+    /// Since the InteractionSourcePose is internal to UnityEngine.VR.WSA.Input,
+    /// this is a fake InteractionSourcePose structure to keep the test code consistent.
     /// </summary>
-    public struct DebugInteractionSourceProperties
-    {
-        public DebugInteractionSourceLocation Location;
-    }
-
-    /// <summary>
-    /// Since the InteractionSourceLocation is internal to UnityEngine.VR.WSA.Input,
-    /// this is a fake SourceLocation structure to keep the test code consistent.
-    /// </summary>
-    public class DebugInteractionSourceLocation
+    public class DebugInteractionSourcePose
     {
         /// <summary>
-        /// In the typical InteractionSourceLocation, the hardware determines if
+        /// In the typical InteractionSourcePose, the hardware determines if
         /// TryGetPosition and TryGetVelocity will return true or not. Here
-        /// we manually emulate this state with TryGetFunctionsReturnsTrue.
+        /// we manually emulate this state with TryGetFunctionsReturnTrue.
         /// </summary>
-        public bool TryGetFunctionsReturnsTrue;
+        public bool TryGetFunctionsReturnTrue;
+        public bool IsPositionAvailable;
+        public bool IsRotationAvailable;
 
         public Vector3 Position;
         public Vector3 Velocity;
+        public Quaternion Rotation;
+        public Ray? PointerRay;
 
         public void Awake()
         {
-            TryGetFunctionsReturnsTrue = false;
+            TryGetFunctionsReturnTrue = false;
+            IsPositionAvailable = false;
+            IsRotationAvailable = false;
             Position = new Vector3(0, 0, 0);
             Velocity = new Vector3(0, 0, 0);
+            Rotation = Quaternion.identity;
         }
 
         public bool TryGetPosition(out Vector3 position)
         {
             position = Position;
-            if (!TryGetFunctionsReturnsTrue)
+            if (!TryGetFunctionsReturnTrue)
             {
                 return false;
             }
@@ -72,7 +74,27 @@ namespace HoloToolkit.Unity.InputModule
         public bool TryGetVelocity(out Vector3 velocity)
         {
             velocity = Velocity;
-            if (!TryGetFunctionsReturnsTrue)
+            if (!TryGetFunctionsReturnTrue)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool TryGetRotation(out Quaternion rotation)
+        {
+            rotation = Rotation;
+            if (!TryGetFunctionsReturnTrue || !IsRotationAvailable)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool TryGetPointerRay(out Ray pointerRay)
+        {
+            pointerRay = (Ray)PointerRay;
+            if (PointerRay == null)
             {
                 return false;
             }
@@ -81,208 +103,222 @@ namespace HoloToolkit.Unity.InputModule
     }
 
     /// <summary>
-    /// Class for manually controlling the hand(s) when not running on HoloLens (in editor).
+    /// Class for manually controlling inputs when running in the Unity editor.
     /// </summary>
     public class EditorInputControl : MonoBehaviour
     {
-        public float HandReturnFactor = 0.25f;  /// [0.0,1.0] the closer this is to one the faster it brings the hand back to center
-        public float HandTimeBeforeReturn = 0.5f;
+        [Obsolete]
+        public DebugInteractionSourceState LeftHandSourceState;
+        [Obsolete]
+        public DebugInteractionSourceState RightHandSourceState;
+
+        [Obsolete]
+        public bool LeftHandInView;
+        [Obsolete]
+        public bool RightHandInView;
+
+        public float ControllerReturnFactor = 0.25f;  /// [0.0,1.0] the closer this is to one the faster it brings the hand back to center
+        public float ControllerTimeBeforeReturn = 0.5f;
         public float MinimumTrackedMovement = 0.001f;
 
         [Tooltip("Use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         public bool UseUnscaledTime = true;
 
-        public AxisController LeftHandPrimaryAxisControl;
-        public AxisController LeftHandSecondaryAxisControl;
-        public ButtonController LeftFingerUpButtonControl;
-        public ButtonController LeftFingerDownButtonControl;
+        public AxisController PrimaryAxisTranslateControl;
+        public AxisController SecondaryAxisTranslateControl;
+        public AxisController PrimaryAxisRotateControl;
+        public AxisController SecondaryAxisRotateControl;
+        public AxisController TertiaryAxisRotateControl;
+        public ButtonController SelectButtonControl;
+        public ButtonController MenuButtonControl;
+        public ButtonController GraspControl;
 
-        public AxisController RightHandPrimaryAxisControl;
-        public AxisController RightHandSecondaryAxisControl;
-        public ButtonController RightFingerUpButtonControl;
-        public ButtonController RightFingerDownButtonControl;
+        public DebugInteractionSourceState ControllerSourceState;
 
-        public DebugInteractionSourceState LeftHandSourceState;
-        public DebugInteractionSourceState RightHandSourceState;
+        public Color ActiveControllerColor;
+        public Color DroppedControllerColor;
 
-        public Color ActiveHandColor;
-        public Color DroppedHandColor;
         /// <summary>
         /// Will place hand visualizations in the world space, only for debugging.
         /// Place the representative GameObjects in LeftHandVisualizer & RightHandVisualizer.
         /// </summary>
-        public bool VisualizeHands = true;
-        public GameObject LeftHandVisualizer;
-        public GameObject RightHandVisualizer;
+        public bool VisualizeController = true;
+        public GameObject ControllerVisualizer;
 
         public Texture HandUpTexture;
         public Texture HandDownTexture;
 
-        public bool LeftHandInView;
-        public bool RightHandInView;
+        public bool ShowPointingRay;
 
-        private Vector3 leftHandInitialPosition;
-        private Vector3 rightHandInitialPosition;
+        public bool ControllerInView { get; private set; }
 
-        private Vector3 leftHandLocalPosition;
-        private Vector3 rightHandLocalPosition;
+        public Vector3 InitialPosition;
 
-        private Renderer leftHandVisualRenderer;
-        private Renderer rightHandVisualRenderer;
-        private MaterialPropertyBlock leftHandVisualPropertyBlock;
-        private MaterialPropertyBlock rightHandVisualPropertyBlock;
-        private int mainTexID;
-        private bool appHasFocus = true;
+        private Vector3 localPosition;
+        private Vector3 localRotation;
+
+        private Renderer visualRenderer;
+        private MaterialPropertyBlock visualPropertyBlock;
+        private int mainTexId;
 
         private float timeBeforeReturn;
 
         private void Awake()
         {
-            mainTexID = Shader.PropertyToID("_MainTex");
+            if (!Application.isEditor)
+            {
+                Destroy(gameObject);
+            }
 
-            LeftHandSourceState.Pressed = false;
-            LeftHandSourceState.Properties.Location = new DebugInteractionSourceLocation();
-            leftHandLocalPosition = LeftHandVisualizer.transform.position;
-            leftHandInitialPosition = leftHandLocalPosition;
-            LeftHandSourceState.Properties.Location.Position = leftHandLocalPosition;
-            leftHandVisualRenderer = LeftHandVisualizer.GetComponent<Renderer>();
-            leftHandVisualPropertyBlock = new MaterialPropertyBlock();
-            leftHandVisualRenderer.SetPropertyBlock(leftHandVisualPropertyBlock);
+            mainTexId = Shader.PropertyToID("_MainTex");
 
-            RightHandSourceState.Pressed = false;
-            RightHandSourceState.Properties.Location = new DebugInteractionSourceLocation();
-            rightHandLocalPosition = RightHandVisualizer.transform.position;
-            rightHandInitialPosition = rightHandLocalPosition;
-            RightHandSourceState.Properties.Location.Position = rightHandLocalPosition;
-            rightHandVisualRenderer = RightHandVisualizer.GetComponent<Renderer>();
-            rightHandVisualPropertyBlock = new MaterialPropertyBlock();
-            rightHandVisualRenderer.SetPropertyBlock(rightHandVisualPropertyBlock);
+            ControllerSourceState.Pressed = false;
+            ControllerSourceState.Grasped = false;
+            ControllerSourceState.MenuPressed = false;
+            ControllerSourceState.SelectPressed = false;
+            ControllerSourceState.SourcePose = new DebugInteractionSourcePose();
+            ControllerSourceState.SourcePose.IsPositionAvailable = false;
+            ControllerSourceState.SourcePose.IsRotationAvailable = false;
 
-#if !UNITY_EDITOR
-            VisualizeHands = false;
-            UpdateHandVisualization();
-            Destroy(this);
-#endif
+            localPosition = ControllerVisualizer.transform.position;
+            InitialPosition = localPosition;
+            ControllerSourceState.SourcePose.Position = localPosition;
+            ControllerSourceState.SourcePose.Rotation = ControllerVisualizer.transform.rotation;
+
+            visualRenderer = ControllerVisualizer.GetComponent<Renderer>();
+            visualPropertyBlock = new MaterialPropertyBlock();
+            visualRenderer.SetPropertyBlock(visualPropertyBlock);
         }
 
         private void Update()
         {
-            UpdateHandVisualization();
-            Transform cameraTransform = CameraCache.Main.transform;
-            float deltaTime = UseUnscaledTime
+            UpdateControllerVisualization();
+
+            var deltaTime = UseUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
 
-            float smoothingFactor = deltaTime * 30.0f * HandReturnFactor;
+            float smoothingFactor = deltaTime * 30.0f * ControllerReturnFactor;
+
             if (timeBeforeReturn > 0.0f)
             {
-                timeBeforeReturn = Mathf.Clamp(timeBeforeReturn - deltaTime, 0.0f, HandTimeBeforeReturn);
+                timeBeforeReturn = Mathf.Clamp(timeBeforeReturn - deltaTime, 0.0f, ControllerTimeBeforeReturn);
             }
 
-            LeftHandSourceState.Pressed = LeftFingerDownButtonControl.Pressed();
-            RightHandSourceState.Pressed = RightFingerDownButtonControl.Pressed();
+            ControllerSourceState.SelectPressed = SelectButtonControl.Pressed();
+            ControllerSourceState.Pressed = ControllerSourceState.SelectPressed;
 
-            if (LeftHandSourceState.Pressed || RightHandSourceState.Pressed)
+            if (MenuButtonControl)
             {
-                timeBeforeReturn = HandTimeBeforeReturn;
+                ControllerSourceState.MenuPressed = MenuButtonControl.Pressed();
+            }
+
+            if (GraspControl)
+            {
+                ControllerSourceState.Grasped = GraspControl.Pressed();
+            }
+
+            if (ControllerSourceState.Pressed)
+            {
+                timeBeforeReturn = ControllerTimeBeforeReturn;
             }
 
             if (timeBeforeReturn <= 0.0f)
             {
-                leftHandLocalPosition = Vector3.Slerp(leftHandLocalPosition, leftHandInitialPosition, smoothingFactor);
-                if (leftHandLocalPosition == leftHandInitialPosition)
+                localPosition = Vector3.Slerp(localPosition, InitialPosition, smoothingFactor);
+                if (localPosition == InitialPosition)
                 {
-                    LeftHandInView = false;
-                }
-                rightHandLocalPosition = Vector3.Slerp(rightHandLocalPosition, rightHandInitialPosition, smoothingFactor);
-                if (rightHandLocalPosition == rightHandInitialPosition)
-                {
-                    RightHandInView = false;
+                    ControllerInView = false;
                 }
             }
 
-            if (appHasFocus)
+            Vector3 translate = Vector3.zero;
+
+            if (PrimaryAxisTranslateControl && SecondaryAxisTranslateControl)
             {
-                Vector3 translate1 = LeftHandPrimaryAxisControl.GetDisplacementVector3();
-                Vector3 translate2 = LeftHandSecondaryAxisControl.GetDisplacementVector3();
-                Vector3 translate = translate1 + translate2;
+                translate = PrimaryAxisTranslateControl.GetDisplacementVector3() +
+                    SecondaryAxisTranslateControl.GetDisplacementVector3();
 
-                // If there is a mouse translate with a modifier key and it is held down, do not reset the hand position.
-                bool handTranslateActive =
-                    (LeftHandPrimaryAxisControl.axisType == AxisController.AxisType.Mouse && LeftHandPrimaryAxisControl.buttonType != ButtonController.ButtonType.None && LeftHandPrimaryAxisControl.ShouldControl()) ||
-                    (LeftHandSecondaryAxisControl.axisType == AxisController.AxisType.Mouse && LeftHandSecondaryAxisControl.buttonType != ButtonController.ButtonType.None && LeftHandSecondaryAxisControl.ShouldControl());
+                ControllerSourceState.SourcePose.IsPositionAvailable = true;
+            }
 
-                if (handTranslateActive || LeftHandSourceState.Pressed)
+            Vector3 rotate = Vector3.zero;
+
+            if (PrimaryAxisRotateControl && SecondaryAxisRotateControl && TertiaryAxisRotateControl)
+            {
+                rotate = PrimaryAxisRotateControl.GetDisplacementVector3() +
+                    SecondaryAxisRotateControl.GetDisplacementVector3() +
+                    TertiaryAxisRotateControl.GetDisplacementVector3();
+
+                if ((PrimaryAxisRotateControl.axisType != AxisController.AxisType.None && PrimaryAxisRotateControl.ShouldControl()) ||
+                    (SecondaryAxisRotateControl.axisType != AxisController.AxisType.None && SecondaryAxisRotateControl.ShouldControl()) ||
+                    (TertiaryAxisRotateControl.axisType != AxisController.AxisType.None && TertiaryAxisRotateControl.ShouldControl()))
                 {
-                    timeBeforeReturn = HandTimeBeforeReturn;
-                    LeftHandInView = true;
+                    ControllerSourceState.SourcePose.IsRotationAvailable = true;
+                    localRotation += rotate;
                 }
+            }
 
-                leftHandLocalPosition += translate;
-                LeftHandSourceState.Properties.Location.Position = cameraTransform.position + cameraTransform.TransformVector(leftHandLocalPosition);
+            // If there is a mouse translate with a modifier key and it is held down, do not reset the controller position.
+            bool controllerTranslateActive =
+                (PrimaryAxisTranslateControl.axisType == AxisController.AxisType.Mouse && PrimaryAxisTranslateControl.buttonType != ButtonController.ButtonType.None && PrimaryAxisTranslateControl.ShouldControl()) ||
+                (SecondaryAxisTranslateControl.axisType == AxisController.AxisType.Mouse && SecondaryAxisTranslateControl.buttonType != ButtonController.ButtonType.None && SecondaryAxisTranslateControl.ShouldControl());
 
-                LeftHandVisualizer.transform.position = LeftHandSourceState.Properties.Location.Position;
-                LeftHandVisualizer.transform.forward = cameraTransform.forward;
+            if (controllerTranslateActive ||
+                ControllerSourceState.SelectPressed ||
+                ControllerSourceState.MenuPressed ||
+                ControllerSourceState.Grasped ||
+                ControllerSourceState.SourcePose.IsRotationAvailable)
+            {
+                timeBeforeReturn = ControllerTimeBeforeReturn;
+                ControllerInView = true;
+            }
 
-                leftHandVisualPropertyBlock.SetTexture(mainTexID, LeftHandSourceState.Pressed ? HandDownTexture : HandUpTexture);
-                leftHandVisualRenderer.SetPropertyBlock(leftHandVisualPropertyBlock);
+            localPosition += translate;
+            ControllerSourceState.SourcePose.Position = CameraCache.Main.transform.position + CameraCache.Main.transform.TransformVector(localPosition);
 
-                LeftHandSourceState.Properties.Location.TryGetFunctionsReturnsTrue = LeftHandInView;
+            ControllerVisualizer.transform.position = ControllerSourceState.SourcePose.Position;
+            ControllerVisualizer.transform.forward = CameraCache.Main.transform.forward;
+
+            ControllerVisualizer.transform.Rotate(localRotation);
+
+            ControllerSourceState.SourcePose.Rotation = ControllerVisualizer.transform.rotation;
+
+            visualPropertyBlock.SetTexture(mainTexId, ControllerSourceState.Pressed ? HandDownTexture : HandUpTexture);
+            visualRenderer.SetPropertyBlock(visualPropertyBlock);
+
+            ControllerSourceState.SourcePose.TryGetFunctionsReturnTrue = ControllerInView;
+
+            if (ControllerInView && ControllerSourceState.SourcePose.IsRotationAvailable && ControllerSourceState.SourcePose.IsPositionAvailable)
+            {
+                // Draw ray
+                Vector3 up = ControllerVisualizer.transform.TransformDirection(Vector3.up);
+                ControllerSourceState.SourcePose.PointerRay = new Ray(ControllerVisualizer.transform.position, up);
+
+                Ray newRay;
+                if (ControllerSourceState.SourcePose.TryGetPointerRay(out newRay))
+                {
+                    if (ShowPointingRay && Physics.Raycast(newRay))
+                    {
+                        // TODO shanama: get pretty ray here, maybe an "active" ray and an "inactive" ray for when buttons are pressed
+                        Debug.DrawRay(newRay.origin, newRay.direction, Color.cyan);
+                    }
+                }
             }
             else
             {
-                LeftHandSourceState.Properties.Location.TryGetFunctionsReturnsTrue = false;
-            }
-
-            if (appHasFocus)
-            {
-                Vector3 translate1 = RightHandPrimaryAxisControl.GetDisplacementVector3();
-                Vector3 translate2 = RightHandSecondaryAxisControl.GetDisplacementVector3();
-                Vector3 translate = translate1 + translate2;
-
-
-                bool handTranslateActive =
-                    (RightHandPrimaryAxisControl.axisType == AxisController.AxisType.Mouse && RightHandPrimaryAxisControl.buttonType != ButtonController.ButtonType.None && RightHandPrimaryAxisControl.ShouldControl()) ||
-                    (RightHandSecondaryAxisControl.axisType == AxisController.AxisType.Mouse && RightHandSecondaryAxisControl.buttonType != ButtonController.ButtonType.None && RightHandSecondaryAxisControl.ShouldControl());
-
-                // If there is a mouse translate with a modifier key and it is held down, do not reset the hand position.
-                if (handTranslateActive || RightHandSourceState.Pressed)
-                {
-                    timeBeforeReturn = HandTimeBeforeReturn;
-                    RightHandInView = true;
-                }
-
-                rightHandLocalPosition += translate;
-                RightHandSourceState.Properties.Location.Position = cameraTransform.position + cameraTransform.TransformVector(rightHandLocalPosition);
-
-                RightHandVisualizer.transform.position = RightHandSourceState.Properties.Location.Position;
-                RightHandVisualizer.transform.forward = cameraTransform.forward;
-                rightHandVisualPropertyBlock.SetTexture(mainTexID, RightHandSourceState.Pressed ? HandDownTexture : HandUpTexture);
-                rightHandVisualRenderer.SetPropertyBlock(rightHandVisualPropertyBlock);
-
-                RightHandSourceState.Properties.Location.TryGetFunctionsReturnsTrue = RightHandInView;
-            }
-            else
-            {
-                RightHandSourceState.Properties.Location.TryGetFunctionsReturnsTrue = false;
+                ControllerSourceState.SourcePose.PointerRay = null;
             }
         }
 
-        private void UpdateHandVisualization()
+        private void UpdateControllerVisualization()
         {
-            leftHandVisualPropertyBlock.SetColor("_Color", LeftHandInView ? ActiveHandColor : DroppedHandColor);
-            rightHandVisualPropertyBlock.SetColor("_Color", RightHandInView ? ActiveHandColor : DroppedHandColor);
+             visualRenderer.material.SetColor("_Color", ControllerInView ? ActiveControllerColor : DroppedControllerColor);
 
-            if (LeftHandVisualizer.activeSelf != VisualizeHands)
+            if (ControllerVisualizer.activeSelf != VisualizeController)
             {
-                LeftHandVisualizer.SetActive(VisualizeHands);
-            }
-            if (RightHandVisualizer.activeSelf != VisualizeHands)
-            {
-                RightHandVisualizer.SetActive(VisualizeHands);
+                ControllerVisualizer.SetActive(VisualizeController);
             }
         }
     }
-
 }
-

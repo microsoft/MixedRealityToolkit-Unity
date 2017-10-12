@@ -6,15 +6,21 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Describes an input event that has a source id. 
+    /// Describes an input event that has a source id and a press kind. 
     /// </summary>
     public class InputEventData : BaseInputEventData
     {
+        /// <summary>
+        /// Button type that initiated the event.
+        /// </summary>
+        public InteractionSourcePressInfo PressType { get; private set; }
+
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, InteractionSourcePressInfo pressType)
         {
-            BaseInitialize(inputSource, sourceId);
+            BaseInitialize(inputSource, sourceId, tag);
+            PressType = pressType;
         }
     }
 }

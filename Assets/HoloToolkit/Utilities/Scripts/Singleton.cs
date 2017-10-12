@@ -16,7 +16,25 @@ namespace HoloToolkit.Unity
         {
             get
             {
+                if (instance == null)
+                {
+                    Debug.LogErrorFormat(
+                        "The {0} singleton instance is being accessed while it's null. Make sure it's included in"
+                            + " the scene, and your initialization/deinitialization sequence is compatible with"
+                            + " singletons.",
+                        typeof(T).Name
+                        );
+                }
+
                 return instance;
+            }
+        }
+
+        public static void AssertIsInitialized()
+        {
+            if (!IsInitialized)
+            {
+                Debug.LogAssertionFormat("The {0} singleton is required.", typeof(T).Name);
             }
         }
 
@@ -42,7 +60,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                instance = (T) this;
+                instance = (T)this;
             }
         }
 

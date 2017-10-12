@@ -1,22 +1,25 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class TestOverrideFocusedObject : MonoBehaviour, IInputClickHandler
     {
-        InputManager inputManager;
-        TextMesh textMesh;
+        private InputManager inputManager;
+        private TextMesh textMesh;
 
-        void Start()
+        private void Start()
         {
             inputManager = InputManager.Instance;
 
             if (inputManager != null)
             {
-                inputManager.OverrideFocusedObject = this.gameObject;
+                inputManager.OverrideFocusedObject = gameObject;
             }
 
-            textMesh = GameObject.FindObjectOfType<TextMesh>();
+            textMesh = FindObjectOfType<TextMesh>();
         }
 
         public void OnInputClicked(InputClickedEventData eventData)

@@ -52,9 +52,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public XboxControllerEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, XboxControllerData inputData)
+        public void Initialize(IInputSource inputSource, uint sourceId, XboxControllerData inputData, object tag = null)
         {
-            BaseInitialize(inputSource, sourceId);
+            BaseInitialize(inputSource, sourceId, tag);
 
             XboxLeftStickHorizontalAxis = inputData.XboxLeftStickHorizontalAxis;
             XboxLeftStickVerticalAxis = inputData.XboxLeftStickVerticalAxis;
