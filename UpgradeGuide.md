@@ -8,19 +8,20 @@ General releases will list breaking changes in their descriptions.
 
 ### What you'll need
 
-- Unity Editor 2017.2.0f3 MRTP or later
-- Running the Windows Insider Preview Build 1709
+- [Unity Editor 2017.2.0f3](https://unity3d.com/unity/whats-new/unity-2017.2.0) or later
+- Running the Windows Fall Creator's Update Build 1709 or later
 - Visual Studio 2017 build 15.3 or later
 - Window 10 SDK 10.0.16267.0 or later
 
 ### List of breaking changes
-- None to date.  See Unity's upgrade guide for Unity Specific changes.
+- None to date.  See [Unity's upgrade guide](https://docs.unity3d.com/Manual/UpgradeGuide20172.html) for Unity Specific changes.
 
 ## 2017.1 Upgrade Guide
 
 ### What you'll need
 
-- Unity Editor 2017.1.2f1 or later
+- [Unity Editor 2017.1.2f1](https://unity3d.com/unity/whats-new/unity-2017.1.2) or later
+- Window Build 1603 or later
 - Visual Studio 2015 or later
 - Windows 10 SDKs 10.0.10240.0 though 10.0.15063.0
 
