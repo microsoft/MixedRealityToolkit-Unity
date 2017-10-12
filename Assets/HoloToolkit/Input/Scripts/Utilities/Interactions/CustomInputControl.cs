@@ -1,125 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public enum ButtonChoices
-    {
-        Left,
-        Right,
-        Middle,
-        Control,
-        Shift,
-        Alt,
-        Focused,
-        None
-    }
-
-    /// <summary>
-    /// Since the InteractionSourceState is internal to UnityEngine.VR.WSA.Input,
-    /// this is a fake SourceState structure to keep the test code consistent.
-    /// </summary>
-    public struct DebugInteractionSourceState
-    {
-        public bool Pressed;
-        public bool Grasped;
-        public bool MenuPressed;
-        public bool SelectPressed;
-        public DebugInteractionSourcePose SourcePose;
-    }
-
-    /// <summary>
-    /// Since the InteractionSourcePose is internal to UnityEngine.VR.WSA.Input,
-    /// this is a fake InteractionSourcePose structure to keep the test code consistent.
-    /// </summary>
-    public class DebugInteractionSourcePose
-    {
-        /// <summary>
-        /// In the typical InteractionSourcePose, the hardware determines if
-        /// TryGetPosition and TryGetVelocity will return true or not. Here
-        /// we manually emulate this state with TryGetFunctionsReturnTrue.
-        /// </summary>
-        public bool TryGetFunctionsReturnTrue;
-        public bool IsPositionAvailable;
-        public bool IsRotationAvailable;
-
-        public Vector3 Position;
-        public Vector3 Velocity;
-        public Quaternion Rotation;
-        public Ray? PointerRay;
-
-        public void Awake()
-        {
-            TryGetFunctionsReturnTrue = false;
-            IsPositionAvailable = false;
-            IsRotationAvailable = false;
-            Position = new Vector3(0, 0, 0);
-            Velocity = new Vector3(0, 0, 0);
-            Rotation = Quaternion.identity;
-        }
-
-        public bool TryGetPosition(out Vector3 position)
-        {
-            position = Position;
-            if (!TryGetFunctionsReturnTrue)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool TryGetVelocity(out Vector3 velocity)
-        {
-            velocity = Velocity;
-            if (!TryGetFunctionsReturnTrue)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool TryGetRotation(out Quaternion rotation)
-        {
-            rotation = Rotation;
-            if (!TryGetFunctionsReturnTrue || !IsRotationAvailable)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool TryGetPointerRay(out Ray pointerRay)
-        {
-            pointerRay = (Ray)PointerRay;
-            if (PointerRay == null)
-            {
-                return false;
-            }
-            return true;
-        }
-    }
-
     /// <summary>
     /// Class for manually controlling inputs when running in the Unity editor.
     /// </summary>
-    public class EditorInputControl : MonoBehaviour
+    public class CustomInputControl : MonoBehaviour
     {
-        [Obsolete]
-        public DebugInteractionSourceState LeftHandSourceState;
-        [Obsolete]
-        public DebugInteractionSourceState RightHandSourceState;
-
-        [Obsolete]
-        public bool LeftHandInView;
-        [Obsolete]
-        public bool RightHandInView;
-
         public float ControllerReturnFactor = 0.25f;  /// [0.0,1.0] the closer this is to one the faster it brings the hand back to center
         public float ControllerTimeBeforeReturn = 0.5f;
-        public float MinimumTrackedMovement = 0.001f;
 
         [Tooltip("Use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         public bool UseUnscaledTime = true;
@@ -176,9 +68,11 @@ namespace HoloToolkit.Unity.InputModule
             ControllerSourceState.Grasped = false;
             ControllerSourceState.MenuPressed = false;
             ControllerSourceState.SelectPressed = false;
-            ControllerSourceState.SourcePose = new DebugInteractionSourcePose();
-            ControllerSourceState.SourcePose.IsPositionAvailable = false;
-            ControllerSourceState.SourcePose.IsRotationAvailable = false;
+            ControllerSourceState.SourcePose = new DebugInteractionSourcePose
+            {
+                IsPositionAvailable = false,
+                IsRotationAvailable = false
+            };
 
             localPosition = ControllerVisualizer.transform.position;
             InitialPosition = localPosition;
@@ -194,9 +88,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             UpdateControllerVisualization();
 
-            var deltaTime = UseUnscaledTime
-                ? Time.unscaledDeltaTime
-                : Time.deltaTime;
+            float deltaTime = UseUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
 
             float smoothingFactor = deltaTime * 30.0f * ControllerReturnFactor;
 
@@ -242,13 +134,11 @@ namespace HoloToolkit.Unity.InputModule
                 ControllerSourceState.SourcePose.IsPositionAvailable = true;
             }
 
-            Vector3 rotate = Vector3.zero;
-
             if (PrimaryAxisRotateControl && SecondaryAxisRotateControl && TertiaryAxisRotateControl)
             {
-                rotate = PrimaryAxisRotateControl.GetDisplacementVector3() +
-                    SecondaryAxisRotateControl.GetDisplacementVector3() +
-                    TertiaryAxisRotateControl.GetDisplacementVector3();
+                Vector3 rotate = PrimaryAxisRotateControl.GetDisplacementVector3() +
+                                 SecondaryAxisRotateControl.GetDisplacementVector3() +
+                                 TertiaryAxisRotateControl.GetDisplacementVector3();
 
                 if ((PrimaryAxisRotateControl.axisType != AxisController.AxisType.None && PrimaryAxisRotateControl.ShouldControl()) ||
                     (SecondaryAxisRotateControl.axisType != AxisController.AxisType.None && SecondaryAxisRotateControl.ShouldControl()) ||
@@ -261,8 +151,12 @@ namespace HoloToolkit.Unity.InputModule
 
             // If there is a mouse translate with a modifier key and it is held down, do not reset the controller position.
             bool controllerTranslateActive =
-                (PrimaryAxisTranslateControl.axisType == AxisController.AxisType.Mouse && PrimaryAxisTranslateControl.buttonType != ButtonController.ButtonType.None && PrimaryAxisTranslateControl.ShouldControl()) ||
-                (SecondaryAxisTranslateControl.axisType == AxisController.AxisType.Mouse && SecondaryAxisTranslateControl.buttonType != ButtonController.ButtonType.None && SecondaryAxisTranslateControl.ShouldControl());
+                (PrimaryAxisTranslateControl.axisType == AxisController.AxisType.Mouse &&
+                 PrimaryAxisTranslateControl.buttonType != ButtonController.ButtonType.None &&
+                 PrimaryAxisTranslateControl.ShouldControl()) ||
+                (SecondaryAxisTranslateControl.axisType == AxisController.AxisType.Mouse &&
+                 SecondaryAxisTranslateControl.buttonType != ButtonController.ButtonType.None &&
+                 SecondaryAxisTranslateControl.ShouldControl());
 
             if (controllerTranslateActive ||
                 ControllerSourceState.SelectPressed ||
@@ -313,7 +207,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdateControllerVisualization()
         {
-             visualRenderer.material.SetColor("_Color", ControllerInView ? ActiveControllerColor : DroppedControllerColor);
+            visualRenderer.material.SetColor("_Color", ControllerInView ? ActiveControllerColor : DroppedControllerColor);
 
             if (ControllerVisualizer.activeSelf != VisualizeController)
             {
