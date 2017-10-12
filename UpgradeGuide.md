@@ -32,3 +32,4 @@ General releases will list breaking changes in their descriptions.
 - Merged Test and Example folders
 - Removed `MicStream` scripts and libraries until they pass WACK
 - `GameObjects` that utilize the `WorldAnchorStore` need to have unique names.
+- `SetGlobalListeners` now registers/unregisters during OnEnable/OnDisable.
