@@ -3,10 +3,6 @@
 
 using UnityEngine;
 
-#if UNITY_WSA
-using UnityEngine.VR.WSA.Input;
-#endif
-
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -265,23 +261,27 @@ namespace HoloToolkit.Unity.InputModule
             controllerId = (uint)Random.value;
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
+            if (!Application.isEditor) { return; }
+
             UpdateControllerData();
             SendControllerVisibilityEvents();
         }
 
         private void OnEnable()
         {
+            if (!Application.isEditor) { return; }
+
             ConnectController();
         }
 
         private void OnDisable()
         {
+            if (!Application.isEditor) { return; }
+
             DisconnectController();
         }
-#endif
 
         private void ConnectController()
         {
@@ -338,16 +338,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="source">Input source to use to update the position.</param>
         private void UpdateControllerState(DebugInteractionSourceState source)
         {
-            float time;
-
-            if (manualController.UseUnscaledTime)
-            {
-                time = Time.unscaledTime;
-            }
-            else
-            {
-                time = Time.time;
-            }
+            float time = manualController.UseUnscaledTime ? Time.unscaledTime : Time.time;
 
             CurrentButtonStates.SelectButtonStateChanged = (CurrentButtonStates.IsSelectButtonDown != source.SelectPressed);
             CurrentButtonStates.IsSelectButtonDown = source.SelectPressed;
