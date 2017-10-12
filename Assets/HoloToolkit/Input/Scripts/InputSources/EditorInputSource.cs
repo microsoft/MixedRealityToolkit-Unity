@@ -407,13 +407,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER && UNITY_WSA
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Select
-#else
-                        InteractionSourcePressInfo.Select
-#endif
-                        );
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Select);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -433,21 +427,10 @@ namespace HoloToolkit.Unity.InputModule
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, controllerId,
-#if UNITY_2017_2_OR_NEWER && UNITY_WSA
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Select,
-#else
-                            InteractionSourcePressInfo.Select,
-#endif
-                            1);
+                        InputManager.Instance.RaiseInputClicked(this, controllerId, InteractionSourcePressInfo.Select, 1);
                     }
-                    InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER && UNITY_WSA
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Select
-#else
-                        InteractionSourcePressInfo.Select
-#endif
-                        );
+
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressInfo.Select);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -486,23 +469,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER && UNITY_WSA
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Menu
-#else
-                        InteractionSourcePressInfo.Menu
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Menu);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER && UNITY_WSA
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Menu
-#else
-                        InteractionSourcePressInfo.Menu
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressInfo.Menu);
                 }
             }
 
@@ -510,23 +481,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId,
-#if UNITY_2017_2_OR_NEWER && UNITY_WSA
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Grasp
-#else
-                        InteractionSourcePressInfo.Grasp
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Grasp);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId,
-#if UNITY_2017_2_OR_NEWER && UNITY_WSA
-                        (InteractionSourcePressInfo)InteractionSourcePressType.Grasp
-#else
-                        InteractionSourcePressInfo.Grasp
-#endif
-                    );
+                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressInfo.Grasp);
                 }
             }
         }
