@@ -8,42 +8,26 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: SpatialUnderstandingSurface
   m_Shader: {fileID: 4800000, guid: d33108619182be04d9d3a2c97b9c901b, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
   m_CustomRenderQueue: 2000
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: _Falloff_Dst
-      second: 3
-    - first:
-        name: _Falloff_Dst_Max
-      second: 8
-    - first:
-        name: _Falloff_Dst_Min
-      second: 2
-    - first:
-        name: _Falloff_Scale
-      second: 0.4
-    - first:
-        name: _WireThickness
-      second: 150
+    - _Falloff_Dst: 3
+    - _Falloff_Dst_Max: 8
+    - _Falloff_Dst_Min: 2
+    - _Falloff_Scale: 0.4
+    - _WireThickness: 150
     m_Colors:
-    - first:
-        name: _BaseColor
-      second: {r: 0.012867644, g: 0.102941155, b: 0.050421562, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _WireColor
-      second: {r: 0.4070135, g: 0.7352941, b: 0.31898788, a: 1}
+    - _BaseColor: {r: 0.012867644, g: 0.102941155, b: 0.050421562, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _WireColor: {r: 0.4070135, g: 0.7352941, b: 0.31898788, a: 1}
