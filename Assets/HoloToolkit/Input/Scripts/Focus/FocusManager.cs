@@ -252,13 +252,13 @@ namespace HoloToolkit.Unity.InputModule
 
             if (pointer.End.Object != null)
             {
-                GameObject deFocusedObject = pointer.End.Object;
+                GameObject unfocusedObject = pointer.End.Object;
 
                 bool objectIsStillFocusedByOtherPointer = false;
 
                 for (int iOther = 0; iOther < pointers.Count; iOther++)
                 {
-                    if (pointers[iOther].End.Object == deFocusedObject)
+                    if (pointers[iOther].End.Object == unfocusedObject)
                     {
                         objectIsStillFocusedByOtherPointer = true;
                         break;
@@ -267,10 +267,10 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
-                    RaiseFocusExitedEvents(deFocusedObject);
+                    RaiseFocusExitedEvents(unfocusedObject);
                 }
 
-                RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, deFocusedObject, null);
+                RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, unfocusedObject, null);
             }
         }
 
@@ -349,7 +349,7 @@ namespace HoloToolkit.Unity.InputModule
         public delegate void FocusEnteredMethod(GameObject focusedObject);
         public event FocusEnteredMethod FocusEntered;
 
-        public delegate void FocusExitedMethod(GameObject deFocusedObject);
+        public delegate void FocusExitedMethod(GameObject unfocusedObject);
         public event FocusExitedMethod FocusExited;
 
         public delegate void PointerSpecificFocusChangedMethod(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
@@ -606,13 +606,13 @@ namespace HoloToolkit.Unity.InputModule
             pendingPointerSpecificFocusChange.Clear();
         }
 
-        private void RaiseFocusExitedEvents(GameObject deFocusedObject)
+        private void RaiseFocusExitedEvents(GameObject unfocusedObject)
         {
-            InputManager.Instance.RaiseFocusExit(deFocusedObject);
-            //Debug.Log("Focus Exit: " + deFocusedObject.name);
+            InputManager.Instance.RaiseFocusExit(unfocusedObject);
+            //Debug.Log("Focus Exit: " + unfocusedObject.name);
             if (FocusExited != null)
             {
-                FocusExited(deFocusedObject);
+                FocusExited(unfocusedObject);
             }
         }
 
