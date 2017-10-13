@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Input source for fake input source information, which gives details about current source state and position.
     /// </summary>
-    [RequireComponent(typeof(EditorInputControl))]
+    [RequireComponent(typeof(CustomInputControl))]
     public class EditorInputSource : BaseInputSource
     {
         // TODO: add thumbstick, touchpad, and trigger axis support.
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private uint controllerId;
 
-        private EditorInputControl manualController;
+        private CustomInputControl manualController;
 
         private bool currentlyVisible;
         private bool visibilityChanged;
@@ -253,7 +253,7 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            manualController = GetComponent<EditorInputControl>();
+            manualController = GetComponent<CustomInputControl>();
 
             CurrentButtonStates = new ButtonStates();
             currentlyVisible = false;
