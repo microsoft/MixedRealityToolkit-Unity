@@ -25,33 +25,33 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Define new axes here adding a new InputManagerAxis to the array.
         /// </summary>
-        private InputManagerAxis[] newInputAxes =
+        private readonly InputManagerAxis[] newInputAxes =
         {
-            new InputManagerAxis() { name = "CONTROLLER_LEFT_STICK_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 1 },
-            new InputManagerAxis() { name = "CONTROLLER_LEFT_STICK_VERTICAL", dead = 0.19f, sensitivity = 1, invert = true, type = AxisType.JoystickAxis, axis = 2 },
-            new InputManagerAxis() { name = "CONTROLLER_LEFT_STICK_CLICK", positiveButton = "joystick button 8", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 4 },
-            new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_VERTICAL", dead = 0.19f, sensitivity = 1, invert = true, type = AxisType.JoystickAxis, axis = 5 },
-            new InputManagerAxis() { name = "CONTROLLER_RIGHT_STICK_CLICK", positiveButton = "joystick button 9", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "CONTROLLER_LEFT_MENU", positiveButton = "joystick button 6", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "CONTROLLER_RIGHT_MENU", positiveButton = "joystick button 7", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "CONTROLLER_LEFT_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 9 },
-            new InputManagerAxis() { name = "CONTROLLER_RIGHT_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 10 },
-            new InputManagerAxis() { name = "XBOX_SHARED_TRIGGER", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 3 },
-            new InputManagerAxis() { name = "XBOX_LEFT_BUMPER", positiveButton = "joystick button 4", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_RIGHT_BUMPER", positiveButton = "joystick button 5", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_A", positiveButton = "joystick button 0", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_B", positiveButton = "joystick button 1", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_X", positiveButton = "joystick button 2", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_Y", positiveButton = "joystick button 3", gravity = 1000, dead = 0.001f, sensitivity = 1000, type = AxisType.KeyOrMouseButton, axis = 1 },
-            new InputManagerAxis() { name = "XBOX_DPAD_HORIZONTAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 6 },
-            new InputManagerAxis() { name = "XBOX_DPAD_VERTICAL", dead = 0.19f, sensitivity = 1, type = AxisType.JoystickAxis, axis = 7 }
+            new InputManagerAxis() { Name = "CONTROLLER_LEFT_STICK_HORIZONTAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 1 },
+            new InputManagerAxis() { Name = "CONTROLLER_LEFT_STICK_VERTICAL", Dead = 0.19f, Sensitivity = 1, Invert = true, Type = AxisType.JoystickAxis, Axis = 2 },
+            new InputManagerAxis() { Name = "CONTROLLER_LEFT_STICK_CLICK", PositiveButton = "joystick button 8", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_STICK_HORIZONTAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 4 },
+            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_STICK_VERTICAL", Dead = 0.19f, Sensitivity = 1, Invert = true, Type = AxisType.JoystickAxis, Axis = 5 },
+            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_STICK_CLICK", PositiveButton = "joystick button 9", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "CONTROLLER_LEFT_MENU", PositiveButton = "joystick button 6", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_MENU", PositiveButton = "joystick button 7", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "CONTROLLER_LEFT_TRIGGER", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 9 },
+            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_TRIGGER", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 10 },
+            new InputManagerAxis() { Name = "XBOX_SHARED_TRIGGER", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 3 },
+            new InputManagerAxis() { Name = "XBOX_LEFT_BUMPER", PositiveButton = "joystick button 4", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "XBOX_RIGHT_BUMPER", PositiveButton = "joystick button 5", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "XBOX_A", PositiveButton = "joystick button 0", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "XBOX_B", PositiveButton = "joystick button 1", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "XBOX_X", PositiveButton = "joystick button 2", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "XBOX_Y", PositiveButton = "joystick button 3", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = "XBOX_DPAD_HORIZONTAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 6 },
+            new InputManagerAxis() { Name = "XBOX_DPAD_VERTICAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 7 }
         };
 
         /// <summary>
         /// Used to map AxisType from a useful name to the int value the InputManager wants.
         /// </summary>
-        public enum AxisType
+        private enum AxisType
         {
             KeyOrMouseButton,
             MouseMovement,
@@ -61,23 +61,23 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Used to define an entire InputManagerAxis, with each variable defined by the same term the Inspector shows.
         /// </summary>
-        public class InputManagerAxis
+        private class InputManagerAxis
         {
-            public string name;
-            public string descriptiveName;
-            public string descriptiveNegativeName;
-            public string negativeButton;
-            public string positiveButton;
-            public string altNegativeButton;
-            public string altPositiveButton;
-            public float gravity;
-            public float dead;
-            public float sensitivity;
-            public bool snap = false;
-            public bool invert = false;
-            public AxisType type;
-            public int axis;
-            public int joyNum;
+            public string Name;
+            public string DescriptiveName;
+            public string DescriptiveNegativeName;
+            public string NegativeButton;
+            public string PositiveButton;
+            public string AltNegativeButton;
+            public string AltPositiveButton;
+            public float Gravity;
+            public float Dead;
+            public float Sensitivity;
+            public bool Snap = false;
+            public bool Invert = false;
+            public AxisType Type;
+            public int Axis;
+            public int JoyNum;
         }
 
         protected override void Awake()
@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity
         {
             foreach (InputManagerAxis axis in newInputAxes)
             {
-                if (Values[axis.name] && !DoesAxisNameExist(axis.name))
+                if (Values[axis.Name] && !DoesAxisNameExist(axis.Name))
                 {
                     AddAxis(axis);
                 }
@@ -106,7 +106,7 @@ namespace HoloToolkit.Unity
 
         private void LoadSetting(InputManagerAxis axis)
         {
-            Values[axis.name] = DoesAxisNameExist(axis.name);
+            Values[axis.Name] = DoesAxisNameExist(axis.Name);
         }
 
         protected override void LoadSettings()
@@ -216,49 +216,49 @@ namespace HoloToolkit.Unity
                 switch (axisProperty.name)
                 {
                     case "m_Name":
-                        axisProperty.stringValue = axis.name;
+                        axisProperty.stringValue = axis.Name;
                         break;
                     case "descriptiveName":
-                        axisProperty.stringValue = axis.descriptiveName;
+                        axisProperty.stringValue = axis.DescriptiveName;
                         break;
                     case "descriptiveNegativeName":
-                        axisProperty.stringValue = axis.descriptiveNegativeName;
+                        axisProperty.stringValue = axis.DescriptiveNegativeName;
                         break;
                     case "negativeButton":
-                        axisProperty.stringValue = axis.negativeButton;
+                        axisProperty.stringValue = axis.NegativeButton;
                         break;
                     case "positiveButton":
-                        axisProperty.stringValue = axis.positiveButton;
+                        axisProperty.stringValue = axis.PositiveButton;
                         break;
                     case "altNegativeButton":
-                        axisProperty.stringValue = axis.altNegativeButton;
+                        axisProperty.stringValue = axis.AltNegativeButton;
                         break;
                     case "altPositiveButton":
-                        axisProperty.stringValue = axis.altPositiveButton;
+                        axisProperty.stringValue = axis.AltPositiveButton;
                         break;
                     case "gravity":
-                        axisProperty.floatValue = axis.gravity;
+                        axisProperty.floatValue = axis.Gravity;
                         break;
                     case "dead":
-                        axisProperty.floatValue = axis.dead;
+                        axisProperty.floatValue = axis.Dead;
                         break;
                     case "sensitivity":
-                        axisProperty.floatValue = axis.sensitivity;
+                        axisProperty.floatValue = axis.Sensitivity;
                         break;
                     case "snap":
-                        axisProperty.boolValue = axis.snap;
+                        axisProperty.boolValue = axis.Snap;
                         break;
                     case "invert":
-                        axisProperty.boolValue = axis.invert;
+                        axisProperty.boolValue = axis.Invert;
                         break;
                     case "type":
-                        axisProperty.intValue = (int)axis.type;
+                        axisProperty.intValue = (int)axis.Type;
                         break;
                     case "axis":
-                        axisProperty.intValue = axis.axis - 1;
+                        axisProperty.intValue = axis.Axis - 1;
                         break;
                     case "joyNum":
-                        axisProperty.intValue = axis.joyNum;
+                        axisProperty.intValue = axis.JoyNum;
                         break;
                 }
             }
