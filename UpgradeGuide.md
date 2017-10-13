@@ -8,7 +8,7 @@ General releases will list breaking changes in their descriptions.
 
 ### What you'll need
 
-- [Unity Editor 2017.2.0f3](https://unity3d.com/unity/whats-new/unity-2017.2.0) or later
+- [Unity Editor 2017.2.0f3 MRTP](http://beta.unity3d.com/download/edcd66fb22ae/download.html) or later
 - Running the Windows Fall Creator's Update Build 1709 or later
 - Visual Studio 2017 build 15.3 or later
 - Window 10 SDK 10.0.16267.0 or later
