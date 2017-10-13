@@ -83,7 +83,6 @@ namespace HoloToolkit.Unity
             else if (!IsInitialized && instance == null)
             {
                 instance = (T)this;
-                searchForInstance = true;
             }
         }
 
