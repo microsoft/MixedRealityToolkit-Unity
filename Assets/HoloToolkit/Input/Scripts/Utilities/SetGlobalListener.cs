@@ -18,16 +18,18 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnDisable()
         {
-            InputManager.AssertIsInitialized();
-
-            InputManager.Instance.RemoveGlobalListener(gameObject);
+            if (InputManager.IsInitialized)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
         }
 
         private void OnDestroy()
         {
-            InputManager.AssertIsInitialized();
-
-            InputManager.Instance.RemoveGlobalListener(gameObject);
+            if (InputManager.IsInitialized)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
         }
 
         private IEnumerator AddGlobalListener()
