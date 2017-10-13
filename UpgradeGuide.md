@@ -25,7 +25,7 @@ General releases will list breaking changes in their descriptions.
 - Visual Studio 2015 or later
 - Windows 10 SDKs 10.0.10240.0 though 10.0.15063.0
 
-### List of braking changes
+### List of breaking changes
 - `TryGetPosition` is now `TryGetPointerPosition`
 - `TryGetOrientation` is now `TryGetPointerRotation`
 - All other changes should throw `Obsolete` warnings with suggested updates.
