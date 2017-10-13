@@ -237,7 +237,7 @@ namespace HoloToolkit.Unity.InputModule
             pointers.Add(pointer);
         }
 
-        public void UnRegisterPointer(IPointingSource pointingSource)
+        public void UnregisterPointer(IPointingSource pointingSource)
         {
             Debug.Assert(pointingSource != null);
 
