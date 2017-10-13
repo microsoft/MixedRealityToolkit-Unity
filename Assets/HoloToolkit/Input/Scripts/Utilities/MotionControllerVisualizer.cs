@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("This material will be used on the loaded glTF controller model. This does not affect the above overrides.")]
         [SerializeField]
-        protected Material GLTFMaterial;
+        protected UnityEngine.Material GLTFMaterial;
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
@@ -76,6 +76,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 #endif
         }
@@ -133,7 +134,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnDestroy()
         {
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             Application.onBeforeRender -= Application_onBeforeRender;
 #endif
         }
@@ -190,12 +194,21 @@ namespace HoloToolkit.Unity.InputModule
         }
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
+        {
+            StartTrackingController(obj.state.source);
+        }
+
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
-            // We only want to attempt loading a model if this source is actually a controller.
-            if (obj.state.source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(obj.state.source.id))
+            StartTrackingController(obj.state.source);
+        }
+
+        private void StartTrackingController(InteractionSource source)
+        {
+            if (source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(source.id))
             {
-                StartCoroutine(LoadControllerModel(obj.state.source));
+                StartCoroutine(LoadControllerModel(source));
             }
         }
 
