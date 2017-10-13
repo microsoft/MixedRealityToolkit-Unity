@@ -27,7 +27,7 @@ namespace HoloToolkit.Sharing.Utilities
         {
             get
             {
-                if (SharingStage.Instance == null || SharingStage.Instance.SessionUsersTracker == null)
+                if (!SharingStage.IsInitialized || SharingStage.Instance.SessionUsersTracker == null)
                 {
                     return false;
                 }
