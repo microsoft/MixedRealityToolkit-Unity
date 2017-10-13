@@ -24,8 +24,9 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (instance == null)
+                if (instance == null && searchForInstance)
                 {
+                    searchForInstance = false;
                     T[] objects = FindObjectsOfType<T>();
                     if (objects.Length == 1)
                     {
@@ -39,6 +40,8 @@ namespace HoloToolkit.Unity
                 return instance;
             }
         }
+
+        private static bool searchForInstance = true;
 
         public static void AssertIsInitialized()
         {
@@ -71,6 +74,7 @@ namespace HoloToolkit.Unity
             else if (!IsInitialized && instance == null)
             {
                 instance = (T)this;
+                searchForInstance = true;
             }
         }
 
