@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -9,11 +11,12 @@ namespace HoloToolkit.Unity.InputModule
     /// Input source for fake input source information, which gives details about current source state and position.
     /// </summary>
     [RequireComponent(typeof(CustomInputControl))]
-    public class EditorInputSource : BaseInputSource
+    public class CustomInputSource : BaseInputSource
     {
         // TODO: add thumbstick, touchpad, and trigger axis support.
 
-        public class ButtonStates
+        [Serializable]
+        private class ButtonStates
         {
             public ButtonStates()
             {
@@ -59,7 +62,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public Ray? PointingRay;
 
-        public ButtonStates CurrentButtonStates;
+        [SerializeField]
+        private ButtonStates currentButtonStates;
 
         private uint controllerId;
 
@@ -223,7 +227,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (SupportsGrasp)
             {
-                isPressed = CurrentButtonStates.IsGrasped;
+                isPressed = currentButtonStates.IsGrasped;
                 return true;
             }
 
@@ -237,7 +241,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (SupportsMenuButton)
             {
-                isPressed = CurrentButtonStates.IsMenuButtonDown;
+                isPressed = currentButtonStates.IsMenuButtonDown;
                 return true;
             }
 
@@ -255,7 +259,7 @@ namespace HoloToolkit.Unity.InputModule
 
             manualController = GetComponent<CustomInputControl>();
 
-            CurrentButtonStates = new ButtonStates();
+            currentButtonStates = new ButtonStates();
             currentlyVisible = false;
             visibilityChanged = false;
             controllerId = (uint)Random.value;
@@ -334,24 +338,15 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="source">Input source to use to update the position.</param>
         private void UpdateControllerState(DebugInteractionSourceState source)
         {
-            float time;
+            float time = manualController.UseUnscaledTime ? Time.unscaledTime : Time.time;
 
-            if (manualController.UseUnscaledTime)
-            {
-                time = Time.unscaledTime;
-            }
-            else
-            {
-                time = Time.time;
-            }
+            currentButtonStates.SelectButtonStateChanged = (currentButtonStates.IsSelectButtonDown != source.SelectPressed);
+            currentButtonStates.IsSelectButtonDown = source.SelectPressed;
 
-            CurrentButtonStates.SelectButtonStateChanged = (CurrentButtonStates.IsSelectButtonDown != source.SelectPressed);
-            CurrentButtonStates.IsSelectButtonDown = source.SelectPressed;
-
-            if (CurrentButtonStates.SelectButtonStateChanged && source.SelectPressed)
+            if (currentButtonStates.SelectButtonStateChanged && source.SelectPressed)
             {
-                CurrentButtonStates.SelectDownStartTime = time;
-                CurrentButtonStates.CumulativeDelta = Vector3.zero;
+                currentButtonStates.SelectDownStartTime = time;
+                currentButtonStates.CumulativeDelta = Vector3.zero;
             }
 
             if (SupportsPosition)
@@ -359,7 +354,7 @@ namespace HoloToolkit.Unity.InputModule
                 Vector3 controllerPosition;
                 if (source.SourcePose.TryGetPosition(out controllerPosition))
                 {
-                    CurrentButtonStates.CumulativeDelta += controllerPosition - ControllerPosition;
+                    currentButtonStates.CumulativeDelta += controllerPosition - ControllerPosition;
                     ControllerPosition = controllerPosition;
                 }
             }
@@ -380,14 +375,14 @@ namespace HoloToolkit.Unity.InputModule
 
             if (SupportsMenuButton)
             {
-                CurrentButtonStates.MenuButtonStateChanged = (CurrentButtonStates.IsMenuButtonDown != source.MenuPressed);
-                CurrentButtonStates.IsMenuButtonDown = source.MenuPressed;
+                currentButtonStates.MenuButtonStateChanged = (currentButtonStates.IsMenuButtonDown != source.MenuPressed);
+                currentButtonStates.IsMenuButtonDown = source.MenuPressed;
             }
 
             if (SupportsGrasp)
             {
-                CurrentButtonStates.GraspStateChanged = (CurrentButtonStates.IsGrasped != source.Grasped);
-                CurrentButtonStates.IsGrasped = source.Grasped;
+                currentButtonStates.GraspStateChanged = (currentButtonStates.IsGrasped != source.Grasped);
+                currentButtonStates.IsGrasped = source.Grasped;
             }
 
             SendControllerStateEvents(time);
@@ -399,9 +394,9 @@ namespace HoloToolkit.Unity.InputModule
         private void SendControllerStateEvents(float time)
         {
             // TODO: Send other new input manager events relating to source updates.
-            if (CurrentButtonStates.SelectButtonStateChanged)
+            if (currentButtonStates.SelectButtonStateChanged)
             {
-                if (CurrentButtonStates.IsSelectButtonDown)
+                if (currentButtonStates.IsSelectButtonDown)
                 {
                     InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Select);
                 }
@@ -409,16 +404,16 @@ namespace HoloToolkit.Unity.InputModule
                 else
                 {
                     // A gesture is always either a click, a hold or a manipulation.
-                    if (CurrentButtonStates.ManipulationInProgress)
+                    if (currentButtonStates.ManipulationInProgress)
                     {
-                        InputManager.Instance.RaiseManipulationCompleted(this, controllerId, CurrentButtonStates.CumulativeDelta);
-                        CurrentButtonStates.ManipulationInProgress = false;
+                        InputManager.Instance.RaiseManipulationCompleted(this, controllerId, currentButtonStates.CumulativeDelta);
+                        currentButtonStates.ManipulationInProgress = false;
                     }
                     // Clicks and holds are based on time, and both are overruled by manipulations.
-                    else if (CurrentButtonStates.HoldInProgress)
+                    else if (currentButtonStates.HoldInProgress)
                     {
                         InputManager.Instance.RaiseHoldCompleted(this, controllerId);
-                        CurrentButtonStates.HoldInProgress = false;
+                        currentButtonStates.HoldInProgress = false;
                     }
                     else
                     {
@@ -430,39 +425,39 @@ namespace HoloToolkit.Unity.InputModule
             }
             // If the select state hasn't changed, but it's down, that means it might
             // trigger a hold or a manipulation (or a hold and then a manipulation).
-            else if (CurrentButtonStates.IsSelectButtonDown)
+            else if (currentButtonStates.IsSelectButtonDown)
             {
-                if (!CurrentButtonStates.ManipulationInProgress)
+                if (!currentButtonStates.ManipulationInProgress)
                 {
                     // Manipulations are triggered by the amount of movement since select was pressed down.
-                    if (CurrentButtonStates.CumulativeDelta.magnitude > manipulationStartMovementThreshold)
+                    if (currentButtonStates.CumulativeDelta.magnitude > manipulationStartMovementThreshold)
                     {
                         // Starting a manipulation will cancel an existing hold.
-                        if (CurrentButtonStates.HoldInProgress)
+                        if (currentButtonStates.HoldInProgress)
                         {
                             InputManager.Instance.RaiseHoldCanceled(this, controllerId);
-                            CurrentButtonStates.HoldInProgress = false;
+                            currentButtonStates.HoldInProgress = false;
                         }
 
                         InputManager.Instance.RaiseManipulationStarted(this, controllerId);
-                        CurrentButtonStates.ManipulationInProgress = true;
+                        currentButtonStates.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.
-                    else if (!CurrentButtonStates.HoldInProgress && (time - CurrentButtonStates.SelectDownStartTime >= MaxClickDuration))
+                    else if (!currentButtonStates.HoldInProgress && (time - currentButtonStates.SelectDownStartTime >= MaxClickDuration))
                     {
                         InputManager.Instance.RaiseHoldStarted(this, controllerId);
-                        CurrentButtonStates.HoldInProgress = true;
+                        currentButtonStates.HoldInProgress = true;
                     }
                 }
                 else
                 {
-                    InputManager.Instance.RaiseManipulationUpdated(this, controllerId, CurrentButtonStates.CumulativeDelta);
+                    InputManager.Instance.RaiseManipulationUpdated(this, controllerId, currentButtonStates.CumulativeDelta);
                 }
             }
 
-            if (CurrentButtonStates.MenuButtonStateChanged)
+            if (currentButtonStates.MenuButtonStateChanged)
             {
-                if (CurrentButtonStates.IsMenuButtonDown)
+                if (currentButtonStates.IsMenuButtonDown)
                 {
                     InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Menu);
                 }
@@ -472,9 +467,9 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            if (CurrentButtonStates.GraspStateChanged)
+            if (currentButtonStates.GraspStateChanged)
             {
-                if (CurrentButtonStates.IsGrasped)
+                if (currentButtonStates.IsGrasped)
                 {
                     InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Grasp);
                 }
