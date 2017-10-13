@@ -13,12 +13,12 @@ namespace HoloToolkit.Unity.InputModule
     {
         private void OnEnable()
         {
-            StartCoroutine(AddGlobalListener());
+            InputManager.Instance.AddGlobalListener(gameObject);
         }
 
         private void OnDisable()
         {
-            if (InputManager.IsInitialized)
+            if (InputManager.Instance != null)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
@@ -26,22 +26,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnDestroy()
         {
-            if (InputManager.IsInitialized)
+            if (InputManager.Instance != null)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
-        }
-
-        private IEnumerator AddGlobalListener()
-        {
-            while (!InputManager.IsInitialized)
-            {
-                yield return null;
-            }
-
-            InputManager.AssertIsInitialized();
-
-            InputManager.Instance.AddGlobalListener(gameObject);
         }
     }
 }
