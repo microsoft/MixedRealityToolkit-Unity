@@ -68,7 +68,7 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogErrorFormat("Trying to instantiate a second instance of singleton class {0}", GetType().Name);
             }
-            else
+            else if (!IsInitialized && instance == null)
             {
                 instance = (T)this;
             }
