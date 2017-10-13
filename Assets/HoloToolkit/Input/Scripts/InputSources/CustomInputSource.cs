@@ -14,7 +14,6 @@ namespace HoloToolkit.Unity.InputModule
     public class CustomInputSource : BaseInputSource
     {
         // TODO: add thumbstick, touchpad, and trigger axis support.
-
         [Serializable]
         private class ButtonStates
         {
@@ -85,7 +84,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            SupportedInputInfo supportedInputInfo = SupportedInputInfo.None;
+            var supportedInputInfo = SupportedInputInfo.None;
 
             if (SupportsPosition)
             {
@@ -265,23 +264,27 @@ namespace HoloToolkit.Unity.InputModule
             controllerId = (uint)Random.value;
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
+            if (!Application.isEditor) { return; }
+
             UpdateControllerData();
             SendControllerVisibilityEvents();
         }
 
         private void OnEnable()
         {
+            if (!Application.isEditor) { return; }
+
             ConnectController();
         }
 
         private void OnDisable()
         {
+            if (!Application.isEditor) { return; }
+
             DisconnectController();
         }
-#endif
 
         private void ConnectController()
         {
@@ -420,6 +423,7 @@ namespace HoloToolkit.Unity.InputModule
                         // We currently only support single taps in editor.
                         InputManager.Instance.RaiseInputClicked(this, controllerId, InteractionSourcePressInfo.Select, 1);
                     }
+
                     InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressInfo.Select);
                 }
             }
