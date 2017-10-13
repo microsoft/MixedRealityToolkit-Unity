@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4000013985985722}
   - component: {fileID: 114950568511066590}
   m_Layer: 0
-  m_Name: EditorControllerManager
+  m_Name: MouseInputControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -330,8 +330,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5805aa1626bf74eac450bb9c04b44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceType: 0
-  SourceNumber: 1
+  simulateHandsInEditor: 1
+  sourceType: 1
+  sourceNumber: 0
   Inputs: []
-  LeftHand: {fileID: 1747030157760962, guid: 0ff07ad2c7f9337489d2f7559b172d5d, type: 2}
-  RightHand: {fileID: 1198379067318554, guid: 6baba202b5cc7954193562351570ad62, type: 2}
+  mouse: {fileID: 1906025923057554, guid: 1c82f15755e170f4a8056a0b7f52cf0c, type: 2}
+  leftHand: {fileID: 1747030157760962, guid: 0ff07ad2c7f9337489d2f7559b172d5d, type: 2}
+  rightHand: {fileID: 1198379067318554, guid: 6baba202b5cc7954193562351570ad62, type: 2}
