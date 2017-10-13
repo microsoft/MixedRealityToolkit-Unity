@@ -69,7 +69,16 @@ namespace HoloToolkit.Unity
         {
             if (IsInitialized && instance != this)
             {
-                Debug.LogErrorFormat("Trying to instantiate a second instance of singleton class {0}", GetType().Name);
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(this);
+                }
+                else
+                {
+                    Destroy(this);
+                }
+
+                Debug.LogErrorFormat("Trying to instantiate a second instance of singleton class {0}. Additional Instance was destroyed", GetType().Name);
             }
             else if (!IsInitialized && instance == null)
             {
