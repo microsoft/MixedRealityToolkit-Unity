@@ -97,6 +97,7 @@ namespace HoloToolkit.Unity
             if (instance == this)
             {
                 instance = null;
+                searchForInstance = true;
             }
         }
     }
