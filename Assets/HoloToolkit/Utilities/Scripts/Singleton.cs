@@ -80,7 +80,7 @@ namespace HoloToolkit.Unity
 
                 Debug.LogErrorFormat("Trying to instantiate a second instance of singleton class {0}. Additional Instance was destroyed", GetType().Name);
             }
-            else if (!IsInitialized && instance == null)
+            else if (!IsInitialized)
             {
                 instance = (T)this;
             }
