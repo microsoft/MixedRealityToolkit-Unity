@@ -94,7 +94,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1498836839153776
 GameObject:
   m_ObjectHideFlags: 1
@@ -666,7 +666,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
-  boundaryHeight: 10
 --- !u!114 &114225625019075894
 MonoBehaviour:
   m_ObjectHideFlags: 1

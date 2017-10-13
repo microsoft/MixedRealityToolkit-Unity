@@ -41,5 +41,17 @@ namespace HoloToolkit.Unity.InputModule
 
             InputManager.Instance.AddGlobalListener(gameObject);
         }
+
+        private IEnumerator AddGlobalListener()
+        {
+            while (!InputManager.IsInitialized)
+            {
+                yield return null;
+            }
+
+            InputManager.AssertIsInitialized();
+
+            InputManager.Instance.AddGlobalListener(gameObject);
+        }
     }
 }

@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 114451707737075006}
   - component: {fileID: 114675328158226630}
   m_Layer: 0
-  m_Name: EditorHandLeft
+  m_Name: LeftHandInputControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ControllerReturnFactor: 0.25
   ControllerTimeBeforeReturn: 0.5
-  MinimumTrackedMovement: 0.001
+  UseUnscaledTime: 1
   PrimaryAxisTranslateControl: {fileID: 114419182377652254}
   SecondaryAxisTranslateControl: {fileID: 114606571351548446}
   PrimaryAxisRotateControl: {fileID: 0}
@@ -289,7 +289,6 @@ MonoBehaviour:
   DroppedControllerColor: {r: 0.39705884, g: 0.3999784, b: 0.3999784, a: 0.4}
   VisualizeController: 1
   ControllerVisualizer: {fileID: 1230265507304776}
-  IsHand: 0
   HandUpTexture: {fileID: 2800000, guid: 778e02a60d620bb419088e692a3584d3, type: 3}
   HandDownTexture: {fileID: 2800000, guid: d84aac8e3bc8fe344b50dab1e7382ad7, type: 3}
   ShowPointingRay: 0
@@ -326,14 +325,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SupportsPosition: 1
-  SupportsOrientation: 0
-  SupportsPointing: 0
+  SupportsRotation: 0
+  SupportsRay: 0
   SupportsMenuButton: 0
   SupportsGrasp: 0
   RaiseEventsBasedOnVisibility: 1
-  sourceKind: 1
+  SourceKind: 0
   ControllerPosition: {x: 0, y: 0, z: 0}
-  ControllerOrientation: {x: 0, y: 0, z: 0, w: 0}
+  ControllerRotation: {x: 0, y: 0, z: 0, w: 0}
+  currentButtonStates:
+    IsSelectButtonDown: 0
+    SelectButtonStateChanged: 0
+    SelectDownStartTime: 0
+    IsMenuButtonDown: 0
+    MenuButtonStateChanged: 0
+    IsGrasped: 0
+    GraspStateChanged: 0
+    ManipulationInProgress: 0
+    HoldInProgress: 0
+    CumulativeDelta: {x: 0, y: 0, z: 0}
+  manipulationStartMovementThreshold: 0.03
 --- !u!114 &114832010102587794
 MonoBehaviour:
   m_ObjectHideFlags: 1

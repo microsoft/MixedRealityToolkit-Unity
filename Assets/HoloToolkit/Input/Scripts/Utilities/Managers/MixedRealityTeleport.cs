@@ -230,7 +230,7 @@ namespace HoloToolkit.Unity.InputModule
                     0.25f, // Fade in time
                     () => // Action after fade out
                     {
-                        transform.RotateAround(Camera.main.transform.position, Vector3.up, rotationAmount);
+                        transform.RotateAround(CameraCache.Main.transform.position, Vector3.up, rotationAmount);
                     }, null); // Action after fade in
             }
         }
@@ -244,9 +244,9 @@ namespace HoloToolkit.Unity.InputModule
                     0.25f, // Fade in time
                     () => // Action after fade out
                     {
-                        Transform transformToRotate = Camera.main.transform;
+                        Transform transformToRotate = CameraCache.Main.transform;
                         transformToRotate.rotation = Quaternion.Euler(0, transformToRotate.rotation.eulerAngles.y, 0);
-                        transform.Translate(strafeAmount, Camera.main.transform);
+                        transform.Translate(strafeAmount, CameraCache.Main.transform);
                     }, null); // Action after fade in
             }
         }
@@ -261,7 +261,7 @@ namespace HoloToolkit.Unity.InputModule
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
             // we need to set it relative to the user's head in the scene so they are looking/standing where 
             // we expect.
-            transform.position = worldPosition - (Camera.main.transform.position - transform.position);
+            transform.position = worldPosition - (CameraCache.Main.transform.position - transform.position);
         }
 
         private void EnableMarker()

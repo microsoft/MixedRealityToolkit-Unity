@@ -1,21 +1,31 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
+    public enum SelectionType
+    {
+        single,
+        multiple
+    }
+
     /// <summary>
     /// A controller for managing multiple radial or tab type buttons
     /// </summary>
-    public class InteractiveRadialSet : MonoBehaviour
+    public class InteractiveSet : MonoBehaviour
     {
+        [Tooltip("Allow single or multiple selection")]
+        public SelectionType Type = SelectionType.single;
+
         [Tooltip("Interactives that will be managed by this controller")]
         public InteractiveToggle[] Interactives;
 
-        [Tooltip("Currently selected index or default starting index")]
-        public int SelectedIndex = 0;
+        [Tooltip("Currently selected indeices or default starting indices")]
+        public List<int> SelectedIndices = new List<int>() { 0 };
 
         [Tooltip("exposed selection changed event")]
         public UnityEvent OnSelectionEvents;
@@ -29,10 +39,14 @@ namespace HoloToolkit.Examples.InteractiveElements
                 int itemIndex = i;
                 // add selection event handler to each button
                 Interactives[i].OnSelectEvents.AddListener(() => HandleOnSelection(itemIndex));
-                Interactives[i].AllowDeselect = false;
+                if (Type == SelectionType.single)
+                {
+                    Interactives[i].AllowDeselect = false;
+                }
+                Interactives[i].HasSelection = SelectedIndices.Contains(i);
             }
+            OnSelectionEvents.Invoke();
 
-            HandleOnSelection(SelectedIndex);
         }
 
         /// <summary>
@@ -56,22 +70,37 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <param name="index"></param>
         private void HandleOnSelection(int index)
         {
-            for (int i = 0; i < Interactives.Length; ++i)
+            if (Type == SelectionType.single)
             {
-                if (i != index)
+                for (int i = 0; i < Interactives.Length; ++i)
                 {
-                    Interactives[i].HasSelection = false;
+                    if (i != index)
+                    {
+                        Interactives[i].HasSelection = false;
+                    }
+                }
+
+                if (!mHasInit)
+                {
+                    Interactives[index].HasSelection = true;
+                    mHasInit = true;
+                }
+
+                SelectedIndices.Clear();
+                SelectedIndices.Add(index);
+            }
+            else
+            {
+                Interactives[index].HasSelection = !Interactives[index].HasSelection;
+                if (SelectedIndices.Contains(index))
+                {
+                    SelectedIndices.Remove(index);
+                }
+                else
+                {
+                    SelectedIndices.Add(index);
                 }
             }
-
-            if (!mHasInit)
-            {
-                Interactives[index].HasSelection = true;
-                mHasInit = true;
-            }
-
-            SelectedIndex = index;
-
             OnSelectionEvents.Invoke();
         }
 
