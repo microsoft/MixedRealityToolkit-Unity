@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Singleton behaviour class, used for components that should only have one instance
     /// </summary>
-    /// <typeparam name="T">The </typeparam>
+    /// <typeparam name="T">The Singleton Type</typeparam>
     public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         private static T instance;
