@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VR;
+using UnityEngine.XR;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-            bool spawnControllers = !VRDevice.isPresent;
+            bool spawnControllers = !XRDevice.isPresent;
 
             if (spawnControllers && Application.isEditor && simulateHandsInEditor)
             {

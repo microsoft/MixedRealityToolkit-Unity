@@ -61,7 +61,9 @@ namespace HoloToolkit.Unity.InputModule
             if (!Application.isEditor)
             {
 #if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
             if (!HolographicSettings.IsDisplayOpaque)
+#endif
                 {
                     CurrentDisplayType = DisplayType.Transparent;
                     ApplySettingsForTransparentDisplay();

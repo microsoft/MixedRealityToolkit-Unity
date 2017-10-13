@@ -52,8 +52,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return new AxisButton2D
                 {
+#if UNITY_2017_2_OR_NEWER
                     Pressed = interactionSource.thumbstickPressed,
                     Position = interactionSource.thumbstickPosition,
+#else
+                    Pressed = false,
+                    Position = default(Vector2)
+#endif
                 };
             }
 
@@ -61,8 +66,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return new AxisButton2D
                 {
+#if UNITY_2017_2_OR_NEWER
                     Pressed = interactionSource.touchpadPressed,
                     Position = interactionSource.touchpadPosition,
+#else
+                    Pressed = false,
+                    Position = default(Vector2)
+#endif
                 };
             }
         }
@@ -77,7 +87,11 @@ namespace HoloToolkit.Unity.InputModule
                 return new TouchpadData
                 {
                     AxisButton = AxisButton2D.GetTouchpad(interactionSource),
+#if UNITY_2017_2_OR_NEWER
                     Touched = interactionSource.touchpadTouched,
+#else
+                    Touched = false,
+#endif
                 };
             }
         }
@@ -91,8 +105,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return new AxisButton1D
                 {
+#if UNITY_2017_2_OR_NEWER
                     Pressed = interactionSource.selectPressed,
                     PressedAmount = interactionSource.selectPressedAmount,
+#else
+                    Pressed = false,
+                    PressedAmount = 0f
+#endif
                 };
             }
         }
@@ -598,13 +617,23 @@ namespace HoloToolkit.Unity.InputModule
             Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
             Debug.Assert(interactionSourceState.source.kind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
 
-            Vector3 newPointerPosition;
-            sourceData.PointerPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
+            Vector3 newPointerPosition = Vector3.zero;
+            sourceData.PointerPosition.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.PointerPosition.IsSupported |= sourceData.PointerPosition.IsAvailable;
 
-            Vector3 newGripPosition;
-            sourceData.GripPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newGripPosition, InteractionSourceNode.Grip);
+            Vector3 newGripPosition = Vector3.zero;
+            sourceData.GripPosition.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetPosition(out newGripPosition, InteractionSourceNode.Grip);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripPosition.IsSupported |= sourceData.GripPosition.IsAvailable;
 
@@ -621,13 +650,23 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.PointerPosition.CurrentReading = newPointerPosition;
             sourceData.GripPosition.CurrentReading = newGripPosition;
 
-            Quaternion newPointerRotation;
-            sourceData.PointerRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newPointerRotation, InteractionSourceNode.Pointer);
+            Quaternion newPointerRotation = Quaternion.identity;
+            sourceData.PointerRotation.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetRotation(out newPointerRotation, InteractionSourceNode.Pointer);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.PointerRotation.IsSupported |= sourceData.PointerRotation.IsAvailable;
 
-            Quaternion newGripRotation;
-            sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
+            Quaternion newGripRotation = Quaternion.identity;
+            sourceData.GripRotation.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
 
@@ -645,8 +684,18 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.GripRotation.CurrentReading = newGripRotation;
 
             Vector3 pointerForward = Vector3.zero;
-            sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
-            sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+            sourceData.PointingRay.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsPointing;
+#else
+                false;
+#endif
+            sourceData.PointingRay.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+#else
+                false;
+#endif
 
             if (CameraCache.Main.transform.parent != null)
             {
@@ -655,7 +704,12 @@ namespace HoloToolkit.Unity.InputModule
 
             sourceData.PointingRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
 
-            sourceData.Thumbstick.IsSupported = interactionSourceState.source.supportsThumbstick;
+            sourceData.Thumbstick.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsThumbstick;
+#else
+                false;
+#endif
             sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
             if (sourceData.Thumbstick.IsAvailable)
             {
@@ -668,7 +722,12 @@ namespace HoloToolkit.Unity.InputModule
                 sourceData.Thumbstick.CurrentReading = default(AxisButton2D);
             }
 
-            sourceData.Touchpad.IsSupported = interactionSourceState.source.supportsTouchpad;
+            sourceData.Touchpad.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsTouchpad;
+#else
+                false;
+#endif
             sourceData.Touchpad.IsAvailable = sourceData.Touchpad.IsSupported;
             if (sourceData.Touchpad.IsAvailable)
             {
@@ -688,13 +747,33 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.SelectPressedAmountUpdated = !sourceData.Select.CurrentReading.PressedAmount.Equals(newSelect.PressedAmount);
             sourceData.Select.CurrentReading = newSelect;
 
-            sourceData.Grasp.IsSupported = interactionSourceState.source.supportsGrasp;
+            sourceData.Grasp.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsGrasp;
+#else
+                false;
+#endif
             sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
-            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable && interactionSourceState.grasped);
+            sourceData.Grasp.CurrentReading =
+#if UNITY_2017_2_OR_NEWER
+                (sourceData.Grasp.IsAvailable && interactionSourceState.grasped);
+#else
+                false;
+#endif
 
-            sourceData.Menu.IsSupported = interactionSourceState.source.supportsMenu;
+            sourceData.Menu.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsMenu;
+#else
+                false;
+#endif
             sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
-            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable && interactionSourceState.menuPressed);
+            sourceData.Menu.CurrentReading =
+#if UNITY_2017_2_OR_NEWER
+                (sourceData.Menu.IsAvailable && interactionSourceState.menuPressed);
+#else
+                false;
+#endif
         }
 
         #region InteractionManager Events
