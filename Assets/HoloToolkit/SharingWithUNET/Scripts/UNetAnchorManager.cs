@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using UnityEngine.Networking;
-
 #if UNITY_WSA
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
 using UnityEngine.XR.WSA.Sharing;
 #else
+using UnityEngine.VR;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.VR.WSA.Sharing;
@@ -190,7 +190,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 networkTransmitter.DataReadyEvent += NetworkTransmitter_DataReadyEvent;
             }
 #else
-            if (Application.isEditor)
+            if (VRDevice.isPresent)
             {
                 AnchorEstablished = true;
             }
@@ -213,6 +213,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque)
+            {
+                return;
+            }
+#else
+            if (!VRDevice.isPresent)
             {
                 return;
             }

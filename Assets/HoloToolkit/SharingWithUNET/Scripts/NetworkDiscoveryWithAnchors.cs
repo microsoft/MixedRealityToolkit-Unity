@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-#if WINDOWS_UWP
+#if !UNITY_EDITOR
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 #endif
@@ -124,7 +124,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         private void Awake()
         {
-#if WINDOWS_UWP
+#if !UNITY_EDITOR
             // Find our local IP
             foreach (HostName hostName in NetworkInformation.GetHostNames())
             {
@@ -166,7 +166,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <returns></returns>
         private string GetLocalComputerName()
         {
-#if WINDOWS_UWP
+#if !UNITY_EDITOR
             foreach (HostName hostName in NetworkInformation.GetHostNames())
             {
                 if (hostName.Type == HostNameType.DomainName)
@@ -194,7 +194,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private IEnumerator InitAsServer()
         {
             Debug.Log("Acting as host");
-#if WINDOWS_UWP
+#if !UNITY_EDITOR
             NetworkManager.singleton.serverBindToIP = true;
             NetworkManager.singleton.serverBindAddress = LocalIp;
 #endif
@@ -294,7 +294,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         {
             StopListening();
 
-#if WINDOWS_UWP
+#if !UNITY_EDITOR
             NetworkManager.singleton.serverBindToIP = true;
             NetworkManager.singleton.serverBindAddress = LocalIp;
 #endif

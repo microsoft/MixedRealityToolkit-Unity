@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
-using HoloToolkit.Unity.InputModule;
+﻿using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity.SpatialMapping;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
-        private bool Moving = false;
+        private bool Moving;
         private int layerMask;
         private InputManager inputManager;
         public Vector3 movementOffset = Vector3.zero;
@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #if UNITY_2017_2_OR_NEWER
             isOpaque = UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
 #else
-            isOpaque = Application.isEditor;
+            isOpaque = !UnityEngine.VR.VRDevice.isPresent;
 #endif
 #endif
             transform.SetParent(SharedCollection.Instance.transform, true);
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 localRotation = transform.localRotation;
             }
 
-            layerMask = HoloToolkit.Unity.SpatialMapping.SpatialMappingManager.Instance.LayerMask;
+            layerMask = SpatialMappingManager.Instance.LayerMask;
             inputManager = InputManager.Instance;
 
         }
@@ -123,7 +123,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                     localRotation = transform.localRotation;
                     if (PlayerController.Instance != null)
                     {
-                        PlayerController.Instance.SendSharedTransform(this.gameObject, localPosition, localRotation);
+                        PlayerController.Instance.SendSharedTransform(gameObject, localPosition, localRotation);
                     }
                 }
 

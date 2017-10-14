@@ -282,7 +282,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #if UNITY_2017_2_OR_NEWER
                 CanShareAnchors = !UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
 #else
-                CanShareAnchors = !Application.isEditor;
+                CanShareAnchors = !Application.isEditor && UnityEngine.VR.VRDevice.isPresent;
 #endif
 #endif
                 Debug.LogFormat("local player {0} share anchors ", (CanShareAnchors ? "does not" : "does"));
