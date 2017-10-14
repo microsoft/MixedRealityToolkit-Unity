@@ -13,6 +13,7 @@ WindowsStoreApp/
 UnityGenerated/
 project.json
 project.lock.json
+ProjectSettings/ProjectVersion.txt
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
