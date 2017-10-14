@@ -3,8 +3,8 @@ This is a development branch for Windows Mixed Reality immersive headset support
 
 **IMPORTANT** You will also need a recent [Windows Insider SDK Preview](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK) installed, or you will not be able to build this branch. 
 
-[unity-download]:                 http://beta.unity3d.com/download/b9a6355603bd/download.html
-[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f2%20MRTP-green.svg
+[unity-download]:                 http://beta.unity3d.com/download/edcd66fb22ae/download.html
+[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f3%20MRTP-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 ## New Features!
@@ -54,7 +54,7 @@ Please feel free to grow all these sections. We can't wait to see your additions
 4. Development PC needs to be on a recent Windows Insider SDK and a Windows Insider build as below.
     1. Launch Settings > Updates and Security > Windows Insider Program > Get Insider Preview builds 
     2. Install the SDK found [here](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK).
-5. Unity beta 2017.2.0 with Mixed Reality API support. This build of Unity can be found [here](https://unity3d.com/unity/beta).
+5. Unity 2017.2.0f3 MRTP with Mixed Reality API support. This build of Unity can be found [here](http://beta.unity3d.com/download/edcd66fb22ae/download.html).
     1. Please read more about [Immersive headset details](https://developer.microsoft.com/en-us/windows/mixed-reality/immersive_headset_details).
 6. [Visual Studio 2017](https://www.visualstudio.com/downloads/).
 

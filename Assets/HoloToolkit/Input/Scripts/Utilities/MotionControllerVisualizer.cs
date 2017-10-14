@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using System.Collections;
 using UnityEngine.XR.WSA.Input;
 #if !UNITY_EDITOR
@@ -41,15 +41,13 @@ namespace HoloToolkit.Unity.InputModule
         protected UnityEngine.Material GLTFMaterial;
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
-        private Dictionary<uint, MotionControllerInfo> controllerDictionary;
+        private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
 
         private void Start()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             Application.onBeforeRender += Application_onBeforeRender;
 
-            controllerDictionary = new Dictionary<uint, MotionControllerInfo>();
-
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (!Application.isEditor)
             {
                 if (GLTFMaterial == null)
@@ -135,7 +133,9 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnDestroy()
         {
+#if UNITY_2017_2_OR_NEWER
             Application.onBeforeRender -= Application_onBeforeRender;
+#endif
         }
 
         private void Application_onBeforeRender()

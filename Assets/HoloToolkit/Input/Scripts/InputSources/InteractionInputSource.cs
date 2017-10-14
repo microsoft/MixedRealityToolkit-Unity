@@ -176,7 +176,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
 #if UNITY_WSA
             GestureRecognizer = new GestureRecognizer();
