@@ -50,7 +50,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private void Start()
         {
 #if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
             isOpaque = UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
+#else
+            isOpaque = Application.isEditor;
+#endif
 #endif
             transform.SetParent(SharedCollection.Instance.transform, true);
             if (isServer)

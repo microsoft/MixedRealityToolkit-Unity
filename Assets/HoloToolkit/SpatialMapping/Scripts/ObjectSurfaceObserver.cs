@@ -15,7 +15,11 @@ namespace HoloToolkit.Unity.SpatialMapping
 
         private void Start()
         {
-            if (!UnityEngine.XR.XRDevice.isPresent && Application.isEditor)
+            if (
+#if UNITY_2017_2_OR_NEWER
+                !UnityEngine.XR.XRDevice.isPresent && 
+#endif
+                Application.isEditor)
             {
                 // When in the Unity editor and not remoting, try loading saved meshes from a model.
                 Load(RoomModel);

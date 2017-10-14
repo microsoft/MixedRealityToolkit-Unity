@@ -279,7 +279,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 CmdSetPlayerName(networkDiscovery.broadcastData);
                 CmdSetPlayerIp(networkDiscovery.LocalIp);
 #if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
                 CanShareAnchors = !UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
+#else
+                CanShareAnchors = !Application.isEditor;
+#endif
 #endif
                 Debug.LogFormat("local player {0} share anchors ", (CanShareAnchors ? "does not" : "does"));
                 CmdSetCanShareAnchors(CanShareAnchors);

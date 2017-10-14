@@ -8,9 +8,15 @@ using UnityEngine.Networking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
 using UnityEngine.XR.WSA.Sharing;
+#else
+using UnityEngine.VR.WSA;
+using UnityEngine.VR.WSA.Persistence;
+using UnityEngine.VR.WSA.Sharing;
+#endif
 using HoloToolkit.Unity.SpatialMapping;
 #endif
 
@@ -173,7 +179,8 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 return;
             }
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+
             if (HolographicSettings.IsDisplayOpaque)
             {
                 AnchorEstablished = true;
@@ -183,7 +190,14 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 networkTransmitter.DataReadyEvent += NetworkTransmitter_DataReadyEvent;
             }
 #else
-            AnchorEstablished = true;
+            if (Application.isEditor)
+            {
+                AnchorEstablished = true;
+            }
+            else
+            {
+                networkTransmitter.DataReadyEvent += NetworkTransmitter_DataReadyEvent;
+            }
 #endif
 
             // If we have a debug panel, then we have debug data for the panel. 
@@ -197,10 +211,12 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private void Update()
         {
 #if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque)
             {
                 return;
             }
+#endif
 
             if (gotOne)
             {
