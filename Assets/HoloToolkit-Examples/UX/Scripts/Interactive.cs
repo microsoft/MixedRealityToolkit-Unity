@@ -243,6 +243,25 @@ namespace HoloToolkit.Examples.InteractiveElements
         }
 
         /// <summary>
+        /// shortcut to set title
+        /// (assuming this Interactive has a LabelTheme and a TextMesh attached to it)
+        /// </summary>
+        /// <param name="title"></param>
+        public void SetTitle(string title)
+        {
+            LabelTheme lblTheme = gameObject.GetComponent<LabelTheme>();
+            if (lblTheme != null)
+            {
+                lblTheme.Default = title;
+            }
+            TextMesh textMesh = gameObject.GetComponentInChildren<TextMesh>();
+            if (textMesh != null)
+            {
+                textMesh.text = title;
+            }
+        }
+
+        /// <summary>
         /// The user is initiating a tap or hold
         /// </summary>
         public virtual void OnInputDown(InputEventData eventData)

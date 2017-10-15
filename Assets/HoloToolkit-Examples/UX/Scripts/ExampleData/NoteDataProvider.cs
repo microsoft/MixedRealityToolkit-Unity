@@ -50,5 +50,21 @@ namespace HoloToolkit.Examples.InteractiveElements
             TargetGroup.Titles = Data[title];
             TargetGroup.UpdateData();
         }
+
+        /// <summary>
+        /// the user tapped the send button. If something is selected it will be logged.
+        /// </summary>
+        public void SendNote()
+        {
+            List<int> selected = TargetGroup.GetInteractiveSet().SelectedIndices;
+            foreach (int index in selected)
+            {
+                Debug.Log("Send new note: " + TargetGroup.Titles[index]);
+            }
+            if (selected.Count == 0)
+            {
+                Debug.Log("Please select a note.");
+            }
+        }
     }
 }
