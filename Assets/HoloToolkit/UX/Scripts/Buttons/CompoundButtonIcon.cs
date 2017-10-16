@@ -54,6 +54,8 @@ namespace HoloToolkit.Unity.Buttons
         private bool updatingAlpha = false;
         private float alphaTarget = 1f;
 
+        private const float AlphaThreshold = 0.01f;
+
         /// <summary>
         /// Property to use in IconMaterial for alpha control
         /// Useful for animating icon transparency
@@ -71,11 +73,15 @@ namespace HoloToolkit.Unity.Buttons
                     alphaTarget = value;
                     if (Application.isPlaying)
                     {                        
-                        if (Mathf.Abs (alpha - alphaTarget) < 0.01f)
+                        if (Mathf.Abs (alpha - alphaTarget) < AlphaThreshold)
+                        {
                             return;
+                        }
 
                         if (updatingAlpha)
+                        {
                             return;
+                        }
 
                         if (gameObject.activeSelf && gameObject.activeInHierarchy)
                         {
@@ -317,6 +323,7 @@ namespace HoloToolkit.Unity.Buttons
                 }
                 yield return null;
             }
+
             alpha = alphaTarget;
             RefreshAlpha();
             updatingAlpha = false;
