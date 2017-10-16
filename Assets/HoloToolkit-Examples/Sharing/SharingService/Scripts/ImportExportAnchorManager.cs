@@ -205,7 +205,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private RoomManagerAdapter roomManagerListener;
 
-#region Untiy APIs
+        #region Unity APIs
 
         protected override void Awake()
         {
@@ -301,9 +301,9 @@ namespace HoloToolkit.Sharing.Tests
             base.OnDestroy();
         }
 
-#endregion
+        #endregion
 
-#region Event Callbacks
+        #region Event Callbacks
 
         /// <summary>
         /// Called when the sharing stage connects to a server.
@@ -470,7 +470,7 @@ namespace HoloToolkit.Sharing.Tests
             ResetState();
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Resets the Anchor Manager state.
@@ -654,7 +654,7 @@ namespace HoloToolkit.Sharing.Tests
 #endif
         }
 
-#region WSA Specific Methods
+        #region WSA Specific Methods
 
 #if UNITY_WSA && !UNITY_EDITOR
 
@@ -966,6 +966,6 @@ namespace HoloToolkit.Sharing.Tests
         }
 
 #endif // UNITY_WSA
-#endregion // WSA Specific Methods
+        #endregion // WSA Specific Methods
     }
 }
