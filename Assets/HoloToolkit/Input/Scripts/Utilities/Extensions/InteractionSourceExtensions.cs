@@ -2,8 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
+#if !UNITY_2017_2_OR_NEWER
 using UnityEngine.VR.WSA.Input;
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#else
+using UnityEngine.XR.WSA.Input;
+#if !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using Windows.Devices.Haptics;
@@ -11,6 +14,7 @@ using Windows.Foundation;
 using Windows.Perception;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
+#endif
 #endif
 #endif
 

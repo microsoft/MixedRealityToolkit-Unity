@@ -14,7 +14,7 @@ namespace HoloToolkit.Examples.Prototyping
     public class ScaleByDistance : MonoBehaviour
     {
         [Tooltip("The object's distance to scale against, default: Main Camera")]
-        public GameObject RefernceObject;
+        public GameObject ReferenceObject;
 
         [Tooltip("The object to scale")]
         public GameObject TargetObject;
@@ -44,7 +44,7 @@ namespace HoloToolkit.Examples.Prototyping
         private float mStartDistance;
 
         /// <summary>
-        /// Set the targetObject and the referenceObject if not set already
+        /// Set the TargetObject and the ReferenceObject if not set already
         /// </summary>
         void Start()
         {
@@ -53,9 +53,9 @@ namespace HoloToolkit.Examples.Prototyping
                 TargetObject = this.gameObject;
             }
 
-            if (RefernceObject == null)
+            if (ReferenceObject == null)
             {
-                RefernceObject = CameraCache.Main.gameObject;
+                ReferenceObject = CameraCache.Main.gameObject;
             }
         }
         
@@ -65,7 +65,7 @@ namespace HoloToolkit.Examples.Prototyping
         public void StartRunning(bool state = false)
         {
             mStartScale = TargetObject.transform.localScale;
-            mStartDistance = Vector3.Distance(TargetObject.transform.position, RefernceObject.transform.position);
+            mStartDistance = Vector3.Distance(TargetObject.transform.position, ReferenceObject.transform.position);
             IsScaling = true;
 
             if (!state)
@@ -80,7 +80,7 @@ namespace HoloToolkit.Examples.Prototyping
         }
 
         /// <summary>
-        /// stop the animation
+        /// Stop the animation
         /// </summary>
         public void StopRunning()
         {
@@ -97,7 +97,7 @@ namespace HoloToolkit.Examples.Prototyping
         {
             if (IsScaling)
             {
-                float ratio = (Vector3.Distance(TargetObject.transform.position, RefernceObject.transform.position) - mStartDistance) / ScaleDistance;
+                float ratio = (Vector3.Distance(TargetObject.transform.position, ReferenceObject.transform.position) - mStartDistance) / ScaleDistance;
                 mDeltaScale = Mathf.Max(mCurrentScale + ratio, MinimumScale);
                 Vector3 targetScale = mStartScale * mDeltaScale;
                 TargetObject.transform.localScale = Vector3.Lerp(TargetObject.transform.localScale, targetScale, Time.deltaTime * ScaleSpeed);

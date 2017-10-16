@@ -124,7 +124,7 @@ TODO: Remove if reduncatnt to InterpolatedVector3.cs
 ---
 
 #### ApplicationViewManager.cs
-Switchs app to a XAML page vaiew, and waits for a return value from it.
+Switchs app to a XAML page view, and waits for a return value from it.
 
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
@@ -147,6 +147,9 @@ You must provide GameObjects for the **_Cursor_** and **_DirectionIndicatorObjec
 **DirectionIndicatorColor** The color you want the DirectionIndicatorObject to be.  The material on the DirectionIndicatorObject will need to support the color or TintColor property for this field to work.  Otherwise the DirectionIndicatorObject will continue to render as its exported color.
 
 **TitleSafeFactor** The percentage the GameObject can be within the view frustum for the DirectionIndicatorObject to start appearing.  A value of 0 will display the DirectionIndicatorObject when the GameObject leaves the view.  0.1 will display when the GameObject is 10% away from the edge of the view.  -0.1 will display when the GameObject is 10% out of view.
+
+#### DisplayDependentObjectActivator.cs
+Causes a GameObject to activate or disable depending on the settings and type of display the application is launched on.
 
 #### FixedAngularSize.cs
 Causes a hologram to maintain a fixed angular size, which is to say it occupies the same pixels in the view regardless of its distance from the camera.

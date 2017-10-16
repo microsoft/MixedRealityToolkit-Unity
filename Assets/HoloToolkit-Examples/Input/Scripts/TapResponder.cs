@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
@@ -11,10 +12,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// </summary>
     public class TapResponder : MonoBehaviour, IInputClickHandler
     {
-        public void OnInputClicked(InputClickedEventData eventData)
+         public void OnInputClicked(InputClickedEventData eventData)
         {
             // Increase the scale of the object just as a response.
             gameObject.transform.localScale += 0.05f * gameObject.transform.localScale;
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
     }
 }

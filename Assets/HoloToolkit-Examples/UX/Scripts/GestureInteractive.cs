@@ -143,7 +143,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
-            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
+            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
 
             mStartHandPosition = handPosition;
             mCurrentHandPosition = handPosition;
@@ -209,7 +209,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mTempInputSource = null;
 
             Vector3 handPosition;
-            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
+            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
 
             mCurrentHandPosition = handPosition;
             Control.ManipulationUpdate(
@@ -266,7 +266,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
-            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
+            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
 
             return handPosition;
         }

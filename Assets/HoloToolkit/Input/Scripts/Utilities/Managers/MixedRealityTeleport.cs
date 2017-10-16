@@ -4,10 +4,17 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.VR;
 
+#if UNITY_2017_2_OR_NEWER
+    using UnityEngine.XR;
+#if UNITY_WSA
+    using UnityEngine.XR.WSA.Input;
+#endif
+#else
+using UnityEngine.VR;
 #if UNITY_WSA
 using UnityEngine.VR.WSA.Input;
+#endif
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -55,7 +62,11 @@ namespace HoloToolkit.Unity.InputModule
         {
             fadeControl = FadeScript.Instance;
 
+#if UNITY_2017_2_OR_NEWER
+            if (!XRDevice.isPresent || fadeControl == null)
+#else
             if (!VRDevice.isPresent || fadeControl == null)
+#endif
             {
                 if (fadeControl == null)
                 {
