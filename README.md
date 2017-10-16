@@ -43,7 +43,7 @@ Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/m
 1. See [Development PC specs](https://developer.microsoft.com/en-us/windows/mixed-reality/install_the_tools#developing_for_immersive_headsets) for tips on developing for immersive headsets.
 2. [Holograms 100](https://developer.microsoft.com/en-us/windows/mixed-reality/holograms_100) has been updated with how to setup Windows Mixed Reality in your app.
 3. [How to navigate the Windows Mixed Reality home](https://developer.microsoft.com/en-us/windows/mixed-reality/navigating_the_windows_mixed_reality_home).
-4. Development PC needs to be on the Fall Creators Update (Build 1709)
+4. Development PC needs to be on the Fall Creators Update (Version 1709)
 5. [Visual Studio 2017](https://www.visualstudio.com/downloads/).
     1. Install the 10.0.16267.0 SDK via Visual Studio Installer.
 6. Unity 2017.2.0f3 MRTP with Mixed Reality API support. This build of Unity can be found [here](http://beta.unity3d.com/download/edcd66fb22ae/download.html).
