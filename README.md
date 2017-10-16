@@ -70,13 +70,8 @@ If you're looking for **teleporting**:
     * MixedRealityCameraParent.prefab
     * TeleportMarker.prefab
     
-If you're looking for **Xbox controller input** via the MixedRealityToolkit's InputManager:
-* See the [**InputTapTest**](Assets/HoloToolkit-Examples/Input/Scenes/InputTapTest.unity) scene.
-* You can use the Xbox controller A to tap.
-* Press A and hold to do hold started, canceled and completed.
-* Press A and left joystick to trigger the navigation events.
-* See:
-    * GamepadInput.cs
+If you're looking for **Xbox Controller Input** via the MixedRealityToolkit's InputManager:
+* See the [**XboxControllerExample**](Assets/HoloToolkit-Examples/Input/Scenes/XboxControllerExample.unity) scene.
     
 If you're looking for **Boundary** tools:
 * See the [**BoundaryTest**](Assets/HoloToolkit-Examples/Boundary/Scenes/BoundaryTest.unity) scene.
