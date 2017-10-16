@@ -1,6 +1,6 @@
 This document describes how to prepare your work envionment to use the HoloToolkit-Unity in your project.
 
-# 1. Setting up your development envionment
+# 1. Setting up your development environment
 Be sure to enable Developer mode for Windows 10 via:
 
 `Action Center -> All Settings -> Update & Security -> For Developers -> Enable Developer mode`
