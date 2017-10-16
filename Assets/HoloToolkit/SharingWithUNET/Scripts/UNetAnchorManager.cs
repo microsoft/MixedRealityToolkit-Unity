@@ -183,7 +183,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #if UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque)
 #else
-            if (!VRDevice.isPresent && !Application.IsEditor)
+            if (!VRDevice.isPresent && !Application.isEditor)
 #endif
             {
                 AnchorEstablished = true;
