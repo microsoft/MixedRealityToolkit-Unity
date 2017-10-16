@@ -179,9 +179,12 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 return;
             }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-
+#if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque)
+#else
+            if (!VRDevice.isPresent && !Application.IsEditor)
+#endif
             {
                 AnchorEstablished = true;
             }
@@ -190,14 +193,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 networkTransmitter.DataReadyEvent += NetworkTransmitter_DataReadyEvent;
             }
 #else
-            if (VRDevice.isPresent)
-            {
-                AnchorEstablished = true;
-            }
-            else
-            {
-                networkTransmitter.DataReadyEvent += NetworkTransmitter_DataReadyEvent;
-            }
+            AnchorEstablished = true;
 #endif
 
             // If we have a debug panel, then we have debug data for the panel. 
