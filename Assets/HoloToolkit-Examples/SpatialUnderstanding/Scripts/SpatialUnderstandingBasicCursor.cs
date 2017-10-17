@@ -42,7 +42,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             // Hide the Cursor to begin with.
             meshRenderer.enabled = false;
 
-            // Cache the cursor default rotation so the cursor can be rotated with respect to the original orientation.
+            // Cache the cursor default rotation so the cursor can be rotated with respect to the original rotation.
             cursorDefaultRotation = gameObject.transform.rotation;
         }
 

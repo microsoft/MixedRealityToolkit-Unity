@@ -285,8 +285,6 @@ MonoBehaviour:
   pointingRaycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291
-  - serializedVersion: 2
-    m_Bits: 32
   registeredPointers: []
   autoRegisterGazePointerIfNoPointersRegistered: 1
   debugDrawPointingRays: 0

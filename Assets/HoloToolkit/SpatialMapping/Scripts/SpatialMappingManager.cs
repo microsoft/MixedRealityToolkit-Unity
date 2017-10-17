@@ -210,9 +210,13 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public void StartObserver()
         {
-#if UNITY_EDITOR || UNITY_UWP
-            // Allow observering if a device is present (Holographic Remoting)
-            if (!UnityEngine.VR.VRDevice.isPresent) return;
+#if UNITY_WSA
+            // Allow observing if a device is present (Holographic Remoting)
+#if UNITY_2017_2_OR_NEWER
+            if (!UnityEngine.XR.XRDevice.isPresent) { return; }
+#else
+            if (!UnityEngine.VR.VRDevice.isPresent) { return; }
+#endif
 #endif
             if (!IsObserverRunning())
             {
@@ -226,9 +230,13 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public void StopObserver()
         {
-#if UNITY_EDITOR || UNITY_UWP
-            // Allow observering if a device is present (Holographic Remoting)
-            if (!UnityEngine.VR.VRDevice.isPresent) return;
+#if UNITY_WSA
+            // Allow observing if a device is present (Holographic Remoting)
+#if UNITY_2017_2_OR_NEWER
+            if (!UnityEngine.XR.XRDevice.isPresent) { return; }
+#else
+            if (!UnityEngine.VR.VRDevice.isPresent) { return; }
+#endif
 #endif
             if (IsObserverRunning())
             {
