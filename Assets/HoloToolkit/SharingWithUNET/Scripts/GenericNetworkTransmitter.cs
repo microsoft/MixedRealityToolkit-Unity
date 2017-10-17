@@ -157,8 +157,9 @@ namespace HoloToolkit.Unity.SharingWithUNET
             outstandingAction.Completed = aach;
 
             return true;
-#endif
+#else
             return false;
+#endif
         }
 
 #if !UNITY_EDITOR && UNITY_WSA

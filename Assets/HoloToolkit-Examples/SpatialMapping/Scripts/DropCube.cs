@@ -5,7 +5,11 @@ using HoloToolkit.Unity;
 using UnityEngine;
 
 #if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
 #endif
 
 namespace HoloToolkit.Examples.SpatialMappingComponent
@@ -22,16 +26,30 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
         {
             recognizer = new GestureRecognizer();
             recognizer.SetRecognizableGestures(GestureSettings.Tap);
+#if UNITY_2017_2_OR_NEWER
             recognizer.Tapped += Recognizer_Tapped;
+#else
+            recognizer.TappedEvent += Recognizer_Tapped;
+#endif
             recognizer.StartCapturingGestures();
         }
 
         private void OnDestroy()
         {
+#if UNITY_2017_2_OR_NEWER
             recognizer.Tapped -= Recognizer_Tapped;
+#else
+            recognizer.TappedEvent -= Recognizer_Tapped;
+#endif
         }
 
-        private void Recognizer_Tapped(TappedEventArgs obj)
+        private void Recognizer_Tapped(
+#if UNITY_2017_2_OR_NEWER
+            TappedEventArgs obj
+#else
+            InteractionSourceKind source, int tapCount, Ray headRay
+#endif
+            )
         {
             // Create a cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -40,7 +58,7 @@ namespace HoloToolkit.Examples.SpatialMappingComponent
             // Start to drop it in front of the camera
             cube.transform.position = CameraCache.Main.transform.position + CameraCache.Main.transform.forward;
             // Apply physics
-            cube.AddComponent<Rigidbody>(); 
+            cube.AddComponent<Rigidbody>();
         }
 #endif
     }

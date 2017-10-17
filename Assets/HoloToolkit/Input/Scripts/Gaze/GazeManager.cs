@@ -12,6 +12,32 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GazeManager : Singleton<GazeManager>, IPointingSource
     {
+        [Obsolete("Use FocusManager.PointerSpecificFocusChangedMethod")]
+        public delegate void FocusedChangedDelegate(GameObject previousObject, GameObject newObject);
+
+        /// <summary>
+        /// Indicates whether the user is currently gazing at an object.
+        /// </summary>
+        [Obsolete("Use FocusManager.TryGetFocusDetails")]
+        public bool IsGazingAtObject { get; private set; }
+
+        /// <summary>
+        /// Dispatched when focus shifts to a new object, or focus on current object
+        /// is lost.
+        /// </summary>
+        [Obsolete("Use FocusManager.PointerSpecificFocusChanged")]
+#pragma warning disable 618
+#pragma warning disable 67
+        public event FocusedChangedDelegate FocusedObjectChanged;
+#pragma warning restore 67
+#pragma warning restore 618
+
+        /// <summary>
+        /// Unity UI pointer event.  This will be null if the EventSystem is not defined in the scene.
+        /// </summary>
+        [Obsolete("Use FocusManager.UnityUIPointerEvent")]
+        public PointerEventData UnityUIPointerEvent { get; private set; }
+
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.
         /// </summary>

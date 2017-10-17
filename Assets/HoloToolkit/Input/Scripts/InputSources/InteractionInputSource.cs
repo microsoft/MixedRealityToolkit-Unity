@@ -4,7 +4,11 @@
 using UnityEngine;
 
 #if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
 using System.Collections.Generic;
 #endif
 
@@ -52,8 +56,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return new AxisButton2D
                 {
+#if UNITY_2017_2_OR_NEWER
                     Pressed = interactionSource.thumbstickPressed,
                     Position = interactionSource.thumbstickPosition,
+#else
+                    Pressed = false,
+                    Position = default(Vector2)
+#endif
                 };
             }
 
@@ -61,8 +70,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return new AxisButton2D
                 {
+#if UNITY_2017_2_OR_NEWER
                     Pressed = interactionSource.touchpadPressed,
                     Position = interactionSource.touchpadPosition,
+#else
+                    Pressed = false,
+                    Position = default(Vector2)
+#endif
                 };
             }
         }
@@ -77,7 +91,11 @@ namespace HoloToolkit.Unity.InputModule
                 return new TouchpadData
                 {
                     AxisButton = AxisButton2D.GetTouchpad(interactionSource),
+#if UNITY_2017_2_OR_NEWER
                     Touched = interactionSource.touchpadTouched,
+#else
+                    Touched = false,
+#endif
                 };
             }
         }
@@ -91,8 +109,13 @@ namespace HoloToolkit.Unity.InputModule
             {
                 return new AxisButton1D
                 {
+#if UNITY_2017_2_OR_NEWER
                     Pressed = interactionSource.selectPressed,
                     PressedAmount = interactionSource.selectPressedAmount,
+#else
+                    Pressed = false,
+                    PressedAmount = 0f
+#endif
                 };
             }
         }
@@ -166,11 +189,20 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.RaiseSourceDetected(this, states[i].source.id);
             }
 
+#if UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+#else
+            InteractionManager.SourceDetected += InteractionManager_InteractionSourceDetected;
+            InteractionManager.SourcePressed += InteractionManager_InteractionSourcePressed;
+            InteractionManager.SourceUpdated += InteractionManager_InteractionSourceUpdated;
+            InteractionManager.SourceReleased += InteractionManager_InteractionSourceReleased;
+            InteractionManager.SourceLost += InteractionManager_InteractionSourceLost;
+#endif
+
 #else
             RecognizerStart = RecognizerStartBehavior.ManualStart;
 #endif
@@ -180,6 +212,7 @@ namespace HoloToolkit.Unity.InputModule
         {
 #if UNITY_WSA
             GestureRecognizer = new GestureRecognizer();
+#if UNITY_2017_2_OR_NEWER
             GestureRecognizer.Tapped += GestureRecognizer_Tapped;
 
             GestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
@@ -190,7 +223,18 @@ namespace HoloToolkit.Unity.InputModule
             GestureRecognizer.ManipulationUpdated += GestureRecognizer_ManipulationUpdated;
             GestureRecognizer.ManipulationCompleted += GestureRecognizer_ManipulationCompleted;
             GestureRecognizer.ManipulationCanceled += GestureRecognizer_ManipulationCanceled;
+#else
+            GestureRecognizer.TappedEvent += GestureRecognizer_Tapped;
 
+            GestureRecognizer.HoldStartedEvent += GestureRecognizer_HoldStarted;
+            GestureRecognizer.HoldCompletedEvent += GestureRecognizer_HoldCompleted;
+            GestureRecognizer.HoldCanceledEvent += GestureRecognizer_HoldCanceled;
+
+            GestureRecognizer.ManipulationStartedEvent += GestureRecognizer_ManipulationStarted;
+            GestureRecognizer.ManipulationUpdatedEvent += GestureRecognizer_ManipulationUpdated;
+            GestureRecognizer.ManipulationCompletedEvent += GestureRecognizer_ManipulationCompleted;
+            GestureRecognizer.ManipulationCanceledEvent += GestureRecognizer_ManipulationCanceled;
+#endif
             GestureRecognizer.SetRecognizableGestures(GestureSettings.Tap |
                                                       GestureSettings.ManipulationTranslate |
                                                       GestureSettings.Hold);
@@ -198,11 +242,17 @@ namespace HoloToolkit.Unity.InputModule
             // We need a separate gesture recognizer for navigation, since it isn't compatible with manipulation
             NavigationGestureRecognizer = new GestureRecognizer();
 
+#if UNITY_2017_2_OR_NEWER
             NavigationGestureRecognizer.NavigationStarted += NavigationGestureRecognizer_NavigationStarted;
             NavigationGestureRecognizer.NavigationUpdated += NavigationGestureRecognizer_NavigationUpdated;
             NavigationGestureRecognizer.NavigationCompleted += NavigationGestureRecognizer_NavigationCompleted;
             NavigationGestureRecognizer.NavigationCanceled += NavigationGestureRecognizer_NavigationCanceled;
-
+#else
+            NavigationGestureRecognizer.NavigationStartedEvent += NavigationGestureRecognizer_NavigationStarted;
+            NavigationGestureRecognizer.NavigationUpdatedEvent += NavigationGestureRecognizer_NavigationUpdated;
+            NavigationGestureRecognizer.NavigationCompletedEvent += NavigationGestureRecognizer_NavigationCompleted;
+            NavigationGestureRecognizer.NavigationCanceledEvent += NavigationGestureRecognizer_NavigationCanceled;
+#endif
             if (UseRailsNavigation)
             {
                 NavigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationRailsX |
@@ -229,12 +279,19 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA
             StopGestureRecognizer();
 
+#if UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
-
+#else
+            InteractionManager.SourceDetected -= InteractionManager_InteractionSourceDetected;
+            InteractionManager.SourcePressed -= InteractionManager_InteractionSourcePressed;
+            InteractionManager.SourceUpdated -= InteractionManager_InteractionSourceUpdated;
+            InteractionManager.SourceReleased -= InteractionManager_InteractionSourceReleased;
+            InteractionManager.SourceLost -= InteractionManager_InteractionSourceLost;
+#endif
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
@@ -256,6 +313,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA
             if (GestureRecognizer != null)
             {
+#if UNITY_2017_2_OR_NEWER
                 GestureRecognizer.Tapped -= GestureRecognizer_Tapped;
 
                 GestureRecognizer.HoldStarted -= GestureRecognizer_HoldStarted;
@@ -266,17 +324,35 @@ namespace HoloToolkit.Unity.InputModule
                 GestureRecognizer.ManipulationUpdated -= GestureRecognizer_ManipulationUpdated;
                 GestureRecognizer.ManipulationCompleted -= GestureRecognizer_ManipulationCompleted;
                 GestureRecognizer.ManipulationCanceled -= GestureRecognizer_ManipulationCanceled;
+#else
+                GestureRecognizer.TappedEvent -= GestureRecognizer_Tapped;
 
+                GestureRecognizer.HoldStartedEvent -= GestureRecognizer_HoldStarted;
+                GestureRecognizer.HoldCompletedEvent -= GestureRecognizer_HoldCompleted;
+                GestureRecognizer.HoldCanceledEvent -= GestureRecognizer_HoldCanceled;
+
+                GestureRecognizer.ManipulationStartedEvent -= GestureRecognizer_ManipulationStarted;
+                GestureRecognizer.ManipulationUpdatedEvent -= GestureRecognizer_ManipulationUpdated;
+                GestureRecognizer.ManipulationCompletedEvent -= GestureRecognizer_ManipulationCompleted;
+                GestureRecognizer.ManipulationCanceledEvent -= GestureRecognizer_ManipulationCanceled;
+
+#endif
                 GestureRecognizer.Dispose();
             }
 
             if (NavigationGestureRecognizer != null)
             {
+#if UNITY_2017_2_OR_NEWER
                 NavigationGestureRecognizer.NavigationStarted -= NavigationGestureRecognizer_NavigationStarted;
                 NavigationGestureRecognizer.NavigationUpdated -= NavigationGestureRecognizer_NavigationUpdated;
                 NavigationGestureRecognizer.NavigationCompleted -= NavigationGestureRecognizer_NavigationCompleted;
                 NavigationGestureRecognizer.NavigationCanceled -= NavigationGestureRecognizer_NavigationCanceled;
-
+#else
+                NavigationGestureRecognizer.NavigationStartedEvent -= NavigationGestureRecognizer_NavigationStarted;
+                NavigationGestureRecognizer.NavigationUpdatedEvent -= NavigationGestureRecognizer_NavigationUpdated;
+                NavigationGestureRecognizer.NavigationCompletedEvent -= NavigationGestureRecognizer_NavigationCompleted;
+                NavigationGestureRecognizer.NavigationCanceledEvent -= NavigationGestureRecognizer_NavigationCanceled;
+#endif
                 NavigationGestureRecognizer.Dispose();
             }
 #endif
@@ -322,7 +398,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void StartHaptics(uint sourceId, float intensity)
         {
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
@@ -333,7 +409,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void StartHaptics(uint sourceId, float intensity, float durationInSeconds)
         {
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
@@ -344,7 +420,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void StopHaptics(uint sourceId)
         {
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
@@ -598,13 +674,23 @@ namespace HoloToolkit.Unity.InputModule
             Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
             Debug.Assert(interactionSourceState.source.kind == sourceData.SourceKind, "An UpdateSourceState call happened with mismatched source kind.");
 
-            Vector3 newPointerPosition;
-            sourceData.PointerPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
+            Vector3 newPointerPosition = Vector3.zero;
+            sourceData.PointerPosition.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.PointerPosition.IsSupported |= sourceData.PointerPosition.IsAvailable;
 
-            Vector3 newGripPosition;
-            sourceData.GripPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newGripPosition, InteractionSourceNode.Grip);
+            Vector3 newGripPosition = Vector3.zero;
+            sourceData.GripPosition.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetPosition(out newGripPosition, InteractionSourceNode.Grip);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripPosition.IsSupported |= sourceData.GripPosition.IsAvailable;
 
@@ -621,13 +707,23 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.PointerPosition.CurrentReading = newPointerPosition;
             sourceData.GripPosition.CurrentReading = newGripPosition;
 
-            Quaternion newPointerRotation;
-            sourceData.PointerRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newPointerRotation, InteractionSourceNode.Pointer);
+            Quaternion newPointerRotation = Quaternion.identity;
+            sourceData.PointerRotation.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetRotation(out newPointerRotation, InteractionSourceNode.Pointer);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.PointerRotation.IsSupported |= sourceData.PointerRotation.IsAvailable;
 
-            Quaternion newGripRotation;
-            sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
+            Quaternion newGripRotation = Quaternion.identity;
+            sourceData.GripRotation.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
+#else
+                false;
+#endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
 
@@ -645,8 +741,18 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.GripRotation.CurrentReading = newGripRotation;
 
             Vector3 pointerForward = Vector3.zero;
-            sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
-            sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+            sourceData.PointingRay.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsPointing;
+#else
+                false;
+#endif
+            sourceData.PointingRay.IsAvailable =
+#if UNITY_2017_2_OR_NEWER
+                sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+#else
+                false;
+#endif
 
             if (CameraCache.Main.transform.parent != null)
             {
@@ -655,7 +761,12 @@ namespace HoloToolkit.Unity.InputModule
 
             sourceData.PointingRay.CurrentReading = new Ray(sourceData.PointerPosition.CurrentReading, pointerForward);
 
-            sourceData.Thumbstick.IsSupported = interactionSourceState.source.supportsThumbstick;
+            sourceData.Thumbstick.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsThumbstick;
+#else
+                false;
+#endif
             sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
             if (sourceData.Thumbstick.IsAvailable)
             {
@@ -668,7 +779,12 @@ namespace HoloToolkit.Unity.InputModule
                 sourceData.Thumbstick.CurrentReading = default(AxisButton2D);
             }
 
-            sourceData.Touchpad.IsSupported = interactionSourceState.source.supportsTouchpad;
+            sourceData.Touchpad.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsTouchpad;
+#else
+                false;
+#endif
             sourceData.Touchpad.IsAvailable = sourceData.Touchpad.IsSupported;
             if (sourceData.Touchpad.IsAvailable)
             {
@@ -688,15 +804,35 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.SelectPressedAmountUpdated = !sourceData.Select.CurrentReading.PressedAmount.Equals(newSelect.PressedAmount);
             sourceData.Select.CurrentReading = newSelect;
 
-            sourceData.Grasp.IsSupported = interactionSourceState.source.supportsGrasp;
+            sourceData.Grasp.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsGrasp;
+#else
+                false;
+#endif
             sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
-            sourceData.Grasp.CurrentReading = (sourceData.Grasp.IsAvailable && interactionSourceState.grasped);
+            sourceData.Grasp.CurrentReading =
+#if UNITY_2017_2_OR_NEWER
+                (sourceData.Grasp.IsAvailable && interactionSourceState.grasped);
+#else
+                false;
+#endif
 
-            sourceData.Menu.IsSupported = interactionSourceState.source.supportsMenu;
+            sourceData.Menu.IsSupported =
+#if UNITY_2017_2_OR_NEWER
+                interactionSourceState.source.supportsMenu;
+#else
+                false;
+#endif
             sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
-            sourceData.Menu.CurrentReading = (sourceData.Menu.IsAvailable && interactionSourceState.menuPressed);
+            sourceData.Menu.CurrentReading =
+#if UNITY_2017_2_OR_NEWER
+                (sourceData.Menu.IsAvailable && interactionSourceState.menuPressed);
+#else
+                false;
+#endif
         }
-
+#if UNITY_2017_2_OR_NEWER
         #region InteractionManager Events
 
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
@@ -838,6 +974,158 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion //Raise GestureRecognizer Events
+#else
+
+        #region InteractionManager Events
+
+        private void InteractionManager_InteractionSourceUpdated(InteractionSourceState state)
+        {
+            SourceData sourceData = GetOrAddSourceData(state.source);
+
+            sourceData.ResetUpdatedBooleans();
+
+            UpdateSourceData(state, sourceData);
+
+            if (sourceData.PositionUpdated)
+            {
+                InputManager.Instance.RaiseSourcePositionChanged(this, sourceData.SourceId, sourceData.PointerPosition.CurrentReading, sourceData.GripPosition.CurrentReading);
+            }
+
+            if (sourceData.RotationUpdated)
+            {
+                InputManager.Instance.RaiseSourceRotationChanged(this, sourceData.SourceId, sourceData.PointerRotation.CurrentReading, sourceData.GripRotation.CurrentReading);
+            }
+
+            if (sourceData.ThumbstickPositionUpdated)
+            {
+                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, InteractionSourcePressInfo.Thumbstick, sourceData.Thumbstick.CurrentReading.Position);
+            }
+
+            if (sourceData.TouchpadPositionUpdated)
+            {
+                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, InteractionSourcePressInfo.Touchpad, sourceData.Touchpad.CurrentReading.AxisButton.Position);
+            }
+
+            if (sourceData.TouchpadTouchedUpdated)
+            {
+                if (sourceData.Touchpad.CurrentReading.Touched)
+                {
+                    InputManager.Instance.RaiseTouchpadTouched(this, sourceData.SourceId);
+                }
+                else
+                {
+                    InputManager.Instance.RaiseTouchpadReleased(this, sourceData.SourceId);
+                }
+            }
+
+            if (sourceData.SelectPressedAmountUpdated)
+            {
+                InputManager.Instance.RaiseSelectPressedAmountChanged(this, sourceData.SourceId, sourceData.Select.CurrentReading.PressedAmount);
+            }
+        }
+
+        private void InteractionManager_InteractionSourceReleased(InteractionSourceState state)
+        {
+            InputManager.Instance.RaiseSourceUp(this, state.source.id,
+#if UNITY_2017_2_OR_NEWER
+                (InteractionSourcePressInfo)args.pressType);
+#else
+                InteractionSourcePressInfo.Select);
+#endif
+        }
+
+        private void InteractionManager_InteractionSourcePressed(InteractionSourceState state)
+        {
+            InputManager.Instance.RaiseSourceDown(this, state.source.id,
+#if UNITY_2017_2_OR_NEWER
+                (InteractionSourcePressInfo)args.pressType);
+#else
+                InteractionSourcePressInfo.Select);
+#endif
+        }
+
+        private void InteractionManager_InteractionSourceLost(InteractionSourceState state)
+        {
+            // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
+            sourceIdToData.Remove(state.source.id);
+
+            InputManager.Instance.RaiseSourceLost(this, state.source.id);
+        }
+
+        private void InteractionManager_InteractionSourceDetected(InteractionSourceState state)
+        {
+            // NOTE: We update the source state data, in case an app wants to query it on source detected.
+            UpdateSourceData(state, GetOrAddSourceData(state.source));
+
+            InputManager.Instance.RaiseSourceDetected(this, state.source.id);
+        }
+
+        #endregion InteractionManager Events
+
+        #region Raise GestureRecognizer Events
+
+        protected void GestureRecognizer_Tapped(InteractionSourceKind source, int tapCount, Ray headRay)
+        {
+            InputManager.Instance.RaiseInputClicked(this, 0, InteractionSourcePressInfo.Select, tapCount);
+        }
+
+        protected void GestureRecognizer_HoldStarted(InteractionSourceKind source, Ray headray)
+        {
+            InputManager.Instance.RaiseHoldStarted(this, 0);
+        }
+
+        protected void GestureRecognizer_HoldCanceled(InteractionSourceKind source, Ray headray)
+        {
+            InputManager.Instance.RaiseHoldCanceled(this, 0);
+        }
+
+        protected void GestureRecognizer_HoldCompleted(InteractionSourceKind source, Ray headray)
+        {
+            InputManager.Instance.RaiseHoldCompleted(this, 0);
+        }
+
+        protected void GestureRecognizer_ManipulationStarted(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            InputManager.Instance.RaiseManipulationStarted(this, 0);
+        }
+
+        protected void GestureRecognizer_ManipulationUpdated(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            InputManager.Instance.RaiseManipulationUpdated(this, 0, cumulativeDelta);
+        }
+
+        protected void GestureRecognizer_ManipulationCompleted(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            InputManager.Instance.RaiseManipulationCompleted(this, 0, cumulativeDelta);
+        }
+
+        protected void GestureRecognizer_ManipulationCanceled(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headray)
+        {
+            InputManager.Instance.RaiseManipulationCanceled(this, 0);
+        }
+
+        protected void NavigationGestureRecognizer_NavigationStarted(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
+        {
+            InputManager.Instance.RaiseNavigationStarted(this, 0);
+        }
+
+        protected void NavigationGestureRecognizer_NavigationUpdated(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
+        {
+            InputManager.Instance.RaiseNavigationUpdated(this, 0, normalizedOffset);
+        }
+
+        protected void NavigationGestureRecognizer_NavigationCompleted(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
+        {
+            InputManager.Instance.RaiseNavigationCompleted(this, 0, normalizedOffset);
+        }
+
+        protected void NavigationGestureRecognizer_NavigationCanceled(InteractionSourceKind source, Vector3 normalizedOffset, Ray headray)
+        {
+            InputManager.Instance.RaiseNavigationCanceled(this, 0);
+        }
+
+        #endregion //Raise GestureRecognizer Events
+#endif
 #endif
 
     }
