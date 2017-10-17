@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
@@ -12,6 +15,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
     /// </summary>
     public abstract class BaseUsable : MonoBehaviour
     {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         [SerializeField]
         private InteractionSourceHandedness handedness;
 
@@ -20,8 +24,10 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         /// </summary>
         [SerializeField]
         private InteractionSourcePressType pressType;
+#endif
 
         private UseStateEnum state;
+
 
         public UseStateEnum UseState
         {
@@ -42,16 +48,21 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         protected virtual void OnEnable()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourcePressed += UseInputStart;
             InteractionManager.InteractionSourceReleased += UseInputEnd;
+#endif
         }
 
         protected virtual void OnDisable()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourcePressed -= UseInputStart;
             InteractionManager.InteractionSourceReleased -= UseInputEnd;
+#endif
         }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
             if (/*obj.pressType == pressType && (*/handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness)
@@ -73,5 +84,6 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
                 UseEnd();
             }
         }
+#endif
     }
 }

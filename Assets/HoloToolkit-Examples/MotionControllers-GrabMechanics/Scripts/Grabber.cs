@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
@@ -12,21 +15,34 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
     /// </summary>
     public class Grabber : BaseGrabber
     {
+        [SerializeField]
+        private LayerMask grabbableLayers = ~0;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        [SerializeField]
+        private InteractionSourcePressType pressType;
+#endif
+
         ///Subscribe GrabStart and GrabEnd to InputEvents for GripPressed
         protected override void OnEnable()
         {
             base.OnEnable();
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourcePressed += InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased += InteractionSourceReleased;
+#endif
         }
 
         protected override void OnDisable()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourcePressed -= InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased -= InteractionSourceReleased;
+#endif
             base.OnDisable();
         }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
         {
             if (obj.pressType == pressType && obj.state.source.handedness == handedness)
@@ -43,6 +59,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
                 GrabEnd();
             }
         }
+#endif
 
         /// <summary>
         /// Controller grabbers find available grabbable objects via triggers
@@ -96,6 +113,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
             RemoveContact(bg);
         }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         public bool TrySetThrowableObject(BaseGrabbable grabbable, InteractionSourcePose poseInfo)
         {
             if (grabbable == null)
@@ -124,11 +142,6 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
             grabbable.GetComponent<BaseThrowable>().LatestControllerThrowAngularVelocity = controlReleaseData.AngleVelocity;
             return true;
         }
-
-        [SerializeField]
-        private LayerMask grabbableLayers = ~0;
-
-        [SerializeField]
-        private InteractionSourcePressType pressType;
+#endif
     }
 }

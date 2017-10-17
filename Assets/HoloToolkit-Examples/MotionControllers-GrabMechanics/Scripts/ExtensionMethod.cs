@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine;
 using HoloToolkit.Unity.InputModule.Examples.Grabbables;
 using UnityEngine.XR.WSA.Input;
@@ -27,3 +28,4 @@ public static class ExtensionMethods
         return new ControllerReleaseData(setVel, angVel);
     }
 }
+#endif

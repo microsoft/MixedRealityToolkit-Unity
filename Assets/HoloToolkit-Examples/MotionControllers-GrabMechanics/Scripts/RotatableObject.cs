@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using UnityEngine;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using System.Collections;
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
@@ -20,7 +23,9 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         {
             base.OnEnable();
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
+#endif
 
             if (baseGrabbable == null)
             {
@@ -30,7 +35,9 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         protected override void OnDisable()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
+#endif
 
             base.OnDisable();
         }
@@ -43,10 +50,13 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         {
             if (baseGrabbable.GrabberPrimary != null)
             {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
                 StartCoroutine(MakeRotate());
+#endif
             }
         }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private IEnumerator MakeRotate()
         {
             while (UseState == UseStateEnum.Active && baseGrabbable.GrabberPrimary && touchPadPressed)
@@ -79,5 +89,6 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         }
 
         private bool touchPadPressed;
+#endif
     }
 }

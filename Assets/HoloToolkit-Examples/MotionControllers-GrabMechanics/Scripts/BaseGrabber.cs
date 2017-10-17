@@ -4,7 +4,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
@@ -17,7 +20,9 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         public event Action<BaseGrabber> OnGrabStateChange;
         public event Action<BaseGrabber> OnContactStateChange;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         public InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
+#endif
 
         public List<BaseGrabbable> GrabbedObjects { get { return new List<BaseGrabbable>(grabbedObjects); } }
 
@@ -75,8 +80,10 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         private GrabStateEnum prevGrabState = GrabStateEnum.Inactive;
         private GrabStateEnum prevContactState = GrabStateEnum.Inactive;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         [SerializeField]
         protected InteractionSourceHandedness handedness;
+#endif
 
         public bool IsGrabbing(BaseGrabbable grabbable)
         {
