@@ -11,7 +11,7 @@ General releases will list breaking changes in their descriptions.
 - [Unity Editor 2017.2.0f3 MRTP](http://beta.unity3d.com/download/edcd66fb22ae/download.html) or later
 - Running the Windows Fall Creator's Update Build 1709 or later
 - Visual Studio 2017 build 15.3 or later
-- Window 10 SDK 10.0.16267.0 or later
+- Window 10 SDK 10.0.16299.0 or later
 
 ### List of breaking changes
 - None to date.  See [Unity's upgrade guide](https://docs.unity3d.com/Manual/UpgradeGuide20172.html) for Unity Specific changes.
