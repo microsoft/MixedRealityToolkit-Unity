@@ -1,25 +1,51 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace MRTK.Grabbables {
+using UnityEngine;
+
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
+{
     /// <summary>
     /// The abstract class that defines the minimum amount of content for any throwable object
     /// Variables declared at the bottom
     /// </summary>
-
     public abstract class BaseThrowable : MonoBehaviour
     {
         public float ThrowMultiplier { get { return throwMultiplier; } set { throwMultiplier = value; } }
-        public bool ZeroGravityThrow { get { return zeroGravityThrow; } set { zeroGravityThrow = value; } }
-        public bool Thrown { get { return thrown; } set { thrown = value; }  }
 
-        //To get velocity info straight from controller
+        public bool ZeroGravityThrow { get { return zeroGravityThrow; } set { zeroGravityThrow = value; } }
+
+        public bool Thrown { get { return thrown; } set { thrown = value; } }
+
+        // To get velocity info straight from controller
         public Vector3 LatestControllerThrowVelocity { get; set; }
         public Vector3 LatestControllerThrowAngularVelocity { get; set; }
 
-        //not implemented yet. lower priority
+        // TODO: Not implemented yet. lower priority
         public AnimationCurve VelocityOverTime { get { return velocityOverTime; } set { velocityOverTime = value; } }
+
         public AnimationCurve UpDownCurveOverTime { get { return upDownCurveOverTime; } set { upDownCurveOverTime = value; } }
+
         public AnimationCurve LeftRightCurveOverTime { get { return leftRightCurveOverTime; } set { leftRightCurveOverTime = value; } }
+
+        private BaseGrabbable grabbable;
+
+        [SerializeField]
+        private float throwMultiplier = 1.0f;
+
+        [SerializeField]
+        private bool zeroGravityThrow;
+
+        [SerializeField]
+        private AnimationCurve velocityOverTime;
+
+        [SerializeField]
+        private AnimationCurve upDownCurveOverTime;
+
+        [SerializeField]
+        private AnimationCurve leftRightCurveOverTime;
+
+        private bool thrown;
 
         protected virtual void Awake()
         {
@@ -68,25 +94,5 @@ namespace MRTK.Grabbables {
             Debug.Log("Throwing..");
             thrown = true;
         }
-
-        private BaseGrabbable grabbable;
-
-        [SerializeField]
-        private float throwMultiplier = 1.0f;
-
-        [SerializeField]
-        private bool zeroGravityThrow;
-
-        [SerializeField]
-        private AnimationCurve velocityOverTime;
-
-        [SerializeField]
-        private AnimationCurve upDownCurveOverTime;
-
-        [SerializeField]
-        private AnimationCurve leftRightCurveOverTime;
-
-        private bool thrown;
-
     }
 }

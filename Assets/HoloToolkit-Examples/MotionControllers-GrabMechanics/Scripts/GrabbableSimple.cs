@@ -1,17 +1,26 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
-namespace MRTK.Grabbables
+
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// This type of grab makes the grabbed object follow the position and rotation of the grabber, but does not create a parent child relationship
     /// </summary>
-
     public class GrabbableSimple : BaseGrabbable
     {
+        private Rigidbody _rigidbody;
+
+        [SerializeField]
+        private bool matchPosition = true;
+        [SerializeField]
+        private bool matchRotation = false;
+
         protected override void Start()
         {
             base.Start();
-            rb = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         /// <summary>
@@ -20,50 +29,63 @@ namespace MRTK.Grabbables
         protected override void StartGrab(BaseGrabber grabber)
         {
             base.StartGrab(grabber);
-            if (rb)
-                rb.useGravity = false;
+            if (_rigidbody)
+            {
+                _rigidbody.useGravity = false;
+            }
         }
 
         /// <summary>
-        /// On release turn garvity back on the so the object falls and set the target back to null
+        /// On release turn gravity back on the so the object falls and set the target back to null
         /// </summary>
         protected override void EndGrab()
         {
-            if (rb)
+            if (_rigidbody)
             {
-                rb.useGravity = true;
+                _rigidbody.useGravity = true;
             }
+
             base.EndGrab();
         }
 
         protected override void OnGrabStay()
         {
-            if(matchPosition)
+            if (matchPosition)
+            {
                 transform.position = GrabberPrimary.GrabHandle.position;
+            }
 
             if (matchRotation)
+            {
                 transform.rotation = GrabberPrimary.GrabHandle.rotation;
+            }
         }
 
-        //the next three functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
+        // The next two functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
+
         protected override void AttachToGrabber(BaseGrabber grabber)
         {
-            GetComponent<Rigidbody>().isKinematic = true;
+            if (_rigidbody == null)
+            {
+                _rigidbody = GetComponent<Rigidbody>();
+            }
+
+            _rigidbody.isKinematic = true;
             if (!activeGrabbers.Contains(grabber))
+            {
                 activeGrabbers.Add(grabber);
+            }
         }
 
         protected override void DetachFromGrabber(BaseGrabber grabber)
         {
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<Rigidbody>().useGravity = true;
+            if (_rigidbody == null)
+            {
+                _rigidbody = GetComponent<Rigidbody>();
+            }
+
+            _rigidbody.isKinematic = false;
+            _rigidbody.useGravity = true;
         }
-
-        private Rigidbody rb;
-
-        [SerializeField]
-        private bool matchPosition = true;
-        [SerializeField]
-        private bool matchRotation = false;
     }
 }

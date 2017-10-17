@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace MRTK.Grabbables
+using UnityEngine;
+
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// This type of grab makes the grabbed object a child of the grabber.
     /// This ensures a grabbed object perfectly follows the position and rotation of the grabbing object
     /// </summary>
-
     public class GrabbableChild : BaseGrabbable
     {
         protected override void StartGrab(BaseGrabber grabber)

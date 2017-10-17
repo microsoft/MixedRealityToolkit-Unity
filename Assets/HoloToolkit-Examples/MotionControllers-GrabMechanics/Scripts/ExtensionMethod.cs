@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
-using MRTK;
-using MRTK.Grabbables;
+using HoloToolkit.Unity.InputModule.Examples.Grabbables;
 using UnityEngine.XR.WSA.Input;
 
-public static class ExtensionMethods  {
-
-    public static ControllerReleaseData GetThrowReleasedVelocityAndAngularVelocity(this Rigidbody rb, Vector3 centerOfMassOfRigidbody, InteractionSourcePose poseInfo)
+public static class ExtensionMethods
+{
+    public static ControllerReleaseData GetThrowReleasedVelocityAndAngularVelocity(this Rigidbody _rigidbody, Vector3 centerOfMassOfRigidbody, InteractionSourcePose poseInfo)
     {
         Vector3 setVel = default(Vector3);
         Vector3 angVel = default(Vector3);
@@ -22,11 +22,8 @@ public static class ExtensionMethods  {
         //vel = velocityOfController + angularVelOfController * distBetween grabbable center of mass and controllerPos;
         //setVel = controllerVelocity + controllerAngularVelocity + (controllerAngularVelocity *-1) * dist;
         setVel = controllerVelocity;
-        Debug.Log(" SetVal = ControllerVelocity ( " + controllerVelocity + ") controllerAngVel ((" + controllerAngularVelocity + ") * -1 )" + "  * dist (" + dist+")");
+        Debug.Log(" SetVal = ControllerVelocity ( " + controllerVelocity + ") controllerAngVel ((" + controllerAngularVelocity + ") * -1 )" + "  * dist (" + dist + ")");
 
         return new ControllerReleaseData(setVel, angVel);
     }
-
-
-
 }

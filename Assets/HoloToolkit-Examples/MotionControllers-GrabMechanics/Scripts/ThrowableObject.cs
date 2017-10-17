@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections;
 using UnityEngine;
 
-namespace MRTK.Grabbables
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// Extends its behaviour from BaseThrowable. This is a non-abstract script that can be attached to throwable object
@@ -9,15 +12,14 @@ namespace MRTK.Grabbables
     /// </summary>
     public class ThrowableObject : BaseThrowable
     {
-
-
         public override void Throw(BaseGrabbable grabbable)
         {
             base.Throw(grabbable);
             //Vector3 vel = grabbable.GetAverageVelocity();
             Vector3 vel = LatestControllerThrowVelocity;
             Vector3 angVel = LatestControllerThrowAngularVelocity;
-            if (GetComponent<GrabbableFixedJoint>() || GetComponent<GrabbableSpringJoint>()) {
+            if (GetComponent<GrabbableFixedJoint>() || GetComponent<GrabbableSpringJoint>())
+            {
                 StartCoroutine(ThrowDelay(vel, angVel, grabbable));
             }
             else
@@ -31,7 +33,7 @@ namespace MRTK.Grabbables
             }
         }
 
-        IEnumerator ThrowDelay(Vector3 vel, Vector3 angVel, BaseGrabbable grabbable)
+        private IEnumerator ThrowDelay(Vector3 vel, Vector3 angVel, BaseGrabbable grabbable)
         {
             yield return null;
             GetComponent<Rigidbody>().velocity = vel * ThrowMultiplier;
