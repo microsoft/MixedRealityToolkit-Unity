@@ -520,7 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClientRole: 0
-  ServerAddress: 192.168.19.100
+  ServerAddress: localhost
   defaultSessionName: DefaultSession
   defaultRoomName: DefaultRoom
   KeepRoomAlive: 0
