@@ -97,7 +97,7 @@ If you're looking for **Boundary** tools:
 | MRTP9                 | End July 2017     | v1.Dev.MRTP9       | <ul><li>Windows Mixed Reality support for working on both HoloLens and immersive headsets.</li><li>Gamepad support.</li><li>Windows Mixed Reality motion controller support.</li></ul>| [Complete: v1.Dev.MRTP9](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP9) |
 | MRTP13                | Early Aug 2017    | v1.Dev.MRTP13      | <ul><li>Updating to MRTP13.</li><li>Windows Mixed Reality motion controller rendering with glTF format read from WU driver.</li></ul>| [Complete: v1.Dev.MRTP13](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP13) |
 | 2017.2.0              | Early Oct 2017      | v1.Dev.2017.2.0    | <ul><li>Adapting to Unity's breaking changes of xR namespace and others.</li></ul>| Complete |
-| 2017.2.0              | End Mid 2017      | v1.Dev.2017.2.1    | <ul><li>Merge branch into master.</li></ul>| In Progress |
+| 2017.2.0              | Mid Oct 2017      | v1.Dev.2017.2.1 | <ul><li>Merge branch into master.</li></ul>| Complete |
 
 # Upcoming Breaking Changes
 
