@@ -1,34 +1,61 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using UnityEngine;
 
-namespace MRTK.Grabbables
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// Simple class to change the color of grabbable objects based on state
     /// </summary>
     public class GrabbableColor : MonoBehaviour
     {
+        [Header("Colors")]
+        [SerializeField]
+        private Color colorOnContactSingle = Color.blue;
+
+        [SerializeField]
+        private Color colorOnContactMulti = Color.cyan;
+
+        [SerializeField]
+        private Color colorOnGrabSingle = Color.yellow;
+
+        [SerializeField]
+        private Color colorOnGrabMulti = Color.red;
+
+        [Header("Objects")]
+        [SerializeField]
+        private Renderer targetRenderer;
+
+        [SerializeField]
+        private BaseGrabbable grabbable;
+
+        private Color originalColor;
         private void Awake()
         {
             if (grabbable == null)
+            {
                 grabbable = GetComponent<BaseGrabbable>();
+            }
+
             if (targetRenderer == null)
+            {
                 targetRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
+            }
 
             originalColor = targetRenderer.material.color;
             grabbable.OnContactStateChange += RefreshColor;
             grabbable.OnGrabStateChange += RefreshColor;
         }
 
-        private void RefreshColor(BaseGrabbable g)
+        private void RefreshColor(BaseGrabbable baseGrab)
         {
             Color finalColor = originalColor;
 
-            switch (g.ContactState)
+            switch (baseGrab.ContactState)
             {
                 case GrabStateEnum.Inactive:
-                default:
                     break;
 
                 case GrabStateEnum.Multi:
@@ -38,12 +65,14 @@ namespace MRTK.Grabbables
                 case GrabStateEnum.Single:
                     finalColor = colorOnContactSingle;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            switch (g.GrabState)
+            switch (baseGrab.GrabState)
             {
                 case GrabStateEnum.Inactive:
-                default:
                     break;
 
                 case GrabStateEnum.Multi:
@@ -53,27 +82,12 @@ namespace MRTK.Grabbables
                 case GrabStateEnum.Single:
                     finalColor = colorOnGrabSingle;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             targetRenderer.material.color = finalColor;
         }
-
-        [Header("Colors")]
-        [SerializeField]
-        private Color colorOnContactSingle = Color.blue;
-        [SerializeField]
-        private Color colorOnContactMulti = Color.cyan;
-        [SerializeField]
-        private Color colorOnGrabSingle = Color.yellow;
-        [SerializeField]
-        private Color colorOnGrabMulti = Color.red;
-
-        [Header("Objects")]
-        [SerializeField]
-        private Renderer targetRenderer;
-        [SerializeField]
-        private BaseGrabbable grabbable;
-
-        private Color originalColor;
     }
 }

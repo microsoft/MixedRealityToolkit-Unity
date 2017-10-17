@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections;
 using UnityEngine;
-namespace MRTK.Grabbables
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// This type of grab creates a temporary spring joint to attach the grabbed object to the grabber
@@ -61,7 +63,9 @@ namespace MRTK.Grabbables
         {
             yield return null;
             if (GrabState == GrabStateEnum.Inactive)
+            {
                 Destroy(joint);
+            }
         }
     }
 }

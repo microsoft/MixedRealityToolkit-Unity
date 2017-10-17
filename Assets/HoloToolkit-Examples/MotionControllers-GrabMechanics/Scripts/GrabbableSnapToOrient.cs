@@ -1,10 +1,13 @@
-﻿using UnityEngine;
-namespace MRTK.Grabbables
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
+
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// This type of grab uses a parent child relationship and also immediately orients the child's forward to the parent's forward position
     /// </summary>
-
     public class GrabbableSnapToOrient : BaseGrabbable
     {
         protected override void StartGrab(BaseGrabber grabber)

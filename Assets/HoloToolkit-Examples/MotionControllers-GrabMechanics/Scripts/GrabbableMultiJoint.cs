@@ -1,11 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
-namespace MRTK.Grabbables
+namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 {
     public class GrabbableMultiJoint : BaseGrabbable
     {
+        [SerializeField]
+        private float blendSpeed = 10f;
+
         protected override void OnGrabStay()
         {
             base.OnGrabStay();
@@ -14,31 +18,31 @@ namespace MRTK.Grabbables
             int numGrabbers = activeGrabbers.Count;
             float weightPerGrabber = 1f / numGrabbers;
 
-            //if (numGrabbers > 1)
-            //{
-                foreach (Grabber activeGrabber in activeGrabbers)
-                {
-                    averagePosition = Vector3.Lerp(averagePosition, activeGrabber.GrabHandle.position, weightPerGrabber);
-                    averageRotation = Quaternion.Lerp(averageRotation, activeGrabber.GrabHandle.rotation, weightPerGrabber);
-                }
+            for (var i = 0; i < activeGrabbers.Count; i++)
+            {
+                var activeGrabber = (Grabber)activeGrabbers[i];
+                averagePosition = Vector3.Lerp(averagePosition, activeGrabber.GrabHandle.position, weightPerGrabber);
+                averageRotation = Quaternion.Lerp(averageRotation, activeGrabber.GrabHandle.rotation, weightPerGrabber);
+            }
 
-                transform.position = Vector3.Lerp(transform.position, averagePosition, Time.deltaTime * blendSpeed);
-                transform.rotation = Quaternion.Lerp(transform.rotation, averageRotation, Time.deltaTime * blendSpeed);
-            //}
+            transform.position = Vector3.Lerp(transform.position, averagePosition, Time.deltaTime * blendSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, averageRotation, Time.deltaTime * blendSpeed);
         }
 
         //the next three functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
+
         protected override void AttachToGrabber(BaseGrabber grabber)
         {
             GetComponent<Rigidbody>().isKinematic = true;
-            if(!activeGrabbers.Contains(grabber))
+            if (!activeGrabbers.Contains(grabber))
+            {
                 activeGrabbers.Add(grabber);
+            }
         }
 
         protected override void DetachFromGrabber(BaseGrabber grabber)
         {
             Debug.Log("Detaching form grabber");
-
         }
 
         protected override void Update()
@@ -50,9 +54,5 @@ namespace MRTK.Grabbables
                 GetComponent<Rigidbody>().useGravity = true;
             }
         }
-
-
-        [SerializeField]
-        private float blendSpeed = 10f;
     }
 }
