@@ -330,7 +330,7 @@ MonoBehaviour:
   SupportsMenuButton: 0
   SupportsGrasp: 0
   RaiseEventsBasedOnVisibility: 1
-  SourceKind: 0
+  SourceKind: 1
   ControllerPosition: {x: 0, y: 0, z: 0}
   ControllerRotation: {x: 0, y: 0, z: 0, w: 0}
   currentButtonStates:

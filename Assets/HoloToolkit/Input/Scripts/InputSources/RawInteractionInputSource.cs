@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2017_2_OR_NEWER
 using UnityEngine.VR.WSA.Input;
 #endif
 
@@ -167,7 +167,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void UpdateSourceData()
         {
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2017_2_OR_NEWER
             // Poll for updated reading from hands
             InteractionSourceState[] sourceStates = InteractionManager.GetCurrentReading();
             if (sourceStates != null)
@@ -184,7 +184,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2017_2_OR_NEWER
         /// <summary>
         /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
         /// </summary>
