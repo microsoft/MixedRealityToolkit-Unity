@@ -210,6 +210,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
             {
                 Activated(this);
             }
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnFocusEnter()

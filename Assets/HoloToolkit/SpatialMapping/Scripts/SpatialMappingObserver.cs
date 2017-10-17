@@ -6,7 +6,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA;
+#else
 using UnityEngine.VR.WSA;
+#endif
 #endif
 
 namespace HoloToolkit.Unity.SpatialMapping
@@ -79,7 +83,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
             set
             {
-                if(observerVolumeType != value)
+                if (observerVolumeType != value)
                 {
                     observerVolumeType = value;
                     SwitchObservedVolume();
