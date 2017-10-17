@@ -75,7 +75,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnManipulationStarted(ManipulationEventData eventData)
         {
             Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}", 
-                eventData.InputSource, 
+                eventData.InputSource,
                 eventData.SourceId,
                 eventData.CumulativeDelta.x,
                 eventData.CumulativeDelta.y,

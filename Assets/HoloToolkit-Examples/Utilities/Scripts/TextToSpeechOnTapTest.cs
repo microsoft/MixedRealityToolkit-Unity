@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
+    /// <summary>
+    /// Tap Test for text to speech. This voice will appear to emanate from the object
+    /// </summary>
     public class TextToSpeechOnTapTest : MonoBehaviour, IInputClickHandler
     {
         private TextToSpeech textToSpeech;
@@ -13,7 +16,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             textToSpeech = GetComponent<TextToSpeech>();
         }
-        
+
         public void OnInputClicked(InputClickedEventData eventData)
         {
             // If we have a text to speech manager on the target object, say something.
