@@ -26,12 +26,15 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
         public bool AnimateControllerModel = true;
 
-        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform left controller model.")]
+        [Tooltip("This setting will be used to determine if the model should always be the alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        public bool AlwaysUseAlternateModel = false;
+
+        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. To override the platform left controller model set AlwaysUseAlternateModel to true; otherwise this will be the default if the model can't be found.")]
         [SerializeField]
-        protected GameObject LeftControllerOverride;
-        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform right controller model.")]
+        protected GameObject AlternateLeftController;
+        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. To override the platform right controller model set AlwaysUseAlternateModel to true; otherwise this will be the default if the model can't be found.")]
         [SerializeField]
-        protected GameObject RightControllerOverride;
+        protected GameObject AlternateRightController;
         [Tooltip("Use this to override the indicator used to show the user's touch location on the touchpad. Default is a sphere.")]
         [SerializeField]
         protected GameObject TouchpadTouchedOverride;
@@ -52,26 +55,26 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (GLTFMaterial == null)
                 {
-                    if (LeftControllerOverride == null && RightControllerOverride == null)
+                    if (AlternateLeftController == null && AlternateRightController == null)
                     {
-                        Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
+                        Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller alternates.");
                     }
-                    else if (LeftControllerOverride == null || RightControllerOverride == null)
+                    else if (AlternateLeftController == null || AlternateRightController == null)
                     {
-                        Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
+                        Debug.Log("Only one alternate is specified, and no material is specified for the glTF model. Please set the material or the " + ((AlternateLeftController == null) ? "left" : "right") + " controller alternate on " + name + ".");
                     }
                 }
             }
             else
             {
                 // Since we're using non-Unity APIs, glTF will only load in a UWP app.
-                if (LeftControllerOverride == null && RightControllerOverride == null)
+                if (AlternateLeftController == null && AlternateRightController == null)
                 {
-                    Debug.Log("Running in the editor won't render the glTF models, and no controller overrides are set. Please specify them on " + name + ".");
+                    Debug.Log("Running in the editor won't render the glTF models, and no controller alternates are set. Please specify them on " + name + ".");
                 }
-                else if (LeftControllerOverride == null || RightControllerOverride == null)
+                else if (AlternateLeftController == null || AlternateRightController == null)
                 {
-                    Debug.Log("Running in the editor won't render the glTF models, and only one controller override is specified. Please set the " + ((LeftControllerOverride == null) ? "left" : "right") + " override on " + name + ".");
+                    Debug.Log("Running in the editor won't render the glTF models, and only one controller alternate is specified. Please set the " + ((AlternateLeftController == null) ? "left" : "right") + " alternate on " + name + ".");
                 }
             }
 
@@ -139,6 +142,11 @@ namespace HoloToolkit.Unity.InputModule
             InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             Application.onBeforeRender -= Application_onBeforeRender;
+#endif
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
 #endif
         }
 
@@ -234,18 +242,24 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator LoadControllerModel(InteractionSource source)
         {
-            GameObject controllerModelGameObject;
-            if (source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
+            if (AlwaysUseAlternateModel)
             {
-                controllerModelGameObject = Instantiate(LeftControllerOverride);
-            }
-            else if (source.handedness == InteractionSourceHandedness.Right && RightControllerOverride != null)
-            {
-                controllerModelGameObject = Instantiate(RightControllerOverride);
+                if (AlternateLeftController == null && AlternateRightController == null)
+                {
+                    Debug.LogError("Always use the alternate model is set on " + name + ", but no alternate controller model was specified.");
+                }
+                else if (AlternateLeftController == null || AlternateRightController == null)
+                {
+                    Debug.LogWarning("Always use the alternate model is set on " + name + ", but the alternate " + ((AlternateLeftController == null) ? "left" : "right") + " controller model was not specified.");
+                }
+
+                LoadAlternateControllerModel(source);
             }
             else
             {
 #if !UNITY_EDITOR
+                GameObject controllerModelGameObject;
+
                 if (GLTFMaterial == null)
                 {
                     Debug.Log("If using glTF, please specify a material on " + name + ".");
@@ -258,6 +272,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (modelTask == null)
                 {
                     Debug.Log("Model task is null.");
+                    LoadAlternateControllerModel(source);
                     yield break;
                 }
 
@@ -270,13 +285,15 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (modelStream == null)
                 {
-                    Debug.Log("Model stream is null.");
+                    Debug.Log("Model stream is null, loading alternate.");
+                    LoadAlternateControllerModel(source);
                     yield break;
                 }
 
                 if (modelStream.Size == 0)
                 {
-                    Debug.Log("Model stream is empty.");
+                    Debug.Log("Model stream is empty, loading alternate.");
+                    LoadAlternateControllerModel(source);
                     yield break;
                 }
 
@@ -301,14 +318,32 @@ namespace HoloToolkit.Unity.InputModule
                 gltfScript.GLTFData = fileBytes;
 
                 yield return gltfScript.LoadModel();
+                FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
 #else
                 yield break;
 #endif
             }
+        }
+#endif
+
+        private void LoadAlternateControllerModel(InteractionSource source)
+        {
+            GameObject controllerModelGameObject;
+            if (source.handedness == InteractionSourceHandedness.Left && AlternateLeftController != null)
+            {
+                controllerModelGameObject = Instantiate(AlternateLeftController);
+            }
+            else if (source.handedness == InteractionSourceHandedness.Right && AlternateRightController != null)
+            {
+                controllerModelGameObject = Instantiate(AlternateRightController);
+            }
+            else
+            {
+                return;
+            }
 
             FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
         }
-#endif
 
         private void FinishControllerSetup(GameObject controllerModelGameObject, string handedness, uint id)
         {
