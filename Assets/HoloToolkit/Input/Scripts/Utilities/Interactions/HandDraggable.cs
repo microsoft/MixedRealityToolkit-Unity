@@ -118,7 +118,7 @@ namespace HoloToolkit.Unity.InputModule
 
             Transform cameraTransform = CameraCache.Main.transform;
             Vector3 handPosition;
-            currentInputSource.TryGetGripPosition(currentInputSourceId, out handPosition);
+            currentInputSource.TryGetPointerPosition(currentInputSourceId, out handPosition);
 
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
             handRefDistance = Vector3.Magnitude(handPosition - pivotPosition);
@@ -183,7 +183,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             Vector3 newHandPosition;
             Transform cameraTransform = CameraCache.Main.transform;
-            currentInputSource.TryGetGripPosition(currentInputSourceId, out newHandPosition);
+            currentInputSource.TryGetPointerPosition(currentInputSourceId, out newHandPosition);
 
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
 

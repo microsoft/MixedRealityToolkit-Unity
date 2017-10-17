@@ -622,7 +622,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_2017_2_OR_NEWER
                 interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
 #else
-                false;
+                interactionSourceState.properties.location.TryGetPosition(out newPointerPosition);
 #endif
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.PointerPosition.IsSupported |= sourceData.PointerPosition.IsAvailable;
