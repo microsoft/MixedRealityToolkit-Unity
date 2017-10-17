@@ -191,25 +191,24 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         void Update()
         {
-            if (Application.isEditor)
+#if UNITY_EDITOR
+            if (UnityEditor.Selection.activeGameObject == gameObject)
             {
-                if (UnityEditor.Selection.activeGameObject == gameObject)
+                if (Input.GetKeyDown(KeyCode.G))
                 {
-                    if (Input.GetKeyDown(KeyCode.G))
+                    if (GrabState == GrabStateEnum.Inactive)
                     {
-                        if (GrabState == GrabStateEnum.Inactive)
-                        {
-                            Debug.Log("Grab start");
-                            GrabStart();
-                        }
-                        else
-                        {
-                            Debug.Log("Grab end");
-                            GrabEnd();
-                        }
+                        Debug.Log("Grab start");
+                        GrabStart();
+                    }
+                    else
+                    {
+                        Debug.Log("Grab end");
+                        GrabEnd();
                     }
                 }
             }
+#endif
 
             if (prevGrabState != GrabState && OnGrabStateChange != null)
             {
