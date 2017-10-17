@@ -13,6 +13,20 @@ namespace HoloToolkit.Unity.InputModule
     public class AnimatedCursor : Cursor
     {
         /// <summary>
+        /// Enabled state Data when enabling
+        /// </summary>
+        [Obsolete("Use InputEnabledParameter")]
+        [Tooltip("Cursor State Data to use when enabling the cursor")]
+        public AnimCursorDatum EnableStateData;
+
+        /// <summary>
+        /// Disabled state Data when disabled
+        /// </summary>
+        [Obsolete("Use InputDisabledParameter")]
+        [Tooltip("Cursor State Data to use when the cursor is disabled")]
+        public AnimCursorDatum DisableStateData;
+
+        /// <summary>
         /// Serialized set of cursor state data
         /// </summary>
         [Header("Animated Cursor State Data")]

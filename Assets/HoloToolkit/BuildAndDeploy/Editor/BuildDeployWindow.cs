@@ -928,6 +928,7 @@ namespace HoloToolkit.Unity
             {
                 var appPackageDirectories = new List<string>();
                 string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory);
+
                 foreach (string appBuild in buildList)
                 {
                     string appPackageDirectory = appBuild + @"\AppPackages";

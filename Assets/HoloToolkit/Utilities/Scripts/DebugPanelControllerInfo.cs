@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
 {
     public class DebugPanelControllerInfo : MonoBehaviour
     {
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private class ControllerState
         {
             public InteractionSourceHandedness Handedness;
@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity
 
         private void Awake()
         {
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             controllers = new Dictionary<uint, ControllerState>();
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             Debug.LogFormat("{0} {1} Detected", obj.state.source.handedness, obj.state.source.kind);
@@ -127,7 +127,7 @@ namespace HoloToolkit.Unity
         private string GetControllerInfo()
         {
             string toReturn = string.Empty;
-#if UNITY_WSA
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             foreach (ControllerState controllerState in controllers.Values)
             {
                 // Debug message

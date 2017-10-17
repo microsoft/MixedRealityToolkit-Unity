@@ -3,7 +3,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
@@ -25,7 +25,7 @@ namespace HoloToolkit.Unity
     {
         private void Start()
         {
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
             UnityEngine.WSA.Application.InvokeOnUIThread(
                 () =>
                 {
@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity
 #endif
         }
 
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
         static int Full3DViewId { get; set; }
         static System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>> CallbackDictionary
             = new System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>>();
@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity
         /// Call this method with Application View Dispatcher， or in Application View Thread, will return to Full3D View and close Application View
         /// </summary>
         /// <param name="returnValue">The return value of the Xaml View Execution</param>
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
         public static async void CallbackReturnValue(object returnValue)
         {
             var viewId = ApplicationView.GetForCurrentView().Id;
@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity
         }
 #else
         public static void CallbackReturnValue(object returnValue)
-        {  
+        {
         }
 #endif
         /// <summary>
@@ -78,7 +78,7 @@ namespace HoloToolkit.Unity
         public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback, object pageNavigateParameter = null)
         {
             bool isCompleted = false;
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
             object returnValue = null;
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;
