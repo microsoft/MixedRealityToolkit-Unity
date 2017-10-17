@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     /// <summary>
-    /// Tap Test for text to speech. This voice will appear to emanate from the object.
+    /// Tap Test for text to speech. This voice will appear to emanate from the object
     /// </summary>
     public class TextToSpeechOnTapTest : MonoBehaviour, IInputClickHandler
     {
@@ -19,13 +19,20 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            // Create message
-            var msg = string.Format(
+            // If we have a text to speech manager on the target object, say something.
+            // This voice will appear to emanate from the object.
+            if (textToSpeech != null && eventData.PressType == InteractionSourcePressInfo.Select)
+            {
+                // Create message
+                var msg = string.Format(
                 "This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.",
                 textToSpeech.Voice.ToString());
 
-            // Speak message
-            textToSpeech.StartSpeaking(msg);
+                // Speak message
+                textToSpeech.StartSpeaking(msg);
+
+                eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+            }
         }
     }
 }

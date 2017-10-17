@@ -6,8 +6,13 @@ using UnityEngine;
 #if UNITY_WSA
 using System;
 using System.Collections.Generic;
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA;
+using UnityEngine.XR.WSA.Persistence;
+#else
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
+#endif
 #if !UNITY_EDITOR
 using HoloToolkit.Unity.SpatialMapping;
 #endif

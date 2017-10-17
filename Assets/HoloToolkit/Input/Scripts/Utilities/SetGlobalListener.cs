@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -12,15 +13,12 @@ namespace HoloToolkit.Unity.InputModule
     {
         private void OnEnable()
         {
-            if (InputManager.IsInitialized)
-            {
-                InputManager.Instance.AddGlobalListener(gameObject);
-            }
+            InputManager.Instance.AddGlobalListener(gameObject);
         }
 
         private void OnDisable()
         {
-            if (InputManager.IsInitialized)
+            if (InputManager.Instance != null)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
@@ -28,7 +26,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnDestroy()
         {
-            if (InputManager.IsInitialized)
+            if (InputManager.Instance != null)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
