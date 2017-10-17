@@ -6,8 +6,13 @@ using UnityEngine;
 #if UNITY_WSA
 using System;
 using System.Collections.Generic;
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
+#else
+using UnityEngine.VR.WSA;
+using UnityEngine.VR.WSA.Persistence;
+#endif
 #if !UNITY_EDITOR
 using HoloToolkit.Unity.SpatialMapping;
 #endif
@@ -170,6 +175,17 @@ namespace HoloToolkit.Unity
 
         #endregion // Event Callbacks
 #endif
+        /// <summary>
+        /// Generates the name for the anchor.
+        /// If no anchor name was specified, the name of the anchor will be the same as the GameObject's name.
+        /// </summary>
+        /// <param name="gameObjectToAnchor">The GameObject to attach the anchor to.</param>
+        /// <param name="proposedAnchorname">Name of the anchor. If none provided, the name of the GameObject will be used.</param>
+        /// <returns>The name of the newly attached anchor.</returns>
+        public static string GenerateAnchorName(GameObject gameObjectToAnchor, string proposedAnchorname = null)
+        {
+            return string.IsNullOrEmpty(proposedAnchorname) ? gameObjectToAnchor.name : proposedAnchorname;
+        }
 
         /// <summary>
         /// Attaches an anchor to the GameObject.  
@@ -198,7 +214,7 @@ namespace HoloToolkit.Unity
                 Debug.LogWarning("[WorldAnchorManager] AttachAnchor called before anchor store is ready.");
             }
 
-            anchorName = string.IsNullOrEmpty(anchorName) ? gameObjectToAnchor.name : anchorName;
+            anchorName = GenerateAnchorName(gameObjectToAnchor, anchorName);
 
             LocalAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo

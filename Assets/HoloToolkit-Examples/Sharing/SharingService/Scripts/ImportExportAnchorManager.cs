@@ -8,9 +8,15 @@ using HoloToolkit.Unity;
 
 #if UNITY_WSA && !UNITY_EDITOR
 using System.Collections.Generic;
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
 using UnityEngine.XR.WSA.Sharing;
+#else
+using UnityEngine.VR.WSA;
+using UnityEngine.VR.WSA.Persistence;
+using UnityEngine.VR.WSA.Sharing;
+#endif
 #endif
 
 namespace HoloToolkit.Sharing.Tests
@@ -199,7 +205,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private RoomManagerAdapter roomManagerListener;
 
-        #region Untiy APIs
+        #region Unity APIs
 
         protected override void Awake()
         {

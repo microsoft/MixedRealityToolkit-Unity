@@ -128,7 +128,7 @@ namespace HoloToolkit.Unity.InputModule
                     XboxView = string.IsNullOrEmpty(value) ? "XBOX_VIEW" : value;
                     break;
                 case XboxControllerMappingTypes.XboxMenu:
-                    XboxMenu = string.IsNullOrEmpty(value) ? "XBOX_MENU" : value;
+                    XboxMenu = string.IsNullOrEmpty(value) ? "CONTROLLER_MENU" : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftBumper:
                     XboxLeftBumper = string.IsNullOrEmpty(value) ? "XBOX_LEFT_BUMPER" : value;

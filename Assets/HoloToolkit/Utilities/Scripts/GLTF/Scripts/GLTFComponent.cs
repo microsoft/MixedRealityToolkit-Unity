@@ -17,7 +17,12 @@ namespace GLTF
         IEnumerator Start()
         {
             UnityWebRequest www = UnityWebRequest.Get(Url);
+
+#if UNITY_2017_2_OR_NEWER
             yield return www.SendWebRequest();
+#else
+            yield return www.Send();
+#endif
             byte[] gltfData = www.downloadHandler.data;
 
             var loader = new GLTFLoader(

@@ -5,161 +5,166 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
-	/// <summary>
-	/// Main components for controlling the quality of the system to maintain a steady framerate.
-	/// Calulates a QualityLevel based on the reported framerate and the refreshrate of the device inside the provided thresholds.
-	/// A QualityChangedEvent is triggered whenever the quality level changes.
-	/// Uses the GpuTimingCamera component to measure gpu time of the frame, if the Camera doesnt already have this component, it is automatically added.
-	/// </summary>
+    /// <summary>
+    /// Main components for controlling the quality of the system to maintain a steady framerate.
+    /// Calulates a QualityLevel based on the reported framerate and the refreshrate of the device inside the provided thresholds.
+    /// A QualityChangedEvent is triggered whenever the quality level changes.
+    /// Uses the GpuTimingCamera component to measure gpu time of the frame, if the Camera doesnt already have this component, it is automatically added.
+    /// </summary>
 
-	public class AdaptiveQuality : MonoBehaviour
-	{
-		[SerializeField]
-		[Tooltip("The minimum frame time percentage threshold used to increase render quality.")]
-		private float MinFrameTimeThreshold = 0.75f;
+    public class AdaptiveQuality : MonoBehaviour
+    {
+        [SerializeField]
+        [Tooltip("The minimum frame time percentage threshold used to increase render quality.")]
+        private float MinFrameTimeThreshold = 0.75f;
 
-		[SerializeField]
-		[Tooltip("The maximum frame time percentage threshold used to decrease render quality.")]
-		private float MaxFrameTimeThreshold = 0.95f;
+        [SerializeField]
+        [Tooltip("The maximum frame time percentage threshold used to decrease render quality.")]
+        private float MaxFrameTimeThreshold = 0.95f;
 
-		[SerializeField]
-		private int MinQualityLevel = -5;
-		[SerializeField]
-		private int MaxQualityLevel = 5;
-		[SerializeField]
-		private int StartQualityLevel = 5;
+        [SerializeField]
+        private int MinQualityLevel = -5;
+        [SerializeField]
+        private int MaxQualityLevel = 5;
+        [SerializeField]
+        private int StartQualityLevel = 5;
 
-		public delegate void QualityChangedEvent(int newQuality, int previousQuality);
-		public event QualityChangedEvent QualityChanged;
+        public delegate void QualityChangedEvent(int newQuality, int previousQuality);
+        public event QualityChangedEvent QualityChanged;
 
-		public int QualityLevel { get; private set; }
-		public int RefreshRate { get; private set; }
+        public int QualityLevel { get; private set; }
+        public int RefreshRate { get; private set; }
 
-		private float frameTimeQuota;
+        private float frameTimeQuota;
 
-		/// <summary>
-		/// The maximum number of frames used to extrapolate a future frame
-		/// </summary>
-		private const int maxLastFrames = 7;
-		private Queue<float> lastFrames = new Queue<float>();
+        /// <summary>
+        /// The maximum number of frames used to extrapolate a future frame
+        /// </summary>
+        private const int maxLastFrames = 7;
+        private Queue<float> lastFrames = new Queue<float>();
 
-		private const int minFrameCountBeforeQualityChange = 5;
-		private int frameCountSinceLastLevelUpdate;
+        private const int minFrameCountBeforeQualityChange = 5;
+        private int frameCountSinceLastLevelUpdate;
 
-		[SerializeField]
-		private Camera adaptiveCamera;
+        [SerializeField]
+        private Camera adaptiveCamera;
 
-		public const string TimingTag = "Frame";
+        public const string TimingTag = "Frame";
 
-		private void OnEnable()
-		{
-			QualityLevel = StartQualityLevel;
+        private void OnEnable()
+        {
+            QualityLevel = StartQualityLevel;
 
-			//Store our refreshrate
-			RefreshRate = (int)UnityEngine.XR.XRDevice.refreshRate;
-			if (RefreshRate == 0)
-			{
-				RefreshRate = 60;
-				if (!Application.isEditor)
-				{
-					Debug.LogWarning("Could not retrieve the HMD's native refresh rate. Assuming " + RefreshRate + " Hz.");
-				}
-			}
-			frameTimeQuota = 1.0f / RefreshRate;
+            //Store our refreshrate
 
-			//Assume main camera if no camera was setup
-			if (adaptiveCamera == null)
-			{
-				adaptiveCamera = Camera.main;
-			}
+#if UNITY_2017_2_OR_NEWER
+            RefreshRate = (int)UnityEngine.XR.XRDevice.refreshRate;
+#else
+            RefreshRate = (int)UnityEngine.VR.VRDevice.refreshRate;
+#endif
+            if (RefreshRate == 0)
+            {
+                RefreshRate = 60;
+                if (!Application.isEditor)
+                {
+                    Debug.LogWarning("Could not retrieve the HMD's native refresh rate. Assuming " + RefreshRate + " Hz.");
+                }
+            }
+            frameTimeQuota = 1.0f / RefreshRate;
 
-			//Make sure we have the GpuTimingCamera component attached to our camera with the correct timing tag
-			GpuTimingCamera gpuCamera = adaptiveCamera.GetComponent<GpuTimingCamera>();
-			if (gpuCamera == null || gpuCamera.TimingTag.CompareTo(TimingTag) != 0)
-			{
-				adaptiveCamera.gameObject.AddComponent<GpuTimingCamera>();
-			}
-		}
+            //Assume main camera if no camera was setup
+            if (adaptiveCamera == null)
+            {
+                adaptiveCamera = Camera.main;
+            }
 
-		protected void Update()
-		{
-			UpdateAdaptiveQuality();
-		}
+            //Make sure we have the GpuTimingCamera component attached to our camera with the correct timing tag
+            GpuTimingCamera gpuCamera = adaptiveCamera.GetComponent<GpuTimingCamera>();
+            if (gpuCamera == null || gpuCamera.TimingTag.CompareTo(TimingTag) != 0)
+            {
+                adaptiveCamera.gameObject.AddComponent<GpuTimingCamera>();
+            }
+        }
 
-		private bool LastFramesBelowThreshold(int frameCount)
-		{
-			//Make sure we have enough new frames since last change
-			if (lastFrames.Count < frameCount || frameCountSinceLastLevelUpdate < frameCount)
-			{
-				return false;
-			}
+        protected void Update()
+        {
+            UpdateAdaptiveQuality();
+        }
 
-			float maxTime = frameTimeQuota * MinFrameTimeThreshold;
-			//See if all our frames are below the threshold
-			foreach (var frameTime in lastFrames)
-			{
-				if (frameTime >= maxTime)
-				{
-					return false;
-				}
-			}
+        private bool LastFramesBelowThreshold(int frameCount)
+        {
+            //Make sure we have enough new frames since last change
+            if (lastFrames.Count < frameCount || frameCountSinceLastLevelUpdate < frameCount)
+            {
+                return false;
+            }
 
-			return true;
-		}
+            float maxTime = frameTimeQuota * MinFrameTimeThreshold;
+            //See if all our frames are below the threshold
+            foreach (var frameTime in lastFrames)
+            {
+                if (frameTime >= maxTime)
+                {
+                    return false;
+                }
+            }
 
-		private void UpdateQualityLevel(int delta)
-		{
-			//Change and clamp the new quality level
-			int prevQualityLevel = QualityLevel;
-			QualityLevel = Mathf.Clamp(QualityLevel + delta, MinQualityLevel, MaxQualityLevel);
+            return true;
+        }
 
-			//Trigger the event if we changed quality
-			if (QualityLevel != prevQualityLevel)
-			{
-				if (QualityChanged != null)
-				{
-					QualityChanged(QualityLevel, prevQualityLevel);
-				}
-				frameCountSinceLastLevelUpdate = 0;
-			}
-		}
+        private void UpdateQualityLevel(int delta)
+        {
+            //Change and clamp the new quality level
+            int prevQualityLevel = QualityLevel;
+            QualityLevel = Mathf.Clamp(QualityLevel + delta, MinQualityLevel, MaxQualityLevel);
 
-		private void UpdateAdaptiveQuality()
-		{
-			float lastAppFrameTime = (float)GpuTiming.GetTime("Frame");
+            //Trigger the event if we changed quality
+            if (QualityLevel != prevQualityLevel)
+            {
+                if (QualityChanged != null)
+                {
+                    QualityChanged(QualityLevel, prevQualityLevel);
+                }
+                frameCountSinceLastLevelUpdate = 0;
+            }
+        }
 
-			if (lastAppFrameTime <= 0)
-			{
-				return;
-			}
+        private void UpdateAdaptiveQuality()
+        {
+            float lastAppFrameTime = (float)GpuTiming.GetTime("Frame");
 
-			//Store a list of the frame samples
-			lastFrames.Enqueue(lastAppFrameTime);
-			if (lastFrames.Count > maxLastFrames)
-			{
-				lastFrames.Dequeue();
-			}
+            if (lastAppFrameTime <= 0)
+            {
+                return;
+            }
 
-			//Wait for a few frames between changes
-			frameCountSinceLastLevelUpdate++;
-			if (frameCountSinceLastLevelUpdate < minFrameCountBeforeQualityChange)
-			{
-				return;
-			}
+            //Store a list of the frame samples
+            lastFrames.Enqueue(lastAppFrameTime);
+            if (lastFrames.Count > maxLastFrames)
+            {
+                lastFrames.Dequeue();
+            }
 
-			// If the last frame is over budget, decrease quality level by 2 slots.
-			if (lastAppFrameTime > MaxFrameTimeThreshold * frameTimeQuota)
-			{
-				UpdateQualityLevel(-2);
-			}
-			else if (lastAppFrameTime < MinFrameTimeThreshold * frameTimeQuota)
-			{
-				// If the last 5 frames are below the GPU usage threshold, increase quality level by one.
-				if (LastFramesBelowThreshold(maxLastFrames))
-				{
-					UpdateQualityLevel(1);
-				}
-			}
-		}
-	}
+            //Wait for a few frames between changes
+            frameCountSinceLastLevelUpdate++;
+            if (frameCountSinceLastLevelUpdate < minFrameCountBeforeQualityChange)
+            {
+                return;
+            }
+
+            // If the last frame is over budget, decrease quality level by 2 slots.
+            if (lastAppFrameTime > MaxFrameTimeThreshold * frameTimeQuota)
+            {
+                UpdateQualityLevel(-2);
+            }
+            else if (lastAppFrameTime < MinFrameTimeThreshold * frameTimeQuota)
+            {
+                // If the last 5 frames are below the GPU usage threshold, increase quality level by one.
+                if (LastFramesBelowThreshold(maxLastFrames))
+                {
+                    UpdateQualityLevel(1);
+                }
+            }
+        }
+    }
 }

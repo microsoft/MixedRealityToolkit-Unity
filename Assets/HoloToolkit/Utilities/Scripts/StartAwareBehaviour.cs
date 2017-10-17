@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -8,6 +9,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// A behaviour designed to help child behaviours take certain actions only after Start has been called.
     /// </summary>
+    [Obsolete]
     public abstract class StartAwareBehaviour : MonoBehaviour
     {
         #region MonoBehaviour implementation

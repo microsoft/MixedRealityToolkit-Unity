@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 #endif
@@ -106,7 +106,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <returns>true if we have what we need, false otherwise.</returns>
         private bool CheckComponents()
         {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
             if (GenericNetworkTransmitter.Instance == null)
             {
                 Debug.Log("Need a UNetNetworkTransmitter in the scene for sending anchor data");
@@ -124,7 +124,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         private void Awake()
         {
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
             // Find our local IP
             foreach (HostName hostName in NetworkInformation.GetHostNames())
             {
@@ -166,7 +166,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <returns></returns>
         private string GetLocalComputerName()
         {
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
             foreach (HostName hostName in NetworkInformation.GetHostNames())
             {
                 if (hostName.Type == HostNameType.DomainName)
@@ -194,7 +194,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private IEnumerator InitAsServer()
         {
             Debug.Log("Acting as host");
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
             NetworkManager.singleton.serverBindToIP = true;
             NetworkManager.singleton.serverBindAddress = LocalIp;
 #endif
@@ -219,7 +219,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             // Start broadcasting for other clients.
             StartAsServer();
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
             // Start creating an anchor.
             UNetAnchorManager.Instance.CreateAnchor();
 #else
@@ -275,7 +275,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             // We have to parse the server IP to make the string friendly to the windows APIs.
             ServerIp = session.SessionIp;
             NetworkManager.singleton.networkAddress = ServerIp;
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
             // Tell the network transmitter the IP to request anchor data from if needed.
             GenericNetworkTransmitter.Instance.SetServerIp(ServerIp);
 #else
@@ -294,7 +294,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         {
             StopListening();
 
-#if WINDOWS_UWP
+#if !UNITY_EDITOR && UNITY_WSA
             NetworkManager.singleton.serverBindToIP = true;
             NetworkManager.singleton.serverBindAddress = LocalIp;
 #endif
@@ -306,7 +306,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             // Start broadcasting for other clients.
             StartAsServer();
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_WSA
             // Invoke creating an anchor in a couple frames to give all the Unet network objects time to spawn.
             Invoke("InvokeCreateAnchor", 0.25f);
 #else

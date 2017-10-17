@@ -4,10 +4,17 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.XR;
 
+#if UNITY_2017_2_OR_NEWER
+    using UnityEngine.XR;
 #if UNITY_WSA
-using UnityEngine.XR.WSA.Input;
+    using UnityEngine.XR.WSA.Input;
+#endif
+#else
+using UnityEngine.VR;
+#if UNITY_WSA
+using UnityEngine.VR.WSA.Input;
+#endif
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -37,7 +44,8 @@ namespace HoloToolkit.Unity.InputModule
         public float RotationSize = 45.0f;
         public float StrafeAmount = 0.5f;
 
-        public GameObject TeleportMarker;
+        [SerializeField]
+        private GameObject teleportMarker;
         private Animator animationController;
 
         /// <summary>
@@ -46,7 +54,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private FadeScript fadeControl;
 
-        private GameObject teleportMarker;
         private bool isTeleportValid;
         private IPointingSource currentPointingSource;
         private uint currentSourceId;
@@ -55,7 +62,11 @@ namespace HoloToolkit.Unity.InputModule
         {
             fadeControl = FadeScript.Instance;
 
+#if UNITY_2017_2_OR_NEWER
             if (!XRDevice.isPresent || fadeControl == null)
+#else
+            if (!VRDevice.isPresent || fadeControl == null)
+#endif
             {
                 if (fadeControl == null)
                 {
@@ -66,9 +77,9 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            if (TeleportMarker != null)
+            if (teleportMarker != null)
             {
-                teleportMarker = Instantiate(TeleportMarker);
+                teleportMarker = Instantiate(teleportMarker);
                 teleportMarker.SetActive(false);
 
                 animationController = teleportMarker.GetComponentInChildren<Animator>();
@@ -209,7 +220,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (isTeleportValid)
                 {
                     RaycastHit hitInfo;
-                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(Camera.main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
+                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
 
                     fadeControl.DoFade(0.25f, 0.5f, () =>
                     {
@@ -230,7 +241,7 @@ namespace HoloToolkit.Unity.InputModule
                     0.25f, // Fade in time
                     () => // Action after fade out
                     {
-                        transform.RotateAround(Camera.main.transform.position, Vector3.up, rotationAmount);
+                        transform.RotateAround(CameraCache.Main.transform.position, Vector3.up, rotationAmount);
                     }, null); // Action after fade in
             }
         }
@@ -244,9 +255,9 @@ namespace HoloToolkit.Unity.InputModule
                     0.25f, // Fade in time
                     () => // Action after fade out
                     {
-                        Transform transformToRotate = Camera.main.transform;
+                        Transform transformToRotate = CameraCache.Main.transform;
                         transformToRotate.rotation = Quaternion.Euler(0, transformToRotate.rotation.eulerAngles.y, 0);
-                        transform.Translate(strafeAmount, Camera.main.transform);
+                        transform.Translate(strafeAmount, CameraCache.Main.transform);
                     }, null); // Action after fade in
             }
         }
@@ -261,7 +272,7 @@ namespace HoloToolkit.Unity.InputModule
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
             // we need to set it relative to the user's head in the scene so they are looking/standing where 
             // we expect.
-            transform.position = worldPosition - (Camera.main.transform.position - transform.position);
+            transform.position = worldPosition - (CameraCache.Main.transform.position - transform.position);
         }
 
         private void EnableMarker()

@@ -36,7 +36,12 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (Application.isEditor)
             {
+
+#if UNITY_2017_2_OR_NEWER
                 if (UnityEngine.XR.XRDevice.isPresent)
+#else
+                if (UnityEngine.VR.VRDevice.isPresent)
+#endif
                 {
                     Destroy(this);
                     return;
@@ -129,5 +134,4 @@ namespace HoloToolkit.Unity.InputModule
             cameraTransform.Translate(this.lastTrackerToUnityTranslation, Space.World);
         }
     }
-
 }
