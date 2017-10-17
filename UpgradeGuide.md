@@ -28,6 +28,7 @@ General releases will list breaking changes in their descriptions.
 ### List of breaking changes
 - `TryGetPosition` is now `TryGetPointerPosition`
 - `TryGetOrientation` is now `TryGetPointerRotation`
+- `SpeechKeywordRecognizedEventData` is now `SpeechEventData`
 - All other changes should throw `Obsolete` warnings with suggested updates.
 - Renamed feature folders
 - Merged Test and Example folders
