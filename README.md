@@ -35,7 +35,7 @@ https://unity3d.com/get-unity/download?thank-you=update&download_nid=48329&os=Wi
 >
 > [![Github Release][githubhl-rel-badge]][unity-release]
 >
-> ### For existing HoloLens developers, also check out the [Breaking Changes](/BreakingChanges) information from the previous release.
+> ### For existing HoloLens developers, also check out the [Breaking Changes](/BreakingChanges.md) information from the previous release.
 
 Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade Guide](/UpgradeGuide.md).
 
@@ -62,7 +62,7 @@ To get up and going as quickly as possible, here are some guides to help you get
 |:--- | :--- |
 | Please go over the [Getting started guide](GettingStarted.md) to learn more about getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. |
 
-> ### Also, check out the new features added for the [Windows 10 Fall Creators update](/FallCreatorsUpdate)
+> ### Also, check out the new features added for the [Windows 10 Fall Creators update](/FallCreatorsUpdate.md)
 
 # Examples and QuickStart scenes
 The MRTK includes many great samples and starter scenes to demonstrate the uses of the MRTK API, these include:
