@@ -28,6 +28,8 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 https://unity3d.com/get-unity/download?thank-you=update&download_nid=48329&os=Win
 [githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20HoloLens%20release-2017.1.2-blue.svg
 
+Check out the updated from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
+
 > ## HoloLens Developers
 > Currently we are waiting on a fix for HoloLens development from Unity, for how you should use the following versions of Unity and the "Release" version of the MRTK Asset:
 >
@@ -58,11 +60,9 @@ The Mixed Reality Toolkit for Unity includes many API's to accelerate the develo
 # Getting started with MRTK
 To get up and going as quickly as possible, here are some guides to help you get started building Mixed Reality Projects
 
-| [![Quick Start Guide](External/ReadMeImages/MRTK170802c_Short_22.png)](GettingStarted.md) [Quick start](GettingStarted.md) | [![Contributing to this project](External/ReadMeImages/MRTK170802c_Short_23.png)](CONTRIBUTING.md) [Contributing to this project](CONTRIBUTING.md) |
-|:--- | :--- |
-| Please go over the [Getting started guide](GettingStarted.md) to learn more about getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. |
-
-> ### Also, check out the new features added for the [Windows 10 Fall Creators update](/FallCreatorsUpdate.md)
+| [![Quick Start Guide](External/ReadMeImages/MRTK170802c_Short_22.png)](GettingStarted.md) [Quick start](GettingStarted.md) | [![Contributing to this project](External/ReadMeImages/MRTK170802c_Short_23.png)](CONTRIBUTING.md) [Contributing to this project](CONTRIBUTING.md) | [![Contributing to this project](External/ReadMeImages/MRTK170802c_Short_24.png)](FallCreatorsUpdate.md) [Fall Creators Update](FallCreatorsUpdate.md) |
+|:--- | :--- | :--- |
+| Please go over the [Getting started guide](GettingStarted.md) to learn more about getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. | Check out the recent updates for Windows Mixed reality in the [Fall Creators update](/FallCreatorsUpdate.md) |
 
 # Examples and QuickStart scenes
 The MRTK includes many great samples and starter scenes to demonstrate the uses of the MRTK API, these include:
