@@ -1,4 +1,4 @@
-# Breaking Changes from previous release
+# Breaking Changes
 
 - **Renaming HoloToolkit-Unity repository to MixedRealityToolkit-Unity** to align with product direction.
 - Technically **all your checkins and redirect links will continue to work as-is** but we wanted to give a better heads up on this.
