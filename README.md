@@ -25,7 +25,7 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 [mrtk-version-badge]:            https://img.shields.io/badge/HoloLens%20MRTK%20release-2017.1.2-blue.svg
 
 [unity-release]:
-https://unity3d.com/get-unity/download?thank-you=update&download_nid=48329&os=Win
+https://unity3d.com/unity/whats-new/unity-2017.1.2
 [githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20HoloLens%20release-2017.1.2-blue.svg
 
 Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
