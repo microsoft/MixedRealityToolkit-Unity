@@ -75,11 +75,11 @@ Select the "Apply Mixed Reality Project Settings" option in the Unity Editor:
 
 ` Mixed Reality Toolkit -> Configure -> Apply Mixed Reality Project Settings`
 
-![MRTK Editor Project Settings](\External\ReadMeImages\MixedRealityProjectEditorOption.png)
+![MRTK Editor Project Settings](/External/ReadMeImages/MixedRealityProjectEditorOption.png)
 
 Select all the required options for your Project type:
 
-![MRTK Project Options](\External\ReadMeImages\MixedRealityProjectOptions.png)
+![MRTK Project Options](/External/ReadMeImages/MixedRealityProjectOptions.png)
 
 Check:
 * For Immersive headsets, check the **Target Occluded Devices** option
@@ -95,11 +95,11 @@ Select the "Apply Mixed Reality Scene Settings" option in the Unity Editor:
 
 ` Mixed Reality Toolkit -> Configure -> Apply Mixed Reality Scene Settings`
 
-![MRTK Editor Scene Settings](\External\ReadMeImages\MixedRealityEditorSceneSettings.png)
+![MRTK Editor Scene Settings](/External/ReadMeImages/MixedRealityEditorSceneSettings.png)
 
 Select all the required options for your Scene type:
 
-![MRTK Scene options](\External\ReadMeImages\MixedRealitySceneOptions.png)
+![MRTK Scene options](/External/ReadMeImages/MixedRealitySceneOptions.png)
 
 Alternatively, you can setup your scene manually as follows:
 
@@ -121,7 +121,7 @@ The MRTK provides you a quick and easy way to generate your Unity project from a
 
 `Mixed Reality Toolkit -> Build Window`
 
-![](\External\ReadMeImages\MixedRealityEditorBuildWindow.png)
+![MRTK Build Window](/External/ReadMeImages/MixedRealityEditorBuildWindow.png)
 
 This window offers many quick options to be able to:
 
