@@ -35,7 +35,7 @@ https://unity3d.com/get-unity/download?thank-you=update&download_nid=48329&os=Wi
 >
 > [![Github Release][githubhl-rel-badge]][unity-release]
 >
-> ### For existing HoloLens developers, also check out the [Upgrade Guide](\UpgradeGuide) information from the previous release.
+> ### For existing HoloLens developers, also check out the [Breaking Changes](\BreakingChanges) information from the previous release.
 
 Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade Guide](/UpgradeGuide.md).
 
