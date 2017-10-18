@@ -28,7 +28,7 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 https://unity3d.com/get-unity/download?thank-you=update&download_nid=48329&os=Win
 [githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20HoloLens%20release-2017.1.2-blue.svg
 
-Check out the updated from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
+Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
 
 > ## HoloLens Developers
 > Currently we are waiting on a fix for HoloLens development from Unity, for how you should use the following versions of Unity and the "Release" version of the MRTK Asset:
@@ -70,7 +70,7 @@ The MRTK includes many great samples and starter scenes to demonstrate the uses 
 | [![Keyboard input sample](External/ReadMeImages/InputKeyboard.png)](/Assets/HoloToolkit-Examples) [Keyboard input sample](/Assets/HoloToolkit-Examples) | [![Input manager tests](External/ReadMeImages/InputManagerTest.png)](/Assets/HoloToolkit-Examples) [Input manager tests](/Assets/HoloToolkit-Examples) | [![Interactive button demos](External/ReadMeImages/InteractiveButtonDemo.png)](/Assets/HoloToolkit-Examples) [Interactive button demos](/Assets/HoloToolkit-Examples) |
 |:--- | :--- | :--- |
 | A sample virtual keyboard, similar to that used in the Mixed Reality Portal | Several gaze interaction demos, showcasing popups, gaze buttons and more | Example UI buttons and controls for use in Mixed Reality |
-| [![Motion Controller tests](External/ReadMeImages/MotionControllerTestExample.png)](/Assets/HoloToolkit-Examples) [Motion Controller tests](/Assets/HoloToolkit-Examples) | [![Grab Mechanics demo](External/ReadMeImages/MRTK_GrabMechanicsExample.jpg)](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) [Grab Mechanics demo](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) | [![Scene occulsion demo](External/ReadMeImages/SceneOcclusion.png)](/Assets/HoloToolkit-Examples) [Scene occulsion demo](/Assets/HoloToolkit-Examples) |
+| [![Motion Controller tests](External/ReadMeImages/MotionControllerTestExample.png)](/Assets/HoloToolkit-Examples) [Motion Controller tests](/Assets/HoloToolkit-Examples) | [![Grab Mechanics demo](External/ReadMeImages/MRTK_GrabMechanicsExample.jpg)](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) [Grab Mechanics demo](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) | [![Scene occulsion demo](External/ReadMeImages/SceneOcclusion.png)](/Assets/HoloToolkit-Examples) [Scene occlusion demo](/Assets/HoloToolkit-Examples) |
 | Motion controller test scene demonstrating controller variables (IHMB only) | Several examples of grab mechanics using the Motion Controllers (IHMD Only) | Scene construction demo on how to make occluded windows |
 
 Check out the [Examples](/Assets/HoloToolkit-Examples) folder for more details.
