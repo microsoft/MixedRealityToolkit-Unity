@@ -2,7 +2,7 @@
 
 When updating the Mixed Reality Toolkit for Unity in your project always be sure to completely remove all the folders and assets of the toolkit before importing the unity package.  Unity does not handle assets that have been deleted, removed, or renamed.
 
-General releases will list [breaking changes](/FallCreatorsUpdate.md) in their descriptions.
+General releases will list [breaking changes](/BreakingChanges.md) in their descriptions.
 
 ## 2017.2 Upgrade Guide for Window Mixed Reality
 
