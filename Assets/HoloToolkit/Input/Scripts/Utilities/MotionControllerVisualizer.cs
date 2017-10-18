@@ -43,6 +43,19 @@ namespace HoloToolkit.Unity.InputModule
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
 
+        private void Awake()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            foreach (var sourceState in InteractionManager.GetCurrentReading())
+            {
+                if (sourceState.source.kind == InteractionSourceKind.Controller)
+                {
+                    StartTrackingController(sourceState.source);
+                }
+            }
+#endif
+        }
+
         private void Start()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
@@ -76,7 +89,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 #endif
         }
@@ -136,7 +148,6 @@ namespace HoloToolkit.Unity.InputModule
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             Application.onBeforeRender -= Application_onBeforeRender;
 #endif
@@ -194,11 +205,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
-        {
-            StartTrackingController(obj.state.source);
-        }
-
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             StartTrackingController(obj.state.source);
