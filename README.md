@@ -25,11 +25,12 @@ Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade G
 
 # Feature areas
 The Mixed Reality Toolkit for Unity includes many API's to accelerate the development of Mixed Reality projects for both HoloLens and the newer Immersive Headsets (IHMD)
+
 | ![Input](External/ReadMeImages/MRTK170802_Short_03.png) [Input](Assets/HoloToolkit/Input/README.md)                                               | ![Sharing](External/ReadMeImages/MRTK170802_Short_04.png) [Sharing](Assets/HoloToolkit/Sharing/README.md)   | ![Spatial Mapping](External/ReadMeImages/MRTK170802_Short_05.png) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| 
 | :--- | :--- | :--- |
-| Scripts that leverage inputs such as gaze, gesture, voice and motion controllers.                                                                 | Sharing library enables collaboration across multiple devices.                                              | Scripts that allow applications to bring the real world into the digital using HoloLens.                                        | 
-| ![Spatial Sound](External/ReadMeImages/MRTK170802_Short_09.png) [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md)                        | ![UX Controls](External/ReadMeImages/MRTK170802_Short_10.png) [UX Controls](Assets/HoloToolkit/UX/README.md)| ![Utilities](External/ReadMeImages/MRTK170802_Short_11.png) [Utilities](Assets/HoloToolkit/Utilities/README.md)                 | 
-| Scripts to help plug spatial audio into your application.                                                                                         | Building blocks for creating good UX in your application like common controls.                              | Common helpers and tools that you can leverage in your application.                                                             |
+| Scripts that leverage inputs such as gaze, gesture, voice and motion controllers. | Sharing library enables collaboration across multiple devices. | Scripts that allow applications to bring the real world into the digital using HoloLens. | 
+| ![Spatial Sound](External/ReadMeImages/MRTK170802_Short_09.png) [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md) | ![UX Controls](External/ReadMeImages/MRTK170802_Short_10.png) [UX Controls](Assets/HoloToolkit/UX/README.md)| ![Utilities](External/ReadMeImages/MRTK170802_Short_11.png) [Utilities](Assets/HoloToolkit/Utilities/README.md) | 
+| Scripts to help plug spatial audio into your application. | Building blocks for creating good UX in your application like common controls. | Common helpers and tools that you can leverage in your application. |
 | ![Spatial Understanding](External/ReadMeImages/MRTK170802_Short_06.png) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)| ![Build](External/ReadMeImages/MRTK170802_Short_12.png) [Build](Assets/HoloToolkit/BuildAndDeploy/README.md)| ![Boundary](External/ReadMeImages/MRTK170802_Short_07.png) [Boundary](Assets/HoloToolkit/Boundary/README.md)                       |
 | Tailor experiences based on room semantics like couch, wall etc.                                                                                  | Build and deploy automation window for Unity Editor.                                                        | Scripts that help with rendering the floor and boundaries for Immersive Devices.
 
@@ -47,6 +48,7 @@ To get up and going as quickly as possible, here are some guides to help you get
 
 # Examples and QuickStart scenes
 The MRTK includes many great samples and starter scenes to demonstrate the uses of the MRTK API, these include:
+
 | ![Hololens Emulator(optional)](External/ReadMeImages/InputKeyboard.png) Keyboard input sample | ![Hololens Emulator(optional)](External/ReadMeImages/InputManagerTest.png) Input manager tests | ![Hololens Emulator(optional)](External/ReadMeImages/InteractiveButtonDemo.png) Interactive button demos |
 |:--- | :--- | :--- |
 | A sample virtual keyboard, similar to that used in the Mixed Reality Portal | Several gaze interaction demos, showcasing popups, gaze buttons and more | Example UI buttons and controls for use in Mixed Reality |
