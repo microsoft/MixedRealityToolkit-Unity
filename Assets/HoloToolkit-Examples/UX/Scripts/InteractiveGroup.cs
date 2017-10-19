@@ -108,8 +108,8 @@ namespace HoloToolkit.Examples.InteractiveElements
                     collider.bounds.size.y + Offsets.y
                 );
                 interactive.gameObject.transform.localPosition = new Vector3(
-                    ((i / rows) - ((columns - 1) / 2f)) * Distance.x,
-                    -(j - (rows - 1) / 2f) * Distance.y);
+                    ((i / rows) - ((columns - 1) * 0.5f)) * Distance.x,
+                    -(j - (rows - 1) * 0.5f) * Distance.y);
             }
             GetInteractiveSet().SelectedIndices.Clear();
             GetInteractiveSet().UpdateInteractives();
