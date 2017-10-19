@@ -2,7 +2,7 @@
 
 When updating the Mixed Reality Toolkit for Unity in your project always be sure to completely remove all the folders and assets of the toolkit before importing the unity package.  Unity does not handle assets that have been deleted, removed, or renamed.
 
-General releases will list breaking changes in their descriptions.
+General releases will list [breaking changes](/BreakingChanges.md) in their descriptions.
 
 ## 2017.2 Upgrade Guide for Window Mixed Reality
 
@@ -28,6 +28,7 @@ General releases will list breaking changes in their descriptions.
 ### List of breaking changes
 - `TryGetPosition` is now `TryGetPointerPosition`
 - `TryGetOrientation` is now `TryGetPointerRotation`
+- `SpeechKeywordRecognizedEventData` is now `SpeechEventData`
 - All other changes should throw `Obsolete` warnings with suggested updates.
 - Renamed feature folders
 - Merged Test and Example folders

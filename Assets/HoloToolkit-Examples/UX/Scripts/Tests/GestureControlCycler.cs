@@ -51,7 +51,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             base.ManipulationUpdate(startGesturePosition, currentGesturePosition, startHeadOrigin, startHeadRay, gestureState);
             
             // get gesture data for gesturing along the horizontal axis
-            GestureInteractiveData gestureData = GetGestureData(new Vector3(1, 0, 0), MaxGestureDistance, FlipDirecationOnCameraForward);
+            GestureInteractiveData gestureData = GetGestureData(new Vector3(1, 0, 0), MaxGestureDistance, FlipDirectionOnCameraForward);
             
             for (int i = 0; i < mCycleList.Count; ++i)
             {

@@ -6,9 +6,12 @@ The project is aimed at reducing barriers to entry to create mixed reality appli
 
 MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://github.com/Microsoft/MixedRealityToolkit) and makes it easier to consume in [Unity](https://unity3d.com/).
 
-<img src="External/ReadMeImages/MixedRealityStack.png">
+[![Mixed Reality Academy](External/ReadMeImages/MixedRealityStack-Apps.png)](https://developer.microsoft.com/en-us/windows/mixed-reality/academy)
+[![View the Mixed Reality Companion Kit](External/ReadMeImages/MixedRealityStack-MRTK-Unity.png)](https://github.com/Microsoft/MixedRealityCompanionKit)
+[![Mixed Reality Toolkit GitHub Repo](External/ReadMeImages/MixedRealityStack-MRTK.png)](https://github.com/Microsoft/MixedRealityToolkit)
+[![Read the Mixed Reality Developer Guides](External/ReadMeImages/MixedRealityStack-UWP.png)](https://developer.microsoft.com/en-us/windows/mixed-reality)
 
-Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/mixed-reality/mixed_reality).
+> Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here
 
 [github-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
 [github-rel-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=latest%20master%20branch%20release&colorB=007ec6
@@ -18,110 +21,79 @@ Learn more about [mixed reality](https://developer.microsoft.com/en-us/windows/m
 [unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f3%20MRTP-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
+[githubhl-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
+[mrtk-version-badge]:            https://img.shields.io/badge/HoloLens%20MRTK%20release-2017.1.2-blue.svg
+
+[unity-release]:
+https://unity3d.com/unity/whats-new/unity-2017.1.2
+[githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20HoloLens%20release-2017.1.2-blue.svg
+
+Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
+
+> ## HoloLens Developers
+> Currently we are waiting on a fix for HoloLens development from Unity, for how you should use the following versions of Unity and the "Release" version of the MRTK Asset:
+>
+> [![Github Release][mrtk-version-badge]][githubhl-rel]
+>
+> [![Github Release][githubhl-rel-badge]][unity-release]
+>
+> ### For existing HoloLens developers, also check out the [Breaking Changes](/BreakingChanges.md) information from the previous release.
+
 Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade Guide](/UpgradeGuide.md).
 
 # Feature areas
-| ![Input](External/ReadMeImages/MRTK170802_Short_03.png) [Input](Assets/HoloToolkit/Input/README.md)                                               | ![Sharing](External/ReadMeImages/MRTK170802_Short_04.png) [Sharing](Assets/HoloToolkit/Sharing/README.md)   | ![Spatial Mapping](External/ReadMeImages/MRTK170802_Short_05.png) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| 
-| :------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
-| Scripts that leverage inputs such as gaze, gesture, voice and motion controllers.                                                                 | Sharing library enables collaboration across multiple devices.                                              | Scripts that allow applications to bring the real world into the digital using HoloLens.                                        | 
-| ![Spatial Sound](External/ReadMeImages/MRTK170802_Short_09.png) [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md)                        | ![UX Controls](External/ReadMeImages/MRTK170802_Short_10.png) [UX Controls](Assets/HoloToolkit/UX/README.md)| ![Utilities](External/ReadMeImages/MRTK170802_Short_11.png) [Utilities](Assets/HoloToolkit/Utilities/README.md)                 | 
-| Scripts to help plug spatial audio into your application.                                                                                         | Building blocks for creating good UX in your application like common controls.                              | Common helpers and tools that you can leverage in your application.                                                             |
-| ![Spatial Understanding](External/ReadMeImages/MRTK170802_Short_06.png) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)| ![Build](External/ReadMeImages/MRTK170802_Short_12.png) [Build](Assets/HoloToolkit/BuildAndDeploy/README.md)| ![Boundary](External/ReadMeImages/MRTK170802_Short_06.png) [Boundary](Assets/HoloToolkit/Boundary/README.md)                       |
+The Mixed Reality Toolkit for Unity includes many API's to accelerate the development of Mixed Reality projects for both HoloLens and the newer Immersive Headsets (IHMD)
+
+| [![Input](External/ReadMeImages/MRTK170802_Short_03.png)](Assets/HoloToolkit/Input/README.md)  [Input](Assets/HoloToolkit/Input/README.md)                                               | [![Sharing](External/ReadMeImages/MRTK170802_Short_04.png)](Assets/HoloToolkit/Sharing/README.md) [Sharing](Assets/HoloToolkit/Sharing/README.md)   | [![Spatial Mapping](External/ReadMeImages/MRTK170802_Short_05.png)](Assets/HoloToolkit/SpatialMapping/README.md) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| 
+| :--- | :--- | :--- |
+| Scripts that leverage inputs such as gaze, gesture, voice and motion controllers. | Sharing library enables collaboration across multiple devices. | Scripts that allow applications to bring the real world into the digital using HoloLens. | 
+| [![Spatial Sound](External/ReadMeImages/MRTK170802_Short_09.png)](Assets/HoloToolkit/SpatialSound/README.md) [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md) | [![UX Controls](External/ReadMeImages/MRTK170802_Short_10.png)](Assets/HoloToolkit/UX/README.md) [UX Controls](Assets/HoloToolkit/UX/README.md)| [![Utilities](External/ReadMeImages/MRTK170802_Short_11.png)](Assets/HoloToolkit/Utilities/README.md) [Utilities](Assets/HoloToolkit/Utilities/README.md) | 
+| Scripts to help plug spatial audio into your application. | Building blocks for creating good UX in your application like common controls. | Common helpers and tools that you can leverage in your application. |
+| [![Spatial Understanding](External/ReadMeImages/MRTK170802_Short_06.png)](Assets/HoloToolkit/SpatialUnderstanding/README.md) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)| [![Build](External/ReadMeImages/MRTK170802_Short_12.png)](Assets/HoloToolkit/BuildAndDeploy/README.md) [Build](Assets/HoloToolkit/BuildAndDeploy/README.md)| [![Boundary](External/ReadMeImages/MRTK170802_Short_07.png)](Assets/HoloToolkit/Boundary/README.md) [Boundary](Assets/HoloToolkit/Boundary/README.md)                       |
 | Tailor experiences based on room semantics like couch, wall etc.                                                                                  | Build and deploy automation window for Unity Editor.                                                        | Scripts that help with rendering the floor and boundaries for Immersive Devices.
 
 # Required Software
-| ![Windows 10 Creators Update](External/ReadMeImages/MRTK170802_Short_17.png) [Windows 10 Creators Update](https://www.microsoft.com/software-download/windows10)| ![Unity](External/ReadMeImages/MRTK170802_Short_18.png) [Unity](https://unity3d.com/get-unity/download/archive)| ![Visual Studio 2017](External/ReadMeImages/MRTK170802_Short_19.png) [Visual Studio 2017](http://dev.windows.com/downloads)| ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802_Short_20.png) [Hololens Emulator(optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
-| :-------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| To develop apps for mixed reality headsets, you need the Fall Creators Update.                                                                                  | The Unity engine is an easy way to get started building a mixed reality app.                                   | Visual Studio is used for code editing, deploying and building UWP app packages.                                           | Emulator allows you test your app without the device in a simulated environment.                                                                           |
+| [![Windows 10 Creators Update](External/ReadMeImages/MRTK170802_Short_17.png)](https://www.microsoft.com/software-download/windows10) [Windows 10 FCU](https://www.microsoft.com/software-download/windows10)| [![Unity](External/ReadMeImages/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 3D](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2017](External/ReadMeImages/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2017](http://dev.windows.com/downloads)| [![Simulator (optional)](External/ReadMeImages/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=852626) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=852626)|
+| :--- | :--- | :--- | :--- |
+| To develop apps for mixed reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Getting started with MRTK
-| ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802c_Short_22.png) Quick start                        | ![Hololens Emulator(optional)](External/ReadMeImages/MRTK170802c_Short_23.png) Contributing to this project |
-| :---------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------- |
-| Please go over the [Getting started guide](GettingStarted.md) to learn more about getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. |
+To get up and going as quickly as possible, here are some guides to help you get started building Mixed Reality Projects
 
-## New Features with Fall Creators Update!
+| [![Quick Start Guide](External/ReadMeImages/MRTK170802c_Short_22.png)](GettingStarted.md) [Quick start](GettingStarted.md) | [![Contributing to this project](External/ReadMeImages/MRTK170802c_Short_23.png)](CONTRIBUTING.md) [Contributing to this project](CONTRIBUTING.md) | [![Contributing to this project](External/ReadMeImages/MRTK170802c_Short_24.png)](FallCreatorsUpdate.md) [Fall Creators Update](FallCreatorsUpdate.md) |
+|:--- | :--- | :--- |
+| Please go over the [Getting started guide](GettingStarted.md) to learn more about getting off the ground quickly. | Please go over the [Contributing guidelines](CONTRIBUTING.md) to learn more about the process and thinking. | Check out the recent updates for Windows Mixed reality in the [Fall Creators update](/FallCreatorsUpdate.md) |
 
-### Prerequisites:
-1. See [Development PC specs](https://developer.microsoft.com/en-us/windows/mixed-reality/install_the_tools#developing_for_immersive_headsets) for tips on developing for immersive headsets.
-2. [Holograms 100](https://developer.microsoft.com/en-us/windows/mixed-reality/holograms_100) has been updated with how to setup Windows Mixed Reality in your app.
-3. [How to navigate the Windows Mixed Reality home](https://developer.microsoft.com/en-us/windows/mixed-reality/navigating_the_windows_mixed_reality_home).
-4. Development PC needs to be on the Fall Creators Update (Version 1709)
-5. [Visual Studio 2017](https://www.visualstudio.com/downloads/).
-    1. Install the **10.0.16299.0 SDK** via Visual Studio Installer.
-6. Unity 2017.2.0f3 MRTP with Mixed Reality API support. This build of Unity can be found [here](http://beta.unity3d.com/download/edcd66fb22ae/download.html).
-    1. Please read more about [Immersive headset details](https://developer.microsoft.com/en-us/windows/mixed-reality/immersive_headset_details).
+# Examples and QuickStart scenes
+The MRTK includes many great samples and starter scenes to demonstrate the uses of the MRTK API, these include:
 
-<img src="External/ReadMeImages/MotionControllerTest_Teleport.png" width="500px">
+| [![Keyboard input sample](External/ReadMeImages/InputKeyboard.png)](/Assets/HoloToolkit-Examples) [Keyboard input sample](/Assets/HoloToolkit-Examples) | [![Input manager tests](External/ReadMeImages/InputManagerTest.png)](/Assets/HoloToolkit-Examples) [Input manager tests](/Assets/HoloToolkit-Examples) | [![Interactive button demos](External/ReadMeImages/InteractiveButtonDemo.png)](/Assets/HoloToolkit-Examples) [Interactive button demos](/Assets/HoloToolkit-Examples) |
+|:--- | :--- | :--- |
+| A sample virtual keyboard, similar to that used in the Mixed Reality Portal | Several gaze interaction demos, showcasing popups, gaze buttons and more | Example UI buttons and controls for use in Mixed Reality |
+| [![Motion Controller tests](External/ReadMeImages/MotionControllerTestExample.png)](/Assets/HoloToolkit-Examples) [Motion Controller tests](/Assets/HoloToolkit-Examples) | [![Grab Mechanics demo](External/ReadMeImages/MRTK_GrabMechanicsExample.jpg)](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) [Grab Mechanics demo](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) | [![Scene occulsion demo](External/ReadMeImages/SceneOcclusion.png)](/Assets/HoloToolkit-Examples) [Scene occlusion demo](/Assets/HoloToolkit-Examples) |
+| Motion controller test scene demonstrating controller variables (IHMB only) | Several examples of grab mechanics using the Motion Controllers (IHMD Only) | Scene construction demo on how to make occluded windows |
 
-If you're looking for **Controller models**:
-* See the [**MotionControllerTest**](Assets/HoloToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
-* See:
-    * ControllerVisualizer.cs
-    * ControllerInfo.cs
-    * GLTFComponentStreamingAssets.cs
-    * The entire Utilities\Scripts\GLTF folder.
-* **IMPORTANT** Requires the **10.0.16299.0 SDK**, or you will not be able to build these scripts.
-    - You can install the SDK using the Visual Studio Installer.
-* **IMPORTANT** Currently, motion controller's GLTF 3D model is only visible when you deploy through Visual Studio. In Unity's game mode, you should assign override model. <img src="External/ReadMeImages/MotionControllerTest_ModelOverride.png" width="700px">
-
-If you're looking for **teleporting**:
-* See the [**MotionControllerTest**](Assets/HoloToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
-* Controls are the same as the Cliff House, using either an Xbox controller or motion controllers. Thumbstick up for teleport, down for backup, left/right for rotation.
-* See:
-    * MixedRealityTeleport.cs
-    * MixedRealityCameraParent.prefab
-    * TeleportMarker.prefab
-    
-If you're looking for **Xbox Controller Input** via the MixedRealityToolkit's InputManager:
-* See the [**XboxControllerExample**](Assets/HoloToolkit-Examples/Input/Scenes/XboxControllerExample.unity) scene.
-    
-If you're looking for **Boundary** tools:
-* See the [**BoundaryTest**](Assets/HoloToolkit-Examples/Boundary/Scenes/BoundaryTest.unity) scene.
-* The **Boundary** folder has the scripts that support defining the floor for your immersive applications.
-* The scripts help to draw the floor for immersive headsets and also allows you to check if an object is within those bounds.
-* See:
-    * BoundaryManager.cs
-    * MixedRealityCameraParent.prefab
-    
-If you're looking for **Motion controller Grab Mechanics**:
-* See  [**MotionControllersGrabMechanics**](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) page.
-<img src="External/ReadMeImages/MRTK_MotionController_GrabMechanics.jpg" width="500px">
-    
+Check out the [Examples](/Assets/HoloToolkit-Examples) folder for more details.
 
 # Roadmaps
 ### Master branch
 | Target Unity release  | Release timeframe | Master release tag | Toolkit release features |
-| --------------------- | ----------------- | ------------------ | ------------------------ |
-| 2017.1.0              | Early Aug 2017    | v1.2017.1.0        | <ul><li>Updating to Unity's beta build.</li><li>3D Keyboard for text entry.</li></ul>|
-| 2017.2.0              | End Oct 2017      | v1.2017.2.0        | <ul><li>Updating master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
+| --- | --- | --- | --- |
+| 2017.2.0 | (current)       | v1.2017.2.0        | <ul><li>Updated master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
 | 2017.3.0              | End Dec 2017      | v1.2017.3.0        | <ul><li>360 video player prefabs.</li><li>Scriptable foveated rendering prefabs.</li></ul>|
+
 ### Dev_Unity_2017.2.0 branch
 
 | Target Unity release  | Release timeframe | Branch release tag | Branch pre-release features | Status |
-| --------------------- | ----------------- | ------------------ | --------------------------- | --------------------------- |
-| MRTP9                 | End July 2017     | v1.Dev.MRTP9       | <ul><li>Windows Mixed Reality support for working on both HoloLens and immersive headsets.</li><li>Gamepad support.</li><li>Windows Mixed Reality motion controller support.</li></ul>| [Complete: v1.Dev.MRTP9](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP9) |
-| MRTP13                | Early Aug 2017    | v1.Dev.MRTP13      | <ul><li>Updating to MRTP13.</li><li>Windows Mixed Reality motion controller rendering with glTF format read from WU driver.</li></ul>| [Complete: v1.Dev.MRTP13](https://github.com/Microsoft/HoloToolkit-Unity/releases/tag/v1.Dev.MRTP13) |
-| 2017.2.0              | Early Oct 2017      | v1.Dev.2017.2.0    | <ul><li>Adapting to Unity's breaking changes of xR namespace and others.</li></ul>| Complete |
-| 2017.2.0              | Mid Oct 2017      | v1.Dev.2017.2.1 | <ul><li>Merge branch into master.</li></ul>| Complete |
-
-# Upcoming Breaking Changes
-
-- **Renaming HoloToolkit-Unity repository to MixedRealityToolkit-Unity** to align with product direction.
-- Technically **all your checkins and redirect links will continue to work as-is** but we wanted to give a better heads up on this.
-- All other dependent repositories will undergo a similar name change.
-- We are **not breaking toolkit folder names and namespaces at this time.**
-- Instead we are taking a staggered approach for breaking changes based on developer feedback.
-
-| Breaking change description                     | Release timeframe | Notes                    |
-| ----------------------------------------------- | ----------------- | ------------------------ |
-| Rename repository to MixedRealityToolkit-Unity. | Mid Aug 2017      | <ul><li>Recommend you do: $git remote set-url origin new_url.</li><li>Recommend reading: https://help.github.com/articles/renaming-a-repository ; https://github.com/blog/1508-repository-redirects-are-here</li></ul>|
-| Updating toolkit namespace to MixedReality      | Nov 2017          | <ul><li>Update folder names, class names and namespace names post 2017.2.0 release.</li></ul>|
+| --- | --- | --- | --- | --- |
+| 2017.2.1              | Mid Oct 2017      | v1.Dev.2017.2.1 | <ul><li>Merge branch into master.</li></ul>| Complete |
 
 # Future work planning
 - Updating landing page for the ReadMe.md to help app developers find content better.
 - Updating API documentation using tools like Doxygen and not writing them manually. This is something we will work with all of you on.
 - Update Wiki to host API documentation instead.
 - Move reusable features from [Mixed Reality Design Labs](https://github.com/Microsoft/MRDesignLabs_Unity) project into toolkit.
+- Improved samples and test cases
 
 # Release cadence
 ### Master branch
