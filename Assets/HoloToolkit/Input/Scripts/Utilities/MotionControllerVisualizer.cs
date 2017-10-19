@@ -26,8 +26,10 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
         public bool AnimateControllerModel = true;
 
-        [Tooltip("This setting will be used to determine if the model should always be the alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
-        public bool AlwaysUseAlternateModel = false;
+        [Tooltip("This setting will be used to determine if the model should always be the left alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        public bool AlwaysUseAlternateLeftModel = false;
+        [Tooltip("This setting will be used to determine if the model should always be the right alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        public bool AlwaysUseAlternateRightModel = false;
 
         [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. To override the platform left controller model set AlwaysUseAlternateModel to true; otherwise this will be the default if the model can't be found.")]
         [SerializeField]
@@ -143,11 +145,6 @@ namespace HoloToolkit.Unity.InputModule
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             Application.onBeforeRender -= Application_onBeforeRender;
 #endif
-
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
-#endif
         }
 
         private void Application_onBeforeRender()
@@ -242,89 +239,104 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator LoadControllerModel(InteractionSource source)
         {
-            if (AlwaysUseAlternateModel)
+            if (AlwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
             {
-                if (AlternateLeftController == null && AlternateRightController == null)
+                if (AlternateLeftController == null)
                 {
-                    Debug.LogError("Always use the alternate model is set on " + name + ", but no alternate controller model was specified.");
+                    Debug.LogWarning("Always use the alternate model is set on " + name + ", but the alternate left controller model was not specified.");
+                    yield return LoadSourceControllerModel(source);
                 }
-                else if (AlternateLeftController == null || AlternateRightController == null)
+                else
                 {
-                    Debug.LogWarning("Always use the alternate model is set on " + name + ", but the alternate " + ((AlternateLeftController == null) ? "left" : "right") + " controller model was not specified.");
+                    LoadAlternateControllerModel(source);
                 }
-
-                LoadAlternateControllerModel(source);
+            }
+            else if (AlwaysUseAlternateRightModel && source.handedness == InteractionSourceHandedness.Right)
+            {
+                if (AlternateRightController == null)
+                {
+                    Debug.LogWarning("Always use the alternate model is set on " + name + ", but the alternate right controller model was not specified.");
+                    yield return LoadSourceControllerModel(source);
+                }
+                else
+                {
+                    LoadAlternateControllerModel(source);
+                }
             }
             else
             {
+                yield return LoadSourceControllerModel(source);
+            }
+        }
+
+        private IEnumerator LoadSourceControllerModel(InteractionSource source)
+        {
 #if !UNITY_EDITOR
-                GameObject controllerModelGameObject;
+            GameObject controllerModelGameObject;
 
-                if (GLTFMaterial == null)
-                {
-                    Debug.Log("If using glTF, please specify a material on " + name + ".");
-                    yield break;
-                }
+            if (GLTFMaterial == null)
+            {
+                Debug.Log("If using glTF, please specify a material on " + name + ".");
+                yield break;
+            }
 
-                // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
-                IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = source.TryGetRenderableModelAsync();
+            // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
+            IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = source.TryGetRenderableModelAsync();
 
-                if (modelTask == null)
-                {
-                    Debug.Log("Model task is null.");
-                    LoadAlternateControllerModel(source);
-                    yield break;
-                }
+            if (modelTask == null)
+            {
+                Debug.Log("Model task is null.");
+                LoadAlternateControllerModel(source);
+                yield break;
+            }
 
-                while (modelTask.Status == AsyncStatus.Started)
+            while (modelTask.Status == AsyncStatus.Started)
+            {
+                yield return null;
+            }
+
+            IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
+
+            if (modelStream == null)
+            {
+                Debug.Log("Model stream is null, loading alternate.");
+                LoadAlternateControllerModel(source);
+                yield break;
+            }
+
+            if (modelStream.Size == 0)
+            {
+                Debug.Log("Model stream is empty, loading alternate.");
+                LoadAlternateControllerModel(source);
+                yield break;
+            }
+
+            byte[] fileBytes = new byte[modelStream.Size];
+
+            using (DataReader reader = new DataReader(modelStream))
+            {
+                DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
+
+                while (loadModelOp.Status == AsyncStatus.Started)
                 {
                     yield return null;
                 }
 
-                IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
-
-                if (modelStream == null)
-                {
-                    Debug.Log("Model stream is null, loading alternate.");
-                    LoadAlternateControllerModel(source);
-                    yield break;
-                }
-
-                if (modelStream.Size == 0)
-                {
-                    Debug.Log("Model stream is empty, loading alternate.");
-                    LoadAlternateControllerModel(source);
-                    yield break;
-                }
-
-                byte[] fileBytes = new byte[modelStream.Size];
-
-                using (DataReader reader = new DataReader(modelStream))
-                {
-                    DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
-
-                    while (loadModelOp.Status == AsyncStatus.Started)
-                    {
-                        yield return null;
-                    }
-
-                    reader.ReadBytes(fileBytes);
-                }
-
-                controllerModelGameObject = new GameObject();
-                GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
-                gltfScript.ColorMaterial = GLTFMaterial;
-                gltfScript.NoColorMaterial = GLTFMaterial;
-                gltfScript.GLTFData = fileBytes;
-
-                yield return gltfScript.LoadModel();
-                FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
-#else
-                yield break;
-#endif
+                reader.ReadBytes(fileBytes);
             }
-        }
+
+            controllerModelGameObject = new GameObject();
+            GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
+            gltfScript.ColorMaterial = GLTFMaterial;
+            gltfScript.NoColorMaterial = GLTFMaterial;
+            gltfScript.GLTFData = fileBytes;
+
+            yield return gltfScript.LoadModel();
+            FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
+#else
+            yield break;
 #endif
+        }
 
         private void LoadAlternateControllerModel(InteractionSource source)
         {
@@ -344,7 +356,7 @@ namespace HoloToolkit.Unity.InputModule
 
             FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
         }
-
+#endif
         private void FinishControllerSetup(GameObject controllerModelGameObject, string handedness, uint id)
         {
             var parentGameObject = new GameObject

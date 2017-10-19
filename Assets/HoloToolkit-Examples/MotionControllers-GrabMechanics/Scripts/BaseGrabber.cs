@@ -186,6 +186,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         {
             if (Application.isEditor)
             {
+#if UNITY_EDITOR
                 if (UnityEditor.Selection.activeGameObject == gameObject)
                 {
                     if (Input.GetKeyDown(KeyCode.G))
@@ -202,6 +203,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
                         }
                     }
                 }
+#endif
             }
 
             if (prevGrabState != GrabState && OnGrabStateChange != null)
