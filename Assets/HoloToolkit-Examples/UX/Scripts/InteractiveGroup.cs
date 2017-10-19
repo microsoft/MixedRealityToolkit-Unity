@@ -5,6 +5,7 @@ using UnityEngine;
 namespace HoloToolkit.Examples.InteractiveElements
 {
     [RequireComponent(typeof(InteractiveSet))]
+    [RequireComponent(typeof(LabelTheme))]
     public class InteractiveGroup : MonoBehaviour
     {
         [Tooltip("Prefab for your interactive.")]
@@ -58,7 +59,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             {
                 GameObject PrefabInst = Instantiate(InteractivePrefab, gameObject.transform) as GameObject;
                 InteractiveToggle InterInst = PrefabInst.GetComponent<InteractiveToggle>();
-                Interactives.Add(InterInst);
+                if (InterInst != null)
+                {
+                    Interactives.Add(InterInst);
+                }
             }
         }
 
@@ -70,14 +74,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         public void SetTitle(string title)
         {
             LabelTheme lblTheme = gameObject.GetComponent<LabelTheme>();
-            if (lblTheme == null)
-            {
-                Debug.LogError("No LabelTheme attached to this Interactive");
-            }
-            else
-            {
-                lblTheme.Default = title;
-            }
+            lblTheme.Default = title;
         }
 
         /// <summary>
@@ -102,6 +99,10 @@ namespace HoloToolkit.Examples.InteractiveElements
                 // layouting
                 int j = i % rows;
                 Collider collider = interactive.gameObject.GetComponent<Collider>();
+                if (collider == null)
+                {
+                    continue;
+                }
                 Vector2 Distance = new Vector2(
                     collider.bounds.size.x + Offsets.x,
                     collider.bounds.size.y + Offsets.y

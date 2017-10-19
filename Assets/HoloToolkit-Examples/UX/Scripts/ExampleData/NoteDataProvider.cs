@@ -46,9 +46,12 @@ namespace HoloToolkit.Examples.InteractiveElements
                 return;
             }
             int interactivePos = SourceSet.SelectedIndices[0];
-            string title = SourceSet.Interactives[interactivePos].gameObject.GetComponent<LabelTheme>().Default;
-            TargetGroup.Titles = Data[title];
-            TargetGroup.UpdateData();
+            LabelTheme label = SourceSet.Interactives[interactivePos].gameObject.GetComponent<LabelTheme>();
+            if (label != null)
+            {
+                TargetGroup.Titles = Data[label.Default];
+                TargetGroup.UpdateData();
+            }
         }
 
         /// <summary>
