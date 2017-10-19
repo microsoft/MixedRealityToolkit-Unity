@@ -65,11 +65,6 @@ namespace HoloToolkit.UI.Keyboard
             // Verify this is attached to a GameObject with a rect transform
             rectTransform = GetComponent<RectTransform>();
 
-            if (rectTransform == null)
-            {
-                Debug.LogError("This component must be attached to a GameObject with a RectTransform component!");
-            }
-
             // Collect children items already added (likely added in the Editor)
             CollectItems();
             UpdateLayout();
