@@ -4,14 +4,22 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
+    /// <summary>
+    /// NoteDataProvider takes the selected Label text of the pressed 
+    /// Interactive and fills the TargetGroup with data accordingly. You might
+    /// want to have some more complex logic and implement your own Data 
+    /// Provider.
+    /// </summary>
     public class NoteDataProvider : MonoBehaviour
     {
         public InteractiveGroup TargetGroup;
 
         public InteractiveSet SourceSet;
 
-        // some test data - imagine this comming from a web-service or some input menu
-        public Dictionary<string, List<string>> Data = new Dictionary<string, List<string>>
+        // some test data - imagine this comming from a web-service 
+        // or some input menu
+        public Dictionary<string, List<string>> Data = 
+            new Dictionary<string, List<string>>
         {
             {
                 "Normal",
@@ -37,34 +45,52 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         /// <summary>
         /// called when clicked on one of the buttons at the SourceSet to 
-        /// modify the TargetGroup data
+        /// modify the TargetGroup data according to the selected button 
+        /// (InteractiveToggle) text
         /// </summary>
         public void NoteTypeButtonSelected()
         {
             if (SourceSet.SelectedIndices.Count == 0)
             {
+                // No item selected, this is only possible when your SourceSet
+                // selection type is set to "Multiple".
                 return;
             }
+            // in this example we are only interested in the first selected
+            // item. If you allow multiple selection for the SourceSet you
+            // might want to have some more logic here
             int interactivePos = SourceSet.SelectedIndices[0];
-            LabelTheme label = SourceSet.Interactives[interactivePos].gameObject.GetComponent<LabelTheme>();
-            if (label != null)
+            InteractiveToggle toggle = SourceSet.Interactives[interactivePos];
+
+            LabelTheme label = toggle.gameObject.GetComponent<LabelTheme>();
+            if (label == null)
             {
+                // The selected InteractiveToggle does not have a LabelTheme 
+                // attached, so it can not be determined what text blocks 
+                // should be shown in the InteractiveGroup.
+                Debug.LogWarning("Please attach a LabelTheme to the " +
+                    "InteractiveToggle named \"" + 
+                    toggle.gameObject.name + "\""); 
+            }
+            else
+            { 
                 TargetGroup.Titles = Data[label.Default];
                 TargetGroup.UpdateData();
             }
         }
 
         /// <summary>
-        /// the user tapped the send button. If something is selected it will be logged.
+        /// The user pressed the send button. 
+        /// If something is selected it will be logged.
         /// </summary>
         public void SendNote()
         {
-            List<int> selected = TargetGroup.GetInteractiveSet().SelectedIndices;
-            foreach (int index in selected)
+            InteractiveSet interactiveSet = TargetGroup.GetInteractiveSet();
+            foreach (int index in interactiveSet.SelectedIndices)
             {
                 Debug.Log("Send new note: " + TargetGroup.Titles[index]);
             }
-            if (selected.Count == 0)
+            if (interactiveSet.SelectedIndices.Count == 0)
             {
                 Debug.Log("Please select a note.");
             }
