@@ -86,15 +86,14 @@ namespace HoloToolkit.Examples.InteractiveElements
                 
                 // layouting
                 int j = i % rows;
+
+                Vector2 Distance = new Vector2(Offsets.x, Offsets.y);
                 Collider collider = interactive.gameObject.GetComponent<Collider>();
-                if (collider == null)
+                if (collider != null)
                 {
-                    continue;
+                    Distance.x += collider.bounds.size.x;
+                    Distance.y += collider.bounds.size.y;
                 }
-                Vector2 Distance = new Vector2(
-                    collider.bounds.size.x + Offsets.x,
-                    collider.bounds.size.y + Offsets.y
-                );
                 interactive.gameObject.transform.localPosition = new Vector3(
                     ((i / rows) - ((columns - 1) * 0.5f)) * Distance.x,
                     -(j - (rows - 1) * 0.5f) * Distance.y);
