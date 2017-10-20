@@ -12,9 +12,12 @@ namespace HoloToolkit.Unity
     /// </summary>
     /// <typeparam name="TEvent">The type of AudioEvent being managed.</typeparam>
     /// <remarks>The TEvent type specified must derive from AudioEvent.</remarks>
-    public partial class UAudioManagerBase<TEvent> : MonoBehaviour where TEvent : AudioEvent, new()
+    public partial class UAudioManagerBase<TEvent, TBank> : MonoBehaviour where TEvent : AudioEvent, new() where TBank : AudioBank<TEvent>, new()
     {
+        public TBank[] DefaultBanks = null;
+
         [SerializeField]
+        [System.Obsolete]
         protected TEvent[] Events = null;
 
         protected const float InfiniteLoop = -1;
@@ -25,9 +28,16 @@ namespace HoloToolkit.Unity
         public List<ActiveEvent> ProfilerEvents { get { return ActiveEvents; } }
 #endif
 
+        protected List<TBank> LoadedBanks;
+
         protected void Awake()
         {
             ActiveEvents = new List<ActiveEvent>();
+            LoadedBanks = new List<TBank>(DefaultBanks.Length + 5);
+            for(int i=0; i<DefaultBanks.Length; i++)
+            {
+                LoadBank(DefaultBanks[i]);
+            }
         }
 
         private void Update()
@@ -38,6 +48,34 @@ namespace HoloToolkit.Unity
         protected void OnDestroy()
         {
             StopAllEvents();
+        }
+
+        protected virtual void BanksChanged()
+        {
+        }
+
+        public bool IsLoaded(TBank bank)
+        {
+            return LoadedBanks.Contains(bank);
+        }
+
+        public void LoadBank(TBank bank)
+        {
+            if (IsLoaded(bank))
+            {
+                Debug.LogWarningFormat("Attempting to Load {0} bank twice", bank.name);
+            }
+            else
+            {
+                LoadedBanks.Add(bank);
+                BanksChanged();
+            }
+        }
+
+        public void UnloadBank(TBank bank)
+        {
+            LoadedBanks.Remove(bank);
+            BanksChanged();
         }
 
         /// <summary>
