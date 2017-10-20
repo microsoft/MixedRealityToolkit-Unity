@@ -33,6 +33,7 @@ namespace HoloToolkit.Unity
                     if (objects.Length == 1)
                     {
                         instance = objects[0];
+                        DontDestroyOnLoad(instance.gameObject.GetParentRoot());
                     }
                     else if (objects.Length > 1)
                     {
