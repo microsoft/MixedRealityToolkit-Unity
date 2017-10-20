@@ -31,7 +31,7 @@ https://unity3d.com/unity/whats-new/unity-2017.1.2
 Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
 
 > ## HoloLens Developers
-> Currently we are waiting on a fix for HoloLens development from Unity, for how you should use the following versions of Unity and the "Release" version of the MRTK Asset:
+> Currently we are waiting on a fix for HoloLens development from Unity, for now you should use the 2017.1.2 version of Unity and the "Release" version of the MRTK Asset:
 >
 > [![Github Release][mrtk-version-badge]][githubhl-rel]
 >
