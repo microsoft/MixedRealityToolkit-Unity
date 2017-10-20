@@ -5,7 +5,6 @@ using UnityEngine;
 namespace HoloToolkit.Examples.InteractiveElements
 {
     [RequireComponent(typeof(InteractiveSet))]
-    [RequireComponent(typeof(LabelTheme))]
     public class InteractiveGroup : MonoBehaviour
     {
         [Tooltip("Prefab for your interactive.")]
@@ -64,17 +63,6 @@ namespace HoloToolkit.Examples.InteractiveElements
                     Interactives.Add(InterInst);
                 }
             }
-        }
-
-        /// <summary>
-        /// shortcut to set title
-        /// (assuming this Interactive has a LabelTheme attached to it)
-        /// </summary>
-        /// <param name="title"></param>
-        public void SetTitle(string title)
-        {
-            LabelTheme lblTheme = gameObject.GetComponent<LabelTheme>();
-            lblTheme.Default = title;
         }
 
         /// <summary>
