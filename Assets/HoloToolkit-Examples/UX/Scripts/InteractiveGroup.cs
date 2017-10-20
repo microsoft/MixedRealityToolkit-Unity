@@ -58,8 +58,13 @@ namespace HoloToolkit.Examples.InteractiveElements
             {
                 GameObject PrefabInst = Instantiate(InteractivePrefab, gameObject.transform) as GameObject;
                 InteractiveToggle InterInst = PrefabInst.GetComponent<InteractiveToggle>();
-                if (InterInst != null)
+                if (InterInst == null)
                 {
+                    Debug.LogWarning("Please add an InteractiveToggle for your prefab " +
+                        gameObject.name + " to use it in an InteractiveGroup.");
+                }
+                else
+                { 
                     Interactives.Add(InterInst);
                 }
             }
