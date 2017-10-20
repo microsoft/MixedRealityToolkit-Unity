@@ -33,9 +33,7 @@ namespace HoloToolkit.Unity
                     T[] objects = FindObjectsOfType<T>();
                     if (objects.Length == 1)
                     {
-                        instance = objects[0];
-                        actionsWaitingForInitialization.ForEach(action => action());
-                        actionsWaitingForInitialization = null;
+                        Instance = objects[0];
                     }
                     else if (objects.Length > 1)
                     {
@@ -43,6 +41,17 @@ namespace HoloToolkit.Unity
                     }
                 }
                 return instance;
+            }
+
+            private set
+            {
+                instance = value;
+
+                if(instance != null && actionsWaitingForInitialization != null)
+                {
+                    actionsWaitingForInitialization.ForEach(action => action());
+                    actionsWaitingForInitialization = null;
+                }
             }
         }
 
@@ -87,7 +96,7 @@ namespace HoloToolkit.Unity
             }
             else if (!IsInitialized)
             {
-                instance = (T)this;
+                Instance = (T)this;
             }
         }
 
@@ -101,7 +110,7 @@ namespace HoloToolkit.Unity
         {
             if (instance == this)
             {
-                instance = null;
+                Instance = null;
                 searchForInstance = true;
             }
         }
