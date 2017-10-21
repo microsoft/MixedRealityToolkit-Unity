@@ -77,7 +77,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// Flips the CurrentDirection based on the camera forward compared to Vector3.forward.
         /// </summary>
         [Tooltip("Should we care if the Camera's forward is not Vector3.forward?")]
-        public bool FlipDirecationOnCameraForward = false;
+        public bool FlipDirectionOnCameraForward = false;
         
         /// <summary>
         /// Current gesture state
@@ -417,7 +417,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             DirectionVector = CurrentGesturePosition - StartGesturePosition;
             CurrentDistance = DirectionVector.magnitude;
-            bool flipDirection = Vector3.Dot(Vector3.forward, StartHeadRay) < 0 && FlipDirecationOnCameraForward;
+            bool flipDirection = Vector3.Dot(Vector3.forward, StartHeadRay) < 0 && FlipDirectionOnCameraForward;
             switch (GestureData)
             {
                 case GestureDataType.Raw:

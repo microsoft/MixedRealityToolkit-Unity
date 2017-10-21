@@ -2,7 +2,7 @@
 
 When updating the Mixed Reality Toolkit for Unity in your project always be sure to completely remove all the folders and assets of the toolkit before importing the unity package.  Unity does not handle assets that have been deleted, removed, or renamed.
 
-General releases will list breaking changes in their descriptions.
+General releases will list [breaking changes](/BreakingChanges.md) in their descriptions.
 
 ## 2017.2 Upgrade Guide for Window Mixed Reality
 
@@ -11,7 +11,7 @@ General releases will list breaking changes in their descriptions.
 - [Unity Editor 2017.2.0f3 MRTP](http://beta.unity3d.com/download/edcd66fb22ae/download.html) or later
 - Running the Windows Fall Creator's Update Build 1709 or later
 - Visual Studio 2017 build 15.3 or later
-- Window 10 SDK 10.0.16267.0 or later
+- Window 10 SDK 10.0.16299.0 or later
 
 ### List of breaking changes
 - None to date.  See [Unity's upgrade guide](https://docs.unity3d.com/Manual/UpgradeGuide20172.html) for Unity Specific changes.
@@ -28,6 +28,7 @@ General releases will list breaking changes in their descriptions.
 ### List of breaking changes
 - `TryGetPosition` is now `TryGetPointerPosition`
 - `TryGetOrientation` is now `TryGetPointerRotation`
+- `SpeechKeywordRecognizedEventData` is now `SpeechEventData`
 - All other changes should throw `Obsolete` warnings with suggested updates.
 - Renamed feature folders
 - Merged Test and Example folders
