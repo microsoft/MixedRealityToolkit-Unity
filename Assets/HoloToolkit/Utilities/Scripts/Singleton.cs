@@ -1,6 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -14,6 +16,7 @@ namespace HoloToolkit.Unity
     public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         private static T instance;
+        private static List<Action> actionsWaitingForInitialization = new List<Action>();
 
         /// <summary>
         /// Returns the Singleton instance of the classes type.
@@ -41,6 +44,17 @@ namespace HoloToolkit.Unity
                     }
                 }
                 return instance;
+            }
+
+            private set
+            {
+                instance = value;
+
+                if(instance != null && actionsWaitingForInitialization != null)
+                {
+                    actionsWaitingForInitialization.ForEach(action => action());
+                    actionsWaitingForInitialization = null;
+                }
             }
         }
 
@@ -101,8 +115,26 @@ namespace HoloToolkit.Unity
         {
             if (instance == this)
             {
-                instance = null;
+                Instance = null;
                 searchForInstance = true;
+            }
+        }
+
+        /// <summary>
+        /// Performs an action when the singleton is initialized.
+        /// If the singleton is already initialized, the action will be called instantanly.
+        /// Actions can be registered multiple times. In this case, the actions will also be called multiple times.
+        /// </summary>
+        /// <param name="action">Action to perform when the singleton is initialized.</param>
+        public static void WhenInitialized(Action action)
+        {
+            if (IsInitialized)
+            {
+                action();
+            }
+            else
+            {
+                actionsWaitingForInitialization.Add(action);
             }
         }
     }
