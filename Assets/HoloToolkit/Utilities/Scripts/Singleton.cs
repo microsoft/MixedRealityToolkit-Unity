@@ -8,7 +8,9 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Singleton behaviour class, used for components that should only have one instance
+    /// Singleton behaviour class, used for components that should only have one instance.
+    /// <remarks>Singleton classes live on through scene transitions and will mark their 
+    /// parent root GameObject with <see cref="GameObject.DontDestroyOnLoad"/></remarks>
     /// </summary>
     /// <typeparam name="T">The Singleton Type</typeparam>
     public class Singleton<T> : MonoBehaviour where T : Singleton<T>
@@ -27,17 +29,18 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (searchForInstance && instance == null)
+                if (!IsInitialized && searchForInstance)
                 {
                     searchForInstance = false;
                     T[] objects = FindObjectsOfType<T>();
                     if (objects.Length == 1)
                     {
-                        Instance = objects[0];
+                        instance = objects[0];
+                        DontDestroyOnLoad(instance.gameObject.GetParentRoot());
                     }
                     else if (objects.Length > 1)
                     {
-                        Debug.LogErrorFormat("Expected exactly 1 {0} but found {1}.", typeof(T).ToString(), objects.Length);
+                        Debug.LogErrorFormat("Expected exactly 1 {0} but found {1}.", typeof(T).Name, objects.Length);
                     }
                 }
                 return instance;
@@ -96,7 +99,9 @@ namespace HoloToolkit.Unity
             }
             else if (!IsInitialized)
             {
-                Instance = (T)this;
+                instance = (T)this;
+                searchForInstance = false;
+                DontDestroyOnLoad(gameObject.GetParentRoot());
             }
         }
 
