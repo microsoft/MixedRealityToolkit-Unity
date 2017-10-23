@@ -441,7 +441,7 @@ namespace HoloToolkit.Unity.Buttons
                 StateChange(newState);
             }
         }
-
+#if UNITY_EDITOR
         /// <summary>
         /// On draw gizmo shows the icon for the object in the editor 
         /// </summary>
@@ -456,5 +456,6 @@ namespace HoloToolkit.Unity.Buttons
                 Gizmos.DrawIcon(collider.bounds.center + (collider.bounds.size.y * Vector3.up), _GizmoIcon, false);
             }
         }
+#endif
     }
 }
