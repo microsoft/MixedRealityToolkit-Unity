@@ -67,8 +67,6 @@ namespace HoloToolkit.Unity.Collections
         [SerializeField]
         private ObjectCollection collection;
 
-        private bool updatedOnce = false;
-
         /// <summary>
         /// Sets each node in the collection to its last stored arrangement
         /// Automatically prunes destroyed or removed nodes

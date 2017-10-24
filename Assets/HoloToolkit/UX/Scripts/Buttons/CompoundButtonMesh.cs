@@ -4,6 +4,7 @@
 //
 using System;
 using UnityEngine;
+using MRDL;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -14,21 +15,14 @@ namespace HoloToolkit.Unity.Buttons
     public class CompoundButtonMesh : ProfileButtonBase<ButtonMeshProfile>
     {
         const float AnimationSpeedMultiplier = 25f;
-
-        /// <summary>
-        /// Transform that scale and offset will be applied to.
-        /// </summary>
+        
+        [Tooltip("Transform that scale and offset will be applied to.")]
+        [DropDownComponent]
         public Transform TargetTransform;
-
-        /// <summary>
-        /// Mesh renderer button for mesh button.
-        /// </summary>
+        
+        [Tooltip("Mesh renderer button for mesh button.")]
+        [DropDownComponent]
         public MeshRenderer Renderer;
-
-        /// <summary>
-        /// Mesh filter object for mesh button.
-        /// </summary>
-        public MeshFilter MeshFilter;
         
         /// <summary>
         /// Mesh Button State Data Set
@@ -95,7 +89,7 @@ namespace HoloToolkit.Unity.Buttons
                 GameObject.DestroyImmediate(instantiatedMaterial);
             }
         }
-        #endif
+#endif
 
         protected void Start ()
         {
@@ -253,5 +247,10 @@ namespace HoloToolkit.Unity.Buttons
                 }
             }
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(CompoundButtonMesh))]
+        public class CustomEditor : MRDLEditor { }
+#endif
     }
 }

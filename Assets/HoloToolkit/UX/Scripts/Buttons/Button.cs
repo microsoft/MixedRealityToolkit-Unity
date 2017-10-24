@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// Current Button State
         /// </summary>
-        [Header("Button")]
+        [Header("Basic Settings")]
         [Tooltip("Current State of the Button")]
         public ButtonStateEnum ButtonState = ButtonStateEnum.Observation;
 

@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using MRDL;
 using System.Collections;
 using UnityEngine;
 
@@ -11,43 +12,29 @@ namespace HoloToolkit.Unity.Buttons
     [RequireComponent(typeof(CompoundButton))]
     public class CompoundButtonIcon : ProfileButtonBase<ButtonIconProfile>
     {
-        /// <summary>
-        /// Turns off the icon entirely
-        /// </summary>
+        [Header("Icon Settings")]
+        [SerializeField]
+        [DropDownComponent]
+        private MeshRenderer targetIconRenderer;
+
+        [Tooltip("Turns off the icon entirely")]
         public bool DisableIcon = false;
 
-        /// <summary>
-        /// Disregard the icon in the profile
-        /// </summary>
+        [Tooltip("Disregard the icon in the profile and use Icon Override instead")]
         public bool OverrideIcon = false;
 
-        /// <summary>
-        /// Icon to use for override
-        /// </summary>
-        public Texture2D IconOverride
-        {
-            get
-            {
-                return iconOverride;
-            }
-            set
-            {
-                iconOverride = value;
-                SetIconName(string.Empty);
-            }
-        }
-
         [SerializeField]
-        private Texture2D iconOverride;
-
-        [SerializeField]
+        [HideInMRDLInspector]
         private string iconName;
 
         [SerializeField]
-        private float alpha = 1f;
+        [ShowIfBoolValue("OverrideIcon")]
+        [Tooltip("Icon to use for override")]
+        private Texture2D iconOverride;
 
         [SerializeField]
-        private MeshRenderer targetIconRenderer;
+        [Tooltip("Alpha value for the text mesh component")]
+        private float alpha = 1f;
 
         private Material instantiatedMaterial;
         private Mesh instantiatedMesh;
@@ -106,23 +93,11 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        public MeshRenderer IconRenderer
-        {
-            get
-            {
-                return targetIconRenderer;
-            }
-            set
-            {
-                targetIconRenderer = value;
-            }
-        }
-
         public MeshFilter IconMeshFilter
         {
             get
             {
-                return IconRenderer != null ? IconRenderer.GetComponent<MeshFilter>() : null;
+                return targetIconRenderer != null ? targetIconRenderer.GetComponent<MeshFilter>() : null;
             }
         }
         
@@ -139,7 +114,7 @@ namespace HoloToolkit.Unity.Buttons
             
         }
         #endif
-
+        
         public string IconName
         {
             get
@@ -155,24 +130,20 @@ namespace HoloToolkit.Unity.Buttons
         private void SetIconName(string newName)
         {
             // Avoid exploding if possible
-            if (Profile == null)
-            {
+            if (Profile == null) {
                 return;
             }
 
-            if (IconRenderer == null)
-            {
+            if (targetIconRenderer == null) {
                 return;
             }
 
-            if (DisableIcon)
-            {
-                IconRenderer.enabled = false;
+            if (DisableIcon) {
+                targetIconRenderer.enabled = false;
                 return;
             }
 
-            if (Profile.IconMaterial == null || Profile.IconMesh == null)
-            {
+            if (Profile.IconMaterial == null || Profile.IconMesh == null) {
                 return;
             }
 
@@ -182,7 +153,7 @@ namespace HoloToolkit.Unity.Buttons
                 instantiatedMaterial = new Material(Profile.IconMaterial);
                 instantiatedMaterial.name = Profile.IconMaterial.name;
             }
-            IconRenderer.sharedMaterial = instantiatedMaterial;
+            targetIconRenderer.sharedMaterial = instantiatedMaterial;
             
             // Instantiate our local mesh now, if we don't have one
             if (instantiatedMesh == null)
@@ -195,7 +166,7 @@ namespace HoloToolkit.Unity.Buttons
             if (OverrideIcon)
             {
                 // Use the default mesh for override icons
-                IconRenderer.enabled = true;
+                targetIconRenderer.enabled = true;
                 IconMeshFilter.sharedMesh = Profile.IconMesh;
                 IconMeshFilter.transform.localScale = Vector3.one;
                 instantiatedMaterial.mainTexture = iconOverride;
@@ -205,21 +176,21 @@ namespace HoloToolkit.Unity.Buttons
             // Disable the renderer if the name is empty
             if (string.IsNullOrEmpty(newName))
             {
-                IconRenderer.enabled = false;
+                targetIconRenderer.enabled = false;
                 iconName = newName;
                 return;
-            }
-            
+            }            
+
             // Moment of truth - try to get our icon
-            if (!Profile.GetIcon(iconName, IconRenderer, IconMeshFilter, true))
+            if (!Profile.GetIcon(newName, targetIconRenderer, IconMeshFilter, true))
             {
-                IconRenderer.enabled = false;
+                targetIconRenderer.enabled = false;
                 return;
             }
 
             // If we've made it this far we're golden
-            IconRenderer.enabled = true;
             iconName = newName;
+            targetIconRenderer.enabled = true;
             RefreshAlpha();
         }
 
@@ -287,10 +258,10 @@ namespace HoloToolkit.Unity.Buttons
             // Reset to default mats and meshes
             if (Profile != null)
             {
-                if (IconRenderer != null)
+                if (targetIconRenderer != null)
                 {
                     // Restore the icon material to the renderer
-                    IconRenderer.sharedMaterial = Profile.IconMaterial;
+                    targetIconRenderer.sharedMaterial = Profile.IconMaterial;
                 }
                 if (IconMeshFilter != null)
                 {
@@ -328,5 +299,16 @@ namespace HoloToolkit.Unity.Buttons
             RefreshAlpha();
             updatingAlpha = false;
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(CompoundButtonIcon))]
+        public class CustomEditor : MRDLEditor {
+            protected override void DrawCustomFooter() {
+                CompoundButtonIcon iconButton = (CompoundButtonIcon)target;
+                iconButton.IconName = iconButton.Profile.DrawIconSelectField(iconButton.iconName);
+
+            }
+        }
+#endif
     }
 }

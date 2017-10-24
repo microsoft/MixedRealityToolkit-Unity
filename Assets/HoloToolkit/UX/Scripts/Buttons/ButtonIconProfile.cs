@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.Buttons
     /// </summary>
     public abstract class ButtonIconProfile : ButtonProfile
     {
+        [Header("Defaults")]
         /// <summary>
         /// The icon returned when a requested icon is not found
         /// </summary>

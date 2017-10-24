@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using MRDL;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -16,6 +17,7 @@ namespace HoloToolkit.Unity.Buttons
     /// /// </summary>
     public class ButtonIconProfileFont : ButtonIconProfile
     {
+        [Header("Font Settings")]
         /// <summary>
         /// Name of the font this profile uses
         /// </summary>
@@ -43,28 +45,21 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// The name of the font being used
         /// </summary>
+        [Header("Font Asset Name")]
         public string OSFontName = DefaultUnicodeFont;
 
-        /// <summary>
-        /// Scale of the text generator's mesh
-        /// </summary>
+        [Tooltip("Scale of the text generator's mesh")]
         public float RendererScale = 0.001f;
 
-        /// <summary>
-        /// Size of the rendered font
-        /// </summary>
-        public int FontScaleFactor = 16;        
+        [Tooltip("Size of the rendered font")]
+        public int FontScaleFactor = 16;
 
-        public Font IconFont
-        {
-            get
-            {
+        public Font IconFont {
+            get {
                 return iconFont;
             }
-            set
-            {
-                if (iconFont != value)
-                {
+            set {
+                if (iconFont != value) {
                     // We'll need to re-initialize
                     initialized = false;
                     iconFont = value;
@@ -72,50 +67,40 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        public override List<string> GetIconKeys()
-        {
+        public override List<string> GetIconKeys() {
             Initialize();
 
-            return new List<string> (UnicodeKeys);
+            return new List<string>(UnicodeKeys);
         }
 
-        public override bool GetIcon(string iconName, MeshRenderer targetRenderer, MeshFilter targetMesh, bool useDefaultIfNotFound)
-        {
+        public override bool GetIcon(string iconName, MeshRenderer targetRenderer, MeshFilter targetMesh, bool useDefaultIfNotFound) {
             Initialize();
 
-            if (targetRenderer == null || targetMesh == null)
-            {
+            if (targetRenderer == null || targetMesh == null) {
                 return false;
             }
 
             Texture2D icon = null;
-            if (useDefaultIfNotFound)
-            {
+            if (useDefaultIfNotFound) {
                 icon = _IconNotFound;
             }
 
             bool useDefaultMesh = true;
 
-            if (IconFont != null)
-            {
-                if (!string.IsNullOrEmpty(iconName))
-                {
-                    if (GetIntValueFromHex (iconName) == 0)
-                    {
-                        if (useDefaultIfNotFound)
-                        {
+            if (IconFont != null) {
+                if (!string.IsNullOrEmpty(iconName)) {
+                    if (GetIntValueFromHex(iconName) == 0) {
+                        if (useDefaultIfNotFound) {
                             icon = _IconNotFound;
                         }
                         return icon != null;
                     }
                     string textValue = GetCharStringFromHex(iconName);
 
-                    if (!string.IsNullOrEmpty(textValue))
-                    {
+                    if (!string.IsNullOrEmpty(textValue)) {
                         Mesh sharedMesh = targetMesh.sharedMesh;
                         // Use the character info to generate text
-                        if (generator == null)
-                        {
+                        if (generator == null) {
                             generator = new TextGenerator(1);
                         }
 
@@ -146,31 +131,26 @@ namespace HoloToolkit.Unity.Buttons
                 }
             }
             targetRenderer.sharedMaterial.mainTexture = icon;
-            if (useDefaultMesh)
-            {
+            if (useDefaultMesh) {
                 targetMesh.sharedMesh = IconMesh;
                 targetMesh.transform.localScale = Vector3.one;
             }
             return icon != null;
         }
 
-        private void Initialize()
-        {
-            if (initialized)
-            {
+        private void Initialize() {
+            if (initialized) {
                 return;
             }
 
             StringBuilder charsInFontString = new StringBuilder();
-            foreach (string hexString in UnicodeKeys)
-            {
+            foreach (string hexString in UnicodeKeys) {
                 charsInFontString.Append(GetCharStringFromHex(hexString));
             }
-            
+
             charactersInFont = charsInFontString.ToString();
 
-            if (iconFont == null)
-            {
+            if (iconFont == null) {
                 return;
             }
 
@@ -180,10 +160,8 @@ namespace HoloToolkit.Unity.Buttons
             initialized = true;
         }
 
-        private void CreateMeshFromGenerator(TextGenerator gen, ref Mesh targetMesh)
-        {
-            if (targetMesh == null)
-            {
+        private void CreateMeshFromGenerator(TextGenerator gen, ref Mesh targetMesh) {
+            if (targetMesh == null) {
                 targetMesh = new Mesh();
             }
 
@@ -192,8 +170,7 @@ namespace HoloToolkit.Unity.Buttons
             Color32[] tempColours = new Color32[vertSize];
             Vector2[] tempUvs = new Vector2[vertSize];
             IList<UIVertex> generatorVerts = gen.verts;
-            for (int i = 0; i < vertSize; ++i)
-            {
+            for (int i = 0; i < vertSize; ++i) {
                 tempVerts[i] = generatorVerts[i].position;
                 tempColours[i] = generatorVerts[i].color;
                 tempUvs[i] = generatorVerts[i].uv0;
@@ -202,8 +179,7 @@ namespace HoloToolkit.Unity.Buttons
             // If the temp verts is zero, something's gone wrong
             // Possibly an empty character
             // Don't assign anything
-            if (tempVerts.Length == 0)
-            {
+            if (tempVerts.Length == 0) {
                 return;
             }
 
@@ -213,8 +189,7 @@ namespace HoloToolkit.Unity.Buttons
 
             int characterCount = vertSize / 4;
             int[] tempIndices = new int[characterCount * 6];
-            for (int i = 0; i < characterCount; ++i)
-            {
+            for (int i = 0; i < characterCount; ++i) {
                 int vertIndexStart = i * 4;
                 int trianglesIndexStart = i * 6;
                 tempIndices[trianglesIndexStart++] = vertIndexStart;
@@ -228,18 +203,15 @@ namespace HoloToolkit.Unity.Buttons
             targetMesh.RecalculateBounds();
         }
 
-        private static int GetIntValueFromHex(string hexString)
-        {
+        private static int GetIntValueFromHex(string hexString) {
             int code;
             int.TryParse(hexString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code);
             return code;
         }
 
-        private static string GetCharStringFromHex(string hexString)
-        {
+        private static string GetCharStringFromHex(string hexString) {
             int code;
-            if (int.TryParse(hexString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code))
-            {
+            if (int.TryParse(hexString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code)) {
                 return char.ConvertFromUtf32(code);
             }
             return string.Empty;
@@ -251,21 +223,17 @@ namespace HoloToolkit.Unity.Buttons
         private TextGenerator generator;
         private bool initialized = false;
         private string charactersInFont;
-        
-        #if UNITY_EDITOR
-        public override string DrawIconSelectField(string iconName)
-        {
-            if (iconFont == null)
-            {
+
+#if UNITY_EDITOR
+        public override string DrawIconSelectField(string iconName) {
+            if (iconFont == null) {
                 return iconName;
             }
 
             List<string> iconKeys = GetIconKeys();
             int selectedIconIndex = -1;
-            for (int i = 0; i < iconKeys.Count; i++)
-            {
-                if (iconName == iconKeys[i])
-                {
+            for (int i = 0; i < iconKeys.Count; i++) {
+                if (iconName == iconKeys[i]) {
                     selectedIconIndex = i;
                     break;
                 }
@@ -282,17 +250,14 @@ namespace HoloToolkit.Unity.Buttons
 
             UnityEditor.EditorGUILayout.BeginVertical(UnityEditor.EditorStyles.helpBox);
 
-            if (showChooser)
-            {
+            if (showChooser) {
                 // Show a list of all the icons
                 int maxPerRow = 6;
                 int rowCount = -1;
-                editorScrollView = UnityEditor.EditorGUILayout.BeginScrollView(editorScrollView, false, false, GUILayout.MinHeight(buttonSize * 1.5f), GUILayout.Height(Mathf.Max (buttonSize * 1.5f, (iconKeys.Count / maxPerRow * buttonSize))));
+                editorScrollView = UnityEditor.EditorGUILayout.BeginScrollView(editorScrollView, false, false, GUILayout.MinHeight(buttonSize * 1.5f), GUILayout.Height(Mathf.Max(buttonSize * 1.5f, (iconKeys.Count / maxPerRow * buttonSize))));
                 UnityEditor.EditorGUILayout.BeginHorizontal();
-                for (int i = 0; i < iconKeys.Count; i++)
-                {
-                    if (int.TryParse(iconKeys[i], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code))
-                    {
+                for (int i = 0; i < iconKeys.Count; i++) {
+                    if (int.TryParse(iconKeys[i], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code)) {
                         textValue = char.ConvertFromUtf32(code);
                     }
 
@@ -306,15 +271,13 @@ namespace HoloToolkit.Unity.Buttons
                         GUILayout.MaxWidth(buttonSize),
                         GUILayout.MaxHeight(buttonSize),
                         GUILayout.MinWidth(buttonSize),
-                        GUILayout.MinHeight(buttonSize)))
-                    {
+                        GUILayout.MinHeight(buttonSize))) {
                         selectedIconIndex = i;
                         showChooser = false;
                     }
 
                     rowCount++;
-                    if (rowCount >= maxPerRow)
-                    {
+                    if (rowCount >= maxPerRow) {
                         rowCount = -1;
                         UnityEditor.EditorGUILayout.EndHorizontal();
                         UnityEditor.EditorGUILayout.BeginHorizontal();
@@ -323,16 +286,12 @@ namespace HoloToolkit.Unity.Buttons
                 UnityEditor.EditorGUILayout.EndHorizontal();
                 UnityEditor.EditorGUILayout.EndScrollView();
                 iconName = (selectedIconIndex < 0 ? string.Empty : iconKeys[selectedIconIndex]);
-                if (GUILayout.Button ("Hide button icons"))
-                {
+                if (GUILayout.Button("Hide button icons")) {
                     showChooser = false;
                 }
-            }
-            else
-            {
+            } else {
                 // Just show the main icon
-                if (int.TryParse(iconName, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code))
-                {
+                if (int.TryParse(iconName, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out code)) {
                     textValue = char.ConvertFromUtf32(code);
                 }
                 UnityEditor.EditorGUILayout.LabelField("(Click button to choose icon)", UnityEditor.EditorStyles.miniLabel);
@@ -341,8 +300,7 @@ namespace HoloToolkit.Unity.Buttons
                     GUILayout.MaxWidth(buttonSize),
                     GUILayout.MaxHeight(buttonSize),
                     GUILayout.MinWidth(buttonSize),
-                    GUILayout.MinHeight(buttonSize)))
-                {
+                    GUILayout.MinHeight(buttonSize))) {
                     showChooser = true;
                 }
             }
@@ -353,6 +311,9 @@ namespace HoloToolkit.Unity.Buttons
 
         private bool showChooser = false;
         private Vector2 editorScrollView;
-        #endif
+
+        [UnityEditor.CustomEditor(typeof(ButtonIconProfileFont))]
+        public class CustomEditor : ProfileInspector { }
+#endif
     }
 }

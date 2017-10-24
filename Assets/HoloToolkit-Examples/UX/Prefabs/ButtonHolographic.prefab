@@ -180,6 +180,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -195,6 +196,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -212,6 +214,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -227,6 +230,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -241,9 +245,10 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1248559929496356}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -259,6 +264,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -276,6 +282,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -291,6 +298,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -381,6 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728fec8e9feecf64f933543126cbecae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TargetAnimator: {fileID: 95836897654538082}
   AnimActions:
   - ButtonState: 0
     ParamName: State
@@ -424,7 +433,6 @@ MonoBehaviour:
     IntValue: 5
     FloatValue: 0
     InvalidParam: 0
-  TargetAnimator: {fileID: 95836897654538082}
 --- !u!114 &114539127433989172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -450,12 +458,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Profile: {fileID: 11400000, guid: a9c1795616f7f6d4a9e866e757eb2b46, type: 2}
+  targetIconRenderer: {fileID: 23553486774948722}
   DisableIcon: 0
   OverrideIcon: 0
-  iconOverride: {fileID: 0}
   iconName: E815
+  iconOverride: {fileID: 0}
   alpha: 1
-  targetIconRenderer: {fileID: 23553486774948722}
 --- !u!114 &114888990318196948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -492,7 +500,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 041d19d84778e4544a8a7cf1c4783f9c, type: 2}
   TargetTransform: {fileID: 4666554649646858}
   Renderer: {fileID: 23082058135631330}
-  MeshFilter: {fileID: 33935470722482786}
 --- !u!114 &114985427041226018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -504,9 +511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77a98cf320fe9340a55eecfe4567ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FilterTag:
-    Tag: Default
   ButtonState: 4
+  ButtonPressFilter: 1
   RequireGaze: 1
   MainCollider: {fileID: 65959870370459156}
   MainRenderer: {fileID: 23976182432781712}

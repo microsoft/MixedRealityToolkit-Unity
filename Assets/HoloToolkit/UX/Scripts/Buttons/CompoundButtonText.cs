@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using MRDL;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.Buttons
@@ -9,82 +10,41 @@ namespace HoloToolkit.Unity.Buttons
     [RequireComponent(typeof(CompoundButton))]
     public class CompoundButtonText : ProfileButtonBase<ButtonTextProfile>
     {
+        [DropDownComponent]
         public TextMesh TextMesh;
-        
+
         /// <summary>
         /// Turn off text entirely
         /// </summary>
-        public bool DisableText
-        {
-            get
-            {
+        [EditableProp]
+        public bool DisableText {
+            get {
                 return disableText;
             }
-            set
-            {
-                if (disableText != value)
-                {
+            set {
+                if (disableText != value) {
                     disableText = value;
                     UpdateStyle();
                 }
             }
         }
 
-        /// <summary>
-        /// Disregard the text style in the profile
-        /// </summary>
-        public bool OverrideFontStyle = false;
-
-        /// <summary>
-        /// Style to use for override
-        /// </summary>
-        public FontStyle Style;
-
-        /// <summary>
-        /// Disregard the anchor in the profile
-        /// </summary>
-        public bool OverrideAnchor = false;
-
-        /// <summary>
-        /// Anchor to use for override
-        /// </summary>
-        public TextAnchor Anchor;
-
-        /// <summary>
-        /// Disregard the size in the profile
-        /// </summary>
-        public bool OverrideSize = false;
-
-        /// <summary>
-        /// Size to use for override
-        /// </summary>
-        public int Size = 72;
-
-        /// <summary>
-        /// Disregard the offset in the profile.
-        /// When this is selected, no offset is applied to the text object.
-        /// </summary>
-        public bool OverrideOffset = false;
-        
-        /// <summary>
-        /// The text value of the button
-        /// </summary>
-        public string Text
-        {
-            get
-            {
-                if (TextMesh == null)
-                {
+        [ShowIfBoolValue("DisableText", false)]
+        [TextAreaProp(30)]
+        public string Text {
+            get {
+                if (TextMesh == null) {
                     return string.Empty;
                 }
                 return TextMesh.text;
             }
-            set
-            {
+            set {
                 TextMesh.text = value;
             }
         }
 
+        [ShowIfBoolValue("DisableText", false)]
+        [RangeProp(0f, 1f)]
         public float Alpha {
             get {
                 return alpha;
@@ -96,6 +56,37 @@ namespace HoloToolkit.Unity.Buttons
                 }
             }
         }
+
+        [ShowIfBoolValue("DisableText", false)]
+        [Tooltip("Disregard the text style in the profile")]
+        public bool OverrideFontStyle = false;
+
+        [ShowIfBoolValue("OverrideFontStyle")]
+        [ShowIfBoolValue("DisableText", false)]
+        [Tooltip("Style to use for override.")]
+        public FontStyle Style;
+
+        [ShowIfBoolValue("DisableText", false)]
+        [Tooltip("Disregard the anchor in the profile.")]
+        public bool OverrideAnchor = false;
+
+        [ShowIfBoolValue("OverrideAnchor")]
+        [ShowIfBoolValue("DisableText", false)]
+        [Tooltip("Anchor to use for override.")]
+        public TextAnchor Anchor;
+
+        [ShowIfBoolValue("DisableText", false)]
+        [Tooltip("Disregard the size in the profile.")]
+        public bool OverrideSize = false;
+        
+        [ShowIfBoolValue("OverrideSize")]
+        [ShowIfBoolValue("DisableText", false)]
+        [Tooltip("Size to use for override.")]
+        public int Size = 72;
+
+        [ShowIfBoolValue("DisableText", false)]
+        [Tooltip("When true, no offset is applied to the text object.")]
+        public bool OverrideOffset = false;
 
         private void OnEnable()
         {
@@ -146,9 +137,16 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         [SerializeField]
+        [HideInMRDLInspector]
         private float alpha = 1f;
 
         [SerializeField]
+        [HideInMRDLInspector]
         private bool disableText = false;
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(CompoundButtonText))]
+        public class CustomEditor : MRDLEditor { }
+#endif
     }
 }

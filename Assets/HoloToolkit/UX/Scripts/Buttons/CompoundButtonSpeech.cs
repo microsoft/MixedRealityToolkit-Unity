@@ -5,6 +5,7 @@
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity.InputModule;
+using MRDL;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -26,16 +27,19 @@ namespace HoloToolkit.Unity.Buttons
         /// Source of the keyword to be used
         /// By default the text in a CompoundButtonText component will be used
         /// </summary>
+        [HideInMRDLInspector]
         public KeywordSourceEnum KeywordSource = KeywordSourceEnum.ButtonText;
 
         /// <summary>
         /// Keyword used when KeywordSource is set to LocalOverride
         /// </summary>
+        [HideInMRDLInspector]
         public string Keyword = string.Empty;
 
         /// <summary>
         /// The confidence level to use for this speech command
         /// </summary>
+        [HideInMRDLInspector]
         public ConfidenceLevel ConfidenceLevel = ConfidenceLevel.Medium;
 
         /// <summary>
@@ -123,5 +127,54 @@ namespace HoloToolkit.Unity.Buttons
                 m_button.TriggerClicked();
             }
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(CompoundButtonSpeech))]
+        public class CustomEditor : MRDLEditor
+        {
+            protected override void DrawCustomFooter() {
+                CompoundButtonSpeech speechButton = (CompoundButtonSpeech)target;
+
+                bool microphoneEnabled = UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone);
+                if (!microphoneEnabled) {
+                    DrawWarning("Microphone capability not present. Speech recognition will be disabled.");
+                    return;
+                }
+
+                UnityEditor.EditorGUILayout.LabelField("Keyword source", UnityEditor.EditorStyles.miniBoldLabel);
+                speechButton.KeywordSource = (CompoundButtonSpeech.KeywordSourceEnum)UnityEditor.EditorGUILayout.EnumPopup(speechButton.KeywordSource);
+                CompoundButtonText text = speechButton.GetComponent<CompoundButtonText>();
+                switch (speechButton.KeywordSource) {
+                    case CompoundButtonSpeech.KeywordSourceEnum.ButtonText:
+                    default:
+                        if (text == null) {
+                            DrawError("No CompoundButtonText component found.");
+                        } else if (string.IsNullOrEmpty(text.Text)) {
+                            DrawWarning("No keyword found in button text.");
+                        } else {
+                            UnityEditor.EditorGUILayout.LabelField("Keyword: " + text.Text);
+                        }
+                        break;
+
+                    case CompoundButtonSpeech.KeywordSourceEnum.LocalOverride:
+                        speechButton.Keyword = UnityEditor.EditorGUILayout.TextField(speechButton.Keyword);
+                        break;
+
+                    case CompoundButtonSpeech.KeywordSourceEnum.None:
+                        UnityEditor.EditorGUILayout.LabelField("(Speech control disabled)", UnityEditor.EditorStyles.miniBoldLabel);
+                        break;
+                }
+            }
+
+            private void EnableMicrophone() {
+                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, true);
+            }
+
+            private void AddText() {
+                CompoundButtonSpeech speechButton = (CompoundButtonSpeech)target;
+                speechButton.gameObject.AddComponent<CompoundButtonText>();
+            }
+        }
+#endif
     }
 }

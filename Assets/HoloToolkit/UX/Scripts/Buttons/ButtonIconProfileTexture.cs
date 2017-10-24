@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using MRDL;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +17,9 @@ namespace HoloToolkit.Unity.Buttons
     /// </summary>
     public class ButtonIconProfileTexture : ButtonIconProfile
     {
-        /// <summary>
-        /// Navigation icons
-        /// </summary>
+        private static float textureSize = 50f;
+
+        [Header("Navigation icons")]
         public Texture2D GlobalNavButton;
         public Texture2D ChevronUp;
         public Texture2D ChevronDown;
@@ -29,9 +30,7 @@ namespace HoloToolkit.Unity.Buttons
         public Texture2D PageLeft;
         public Texture2D PageRight;
 
-        /// <summary>
-        /// Common action icons
-        /// </summary>
+        [Header("Common action icons")]
         public Texture2D Add;
         public Texture2D Remove;
         public Texture2D Clear;
@@ -42,15 +41,11 @@ namespace HoloToolkit.Unity.Buttons
         public Texture2D Accept;
         public Texture2D OpenInNewWindow;
 
-        /// <summary>
-        /// Common notification icons
-        /// </summary>
+        [Header("Common notification icons")]
         public Texture2D Completed;
         public Texture2D Error;
 
-        /// <summary>
-        /// Common object icons
-        /// </summary>
+        [Header("Common object icons")]
         public Texture2D Contact;
         public Texture2D Volume;
         public Texture2D KeyboardClassic;
@@ -58,9 +53,7 @@ namespace HoloToolkit.Unity.Buttons
         public Texture2D Video;
         public Texture2D Microphone;
 
-        /// <summary>
-        /// Common gesture icons
-        /// </summary>
+        [Header("Common gesture icons")]
         public Texture2D Ready;
         public Texture2D AirTap;
         public Texture2D PressHold;
@@ -70,9 +63,7 @@ namespace HoloToolkit.Unity.Buttons
         public Texture2D AdjustHologram;
         public Texture2D RemoveHologram;
 
-        /// <summary>
-        /// Custom icons - these will override common icons by name
-        /// </summary>
+        [HideInMRDLInspector]
         public Texture2D[] CustomIcons;
 
         private bool initialized;
@@ -88,18 +79,19 @@ namespace HoloToolkit.Unity.Buttons
             {
                 icon = _IconNotFound;
             }
+
             if (!string.IsNullOrEmpty(iconName))
             {
                 // See if the icon exists
-                if (!iconLookup.TryGetValue(iconName, out icon) || icon == null)
-                {
-                    // Substitute the default icon
+                if (!iconLookup.TryGetValue(iconName, out icon))
                     if (useDefaultIfNotFound)
-                    {
                         icon = _IconNotFound;
-                    }
-                }
+
+                if (icon == null)
+                    if (useDefaultIfNotFound)
+                        icon = _IconNotFound;
             }
+
             // Set the texture on the material
             targetMesh.sharedMesh = IconMesh;
             targetMesh.transform.localScale = Vector3.one;
@@ -172,6 +164,25 @@ namespace HoloToolkit.Unity.Buttons
             // This will automatically set the icon in the editor view
             iconName = (newIconIndex < 0 ? string.Empty : iconKeys[newIconIndex]);
             return iconName;
+        }
+
+        [UnityEditor.CustomEditor(typeof(ButtonIconProfileTexture))]
+        public class CustomEditor : ProfileInspector {
+            protected override void DrawCustomFooter() {
+
+                ButtonIconProfileTexture iconProfile = (ButtonIconProfileTexture)target;
+                UnityEditor.EditorGUILayout.LabelField("Custom Icons", UnityEditor.EditorStyles.boldLabel);
+
+                for (int i = 0; i < iconProfile.CustomIcons.Length; i++) {
+                    Texture2D icon = iconProfile.CustomIcons[i];
+                    icon = (Texture2D)UnityEditor.EditorGUILayout.ObjectField(icon != null ? icon.name : "(Empty)", icon, typeof(Texture2D), false, GUILayout.MaxHeight(textureSize));
+                    iconProfile.CustomIcons[i] = icon;
+                }
+
+                if (GUILayout.Button("Add custom icon")) {
+                    System.Array.Resize<Texture2D>(ref iconProfile.CustomIcons, iconProfile.CustomIcons.Length + 1);
+                }
+            }
         }
 #endif
     }
