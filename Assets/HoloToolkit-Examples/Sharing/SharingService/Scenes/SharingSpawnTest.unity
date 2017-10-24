@@ -164,8 +164,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1430003398}
-  - {fileID: 1747966606}
   - {fileID: 1421812656}
+  - {fileID: 1747966606}
   - {fileID: 887295365}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -459,7 +459,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 813254006}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1430003394
 GameObject:
@@ -472,6 +472,7 @@ GameObject:
   - component: {fileID: 1430003397}
   - component: {fileID: 1430003396}
   - component: {fileID: 1430003395}
+  - component: {fileID: 1430003399}
   m_Layer: 0
   m_Name: Sharing
   m_TagString: Untagged
@@ -542,6 +543,20 @@ Transform:
   m_Father: {fileID: 813254006}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1430003399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1430003394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07ae3de54e484bf46a26fc8f28d3fff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnchorDebugText: {fileID: 0}
+  ShowDetailedLogs: 0
+  PersistentAnchors: 0
 --- !u!1001 &1747966605
 Prefab:
   m_ObjectHideFlags: 0
@@ -579,7 +594,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1000013803292764, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
       propertyPath: m_StaticEditorFlags

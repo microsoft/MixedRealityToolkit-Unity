@@ -42,10 +42,19 @@ namespace HoloToolkit.Unity.InputModule
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
+        private List<uint> loadingControllers = new List<uint>();
 
-        private void Start()
+        private void Awake()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            foreach (var sourceState in InteractionManager.GetCurrentReading())
+            {
+                if (sourceState.source.kind == InteractionSourceKind.Controller)
+                {
+                    StartTrackingController(sourceState.source);
+                }
+            }
+
             Application.onBeforeRender += Application_onBeforeRender;
 
             if (!Application.isEditor)
@@ -76,67 +85,21 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 #endif
         }
 
         private void Update()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // NOTE: The controller's state is being updated here in order to provide a good position and rotation
             // for any child GameObjects that might want to raycast or otherwise reason about their location in the world.
-            foreach (var sourceState in InteractionManager.GetCurrentReading())
-            {
-                MotionControllerInfo currentController;
-                if (sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(sourceState.source.id, out currentController))
-                {
-                    if (AnimateControllerModel)
-                    {
-                        currentController.AnimateSelect(sourceState.selectPressedAmount);
-
-                        if (sourceState.source.supportsGrasp)
-                        {
-                            currentController.AnimateGrasp(sourceState.grasped);
-                        }
-
-                        if (sourceState.source.supportsMenu)
-                        {
-                            currentController.AnimateMenu(sourceState.menuPressed);
-                        }
-
-                        if (sourceState.source.supportsThumbstick)
-                        {
-                            currentController.AnimateThumbstick(sourceState.thumbstickPressed, sourceState.thumbstickPosition);
-                        }
-
-                        if (sourceState.source.supportsTouchpad)
-                        {
-                            currentController.AnimateTouchpad(sourceState.touchpadPressed, sourceState.touchpadTouched, sourceState.touchpadPosition);
-                        }
-                    }
-
-                    Vector3 newPosition;
-                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
-                    {
-                        currentController.ControllerParent.transform.localPosition = newPosition;
-                    }
-
-                    Quaternion newRotation;
-                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
-                    {
-                        currentController.ControllerParent.transform.localRotation = newRotation;
-                    }
-                }
-            }
-#endif
+            UpdateControllerState();
         }
 
         private void OnDestroy()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             Application.onBeforeRender -= Application_onBeforeRender;
 #endif
@@ -144,9 +107,14 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Application_onBeforeRender()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // NOTE: This work is being done here to present the most correct rendered location of the controller each frame.
             // Any app logic depending on the controller state should happen in Update() or using InteractionManager's events.
+            UpdateControllerState();
+        }
+
+        private void UpdateControllerState()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             foreach (var sourceState in InteractionManager.GetCurrentReading())
             {
                 MotionControllerInfo currentController;
@@ -194,11 +162,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
-        {
-            StartTrackingController(obj.state.source);
-        }
-
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             StartTrackingController(obj.state.source);
@@ -206,7 +169,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StartTrackingController(InteractionSource source)
         {
-            if (source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(source.id))
+            if (source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(source.id) && !loadingControllers.Contains(source.id))
             {
                 StartCoroutine(LoadControllerModel(source));
             }
@@ -234,6 +197,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator LoadControllerModel(InteractionSource source)
         {
+            loadingControllers.Add(source.id);
+
             GameObject controllerModelGameObject;
             if (source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
             {
@@ -249,6 +214,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (GLTFMaterial == null)
                 {
                     Debug.Log("If using glTF, please specify a material on " + name + ".");
+                    loadingControllers.Remove(source.id);
                     yield break;
                 }
 
@@ -258,6 +224,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (modelTask == null)
                 {
                     Debug.Log("Model task is null.");
+                    loadingControllers.Remove(source.id);
                     yield break;
                 }
 
@@ -271,12 +238,14 @@ namespace HoloToolkit.Unity.InputModule
                 if (modelStream == null)
                 {
                     Debug.Log("Model stream is null.");
+                    loadingControllers.Remove(source.id);
                     yield break;
                 }
 
                 if (modelStream.Size == 0)
                 {
                     Debug.Log("Model stream is empty.");
+                    loadingControllers.Remove(source.id);
                     yield break;
                 }
 
@@ -302,6 +271,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 yield return gltfScript.LoadModel();
 #else
+                loadingControllers.Remove(source.id);
                 yield break;
 #endif
             }
@@ -325,6 +295,8 @@ namespace HoloToolkit.Unity.InputModule
             {
                 newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
             }
+
+            loadingControllers.Remove(id);
             controllerDictionary.Add(id, newControllerInfo);
         }
 
