@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// List of animation actions
         /// </summary>
-        [HideInInspector]
+        [HideInMRDLInspector]
         public AnimatorControllerAction[] AnimActions;
 
         private void Awake() {
@@ -78,6 +78,9 @@ namespace HoloToolkit.Unity.Buttons
         [UnityEditor.CustomEditor(typeof(CompoundButtonAnim))]
         public class CustomEditor : MRDLEditor
         {
+            /// <summary>
+            /// Draw a custom editor for AnimatorControllerActions to make them easier to edit
+            /// </summary>
             protected override void DrawCustomFooter() {
 
                 CompoundButtonAnim acb = (CompoundButtonAnim)target;

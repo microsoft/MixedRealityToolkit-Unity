@@ -11,6 +11,8 @@ namespace HoloToolkit.Unity.Buttons
     [ExecuteInEditMode]
     public class ButtonLocalizedText : MonoBehaviour
     {
+        public TextMesh TextMesh;
+
         public string Text
         {
             get
@@ -22,7 +24,5 @@ namespace HoloToolkit.Unity.Buttons
                 TextMesh.text = value;
             }
         }
-
-        public TextMesh TextMesh;
     }
 }

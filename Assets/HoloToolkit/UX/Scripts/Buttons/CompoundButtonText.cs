@@ -88,6 +88,14 @@ namespace HoloToolkit.Unity.Buttons
         [Tooltip("When true, no offset is applied to the text object.")]
         public bool OverrideOffset = false;
 
+        [SerializeField]
+        [HideInMRDLInspector]
+        private float alpha = 1f;
+
+        [SerializeField]
+        [HideInMRDLInspector]
+        private bool disableText = false;
+
         private void OnEnable()
         {
             UpdateStyle();
@@ -135,14 +143,6 @@ namespace HoloToolkit.Unity.Buttons
         {
             UpdateStyle();
         }
-
-        [SerializeField]
-        [HideInMRDLInspector]
-        private float alpha = 1f;
-
-        [SerializeField]
-        [HideInMRDLInspector]
-        private bool disableText = false;
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(CompoundButtonText))]

@@ -67,6 +67,13 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
+        [SerializeField]
+        private Font iconFont;
+        private TextGenerationSettings settings = new TextGenerationSettings();
+        private TextGenerator generator;
+        private bool initialized = false;
+        private string charactersInFont;
+
         public override List<string> GetIconKeys() {
             Initialize();
 
@@ -216,13 +223,6 @@ namespace HoloToolkit.Unity.Buttons
             }
             return string.Empty;
         }
-
-        [SerializeField]
-        private Font iconFont;
-        private TextGenerationSettings settings = new TextGenerationSettings();
-        private TextGenerator generator;
-        private bool initialized = false;
-        private string charactersInFont;
 
 #if UNITY_EDITOR
         public override string DrawIconSelectField(string iconName) {

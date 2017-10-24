@@ -38,6 +38,9 @@ namespace HoloToolkit.Unity.Buttons
         [UnityEditor.CustomEditor(typeof(ButtonMeshProfile))]
         public class CustomEditor : ProfileInspector
         {
+            /// <summary>
+            /// Draws a custom editor for mesh button datum so they're human-editable
+            /// </summary>
             protected override void DrawCustomFooter() {
 
                 ButtonMeshProfile meshProfile = (ButtonMeshProfile)target;

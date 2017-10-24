@@ -8,7 +8,8 @@ namespace MRDL
 {
     /// <summary>
     /// The base class for all profiles
-    /// Inherit from this to create new button profile types
+    /// Profiles are scriptable objects that contain shared information
+    /// Inherit from this to create new profile types
     /// </summary>
     public abstract class ProfileBase : ScriptableObject
     {

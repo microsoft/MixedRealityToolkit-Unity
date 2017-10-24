@@ -26,6 +26,10 @@ namespace HoloToolkit.Unity.Buttons
         [UnityEditor.CustomEditor(typeof(CompoundButton))]
         public class CustomEditor : MRDLEditor
         {
+            /// <summary>
+            /// Validate button settings to ensure button will work in current scene
+            /// TODO strengthen this check against new MRTK system
+            /// </summary>
             protected override void DrawCustomFooter() {
 
                 CompoundButton cb = (CompoundButton)target;

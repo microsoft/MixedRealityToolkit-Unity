@@ -7,70 +7,29 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+// This is a set of custom property drawers + custom attributs as well as a base custom editor class
+// They can be used to automatically generate inspectors with custom formatting and input validation
+// The purpose of the custom editors is to help us clarify and simplify the functionality of complex & interdependent MRTK components
+// The purpose of generating them in this manner is to ensure that all validation logic is visible in the target class and NOT in a separate editor class
+// Everything is included in one file so that developers may easily include it with any individual scripts they wish to copy to their projects
+
 namespace MRDL
 {
-    #region enums
-
-    public enum ValidateResultEnum {
-        Succeed,
-        Fail,
-    }
-
-    public enum ValidateFailActionEnum {
-        None,
-        Warning,
-        HaltEditor,
-    }
-
-    #endregion
-
-    #region property drawers
-
-#if UNITY_EDITOR
-    [CustomPropertyDrawer(typeof(HeaderAttribute))]
-    public class CustomHeaderDrawer : DecoratorDrawer {
-        public override float GetHeight() {
-            return MRDLEditor.ShowCustomEditors ? 0f : 24f;
-        }
-
-        public override void OnGUI(Rect position) {
-            // If we're using MRDL custom editors, don't show the header
-            if (MRDLEditor.ShowCustomEditors)
-                return;
-
-            // Otherwise draw it normally
-            GUI.Label(position, (base.attribute as HeaderAttribute).header, EditorStyles.boldLabel);
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
-    public class EnumFlagsPropertyDrawer : PropertyDrawer {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-            // If we're using MRDL custom edtiors, let the draw override property handle it
-            if (MRDLEditor.ShowCustomEditors)
-                return;
-
-            // Otherwise draw a bitmask normally
-            base.OnGUI(position, property, label);
-        }
-    }
-#endif
-
-    #endregion
-
     #region custom attributes
 
     // Base class for identifying members with special behavior
     public abstract class EditorAttribute : Attribute { }
 
-    // DrawOverrideAttributes prevent the MRDLEditor from drawing a default property
-    public abstract class DrawOverrideAttribute : EditorAttribute {
+    // Base class for custom drawing without property drawers - prevents the MRDLEditor from drawing a default property, supplies an alternative
+    public abstract class DrawOverrideAttribute : EditorAttribute
+    {
 #if UNITY_EDITOR
         public abstract void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property);
         public abstract void DrawEditor(UnityEngine.Object target, PropertyInfo prop);
 #endif
 
-        protected string SplitCamelCase(string str) {
+        protected string SplitCamelCase(string str)
+        {
             if (string.IsNullOrEmpty(str))
                 return string.Empty;
 
@@ -89,169 +48,17 @@ namespace MRDL
         }
     }
 
-    // Class used to send members to bottom of drawing queue
-    [AttributeUsage(AttributeTargets.Field)]
-    public sealed class DrawLastAttribute : Attribute { }
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public sealed class DocLinkAttribute : Attribute {
-        public DocLinkAttribute(string docURL, string description = null) {
-            DocURL = docURL;
-            Description = description;
-        }
-
-        public string DocURL { get; private set; }
-        public string Description { get; private set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class TutorialAttribute : Attribute {
-        public TutorialAttribute(string tutorialURL, string description = null) {
-            TutorialURL = tutorialURL;
-            Description = description;
-        }
-
-        public string TutorialURL { get; private set; }
-        public string Description { get; private set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class UseWithAttribute : Attribute {
-        // IL2CPP doesn't support attributes with object arguments that are array types
-        public UseWithAttribute(Type useWithType1, Type useWithType2 = null, Type useWithType3 = null, Type useWithType4 = null, Type useWithType5 = null) {
-            List<Type> types = new List<Type>() { useWithType1 };
-
-            if (useWithType2 != null)
-                types.Add(useWithType2);
-
-            if (useWithType3 != null)
-                types.Add(useWithType3);
-
-            if (useWithType4 != null)
-                types.Add(useWithType4);
-
-            if (useWithType5 != null)
-                types.Add(useWithType5);
-
-            UseWithTypes = types.ToArray();
-        }
-
-        public Type[] UseWithTypes { get; private set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class TextAreaProp : DrawOverrideAttribute
+    // Base class for show / hide - shows or hides fields & properties in the editor based on the value of a member in the target object
+    public abstract class ShowIfAttribute : EditorAttribute
     {
-        public TextAreaProp (int fontSize = -1) {
-            FontSize = fontSize;
-        }
-
-#if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
-            throw new NotImplementedException();
-        }
-
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
-            string propValue = (string)prop.GetValue(target, null);
-            EditorGUILayout.LabelField(SplitCamelCase(prop.Name), EditorStyles.miniBoldLabel);
-            GUIStyle textAreaStyle = EditorStyles.textArea;
-            if (FontSize > 0) {
-                textAreaStyle.fontSize = FontSize;
-            }
-            propValue = EditorGUILayout.TextArea(propValue, textAreaStyle);
-            prop.SetValue(target, propValue, null);
-        }
-#endif
-        
-        public int FontSize { get; private set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class RangePropAttribute : DrawOverrideAttribute {
-        public enum TypeEnum {
-            Float,
-            Int,
-        }
-
-        public RangePropAttribute(float min, float max) {
-            MinFloat = min;
-            MaxFloat = max;
-            Type = TypeEnum.Float;
-        }
-
-        public RangePropAttribute(int min, int max) {
-            MinInt = min;
-            MaxInt = max;
-            Type = TypeEnum.Int;
-        }
-
-#if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
-            // (safe since this is property-only attribute)
-            throw new NotImplementedException();
-        }
-
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
-            if (prop.PropertyType == typeof(int)) {
-                int propIntValue = (int)prop.GetValue(target, null);
-                propIntValue = EditorGUILayout.IntSlider(SplitCamelCase(prop.Name), propIntValue, MinInt, MaxInt);
-                prop.SetValue(target, propIntValue, null);
-            } else if (prop.PropertyType == typeof(float)) {
-                float propFloatValue = (float)prop.GetValue(target, null);
-                propFloatValue = EditorGUILayout.Slider(SplitCamelCase(prop.Name), propFloatValue, MinFloat, MaxFloat);
-                prop.SetValue(target, propFloatValue, null);
-            }
-        }
-#endif
-
-        public float MinFloat { get; private set; }
-        public float MaxFloat { get; private set; }
-        public int MinInt { get; private set; }
-        public int MaxInt { get; private set; }
-        public TypeEnum Type { get; private set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class EditablePropAttribute : DrawOverrideAttribute {
-        public EditablePropAttribute(string customLabel = null) {
-            CustomLabel = customLabel;
-        }
-
-#if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
-            // (safe since this is property-only attribute)
-            throw new NotImplementedException();
-        }
-
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
-            switch (prop.PropertyType.Name) {
-                case "Boolean":
-                    bool boolValue = (bool)prop.GetValue(target, null);
-                    boolValue = EditorGUILayout.Toggle(SplitCamelCase(prop.Name), boolValue);
-                    prop.SetValue(target, boolValue, null);
-                    break;
-
-                default:
-                    throw new NotImplementedException("No drawer for type " + prop.PropertyType.Name);
-            }
-        }
-#endif
-
-        public string CustomLabel { get; private set; }
-    }
-
-    /// <summary>
-    /// Shows or hides fields & properties in the editor based on the value of a member in the target object
-    /// </summary>
-    public abstract class ShowIfAttribute : EditorAttribute {
-#if UNITY_EDITOR
-        public abstract bool ShouldShow(object target);
-#endif
         public string MemberName { get; protected set; }
         public bool ShowIfConditionMet { get; protected set; }
 
 #if UNITY_EDITOR
-        protected static object GetMemberValue(object target, string memberName) {
+        public abstract bool ShouldShow(object target);
+
+        protected static object GetMemberValue(object target, string memberName)
+        {
             if (target == null)
                 throw new NullReferenceException("Target cannot be null.");
 
@@ -266,7 +73,8 @@ namespace MRDL
 
             object memberValue;
 
-            switch (members[0].MemberType) {
+            switch (members[0].MemberType)
+            {
                 case MemberTypes.Field:
                     FieldInfo fieldInfo = targetType.GetField(memberName);
                     memberValue = fieldInfo.GetValue(target);
@@ -283,7 +91,8 @@ namespace MRDL
             return memberValue;
         }
 
-        protected static bool IsNullable(object target, string memberName) {
+        protected static bool IsNullable(object target, string memberName)
+        {
             if (target == null)
                 throw new NullReferenceException("Target cannot be null.");
 
@@ -309,34 +118,228 @@ namespace MRDL
 #endif
     }
 
+    // Provides a clickable link to documentation in the inspector header
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class DocLinkAttribute : Attribute
+    {
+
+        public string DocURL { get; private set; }
+        public string Description { get; private set; }
+
+        public DocLinkAttribute(string docURL, string description = null)
+        {
+            DocURL = docURL;
+            Description = description;
+        }
+    }
+
+    // Provides a clickable link to a tuturoial in the inspector header
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public sealed class TutorialAttribute : Attribute
+    {
+
+        public string TutorialURL { get; private set; }
+        public string Description { get; private set; }
+
+        public TutorialAttribute(string tutorialURL, string description = null)
+        {
+            TutorialURL = tutorialURL;
+            Description = description;
+        }
+    }
+
+    // Indicates which components this class ought to be used with (though are not strictly required)
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public sealed class UseWithAttribute : Attribute
+    {
+        public Type[] UseWithTypes { get; private set; }
+
+        // IL2CPP doesn't support attributes with object arguments that are array types
+        public UseWithAttribute(Type useWithType1, Type useWithType2 = null, Type useWithType3 = null, Type useWithType4 = null, Type useWithType5 = null)
+        {
+            List<Type> types = new List<Type>() { useWithType1 };
+
+            if (useWithType2 != null)
+                types.Add(useWithType2);
+
+            if (useWithType3 != null)
+                types.Add(useWithType3);
+
+            if (useWithType4 != null)
+                types.Add(useWithType4);
+
+            if (useWithType5 != null)
+                types.Add(useWithType5);
+
+            UseWithTypes = types.ToArray();
+        }
+    }
+
+    // Displays a text property as a textarea
+    [AttributeUsage(AttributeTargets.Property)]
+    public sealed class TextAreaProp : DrawOverrideAttribute
+    {
+        public int FontSize { get; private set; }
+
+        public TextAreaProp(int fontSize = -1)
+        {
+            FontSize = fontSize;
+        }
+
+#if UNITY_EDITOR
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
+            string propValue = (string)prop.GetValue(target, null);
+            EditorGUILayout.LabelField(SplitCamelCase(prop.Name), EditorStyles.miniBoldLabel);
+            GUIStyle textAreaStyle = EditorStyles.textArea;
+            if (FontSize > 0)
+            {
+                textAreaStyle.fontSize = FontSize;
+            }
+            propValue = EditorGUILayout.TextArea(propValue, textAreaStyle);
+            prop.SetValue(target, propValue, null);
+        }
+#endif
+
+    }
+
+    // Displays an int or float property as a range
+    [AttributeUsage(AttributeTargets.Property)]
+    public sealed class RangePropAttribute : DrawOverrideAttribute
+    {
+
+        public enum TypeEnum
+        {
+            Float,
+            Int,
+        }
+
+        public float MinFloat { get; private set; }
+        public float MaxFloat { get; private set; }
+        public int MinInt { get; private set; }
+        public int MaxInt { get; private set; }
+        public TypeEnum Type { get; private set; }
+
+        public RangePropAttribute(float min, float max)
+        {
+            MinFloat = min;
+            MaxFloat = max;
+            Type = TypeEnum.Float;
+        }
+
+        public RangePropAttribute(int min, int max)
+        {
+            MinInt = min;
+            MaxInt = max;
+            Type = TypeEnum.Int;
+        }
+
+#if UNITY_EDITOR
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
+            // (safe since this is property-only attribute)
+            throw new NotImplementedException();
+        }
+
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
+            if (prop.PropertyType == typeof(int))
+            {
+                int propIntValue = (int)prop.GetValue(target, null);
+                propIntValue = EditorGUILayout.IntSlider(SplitCamelCase(prop.Name), propIntValue, MinInt, MaxInt);
+                prop.SetValue(target, propIntValue, null);
+            }
+            else if (prop.PropertyType == typeof(float))
+            {
+                float propFloatValue = (float)prop.GetValue(target, null);
+                propFloatValue = EditorGUILayout.Slider(SplitCamelCase(prop.Name), propFloatValue, MinFloat, MaxFloat);
+                prop.SetValue(target, propFloatValue, null);
+            }
+        }
+#endif
+
+    }
+
+    // Displays a prop as editable in the inspector
+    [AttributeUsage(AttributeTargets.Property)]
+    public sealed class EditablePropAttribute : DrawOverrideAttribute
+    {
+
+        public string CustomLabel { get; private set; }
+
+        public EditablePropAttribute(string customLabel = null)
+        {
+            CustomLabel = customLabel;
+        }
+
+#if UNITY_EDITOR
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
+            // (safe since this is property-only attribute)
+            throw new NotImplementedException();
+        }
+
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
+            switch (prop.PropertyType.Name)
+            {
+                case "Boolean":
+                    bool boolValue = (bool)prop.GetValue(target, null);
+                    boolValue = EditorGUILayout.Toggle(SplitCamelCase(prop.Name), boolValue);
+                    prop.SetValue(target, boolValue, null);
+                    break;
+
+                default:
+                    throw new NotImplementedException("No drawer for type " + prop.PropertyType.Name);
+            }
+        }
+#endif
+
+    }
+    
+    // Shows / hides based on bool value of named member
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-    public sealed class ShowIfBoolValueAttribute : ShowIfAttribute {
-        public ShowIfBoolValueAttribute(string boolMemberName, bool showIfConditionMet = true) {
+    public sealed class ShowIfBoolValueAttribute : ShowIfAttribute
+    {
+
+        public ShowIfBoolValueAttribute(string boolMemberName, bool showIfConditionMet = true)
+        {
             MemberName = boolMemberName;
             ShowIfConditionMet = showIfConditionMet;
         }
 
 #if UNITY_EDITOR
-        public override bool ShouldShow(object target) {
+        public override bool ShouldShow(object target)
+        {
             bool conditionMet = (bool)GetMemberValue(target, MemberName);
             return ShowIfConditionMet ? conditionMet : !conditionMet;
         }
 #endif
     }
 
+    // Hides a field in an MRDL inspector
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class HideInMRDLInspector : ShowIfAttribute
     {
-        public HideInMRDLInspector () { }
+        public HideInMRDLInspector() { }
 
-        public override bool ShouldShow(object target) {
+        public override bool ShouldShow(object target)
+        {
             return false;
         }
     }
 
+    // Shows / hides based on enum value of a named member
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class ShowIfEnumValueAttribute : ShowIfAttribute
     {
+        public int[] ShowValues { get; private set; }
+
         // IL2CPP doesn't support attributes with object arguments that are array types
         public ShowIfEnumValueAttribute(string enumVariableName, object enumValue, bool showIfConditionMet = true)
         {
@@ -402,11 +405,14 @@ namespace MRDL
         }*/
 
 #if UNITY_EDITOR
-        public override bool ShouldShow(object target) {
+        public override bool ShouldShow(object target)
+        {
             bool conditionMet = false;
             int memberValue = Convert.ToInt32(GetMemberValue(target, MemberName));
-            for (int i = 0; i < ShowValues.Length; i++) {
-                if (ShowValues[i] == memberValue) {
+            for (int i = 0; i < ShowValues.Length; i++)
+            {
+                if (ShowValues[i] == memberValue)
+                {
                     conditionMet = true;
                     break;
                 }
@@ -415,32 +421,34 @@ namespace MRDL
         }
 #endif
 
-        public int[] ShowValues { get; private set; }
-
-        private static object GetAsUnderlyingType(Enum enval) {
+        private static object GetAsUnderlyingType(Enum enval)
+        {
             Type entype = enval.GetType();
             Type undertype = Enum.GetUnderlyingType(entype);
             return Convert.ChangeType(enval, undertype);
         }
     }
 
+    // Shows / hides based on whether named member is null
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class ShowIfNullAttribute : ShowIfAttribute
     {
-        public ShowIfNullAttribute(string nullableMemberName, bool showIfConditionMet = false) {
+        public ShowIfNullAttribute(string nullableMemberName, bool showIfConditionMet = false)
+        {
             MemberName = nullableMemberName;
             ShowIfConditionMet = showIfConditionMet;
         }
 
 #if UNITY_EDITOR
-        public override bool ShouldShow(object target) {
+        public override bool ShouldShow(object target)
+        {
             bool isNullable = true;
             if (target != null)
                 isNullable = IsNullable(target, MemberName);
 
             if (!isNullable)
                 throw new InvalidCastException("Member " + MemberName + " is not nullable.");
-            
+
             UnityEngine.Object memberValue = (UnityEngine.Object)GetMemberValue(target, MemberName);
             bool conditionMet = memberValue == null;
             return ShowIfConditionMet ? conditionMet : !conditionMet;
@@ -448,47 +456,14 @@ namespace MRDL
 #endif
     }
 
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public sealed class ValidateUnityObjectAttribute : Attribute
-    {
-        public ValidateUnityObjectAttribute(string methodName, string messageOnError, ValidateFailActionEnum failAction = ValidateFailActionEnum.Warning)
-        {
-            MethodName = methodName;
-            MessageOnFail = messageOnError;
-            FailAction = failAction;
-        }
-
-        public ValidateResultEnum Validate(UnityEngine.Object target, System.Object source, out string messageOnFail, out ValidateFailActionEnum failAction)
-        {
-            if (source == null)
-                throw new NullReferenceException("Source cannot be null.");
-
-            MethodInfo m = source.GetType().GetMethod(MethodName);
-            if (m == null)
-                throw new MissingMethodException("Method " + MethodName + " not found in type " + source.GetType().ToString());
-
-            bool result = (bool)m.Invoke(source, new System.Object[] { target });
-
-            if (result)
-            {
-                messageOnFail = string.Empty;
-                failAction = ValidateFailActionEnum.None;
-                return ValidateResultEnum.Succeed;
-            }
-
-            messageOnFail = MessageOnFail;
-            failAction = FailAction;
-            return ValidateResultEnum.Fail;
-        }
-
-        public ValidateFailActionEnum FailAction { get; private set; }
-        public string MethodName { get; private set; }
-        public string MessageOnFail { get; private set; }
-    }
-
+    // Displays a drop-down menu of Component objects that are limited to the target object
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class DropDownComponentAttribute : DrawOverrideAttribute
     {
+        public bool AutoFill { get; private set; }
+        public bool ShowComponentNames { get; private set; }
+        public string CustomLabel { get; private set; }
+
         public DropDownComponentAttribute(bool showComponentNames = false, bool autoFill = false, string customLabel = null)
         {
             ShowComponentNames = showComponentNames;
@@ -497,7 +472,8 @@ namespace MRDL
         }
 
 #if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
             Transform transform = (target as Component).transform;
 
             Component componentValue = field.GetValue(target) as Component;
@@ -506,7 +482,8 @@ namespace MRDL
             if (targetType == typeof(MonoBehaviour))
                 targetType = typeof(Component);
 
-            if (componentValue == null && AutoFill) {
+            if (componentValue == null && AutoFill)
+            {
                 componentValue = transform.GetComponentInChildren(targetType) as Component;
             }
 
@@ -517,9 +494,10 @@ namespace MRDL
                 transform,
                 ShowComponentNames);
             field.SetValue(target, componentValue);
-        } 
+        }
 
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
             Transform transform = (target as Component).transform;
 
             Component componentValue = prop.GetValue(target, null) as Component;
@@ -528,7 +506,8 @@ namespace MRDL
             if (targetType == typeof(MonoBehaviour))
                 targetType = typeof(Component);
 
-            if (componentValue == null && AutoFill) {
+            if (componentValue == null && AutoFill)
+            {
                 componentValue = transform.GetComponentInChildren(targetType) as Component;
             }
 
@@ -583,21 +562,22 @@ namespace MRDL
         }
 #endif
 
-        public bool AutoFill { get; private set; }
-        public bool ShowComponentNames { get; private set; }
-        public string CustomLabel { get; private set; }
     }
 
+    // Displays a drop-down menu of GameObjects that are limited to the target object
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class DropDownGameObjectAttribute : DrawOverrideAttribute
     {
+        public string CustomLabel { get; private set; }
+
         public DropDownGameObjectAttribute(string customLabel = null)
         {
             CustomLabel = customLabel;
         }
 
 #if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
             Transform transform = (target as Component).transform;
 
             GameObject fieldValue = field.GetValue(target) as GameObject;
@@ -608,7 +588,8 @@ namespace MRDL
             field.SetValue(target, fieldValue);
         }
 
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
             Transform transform = (target as Component).transform;
 
             GameObject propValue = prop.GetValue(target, null) as GameObject;
@@ -654,19 +635,22 @@ namespace MRDL
         }
 #endif
 
-        public string CustomLabel { get; private set; }
     }
 
+    // Displays a drop-down menu of Component objects that are limited to the scene (no prefabs)
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class SceneComponentAttribute : DrawOverrideAttribute
     {
+        public string CustomLabel { get; private set; }
+
         public SceneComponentAttribute(string customLabel = null)
         {
             CustomLabel = customLabel;
         }
 
 #if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
             Component fieldValue = field.GetValue(target) as Component;
             fieldValue = SceneObjectField(
                 SplitCamelCase(field.Name),
@@ -675,7 +659,8 @@ namespace MRDL
             field.SetValue(target, fieldValue);
         }
 
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
             Component propValue = prop.GetValue(target, null) as Component;
             propValue = SceneObjectField(
                 SplitCamelCase(prop.Name),
@@ -684,15 +669,20 @@ namespace MRDL
             prop.SetValue(target, propValue, null);
         }
 
-        public static Component SceneObjectField(string label, Component sceneObject, Type componentType) {
+        public static Component SceneObjectField(string label, Component sceneObject, Type componentType)
+        {
 
             EditorGUILayout.BeginHorizontal();
-            if (string.IsNullOrEmpty(label)) {
+            if (string.IsNullOrEmpty(label))
+            {
                 sceneObject = (Component)EditorGUILayout.ObjectField(sceneObject, componentType, true);
-            } else {
+            }
+            else
+            {
                 sceneObject = (Component)EditorGUILayout.ObjectField(label, sceneObject, componentType, true);
             }
-            if (sceneObject != null && sceneObject.gameObject.scene.name == null) {
+            if (sceneObject != null && sceneObject.gameObject.scene.name == null)
+            {
                 // Don't allow objects that aren't in the scene!
                 sceneObject = null;
             }
@@ -701,16 +691,21 @@ namespace MRDL
             int selectedIndex = 0;
             string[] displayedOptions = new string[objectsInScene.Length + 1];
             displayedOptions[0] = "(None)";
-            for (int i = 0; i < objectsInScene.Length; i++) {
+            for (int i = 0; i < objectsInScene.Length; i++)
+            {
                 displayedOptions[i + 1] = objectsInScene[i].name;
-                if (objectsInScene[i] == sceneObject) {
+                if (objectsInScene[i] == sceneObject)
+                {
                     selectedIndex = i + 1;
                 }
             }
             selectedIndex = EditorGUILayout.Popup(selectedIndex, displayedOptions);
-            if (selectedIndex == 0) {
+            if (selectedIndex == 0)
+            {
                 sceneObject = null;
-            } else {
+            }
+            else
+            {
                 sceneObject = (Component)objectsInScene[selectedIndex - 1];
             }
             EditorGUILayout.EndHorizontal();
@@ -718,34 +713,42 @@ namespace MRDL
         }
 #endif
 
-        public string CustomLabel { get; private set; }
     }
 
+    // Displays a drop-down menu of GameObjects that are limited to the target object
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class SceneGameObjectAttribute : DrawOverrideAttribute
     {
+        public string CustomLabel { get; private set; }
+
         public SceneGameObjectAttribute(string customLabel = null)
         {
             CustomLabel = customLabel;
         }
 
 #if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
             throw new NotImplementedException();
         }
 
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
             throw new NotImplementedException();
         }
 #endif
 
-        public string CustomLabel { get; private set; }
     }
 
+    // Adds a 'default' button to an animation curve that will supply default curve values
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class AnimationCurveDefaultAttribute : DrawOverrideAttribute
     {
-        public AnimationCurveDefaultAttribute (Keyframe startVal, Keyframe endVal, WrapMode postWrap = WrapMode.Loop)
+        public WrapMode PostWrap { get; private set; }
+        public Keyframe StartVal { get; private set; }
+        public Keyframe EndVal { get; private set; }
+
+        public AnimationCurveDefaultAttribute(Keyframe startVal, Keyframe endVal, WrapMode postWrap = WrapMode.Loop)
         {
             PostWrap = postWrap;
             StartVal = startVal;
@@ -764,11 +767,9 @@ namespace MRDL
         }
 #endif
 
-        public WrapMode PostWrap { get; private set; }
-        public Keyframe StartVal { get; private set; }
-        public Keyframe EndVal { get; private set; }
     }
 
+    // Adds a 'default' button to a color gradient that will supply default color values
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class GradientDefaultAttribute : DrawOverrideAttribute
     {
@@ -867,7 +868,8 @@ namespace MRDL
             }
         }
     }
-    
+
+    // Displays an enum value as a dropdown mask
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class EnumFlagsAttribute : DrawOverrideAttribute
     {
@@ -876,7 +878,8 @@ namespace MRDL
         {
             int enumValue = Convert.ToInt32(field.GetValue(target));
             List<string> displayOptions = new List<string>();
-            foreach (object value in Enum.GetValues(field.FieldType)) {
+            foreach (object value in Enum.GetValues(field.FieldType))
+            {
                 displayOptions.Add(value.ToString());
             }
             enumValue = EditorGUILayout.MaskField(SplitCamelCase(field.Name), enumValue, displayOptions.ToArray());
@@ -895,10 +898,19 @@ namespace MRDL
 #endif
     }
 
+    // Displays an enum value as a set of checkboxes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class EnumCheckboxAttribute : DrawOverrideAttribute
     {
-        public EnumCheckboxAttribute(string customLabel = null) {
+        public string DefaultName { get; private set; }
+        public int DefaultValue { get; private set; }
+        public int ValueOnZero { get; private set; }
+        public bool IgnoreNone { get; private set; }
+        public bool IgnoreAll { get; private set; }
+        public string CustomLabel { get; private set; }
+
+        public EnumCheckboxAttribute(string customLabel = null)
+        {
             DefaultName = null;
             DefaultValue = 0;
             ValueOnZero = 0;
@@ -907,7 +919,8 @@ namespace MRDL
             CustomLabel = customLabel;
         }
 
-        public EnumCheckboxAttribute(bool ignoreNone, bool ignoreAll, string customLabel = null) {
+        public EnumCheckboxAttribute(bool ignoreNone, bool ignoreAll, string customLabel = null)
+        {
             DefaultName = null;
             DefaultValue = 0;
             ValueOnZero = 0;
@@ -919,7 +932,7 @@ namespace MRDL
         public EnumCheckboxAttribute(string defaultName, object defaultValue, object valueOnZero = null, bool ignoreNone = true, bool ignoreAll = true, string customLabel = null)
         {
             DefaultName = defaultName;
-            DefaultValue = Convert.ToInt32 (defaultValue);
+            DefaultValue = Convert.ToInt32(defaultValue);
             ValueOnZero = Convert.ToInt32(valueOnZero);
             IgnoreNone = ignoreNone;
             IgnoreAll = ignoreAll;
@@ -927,7 +940,8 @@ namespace MRDL
         }
 
 #if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
             int value = EnumCheckbox(
                 (string.IsNullOrEmpty(CustomLabel) ? SplitCamelCase(field.Name) : CustomLabel),
                 field.GetValue(target),
@@ -940,7 +954,8 @@ namespace MRDL
             field.SetValue(target, value);
         }
 
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
             int value = EnumCheckbox(
                 (string.IsNullOrEmpty(CustomLabel) ? SplitCamelCase(prop.Name) : CustomLabel),
                 prop.GetValue(target, null),
@@ -953,8 +968,10 @@ namespace MRDL
             prop.SetValue(target, value, null);
         }
 
-        private static int EnumCheckbox(string label, object enumObj, string defaultName, object defaultVal, object valOnZero, bool ignoreNone = true, bool ignoreAll = true) {
-            if (!enumObj.GetType().IsEnum) {
+        private static int EnumCheckbox(string label, object enumObj, string defaultName, object defaultVal, object valOnZero, bool ignoreNone = true, bool ignoreAll = true)
+        {
+            if (!enumObj.GetType().IsEnum)
+            {
                 throw new ArgumentException("enumObj must be an enum.");
             }
 
@@ -972,54 +989,66 @@ namespace MRDL
             System.Array enumVals = Enum.GetValues(enumObj.GetType());
             int lastvalue = Convert.ToInt32(enumVals.GetValue(enumVals.GetLength(0) - 1));
 
-            foreach (object enumVal in enumVals) {
+            foreach (object enumVal in enumVals)
+            {
                 int flagVal = Convert.ToInt32(enumVal);
-                if (ignoreNone && flagVal == 0 && enumVal.ToString().ToLower() == "none") {
+                if (ignoreNone && flagVal == 0 && enumVal.ToString().ToLower() == "none")
+                {
                     continue;
                 }
-                if (ignoreAll && flagVal == lastvalue && enumVal.ToString().ToLower() == "all") {
+                if (ignoreAll && flagVal == lastvalue && enumVal.ToString().ToLower() == "all")
+                {
                     continue;
                 }
                 bool selected = (flagVal & enumFlags) != 0;
                 selected = EditorGUILayout.Toggle(enumVal.ToString(), selected);
                 // If it's selected add it to the enumObj, otherwise remove it
-                if (selected) {
+                if (selected)
+                {
                     enumFlags |= flagVal;
-                } else {
+                }
+                else
+                {
                     enumFlags &= ~flagVal;
                 }
             }
-            if (!string.IsNullOrEmpty(defaultName)) {
-                if (GUILayout.Button(defaultName, EditorStyles.miniButton)) {
+            if (!string.IsNullOrEmpty(defaultName))
+            {
+                if (GUILayout.Button(defaultName, EditorStyles.miniButton))
+                {
                     enumFlags = Convert.ToInt32(defaultVal);
                 }
             }
             EditorGUILayout.EndVertical();
 
-            if (enumFlags == 0) {
+            if (enumFlags == 0)
+            {
                 enumFlags = Convert.ToInt32(valOnZero);
             }
             return enumFlags;
         }
 #endif
 
-        public string DefaultName { get; private set; }
-        public int DefaultValue { get; private set; }
-        public int ValueOnZero { get; private set; }
-        public bool IgnoreNone { get; private set; }
-        public bool IgnoreAll { get; private set; }
-        public string CustomLabel { get; private set; }
     }
 
+    // Displays a drop-down list of available material properties from the material supplied in a named member
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class MaterialPropertyAttribute : DrawOverrideAttribute
     {
-        public enum PropertyTypeEnum {
+        public enum PropertyTypeEnum
+        {
             Color,
             Float,
             Range,
             Vector,
         }
+
+        public string Property { get; private set; }
+        public PropertyTypeEnum PropertyType { get; private set; }
+        public string MaterialMemberName { get; private set; }
+        public bool AllowNone { get; private set; }
+        public string DefaultProperty { get; private set; }
+        public string CustomLabel { get; private set; }
 
         public MaterialPropertyAttribute(PropertyTypeEnum propertyType, string materialMemberName, bool allowNone = true, string defaultProperty = "_Color", string customLabel = null)
         {
@@ -1031,7 +1060,8 @@ namespace MRDL
         }
 
 #if UNITY_EDITOR
-        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property) {
+        public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
+        {
             Material mat = GetMaterial(target);
 
             string fieldValue = MaterialPropertyName(
@@ -1045,7 +1075,8 @@ namespace MRDL
             field.SetValue(target, fieldValue);
         }
 
-        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop) {
+        public override void DrawEditor(UnityEngine.Object target, PropertyInfo prop)
+        {
             Material mat = GetMaterial(target);
 
             string propValue = MaterialPropertyName(
@@ -1059,16 +1090,19 @@ namespace MRDL
             prop.SetValue(target, propValue, null);
         }
 
-        private Material GetMaterial (object target) {
+        private Material GetMaterial(object target)
+        {
             MemberInfo[] members = target.GetType().GetMember(MaterialMemberName);
-            if (members.Length == 0) {
+            if (members.Length == 0)
+            {
                 Debug.LogError("Couldn't find material member " + MaterialMemberName);
                 return null;
             }
 
             Material mat = null;
 
-            switch (members[0].MemberType) {
+            switch (members[0].MemberType)
+            {
                 case MemberTypes.Field:
                     FieldInfo matField = target.GetType().GetField(MaterialMemberName);
                     mat = matField.GetValue(target) as Material;
@@ -1087,47 +1121,62 @@ namespace MRDL
             return mat;
         }
 
-        private static string MaterialPropertyName(string property, Material mat, PropertyTypeEnum type, bool allowNone, string defaultProperty, string labelName) {
+        private static string MaterialPropertyName(string property, Material mat, PropertyTypeEnum type, bool allowNone, string defaultProperty, string labelName)
+        {
             Color tColor = GUI.color;
             // Create a list of available color and value properties
             List<string> props = new List<string>();
 
             int selectedPropIndex = 0;
 
-            if (allowNone) {
+            if (allowNone)
+            {
                 props.Add("(None)");
             }
 
-            if (mat != null) {
+            if (mat != null)
+            {
                 int propertyCount = ShaderUtil.GetPropertyCount(mat.shader);
                 string propName = string.Empty;
-                for (int i = 0; i < propertyCount; i++) {
-                    if (ShaderUtil.GetPropertyType(mat.shader, i).ToString() == type.ToString()) {
+                for (int i = 0; i < propertyCount; i++)
+                {
+                    if (ShaderUtil.GetPropertyType(mat.shader, i).ToString() == type.ToString())
+                    {
                         propName = ShaderUtil.GetPropertyName(mat.shader, i);
-                        if (propName == property) {
+                        if (propName == property)
+                        {
                             // We've found our current property
                             selectedPropIndex = props.Count;
                         }
                         props.Add(propName);
                     }
                 }
-                
-                if (string.IsNullOrEmpty(labelName)) {
+
+                if (string.IsNullOrEmpty(labelName))
+                {
                     labelName = type.ToString();
                 }
                 int newPropIndex = EditorGUILayout.Popup(labelName, selectedPropIndex, props.ToArray());
-                if (allowNone) {
+                if (allowNone)
+                {
                     property = (newPropIndex > 0 ? props[newPropIndex] : string.Empty);
-                } else {
-                    if (props.Count > 0) {
+                }
+                else
+                {
+                    if (props.Count > 0)
+                    {
                         property = props[newPropIndex];
-                    } else {
+                    }
+                    else
+                    {
                         property = defaultProperty;
                     }
                 }
                 return property;
-            } else {
-                GUI.color = Color.Lerp (tColor, Color.gray, 0.5f);
+            }
+            else
+            {
+                GUI.color = Color.Lerp(tColor, Color.gray, 0.5f);
                 // Draw an empty property
                 EditorGUILayout.Popup(labelName, selectedPropIndex, props.ToArray());
                 GUI.color = tColor;
@@ -1136,63 +1185,139 @@ namespace MRDL
         }
 #endif
 
-        public string Property { get; private set; }
-        public PropertyTypeEnum PropertyType { get; private set; }
-        public string MaterialMemberName { get; private set; }
-        public bool AllowNone { get; private set; }
-        public string DefaultProperty { get; private set; }
-        public string CustomLabel { get; private set; }
     }
 
+    // Validates object and displays an error or warning if validation fails
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public sealed class FilterTagsAttribute : Attribute
+    public sealed class ValidateUnityObjectAttribute : Attribute
     {
-
-    }
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public sealed class ValidateSettingAttribute : Attribute
-    {        
-        public ValidateSettingAttribute (string validateMethodName, string fixMethodName = null)
+        public enum ActionEnum
         {
-            ValidateMethodName = validateMethodName;
-            FixMethodName = fixMethodName;
+            Success,
+            Warn,
+            Error,
+            HaltError,
         }
-        
-        public string ValidateMethodName { get; private set; }
-        public string FixMethodName { get; private set; }
+
+        public ActionEnum FailAction { get; private set; }
+        public string MethodName { get; private set; }
+        public string MessageOnFail { get; private set; }
+
+        public ValidateUnityObjectAttribute(string methodName, string messageOnError, ActionEnum failAction = ActionEnum.Warn)
+        {
+            MethodName = methodName;
+            MessageOnFail = messageOnError;
+            FailAction = failAction;
+        }
+
+        public ActionEnum Validate(UnityEngine.Object target, System.Object source, out string messageOnFail)
+        {
+            if (source == null)
+                throw new NullReferenceException("Source cannot be null.");
+
+            MethodInfo m = source.GetType().GetMethod(MethodName);
+            if (m == null)
+                throw new MissingMethodException("Method " + MethodName + " not found in type " + source.GetType().ToString());
+
+            bool result = (bool)m.Invoke(source, new System.Object[] { target });
+
+            if (result)
+            {
+                messageOnFail = string.Empty;
+                return ActionEnum.Success;
+            }
+
+            messageOnFail = MessageOnFail;
+            return FailAction;
+        }
     }
 
+    // Sets the indent level for custom formatting
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class SetIndentAttribute : Attribute
     {
+        public int Indent { get; private set; }
+
         public SetIndentAttribute(int indent)
         {
             Indent = indent;
         }
-
-        public int Indent { get; private set; }
     }
 
-#endregion
+    // Class used to send members to bottom of drawing queue
+    [AttributeUsage(AttributeTargets.Field)]
+    public sealed class DrawLastAttribute : Attribute { }
 
-#region custom editors
+    #endregion
+
+    #region property drawers
 
 #if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(HeaderAttribute))]
+    public class CustomHeaderDrawer : DecoratorDrawer
+    {
+        public override float GetHeight()
+        {
+            return MRDLEditor.ShowCustomEditors ? 0f : 24f;
+        }
+
+        public override void OnGUI(Rect position)
+        {
+            // If we're using MRDL custom editors, don't show the header
+            if (MRDLEditor.ShowCustomEditors)
+                return;
+
+            // Otherwise draw it normally
+            GUI.Label(position, (base.attribute as HeaderAttribute).header, EditorStyles.boldLabel);
+        }
+    }
+
+    [CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
+    public class EnumFlagsPropertyDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            // If we're using MRDL custom edtiors, let the draw override property handle it
+            if (MRDLEditor.ShowCustomEditors)
+                return;
+
+            // Otherwise draw a bitmask normally
+            base.OnGUI(position, property, label);
+        }
+    }
+#endif
+
+    #endregion
+
+    #region custom editor
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// To use this class in a Monobehavior or ScriptableObject, add this line at the bottom of your class:
+    /// 
+    /// public class ClassName {
+    /// ...
+    /// #if UNITY_EDITOR
+    ///     [UnityEditor.CustomEditor(typeof(ClassName))]
+    ///     public class CustomEditor : MRDLEditor { }
+    /// #endif
+    /// }
+    /// 
+    /// </summary>
     public class MRDLEditor : Editor
     {
-#region static vars
+        #region static vars
+        // Toggles custom editors on / off
         public static bool ShowCustomEditors = true;
         public static GameObject lastTarget;
 
-        private static bool showHelp = false;
-        private static int indentOnSectionStart = 0;
-
+        // Styles
         private static GUIStyle toggleButtonOffStyle = null;
         private static GUIStyle toggleButtonOnStyle = null;
         private static GUIStyle sectionStyle = null;
         private static GUIStyle toolTipStyle = null;
 
+        // Colors
         protected readonly static Color defaultColor = new Color(1f, 1f, 1f);
         protected readonly static Color disabledColor = new Color(0.6f, 0.6f, 0.6f);
         protected readonly static Color borderedColor = new Color(0.8f, 0.8f, 0.8f);
@@ -1206,11 +1331,15 @@ namespace MRDL
         protected readonly static Color objectColorEmpty = new Color(0.75f, 0.8f, 0.9f);
         protected readonly static Color profileColor = new Color(0.88f, 0.7f, .97f);
 
+        // Toggles visible tooltips
+        private static bool showHelp = false;
+        // Stores the show / hide values of displayed sections by target name + section name
+        private static Dictionary<string, bool> displayedSections = new Dictionary<string, bool>();
+        private static int indentOnSectionStart = 0;
+
         private static BindingFlags defaultBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-        private static Dictionary<string, bool> displayedSections = new Dictionary<string, bool>();
-        
-#endregion
+        #endregion
 
         public override void OnInspectorGUI()
         {
@@ -1218,13 +1347,16 @@ namespace MRDL
             DrawInspectorHeader();
             Undo.RecordObject(target, target.name);
 
-            if (ShowCustomEditors) {
+            if (ShowCustomEditors)
+            {
                 DrawCustomEditor();
                 DrawCustomFooter();
-            } else {
+            }
+            else
+            {
                 base.DrawDefaultInspector();
             }
-            
+
             SaveChanges();
         }
 
@@ -1341,6 +1473,9 @@ namespace MRDL
             EditorGUILayout.Space();
         }
 
+        /// <summary>
+        /// Draws main editor
+        /// </summary>
         protected void DrawCustomEditor()
         {
             EditorGUILayout.BeginVertical();
@@ -1349,13 +1484,15 @@ namespace MRDL
             // Get all the members of this type, public and private
             List<MemberInfo> members = new List<MemberInfo>(targetType.GetMembers(defaultBindingFlags));
             members.Sort(
-                delegate (MemberInfo m1, MemberInfo m2) {
-                    if (m1.IsDefined(typeof(DrawLastAttribute), true)) {
+                delegate (MemberInfo m1, MemberInfo m2)
+                {
+                    if (m1.IsDefined(typeof(DrawLastAttribute), true))
+                    {
                         return 1;
                     }
                     return 0;
                 }
-            );            
+            );
 
             // Start drawing the editor
             int currentIndentLevel = 0;
@@ -1378,7 +1515,7 @@ namespace MRDL
                     }
 
                     // Then do basic show / hide based on ShowIfAttribute
-                    if ((insideSectionBlock && !drawCurrentSection) || !ShowMember(member, targetType, target))
+                    if ((insideSectionBlock && !drawCurrentSection) || !ShouldDrawMember(member, targetType, target))
                         continue;
 
                     // Handle drawing stuff (indent, help)
@@ -1471,17 +1608,32 @@ namespace MRDL
         /// override this if you want to draw a footer at the bottom of your editor
         /// Typically used for validation and error / warning messages that are too complex for Validate attributes
         /// </summary>
-        protected virtual void DrawCustomFooter() {
-
+        protected virtual void DrawCustomFooter()
+        {
+            //...
         }
 
-        protected void SaveChanges() {
-            if (serializedObject.ApplyModifiedProperties()) {
+        /// <summary>
+        /// Ensures changes are saved once editor is finished
+        /// </summary>
+        protected void SaveChanges()
+        {
+            if (serializedObject.ApplyModifiedProperties())
+            {
                 EditorUtility.SetDirty(target);
             }
         }
 
-        private bool ShowMember(MemberInfo member, Type targetType, object target)
+        #region drawing
+
+        /// <summary>
+        /// Determines whether this member should be shown in the editor
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="targetType"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        private bool ShouldDrawMember(MemberInfo member, Type targetType, object target)
         {
             object[] hideAttributes = member.GetCustomAttributes(typeof(HideInInspector), true);
             if (hideAttributes != null && hideAttributes.Length > 0)
@@ -1493,8 +1645,10 @@ namespace MRDL
             {
                 case MemberTypes.Field:
                     // Fields are visible by default unless they're hidden by a ShowIfAttribute
-                    foreach (ShowIfAttribute attribute in member.GetCustomAttributes(typeof(ShowIfAttribute), true)) {
-                        if (!attribute.ShouldShow(target)) {
+                    foreach (ShowIfAttribute attribute in member.GetCustomAttributes(typeof(ShowIfAttribute), true))
+                    {
+                        if (!attribute.ShouldShow(target))
+                        {
                             shouldBeVisible = false;
                             break;
                         }
@@ -1503,12 +1657,17 @@ namespace MRDL
 
                 case MemberTypes.Property:
                     // Property types require at least one EditorAttribute to be visible
-                    if (member.GetCustomAttributes(typeof(EditorAttribute), true).Length == 0) {
+                    if (member.GetCustomAttributes(typeof(EditorAttribute), true).Length == 0)
+                    {
                         shouldBeVisible = false;
-                    } else {
+                    }
+                    else
+                    {
                         // Even if they have an editor attribute, they can still be hidden by a ShowIfAttribute
-                        foreach (ShowIfAttribute attribute in member.GetCustomAttributes(typeof(ShowIfAttribute), true)) {
-                            if (!attribute.ShouldShow(target)) {
+                        foreach (ShowIfAttribute attribute in member.GetCustomAttributes(typeof(ShowIfAttribute), true))
+                        {
+                            if (!attribute.ShouldShow(target))
+                            {
                                 shouldBeVisible = false;
                                 break;
                             }
@@ -1522,34 +1681,26 @@ namespace MRDL
             return shouldBeVisible;
         }
 
-        private void CreateStyles()
-        {
-            if (toggleButtonOffStyle == null)
-            {
-                toggleButtonOffStyle = "ToolbarButton";
-                toggleButtonOffStyle.fontSize = 9;
-                toggleButtonOnStyle = new GUIStyle(toggleButtonOffStyle);
-                toggleButtonOnStyle.normal.background = toggleButtonOnStyle.active.background;
-               
-
-                sectionStyle = new GUIStyle(EditorStyles.foldout);
-                sectionStyle.fontStyle = FontStyle.Bold;
-
-                toolTipStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
-                toolTipStyle.fontStyle = FontStyle.Normal;
-                toolTipStyle.alignment = TextAnchor.LowerLeft;
-            }
-        }
-
-#region drawing
-
+        /// <summary>
+        /// Draws default unity serialized field
+        /// </summary>
+        /// <param name="serializedObject"></param>
+        /// <param name="propertyPath"></param>
         protected void DrawSerializedField(SerializedObject serializedObject, string propertyPath)
         {
             SerializedProperty prop = serializedObject.FindProperty(propertyPath);
             if (prop != null)
                 EditorGUILayout.PropertyField(prop, true);
-        }        
-        
+        }
+
+        /// <summary>
+        /// Draws a section start (initiated by the Header attribute)
+        /// </summary>
+        /// <param name="targetName"></param>
+        /// <param name="headerName"></param>
+        /// <param name="toUpper"></param>
+        /// <param name="drawInitially"></param>
+        /// <returns></returns>
         public static bool DrawSectionStart(string targetName, string headerName, bool toUpper = true, bool drawInitially = true)
         {
             string lookupName = targetName + headerName;
@@ -1571,16 +1722,23 @@ namespace MRDL
 
             indentOnSectionStart = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;// indentOnSectionStart + 1;
-            
+
             return drawSection;
         }
 
+        /// <summary>
+        /// Draws section end (initiated by next Header attribute)
+        /// </summary>
         public static void DrawSectionEnd()
         {
             EditorGUILayout.EndVertical();
             EditorGUI.indentLevel = indentOnSectionStart;
         }
 
+        /// <summary>
+        /// Draws a tooltip as text in the editor
+        /// </summary>
+        /// <param name="member"></param>
         public static void DrawToolTip(MemberInfo member)
         {
             if (member.IsDefined(typeof(TooltipAttribute), true))
@@ -1627,14 +1785,40 @@ namespace MRDL
             GUILayout.Box("", styleHR);
         }
 
-#endregion
+        private void CreateStyles()
+        {
+            if (toggleButtonOffStyle == null)
+            {
+                toggleButtonOffStyle = "ToolbarButton";
+                toggleButtonOffStyle.fontSize = 9;
+                toggleButtonOnStyle = new GUIStyle(toggleButtonOffStyle);
+                toggleButtonOnStyle.normal.background = toggleButtonOnStyle.active.background;
 
-#region profiles
 
+                sectionStyle = new GUIStyle(EditorStyles.foldout);
+                sectionStyle.fontStyle = FontStyle.Bold;
+
+                toolTipStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
+                toolTipStyle.fontStyle = FontStyle.Normal;
+                toolTipStyle.alignment = TextAnchor.LowerLeft;
+            }
+        }
+
+        #endregion
+
+        #region profiles
+
+        /// <summary>
         /// Draws a field for scriptable object profiles
+        /// Profiles are scriptable objects that contain shared information
         /// If base class is abstract, includes a button for creating a profile of each type that inherits from base class T
         /// Otherwise just includes button for creating a profile of type
         /// Also finds and draws the inspector for the profile
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="profile"></param>
+        /// <param name="profileType"></param>
+        /// <returns></returns>
         private static UnityEngine.Object DrawProfileField(UnityEngine.Object target, UnityEngine.Object profile, Type profileType)
         {
             Color prevColor = GUI.color;
@@ -1713,6 +1897,9 @@ namespace MRDL
             return newProfile;
         }
 
+        /// <summary>
+        /// Displays a help window explaning profile objects
+        /// </summary>
         private static void LaunchProfileHelp()
         {
             EditorUtility.DisplayDialog(
@@ -1726,6 +1913,11 @@ namespace MRDL
                         , "OK");
         }
 
+        /// <summary>
+        /// Creates a new instance of the profile object
+        /// </summary>
+        /// <param name="profileType"></param>
+        /// <returns></returns>
         private static UnityEngine.Object CreateProfile(Type profileType)
         {
             UnityEngine.Object asset = ScriptableObject.CreateInstance(profileType);
@@ -1789,19 +1981,23 @@ namespace MRDL
             return false;
         }
 
-#endregion
+        #endregion
     }
 
     /// <summary>
     /// Base class for profile inspectors
-    /// Adds a 'target component' so inspectors can differentiate between local / global editing
+    /// Profiles are scriptable objects that contain shared information
+    /// To ensure that developers understand that they're editing 'global' data, 
+    /// this inspector automatically displays a CONSISTENT warning message and 'profile' color to the controls
+    /// It also provides a 'target component' so inspectors can differentiate between local / global editing
     /// See compound button component inspectors for usage examples
     /// </summary>
     public abstract class ProfileInspector : MRDLEditor
     {
         public Component targetComponent;
 
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             Undo.RecordObject(target, target.name);
             BeginProfileInspector();
             DrawCustomEditor();
@@ -1810,7 +2006,8 @@ namespace MRDL
             SaveChanges();
         }
 
-        private void BeginProfileInspector() {
+        private void BeginProfileInspector()
+        {
             GUI.color = profileColor;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             GUI.color = Color.Lerp(profileColor, Color.red, 0.5f);
@@ -1818,7 +2015,8 @@ namespace MRDL
             GUI.color = defaultColor;
         }
 
-        private void EndProfileInspector() {
+        private void EndProfileInspector()
+        {
             EditorGUILayout.EndVertical();
         }
     }
