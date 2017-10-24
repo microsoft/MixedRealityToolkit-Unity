@@ -18,7 +18,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         public Vector2 Offsets = new Vector2(0.00f, 0.00f);
 
-        void Start()
+        private void Start()
         {
             Interactive interactive = InteractivePrefab.GetComponent<Interactive>();
             if (interactive == null)
@@ -52,7 +52,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// create new Prefab-instance and fill with given data
         /// </summary>
-        void CreateInteractives()
+        private void CreateInteractives()
         {
             for (int i = Interactives.Count; i < Titles.Count; i++)
             {
@@ -117,7 +117,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// remove unused Interactives from scene
         /// </summary>
         /// <param name="keep">number of Iteractives that will NOT be deleted</param>
-        void RemoveInteractives(int keep = 0)
+        private void RemoveInteractives(int keep = 0)
         {
             for (int i = Interactives.Count - 1; i >= keep; i--)
             {

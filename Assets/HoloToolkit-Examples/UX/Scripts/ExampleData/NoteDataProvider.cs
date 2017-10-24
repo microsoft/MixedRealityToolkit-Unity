@@ -16,10 +16,11 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         public InteractiveSet SourceSet;
 
-        // some test data - imagine this comming from a web-service 
-        // or some input menu
-        public Dictionary<string, List<string>> Data = 
-            new Dictionary<string, List<string>>
+        /// <summary>
+        /// some test data - imagine this comming from a web-service 
+        /// or some input menu
+        /// </summary>
+        public Dictionary<string, List<string>> Data = new Dictionary<string, List<string>>
         {
             {
                 "Normal",
@@ -56,7 +57,8 @@ namespace HoloToolkit.Examples.InteractiveElements
                 // selection type is set to "Multiple".
                 return;
             }
-            // in this example we are only interested in the first selected
+
+            // In this example we are only interested in the first selected
             // item. If you allow multiple selection for the SourceSet you
             // might want to have some more logic here
             int interactivePos = SourceSet.SelectedIndices[0];
@@ -69,8 +71,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 // attached, so it can not be determined what text blocks 
                 // should be shown in the InteractiveGroup.
                 Debug.LogWarning("Please attach a LabelTheme to the " +
-                    "InteractiveToggle named \"" + 
-                    toggle.gameObject.name + "\""); 
+                    "InteractiveToggle named \"" + toggle.gameObject.name + "\""); 
             }
             else
             { 
