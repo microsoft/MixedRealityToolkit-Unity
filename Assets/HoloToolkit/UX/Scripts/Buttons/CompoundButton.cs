@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using MRDL;
+using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.Buttons
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(CompoundButton))]
-        public class CustomEditor : MRDLEditor
+        public class CustomEditor : MRTKEditor
         {
             /// <summary>
             /// Validate button settings to ensure button will work in current scene

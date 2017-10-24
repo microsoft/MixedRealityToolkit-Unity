@@ -5,7 +5,7 @@
 using System;
 using System.Reflection;
 using UnityEngine;
-using MRDL;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -19,11 +19,11 @@ namespace HoloToolkit.Unity.Buttons
         public ToggleBehaviorEnum Behavior = ToggleBehaviorEnum.OnTapped;
 
         [Tooltip("Profile to use when State is TRUE")]
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public ButtonProfile OnProfile;
 
         [Tooltip("Profile to use when State is FALSE")]
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public ButtonProfile OffProfile;
 
         [DropDownComponent(true)]
@@ -134,7 +134,7 @@ namespace HoloToolkit.Unity.Buttons
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(CompoundButtonToggle))]
-        public class CustomEditor : MRDLEditor
+        public class CustomEditor : MRTKEditor
         {
             protected override void DrawCustomFooter() {
                 CompoundButtonToggle toggle = (CompoundButtonToggle)target;

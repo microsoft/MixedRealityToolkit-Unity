@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using MRDL;
+using HoloToolkit.Unity;
 using System;
 using UnityEngine;
 
@@ -22,23 +22,23 @@ namespace HoloToolkit.Unity.Buttons
         // This is useful when button text position will change dramatically based on the presence of other elements
         // eg, bottom anchor will move the text out of the way of an icon
         [Header("Anchor Settings")]
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorLowerCenterOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorLowerLeftOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorLowerRightOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorMiddleCenterOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorMiddleLeftOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorMiddleRightOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorUpperCenterOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorUpperLeftOffset = Vector3.zero;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Vector3 AnchorUpperRightOffset = Vector3.zero;
 
         /// <summary>

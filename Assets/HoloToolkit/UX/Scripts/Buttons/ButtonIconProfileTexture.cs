@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using MRDL;
+using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.Buttons
         public Texture2D AdjustHologram;
         public Texture2D RemoveHologram;
 
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public Texture2D[] CustomIcons;
 
         private bool initialized;

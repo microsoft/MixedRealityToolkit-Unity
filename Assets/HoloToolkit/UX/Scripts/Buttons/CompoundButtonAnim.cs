@@ -4,7 +4,7 @@
 //
 using UnityEngine;
 using System;
-using MRDL;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// List of animation actions
         /// </summary>
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AnimatorControllerAction[] AnimActions;
 
         private void Awake() {
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity.Buttons
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(CompoundButtonAnim))]
-        public class CustomEditor : MRDLEditor
+        public class CustomEditor : MRTKEditor
         {
             /// <summary>
             /// Draw a custom editor for AnimatorControllerActions to make them easier to edit

@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using MRDL;
+using HoloToolkit.Unity;
 using System.Collections;
 using UnityEngine;
 
@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.Buttons
         public bool OverrideIcon = false;
 
         [SerializeField]
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         private string iconName;
 
         [SerializeField]
@@ -302,7 +302,7 @@ namespace HoloToolkit.Unity.Buttons
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(CompoundButtonIcon))]
-        public class CustomEditor : MRDLEditor {
+        public class CustomEditor : MRTKEditor {
             protected override void DrawCustomFooter() {
                 CompoundButtonIcon iconButton = (CompoundButtonIcon)target;
                 iconButton.IconName = iconButton.Profile.DrawIconSelectField(iconButton.iconName);

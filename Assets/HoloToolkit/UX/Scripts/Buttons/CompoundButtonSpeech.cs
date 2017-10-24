@@ -5,7 +5,7 @@
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity.InputModule;
-using MRDL;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -27,19 +27,19 @@ namespace HoloToolkit.Unity.Buttons
         /// Source of the keyword to be used
         /// By default the text in a CompoundButtonText component will be used
         /// </summary>
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public KeywordSourceEnum KeywordSource = KeywordSourceEnum.ButtonText;
 
         /// <summary>
         /// Keyword used when KeywordSource is set to LocalOverride
         /// </summary>
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public string Keyword = string.Empty;
 
         /// <summary>
         /// The confidence level to use for this speech command
         /// </summary>
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public ConfidenceLevel ConfidenceLevel = ConfidenceLevel.Medium;
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace HoloToolkit.Unity.Buttons
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(CompoundButtonSpeech))]
-        public class CustomEditor : MRDLEditor
+        public class CustomEditor : MRTKEditor
         {
             protected override void DrawCustomFooter() {
                 CompoundButtonSpeech speechButton = (CompoundButtonSpeech)target;

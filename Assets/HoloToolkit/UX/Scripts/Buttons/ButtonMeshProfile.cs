@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using MRDL;
+using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity.Buttons
         [Tooltip("How quickly to animate scale, offset, color and value properties")]
         public float AnimationSpeed = 1f;
 
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public CompoundButtonMesh.MeshButtonDatum[] ButtonStates = new CompoundButtonMesh.MeshButtonDatum[]{ new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)0), new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)1),
             new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)2), new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)3),
             new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)4), new CompoundButtonMesh.MeshButtonDatum((ButtonStateEnum)5) };

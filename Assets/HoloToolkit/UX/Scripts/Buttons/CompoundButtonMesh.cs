@@ -4,7 +4,7 @@
 //
 using System;
 using UnityEngine;
-using MRDL;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -250,7 +250,7 @@ namespace HoloToolkit.Unity.Buttons
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(CompoundButtonMesh))]
-        public class CustomEditor : MRDLEditor { }
+        public class CustomEditor : MRTKEditor { }
 #endif
     }
 }

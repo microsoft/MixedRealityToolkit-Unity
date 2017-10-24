@@ -4,7 +4,7 @@
 //
 using UnityEngine;
 
-namespace MRDL
+namespace HoloToolkit.Unity
 {
     /// <summary>
     /// The base class for all profiles

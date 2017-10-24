@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using MRDL;
+using HoloToolkit.Unity;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.Buttons
@@ -10,37 +10,37 @@ namespace HoloToolkit.Unity.Buttons
     public class ButtonSoundProfile : ButtonProfile
     {
         // Direct interaction clips
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AudioClip ButtonCanceled;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AudioClip ButtonHeld;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AudioClip ButtonPressed;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AudioClip ButtonReleased;
 
         // State change clips
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AudioClip ButtonObservation;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AudioClip ButtonObservationTargeted;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public AudioClip ButtonTargeted;
 
         // Volumes
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public float ButtonCanceledVolume = 1f;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public float ButtonHeldVolume = 1f;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public float ButtonPressedVolume = 1f;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public float ButtonReleasedVolume = 1f;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public float ButtonObservationVolume = 1f;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public float ButtonObservationTargetedVolume = 1f;
-        [HideInMRDLInspector]
+        [HideInMRTKInspector]
         public float ButtonTargetedVolume = 1f;
 
 #if UNITY_EDITOR
