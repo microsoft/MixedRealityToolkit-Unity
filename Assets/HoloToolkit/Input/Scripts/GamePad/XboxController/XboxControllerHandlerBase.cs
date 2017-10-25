@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public virtual void OnGamePadUpdate(XboxControllerEventData eventData)
+        public virtual void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
         }
 

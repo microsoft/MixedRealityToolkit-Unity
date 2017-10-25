@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -13,8 +14,20 @@ namespace HoloToolkit.Unity.InputModule
         protected float DeviceRefreshTimer;
         protected int LastDeviceUpdateCount;
         protected string[] LastDeviceList;
+        protected StandaloneInputModule InputModule;
 
         #region Unity methods
+
+        protected virtual void Awake()
+        {
+            InputModule = FindObjectOfType<StandaloneInputModule>();
+
+            if (InputModule == null)
+            {
+                Debug.LogError("Missing the Standalone Input Module for GamePad Input Source!\n" +
+                               "Ensure you have an Event System in your scene.");
+            }
+        }
 
         protected virtual void Update()
         {
@@ -34,7 +47,6 @@ namespace HoloToolkit.Unity.InputModule
             var joystickNames = Input.GetJoystickNames();
 
             if (joystickNames.Length <= 0) { return; }
-
 
             for (var i = 0; i < joystickNames.Length; i++)
             {

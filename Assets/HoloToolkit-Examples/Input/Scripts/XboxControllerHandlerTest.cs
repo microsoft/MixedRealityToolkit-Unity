@@ -42,9 +42,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             DebugText.text = "No Controller Connected";
         }
 
-        public override void OnGamePadUpdate(XboxControllerEventData eventData)
+        public override void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
-            base.OnGamePadUpdate(eventData);
+            base.OnXboxInputUpdate(eventData);
 
             newPosition = Vector3.zero;
             newRotation = Vector3.zero;
