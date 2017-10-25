@@ -16,10 +16,8 @@ namespace HoloToolkit.Unity.InputModule
         public static string RightTouchPadHorizontal { get; private set; }
         public static string RightTouchPadVertical { get; private set; }
         public static string LeftTrigger { get; private set; }
-        public static string LeftTriggerPressed { get; private set; }
         public static string LeftTriggerPartiallyPressed { get; private set; }
         public static string RightTrigger { get; private set; }
-        public static string RightTriggerPressed { get; private set; }
         public static string RightTriggerPartiallyPressed { get; private set; }
         public static string LeftMenu { get; private set; }
         public static string RightMenu { get; private set; }
@@ -41,10 +39,8 @@ namespace HoloToolkit.Unity.InputModule
         private const string CONTROLLER_RIGHT_TOUCHPAD_HORIZONTAL = "CONTROLLER_RIGHT_TOUCHPAD_HORIZONTAL";
         private const string CONTROLLER_RIGHT_TOUCHPAD_VERTICAL = "CONTROLLER_RIGHT_TOUCHPAD_VERTICAL";
         private const string CONTROLLER_LEFT_TRIGGER = "CONTROLLER_LEFT_TRIGGER";
-        private const string CONTROLLER_LEFT_TRIGGER_PRESSED = "CONTROLLER_LEFT_TRIGGER_PRESSED";
         private const string CONTROLLER_LEFT_TRIGGER_PARTIAL_PRESSED = "CONTROLLER_LEFT_TRIGGER_PARTIAL_PRESSED";
         private const string CONTROLLER_RIGHT_TRIGGER = "CONTROLLER_RIGHT_TRIGGER";
-        private const string CONTROLLER_RIGHT_TRIGGER_PRESSED = "CONTROLLER_RIGHT_TRIGGER_PRESSED";
         private const string CONTROLLER_RIGHT_TRIGGER_PARTIAL_PRESSED = "CONTROLLER_RIGHT_TRIGGER_PARTIAL_PRESSED";
         private const string CONTROLLER_LEFT_MENU = "CONTROLLER_LEFT_MENU";
         private const string CONTROLLER_RIGHT_MENU = "CONTROLLER_RIGHT_MENU";
@@ -82,13 +78,13 @@ namespace HoloToolkit.Unity.InputModule
                 case MotionControllerMappingTypes.LeftTrigger:
                     return LeftTrigger;
                 case MotionControllerMappingTypes.LeftTriggerPressed:
-                    return LeftTriggerPressed;
+                    return LeftTrigger;
                 case MotionControllerMappingTypes.LeftTriggerPartiallyPressed:
                     return LeftTriggerPartiallyPressed;
                 case MotionControllerMappingTypes.RightTrigger:
                     return RightTrigger;
                 case MotionControllerMappingTypes.RightTriggerPressed:
-                    return RightTriggerPressed;
+                    return RightTrigger;
                 case MotionControllerMappingTypes.RightTriggerPartiallyPressed:
                     return RightTriggerPartiallyPressed;
                 case MotionControllerMappingTypes.LeftMenu:
@@ -121,6 +117,8 @@ namespace HoloToolkit.Unity.InputModule
             switch (type)
             {
                 case MotionControllerMappingTypes.None:
+                case MotionControllerMappingTypes.LeftTriggerPressed:
+                case MotionControllerMappingTypes.RightTriggerPressed:
                     break;
                 case MotionControllerMappingTypes.LeftStickHorizontal:
                     LeftStickHorizontal = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_STICK_HORIZONTAL : value;
@@ -149,17 +147,11 @@ namespace HoloToolkit.Unity.InputModule
                 case MotionControllerMappingTypes.LeftTrigger:
                     LeftTrigger = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_TRIGGER : value;
                     break;
-                case MotionControllerMappingTypes.LeftTriggerPressed:
-                    LeftTriggerPressed = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_TRIGGER_PRESSED : value;
-                    break;
                 case MotionControllerMappingTypes.LeftTriggerPartiallyPressed:
                     LeftTriggerPartiallyPressed = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_TRIGGER_PARTIAL_PRESSED : value;
                     break;
                 case MotionControllerMappingTypes.RightTrigger:
                     RightTrigger = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_TRIGGER : value;
-                    break;
-                case MotionControllerMappingTypes.RightTriggerPressed:
-                    RightTriggerPressed = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_TRIGGER_PRESSED : value;
                     break;
                 case MotionControllerMappingTypes.RightTriggerPartiallyPressed:
                     RightTriggerPartiallyPressed = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_TRIGGER_PARTIAL_PRESSED : value;

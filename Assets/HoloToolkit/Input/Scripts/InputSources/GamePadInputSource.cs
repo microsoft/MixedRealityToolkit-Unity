@@ -8,13 +8,27 @@ namespace HoloToolkit.Unity.InputModule
 {
     public class GamePadInputSource : BaseInputSource
     {
+        protected uint SourceId;
+
         [SerializeField]
         [Tooltip("Time in seconds to determine if an Input Device has been connected or disconnected")]
         protected float DeviceRefreshInterval = 3.0f;
         protected float DeviceRefreshTimer;
         protected int LastDeviceUpdateCount;
         protected string[] LastDeviceList;
+
         protected StandaloneInputModule InputModule;
+        protected const string DefaultHorizontalAxis = "Horizontal";
+        protected const string DefaultVerticalAxis = "Vertical";
+        protected const string DefaultSubmitButton = "Submit";
+        protected const string DefaultCancelButton = "Cancel";
+        protected const bool DefaultForceActiveState = false;
+
+        protected string PreviousHorizontalAxis;
+        protected string PreviousVerticalAxis;
+        protected string PreviousSubmitButton;
+        protected string PreviousCancelButton;
+        protected bool PreviousForceActiveState;
 
         #region Unity methods
 

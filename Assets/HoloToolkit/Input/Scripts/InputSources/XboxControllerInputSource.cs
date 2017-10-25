@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -29,13 +28,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private readonly Dictionary<uint, XboxControllerData> gamePadInputDatas = new Dictionary<uint, XboxControllerData>(0);
 
-        private uint sourceId;
         private XboxControllerData controllerData;
-        private string previousHorizontalAxis;
-        private string previousVerticalAxis;
-        private string previousSubmitButton;
-        private string previousCancelButton;
-        private bool previousForceActiveState;
 
         public XboxControllerMappingTypes HorizontalAxis { get { return horizontalAxis; } }
         public XboxControllerMappingTypes VerticalAxis { get { return verticalAxis; } }
@@ -49,10 +42,10 @@ namespace HoloToolkit.Unity.InputModule
         private XboxControllerMappingTypes verticalAxis = XboxControllerMappingTypes.XboxDpadVertical;
 
         [SerializeField]
-        private XboxControllerMappingTypes submitButton = XboxControllerMappingTypes.None;
+        private XboxControllerMappingTypes submitButton = XboxControllerMappingTypes.XboxA;
 
         [SerializeField]
-        private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.None;
+        private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.XboxB;
 
         [SerializeField]
         private MappingEntry[] mapping;
@@ -61,31 +54,34 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Awake();
 
-            for (var i = 0; i < Enum.GetNames(typeof(XboxControllerMappingTypes)).Length; i++)
+            if (mapping != null)
             {
-                XboxControllerMapping.SetMapping((XboxControllerMappingTypes)i, mapping[i].Value);
+                for (var i = 0; i < Enum.GetNames(typeof(XboxControllerMappingTypes)).Length; i++)
+                {
+                    XboxControllerMapping.SetMapping((XboxControllerMappingTypes)i, mapping[i].Value);
+                }
             }
 
-            previousForceActiveState = InputModule.forceModuleActive;
+            PreviousForceActiveState = InputModule.forceModuleActive;
 
             if (horizontalAxis != XboxControllerMappingTypes.None)
             {
-                previousHorizontalAxis = InputModule.horizontalAxis;
+                PreviousHorizontalAxis = InputModule.horizontalAxis;
             }
 
             if (verticalAxis != XboxControllerMappingTypes.None)
             {
-                previousVerticalAxis = InputModule.verticalAxis;
+                PreviousVerticalAxis = InputModule.verticalAxis;
             }
 
             if (submitButton != XboxControllerMappingTypes.None)
             {
-                previousSubmitButton = InputModule.submitButton;
+                PreviousSubmitButton = InputModule.submitButton;
             }
 
             if (cancelButton != XboxControllerMappingTypes.None)
             {
-                previousCancelButton = InputModule.cancelButton;
+                PreviousCancelButton = InputModule.cancelButton;
             }
         }
 
@@ -139,7 +135,7 @@ namespace HoloToolkit.Unity.InputModule
             controllerData.XboxLeftStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxLeftStickClick);
             controllerData.XboxRightStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightStickClick);
 
-            InputManager.Instance.RaiseXboxInputUpdate(this, sourceId, controllerData);
+            InputManager.Instance.RaiseXboxInputUpdate(this, SourceId, controllerData);
         }
 
         protected override void RefreshDevices()
@@ -170,11 +166,11 @@ namespace HoloToolkit.Unity.InputModule
                 foreach (var gamePadInputSource in gamePadInputDatas)
                 {
                     // Reset our input module to it's previous state.
-                    InputModule.forceModuleActive = previousForceActiveState;
-                    InputModule.verticalAxis = previousVerticalAxis;
-                    InputModule.horizontalAxis = previousHorizontalAxis;
-                    InputModule.submitButton = previousSubmitButton;
-                    InputModule.cancelButton = previousCancelButton;
+                    InputModule.forceModuleActive = PreviousForceActiveState;
+                    InputModule.verticalAxis = PreviousVerticalAxis;
+                    InputModule.horizontalAxis = PreviousHorizontalAxis;
+                    InputModule.submitButton = PreviousSubmitButton;
+                    InputModule.cancelButton = PreviousCancelButton;
 
                     InputManager.Instance.RaiseGamePadLost(this, gamePadInputSource.Key, LastDeviceList[gamePadInputSource.Key]);
                 }
@@ -194,9 +190,9 @@ namespace HoloToolkit.Unity.InputModule
                     // We will only register the first device we find.  Input is taken from all joysticks.
                     if (gamePadInputDatas.Count != 0) { return; }
 
-                    sourceId = (uint)i;
+                    SourceId = (uint)i;
                     controllerData = new XboxControllerData();
-                    gamePadInputDatas.Add(sourceId, controllerData);
+                    gamePadInputDatas.Add(SourceId, controllerData);
 
                     // Setup the Input Module to use our custom axis settings.
                     InputModule.forceModuleActive = true;
@@ -205,7 +201,7 @@ namespace HoloToolkit.Unity.InputModule
                     InputModule.submitButton = XboxControllerMapping.GetMapping(submitButton);
                     InputModule.cancelButton = XboxControllerMapping.GetMapping(cancelButton);
 
-                    InputManager.Instance.RaiseGamePadDetected(this, sourceId, joystickNames[i]);
+                    InputManager.Instance.RaiseGamePadDetected(this, SourceId, joystickNames[i]);
                 }
                 else
                 {

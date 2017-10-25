@@ -34,6 +34,8 @@ namespace HoloToolkit.Unity.InputModule
         public bool LeftTouchPad_Pressed { get; private set; }
         public bool RightTouchPad_Pressed { get; private set; }
 
+        public bool LeftTrigger_PartiallyPressed_Up { get; private set; }
+        public bool RightTrigger_PartiallyPressed_Up { get; private set; }
         public bool LeftMenu_Up { get; private set; }
         public bool RightMenu_Up { get; private set; }
         public bool LeftGrip_Up { get; private set; }
@@ -45,6 +47,8 @@ namespace HoloToolkit.Unity.InputModule
         public bool LeftTouchPad_Up { get; private set; }
         public bool RightTouchPad_Up { get; private set; }
 
+        public bool LeftTrigger_PartiallyPressed_Down { get; private set; }
+        public bool RightTrigger_PartiallyPressed_Down { get; private set; }
         public bool LeftMenu_Down { get; private set; }
         public bool RightMenu_Down { get; private set; }
         public bool LeftGrip_Down { get; private set; }
@@ -88,6 +92,8 @@ namespace HoloToolkit.Unity.InputModule
             LeftTouchPad_Pressed = inputData.LeftTouchPad_Pressed;
             RightTouchPad_Pressed = inputData.RightTouchPad_Pressed;
 
+            LeftTrigger_PartiallyPressed_Up = inputData.LeftTrigger_PartiallyPressed_Up;
+            RightTrigger_PartiallyPressed_Up = inputData.RightTrigger_PartiallyPressed_Up;
             LeftMenu_Up = inputData.LeftMenu_Up;
             RightMenu_Up = inputData.RightMenu_Up;
             LeftGrip_Up = inputData.LeftGrip_Up;
@@ -99,6 +105,8 @@ namespace HoloToolkit.Unity.InputModule
             LeftTouchPad_Up = inputData.LeftTouchPad_Up;
             RightTouchPad_Up = inputData.RightTouchPad_Up;
 
+            LeftTrigger_PartiallyPressed_Down = inputData.LeftTrigger_PartiallyPressed_Down;
+            RightTrigger_PartiallyPressed_Down = inputData.RightTrigger_PartiallyPressed_Down;
             LeftMenu_Down = inputData.LeftMenu_Down;
             RightMenu_Down = inputData.RightMenu_Down;
             LeftGrip_Down = inputData.LeftGrip_Down;

@@ -2,10 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public interface IXboxControllerHandler : IGamePadHandler
+    public interface IXboxControllerHandler : IEventSystemHandler
     {
         [Obsolete("Use OnXboxInputUpdate")]
         void OnXboxAxisUpdate(XboxControllerEventData eventData);

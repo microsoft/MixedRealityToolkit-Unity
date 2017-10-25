@@ -31,6 +31,8 @@ namespace HoloToolkit.Unity.InputModule
         public bool LeftTouchPad_Pressed { get; set; }
         public bool RightTouchPad_Pressed { get; set; }
 
+        public bool LeftTrigger_PartiallyPressed_Up { get; set; }
+        public bool RightTrigger_PartiallyPressed_Up { get; set; }
         public bool LeftMenu_Up { get; set; }
         public bool RightMenu_Up { get; set; }
         public bool LeftGrip_Up { get; set; }
@@ -42,6 +44,8 @@ namespace HoloToolkit.Unity.InputModule
         public bool LeftTouchPad_Up { get; set; }
         public bool RightTouchPad_Up { get; set; }
 
+        public bool LeftTrigger_PartiallyPressed_Down { get; set; }
+        public bool RightTrigger_PartiallyPressed_Down { get; set; }
         public bool LeftMenu_Down { get; set; }
         public bool RightMenu_Down { get; set; }
         public bool LeftGrip_Down { get; set; }
