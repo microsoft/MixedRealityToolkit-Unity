@@ -134,15 +134,18 @@ namespace HoloToolkit.Unity
 
             if (audioEvent.Spatialization == SpatialPositioningType.SpatialSound)
             {
-                CreateFlatSpatialRolloffCurve();
                 forEachSource((source) =>
                 {
-                    source.rolloffMode = AudioRolloffMode.Custom;
-                    source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, SpatialRolloff);
                     SpatialSoundSettings.SetRoomSize(source, audioEvent.RoomSize);
                     SpatialSoundSettings.SetMinGain(source, audioEvent.MinGain);
                     SpatialSoundSettings.SetMaxGain(source, audioEvent.MaxGain);
                     SpatialSoundSettings.SetUnityGainDistance(source, audioEvent.UnityGainDistance);
+                    source.rolloffMode = AudioRolloffMode.Custom;
+                    source.maxDistance = audioEvent.MaxDistanceAttenuation3D;
+                    source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioEvent.AttenuationCurve);
+                    //source.SetCustomCurve(AudioSourceCurveType.SpatialBlend, audioEvent.SpatialCurve);
+                    //source.SetCustomCurve(AudioSourceCurveType.Spread, audioEvent.SpreadCurve);
+                    //source.SetCustomCurve(AudioSourceCurveType.ReverbZoneMix, audioEvent.ReverbCurve);
                 });
             }
             else

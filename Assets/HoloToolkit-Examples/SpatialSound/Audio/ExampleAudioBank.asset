@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:HoloToolkit.Unity:AudioEventBank
   Events:
   - Name: Laser
-    Spatialization: 0
+    Spatialization: 2
     RoomSize: 0
     MinGain: -96
     MaxGain: 12
@@ -34,7 +34,7 @@ MonoBehaviour:
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-      m_RotationOrder: 4
+      m_RotationOrder: 0
     SpatialCurve:
       serializedVersion: 2
       m_Curve:
@@ -52,7 +52,7 @@ MonoBehaviour:
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-      m_RotationOrder: 4
+      m_RotationOrder: 0
     SpreadCurve:
       serializedVersion: 2
       m_Curve:
@@ -70,25 +70,7 @@ MonoBehaviour:
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-      m_RotationOrder: 4
-    LowPassCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+      m_RotationOrder: 0
     ReverbCurve:
       serializedVersion: 2
       m_Curve:
@@ -106,8 +88,8 @@ MonoBehaviour:
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-      m_RotationOrder: 4
-    MaxDistanceAttenuation3D: 100
+      m_RotationOrder: 0
+    MaxDistanceAttenuation3D: 10
     UnityGainDistance: 1
     AudioBus: {fileID: 0}
     PitchCenter: 1
@@ -133,7 +115,7 @@ MonoBehaviour:
       CrossfadeTime: 0
       CurrentClip: 0
   - Name: Vocals
-    Spatialization: 0
+    Spatialization: 2
     RoomSize: 0
     MinGain: -96
     MaxGain: 12
@@ -190,25 +172,7 @@ MonoBehaviour:
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-      m_RotationOrder: 4
-    LowPassCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+      m_RotationOrder: 0
     ReverbCurve:
       serializedVersion: 2
       m_Curve:
@@ -227,7 +191,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    MaxDistanceAttenuation3D: 100
+    MaxDistanceAttenuation3D: 15
     UnityGainDistance: 1
     AudioBus: {fileID: 0}
     PitchCenter: 1

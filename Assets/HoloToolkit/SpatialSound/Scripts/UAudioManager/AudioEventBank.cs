@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
-    public abstract class AudioBank<T> : ScriptableObject
+    [CreateAssetMenu(fileName = "AudioEventBank")]
+    public class AudioEventBank : AudioBank<AudioEvent>
     {
-        public T[] Events;
     }
-
 }
 
