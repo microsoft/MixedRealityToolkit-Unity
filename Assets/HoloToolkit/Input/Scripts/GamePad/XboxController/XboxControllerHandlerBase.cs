@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     public class XboxControllerHandlerBase : MonoBehaviour, IXboxControllerHandler
     {
         [SerializeField]
-        [Tooltip("Is Gaze required for controller input?")]
+        [Tooltip("True, if gaze is not required for Input")]
         protected bool IsGlobalListener = true;
 
         protected string GamePadName;
@@ -32,7 +32,12 @@ namespace HoloToolkit.Unity.InputModule
             GamePadName = string.Empty;
         }
 
+        [Obsolete("Please use OnGamePadUpdate")]
         public virtual void OnXboxAxisUpdate(XboxControllerEventData eventData)
+        {
+        }
+
+        public virtual void OnGamePadUpdate(XboxControllerEventData eventData)
         {
         }
 
@@ -126,6 +131,33 @@ namespace HoloToolkit.Unity.InputModule
                     return eventData.XboxRightStick_Down;
                 default:
                     throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
+            }
+        }
+
+        protected static float OnAxis(XboxControllerMappingTypes axisType, XboxControllerEventData eventData)
+        {
+            switch (axisType)
+            {
+                case XboxControllerMappingTypes.XboxLeftStickHorizontal:
+                    return eventData.XboxLeftStickHorizontalAxis;
+                case XboxControllerMappingTypes.XboxLeftStickVertical:
+                    return eventData.XboxLeftStickVerticalAxis;
+                case XboxControllerMappingTypes.XboxRightStickHorizontal:
+                    return eventData.XboxRightStickHorizontalAxis;
+                case XboxControllerMappingTypes.XboxRightStickVertical:
+                    return eventData.XboxRightStickVerticalAxis;
+                case XboxControllerMappingTypes.XboxDpadHorizontal:
+                    return eventData.XboxDpadHorizontalAxis;
+                case XboxControllerMappingTypes.XboxDpadVertical:
+                    return eventData.XboxDpadVerticalAxis;
+                case XboxControllerMappingTypes.XboxLeftTrigger:
+                    return eventData.XboxLeftTriggerAxis;
+                case XboxControllerMappingTypes.XboxRightTrigger:
+                    return eventData.XboxRightTriggerAxis;
+                case XboxControllerMappingTypes.XboxSharedTrigger:
+                    return eventData.XboxSharedTriggerAxis;
+                default:
+                    throw new ArgumentOutOfRangeException("axisType", axisType, null);
             }
         }
     }
