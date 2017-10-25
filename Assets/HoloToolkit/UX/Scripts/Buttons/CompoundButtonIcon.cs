@@ -305,7 +305,10 @@ namespace HoloToolkit.Unity.Buttons
         public class CustomEditor : MRTKEditor {
             protected override void DrawCustomFooter() {
                 CompoundButtonIcon iconButton = (CompoundButtonIcon)target;
-                iconButton.IconName = iconButton.Profile.DrawIconSelectField(iconButton.iconName);
+                if (iconButton != null && iconButton.Profile != null)
+                {
+                    iconButton.IconName = iconButton.Profile.DrawIconSelectField(iconButton.iconName);
+                }
 
             }
         }
