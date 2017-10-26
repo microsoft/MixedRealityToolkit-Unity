@@ -27,6 +27,7 @@ namespace HoloToolkit.Unity.Examples
 
                 // Optimize the default postion of the objects for Immersive HMD
                 containerObject.transform.position = new Vector3(0.05f, 1.2f, 1.08f);
+
             }
             else
             {
@@ -36,6 +37,9 @@ namespace HoloToolkit.Unity.Examples
 
                 // Optimize the default postion of the objects for HoloLens
                 containerObject.transform.position = new Vector3(0.05f, -0.65f, 1.65f);
+
+                // Remove skybox for HoloLens
+                RenderSettings.skybox = null;
             }
         }
 
