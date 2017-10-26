@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465785, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -213,7 +213,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 106511350}
-  MeshFilter: {fileID: 0}
 --- !u!23 &106511350 stripped
 MeshRenderer:
   m_PrefabParentObject: {fileID: 2300000, guid: 5942fa356be284c4a8d1d231519a7581,
@@ -327,7 +326,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 115234596}
-  MeshFilter: {fileID: 0}
 --- !u!23 &115234596 stripped
 MeshRenderer:
   m_PrefabParentObject: {fileID: 2300000, guid: 5942fa356be284c4a8d1d231519a7581,
@@ -613,7 +611,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 181000287}
-  MeshFilter: {fileID: 0}
 --- !u!23 &181000287 stripped
 MeshRenderer:
   m_PrefabParentObject: {fileID: 2300000, guid: 5942fa356be284c4a8d1d231519a7581,
@@ -795,7 +792,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 251071228}
-  MeshFilter: {fileID: 0}
 --- !u!114 &251071232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1295,7 +1291,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 462019581}
-  MeshFilter: {fileID: 0}
 --- !u!23 &462019581 stripped
 MeshRenderer:
   m_PrefabParentObject: {fileID: 2300000, guid: 5942fa356be284c4a8d1d231519a7581,
@@ -2812,7 +2807,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 859038166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.901, y: 1.3838, z: 1.7390001}
+  m_LocalPosition: {x: 1.547, y: 1.3838, z: 0.868}
   m_LocalScale: {x: 0.7318744, y: 0.7318744, z: 0.7318744}
   m_Children:
   - {fileID: 545328827}
@@ -3157,7 +3152,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 916144691}
-  MeshFilter: {fileID: 0}
 --- !u!23 &916144691 stripped
 MeshRenderer:
   m_PrefabParentObject: {fileID: 2300000, guid: 5942fa356be284c4a8d1d231519a7581,
@@ -4276,6 +4270,62 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1001 &1270042277
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.544
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 1.639
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013198843976, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_Name
+      value: TitleText
+      objectReference: {fileID: 0}
+    - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
+        type: 2}
+      propertyPath: m_Text
+      value: Object Collection Examples
+      objectReference: {fileID: 0}
+    - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
+        type: 2}
+      propertyPath: m_FontSize
+      value: 93
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1281891980
 Prefab:
   m_ObjectHideFlags: 0
@@ -5553,7 +5603,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 1699166043}
-  MeshFilter: {fileID: 0}
 --- !u!23 &1699166043 stripped
 MeshRenderer:
   m_PrefabParentObject: {fileID: 2300000, guid: 5942fa356be284c4a8d1d231519a7581,
@@ -6021,7 +6070,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1813752214}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.813, y: 1.3818, z: 1.69}
+  m_LocalPosition: {x: -1.431, y: 1.3818, z: 0.851}
   m_LocalScale: {x: 0.7318744, y: 0.7318744, z: 0.7318744}
   m_Children:
   - {fileID: 457182376}
@@ -6147,7 +6196,6 @@ MonoBehaviour:
   Profile: {fileID: 11400000, guid: 313fc2556ab60d346bea344a4a4eda31, type: 2}
   TargetTransform: {fileID: 0}
   Renderer: {fileID: 1833261826}
-  MeshFilter: {fileID: 0}
 --- !u!23 &1833261826 stripped
 MeshRenderer:
   m_PrefabParentObject: {fileID: 2300000, guid: 5942fa356be284c4a8d1d231519a7581,
@@ -6955,6 +7003,65 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!1001 &2096369873
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.473
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 1.639
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013198843976, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+      propertyPath: m_Name
+      value: InformationText
+      objectReference: {fileID: 0}
+    - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
+        type: 2}
+      propertyPath: m_Text
+      value: "Object collection is a script which helps you layout an array of objects
+        in a predefined three-dimensional shape. \nIt supports four different surface
+        styles - plane, cylinder, sphere and scatter.\nVisit https://developer.microsoft.com/windows/mixed-reality/object_collection
+        for design guideline"
+      objectReference: {fileID: 0}
+    - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
+        type: 2}
+      propertyPath: m_FontSize
+      value: 46
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &2097373868
 GameObject:
   m_ObjectHideFlags: 0
