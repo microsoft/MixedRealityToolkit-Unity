@@ -15,15 +15,17 @@ namespace HoloToolkit.Unity.Examples
         public GameObject environmentObject;
         public GameObject cameraHoloLens;
         public GameObject cameraImmersiveHMD;
+        private Camera cam;
 
         void Start()
         {
+            cam = GetComponent<Camera>();
+
             // Check if the device type is HoloLens or Immersive HMD
             if (HolographicSettings.IsDisplayOpaque)
             {
-                // Show IHMD camera
-                cameraHoloLens.SetActive(false);
-                cameraImmersiveHMD.SetActive(true);
+                // Set camera clear flags to skybox for IHMD, show floor and table
+                cam.clearFlags = CameraClearFlags.Skybox;
                 environmentObject.SetActive(true);
 
                 // Optimize the default postion of the objects for Immersive HMD
@@ -31,9 +33,8 @@ namespace HoloToolkit.Unity.Examples
             }
             else
             {
-                // Show HoloLens camera, hide floor and table
-                cameraHoloLens.SetActive(true);
-                cameraImmersiveHMD.SetActive(false);
+                // Set camera clear flags to solid color for HoloLens, hide floor and table
+                cam.clearFlags = CameraClearFlags.SolidColor;
                 environmentObject.SetActive(false);
 
                 // Optimize the default postion of the objects for HoloLens
