@@ -4,11 +4,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR_WIN
+using System;
+using System.Runtime.InteropServices;
+#endif
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using GLTF;
 using System.Collections;
 using UnityEngine.XR.WSA.Input;
+
 #if !UNITY_EDITOR
-using GLTF;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 #endif
@@ -44,6 +50,11 @@ namespace HoloToolkit.Unity.InputModule
         private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
         private List<uint> loadingControllers = new List<uint>();
 
+#if UNITY_EDITOR_WIN
+        [DllImport("MotionControllerModel")]
+        private static extern int TryGetMotionControllerModel([In] uint controllerId, [Out] out ulong outputSize, [Out] out IntPtr outputBuffer);
+#endif
+
         private void Awake()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
@@ -57,30 +68,15 @@ namespace HoloToolkit.Unity.InputModule
 
             Application.onBeforeRender += Application_onBeforeRender;
 
-            if (!Application.isEditor)
+            if (GLTFMaterial == null)
             {
-                if (GLTFMaterial == null)
-                {
-                    if (LeftControllerOverride == null && RightControllerOverride == null)
-                    {
-                        Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
-                    }
-                    else if (LeftControllerOverride == null || RightControllerOverride == null)
-                    {
-                        Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
-                    }
-                }
-            }
-            else
-            {
-                // Since we're using non-Unity APIs, glTF will only load in a UWP app.
                 if (LeftControllerOverride == null && RightControllerOverride == null)
                 {
-                    Debug.Log("Running in the editor won't render the glTF models, and no controller overrides are set. Please specify them on " + name + ".");
+                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
                 }
                 else if (LeftControllerOverride == null || RightControllerOverride == null)
                 {
-                    Debug.Log("Running in the editor won't render the glTF models, and only one controller override is specified. Please set the " + ((LeftControllerOverride == null) ? "left" : "right") + " override on " + name + ".");
+                    Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
                 }
             }
 
@@ -200,6 +196,7 @@ namespace HoloToolkit.Unity.InputModule
             loadingControllers.Add(source.id);
 
             GameObject controllerModelGameObject;
+
             if (source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
             {
                 controllerModelGameObject = Instantiate(LeftControllerOverride);
@@ -210,7 +207,8 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-#if !UNITY_EDITOR
+                byte[] fileBytes;
+
                 if (GLTFMaterial == null)
                 {
                     Debug.Log("If using glTF, please specify a material on " + name + ".");
@@ -218,6 +216,7 @@ namespace HoloToolkit.Unity.InputModule
                     yield break;
                 }
 
+#if !UNITY_EDITOR
                 // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
                 IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = source.TryGetRenderableModelAsync();
 
@@ -249,7 +248,7 @@ namespace HoloToolkit.Unity.InputModule
                     yield break;
                 }
 
-                byte[] fileBytes = new byte[modelStream.Size];
+                fileBytes = new byte[modelStream.Size];
 
                 using (DataReader reader = new DataReader(modelStream))
                 {
@@ -262,6 +261,23 @@ namespace HoloToolkit.Unity.InputModule
 
                     reader.ReadBytes(fileBytes);
                 }
+#else
+                IntPtr controllerModel = new IntPtr();
+                ulong outputSize = 0;
+
+                if (TryGetMotionControllerModel(source.id, out outputSize, out controllerModel) > 0)
+                {
+                    fileBytes = new byte[Convert.ToInt32(outputSize)];
+
+                    Marshal.Copy(controllerModel, fileBytes, 0, Convert.ToInt32(outputSize));
+                }
+                else
+                {
+                    Debug.Log("Unable to load controller models.");
+                    loadingControllers.Remove(source.id);
+                    yield break;
+                }
+#endif
 
                 controllerModelGameObject = new GameObject();
                 GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
@@ -270,10 +286,6 @@ namespace HoloToolkit.Unity.InputModule
                 gltfScript.GLTFData = fileBytes;
 
                 yield return gltfScript.LoadModel();
-#else
-                loadingControllers.Remove(source.id);
-                yield break;
-#endif
             }
 
             FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
