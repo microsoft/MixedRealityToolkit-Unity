@@ -280,6 +280,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
 
                 controllerModelGameObject = new GameObject();
+                controllerModelGameObject.name = "glTFController";
                 GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
                 gltfScript.ColorMaterial = GLTFMaterial;
                 gltfScript.NoColorMaterial = GLTFMaterial;
