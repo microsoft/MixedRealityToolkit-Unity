@@ -17,13 +17,17 @@ namespace HoloToolkit.Unity.Tests
         {
             while (true)
             {
+                UAudioManager.Instance.PlayEvent("Vocals3d");
+
+                yield return new WaitForSeconds(10.0f);
+
+                UAudioManager.Instance.PlayEvent("VocalsSpatial");
+
+                yield return new WaitForSeconds(10.0f);
+
                 UAudioManager.Instance.PlayEvent("Laser");
 
                 yield return new WaitForSeconds(1.0f);
-
-                UAudioManager.Instance.PlayEvent("Vocals");
-
-                yield return new WaitForSeconds(10.0f);
             }
         }
 
