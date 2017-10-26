@@ -13,8 +13,6 @@ namespace HoloToolkit.Unity.Examples
     {
         public GameObject containerObject;
         public GameObject environmentObject;
-        public GameObject cameraHoloLens;
-        public GameObject cameraImmersiveHMD;
         private Camera cam;
 
         void Start()
