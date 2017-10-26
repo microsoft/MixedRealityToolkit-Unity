@@ -292,18 +292,13 @@ namespace HoloToolkit.Unity.InputModule
             InteractionManager.SourceReleased -= InteractionManager_InteractionSourceReleased;
             InteractionManager.SourceLost -= InteractionManager_InteractionSourceLost;
 #endif
+
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                GetOrAddSourceData(states[i].source);
-                InputManager.Instance.RaiseSourceLost(this, states[i].source.id);
-            }
-
-            foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
-            {
                 // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
-                sourceIdToData.Remove(iss.source.id);
-                InputManager.Instance.RaiseSourceLost(this, iss.source.id);
+                sourceIdToData.Remove(states[i].source.id);
+                InputManager.Instance.RaiseSourceLost(this, states[i].source.id);
             }
 #endif
         }
@@ -389,6 +384,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 GestureRecognizer.StopCapturingGestures();
             }
+
             if (NavigationGestureRecognizer != null && NavigationGestureRecognizer.IsCapturingGestures())
             {
                 NavigationGestureRecognizer.StopCapturingGestures();
