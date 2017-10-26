@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
         // IL2CPP doesn't support attributes with object arguments that are array types
         public ShowIfEnumValueAttribute(string enumVariableName, object enumValue, bool showIfConditionMet = true)
         {
-            if (!enumValue.GetType().IsEnum)
+            if (!enumValue.GetType().IsEnum())
                 throw new Exception("Value must be of type Enum");
 
             ShowValues = new int[] { Convert.ToInt32(enumValue) };
@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity
 
         public ShowIfEnumValueAttribute(string enumVariableName, object enumValue1, object enumValue2, bool showIfConditionMet = true)
         {
-            if (!enumValue1.GetType().IsEnum || !enumValue2.GetType().IsEnum)
+            if (!enumValue1.GetType().IsEnum() || !enumValue2.GetType().IsEnum())
                 throw new Exception("Values must be of type Enum");
 
             ShowValues = new int[] { Convert.ToInt32(enumValue1), Convert.ToInt32(enumValue2) };
@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity
 
         public ShowIfEnumValueAttribute(string enumVariableName, object enumValue1, object enumValue2, object enumValue3, bool showIfConditionMet = true)
         {
-            if (!enumValue1.GetType().IsEnum || !enumValue2.GetType().IsEnum || !enumValue3.GetType().IsEnum)
+            if (!enumValue1.GetType().IsEnum() || !enumValue2.GetType().IsEnum() || !enumValue3.GetType().IsEnum())
                 throw new Exception("Values must be of type Enum");
 
             ShowValues = new int[] { Convert.ToInt32(enumValue1), Convert.ToInt32(enumValue2), Convert.ToInt32(enumValue3) };
@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity
 
         public ShowIfEnumValueAttribute(string enumVariableName, object enumValue1, object enumValue2, object enumValue3, object enumValue4, bool showIfConditionMet = true)
         {
-            if (!enumValue1.GetType().IsEnum || !enumValue2.GetType().IsEnum || !enumValue3.GetType().IsEnum || !enumValue4.GetType().IsEnum)
+            if (!enumValue1.GetType().IsEnum() || !enumValue2.GetType().IsEnum() || !enumValue3.GetType().IsEnum() || !enumValue4.GetType().IsEnum())
                 throw new Exception("Values must be of type Enum");
 
             ShowValues = new int[] { Convert.ToInt32(enumValue1), Convert.ToInt32(enumValue2), Convert.ToInt32(enumValue3), Convert.ToInt32(enumValue4) };

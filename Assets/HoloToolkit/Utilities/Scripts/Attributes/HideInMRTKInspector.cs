@@ -15,9 +15,11 @@ namespace HoloToolkit.Unity
     {
         public HideInMRTKInspector() { }
 
+#if UNITY_EDITOR
         public override bool ShouldShow(object target)
         {
             return false;
         }
+#endif
     }
 }
