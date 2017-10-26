@@ -3,6 +3,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 
@@ -12,7 +13,7 @@ namespace HoloToolkit.Unity.Receivers
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
     /// based on events from those interactable objects.  This is the base abstract class to extend from.
     /// </summary>
-    public abstract class InteractionReceiver : MonoBehaviour
+    public abstract class InteractionReceiver : MonoBehaviour, IInputHandler, IHoldHandler, IInputClickHandler
     {
         #region Public Members
         /// <summary>
@@ -57,11 +58,12 @@ namespace HoloToolkit.Unity.Receivers
         #endregion
 
         /// <summary>
-        /// On enable subscribe to all interaction events on elements in the interactables list.
+        /// On start subscribe to all interaction events on elements in the interactables list.
         /// </summary>
         public virtual void OnEnable()
         {
             InputManager.Instance.AddGlobalListener(gameObject);
+            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -70,6 +72,7 @@ namespace HoloToolkit.Unity.Receivers
         public virtual void OnDisable()
         {
             InputManager.Instance.RemoveGlobalListener(gameObject);
+            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -193,24 +196,29 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
+        /// <summary>
+        /// Handle the pointer specific changes to fire focus enter and exit events
+        /// </summary>
+        /// <param name="pointer">The pointer associated with this focus change.</param>
+        /// <param name="oldFocusedObject">Object that was previously being focused.</param>
+        /// <param name="newFocusedObject">New object being focused.</param>
+        private void OnPointerSpecificFocusChanged(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        {
+            PointerSpecificEventData eventData = new PointerSpecificEventData(EventSystem.current);
+            eventData.Initialize(pointer);
+
+            if (newFocusedObject != null && Isinteractable(newFocusedObject))
+            {
+                FocusEnter(newFocusedObject, eventData);
+            }
+
+            if (oldFocusedObject != null && Isinteractable(oldFocusedObject))
+            {
+                FocusExit(oldFocusedObject, eventData);
+            }
+        }
+
         #region Global Listener Callbacks
-
-        public void OnFocusEnter(PointerSpecificEventData eventData)
-        {
-            if (Isinteractable(eventData.selectedObject))
-            {
-                FocusEnter(eventData.selectedObject, eventData);
-            }
-        }
-
-        public void OnFocusExit(PointerSpecificEventData eventData)
-        {
-            if (Isinteractable(eventData.selectedObject))
-            {
-                FocusExit(eventData.selectedObject, eventData);
-            }
-        }
-
         public void OnInputDown(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
@@ -224,6 +232,14 @@ namespace HoloToolkit.Unity.Receivers
             if (Isinteractable(eventData.selectedObject))
             {
                 InputUp(eventData.selectedObject, eventData);
+            }
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            if (Isinteractable(eventData.selectedObject))
+            {
+                InputClicked(eventData.selectedObject, eventData);
             }
         }
 
@@ -318,11 +334,11 @@ namespace HoloToolkit.Unity.Receivers
 
         #region Protected Virtual Callback Functions
         protected virtual void FocusEnter(GameObject obj, PointerSpecificEventData eventData) { }
-
         protected virtual void FocusExit(GameObject obj, PointerSpecificEventData eventData) { }
 
         protected virtual void InputDown(GameObject obj, InputEventData eventData) { }
         protected virtual void InputUp(GameObject obj, InputEventData eventData) { }
+        protected virtual void InputClicked(GameObject obj, InputClickedEventData eventData) { }
 
         protected virtual void HoldStarted(GameObject obj, HoldEventData eventData) { }
         protected virtual void HoldCompleted(GameObject obj, HoldEventData eventData) { }
