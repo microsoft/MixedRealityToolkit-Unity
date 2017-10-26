@@ -486,7 +486,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: CONTROLLER_LEFT_TRIGGER_PARTIAL_PRESS
+    m_Name: CONTROLLER_LEFT_TRIGGER_PARTIAL_PRESSED
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -502,7 +502,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: CONTROLLER_RIGHT_TRIGGER_PARTIAL_PRESS
+    m_Name: CONTROLLER_RIGHT_TRIGGER_PARTIAL_PRESSED
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 

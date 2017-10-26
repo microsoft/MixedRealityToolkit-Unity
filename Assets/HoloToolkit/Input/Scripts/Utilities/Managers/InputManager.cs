@@ -57,9 +57,13 @@ namespace HoloToolkit.Unity.InputModule
 #endif
 
         /// <summary>
-        /// List of the input sources as detected by the input manager like hands or motion controllers.
+        /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
         /// </summary>
-        private readonly List<InputSourceInfo> detectedInputSources = new List<InputSourceInfo>(0);
+        private static readonly List<InputSourceInfo> detectedInputSources = new List<InputSourceInfo>(0);
+
+        /// <summary>
+        /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
+        /// </summary>
         public List<InputSourceInfo> DetectedInputSources { get { return detectedInputSources; } }
 
         /// <summary>
@@ -477,22 +481,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceDetected(IInputSource source, uint sourceId, object[] tags = null)
         {
-            // Manage list of detected sources
-            bool alreadyDetected = false;
-
-            for (int iDetected = 0; iDetected < detectedInputSources.Count; iDetected++)
-            {
-                if (detectedInputSources[iDetected].Matches(source, sourceId))
-                {
-                    alreadyDetected = true;
-                    break;
-                }
-            }
-
-            if (!alreadyDetected)
-            {
-                detectedInputSources.Add(new InputSourceInfo(source, sourceId));
-            }
+            AddSource(source, sourceId);
 
             // Create input event
             sourceStateEventData.Initialize(source, sourceId, tags);
@@ -510,15 +499,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceLost(IInputSource source, uint sourceId, object[] tags = null)
         {
-            // Manage list of detected sources
-            for (int iDetected = 0; iDetected < detectedInputSources.Count; iDetected++)
-            {
-                if (detectedInputSources[iDetected].Matches(source, sourceId))
-                {
-                    detectedInputSources.RemoveAt(iDetected);
-                    break;
-                }
-            }
+            RemoveSource(source, sourceId);
 
             // Create input event
             sourceStateEventData.Initialize(source, sourceId, tags);
@@ -828,6 +809,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseGamePadDetected(IInputSource source, uint sourceId, string gamePadName)
         {
+            AddSource(source, sourceId);
+
             // Create input event
             gamePadEventData.Initialize(source, sourceId, gamePadName);
 
@@ -844,6 +827,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseGamePadLost(IInputSource source, uint sourceId, string gamePadName)
         {
+            RemoveSource(source, sourceId);
+
             // Create input event
             gamePadEventData.Initialize(source, sourceId, gamePadName);
 
@@ -982,5 +967,40 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Dictation Events
 #endif
+
+        #region Helpers
+
+        private static void AddSource(IInputSource source, uint sourceId)
+        {
+            bool alreadyDetected = false;
+
+            for (int i = 0; i < detectedInputSources.Count; i++)
+            {
+                if (detectedInputSources[i].Matches(source, sourceId))
+                {
+                    alreadyDetected = true;
+                    break;
+                }
+            }
+
+            if (!alreadyDetected)
+            {
+                detectedInputSources.Add(new InputSourceInfo(source, sourceId));
+            }
+        }
+
+        private static void RemoveSource(IInputSource source, uint sourceId)
+        {
+            for (int iDetected = 0; iDetected < detectedInputSources.Count; iDetected++)
+            {
+                if (detectedInputSources[iDetected].Matches(source, sourceId))
+                {
+                    detectedInputSources.RemoveAt(iDetected);
+                    break;
+                }
+            }
+        }
+
+        #endregion
     }
 }

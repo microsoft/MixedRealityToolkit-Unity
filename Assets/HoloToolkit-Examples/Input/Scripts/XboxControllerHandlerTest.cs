@@ -8,7 +8,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class XboxControllerHandlerTest : XboxControllerHandlerBase
     {
-
         [SerializeField]
         private float movementSpeedMultiplier = 1f;
 
@@ -59,7 +58,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             transform.rotation *= Quaternion.Euler(newRotation);
 
-            if (OnButton_Up(resetButton, eventData))
+            if (XboxControllerMapping.GetButton_Up(resetButton, eventData))
             {
                 transform.position = initialPosition;
             }

@@ -15,14 +15,9 @@ public class MotionControllerInputSource : GamePadInputSource
         public string Value = string.Empty;
     }
 
-    private const string MotionControllerRight = "";
-    private const string MotionControllerLeft = "";
-
     private readonly Dictionary<uint, MotionControllerData> gamePadInputDatas = new Dictionary<uint, MotionControllerData>(0);
 
     private MotionControllerData controllerData;
-
-
 
     public MotionControllerMappingTypes HorizontalAxis { get { return horizontalAxis; } }
     public MotionControllerMappingTypes VerticalAxis { get { return verticalAxis; } }
@@ -82,6 +77,9 @@ public class MotionControllerInputSource : GamePadInputSource
     protected override void Update()
     {
         base.Update();
+
+        // Bail if we don't have any GamePads registered.
+        if (gamePadInputDatas.Count == 0) { return; }
 
         controllerData.LeftStickHorizontalAxis = Input.GetAxis(MotionControllerMapping.LeftStickHorizontal);
         controllerData.LeftStickVerticalAxis = Input.GetAxis(MotionControllerMapping.LeftStickVertical);
@@ -165,18 +163,44 @@ public class MotionControllerInputSource : GamePadInputSource
         {
             foreach (var gamePadInputSource in gamePadInputDatas)
             {
+                InputManager.Instance.RaiseGamePadLost(this, gamePadInputSource.Key, LastDeviceList[gamePadInputSource.Key]);
+            }
+
+            gamePadInputDatas.Clear();
+
+            XboxControllerInputSource xboxSource = null;
+            var sources = InputManager.Instance.DetectedInputSources;
+
+            for (var i = 0; i < sources.Count; i++)
+            {
+                if (sources[i].InputSource.GetType() == typeof(XboxControllerInputSource))
+                {
+                    xboxSource = (XboxControllerInputSource)sources[i].InputSource;
+                    break;
+                }
+            }
+
+            if (xboxSource != null)
+            {
+                // Reset our input module to use xbox axes.
+                InputModule.forceModuleActive = true;
+                InputModule.verticalAxis = XboxControllerMapping.GetMapping(xboxSource.VerticalAxis);
+                InputModule.horizontalAxis = XboxControllerMapping.GetMapping(xboxSource.HorizontalAxis);
+                InputModule.submitButton = XboxControllerMapping.GetMapping(xboxSource.SubmitButton);
+                InputModule.cancelButton = XboxControllerMapping.GetMapping(xboxSource.CancelButton);
+            }
+            else
+            {
                 // Reset our input module to it's previous state.
                 InputModule.forceModuleActive = PreviousForceActiveState;
                 InputModule.verticalAxis = PreviousVerticalAxis;
                 InputModule.horizontalAxis = PreviousHorizontalAxis;
                 InputModule.submitButton = PreviousSubmitButton;
                 InputModule.cancelButton = PreviousCancelButton;
-
-                InputManager.Instance.RaiseGamePadLost(this, gamePadInputSource.Key, LastDeviceList[gamePadInputSource.Key]);
             }
-
-            gamePadInputDatas.Clear();
         }
+
+        bool updateInputModule = false;
 
         for (var i = 0; i < joystickNames.Length; i++)
         {
@@ -189,19 +213,30 @@ public class MotionControllerInputSource : GamePadInputSource
                 controllerData = new MotionControllerData();
                 gamePadInputDatas.Add(SourceId, controllerData);
 
-                // Setup the Input Module to use our custom axis settings.
-                InputModule.forceModuleActive = true;
-                InputModule.verticalAxis = MotionControllerMapping.GetMapping(verticalAxis);
-                InputModule.horizontalAxis = MotionControllerMapping.GetMapping(horizontalAxis);
-                InputModule.submitButton = MotionControllerMapping.GetMapping(submitButton);
-                InputModule.cancelButton = MotionControllerMapping.GetMapping(cancelButton);
-
                 InputManager.Instance.RaiseGamePadDetected(this, SourceId, joystickNames[i]);
+                updateInputModule = true;
+            }
+            else if (joystickNames[i].Contains(XboxController) ||
+                     joystickNames[i].Contains(XboxOneForWindows) ||
+                     joystickNames[i].Contains(XboxBluetoothGamePad) ||
+                     joystickNames[i].Contains(XboxWirelessController))
+            {
+                // Do Nothing
             }
             else
             {
                 Debug.LogWarning("Unimplemented Controller type Detected: " + joystickNames[i]);
             }
+        }
+
+        if (updateInputModule)
+        {
+            // Setup the Input Module to use our custom axis settings.
+            InputModule.forceModuleActive = true;
+            InputModule.verticalAxis = MotionControllerMapping.GetMapping(verticalAxis);
+            InputModule.horizontalAxis = MotionControllerMapping.GetMapping(horizontalAxis);
+            InputModule.submitButton = MotionControllerMapping.GetMapping(submitButton);
+            InputModule.cancelButton = MotionControllerMapping.GetMapping(cancelButton);
         }
 
         LastDeviceList = joystickNames;

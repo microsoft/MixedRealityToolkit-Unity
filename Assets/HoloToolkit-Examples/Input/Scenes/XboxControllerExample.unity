@@ -615,6 +615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1895018971}
   - component: {fileID: 1895018972}
+  - component: {fileID: 1895018973}
   m_Layer: 0
   m_Name: XboxControllerInputSource
   m_TagString: Untagged
@@ -691,4 +692,71 @@ MonoBehaviour:
   - Type: 18
     Value: 
   - Type: 19
+    Value: 
+--- !u!114 &1895018973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1895018970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3511ca2af10e2a842b01c6b8e0f3eafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeviceRefreshInterval: 3
+  horizontalAxis: 7
+  verticalAxis: 8
+  submitButton: 13
+  cancelButton: 16
+  mapping:
+  - Type: 0
+    Value: 
+  - Type: 1
+    Value: 
+  - Type: 2
+    Value: 
+  - Type: 3
+    Value: 
+  - Type: 4
+    Value: 
+  - Type: 5
+    Value: 
+  - Type: 6
+    Value: 
+  - Type: 7
+    Value: 
+  - Type: 8
+    Value: 
+  - Type: 9
+    Value: 
+  - Type: 10
+    Value: 
+  - Type: 11
+    Value: 
+  - Type: 12
+    Value: 
+  - Type: 13
+    Value: 
+  - Type: 14
+    Value: 
+  - Type: 15
+    Value: 
+  - Type: 16
+    Value: 
+  - Type: 17
+    Value: 
+  - Type: 18
+    Value: 
+  - Type: 19
+    Value: 
+  - Type: 20
+    Value: 
+  - Type: 21
+    Value: 
+  - Type: 22
+    Value: 
+  - Type: 23
+    Value: 
+  - Type: 24
     Value: 

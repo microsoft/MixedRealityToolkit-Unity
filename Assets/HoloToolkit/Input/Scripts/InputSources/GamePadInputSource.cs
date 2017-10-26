@@ -8,12 +8,18 @@ namespace HoloToolkit.Unity.InputModule
 {
     public class GamePadInputSource : BaseInputSource
     {
+        protected const string XboxController = "Xbox Controller";
+        protected const string XboxOneForWindows = "Xbox One For Windows";
+        protected const string XboxBluetoothGamePad = "Xbox Bluetooth Gamepad";
+        protected const string XboxWirelessController = "Xbox Wireless Controller";
+        protected const string MotionControllerLeft = "Spatial Controller - Left";
+        protected const string MotionControllerRight = "Spatial Controller - Right";
+
         protected uint SourceId;
 
         [SerializeField]
         [Tooltip("Time in seconds to determine if an Input Device has been connected or disconnected")]
         protected float DeviceRefreshInterval = 3.0f;
-        protected float DeviceRefreshTimer;
         protected int LastDeviceUpdateCount;
         protected string[] LastDeviceList;
 
@@ -30,6 +36,8 @@ namespace HoloToolkit.Unity.InputModule
         protected string PreviousCancelButton;
         protected bool PreviousForceActiveState;
 
+        private float deviceRefreshTimer;
+
         #region Unity methods
 
         protected virtual void Awake()
@@ -45,11 +53,11 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void Update()
         {
-            DeviceRefreshTimer += Time.unscaledDeltaTime;
+            deviceRefreshTimer += Time.unscaledDeltaTime;
 
-            if (DeviceRefreshTimer >= DeviceRefreshInterval)
+            if (deviceRefreshTimer >= DeviceRefreshInterval)
             {
-                DeviceRefreshTimer = 0.0f;
+                deviceRefreshTimer = 0.0f;
                 RefreshDevices();
             }
         }

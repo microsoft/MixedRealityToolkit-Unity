@@ -16,124 +16,22 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
+        [Obsolete("Use XboxControllerMapping.GetButton_Up")]
         protected static bool OnButton_Up(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
         {
-            switch (buttonType)
-            {
-                case XboxControllerMappingTypes.None:
-                    return false;
-                case XboxControllerMappingTypes.XboxA:
-                    return eventData.XboxA_Up;
-                case XboxControllerMappingTypes.XboxB:
-                    return eventData.XboxB_Up;
-                case XboxControllerMappingTypes.XboxX:
-                    return eventData.XboxX_Up;
-                case XboxControllerMappingTypes.XboxY:
-                    return eventData.XboxY_Up;
-                case XboxControllerMappingTypes.XboxView:
-                    return eventData.XboxView_Up;
-                case XboxControllerMappingTypes.XboxMenu:
-                    return eventData.XboxMenu_Up;
-                case XboxControllerMappingTypes.XboxLeftBumper:
-                    return eventData.XboxLeftBumper_Up;
-                case XboxControllerMappingTypes.XboxRightBumper:
-                    return eventData.XboxRightBumper_Up;
-                case XboxControllerMappingTypes.XboxLeftStickClick:
-                    return eventData.XboxLeftStick_Up;
-                case XboxControllerMappingTypes.XboxRightStickClick:
-                    return eventData.XboxRightStick_Up;
-                default:
-                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
-            }
+            return XboxControllerMapping.GetButton_Up(buttonType, eventData);
         }
 
+        [Obsolete("Use XboxControllerMapping.GetButton_Pressed")]
         protected static bool OnButton_Pressed(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
         {
-            switch (buttonType)
-            {
-                case XboxControllerMappingTypes.None:
-                    return false;
-                case XboxControllerMappingTypes.XboxA:
-                    return eventData.XboxA_Pressed;
-                case XboxControllerMappingTypes.XboxB:
-                    return eventData.XboxB_Pressed;
-                case XboxControllerMappingTypes.XboxX:
-                    return eventData.XboxX_Pressed;
-                case XboxControllerMappingTypes.XboxY:
-                    return eventData.XboxY_Pressed;
-                case XboxControllerMappingTypes.XboxView:
-                    return eventData.XboxView_Pressed;
-                case XboxControllerMappingTypes.XboxMenu:
-                    return eventData.XboxMenu_Pressed;
-                case XboxControllerMappingTypes.XboxLeftBumper:
-                    return eventData.XboxLeftBumper_Pressed;
-                case XboxControllerMappingTypes.XboxRightBumper:
-                    return eventData.XboxRightBumper_Pressed;
-                case XboxControllerMappingTypes.XboxLeftStickClick:
-                    return eventData.XboxLeftStick_Pressed;
-                case XboxControllerMappingTypes.XboxRightStickClick:
-                    return eventData.XboxRightStick_Pressed;
-                default:
-                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
-            }
+            return XboxControllerMapping.GetButton_Pressed(buttonType, eventData);
         }
 
+        [Obsolete("Use XboxControllerMapping.GetButton_Down")]
         protected static bool OnButton_Down(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
         {
-            switch (buttonType)
-            {
-                case XboxControllerMappingTypes.None:
-                    return false;
-                case XboxControllerMappingTypes.XboxA:
-                    return eventData.XboxA_Down;
-                case XboxControllerMappingTypes.XboxB:
-                    return eventData.XboxB_Down;
-                case XboxControllerMappingTypes.XboxX:
-                    return eventData.XboxX_Down;
-                case XboxControllerMappingTypes.XboxY:
-                    return eventData.XboxY_Down;
-                case XboxControllerMappingTypes.XboxView:
-                    return eventData.XboxView_Down;
-                case XboxControllerMappingTypes.XboxMenu:
-                    return eventData.XboxMenu_Down;
-                case XboxControllerMappingTypes.XboxLeftBumper:
-                    return eventData.XboxLeftBumper_Down;
-                case XboxControllerMappingTypes.XboxRightBumper:
-                    return eventData.XboxRightBumper_Down;
-                case XboxControllerMappingTypes.XboxLeftStickClick:
-                    return eventData.XboxLeftStick_Down;
-                case XboxControllerMappingTypes.XboxRightStickClick:
-                    return eventData.XboxRightStick_Down;
-                default:
-                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
-            }
-        }
-
-        protected static float OnAxis(XboxControllerMappingTypes axisType, XboxControllerEventData eventData)
-        {
-            switch (axisType)
-            {
-                case XboxControllerMappingTypes.XboxLeftStickHorizontal:
-                    return eventData.XboxLeftStickHorizontalAxis;
-                case XboxControllerMappingTypes.XboxLeftStickVertical:
-                    return eventData.XboxLeftStickVerticalAxis;
-                case XboxControllerMappingTypes.XboxRightStickHorizontal:
-                    return eventData.XboxRightStickHorizontalAxis;
-                case XboxControllerMappingTypes.XboxRightStickVertical:
-                    return eventData.XboxRightStickVerticalAxis;
-                case XboxControllerMappingTypes.XboxDpadHorizontal:
-                    return eventData.XboxDpadHorizontalAxis;
-                case XboxControllerMappingTypes.XboxDpadVertical:
-                    return eventData.XboxDpadVerticalAxis;
-                case XboxControllerMappingTypes.XboxLeftTrigger:
-                    return eventData.XboxLeftTriggerAxis;
-                case XboxControllerMappingTypes.XboxRightTrigger:
-                    return eventData.XboxRightTriggerAxis;
-                case XboxControllerMappingTypes.XboxSharedTrigger:
-                    return eventData.XboxSharedTriggerAxis;
-                default:
-                    throw new ArgumentOutOfRangeException("axisType", axisType, null);
-            }
+            return XboxControllerMapping.GetButton_Down(buttonType, eventData);
         }
     }
 }
