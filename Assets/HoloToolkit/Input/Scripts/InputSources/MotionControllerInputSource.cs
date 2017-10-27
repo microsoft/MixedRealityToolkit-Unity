@@ -163,7 +163,7 @@ public class MotionControllerInputSource : GamePadInputSource
         {
             foreach (var gamePadInputSource in gamePadInputDatas)
             {
-                InputManager.Instance.RaiseGamePadLost(this, gamePadInputSource.Key, LastDeviceList[gamePadInputSource.Key]);
+                InputManager.Instance.RaiseSourceDetected(this, gamePadInputSource.Key);
             }
 
             gamePadInputDatas.Clear();
@@ -200,8 +200,6 @@ public class MotionControllerInputSource : GamePadInputSource
             }
         }
 
-        bool updateInputModule = false;
-
         for (var i = 0; i < joystickNames.Length; i++)
         {
             if (string.IsNullOrEmpty(joystickNames[i]) || gamePadInputDatas.ContainsKey((uint)i)) { continue; }
@@ -213,30 +211,27 @@ public class MotionControllerInputSource : GamePadInputSource
                 controllerData = new MotionControllerData();
                 gamePadInputDatas.Add(SourceId, controllerData);
 
-                InputManager.Instance.RaiseGamePadDetected(this, SourceId, joystickNames[i]);
-                updateInputModule = true;
+                InputManager.Instance.RaiseSourceDetected(this, SourceId);
+
+                // Setup the Input Module to use our custom axis settings.
+                InputModule.forceModuleActive = true;
+                InputModule.verticalAxis = MotionControllerMapping.GetMapping(verticalAxis);
+                InputModule.horizontalAxis = MotionControllerMapping.GetMapping(horizontalAxis);
+                InputModule.submitButton = MotionControllerMapping.GetMapping(submitButton);
+                InputModule.cancelButton = MotionControllerMapping.GetMapping(cancelButton);
             }
             else if (joystickNames[i].Contains(XboxController) ||
                      joystickNames[i].Contains(XboxOneForWindows) ||
                      joystickNames[i].Contains(XboxBluetoothGamePad) ||
                      joystickNames[i].Contains(XboxWirelessController))
             {
-                // Do Nothing
+                Debug.Log("Xbox Controller is overridden by Motion Controllers\n" +
+                          "Turn off Motion Controllers to restore Xbox Input.");
             }
             else
             {
                 Debug.LogWarning("Unimplemented Controller type Detected: " + joystickNames[i]);
             }
-        }
-
-        if (updateInputModule)
-        {
-            // Setup the Input Module to use our custom axis settings.
-            InputModule.forceModuleActive = true;
-            InputModule.verticalAxis = MotionControllerMapping.GetMapping(verticalAxis);
-            InputModule.horizontalAxis = MotionControllerMapping.GetMapping(horizontalAxis);
-            InputModule.submitButton = MotionControllerMapping.GetMapping(submitButton);
-            InputModule.cancelButton = MotionControllerMapping.GetMapping(cancelButton);
         }
 
         LastDeviceList = joystickNames;

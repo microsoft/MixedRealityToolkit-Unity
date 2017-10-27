@@ -7,11 +7,6 @@ namespace HoloToolkit.Unity.InputModule
 {
     public class XboxControllerHandlerBase : GamePadHandlerBase, IXboxControllerHandler
     {
-        [Obsolete("Please use OnGamePadUpdate")]
-        public virtual void OnXboxAxisUpdate(XboxControllerEventData eventData)
-        {
-        }
-
         public virtual void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
         }

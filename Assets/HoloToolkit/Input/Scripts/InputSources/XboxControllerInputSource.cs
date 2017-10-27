@@ -160,7 +160,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 foreach (var gamePadInputSource in gamePadInputDatas)
                 {
-                    InputManager.Instance.RaiseGamePadLost(this, gamePadInputSource.Key, LastDeviceList[gamePadInputSource.Key]);
+                    InputManager.Instance.RaiseSourceLost(this, gamePadInputSource.Key);
                 }
 
                 gamePadInputDatas.Clear();
@@ -187,11 +187,17 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            bool updateInputModule = false;
-
             for (var i = 0; i < joystickNames.Length; i++)
             {
-                if (string.IsNullOrEmpty(joystickNames[i]) || gamePadInputDatas.ContainsKey((uint)i)) { continue; }
+                if (string.IsNullOrEmpty(joystickNames[i]) ||
+                    gamePadInputDatas.ContainsKey((uint)i) ||
+                    joystickNames[i].Contains(MotionControllerLeft) ||
+                    joystickNames[i].Contains(MotionControllerRight))
+                {
+                    // If we don't have any matching joystick types, continue.
+                    // If we have motion controllers connected we override the xbox input.
+                    continue;
+                }
 
                 if (joystickNames[i].Contains(XboxController) ||
                     joystickNames[i].Contains(XboxOneForWindows) ||
@@ -205,42 +211,18 @@ namespace HoloToolkit.Unity.InputModule
                     controllerData = new XboxControllerData();
                     gamePadInputDatas.Add(SourceId, controllerData);
 
-                    InputManager.Instance.RaiseGamePadDetected(this, SourceId, joystickNames[i]);
-                    updateInputModule = true;
-                }
-                else if (joystickNames[i].Contains(MotionControllerLeft) ||
-                         joystickNames[i].Contains(MotionControllerRight))
-                {
-                    // Do nothing.
-                }
-                else
-                {
-                    Debug.LogWarning("Unimplemented Controller type Detected: " + joystickNames[i]);
-                }
-            }
+                    InputManager.Instance.RaiseSourceDetected(this, SourceId);
 
-            if (updateInputModule)
-            {
-                int motionControllerCount = 0;
-                var sources = InputManager.Instance.DetectedInputSources;
-
-                for (var i = 0; i < sources.Count; i++)
-                {
-                    if (sources[i].InputSource.GetType() == typeof(MotionControllerInputSource))
-                    {
-                        motionControllerCount++;
-                    }
-                }
-
-                // Motion controllers always get priority for Input Module.
-                if (motionControllerCount == 0)
-                {
                     // Setup the Input Module to use our custom axis settings.
                     InputModule.forceModuleActive = true;
                     InputModule.verticalAxis = XboxControllerMapping.GetMapping(verticalAxis);
                     InputModule.horizontalAxis = XboxControllerMapping.GetMapping(horizontalAxis);
                     InputModule.submitButton = XboxControllerMapping.GetMapping(submitButton);
                     InputModule.cancelButton = XboxControllerMapping.GetMapping(cancelButton);
+                }
+                else
+                {
+                    Debug.LogWarning("Unimplemented Controller type Detected: " + joystickNames[i]);
                 }
             }
 

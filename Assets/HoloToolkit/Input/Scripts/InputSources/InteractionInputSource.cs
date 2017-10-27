@@ -700,6 +700,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
             }
+
             sourceData.PointerPosition.CurrentReading = newPointerPosition;
             sourceData.GripPosition.CurrentReading = newGripPosition;
 

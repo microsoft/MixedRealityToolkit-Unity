@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public class XboxControllerEventData : GamePadEventData
+    public class XboxControllerEventData : SourceStateEventData
     {
         public float XboxLeftStickHorizontalAxis { get; private set; }
         public float XboxLeftStickVerticalAxis { get; private set; }

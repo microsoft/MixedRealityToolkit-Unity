@@ -3,7 +3,7 @@
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public interface IMotionControllerHandler : IGamePadHandler
+    public interface IMotionControllerHandler : ISourceStateHandler
     {
         void OnMotionControllerInputUpdate(MotionControllerEventData eventData);
     }

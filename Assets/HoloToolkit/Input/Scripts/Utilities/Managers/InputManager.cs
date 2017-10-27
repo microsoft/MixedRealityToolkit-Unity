@@ -43,7 +43,6 @@ namespace HoloToolkit.Unity.InputModule
         private ManipulationEventData manipulationEventData;
         private HoldEventData holdEventData;
         private NavigationEventData navigationEventData;
-        private GamePadEventData gamePadEventData;
         private XboxControllerEventData xboxControllerEventData;
         private MotionControllerEventData motionControllerEventData;
         private SourceRotationEventData sourceRotationEventData;
@@ -207,7 +206,6 @@ namespace HoloToolkit.Unity.InputModule
             selectPressedEventData = new SelectPressedEventData(EventSystem.current);
             sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
-            gamePadEventData = new GamePadEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
             motionControllerEventData = new MotionControllerEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
@@ -798,42 +796,14 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Controller Events
 
-        #region GamePad Events
-
-        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadDetectedEventHandler =
-            delegate (IGamePadHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
-                handler.OnGamePadDetected(casted);
-            };
-
+        [Obsolete("Use RaiseSourceDetected")]
         public void RaiseGamePadDetected(IInputSource source, uint sourceId, string gamePadName)
         {
-            AddSource(source, sourceId);
-
-            // Create input event
-            gamePadEventData.Initialize(source, sourceId, gamePadName);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(gamePadEventData, OnGamePadDetectedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadLostEventHandler =
-            delegate (IGamePadHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
-                handler.OnGamePadLost(casted);
-            };
-
+        [Obsolete("Use RaiseSourceLost")]
         public void RaiseGamePadLost(IInputSource source, uint sourceId, string gamePadName)
         {
-            RemoveSource(source, sourceId);
-
-            // Create input event
-            gamePadEventData.Initialize(source, sourceId, gamePadName);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(gamePadEventData, OnGamePadLostEventHandler);
         }
 
         #region Xbox Controller Events
@@ -858,7 +828,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Motion Controller Events
 
-        private static readonly ExecuteEvents.EventFunction<IMotionControllerHandler> OnMotionControllerAxisUpdateHandler =
+        private static readonly ExecuteEvents.EventFunction<IMotionControllerHandler> OnMotionControllerInputUpdateHandler =
             delegate (IMotionControllerHandler handler, BaseEventData eventData)
             {
                 var casted = ExecuteEvents.ValidateEventData<MotionControllerEventData>(eventData);
@@ -871,12 +841,10 @@ namespace HoloToolkit.Unity.InputModule
             motionControllerEventData.Initialize(source, sourceId, inputData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(motionControllerEventData, OnMotionControllerAxisUpdateHandler);
+            HandleEvent(motionControllerEventData, OnMotionControllerInputUpdateHandler);
         }
 
         #endregion // Motion Controller Events
-
-        #endregion // GamePad Events
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         #region Speech Events
