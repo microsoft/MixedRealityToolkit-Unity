@@ -18,7 +18,7 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 [![Github Release][github-rel-badge]][github-rel]
 
 [unity-download]:                 http://beta.unity3d.com/download/00283454d7e3/download.html
-[unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.0f3%20MRTP3-green.svg
+[unity-version-badge]:            https://img.shields.io/badge/Unity%20Editor%20WMR%20Version-2017.2.0f3%20MRTP3-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 [githubhl-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
