@@ -117,9 +117,6 @@ namespace HoloToolkit.Unity
             if (selectedEvent.Spatialization == SpatialPositioningType.SpatialSound)
             {
                 EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("RoomSize"));
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("MinGain"));
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("MaxGain"));
-                EditorGUILayout.PropertyField(selectedEventProperty.FindPropertyRelative("UnityGainDistance"));
 
                 EditorGUILayout.Space();
             }

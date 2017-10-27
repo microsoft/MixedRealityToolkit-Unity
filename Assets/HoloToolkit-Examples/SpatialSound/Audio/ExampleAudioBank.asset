@@ -15,8 +15,6 @@ MonoBehaviour:
   - Name: Laser
     Spatialization: 2
     RoomSize: 0
-    MinGain: -96
-    MaxGain: -12
     AttenuationCurve:
       serializedVersion: 2
       m_Curve:
@@ -90,7 +88,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 0
     MaxDistanceAttenuation3D: 10
-    UnityGainDistance: 1
     AudioBus: {fileID: 0}
     PitchCenter: 1
     PitchRandomization: 0
@@ -117,8 +114,6 @@ MonoBehaviour:
   - Name: VocalsSpatial
     Spatialization: 2
     RoomSize: 0
-    MinGain: -96
-    MaxGain: -12
     AttenuationCurve:
       serializedVersion: 2
       m_Curve:
@@ -192,7 +187,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     MaxDistanceAttenuation3D: 15
-    UnityGainDistance: 1
     AudioBus: {fileID: 0}
     PitchCenter: 1
     PitchRandomization: 0
@@ -219,8 +213,6 @@ MonoBehaviour:
   - Name: Vocals3d
     Spatialization: 1
     RoomSize: 0
-    MinGain: -96
-    MaxGain: 12
     AttenuationCurve:
       serializedVersion: 2
       m_Curve:
@@ -294,7 +286,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     MaxDistanceAttenuation3D: 15
-    UnityGainDistance: 1
     AudioBus: {fileID: 0}
     PitchCenter: 1
     PitchRandomization: 0

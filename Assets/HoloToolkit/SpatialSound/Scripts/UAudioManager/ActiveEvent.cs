@@ -137,9 +137,6 @@ namespace HoloToolkit.Unity
                 forEachSource((source) =>
                 {
                     SpatialSoundSettings.SetRoomSize(source, audioEvent.RoomSize);
-                    SpatialSoundSettings.SetMinGain(source, audioEvent.MinGain);
-                    SpatialSoundSettings.SetMaxGain(source, audioEvent.MaxGain);
-                    SpatialSoundSettings.SetUnityGainDistance(source, audioEvent.UnityGainDistance);
                     source.rolloffMode = AudioRolloffMode.Custom;
                     source.maxDistance = audioEvent.MaxDistanceAttenuation3D;
                     source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioEvent.AttenuationCurve);

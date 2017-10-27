@@ -62,14 +62,6 @@ namespace HoloToolkit.Unity
         [Tooltip("The size of the Microsoft Spatial Sound room.  Only used when positioning is set to SpatialSound.")]
         public SpatialSoundRoomSizes RoomSize = SpatialSoundSettings.DefaultSpatialSoundRoom;
 
-        [Tooltip("The minimum gain, in decibels.  Only used when positioning is set to SpatialSound.")]
-        [Range(SpatialSoundSettings.MinimumGainDecibels, SpatialSoundSettings.MaximumGainDecibels)]
-        public float MinGain = SpatialSoundSettings.DefaultMinGain;
-
-        [Tooltip("The maximum gain, in decibels.  Only used when positioning is set to SpatialSound.")]
-        [Range(SpatialSoundSettings.MinimumGainDecibels, SpatialSoundSettings.MaximumGainDecibels)]
-        public float MaxGain = SpatialSoundSettings.DefaultMaxGain;
-
         [Tooltip("The volume attenuation curve for simple 3D sounds. Used when positioning is set to 3D or Spatial")]
         public AnimationCurve AttenuationCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f); // By default simple attenuation
 
@@ -88,10 +80,6 @@ namespace HoloToolkit.Unity
         [Tooltip("The maximum attenuation distance for simple 3D sounds. Only used when positioning is set to 3D")]
         [Range(1f, 500f)]
         public float MaxDistanceAttenuation3D = 100f;
-
-        [Tooltip("The distance, in meters at which the gain is 0 decibels.  Only used when positioning is set to SpatialSound.")]
-        [Range(SpatialSoundSettings.MinimumUnityGainDistanceMeters, SpatialSoundSettings.MaximumUnityGainDistanceMeters)]
-        public float UnityGainDistance = SpatialSoundSettings.DefaultUnityGainDistance;
 
         [Tooltip("The AudioMixerGroup to use when playing.")]
         public AudioMixerGroup AudioBus;
