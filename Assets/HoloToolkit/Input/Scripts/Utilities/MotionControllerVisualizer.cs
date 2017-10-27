@@ -52,7 +52,7 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_EDITOR_WIN
         [DllImport("MotionControllerModel")]
-        private static extern int TryGetMotionControllerModel([In] uint controllerId, [Out] out ulong outputSize, [Out] out IntPtr outputBuffer);
+        private static extern bool TryGetMotionControllerModel([In] uint controllerId, [Out] out uint outputSize, [Out] out IntPtr outputBuffer);
 #endif
 
         private void Awake()
@@ -263,9 +263,9 @@ namespace HoloToolkit.Unity.InputModule
                 }
 #else
                 IntPtr controllerModel = new IntPtr();
-                ulong outputSize = 0;
+                uint outputSize = 0;
 
-                if (TryGetMotionControllerModel(source.id, out outputSize, out controllerModel) > 0)
+                if (TryGetMotionControllerModel(source.id, out outputSize, out controllerModel))
                 {
                     fileBytes = new byte[Convert.ToInt32(outputSize)];
 
