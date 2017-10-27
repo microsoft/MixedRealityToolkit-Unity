@@ -13,7 +13,7 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 
 > Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here
 
-[github-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
+[github-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v1.Dev.2017.2.1
 [github-rel-badge]:            https://img.shields.io/badge/WMR%20MRTK%20Release-%20v1.Dev.2017.2.1-green.svg
 [![Github Release][github-rel-badge]][github-rel]
 
