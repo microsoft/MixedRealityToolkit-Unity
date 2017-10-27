@@ -70,7 +70,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
                 fadeControl == null)
 #else
-                if (VRDevice.isPresent || fadeControl == null)
+            if (VRDevice.isPresent || fadeControl == null)
 #endif
             {
                 if (fadeControl == null)
