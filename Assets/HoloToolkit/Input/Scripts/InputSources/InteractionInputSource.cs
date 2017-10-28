@@ -32,7 +32,11 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
         public bool UseRailsNavigation = false;
 
-        private bool delayInitialization;
+        /// <summary>
+        /// Always true initially so we only initialize our interaction sources 
+        /// after all <see cref="Singleton{T}"/> Instances have been properly initialized.
+        /// </summary>
+        private bool delayInitialization = true;
 
 #if UNITY_WSA
         protected GestureRecognizer GestureRecognizer;
@@ -244,10 +248,9 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void OnEnable()
         {
-            delayInitialization = !InputManager.IsInitialized;
-
             if (!delayInitialization)
             {
+                // The first time we call OnEnable we skip this.
                 InitializeSources();
             }
         }
