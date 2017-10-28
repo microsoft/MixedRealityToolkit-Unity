@@ -383,8 +383,10 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-        public void InitializeSources()
+        private void InitializeSources()
         {
+            InputManager.AssertIsInitialized();
+
 #if UNITY_WSA
             if (RecognizerStart == RecognizerStartBehavior.AutoStart)
             {
