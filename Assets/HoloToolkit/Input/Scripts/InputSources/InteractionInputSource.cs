@@ -32,6 +32,8 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
         public bool UseRailsNavigation = false;
 
+        private bool delayInitialization;
+
 #if UNITY_WSA
         protected GestureRecognizer GestureRecognizer;
         protected GestureRecognizer NavigationGestureRecognizer;
@@ -174,40 +176,6 @@ namespace HoloToolkit.Unity.InputModule
 
         #region MonoBehaviour APIs
 
-        protected virtual void OnEnable()
-        {
-#if UNITY_WSA
-            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
-            {
-                StartGestureRecognizer();
-            }
-
-            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
-            for (var i = 0; i < states.Length; i++)
-            {
-                GetOrAddSourceData(states[i].source);
-                InputManager.Instance.RaiseSourceDetected(this, states[i].source.id);
-            }
-
-#if UNITY_2017_2_OR_NEWER
-            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
-            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
-            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
-            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
-#else
-            InteractionManager.SourceDetected += InteractionManager_InteractionSourceDetected;
-            InteractionManager.SourcePressed += InteractionManager_InteractionSourcePressed;
-            InteractionManager.SourceUpdated += InteractionManager_InteractionSourceUpdated;
-            InteractionManager.SourceReleased += InteractionManager_InteractionSourceReleased;
-            InteractionManager.SourceLost += InteractionManager_InteractionSourceLost;
-#endif
-
-#else
-            RecognizerStart = RecognizerStartBehavior.ManualStart;
-#endif
-        }
-
         protected virtual void Awake()
         {
 #if UNITY_WSA
@@ -272,6 +240,25 @@ namespace HoloToolkit.Unity.InputModule
                 NavigationGestureRecognizer.StartCapturingGestures();
             }
 #endif
+        }
+
+        protected virtual void OnEnable()
+        {
+            delayInitialization = !InputManager.IsInitialized;
+
+            if (!delayInitialization)
+            {
+                InitializeSources();
+            }
+        }
+
+        protected virtual void Start()
+        {
+            if (delayInitialization)
+            {
+                delayInitialization = false;
+                InitializeSources();
+            }
         }
 
         protected virtual void OnDisable()
@@ -393,6 +380,40 @@ namespace HoloToolkit.Unity.InputModule
             {
                 NavigationGestureRecognizer.StopCapturingGestures();
             }
+#endif
+        }
+
+        public void InitializeSources()
+        {
+#if UNITY_WSA
+            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+            {
+                StartGestureRecognizer();
+            }
+
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            for (var i = 0; i < states.Length; i++)
+            {
+                GetOrAddSourceData(states[i].source);
+                InputManager.Instance.RaiseSourceDetected(this, states[i].source.id);
+            }
+
+#if UNITY_2017_2_OR_NEWER
+            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
+            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+#else
+            InteractionManager.SourceDetected += InteractionManager_InteractionSourceDetected;
+            InteractionManager.SourcePressed += InteractionManager_InteractionSourcePressed;
+            InteractionManager.SourceUpdated += InteractionManager_InteractionSourceUpdated;
+            InteractionManager.SourceReleased += InteractionManager_InteractionSourceReleased;
+            InteractionManager.SourceLost += InteractionManager_InteractionSourceLost;
+#endif
+
+#else
+            RecognizerStart = RecognizerStartBehavior.ManualStart;
 #endif
         }
 
