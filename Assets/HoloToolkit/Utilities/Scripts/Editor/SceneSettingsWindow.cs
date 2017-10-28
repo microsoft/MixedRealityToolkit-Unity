@@ -94,7 +94,17 @@ namespace HoloToolkit.Unity
                     DestroyImmediate(inputModule.gameObject);
                 }
 
-                PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(InputSystemPrefabGUID)));
+                var inputSystem = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(InputSystemPrefabGUID)));
+                var uiRaycastCamera = inputSystem.GetComponentInChildren<Camera>();
+                var sceneCanvases = FindObjectsOfType<Canvas>();
+
+                foreach (Canvas canvas in sceneCanvases)
+                {
+                    if (canvas.renderMode == RenderMode.WorldSpace)
+                    {
+                        canvas.worldCamera = uiRaycastCamera;
+                    }
+                }
             }
 
             if (Values[SceneSetting.AddDefaultCursor])

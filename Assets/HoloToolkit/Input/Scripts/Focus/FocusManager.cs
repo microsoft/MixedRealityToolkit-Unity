@@ -150,8 +150,8 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // We do not update the PreviousEndObject here because
                 // it's already been updated in the first physics raycast.
-
                 StartPoint = PointingSource.Ray.origin;
+
                 End = new FocusDetails
                 {
                     Point = hit.point,
@@ -199,6 +199,24 @@ namespace HoloToolkit.Unity.InputModule
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
+
+        /// <summary>
+        /// Cached vector 3 reference to the new raycast position.
+        /// <remarks>Only used to update UI raycast results.</remarks>
+        /// </summary>
+        Vector3 newUiRaycastPosition = Vector3.zero;
+
+        /// <summary>
+        /// Private uiRaycastCamera used primarily for UI pointer data.
+        /// </summary>
+        [SerializeField]
+        private Camera uiRaycastCamera;
+
+        /// <summary>
+        /// The Camera the Event System uses to raycast against.
+        /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
+        /// </summary>
+        public Camera UIRaycastCamera { get { return uiRaycastCamera; } }
 
         #endregion
 
@@ -357,6 +375,12 @@ namespace HoloToolkit.Unity.InputModule
 
         public PointerInputEventData GetPointerEventData()
         {
+            if (uiRaycastCamera == null)
+            {
+                Debug.LogWarning("No Raycast Camera found in scene!\n" +
+                                 "If you're using uGUI elements you need to also assign the Raycast Camera to each Canvas.");
+            }
+
             if (UnityUIPointerEvent == null)
             {
                 UnityUIPointerEvent = new PointerInputEventData(EventSystem.current);
@@ -479,10 +503,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             GetPointerEventData();
 
-            Debug.Assert(pointer.End.Point != Vector3.zero);
+            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer end point found to raycast against!");
 
-            // 2D pointer position
-            UnityUIPointerEvent.position = CameraCache.Main.WorldToScreenPoint(pointer.End.Point);
+            // Move the uiRaycast camera to the the current pointer's position.
+            uiRaycastCamera.transform.position = pointer.PointingSource.Ray.origin;
+            uiRaycastCamera.transform.forward = pointer.PointingSource.Ray.direction;
+
+            // We always raycast from the center of the camera.
+            UnityUIPointerEvent.position = new Vector2(uiRaycastCamera.pixelWidth * 0.5f, uiRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
             RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
@@ -523,14 +551,18 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 // Check if we need to overwrite the physics raycast info
-                if (pointer.End.Object == null || overridePhysicsRaycast)
+                if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.module.eventCamera == uiRaycastCamera)
                 {
-                    Vector3 worldPos = CameraCache.Main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
+                    newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
+                    newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
+                    newUiRaycastPosition.z = uiRaycastResult.distance;
+
+                    Vector3 worldPos = uiRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
+
                     var hitInfo = new RaycastHit
                     {
-                        distance = uiRaycastResult.distance,
-                        normal = -uiRaycastResult.gameObject.transform.forward,
-                        point = worldPos
+                        point = worldPos,
+                        normal = -uiRaycastResult.gameObject.transform.forward
                     };
 
                     pointer.UpdateHit(uiRaycastResult, hitInfo);

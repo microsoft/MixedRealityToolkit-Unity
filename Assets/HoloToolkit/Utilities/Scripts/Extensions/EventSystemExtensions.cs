@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity
         private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         /// <summary>
-        /// Executes a raycast all and returns the closest element. Fixes the current issue with Unitys raycast sorting which does not 
+        /// Executes a raycast all and returns the closest element. Fixes the current issue with Unity's raycast sorting which does not 
         /// consider separate canvases.
         /// </summary>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
