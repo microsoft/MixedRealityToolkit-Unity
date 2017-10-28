@@ -55,6 +55,8 @@ namespace HoloToolkit.Unity.InputModule
         private DictationEventData dictationEventData;
 #endif
 
+        private bool eventDataInitialized = false;
+
         /// <summary>
         /// List of the input sources as detected by the input manager like hands or motion controllers.
         /// </summary>
@@ -195,6 +197,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InitializeEventDatas()
         {
+            if (eventDataInitialized)
+            {
+                return;
+            }
             inputEventData = new InputEventData(EventSystem.current);
             sourceClickedEventData = new InputClickedEventData(EventSystem.current);
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
@@ -211,6 +217,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
+            eventDataInitialized = true;
 #endif
         }
 
@@ -479,6 +486,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceDetected(IInputSource source, uint sourceId, object[] tags = null)
         {
+            InitializeEventDatas();
+
             // Manage list of detected sources
             bool alreadyDetected = false;
 
