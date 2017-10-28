@@ -13,20 +13,19 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 
 > Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here
 
-[github-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
-[github-rel-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=latest%20master%20branch%20release&colorB=007ec6
+[github-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v1.Dev.2017.2.1
+[github-rel-badge]:            https://img.shields.io/badge/WMR%20MRTK%20Release-%20v1.Dev.2017.2.1-green.svg
 [![Github Release][github-rel-badge]][github-rel]
 
-[unity-download]:                 http://beta.unity3d.com/download/edcd66fb22ae/download.html
-[unity-version-badge]:            https://img.shields.io/badge/current%20unity%20editor%20version-2017.2.0f3%20MRTP-green.svg
+[unity-download]:                 http://beta.unity3d.com/download/00283454d7e3/download.html
+[unity-version-badge]:            https://img.shields.io/badge/Unity%20Editor%20WMR%20Version-2017.2.0f3%20MRTP3-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 [githubhl-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
-[mrtk-version-badge]:            https://img.shields.io/badge/HoloLens%20MRTK%20release-2017.1.2-blue.svg
+[mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
 
-[unity-release]:
-https://unity3d.com/unity/whats-new/unity-2017.1.2
-[githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20HoloLens%20release-2017.1.2-blue.svg
+[unity-release]:                 https://unity3d.com/unity/whats-new/unity-2017.1.2
+[githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20Editor%20HoloLens%20Version-2017.1.2.0f3-blue.svg
 
 Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
 
