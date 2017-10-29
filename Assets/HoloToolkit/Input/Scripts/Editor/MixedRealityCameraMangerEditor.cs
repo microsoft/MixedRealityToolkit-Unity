@@ -10,37 +10,56 @@ namespace HoloToolKit.Unity
     [CustomEditor(typeof(MixedRealityCameraManager))]
     public class MixedRealityCameraMangerEditor : Editor
     {
-        private MixedRealityCameraManager cameraManager;
+        private SerializedProperty opaqueNearClip;
+        private SerializedProperty opaqueClearFlags;
+        private SerializedProperty opaqueBackgroundColor;
+        private SerializedProperty opaqueQualityLevel;
+
+        private SerializedProperty transparentNearClip;
+        private SerializedProperty transparentClearFlags;
+        private SerializedProperty transparentBackgroundColor;
+        private SerializedProperty holoLensQualityLevel;
 
         private void OnEnable()
         {
-            cameraManager = (MixedRealityCameraManager)target;
+            opaqueNearClip = serializedObject.FindProperty("NearClipPlane_OpaqueDisplay");
+            opaqueClearFlags = serializedObject.FindProperty("CameraClearFlags_OpaqueDisplay");
+            opaqueBackgroundColor = serializedObject.FindProperty("BackgroundColor_OpaqueDisplay");
+            opaqueQualityLevel = serializedObject.FindProperty("OpaqueQualityLevel");
+
+            transparentNearClip = serializedObject.FindProperty("NearClipPlane_TransparentDisplay");
+            transparentClearFlags = serializedObject.FindProperty("CameraClearFlags_TransparentDisplay");
+            transparentBackgroundColor = serializedObject.FindProperty("BackgroundColor_TransparentDisplay");
+            holoLensQualityLevel = serializedObject.FindProperty("HoloLensQualityLevel");
         }
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
             var headerStyle = new GUIStyle("label") { richText = true };
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("<b>Opaque Display Settings:</b>", headerStyle);
-            cameraManager.NearClipPlane_OpaqueDisplay = EditorGUILayout.FloatField("Near Clip", cameraManager.NearClipPlane_OpaqueDisplay);
-            cameraManager.CameraClearFlags_OpaqueDisplay = (CameraClearFlags)EditorGUILayout.EnumPopup("Clear Flags", cameraManager.CameraClearFlags_OpaqueDisplay);
-            if (cameraManager.CameraClearFlags_OpaqueDisplay == CameraClearFlags.Color)
+            EditorGUILayout.PropertyField(opaqueNearClip, new GUIContent("Near Clip"));
+            EditorGUILayout.PropertyField(opaqueClearFlags, new GUIContent("Clear Flags"));
+            if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
             {
-                cameraManager.BackgroundColor_OpaqueDisplay = EditorGUILayout.ColorField("Background Color", cameraManager.BackgroundColor_OpaqueDisplay);
+                opaqueBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", opaqueBackgroundColor.colorValue);
             }
 
-            cameraManager.OpaqueQualityLevel = EditorGUILayout.Popup("Quality Setting", cameraManager.OpaqueQualityLevel, QualitySettings.names);
+            opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("<b>Transparent Display Settings:</b>", headerStyle);
-            cameraManager.NearClipPlane_TransparentDisplay = EditorGUILayout.FloatField("Near Clip", cameraManager.NearClipPlane_TransparentDisplay);
-            cameraManager.CameraClearFlags_TransparentDisplay = (CameraClearFlags)EditorGUILayout.EnumPopup("Clear Flags", cameraManager.CameraClearFlags_TransparentDisplay);
-            if (cameraManager.CameraClearFlags_TransparentDisplay == CameraClearFlags.Color)
+            EditorGUILayout.PropertyField(transparentNearClip, new GUIContent("Near Clip"));
+            EditorGUILayout.PropertyField(transparentClearFlags, new GUIContent("Clear Flags"));
+            if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
             {
-                cameraManager.BackgroundColor_TransparentDisplay = EditorGUILayout.ColorField("Background Color", cameraManager.BackgroundColor_TransparentDisplay);
+                transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
             }
 
-            cameraManager.HoloLensQualityLevel = EditorGUILayout.Popup("Quality Setting", cameraManager.HoloLensQualityLevel, QualitySettings.names);
+            holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
