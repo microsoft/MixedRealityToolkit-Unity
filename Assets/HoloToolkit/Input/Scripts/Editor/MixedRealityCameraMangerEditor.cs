@@ -20,6 +20,10 @@ namespace HoloToolKit.Unity
         private SerializedProperty transparentBackgroundColor;
         private SerializedProperty holoLensQualityLevel;
 
+        private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
+        private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
+        private readonly GUIStyle headerStyle = new GUIStyle("label") {richText = true};
+
         private void OnEnable()
         {
             opaqueNearClip = serializedObject.FindProperty("NearClipPlane_OpaqueDisplay");
@@ -36,11 +40,10 @@ namespace HoloToolKit.Unity
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            var headerStyle = new GUIStyle("label") { richText = true };
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("<b>Opaque Display Settings:</b>", headerStyle);
-            EditorGUILayout.PropertyField(opaqueNearClip, new GUIContent("Near Clip"));
-            EditorGUILayout.PropertyField(opaqueClearFlags, new GUIContent("Clear Flags"));
+            EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
+            EditorGUILayout.PropertyField(opaqueClearFlags, clearFlagsTitle);
             if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
             {
                 opaqueBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", opaqueBackgroundColor.colorValue);
@@ -50,8 +53,8 @@ namespace HoloToolKit.Unity
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("<b>Transparent Display Settings:</b>", headerStyle);
-            EditorGUILayout.PropertyField(transparentNearClip, new GUIContent("Near Clip"));
-            EditorGUILayout.PropertyField(transparentClearFlags, new GUIContent("Clear Flags"));
+            EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
+            EditorGUILayout.PropertyField(transparentClearFlags, clearFlagsTitle);
             if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
             {
                 transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
