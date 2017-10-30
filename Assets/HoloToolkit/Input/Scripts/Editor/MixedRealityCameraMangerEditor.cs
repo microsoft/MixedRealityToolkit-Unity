@@ -20,9 +20,9 @@ namespace HoloToolKit.Unity
         private SerializedProperty transparentBackgroundColor;
         private SerializedProperty holoLensQualityLevel;
 
-        private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
-        private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
-        private readonly GUIStyle headerStyle = new GUIStyle("label") {richText = true};
+        private GUIContent nearClipTitle;
+        private GUIContent clearFlagsTitle;
+        private GUIStyle headerStyle;
 
         private void OnEnable()
         {
@@ -39,6 +39,10 @@ namespace HoloToolKit.Unity
 
         public override void OnInspectorGUI()
         {
+            nearClipTitle = new GUIContent("Near Clip");
+            clearFlagsTitle = new GUIContent("Clear Flags");
+            headerStyle = new GUIStyle("label") { richText = true };
+
             serializedObject.Update();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("<b>Opaque Display Settings:</b>", headerStyle);
