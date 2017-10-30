@@ -7091,10 +7091,26 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114710303647202208, guid: d29bc40b7f3df26479d6a0aac211c355,
         type: 2}
-      propertyPath: LeftControllerOverride
+      propertyPath: AlternateLeftController
       value: 
       objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
         type: 2}
+    - target: {fileID: 114710303647202208, guid: d29bc40b7f3df26479d6a0aac211c355,
+        type: 2}
+      propertyPath: AlternateRightController
+      value: 
+      objectReference: {fileID: 1097318689274706, guid: 869d340c69dbcef459070c1a159d38ac,
+        type: 2}
+    - target: {fileID: 114710303647202208, guid: d29bc40b7f3df26479d6a0aac211c355,
+        type: 2}
+      propertyPath: AlwaysUseAlternateLeftModel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114710303647202208, guid: d29bc40b7f3df26479d6a0aac211c355,
+        type: 2}
+      propertyPath: AlwaysUseAlternateRightModel
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
   m_IsPrefabParent: 0
