@@ -64,9 +64,9 @@ namespace HoloToolkit.Unity.InputModule
         /// Origin of the gaze.
         /// </summary>
         public Vector3 GazeOrigin
-        {
-            get { return Ray.origin; }
-        }
+        { get; protected set; }
+     // return Ray.origin; 
+        
 
         /// <summary>
         /// Normal of the gaze.
@@ -170,7 +170,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Updates the current gaze information, so that the gaze origin and normal are accurate.
         /// </summary>
-        private void UpdateGazeInfo()
+        protected virtual void UpdateGazeInfo()
         {
             if (GazeTransform == null)
             {
@@ -191,7 +191,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 Ray = new Ray(newGazeOrigin, newGazeNormal);
             }
-
+            GazeOrigin = Ray.origin;
             UpdateHitPosition();
         }
 

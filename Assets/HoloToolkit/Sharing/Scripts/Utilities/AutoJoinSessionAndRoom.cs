@@ -50,7 +50,7 @@ namespace HoloToolkit.Sharing.Utilities
             }
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             // SharingStage should be valid at this point, but we may not be connected.
             if (SharingStage.Instance.IsConnected)

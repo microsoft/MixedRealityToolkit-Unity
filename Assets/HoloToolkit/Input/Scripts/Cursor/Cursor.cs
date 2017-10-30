@@ -100,15 +100,15 @@ namespace HoloToolkit.Unity.InputModule
         protected GameObject TargetedObject;
         protected ICursorModifier TargetedCursorModifier;
 
-        private uint visibleHandsCount = 0;
-        private bool isVisible = true;
+        protected uint visibleHandsCount = 0;
+        protected bool isVisible = true;
 
         /// <summary>
         /// Position, scale and rotational goals for cursor
         /// </summary>
-        private Vector3 targetPosition;
-        private Vector3 targetScale;
-        private Quaternion targetRotation;
+        protected Vector3 targetPosition;
+        protected Vector3 targetScale;
+        protected Quaternion targetRotation;
 
         /// <summary>
         /// Indicates if the cursor should be visible
@@ -124,14 +124,14 @@ namespace HoloToolkit.Unity.InputModule
 
         #region MonoBehaviour Functions
 
-        private void Awake()
+        protected virtual void Awake()
         {
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
             SetVisibility(isVisible);
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             RegisterManagers();
             TryLoadPointerIfNeeded();
@@ -167,7 +167,7 @@ namespace HoloToolkit.Unity.InputModule
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             UnregisterManagers();
         }
