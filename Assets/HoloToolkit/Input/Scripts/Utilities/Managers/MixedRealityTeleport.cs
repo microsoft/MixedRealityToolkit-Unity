@@ -6,9 +6,10 @@ using System;
 using UnityEngine;
 
 #if UNITY_2017_2_OR_NEWER
-    using UnityEngine.XR;
+using UnityEngine.XR;
 #if UNITY_WSA
-    using UnityEngine.XR.WSA.Input;
+using UnityEngine.XR.WSA;
+using UnityEngine.XR.WSA.Input;
 #endif
 #else
 using UnityEngine.VR;
@@ -63,9 +64,13 @@ namespace HoloToolkit.Unity.InputModule
             fadeControl = FadeScript.Instance;
 
 #if UNITY_2017_2_OR_NEWER
-            if (!XRDevice.isPresent || fadeControl == null)
+            if (!XRDevice.isPresent ||
+#if UNITY_WSA
+                !HolographicSettings.IsDisplayOpaque ||
+#endif
+                fadeControl == null)
 #else
-            if (!VRDevice.isPresent || fadeControl == null)
+            if (VRDevice.isPresent || fadeControl == null)
 #endif
             {
                 if (fadeControl == null)

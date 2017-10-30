@@ -93,7 +93,11 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public void PopModalInputHandler()
         {
-            modalInputStack.Pop();
+            if (modalInputStack.Count>0)
+            {
+                modalInputStack.Pop();
+
+            }
         }
 
         /// <summary>

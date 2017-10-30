@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: KeyboardAtlas
+  m_EditorData:
+    textureSettings:
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      colorSpace: 1
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+    platformSettings: []
+    packingParameters:
+      paddingPower: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    packedHash:
+      serializedVersion: 2
+      Hash: 7a51a503fafedb02020be41129e8d68c
+    variantMultiplier: 1
+    bindAsDefault: 1
+    finalFormat: 4
+    hashString: 7a51a503fafedb02020be41129e8d68c
+    totalSpriteSurfaceArea: 2553777
+    packables:
+    - {fileID: 102900000, guid: ebf9a4ed0c92cc24483bdd4cca5078c2, type: 3}
+    - {fileID: 102900000, guid: bf36f765bd852074bab3404177d5ed3e, type: 3}
+    packedSpriteRenderDataKeys:
+    - 1dde69ccd9583fa4f8dfab2b590119ee: 21300000
+    - 161fc5872226601449a8143014ece469: 21300000
+    - 73830216a21a45e499598b2624ef723e: 21300000
+    - 5eb0b332d494ca84d9c38cf77ba0e12d: 21300000
+    - ec8b4073237c9724ba8422f71fda3694: 21300000
+    - 11e4524f21fc6434abbbba83d70d0040: 21300000
+    - 7029cbbbce5f0ac4dbc4e93267bfddf4: 21300000
+    - b575d7b7d87461b4ea9965b50e367249: 21300000
+    - f6f44dc3b387f9d48bcaaee0038969c4: 21300000
+    - 2775a1cee10328748889e019ab01d248: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 1dde69ccd9583fa4f8dfab2b590119ee, type: 3}
+  - {fileID: 21300000, guid: 161fc5872226601449a8143014ece469, type: 3}
+  - {fileID: 21300000, guid: 73830216a21a45e499598b2624ef723e, type: 3}
+  - {fileID: 21300000, guid: 5eb0b332d494ca84d9c38cf77ba0e12d, type: 3}
+  - {fileID: 21300000, guid: ec8b4073237c9724ba8422f71fda3694, type: 3}
+  - {fileID: 21300000, guid: 11e4524f21fc6434abbbba83d70d0040, type: 3}
+  - {fileID: 21300000, guid: 7029cbbbce5f0ac4dbc4e93267bfddf4, type: 3}
+  - {fileID: 21300000, guid: b575d7b7d87461b4ea9965b50e367249, type: 3}
+  - {fileID: 21300000, guid: f6f44dc3b387f9d48bcaaee0038969c4, type: 3}
+  - {fileID: 21300000, guid: 2775a1cee10328748889e019ab01d248, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - KeyboardKeyGlyphs_Shift_Symbols
+  - KeyboardKeyGlyphs_Down
+  - KeyboardKeyGlyphs_Up
+  - KeyboardKeyGlyphs_Backspace
+  - KeyboardKeyGlyphs_Left
+  - KeyboardKeyGlyphs_Right
+  - KeyboardKeyGlyphs_Close
+  - KeyboardKeyGlyphs_Dictation
+  - KeyboardKeyGlyphs_UnShift_Symbols
+  - ButtonBounds
+  m_Tag: KeyboardAtlas
+  m_IsVariant: 0

@@ -109,6 +109,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &129012584
 GameObject:
@@ -120,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 129012586}
   - component: {fileID: 129012585}
+  - component: {fileID: 129012587}
   m_Layer: 0
   m_Name: FocusedGridGenerator
   m_TagString: Untagged
@@ -160,6 +163,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &129012587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 129012584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 906323c940a3fad4f8f7e9e4fcd747f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &843177361
 Prefab:
   m_ObjectHideFlags: 0
@@ -244,7 +258,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013302559888, guid: c6123c255be77df44a2c575b2a846253, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c6123c255be77df44a2c575b2a846253, type: 2}
@@ -312,7 +326,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1838673015
 Prefab:
