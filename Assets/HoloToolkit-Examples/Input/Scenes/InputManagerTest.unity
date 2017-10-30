@@ -1650,6 +1650,11 @@ Prefab:
       propertyPath: Cursor
       value: 
       objectReference: {fileID: 759629491}
+    - target: {fileID: 114950568511066590, guid: 3eddd1c29199313478dd3f912bfab2ab,
+        type: 2}
+      propertyPath: simulateHandsInEditor
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
   m_IsPrefabParent: 0
@@ -3152,6 +3157,11 @@ Prefab:
         type: 2}
       propertyPath: ShapeModule.radius.value
       value: 0.02237308
+      objectReference: {fileID: 0}
+    - target: {fileID: 199000010866415596, guid: 31ed45da60c98354380578a9bde4814d,
+        type: 2}
+      propertyPath: m_SelectedEditorRenderState
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31ed45da60c98354380578a9bde4814d, type: 2}

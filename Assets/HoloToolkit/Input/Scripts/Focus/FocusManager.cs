@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -119,6 +120,20 @@ namespace HoloToolkit.Unity.InputModule
         {
             public readonly IPointingSource PointingSource;
 
+            private PointerInputEventData pointerData;
+            public PointerInputEventData UnityUIPointerData
+            {
+                get
+                {
+                    if (pointerData == null)
+                    {
+                        pointerData = new PointerInputEventData(EventSystem.current);
+                    }
+
+                    return pointerData;
+                }
+            }
+
             public Vector3 StartPoint { get; private set; }
 
             public FocusDetails End { get; private set; }
@@ -194,6 +209,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private PointerData gazeManagerPointingData;
 
+        [Obsolete("Use GetGazePointerEventData or GetSpecificPointerEventData")]
         public PointerInputEventData UnityUIPointerEvent { get; private set; }
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
@@ -216,7 +232,19 @@ namespace HoloToolkit.Unity.InputModule
         /// The Camera the Event System uses to raycast against.
         /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
         /// </summary>
-        public Camera UIRaycastCamera { get { return uiRaycastCamera; } }
+        public Camera UIRaycastCamera
+        {
+            get
+            {
+                if (uiRaycastCamera == null)
+                {
+                    Debug.LogWarning("No Raycast Camera found in scene!\n" +
+                                     "If you're using uGUI elements you need to also assign the Raycast Camera to each Canvas.");
+                }
+
+                return uiRaycastCamera;
+            }
+        }
 
         #endregion
 
@@ -316,8 +344,11 @@ namespace HoloToolkit.Unity.InputModule
                 return null;
             }
 
-            var pointer = GetPointerEventData();
-            pointer.selectedObject = details.Value.Object;
+            IPointingSource pointingSource;
+            TryGetPointingSource(eventData, out pointingSource);
+            PointerInputEventData pointerInputEventData = GetSpecificPointerEventData(pointingSource);
+            pointerInputEventData.selectedObject = details.Value.Object;
+
             return details.Value.Object;
         }
 
@@ -373,24 +404,20 @@ namespace HoloToolkit.Unity.InputModule
         public delegate void PointerSpecificFocusChangedMethod(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
         public event PointerSpecificFocusChangedMethod PointerSpecificFocusChanged;
 
+        [Obsolete("Use either GetGazePointerEventData or GetSpecificPointerEventData")]
         public PointerInputEventData GetPointerEventData()
         {
-            if (uiRaycastCamera == null)
-            {
-                Debug.LogWarning("No Raycast Camera found in scene!\n" +
-                                 "If you're using uGUI elements you need to also assign the Raycast Camera to each Canvas.");
-            }
+            return GetGazePointerEventData();
+        }
 
-            if (UnityUIPointerEvent == null)
-            {
-                UnityUIPointerEvent = new PointerInputEventData(EventSystem.current);
-            }
-            else
-            {
-                UnityUIPointerEvent.Clear();
-            }
+        public PointerInputEventData GetGazePointerEventData()
+        {
+            return gazeManagerPointingData.UnityUIPointerData;
+        }
 
-            return UnityUIPointerEvent;
+        public PointerInputEventData GetSpecificPointerEventData(IPointingSource pointer)
+        {
+            return GetPointer(pointer).UnityUIPointerData;
         }
 
         public float GetPointingExtent(IPointingSource pointingSource)
@@ -501,20 +528,20 @@ namespace HoloToolkit.Unity.InputModule
 
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            GetPointerEventData();
+            pointer.UnityUIPointerData.Clear();
 
-            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer end point found to raycast against!");
+            Debug.Assert(pointer.End.Point != Vector3.zero, string.Format("No pointer {0} end point found to raycast against!", pointer.PointingSource.GetType()));
 
             // Move the uiRaycast camera to the the current pointer's position.
-            uiRaycastCamera.transform.position = pointer.PointingSource.Ray.origin;
-            uiRaycastCamera.transform.forward = pointer.PointingSource.Ray.direction;
+            UIRaycastCamera.transform.position = pointer.PointingSource.Ray.origin;
+            UIRaycastCamera.transform.forward = pointer.PointingSource.Ray.direction;
 
             // We always raycast from the center of the camera.
-            UnityUIPointerEvent.position = new Vector2(uiRaycastCamera.pixelWidth * 0.5f, uiRaycastCamera.pixelHeight * 0.5f);
+            pointer.UnityUIPointerData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
-            RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
-            UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
+            RaycastResult uiRaycastResult = EventSystem.current.Raycast(pointer.UnityUIPointerData, prioritizedLayerMasks);
+            pointer.UnityUIPointerData.pointerCurrentRaycast = uiRaycastResult;
 
             // If we have a raycast result, check if we need to overwrite the physics raycast info
             if (uiRaycastResult.gameObject != null)
@@ -551,13 +578,13 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 // Check if we need to overwrite the physics raycast info
-                if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.module.eventCamera == uiRaycastCamera)
+                if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.module.eventCamera == UIRaycastCamera)
                 {
                     newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                     newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
                     newUiRaycastPosition.z = uiRaycastResult.distance;
 
-                    Vector3 worldPos = uiRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
+                    Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
 
                     var hitInfo = new RaycastHit
                     {

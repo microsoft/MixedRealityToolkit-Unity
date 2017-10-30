@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// This class uses the InputSourcePointer to define the rules of stealing focus when a pointing ray is detected
     /// with a motion controller that supports pointing.
     /// </summary>
-    public class SimpleSinglePointerSelector : MonoBehaviour, ISourceStateHandler, IInputHandler
+    public class SimpleSinglePointerSelector : MonoBehaviour, ISourceStateHandler, IInputHandler, IInputClickHandler
     {
         #region Settings
 
@@ -29,6 +29,7 @@ namespace HoloToolkit.Unity.InputModule
         #region Data
 
         private bool started;
+        private bool pointerWasChanged;
 
         private bool addedInputManagerListener;
         private IPointingSource currentPointer;
@@ -86,7 +87,27 @@ namespace HoloToolkit.Unity.InputModule
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            // Nothing to do on input up.
+            // Since this input resulted in a pointer change, we mark the event as used to
+            // prevent it from falling through to other handlers to prevent potentially
+            // unintended input from reaching handlers that aren't being pointed at by
+            // the new pointer.
+            if (pointerWasChanged)
+            {
+                pointerWasChanged = false;
+                eventData.Use();
+            }
+        }
+
+        void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
+        {
+            // Since this input resulted in a pointer change, we mark the event as used to
+            // prevent it from falling through to other handlers to prevent potentially
+            // unintended input from reaching handlers that aren't being pointed at by
+            // the new pointer.
+            if (pointerWasChanged)
+            {
+                eventData.Use();
+            }
         }
 
         void IInputHandler.OnInputDown(InputEventData eventData)
@@ -178,11 +199,11 @@ namespace HoloToolkit.Unity.InputModule
         {
             IPointingSource bestPointer = null;
 
-            foreach (var detectedSource in InputManager.Instance.DetectedInputSources)
+            for (var i = 0; i < InputManager.Instance.DetectedInputSources.Count; i++)
             {
-                if (SupportsPointingRay(detectedSource))
+                if (SupportsPointingRay(InputManager.Instance.DetectedInputSources[i]))
                 {
-                    AttachInputSourcePointer(detectedSource);
+                    AttachInputSourcePointer(InputManager.Instance.DetectedInputSources[i]);
                     bestPointer = inputSourcePointer;
                     break;
                 }
@@ -201,8 +222,6 @@ namespace HoloToolkit.Unity.InputModule
             // TODO: robertes: Investigate how this feels. Since "Down" will often be followed by "Click", is
             //       marking the event as used actually effective in preventing unintended app input during a
             //       pointer change?
-
-            bool pointerWasChanged;
 
             if (SupportsPointingRay(eventData))
             {
