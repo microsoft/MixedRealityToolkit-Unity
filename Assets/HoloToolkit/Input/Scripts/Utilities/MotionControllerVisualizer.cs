@@ -334,6 +334,7 @@ namespace HoloToolkit.Unity.InputModule
             yield return gltfScript.LoadModel();
             FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
 #else
+            LoadAlternateControllerModel(source);
             yield break;
 #endif
         }
