@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HoloToolKit.Unity
 {
     [CustomEditor(typeof(MixedRealityCameraManager))]
-    public class MixedRealityCameraMangerEditor : Editor
+    public class MixedRealityCameraManagerEditor : Editor
     {
         private SerializedProperty opaqueNearClip;
         private SerializedProperty opaqueClearFlags;
