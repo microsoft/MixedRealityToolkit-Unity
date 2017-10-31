@@ -198,12 +198,13 @@ namespace HoloToolkit.Unity.InputModule
         private void ConnectBestAvailablePointer()
         {
             IPointingSource bestPointer = null;
+            var inputSources = InputManager.Instance.DetectedInputSources;
 
-            for (var i = 0; i < InputManager.Instance.DetectedInputSources.Count; i++)
+            for (var i = 0; i < inputSources.Count; i++)
             {
-                if (SupportsPointingRay(InputManager.Instance.DetectedInputSources[i]))
+                if (SupportsPointingRay(inputSources[i]))
                 {
-                    AttachInputSourcePointer(InputManager.Instance.DetectedInputSources[i]);
+                    AttachInputSourcePointer(inputSources[i]);
                     bestPointer = inputSourcePointer;
                     break;
                 }
