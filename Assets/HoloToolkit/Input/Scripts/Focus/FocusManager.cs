@@ -220,7 +220,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Cached vector 3 reference to the new raycast position.
         /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
-        Vector3 newUiRaycastPosition = Vector3.zero;
+        private Vector3 newUiRaycastPosition = Vector3.zero;
 
         /// <summary>
         /// Private uiRaycastCamera used primarily for UI pointer data.
