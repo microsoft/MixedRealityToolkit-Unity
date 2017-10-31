@@ -755,6 +755,23 @@ namespace HoloToolkit.Unity.InputModule
             return null;
         }
 
+        /// <summary>
+        /// Helper for assigning world space canvases event cameras.
+        /// <remarks>Can be used at runtime.</remarks>
+        /// </summary>
+        public void UpdateCanvasEventSystems()
+        {
+            var sceneCanvases = FindObjectsOfType<Canvas>();
+
+            for (var i = 0; i < sceneCanvases.Length; i++)
+            {
+                if (sceneCanvases[i].renderMode == RenderMode.WorldSpace)
+                {
+                    sceneCanvases[i].worldCamera = UIRaycastCamera;
+                }
+            }
+        }
+
         #endregion
     }
 }
