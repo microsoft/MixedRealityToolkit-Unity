@@ -441,6 +441,14 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Update the dictionary of available audio events.
+        /// </summary>
+        protected override void BanksChanged()
+        {
+            CreateEventsDictionary();
+        }
+
+        /// <summary>
         /// Create the Dictionary for quick lookup of AudioEvents.
         /// </summary>
         private void CreateEventsDictionary()
