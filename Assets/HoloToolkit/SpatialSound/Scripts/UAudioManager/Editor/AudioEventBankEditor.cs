@@ -1,10 +1,15 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// Inspector for the AudioBank
+    /// </summary>
+    /// <typeparam name="TEvent">Event type to support</typeparam>
     public class AudioBankEditor<TEvent> : Editor where TEvent : AudioEvent, new()
     {
         protected AudioBank<TEvent> MyTarget;
