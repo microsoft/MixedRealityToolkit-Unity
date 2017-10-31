@@ -71,9 +71,6 @@ namespace HoloToolkit.Unity
         [Tooltip("The spread attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
         public AnimationCurve SpreadCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 0f); // by default no spread
 
-        //[Tooltip("The lowpass attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
-        //public AnimationCurve LowPassCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 0f); // by default no lowpass
-
         [Tooltip("The reverb attenuation curve for simple 3D sounds. Only used when positioning is set to 3D")]
         public AnimationCurve ReverbCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 0f); // by default no reverb
 

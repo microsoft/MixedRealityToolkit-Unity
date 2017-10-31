@@ -140,9 +140,6 @@ namespace HoloToolkit.Unity
                     source.rolloffMode = AudioRolloffMode.Custom;
                     source.maxDistance = audioEvent.MaxDistanceAttenuation3D;
                     source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioEvent.AttenuationCurve);
-                    //source.SetCustomCurve(AudioSourceCurveType.SpatialBlend, audioEvent.SpatialCurve);
-                    //source.SetCustomCurve(AudioSourceCurveType.Spread, audioEvent.SpreadCurve);
-                    //source.SetCustomCurve(AudioSourceCurveType.ReverbZoneMix, audioEvent.ReverbCurve);
                 });
             }
             else

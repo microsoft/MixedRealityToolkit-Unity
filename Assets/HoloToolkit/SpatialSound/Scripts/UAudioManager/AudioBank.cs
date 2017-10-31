@@ -12,6 +12,4 @@ namespace HoloToolkit.Unity
     {
         public T[] Events;
     }
-
 }
-
