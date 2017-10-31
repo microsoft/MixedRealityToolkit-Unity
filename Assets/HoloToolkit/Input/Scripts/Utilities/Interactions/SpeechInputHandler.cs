@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (PersistentKeywords)
             {
-                DontDestroyOnLoad(gameObject);
+                gameObject.DontDestroyOnLoad();
             }
 
             // Convert the struct array into a dictionary, with the keywords and the methods as the values.
