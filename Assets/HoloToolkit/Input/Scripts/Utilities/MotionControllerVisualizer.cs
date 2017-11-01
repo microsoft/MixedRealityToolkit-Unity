@@ -32,12 +32,17 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
         public bool AnimateControllerModel = true;
 
-        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform left controller model.")]
+        [Tooltip("This setting will be used to determine if the model should always be the left alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        public bool AlwaysUseAlternateLeftModel = false;
+        [Tooltip("This setting will be used to determine if the model should always be the right alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        public bool AlwaysUseAlternateRightModel = false;
+
+        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. To override the platform left controller model set AlwaysUseAlternateModel to true; otherwise this will be the default if the model can't be found.")]
         [SerializeField]
-        protected GameObject LeftControllerOverride;
-        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. This will override the platform right controller model.")]
+        protected GameObject AlternateLeftController;
+        [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. To override the platform right controller model set AlwaysUseAlternateModel to true; otherwise this will be the default if the model can't be found.")]
         [SerializeField]
-        protected GameObject RightControllerOverride;
+        protected GameObject AlternateRightController;
         [Tooltip("Use this to override the indicator used to show the user's touch location on the touchpad. Default is a sphere.")]
         [SerializeField]
         protected GameObject TouchpadTouchedOverride;
@@ -70,13 +75,13 @@ namespace HoloToolkit.Unity.InputModule
 
             if (GLTFMaterial == null)
             {
-                if (LeftControllerOverride == null && RightControllerOverride == null)
+                if (AlternateLeftController == null && AlternateRightController == null)
                 {
-                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller overrides.");
+                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller alternates.");
                 }
-                else if (LeftControllerOverride == null || RightControllerOverride == null)
+                else if (AlternateLeftController == null || AlternateRightController == null)
                 {
-                    Debug.Log("Only one override is specified, and no material is specified for the glTF model. Please set the material or the " + ((LeftControllerOverride == null) ? "left" : "right") + " controller override on " + name + ".");
+                    Debug.Log("Only one alternate is specified, and no material is specified for the glTF model. Please set the material or the " + ((AlternateLeftController == null) ? "left" : "right") + " controller alternate on " + name + ".");
                 }
             }
 
@@ -194,99 +199,138 @@ namespace HoloToolkit.Unity.InputModule
         private IEnumerator LoadControllerModel(InteractionSource source)
         {
             loadingControllers.Add(source.id);
-
-            GameObject controllerModelGameObject;
-
-            if (source.handedness == InteractionSourceHandedness.Left && LeftControllerOverride != null)
+            
+            if (AlwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
             {
-                controllerModelGameObject = Instantiate(LeftControllerOverride);
+                if (AlternateLeftController == null)
+                {
+                    Debug.LogWarning("Always use the alternate left model is set on " + name + ", but the alternate left controller model was not specified.");
+                    yield return LoadSourceControllerModel(source);
+                }
+                else
+                {
+                    LoadAlternateControllerModel(source);
+                }
             }
-            else if (source.handedness == InteractionSourceHandedness.Right && RightControllerOverride != null)
+            else if (AlwaysUseAlternateRightModel && source.handedness == InteractionSourceHandedness.Right)
             {
-                controllerModelGameObject = Instantiate(RightControllerOverride);
+                if (AlternateRightController == null)
+                {
+                    Debug.LogWarning("Always use the alternate right model is set on " + name + ", but the alternate right controller model was not specified.");
+                    yield return LoadSourceControllerModel(source);
+                }
+                else
+                {
+                    LoadAlternateControllerModel(source);
+                }
             }
             else
             {
-                byte[] fileBytes;
+                yield return LoadSourceControllerModel(source);
+            }
+        }
 
-                if (GLTFMaterial == null)
-                {
-                    Debug.Log("If using glTF, please specify a material on " + name + ".");
-                    loadingControllers.Remove(source.id);
-                    yield break;
-                }
+        private IEnumerator LoadSourceControllerModel(InteractionSource source)
+        {
+            byte[] fileBytes;
+            GameObject controllerModelGameObject;
+
+            if (GLTFMaterial == null)
+            {
+                Debug.Log("If using glTF, please specify a material on " + name + ".");
+                yield break;
+            }
 
 #if !UNITY_EDITOR
-                // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
-                IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = source.TryGetRenderableModelAsync();
+            // This API returns the appropriate glTF file according to the motion controller you're currently using, if supported.
+            IAsyncOperation<IRandomAccessStreamWithContentType> modelTask = source.TryGetRenderableModelAsync();
 
-                if (modelTask == null)
-                {
-                    Debug.Log("Model task is null.");
-                    loadingControllers.Remove(source.id);
-                    yield break;
-                }
+            if (modelTask == null)
+            {
+                Debug.Log("Model task is null; loading alternate.");
+                LoadAlternateControllerModel(source);
+                yield break;
+            }
 
-                while (modelTask.Status == AsyncStatus.Started)
+            while (modelTask.Status == AsyncStatus.Started)
+            {
+                yield return null;
+            }
+
+            IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
+
+            if (modelStream == null)
+            {
+                Debug.Log("Model stream is null; loading alternate.");
+                LoadAlternateControllerModel(source);
+                yield break;
+            }
+
+            if (modelStream.Size == 0)
+            {
+                Debug.Log("Model stream is empty; loading alternate.");
+                LoadAlternateControllerModel(source);
+                yield break;
+            }
+
+            fileBytes = new byte[modelStream.Size];
+
+            using (DataReader reader = new DataReader(modelStream))
+            {
+                DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
+
+                while (loadModelOp.Status == AsyncStatus.Started)
                 {
                     yield return null;
                 }
 
-                IRandomAccessStreamWithContentType modelStream = modelTask.GetResults();
-
-                if (modelStream == null)
-                {
-                    Debug.Log("Model stream is null.");
-                    loadingControllers.Remove(source.id);
-                    yield break;
-                }
-
-                if (modelStream.Size == 0)
-                {
-                    Debug.Log("Model stream is empty.");
-                    loadingControllers.Remove(source.id);
-                    yield break;
-                }
-
-                fileBytes = new byte[modelStream.Size];
-
-                using (DataReader reader = new DataReader(modelStream))
-                {
-                    DataReaderLoadOperation loadModelOp = reader.LoadAsync((uint)modelStream.Size);
-
-                    while (loadModelOp.Status == AsyncStatus.Started)
-                    {
-                        yield return null;
-                    }
-
-                    reader.ReadBytes(fileBytes);
-                }
+                reader.ReadBytes(fileBytes);
+            }
 #else
-                IntPtr controllerModel = new IntPtr();
-                uint outputSize = 0;
+            IntPtr controllerModel = new IntPtr();
+            uint outputSize = 0;
 
-                if (TryGetMotionControllerModel(source.id, out outputSize, out controllerModel))
-                {
-                    fileBytes = new byte[Convert.ToInt32(outputSize)];
+            if (TryGetMotionControllerModel(source.id, out outputSize, out controllerModel))
+            {
+                fileBytes = new byte[Convert.ToInt32(outputSize)];
 
-                    Marshal.Copy(controllerModel, fileBytes, 0, Convert.ToInt32(outputSize));
-                }
-                else
-                {
-                    Debug.Log("Unable to load controller models.");
-                    loadingControllers.Remove(source.id);
-                    yield break;
-                }
+                Marshal.Copy(controllerModel, fileBytes, 0, Convert.ToInt32(outputSize));
+            }
+            else
+            {
+                Debug.Log("Unable to load controller models; loading alternate.");
+                LoadAlternateControllerModel(source);
+                yield break;
+            }
 #endif
 
-                controllerModelGameObject = new GameObject();
-                controllerModelGameObject.name = "glTFController";
-                GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
-                gltfScript.ColorMaterial = GLTFMaterial;
-                gltfScript.NoColorMaterial = GLTFMaterial;
-                gltfScript.GLTFData = fileBytes;
+            controllerModelGameObject = new GameObject();
+            controllerModelGameObject.name = "glTFController";
+            GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
+            gltfScript.ColorMaterial = GLTFMaterial;
+            gltfScript.NoColorMaterial = GLTFMaterial;
+            gltfScript.GLTFData = fileBytes;
 
-                yield return gltfScript.LoadModel();
+            yield return gltfScript.LoadModel();
+
+            FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
+        }
+
+        private void LoadAlternateControllerModel(InteractionSource source)
+        {
+            GameObject controllerModelGameObject;
+            if (source.handedness == InteractionSourceHandedness.Left && AlternateLeftController != null)
+            {
+                controllerModelGameObject = Instantiate(AlternateLeftController);
+            }
+            else if (source.handedness == InteractionSourceHandedness.Right && AlternateRightController != null)
+            {
+                controllerModelGameObject = Instantiate(AlternateRightController);
+            }
+            else
+            {
+                loadingControllers.Remove(source.id);
+                return;
             }
 
             FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
