@@ -17,24 +17,15 @@ namespace HoloToolkit.Unity.Examples
 
         void Start()
         {
-
             // Check if the device type is HoloLens or Immersive HMD
             if (HolographicSettings.IsDisplayOpaque)
             {
-                // Set camera clear flags to skybox for IHMD, show floor and table
-                cameraObject.clearFlags = CameraClearFlags.Skybox;
-                environmentObject.SetActive(true);
-
                 // Optimize the default postion of the objects for Immersive HMD
                 containerObject.transform.position = new Vector3(0.05f, 1.2f, 1.08f);
 
             }
             else
             {
-                // Set camera clear flags to solid color for HoloLens, hide floor and table
-                cameraObject.clearFlags = CameraClearFlags.SolidColor;
-                environmentObject.SetActive(false);
-
                 // Optimize the default postion of the objects for HoloLens
                 containerObject.transform.position = new Vector3(0.05f, -0.65f, 1.65f);
 
