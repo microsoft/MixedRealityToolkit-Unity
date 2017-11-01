@@ -12,8 +12,6 @@ namespace HoloToolkit.Unity.Examples
     public class OptimizeSceneforDeviceType : MonoBehaviour
     {
         public GameObject containerObject;
-        public GameObject environmentObject;
-        public Camera cameraObject;
 
         void Start()
         {
