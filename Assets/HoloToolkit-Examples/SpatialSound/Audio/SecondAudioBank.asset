@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f1d4e6c796e6b046a056641ccec5ec8, type: 3}
+  m_Name: SecondAudioBank
+  m_EditorClassIdentifier: 
+  Events:
+  - Name: Test/Vocals
+    Spatialization: 2
+    RoomSize: 0
+    AttenuationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    SpatialCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    SpreadCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ReverbCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    MaxDistanceAttenuation3D: 15
+    AudioBus: {fileID: 0}
+    PitchCenter: 1
+    PitchRandomization: 0
+    VolumeCenter: 1
+    VolumeRandomization: 0
+    PanCenter: 0
+    PanRandomization: 0
+    FadeInTime: 0
+    FadeOutTime: 0
+    InstanceLimit: 0
+    InstanceTimeBuffer: 0
+    AudioEventInstanceBehavior: 0
+    Container:
+      ContainerType: 0
+      Looping: 0
+      LoopTime: 0
+      Sounds:
+      - Sound: {fileID: 8300000, guid: aa9275dc39fa76144bcdb5c329400abe, type: 3}
+        Looping: 0
+        DelayCenter: 0
+        DelayRandomization: 0
+      CrossfadeTime: 0
+      CurrentClip: 0
