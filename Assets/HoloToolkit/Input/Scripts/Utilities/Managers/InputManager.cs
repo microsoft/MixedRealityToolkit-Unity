@@ -435,6 +435,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
                 ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
+                pointerInputEventData.Clear();
             }
         }
 

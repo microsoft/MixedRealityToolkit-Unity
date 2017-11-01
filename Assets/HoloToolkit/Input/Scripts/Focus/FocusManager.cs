@@ -528,8 +528,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            pointer.UnityUIPointerData.Clear();
-
             Debug.Assert(pointer.End.Point != Vector3.zero, string.Format("No pointer {0} end point found to raycast against!", pointer.PointingSource.GetType()));
 
             // Move the uiRaycast camera to the the current pointer's position.
