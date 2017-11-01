@@ -37,21 +37,6 @@ namespace HoloToolkit.Unity.Receivers
 
         #region Private and Protected Members
         /// <summary>
-        /// Internal protected member for our default gizmo icon
-        /// </summary>
-        protected string _gizmoIconDefault = "HUX/hux_receiver_icon.png";
-
-        /// <summary>
-        /// Internal protected member for our gizmo selected icon
-        /// </summary>
-        protected string _gizmoIconSelected = "HUX/hux_receiver_icon_selected.png";
-
-        /// <summary>
-        /// Protected string for the current active gizmo icon
-        /// </summary>
-        protected string _gizmoIcon;
-
-        /// <summary>
         /// Protected focuser for the current selecting focuser
         /// </summary>
         protected IPointingSource _selectingFocuser;
@@ -124,14 +109,6 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        /// <summary>
-        /// On Draw Gizmo show the receiver icon
-        /// </summary>
-        protected virtual void OnDrawGizmos()
-        {
-            _gizmoIcon = UnityEditor.Selection.activeGameObject == this.gameObject ? _gizmoIconSelected : _gizmoIconDefault;
-            Gizmos.DrawIcon(this.transform.position, _gizmoIcon, false);
-        }
 #endif
 
         /// <summary>

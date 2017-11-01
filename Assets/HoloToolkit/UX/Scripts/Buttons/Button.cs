@@ -69,16 +69,6 @@ namespace HoloToolkit.Unity.Buttons
 
         #region Private and Protected Members
         /// <summary>
-        /// Internal protected member for our default gizmo icon
-        /// </summary>
-        protected const string _GizmoIconDefault = "HUX/hux_button_icon.png";
-
-        /// <summary>
-        /// Internal protected member for our gizmo selected icon
-        /// </summary>
-        protected const string _GizmoIconSelected = "HUX/hux_button_icon_selected.png";
-
-        /// <summary>
         /// Protected string for the current active gizmo icon
         /// </summary>
         protected string _GizmoIcon;
@@ -441,21 +431,5 @@ namespace HoloToolkit.Unity.Buttons
                 StateChange(newState);
             }
         }
-#if UNITY_EDITOR
-        /// <summary>
-        /// On draw gizmo shows the icon for the object in the editor 
-        /// </summary>
-        private void OnDrawGizmos()
-        {
-            // Simple visualization if Gazer is none - we could be in a level without the gazer spawned yet, or in editor.
-            Collider collider = this.GetComponent<Collider>();
-            if (collider != null)
-            {
-                _GizmoIcon = UnityEditor.Selection.activeGameObject == this.gameObject ? _GizmoIconSelected : _GizmoIconDefault;
-                Gizmos.DrawIcon(this.transform.position, _GizmoIcon, false);
-                Gizmos.DrawIcon(collider.bounds.center + (collider.bounds.size.y * Vector3.up), _GizmoIcon, false);
-            }
-        }
-#endif
     }
 }
