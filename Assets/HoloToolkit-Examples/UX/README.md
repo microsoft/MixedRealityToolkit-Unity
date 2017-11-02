@@ -79,3 +79,15 @@ This slider is not billboarded and the user can pull the slider along the rail. 
 
 #### Camera Aligned
 This slider is looking for a left or right movement perpendicular to the camera's forward.
+
+## InteractiveElementInstantiate
+This Example shows the dynamic creation and data update of data that represents an InteractiveSet.
+
+In this fictional scenario the user has the choice to create a "normal" or a "warning" message from a group of text snipps.
+When he air-taps on one of the buttons the group of shown text snpippets  change directly.
+You can also configure the amount of elements after which a new column is added to save space.
+
+Note that the "Send"-Button just prints your selected note snippet in the logs.
+
+### InteractiveGroup
+The Interactive group is a list of InteractiveToggles (ToggleButtons/Checkboxes) that get instantiated and positioned based on a list of items and a Prefab.
