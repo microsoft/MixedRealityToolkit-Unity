@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235af7010dfacab48a6425d9dba6bd8f, type: 3}
+  m_Name: DefaultButtonSoundsProfile
+  m_EditorClassIdentifier: 
+  ButtonCancelled: {fileID: 0}
+  ButtonHeld: {fileID: 0}
+  ButtonPressed: {fileID: 8300000, guid: 1e6758bd9d63c6c4ea09d8a9faae1346, type: 3}
+  ButtonReleased: {fileID: 0}
+  ButtonObservation: {fileID: 0}
+  ButtonObservationTargeted: {fileID: 8300000, guid: c7f9799384186a64e8330da57cb04fd9,
+    type: 3}
+  ButtonTargeted: {fileID: 8300000, guid: c7f9799384186a64e8330da57cb04fd9, type: 3}
+  ButtonCancelledVolume: 1
+  ButtonHeldVolume: 1
+  ButtonPressedVolume: 1
+  ButtonReleasedVolume: 1
+  ButtonObservationVolume: 1
+  ButtonObservationTargetedVolume: 0.15
+  ButtonTargetedVolume: 0.15
