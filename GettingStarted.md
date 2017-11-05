@@ -30,12 +30,12 @@ Make sure you are running the appropriate version of Unity 3D on your machine. Y
 
 > The Mixed Reality Toolkit now supports the following Unity 3D versions:
 
-[unity-release]:                 http://beta.unity3d.com/download/edcd66fb22ae/download.html
+[unity-release]:                  https://unity3d.com/unity/whats-new/unity-2017.1.2
 [unity-version-badge]:            https://img.shields.io/badge/latest%20HoloLens%20release-2017.1.2-blue.svg
 > [![Github Release][unity-version-badge]][unity-release] 
 
-[unity-beta-release]:                 http://beta.unity3d.com/download/edcd66fb22ae/download.html
-[unity-beta-version-badge]:            https://img.shields.io/badge/latest%20Mixed%20Reality%20beta-2017.2.0f3%20MRTP-green.svg
+[unity-beta-release]:                  http://beta.unity3d.com/download/00283454d7e3/download.html
+[unity-beta-version-badge]:            https://img.shields.io/badge/latest%20Mixed%20Reality%20beta-2017.2.0f3%20MRTP3-green.svg
 > [![Github Release][unity-beta-version-badge]][unity-beta-release] 
 
 _Note: Be sure to include the Windows Store .NET scripting backend components._
@@ -49,7 +49,7 @@ You can download the latest unity package from [Releases](https://github.com/Mic
 [github-rel-badge]:            https://img.shields.io/badge/latest%20HoloLens%20release-2017.1.2-blue.svg
 [![Github Release][github-rel-badge]][github-rel]
 
-[mrtk-prerelease]:                 https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v1.Dev.2017.2.1
+[mrtk-prerelease]:             https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v1.Dev.2017.2.1
 [unity-mrtp-badge]:            https://img.shields.io/badge/latest%20Immersive%20release-2017.2.0f3%20MRTP-green.svg
 [![Github Release][unity-mrtp-badge]][mrtk-prerelease] 
 
