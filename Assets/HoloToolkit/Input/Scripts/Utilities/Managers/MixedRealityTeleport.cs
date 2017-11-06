@@ -65,6 +65,8 @@ namespace HoloToolkit.Unity.InputModule
 
             fadeControl = FadeManager.Instance;
 
+            // If our FadeManager is missing, or if we're on the HoloLens
+            // Remove this component.
 #if UNITY_2017_2_OR_NEWER
             if (!XRDevice.isPresent ||
 #if UNITY_WSA
