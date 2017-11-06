@@ -55,10 +55,7 @@ namespace MRTK.UX
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(Ellipse))]
-        public class CustomEditor : LineBaseEditor
-        {
-
-        }
+        public class CustomEditor : LineBaseEditor { }
 #endif
     }
 }

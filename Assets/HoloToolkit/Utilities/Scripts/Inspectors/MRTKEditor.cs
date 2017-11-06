@@ -36,6 +36,7 @@ namespace HoloToolkit.Unity
         private static GUIStyle toggleButtonOnStyle = null;
         private static GUIStyle sectionStyle = null;
         private static GUIStyle toolTipStyle = null;
+        private static GUIStyle inProgressStyle = null;
 
         // Colors
         protected readonly static Color defaultColor = new Color(1f, 1f, 1f);
@@ -276,6 +277,17 @@ namespace HoloToolkit.Unity
                         EditorGUI.indentLevel = currentIndentLevel;
                     }
 
+                    if (member.IsDefined(typeof(FeatureInProgressAttribute), true))
+                    {
+                        GUI.color = helpBoxColor;
+                        EditorGUILayout.LabelField("(This field or property is marked as 'In Progress' and may have no effect.)", inProgressStyle);
+                        GUI.color = Color.Lerp (disabledColor, Color.clear, 0.5f);
+                    }
+                    else
+                    {
+                        GUI.color = defaultColor;
+                    }
+
                     // Now get down to drawing the thing
                     // Get an array ready for our override attributes
                     object[] drawOverrideAttributes = null;
@@ -309,26 +321,26 @@ namespace HoloToolkit.Unity
                                 }
                             }
                         }
-                        else // Property
+                    }
+                    else // Property
+                    {
+                        // We have to draw properties manually
+                        PropertyInfo prop = targetType.GetProperty(member.Name, defaultBindingFlags);
+                        drawOverrideAttributes = prop.GetCustomAttributes(typeof(DrawOverrideAttribute), true);
+                        // If it's a profile field, take care of that first
+                        if (IsSubclassOf(prop.PropertyType, typeof(ProfileBase)))
                         {
-                            // We have to draw properties manually
-                            PropertyInfo prop = targetType.GetProperty(member.Name, defaultBindingFlags);
-                            drawOverrideAttributes = prop.GetCustomAttributes(typeof(DrawOverrideAttribute), true);
-                            // If it's a profile field, take care of that first
-                            if (IsSubclassOf(prop.PropertyType, typeof(ProfileBase)))
-                            {
-                                UnityEngine.Object profile = (UnityEngine.Object)prop.GetValue(target, null);
-                                profile = DrawProfileField(target, profile, prop.PropertyType);
-                                prop.SetValue(target, profile, null);
-                            }
-                            // If we find overrides, draw using those
-                            else if (drawOverrideAttributes.Length > 0)
-                            {
-                                if (drawOverrideAttributes.Length > 1)
-                                    DrawWarning("You should only use one DrawOverride attribute per member. Drawing " + drawOverrideAttributes[0].GetType().Name + " only.");
+                            UnityEngine.Object profile = (UnityEngine.Object)prop.GetValue(target, null);
+                            profile = DrawProfileField(target, profile, prop.PropertyType);
+                            prop.SetValue(target, profile, null);
+                        }
+                        // If we find overrides, draw using those
+                        else if (drawOverrideAttributes.Length > 0)
+                        {
+                            if (drawOverrideAttributes.Length > 1)
+                                DrawWarning("You should only use one DrawOverride attribute per member. Drawing " + drawOverrideAttributes[0].GetType().Name + " only.");
 
-                                (drawOverrideAttributes[0] as DrawOverrideAttribute).DrawEditor(target, prop);
-                            }
+                            (drawOverrideAttributes[0] as DrawOverrideAttribute).DrawEditor(target, prop);
                         }
                     }
                 }
@@ -549,6 +561,10 @@ namespace HoloToolkit.Unity
                 toolTipStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
                 toolTipStyle.fontStyle = FontStyle.Normal;
                 toolTipStyle.alignment = TextAnchor.LowerLeft;
+
+                inProgressStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
+                inProgressStyle.fontStyle = FontStyle.Italic;
+                inProgressStyle.alignment = TextAnchor.LowerLeft;
             }
         }
 
@@ -742,7 +758,7 @@ namespace HoloToolkit.Unity
                 handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
 
             Handles.DrawDottedLine(origin, position, DottedLineScreenSpace);
-            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(direction), handleSize * 10, EventType.Repaint);
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(direction), handleSize * 2, EventType.Repaint);
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
             if (recordingUndo)
                 return distance;

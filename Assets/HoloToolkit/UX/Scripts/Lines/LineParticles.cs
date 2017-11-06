@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MRTK.UX
 {
-    public class LineParticles : LineRenderer
+    public class LineParticles : LineRendererBase
     {
         const int GlobalMaxParticles = 2048;
         const float GlobalParticleStartLifetime = 0.5f;

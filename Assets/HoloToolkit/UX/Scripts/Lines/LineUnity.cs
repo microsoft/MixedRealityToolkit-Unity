@@ -1,17 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity;
 using System.Collections;
 using UnityEngine;
 
 namespace MRTK.UX
 {
-    public class LineUnity : LineRenderer
+    public class LineUnity : LineRendererBase
     {
         const string DefaultLineShader = "Particles/Alpha Blended";
         const string DefaultLineShaderColor = "_TintColor";
 
         [Header("LineUnity Settings")]
+        [Tooltip("The material to use for the Unity LineRenderer (will be auto-generated if null)")]
         public Material LineMaterial;
 
         public bool RoundedEdges = true;
@@ -99,6 +101,13 @@ namespace MRTK.UX
 
         [SerializeField]
         private UnityEngine.LineRenderer lineRenderer;
+
         private Vector3[] positions;
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(LineUnity))]
+        public class CustomEditor : MRTKEditor { }
+#endif
+
     }
 }

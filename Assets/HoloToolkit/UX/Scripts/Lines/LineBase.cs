@@ -363,14 +363,6 @@ namespace MRTK.UX
         }
         
         #if UNITY_EDITOR
-        public static void DrawSceneGUILine(LineBase line)
-        {
-            if (Application.isPlaying)
-                return;
-
-
-        }
-
         protected virtual void OnDrawGizmos()
         {
             // Show gizmos if this object is not selected
@@ -383,7 +375,7 @@ namespace MRTK.UX
                 return;
 
             // Only draw a gizmo if we don't have a line renderer
-            LineRenderer lr = gameObject.GetComponent<LineRenderer>();
+            LineRendererBase lr = gameObject.GetComponent<LineRendererBase>();
             if (lr != null)
                 return;
 
@@ -394,7 +386,7 @@ namespace MRTK.UX
 
             for (int i = 1; i < numSteps; i++)
             {
-                float normalizedLength = (1f / numSteps) * i;
+                float normalizedLength = (1f / (numSteps - 1)) * i;
                 Vector3 currentPos = GetPoint(normalizedLength);
                 Gizmos.DrawLine(lastPos, currentPos);
                 lastPos = currentPos;

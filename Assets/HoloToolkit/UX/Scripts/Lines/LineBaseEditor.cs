@@ -19,11 +19,14 @@ public class LineBaseEditor : MRTKEditor
 
     // Static editor properties
     protected static int linePreviewResolutionSelected = 16;
+    protected static bool drawLinePoints = false;
     protected static bool drawDottedLine = true;
     protected static bool drawLineRotations = false;
     protected static bool drawLineManualUpVectors = false;
     protected static float lineRotationLength = 0.5f;
     protected static float lineManualUpVectorLength = 10f;
+
+    protected virtual LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.Interpolated; } }
 
     protected override void DrawCustomSceneGUI()
     {
@@ -46,9 +49,11 @@ public class LineBaseEditor : MRTKEditor
         if (drawLineManualUpVectors && selected)
             DrawManualUpVectorHandles(line);
 
+        if (drawLinePoints)
+            DrawLinePoints(line);
+
         // Since lines are constantly updating themselves
         // just repaint all by default
-        SceneView.RepaintAll();
     }
 
     protected override void DrawCustomFooter()
@@ -60,13 +65,14 @@ public class LineBaseEditor : MRTKEditor
             linePreviewResolutionSelected = EditorGUILayout.IntSlider("Preview resolution", linePreviewResolutionSelected, 3, 100);
 
             drawDottedLine = EditorGUILayout.Toggle("Draw Dotted Line", drawDottedLine);
-            
-            drawLineRotations = EditorGUILayout.Toggle("Draw Rotations", drawLineRotations);
+            drawLinePoints = EditorGUILayout.Toggle("Draw Line Points", drawLinePoints);
+            drawLineRotations = EditorGUILayout.Toggle("Draw Line Rotations", drawLineRotations);
+            drawLineManualUpVectors = EditorGUILayout.Toggle("Draw Manual Up Vectors", drawLineManualUpVectors);
 
             if (drawLineRotations)
+            {
                 lineRotationLength = EditorGUILayout.Slider("Rotation Arrow Length", lineRotationLength, 0.01f, 5f);
-
-            drawLineManualUpVectors = EditorGUILayout.Toggle("Draw Manual Up Vectors", drawLineManualUpVectors);
+            }
 
             if (drawLineManualUpVectors)
             {
@@ -85,25 +91,63 @@ public class LineBaseEditor : MRTKEditor
             }
         }
         DrawSectionEnd();
+
+        SceneView.RepaintAll();
     }
 
     protected void DrawDottedLine(LineBase line, int numSteps)
     {
-        Vector3 firstPos = line.GetPoint(0f);
-        Vector3 lastPos = firstPos;
-        Handles.color = DefaultDisplayLineColor;
+        Vector3 firstPos = Vector3.zero;
+        Vector3 lastPos = Vector3.zero;
 
-        for (int i = 1; i < numSteps; i++)
+        switch (EditorStepMode)
         {
-            float normalizedLength = (1f / (numSteps - 1)) * i;
-            Vector3 currentPos = line.GetPoint(normalizedLength);
-            Handles.DrawDottedLine(lastPos, currentPos, MRTKEditor.DottedLineScreenSpace);
-            lastPos = currentPos;
+            case LineUtils.StepModeEnum.FromSource:
+                firstPos = line.GetPoint(0);
+                lastPos = firstPos;
+
+                for (int i = 1; i < line.NumPoints; i++)
+                {
+                    Vector3 currentPos = line.GetPoint(i);
+                    Handles.DrawDottedLine(lastPos, currentPos, MRTKEditor.DottedLineScreenSpace);
+                    lastPos = currentPos;
+                }
+
+                if (line.Loops)
+                {
+                    Handles.DrawDottedLine(lastPos, firstPos, MRTKEditor.DottedLineScreenSpace);
+                }
+                break;
+
+            case LineUtils.StepModeEnum.Interpolated:
+            default:
+                firstPos = line.GetPoint(0f);
+                lastPos = firstPos;
+                Handles.color = DefaultDisplayLineColor;
+
+                for (int i = 1; i < numSteps; i++)
+                {
+                    float normalizedLength = (1f / (numSteps - 1)) * i;
+                    Vector3 currentPos = line.GetPoint(normalizedLength);
+                    Handles.DrawDottedLine(lastPos, currentPos, MRTKEditor.DottedLineScreenSpace);
+                    lastPos = currentPos;
+                }
+
+                if (line.Loops)
+                {
+                    Handles.DrawDottedLine(lastPos, firstPos, MRTKEditor.DottedLineScreenSpace);
+                }
+                break;
         }
+    }
 
-        if (line.Loops)
+    protected void DrawLinePoints(LineBase line)
+    {
+        Handles.color = DefaultDisplayLineColor;
+        float dotSize = HandleUtility.GetHandleSize(line.transform.position) * 0.025f;
+        for (int i = 0; i < line.NumPoints; i++)
         {
-            Handles.DrawDottedLine(lastPos, firstPos, MRTKEditor.DottedLineScreenSpace);
+            Handles.DotHandleCap(0, line.GetPoint(i), Quaternion.identity, dotSize, EventType.Repaint);
         }
     }
 

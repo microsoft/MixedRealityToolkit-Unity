@@ -1,7 +1,7 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
+using HoloToolkit.Unity;
 using UnityEngine;
 
 namespace MRTK.UX
@@ -27,8 +27,60 @@ namespace MRTK.UX
         }
 
         [Header("Rectangle Settings")]
-        public Vector2 Dimensions = Vector2.one;
-        public float ZOffset;
+        [SerializeField]
+        private Vector3[] points;
+
+        [EditableProp]
+        public float XSize
+        {
+            get { return xSize; }
+            set
+            {
+                if (xSize != value)
+                {
+                    xSize = value;
+                    BuildPoints();
+                }
+            }
+        }
+        [EditableProp]
+        public float YSize
+        {
+            get { return ySize; }
+            set {
+                if (ySize != value)
+                {
+                    ySize = value;
+                    BuildPoints();
+                }
+            }
+        }
+        [EditableProp]
+        public float ZOffset
+        {
+            get
+            {
+                return zOffset;
+            }
+            set
+            {
+                if (zOffset != value)
+                {
+                    zOffset = value;
+                    BuildPoints();
+                }
+            }
+        }
+
+        [SerializeField]
+        [HideInMRTKInspector]
+        private float xSize = 1f;
+        [SerializeField]
+        [HideInMRTKInspector]
+        private float ySize = 1f;
+        [SerializeField]
+        [HideInMRTKInspector]
+        private float zOffset = 0f;
 
         /// <summary>
         /// When we get interpolated points we subdivide the square so our sampling has more to work with
@@ -89,10 +141,10 @@ namespace MRTK.UX
         private void BuildPoints()
         {
             Vector3 offset = Vector3.forward * ZOffset;
-            Vector3 top = (Vector3.up * Dimensions.y * 0.5f);
-            Vector3 bot = (Vector3.down * Dimensions.y * 0.5f);
-            Vector3 left = (Vector3.left * Dimensions.x * 0.5f);
-            Vector3 right = (Vector3.right * Dimensions.x * 0.5f);
+            Vector3 top = (Vector3.up * YSize * 0.5f);
+            Vector3 bot = (Vector3.down * YSize * 0.5f);
+            Vector3 left = (Vector3.left * XSize * 0.5f);
+            Vector3 right = (Vector3.right * XSize * 0.5f);
 
             SetPointInternal(0, top + left + offset);
             SetPointInternal(1, top + offset);
@@ -104,8 +156,43 @@ namespace MRTK.UX
             SetPointInternal(7, left + offset);
         }
 
-        [SerializeField]
-        private Vector3[] points;
-        
+        protected override void OnDrawGizmos()
+        {
+            // Show gizmos if this object is not selected
+            // (SceneGUI will display it otherwise)
+
+            if (Application.isPlaying)
+                return;
+
+            if (UnityEditor.Selection.activeGameObject == this.gameObject)
+                return;
+
+            // Only draw a gizmo if we don't have a line renderer
+            LineRendererBase lr = gameObject.GetComponent<LineRendererBase>();
+            if (lr != null)
+                return;
+
+            Vector3 firstPos = GetPoint(0);
+            Vector3 lastPos = firstPos;
+            Gizmos.color = Color.Lerp(LineBaseEditor.DefaultDisplayLineColor, Color.clear, 0.25f);
+            
+            for (int i = 1; i < NumPoints; i++)
+            {
+                Vector3 currentPos = GetPoint(i);
+                Gizmos.DrawLine(lastPos, currentPos);
+                lastPos = currentPos;
+            }
+
+            Gizmos.DrawLine(lastPos, firstPos);
+        }
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(Rectangle))]
+        public class CustomEditor : LineBaseEditor {
+            // Use FromSource step mode for rectangles since interpolated looks weird
+            protected override LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.FromSource; } }
+            
+        }
+#endif
     }
 }

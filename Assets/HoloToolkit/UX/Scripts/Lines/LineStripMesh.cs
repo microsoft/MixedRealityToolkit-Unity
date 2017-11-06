@@ -1,20 +1,42 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MRTK.UX
 {
-    public class LineStripMesh : LineRenderer
+    public class LineStripMesh : LineRendererBase
     {
+        [Header("Strip Mesh Settings")]
         public Material LineMaterial;
 
         public Vector3 Forward;
 
+        [SerializeField]
+        private float uvOffset = 0f;
+
+        private Mesh stripMesh;
+        private MeshRenderer stripMeshRenderer;
+        private Material lineMatInstance;
+        private List<Vector3> positions = new List<Vector3>();
+        private List<Vector3> forwards = new List<Vector3>();
+        private List<Color> colors = new List<Color>();
+        private List<float> widths = new List<float>();
+
+        private GameObject meshRendererGameObject;
+
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            if (LineMaterial == null)
+            {
+                Debug.LogError("Line material cannot be null.");
+                enabled = false;
+                return;
+            }
 
             lineMatInstance = new Material(LineMaterial);
 
@@ -23,20 +45,20 @@ namespace MRTK.UX
             {
                 stripMesh = new Mesh();
             }
-            if (stripMeshRenderer == null)
-                stripMeshRenderer = gameObject.GetComponent<MeshRenderer>();
 
             if (stripMeshRenderer == null)
-                stripMeshRenderer = gameObject.AddComponent<MeshRenderer>();
-
+            {
+                meshRendererGameObject = new GameObject("Strip Mesh Renderer");
+                stripMeshRenderer = meshRendererGameObject.AddComponent<MeshRenderer>();
+            }
             stripMeshRenderer.sharedMaterial = lineMatInstance;
             stripMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             stripMeshRenderer.receiveShadows = false;
             stripMeshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 
-            MeshFilter stripMeshFilter = gameObject.GetComponent<MeshFilter>();
+            MeshFilter stripMeshFilter = stripMeshRenderer.GetComponent<MeshFilter>();
             if (stripMeshFilter == null)
-                stripMeshFilter = gameObject.AddComponent<MeshFilter>();
+                stripMeshFilter = stripMeshRenderer.gameObject.AddComponent<MeshFilter>();
 
             stripMeshFilter.sharedMesh = stripMesh;
         }
@@ -45,6 +67,12 @@ namespace MRTK.UX
         {
             if (lineMatInstance != null)
                 GameObject.Destroy(lineMatInstance);
+
+            if (meshRendererGameObject != null)
+            {
+                GameObject.Destroy(meshRendererGameObject);
+                stripMeshRenderer = null;
+            }
         }
 
         public void Update()
@@ -61,7 +89,6 @@ namespace MRTK.UX
             colors.Clear();
             widths.Clear();
 
-            //float normalizedLengthPerStep = 1f / NumLineSteps;
             for (int i = 0; i <= NumLineSteps; i++)
             {
                 float normalizedDistance = (1f / (NumLineSteps - 1)) * i;
@@ -126,17 +153,9 @@ namespace MRTK.UX
             mesh.RecalculateNormals();
         }
 
-        [SerializeField]
-        private float uvOffset = 0f;
-
-        [SerializeField]
-        private Mesh stripMesh;
-        [SerializeField]
-        private MeshRenderer stripMeshRenderer;
-        private Material lineMatInstance;
-        private List<Vector3> positions = new List<Vector3>();
-        private List<Vector3> forwards = new List<Vector3>();
-        private List<Color> colors = new List<Color>();
-        private List<float> widths = new List<float>();
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(LineStripMesh))]
+        public class CustomEditor : MRTKEditor { }
+#endif
     }
 }

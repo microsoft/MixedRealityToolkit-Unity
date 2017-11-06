@@ -1,38 +1,53 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity;
 using UnityEngine;
 
 namespace MRTK.UX
 {
-    public abstract class LineRenderer : MonoBehaviour
+    public abstract class LineRendererBase : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("The source Line this component will render")]
+        protected LineBase source;
+
         [Header("Visual Settings")]
+        [Tooltip("Color gradient applied to line's normalized length")]
         public Gradient LineColor;
 
         public AnimationCurve LineWidth = AnimationCurve.Linear(0f, 0.05f, 1f, 0.05f);
-        [Range(0f, 1f)]
-        public float WidthMultiplier = 0.025f;
+        [Range(0f, 10f)]
+        public float WidthMultiplier = 0.25f;
 
         [Header ("Offsets")]
         [Range(0f, 10f)]
+        [Tooltip("Normalized offset for color gradient")]
         public float ColorOffset = 0f;
         [Range(0f, 10f)]
+        [Tooltip("Normalized offset for width curve")]
         public float WidthOffset = 0f;
         [Range(0f, 10f)]
+        [Tooltip("Normalized offset for rotation offset")]
         public float RotationOffset = 0f;
 
         [Header ("Point Placement")]
+        [Tooltip("Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all Line types.)")]
         public LineUtils.StepModeEnum StepMode = LineUtils.StepModeEnum.Interpolated;
-
-        public LineUtils.InterpolationModeEnum InterpolationMode = LineUtils.InterpolationModeEnum.FromLength;
         [Range(0, 2048)]
+        [Tooltip("Number of steps to interpolate along line in Interpolated step mode")]
+        [ShowIfEnumValue("StepMode", LineUtils.StepModeEnum.Interpolated)]
         public int NumLineSteps = 10;
-        [Range(0.001f,1f)]
+
+        [FeatureInProgress]
+        public LineUtils.InterpolationModeEnum InterpolationMode = LineUtils.InterpolationModeEnum.FromLength;
+        [FeatureInProgress]
+        [Range(0.001f, 1f)]
         public float StepLength = 0.05f;
+        [FeatureInProgress]
         [Range(1, 2048)]
         public int MaxLineSteps = 2048;
-
+        [FeatureInProgress]
         public AnimationCurve StepLengthCurve = AnimationCurve.Linear(0f, 1f, 1f, 0.5f);
 
         public virtual LineBase Target
@@ -69,12 +84,9 @@ namespace MRTK.UX
                 source = gameObject.GetComponent<LineBase>();
         }
 
-        [SerializeField]
-        protected LineBase source;
-
         private float[] normalizedLengths;
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
             if (Application.isPlaying)
@@ -88,7 +100,7 @@ namespace MRTK.UX
             GizmosDrawLineRenderer(source, this);
         }
 
-        public static void GizmosDrawLineRenderer(LineBase source, LineRenderer renderer)
+        public static void GizmosDrawLineRenderer(LineBase source, LineRendererBase renderer)
         {
             switch (renderer.StepMode)
             {
@@ -102,7 +114,7 @@ namespace MRTK.UX
             }
         }
 
-        public static void GizmosDrawLineFromSource(LineBase source, LineRenderer renderer)
+        public static void GizmosDrawLineFromSource(LineBase source, LineRendererBase renderer)
         {
             Vector3 firstPos = source.GetPoint(0);
             Vector3 lastPos = firstPos;
@@ -113,10 +125,10 @@ namespace MRTK.UX
             Gizmos.DrawSphere(firstPos, renderer.GetWidth(0) / 2);
             for (int i = 1; i < source.NumPoints; i++)
             {
-                float normalizedLength = (1f / source.NumPoints) * i;
+                float normalizedLength = (1f / (source.NumPoints)) * i;
                 Vector3 currentPos = source.GetPoint(i);
                 gColor = renderer.GetColor(normalizedLength);
-                gColor.a = 0.5f;
+                gColor.a = gColor.a * 0.5f;
                 Gizmos.color = gColor;
                 Gizmos.DrawLine(lastPos, currentPos);
                 Gizmos.DrawSphere(currentPos, renderer.GetWidth(normalizedLength) / 2);
@@ -129,7 +141,7 @@ namespace MRTK.UX
             }
         }
 
-        public static void GizmosDrawLineInterpolated(LineBase source, LineRenderer renderer)
+        public static void GizmosDrawLineInterpolated(LineBase source, LineRendererBase renderer)
         {
             Vector3 firstPos = source.GetPoint(0f);
             Vector3 lastPos = firstPos;
@@ -138,12 +150,12 @@ namespace MRTK.UX
             gColor.a = 0.5f;
             Gizmos.color = gColor;
             Gizmos.DrawSphere(firstPos, renderer.GetWidth(0) / 2);
-            for (int i = 1; i < renderer.NumLineSteps; i++)
+            for (int i = 1; i <= renderer.NumLineSteps; i++)
             {
-                float normalizedLength = (1f / renderer.NumLineSteps) * i;
+                float normalizedLength = (1f / (renderer.NumLineSteps)) * i;
                 Vector3 currentPos = source.GetPoint(normalizedLength);
                 gColor = renderer.GetColor(normalizedLength);
-                gColor.a = 0.5f;
+                gColor.a = gColor.a * 0.5f;
                 Gizmos.color = gColor;
                 Gizmos.DrawLine(lastPos, currentPos);
                 Gizmos.DrawSphere(currentPos, renderer.GetWidth(normalizedLength) / 2);
@@ -155,6 +167,7 @@ namespace MRTK.UX
                 Gizmos.DrawLine(lastPos, firstPos);
             }
         }
-        #endif
+#endif
+
     }
 }

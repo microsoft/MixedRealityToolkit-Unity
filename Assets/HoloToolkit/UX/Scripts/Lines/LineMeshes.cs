@@ -2,25 +2,48 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace MRTK.UX
 {
-    public class LineMeshes : LineRenderer
+    public class LineMeshes : LineRendererBase
     {
-        readonly string InvisibleShaderName = "HUX/InvisibleShader";
+        readonly string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
 
+        [Header("Instanced Mesh Settings")]
         public Mesh LineMesh;
 
         public Material LineMaterial;
         
+        [MaterialProperty(MaterialPropertyAttribute.PropertyTypeEnum.Color, "LineMaterial")]
         public string ColorProp = "_Color";
+
+        // Command buffer properties
+        private MaterialPropertyBlock linePropertyBlock;
+        private int colorID;
+        private Matrix4x4[] meshTransforms;
+        private Vector4[] colorValues;
+        private bool executeCommandBuffer = false;
+        private Dictionary<Camera, CommandBuffer> cameras = new Dictionary<Camera, CommandBuffer>();
+        // OnWillRenderObject helpers
+        private MeshRenderer onWillRenderHelper;
+        private Mesh onWillRenderMesh;
+        private Material onWillRenderMat;
+        private Vector3[] meshVertices = new Vector3[3];
 
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            if (LineMaterial == null)
+            {
+                Debug.LogError("Line material cannot be null.");
+                enabled = false;
+                return;
+            }
 
             if (linePropertyBlock == null)
             {
@@ -124,17 +147,9 @@ namespace MRTK.UX
             onWillRenderMesh.RecalculateBounds();
         }
 
-        // Command buffer properties
-        private MaterialPropertyBlock linePropertyBlock;
-        private int colorID;
-        private Matrix4x4[] meshTransforms;
-        private Vector4[] colorValues;
-        private bool executeCommandBuffer = false;
-        private Dictionary<Camera, CommandBuffer> cameras = new Dictionary<Camera, CommandBuffer>();
-        // OnWillRenderObject helpers
-        private MeshRenderer onWillRenderHelper;
-        private Mesh onWillRenderMesh;
-        private Material onWillRenderMat;
-        private Vector3[] meshVertices = new Vector3[3];
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(LineMeshes))]
+        public class CustomEditor : MRTKEditor { }
+#endif
     }
 }
