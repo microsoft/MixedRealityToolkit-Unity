@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MRTK.UX
@@ -41,8 +45,6 @@ namespace MRTK.UX
 
         private void ForceUpdateAlignment(int pointIndex) {
             if (AlignControlPoints) {
-                Vector3 point = Points[pointIndex].Point;
-
                 int prevControlPoint = 0;
                 int changedControlPoint = 0;
                 int midPointIndex = ((pointIndex + 1) / 3) * 3;
@@ -215,22 +217,202 @@ namespace MRTK.UX
         [UnityEditor.CustomEditor(typeof(Spline))]
         public class CustomEditor : LineBaseEditor
         {
-            protected override void DrawCustomSceneGUI()
+            private static bool editPositions = true;
+            private static bool editRotations = false;
+
+            private const float overlappingPointThreshold = 0.015f;
+
+            // Convenience buttons for adding / removing points
+            protected override void DrawCustomFooter()
             {
-                base.DrawCustomSceneGUI();
+                base.DrawCustomFooter();
 
                 Spline line = (Spline)target;
+
+                HashSet<int> overlappingPointIndexes = new HashSet<int>();
+
+                if (DrawSectionStart(line.name + " Points", "Point Editing"))
+                {
+                    if (GUILayout.Button(" + Add Points to Start"))
+                    {
+                        List<SplinePoint> points = new List<SplinePoint>();
+                        SplinePoint[] newPoints = new SplinePoint[3];
+                        Vector3 direction = line.GetVelocity(0.01f);
+                        float distance = Mathf.Max(line.UnclampedWorldLength * 0.05f, overlappingPointThreshold * 5);
+                        newPoints[2].Point = line.FirstPoint - (direction * distance);
+                        newPoints[1].Point = newPoints[2].Point - (direction * distance);
+                        newPoints[0].Point = newPoints[1].Point - (direction * distance);
+                        points.AddRange(newPoints);
+                        points.AddRange(line.Points);
+                        line.Points = points.ToArray();
+                    }
+                    if (line.NumPoints > 4)
+                    {
+                        if (GUILayout.Button(" - Remove Points From Start"))
+                        {
+                            // Using lists for maximum clarity
+                            List<SplinePoint> points = new List<SplinePoint>(line.Points);
+                            points.RemoveAt(0);
+                            points.RemoveAt(0);
+                            points.RemoveAt(0);
+                            line.Points = points.ToArray();
+                        }
+                    }
+
+                    // Points list
+                    UnityEditor.EditorGUILayout.BeginVertical(UnityEditor.EditorStyles.helpBox);
+                    bool wideModeSetting = UnityEditor.EditorGUIUtility.wideMode;
+                    UnityEditor.EditorGUIUtility.wideMode = false;
+                    UnityEditor.EditorGUILayout.BeginHorizontal();
+
+                    // Positions
+                    UnityEditor.EditorGUILayout.BeginVertical();
+                    GUI.color = (editPositions ? defaultColor : disabledColor);
+                    editPositions = UnityEditor.EditorGUILayout.Toggle("Edit Positions", editPositions);
+                    for (int i = 0; i < line.Points.Length; i++)
+                    {
+                        GUI.color = (i % 3 == 0) ? handleColorCircle : handleColorSquare;
+                        if (editPositions)
+                        {
+                            GUI.color = Color.Lerp(GUI.color, defaultColor, 0.75f);
+                            // highlight points that are overlapping
+                            for (int j = 0; j < line.Points.Length; j++)
+                            {
+                                if (j == i)
+                                    continue;
+
+                                if (Vector3.Distance(line.Points[j].Point, line.Points[i].Point) < overlappingPointThreshold)
+                                {
+                                    overlappingPointIndexes.Add(i);
+                                    overlappingPointIndexes.Add(j);
+                                    GUI.color = errorColor;
+                                    break;
+                                }
+                            }
+                            line.Points[i].Point = UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Point);
+                        }
+                        else
+                        {
+                            GUI.color = Color.Lerp(GUI.color, disabledColor, 0.75f);
+                            UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Point);
+                        }
+                    }
+                    UnityEditor.EditorGUILayout.EndVertical();
+
+                    // Rotations
+                    GUI.color = defaultColor;
+                    UnityEditor.EditorGUILayout.BeginVertical();
+                    editRotations = UnityEditor.EditorGUILayout.Toggle("Edit Rotations", editRotations);
+                    GUI.color = (editRotations ? defaultColor : disabledColor);
+                    for (int i = 0; i < line.Points.Length; i++)
+                    {
+                        GUI.color = (i % 3 == 0) ? handleColorCircle : handleColorSquare;
+                        if (editRotations)
+                        {
+                            GUI.color = Color.Lerp(GUI.color, defaultColor, 0.75f);
+                            line.Points[i].Rotation = Quaternion.Euler(UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Rotation.eulerAngles));
+                        }
+                        else
+                        {
+                            GUI.color = Color.Lerp(GUI.color, disabledColor, 0.75f);
+                            UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Rotation.eulerAngles);
+                        }
+                    }
+                    UnityEditor.EditorGUILayout.EndVertical();
+
+                    UnityEditor.EditorGUILayout.EndHorizontal();
+                    UnityEditor.EditorGUIUtility.wideMode = wideModeSetting;
+
+                    GUI.color = defaultColor;
+                    // If we found overlapping points, provide an option to auto-separate them
+                    if (overlappingPointIndexes.Count > 0)
+                    {
+                        GUI.color = errorColor;
+                        if (GUILayout.Button("Fix overlappoing points"))
+                        {
+                            // Move them slightly out of the way
+                            foreach (int overlappoingPointIndex in overlappingPointIndexes)
+                            {
+                                line.Points[overlappoingPointIndex].Point += (UnityEngine.Random.onUnitSphere * overlappingPointThreshold * 2);
+                            }
+                        }
+                    }
+
+                    UnityEditor.EditorGUILayout.EndVertical();
+
+                    GUI.color = defaultColor;
+                    if (GUILayout.Button(" + Add Points To End"))
+                    {
+                        // Using lists for maximum clarity
+                        List<SplinePoint> points = new List<SplinePoint>();
+                        SplinePoint[] newPoints = new SplinePoint[3];
+                        Vector3 direction = line.GetVelocity(0.99f);
+                        float distance = Mathf.Max(line.UnclampedWorldLength * 0.05f, overlappingPointThreshold * 5);
+                        newPoints[0].Point = line.LastPoint + (direction * distance);
+                        newPoints[1].Point = newPoints[0].Point + (direction * distance);
+                        newPoints[2].Point = newPoints[1].Point + (direction * distance);
+                        points.AddRange(line.Points);
+                        points.AddRange(newPoints);
+                        line.Points = points.ToArray();
+                    }
+                    if (line.NumPoints > 4)
+                    {
+                        if (GUILayout.Button(" - Remove Points From End"))
+                        {
+                            // Using lists for maximum clarity
+                            List<SplinePoint> points = new List<SplinePoint>(line.Points);
+                            points.RemoveAt(points.Count - 1);
+                            points.RemoveAt(points.Count - 1);
+                            points.RemoveAt(points.Count - 1);
+                            line.Points = points.ToArray();
+                        }
+                    }
+                }
+                DrawSectionEnd();
+            }
+
+            protected override void DrawCustomSceneGUI()
+            {
+                Spline line = (Spline)target;
                 
+                base.DrawCustomSceneGUI();
+
                 for (int i = 0; i < line.NumPoints; i++)
                 {
-                    // Draw squares at start / end and circles for mid-points
-                    if (i == 0 || i == line.NumPoints - 1)
+                    if (editPositions)
                     {
-                        line.SetPoint(i, SquareMoveHandle(line.GetPoint(i)));
+                        if (i % 3 == 0)
+                        {
+                            if (i == 0)
+                            {
+                                line.SetPoint(i, SphereMoveHandle(line.GetPoint(i)));
+                                UnityEditor.Handles.color = handleColorTangent;
+                                UnityEditor.Handles.DrawLine(line.GetPoint(i), line.GetPoint(i + 1));
+                            }
+                            else if (i == line.NumPoints - 1)
+                            {
+                                line.SetPoint(i, SphereMoveHandle(line.GetPoint(i)));
+                                UnityEditor.Handles.color = handleColorTangent;
+                                UnityEditor.Handles.DrawLine(line.GetPoint(i), line.GetPoint(i - 1));
+                            }
+                            else
+                            {
+                                line.SetPoint(i, CircleMoveHandle(line.GetPoint(i)));
+                                UnityEditor.Handles.color = handleColorTangent;
+                                UnityEditor.Handles.DrawLine(line.GetPoint(i), line.GetPoint(i + 1));
+                                UnityEditor.Handles.DrawLine(line.GetPoint(i), line.GetPoint(i - 1));
+                            }
+
+                        }
+                        else
+                        {
+                            line.SetPoint(i, SquareMoveHandle(line.GetPoint(i)));
+                        }
                     }
-                    else
+
+                    if (editRotations)
                     {
-                        line.SetPoint(i, CircleMoveHandle(line.GetPoint(i)));
+                        line.Points[i].Rotation = RotationHandle(line.GetPoint(i), line.Points[i].Rotation);
                     }
                 }
             }

@@ -52,5 +52,13 @@ namespace MRTK.UX
             }
             return distance;
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(Ellipse))]
+        public class CustomEditor : LineBaseEditor
+        {
+
+        }
+#endif
     }
 }

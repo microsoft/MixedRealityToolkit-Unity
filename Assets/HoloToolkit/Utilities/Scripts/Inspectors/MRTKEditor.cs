@@ -51,9 +51,11 @@ namespace HoloToolkit.Unity
         protected readonly static Color objectColorEmpty = new Color(0.75f, 0.8f, 0.9f);
         protected readonly static Color profileColor = new Color(0.88f, 0.7f, .97f);
         protected readonly static Color handleColorSquare = new Color(0.0f, 0.9f, 1f);
-        protected readonly static Color handleColorCircle = new Color(0.0f, 0.9f, 1f);
-        protected readonly static Color handleColorSphere = new Color(0.0f, 0.9f, 1f);
+        protected readonly static Color handleColorCircle = new Color(1f, 0.5f, 1f);
+        protected readonly static Color handleColorSphere = new Color(1f, 0.5f, 1f);
         protected readonly static Color handleColorAxis = new Color(0.0f, 1f, 0.2f);
+        protected readonly static Color handleColorRotation = new Color(0.0f, 1f, 0.2f);
+        protected readonly static Color handleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
 
         public const float DottedLineScreenSpace = 4.65f;
 
@@ -737,7 +739,7 @@ namespace HoloToolkit.Unity
 
             Handles.color = handleColorAxis;
             if (autoSize)
-                handleSize = HandleUtility.GetHandleSize(position) * handleSize;
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
 
             Handles.DrawDottedLine(origin, position, DottedLineScreenSpace);
             Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(direction), handleSize * 10, EventType.Repaint);
@@ -760,7 +762,7 @@ namespace HoloToolkit.Unity
         {
             Handles.color = handleColorCircle;
             if (autoSize)
-                handleSize = HandleUtility.GetHandleSize(position) * handleSize;
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
 
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
             if (recordingUndo)
@@ -782,9 +784,10 @@ namespace HoloToolkit.Unity
         {
             Handles.color = handleColorSquare;
             if (autoSize)
-                handleSize = HandleUtility.GetHandleSize(position) * handleSize;
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
 
-            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.RectangleHandleCap);
+            // Multiply square handle to match other types
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 0.8f, Vector3.zero, Handles.RectangleHandleCap);
             if (recordingUndo)
                 return position;
 
@@ -804,9 +807,10 @@ namespace HoloToolkit.Unity
         {
             Handles.color = handleColorSphere;
             if (autoSize)
-                handleSize = HandleUtility.GetHandleSize(position) * handleSize;
+                handleSize = Mathf.Lerp (handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
 
-            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.RectangleHandleCap);
+            // Multiply sphere handle size to match other types
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 2, Vector3.zero, Handles.SphereHandleCap);
             if (recordingUndo)
                 return position;
 
@@ -820,6 +824,93 @@ namespace HoloToolkit.Unity
                 position.z = Mathf.Lerp(position.y, newPosition.z, Mathf.Clamp01(zScale));
             }
             return position;
+        }
+
+        protected Vector3 VectorHandle(Vector3 origin, Vector3 vector, bool normalize = true, float handleLength = 1f, bool clamp = true, float handleSize = 0.1f, bool autoSize = true)
+        {
+            Handles.color = handleColorTangent;
+            if (autoSize)
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(origin) * handleSize, 0.75f);
+
+            Vector3 handlePosition = origin + (vector * handleLength);
+            float distanceToOrigin = Vector3.Distance(origin, handlePosition) / handleLength;
+            
+            if (normalize) {
+                vector.Normalize();
+            }
+            else
+            {
+                // If the handle isn't normalized, brighten based on distance to origin
+                Handles.color = Color.Lerp(Color.gray, handleColorTangent, distanceToOrigin * 0.85f);
+                if (clamp)
+                {
+                    // To indicate that we're at the clamped limit, make the handle 'pop' slightly larger
+                    if (distanceToOrigin >= 0.98f)
+                    {
+                        Handles.color = Color.Lerp (handleColorTangent, Color.white, 0.5f);
+                        handleSize *= 1.5f;
+                    }
+                }
+            }
+
+            // Draw a line from origin to origin + direction
+            Handles.DrawLine(origin, handlePosition);
+
+            Quaternion rotation = Quaternion.identity;
+            if (vector != Vector3.zero)
+                rotation = Quaternion.LookRotation(vector);
+
+            Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, rotation, handleSize, Vector3.zero, Handles.DotHandleCap);
+            if (recordingUndo)
+                return vector;
+
+            if (handlePosition != newPosition)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+                vector = (newPosition - origin).normalized;
+
+                // If we normalize, we're done
+                // Otherwise, multiply the vector by the distance between origin and target
+                if (!normalize)
+                {
+                    distanceToOrigin = Vector3.Distance(origin, newPosition) / handleLength;
+                    if (clamp)
+                    {
+                        distanceToOrigin = Mathf.Clamp01(distanceToOrigin);
+                    }
+                    vector *= distanceToOrigin;
+                }
+            }
+            return vector;
+        }
+
+        protected Quaternion RotationHandle(Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true)
+        {
+            Handles.color = handleColorRotation;
+            if (autoSize)
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+
+            // Make rotation handles larger so they can overlay movement handles
+            Quaternion newRotation = Handles.FreeRotateHandle(rotation, position, handleSize * 2);
+            if (recordingUndo)
+                return newRotation;
+            
+            Handles.color = Handles.zAxisColor;
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.forward), handleSize * 2, EventType.Repaint);
+            Handles.color = Handles.xAxisColor;
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.right), handleSize * 2, EventType.Repaint);
+            Handles.color = Handles.yAxisColor;
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.up), handleSize * 2, EventType.Repaint);
+
+            if (rotation != newRotation)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                rotation = newRotation;
+            }
+            return rotation;
         }
     #endregion
     }

@@ -20,9 +20,11 @@ namespace MRTK.UX
         }
 
         [Header("Basic Settings")]
+        [Tooltip("Clamps the line's normalized start point. This setting will affect line renderers.")]
         [Range(0f, 1f)]
         public float LineStartClamp = 0f;
         [Range(0f, 1f)]
+        [Tooltip("Clamps the line's normalized end point. This setting will affect line renderers.")]
         public float LineEndClamp = 1f;
         
         public virtual bool Loops
@@ -34,30 +36,42 @@ namespace MRTK.UX
         }
 
         [Header("Rotation")]
+        [Tooltip("The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.")]
         public LineUtils.RotationTypeEnum RotationType = LineUtils.RotationTypeEnum.Velocity;
 
+        [Tooltip("Reverses up vector when determining rotation along line")]
         public bool FlipUpVector = false;
 
+        [Tooltip("Local space offset to transform position. Used to determine rotation along line in RelativeToOrigin rotation mode")]
         public Vector3 OriginOffset = Vector3.zero;
 
+        [Tooltip("The weight of manual up vectors in Velocity rotation mode")]
         [Range(0f,1f)]
         public float ManualUpVectorBlend = 0f;
+         
+        [Tooltip("These vectors are used with ManualUpVectorBlend to determine rotation along the line in Velocity rotation mode. Vectors are distributed along the normalized length of the line.")]
+        public Vector3[] ManualUpVectors = new Vector3[] { Vector3.up, Vector3.up, Vector3.up };
 
-        public Vector3[] ManualUpVectors = new Vector3[] { Vector3.up };
-
+        [Tooltip("Used in Velocity rotation mode. Smaller values are more accurate but more expensive")]
         [Range(0.0001f, 0.1f)]
         public float VelocitySearchRange = 0.02f;
         [Range(0f, 1f)]
         public float VelocityBlend = 0.5f;
 
         [Header ("Distortion")]
+        [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         public LineUtils.DistortionTypeEnum DistortionType = LineUtils.DistortionTypeEnum.NormalizedLength;
         public AnimationCurve DistortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
         [Range(0f, 1f)]
         public float UniformDistortionStrength = 1f;
 
         [SerializeField]
+        [Tooltip("A list of distorters that apply to this line")]
         protected List<Distorter> distorters = new List<Distorter>();
+
+        [Tooltip("Controls whether this line loops (Note: some classes override this setting)")]
+        [SerializeField]
+        protected bool loops = false;
 
         // Abstract
         public abstract int NumPoints { get; }
@@ -348,9 +362,6 @@ namespace MRTK.UX
             return Mathf.Lerp(Mathf.Max (LineStartClamp, 0.0001f), Mathf.Min (LineEndClamp, 0.9999f), Mathf.Clamp01(normalizedLength));
         }
         
-        [SerializeField]
-        protected bool loops = false;
-
         #if UNITY_EDITOR
         public static void DrawSceneGUILine(LineBase line)
         {
@@ -379,7 +390,7 @@ namespace MRTK.UX
             Vector3 firstPos = GetPoint(0f);
             Vector3 lastPos = firstPos;
             Gizmos.color = Color.Lerp (LineBaseEditor.DefaultDisplayLineColor, Color.clear, 0.25f);
-            int numSteps = LineBaseEditor.DefaultDisplayLineSteps;
+            int numSteps = 16;
 
             for (int i = 1; i < numSteps; i++)
             {

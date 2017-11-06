@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,7 +61,7 @@ namespace MRTK.UX
             colors.Clear();
             widths.Clear();
 
-            float normalizedLengthPerStep = 1f / NumLineSteps;
+            //float normalizedLengthPerStep = 1f / NumLineSteps;
             for (int i = 0; i <= NumLineSteps; i++)
             {
                 float normalizedDistance = (1f / (NumLineSteps - 1)) * i;
