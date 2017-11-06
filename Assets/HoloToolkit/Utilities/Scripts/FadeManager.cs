@@ -14,9 +14,9 @@ using UnityEngine.VR.WSA;
 
 namespace HoloToolkit.Unity
 {
-    public class FadeScript : Singleton<FadeScript>
+    public class FadeManager : Singleton<FadeManager>
     {
-        [Tooltip("If true, the FadeScript will update the shared material. Useful for fading multiple cameras that each render different layers.")]
+        [Tooltip("If true, the FadeManager will update the shared material. Useful for fading multiple cameras that each render different layers.")]
         public bool FadeSharedMaterial;
 
         private Material fadeMaterial;
@@ -66,11 +66,6 @@ namespace HoloToolkit.Unity
             if (Busy)
             {
                 CalculateFade();
-            }
-
-            if (Input.GetKeyUp(KeyCode.F))
-            {
-                DoFade(3, 3, () => { Debug.Log("Done fading out"); }, () => { Debug.Log("Done fading in"); });
             }
         }
 
