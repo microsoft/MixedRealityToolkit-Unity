@@ -156,6 +156,14 @@ namespace MRTK.UX
             SetPointInternal(7, left + offset);
         }
 
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(Rectangle))]
+        public class CustomEditor : LineBaseEditor {
+            // Use FromSource step mode for rectangles since interpolated looks weird
+            protected override LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.FromSource; } }
+            
+        }
+
         protected override void OnDrawGizmos()
         {
             // Show gizmos if this object is not selected
@@ -175,7 +183,7 @@ namespace MRTK.UX
             Vector3 firstPos = GetPoint(0);
             Vector3 lastPos = firstPos;
             Gizmos.color = Color.Lerp(LineBaseEditor.DefaultDisplayLineColor, Color.clear, 0.25f);
-            
+
             for (int i = 1; i < NumPoints; i++)
             {
                 Vector3 currentPos = GetPoint(i);
@@ -184,14 +192,6 @@ namespace MRTK.UX
             }
 
             Gizmos.DrawLine(lastPos, firstPos);
-        }
-
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(Rectangle))]
-        public class CustomEditor : LineBaseEditor {
-            // Use FromSource step mode for rectangles since interpolated looks weird
-            protected override LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.FromSource; } }
-            
         }
 #endif
     }
