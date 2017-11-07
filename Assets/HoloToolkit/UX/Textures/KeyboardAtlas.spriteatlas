@@ -8,33 +8,34 @@ SpriteAtlas:
   m_Name: KeyboardAtlas
   m_EditorData:
     textureSettings:
+      serializedVersion: 2
       anisoLevel: 1
       compressionQuality: 50
       maxTextureSize: 2048
       textureCompression: 0
-      colorSpace: 1
       filterMode: 1
       generateMipMaps: 0
       readable: 0
       crunchedCompression: 0
+      sRGB: 0
     platformSettings: []
     packingParameters:
-      paddingPower: 2
+      serializedVersion: 2
+      padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 0
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: 7a51a503fafedb02020be41129e8d68c
+      Hash: 59447b9d27cd467b975647bc4533e86e
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: 7a51a503fafedb02020be41129e8d68c
-    totalSpriteSurfaceArea: 2553777
+    hashString: 59447b9d27cd467b975647bc4533e86e
+    totalSpriteSurfaceArea: 2359296
     packables:
     - {fileID: 102900000, guid: ebf9a4ed0c92cc24483bdd4cca5078c2, type: 3}
-    - {fileID: 102900000, guid: bf36f765bd852074bab3404177d5ed3e, type: 3}
     packedSpriteRenderDataKeys:
     - 1dde69ccd9583fa4f8dfab2b590119ee: 21300000
     - 161fc5872226601449a8143014ece469: 21300000
@@ -45,7 +46,6 @@ SpriteAtlas:
     - 7029cbbbce5f0ac4dbc4e93267bfddf4: 21300000
     - b575d7b7d87461b4ea9965b50e367249: 21300000
     - f6f44dc3b387f9d48bcaaee0038969c4: 21300000
-    - 2775a1cee10328748889e019ab01d248: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 1dde69ccd9583fa4f8dfab2b590119ee, type: 3}
@@ -57,7 +57,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 7029cbbbce5f0ac4dbc4e93267bfddf4, type: 3}
   - {fileID: 21300000, guid: b575d7b7d87461b4ea9965b50e367249, type: 3}
   - {fileID: 21300000, guid: f6f44dc3b387f9d48bcaaee0038969c4, type: 3}
-  - {fileID: 21300000, guid: 2775a1cee10328748889e019ab01d248, type: 3}
   m_PackedSpriteNamesToIndex:
   - KeyboardKeyGlyphs_Shift_Symbols
   - KeyboardKeyGlyphs_Down
@@ -68,6 +67,5 @@ SpriteAtlas:
   - KeyboardKeyGlyphs_Close
   - KeyboardKeyGlyphs_Dictation
   - KeyboardKeyGlyphs_UnShift_Symbols
-  - ButtonBounds
   m_Tag: KeyboardAtlas
   m_IsVariant: 0
