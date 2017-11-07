@@ -50,7 +50,7 @@ namespace Holotoolkit.Unity.UX
 
                     switch (this.StepMode)
                     {
-                        case LineUtils.StepModeEnum.FromSource:
+                        case StepModeEnum.FromSource:
                             lineRenderer.positionCount = source.NumPoints;
                             if (positions == null || positions.Length != source.NumPoints)
                             {
@@ -62,7 +62,7 @@ namespace Holotoolkit.Unity.UX
                             }
                             break;
 
-                        case LineUtils.StepModeEnum.Interpolated:
+                        case StepModeEnum.Interpolated:
                             lineRenderer.positionCount = NumLineSteps;
                             if (positions == null || positions.Length != NumLineSteps)
                             {

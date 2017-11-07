@@ -33,14 +33,14 @@ namespace Holotoolkit.Unity.UX
 
         [Header ("Point Placement")]
         [Tooltip("Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all Line types.)")]
-        public LineUtils.StepModeEnum StepMode = LineUtils.StepModeEnum.Interpolated;
+        public StepModeEnum StepMode = StepModeEnum.Interpolated;
         [Range(0, 2048)]
         [Tooltip("Number of steps to interpolate along line in Interpolated step mode")]
-        [ShowIfEnumValue("StepMode", LineUtils.StepModeEnum.Interpolated)]
+        [ShowIfEnumValue("StepMode", StepModeEnum.Interpolated)]
         public int NumLineSteps = 10;
 
         [FeatureInProgress]
-        public LineUtils.InterpolationModeEnum InterpolationMode = LineUtils.InterpolationModeEnum.FromLength;
+        public InterpolationModeEnum InterpolationMode = InterpolationModeEnum.FromLength;
         [FeatureInProgress]
         [Range(0.001f, 1f)]
         public float StepLength = 0.05f;
@@ -104,11 +104,11 @@ namespace Holotoolkit.Unity.UX
         {
             switch (renderer.StepMode)
             {
-                case LineUtils.StepModeEnum.FromSource:
+                case StepModeEnum.FromSource:
                     GizmosDrawLineFromSource(source, renderer);
                     break;
 
-                case LineUtils.StepModeEnum.Interpolated:
+                case StepModeEnum.Interpolated:
                     GizmosDrawLineInterpolated(source, renderer);
                     break;
             }

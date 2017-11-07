@@ -26,7 +26,7 @@ namespace Holotoolkit.Unity.UX
 
         public AnimationCurve ObjectOffset = AnimationCurve.Linear(0f, 0f, 1f, 0f);
 
-        public LineUtils.RotationTypeEnum RotationTypeOverride = LineUtils.RotationTypeEnum.None;
+        public RotationTypeEnum RotationTypeOverride = RotationTypeEnum.None;
 
         public bool SwarmVelocities = true;
 

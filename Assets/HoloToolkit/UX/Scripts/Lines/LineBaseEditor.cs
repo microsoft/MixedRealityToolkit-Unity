@@ -26,7 +26,7 @@ public class LineBaseEditor : MRTKEditor
     protected static float lineRotationLength = 0.5f;
     protected static float lineManualUpVectorLength = 10f;
 
-    protected virtual LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.Interpolated; } }
+    protected virtual StepModeEnum EditorStepMode { get { return StepModeEnum.Interpolated; } }
 
     protected override void DrawCustomSceneGUI()
     {
@@ -107,7 +107,7 @@ public class LineBaseEditor : MRTKEditor
 
         switch (EditorStepMode)
         {
-            case LineUtils.StepModeEnum.FromSource:
+            case StepModeEnum.FromSource:
                 firstPos = line.GetPoint(0);
                 lastPos = firstPos;
 
@@ -124,7 +124,7 @@ public class LineBaseEditor : MRTKEditor
                 }
                 break;
 
-            case LineUtils.StepModeEnum.Interpolated:
+            case StepModeEnum.Interpolated:
             default:
                 firstPos = line.GetPoint(0f);
                 lastPos = firstPos;

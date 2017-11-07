@@ -7,64 +7,64 @@ using UnityEngine;
 
 namespace Holotoolkit.Unity.UX
 {
+    public enum InterpolationEnum
+    {
+        Bezeir,
+        CatmullRom,
+        Hermite,
+    }
+
+    /// <summary>
+    /// Default options for getting a rotation along a line
+    /// </summary>
+    public enum RotationTypeEnum
+    {
+        None,                           // Don't rotate
+        Velocity,                       // Use velocity
+        RelativeToOrigin,               // Rotate relative to direction from origin point
+    }
+
+    /// <summary>
+    /// Default options for getting an interpolated point along a line
+    /// </summary>
+    public enum PointDistributionTypeEnum
+    {
+        None,                       // Don't adjust placement
+        Auto,                       // Adjust placement automatically (default)
+        DistanceSingleValue,        // Place based on distance
+        DistanceCurveValue,         // Place based on curve
+    }
+
+    /// <summary>
+    /// Default options for how to generate points in a line renderer
+    /// </summary>
+    public enum StepModeEnum
+    {
+        Interpolated,   // Draw points based on NumLineSteps
+        FromSource,     // Draw only the points available in the source - use this for hard edges
+    }
+
+    /// <summary>
+    /// Default options for how to distribute interpolated points in a line renderer
+    /// </summary>
+    public enum InterpolationModeEnum
+    {
+        FromNumSteps,   // Specify the number of interpolation steps manually
+        FromLength,     // Create steps based on total length of line + manually specified length
+        FromCurve       // Create steps based on total length of line + animation curve
+    }
+
+    public enum DistortionTypeEnum
+    {
+        NormalizedLength,   // Use the normalized length of the line plus its distortion strength curve to determine distortion strength
+        Uniform,            // Use a single value to determine distortion strength
+    }
+
     public static class LineUtils
     {
         #region enums
 
         public static readonly Vector3 DefaultUpVector = Vector3.up;
-
-        public enum InterpolationEnum
-        {
-            Bezeir,
-            CatmullRom,
-            Hermite,
-        }
-
-        /// <summary>
-        /// Default options for getting a rotation along a line
-        /// </summary>
-        public enum RotationTypeEnum
-        {
-            None,                           // Don't rotate
-            Velocity,                       // Use velocity
-            RelativeToOrigin,               // Rotate relative to direction from origin point
-        }
-
-        /// <summary>
-        /// Default options for getting an interpolated point along a line
-        /// </summary>
-        public enum PointDistributionTypeEnum
-        {
-            None,                       // Don't adjust placement
-            Auto,                       // Adjust placement automatically (default)
-            DistanceSingleValue,        // Place based on distance
-            DistanceCurveValue,         // Place based on curve
-        }
-
-        /// <summary>
-        /// Default options for how to generate points in a line renderer
-        /// </summary>
-        public enum StepModeEnum
-        {
-            Interpolated,   // Draw points based on NumLineSteps
-            FromSource,     // Draw only the points available in the source - use this for hard edges
-        }
-
-        /// <summary>
-        /// Default options for how to distribute interpolated points in a line renderer
-        /// </summary>
-        public enum InterpolationModeEnum
-        {
-            FromNumSteps,   // Specify the number of interpolation steps manually
-            FromLength,     // Create steps based on total length of line + manually specified length
-            FromCurve       // Create steps based on total length of line + animation curve
-        }
-
-        public enum DistortionTypeEnum
-        {
-            NormalizedLength,   // Use the normalized length of the line plus its distortion strength curve to determine distortion strength
-            Uniform,            // Use a single value to determine distortion strength
-        }
 
         #endregion
 

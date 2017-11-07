@@ -39,7 +39,7 @@ namespace Holotoolkit.Unity.UX
 
         [Header("Rotation")]
         [Tooltip("The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.")]
-        public LineUtils.RotationTypeEnum RotationType = LineUtils.RotationTypeEnum.Velocity;
+        public RotationTypeEnum RotationType = RotationTypeEnum.Velocity;
 
         [Tooltip("Reverses up vector when determining rotation along line")]
         public bool FlipUpVector = false;
@@ -62,7 +62,7 @@ namespace Holotoolkit.Unity.UX
 
         [Header ("Distortion")]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
-        public LineUtils.DistortionTypeEnum DistortionType = LineUtils.DistortionTypeEnum.NormalizedLength;
+        public DistortionTypeEnum DistortionType = DistortionTypeEnum.NormalizedLength;
         public AnimationCurve DistortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
         [Range(0f, 1f)]
         public float UniformDistortionStrength = 1f;
@@ -227,22 +227,22 @@ namespace Holotoolkit.Unity.UX
         /// <param name="normalizedLength"></param>
         /// <param name="rotationType"></param>
         /// <returns></returns>
-        public Quaternion GetRotation(float normalizedLength, LineUtils.RotationTypeEnum rotationType = LineUtils.RotationTypeEnum.None)
+        public Quaternion GetRotation(float normalizedLength, RotationTypeEnum rotationType = RotationTypeEnum.None)
         {
-            rotationType = (rotationType != LineUtils.RotationTypeEnum.None) ? rotationType : RotationType;
+            rotationType = (rotationType != RotationTypeEnum.None) ? rotationType : RotationType;
             Vector3 rotationVector = Vector3.zero;
 
             switch (rotationType)
             {
-                case LineUtils.RotationTypeEnum.None:
+                case RotationTypeEnum.None:
                 default:
                     break;
 
-                case LineUtils.RotationTypeEnum.Velocity:
+                case RotationTypeEnum.Velocity:
                     rotationVector = GetVelocity(normalizedLength);
                     break;
 
-                case LineUtils.RotationTypeEnum.RelativeToOrigin:
+                case RotationTypeEnum.RelativeToOrigin:
                     Vector3 point = GetPoint(normalizedLength);
                     Vector3 origin = transform.TransformPoint(OriginOffset);
                     rotationVector = (point - origin).normalized;
@@ -272,9 +272,9 @@ namespace Holotoolkit.Unity.UX
         /// <param name="pointIndex"></param>
         /// <param name="rotationType"></param>
         /// <returns></returns>
-        public Quaternion GetRotation (int pointIndex, LineUtils.RotationTypeEnum rotationType = LineUtils.RotationTypeEnum.None)
+        public Quaternion GetRotation (int pointIndex, RotationTypeEnum rotationType = RotationTypeEnum.None)
         {
-            return GetRotation((float)pointIndex / NumPoints, (rotationType != LineUtils.RotationTypeEnum.None) ? rotationType : RotationType);
+            return GetRotation((float)pointIndex / NumPoints, (rotationType != RotationTypeEnum.None) ? rotationType : RotationType);
         }
 
         /// <summary>
@@ -346,11 +346,11 @@ namespace Holotoolkit.Unity.UX
             float strength = UniformDistortionStrength;
             switch (DistortionType)
             {
-                case LineUtils.DistortionTypeEnum.Uniform:
+                case DistortionTypeEnum.Uniform:
                 default:
                     break;
 
-                case LineUtils.DistortionTypeEnum.NormalizedLength:
+                case DistortionTypeEnum.NormalizedLength:
                     strength = DistortionStrength.Evaluate(normalizedLength);
                     break;
             }

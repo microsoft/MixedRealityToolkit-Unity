@@ -39,12 +39,12 @@ namespace Holotoolkit.Unity.UX
 
         public Vector3 PositionOffset = Vector3.zero;
 
-        public LineUtils.RotationTypeEnum RotationTypeOverride = LineUtils.RotationTypeEnum.None;
+        public RotationTypeEnum RotationTypeOverride = RotationTypeEnum.None;
 
-        public LineUtils.PointDistributionTypeEnum DistributionType = LineUtils.PointDistributionTypeEnum.None;
+        public PointDistributionTypeEnum DistributionType = PointDistributionTypeEnum.None;
 
         [Header("Object Placement")]
-        public LineUtils.StepModeEnum StepMode = LineUtils.StepModeEnum.Interpolated;
+        public StepModeEnum StepMode = StepModeEnum.Interpolated;
 
         // Convenience functions
         public float GetOffsetFromObjectIndex(int index, bool wrap = true)
@@ -112,10 +112,10 @@ namespace Holotoolkit.Unity.UX
 
             switch (StepMode)
             {
-                case LineUtils.StepModeEnum.FromSource:
+                case StepModeEnum.FromSource:
                     break;
 
-                case LineUtils.StepModeEnum.Interpolated:
+                case StepModeEnum.Interpolated:
                     for (int i = 0; i < Objects.Count; i++)
                     {
                         if (Objects[i] == null)

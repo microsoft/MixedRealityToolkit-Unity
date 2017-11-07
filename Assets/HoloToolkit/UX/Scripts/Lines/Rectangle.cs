@@ -159,7 +159,7 @@ namespace Holotoolkit.Unity.UX
         [UnityEditor.CustomEditor(typeof(Rectangle))]
         public class CustomEditor : LineBaseEditor {
             // Use FromSource step mode for rectangles since interpolated looks weird
-            protected override LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.FromSource; } }            
+            protected override StepModeEnum EditorStepMode { get { return StepModeEnum.FromSource; } }            
         }
 
         protected override void OnDrawGizmos()
