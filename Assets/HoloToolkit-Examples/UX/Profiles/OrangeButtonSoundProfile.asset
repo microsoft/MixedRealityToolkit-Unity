@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235af7010dfacab48a6425d9dba6bd8f, type: 3}
+  m_Name: OrangeButtonSoundProfile
+  m_EditorClassIdentifier: 
+  ButtonCancelled: {fileID: 0}
+  ButtonHeld: {fileID: 0}
+  ButtonPressed: {fileID: 8300000, guid: 74d114cca7439ed4ebbf5226408813a7, type: 3}
+  ButtonReleased: {fileID: 8300000, guid: 14f39a21832afd146a5df56a75445bc0, type: 3}
+  ButtonObservation: {fileID: 0}
+  ButtonObservationTargeted: {fileID: 8300000, guid: 01c25be56827a4140accab2bb56f03d7,
+    type: 3}
+  ButtonTargeted: {fileID: 0}

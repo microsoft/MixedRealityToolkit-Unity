@@ -244,7 +244,11 @@ namespace HoloToolkit.Unity
                 if (!Values[ProjectSetting.TargetOccludedDevices])
                 {
                     EditorUserBuildSettings.wsaSubtarget = WSASubtarget.HoloLens;
+#if UNITY_2017_2_OR_NEWER
                     UnityEditorInternal.VR.VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "WindowsMR" });
+#else
+                    UnityEditorInternal.VR.VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "HoloLens" });
+#endif
                     PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, Values[ProjectSetting.XboxControllerSupport]);
                     BuildDeployPrefs.BuildPlatform = "x86";
 
