@@ -15,8 +15,8 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 
 _Note: The latest release should work for both HoloLens and Windows Mixed Reality development._
 
-[github-rel]:                   https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
-[mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=008000
+[github-rel]:                    https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
+[mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=9acd32
 [![Github Release][mrtk-version-badge]][github-rel]
 
 [unity-download]:                 http://beta.unity3d.com/download/b1565bfe4a0c/download.html
