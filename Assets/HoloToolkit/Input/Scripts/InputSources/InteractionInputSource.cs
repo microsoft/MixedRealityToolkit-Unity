@@ -909,12 +909,24 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
         {
-            InputManager.Instance.RaiseSourceUp(this, args.state.source.id, (InteractionSourcePressInfo)args.pressType);
+            var pressType = (InteractionSourcePressInfo)args.pressType;
+            if (args.state.source.kind == InteractionSourceKind.Hand)
+            {
+                pressType = InteractionSourcePressInfo.Select;
+            }
+
+            InputManager.Instance.RaiseSourceUp(this, args.state.source.id, pressType);
         }
 
         private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
         {
-            InputManager.Instance.RaiseSourceDown(this, args.state.source.id, (InteractionSourcePressInfo)args.pressType);
+            var pressType = (InteractionSourcePressInfo)args.pressType;
+            if (args.state.source.kind == InteractionSourceKind.Hand)
+            {
+                pressType = InteractionSourcePressInfo.Select;
+            }
+
+            InputManager.Instance.RaiseSourceDown(this, args.state.source.id, pressType);
         }
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
