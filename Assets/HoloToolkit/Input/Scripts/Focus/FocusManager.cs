@@ -75,6 +75,18 @@ namespace HoloToolkit.Unity.InputModule
             UpdateFocusedObjects();
         }
 
+        /// <summary>
+        /// It's assumed that if you're using the MRTK's input system you'll
+        /// need to update your canvases to use the proper raycast camera for input.
+        /// </summary>
+        private void OnValidate()
+        {
+            if (UIRaycastCamera != null)
+            {
+                UpdateCanvasEventSystems();
+            }
+        }
+
         #endregion
 
         #region Settings
@@ -238,8 +250,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (uiRaycastCamera == null)
                 {
-                    Debug.LogWarning("No Raycast Camera found in scene!\n" +
-                                     "If you're using uGUI elements you need to also assign the Raycast Camera to each Canvas.");
+                    Debug.LogWarning("No UIRaycastCamera assigned! Falling back to the RaycastCamera.\n" +
+                                     "It's highly recommended to use the RaycastCamera found on the EventSystem of this InputManager.");
+                    uiRaycastCamera = GetComponentInChildren<Camera>();
                 }
 
                 return uiRaycastCamera;
@@ -529,6 +542,7 @@ namespace HoloToolkit.Unity.InputModule
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
             Debug.Assert(pointer.End.Point != Vector3.zero, string.Format("No pointer {0} end point found to raycast against!", pointer.PointingSource.GetType()));
+            Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before you can process uGUI raycasting.");
 
             // Move the uiRaycast camera to the the current pointer's position.
             UIRaycastCamera.transform.position = pointer.PointingSource.Ray.origin;
@@ -759,11 +773,14 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public void UpdateCanvasEventSystems()
         {
-            var sceneCanvases = FindObjectsOfType<Canvas>();
+            Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before updating your canvases.");
+
+            // This will also find disabled GameObjects in the scene.
+            var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
 
             for (var i = 0; i < sceneCanvases.Length; i++)
             {
-                if (sceneCanvases[i].renderMode == RenderMode.WorldSpace)
+                if (sceneCanvases[i].isRootCanvas && sceneCanvases[i].renderMode == RenderMode.WorldSpace)
                 {
                     sceneCanvases[i].worldCamera = UIRaycastCamera;
                 }

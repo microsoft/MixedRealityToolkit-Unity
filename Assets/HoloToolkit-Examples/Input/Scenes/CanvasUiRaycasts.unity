@@ -271,11 +271,6 @@ Prefab:
       propertyPath: Cursor
       value: 
       objectReference: {fileID: 285769042}
-    - target: {fileID: 114708646396671696, guid: 3eddd1c29199313478dd3f912bfab2ab,
-        type: 2}
-      propertyPath: uiRaycastCamera
-      value: 
-      objectReference: {fileID: 41258885}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
   m_IsPrefabParent: 0
@@ -446,7 +441,7 @@ RectTransform:
   - {fileID: 1577322405}
   - {fileID: 1354349145}
   m_Father: {fileID: 603432406}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -872,8 +867,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 160117912}
   - {fileID: 1748863526}
+  - {fileID: 160117912}
   - {fileID: 1985735395}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -2243,7 +2238,7 @@ RectTransform:
   - {fileID: 576869519}
   - {fileID: 1825249308}
   m_Father: {fileID: 603432406}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
