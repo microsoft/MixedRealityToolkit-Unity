@@ -25,7 +25,7 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
 
 [unity-release]:                 https://unity3d.com/unity/whats-new/unity-2017.1.2
-[githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20Editor%20HoloLens%20Version-2017.1.2.0f3-blue.svg
+[githubhl-rel-badge]:            https://img.shields.io/badge/Unity%20Editor%20HoloLens%20Version-2017.1.2f1-blue.svg
 
 Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
 
@@ -66,11 +66,13 @@ To get up and going as quickly as possible, here are some guides to help you get
 # Examples and QuickStart scenes
 The MRTK includes many great samples and starter scenes to demonstrate the uses of the MRTK API, these include:
 
-| [![Keyboard input sample](External/ReadMeImages/InputKeyboard.png)](/Assets/HoloToolkit-Examples) [Keyboard input sample](/Assets/HoloToolkit-Examples) | [![Input manager tests](External/ReadMeImages/InputManagerTest.png)](/Assets/HoloToolkit-Examples) [Input manager tests](/Assets/HoloToolkit-Examples) | [![Interactive button demos](External/ReadMeImages/InteractiveButtonDemo.png)](/Assets/HoloToolkit-Examples) [Interactive button demos](/Assets/HoloToolkit-Examples) |
+| [![Motion Controller tests](External/ReadMeImages/MRTK_MotionControllerTest.jpg)](/Assets/HoloToolkit-Examples) [Motion Controller tests](/Assets/HoloToolkit-Examples) | [![Input manager tests](External/ReadMeImages/MRTK_InputManagerTest.jpg)](/Assets/HoloToolkit-Examples) [Input manager tests](/Assets/HoloToolkit-Examples) | [![Grab Mechanics demo](External/ReadMeImages/MRTK_GrabMechanics.jpg)](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) [Grab Mechanics demo](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) |
 |:--- | :--- | :--- |
-| A sample virtual keyboard, similar to that used in the Mixed Reality Portal | Several gaze interaction demos, showcasing popups, gaze buttons and more | Example UI buttons and controls for use in Mixed Reality |
-| [![Motion Controller tests](External/ReadMeImages/MotionControllerTestExample.png)](/Assets/HoloToolkit-Examples) [Motion Controller tests](/Assets/HoloToolkit-Examples) | [![Grab Mechanics demo](External/ReadMeImages/MRTK_GrabMechanicsExample.jpg)](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) [Grab Mechanics demo](/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) | [![Scene occulsion demo](External/ReadMeImages/SceneOcclusion.png)](/Assets/HoloToolkit-Examples) [Scene occlusion demo](/Assets/HoloToolkit-Examples) |
-| Motion controller test scene demonstrating controller variables (IHMB only) | Several examples of grab mechanics using the Motion Controllers (IHMD Only) | Scene construction demo on how to make occluded windows |
+| Motion controller test scene demonstrating controller input events | Several gaze interaction demos such as popups, buttons and more |   Examples of direct manipulation with Motion Controllers (IHMD Only) |
+| [![Interactable Objects](External/ReadMeImages/MRTK_InteractableObject.jpg)](/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md) [Interactable Objects](/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md) | [![Object Collection](External/ReadMeImages/MRTK_ObjectCollection.jpg)](/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md) [Object Collection](/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md) | [![App Bar and Bounding Box](External/ReadMeImages/MRTK_AppBar_BoundingBox.jpg)](/Assets/HoloToolkit-Examples/UX/Scenes) App Bar and Bounding Box |
+| Example of modular and extensible interactable objects with visual states, including Holographic button  | Object collection helps you lay out an array of objects in a three-dimensional shape | **[Coming Soon]** Standard UI for move/rotate/scale 3D objects |
+| [![Keyboard input sample](External/ReadMeImages/MRTK_Keyboard.jpg)](/Assets/HoloToolkit-Examples) [Keyboard input sample](/Assets/HoloToolkit-Examples) | [![Interactive button demos](External/ReadMeImages/MRTK_InteractiveButtons.jpg)](/Assets/HoloToolkit-Examples/UX/Readme/README_InteractiveButtonComponents.md) [Interactive button demos](/Assets/HoloToolkit-Examples/UX/Readme/README_InteractiveButtonComponents.md) | [![Scene occulsion demo](External/ReadMeImages/MRTK_OcclusionExample.jpg)](/Assets/HoloToolkit-Examples) [Scene occlusion demo](/Assets/HoloToolkit-Examples) |
+| A sample virtual keyboard, similar to system keyboard in Windows Mixed Reality shell  | Example UI buttons and controls for use in Mixed Reality | Scene construction demo on how to make occluded windows |
 
 Check out the [Examples](/Assets/HoloToolkit-Examples) folder for more details.
 

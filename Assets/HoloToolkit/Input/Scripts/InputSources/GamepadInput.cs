@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule
     public class GamepadInput : BaseInputSource
     {
         [Tooltip("Game pad button to press for air tap.")]
-        public string GamePadButtonA = "Fire1";
+        public string GamePadButtonA = "XBOX_A";
 
         [Tooltip("Change this value to give a different source id to your controller.")]
         public uint GamePadId = 50000;
@@ -35,10 +35,10 @@ namespace HoloToolkit.Unity.InputModule
         public float HoldCompletedInterval = 3.0f;
 
         [Tooltip("Name of the joystick axis that navigates around X.")]
-        public string NavigateAroundXAxisName = "ControllerLeftStickX";
+        public string NavigateAroundXAxisName = "CONTROLLER_LEFT_STICK_HORIZONTAL";
 
         [Tooltip("Name of the joystick axis that navigates around Y.")]
-        public string NavigateAroundYAxisName = "ControllerLeftStickY";
+        public string NavigateAroundYAxisName = "CONTROLLER_LEFT_STICK_VERTICAL";
 
         bool isAPressed = false;
         bool holdStarted = false;
