@@ -33,6 +33,9 @@ namespace HoloToolkit
         /// </summary>
         public static bool UniversalApiContractV4_IsAvailable { get; private set; }
 
+        /// <summary>
+        /// Is the Universal API Contract v3.0 Available?
+        /// </summary>
         public static bool UniversalApiContractV3_IsAvailable { get; private set; }
     }
 }
