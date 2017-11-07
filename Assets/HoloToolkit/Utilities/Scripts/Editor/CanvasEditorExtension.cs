@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
             // We will only ask if we have a focus manager in our scene.
             if (EditorGUI.EndChangeCheck() && FocusManager.IsInitialized)
             {
-                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace)
+                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
                 {
                     userPermission = EditorUtility.DisplayDialog("Attention!",
                         "Hi there, we noticed that you've changed this canvas to use WorldSpace.\n\n" +
