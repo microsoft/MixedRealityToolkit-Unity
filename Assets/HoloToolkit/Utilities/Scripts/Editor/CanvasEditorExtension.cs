@@ -27,8 +27,10 @@ namespace HoloToolkit.Unity
             base.OnInspectorGUI();
 
             // We will only ask if we have a focus manager in our scene.
-            if (EditorGUI.EndChangeCheck() && FocusManager.IsInitialized)
+            if (EditorGUI.EndChangeCheck() && FocusManager.Instance)
             {
+                FocusManager.AssertIsInitialized();
+
                 if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
                 {
                     userPermission = EditorUtility.DisplayDialog("Attention!",
@@ -42,7 +44,8 @@ namespace HoloToolkit.Unity
                         canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
                     }
                 }
-                else
+
+                if (canvas.renderMode != RenderMode.WorldSpace || !userPermission)
                 {
                     // Sets it back to MainCamera default
                     canvas.worldCamera = null;
