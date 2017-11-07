@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class LineObjectCollection : MonoBehaviour
     {
@@ -52,10 +52,11 @@ namespace MRTK.UX
             if (Objects.Count == 0)
                 return 0;
 
-            if (wrap)
+            if (wrap) {
                 index = WrapIndex(index, Objects.Count);
-            else
+            } else {
                 index = Mathf.Clamp(index, 0, Objects.Count - 1);
+            }
 
             return (1f / Objects.Count * (index + 1));
         }
@@ -80,10 +81,11 @@ namespace MRTK.UX
 
             index--;
 
-            if (wrap)
+            if (wrap) {
                 return WrapIndex(index, Objects.Count);
-            else
+            } else {
                 return Mathf.Clamp(index, 0, Objects.Count - 1);
+            }
         }
 
         public void Update()

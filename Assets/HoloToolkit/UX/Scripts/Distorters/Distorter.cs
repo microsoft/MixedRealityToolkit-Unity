@@ -5,14 +5,15 @@
 using System;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public abstract class Distorter : MonoBehaviour, IComparable<Distorter>
     {
         public int CompareTo(Distorter other)
         {
-            if (other == null)
+            if (other == null) {
                 return 0;
+            }
             
             return DistortOrder.CompareTo(other.DistortOrder);
         }
@@ -26,8 +27,9 @@ namespace MRTK.UX
         /// <returns></returns>
         public Vector3 DistortPoint (Vector3 point, float strength = 1f)
         {
-            if (!isActiveAndEnabled)
+            if (!isActiveAndEnabled) {
                 return point;
+            }
 
             strength = Mathf.Clamp01 (strength * DistortStrength);
 
@@ -46,8 +48,9 @@ namespace MRTK.UX
         /// <returns></returns>
         public Vector3 DistortScale(Vector3 scale, float strength = 1f)
         {
-            if (!isActiveAndEnabled)
+            if (!isActiveAndEnabled) {
                 return scale;
+            }
 
             strength = Mathf.Clamp01(strength * DistortStrength);
 
@@ -70,12 +73,12 @@ namespace MRTK.UX
         /// <returns></returns>
         protected abstract Vector3 DistortScaleInternal(Vector3 point, float strength);
 
-        protected void OnEnable()
+        protected virtual void OnEnable()
         {
             // Makes script enableable in editor
         }
 
-        protected void OnDisable()
+        protected virtual void OnDisable()
         {
             // Makes script enableable in editor            
         }
@@ -89,7 +92,7 @@ namespace MRTK.UX
         public int DistortOrder
         {
             get { return distortOrder; }
-            set { distortOrder = value; }
+            set { distortOrder = value; } // TODO implement auto-sort
         }
 
         [SerializeField]

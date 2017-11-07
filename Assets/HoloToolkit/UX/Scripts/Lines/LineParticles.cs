@@ -4,7 +4,7 @@
 //
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class LineParticles : LineRendererBase
     {
@@ -17,6 +17,7 @@ namespace MRTK.UX
         public int MaxParticles = GlobalMaxParticles;
         [Range(0.001f, 5f)]
         public float ParticleStartLifetime = GlobalParticleStartLifetime;
+
         [Header("Noise settings")]
         public bool ParticleNoiseOnDisabled = true;
         public Vector3 NoiseStrength = Vector3.one;
@@ -28,6 +29,13 @@ namespace MRTK.UX
         [Range(0.01f, 0.5f)]
         public float LifetimeAfterDisabled = 0.25f;
         public Gradient DecayGradient;
+
+        [SerializeField]
+        private ParticleSystem particles;
+        private ParticleSystem.Particle[] mainParticleArray = new ParticleSystem.Particle[GlobalMaxParticles];
+        private ParticleSystemRenderer mainParticleRenderer;
+        private ParticleSystem.NoiseModule mainNoise;
+        private float decayStartTime = 0f;
 
         protected override void OnEnable()
         {
@@ -51,7 +59,6 @@ namespace MRTK.UX
             main.playOnAwake = false;
             main.maxParticles = Mathf.Min (MaxParticles, GlobalMaxParticles);
             main.simulationSpace = ParticleSystemSimulationSpace.World;
-            //main.useUnscaledTime = true;
 
             ParticleSystem.ShapeModule shape = particles.shape;
             shape.enabled = false;
@@ -124,12 +131,5 @@ namespace MRTK.UX
             }
             particles.SetParticles(mainParticleArray, NumLineSteps);
         }
-
-        [SerializeField]
-        private ParticleSystem particles;
-        private ParticleSystem.Particle[] mainParticleArray = new ParticleSystem.Particle[GlobalMaxParticles];
-        private ParticleSystemRenderer mainParticleRenderer;
-        private ParticleSystem.NoiseModule mainNoise;
-        private float decayStartTime = 0f;
     }
 }

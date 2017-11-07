@@ -4,7 +4,7 @@
 using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class Rectangle : LineBase
     {
@@ -95,7 +95,6 @@ namespace MRTK.UX
             BuildPoints();
 
             return LineUtils.InterpolateVectorArray(points, normalizedDistance);
-            //return InterpolateCatmullRomPoints(TopLeft, TopRight, BotLeft, BotRight, normalizedDistance);
         }
 
         protected override void SetPointInternal(int pointIndex, Vector3 point)
@@ -160,8 +159,7 @@ namespace MRTK.UX
         [UnityEditor.CustomEditor(typeof(Rectangle))]
         public class CustomEditor : LineBaseEditor {
             // Use FromSource step mode for rectangles since interpolated looks weird
-            protected override LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.FromSource; } }
-            
+            protected override LineUtils.StepModeEnum EditorStepMode { get { return LineUtils.StepModeEnum.FromSource; } }            
         }
 
         protected override void OnDrawGizmos()

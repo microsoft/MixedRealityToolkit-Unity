@@ -4,15 +4,14 @@
 using System;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
-    public class Bezeir : LineBase
+    public class Bezier : LineBase
     {
         [Serializable]
-        public struct PointSet
+        private struct PointSet
         {
-            public PointSet (float spread)
-            {
+            public PointSet(float spread) {
                 Point1 = Vector3.right * spread * 0.5f;
                 Point2 = Vector3.right * spread * 0.25f;
                 Point3 = Vector3.left * spread * 0.25f;
@@ -25,56 +24,51 @@ namespace MRTK.UX
             public Vector3 Point4;
         }
 
-        [Header("Bezeir Settings")]
-        public PointSet Points = new PointSet(0.5f);
+        [Header("Bezier Settings")]
+        [SerializeField]
+        private PointSet points = new PointSet(0.5f);
 
-        public override int NumPoints
-        {
-            get
-            {
+        public override int NumPoints {
+            get {
                 return 4;
             }
         }
 
-        protected override Vector3 GetPointInternal(int pointIndex)
-        {
-            switch (pointIndex)
-            {
+        protected override Vector3 GetPointInternal(int pointIndex) {
+            switch (pointIndex) {
                 case 0:
-                    return Points.Point1;
+                    return points.Point1;
 
                 case 1:
-                    return Points.Point2;
+                    return points.Point2;
 
                 case 2:
-                    return Points.Point3;
+                    return points.Point3;
 
                 case 3:
-                    return Points.Point4;
+                    return points.Point4;
 
                 default:
                     return Vector3.zero;
             }
         }
 
-        protected override void SetPointInternal(int pointIndex, Vector3 point)
-        {
-            switch (pointIndex)
-            {
+        protected override void SetPointInternal(int pointIndex, Vector3 point) {
+            switch (pointIndex) {
                 case 0:
-                    Points.Point1 = point;
+                    points.Point1 = point;
                     break;
 
                 case 1:
-                    Points.Point2 = point;
+                    points.Point2 = point;
                     break;
 
                 case 2:
-                    Points.Point3 = point;
+                    points.Point3 = point;
                     break;
 
                 case 3:
-                    Points.Point4 = point;
+                    points.Point4 = point;
                     break;
 
                 default:
@@ -82,40 +76,35 @@ namespace MRTK.UX
             }
         }
 
-        protected override Vector3 GetPointInternal(float normalizedDistance)
-        {
-            return LineUtils.InterpolateBezeirPoints(Points.Point1, Points.Point2, Points.Point3, Points.Point4, normalizedDistance);
+        protected override Vector3 GetPointInternal(float normalizedDistance) {
+            return LineUtils.InterpolateBezeirPoints(points.Point1, points.Point2, points.Point3, points.Point4, normalizedDistance);
         }
 
-        protected override float GetUnclampedWorldLengthInternal()
-        {
+        protected override float GetUnclampedWorldLengthInternal() {
             // Crude approximation
             // TODO optimize
             float distance = 0f;
             Vector3 last = GetUnclampedPoint(0f);
-            for (int i = 1; i < 10; i++)
-            {
+            for (int i = 1; i < 10; i++) {
                 Vector3 current = GetUnclampedPoint((float)i / 10);
                 distance += Vector3.Distance(last, current);
             }
             return distance;
         }
 
-        protected override Vector3 GetUpVectorInternal(float normalizedLength)
-        {
+        protected override Vector3 GetUpVectorInternal(float normalizedLength) {
             // Bezeir up vectors just use transform up
             return transform.up;
         }
 
 #if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(Bezeir))]
+        [UnityEditor.CustomEditor(typeof(Bezier))]
         public class CustomEditor : LineBaseEditor
         {
-            protected override void DrawCustomSceneGUI()
-            {
+            protected override void DrawCustomSceneGUI() {
                 base.DrawCustomSceneGUI();
 
-                Bezeir line = (Bezeir)target;
+                Bezier line = (Bezier)target;
 
                 line.SetPoint(0, SphereMoveHandle(line.GetPoint(0)));
                 line.SetPoint(1, SquareMoveHandle(line.GetPoint(1)));

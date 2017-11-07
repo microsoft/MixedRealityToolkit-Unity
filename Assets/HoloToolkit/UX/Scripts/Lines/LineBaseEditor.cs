@@ -3,7 +3,7 @@
 
 using HoloToolkit.Unity;
 using UnityEngine;
-using MRTK.UX;
+using Holotoolkit.Unity.UX;
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -34,23 +34,28 @@ public class LineBaseEditor : MRTKEditor
         bool selected = Selection.activeGameObject == line.gameObject;
 
         int previewResolution = Mathf.Min(linePreviewResolutionSelected, linePreviewResolutionUnselected);
-        if (selected)
+        if (selected) {
             previewResolution = linePreviewResolutionSelected;
+        }
 
         // Draw dotted lines regardless of selection
-        if (drawDottedLine)
+        if (drawDottedLine) {
             DrawDottedLine(line, linePreviewResolutionSelected);
+        }
 
         // Draw rotations only on selected object
-        if (drawLineRotations && selected)
+        if (drawLineRotations && selected) {
             DrawLineRotations(line, linePreviewResolutionSelected);
+        }
 
         // Draw up vectors only on selected object
-        if (drawLineManualUpVectors && selected)
+        if (drawLineManualUpVectors && selected) {
             DrawManualUpVectorHandles(line);
+        }
 
-        if (drawLinePoints)
+        if (drawLinePoints) {
             DrawLinePoints(line);
+        }
 
         // Since lines are constantly updating themselves
         // just repaint all by default

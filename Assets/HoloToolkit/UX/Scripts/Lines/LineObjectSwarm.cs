@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     [ExecuteInEditMode]
     public class LineObjectSwarm : MonoBehaviour
@@ -12,6 +12,9 @@ namespace MRTK.UX
 
         [Range(0,100)]
         public int Seed = 0;
+
+        [SerializeField]
+        private LineBase source;
 
         [Header("Swarm Settings")]
         [Range(0f, 1f)]
@@ -41,6 +44,10 @@ namespace MRTK.UX
         public Vector3 AxisSpeed = Vector3.one;
         public Vector3 AxisOffset = Vector3.zero;
 
+        private Vector3[] prevPoints;
+        private System.Random randomPosition;
+        private System.Random randomRotation;
+        private FastSimplexNoise noise = new FastSimplexNoise();
 
         public Vector3 GetRandomPoint ()
         {
@@ -100,13 +107,5 @@ namespace MRTK.UX
                 prevPoints[i] = point;
             }
         }
-
-        [SerializeField]
-        private LineBase source;
-
-        private Vector3[] prevPoints;
-        private System.Random randomPosition;
-        private System.Random randomRotation;
-        private FastSimplexNoise noise = new FastSimplexNoise();
     }
 }

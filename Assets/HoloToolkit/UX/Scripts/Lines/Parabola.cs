@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class Parabola : LineBase
     {

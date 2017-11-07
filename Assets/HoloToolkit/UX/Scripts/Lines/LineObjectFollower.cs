@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     [ExecuteInEditMode]
     public class LineObjectFollower : MonoBehaviour
@@ -13,12 +13,12 @@ namespace MRTK.UX
         [Range(0f, 1f)]
         public float NormalizedDistance = 0f;
 
+        [SerializeField]
+        private LineBase source;
+
         private void Update() {
             Vector3 linePoint = source.GetPoint(NormalizedDistance);
             Object.position = linePoint;
         }
-
-        [SerializeField]
-        private LineBase source;
     }
 }

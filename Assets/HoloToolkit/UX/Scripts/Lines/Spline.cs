@@ -5,20 +5,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class Spline : LineBase
     {
         [Header("Spline Settings")]
-        public SplinePoint[] Points = new SplinePoint[4];
+        [SerializeField]
+        private SplinePoint[] points = new SplinePoint[4];
 
         [SerializeField]
         private bool alignControlPoints = true;
 
         public bool AlignControlPoints {
-            get {
-                return alignControlPoints;
-            }
+            get { return alignControlPoints; }
             set {
                 if (alignControlPoints != value) {
                     alignControlPoints = value;
@@ -31,7 +30,7 @@ namespace MRTK.UX
         {
             get
             {
-                return Points.Length;
+                return points.Length;
             }
         }
 
@@ -70,24 +69,24 @@ namespace MRTK.UX
                         prevControlPoint = prevControlPoint % (NumPoints - 1);
                     }
 
-                    Vector3 midPoint = Points[midPointIndex].Point;
-                    Vector3 tangent = midPoint - Points[prevControlPoint].Point;
-                    tangent = tangent.normalized * Vector3.Distance(midPoint, Points[changedControlPoint].Point);
-                    Points[changedControlPoint].Point = midPoint + tangent;
+                    Vector3 midPoint = points[midPointIndex].Point;
+                    Vector3 tangent = midPoint - points[prevControlPoint].Point;
+                    tangent = tangent.normalized * Vector3.Distance(midPoint, points[changedControlPoint].Point);
+                    points[changedControlPoint].Point = midPoint + tangent;
 
                 } else if (changedControlPoint >= 0 && changedControlPoint < NumPoints && prevControlPoint >= 0 && prevControlPoint < NumPoints) {
-                    Vector3 midPoint = Points[midPointIndex].Point;
-                    Vector3 tangent = midPoint - Points[prevControlPoint].Point;
-                    tangent = tangent.normalized * Vector3.Distance(midPoint, Points[changedControlPoint].Point);
-                    Points[changedControlPoint].Point = midPoint + tangent;
+                    Vector3 midPoint = points[midPointIndex].Point;
+                    Vector3 tangent = midPoint - points[prevControlPoint].Point;
+                    tangent = tangent.normalized * Vector3.Distance(midPoint, points[changedControlPoint].Point);
+                    points[changedControlPoint].Point = midPoint + tangent;
                 }
             }
         }
 
         public override void AppendPoint(Vector3 point)
         {
-            int pointIndex = Points.Length;
-            Array.Resize<SplinePoint>(ref Points, Points.Length + 1);
+            int pointIndex = points.Length;
+            Array.Resize<SplinePoint>(ref points, points.Length + 1);
             SetPoint(pointIndex, point);
         }
 
@@ -105,10 +104,10 @@ namespace MRTK.UX
 
             if (!loops) {
                 if (point1Index + 3 >= NumPoints) {
-                    return Points[NumPoints - 1].Point;
+                    return points[NumPoints - 1].Point;
                 }
                 if (point1Index < 0)
-                    return Points[0].Point;
+                    return points[0].Point;
 
                 point2Index = point1Index + 1;
                 point3Index = point1Index + 2;
@@ -120,82 +119,82 @@ namespace MRTK.UX
                 point4Index = (point1Index + 3) % (NumPoints - 1);
             }
 
-            Vector3 point1 = Points[point1Index].Point;
-            Vector3 point2 = Points[point2Index].Point;
-            Vector3 point3 = Points[point3Index].Point;
-            Vector3 point4 = Points[point4Index].Point;
+            Vector3 point1 = points[point1Index].Point;
+            Vector3 point2 = points[point2Index].Point;
+            Vector3 point3 = points[point3Index].Point;
+            Vector3 point4 = points[point4Index].Point;
 
             return LineUtils.InterpolateBezeirPoints(point1, point2, point3, point4, subDistance);
         }
 
         protected override Vector3 GetPointInternal(int pointIndex)
         {
-            if (pointIndex < 0 || pointIndex >= Points.Length)
+            if (pointIndex < 0 || pointIndex >= points.Length)
                 throw new IndexOutOfRangeException();
 
             if (loops && pointIndex == NumPoints - 1) {
-                Points[pointIndex] = Points[0];
+                points[pointIndex] = points[0];
                 pointIndex = 0;
             }
 
-            return Points[pointIndex].Point;
+            return points[pointIndex].Point;
         }
        
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            if (pointIndex < 0 || pointIndex >= Points.Length)
+            if (pointIndex < 0 || pointIndex >= points.Length)
                 throw new IndexOutOfRangeException();
 
             if (loops && pointIndex == NumPoints - 1) {
-                Points[pointIndex] = Points[0];
+                points[pointIndex] = points[0];
                 pointIndex = 0;
             }
 
             if (AlignControlPoints) {
                 if (pointIndex % 3 == 0) {
-                    Vector3 delta = point - Points[pointIndex].Point;
+                    Vector3 delta = point - points[pointIndex].Point;
                     if (loops) {
                         if (pointIndex == 0) {
-                            Points[1].Point += delta;
-                            Points[NumPoints - 2].Point += delta;
-                            Points[NumPoints - 1].Point = point;
+                            points[1].Point += delta;
+                            points[NumPoints - 2].Point += delta;
+                            points[NumPoints - 1].Point = point;
                         } else if (pointIndex == NumPoints) {
-                            Points[0].Point = point;
-                            Points[1].Point += delta;
-                            Points[pointIndex - 1].Point += delta;
+                            points[0].Point = point;
+                            points[1].Point += delta;
+                            points[pointIndex - 1].Point += delta;
                         } else {
-                            Points[pointIndex - 1].Point += delta;
-                            Points[pointIndex + 1].Point += delta;
+                            points[pointIndex - 1].Point += delta;
+                            points[pointIndex + 1].Point += delta;
                         }
                     } else {
                         if (pointIndex > 0) {
-                            Points[pointIndex - 1].Point += delta;
+                            points[pointIndex - 1].Point += delta;
                         }
-                        if (pointIndex + 1 < Points.Length) {
-                            Points[pointIndex + 1].Point += delta;
+                        if (pointIndex + 1 < points.Length) {
+                            points[pointIndex + 1].Point += delta;
                         }
                     }
                 }
             }
 
-            Points[pointIndex].Point = point;
+            points[pointIndex].Point = point;
 
             ForceUpdateAlignment(pointIndex);
         }
 
         protected override Vector3 GetUpVectorInternal(float normalizedLength) {
 
-            float arrayValueLength = 1f / Points.Length;
-            int indexA = Mathf.FloorToInt(normalizedLength * Points.Length);
-            if (indexA >= Points.Length)
+            float arrayValueLength = 1f / points.Length;
+            int indexA = Mathf.FloorToInt(normalizedLength * points.Length);
+            if (indexA >= points.Length)
                 indexA = 0;
 
             int indexB = indexA + 1;
-            if (indexB >= Points.Length)
+            if (indexB >= points.Length)
                 indexB = 0;
 
             float blendAmount = (normalizedLength - (arrayValueLength * indexA)) / arrayValueLength;
-            Quaternion rotation = Quaternion.Lerp(Points[indexA].Rotation, Points[indexB].Rotation, blendAmount);
+            Quaternion rotation = Quaternion.Lerp(points[indexA].Rotation, points[indexB].Rotation, blendAmount);
             return rotation * transform.up;
         }
 
@@ -225,10 +224,11 @@ namespace MRTK.UX
             // Convenience buttons for adding / removing points
             protected override void DrawCustomFooter()
             {
+
                 base.DrawCustomFooter();
 
                 Spline line = (Spline)target;
-
+                
                 HashSet<int> overlappingPointIndexes = new HashSet<int>();
 
                 if (DrawSectionStart(line.name + " Points", "Point Editing"))
@@ -243,19 +243,19 @@ namespace MRTK.UX
                         newPoints[1].Point = newPoints[2].Point - (direction * distance);
                         newPoints[0].Point = newPoints[1].Point - (direction * distance);
                         points.AddRange(newPoints);
-                        points.AddRange(line.Points);
-                        line.Points = points.ToArray();
+                        points.AddRange(line.points);
+                        line.points = points.ToArray();
                     }
                     if (line.NumPoints > 4)
                     {
                         if (GUILayout.Button(" - Remove Points From Start"))
                         {
                             // Using lists for maximum clarity
-                            List<SplinePoint> points = new List<SplinePoint>(line.Points);
+                            List<SplinePoint> points = new List<SplinePoint>(line.points);
                             points.RemoveAt(0);
                             points.RemoveAt(0);
                             points.RemoveAt(0);
-                            line.Points = points.ToArray();
+                            line.points = points.ToArray();
                         }
                     }
 
@@ -269,19 +269,19 @@ namespace MRTK.UX
                     UnityEditor.EditorGUILayout.BeginVertical();
                     GUI.color = (editPositions ? defaultColor : disabledColor);
                     editPositions = UnityEditor.EditorGUILayout.Toggle("Edit Positions", editPositions);
-                    for (int i = 0; i < line.Points.Length; i++)
+                    for (int i = 0; i < line.points.Length; i++)
                     {
                         GUI.color = (i % 3 == 0) ? handleColorCircle : handleColorSquare;
                         if (editPositions)
                         {
                             GUI.color = Color.Lerp(GUI.color, defaultColor, 0.75f);
                             // highlight points that are overlapping
-                            for (int j = 0; j < line.Points.Length; j++)
+                            for (int j = 0; j < line.points.Length; j++)
                             {
                                 if (j == i)
                                     continue;
 
-                                if (Vector3.Distance(line.Points[j].Point, line.Points[i].Point) < overlappingPointThreshold)
+                                if (Vector3.Distance(line.points[j].Point, line.points[i].Point) < overlappingPointThreshold)
                                 {
                                     overlappingPointIndexes.Add(i);
                                     overlappingPointIndexes.Add(j);
@@ -289,12 +289,12 @@ namespace MRTK.UX
                                     break;
                                 }
                             }
-                            line.Points[i].Point = UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Point);
+                            line.points[i].Point = UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Point);
                         }
                         else
                         {
                             GUI.color = Color.Lerp(GUI.color, disabledColor, 0.75f);
-                            UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Point);
+                            UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Point);
                         }
                     }
                     UnityEditor.EditorGUILayout.EndVertical();
@@ -304,18 +304,18 @@ namespace MRTK.UX
                     UnityEditor.EditorGUILayout.BeginVertical();
                     editRotations = UnityEditor.EditorGUILayout.Toggle("Edit Rotations", editRotations);
                     GUI.color = (editRotations ? defaultColor : disabledColor);
-                    for (int i = 0; i < line.Points.Length; i++)
+                    for (int i = 0; i < line.points.Length; i++)
                     {
                         GUI.color = (i % 3 == 0) ? handleColorCircle : handleColorSquare;
                         if (editRotations)
                         {
                             GUI.color = Color.Lerp(GUI.color, defaultColor, 0.75f);
-                            line.Points[i].Rotation = Quaternion.Euler(UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Rotation.eulerAngles));
+                            line.points[i].Rotation = Quaternion.Euler(UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Rotation.eulerAngles));
                         }
                         else
                         {
                             GUI.color = Color.Lerp(GUI.color, disabledColor, 0.75f);
-                            UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Rotation.eulerAngles);
+                            UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Rotation.eulerAngles);
                         }
                     }
                     UnityEditor.EditorGUILayout.EndVertical();
@@ -333,7 +333,7 @@ namespace MRTK.UX
                             // Move them slightly out of the way
                             foreach (int overlappoingPointIndex in overlappingPointIndexes)
                             {
-                                line.Points[overlappoingPointIndex].Point += (UnityEngine.Random.onUnitSphere * overlappingPointThreshold * 2);
+                                line.points[overlappoingPointIndex].Point += (UnityEngine.Random.onUnitSphere * overlappingPointThreshold * 2);
                             }
                         }
                     }
@@ -351,20 +351,20 @@ namespace MRTK.UX
                         newPoints[0].Point = line.LastPoint + (direction * distance);
                         newPoints[1].Point = newPoints[0].Point + (direction * distance);
                         newPoints[2].Point = newPoints[1].Point + (direction * distance);
-                        points.AddRange(line.Points);
+                        points.AddRange(line.points);
                         points.AddRange(newPoints);
-                        line.Points = points.ToArray();
+                        line.points = points.ToArray();
                     }
                     if (line.NumPoints > 4)
                     {
                         if (GUILayout.Button(" - Remove Points From End"))
                         {
                             // Using lists for maximum clarity
-                            List<SplinePoint> points = new List<SplinePoint>(line.Points);
+                            List<SplinePoint> points = new List<SplinePoint>(line.points);
                             points.RemoveAt(points.Count - 1);
                             points.RemoveAt(points.Count - 1);
                             points.RemoveAt(points.Count - 1);
-                            line.Points = points.ToArray();
+                            line.points = points.ToArray();
                         }
                     }
                 }
@@ -412,7 +412,7 @@ namespace MRTK.UX
 
                     if (editRotations)
                     {
-                        line.Points[i].Rotation = RotationHandle(line.GetPoint(i), line.Points[i].Rotation);
+                        line.points[i].Rotation = RotationHandle(line.GetPoint(i), line.points[i].Rotation);
                     }
                 }
             }

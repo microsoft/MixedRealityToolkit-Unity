@@ -4,7 +4,7 @@
 using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public abstract class LineRendererBase : MonoBehaviour
     {

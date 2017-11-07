@@ -5,7 +5,7 @@ using HoloToolkit.Unity;
 using System.Collections;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class LineUnity : LineRendererBase
     {

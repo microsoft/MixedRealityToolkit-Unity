@@ -5,11 +5,13 @@ using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public abstract class LineBase : MonoBehaviour
     {
         protected const float MinRotationMagnitude = 0.0001f;
+
+        #region fields & properties
 
         public float UnclampedWorldLength
         {
@@ -73,7 +75,10 @@ namespace MRTK.UX
         [SerializeField]
         protected bool loops = false;
 
-        // Abstract
+        #endregion
+
+        #region abstract
+
         public abstract int NumPoints { get; }
 
         protected abstract void SetPointInternal(int pointIndex, Vector3 point);
@@ -110,7 +115,9 @@ namespace MRTK.UX
         /// <returns></returns>
         protected abstract float GetUnclampedWorldLengthInternal();
 
-        // Public
+        #endregion
+
+        #region public
 
         // Convenience
         public Vector3 FirstPoint
@@ -240,7 +247,6 @@ namespace MRTK.UX
                     Vector3 origin = transform.TransformPoint(OriginOffset);
                     rotationVector = (point - origin).normalized;
                     break;
-
             }
 
             if (rotationVector.magnitude < MinRotationMagnitude)
@@ -325,7 +331,10 @@ namespace MRTK.UX
             // Does nothing by default
         }
 
-        // Private & protected
+        #endregion
+
+        #region private & protected
+
         protected virtual void OnEnable()
         {
             // Sort our distorters
@@ -361,8 +370,10 @@ namespace MRTK.UX
         {
             return Mathf.Lerp(Mathf.Max (LineStartClamp, 0.0001f), Mathf.Min (LineEndClamp, 0.9999f), Mathf.Clamp01(normalizedLength));
         }
-        
-        #if UNITY_EDITOR
+
+        #endregion
+
+#if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
             // Show gizmos if this object is not selected
@@ -397,6 +408,6 @@ namespace MRTK.UX
                 Gizmos.DrawLine(lastPos, firstPos);
             }
         }
-        #endif
+#endif
     }
 }

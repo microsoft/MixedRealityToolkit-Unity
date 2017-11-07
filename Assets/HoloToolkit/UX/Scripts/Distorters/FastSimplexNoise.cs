@@ -9,15 +9,18 @@ using System;
 /// </summary>
 public class FastSimplexNoise
 {
-    private const double STRETCH_2D = -0.211324865405187;
+    private const double STRETCH_2D = -1.0 / 4.73205;
     private const double STRETCH_3D = -1.0 / 6.0;
-    private const double STRETCH_4D = -0.138196601125011;
-    private const double SQUISH_2D = 0.366025403784439;
+    private const double STRETCH_4D = -1.0 / 7.23607;
+    private const double SQUISH_2D = 1.0 / 2.73205;
     private const double SQUISH_3D = 1.0 / 3.0;
-    private const double SQUISH_4D = 0.309016994374947;
+    private const double SQUISH_4D = 1.0 / 7.23607;
     private const double NORM_2D = 1.0 / 47.0;
     private const double NORM_3D = 1.0 / 103.0;
     private const double NORM_4D = 1.0 / 30.0;
+
+    private const Int64 SEEDVAL_1 = 6364136223846793005L;
+    private const Int64 SEEDVAL_2 = 1442695040888963407L;
 
     private byte[] perm;
     private byte[] perm2D;
@@ -204,12 +207,12 @@ public class FastSimplexNoise
         {
             source[i] = (byte)i;
         }
-        seed = seed * 6364136223846793005L + 1442695040888963407L;
-        seed = seed * 6364136223846793005L + 1442695040888963407L;
-        seed = seed * 6364136223846793005L + 1442695040888963407L;
+        seed = seed * SEEDVAL_1 + SEEDVAL_2;
+        seed = seed * SEEDVAL_1 + SEEDVAL_2;
+        seed = seed * SEEDVAL_1 + SEEDVAL_2;
         for (int i = 255; i >= 0; i--)
         {
-            seed = seed * 6364136223846793005L + 1442695040888963407L;
+            seed = seed * SEEDVAL_1 + SEEDVAL_2;
             int r = (int)((seed + 31) % (i + 1));
             if (r < 0)
             {

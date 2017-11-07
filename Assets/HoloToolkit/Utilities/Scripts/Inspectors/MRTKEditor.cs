@@ -220,16 +220,6 @@ namespace HoloToolkit.Unity
             Type targetType = target.GetType();
             // Get all the members of this type, public and private
             List<MemberInfo> members = new List<MemberInfo>(targetType.GetMembers(defaultBindingFlags));
-            /*members.Sort(
-                delegate (MemberInfo m1, MemberInfo m2)
-                {
-                    if (m1.IsDefined(typeof(DrawLastAttribute), true))
-                    {
-                        return 1;
-                    }
-                    return 0;
-                }
-            );*/
 
             // Start drawing the editor
             int currentIndentLevel = 0;

@@ -5,17 +5,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
-    #region structs
-    [Serializable]
-    public struct SplinePoint
-    {
-        public Vector3 Point;
-        public Quaternion Rotation;
-    }
-    #endregion
-
     public static class LineUtils
     {
         #region enums
@@ -27,12 +18,6 @@ namespace MRTK.UX
             Bezeir,
             CatmullRom,
             Hermite,
-        }
-
-        public enum SpaceEnum
-        {
-            Global,
-            Local,
         }
 
         /// <summary>
@@ -166,8 +151,6 @@ namespace MRTK.UX
         {
             float parabolaTime = normalizedLength * 2 - 1;
             Vector3 direction = end - start;
-            //Vector3 grounded = end - new Vector3(start.x, end.y, start.z);
-            //Vector3 right = Vector3.Cross(direction, grounded);
             Vector3 pos = start + normalizedLength * direction;
             pos += ((-parabolaTime * parabolaTime + 1) * height) * up.normalized;
             return pos;
@@ -196,9 +179,6 @@ namespace MRTK.UX
 
                 case InterpolationEnum.CatmullRom:
                     return InterpolateCatmullRomPoints(point1, point2, point3, point4, subnormalizedLength);
-
-                //case InterpolationEnum.Hermite:
-                    //return InterpolateHermitePoints(point1, point2, point3, point4, subnormalizedLength);
             }
         }
 

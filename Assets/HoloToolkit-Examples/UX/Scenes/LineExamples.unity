@@ -572,11 +572,11 @@ MonoBehaviour:
   UniformDistortionStrength: 1
   distorters: []
   loops: 0
-  Points:
-    Point1: {x: -0.12396095, y: -0.7737789, z: -4.623802}
-    Point2: {x: 0.9217732, y: 0.10753441, z: -5.5274854}
-    Point3: {x: -1.2487042, y: 0.17812824, z: -3.631322}
-    Point4: {x: 0.17956391, y: 1.1386318, z: -4.697933}
+  points:
+    Point1: {x: -0.4064849, y: -1.7324481, z: -4.8246646}
+    Point2: {x: 1.0307146, y: -0.86579084, z: -5.1624217}
+    Point3: {x: -1.9511347, y: 0.015818596, z: -5.4449763}
+    Point4: {x: -0.5034891, y: 0.98957634, z: -4.850485}
 --- !u!4 &345617695
 Transform:
   m_ObjectHideFlags: 0
@@ -1271,11 +1271,11 @@ MonoBehaviour:
   UniformDistortionStrength: 1
   distorters: []
   loops: 0
-  Points:
-    Point1: {x: -0.12396095, y: -0.7737789, z: -4.623802}
-    Point2: {x: 0.9217732, y: 0.10753441, z: -5.5274854}
-    Point3: {x: -1.2487042, y: 0.178128, z: -3.631322}
-    Point4: {x: 0.17956391, y: 1.1386316, z: -4.697933}
+  points:
+    Point1: {x: -0.4064849, y: -1.732448, z: -4.8246646}
+    Point2: {x: 1.0307146, y: -0.865791, z: -5.1624217}
+    Point3: {x: -1.9511347, y: 0.015818872, z: -5.4449763}
+    Point4: {x: -0.5034891, y: 0.9895762, z: -4.850485}
 --- !u!114 &479148583
 MonoBehaviour:
   m_ObjectHideFlags: 0

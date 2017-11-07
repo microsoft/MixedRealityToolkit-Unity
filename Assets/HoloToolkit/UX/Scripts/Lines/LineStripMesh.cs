@@ -5,7 +5,7 @@ using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class LineStripMesh : LineRendererBase
     {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class LineMeshes : LineRendererBase
     {

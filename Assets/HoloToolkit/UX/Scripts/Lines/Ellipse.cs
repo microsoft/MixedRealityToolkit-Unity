@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MRTK.UX
+namespace Holotoolkit.Unity.UX
 {
     public class Ellipse : LineBase
     {
