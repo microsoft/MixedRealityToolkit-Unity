@@ -24,11 +24,11 @@ namespace HoloToolkit
         /// <summary>
         /// Is the Universal API Contract v5.0 Available?
         /// </summary>
-        public static bool UniversalApiContractV5_IsAvailable { get; }
+        public static bool UniversalApiContractV5_IsAvailable { get; private set; }
 
         /// <summary>
         /// Is the Universal API Contract v4.0 Available?
         /// </summary>
-        public static bool UniversalApiContractV4_IsAvailable { get; }
+        public static bool UniversalApiContractV4_IsAvailable { get; private set; }
     }
 }

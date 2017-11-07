@@ -41,7 +41,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_1_OR_NEWER
+#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -79,7 +79,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_1_OR_NEWER
+#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
