@@ -13,11 +13,13 @@ namespace HoloToolkit
         static WindowsApiChecker()
         {
 #if !UNITY_EDITOR && UNITY_WSA
-            UniversalApiContractV5_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5, 0);
-            UniversalApiContractV4_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4, 0);
+            UniversalApiContractV5_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5);
+            UniversalApiContractV4_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
+            UniversalApiContractV3_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3);
 #else
             UniversalApiContractV5_IsAvailable = false;
             UniversalApiContractV4_IsAvailable = false;
+            UniversalApiContractV3_IsAvailable = false;
 #endif
         }
 
@@ -30,5 +32,7 @@ namespace HoloToolkit
         /// Is the Universal API Contract v4.0 Available?
         /// </summary>
         public static bool UniversalApiContractV4_IsAvailable { get; private set; }
+
+        public static bool UniversalApiContractV3_IsAvailable { get; private set; }
     }
 }
