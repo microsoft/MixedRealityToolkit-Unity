@@ -55,7 +55,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             // Assign new Position Data
             newPosition.x += eventData.LeftStickHorizontalAxis * movementSpeedMultiplier;
             newPosition.z += eventData.LeftStickVerticalAxis * movementSpeedMultiplier;
-            //newPosition.y += eventData.XboxSharedTriggerAxis * movementSpeedMultiplier;
 
             transform.position += newPosition;
 
