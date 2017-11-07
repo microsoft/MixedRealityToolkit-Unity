@@ -16,6 +16,19 @@ namespace Holotoolkit.Unity.UX
         [SerializeField]
         private LineBase source;
 
+        [Header("Noise Settings")]
+        public float ScaleMultiplier = 10f;
+        public float SpeedMultiplier = 1f;
+        public float StrengthMultiplier = 0.5f;
+        public Vector3 AxisStrength = Vector3.one;
+        public Vector3 AxisSpeed = Vector3.one;
+        public Vector3 AxisOffset = Vector3.zero;
+
+        private Vector3[] prevPoints;
+        private System.Random randomPosition;
+        private System.Random randomRotation;
+        private FastSimplexNoise noise = new FastSimplexNoise();
+
         [Header("Swarm Settings")]
         [Range(0f, 1f)]
         public float NormalizedDistance = 0f;
@@ -35,19 +48,6 @@ namespace Holotoolkit.Unity.UX
         public Vector3 RotationOffset = Vector3.zero;
 
         public Vector3 AxisScale = Vector3.one;
-
-        [Header("Noise Settings")]
-        public float ScaleMultiplier = 10f;
-        public float SpeedMultiplier = 1f;
-        public float StrengthMultiplier = 0.5f;
-        public Vector3 AxisStrength = Vector3.one;
-        public Vector3 AxisSpeed = Vector3.one;
-        public Vector3 AxisOffset = Vector3.zero;
-
-        private Vector3[] prevPoints;
-        private System.Random randomPosition;
-        private System.Random randomRotation;
-        private FastSimplexNoise noise = new FastSimplexNoise();
 
         public Vector3 GetRandomPoint ()
         {

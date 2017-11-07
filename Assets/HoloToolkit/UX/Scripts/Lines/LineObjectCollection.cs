@@ -68,10 +68,11 @@ namespace Holotoolkit.Unity.UX
 
             index++;
 
-            if (wrap)
+            if (wrap) {
                 return WrapIndex(index, Objects.Count);
-            else
+            } else {
                 return Mathf.Clamp(index, 0, Objects.Count - 1);
+            }
         }
 
         public int GetPrevObjectIndex(int index, bool wrap = true)
@@ -133,9 +134,6 @@ namespace Holotoolkit.Unity.UX
                         transformHelper.localEulerAngles = RotationOffset;
                         Objects[i].parent = tempParent;
                         Objects[i].transform.localScale = Vector3.one * ObjectScale.Evaluate(Mathf.Repeat(ScaleOffset + normalizedDistance, 1f)) * ScaleMultiplier;
-                        /*if (FlipRotation) {
-                            Objects[i].forward = -Objects[i].forward;
-                        }*/
                     }
                     break;
             }
