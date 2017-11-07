@@ -22,7 +22,7 @@ MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://
 [![Github Release][unity-version-badge]][unity-download]
 
 [githubhl-rel]:                  https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
-[mrtk-version-badge]:            https://img.shields.io/badge/HoloLens%20MRTK%20release-2017.2.0-blue.svg
+[mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=latest%20master%20branch%20release
 
 [unity-release]:
 https://unity3d.com/unity/whats-new/unity-2017.1.2
