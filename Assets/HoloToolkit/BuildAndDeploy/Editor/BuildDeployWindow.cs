@@ -28,7 +28,6 @@ namespace HoloToolkit.Unity
 
         private enum BuildPlatformEnum
         {
-            AnyCPU = 0,
             x86 = 1,
             x64 = 2
         }
@@ -299,11 +298,9 @@ namespace HoloToolkit.Unity
             GUILayout.BeginHorizontal();
 
             // SDK and MS Build Version(and save setting, if it's changed)
-            string curMSBuildVer = BuildDeployPrefs.MsBuildVersion;
             string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
 
             int currentSDKVersionIndex = 0;
-            int defaultMSBuildVersionIndex = -1;
 
             for (var i = 0; i < windowsSdkPaths.Length; i++)
             {
@@ -313,19 +310,19 @@ namespace HoloToolkit.Unity
                 }
                 else
                 {
-                    if (windowsSdkPaths[i].Equals(currentSDKVersion))
+                    if (windowsSdkPaths[i].Equals("10.0.16299.0"))
                     {
                         currentSDKVersionIndex = i;
-                    }
-
-                    if (windowsSdkPaths[i].Equals("10.0.14393.0"))
-                    {
-                        defaultMSBuildVersionIndex = i;
                     }
                 }
             }
 
-            currentSDKVersionIndex = EditorGUILayout.Popup(GUIHorizontalSpacer + "SDK Version", currentSDKVersionIndex, windowsSdkPaths);
+            if (currentSDKVersionIndex == 0)
+            {
+                Debug.LogError("Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the 10.0.16299.0 SDK from Visual Studio Installer.");
+            }
+
+            EditorGUILayout.LabelField(GUIHorizontalSpacer + "Required SDK Version: 10.0.16299.0");
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
@@ -344,14 +341,6 @@ namespace HoloToolkit.Unity
             if (!newSDKVersion.Equals(currentSDKVersion))
             {
                 EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
-            }
-
-            string newMSBuildVer = currentSDKVersionIndex <= defaultMSBuildVersionIndex ? BuildDeployTools.DefaultMSBuildVersion : "15.0";
-
-            if (!newMSBuildVer.Equals(curMSBuildVer))
-            {
-                BuildDeployPrefs.MsBuildVersion = newMSBuildVer;
-                curMSBuildVer = newMSBuildVer;
             }
 
             GUILayout.EndHorizontal();
@@ -386,7 +375,7 @@ namespace HoloToolkit.Unity
 
             // Build Platform (and save setting, if it's changed)
             string curBuildPlatformString = BuildDeployPrefs.BuildPlatform;
-            BuildPlatformEnum buildPlatformOption;
+            BuildPlatformEnum buildPlatformOption = BuildPlatformEnum.x86;
 
             if (curBuildPlatformString.ToLower().Equals("x86"))
             {
@@ -396,10 +385,6 @@ namespace HoloToolkit.Unity
             {
                 buildPlatformOption = BuildPlatformEnum.x64;
             }
-            else
-            {
-                buildPlatformOption = BuildPlatformEnum.AnyCPU;
-            }
 
             buildPlatformOption = (BuildPlatformEnum)EditorGUILayout.EnumPopup(GUIHorizontalSpacer + "Build Platform", buildPlatformOption);
 
@@ -407,9 +392,6 @@ namespace HoloToolkit.Unity
 
             switch (buildPlatformOption)
             {
-                case BuildPlatformEnum.AnyCPU:
-                    newBuildPlatformString = "Any CPU";
-                    break;
                 case BuildPlatformEnum.x86:
                 case BuildPlatformEnum.x64:
                     newBuildPlatformString = buildPlatformOption.ToString();
@@ -472,7 +454,7 @@ namespace HoloToolkit.Unity
                         EditorApplication.delayCall += () =>
                             BuildDeployTools.BuildAppxFromSLN(
                                 PlayerSettings.productName,
-                                curMSBuildVer,
+                                BuildDeployTools.DefaultMSBuildVersion,
                                 curForceRebuildAppx,
                                 curBuildConfigString,
                                 curBuildPlatformString,

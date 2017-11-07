@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployTools
     {
-        public static readonly string DefaultMSBuildVersion = "14.0";
+        public static readonly string DefaultMSBuildVersion = "15.0";
 
         public static bool CanBuild()
         {
