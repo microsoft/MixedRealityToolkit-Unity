@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class MRTKEditor : Editor
     {
-    #region static vars
+        #region static vars
         // Toggles custom editors on / off
         public static bool ShowCustomEditors = true;
         public static GameObject lastTarget;
@@ -36,6 +36,7 @@ namespace HoloToolkit.Unity
         private static GUIStyle toggleButtonOnStyle = null;
         private static GUIStyle sectionStyle = null;
         private static GUIStyle toolTipStyle = null;
+        private static GUIStyle inProgressStyle = null;
 
         // Colors
         protected readonly static Color defaultColor = new Color(1f, 1f, 1f);
@@ -50,6 +51,14 @@ namespace HoloToolkit.Unity
         protected readonly static Color darkColor = new Color(0.1f, 0.1f, 0.1f);
         protected readonly static Color objectColorEmpty = new Color(0.75f, 0.8f, 0.9f);
         protected readonly static Color profileColor = new Color(0.88f, 0.7f, .97f);
+        protected readonly static Color handleColorSquare = new Color(0.0f, 0.9f, 1f);
+        protected readonly static Color handleColorCircle = new Color(1f, 0.5f, 1f);
+        protected readonly static Color handleColorSphere = new Color(1f, 0.5f, 1f);
+        protected readonly static Color handleColorAxis = new Color(0.0f, 1f, 0.2f);
+        protected readonly static Color handleColorRotation = new Color(0.0f, 1f, 0.2f);
+        protected readonly static Color handleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
+
+        public const float DottedLineScreenSpace = 4.65f;
 
         // Toggles visible tooltips
         private static bool showHelp = false;
@@ -59,7 +68,9 @@ namespace HoloToolkit.Unity
 
         private static BindingFlags defaultBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-    #endregion
+        private bool recordingUndo = false;
+
+        #endregion
 
         public override void OnInspectorGUI()
         {
@@ -78,6 +89,12 @@ namespace HoloToolkit.Unity
             }
 
             SaveChanges();
+        }
+
+        public void OnSceneGUI()
+        {
+            recordingUndo = false;
+            DrawCustomSceneGUI();
         }
 
         /// <summary>
@@ -107,9 +124,13 @@ namespace HoloToolkit.Unity
                             HeaderAttribute h = member.GetCustomAttributes(typeof(HeaderAttribute), true)[0] as HeaderAttribute;
                             string lookupName = targetType.Name + h.header;
                             if (!displayedSections.ContainsKey(lookupName))
+                            {
                                 displayedSections.Add(lookupName, true);
+                            }
                             else
+                            {
                                 displayedSections[lookupName] = true;
+                            }
                         }
                     }
                 }
@@ -123,9 +144,13 @@ namespace HoloToolkit.Unity
                             HeaderAttribute h = member.GetCustomAttributes(typeof(HeaderAttribute), true)[0] as HeaderAttribute;
                             string lookupName = targetType.Name + h.header;
                             if (!displayedSections.ContainsKey(lookupName))
+                            {
                                 displayedSections.Add(lookupName, false);
+                            }
                             else
+                            {
                                 displayedSections[lookupName] = false;
+                            }
                         }
                     }
                 }
@@ -143,10 +168,14 @@ namespace HoloToolkit.Unity
                 {
                     string description = attribute.Description;
                     if (string.IsNullOrEmpty(description))
+                    {
                         description = "Click for documentation about " + targetType.Name;
+                    }
 
                     if (GUILayout.Button(description, EditorStyles.toolbarButton))
+                    {
                         Application.OpenURL(attribute.DocURL);
+                    }
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -154,10 +183,14 @@ namespace HoloToolkit.Unity
                 {
                     string description = attribute.Description;
                     if (string.IsNullOrEmpty(description))
+                    {
                         description = "Click for a tutorial on " + targetType.Name;
+                    }
 
                     if (GUILayout.Button(description, EditorStyles.toolbarButton))
+                    {
                         Application.OpenURL(attribute.TutorialURL);
+                    }
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -166,13 +199,17 @@ namespace HoloToolkit.Unity
                 {
                     Component targetGo = (Component)target;
                     if (targetGo == null)
+                    {
                         break;
+                    }
 
                     foreach (Type type in attribute.UseWithTypes)
                     {
                         Component c = targetGo.GetComponent(type);
                         if (c == null)
+                        {
                             missingTypes.Add(type);
+                        }
                     }
                 }
                 if (missingTypes.Count > 0)
@@ -203,16 +240,6 @@ namespace HoloToolkit.Unity
             Type targetType = target.GetType();
             // Get all the members of this type, public and private
             List<MemberInfo> members = new List<MemberInfo>(targetType.GetMembers(defaultBindingFlags));
-            members.Sort(
-                delegate (MemberInfo m1, MemberInfo m2)
-                {
-                    if (m1.IsDefined(typeof(DrawLastAttribute), true))
-                    {
-                        return 1;
-                    }
-                    return 0;
-                }
-            );
 
             // Start drawing the editor
             int currentIndentLevel = 0;
@@ -223,12 +250,25 @@ namespace HoloToolkit.Unity
             {
                 try
                 {
+                    switch (member.MemberType)
+                    {
+                        default:
+                            // We only want to draw fields, properties and arrays
+                            continue;
+
+                        case MemberTypes.Field:
+                        case MemberTypes.Property:
+                            break;
+                    }
+
                     // First get header and indent settings
                     if (member.IsDefined(typeof(HeaderAttribute), true))
                     {
                         HeaderAttribute header = member.GetCustomAttributes(typeof(HeaderAttribute), true)[0] as HeaderAttribute;
                         if (insideSectionBlock)
+                        {
                             DrawSectionEnd();
+                        }
 
                         insideSectionBlock = true;
                         drawCurrentSection = DrawSectionStart(target.GetType().Name, header.header);
@@ -236,11 +276,15 @@ namespace HoloToolkit.Unity
 
                     // Then do basic show / hide based on ShowIfAttribute
                     if ((insideSectionBlock && !drawCurrentSection) || !ShouldDrawMember(member, targetType, target))
+                    {
                         continue;
+                    }
 
                     // Handle drawing stuff (indent, help)
                     if (showHelp)
+                    {
                         DrawToolTip(member);
+                    }
 
                     if (member.IsDefined(typeof(SetIndentAttribute), true))
                     {
@@ -249,66 +293,73 @@ namespace HoloToolkit.Unity
                         EditorGUI.indentLevel = currentIndentLevel;
                     }
 
+                    if (member.IsDefined(typeof(FeatureInProgressAttribute), true))
+                    {
+                        GUI.color = helpBoxColor;
+                        EditorGUILayout.LabelField("(This field or property is marked as 'In Progress' and may have no effect.)", inProgressStyle);
+                        GUI.color = Color.Lerp(disabledColor, Color.clear, 0.5f);
+                    }
+                    else
+                    {
+                        GUI.color = defaultColor;
+                    }
+
                     // Now get down to drawing the thing
                     // Get an array ready for our override attributes
                     object[] drawOverrideAttributes = null;
-                    switch (member.MemberType)
+                    if (member.MemberType == MemberTypes.Field)
                     {
-                        case MemberTypes.Field:
-                            FieldInfo field = targetType.GetField(member.Name, defaultBindingFlags);
-                            if (!field.IsPrivate || field.IsDefined(typeof(SerializeField), true))
+                        FieldInfo field = targetType.GetField(member.Name, defaultBindingFlags);
+                        if (!field.IsPrivate || field.IsDefined(typeof(SerializeField), true))
+                        {
+                            // If it's a profile field, take care of that first
+                            if (IsSubclassOf(field.FieldType, typeof(ProfileBase)))
                             {
-                                // If it's a profile field, take care of that first
-                                if (IsSubclassOf(field.FieldType, typeof(ProfileBase)))
+                                UnityEngine.Object profile = (UnityEngine.Object)field.GetValue(target);
+                                profile = DrawProfileField(target, profile, field.FieldType);
+                                field.SetValue(target, profile);
+                            }
+                            else
+                            {
+                                drawOverrideAttributes = field.GetCustomAttributes(typeof(DrawOverrideAttribute), true);
+                                // If we fine overrides, draw using those
+                                if (drawOverrideAttributes.Length > 0)
                                 {
-                                    UnityEngine.Object profile = (UnityEngine.Object)field.GetValue(target);
-                                    profile = DrawProfileField(target, profile, field.FieldType);
-                                    field.SetValue(target, profile);
+                                    if (drawOverrideAttributes.Length > 1)
+                                        DrawWarning("You should only use one DrawOverride attribute per member. Drawing " + drawOverrideAttributes[0].GetType().Name + " only.");
+
+                                    (drawOverrideAttributes[0] as DrawOverrideAttribute).DrawEditor(target, field, serializedObject.FindProperty(field.Name));
                                 }
                                 else
                                 {
-                                    drawOverrideAttributes = field.GetCustomAttributes(typeof(DrawOverrideAttribute), true);
-                                    // If we fine overrides, draw using those
-                                    if (drawOverrideAttributes.Length > 0)
-                                    {
-                                        if (drawOverrideAttributes.Length > 1)
-                                            DrawWarning("You should only use one DrawOverride attribute per member. Drawing " + drawOverrideAttributes[0].GetType().Name + " only.");
-
-                                        (drawOverrideAttributes[0] as DrawOverrideAttribute).DrawEditor(target, field, serializedObject.FindProperty(field.Name));
-                                    }
-                                    else
-                                    {
-                                        // Otherwise just draw the default editor
-                                        DrawSerializedField(serializedObject, field.Name);
-                                    }
+                                    // Otherwise just draw the default editor
+                                    DrawSerializedField(serializedObject, field.Name);
                                 }
                             }
-                            break;
-
-                        case MemberTypes.Property:
-                            // We have to draw properties manually
-                            PropertyInfo prop = targetType.GetProperty(member.Name, defaultBindingFlags);
-                            drawOverrideAttributes = prop.GetCustomAttributes(typeof(DrawOverrideAttribute), true);
-                            // If it's a profile field, take care of that first
-                            if (IsSubclassOf(prop.PropertyType, typeof(ProfileBase)))
+                        }
+                    }
+                    else // Property
+                    {
+                        // We have to draw properties manually
+                        PropertyInfo prop = targetType.GetProperty(member.Name, defaultBindingFlags);
+                        drawOverrideAttributes = prop.GetCustomAttributes(typeof(DrawOverrideAttribute), true);
+                        // If it's a profile field, take care of that first
+                        if (IsSubclassOf(prop.PropertyType, typeof(ProfileBase)))
+                        {
+                            UnityEngine.Object profile = (UnityEngine.Object)prop.GetValue(target, null);
+                            profile = DrawProfileField(target, profile, prop.PropertyType);
+                            prop.SetValue(target, profile, null);
+                        }
+                        // If we find overrides, draw using those
+                        else if (drawOverrideAttributes.Length > 0)
+                        {
+                            if (drawOverrideAttributes.Length > 1)
                             {
-                                UnityEngine.Object profile = (UnityEngine.Object)prop.GetValue(target, null);
-                                profile = DrawProfileField(target, profile, prop.PropertyType);
-                                prop.SetValue(target, profile, null);
+                                DrawWarning("You should only use one DrawOverride attribute per member. Drawing " + drawOverrideAttributes[0].GetType().Name + " only.");
                             }
-                            // If we find overrides, draw using those
-                            else if (drawOverrideAttributes.Length > 0)
-                            {
-                                if (drawOverrideAttributes.Length > 1)
-                                    DrawWarning("You should only use one DrawOverride attribute per member. Drawing " + drawOverrideAttributes[0].GetType().Name + " only.");
 
-                                (drawOverrideAttributes[0] as DrawOverrideAttribute).DrawEditor(target, prop);
-                            }
-                            break;
-
-                        default:
-                            // Don't do anything, it's not something we can use
-                            break;
+                            (drawOverrideAttributes[0] as DrawOverrideAttribute).DrawEditor(target, prop);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -319,9 +370,19 @@ namespace HoloToolkit.Unity
             }
 
             if (insideSectionBlock)
+            {
                 DrawSectionEnd();
+            }
 
             EditorGUILayout.EndVertical();
+        }
+
+        /// <summary>
+        /// Override this to draw a scene editor
+        /// </summary>
+        protected virtual void DrawCustomSceneGUI()
+        {
+
         }
 
         /// <summary>
@@ -344,7 +405,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-    #region drawing
+        #region drawing
 
         /// <summary>
         /// Determines whether this member should be shown in the editor
@@ -410,7 +471,9 @@ namespace HoloToolkit.Unity
         {
             SerializedProperty prop = serializedObject.FindProperty(propertyPath);
             if (prop != null)
+            {
                 EditorGUILayout.PropertyField(prop, true);
+            }
         }
 
         /// <summary>
@@ -433,7 +496,9 @@ namespace HoloToolkit.Unity
             GUI.color = sectionColor;
 
             if (toUpper)
+            {
                 headerName = headerName.ToUpper();
+            }
 
             drawSection = EditorGUILayout.Foldout(drawSection, headerName, true, sectionStyle);
             displayedSections[lookupName] = drawSection;
@@ -514,19 +579,22 @@ namespace HoloToolkit.Unity
                 toggleButtonOnStyle = new GUIStyle(toggleButtonOffStyle);
                 toggleButtonOnStyle.normal.background = toggleButtonOnStyle.active.background;
 
-
                 sectionStyle = new GUIStyle(EditorStyles.foldout);
                 sectionStyle.fontStyle = FontStyle.Bold;
 
                 toolTipStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
                 toolTipStyle.fontStyle = FontStyle.Normal;
                 toolTipStyle.alignment = TextAnchor.LowerLeft;
+
+                inProgressStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
+                inProgressStyle.fontStyle = FontStyle.Italic;
+                inProgressStyle.alignment = TextAnchor.LowerLeft;
             }
         }
 
-    #endregion
+        #endregion
 
-    #region profiles
+        #region profiles
 
         /// <summary>
         /// Draws a field for scriptable object profiles
@@ -678,7 +746,9 @@ namespace HoloToolkit.Unity
             if (baseType.IsGenericType == false)
             {
                 if (type.IsGenericType == false)
+                {
                     return type.IsSubclassOf(baseType);
+                }
             }
             else
             {
@@ -693,14 +763,219 @@ namespace HoloToolkit.Unity
                 Type curentType = type.IsGenericType ?
                     type.GetGenericTypeDefinition() : type;
                 if (curentType == baseType)
+                {
                     return true;
+                }
 
                 type = type.BaseType;
             }
 
             return false;
         }
-    #endregion
+        #endregion
+
+        #region handles
+        // These are a set of handles for OnSceneGUI. They automatically register Undo for the target object and they have a consistent look.
+
+        protected float AxisMoveHandle(Vector3 origin, Vector3 direction, float distance, float handleSize = 0.2f, bool autoSize = true)
+        {
+            Vector3 position = origin + (direction.normalized * distance);
+
+            Handles.color = handleColorAxis;
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            Handles.DrawDottedLine(origin, position, DottedLineScreenSpace);
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(direction), handleSize * 2, EventType.Repaint);
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
+            if (recordingUndo)
+                return distance;
+
+            float newDistance = Vector3.Distance(origin, newPosition);
+
+            if (distance != newDistance)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+                distance = newDistance;
+            }
+            return distance;
+        }
+
+        protected Vector3 CircleMoveHandle(Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f)
+        {
+            Handles.color = handleColorCircle;
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
+            if (recordingUndo)
+                return position;
+
+            if (position != newPosition)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                position.x = Mathf.Lerp(position.x, newPosition.x, Mathf.Clamp01(xScale));
+                position.y = Mathf.Lerp(position.z, newPosition.y, Mathf.Clamp01(yScale));
+                position.z = Mathf.Lerp(position.y, newPosition.z, Mathf.Clamp01(zScale));
+            }
+            return position;
+        }
+
+        protected Vector3 SquareMoveHandle(Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f)
+        {
+            Handles.color = handleColorSquare;
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            // Multiply square handle to match other types
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 0.8f, Vector3.zero, Handles.RectangleHandleCap);
+            if (recordingUndo)
+                return position;
+
+            if (position != newPosition)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                position.x = Mathf.Lerp(position.x, newPosition.x, Mathf.Clamp01(xScale));
+                position.y = Mathf.Lerp(position.z, newPosition.y, Mathf.Clamp01(yScale));
+                position.z = Mathf.Lerp(position.y, newPosition.z, Mathf.Clamp01(zScale));
+            }
+            return position;
+        }
+
+        protected Vector3 SphereMoveHandle(Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f)
+        {
+            Handles.color = handleColorSphere;
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            // Multiply sphere handle size to match other types
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 2, Vector3.zero, Handles.SphereHandleCap);
+            if (recordingUndo)
+                return position;
+
+            if (position != newPosition)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                position.x = Mathf.Lerp(position.x, newPosition.x, Mathf.Clamp01(xScale));
+                position.y = Mathf.Lerp(position.z, newPosition.y, Mathf.Clamp01(yScale));
+                position.z = Mathf.Lerp(position.y, newPosition.z, Mathf.Clamp01(zScale));
+            }
+            return position;
+        }
+
+        protected Vector3 VectorHandle(Vector3 origin, Vector3 vector, bool normalize = true, float handleLength = 1f, bool clamp = true, float handleSize = 0.1f, bool autoSize = true)
+        {
+            Handles.color = handleColorTangent;
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(origin) * handleSize, 0.75f);
+            }
+
+            Vector3 handlePosition = origin + (vector * handleLength);
+            float distanceToOrigin = Vector3.Distance(origin, handlePosition) / handleLength;
+
+            if (normalize)
+            {
+                vector.Normalize();
+            }
+            else
+            {
+                // If the handle isn't normalized, brighten based on distance to origin
+                Handles.color = Color.Lerp(Color.gray, handleColorTangent, distanceToOrigin * 0.85f);
+                if (clamp)
+                {
+                    // To indicate that we're at the clamped limit, make the handle 'pop' slightly larger
+                    if (distanceToOrigin >= 0.98f)
+                    {
+                        Handles.color = Color.Lerp(handleColorTangent, Color.white, 0.5f);
+                        handleSize *= 1.5f;
+                    }
+                }
+            }
+
+            // Draw a line from origin to origin + direction
+            Handles.DrawLine(origin, handlePosition);
+
+            Quaternion rotation = Quaternion.identity;
+            if (vector != Vector3.zero)
+            {
+                rotation = Quaternion.LookRotation(vector);
+            }
+
+            Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, rotation, handleSize, Vector3.zero, Handles.DotHandleCap);
+            if (recordingUndo)
+            {
+                return vector;
+            }
+
+            if (handlePosition != newPosition)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+                vector = (newPosition - origin).normalized;
+
+                // If we normalize, we're done
+                // Otherwise, multiply the vector by the distance between origin and target
+                if (!normalize)
+                {
+                    distanceToOrigin = Vector3.Distance(origin, newPosition) / handleLength;
+                    if (clamp)
+                    {
+                        distanceToOrigin = Mathf.Clamp01(distanceToOrigin);
+                    }
+                    vector *= distanceToOrigin;
+                }
+            }
+            return vector;
+        }
+
+        protected Quaternion RotationHandle(Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true)
+        {
+            Handles.color = handleColorRotation;
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            // Make rotation handles larger so they can overlay movement handles
+            Quaternion newRotation = Handles.FreeRotateHandle(rotation, position, handleSize * 2);
+            if (recordingUndo)
+            {
+                return newRotation;
+            }
+
+            Handles.color = Handles.zAxisColor;
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.forward), handleSize * 2, EventType.Repaint);
+            Handles.color = Handles.xAxisColor;
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.right), handleSize * 2, EventType.Repaint);
+            Handles.color = Handles.yAxisColor;
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.up), handleSize * 2, EventType.Repaint);
+
+            if (rotation != newRotation)
+            {
+                recordingUndo = true;
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                rotation = newRotation;
+            }
+            return rotation;
+        }
+        #endregion
     }
 #endif
 }
