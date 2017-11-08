@@ -63,7 +63,9 @@ namespace Holotoolkit.Unity.UX
         private void OnDisable()
         {
             if (lineMatInstance != null)
+            {
                 GameObject.Destroy(lineMatInstance);
+            }
 
             if (meshRendererGameObject != null)
             {

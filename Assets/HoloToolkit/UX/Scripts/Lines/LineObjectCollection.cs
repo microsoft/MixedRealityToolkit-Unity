@@ -114,7 +114,9 @@ namespace Holotoolkit.Unity.UX
         public int GetPrevObjectIndex(int index, bool wrap = true)
         {
             if (Objects.Count == 0)
+            {
                 return 0;
+            }
 
             index--;
 
@@ -184,7 +186,9 @@ namespace Holotoolkit.Unity.UX
         private void OnDrawGizmos()
         {
             if (Application.isPlaying)
+            {
                 return;
+            }
 
             UpdateCollection();
         }
