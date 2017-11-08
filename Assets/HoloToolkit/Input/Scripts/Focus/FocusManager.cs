@@ -158,8 +158,14 @@ namespace HoloToolkit.Unity.InputModule
             {
                 PointingSource = pointingSource;
             }
-
+			
+			[Obsolete]
             public void UpdateHit(RaycastHit hit)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
                 PreviousEndObject = End.Object;
@@ -199,10 +205,14 @@ namespace HoloToolkit.Unity.InputModule
                     Object = null
                 };
             }
-
-            public void ResetFocusedObjects()
+           
+            public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                PreviousEndObject = null;
+                if (clearPreviousObject)
+                {
+                    PreviousEndObject = null;
+                }
+
                 End = new FocusDetails
                 {
                     Point = End.Point,
