@@ -20,39 +20,54 @@ namespace HoloToolkit.Unity.InputModule
         public BaseRayStabilizer RayStabilizer { get; set; }
 
         public bool OwnAllInput { get; set; }
-        
+
         [Obsolete]
         public Ray Ray { get { return Rays[0]; } }
 
         public RayStep[] Rays {
             get
             {
-                return new RayStep(rawRay.origin, rawRay.origin + rawRay.direction);
+                return rays;
             }
         }
+
+        public PointerResult Result { get; set; }
 
         public float? ExtentOverride { get; set; }
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        private Ray rawRay = default(Ray);
+        public bool InteractionEnabled
+        {
+            get
+            {
+                return true;
+            }
+        }
 
+        private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
+        
         public void UpdatePointer()
         {
             if (InputSource == null)
             {
-                rawRay = default(Ray);
+                rays[0] = default(RayStep);
             }
             else
             {
                 Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing));
 
-                InputSource.TryGetPointingRay(InputSourceId, out rawRay);
+                Ray pointingRay = default(Ray);
+                if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
+                {
+                    rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent (this));
+                }
             }
 
             if (RayStabilizer != null)
             {
-                RayStabilizer.UpdateStability(rawRay.origin, rawRay.direction);
+                RayStabilizer.UpdateStability(rays[0].origin, rays[0].direction);
+                rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
             }
         }
 
@@ -68,6 +83,6 @@ namespace HoloToolkit.Unity.InputModule
             return (inputData != null)
                 && (inputData.InputSource == InputSource)
                 && (inputData.SourceId == InputSourceId);
-        }
+        }    
     }
 }
