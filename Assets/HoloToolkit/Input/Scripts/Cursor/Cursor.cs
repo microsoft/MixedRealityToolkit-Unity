@@ -290,7 +290,8 @@ namespace HoloToolkit.Unity.InputModule
             GameObject newTargetedObject = focusDetails.Object;
 
             // Get the forward vector looking back along the pointing ray.
-            Vector3 lookForward = -Pointer.Ray.direction;
+            RayStep lastStep = Pointer.Rays[Pointer.Rays.Length - 1];
+            Vector3 lookForward = -lastStep.direction;
 
             // Normalize scale on before update
             targetScale = Vector3.one;
@@ -300,7 +301,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 TargetedObject = null;
                 TargetedCursorModifier = null;
-                targetPosition = Pointer.Ray.origin + Pointer.Ray.direction * DefaultCursorDistance;
+                targetPosition = lastStep.terminus;
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else

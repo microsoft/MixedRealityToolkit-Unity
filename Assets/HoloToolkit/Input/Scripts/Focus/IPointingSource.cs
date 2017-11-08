@@ -11,11 +11,15 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IPointingSource
     {
-        Ray Ray { get; }
+        bool InteractionEnabled { get; }
 
         float? ExtentOverride { get; }
+        
+        RayStep[] Rays { get; }
 
         LayerMask[] PrioritizedLayerMasksOverride { get; }
+
+        PointerResult Result { get; set; }
 
         void UpdatePointer();
 

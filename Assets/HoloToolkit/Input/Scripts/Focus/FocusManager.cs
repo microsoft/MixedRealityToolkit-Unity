@@ -1,12 +1,31 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
+    [Serializable]
+    public class PointerResult
+    {
+        public Vector3 StartPoint { get; protected set; }
+
+        public FocusDetails End { get; protected set; }
+
+        public GameObject PreviousEndObject { get; protected set; }
+
+        public RaycastHit LastRaycastHit { get; protected set; }
+
+        /// <summary>
+        /// The index of the step that produced the last raycast hit
+        /// 0 when no raycast hit
+        /// </summary>
+        public int RayStepIndex { get; protected set; }
+    }
+
     /// <summary>
     /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor
     /// or pointing ray enabled motion controllers.
@@ -115,29 +134,22 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Data
 
-        private class PointerData
+        private class PointerData : PointerResult
         {
             public readonly IPointingSource PointingSource;
-
-            public Vector3 StartPoint { get; private set; }
-
-            public FocusDetails End { get; private set; }
-
-            public GameObject PreviousEndObject { get; private set; }
-
-            public RaycastHit LastRaycastHit { get; private set; }
 
             public PointerData(IPointingSource pointingSource)
             {
                 PointingSource = pointingSource;
             }
 
-            public void UpdateHit(RaycastHit hit)
+            public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
                 PreviousEndObject = End.Object;
+                RayStepIndex = rayStepIndex;
 
-                StartPoint = PointingSource.Ray.origin;
+                StartPoint = sourceRay.origin;
                 End = new FocusDetails
                 {
                     Point = hit.point,
@@ -146,12 +158,13 @@ namespace HoloToolkit.Unity.InputModule
                 };
             }
 
-            public void UpdateHit(RaycastResult result, RaycastHit hit)
+            public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 // We do not update the PreviousEndObject here because
                 // it's already been updated in the first physics raycast.
 
-                StartPoint = PointingSource.Ray.origin;
+                RayStepIndex = rayStepIndex;
+                StartPoint = sourceRay.origin;
                 End = new FocusDetails
                 {
                     Point = hit.point,
@@ -164,18 +177,24 @@ namespace HoloToolkit.Unity.InputModule
             {
                 PreviousEndObject = End.Object;
 
-                StartPoint = PointingSource.Ray.origin;
+                RayStep firstStep = PointingSource.Rays[0];
+                RayStep finalStep = PointingSource.Rays[PointingSource.Rays.Length - 1];
+                RayStepIndex = 0;
+
+                StartPoint = firstStep.origin;
                 End = new FocusDetails
                 {
-                    Point = (StartPoint + (extent * PointingSource.Ray.direction)),
-                    Normal = (-PointingSource.Ray.direction),
+                    Point = finalStep.terminus,
+                    Normal = (-finalStep.direction),
                     Object = null
                 };
             }
-
-            public void ResetFocusedObjects()
+           
+            public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                PreviousEndObject = null;
+                if (clearPreviousObject)
+                    PreviousEndObject = null;
+
                 End = new FocusDetails
                 {
                     Point = End.Point,
@@ -425,7 +444,18 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdatePointer(PointerData pointer)
         {
+            // Call the pointer's update function first
             pointer.PointingSource.UpdatePointer();
+
+            // If pointer interaction isn't enabled, clear its result object and return
+            if (!pointer.PointingSource.InteractionEnabled)
+            {
+                // Don't clear the previous focused object since we still want to trigger FocusExit events
+                pointer.ResetFocusedObjects(false);
+                return;
+            }
+
+            // Otherwise, continue
             var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
 
             // Perform raycast to determine focused object
@@ -437,6 +467,9 @@ namespace HoloToolkit.Unity.InputModule
                 // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
                 RaycastUnityUI(pointer, prioritizedLayerMasks);
             }
+
+            // Set the pointer's result last
+            pointer.PointingSource.Result = pointer;
         }
 
         /// <summary>
@@ -444,19 +477,49 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            bool isHit;
             RaycastHit physicsHit = default(RaycastHit);
-            float extent = GetPointingExtent(pointer);
+            RayStep rayStep = default(RayStep);
+            bool isHit = false;
+            int rayStepIndex = 0;
+
+            // Check raycast for each step in the pointing source
+            for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
+            {
+                if (RaycastPhysicsStep(pointer.PointingSource.Rays[i], prioritizedLayerMasks, out physicsHit))
+                {
+                    // Set the pointer source's origin ray to this step
+                    isHit = true;
+                    rayStep = pointer.PointingSource.Rays[i];
+                    rayStepIndex = i;
+                    // No need to continue once we've hit something
+                    break;
+                }
+            }
+
+            if (isHit)
+            {
+                pointer.UpdateHit(physicsHit, rayStep, rayStepIndex);
+            }
+            else
+            {
+                pointer.UpdateHit(GetPointingExtent(pointer));
+            }
+        }
+
+        private bool RaycastPhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        {
+            bool isHit = false;
+            physicsHit = default(RaycastHit);
 
             // If there is only one priority, don't prioritize
             if (prioritizedLayerMasks.Length == 1)
             {
-                isHit = Physics.Raycast(pointer.PointingSource.Ray, out physicsHit, extent, prioritizedLayerMasks[0]);
+                isHit = Physics.Raycast(step.origin, step.direction, out physicsHit, step.length, prioritizedLayerMasks[0]);
             }
             else
             {
                 // Raycast across all layers and prioritize
-                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(pointer.PointingSource.Ray, extent, /*All layers*/ -1), prioritizedLayerMasks);
+                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(step.origin, step.direction, step.length, /*All layers*/ -1), prioritizedLayerMasks);
                 isHit = hit.HasValue;
 
                 if (isHit)
@@ -465,14 +528,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            if (isHit)
-            {
-                pointer.UpdateHit(physicsHit);
-            }
-            else
-            {
-                pointer.UpdateHit(GetPointingExtent(pointer));
-            }
+            return isHit;
         }
 
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
@@ -481,17 +537,51 @@ namespace HoloToolkit.Unity.InputModule
 
             Debug.Assert(pointer.End.Point != Vector3.zero);
 
+            RaycastResult uiRaycastResult = default(RaycastResult);
+            bool overridePhysicsRaycast = false;
+            RayStep rayStep = default(RayStep);
+            int rayStepIndex = 0;
+
+            // Cast rays for every step until we score a hit
+            for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
+            {
+                if (RaycastUnityUIStep(pointer, pointer.PointingSource.Rays[i], prioritizedLayerMasks, out overridePhysicsRaycast, out uiRaycastResult))
+                {
+                    rayStepIndex = i;
+                    rayStep = pointer.PointingSource.Rays[i];
+                    break;
+                }
+            }
+
+            // Check if we need to overwrite the physics raycast info
+            if (overridePhysicsRaycast)
+            {
+                Vector3 worldPos = CameraCache.Main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
+                var hitInfo = new RaycastHit
+                {
+                    distance = uiRaycastResult.distance,
+                    normal = -uiRaycastResult.gameObject.transform.forward,
+                    point = worldPos
+                };
+                                
+                pointer.UpdateHit(uiRaycastResult, hitInfo, rayStep, rayStepIndex);
+            }
+        }
+
+        private bool RaycastUnityUIStep(PointerData pointer, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
+        {
             // 2D pointer position
             UnityUIPointerEvent.position = CameraCache.Main.WorldToScreenPoint(pointer.End.Point);
 
             // Graphics raycast
-            RaycastResult uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
+            uiRaycastResult = EventSystem.current.Raycast(UnityUIPointerEvent, prioritizedLayerMasks);
             UnityUIPointerEvent.pointerCurrentRaycast = uiRaycastResult;
+
+            overridePhysicsRaycast = false;
 
             // If we have a raycast result, check if we need to overwrite the physics raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                bool overridePhysicsRaycast = false;
                 if (pointer.End.Object != null)
                 {
                     // Check layer prioritization
@@ -521,21 +611,12 @@ namespace HoloToolkit.Unity.InputModule
                         }
                     }
                 }
-
-                // Check if we need to overwrite the physics raycast info
-                if (pointer.End.Object == null || overridePhysicsRaycast)
-                {
-                    Vector3 worldPos = CameraCache.Main.ScreenToWorldPoint(new Vector3(uiRaycastResult.screenPosition.x, uiRaycastResult.screenPosition.y, uiRaycastResult.distance));
-                    var hitInfo = new RaycastHit
-                    {
-                        distance = uiRaycastResult.distance,
-                        normal = -uiRaycastResult.gameObject.transform.forward,
-                        point = worldPos
-                    };
-
-                    pointer.UpdateHit(uiRaycastResult, hitInfo);
-                }
+                Debug.Log("Hit raycast result " + uiRaycastResult.gameObject.name);
+                // If we've hit somthing, no need to go further
+                return true;
             }
+            // If we haven't hit something, keep going
+            return false;
         }
 
         private void UpdateFocusedObjects()

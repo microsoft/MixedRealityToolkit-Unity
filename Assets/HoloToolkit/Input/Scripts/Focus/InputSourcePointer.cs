@@ -20,38 +20,50 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool OwnAllInput { get; set; }
 
-        public Ray Ray
-        {
+        public RayStep[] Rays {
             get
             {
-                return (RayStabilizer == null)
-                    ? rawRay
-                    : RayStabilizer.StableRay;
+                return rays;
             }
         }
+
+        public PointerResult Result { get; set; }
 
         public float? ExtentOverride { get; set; }
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        private Ray rawRay = default(Ray);
+        public bool InteractionEnabled
+        {
+            get
+            {
+                return true;
+            }
+        }
 
+        private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
+        
         public void UpdatePointer()
         {
             if (InputSource == null)
             {
-                rawRay = default(Ray);
+                rays[0] = default(RayStep);
             }
             else
             {
                 Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing));
 
-                InputSource.TryGetPointingRay(InputSourceId, out rawRay);
+                Ray pointingRay = default(Ray);
+                if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
+                {
+                    rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent (this));
+                }
             }
 
             if (RayStabilizer != null)
             {
-                RayStabilizer.UpdateStability(rawRay.origin, rawRay.direction);
+                RayStabilizer.UpdateStability(rays[0].origin, rays[0].direction);
+                rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
             }
         }
 
@@ -67,6 +79,6 @@ namespace HoloToolkit.Unity.InputModule
             return (inputData != null)
                 && (inputData.InputSource == InputSource)
                 && (inputData.SourceId == InputSourceId);
-        }
+        }    
     }
 }

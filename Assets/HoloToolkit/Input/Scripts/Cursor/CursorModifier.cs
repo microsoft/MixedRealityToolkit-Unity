@@ -78,7 +78,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             Quaternion rotation;
 
-            Vector3 forward = UseGazeBasedNormal ? -cursor.Pointer.Ray.direction : HostTransform.rotation * CursorNormal;
+            RayStep lastStep = cursor.Pointer.Rays[cursor.Pointer.Rays.Length - 1];
+            Vector3 forward = UseGazeBasedNormal ? -lastStep.direction : HostTransform.rotation * CursorNormal;
 
             // Determine the cursor forward
             if (forward.magnitude > 0)
