@@ -8,24 +8,6 @@ using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    [Serializable]
-    public class PointerResult
-    {
-        public Vector3 StartPoint { get; protected set; }
-
-        public FocusDetails End { get; protected set; }
-
-        public GameObject PreviousEndObject { get; protected set; }
-
-        public RaycastHit LastRaycastHit { get; protected set; }
-
-        /// <summary>
-        /// The index of the step that produced the last raycast hit
-        /// 0 when no raycast hit
-        /// </summary>
-        public int RayStepIndex { get; protected set; }
-    }
-
     /// <summary>
     /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor
     /// or pointing ray enabled motion controllers.
@@ -143,6 +125,12 @@ namespace HoloToolkit.Unity.InputModule
                 PointingSource = pointingSource;
             }
 
+            [Obsolete]
+            public void UpdateHit(RaycastHit hit)
+            {
+                throw new NotImplementedException();
+            }
+
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
@@ -193,7 +181,9 @@ namespace HoloToolkit.Unity.InputModule
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
                 if (clearPreviousObject)
+                {
                     PreviousEndObject = null;
+                }
 
                 End = new FocusDetails
                 {

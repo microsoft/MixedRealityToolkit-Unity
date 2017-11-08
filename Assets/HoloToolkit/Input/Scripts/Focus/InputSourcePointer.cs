@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,6 +20,9 @@ namespace HoloToolkit.Unity.InputModule
         public BaseRayStabilizer RayStabilizer { get; set; }
 
         public bool OwnAllInput { get; set; }
+
+        [Obsolete]
+        public Ray Ray { get { return Rays[0]; } }
 
         public RayStep[] Rays {
             get
