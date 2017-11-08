@@ -34,26 +34,31 @@ public class LineBaseEditor : MRTKEditor
         bool selected = Selection.activeGameObject == line.gameObject;
 
         int previewResolution = Mathf.Min(linePreviewResolutionSelected, linePreviewResolutionUnselected);
-        if (selected) {
+        if (selected)
+        {
             previewResolution = linePreviewResolutionSelected;
         }
 
         // Draw dotted lines regardless of selection
-        if (drawDottedLine) {
+        if (drawDottedLine)
+        {
             DrawDottedLine(line, linePreviewResolutionSelected);
         }
 
         // Draw rotations only on selected object
-        if (drawLineRotations && selected) {
+        if (drawLineRotations && selected)
+        {
             DrawLineRotations(line, linePreviewResolutionSelected);
         }
 
         // Draw up vectors only on selected object
-        if (drawLineManualUpVectors && selected) {
+        if (drawLineManualUpVectors && selected)
+        {
             DrawManualUpVectorHandles(line);
         }
 
-        if (drawLinePoints) {
+        if (drawLinePoints)
+        {
             DrawLinePoints(line);
         }
 
@@ -82,13 +87,15 @@ public class LineBaseEditor : MRTKEditor
             if (drawLineManualUpVectors)
             {
                 lineManualUpVectorLength = EditorGUILayout.Slider("Manual Up Vector Length", lineManualUpVectorLength, 1f, 10f);
-                if (GUILayout.Button ("Normalize Up Vectors"))
+                if (GUILayout.Button("Normalize Up Vectors"))
                 {
                     for (int i = 0; i < line.ManualUpVectors.Length; i++)
                     {
                         Vector3 upVector = line.ManualUpVectors[i];
                         if (upVector == Vector3.zero)
+                        {
                             upVector = Vector3.up;
+                        }
 
                         line.ManualUpVectors[i] = upVector.normalized;
                     }
@@ -156,7 +163,7 @@ public class LineBaseEditor : MRTKEditor
         }
     }
 
-    protected void DrawLineRotations (LineBase line, int numSteps)
+    protected void DrawLineRotations(LineBase line, int numSteps)
     {
         Handles.color = lineVelocityColor;
         float arrowSize = HandleUtility.GetHandleSize(line.transform.position) * lineRotationLength;
@@ -167,7 +174,7 @@ public class LineBaseEditor : MRTKEditor
             Vector3 currentPos = line.GetPoint(normalizedLength);
             Quaternion rotation = line.GetRotation(normalizedLength);
 
-            Handles.color = Color.Lerp (lineVelocityColor, Handles.zAxisColor, 0.75f);
+            Handles.color = Color.Lerp(lineVelocityColor, Handles.zAxisColor, 0.75f);
             Handles.ArrowHandleCap(0, currentPos, Quaternion.LookRotation(rotation * Vector3.forward), arrowSize, EventType.Repaint);
             Handles.color = Color.Lerp(lineVelocityColor, Handles.xAxisColor, 0.75f);
             Handles.ArrowHandleCap(0, currentPos, Quaternion.LookRotation(rotation * Vector3.right), arrowSize, EventType.Repaint);

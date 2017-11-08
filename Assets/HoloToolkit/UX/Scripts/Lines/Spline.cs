@@ -16,10 +16,13 @@ namespace Holotoolkit.Unity.UX
         [SerializeField]
         private bool alignControlPoints = true;
 
-        public bool AlignControlPoints {
+        public bool AlignControlPoints
+        {
             get { return alignControlPoints; }
-            set {
-                if (alignControlPoints != value) {
+            set
+            {
+                if (alignControlPoints != value)
+                {
                     alignControlPoints = value;
                     ForceUpdateAlignment();
                 }
@@ -34,38 +37,53 @@ namespace Holotoolkit.Unity.UX
             }
         }
 
-        public void ForceUpdateAlignment() {
-            if (AlignControlPoints) {
-                for (int i = 0; i < NumPoints; i++) {
+        public void ForceUpdateAlignment()
+        {
+            if (AlignControlPoints)
+            {
+                for (int i = 0; i < NumPoints; i++)
+                {
                     ForceUpdateAlignment(i);
                 }
             }
         }
 
-        private void ForceUpdateAlignment(int pointIndex) {
-            if (AlignControlPoints) {
+        private void ForceUpdateAlignment(int pointIndex)
+        {
+            if (AlignControlPoints)
+            {
                 int prevControlPoint = 0;
                 int changedControlPoint = 0;
                 int midPointIndex = ((pointIndex + 1) / 3) * 3;
 
-                if (pointIndex <= midPointIndex) {
+                if (pointIndex <= midPointIndex)
+                {
                     prevControlPoint = midPointIndex - 1;
                     changedControlPoint = midPointIndex + 1;
-                } else {
+                }
+                else
+                {
                     prevControlPoint = midPointIndex + 1;
                     changedControlPoint = midPointIndex - 1;
                 }
 
-                if (loops) {
-                    if (changedControlPoint < 0) {
+                if (loops)
+                {
+                    if (changedControlPoint < 0)
+                    {
                         changedControlPoint = (NumPoints - 1) + changedControlPoint;
-                    } else if (changedControlPoint >= NumPoints) {
+                    }
+                    else if (changedControlPoint >= NumPoints)
+                    {
                         changedControlPoint = changedControlPoint % (NumPoints - 1);
                     }
 
-                    if (prevControlPoint < 0) {
+                    if (prevControlPoint < 0)
+                    {
                         prevControlPoint = (NumPoints - 1) + prevControlPoint;
-                    } else if (prevControlPoint >= NumPoints) {
+                    }
+                    else if (prevControlPoint >= NumPoints)
+                    {
                         prevControlPoint = prevControlPoint % (NumPoints - 1);
                     }
 
@@ -74,7 +92,9 @@ namespace Holotoolkit.Unity.UX
                     tangent = tangent.normalized * Vector3.Distance(midPoint, points[changedControlPoint].Point);
                     points[changedControlPoint].Point = midPoint + tangent;
 
-                } else if (changedControlPoint >= 0 && changedControlPoint < NumPoints && prevControlPoint >= 0 && prevControlPoint < NumPoints) {
+                }
+                else if (changedControlPoint >= 0 && changedControlPoint < NumPoints && prevControlPoint >= 0 && prevControlPoint < NumPoints)
+                {
                     Vector3 midPoint = points[midPointIndex].Point;
                     Vector3 tangent = midPoint - points[prevControlPoint].Point;
                     tangent = tangent.normalized * Vector3.Distance(midPoint, points[changedControlPoint].Point);
@@ -102,18 +122,24 @@ namespace Holotoolkit.Unity.UX
             int point3Index = 0;
             int point4Index = 0;
 
-            if (!loops) {
-                if (point1Index + 3 >= NumPoints) {
+            if (!loops)
+            {
+                if (point1Index + 3 >= NumPoints)
+                {
                     return points[NumPoints - 1].Point;
                 }
                 if (point1Index < 0)
+                {
                     return points[0].Point;
+                }
 
                 point2Index = point1Index + 1;
                 point3Index = point1Index + 2;
                 point4Index = point1Index + 3;
 
-            } else {
+            }
+            else
+            {
                 point2Index = (point1Index + 1) % (NumPoints - 1);
                 point3Index = (point1Index + 2) % (NumPoints - 1);
                 point4Index = (point1Index + 3) % (NumPoints - 1);
@@ -130,47 +156,65 @@ namespace Holotoolkit.Unity.UX
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             if (pointIndex < 0 || pointIndex >= points.Length)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
-            if (loops && pointIndex == NumPoints - 1) {
+            if (loops && pointIndex == NumPoints - 1)
+            {
                 points[pointIndex] = points[0];
                 pointIndex = 0;
             }
 
             return points[pointIndex].Point;
         }
-       
+
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
             if (pointIndex < 0 || pointIndex >= points.Length)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
-            if (loops && pointIndex == NumPoints - 1) {
+            if (loops && pointIndex == NumPoints - 1)
+            {
                 points[pointIndex] = points[0];
                 pointIndex = 0;
             }
 
-            if (AlignControlPoints) {
-                if (pointIndex % 3 == 0) {
+            if (AlignControlPoints)
+            {
+                if (pointIndex % 3 == 0)
+                {
                     Vector3 delta = point - points[pointIndex].Point;
-                    if (loops) {
-                        if (pointIndex == 0) {
+                    if (loops)
+                    {
+                        if (pointIndex == 0)
+                        {
                             points[1].Point += delta;
                             points[NumPoints - 2].Point += delta;
                             points[NumPoints - 1].Point = point;
-                        } else if (pointIndex == NumPoints) {
+                        }
+                        else if (pointIndex == NumPoints)
+                        {
                             points[0].Point = point;
                             points[1].Point += delta;
                             points[pointIndex - 1].Point += delta;
-                        } else {
+                        }
+                        else
+                        {
                             points[pointIndex - 1].Point += delta;
                             points[pointIndex + 1].Point += delta;
                         }
-                    } else {
-                        if (pointIndex > 0) {
+                    }
+                    else
+                    {
+                        if (pointIndex > 0)
+                        {
                             points[pointIndex - 1].Point += delta;
                         }
-                        if (pointIndex + 1 < points.Length) {
+                        if (pointIndex + 1 < points.Length)
+                        {
                             points[pointIndex + 1].Point += delta;
                         }
                     }
@@ -182,16 +226,21 @@ namespace Holotoolkit.Unity.UX
             ForceUpdateAlignment(pointIndex);
         }
 
-        protected override Vector3 GetUpVectorInternal(float normalizedLength) {
+        protected override Vector3 GetUpVectorInternal(float normalizedLength)
+        {
 
             float arrayValueLength = 1f / points.Length;
             int indexA = Mathf.FloorToInt(normalizedLength * points.Length);
             if (indexA >= points.Length)
+            {
                 indexA = 0;
+            }
 
             int indexB = indexA + 1;
             if (indexB >= points.Length)
+            {
                 indexB = 0;
+            }
 
             float blendAmount = (normalizedLength - (arrayValueLength * indexA)) / arrayValueLength;
             Quaternion rotation = Quaternion.Lerp(points[indexA].Rotation, points[indexB].Rotation, blendAmount);
@@ -218,44 +267,46 @@ namespace Holotoolkit.Unity.UX
         {
             private static bool editPositions = true;
             private static bool editRotations = false;
+            private static List<SplinePoint> pointsList = new List<SplinePoint>();
+            private static HashSet<int> overlappingPointIndexes = new HashSet<int>();
 
             private const float overlappingPointThreshold = 0.015f;
 
             // Convenience buttons for adding / removing points
             protected override void DrawCustomFooter()
             {
-
                 base.DrawCustomFooter();
 
                 Spline line = (Spline)target;
-                
+
                 HashSet<int> overlappingPointIndexes = new HashSet<int>();
 
                 if (DrawSectionStart(line.name + " Points", "Point Editing"))
                 {
                     if (GUILayout.Button(" + Add Points to Start"))
                     {
-                        List<SplinePoint> points = new List<SplinePoint>();
+                        pointsList.Clear();
                         SplinePoint[] newPoints = new SplinePoint[3];
                         Vector3 direction = line.GetVelocity(0.01f);
                         float distance = Mathf.Max(line.UnclampedWorldLength * 0.05f, overlappingPointThreshold * 5);
                         newPoints[2].Point = line.FirstPoint - (direction * distance);
                         newPoints[1].Point = newPoints[2].Point - (direction * distance);
                         newPoints[0].Point = newPoints[1].Point - (direction * distance);
-                        points.AddRange(newPoints);
-                        points.AddRange(line.points);
-                        line.points = points.ToArray();
+                        pointsList.AddRange(newPoints);
+                        pointsList.AddRange(line.points);
+                        line.points = pointsList.ToArray();
                     }
                     if (line.NumPoints > 4)
                     {
                         if (GUILayout.Button(" - Remove Points From Start"))
                         {
                             // Using lists for maximum clarity
-                            List<SplinePoint> points = new List<SplinePoint>(line.points);
-                            points.RemoveAt(0);
-                            points.RemoveAt(0);
-                            points.RemoveAt(0);
-                            line.points = points.ToArray();
+                            pointsList.Clear();
+                            pointsList.AddRange(line.points);
+                            pointsList.RemoveAt(0);
+                            pointsList.RemoveAt(0);
+                            pointsList.RemoveAt(0);
+                            line.points = pointsList.ToArray();
                         }
                     }
 
@@ -279,7 +330,9 @@ namespace Holotoolkit.Unity.UX
                             for (int j = 0; j < line.points.Length; j++)
                             {
                                 if (j == i)
+                                {
                                     continue;
+                                }
 
                                 if (Vector3.Distance(line.points[j].Point, line.points[i].Point) < overlappingPointThreshold)
                                 {
@@ -344,27 +397,28 @@ namespace Holotoolkit.Unity.UX
                     if (GUILayout.Button(" + Add Points To End"))
                     {
                         // Using lists for maximum clarity
-                        List<SplinePoint> points = new List<SplinePoint>();
+                        pointsList.Clear();
                         SplinePoint[] newPoints = new SplinePoint[3];
                         Vector3 direction = line.GetVelocity(0.99f);
                         float distance = Mathf.Max(line.UnclampedWorldLength * 0.05f, overlappingPointThreshold * 5);
                         newPoints[0].Point = line.LastPoint + (direction * distance);
                         newPoints[1].Point = newPoints[0].Point + (direction * distance);
                         newPoints[2].Point = newPoints[1].Point + (direction * distance);
-                        points.AddRange(line.points);
-                        points.AddRange(newPoints);
-                        line.points = points.ToArray();
+                        pointsList.AddRange(line.points);
+                        pointsList.AddRange(newPoints);
+                        line.points = pointsList.ToArray();
                     }
                     if (line.NumPoints > 4)
                     {
                         if (GUILayout.Button(" - Remove Points From End"))
                         {
                             // Using lists for maximum clarity
-                            List<SplinePoint> points = new List<SplinePoint>(line.points);
-                            points.RemoveAt(points.Count - 1);
-                            points.RemoveAt(points.Count - 1);
-                            points.RemoveAt(points.Count - 1);
-                            line.points = points.ToArray();
+                            pointsList.Clear();
+                            pointsList.AddRange(line.points);
+                            pointsList.RemoveAt(pointsList.Count - 1);
+                            pointsList.RemoveAt(pointsList.Count - 1);
+                            pointsList.RemoveAt(pointsList.Count - 1);
+                            line.points = pointsList.ToArray();
                         }
                     }
                 }
@@ -374,7 +428,7 @@ namespace Holotoolkit.Unity.UX
             protected override void DrawCustomSceneGUI()
             {
                 Spline line = (Spline)target;
-                
+
                 base.DrawCustomSceneGUI();
 
                 for (int i = 0; i < line.NumPoints; i++)

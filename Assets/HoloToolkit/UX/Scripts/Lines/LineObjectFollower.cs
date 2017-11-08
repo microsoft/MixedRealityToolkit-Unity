@@ -16,7 +16,8 @@ namespace Holotoolkit.Unity.UX
         [SerializeField]
         private LineBase source;
 
-        private void Update() {
+        private void Update()
+        {
             Vector3 linePoint = source.GetPoint(NormalizedDistance);
             Object.position = linePoint;
         }

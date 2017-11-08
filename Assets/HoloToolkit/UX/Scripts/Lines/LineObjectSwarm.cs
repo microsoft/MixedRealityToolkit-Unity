@@ -10,7 +10,7 @@ namespace Holotoolkit.Unity.UX
 
         public List<Transform> Objects = new List<Transform>();
 
-        [Range(0,100)]
+        [Range(0, 100)]
         public int Seed = 0;
 
         [SerializeField]
@@ -49,7 +49,27 @@ namespace Holotoolkit.Unity.UX
 
         public Vector3 AxisScale = Vector3.one;
 
-        public Vector3 GetRandomPoint ()
+        public virtual LineBase Source
+        {
+            get
+            {
+                if (source == null)
+                {
+                    source = GetComponent<LineBase>();
+                }
+                return source;
+            }
+            set
+            {
+                source = value;
+                if (source == null)
+                {
+                    enabled = false;
+                }
+            }
+        }
+
+        public Vector3 GetRandomPoint()
         {
             Vector3 randomPoint = Vector3.one;
             randomPoint.x = (float)randomPosition.Next(-RandomValueResolution, RandomValueResolution) / (RandomValueResolution * 2);
@@ -63,20 +83,22 @@ namespace Holotoolkit.Unity.UX
         {
             UpdateCollection();
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(gameObject);
-            #endif
+#endif
         }
 
         public void UpdateCollection()
         {
-            if (source == null)
-                source = gameObject.GetComponent<LineBase>();
-            if (source == null)
+            if (Source == null)
+            {
                 return;
+            }
 
             if (prevPoints == null || prevPoints.Length != Objects.Count)
+            {
                 prevPoints = new Vector3[Objects.Count];
+            }
 
             randomPosition = new System.Random(Seed);
             Vector3 linePoint = source.GetPoint(NormalizedDistance);
@@ -85,9 +107,11 @@ namespace Holotoolkit.Unity.UX
             for (int i = 0; i < Objects.Count; i++)
             {
                 if (Objects[i] == null)
+                {
                     continue;
-                
-                Vector3 point = source.transform.TransformVector (GetRandomPoint());
+                }
+
+                Vector3 point = source.transform.TransformVector(GetRandomPoint());
                 point.x = (float)(point.x + (noise.Evaluate((point.x + AxisOffset.x) * ScaleMultiplier, Time.unscaledTime * AxisSpeed.x * SpeedMultiplier)) * AxisStrength.x * StrengthMultiplier);
                 point.y = (float)(point.y + (noise.Evaluate((point.y + AxisOffset.y) * ScaleMultiplier, Time.unscaledTime * AxisSpeed.y * SpeedMultiplier)) * AxisStrength.y * StrengthMultiplier);
                 point.z = (float)(point.z + (noise.Evaluate((point.z + AxisOffset.z) * ScaleMultiplier, Time.unscaledTime * AxisSpeed.z * SpeedMultiplier)) * AxisStrength.z * StrengthMultiplier);
@@ -96,7 +120,7 @@ namespace Holotoolkit.Unity.UX
                 if (SwarmVelocities)
                 {
                     Vector3 velocity = prevPoints[i] - point;
-                    Objects[i].rotation = Quaternion.Lerp (lineRotation, Quaternion.LookRotation(velocity, Vector3.up), VelocityBlend);
+                    Objects[i].rotation = Quaternion.Lerp(lineRotation, Quaternion.LookRotation(velocity, Vector3.up), VelocityBlend);
                 }
                 else
                 {

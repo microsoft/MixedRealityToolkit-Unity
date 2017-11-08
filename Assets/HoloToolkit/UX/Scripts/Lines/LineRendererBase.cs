@@ -20,7 +20,7 @@ namespace Holotoolkit.Unity.UX
         [Range(0f, 10f)]
         public float WidthMultiplier = 0.25f;
 
-        [Header ("Offsets")]
+        [Header("Offsets")]
         [Range(0f, 10f)]
         [Tooltip("Normalized offset for color gradient")]
         public float ColorOffset = 0f;
@@ -31,7 +31,7 @@ namespace Holotoolkit.Unity.UX
         [Tooltip("Normalized offset for rotation offset")]
         public float RotationOffset = 0f;
 
-        [Header ("Point Placement")]
+        [Header("Point Placement")]
         [Tooltip("Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all Line types.)")]
         public StepModeEnum StepMode = StepModeEnum.Interpolated;
         [Range(0, 2048)]
@@ -50,22 +50,32 @@ namespace Holotoolkit.Unity.UX
         [FeatureInProgress]
         public AnimationCurve StepLengthCurve = AnimationCurve.Linear(0f, 1f, 1f, 0.5f);
 
-        public virtual LineBase Target
+        public virtual LineBase Source
         {
             get
             {
+                if (source == null)
+                {
+                    source = GetComponent<LineBase>();
+                }
                 return source;
             }
             set
             {
                 source = value;
+                if (source == null)
+                {
+                    enabled = false;
+                }
             }
         }
 
-        protected virtual Color GetColor (float normalizedLength)
+        protected virtual Color GetColor(float normalizedLength)
         {
             if (LineColor == null)
+            {
                 LineColor = new Gradient();
+            }
 
             return LineColor.Evaluate(Mathf.Repeat(normalizedLength + ColorOffset, 1f));
         }
@@ -73,15 +83,11 @@ namespace Holotoolkit.Unity.UX
         protected virtual float GetWidth(float normalizedLength)
         {
             if (LineWidth == null)
+            {
                 LineWidth = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+            }
 
             return LineWidth.Evaluate(Mathf.Repeat(normalizedLength + WidthOffset, 1f)) * WidthMultiplier;
-        }
-                      
-        protected virtual void OnEnable()
-        {
-            if (source == null)
-                source = gameObject.GetComponent<LineBase>();
         }
 
         private float[] normalizedLengths;
@@ -91,7 +97,7 @@ namespace Holotoolkit.Unity.UX
         {
             if (Application.isPlaying)
                 return;
-            
+
             if (source == null)
                 source = gameObject.GetComponent<LineBase>();
             if (source == null || !source.enabled)

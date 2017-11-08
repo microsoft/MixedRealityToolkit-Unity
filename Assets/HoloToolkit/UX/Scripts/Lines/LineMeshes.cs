@@ -9,6 +9,7 @@ using UnityEngine.Rendering;
 
 namespace Holotoolkit.Unity.UX
 {
+    [UseWith(typeof(LineBase))]
     public class LineMeshes : LineRendererBase
     {
         readonly string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
@@ -17,7 +18,7 @@ namespace Holotoolkit.Unity.UX
         public Mesh LineMesh;
 
         public Material LineMaterial;
-        
+
         [MaterialProperty(MaterialPropertyAttribute.PropertyTypeEnum.Color, "LineMaterial")]
         public string ColorProp = "_Color";
 
@@ -34,10 +35,8 @@ namespace Holotoolkit.Unity.UX
         private Material onWillRenderMat;
         private Vector3[] meshVertices = new Vector3[3];
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
-
             if (LineMaterial == null)
             {
                 Debug.LogError("Line material cannot be null.");
@@ -80,7 +79,7 @@ namespace Holotoolkit.Unity.UX
         {
             executeCommandBuffer = false;
 
-            if (source.enabled)
+            if (Source.enabled)
             {
                 if (meshTransforms == null || meshTransforms.Length != NumLineSteps)
                 {
@@ -97,7 +96,7 @@ namespace Holotoolkit.Unity.UX
                 {
                     float normalizedDistance = (1f / (NumLineSteps - 1)) * i;
                     colorValues[i] = GetColor(normalizedDistance);
-                    meshTransforms[i] = Matrix4x4.TRS(source.GetPoint(normalizedDistance), source.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance));
+                    meshTransforms[i] = Matrix4x4.TRS(Source.GetPoint(normalizedDistance), Source.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance));
                 }
 
                 linePropertyBlock.SetVectorArray(colorID, colorValues);
@@ -140,9 +139,9 @@ namespace Holotoolkit.Unity.UX
         private void LateUpdate()
         {
             // Update our helper mesh so OnWillRenderObject will be called
-            meshVertices[0] = transform.InverseTransformPoint (source.GetPoint(0.0f));// - transform.position;
-            meshVertices[1] = transform.InverseTransformPoint (source.GetPoint(0.5f));// - transform.position;
-            meshVertices[2] = transform.InverseTransformPoint (source.GetPoint(1.0f));// - transform.position;
+            meshVertices[0] = transform.InverseTransformPoint(Source.GetPoint(0.0f));// - transform.position;
+            meshVertices[1] = transform.InverseTransformPoint(Source.GetPoint(0.5f));// - transform.position;
+            meshVertices[2] = transform.InverseTransformPoint(Source.GetPoint(1.0f));// - transform.position;
             onWillRenderMesh.vertices = meshVertices;
             onWillRenderMesh.RecalculateBounds();
         }

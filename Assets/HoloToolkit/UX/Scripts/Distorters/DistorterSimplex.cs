@@ -19,9 +19,6 @@ namespace Holotoolkit.Unity.UX
 
         protected override Vector3 DistortPointInternal(Vector3 point, float strength)
         {
-            if (!isActiveAndEnabled)
-                return point;
-
             Vector3 scaledPoint = (point * ScaleMultiplier) + AxisOffset;
 
             point.x = (float)(point.x + (noise.Evaluate(scaledPoint.x, scaledPoint.y, scaledPoint.z, Time.unscaledTime * AxisSpeed.x)) * AxisStrength.x * StrengthMultiplier);
@@ -32,9 +29,6 @@ namespace Holotoolkit.Unity.UX
 
         protected override Vector3 DistortScaleInternal(Vector3 point, float strength)
         {
-            if (!isActiveAndEnabled)
-                return Vector3.one;
-
             if (UniformScaleDistort)
             {
                 float scale = (float)(noise.Evaluate(point.x, point.y, point.z, Time.unscaledTime));

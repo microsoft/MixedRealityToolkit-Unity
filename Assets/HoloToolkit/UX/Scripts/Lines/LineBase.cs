@@ -147,7 +147,9 @@ namespace Holotoolkit.Unity.UX
         public void AddDistorter(Distorter newDistorter)
         {
             if (!distorters.Contains(newDistorter))
+            {
                 distorters.Add(newDistorter);
+            }
         }
 
         /// <summary>
@@ -250,7 +252,9 @@ namespace Holotoolkit.Unity.UX
             }
 
             if (rotationVector.magnitude < MinRotationMagnitude)
+            {
                 return transform.rotation;
+            }
 
             Vector3 upVector = GetUpVectorInternal(normalizedLength);
 
@@ -261,7 +265,9 @@ namespace Holotoolkit.Unity.UX
             }
 
             if (FlipUpVector)
+            {
                 upVector = -upVector;
+            }
 
             return Quaternion.LookRotation(rotationVector, upVector);
         }
@@ -307,7 +313,9 @@ namespace Holotoolkit.Unity.UX
         public Vector3 GetPoint (int pointIndex)
         {
             if (pointIndex < 0 || pointIndex >= NumPoints)
+            {
                 throw new System.IndexOutOfRangeException();
+            }
 
             return transform.TransformPoint(GetPointInternal(pointIndex));
         }
@@ -321,7 +329,9 @@ namespace Holotoolkit.Unity.UX
         public void SetPoint (int pointIndex, Vector3 point)
         {
             if (pointIndex < 0 || pointIndex >= NumPoints)
+            {
                 throw new System.IndexOutOfRangeException();
+            }
 
             SetPointInternal(pointIndex, transform.InverseTransformPoint(point));
         }
@@ -380,15 +390,21 @@ namespace Holotoolkit.Unity.UX
             // (SceneGUI will display it otherwise)
 
             if (Application.isPlaying)
+            {
                 return;
+            }
 
             if (UnityEditor.Selection.activeGameObject == this.gameObject)
+            {
                 return;
+            }
 
             // Only draw a gizmo if we don't have a line renderer
-            LineRendererBase lr = gameObject.GetComponent<LineRendererBase>();
-            if (lr != null)
+            LineRendererBase lineRenderer = gameObject.GetComponent<LineRendererBase>();
+            if (lineRenderer != null)
+            {
                 return;
+            }
 
             Vector3 firstPos = GetPoint(0f);
             Vector3 lastPos = firstPos;

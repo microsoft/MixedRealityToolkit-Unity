@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class MRTKEditor : Editor
     {
-    #region static vars
+        #region static vars
         // Toggles custom editors on / off
         public static bool ShowCustomEditors = true;
         public static GameObject lastTarget;
@@ -70,7 +70,7 @@ namespace HoloToolkit.Unity
 
         private bool recordingUndo = false;
 
-    #endregion
+        #endregion
 
         public override void OnInspectorGUI()
         {
@@ -124,9 +124,13 @@ namespace HoloToolkit.Unity
                             HeaderAttribute h = member.GetCustomAttributes(typeof(HeaderAttribute), true)[0] as HeaderAttribute;
                             string lookupName = targetType.Name + h.header;
                             if (!displayedSections.ContainsKey(lookupName))
+                            {
                                 displayedSections.Add(lookupName, true);
+                            }
                             else
+                            {
                                 displayedSections[lookupName] = true;
+                            }
                         }
                     }
                 }
@@ -140,9 +144,13 @@ namespace HoloToolkit.Unity
                             HeaderAttribute h = member.GetCustomAttributes(typeof(HeaderAttribute), true)[0] as HeaderAttribute;
                             string lookupName = targetType.Name + h.header;
                             if (!displayedSections.ContainsKey(lookupName))
+                            {
                                 displayedSections.Add(lookupName, false);
+                            }
                             else
+                            {
                                 displayedSections[lookupName] = false;
+                            }
                         }
                     }
                 }
@@ -160,10 +168,14 @@ namespace HoloToolkit.Unity
                 {
                     string description = attribute.Description;
                     if (string.IsNullOrEmpty(description))
+                    {
                         description = "Click for documentation about " + targetType.Name;
+                    }
 
                     if (GUILayout.Button(description, EditorStyles.toolbarButton))
+                    {
                         Application.OpenURL(attribute.DocURL);
+                    }
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -171,10 +183,14 @@ namespace HoloToolkit.Unity
                 {
                     string description = attribute.Description;
                     if (string.IsNullOrEmpty(description))
+                    {
                         description = "Click for a tutorial on " + targetType.Name;
+                    }
 
                     if (GUILayout.Button(description, EditorStyles.toolbarButton))
+                    {
                         Application.OpenURL(attribute.TutorialURL);
+                    }
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -183,13 +199,17 @@ namespace HoloToolkit.Unity
                 {
                     Component targetGo = (Component)target;
                     if (targetGo == null)
+                    {
                         break;
+                    }
 
                     foreach (Type type in attribute.UseWithTypes)
                     {
                         Component c = targetGo.GetComponent(type);
                         if (c == null)
+                        {
                             missingTypes.Add(type);
+                        }
                     }
                 }
                 if (missingTypes.Count > 0)
@@ -246,7 +266,9 @@ namespace HoloToolkit.Unity
                     {
                         HeaderAttribute header = member.GetCustomAttributes(typeof(HeaderAttribute), true)[0] as HeaderAttribute;
                         if (insideSectionBlock)
+                        {
                             DrawSectionEnd();
+                        }
 
                         insideSectionBlock = true;
                         drawCurrentSection = DrawSectionStart(target.GetType().Name, header.header);
@@ -254,11 +276,15 @@ namespace HoloToolkit.Unity
 
                     // Then do basic show / hide based on ShowIfAttribute
                     if ((insideSectionBlock && !drawCurrentSection) || !ShouldDrawMember(member, targetType, target))
+                    {
                         continue;
+                    }
 
                     // Handle drawing stuff (indent, help)
                     if (showHelp)
+                    {
                         DrawToolTip(member);
+                    }
 
                     if (member.IsDefined(typeof(SetIndentAttribute), true))
                     {
@@ -271,7 +297,7 @@ namespace HoloToolkit.Unity
                     {
                         GUI.color = helpBoxColor;
                         EditorGUILayout.LabelField("(This field or property is marked as 'In Progress' and may have no effect.)", inProgressStyle);
-                        GUI.color = Color.Lerp (disabledColor, Color.clear, 0.5f);
+                        GUI.color = Color.Lerp(disabledColor, Color.clear, 0.5f);
                     }
                     else
                     {
@@ -328,7 +354,9 @@ namespace HoloToolkit.Unity
                         else if (drawOverrideAttributes.Length > 0)
                         {
                             if (drawOverrideAttributes.Length > 1)
+                            {
                                 DrawWarning("You should only use one DrawOverride attribute per member. Drawing " + drawOverrideAttributes[0].GetType().Name + " only.");
+                            }
 
                             (drawOverrideAttributes[0] as DrawOverrideAttribute).DrawEditor(target, prop);
                         }
@@ -340,9 +368,11 @@ namespace HoloToolkit.Unity
                     DrawError(System.Environment.NewLine + e.ToString());
                 }
             }
-            
+
             if (insideSectionBlock)
+            {
                 DrawSectionEnd();
+            }
 
             EditorGUILayout.EndVertical();
         }
@@ -375,7 +405,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-    #region drawing
+        #region drawing
 
         /// <summary>
         /// Determines whether this member should be shown in the editor
@@ -441,7 +471,9 @@ namespace HoloToolkit.Unity
         {
             SerializedProperty prop = serializedObject.FindProperty(propertyPath);
             if (prop != null)
+            {
                 EditorGUILayout.PropertyField(prop, true);
+            }
         }
 
         /// <summary>
@@ -464,7 +496,9 @@ namespace HoloToolkit.Unity
             GUI.color = sectionColor;
 
             if (toUpper)
+            {
                 headerName = headerName.ToUpper();
+            }
 
             drawSection = EditorGUILayout.Foldout(drawSection, headerName, true, sectionStyle);
             displayedSections[lookupName] = drawSection;
@@ -558,9 +592,9 @@ namespace HoloToolkit.Unity
             }
         }
 
-    #endregion
+        #endregion
 
-    #region profiles
+        #region profiles
 
         /// <summary>
         /// Draws a field for scriptable object profiles
@@ -712,7 +746,9 @@ namespace HoloToolkit.Unity
             if (baseType.IsGenericType == false)
             {
                 if (type.IsGenericType == false)
+                {
                     return type.IsSubclassOf(baseType);
+                }
             }
             else
             {
@@ -727,7 +763,9 @@ namespace HoloToolkit.Unity
                 Type curentType = type.IsGenericType ?
                     type.GetGenericTypeDefinition() : type;
                 if (curentType == baseType)
+                {
                     return true;
+                }
 
                 type = type.BaseType;
             }
@@ -745,7 +783,9 @@ namespace HoloToolkit.Unity
 
             Handles.color = handleColorAxis;
             if (autoSize)
+            {
                 handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
 
             Handles.DrawDottedLine(origin, position, DottedLineScreenSpace);
             Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(direction), handleSize * 2, EventType.Repaint);
@@ -764,11 +804,13 @@ namespace HoloToolkit.Unity
             return distance;
         }
 
-        protected Vector3 CircleMoveHandle (Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f)
+        protected Vector3 CircleMoveHandle(Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f)
         {
             Handles.color = handleColorCircle;
             if (autoSize)
+            {
                 handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
 
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
             if (recordingUndo)
@@ -790,7 +832,9 @@ namespace HoloToolkit.Unity
         {
             Handles.color = handleColorSquare;
             if (autoSize)
+            {
                 handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
 
             // Multiply square handle to match other types
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 0.8f, Vector3.zero, Handles.RectangleHandleCap);
@@ -813,7 +857,9 @@ namespace HoloToolkit.Unity
         {
             Handles.color = handleColorSphere;
             if (autoSize)
-                handleSize = Mathf.Lerp (handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
 
             // Multiply sphere handle size to match other types
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 2, Vector3.zero, Handles.SphereHandleCap);
@@ -836,12 +882,15 @@ namespace HoloToolkit.Unity
         {
             Handles.color = handleColorTangent;
             if (autoSize)
+            {
                 handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(origin) * handleSize, 0.75f);
+            }
 
             Vector3 handlePosition = origin + (vector * handleLength);
             float distanceToOrigin = Vector3.Distance(origin, handlePosition) / handleLength;
-            
-            if (normalize) {
+
+            if (normalize)
+            {
                 vector.Normalize();
             }
             else
@@ -853,7 +902,7 @@ namespace HoloToolkit.Unity
                     // To indicate that we're at the clamped limit, make the handle 'pop' slightly larger
                     if (distanceToOrigin >= 0.98f)
                     {
-                        Handles.color = Color.Lerp (handleColorTangent, Color.white, 0.5f);
+                        Handles.color = Color.Lerp(handleColorTangent, Color.white, 0.5f);
                         handleSize *= 1.5f;
                     }
                 }
@@ -864,11 +913,15 @@ namespace HoloToolkit.Unity
 
             Quaternion rotation = Quaternion.identity;
             if (vector != Vector3.zero)
+            {
                 rotation = Quaternion.LookRotation(vector);
+            }
 
             Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, rotation, handleSize, Vector3.zero, Handles.DotHandleCap);
             if (recordingUndo)
+            {
                 return vector;
+            }
 
             if (handlePosition != newPosition)
             {
@@ -895,13 +948,17 @@ namespace HoloToolkit.Unity
         {
             Handles.color = handleColorRotation;
             if (autoSize)
+            {
                 handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
 
             // Make rotation handles larger so they can overlay movement handles
             Quaternion newRotation = Handles.FreeRotateHandle(rotation, position, handleSize * 2);
             if (recordingUndo)
+            {
                 return newRotation;
-            
+            }
+
             Handles.color = Handles.zAxisColor;
             Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.forward), handleSize * 2, EventType.Repaint);
             Handles.color = Handles.xAxisColor;
@@ -918,7 +975,7 @@ namespace HoloToolkit.Unity
             }
             return rotation;
         }
-    #endregion
+        #endregion
     }
 #endif
 }

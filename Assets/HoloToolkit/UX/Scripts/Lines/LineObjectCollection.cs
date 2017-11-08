@@ -46,15 +46,46 @@ namespace Holotoolkit.Unity.UX
         [Header("Object Placement")]
         public StepModeEnum StepMode = StepModeEnum.Interpolated;
 
+        [SerializeField]
+        private LineBase source;
+
+        [SerializeField]
+        private Transform transformHelper;
+
+        public virtual LineBase Source
+        {
+            get
+            {
+                if (source == null)
+                {
+                    source = GetComponent<LineBase>();
+                }
+                return source;
+            }
+            set
+            {
+                source = value;
+                if (source == null)
+                {
+                    enabled = false;
+                }
+            }
+        }
+
         // Convenience functions
         public float GetOffsetFromObjectIndex(int index, bool wrap = true)
         {
             if (Objects.Count == 0)
+            {
                 return 0;
+            }
 
-            if (wrap) {
+            if (wrap)
+            {
                 index = WrapIndex(index, Objects.Count);
-            } else {
+            }
+            else
+            {
                 index = Mathf.Clamp(index, 0, Objects.Count - 1);
             }
 
@@ -64,13 +95,18 @@ namespace Holotoolkit.Unity.UX
         public int GetNextObjectIndex(int index, bool wrap = true)
         {
             if (Objects.Count == 0)
+            {
                 return 0;
+            }
 
             index++;
 
-            if (wrap) {
+            if (wrap)
+            {
                 return WrapIndex(index, Objects.Count);
-            } else {
+            }
+            else
+            {
                 return Mathf.Clamp(index, 0, Objects.Count - 1);
             }
         }
@@ -82,9 +118,12 @@ namespace Holotoolkit.Unity.UX
 
             index--;
 
-            if (wrap) {
+            if (wrap)
+            {
                 return WrapIndex(index, Objects.Count);
-            } else {
+            }
+            else
+            {
                 return Mathf.Clamp(index, 0, Objects.Count - 1);
             }
         }
@@ -96,10 +135,10 @@ namespace Holotoolkit.Unity.UX
 
         public void UpdateCollection()
         {
-            if (source == null)
-                source = gameObject.GetComponent<LineBase>();
-            if (source == null)
+            if (Source == null)
+            {
                 return;
+            }
 
             if (transformHelper == null)
             {
@@ -120,11 +159,13 @@ namespace Holotoolkit.Unity.UX
                     for (int i = 0; i < Objects.Count; i++)
                     {
                         if (Objects[i] == null)
+                        {
                             continue;
+                        }
 
                         float normalizedDistance = Mathf.Repeat(((float)i / Objects.Count) + DistributionOffset, 1f);
-                        Objects[i].position = source.GetPoint(normalizedDistance);
-                        Objects[i].rotation = source.GetRotation(normalizedDistance, RotationTypeOverride);
+                        Objects[i].position = Source.GetPoint(normalizedDistance);
+                        Objects[i].rotation = Source.GetRotation(normalizedDistance, RotationTypeOverride);
 
                         transformHelper.localScale = Vector3.one;
                         transformHelper.position = Objects[i].position;
@@ -139,7 +180,7 @@ namespace Holotoolkit.Unity.UX
             }
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (Application.isPlaying)
@@ -147,21 +188,16 @@ namespace Holotoolkit.Unity.UX
 
             UpdateCollection();
         }
-        #endif
+#endif
 
         private static int WrapIndex(int index, int numObjects)
         {
             return ((index % numObjects) + numObjects) % numObjects;
         }
-
-        [SerializeField]
-        private LineBase source;
-
-        private Transform transformHelper;
     }
 
-    #if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof (LineObjectCollection))]
+#if UNITY_EDITOR
+    [UnityEditor.CustomEditor(typeof(LineObjectCollection))]
     public class LineObjectCollectionEditor : UnityEditor.Editor
     {
         public void OnSceneGUI()
@@ -172,10 +208,10 @@ namespace Holotoolkit.Unity.UX
             {
                 if (loc.Objects[i] != null)
                 {
-                    UnityEditor.Handles.Label(loc.Objects[i].position, "Index: "+ i.ToString("000") + "\nOffset: " + loc.GetOffsetFromObjectIndex(i).ToString("00.00"));
+                    UnityEditor.Handles.Label(loc.Objects[i].position, "Index: " + i.ToString("000") + "\nOffset: " + loc.GetOffsetFromObjectIndex(i).ToString("00.00"));
                 }
             }
         }
     }
-    #endif
+#endif
 }

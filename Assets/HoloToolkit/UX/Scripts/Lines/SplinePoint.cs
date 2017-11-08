@@ -4,9 +4,12 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public struct SplinePoint
+namespace Holotoolkit.Unity.UX
 {
-    public Vector3 Point;
-    public Quaternion Rotation;
+    [Serializable]
+    public struct SplinePoint
+    {
+        public Vector3 Point;
+        public Quaternion Rotation;
+    }
 }

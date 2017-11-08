@@ -47,7 +47,8 @@ namespace Holotoolkit.Unity.UX
         public float YSize
         {
             get { return ySize; }
-            set {
+            set
+            {
                 if (ySize != value)
                 {
                     ySize = value;
@@ -90,7 +91,9 @@ namespace Holotoolkit.Unity.UX
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
             if (points == null || points.Length != 8)
+            {
                 points = new Vector3[8];
+            }
 
             BuildPoints();
 
@@ -100,19 +103,27 @@ namespace Holotoolkit.Unity.UX
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
             if (points == null || points.Length != 8)
+            {
                 points = new Vector3[8];
+            }
 
             if (pointIndex <= 7 && pointIndex >= 0)
+            {
                 points[pointIndex] = point;
+            }
         }
 
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             if (points == null || points.Length != 8)
+            {
                 points = new Vector3[8];
+            }
 
             if (pointIndex <= 7 && pointIndex >= 0)
-                    return points[pointIndex];
+            {
+                return points[pointIndex];
+            }
 
             return Vector3.zero;
         }
@@ -157,9 +168,10 @@ namespace Holotoolkit.Unity.UX
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(Rectangle))]
-        public class CustomEditor : LineBaseEditor {
+        public class CustomEditor : LineBaseEditor
+        {
             // Use FromSource step mode for rectangles since interpolated looks weird
-            protected override StepModeEnum EditorStepMode { get { return StepModeEnum.FromSource; } }            
+            protected override StepModeEnum EditorStepMode { get { return StepModeEnum.FromSource; } }
         }
 
         protected override void OnDrawGizmos()
@@ -168,15 +180,21 @@ namespace Holotoolkit.Unity.UX
             // (SceneGUI will display it otherwise)
 
             if (Application.isPlaying)
+            {
                 return;
+            }
 
             if (UnityEditor.Selection.activeGameObject == this.gameObject)
+            {
                 return;
+            }
 
             // Only draw a gizmo if we don't have a line renderer
             LineRendererBase lr = gameObject.GetComponent<LineRendererBase>();
             if (lr != null)
+            {
                 return;
+            }
 
             Vector3 firstPos = GetPoint(0);
             Vector3 lastPos = firstPos;

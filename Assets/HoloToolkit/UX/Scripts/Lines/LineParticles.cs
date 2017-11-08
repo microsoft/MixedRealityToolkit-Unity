@@ -2,10 +2,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using HoloToolkit.Unity;
 using UnityEngine;
 
 namespace Holotoolkit.Unity.UX
 {
+    [UseWith(typeof(LineBase))]
     public class LineParticles : LineRendererBase
     {
         const int GlobalMaxParticles = 2048;
@@ -37,15 +39,9 @@ namespace Holotoolkit.Unity.UX
         private ParticleSystem.NoiseModule mainNoise;
         private float decayStartTime = 0f;
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
-
-            if (particles == null)
-                particles = gameObject.GetComponent<ParticleSystem>();
-
-            if (particles == null)
-                particles = gameObject.AddComponent<ParticleSystem>();
+            particles = gameObject.EnsureComponent<ParticleSystem>();
 
             mainNoise = particles.noise;
 
@@ -57,7 +53,7 @@ namespace Holotoolkit.Unity.UX
             ParticleSystem.MainModule main = particles.main;
             main.loop = false;
             main.playOnAwake = false;
-            main.maxParticles = Mathf.Min (MaxParticles, GlobalMaxParticles);
+            main.maxParticles = Mathf.Min(MaxParticles, GlobalMaxParticles);
             main.simulationSpace = ParticleSystemSimulationSpace.World;
 
             ParticleSystem.ShapeModule shape = particles.shape;
@@ -83,12 +79,14 @@ namespace Holotoolkit.Unity.UX
         private void OnDisable()
         {
             if (mainParticleRenderer != null)
+            {
                 mainParticleRenderer.enabled = false;
+            }
         }
 
-        private void Update() {
-
-            if (!source.enabled)
+        private void Update()
+        {
+            if (!Source.enabled)
             {
                 mainNoise.enabled = ParticleNoiseOnDisabled;
                 mainNoise.strengthX = NoiseStrength.x;
@@ -98,9 +96,10 @@ namespace Holotoolkit.Unity.UX
                 mainNoise.scrollSpeed = NoiseSpeed;
                 mainNoise.frequency = NoiseFrequency;
 
-
                 if (decayStartTime < 0)
+                {
                     decayStartTime = Time.unscaledTime;
+                }
             }
             else
             {
@@ -108,13 +107,13 @@ namespace Holotoolkit.Unity.UX
                 decayStartTime = -1;
             }
 
-            if (source.enabled)
+            if (Source.enabled)
             {
                 for (int i = 0; i < NumLineSteps; i++)
                 {
                     float normalizedDistance = (1f / (NumLineSteps - 1)) * i;
                     ParticleSystem.Particle particle = mainParticleArray[i];
-                    particle.position = source.GetPoint(normalizedDistance);
+                    particle.position = Source.GetPoint(normalizedDistance);
                     particle.startColor = GetColor(normalizedDistance);
                     particle.startSize = GetWidth(normalizedDistance);
                     mainParticleArray[i] = particle;

@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Holotoolkit.Unity.UX
 {
+    [UseWith(typeof(LineBase))]
     public class LineUnity : LineRendererBase
     {
         const string DefaultLineShader = "Particles/Alpha Blended";
@@ -19,16 +20,22 @@ namespace Holotoolkit.Unity.UX
         public bool RoundedEdges = true;
         public bool RoundedCaps = true;
 
-        protected override void OnEnable()
+        [SerializeField]
+        private UnityEngine.LineRenderer lineRenderer;
+
+        private Vector3[] positions;
+
+        protected void OnEnable()
         {
-            base.OnEnable();
-
+            // If we haven't specified a line renderer
             if (lineRenderer == null)
-                lineRenderer = gameObject.GetComponent<UnityEngine.LineRenderer>();
-            if (lineRenderer == null)
-                lineRenderer = gameObject.AddComponent<UnityEngine.LineRenderer>();
+            {
+                // Get or create one that's attached to this gameObject
+                lineRenderer = gameObject.EnsureComponent<UnityEngine.LineRenderer>();
+            }
 
-            if (LineMaterial == null) {
+            if (LineMaterial == null)
+            {
                 LineMaterial = new Material(Shader.Find(DefaultLineShader));
                 LineMaterial.SetColor(DefaultLineShaderColor, Color.white);
             }
@@ -48,7 +55,7 @@ namespace Holotoolkit.Unity.UX
                 {
                     lineRenderer.enabled = true;
 
-                    switch (this.StepMode)
+                    switch (StepMode)
                     {
                         case StepModeEnum.FromSource:
                             lineRenderer.positionCount = source.NumPoints;
@@ -98,11 +105,6 @@ namespace Holotoolkit.Unity.UX
                 yield return null;
             }
         }
-
-        [SerializeField]
-        private UnityEngine.LineRenderer lineRenderer;
-
-        private Vector3[] positions;
 
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(LineUnity))]

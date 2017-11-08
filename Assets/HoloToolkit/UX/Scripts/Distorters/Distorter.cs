@@ -9,6 +9,13 @@ namespace Holotoolkit.Unity.UX
 {
     public abstract class Distorter : MonoBehaviour, IComparable<Distorter>
     {
+        [SerializeField]
+        [Range(0, 10)]
+        protected int distortOrder = 0;
+        [SerializeField]
+        [Range(0, 1)]
+        protected float distortStrength = 1f;
+
         public int CompareTo(Distorter other)
         {
             if (other == null) {
@@ -34,7 +41,9 @@ namespace Holotoolkit.Unity.UX
             strength = Mathf.Clamp01 (strength * DistortStrength);
 
             if (strength <= 0)
+            {
                 return point;
+            }
 
             return DistortPointInternal(point, strength);
         }
@@ -94,12 +103,5 @@ namespace Holotoolkit.Unity.UX
             get { return distortOrder; }
             set { distortOrder = value; } // TODO implement auto-sort
         }
-
-        [SerializeField]
-        [Range(0,10)]
-        protected int distortOrder = 0;
-        [SerializeField]
-        [Range(0,1)]
-        protected float distortStrength = 1f;
     }
 }
