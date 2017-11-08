@@ -180,7 +180,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1635556075}
-  - {fileID: 1895018971}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -657,89 +656,3 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1763047398}
   m_Script: {fileID: 11500000, guid: 0decd33ba8702954885a62b5bc1a778e, type: 3}
---- !u!1 &1895018970
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1895018971}
-  - component: {fileID: 1895018972}
-  m_Layer: 0
-  m_Name: XboxControllerInputSource
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1895018971
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1895018970}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 402900810}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1895018972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1895018970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53e0243d951df74baba23d966f61986, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DeviceRefreshInterval: 3
-  horizontalAxis: 3
-  verticalAxis: 4
-  submitButton: 10
-  cancelButton: 11
-  mapping:
-  - Type: 0
-    Value: 
-  - Type: 1
-    Value: 
-  - Type: 2
-    Value: 
-  - Type: 3
-    Value: 
-  - Type: 4
-    Value: 
-  - Type: 5
-    Value: 
-  - Type: 6
-    Value: 
-  - Type: 7
-    Value: 
-  - Type: 8
-    Value: 
-  - Type: 9
-    Value: 
-  - Type: 10
-    Value: 
-  - Type: 11
-    Value: 
-  - Type: 12
-    Value: 
-  - Type: 13
-    Value: 
-  - Type: 14
-    Value: 
-  - Type: 15
-    Value: 
-  - Type: 16
-    Value: 
-  - Type: 17
-    Value: 
-  - Type: 18
-    Value: 
-  - Type: 19
-    Value: 
