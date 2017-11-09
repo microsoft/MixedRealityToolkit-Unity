@@ -141,11 +141,11 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         pointerData = new PointerInputEventData(EventSystem.current);
                     }
-
+                    
                     return pointerData;
                 }
             }
-
+            
             public PointerData(IPointingSource pointingSource)
             {
                 PointingSource = pointingSource;

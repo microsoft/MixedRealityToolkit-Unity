@@ -113,10 +113,10 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
         public PointerResult Result { get; set; }
-
+        
         [Obsolete]
         public Ray Ray { get { return Rays[0]; } }
-
+        
         public RayStep[] Rays { get { return rays; } }
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.zero) };
