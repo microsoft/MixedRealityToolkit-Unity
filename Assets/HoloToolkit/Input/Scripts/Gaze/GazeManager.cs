@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public Vector3 GazeOrigin
         {
-            get { return FirstRay.origin; }
+            get { return Rays[0].origin; }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public Vector3 GazeNormal
         {
-            get { return FirstRay.direction; }
+            get { return Rays[0].direction; }
         }
 
         /// <summary>
@@ -120,8 +120,6 @@ namespace HoloToolkit.Unity.InputModule
         public RayStep[] Rays { get { return rays; } }
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.zero) };
-
-        private RayStep FirstRay { get { return rays[0]; } set { rays[0] = value; } }
  
         public float? ExtentOverride
         {
@@ -190,7 +188,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (GazeTransform == null)
             {
-                FirstRay = default(RayStep);
+                Rays[0] = default(RayStep);
             }
             else
             {
@@ -205,7 +203,7 @@ namespace HoloToolkit.Unity.InputModule
                     newGazeNormal = Stabilizer.StableRay.direction;
                 }
 
-                FirstRay.UpdateRaystep(newGazeOrigin, newGazeOrigin + newGazeNormal);
+                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent (this)));
             }
 
             UpdateHitPosition();
@@ -242,7 +240,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (focusDetails.Object != null)
             {
-                lastHitDistance = (focusDetails.Point - FirstRay.origin).magnitude;
+                lastHitDistance = (focusDetails.Point - Rays[0].origin).magnitude;
                 UpdateHitPosition();
                 HitNormal = focusDetails.Normal;
             }
@@ -250,7 +248,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdateHitPosition()
         {
-            HitPosition = (FirstRay.origin + (lastHitDistance * FirstRay.direction));
+            HitPosition = (Rays[0].origin + (lastHitDistance * Rays[0].direction));
         }
     }
 }

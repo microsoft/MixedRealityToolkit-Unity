@@ -24,10 +24,10 @@ namespace HoloToolkit.Unity
             return Vector3.MoveTowards(origin, terminus, distance);
         }
 
-        public void UpdateRaystep(Vector3 newOrigin, Vector3 newTerminus)
+        public void UpdateRayStep(Vector3 origin, Vector3 terminus)
         {
-            origin = origin;
-            terminus = terminus;
+            this.origin = origin;
+            this.terminus = terminus;
             length = Vector3.Distance(origin, terminus);
             direction = (this.terminus - this.origin).normalized;
         }
