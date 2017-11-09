@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
-        
+
             if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
             {
                 UnityEngine.WSA.Application.InvokeOnUIThread(() =>
