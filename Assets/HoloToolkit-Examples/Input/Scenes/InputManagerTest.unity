@@ -1397,7 +1397,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 485146271}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1650,9 +1650,19 @@ Prefab:
       propertyPath: Cursor
       value: 
       objectReference: {fileID: 759629491}
+    - target: {fileID: 114950568511066590, guid: 3eddd1c29199313478dd3f912bfab2ab,
+        type: 2}
+      propertyPath: simulateHandsInEditor
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
   m_IsPrefabParent: 0
+--- !u!20 &485146271 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 20049547090947856, guid: 3eddd1c29199313478dd3f912bfab2ab,
+    type: 2}
+  m_PrefabInternal: {fileID: 485146270}
 --- !u!1 &502235477
 GameObject:
   m_ObjectHideFlags: 0
@@ -3147,6 +3157,11 @@ Prefab:
         type: 2}
       propertyPath: ShapeModule.radius.value
       value: 0.02237308
+      objectReference: {fileID: 0}
+    - target: {fileID: 199000010866415596, guid: 31ed45da60c98354380578a9bde4814d,
+        type: 2}
+      propertyPath: m_SelectedEditorRenderState
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31ed45da60c98354380578a9bde4814d, type: 2}

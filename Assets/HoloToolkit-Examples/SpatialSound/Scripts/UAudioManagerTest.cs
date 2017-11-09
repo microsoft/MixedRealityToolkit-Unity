@@ -8,6 +8,13 @@ namespace HoloToolkit.Unity.Tests
 {
     public class UAudioManagerTest : MonoBehaviour
     {
+        [AudioEvent]
+        public string Vocals3d;
+        [AudioEvent]
+        public string VocalsSpatialized;
+        [AudioEvent]
+        public string Laser;
+
         private void Start()
         {
             StartCoroutine(ContinouslyPlaySounds());
@@ -17,13 +24,17 @@ namespace HoloToolkit.Unity.Tests
         {
             while (true)
             {
-                UAudioManager.Instance.PlayEvent("Laser");
-
-                yield return new WaitForSeconds(1.0f);
-
-                UAudioManager.Instance.PlayEvent("Vocals");
+                UAudioManager.Instance.PlayEvent(Vocals3d);
 
                 yield return new WaitForSeconds(10.0f);
+
+                UAudioManager.Instance.PlayEvent(VocalsSpatialized);
+
+                yield return new WaitForSeconds(10.0f);
+
+                UAudioManager.Instance.PlayEvent(Laser);
+
+                yield return new WaitForSeconds(1.0f);
             }
         }
 

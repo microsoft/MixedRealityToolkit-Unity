@@ -909,12 +909,26 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
         {
-            InputManager.Instance.RaiseSourceUp(this, args.state.source.id, (InteractionSourcePressInfo)args.pressType);
+            var pressType = (InteractionSourcePressInfo)args.pressType;
+            // HACK: If we're not dealing with a spatial controller we may not get Select called properly
+            if (args.state.source.kind != InteractionSourceKind.Controller)
+            {
+                pressType = InteractionSourcePressInfo.Select;
+            }
+
+            InputManager.Instance.RaiseSourceUp(this, args.state.source.id, pressType);
         }
 
         private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
         {
-            InputManager.Instance.RaiseSourceDown(this, args.state.source.id, (InteractionSourcePressInfo)args.pressType);
+            var pressType = (InteractionSourcePressInfo)args.pressType;
+            // HACK: If we're not dealing with a spatial controller we may not get Select called properly
+            if (args.state.source.kind != InteractionSourceKind.Controller)
+            {
+                pressType = InteractionSourcePressInfo.Select;
+            }
+
+            InputManager.Instance.RaiseSourceDown(this, args.state.source.id, pressType);
         }
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
@@ -1052,22 +1066,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceReleased(InteractionSourceState state)
         {
-            InputManager.Instance.RaiseSourceUp(this, state.source.id,
-#if UNITY_2017_2_OR_NEWER
-                (InteractionSourcePressInfo)args.pressType);
-#else
-                InteractionSourcePressInfo.Select);
-#endif
+            InputManager.Instance.RaiseSourceUp(this, state.source.id, InteractionSourcePressInfo.Select);
         }
 
         private void InteractionManager_InteractionSourcePressed(InteractionSourceState state)
         {
-            InputManager.Instance.RaiseSourceDown(this, state.source.id,
-#if UNITY_2017_2_OR_NEWER
-                (InteractionSourcePressInfo)args.pressType);
-#else
-                InteractionSourcePressInfo.Select);
-#endif
+            InputManager.Instance.RaiseSourceDown(this, state.source.id, InteractionSourcePressInfo.Select);
         }
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceState state)

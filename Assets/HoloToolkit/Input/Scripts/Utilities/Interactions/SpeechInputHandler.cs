@@ -2,11 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -43,12 +41,19 @@ namespace HoloToolkit.Unity.InputModule
         [NonSerialized]
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
+        protected virtual void OnEnable()
+        {
+            if (IsGlobalListener)
+            {
+                InputManager.Instance.AddGlobalListener(gameObject);
+            }
+        }
+
         protected virtual void Start()
         {
             if (PersistentKeywords)
             {
-                DontDestroyOnLoad(gameObject);
-                SceneManager.sceneLoaded += OnSceneLoaded;
+                gameObject.DontDestroyOnLoad();
             }
 
             // Convert the struct array into a dictionary, with the keywords and the methods as the values.
@@ -68,10 +73,21 @@ namespace HoloToolkit.Unity.InputModule
                     responses.Add(keyword, keywordAndResponse.Response);
                 }
             }
+        }
 
-            if (IsGlobalListener)
+        protected virtual void OnDisable()
+        {
+            if (InputManager.Instance != null && IsGlobalListener)
             {
-                InputManager.Instance.AddGlobalListener(gameObject);
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (InputManager.Instance != null && IsGlobalListener)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
             }
         }
 
@@ -84,24 +100,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 keywordResponse.Invoke();
             }
-        }
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
-        {
-            if (IsGlobalListener)
-            {
-                StartCoroutine(AttachToInputManagerInstance());
-            }
-        }
-
-        private IEnumerator AttachToInputManagerInstance()
-        {
-            while (InputManager.Instance == null)
-            {
-                yield return null;
-            }
-
-            InputManager.Instance.AddGlobalListener(gameObject);
         }
     }
 }
