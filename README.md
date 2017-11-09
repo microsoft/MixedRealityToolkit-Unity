@@ -23,10 +23,8 @@ _Note: The latest release should work for both HoloLens and Windows Mixed Realit
 [unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.0p1%20MRTP4-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
-Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
-
-> ## HoloLens Developers
-> ### Check out the [Breaking Changes](/BreakingChanges.md) from the previous release.
+> Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
+> Check out the [Breaking Changes](/BreakingChanges.md) from the previous release.
 
 Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade Guide](/UpgradeGuide.md).
 
