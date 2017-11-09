@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.InputModule
 
         float? ExtentOverride { get; }
 
-        [Obsolete]
+        [Obsolete("Will be removed in a later version. For equivalent behavior return a RayStep array with a single element.")]
         Ray Ray { get; }
 
         RayStep[] Rays { get; }
@@ -25,7 +25,9 @@ namespace HoloToolkit.Unity.InputModule
 
         PointerResult Result { get; set; }
 
-        void UpdatePointer();
+        void OnPreRaycast();
+
+        void OnPostRaycast();
 
         bool OwnsInput(BaseEventData eventData);
     }

@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool OwnAllInput { get; set; }
 
-        [Obsolete]
+        [Obsolete("Will be removed in a later version. Use Rays instead.")]
         public Ray Ray { get { return Rays[0]; } }
 
         public RayStep[] Rays {
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
         
-        public void UpdatePointer()
+        public void OnPreRaycast()
         {
             if (InputSource == null)
             {
@@ -69,6 +69,11 @@ namespace HoloToolkit.Unity.InputModule
                 RayStabilizer.UpdateStability(rays[0].origin, rays[0].direction);
                 rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
             }
+        }
+
+        public void OnPostRaycast()
+        {
+            // Nothing needed
         }
 
         public bool OwnsInput(BaseEventData eventData)

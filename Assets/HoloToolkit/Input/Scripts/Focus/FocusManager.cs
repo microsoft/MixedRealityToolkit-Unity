@@ -151,7 +151,7 @@ namespace HoloToolkit.Unity.InputModule
                 PointingSource = pointingSource;
             }
 
-            [Obsolete]
+            [Obsolete ("Use UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex) or UpdateHit (float extent)")]
             public void UpdateHit(RaycastHit hit)
             {
                 throw new NotImplementedException();
@@ -497,8 +497,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdatePointer(PointerData pointer)
         {
-            // Call the pointer's update function first
-            pointer.PointingSource.UpdatePointer();
+            // Call the pointer's OnPreRaycast function
+            // This will give it a chance to prepare itself for raycasts
+            // eg, by building its Rays array
+            pointer.PointingSource.OnPreRaycast();
 
             // If pointer interaction isn't enabled, clear its result object and return
             if (!pointer.PointingSource.InteractionEnabled)
@@ -523,6 +525,11 @@ namespace HoloToolkit.Unity.InputModule
 
             // Set the pointer's result last
             pointer.PointingSource.Result = pointer;
+
+            // Call the pointer's OnPostRaycast function
+            // This will give it a chance to respond to raycast results
+            // eg by updating its appearance
+            pointer.PointingSource.OnPostRaycast();
         }
 
         /// <summary>
@@ -627,8 +634,8 @@ namespace HoloToolkit.Unity.InputModule
         private bool RaycastUnityUIStep(PointerData pointer, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
         {
             // Move the uiRaycast camera to the the current pointer's position.
-            UIRaycastCamera.transform.position = pointer.PointingSource.Ray.origin;
-            UIRaycastCamera.transform.forward = pointer.PointingSource.Ray.direction;
+            UIRaycastCamera.transform.position = step.origin;
+            UIRaycastCamera.transform.forward = step.direction;
 
             // We always raycast from the center of the camera.
             pointer.UnityUIPointerData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);

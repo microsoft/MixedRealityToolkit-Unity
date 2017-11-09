@@ -114,7 +114,7 @@ namespace HoloToolkit.Unity.InputModule
         public bool DebugDrawRay;
         public PointerResult Result { get; set; }
         
-        [Obsolete]
+        [Obsolete("Will be removed in a later version. Use Rays instead.")]
         public Ray Ray { get { return Rays[0]; } }
         
         public RayStep[] Rays { get { return rays; } }
@@ -211,9 +211,14 @@ namespace HoloToolkit.Unity.InputModule
             UpdateHitPosition();
         }
 
-        public void UpdatePointer()
+        public void OnPreRaycast()
         {
             UpdateGazeInfo();
+        }
+
+        public void OnPostRaycast()
+        {
+            // Nothing needed
         }
 
         public bool OwnsInput(BaseEventData eventData)
