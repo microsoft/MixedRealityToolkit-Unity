@@ -131,7 +131,7 @@ namespace HoloToolkit.Unity.InputModule
         private class PointerData : PointerResult
         {
             public readonly IPointingSource PointingSource;
-            
+
             private PointerInputEventData pointerData;
             public PointerInputEventData UnityUIPointerData
             {
@@ -141,17 +141,17 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         pointerData = new PointerInputEventData(EventSystem.current);
                     }
-                    
+
                     return pointerData;
                 }
             }
-            
+
             public PointerData(IPointingSource pointingSource)
             {
                 PointingSource = pointingSource;
             }
 
-            [Obsolete ("Use UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex) or UpdateHit (float extent)")]
+            [Obsolete("Use UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex) or UpdateHit (float extent)")]
             public void UpdateHit(RaycastHit hit)
             {
                 throw new NotImplementedException();
@@ -203,7 +203,7 @@ namespace HoloToolkit.Unity.InputModule
                     Object = null
                 };
             }
-           
+
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
                 if (clearPreviousObject)
@@ -579,7 +579,7 @@ namespace HoloToolkit.Unity.InputModule
             else
             {
                 // Raycast across all layers and prioritize
-                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(step.origin, step.direction, step.length, /*All layers*/ -1), prioritizedLayerMasks);
+                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(step.origin, step.direction, step.length, Physics.AllLayers), prioritizedLayerMasks);
                 isHit = hit.HasValue;
 
                 if (isHit)

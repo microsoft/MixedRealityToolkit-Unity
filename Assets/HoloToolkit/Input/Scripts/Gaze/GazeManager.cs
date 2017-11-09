@@ -205,7 +205,7 @@ namespace HoloToolkit.Unity.InputModule
                     newGazeNormal = Stabilizer.StableRay.direction;
                 }
 
-                FirstRay = new RayStep(newGazeOrigin, newGazeOrigin + newGazeNormal);
+                FirstRay.UpdateRaystep(newGazeOrigin, newGazeOrigin + newGazeNormal);
             }
 
             UpdateHitPosition();
