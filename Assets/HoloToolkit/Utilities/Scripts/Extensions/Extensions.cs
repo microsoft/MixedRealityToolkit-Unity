@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace HoloToolkit.Unity
 {
@@ -167,6 +168,18 @@ namespace HoloToolkit.Unity
         public static bool Approximately(this double number, double other, double tolerance)
         {
             return (Math.Abs(number - other) <= tolerance);
+        }
+
+        #endregion
+
+        #region UnityEngine.Object
+
+        public static void DontDestroyOnLoad(this Object target)
+        {
+#if UNITY_EDITOR // Skip Don't Destroy On Load when editor isn't playing so test runner passes.
+            if (UnityEditor.EditorApplication.isPlaying)
+#endif
+                Object.DontDestroyOnLoad(target);
         }
 
         #endregion

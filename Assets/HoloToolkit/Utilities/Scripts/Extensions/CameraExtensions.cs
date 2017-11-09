@@ -13,8 +13,7 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public static float GetHorizontalFieldOfViewRadians(this Camera camera)
         {
-            float horizontalFovRadians = 2f * Mathf.Atan(Mathf.Tan(camera.fieldOfView * Mathf.Deg2Rad * 0.5f) * camera.aspect);
-            return horizontalFovRadians;
+            return 2f * Mathf.Atan(Mathf.Tan(camera.fieldOfView * Mathf.Deg2Rad * 0.5f) * camera.aspect);
         }
 
         /// <summary>
