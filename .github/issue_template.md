@@ -4,7 +4,8 @@
 
 ## Actual Behavior
 
-## Steps to reproduce (Links to sample github project preferred)
+## Steps to reproduce
+_(Links to sample github project preferred)_
 
 ## Unity Editor Version
 
