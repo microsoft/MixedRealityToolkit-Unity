@@ -13,6 +13,10 @@ namespace HoloToolkit.Unity
     [CustomEditor(typeof(Canvas))]
     public class CanvasEditorExtension : Editor
     {
+        private const string DialogText = "Hi there, we noticed that you've changed this canvas to use WorldSpace.\n\n" +
+                                          "In order for the InputManager to work properly with uGUI raycasting we'd like to update this canvas' " +
+                                          "WorldCamera to use the FocusManager's UIRaycastCamera.\n";
+
         private Canvas canvas;
         private bool userPermission;
 
@@ -33,11 +37,7 @@ namespace HoloToolkit.Unity
 
                 if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
                 {
-                    userPermission = EditorUtility.DisplayDialog("Attention!",
-                        "Hi there, we noticed that you've changed this canvas to use WorldSpace.\n\n" +
-                        "In order for the InputManager to work properly with uGUI raycasting we'd like to update this canvas' " +
-                        "WorldCamera to use the FocusManager's UIRaycastCamera.\n",
-                        "OK", "Cancel");
+                    userPermission = EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel");
 
                     if (userPermission)
                     {
