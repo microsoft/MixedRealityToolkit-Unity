@@ -67,6 +67,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             get { return Ray.origin; }
         }
+        
 
         /// <summary>
         /// Normal of the gaze.
@@ -113,7 +114,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
 
-        public Ray Ray { get; private set; }
+        public Ray Ray { get; protected set; }
 
         public float? ExtentOverride
         {
@@ -170,7 +171,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Updates the current gaze information, so that the gaze origin and normal are accurate.
         /// </summary>
-        private void UpdateGazeInfo()
+        protected virtual void UpdateGazeInfo()
         {
             if (GazeTransform == null)
             {
@@ -190,8 +191,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
 
                 Ray = new Ray(newGazeOrigin, newGazeNormal);
-            }
-
+            } 
             UpdateHitPosition();
         }
 
@@ -227,7 +227,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void UpdateHitPosition()
+        protected void UpdateHitPosition()
         {
             HitPosition = (Ray.origin + (lastHitDistance * Ray.direction));
         }
