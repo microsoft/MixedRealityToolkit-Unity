@@ -22,23 +22,23 @@ Be sure to enable Developer mode for Windows 10 via:
 
 If you have not already, download and install [Visual Studio 2017](https://www.visualstudio.com/vs/) and these required components:
 
+- Windows Universal Platform Development Workload
+- Windows SDK 10.16299.10
+- Visual Studio Tools for Unity
+- msbuild
+- Nuget Package Manager
+
 ![Visual Studio Components](/External/ReadMeImages/VisualStudioComponents.PNG)
 
 You can install more components and UWP SDK's as you wish.
 
 Make sure you are running the appropriate version of Unity 3D on your machine. You should [download and install the latest version](https://unity3d.com/get-unity/download/archive) this project says it supports on the [main readme page](/README.md).
 
-[unity-release]:                  https://unity3d.com/unity/whats-new/unity-2017.1.2
-[unity-version-badge]:            https://img.shields.io/badge/Latest%20Release%20For%20HoloLens-2017.1.2-blue.svg
+[unity-release]:             http://beta.unity3d.com/download/b1565bfe4a0c/download.html
+[unity-version-badge]:       https://img.shields.io/badge/Latest%20Mixed%20Reality%20Technical%20Preview-2017.2.0p1%20MRTP4-green.svg
 
-[unity-beta-release]:             http://beta.unity3d.com/download/b1565bfe4a0c/download.html
-[unity-beta-version-badge]:       https://img.shields.io/badge/Latest%20Mixed%20Reality%20Technical%20Preview-2017.2.0p1%20MRTP4-green.svg
-
-> The Mixed Reality Toolkit now supports the following Unity 3D versions:
->
+> The Mixed Reality Toolkit now recommends the following Unity 3D version:
 > [![Github Release][unity-version-badge]][unity-release] 
->
-> [![Github Release][unity-beta-version-badge]][unity-beta-release] 
 
 _Note: Be sure to include the Windows Store .NET scripting backend components._
 
@@ -49,7 +49,7 @@ You can download the latest unity package from [Releases](https://github.com/Mic
 
 _Note: The latest release should work for both HoloLens and Windows Mixed Reality development._
 
-[unity-release1]:                 https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
+[unity-release1]:                https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
 [![Github Release][mrtk-version-badge]][unity-release1]
 
@@ -143,6 +143,7 @@ This window offers many quick options to be able to:
 
 ![Build Window](/External/ReadMeImages/BuildWindow.PNG)
 
+_Note: You should always target the lastest Windows SDK in all builds._
 
 ## 5.1 Running your project for **Immersive Headsets**
 Unity supports running your Immersive solution direct from the editor **BUT** Only when the Mixed Reality Portal is running.

@@ -23,17 +23,9 @@ _Note: The latest release should work for both HoloLens and Windows Mixed Realit
 [unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.0p1%20MRTP4-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
-[unity-release]:                 https://unity3d.com/unity/whats-new/unity-2017.1.2
-[hololens-rel-badge]:            https://img.shields.io/badge/Unity%20Editor%20HoloLens%20Version-2017.1.2f1-blue.svg
-
-Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality
-
-> ## HoloLens Developers
-> Currently we are waiting on a fix for HoloLens development from Unity, for now you should use the 2017.1.2 version of Unity and the "Release" version of the MRTK Asset:
+> Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality.
 >
-> [![Github Release][hololens-rel-badge]][unity-release]
->
-> ### For existing HoloLens developers, also check out the [Breaking Changes](/BreakingChanges.md) information from the previous release.
+> Check out the [Breaking Changes](/BreakingChanges.md) from the previous release.
 
 Looking to upgrade your projects to Windows Mixed Reality? [Follow the Upgrade Guide](/UpgradeGuide.md).
 
