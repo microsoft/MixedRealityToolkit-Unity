@@ -209,12 +209,18 @@ namespace HoloToolkit.Unity.InputModule
             UpdateHitPosition();
         }
 
-        public void OnPreRaycast()
+        [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
+        public void UpdatePointer()
+        {
+
+        }
+
+        public virtual void OnPreRaycast()
         {
             UpdateGazeInfo();
         }
 
-        public void OnPostRaycast()
+        public virtual void OnPostRaycast()
         {
             // Nothing needed
         }

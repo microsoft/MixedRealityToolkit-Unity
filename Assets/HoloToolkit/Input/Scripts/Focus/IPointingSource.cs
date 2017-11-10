@@ -25,6 +25,9 @@ namespace HoloToolkit.Unity.InputModule
 
         PointerResult Result { get; set; }
 
+        [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
+        void UpdatePointer();
+
         void OnPreRaycast();
 
         void OnPostRaycast();

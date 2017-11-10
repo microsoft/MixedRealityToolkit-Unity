@@ -24,7 +24,8 @@ namespace HoloToolkit.Unity.InputModule
         [Obsolete("Will be removed in a later version. Use Rays instead.")]
         public Ray Ray { get { return Rays[0]; } }
 
-        public RayStep[] Rays {
+        public RayStep[] Rays
+        {
             get
             {
                 return rays;
@@ -46,8 +47,14 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
-        
-        public void OnPreRaycast()
+
+        [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
+        public void UpdatePointer()
+        {
+
+        }
+
+        public virtual void OnPreRaycast()
         {
             if (InputSource == null)
             {
@@ -60,7 +67,7 @@ namespace HoloToolkit.Unity.InputModule
                 Ray pointingRay = default(Ray);
                 if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
                 {
-                    rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent (this));
+                    rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
                 }
             }
 
@@ -71,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public void OnPostRaycast()
+        public virtual void OnPostRaycast()
         {
             // Nothing needed
         }
@@ -88,6 +95,6 @@ namespace HoloToolkit.Unity.InputModule
             return (inputData != null)
                 && (inputData.InputSource == InputSource)
                 && (inputData.SourceId == InputSourceId);
-        }    
+        }
     }
 }
