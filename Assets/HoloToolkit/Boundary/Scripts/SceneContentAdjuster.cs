@@ -14,13 +14,11 @@ namespace HoloToolkit.Unity.Boundary
 {
     public class SceneContentAdjuster : MonoBehaviour
     {
-        private float contentHeightOffset = 1f;
         private int frameWaitHack = 0;
 
         [SerializeField]
         [Tooltip("Optional container object reference.  If null, this script will move the object it's attached to.")]
         private Transform containerObject;
-
 
         private void Awake()
         {
@@ -30,7 +28,7 @@ namespace HoloToolkit.Unity.Boundary
             }
 
 #if UNITY_2017_2_OR_NEWER
-            // A Stationary TrackingSpaceType doesn't need any changes for an object at height 0.
+            // A Stationary TrackingSpaceType doesn't need any changes for an object.
             if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary || !XRDevice.isPresent)
 #else
             if (true)
