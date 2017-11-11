@@ -28,7 +28,8 @@ namespace HoloToolkit.Unity
     {
         #region static vars
         // Toggles custom editors on / off
-        public static bool ShowCustomEditors = true;
+        public static bool ShowCustomEditors { get; private set; }
+        public static bool CustomEditorActive { get; private set; }
         public static GameObject lastTarget;
 
         // Styles
@@ -74,21 +75,32 @@ namespace HoloToolkit.Unity
 
         public override void OnInspectorGUI()
         {
-            CreateStyles();
-            DrawInspectorHeader();
-            Undo.RecordObject(target, target.name);
+            // Set this to true so 
+            CustomEditorActive = true;
 
-            if (ShowCustomEditors)
+            try
             {
-                DrawCustomEditor();
-                DrawCustomFooter();
-            }
-            else
+                CreateStyles();
+                DrawInspectorHeader();
+                Undo.RecordObject(target, target.name);
+
+                if (ShowCustomEditors)
+                {
+                    DrawCustomEditor();
+                    DrawCustomFooter();
+                }
+                else
+                {
+                    base.DrawDefaultInspector();
+                }
+
+                SaveChanges();
+            } catch (Exception e)
             {
-                base.DrawDefaultInspector();
+                DrawError(e.ToString());
             }
 
-            SaveChanges();
+            CustomEditorActive = false;
         }
 
         public void OnSceneGUI()
