@@ -1,7 +1,10 @@
-﻿using HoloToolkit.Unity.Boundary;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
 #if UNITY_2017_2_OR_NEWER
+using HoloToolkit.Unity.Boundary;
 using UnityEngine.XR;
 #else
 using UnityEngine.VR;
@@ -12,13 +15,23 @@ public class SceneContentAdjuster : MonoBehaviour
     private Vector3 lastFloorHeight;
     private float floorHeightOffset = 1f;
 
+    [SerializeField]
+    [Tooltip("Optional container object reference.  If null, this script will move the object it's attached to.")]
+    private Transform containerObject;
+
+
     private void Awake()
     {
+        if (containerObject == null)
+        {
+            containerObject = transform;
+        }
+
 #if UNITY_2017_2_OR_NEWER
         if (Application.isEditor && XRDevice.isPresent)
         {
             lastFloorHeight.y = floorHeightOffset;
-            transform.position = lastFloorHeight;
+            containerObject.position = lastFloorHeight;
         }
 #else
         if (VRDevice.isPresent)
@@ -38,7 +51,7 @@ public class SceneContentAdjuster : MonoBehaviour
             if (lastFloorHeight.y != floorHeightOffset)
             {
                 lastFloorHeight.y = floorHeightOffset;
-                transform.position = lastFloorHeight;
+                containerObject.position = lastFloorHeight;
             }
         }
 #endif
