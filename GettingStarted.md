@@ -121,7 +121,7 @@ Alternatively, you can setup your scene manually as follows:
 
 3. Add the `MixedRealityCameraParent.prefab` (found under HoloToolkit/Input/Prefabs). Check the configured options for the Parent and child camera meet your requirements.
 
-4. Add the `Managers.prefab` (found under HoloToolkit/Input/Prefabs/Cursor), which will add a new Managers folder containing the **InputManager** Prefab and the all-important UI **EventSystem** object.
+4. Add the `InputManager.prefab` (found under HoloToolkit/Input/Prefabs), which will enable input events to be detected and raised.
 
 5. Add the `DefaultCursor.prefab` (found under HoloToolkit/Input/Prefabs/Cursor) and add that Object to the **InputManager** Cursor parameter (to avoid it being searched for on scene start) 
 
