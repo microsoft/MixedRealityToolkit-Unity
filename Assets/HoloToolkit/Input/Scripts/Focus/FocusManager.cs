@@ -75,18 +75,6 @@ namespace HoloToolkit.Unity.InputModule
             UpdateFocusedObjects();
         }
 
-        /// <summary>
-        /// It's assumed that if you're using the MRTK's input system you'll
-        /// need to update your canvases to use the proper raycast camera for input.
-        /// </summary>
-        private void OnValidate()
-        {
-            if (UIRaycastCamera != null)
-            {
-                UpdateCanvasEventSystems();
-            }
-        }
-
         #endregion
 
         #region Settings
