@@ -42,13 +42,13 @@ public class LineBaseEditor : MRTKEditor
         // Draw dotted lines regardless of selection
         if (drawDottedLine)
         {
-            DrawDottedLine(line, linePreviewResolutionSelected);
+            DrawDottedLine(line, previewResolution);
         }
 
         // Draw rotations only on selected object
         if (drawLineRotations && selected)
         {
-            DrawLineRotations(line, linePreviewResolutionSelected);
+            DrawLineRotations(line, previewResolution);
         }
 
         // Draw up vectors only on selected object
