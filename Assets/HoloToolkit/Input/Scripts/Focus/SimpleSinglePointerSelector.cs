@@ -85,12 +85,9 @@ namespace HoloToolkit.Unity.InputModule
                 FocusManager.Instance.UnregisterPointer(pointingSource);
             }
 
-            if (IsInputSourcePointerActive)
+            if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
             {
-                if (inputSourcePointer.InputIsFromSource(eventData))
-                {
-                    ConnectBestAvailablePointer();
-                }
+                ConnectBestAvailablePointer();
             }
         }
 
