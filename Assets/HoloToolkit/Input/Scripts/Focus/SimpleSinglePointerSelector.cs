@@ -89,7 +89,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (inputSourcePointer.InputIsFromSource(eventData))
                 {
-
                     ConnectBestAvailablePointer();
                 }
             }
