@@ -79,9 +79,19 @@ namespace HoloToolkit.Unity.InputModule
 
         void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
+            IPointingSource pointingSource;
+            if (FocusManager.Instance.TryGetPointingSource(eventData, out pointingSource))
             {
-                ConnectBestAvailablePointer();
+                FocusManager.Instance.UnregisterPointer(pointingSource);
+            }
+
+            if (IsInputSourcePointerActive)
+            {
+                if (inputSourcePointer.InputIsFromSource(eventData))
+                {
+
+                    ConnectBestAvailablePointer();
+                }
             }
         }
 
@@ -156,11 +166,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (currentPointer != newPointer)
             {
-                if (currentPointer != null)
-                {
-                    FocusManager.Instance.UnregisterPointer(currentPointer);
-                }
-
                 currentPointer = newPointer;
 
                 if (newPointer != null)
