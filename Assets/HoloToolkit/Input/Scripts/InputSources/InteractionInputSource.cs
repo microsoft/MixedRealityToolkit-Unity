@@ -911,7 +911,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             var pressType = (InteractionSourcePressInfo)args.pressType;
             // HACK: If we're not dealing with a spatial controller we may not get Select called properly
-            if (args.state.source.kind != InteractionSourceKind.Controller)
+            if (args.state.source.kind != InteractionSourceKind.Controller || !args.state.source.supportsPointing)
             {
                 pressType = InteractionSourcePressInfo.Select;
             }
@@ -923,7 +923,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             var pressType = (InteractionSourcePressInfo)args.pressType;
             // HACK: If we're not dealing with a spatial controller we may not get Select called properly
-            if (args.state.source.kind != InteractionSourceKind.Controller)
+            if (args.state.source.kind != InteractionSourceKind.Controller || !args.state.source.supportsPointing)
             {
                 pressType = InteractionSourcePressInfo.Select;
             }
