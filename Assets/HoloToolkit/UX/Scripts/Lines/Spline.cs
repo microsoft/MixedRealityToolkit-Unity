@@ -279,7 +279,7 @@ namespace Holotoolkit.Unity.UX
 
                 Spline line = (Spline)target;
 
-                HashSet<int> overlappingPointIndexes = new HashSet<int>();
+                overlappingPointIndexes.Clear();
 
                 if (DrawSectionStart(line.name + " Points", "Point Editing"))
                 {
