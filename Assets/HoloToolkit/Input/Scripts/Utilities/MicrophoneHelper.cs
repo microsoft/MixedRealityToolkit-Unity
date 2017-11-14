@@ -18,7 +18,7 @@ using Windows.Media.Capture;
 
 namespace HoloToolkit.Unity
 {
-    enum MicrophoneStatus
+    public enum MicrophoneStatus
     {
         MicrophoneReady,
         MicrophoneUseNotAuthorized,
@@ -37,11 +37,17 @@ namespace HoloToolkit.Unity
     /// For full details see unity documentation page
     /// https://docs.unity3d.com/Manual/IL2CPP-WindowsRuntimeSupport.html
     /// </summary>
-    class MicrophoneHelper
+    public class MicrophoneHelper
     {
 #if ENABLE_WINMD_SUPPORT
-        // If no recording device is attached, attempting to get access to audio capture devices will throw 
-        // a System.Exception object, with HResult = ‭0xC00DABE0‬ set.
+
+        /// <summary>
+        /// Error code returned if there is no audio device in the system
+        /// </summary>
+        /// <remarks>
+        /// If no recording device is attached, attempting to get access to audio capture devices will throw 
+        /// a System.Exception object, with HResult = ‭0xC00DABE0‬ set.
+        /// </remarks>
         private static int NoCaptureDevicesHResult = -1072845856;
 
         /// <summary>
@@ -127,14 +133,20 @@ namespace HoloToolkit.Unity
             return status == MicrophoneStatus.MicrophoneReady;
         }
 #else
-        // if we run in the editor return that microphone is ready by default
-        // It could be useful to test in the editor the behavior where the
-        // microphone is reported ready.
+        /// <summary>
+        /// Stub function imitating the original GetMicrophoneStatus
+        /// </summary>
+        /// <returns>
+        /// Always returns microphone ready.
+        /// </returns>
         public static MicrophoneStatus GetMicrophoneStatus()
         {
             return MicrophoneStatus.MicrophoneReady;
         }
 
+        /// <summary>
+        /// Stub function imitating the original IsMicrophoneReady
+        /// </summary>
         public static bool IsMicrophoneReady()
         {
             var status = GetMicrophoneStatus();
