@@ -507,24 +507,32 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
                 pointer.ResetFocusedObjects(false);
-                return;
             }
-
-            // Otherwise, continue
-            var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
-
-            // Perform raycast to determine focused object
-            RaycastPhysics(pointer, prioritizedLayerMasks);
-
-            // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
-            if (EventSystem.current != null)
+            else
             {
-                // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
-                RaycastUnityUI(pointer, prioritizedLayerMasks);
-            }
+                // If the pointer is locked
+                // Keep the focus objects the same
+                // This will ensure that we execute events on those objects
+                // even if the pointer isn't pointing at them
+                if (!pointer.PointingSource.FocusLocked)
+                {
+                    // Otherwise, continue
+                    var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
 
-            // Set the pointer's result last
-            pointer.PointingSource.Result = pointer;
+                    // Perform raycast to determine focused object
+                    RaycastPhysics(pointer, prioritizedLayerMasks);
+
+                    // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+                    if (EventSystem.current != null)
+                    {
+                        // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                        RaycastUnityUI(pointer, prioritizedLayerMasks);
+                    }
+
+                    // Set the pointer's result last
+                    pointer.PointingSource.Result = pointer;
+                }
+            }
 
             // Call the pointer's OnPostRaycast function
             // This will give it a chance to respond to raycast results
@@ -601,6 +609,9 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
+            Debug.Assert(pointer.PointingSource.Rays != null);
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0);
+
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
             {
@@ -613,7 +624,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.End.Object == null || overridePhysicsRaycast) && (uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera))
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;

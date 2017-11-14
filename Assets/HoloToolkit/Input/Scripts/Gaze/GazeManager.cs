@@ -139,6 +139,8 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        public bool FocusLocked { get; set; }
+
         private float lastHitDistance = 2.0f;
 
         protected override void Awake()
