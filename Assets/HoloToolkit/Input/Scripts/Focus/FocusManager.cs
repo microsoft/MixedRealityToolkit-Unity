@@ -779,9 +779,9 @@ namespace HoloToolkit.Unity.InputModule
 
         private PointerData GetPointer(IPointingSource pointingSource)
         {
+            Debug.Assert(pointers.Count > 0, "No Pointers registered!");
             int? iPointer = TryGetPointerIndex(pointingSource);
-            Debug.Assert(iPointer != null);
-            return pointers[iPointer.Value];
+            return iPointer != null ? pointers[iPointer.Value] : pointers[0];
         }
 
         private int? TryGetPointerIndex(IPointingSource pointingSource)
