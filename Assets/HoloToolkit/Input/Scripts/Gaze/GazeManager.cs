@@ -133,10 +133,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool InteractionEnabled
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         private float lastHitDistance = 2.0f;
