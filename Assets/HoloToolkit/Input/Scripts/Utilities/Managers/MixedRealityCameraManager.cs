@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity.InputModule
                 // Runtime HoloLens detection
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
-            if (!HolographicSettings.IsDisplayOpaque)
+                if (!HolographicSettings.IsDisplayOpaque)
 #endif
                 {
                     CurrentDisplayType = DisplayType.Transparent;
@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_EDITOR
             // Editor Hololens Remoting detection
-            var window = (HolographicEmulationWindow)EditorWindow.GetWindow(typeof(HolographicEmulationWindow));
+            var window = EditorWindow.GetWindow<HolographicEmulationWindow>(typeof(HolographicEmulationWindow));
             if (window != null && window.emulationMode == EmulationMode.RemoteDevice)
             {
                 CurrentDisplayType = DisplayType.Transparent;
@@ -91,9 +91,13 @@ namespace HoloToolkit.Unity.InputModule
 #endif
 
             if (CurrentDisplayType == DisplayType.Opaque)
+            {
                 ApplySettingsForOpaqueDisplay();
+            }
             else
+            {
                 ApplySettingsForTransparentDisplay();
+            }
 
             if (OnDisplayDetected != null)
             {
