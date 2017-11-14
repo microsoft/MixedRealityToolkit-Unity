@@ -63,12 +63,10 @@ namespace HoloToolkit.Unity.InputModule
         private void Awake()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            foreach (var sourceState in InteractionManager.GetCurrentReading())
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            for (var i = 0; i < states.Length; i++)
             {
-                if (sourceState.source.kind == InteractionSourceKind.Controller)
-                {
-                    StartTrackingController(sourceState.source);
-                }
+                StartTrackingController(states[i].source);
             }
 
             Application.onBeforeRender += Application_onBeforeRender;
@@ -170,7 +168,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StartTrackingController(InteractionSource source)
         {
-            if (source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(source.id) && !loadingControllers.Contains(source.id))
+            if (source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(source.id) && !loadingControllers.Contains(source.id) && source.supportsPointing)
             {
                 StartCoroutine(LoadControllerModel(source));
             }
@@ -199,7 +197,7 @@ namespace HoloToolkit.Unity.InputModule
         private IEnumerator LoadControllerModel(InteractionSource source)
         {
             loadingControllers.Add(source.id);
-            
+
             if (AlwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
             {
                 if (AlternateLeftController == null)

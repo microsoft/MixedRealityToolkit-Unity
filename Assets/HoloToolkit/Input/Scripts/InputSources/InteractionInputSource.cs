@@ -953,64 +953,64 @@ namespace HoloToolkit.Unity.InputModule
 
         // TODO: robertes: Should these also cause source state data to be stored/updated? What about SourceDetected synthesized events?
 
-        protected void GestureRecognizer_Tapped(TappedEventArgs obj)
+        protected void GestureRecognizer_Tapped(TappedEventArgs args)
         {
-            InputManager.Instance.RaiseInputClicked(this, obj.source.id, InteractionSourcePressInfo.Select, obj.tapCount);
+            InputManager.Instance.RaiseInputClicked(this, args.source.id, InteractionSourcePressInfo.Select, args.tapCount);
         }
 
-        protected void GestureRecognizer_HoldStarted(HoldStartedEventArgs obj)
+        protected void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
-            InputManager.Instance.RaiseHoldStarted(this, obj.source.id);
+            InputManager.Instance.RaiseHoldStarted(this, args.source.id);
         }
 
-        protected void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs obj)
+        protected void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
         {
-            InputManager.Instance.RaiseHoldCanceled(this, obj.source.id);
+            InputManager.Instance.RaiseHoldCanceled(this, args.source.id);
         }
 
-        protected void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs obj)
+        protected void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs args)
         {
-            InputManager.Instance.RaiseHoldCompleted(this, obj.source.id);
+            InputManager.Instance.RaiseHoldCompleted(this, args.source.id);
         }
 
-        protected void GestureRecognizer_ManipulationStarted(ManipulationStartedEventArgs obj)
+        protected void GestureRecognizer_ManipulationStarted(ManipulationStartedEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationStarted(this, obj.source.id);
+            InputManager.Instance.RaiseManipulationStarted(this, args.source.id);
         }
 
-        protected void GestureRecognizer_ManipulationUpdated(ManipulationUpdatedEventArgs obj)
+        protected void GestureRecognizer_ManipulationUpdated(ManipulationUpdatedEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationUpdated(this, obj.source.id, obj.cumulativeDelta);
+            InputManager.Instance.RaiseManipulationUpdated(this, args.source.id, args.cumulativeDelta);
         }
 
-        protected void GestureRecognizer_ManipulationCompleted(ManipulationCompletedEventArgs obj)
+        protected void GestureRecognizer_ManipulationCompleted(ManipulationCompletedEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationCompleted(this, obj.source.id, obj.cumulativeDelta);
+            InputManager.Instance.RaiseManipulationCompleted(this, args.source.id, args.cumulativeDelta);
         }
 
-        protected void GestureRecognizer_ManipulationCanceled(ManipulationCanceledEventArgs obj)
+        protected void GestureRecognizer_ManipulationCanceled(ManipulationCanceledEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationCanceled(this, obj.source.id);
+            InputManager.Instance.RaiseManipulationCanceled(this, args.source.id);
         }
 
-        protected void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs obj)
+        protected void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationStarted(this, obj.source.id);
+            InputManager.Instance.RaiseNavigationStarted(this, args.source.id);
         }
 
-        protected void NavigationGestureRecognizer_NavigationUpdated(NavigationUpdatedEventArgs obj)
+        protected void NavigationGestureRecognizer_NavigationUpdated(NavigationUpdatedEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationUpdated(this, obj.source.id, obj.normalizedOffset);
+            InputManager.Instance.RaiseNavigationUpdated(this, args.source.id, args.normalizedOffset);
         }
 
-        protected void NavigationGestureRecognizer_NavigationCompleted(NavigationCompletedEventArgs obj)
+        protected void NavigationGestureRecognizer_NavigationCompleted(NavigationCompletedEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationCompleted(this, obj.source.id, obj.normalizedOffset);
+            InputManager.Instance.RaiseNavigationCompleted(this, args.source.id, args.normalizedOffset);
         }
 
-        protected void NavigationGestureRecognizer_NavigationCanceled(NavigationCanceledEventArgs obj)
+        protected void NavigationGestureRecognizer_NavigationCanceled(NavigationCanceledEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationCanceled(this, obj.source.id);
+            InputManager.Instance.RaiseNavigationCanceled(this, args.source.id);
         }
 
         #endregion //Raise GestureRecognizer Events
