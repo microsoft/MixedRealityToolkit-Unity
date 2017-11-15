@@ -292,9 +292,11 @@ namespace HoloToolkit.Unity.InputModule
 
             int pointerIndex;
             TryGetPointerIndex(pointingSource, out pointerIndex);
+            Debug.Assert(pointerIndex > 0, "Invalid pointer index!");
 
             PointerData pointer;
-            GetPointer(pointingSource, out pointer);
+            GetPointerData(pointingSource, out pointer);
+            Debug.Assert(pointer != null, "Attempting to unregister a pointer that was never registered!");
 
             // Should we be protecting against unregistering the GazeManager?
 
@@ -378,7 +380,7 @@ namespace HoloToolkit.Unity.InputModule
             PointerData pointerData;
             FocusDetails details = default(FocusDetails);
 
-            if (GetPointer(pointingSource, out pointerData))
+            if (GetPointerData(pointingSource, out pointerData))
             {
                 details = pointerData.End;
             }
@@ -391,7 +393,7 @@ namespace HoloToolkit.Unity.InputModule
             PointerData pointerData;
             GameObject focusedObject = null;
 
-            if (GetPointer(pointingSource, out pointerData))
+            if (GetPointerData(pointingSource, out pointerData))
             {
                 focusedObject = pointerData.End.Object;
             }
@@ -438,18 +440,12 @@ namespace HoloToolkit.Unity.InputModule
         public PointerInputEventData GetSpecificPointerEventData(IPointingSource pointer)
         {
             PointerData pointerEventData;
-            return GetPointer(pointer, out pointerEventData) ? pointerEventData.UnityUIPointerData : null;
+            return GetPointerData(pointer, out pointerEventData) ? pointerEventData.UnityUIPointerData : null;
         }
 
         public float GetPointingExtent(IPointingSource pointingSource)
         {
-            PointerData pointerData;
-            return GetPointer(pointingSource, out pointerData) ? GetPointingExtent(pointerData) : pointingExtent;
-        }
-
-        private float GetPointingExtent(PointerData pointer)
-        {
-            return pointer.PointingSource.ExtentOverride ?? pointingExtent;
+            return pointingSource.ExtentOverride ?? pointingExtent;
         }
 
         #endregion
@@ -543,10 +539,10 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            RaycastHit physicsHit = default(RaycastHit);
-            RayStep rayStep = default(RayStep);
             bool isHit = false;
             int rayStepIndex = 0;
+            RayStep rayStep = default(RayStep);
+            RaycastHit physicsHit = default(RaycastHit);
 
             Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
             Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
@@ -571,7 +567,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                pointer.UpdateHit(GetPointingExtent(pointer));
+                pointer.UpdateHit(GetPointingExtent(pointer.PointingSource));
             }
         }
 
@@ -795,7 +791,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private bool GetPointer(IPointingSource pointingSource, out PointerData pointerData)
+        private bool GetPointerData(IPointingSource pointingSource, out PointerData pointerData)
         {
             int pointerIndex;
 
