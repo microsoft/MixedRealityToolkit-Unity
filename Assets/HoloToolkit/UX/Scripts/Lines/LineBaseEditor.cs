@@ -3,7 +3,7 @@
 
 using HoloToolkit.Unity;
 using UnityEngine;
-using Holotoolkit.Unity.UX;
+using HoloToolkit.Unity.UX;
 #if UNITY_EDITOR
 using UnityEditor;
 
