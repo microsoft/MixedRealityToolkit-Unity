@@ -129,6 +129,9 @@ namespace HoloToolkit.Unity
         /// <returns></returns>
         public static Vector3 GetDirectionByDistance(RayStep[] steps, float distance)
         {
+            Debug.Assert(steps != null);
+            Debug.Assert(steps.Length > 0);
+
             return GetStepByDistance(steps, distance).direction;
         }
 
