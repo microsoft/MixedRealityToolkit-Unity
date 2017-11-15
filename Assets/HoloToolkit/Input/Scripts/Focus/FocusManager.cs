@@ -292,7 +292,7 @@ namespace HoloToolkit.Unity.InputModule
 
             int pointerIndex;
             TryGetPointerIndex(pointingSource, out pointerIndex);
-            Debug.Assert(pointerIndex > 0, "Invalid pointer index!");
+            Debug.Assert(pointerIndex >= 0, "Invalid pointer index!");
 
             PointerData pointer;
             GetPointerData(pointingSource, out pointer);
