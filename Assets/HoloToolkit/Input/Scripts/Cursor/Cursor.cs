@@ -222,7 +222,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // Nothing to do. Keep the pointer that must have been set programmatically.
             }
-
             else if (LoadPointer != null)
             {
                 Pointer = LoadPointer.GetComponent<IPointingSource>();
@@ -369,7 +368,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnInputUp(InputEventData eventData)
         {
-            if (Pointer.OwnsInput(eventData))
+            if (Pointer != null && Pointer.OwnsInput(eventData))
             {
                 IsInputSourceDown = false;
             }
@@ -381,7 +380,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnInputDown(InputEventData eventData)
         {
-            if (Pointer.OwnsInput(eventData))
+            if (Pointer != null && Pointer.OwnsInput(eventData))
             {
                 IsInputSourceDown = true;
             }
@@ -403,7 +402,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (Pointer.OwnsInput(eventData))
+            if (Pointer != null && Pointer.OwnsInput(eventData))
             {
                 visibleHandsCount++;
                 IsHandVisible = true;
@@ -417,7 +416,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (Pointer.OwnsInput(eventData))
+            if (Pointer != null && Pointer.OwnsInput(eventData))
             {
                 visibleHandsCount--;
                 if (visibleHandsCount == 0)
@@ -441,7 +440,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Virtual function for checking state changess.
+        /// Virtual function for checking state changes.
         /// </summary>
         public virtual CursorStateEnum CheckCursorState()
         {
