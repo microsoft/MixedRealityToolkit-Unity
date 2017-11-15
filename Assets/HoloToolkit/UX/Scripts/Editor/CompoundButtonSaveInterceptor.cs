@@ -1,31 +1,34 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using UnityEditor;
+
 using UnityEngine;
-using HoloToolkit.Unity.Buttons;
 
-public class CompoundButtonSaveInterceptor : UnityEditor.AssetModificationProcessor
+namespace HoloToolkit.Unity.Buttons
 {
-    public static string[] OnWillSaveAssets(string[] paths)
+    public class CompoundButtonSaveInterceptor : UnityEditor.AssetModificationProcessor
     {
-        // Tell our mesh buttons and icons to switch over to non-instanced materials
-        // This will prevent them from saving the scene with broken material links
-        // Materials will be re-instanced immediately afterward so this should have no effect 
-
-        CompoundButtonMesh[] meshButtons = GameObject.FindObjectsOfType<CompoundButtonMesh>();
-        foreach (CompoundButtonMesh meshButton in meshButtons)
+        /// <summary>
+        /// Tell our mesh buttons and icons to switch over to non-instanced materials
+        /// This will prevent them from saving the scene with broken material links
+        /// Materials will be re-instanced immediately afterward so this should have no effect 
+        /// </summary>
+        /// <param name="paths"></param>
+        /// <returns></returns>
+        public static string[] OnWillSaveAssets(string[] paths)
         {
-            meshButton.OnWillSaveScene();
-        }
+            CompoundButtonMesh[] meshButtons = Object.FindObjectsOfType<CompoundButtonMesh>();
+            for (var i = 0; i < meshButtons.Length; i++)
+            {
+                meshButtons[i].OnWillSaveScene();
+            }
 
-        CompoundButtonIcon[] iconButtons = GameObject.FindObjectsOfType<CompoundButtonIcon>();
-        foreach (CompoundButtonIcon iconButton in iconButtons)
-        {
-            iconButton.OnWillSaveScene();
-        }
+            CompoundButtonIcon[] iconButtons = Object.FindObjectsOfType<CompoundButtonIcon>();
+            for (var i = 0; i < iconButtons.Length; i++)
+            {
+                iconButtons[i].OnWillSaveScene();
+            }
 
-        return paths;
+            return paths;
+        }
     }
 }

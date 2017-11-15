@@ -4,20 +4,23 @@
 using UnityEngine;
 using HoloToolkit.Unity;
 
-public class AdaptiveQualityExample : MonoBehaviour
+namespace HoloToolkit.Examples
 {
-    public TextMesh Text;
-    public AdaptiveQuality Quality;
-
-    private void Update()
+    public class AdaptiveQualityExample : MonoBehaviour
     {
-        Text.text = string.Format("GPUTime:{0:N2}\nQualityLevel:{1}\nViewportScale:{2:N2}",
-            GpuTiming.GetTime("Frame") * 1000.0f,
-            Quality.QualityLevel,
+        public TextMesh Text;
+        public AdaptiveQuality Quality;
+
+        private void Update()
+        {
+            Text.text = string.Format("GPUTime:{0:N2}\nQualityLevel:{1}\nViewportScale:{2:N2}",
+                GpuTiming.GetTime("Frame") * 1000.0f,
+                Quality.QualityLevel,
 #if UNITY_2017_2_OR_NEWER
             UnityEngine.XR.XRSettings.renderViewportScale);
 #else
             UnityEngine.VR.VRSettings.renderViewportScale);
 #endif
+        }
     }
 }

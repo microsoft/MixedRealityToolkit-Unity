@@ -1,5 +1,4 @@
-﻿using HoloToolkit.Unity.Boundary;
-using UnityEngine;
+﻿using UnityEngine;
 
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR;
@@ -7,40 +6,43 @@ using UnityEngine.XR;
 using UnityEngine.VR;
 #endif
 
-public class SceneContentAdjuster : MonoBehaviour
+namespace HoloToolkit.Unity.Boundary
 {
-    private Vector3 lastFloorHeight;
-    private float floorHeightOffset = 1f;
-
-    private void Awake()
+    public class SceneContentAdjuster : MonoBehaviour
     {
-#if UNITY_2017_2_OR_NEWER
-        if (Application.isEditor && XRDevice.isPresent)
+        private Vector3 lastFloorHeight;
+        private float floorHeightOffset = 1f;
+
+        private void Awake()
         {
-            lastFloorHeight.y = floorHeightOffset;
-            transform.position = lastFloorHeight;
-        }
+#if UNITY_2017_2_OR_NEWER
+            if (Application.isEditor && XRDevice.isPresent)
+            {
+                lastFloorHeight.y = floorHeightOffset;
+                transform.position = lastFloorHeight;
+            }
 #else
         if (VRDevice.isPresent)
         {
             Destroy(this);
         }
 #endif
-    }
-
-    private void Update()
-    {
-#if UNITY_2017_2_OR_NEWER
-        if (!Application.isEditor && XRDevice.isPresent)
-        {
-            floorHeightOffset = BoundaryManager.Instance.CurrentFloorHeightOffset;
-
-            if (lastFloorHeight.y != floorHeightOffset)
-            {
-                lastFloorHeight.y = floorHeightOffset;
-                transform.position = lastFloorHeight;
-            }
         }
+
+        private void Update()
+        {
+#if UNITY_2017_2_OR_NEWER
+            if (!Application.isEditor && XRDevice.isPresent)
+            {
+                floorHeightOffset = BoundaryManager.Instance.CurrentFloorHeightOffset;
+
+                if (lastFloorHeight.y != floorHeightOffset)
+                {
+                    lastFloorHeight.y = floorHeightOffset;
+                    transform.position = lastFloorHeight;
+                }
+            }
 #endif
+        }
     }
 }
