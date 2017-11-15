@@ -5,7 +5,7 @@ using HoloToolkit.Unity.InputModule;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolKit.Unity
+namespace HoloToolkit.Unity
 {
     [CustomEditor(typeof(MixedRealityCameraManager))]
     public class MixedRealityCameraManagerEditor : Editor
