@@ -5,7 +5,7 @@
 using System;
 using UnityEngine;
 
-namespace Holotoolkit.Unity.UX
+namespace HoloToolkit.Unity.UX
 {
     public abstract class Distorter : MonoBehaviour, IComparable<Distorter>
     {

@@ -53,7 +53,6 @@ namespace HoloToolkit.Unity.InputModule
         [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
         public void UpdatePointer()
         {
-
         }
 
         public virtual void OnPreRaycast()
@@ -64,9 +63,9 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing));
+                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing), string.Format("{0} with id {1} does not support pointing!", InputSource, InputSourceId));
 
-                Ray pointingRay = default(Ray);
+                Ray pointingRay;
                 if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
                 {
                     rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
