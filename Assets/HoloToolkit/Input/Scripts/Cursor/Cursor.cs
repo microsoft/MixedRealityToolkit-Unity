@@ -287,10 +287,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(Pointer);
             GameObject newTargetedObject = focusDetails.Object;
-
-            // Get the forward vector looking back along the pointing ray.
-            RayStep lastStep = Pointer.Rays[Pointer.Rays.Length - 1];
-            Vector3 lookForward = -lastStep.direction;
+            Vector3 lookForward = Vector3.forward;
 
             // Normalize scale on before update
             targetScale = Vector3.one;
@@ -300,7 +297,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 TargetedObject = null;
                 TargetedCursorModifier = null;
-                targetPosition = lastStep.terminus;
+
+                targetPosition = RayStep.GetPointByDistance(Pointer.Rays, DefaultCursorDistance);
+                lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, DefaultCursorDistance);
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else
@@ -315,6 +314,10 @@ namespace HoloToolkit.Unity.InputModule
                 else
                 {
                     // If no modifier is on the target, just use the hit result to set cursor position
+                    // Get the look forward by using distance between pointer origin and target position
+                    // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
+                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].origin, focusDetails.Point);
+                    lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
                     targetPosition = focusDetails.Point + (lookForward * SurfaceCursorDistance);
                     Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, LookRotationBlend);
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
