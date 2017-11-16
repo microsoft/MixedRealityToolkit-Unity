@@ -2,7 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {

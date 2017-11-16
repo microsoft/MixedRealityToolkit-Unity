@@ -3,9 +3,13 @@
 
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
 
-namespace HoloToolkit.Unity.Controllers
+namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Waits for a controller to be instantiated, then attaches itself to a specified element
