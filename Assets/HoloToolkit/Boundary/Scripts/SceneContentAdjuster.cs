@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity.Boundary
                 yield return null;
             }
 
-            containerObject.position = new Vector3(containerObject.position.x, CameraCache.Main.transform.position.y, containerObject.position.z);
+            containerObject.position = new Vector3(containerObject.position.x, containerObject.position.y + CameraCache.Main.transform.position.y, containerObject.position.z);
         }
     }
 }
