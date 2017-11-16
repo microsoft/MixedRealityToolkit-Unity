@@ -4,56 +4,58 @@
 using UnityEngine;
 
 #if UNITY_2017_2_OR_NEWER
-using HoloToolkit.Unity.Boundary;
 using UnityEngine.XR;
 #else
 using UnityEngine.VR;
 #endif
 
-public class SceneContentAdjuster : MonoBehaviour
+namespace HoloToolkit.Unity.Boundary
 {
-    private Vector3 lastFloorHeight;
-    private float floorHeightOffset = 1f;
-
-    [SerializeField]
-    [Tooltip("Optional container object reference.  If null, this script will move the object it's attached to.")]
-    private Transform containerObject;
-
-
-    private void Awake()
+    public class SceneContentAdjuster : MonoBehaviour
     {
-        if (containerObject == null)
+        private Vector3 lastFloorHeight;
+        private float floorHeightOffset = 1f;
+
+        [SerializeField]
+        [Tooltip("Optional container object reference.  If null, this script will move the object it's attached to.")]
+        private Transform containerObject;
+
+
+        private void Awake()
         {
-            containerObject = transform;
-        }
+            if (containerObject == null)
+            {
+                containerObject = transform;
+            }
 
 #if UNITY_2017_2_OR_NEWER
-        if (Application.isEditor && XRDevice.isPresent)
-        {
-            lastFloorHeight.y = floorHeightOffset;
-            containerObject.position = lastFloorHeight;
-        }
+            if (Application.isEditor && XRDevice.isPresent)
+            {
+                lastFloorHeight.y = floorHeightOffset;
+                containerObject.position = lastFloorHeight;
+            }
 #else
         if (VRDevice.isPresent)
         {
             Destroy(this);
         }
 #endif
-    }
-
-    private void Update()
-    {
-#if UNITY_2017_2_OR_NEWER
-        if (!Application.isEditor && XRDevice.isPresent)
-        {
-            floorHeightOffset = BoundaryManager.Instance.CurrentFloorHeightOffset;
-
-            if (lastFloorHeight.y != floorHeightOffset)
-            {
-                lastFloorHeight.y = floorHeightOffset;
-                containerObject.position = lastFloorHeight;
-            }
         }
+
+        private void Update()
+        {
+#if UNITY_2017_2_OR_NEWER
+            if (!Application.isEditor && XRDevice.isPresent)
+            {
+                floorHeightOffset = BoundaryManager.Instance.CurrentFloorHeightOffset;
+
+                if (lastFloorHeight.y != floorHeightOffset)
+                {
+                    lastFloorHeight.y = floorHeightOffset;
+                    containerObject.position = lastFloorHeight;
+                }
+            }
 #endif
+        }
     }
 }
