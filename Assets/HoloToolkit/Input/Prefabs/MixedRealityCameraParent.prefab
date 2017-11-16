@@ -667,6 +667,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
   boundaryHeight: 10
+  opaqueTrackingSpaceType: 1
+  transparentTrackingSpaceType: 0
 --- !u!114 &114225625019075894
 MonoBehaviour:
   m_ObjectHideFlags: 1
