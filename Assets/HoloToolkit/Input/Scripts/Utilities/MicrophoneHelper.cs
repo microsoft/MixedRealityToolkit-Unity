@@ -97,9 +97,9 @@ namespace HoloToolkit.Unity
             }
             catch (Exception exception)
             {
-                // This can be replicated by using remote desktop to a system, but not redirecting the microphone input.
-                // Can also occur if using the virtual machine console tool to access a VM instead of using remote desktop.
-                // You can also get here if you disable all audio recording endpoints
+                // In mixed reality this would be the case when your HMD uses headset jack, your host machine does not have connected microphone
+                //       (i.e. desktop with no integrated mic, nothing plugged into mic/headset jack or you disabled all recording endpoints)
+                // If the HMD has built in microphones, they would be disabled when HMD is not worn and will be enabled when you put the device on.
                 if (exception.HResult == NoCaptureDevicesHResult)
                 {
                     return MicrophoneStatus.MicrophoneNotPresent;
