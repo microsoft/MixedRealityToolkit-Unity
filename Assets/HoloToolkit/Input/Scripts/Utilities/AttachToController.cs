@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
@@ -55,11 +54,13 @@ namespace HoloToolkit.Unity.InputModule
         {
             SetChildrenActive(false);
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
             {
                 AttachElementToController(controller);
             }
+#endif
 
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AttachElementToController;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += DetachElementFromController;
