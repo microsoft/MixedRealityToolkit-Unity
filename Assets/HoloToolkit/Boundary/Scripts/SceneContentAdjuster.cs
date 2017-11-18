@@ -17,8 +17,20 @@ namespace HoloToolkit.Unity.Boundary
         private int frameWaitHack = 0;
 
         [SerializeField]
-        [Tooltip("Optional container object reference.  If null, this script will move the object it's attached to.")]
+        [Tooltip("Optional container object reference. If null, this script will move the object it's attached to.")]
         private Transform containerObject;
+
+        [SerializeField]
+        [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
+        private bool alignWithInitialHeadHeight = true;
+
+        [SerializeField]
+        [Tooltip("Use this to set the desired position of the container in a stationary app.")]
+        private Vector3 stationarySpaceTypePosition = Vector3.zero;
+
+        [SerializeField]
+        [Tooltip("Use this to set the desired position of the container in a room scale app, if alignWithInitialHeadHeight has not been set.")]
+        private Vector3 roomScaleSpaceTypePosition = Vector3.zero;
 
         private void Awake()
         {
@@ -28,8 +40,7 @@ namespace HoloToolkit.Unity.Boundary
             }
 
 #if UNITY_2017_2_OR_NEWER
-            // A Stationary TrackingSpaceType doesn't need any changes for an object.
-            if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary || !XRDevice.isPresent)
+            if (!XRDevice.isPresent)
 #else
             if (true)
 #endif
@@ -51,7 +62,21 @@ namespace HoloToolkit.Unity.Boundary
                 yield return null;
             }
 
-            containerObject.position = new Vector3(containerObject.position.x, containerObject.position.y + CameraCache.Main.transform.position.y, containerObject.position.z);
+            if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale)
+            {
+                if (alignWithInitialHeadHeight)
+                {
+                    containerObject.position = new Vector3(containerObject.position.x, containerObject.position.y + CameraCache.Main.transform.position.y, containerObject.position.z);
+                }
+                else
+                {
+                    containerObject.position = roomScaleSpaceTypePosition;
+                }
+            }
+            else if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary)
+            {
+                containerObject.position = stationarySpaceTypePosition;
+            }
         }
     }
 }
