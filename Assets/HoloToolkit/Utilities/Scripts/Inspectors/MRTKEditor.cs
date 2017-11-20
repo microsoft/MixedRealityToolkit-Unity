@@ -32,11 +32,11 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                return EditorPrefs.GetBool("MRTK_Show_MRTK_Editors");
+                return GetEditorPref("MRTK_Show_MRTK_Editors", true);
             }
             private set
             {
-                EditorPrefs.SetBool("MRTK_Show_MRTK_Editors", value);
+                SetEditorPref("MRTK_Show_MRTK_Editors", value);
             }
         }
         public static bool CustomEditorActive { get; private set; }
@@ -1014,6 +1014,26 @@ namespace HoloToolkit.Unity
             }
             return rotation;
         }
+        #endregion
+
+        #region editor prefs
+        
+        private static void SetEditorPref(string key, bool value)
+        {
+            EditorPrefs.SetBool(Application.productName + key, value);
+        }
+
+        private static bool GetEditorPref(string key, bool defaultValue)
+        {
+            if (EditorPrefs.HasKey(Application.productName + key))
+            {
+                return EditorPrefs.GetBool(Application.productName + key);
+            }
+
+            EditorPrefs.SetBool(Application.productName + key, defaultValue);
+            return defaultValue;
+        }
+
         #endregion
     }
 #endif
