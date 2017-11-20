@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.Boundary
 
         [SerializeField]
         [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
-        private bool alignWithInitialHeadHeight = true;
+        private bool alignWithHeadHeight = true;
 
         [SerializeField]
         [Tooltip("Use this to set the desired position of the container in a stationary app.")]
@@ -32,6 +32,8 @@ namespace HoloToolkit.Unity.Boundary
         [Tooltip("Use this to set the desired position of the container in a room scale app, if alignWithInitialHeadHeight has not been set.")]
         private Vector3 roomScaleSpaceTypePosition = Vector3.zero;
 
+        private Vector3 contentPosition = Vector3.zero;
+
         private void Awake()
         {
             if (containerObject == null)
@@ -40,6 +42,9 @@ namespace HoloToolkit.Unity.Boundary
             }
 
 #if UNITY_2017_2_OR_NEWER
+            // If no XR device is present, the editor will default to (0, 0, 0) and no adjustment is needed.
+            // This script runs on both opaque and transparent display devices, since the floor offset is based on
+            // TrackingSpaceType and not display type.
             if (!XRDevice.isPresent)
 #else
             if (true)
@@ -64,9 +69,13 @@ namespace HoloToolkit.Unity.Boundary
 
             if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale)
             {
-                if (alignWithInitialHeadHeight)
+                if (alignWithHeadHeight)
                 {
-                    containerObject.position = new Vector3(containerObject.position.x, containerObject.position.y + CameraCache.Main.transform.position.y, containerObject.position.z);
+                    contentPosition.x = containerObject.position.x;
+                    contentPosition.y = containerObject.position.y + CameraCache.Main.transform.position.y;
+                    contentPosition.z = containerObject.position.z;
+
+                    containerObject.position = contentPosition;
                 }
                 else
                 {

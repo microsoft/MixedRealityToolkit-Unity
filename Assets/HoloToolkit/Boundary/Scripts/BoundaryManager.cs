@@ -39,6 +39,10 @@ namespace HoloToolkit.Unity.Boundary
         private TrackingSpaceType transparentTrackingSpaceType = TrackingSpaceType.Stationary;
 #endif
 
+        // Testing in the editor found that this moved the floor out of the way enough, and it is only
+        // used in the case where a headset isn't attached. Otherwise, the floor is positioned like normal.
+        private readonly Vector3 floorPositionInEditor = new Vector3(0f, -3f, 0f);
+
         [SerializeField]
         private bool renderFloor = true;
         public bool RenderFloor
@@ -51,14 +55,6 @@ namespace HoloToolkit.Unity.Boundary
                     renderFloor = value;
                     SetFloorRendering();
                 }
-            }
-        }
-
-        private void SetFloorRendering()
-        {
-            if (floorQuadInstance != null)
-            {
-                floorQuadInstance.SetActive(renderFloor);
             }
         }
 
@@ -75,17 +71,6 @@ namespace HoloToolkit.Unity.Boundary
                     SetBoundaryRendering();
                 }
             }
-        }
-
-        private void SetBoundaryRendering()
-        {
-#if UNITY_2017_2_OR_NEWER
-            // TODO: BUG: Unity: configured bool always returns false in 2017.2.0p1-MRTP4.
-            if (UnityEngine.Experimental.XR.Boundary.configured)
-            {
-                UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
-            }
-#endif
         }
 
         protected override void Awake()
@@ -113,6 +98,25 @@ namespace HoloToolkit.Unity.Boundary
 #endif
         }
 
+        private void SetFloorRendering()
+        {
+            if (floorQuadInstance != null)
+            {
+                floorQuadInstance.SetActive(renderFloor);
+            }
+        }
+
+        private void SetBoundaryRendering()
+        {
+#if UNITY_2017_2_OR_NEWER
+            // TODO: BUG: Unity: configured bool always returns false in 2017.2.0p1-MRTP4.
+            if (UnityEngine.Experimental.XR.Boundary.configured)
+            {
+                UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
+            }
+#endif
+        }
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void RenderFloorQuad()
         {
@@ -123,14 +127,14 @@ namespace HoloToolkit.Unity.Boundary
                 if (!XRDevice.isPresent)
                 {
                     // So the floor quad does not occlude in editor testing, draw it lower.
-                    floorQuadInstance.transform.position = new Vector3(0, -3, 0);
+                    floorQuadInstance.transform.position = floorPositionInEditor;
                 }
                 else
                 {
                     floorQuadInstance.transform.position = Vector3.zero;
                 }
 
-                floorQuadInstance.SetActive(true);
+                SetFloorRendering();
             }
         }
 
