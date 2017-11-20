@@ -25,6 +25,12 @@ namespace HoloToolkit.Unity
         private const float GUISectionOffset = 10.0f;
         private const string GUIHorizontalSpacer = "     ";
         private const float UpdateBuildsPeriod = 1.0f;
+        private const string SdkVersion =
+#if UNITY_2017_2_OR_NEWER
+            "10.0.16299.0";
+#else
+            "10.0.15063.0";
+#endif
 
         private enum BuildPlatformEnum
         {
@@ -310,7 +316,7 @@ namespace HoloToolkit.Unity
                 }
                 else
                 {
-                    if (windowsSdkPaths[i].Equals("10.0.16299.0"))
+                    if (windowsSdkPaths[i].Equals(SdkVersion))
                     {
                         currentSDKVersionIndex = i;
                     }
@@ -319,10 +325,10 @@ namespace HoloToolkit.Unity
 
             if (currentSDKVersionIndex == 0)
             {
-                Debug.LogError("Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the 10.0.16299.0 SDK from Visual Studio Installer.");
+                Debug.LogErrorFormat("Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion);
             }
 
-            EditorGUILayout.LabelField(GUIHorizontalSpacer + "Required SDK Version: 10.0.16299.0");
+            EditorGUILayout.LabelField(GUIHorizontalSpacer + "Required SDK Version: " + SdkVersion);
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
