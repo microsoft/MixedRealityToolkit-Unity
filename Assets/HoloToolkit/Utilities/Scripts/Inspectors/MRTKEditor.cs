@@ -131,11 +131,16 @@ namespace HoloToolkit.Unity
             // Empty by default
         }
 
+        protected virtual bool DisplayHeader { get { return true; } }
+
         /// <summary>
         /// Draws buttons for turning custom editors on/off, as well as DocType, Tutorial and UseWith attributes
         /// </summary>
         private void DrawInspectorHeader()
         {
+            if (!DisplayHeader)
+                return;
+
             EditorGUILayout.Space();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button(ShowCustomEditors ? "Toggle Custom Editors (ON)" : "Toggle Custom Editors (OFF)", ShowCustomEditors ? toggleButtonOnStyle : toggleButtonOffStyle))
