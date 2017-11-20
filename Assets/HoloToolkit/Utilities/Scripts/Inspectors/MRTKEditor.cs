@@ -28,7 +28,17 @@ namespace HoloToolkit.Unity
     {
         #region static vars
         // Toggles custom editors on / off
-        public static bool ShowCustomEditors { get; private set; }
+        public static bool ShowCustomEditors
+        {
+            get
+            {
+                return EditorPrefs.GetBool("MRTK_Show_MRTK_Editors");
+            }
+            private set
+            {
+                EditorPrefs.SetBool("MRTK_Show_MRTK_Editors", value);
+            }
+        }
         public static bool CustomEditorActive { get; private set; }
         public static GameObject lastTarget;
 
@@ -75,7 +85,7 @@ namespace HoloToolkit.Unity
 
         public override void OnInspectorGUI()
         {
-            // Set this to true so 
+            // Set this to true so we can track which kind of headers to draw
             CustomEditorActive = true;
 
             try
@@ -86,8 +96,10 @@ namespace HoloToolkit.Unity
 
                 if (ShowCustomEditors)
                 {
+                    BeginInspectorStyle();
                     DrawCustomEditor();
                     DrawCustomFooter();
+                    EndInspectorStyle();
                 }
                 else
                 {
@@ -107,6 +119,16 @@ namespace HoloToolkit.Unity
         {
             recordingUndo = false;
             DrawCustomSceneGUI();
+        }
+
+        protected virtual void BeginInspectorStyle()
+        {
+            // Empty by default
+        }
+
+        protected virtual void EndInspectorStyle()
+        {
+            // Empty by default
         }
 
         /// <summary>
@@ -411,10 +433,8 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected void SaveChanges()
         {
-            if (serializedObject.ApplyModifiedProperties())
-            {
-                EditorUtility.SetDirty(target);
-            }
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(target);
         }
 
         #region drawing

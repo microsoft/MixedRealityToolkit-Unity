@@ -22,17 +22,7 @@ namespace HoloToolkit.Unity
     {
         public Component targetComponent;
 
-        public override void OnInspectorGUI()
-        {
-            Undo.RecordObject(target, target.name);
-            BeginProfileInspector();
-            DrawCustomEditor();
-            DrawCustomFooter();
-            EndProfileInspector();
-            SaveChanges();
-        }
-
-        private void BeginProfileInspector()
+        protected override void BeginInspectorStyle()
         {
             GUI.color = profileColor;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -41,7 +31,7 @@ namespace HoloToolkit.Unity
             GUI.color = defaultColor;
         }
 
-        private void EndProfileInspector()
+        protected override void EndInspectorStyle()
         {
             EditorGUILayout.EndVertical();
         }
