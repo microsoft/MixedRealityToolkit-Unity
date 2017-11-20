@@ -139,7 +139,9 @@ namespace HoloToolkit.Unity
         private void DrawInspectorHeader()
         {
             if (!DisplayHeader)
+            {
                 return;
+            }
 
             EditorGUILayout.Space();
             GUILayout.BeginHorizontal();
