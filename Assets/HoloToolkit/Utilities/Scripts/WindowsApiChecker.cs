@@ -13,10 +13,8 @@ namespace HoloToolkit
         static WindowsApiChecker()
         {
 #if !UNITY_EDITOR && UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
             UniversalApiContractV5_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5);
             UniversalApiContractV4_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
-#endif
             UniversalApiContractV3_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3);
 #else
             UniversalApiContractV5_IsAvailable = false;
