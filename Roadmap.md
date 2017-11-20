@@ -14,7 +14,9 @@
 
 # Future work planning
 - Automated build for MRTK-Unity.
-- Updating landing page for the ReadMe.md to help app developers find content better.
+- Unity packages for each release will be published to the Unity asset store.
+- Unity packages for each feature area like Input/SpatialMapping will also be added to the release notes. More work needs to happen to ensure feature areas don't have cross dependencies.
+- [Academy content](https://github.com/Microsoft/HolographicAcademy) will be updated with each major toolkit release.
 - Updating API documentation using tools like Doxygen and not writing them manually. This is something we will work with all of you on.
 - Update Wiki to host API documentation instead.
 - Move reusable features from [Mixed Reality Design Labs](https://github.com/Microsoft/MRDesignLabs_Unity) project into toolkit.
@@ -25,7 +27,7 @@
 - **No direct PR's into master branch.** It will be locked and only merges from stable development branches will be taken.
 - Exception will be major bug fixes on a case by case basis.
 - Please use the [working development branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) for daily feature work.
-- [Working development branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) will be snapped every 3 weeks for stabilization.
+- [Working development branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) will be snapshot every 3 weeks for stabilization into a separate branch. Working branch will still be open for contributions.
 - That stabilization branch will be worked on for 1 week.
 - Only bug fixes will be accepted in the stabilization branch before being merged into master.
 
@@ -37,9 +39,7 @@
 - Release tag name convention: v1.Unity release major number.Unity release minor number.Iteration number
 	- For example: For Unity version 2017.1.0 our release tag would be **v1.2017.1.0**
 	- If we marked another release with the same Unity version: **v1.2017.1.1**
-- Unity packages for each release will be published to the Unity asset store.
-- Unity packages for each feature area like Input/SpatialMapping will also be added to the release notes.
-- Academy content will be updated with each major toolkit release.
+
 
 ### Development branches
 - Development branches are great for incubating features before they make their way into master.
