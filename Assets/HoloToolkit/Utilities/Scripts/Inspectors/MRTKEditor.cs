@@ -27,16 +27,18 @@ namespace HoloToolkit.Unity
     public class MRTKEditor : Editor
     {
         #region static vars
+        const string mrtkShowEditorKey = "_Show_MRTK_Editors";
+
         // Toggles custom editors on / off
         public static bool ShowCustomEditors
         {
             get
             {
-                return GetEditorPref("MRTK_Show_MRTK_Editors", true);
+                return GetEditorPref(mrtkShowEditorKey, true);
             }
             private set
             {
-                SetEditorPref("MRTK_Show_MRTK_Editors", value);
+                SetEditorPref(mrtkShowEditorKey, value);
             }
         }
         public static bool CustomEditorActive { get; private set; }
