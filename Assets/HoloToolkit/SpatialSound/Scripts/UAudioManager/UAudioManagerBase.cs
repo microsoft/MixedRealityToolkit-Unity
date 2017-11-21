@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace HoloToolkit.Unity
 {
@@ -11,23 +13,39 @@ namespace HoloToolkit.Unity
     /// UAudioManagerBase provides the base functionality for UAudioManager classes.
     /// </summary>
     /// <typeparam name="TEvent">The type of AudioEvent being managed.</typeparam>
+    /// <typeparam name="TBank"></typeparam>
     /// <remarks>The TEvent type specified must derive from AudioEvent.</remarks>
-    public partial class UAudioManagerBase<TEvent> : MonoBehaviour where TEvent : AudioEvent, new()
+    public partial class UAudioManagerBase<TEvent, TBank> : MonoBehaviour where TEvent : AudioEvent, new() where TBank : AudioBank<TEvent>, new()
     {
+        public TBank[] DefaultBanks = null;
+
         [SerializeField]
+        [Obsolete]
         protected TEvent[] Events = null;
 
         protected const float InfiniteLoop = -1;
         protected List<ActiveEvent> ActiveEvents;
 
 #if UNITY_EDITOR
+        // Temp disable this obsolete warning until we remove Events field.
+        // This public editor only field is here for enabling users to export audio events
+        // into banks for the new paradigm.
+#pragma warning disable 612
         public TEvent[] EditorEvents { get { return Events; } set { Events = value; } }
+#pragma warning restore 612
         public List<ActiveEvent> ProfilerEvents { get { return ActiveEvents; } }
 #endif
+
+        protected List<TBank> LoadedBanks;
 
         protected void Awake()
         {
             ActiveEvents = new List<ActiveEvent>();
+            LoadedBanks = new List<TBank>(DefaultBanks.Length + 5);
+            for (int i = 0; i < DefaultBanks.Length; i++)
+            {
+                LoadBank(DefaultBanks[i]);
+            }
         }
 
         private void Update()
@@ -38,6 +56,34 @@ namespace HoloToolkit.Unity
         protected void OnDestroy()
         {
             StopAllEvents();
+        }
+
+        protected virtual void BanksChanged()
+        {
+        }
+
+        public bool IsLoaded(TBank bank)
+        {
+            return LoadedBanks.Contains(bank);
+        }
+
+        public void LoadBank(TBank bank)
+        {
+            if (IsLoaded(bank))
+            {
+                Debug.LogWarningFormat("Attempting to Load {0} bank twice", bank.name);
+            }
+            else
+            {
+                LoadedBanks.Add(bank);
+                BanksChanged();
+            }
+        }
+
+        public void UnloadBank(TBank bank)
+        {
+            LoadedBanks.Remove(bank);
+            BanksChanged();
         }
 
         /// <summary>

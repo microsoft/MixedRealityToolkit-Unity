@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,39 +21,67 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool OwnAllInput { get; set; }
 
-        public Ray Ray
+        [Obsolete("Will be removed in a later version. Use Rays instead.")]
+        public Ray Ray { get { return Rays[0]; } }
+
+        public RayStep[] Rays
         {
             get
             {
-                return (RayStabilizer == null)
-                    ? rawRay
-                    : RayStabilizer.StableRay;
+                return rays;
             }
         }
+
+        public PointerResult Result { get; set; }
 
         public float? ExtentOverride { get; set; }
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        private Ray rawRay = default(Ray);
+        public bool InteractionEnabled
+        {
+            get
+            {
+                return true;
+            }
+        }
 
+        public bool FocusLocked { get; set; }
+
+        private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
+
+        [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
         public void UpdatePointer()
+        {
+        }
+
+        public virtual void OnPreRaycast()
         {
             if (InputSource == null)
             {
-                rawRay = default(Ray);
+                rays[0] = default(RayStep);
             }
             else
             {
-                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing));
+                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing), string.Format("{0} with id {1} does not support pointing!", InputSource, InputSourceId));
 
-                InputSource.TryGetPointingRay(InputSourceId, out rawRay);
+                Ray pointingRay;
+                if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
+                {
+                    rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
+                }
             }
 
             if (RayStabilizer != null)
             {
-                RayStabilizer.UpdateStability(rawRay.origin, rawRay.direction);
+                RayStabilizer.UpdateStability(rays[0].origin, rays[0].direction);
+                rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
             }
+        }
+
+        public virtual void OnPostRaycast()
+        {
+            // Nothing needed
         }
 
         public bool OwnsInput(BaseEventData eventData)

@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.Receivers
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
     /// based on events from those interactable objects.  This is the base abstract class to extend from.
     /// </summary>
-    public abstract class InteractionReceiver : MonoBehaviour, IInputHandler, IHoldHandler, IInputClickHandler
+    public abstract class InteractionReceiver : MonoBehaviour, IInputHandler, IHoldHandler, IInputClickHandler, IManipulationHandler
     {
         #region Public Members
         /// <summary>
@@ -31,11 +31,25 @@ namespace HoloToolkit.Unity.Receivers
         /// <summary>
         /// Flag for locking focus while selected
         /// </summary>
-        [Tooltip("If true, this object will remain the prime focus while select is held")]
-        public bool _LockFocus;
+        public bool LockFocus
+        {
+            get
+            {
+                return lockFocus;
+            }
+            set
+            {
+                lockFocus = value;
+                CheckLockFocus(_selectingFocuser);
+            }
+        }
         #endregion
 
         #region Private and Protected Members
+        [Tooltip("If true, this object will remain the prime focus while select is held")]
+        [SerializeField]
+        private bool lockFocus = false;
+
         /// <summary>
         /// Protected focuser for the current selecting focuser
         /// </summary>
@@ -148,27 +162,39 @@ namespace HoloToolkit.Unity.Receivers
 
         private void CheckLockFocus(IPointingSource focuser)
         {
-            if (_LockFocus)
+            // If our previous selecting focuser isn't the same
+            if (_selectingFocuser != null && _selectingFocuser != focuser)
             {
-                //LockFocus(focuser);
+                // If our focus is currently locked, unlock it before moving on
+                if (LockFocus)
+                {
+                    _selectingFocuser.FocusLocked = false;
+                }
+            }
+
+            // Set to the new focuser
+            _selectingFocuser = focuser;
+            if (_selectingFocuser != null)
+            {
+                _selectingFocuser.FocusLocked = LockFocus;
             }
         }
 
-        private void LockFocus(IPointingSource focuser)
+        private void LockFocuser(IPointingSource focuser)
         {
             if (focuser != null)
             {
-                ReleaseFocus();
+                ReleaseFocuser();
                 _selectingFocuser = focuser;
-                // _selectingFocuser.LockFocus();
+                _selectingFocuser.FocusLocked = true;
             }
         }
 
-        private void ReleaseFocus()
+        private void ReleaseFocuser()
         {
             if (_selectingFocuser != null)
             {
-                // _selectingFocuser.ReleaseFocus();
+                _selectingFocuser.FocusLocked = false;
                 _selectingFocuser = null;
             }
         }
@@ -193,6 +219,8 @@ namespace HoloToolkit.Unity.Receivers
             {
                 FocusExit(oldFocusedObject, eventData);
             }
+
+            CheckLockFocus(pointer);
         }
 
         #region Global Listener Callbacks

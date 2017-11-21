@@ -15,18 +15,28 @@ namespace HoloToolkit.Unity
     {
         public override float GetHeight()
         {
-            return MRTKEditor.ShowCustomEditors ? 0f : 24f;
+            return (MRTKEditor.ShowCustomEditors && MRTKEditor.CustomEditorActive) ? 0f : 24f;
         }
 
         public override void OnGUI(Rect position)
         {
+            if (headerStyle == null)
+            {
+                headerStyle = new GUIStyle(EditorStyles.boldLabel);
+                headerStyle.alignment = TextAnchor.LowerLeft;
+            }
+
             // If we're using MRDL custom editors, don't show the header
-            if (MRTKEditor.ShowCustomEditors)
+            if (MRTKEditor.ShowCustomEditors && MRTKEditor.CustomEditorActive)
+            {
                 return;
+            }
 
             // Otherwise draw it normally
-            GUI.Label(position, (base.attribute as HeaderAttribute).header, EditorStyles.boldLabel);
+            GUI.Label(position, (base.attribute as HeaderAttribute).header, headerStyle);
         }
+
+        private static GUIStyle headerStyle = null;
     }
 #endif
 
