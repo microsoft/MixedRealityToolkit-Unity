@@ -77,7 +77,7 @@ namespace HoloToolkit.Unity.Receivers
 
             if (FocusManager.IsInitialized)
             {
-                FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
+                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
             }
         }
 
