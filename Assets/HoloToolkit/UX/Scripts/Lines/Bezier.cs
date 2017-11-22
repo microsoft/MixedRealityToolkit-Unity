@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity.UX
         }
 
         protected override Vector3 GetUpVectorInternal(float normalizedLength) {
-            // Bezeir up vectors just use transform up
+            // Bezier up vectors just use transform up
             return transform.up;
         }
 

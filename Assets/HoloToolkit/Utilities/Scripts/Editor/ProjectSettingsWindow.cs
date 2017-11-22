@@ -327,9 +327,9 @@ namespace HoloToolkit.Unity
             Names[ProjectSetting.WsaUwpBuildToD3D] = "Build for Direct3D";
             Descriptions[ProjectSetting.WsaUwpBuildToD3D] =
                 "Recommended\n\n" +
-                "Produces an app that targets Direct3D instead of Xaml.\n\n" +
-                "Pure Direct3D apps run faster than applications that include Xaml. This option should remain checked unless you plan to " +
-                "overlay Unity content with Xaml content or you plan to switch between Unity views and Xaml views at runtime.";
+                "Produces an app that targets Direct3D instead of XAML.\n\n" +
+                "Pure Direct3D apps run faster than applications that include XAML. This option should remain checked unless you plan to " +
+                "overlay Unity content with XAML content or you plan to switch between Unity views and XAML views at runtime.";
 
             Names[ProjectSetting.TargetOccludedDevices] = "Target Occluded Devices";
             Descriptions[ProjectSetting.TargetOccludedDevices] =

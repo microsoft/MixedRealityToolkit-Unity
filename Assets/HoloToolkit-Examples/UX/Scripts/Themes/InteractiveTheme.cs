@@ -35,7 +35,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("Current value : read only")]
         public Type CurrentValue;
 
-        [Tooltip("Interactive host : opional")]
+        [Tooltip("Interactive host : optional")]
         public Interactive Button;
         private void Awake()
         {

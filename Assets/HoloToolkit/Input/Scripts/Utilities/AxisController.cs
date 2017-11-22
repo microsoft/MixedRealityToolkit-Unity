@@ -268,12 +268,12 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (this.buttonType <= ButtonController.ButtonType.Middle)
             {
-                // if mousebutton is either left, right or middle
+                // if mouse button is either left, right or middle
                 SetWantsMouseJumping(true);
             }
             else if (this.buttonType <= ButtonController.ButtonType.Focused)
             {
-                // if mousebutton is either control, shift or focused
+                // if mouse button is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                 UnityEngine.Cursor.visible = false;
             }
@@ -285,12 +285,12 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (this.buttonType <= ButtonController.ButtonType.Middle)
             {
-                // if mousebutton is either left, right or middle
+                // if mouse button is either left, right or middle
                 SetWantsMouseJumping(false);
             }
             else if (this.buttonType <= ButtonController.ButtonType.Focused)
             {
-                // if mousebutton is either control, shift or focused
+                // if mouse button is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
                 UnityEngine.Cursor.visible = true;
             }
@@ -505,7 +505,7 @@ namespace HoloToolkit.Unity.InputModule
         ///  It means that the cursor will be invisible when it is outside of the
         ///  Unity game view window, and visible when it breaches the outer edges.
         /// </summary>
-        /// <param name="wantsJumping">Wheter the mouse cursor should be visible over the game window.</param>
+        /// <param name="wantsJumping">Whether the mouse cursor should be visible over the game window.</param>
         private void SetWantsMouseJumping(bool wantsJumping)
         {
             if (wantsJumping != this.isMouseJumping)

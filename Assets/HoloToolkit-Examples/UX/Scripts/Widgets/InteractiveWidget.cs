@@ -30,7 +30,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         }
 
         /// <summary>
-        /// un register when disabled
+        /// Unregister when disabled
         /// </summary>
         protected virtual void OnDisable()
         {

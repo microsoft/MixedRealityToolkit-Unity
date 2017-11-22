@@ -96,7 +96,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         public string ServerIp { get; private set; }
 
         /// <summary>
-        /// Keeps track of the local Ip address.
+        /// Keeps track of the local IP address.
         /// </summary>
         public string LocalIp { get; set; }
 
@@ -266,7 +266,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         /// <summary>
-        /// Call to join a sessoin
+        /// Call to join a session
         /// </summary>
         /// <param name="session">Information about the session to join</param>
         public void JoinSession(SessionInfo session)

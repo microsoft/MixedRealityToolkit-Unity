@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
     /// <summary>
     /// Attach this component to a GameObject that contains some meshes (i.e.: the FakeSpatialMappingMesh.fbx).
     /// When running in the Unity editor, the planes are then visualized via editor gizmos.  You can then
-    /// play with the API parameters in realtime to see how the impact the plane finding algorithm.
+    /// play with the API parameters in real-time to see how the impact the plane finding algorithm.
     /// </summary>
     public class PlaneFindingTest : MonoBehaviour
     {

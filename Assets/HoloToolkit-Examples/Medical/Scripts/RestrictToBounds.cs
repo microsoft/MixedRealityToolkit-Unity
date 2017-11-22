@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Keeps a game object within configured boudns
+    /// Keeps a game object within configured bounds
     /// </summary>
     [RequireComponent(typeof(Transform))]
     public class RestrictToBounds : MonoBehaviour

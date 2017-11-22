@@ -103,7 +103,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         public virtual bool TryGrabWith(BaseGrabber grabber)
         {
-            // TODO error checking, mult-grab checking
+            // TODO error checking, multi-grab checking
             if (GrabState != GrabStateEnum.Inactive)
             {
                 switch (grabStyle)
@@ -113,7 +113,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
                         BaseGrabber primary = GrabberPrimary;
                         if (GrabberPrimary.CanTransferOwnershipTo(this, grabber))
                         {
-                            // Remove from grabbable list and detatch
+                            // Remove from grabbable list and detach
                             activeGrabbers.Remove(primary);
                             DetachFromGrabber(primary);
                         }
@@ -150,7 +150,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
             availableGrabbers.Remove(availableObject);
         }
 
-        //the next three functions provide basic behaviour. Extend from this base script in order to provide more specific functionality.
+        // The next three functions provide basic behavior. Extend from this base script in order to provide more specific functionality.
 
         protected virtual void AttachToGrabber(BaseGrabber grabber)
         {

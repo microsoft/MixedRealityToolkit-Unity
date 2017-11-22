@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            // If we're using MRDL custom edtiors, let the draw override property handle it
+            // If we're using MRDL custom editors, let the draw override property handle it
             if (MRTKEditor.ShowCustomEditors)
                 return;
 
