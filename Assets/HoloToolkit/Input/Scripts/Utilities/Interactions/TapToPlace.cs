@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using HoloToolkit.Unity.SpatialMapping;
 
 namespace HoloToolkit.Unity.InputModule
@@ -40,6 +41,16 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("Should the center of the Collider be used instead of the gameObjects world transform.")]
         public bool UseColliderCenter;
+
+        /// <summary>
+        /// On Started Placing Event
+        /// </summary>
+        public UnityEvent OnStartedPlacing;
+
+        /// <summary>
+        /// On Stopped Placing Event
+        /// </summary>
+        public UnityEvent OnStoppedPlacing;
 
         private Interpolator interpolator;
 
@@ -156,6 +167,11 @@ namespace HoloToolkit.Unity.InputModule
 
             ToggleSpatialMesh();
             RemoveWorldAnchor();
+
+            if (OnStartedPlacing != null)
+            {
+                OnStartedPlacing.Invoke();
+            }
         }
 
         private void StopPlacing()
@@ -166,6 +182,11 @@ namespace HoloToolkit.Unity.InputModule
 
             ToggleSpatialMesh();
             AttachWorldAnchor();
+
+            if (OnStoppedPlacing != null)
+            {
+                OnStoppedPlacing.Invoke();
+            }
         }
 
         private void AttachWorldAnchor()
