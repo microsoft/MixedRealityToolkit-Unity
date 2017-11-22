@@ -44,7 +44,6 @@ namespace HoloToolkit.Unity.InputModule
         private HoldEventData holdEventData;
         private NavigationEventData navigationEventData;
         private XboxControllerEventData xboxControllerEventData;
-        private MotionControllerEventData motionControllerEventData;
         private SourceRotationEventData sourceRotationEventData;
         private SourcePositionEventData sourcePositionEventData;
         private PointerSpecificEventData pointerSpecificEventData;
@@ -212,7 +211,6 @@ namespace HoloToolkit.Unity.InputModule
             sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
-            motionControllerEventData = new MotionControllerEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
@@ -838,26 +836,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion // Xbox Controller Events
-
-        #region Motion Controller Events
-
-        private static readonly ExecuteEvents.EventFunction<IMotionControllerHandler> OnMotionControllerInputUpdateHandler =
-            delegate (IMotionControllerHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<MotionControllerEventData>(eventData);
-                handler.OnMotionControllerInputUpdate(casted);
-            };
-
-        public void RaiseMotionControllerInputUpdate(IInputSource source, uint sourceId, MotionControllerData inputData)
-        {
-            // Create input event
-            motionControllerEventData.Initialize(source, sourceId, inputData);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(motionControllerEventData, OnMotionControllerInputUpdateHandler);
-        }
-
-        #endregion // Motion Controller Events
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         #region Speech Events

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class ControllerHandlerTest : GamePadHandlerBase, IXboxControllerHandler, IMotionControllerHandler
+    public class ControllerHandlerTest : GamePadHandlerBase, IXboxControllerHandler
     {
         [SerializeField]
         private float movementSpeedMultiplier = 1f;
@@ -17,10 +17,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         [Header("Xbox Controller Settings")]
         [SerializeField]
         private XboxControllerMappingTypes xboxResetButton = XboxControllerMappingTypes.XboxY;
-
-        [Header("Motion Controller Settings")]
-        [SerializeField]
-        private MotionControllerMappingTypes motionControllerResetButton = MotionControllerMappingTypes.RightMenu;
 
         public Text DebugText;
         private Vector3 initialPosition;
@@ -44,58 +40,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             base.OnSourceLost(eventData);
             Debug.LogFormat("Joystick \"{0}\" Disconnected", eventData.SourceId);
             DebugText.text = "No Controller Connected";
-        }
-
-        public void OnMotionControllerInputUpdate(MotionControllerEventData eventData)
-        {
-            // Reset our new vectors
-            newPosition = Vector3.zero;
-            newRotation = Vector3.zero;
-
-            // Assign new Position Data
-            newPosition.x += eventData.LeftStickHorizontalAxis * movementSpeedMultiplier;
-            newPosition.z += eventData.LeftStickVerticalAxis * movementSpeedMultiplier;
-
-            transform.position += newPosition;
-
-            // Assign new rotation data
-            newRotation.y += eventData.RightStickHorizontalAxis * rotationSpeedMultiplier;
-
-            transform.rotation *= Quaternion.Euler(newRotation);
-
-            if (MotionControllerMapping.GetButton_Up(motionControllerResetButton, eventData))
-            {
-                transform.position = initialPosition;
-            }
-
-            DebugText.text =
-                string.Format(
-                    "{0}\n" +
-                    "LS Horizontal: {1:0.000} Vertical: {2:0.000}\n" +
-                    "RS Horizontal: {3:0.000} Vertical: {4:0.000}\n" +
-                    "LT Horizontal: {5:0.000} Vertical: {6:0.000}\n" +
-                    "RT Horizontal: {7:0.000} Vertical: {8:0.000}\n" +
-                    "Left Trigger:  {9:0.000} Right Trigger: {10:0.000}\n" +
-                    "Left Trigger Pressed: {11} Right Trigger Pressed: {12} \n" +
-                    "Left Trigger Partially Pressed: {13} Right Trigger Partially Pressed: {14} \n" +
-                    "Left Menu Pressed: {15} Right Menu Pressed: {16} \n" +
-                    "Left Grip Pressed: {17} Right Grip Pressed: {18} \n" +
-                    "Left Stick Pressed: {19} Right Stick Pressed: {20} \n" +
-                    "Left TouchPad Touched: {21} Right TouchPad Touched: {22} \n" +
-                    "Left TouchPad Pressed: {23} Right TouchPad Pressed: {24} \n",
-                    GamePadName,
-                    eventData.LeftStickHorizontalAxis, eventData.LeftStickVerticalAxis,
-                    eventData.RightStickHorizontalAxis, eventData.RightStickVerticalAxis,
-                    eventData.LeftTouchPadHorizontalAxis, eventData.LeftTouchPadVerticalAxis,
-                    eventData.RightTouchPadHorizontalAxis, eventData.RightTouchPadVerticalAxis,
-                    eventData.LeftTriggerAxis, eventData.RightTriggerAxis,
-                    eventData.LeftTrigger_Pressed, eventData.RightTrigger_Pressed,
-                    eventData.LeftTrigger_PartiallyPressed, eventData.RightTrigger_PartiallyPressed,
-                    eventData.LeftMenu_Pressed, eventData.RightMenu_Pressed,
-                    eventData.LeftGrip_Pressed, eventData.RightGrip_Pressed,
-                    eventData.LeftStick_Pressed, eventData.RightStick_Pressed,
-                    eventData.LeftTouchPad_Touched, eventData.RightTouchPad_Touched,
-                    eventData.LeftTouchPad_Pressed, eventData.RightTouchPad_Pressed);
         }
 
         public void OnXboxInputUpdate(XboxControllerEventData eventData)

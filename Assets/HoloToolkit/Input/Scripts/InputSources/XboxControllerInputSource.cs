@@ -45,6 +45,8 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private MappingEntry[] mapping;
 
+        private int motionControllerCount = 0;
+
         protected override void Awake()
         {
             base.Awake();
@@ -85,7 +87,8 @@ namespace HoloToolkit.Unity.InputModule
             base.Update();
 
             // We will only register the first device we find.  Input is taken from joystick 1.
-            if (gamePadInputDatas.Count != 1) { return; }
+            // If we have motion controllers connected we will not process Xbox controller input.
+            if (gamePadInputDatas.Count != 1 || motionControllerCount > 0) { return; }
 
             controllerData.XboxLeftStickHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickHorizontal);
             controllerData.XboxLeftStickVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickVertical);
@@ -165,18 +168,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 gamePadInputDatas.Clear();
 
-                int motionControllerCount = 0;
-                var sources = InputManager.Instance.DetectedInputSources;
-
-                for (var i = 0; i < sources.Count; i++)
-                {
-                    if (sources[i].InputSource.GetType() == typeof(MotionControllerInputSource))
-                    {
-                        motionControllerCount++;
-                    }
-                }
-
-                if (motionControllerCount == 0)
+                if (gamePadInputDatas.Count == 0)
                 {
                     // Reset our input module to it's previous state.
                     InputModule.forceModuleActive = PreviousForceActiveState;
@@ -187,6 +179,8 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
+            motionControllerCount = 0;
+
             for (var i = 0; i < joystickNames.Length; i++)
             {
                 if (string.IsNullOrEmpty(joystickNames[i]) ||
@@ -196,6 +190,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     // If we don't have any matching joystick types, continue.
                     // If we have motion controllers connected we override the xbox input.
+                    motionControllerCount++;
                     continue;
                 }
 
