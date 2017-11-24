@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: 449e08ed41035264a997b19b6eda31e7
+guid: bcf5a18aea16b1d41b747c84181ca558
 timeCreated: 1442349494
 licenseType: Pro
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: Cursor_Cross
     100002: cursor_cross_ring
@@ -14,13 +14,13 @@ ModelImporter:
     100012: cursor_cross_ring_press
     100014: cursor_cross_ring_press_scale
     100016: //RootNode
-    100018: cursor_sizeNorthwestSoutheast_arrows
-    100020: cursor_sizeNorthwestSoutheast_root
+    100018: cursor_sizeNorthSouth_arrows
+    100020: cursor_sizeNorthSouth_root
     100022: polySurface10
-    100024: polySurface19
-    100026: polySurface20
-    100028: polySurface21
-    100030: polySurface22
+    100024: polySurface11
+    100026: polySurface12
+    100028: polySurface13
+    100030: polySurface14
     100032: polySurface23
     100034: polySurface24
     100036: polySurface25
@@ -38,13 +38,13 @@ ModelImporter:
     400012: cursor_cross_ring_press
     400014: cursor_cross_ring_press_scale
     400016: //RootNode
-    400018: cursor_sizeNorthwestSoutheast_arrows
-    400020: cursor_sizeNorthwestSoutheast_root
+    400018: cursor_sizeNorthSouth_arrows
+    400020: cursor_sizeNorthSouth_root
     400022: polySurface10
-    400024: polySurface19
-    400026: polySurface20
-    400028: polySurface21
-    400030: polySurface22
+    400024: polySurface11
+    400026: polySurface12
+    400028: polySurface13
+    400030: polySurface14
     400032: polySurface23
     400034: polySurface24
     400036: polySurface25
@@ -54,10 +54,10 @@ ModelImporter:
     400044: polySurface9
     400046: rotate_root
     2300000: polySurface10
-    2300002: polySurface19
-    2300004: polySurface20
-    2300006: polySurface21
-    2300008: polySurface22
+    2300002: polySurface11
+    2300004: polySurface12
+    2300006: polySurface13
+    2300008: polySurface14
     2300010: polySurface23
     2300012: polySurface24
     2300014: polySurface25
@@ -66,10 +66,10 @@ ModelImporter:
     2300020: polySurface28
     2300022: polySurface9
     3300000: polySurface10
-    3300002: polySurface19
-    3300004: polySurface20
-    3300006: polySurface21
-    3300008: polySurface22
+    3300002: polySurface11
+    3300004: polySurface12
+    3300006: polySurface13
+    3300008: polySurface14
     3300010: polySurface23
     3300012: polySurface24
     3300014: polySurface25
@@ -85,52 +85,25 @@ ModelImporter:
     4300010: polySurface26
     4300012: polySurface27
     4300014: polySurface28
-    4300016: polySurface19
-    4300018: polySurface20
-    4300020: polySurface21
-    4300022: polySurface22
-    7400000: Cursor_Cross_Observation_In_NorthwestSoutheast
-    7400002: Cursor_Cross_Observation_Out_NorthwestSoutheast
-    7400004: Cursor_Cross_Interaction_In_NorthwestSoutheast
-    7400006: Cursor_Cross_Interaction_Out_NorthwestSoutheast
-    7400008: Cursor_Cross_Hold_In_NorthwestSoutheast
-    7400010: Cursor_Cross_Hold_Out_NorthwestSoutheast
-    7400012: Cursor_Cross_Observation_NorthwestSoutheast
-    7400014: Cursor_Cross_Interaction_From_Observation_NorthwestSoutheast
-    7400016: Cursor_Cross_Interaction_From_Hold_NorthwestSoutheast
-    7400018: Cursor_Cross_Hold
+    4300016: polySurface11
+    4300018: polySurface12
+    4300020: polySurface13
+    4300022: polySurface14
+    7400000: Cursor_Cross_Observation_In_NorthSouth
+    7400002: Cursor_Cross_Observation_Out_NorthSouth
+    7400004: Cursor_Cross_Interaction_In_NorthSouth
+    7400006: Cursor_Cross_Interaction_Out_NorthSouth
+    7400008: Cursor_Cross_Hold_In_NorthSouth
+    7400010: Cursor_Cross_Hold_Out_NorthSouth
+    7400012: Cursor_Cross_Observation_NorthSouth
+    7400014: Cursor_Cross_Interaction_From_Observation_NorthSouth
+    7400016: Cursor_Cross_Interaction_From_Hold_NorthSouth
+    7400018: Cursor_Cross_Hold_NorthSouth
     9500000: //RootNode
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert2
-    second: {fileID: 2100000, guid: 69ad186d6ee6fb0499359e09bdef95db, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert3
-    second: {fileID: 2100000, guid: 170bada3f495b0d49884ccedf2a26131, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert4
-    second: {fileID: 2100000, guid: 170bada3f495b0d49884ccedf2a26131, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert5
-    second: {fileID: 2100000, guid: 30b414a694ff60744a035148e25d4274, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert6
-    second: {fileID: 2100000, guid: 23202c3c9bf7ee949868fe82b00c5051, type: 2}
   materials:
     importMaterials: 0
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -143,17 +116,15 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    importAnimatedCustomProperties: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Cursor_Cross_Observation_In_NorthwestSoutheast
+      name: Cursor_Cross_Observation_In_NorthSouth
       takeName: Take 001
       firstFrame: 1
       lastFrame: 6
@@ -213,23 +184,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Observation_Out_NorthwestSoutheast
+      name: Cursor_Cross_Observation_Out_NorthSouth
       takeName: Take 001
       firstFrame: 20
       lastFrame: 25
@@ -289,23 +260,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Interaction_In_NorthwestSoutheast
+      name: Cursor_Cross_Interaction_In_NorthSouth
       takeName: Take 001
       firstFrame: 40
       lastFrame: 45
@@ -365,23 +336,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Interaction_Out_NorthwestSoutheast
+      name: Cursor_Cross_Interaction_Out_NorthSouth
       takeName: Take 001
       firstFrame: 60
       lastFrame: 65
@@ -441,23 +412,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Hold_In_NorthwestSoutheast
+      name: Cursor_Cross_Hold_In_NorthSouth
       takeName: Take 001
       firstFrame: 70
       lastFrame: 75
@@ -517,23 +488,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Hold_Out_NorthwestSoutheast
+      name: Cursor_Cross_Hold_Out_NorthSouth
       takeName: Take 001
       firstFrame: 80
       lastFrame: 85
@@ -593,23 +564,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Observation_NorthwestSoutheast
+      name: Cursor_Cross_Observation_NorthSouth
       takeName: Take 001
       firstFrame: 100
       lastFrame: 104
@@ -669,23 +640,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Interaction_From_Observation_NorthwestSoutheast
+      name: Cursor_Cross_Interaction_From_Observation_NorthSouth
       takeName: Take 001
       firstFrame: 109
       lastFrame: 113
@@ -745,23 +716,23 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Interaction_From_Hold_NorthwestSoutheast
+      name: Cursor_Cross_Interaction_From_Hold_NorthSouth
       takeName: Take 001
       firstFrame: 119
       lastFrame: 122
@@ -821,25 +792,25 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Cursor_Cross_Hold
+      name: Cursor_Cross_Hold_NorthSouth
       takeName: Take 001
-      firstFrame: 129
+      firstFrame: 119
       lastFrame: 132
       wrapMode: 0
       orientationOffsetY: 0
@@ -897,17 +868,17 @@ ModelImporter:
         weight: 1
       - path: Cursor_Cross/cursor_cross_ring/rotate_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface19
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface11
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface20
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface12
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface21
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface13
         weight: 1
-      - path: Cursor_Cross/cursor_sizeNorthwestSoutheast_root/cursor_sizeNorthwestSoutheast_arrows/polySurface22
+      - path: Cursor_Cross/cursor_sizeNorthSouth_root/cursor_sizeNorthSouth_arrows/polySurface14
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -918,16 +889,13 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 0
-    importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
+    importBlendShapes: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -937,7 +905,6 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 4
-    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
