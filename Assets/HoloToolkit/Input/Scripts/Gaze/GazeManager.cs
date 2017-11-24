@@ -113,14 +113,14 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
         public PointerResult Result { get; set; }
-        
+
         [Obsolete("Will be removed in a later version. Use Rays instead.")]
         public Ray Ray { get { return Rays[0]; } }
-        
+
         public RayStep[] Rays { get { return rays; } }
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.zero) };
- 
+
         public float? ExtentOverride
         {
             get { return MaxGazeCollisionDistance; }
@@ -133,11 +133,10 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool InteractionEnabled
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
+
+        public bool FocusLocked { get; set; }
 
         private float lastHitDistance = 2.0f;
 
@@ -203,7 +202,7 @@ namespace HoloToolkit.Unity.InputModule
                     newGazeNormal = Stabilizer.StableRay.direction;
                 }
 
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent (this)));
+                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent(this)));
             }
 
             UpdateHitPosition();
@@ -212,7 +211,6 @@ namespace HoloToolkit.Unity.InputModule
         [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
         public void UpdatePointer()
         {
-
         }
 
         public virtual void OnPreRaycast()

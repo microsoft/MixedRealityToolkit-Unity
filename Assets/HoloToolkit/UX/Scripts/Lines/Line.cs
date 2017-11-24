@@ -4,7 +4,7 @@
 using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace Holotoolkit.Unity.UX
+namespace HoloToolkit.Unity.UX
 {
     public class Line : LineBase
     {

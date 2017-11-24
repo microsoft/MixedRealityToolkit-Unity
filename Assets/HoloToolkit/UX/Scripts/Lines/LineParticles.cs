@@ -5,7 +5,7 @@
 using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace Holotoolkit.Unity.UX
+namespace HoloToolkit.Unity.UX
 {
     [UseWith(typeof(LineBase))]
     public class LineParticles : LineRendererBase

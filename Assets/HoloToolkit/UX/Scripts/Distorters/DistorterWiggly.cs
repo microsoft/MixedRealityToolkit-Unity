@@ -4,7 +4,7 @@
 //
 using UnityEngine;
 
-namespace Holotoolkit.Unity.UX
+namespace HoloToolkit.Unity.UX
 {
     public class DistorterWiggly : Distorter
     {

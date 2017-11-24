@@ -51,19 +51,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            if (gazeManagerPointingData == null)
-            {
-                if (GazeManager.IsInitialized)
-                {
-                    gazeManagerPointingData = new PointerData(GazeManager.Instance);
-                }
-            }
-            else
-            {
-                Debug.Assert(ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
-            }
-
-            if ((pointers.Count == 0) && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
+            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
             {
                 RegisterPointer(GazeManager.Instance);
             }
@@ -73,18 +61,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             UpdatePointers();
             UpdateFocusedObjects();
-        }
-
-        /// <summary>
-        /// It's assumed that if you're using the MRTK's input system you'll
-        /// need to update your canvases to use the proper raycast camera for input.
-        /// </summary>
-        private void OnValidate()
-        {
-            if (UIRaycastCamera != null)
-            {
-                UpdateCanvasEventSystems();
-            }
         }
 
         #endregion
@@ -273,27 +249,33 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RegisterPointer(IPointingSource pointingSource)
         {
-            Debug.Assert(pointingSource != null);
+            Debug.Assert(pointingSource != null, "Can't register a pointer if you give us one.");
 
-            if (TryGetPointerIndex(pointingSource) != null)
+            int pointerIndex;
+            PointerData pointer;
+
+            if (TryGetPointerIndex(pointingSource, out pointerIndex))
             {
                 // This pointing source is already registered and active.
                 return;
             }
 
-            PointerData pointer;
-
             if (pointingSource is GazeManager)
             {
                 if (gazeManagerPointingData == null)
                 {
-                    gazeManagerPointingData = new PointerData(pointingSource);
+                    if (GazeManager.IsInitialized)
+                    {
+                        gazeManagerPointingData = new PointerData(GazeManager.Instance);
+                    }
                 }
                 else
                 {
+                    Debug.Assert(ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
                     gazeManagerPointingData.ResetFocusedObjects();
                 }
 
+                Debug.Assert(gazeManagerPointingData != null);
                 pointer = gazeManagerPointingData;
             }
             else
@@ -306,14 +288,19 @@ namespace HoloToolkit.Unity.InputModule
 
         public void UnregisterPointer(IPointingSource pointingSource)
         {
-            Debug.Assert(pointingSource != null);
+            Debug.Assert(pointingSource != null, "Can't unregister a pointer if you give us one.");
 
-            int? iPointer = TryGetPointerIndex(pointingSource);
-            Debug.Assert(iPointer != null);
+            int pointerIndex;
+            TryGetPointerIndex(pointingSource, out pointerIndex);
+            Debug.Assert(pointerIndex >= 0, "Invalid pointer index!");
 
-            PointerData pointer = pointers[iPointer.Value];
+            PointerData pointer;
+            GetPointerData(pointingSource, out pointer);
+            Debug.Assert(pointer != null, "Attempting to unregister a pointer that was never registered!");
 
-            pointers.RemoveAt(iPointer.Value);
+            // Should we be protecting against unregistering the GazeManager?
+
+            pointers.RemoveAt(pointerIndex);
 
             // Raise focus events if needed:
 
@@ -343,13 +330,11 @@ namespace HoloToolkit.Unity.InputModule
 
         public FocusDetails? TryGetFocusDetails(BaseEventData eventData)
         {
-            for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
+            for (int i = 0; i < pointers.Count; i++)
             {
-                PointerData pointer = pointers[iPointer];
-
-                if (pointer.PointingSource.OwnsInput(eventData))
+                if (pointers[i].PointingSource.OwnsInput(eventData))
                 {
-                    return pointer.End;
+                    return pointers[i].End;
                 }
             }
 
@@ -368,6 +353,8 @@ namespace HoloToolkit.Unity.InputModule
             IPointingSource pointingSource;
             TryGetPointingSource(eventData, out pointingSource);
             PointerInputEventData pointerInputEventData = GetSpecificPointerEventData(pointingSource);
+
+            Debug.Assert(pointerInputEventData != null);
             pointerInputEventData.selectedObject = details.Value.Object;
 
             return details.Value.Object;
@@ -375,13 +362,11 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool TryGetPointingSource(BaseEventData eventData, out IPointingSource pointingSource)
         {
-            for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
+            for (int i = 0; i < pointers.Count; i++)
             {
-                PointerData pointer = pointers[iPointer];
-
-                if (pointer.PointingSource.OwnsInput(eventData))
+                if (pointers[i].PointingSource.OwnsInput(eventData))
                 {
-                    pointingSource = pointer.PointingSource;
+                    pointingSource = pointers[i].PointingSource;
                     return true;
                 }
             }
@@ -392,12 +377,28 @@ namespace HoloToolkit.Unity.InputModule
 
         public FocusDetails GetFocusDetails(IPointingSource pointingSource)
         {
-            return GetPointer(pointingSource).End;
+            PointerData pointerData;
+            FocusDetails details = default(FocusDetails);
+
+            if (GetPointerData(pointingSource, out pointerData))
+            {
+                details = pointerData.End;
+            }
+
+            return details;
         }
 
         public GameObject GetFocusedObject(IPointingSource pointingSource)
         {
-            return GetPointer(pointingSource).End.Object;
+            PointerData pointerData;
+            GameObject focusedObject = null;
+
+            if (GetPointerData(pointingSource, out pointerData))
+            {
+                focusedObject = pointerData.End.Object;
+            }
+
+            return focusedObject;
         }
 
         /// <summary>
@@ -438,12 +439,13 @@ namespace HoloToolkit.Unity.InputModule
 
         public PointerInputEventData GetSpecificPointerEventData(IPointingSource pointer)
         {
-            return GetPointer(pointer).UnityUIPointerData;
+            PointerData pointerEventData;
+            return GetPointerData(pointer, out pointerEventData) ? pointerEventData.UnityUIPointerData : null;
         }
 
         public float GetPointingExtent(IPointingSource pointingSource)
         {
-            return GetPointingExtent(GetPointer(pointingSource));
+            return pointingSource.ExtentOverride ?? pointingExtent;
         }
 
         #endregion
@@ -507,24 +509,32 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
                 pointer.ResetFocusedObjects(false);
-                return;
             }
-
-            // Otherwise, continue
-            var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
-
-            // Perform raycast to determine focused object
-            RaycastPhysics(pointer, prioritizedLayerMasks);
-
-            // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
-            if (EventSystem.current != null)
+            else
             {
-                // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
-                RaycastUnityUI(pointer, prioritizedLayerMasks);
-            }
+                // If the pointer is locked
+                // Keep the focus objects the same
+                // This will ensure that we execute events on those objects
+                // even if the pointer isn't pointing at them
+                if (!pointer.PointingSource.FocusLocked)
+                {
+                    // Otherwise, continue
+                    var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
 
-            // Set the pointer's result last
-            pointer.PointingSource.Result = pointer;
+                    // Perform raycast to determine focused object
+                    RaycastPhysics(pointer, prioritizedLayerMasks);
+
+                    // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+                    if (EventSystem.current != null)
+                    {
+                        // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                        RaycastUnityUI(pointer, prioritizedLayerMasks);
+                    }
+
+                    // Set the pointer's result last
+                    pointer.PointingSource.Result = pointer;
+                }
+            }
 
             // Call the pointer's OnPostRaycast function
             // This will give it a chance to respond to raycast results
@@ -537,10 +547,13 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            RaycastHit physicsHit = default(RaycastHit);
-            RayStep rayStep = default(RayStep);
             bool isHit = false;
             int rayStepIndex = 0;
+            RayStep rayStep = default(RayStep);
+            RaycastHit physicsHit = default(RaycastHit);
+
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
 
             // Check raycast for each step in the pointing source
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -562,7 +575,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                pointer.UpdateHit(GetPointingExtent(pointer));
+                pointer.UpdateHit(GetPointingExtent(pointer.PointingSource));
             }
         }
 
@@ -601,6 +614,9 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
+
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
             {
@@ -613,7 +629,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid && uiRaycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
@@ -783,32 +799,33 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private PointerData GetPointer(IPointingSource pointingSource)
+        private bool GetPointerData(IPointingSource pointingSource, out PointerData pointerData)
         {
-            int? iPointer = TryGetPointerIndex(pointingSource);
-            Debug.Assert(iPointer != null);
-            return pointers[iPointer.Value];
+            int pointerIndex;
+
+            if (TryGetPointerIndex(pointingSource, out pointerIndex))
+            {
+                pointerData = pointers[pointerIndex];
+                return true;
+            }
+
+            pointerData = null;
+            return false;
         }
 
-        private int? TryGetPointerIndex(IPointingSource pointingSource)
+        private bool TryGetPointerIndex(IPointingSource pointingSource, out int pointerIndex)
         {
-            int? found = null;
-
             for (int i = 0; i < pointers.Count; i++)
             {
-                if (pointers[i].PointingSource == pointingSource)
+                if (pointingSource == pointers[i].PointingSource)
                 {
-                    found = i;
-                    break;
+                    pointerIndex = i;
+                    return true;
                 }
             }
 
-            return found;
-        }
-
-        private float GetPointingExtent(PointerData pointer)
-        {
-            return (pointer.PointingSource.ExtentOverride ?? pointingExtent);
+            pointerIndex = -1;
+            return false;
         }
 
         private RaycastHit? PrioritizeHits(RaycastHit[] hits, LayerMask[] layerMasks)

@@ -45,14 +45,12 @@ namespace HoloToolkit.Unity.InputModule
             started = true;
 
             InputManager.AssertIsInitialized();
-            GazeManager.AssertIsInitialized();
             FocusManager.AssertIsInitialized();
+            GazeManager.AssertIsInitialized();
 
             AddInputManagerListenerIfNeeded();
             FindCursorIfNeeded();
             ConnectBestAvailablePointer();
-
-            Debug.Assert(currentPointer != null, this);
         }
 
         private void OnEnable()
@@ -173,6 +171,8 @@ namespace HoloToolkit.Unity.InputModule
                     Cursor.Pointer = newPointer;
                 }
             }
+
+            Debug.Assert(currentPointer != null, "No Pointer Set!");
         }
 
         private void ConnectBestAvailablePointer()
@@ -228,7 +228,6 @@ namespace HoloToolkit.Unity.InputModule
                     // TODO: robertes: see if we can treat voice separately from the other simple committers,
                     //       so voice doesn't steal from a pointing controller. I think input Kind would need
                     //       to come through with the event data.
-
                     SetPointer(GazeManager.Instance);
                     pointerWasChanged = true;
                 }

@@ -22,28 +22,32 @@ namespace HoloToolkit.Unity
     {
         public Component targetComponent;
 
-        public override void OnInspectorGUI()
+        protected override bool DisplayHeader
         {
-            Undo.RecordObject(target, target.name);
-            BeginProfileInspector();
-            DrawCustomEditor();
-            DrawCustomFooter();
-            EndProfileInspector();
-            SaveChanges();
+            get
+            {
+                return targetComponent == null;
+            }
         }
 
-        private void BeginProfileInspector()
+        protected override void BeginInspectorStyle()
         {
-            GUI.color = profileColor;
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            GUI.color = Color.Lerp(profileColor, Color.red, 0.5f);
-            EditorGUILayout.LabelField("(Warning: this section edits the button profile. These changes will affect all objects that use this profile.)", EditorStyles.wordWrappedMiniLabel);
-            GUI.color = defaultColor;
+            if (targetComponent == null)
+            {
+                GUI.color = profileColor;
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                GUI.color = Color.Lerp(profileColor, Color.red, 0.5f);
+                EditorGUILayout.LabelField("(Warning: this section edits the button profile. These changes will affect all objects that use this profile.)", EditorStyles.wordWrappedMiniLabel);
+                GUI.color = defaultColor;
+            }
         }
 
-        private void EndProfileInspector()
+        protected override void EndInspectorStyle()
         {
-            EditorGUILayout.EndVertical();
+            if (targetComponent == null)
+            {
+                EditorGUILayout.EndVertical();
+            }
         }
     }
     #endif

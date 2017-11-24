@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Holotoolkit.Unity.UX
+namespace HoloToolkit.Unity.UX
 {
     public class Spline : LineBase
     {
@@ -279,7 +279,7 @@ namespace Holotoolkit.Unity.UX
 
                 Spline line = (Spline)target;
 
-                HashSet<int> overlappingPointIndexes = new HashSet<int>();
+                overlappingPointIndexes.Clear();
 
                 if (DrawSectionStart(line.name + " Points", "Point Editing"))
                 {

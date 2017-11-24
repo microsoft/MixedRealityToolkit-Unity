@@ -46,12 +46,13 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        public bool FocusLocked { get; set; }
+
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
 
         [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
         public void UpdatePointer()
         {
-
         }
 
         public virtual void OnPreRaycast()
@@ -62,9 +63,9 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing));
+                Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing), string.Format("{0} with id {1} does not support pointing!", InputSource, InputSourceId));
 
-                Ray pointingRay = default(Ray);
+                Ray pointingRay;
                 if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
                 {
                     rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));

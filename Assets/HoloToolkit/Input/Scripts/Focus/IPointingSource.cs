@@ -33,5 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         void OnPostRaycast();
 
         bool OwnsInput(BaseEventData eventData);
+
+        bool FocusLocked { get; set; }
     }
 }
