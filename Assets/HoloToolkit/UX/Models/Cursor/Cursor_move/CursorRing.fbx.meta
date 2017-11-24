@@ -3,7 +3,7 @@ guid: 24bdd28d56f824a41a06a31704fc5612
 timeCreated: 1442357229
 licenseType: Pro
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 22
   fileIDToRecycleName:
     100000: Cursor_Ring
     100002: //RootNode
@@ -89,12 +89,14 @@ ModelImporter:
     7400038: Cursor_Ring_Drag_Enter
     7400040: Cursor_Ring_Zoom_Enter
     7400042: Cursor
-    7400044: Take 001
+    7400044: Cursor
     9500000: //RootNode
+  externalObjects: {}
   materials:
     importMaterials: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -107,12 +109,14 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
     animationCompression: 0
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Cursor_Ring_Observation
@@ -1194,13 +1198,76 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Cursor
+      takeName: Take 001
+      firstFrame: 5
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cursor_Ring
+        weight: 1
+      - path: Cursor_Ring/hold_transition
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_drag
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_hand
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_shadow
+        weight: 1
+      - path: Cursor_Ring/hold_transition/hold_transition_zoom
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_geo
+        weight: 1
+      - path: Cursor_Ring/ring_interaction_root/ring_interaction_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_geo
+        weight: 1
+      - path: Cursor_Ring/ring_observation_scale/ring_observation_shadow
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_geo
+        weight: 1
+      - path: Cursor_Ring/ring_press_scale/ring_press_shadow
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    importVisibility: 0
     importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -1216,6 +1283,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 4
+    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
