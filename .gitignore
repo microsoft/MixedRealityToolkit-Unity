@@ -11,8 +11,11 @@
 UWP/
 WindowsStoreApp/
 UnityGenerated/
+UnityPackageManager/
 project.json
 project.lock.json
+WSATestCertificate.pfx
+WSATestCertificate.pfx.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -38,6 +41,5 @@ obj/
 *.idb
 *.opendb
 
-WSATestCertificate.pfx
-WSATestCertificate.pfx.meta
-UnityPackageManager/
+Assets/ThirdParty/
+Assets/ThirdParty.meta
