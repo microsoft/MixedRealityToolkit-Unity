@@ -3,8 +3,20 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Input System Diagrams](#input-system-diagrams)
 - [Input Module Design](#input-module-design)
+    - [Generic Cross Platform Interfaces](#generic-cross-platform-interfaces)
+    - [Windows Specific Interfaces](#windows-specific-interfaces)
+    - [UWP Specific Interfaces](#uwp-specific-interfaces)
+    - [Motion Controller Specific Interfaces](#motion-controller-specific-interfaces)
+- [Getting Started](#getting-started)
+    - [Detecting Input Sources](#detecting-input-sources)
+    - [Getting Focus](#getting-focus)
+    - [Getting Clicks and Generic Input](#getting-clicks-and-generic-input)
+    - [Xbox Controller Input](#xbox-controller-input)
+    - [Voice Input](#voice-interfaces)
+    - [Dictation Input](#dictation-input)
+    - [Hold, Navigation, and Manipulation Inputs](#motion-controller-specific-input)
+    - [Motion Controller Input](#motion-controller-input)
 - [Prefabs](#prefabs)
 - [Scripts](#scripts)
 - [Test Prefabs](#test-prefabs)
@@ -13,23 +25,32 @@
 
 ## Overview
 This contains a fully-featured input system, which allows you to handle various types of input and send them to any `GameObject` being currently gazed at, or any fallback object. It also includes a few example cursors that fully leverages the Unity's animation system.
-This input system uses and extends Unity's default `EventSystem` so there's no need for a custom input module.
-This input system is cross platform and can be easily extended with custom input sources, events, and input handlers.
-This input system works with Unity’s native uGUI.
-Input Module Design
+- This input system uses and extends Unity's default `EventSystem` so there's no need for a custom input module.
+- This input system is cross platform and can be easily extended with custom input sources, events, and input handlers.
+- This input system works with Unity’s native uGUI.
+
+### Input Module Design
+
 Each input source (Motion Controllers, Hands, Gestures, Mouse, Keyboard, etc.) implement a `IInputSource` interface. The interface defines various events that the input sources can trigger. The input sources register themselves with the `InputManager`, whose role it is to forward input to the appropriate game objects. Input sources can be dynamically enabled / disabled as necessary, and new input sources can be created to support different input devices.
+
 The `InputManager` listens to the various events coming from the input sources, and also takes into account the current gaze and pointers.
+
 By default, input events are sent to the currently focused game object, if that object implements the appropriate interface.  Any event sent by the `InputManager` always bubbles up from the focused GameObject, to each of its ancestors.
+
 If you wish to be able to send input events to `GameObject`s that do not require gaze (such as voice commands), you will need to register the handler as a Global Listener.
+
 Modals input handlers can also be added to the `InputManager`. These modal handlers will take priority over the currently focused object. Fallback handlers can also be defined, so that the application can react to global inputs that aren't targeting a specific element.
+
 The `InputManager` forwards the various input sources events to the appropriate game object, using the following order:
-Registered Global Listeners
-The registered modal input handlers, in LIFO (Last-In First-Out) order of registration
-The currently focused `GameObject`
-The fallback input handlers, in LIFO (Last-In First-Out) order of registration
+
+1. Registered Global Listeners
+2. The registered modal input handlers, in LIFO (Last-In First-Out) order of registration
+3. The currently focused `GameObject`
+4. The fallback input handlers, in LIFO (Last-In First-Out) order of registration
+
 `GameObject`s that want to consume input events can implement one or more input interfaces.  These interface handlers follow a specific hierarchy:
 
-### Generic Cross Platform Input Handlers
+### Generic Cross Platform Interfaces
 
 - `ISourceStateHandler` for all source detected/source lost events.
 - `IFocusable` for focus enter and exit. The focus can be triggered by the user's gaze or any other gaze source.
@@ -44,15 +65,19 @@ The fallback input handlers, in LIFO (Last-In First-Out) order of registration
     - Motion Controller Trigger Presses
 - `IXboxControllerHandler` for Cross Platform Xbox One Controller events.
 
-### Windows Specific Input Handlers
+### Windows Specific Interfaces
 
 - `ISpeechHandler` for voice commands.
 - `IDictationHandler` for speech to text dictation.
-### UWP Specific Input Handlers
+
+### UWP Specific Interfaces
+
 - `IHoldHandler` for the Windows hold gesture.
 - `IManipulationHandler` for the Windows manipulation gesture.
 - `INavigationHandler` for the Windows navigation gesture.
-Motion Controller Specific Interfaces
+
+### Motion Controller Specific Interfaces
+
 - `IControllerInputHandler` for input position events from the thumbstick and TouchPad.
 - `ISelectHandler` for selection pressed amount changes.
 - `IControllerTouchpadHandler` for TouchPad press and touch events.
@@ -281,7 +306,9 @@ public class XboxInputHandler : XboxControllerHandlerBase
 }
 ```
 
-### Windows Platform Specific Input
+### Voice Input
+
+> _Note: Only availible for Windows and UWP Platform Targets._
 
 1. Voice Input
 2. Create a new scene
@@ -316,7 +343,10 @@ public class SpeechHandler : MonoBehaviour, ISpeechHandler
     }
 }
 ```
+
 ### Dictation Input
+
+> _Note: Only availible for Windows and UWP Platform Targets._
 
 1. Create a new scene
 2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
@@ -423,7 +453,8 @@ public class DictationHandler : MonoBehaviour, IInputClickHandler, IDictationHan
     }
 ```
 
-### UWP Specific Input
+### Hold, Navigation, and Manipulation Inputs
+
 1. Create a new scene
 2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
 3. Create a Cube
@@ -555,7 +586,9 @@ public class InputHandler : MonoBehaviour, IHoldHandler, IManipulationHandler, I
 }
 ```
 
-### Motion Controllers Specific Input
+### Motion Controller Input
+
+> _Note: Only availible for UWP Platform Targets._
 
 1. Create a new scene
 2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
