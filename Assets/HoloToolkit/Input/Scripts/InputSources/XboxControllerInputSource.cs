@@ -60,26 +60,10 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             PreviousForceActiveState = InputModule.forceModuleActive;
-
-            if (horizontalAxis != XboxControllerMappingTypes.None)
-            {
-                PreviousHorizontalAxis = InputModule.horizontalAxis;
-            }
-
-            if (verticalAxis != XboxControllerMappingTypes.None)
-            {
-                PreviousVerticalAxis = InputModule.verticalAxis;
-            }
-
-            if (submitButton != XboxControllerMappingTypes.None)
-            {
-                PreviousSubmitButton = InputModule.submitButton;
-            }
-
-            if (cancelButton != XboxControllerMappingTypes.None)
-            {
-                PreviousCancelButton = InputModule.cancelButton;
-            }
+            PreviousHorizontalAxis = InputModule.horizontalAxis;
+            PreviousVerticalAxis = InputModule.verticalAxis;
+            PreviousSubmitButton = InputModule.submitButton;
+            PreviousCancelButton = InputModule.cancelButton;
         }
 
         protected override void Update()
@@ -140,8 +124,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             var joystickNames = Input.GetJoystickNames();
 
-            if (joystickNames.Length <= 0)
-            { return; }
+            if (joystickNames.Length <= 0) { return; }
 
             bool devicesChanged = LastDeviceList == null;
 
@@ -211,10 +194,26 @@ namespace HoloToolkit.Unity.InputModule
 
                     // Setup the Input Module to use our custom axis settings.
                     InputModule.forceModuleActive = true;
-                    InputModule.verticalAxis = XboxControllerMapping.GetMapping(verticalAxis);
-                    InputModule.horizontalAxis = XboxControllerMapping.GetMapping(horizontalAxis);
-                    InputModule.submitButton = XboxControllerMapping.GetMapping(submitButton);
-                    InputModule.cancelButton = XboxControllerMapping.GetMapping(cancelButton);
+
+                    if (verticalAxis != XboxControllerMappingTypes.None)
+                    {
+                        InputModule.verticalAxis = XboxControllerMapping.GetMapping(verticalAxis);
+                    }
+
+                    if (horizontalAxis != XboxControllerMappingTypes.None)
+                    {
+                        InputModule.horizontalAxis = XboxControllerMapping.GetMapping(horizontalAxis);
+                    }
+
+                    if (submitButton != XboxControllerMappingTypes.None)
+                    {
+                        InputModule.submitButton = XboxControllerMapping.GetMapping(submitButton);
+                    }
+
+                    if (cancelButton != XboxControllerMappingTypes.None)
+                    {
+                        InputModule.cancelButton = XboxControllerMapping.GetMapping(cancelButton);
+                    }
                 }
             }
 
