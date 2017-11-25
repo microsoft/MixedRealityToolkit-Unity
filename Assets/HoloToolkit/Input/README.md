@@ -15,10 +15,6 @@
 
 This contains a fully-featured **input system**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a few example cursors, similar to the HoloLens shell cursor, that fully leverages the Unity's animation system.  This input system uses Unity's default **EventSystem** and there's no need for a custom **input module**.  The default **Standalone Input Module** works with this input system.
 
-## Input System Diagrams:
-![alt text](/External/ReadMeImages/InputSystemDiagram.png)
-![alt text](/External/ReadMeImages/CursorSystemDiagram.PNG)
-
 ### Input Module Design
 The input module is designed to be extensible: it could support various input mechanisms and various types of gazers.
 
