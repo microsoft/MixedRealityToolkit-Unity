@@ -221,6 +221,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             AddButton("Large positions on floor", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargestPositionsOnFloor(); timeLastQuery = DateTime.MinValue; });
             AddButton("Place objects positions", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionsPlaceable(); timeLastQuery = DateTime.MinValue; });
 
+
             // Shape queries
             ButtonPanels[(int)Panels.Shapes].Button.GetComponentInChildren<Text>().text = "Shape Queries";
             ButtonPanels[(int)Panels.Shapes].Button.onClick.AddListener(() => { SetActiveTab(Panels.Shapes); });
@@ -247,6 +248,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             AddButton("OnEdge NearCenter", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnEdge_NearCenter(); timeLastQuery = DateTime.MinValue; });
             AddButton("OnFloor AwayFromMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_AwayFromMe(); timeLastQuery = DateTime.MinValue; });
             AddButton("OnFloor NearMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_NearMe(); timeLastQuery = DateTime.MinValue; });
+            AddButton("Large positions sittable", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargePositionsSittable(); timeLastQuery = DateTime.MinValue; });
 
             // Default one of them active
             SetActiveTab(Panels.Topology);
