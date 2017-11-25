@@ -50,6 +50,8 @@ The `InputManager` forwards the various input sources events to the appropriate 
 
 `GameObject`s that want to consume input events can implement one or more input interfaces.  These interface handlers follow a specific hierarchy:
 
+![alt text](/External/ReadMeImages/input_system_handler_hierarchy.PNG)
+
 ### Generic Cross Platform Interfaces
 
 - `ISourceStateHandler` for all source detected/source lost events.
