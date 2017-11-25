@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Xbox Controller support.
     /// <remarks>Only supports one connected device at a time.</remarks>
-    /// <remarks>Make sure to enable the <see cref="HumanInterfaceDevice"/> capability before using.</remarks>
+    /// <remarks>Make sure to enable the <see cref="HumanInterfaceDevice"/> capability before using when targeting HoloLens device.</remarks>
     /// </summary>
     public class XboxControllerInputSource : GamePadInputSource
     {
@@ -140,7 +140,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             var joystickNames = Input.GetJoystickNames();
 
-            if (joystickNames.Length <= 0) { return; }
+            if (joystickNames.Length <= 0)
+            { return; }
 
             bool devicesChanged = LastDeviceList == null;
 
@@ -203,7 +204,7 @@ namespace HoloToolkit.Unity.InputModule
                     if (gamePadInputDatas.Count != 0) { return; }
 
                     SourceId = (uint)i;
-                    controllerData = new XboxControllerData();
+                    controllerData = new XboxControllerData { GamePadName = joystickNames[i] };
                     gamePadInputDatas.Add(SourceId, controllerData);
 
                     InputManager.Instance.RaiseSourceDetected(this, SourceId);
@@ -214,10 +215,6 @@ namespace HoloToolkit.Unity.InputModule
                     InputModule.horizontalAxis = XboxControllerMapping.GetMapping(horizontalAxis);
                     InputModule.submitButton = XboxControllerMapping.GetMapping(submitButton);
                     InputModule.cancelButton = XboxControllerMapping.GetMapping(cancelButton);
-                }
-                else
-                {
-                    Debug.LogWarning("Unimplemented Controller type Detected: " + joystickNames[i]);
                 }
             }
 

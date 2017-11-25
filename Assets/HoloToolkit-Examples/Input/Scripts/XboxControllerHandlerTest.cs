@@ -34,13 +34,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public override void OnSourceDetected(SourceStateEventData eventData)
         {
             base.OnSourceDetected(eventData);
-            Debug.LogFormat("Joystick Id: \"{0}\" Connected", eventData.SourceId);
+            var xboxEventData = (XboxControllerEventData)eventData;
+            GamePadName = xboxEventData.GamePadName;
+            Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", GamePadName, eventData.SourceId);
         }
 
         public override void OnSourceLost(SourceStateEventData eventData)
         {
+            Debug.LogFormat("Joystick {0} with id: \"{1}\" Disconnected", GamePadName, eventData.SourceId);
             base.OnSourceLost(eventData);
-            Debug.LogFormat("Joystick \"{0}\" Disconnected", eventData.SourceId);
             debugText.text = "No Controller Connected";
         }
 
