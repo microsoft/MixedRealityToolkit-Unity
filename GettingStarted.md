@@ -53,20 +53,27 @@ _Note: The latest release should work for both HoloLens and Windows Mixed Realit
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?style=flat-square&label=Latest%20Master%20Branch%20Release&colorB=007ec6
 [![Github Release][mrtk-version-badge]][unity-release1]
 
-### Using the source code
-Optionally, If you'd like to build the Mixed Reality Toolkit from the source, you'll need to clone the GitHub repository from:
+### (Optional) Using the source code
+If you'd like to build the Mixed Reality Toolkit from the source, you'll need to clone the GitHub repository from:
 
 >  ## https://github.com/Microsoft/MixedRealityToolkit-Unity.git. 
 
-If you've never cloned a repo before then you should consider using the GitHub desktop client, see https://desktop.github.com/ for more information.
-
-> ### (optional) Preparing an asset package from the source code
-> Open the folder you just cloned in Unity.
-> Now, inside of Unity ensure you have the Assets folder selected in the project view, and export the package. 
+> If you've never cloned a repo before then you should consider using the GitHub desktop client, see https://desktop.github.com/ for more information.
 >
-> **IMPORTANT:** Make sure you select the root Assets folder in the Project. It contains important .rsp files like csc, gmcs and smcs.
+> 1. Install Git and Git LFS
+> [Git](https://git-scm.com/downloads) and [Git LFS](https://git-lfs.github.com/) is required to clone the MRTK.
 >
-> `Assets -> Export Package…`
+>     _Note: Some Git Clients such as [Source Tree](https://www.sourcetreeapp.com/) have Git and Git LFS embedded._
+>
+> 2. Clone the repository to your local disk.
+>
+> 3. Open the project in Unity.
+>
+> 4. Select the Specific folders you wish to export.
+>    - HoloToolkit
+>    - HoloToolkit-Examples
+>
+> 5. With the specific folders selected, right click in the project tab and click `Export Package…` in the context menu.
 
 # 3. Adding the MixedRealityToolkit-Unity package in your project
 
