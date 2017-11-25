@@ -34,8 +34,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public override void OnSourceDetected(SourceStateEventData eventData)
         {
             base.OnSourceDetected(eventData);
-            var xboxEventData = (XboxControllerEventData)eventData;
-            GamePadName = xboxEventData.GamePadName;
             Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", GamePadName, eventData.SourceId);
         }
 
