@@ -31,17 +31,17 @@ This contains a fully-featured input system, which allows you to handle various 
 
 ### Input Module Design
 
-Each input source (Motion Controllers, Hands, Gestures, Mouse, Keyboard, etc.) implement a `IInputSource` interface. The interface defines various events that the input sources can trigger. The input sources register themselves with the `InputManager`, whose role it is to forward input to the appropriate game objects. Input sources can be dynamically enabled / disabled as necessary, and new input sources can be created to support different input devices.
+Each input source (Motion Controllers, Hands, Gestures, Mouse, Keyboard, etc.) implement a `IInputSource` interface. The interface defines various events that the input sources can trigger. The input sources register themselves with the `InputManager`, whose role it is to forward input to the appropriate `GameObject`s. Input sources can be dynamically enabled / disabled as necessary, and new input sources can be created to support different input devices.
 
-The `InputManager` listens to the various events coming from the input sources, and also takes into account the current gaze and pointers.
+The `InputManager` listens to the various events coming from the input sources, and also takes into account which `GameObject` the current gaze and pointers are focused on.
 
-By default, input events are sent to the currently focused game object, if that object implements the appropriate interface.  Any event sent by the `InputManager` always bubbles up from the focused GameObject, to each of its ancestors.
+By default, input events are sent to the currently focused `GameObject`, if that object implements the appropriate interface.  Any event sent by the `InputManager` always bubbles up from the focused `GameObject`, to each of its ancestors.
 
 If you wish to be able to send input events to `GameObject`s that do not require gaze (such as voice commands), you will need to register the handler as a Global Listener.
 
-Modals input handlers can also be added to the `InputManager`. These modal handlers will take priority over the currently focused object. Fallback handlers can also be defined, so that the application can react to global inputs that aren't targeting a specific element.
+Modal input handlers can also be added to the `InputManager`. These modal handlers will take priority over the currently focused object. Fallback handlers can also be defined, so that the application can react to global inputs that aren't targeting a specific element.
 
-The `InputManager` forwards the various input sources events to the appropriate game object, using the following order:
+The `InputManager` forwards the various input sources events to the appropriate `GameObject`, using the following order:
 
 1. Registered Global Listeners
 2. The registered modal input handlers, in LIFO (Last-In First-Out) order of registration
