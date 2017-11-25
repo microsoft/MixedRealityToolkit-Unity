@@ -153,6 +153,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 CurrentGestureState = GestureState.NavigationStarted;
                 NavigationStarted = true;
+
                 // Raise navigation started event.
                 InputManager.Instance.RaiseNavigationStarted(eventData.InputSource, eventData.SourceId);
             }

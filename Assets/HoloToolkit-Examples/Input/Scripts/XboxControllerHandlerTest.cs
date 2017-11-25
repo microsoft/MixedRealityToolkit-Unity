@@ -6,19 +6,21 @@ using UnityEngine.UI;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class ControllerHandlerTest : GamePadHandlerBase, IXboxControllerHandler
+    public class XboxControllerHandlerTest : XboxControllerHandlerBase
     {
+        [Header("Xbox Controller Test Options")]
         [SerializeField]
         private float movementSpeedMultiplier = 1f;
 
         [SerializeField]
         private float rotationSpeedMultiplier = 1f;
 
-        [Header("Xbox Controller Settings")]
         [SerializeField]
-        private XboxControllerMappingTypes xboxResetButton = XboxControllerMappingTypes.XboxY;
+        private XboxControllerMappingTypes resetButton = XboxControllerMappingTypes.XboxY;
 
-        public Text DebugText;
+        [SerializeField]
+        private Text debugText;
+
         private Vector3 initialPosition;
         private Vector3 newPosition;
         private Vector3 newRotation;
@@ -39,11 +41,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             base.OnSourceLost(eventData);
             Debug.LogFormat("Joystick \"{0}\" Disconnected", eventData.SourceId);
-            DebugText.text = "No Controller Connected";
+            debugText.text = "No Controller Connected";
         }
 
-        public void OnXboxInputUpdate(XboxControllerEventData eventData)
+        public override void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
+            base.OnXboxInputUpdate(eventData);
+
             // Reset our new vectors
             newPosition = Vector3.zero;
             newRotation = Vector3.zero;
@@ -60,12 +64,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             transform.rotation *= Quaternion.Euler(newRotation);
 
-            if (XboxControllerMapping.GetButton_Up(xboxResetButton, eventData))
+            if (XboxControllerMapping.GetButton_Up(resetButton, eventData))
             {
                 transform.position = initialPosition;
             }
 
-            DebugText.text =
+            debugText.text =
                 string.Format(
                     "{19}\n" +
                     "LS Horizontal: {0:0.000} Vertical: {1:0.000}\n" +
