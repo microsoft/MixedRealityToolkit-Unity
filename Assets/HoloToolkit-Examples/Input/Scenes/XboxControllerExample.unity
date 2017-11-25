@@ -220,7 +220,7 @@ MonoBehaviour:
   HorizontalNavigationAxis: 1
   movementSpeedMultiplier: 0.01
   rotationSpeedMultiplier: 1
-  xboxResetButton: 13
+  resetButton: 13
   debugText: {fileID: 1246058048}
 --- !u!23 &473449479
 MeshRenderer:
