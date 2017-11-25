@@ -15,7 +15,7 @@ using UnityEngine.VR.WSA.Input;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// GamepadInput class maps Xbox gamepad buttons to the GestureRecognizer.
+    /// GamepadInput class maps Xbox GamePad buttons to the GestureRecognizer.
     /// Gamepad button A press and release maps to tap gesture.
     /// Gamepad button A pressed maps to hold started, completed, canceled gesture.
     /// Gamepad button A pressed plus left joystick rotate maps to navigation gesture.

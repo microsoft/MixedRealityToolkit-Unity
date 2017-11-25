@@ -8,7 +8,12 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("True, if gaze is not required for Input")]
         protected bool IsGlobalListener = true;
 
-        protected string GamePadName;
+        protected string GamePadName = string.Empty;
+
+        private void OnEnable()
+        {
+            InputManager.Instance.AddGlobalListener(gameObject);
+        }
 
         protected virtual void Start()
         {
@@ -18,9 +23,17 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        protected virtual void OnDisable()
+        {
+            if (IsGlobalListener && InputManager.Instance != null)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
+        }
+
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            //GamePadName = eventData.SourceName;
+            // Override and name your GamePad source.
         }
 
         public virtual void OnSourceLost(SourceStateEventData eventData)
