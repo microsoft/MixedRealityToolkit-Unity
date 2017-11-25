@@ -12,37 +12,604 @@
 - [Tests](#tests)
 
 ## Overview
+This contains a fully-featured input system, which allows you to handle various types of input and send them to any `GameObject` being currently gazed at, or any fallback object. It also includes a few example cursors that fully leverages the Unity's animation system.
+This input system uses and extends Unity's default `EventSystem` so there's no need for a custom input module.
+This input system is cross platform and can be easily extended with custom input sources, events, and input handlers.
+This input system works with Unity’s native uGUI.
+Input Module Design
+Each input source (Motion Controllers, Hands, Gestures, Mouse, Keyboard, etc.) implement a `IInputSource` interface. The interface defines various events that the input sources can trigger. The input sources register themselves with the `InputManager`, whose role it is to forward input to the appropriate game objects. Input sources can be dynamically enabled / disabled as necessary, and new input sources can be created to support different input devices.
+The `InputManager` listens to the various events coming from the input sources, and also takes into account the current gaze and pointers.
+By default, input events are sent to the currently focused game object, if that object implements the appropriate interface.  Any event sent by the `InputManager` always bubbles up from the focused GameObject, to each of its ancestors.
+If you wish to be able to send input events to `GameObject`s that do not require gaze (such as voice commands), you will need to register the handler as a Global Listener.
+Modals input handlers can also be added to the `InputManager`. These modal handlers will take priority over the currently focused object. Fallback handlers can also be defined, so that the application can react to global inputs that aren't targeting a specific element.
+The `InputManager` forwards the various input sources events to the appropriate game object, using the following order:
+Registered Global Listeners
+The registered modal input handlers, in LIFO (Last-In First-Out) order of registration
+The currently focused `GameObject`
+The fallback input handlers, in LIFO (Last-In First-Out) order of registration
+`GameObject`s that want to consume input events can implement one or more input interfaces.  These interface handlers follow a specific hierarchy:
 
-This contains a fully-featured **input system**, which allows you to handle various types of input and send them to any game object being currently gazed at, or any fallback object. It also includes a few example cursors, similar to the HoloLens shell cursor, that fully leverages the Unity's animation system.  This input system uses Unity's default **EventSystem** and there's no need for a custom **input module**.  The default **Standalone Input Module** works with this input system.
+### Generic Cross Platform Input Handlers
 
-### Input Module Design
-The input module is designed to be extensible: it could support various input mechanisms and various types of gazers.
+- `ISourceStateHandler` for all source detected/source lost events.
+- `IFocusable` for focus enter and exit. The focus can be triggered by the user's gaze or any other gaze source.
+- `IInputHandler` for source up, down, and pressed events.
+    - Similar to [Unity’s `Input` class](https://docs.unity3d.com/ScriptReference/Input.html) `GetButtonDown`, `GetButtonUp`, and `GetButton` methods.
+    - Only Pointers will raise UI events for Source Up and Source Down.
+- `IInputClickHandler` for source “clicked”.  The Default Pointer Sources that raise the click handler include:
+    - Mouse Clicks
+    - When a user says “Select”
+    - Hand Taps
+    - Clicker Presses
+    - Motion Controller Trigger Presses
+- `IXboxControllerHandler` for Cross Platform Xbox One Controller events.
 
-Each input source (hands, gestures, others) implement a **IInputSource** interface. The interface defines various events that the input sources can trigger. The input sources register themselves with the InputManager, whose role it is to forward input to the appropriate game objects. Input sources can be dynamically enabled / disabled as necessary, and new input sources can be created to support different input devices.
+### Windows Specific Input Handlers
 
-Game objects that want to consume input events can implement one or many **input interfaces**, such as:
+- `ISpeechHandler` for voice commands.
+- `IDictationHandler` for speech to text dictation.
+### UWP Specific Input Handlers
+- `IHoldHandler` for the Windows hold gesture.
+- `IManipulationHandler` for the Windows manipulation gesture.
+- `INavigationHandler` for the Windows navigation gesture.
+Motion Controller Specific Interfaces
+- `IControllerInputHandler` for input position events from the thumbstick and TouchPad.
+- `ISelectHandler` for selection pressed amount changes.
+- `IControllerTouchpadHandler` for TouchPad press and touch events.
+- `ISourcePositionHandler` to get pointer and grip position events.
+- `ISourceRotationHandler` to get pointer and grip rotation events.
 
-- **IFocusable** for focus enter and exit. The focus can be triggered by the user's gaze or any other gaze source.
-- **IHoldHandle** for the Windows hold gesture.
-- **IInputHandler** for source up and down. The source can be a hand that tapped, a clicker that was pressed, etc.
-- **IInputClickHandler** for source clicked. The source can be a hand that tapped, a clicker that was pressed, etc.
-- **IManipulationHandler** for the Windows manipulation gesture.
-- **INavigationHandler** for the Windows navigation gesture.
-- **ISourceStateHandler** for the source detected and source lost events.
-- **ISpeechHandler** for voice commands.
-- **IDictationHandler** for speech to text dictation.
-- **IGamePadHandler** for generic gamepad events.
-- **IXboxControllerHandler** for Xbox One Controller events.
+## Getting Started
 
-The **input manager** listens to the various events coming from the input sources, and also takes into account the gaze. Currently, that gaze is always coming from the GazeManager class, but this could be extended to support multiple gaze sources if the need arises.
+First, it’s important to read and review Microsoft’s developer guidelines for [Gaze](https://developer.microsoft.com/en-us/windows/mixed-reality/gaze), [Gestures](https://developer.microsoft.com/en-us/windows/mixed-reality/gestures), [Voice](https://developer.microsoft.com/en-us/windows/mixed-reality/voice_input), and [Motion Controllers](https://developer.microsoft.com/en-us/windows/mixed-reality/motion_controllers).  When setting up input for your own projects you’ll need to keep a few things in mind.
 
-By default, input events are sent to the currently focused game object, if that object implements the appropriate interface. Modals input handlers can also be added to the input manager: these modal handlers will take priority over the currently focused object Fallback handlers can also be defined, so that the application can react to global inputs that aren't targeting a specific element. Any event sent by the input manager always bubbles up from the object to its ancestors. 
+- The InputManager.prefab is required
+- A cursor that inherits from the ICursor interface is required.
+- The `GameObect`(s) you want to interact with are required to have a Collider component.
+- When using uGUI, all world space canvases are required to use the UIRaycastCamera as their event camera.
+- When consuming events in your input handlers, it’s highly suggested you call `eventData.Use();` so the event doesn’t fall through to other input handlers.
 
-In recap, the **input manager** forwards the various input sources events to the appropriate game object, using the following order:
+### Detecting Input Sources
 
-1. The registered modal input handlers, in LIFO (Last-In First-Out) order of registration
-2. The currently focused object
-3. The fallback input handlers, in LIFO order of registration
+1. Create a new scene
+2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+3. Create an empty GameObject
+4. Rename the GameObject to InputSourceHandler
+5. Attach a `SetGlobalListener` component to the InputSourceHander GameObject
+6. Create a new script named `InputSourceHandler`
+7. Attach the `InputSourceHandler` to your InputSourceHander GameObject
+8. Open the new script in any text editor
+9. Implement the `ISourceStateHandler` interface
+10. Add logic for handling source detection and loss
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class InputSourceDetectionHandler : MonoBehaviour, ISourceStateHandler
+{
+    public void OnSourceDetected(SourceStateEventData eventData)
+    {
+        Debug.LogFormat("OnSourceDetected\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    public void OnSourceLost(SourceStateEventData eventData)
+    {
+        Debug.LogFormat("OnSourceLost\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+}
+```
+
+### Getting Focus
+
+1. Create a new scene
+2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+3. Create a Cube
+4. Create a new script named `HighlightHandler`
+5. Attach the `HighlightHandler` to your Cube
+6. Open the new script in any text editor
+7. Implement the `IFocusable` interface
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class HighlightHandler : MonoBehaviour, IFocusable
+{
+    void IFocusable.OnFocusEnter()
+    {
+    }
+
+    void IFocusable.OnFocusExit()
+    {
+    }
+
+}
+```
+
+8. Add Color, Renderer, and Material fields
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+[RequireComponent(typeof(Renderer))]
+public class HighlightHandler : MonoBehaviour, IFocusable
+{
+    [SerializeField]
+    private Color highlightColor;
+
+    private Color initialColor;
+    private Renderer rendererInstance;
+    private Material materialInstance;
+
+    void IFocusable.OnFocusEnter()
+    {
+    }
+
+    void IFocusable.OnFocusExit()
+    {
+    }
+}
+```
+
+9. Cache initial Color, Renderer, and Material in Awake
+10. Properly destroy the Material instance in OnDestroy
+
+```
+    private void Awake()
+    {
+        rendererInstance = GetComponent<Renderer>();
+        materialInstance = rendererInstance.material;
+        initialColor = materialInstance.color;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(materialInstance);
+    }
+```
+
+11. Handle color changes in implemented methods
+
+```
+    void IFocusable.OnFocusEnter()
+    {
+        materialInstance.color = highlightColor;
+    }
+
+    void IFocusable.OnFocusExit()
+    {
+        materialInstance.color = initialColor;
+    }
+```
+
+### Getting Clicks and Generic Input
+
+1. Create a new scene
+2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+3. Create a Cube
+4. Create a new script named `InputHandler`
+5. Attach the `InputHandler` to your Cube
+6. Open the new script in any text editor
+7. Implement the `IInputClickHandler` and `IInputHandler` interfaces
+8. Add logic for when Input Click events and Input Up/Down events
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class InputHandler : MonoBehaviour, IInputClickHandler, IInputHandler
+{
+    void IInputHandler.OnInputUp(InputEventData eventData)
+    {
+        Debug.LogFormat("OnInputUp\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId, eventData.PressType);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IInputHandler.OnInputDown(InputEventData eventData)
+    {
+        Debug.LogFormat("OnInputDown\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId, eventData.PressType);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
+    {
+        Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}  TapCount: {3}", eventData.InputSource, eventData.SourceId, eventData.PressType, eventData.TapCount);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+}
+```
+
+### Xbox Controller Input
+
+1. Create a new scene
+2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+3. Create an empty GameObject
+4. Rename the GameObject to XboxControllerSource
+5. Create a new script named `XboxControllerHandler`
+6. Attach the `XboxControllerHandler` to your XboxControllerSource GameObject
+7. Open the new script in any text editor
+8. Your new `XboxControllerHandler` class should inherit from `XboxControllerHandlerBase`
+9. Add logic for handling source detection/loss and `XboxInputUpdate`
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class XboxInputHandler : XboxControllerHandlerBase
+{
+    public override void OnSourceDetected(SourceStateEventData eventData)
+    {
+        base.OnSourceDetected(eventData);
+        Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", GamePadName, eventData.SourceId);
+    }
+
+    public override void OnSourceLost(SourceStateEventData eventData)
+    {
+        Debug.LogFormat("Joystick {0} with id: \"{1}\" Disconnected", GamePadName, eventData.SourceId);
+        base.OnSourceLost(eventData);
+    }
+
+    public override void OnXboxInputUpdate(XboxControllerEventData eventData)
+    {
+        // FYI, eventData.Use() is called in the base implementation.
+        base.OnXboxInputUpdate(eventData);
+
+        Debug.LogFormat(
+            "{19}\n" +
+            "LS Horizontal: {0:0.000} Vertical: {1:0.000}\n" +
+            "RS Horizontal: {2:0.000} Vertical: {3:0.000}\n" +
+            "DP Horizontal: {4:0.000} Vertical: {5:0.000}\n" +
+            "Left Trigger:  {6:0.000} Right Trigger: {7:0.000} Shared Trigger: {8:0.00}\n" +
+            "A: {9} B: {10} X: {11} Y: {12}\n" +
+            "LB: {13} RB: {14} " +
+            "LS: {15} RS: {16}\n" +
+            "View: {17} Menu: {18}\n",
+            eventData.XboxLeftStickHorizontalAxis, eventData.XboxLeftStickVerticalAxis,
+            eventData.XboxRightStickHorizontalAxis, eventData.XboxRightStickVerticalAxis,
+            eventData.XboxDpadHorizontalAxis, eventData.XboxDpadVerticalAxis,
+            eventData.XboxLeftTriggerAxis, eventData.XboxRightTriggerAxis, eventData.XboxSharedTriggerAxis,
+            eventData.XboxA_Pressed, eventData.XboxB_Pressed, eventData.XboxX_Pressed, eventData.XboxY_Pressed,
+            eventData.XboxLeftBumper_Pressed, eventData.XboxRightBumper_Pressed,
+            eventData.XboxLeftStick_Pressed, eventData.XboxRightStick_Pressed,
+            eventData.XboxView_Pressed, eventData.XboxMenu_Pressed,
+            GamePadName);
+    }
+}
+```
+
+### Windows Platform Specific Input
+
+1. Voice Input
+2. Create a new scene
+3. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+4. Create a Cube
+5. Create a new script named `SpeechHandler`
+6. Attach the `SpeechHandler` to your Cube
+7. Open the new script in any text editor
+8. Implement the `ISpeechHandler` interface
+9. Add switch statement for `eventData.RecognizedText` with a case for each command you wish to use.
+    - _Note: It’s helpful to use `ToLower()` to get better matches._
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class SpeechHandler : MonoBehaviour, ISpeechHandler
+{
+    void ISpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
+    {
+        switch (eventData.RecognizedText.ToLower())
+        {
+            case "your voice command":
+                DoAction();
+                break;
+        }
+    }
+
+    public void DoAction()
+    {
+        // TODO: Action
+    }
+}
+```
+### Dictation Input
+
+1. Create a new scene
+2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+3. Create an empty GameObject
+4. Rename the GameObject to DictationHandler
+5. Create a new script named `DictationHandler`
+6. Attach the new `DictationHandler` script to your DictationHandler GameObject
+7. Open the new script in any text editor
+8. Implement the `IInputClickHandler` and `IDictationHandler` interfaces
+9. Add fields for the initial silence timeout, auto silence timeout, and total allowable recording time.
+10. Add fields for the text output
+11. Add a flag for recording
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class DictationHandler : MonoBehaviour, IInputClickHandler, IDictationHandler
+{
+    [SerializeField]
+    [Range(0.1f, 5f)]
+    [Tooltip("The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.")]
+    private float initialSilenceTimeout = 5f;
+
+    [SerializeField]
+    [Range(5f, 60f)]
+    [Tooltip("The time length in seconds before dictation recognizer session ends due to lack of audio input.")]
+    private float autoSilenceTimeout = 20f;
+
+    [SerializeField]
+    [Range(1, 60)]
+    [Tooltip("Length in seconds for the manager to listen.")]
+    private int recordingTime = 10;
+
+    private string lastOutput;
+    private string speechToTextOutput = string.Empty;
+    public string SpeechToTextOutput { get { return speechToTextOutput; } }
+
+    private bool isRecording;
+}
+```
+
+12. Add logic for handling the recording toggle when DictationHander GameObject is clicked
+
+```
+
+    public void OnInputClicked(InputClickedEventData eventData)
+    {
+        ToggleRecording();
+    }
+
+    private void ToggleRecording()
+    {
+        if (isRecording)
+        {
+            isRecording = false;
+            StartCoroutine(DictationInputManager.StopRecording());
+        }
+        else
+        {
+            isRecording = true;
+            StartCoroutine(DictationInputManager.StartRecording(initialSilenceTimeout, autoSilenceTimeout, recordingTime));
+        }
+    }
+```
+
+13. Add logic for handling dictation results
+
+```
+    void IDictationHandler.OnDictationHypothesis(DictationEventData eventData)
+    {
+        speechToTextOutput = eventData.DictationResult;
+    }
+
+    void IDictationHandler.OnDictationResult(DictationEventData eventData)
+    {
+        speechToTextOutput = eventData.DictationResult;
+    }
+
+    void IDictationHandler.OnDictationComplete(DictationEventData eventData)
+    {
+        speechToTextOutput = eventData.DictationResult;
+    }
+
+    void IDictationHandler.OnDictationError(DictationEventData eventData)
+    {
+        isRecording = false;
+        speechToTextOutput = eventData.DictationResult;
+        Debug.LogError(eventData.DictationResult);
+        StartCoroutine(DictationInputManager.StopRecording());
+    }
+```
+
+14. Add logic for displaying the results
+
+```
+    private void Update()
+    {
+        if (!string.IsNullOrEmpty(speechToTextOutput) && !lastOutput.Equals(speechToTextOutput))
+        {
+            Debug.Log(speechToTextOutput);
+            lastOutput = speechToTextOutput;
+        }
+    }
+```
+
+### UWP Specific Input
+1. Create a new scene
+2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+3. Create a Cube
+4. Create a new script named `InputHandler`
+5. Attach the `InputHandler` to your Cube
+6. Open the new script in any text editor
+7. Implement the `IHoldHandler`,`IManipulationHandler`, and `INavigationHandler` interfaces
+8. Add logic for each event
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class InputHandler : MonoBehaviour, IHoldHandler, IManipulationHandler, INavigationHandler
+{
+    void IHoldHandler.OnHoldStarted(HoldEventData eventData)
+    {
+        Debug.LogFormat("OnHoldStarted\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IHoldHandler.OnHoldCompleted(HoldEventData eventData)
+    {
+        Debug.LogFormat("OnHoldCompleted\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IHoldHandler.OnHoldCanceled(HoldEventData eventData)
+    {
+        Debug.LogFormat("OnHoldCanceled\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IManipulationHandler.OnManipulationStarted(ManipulationEventData eventData)
+    {
+        Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.CumulativeDelta.x,
+            eventData.CumulativeDelta.y,
+            eventData.CumulativeDelta.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IManipulationHandler.OnManipulationUpdated(ManipulationEventData eventData)
+    {
+        Debug.LogFormat("OnManipulationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.CumulativeDelta.x,
+            eventData.CumulativeDelta.y,
+            eventData.CumulativeDelta.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IManipulationHandler.OnManipulationCompleted(ManipulationEventData eventData)
+    {
+        Debug.LogFormat("OnManipulationCompleted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.CumulativeDelta.x,
+            eventData.CumulativeDelta.y,
+            eventData.CumulativeDelta.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void IManipulationHandler.OnManipulationCanceled(ManipulationEventData eventData)
+    {
+        Debug.LogFormat("OnManipulationCanceled\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.CumulativeDelta.x,
+            eventData.CumulativeDelta.y,
+            eventData.CumulativeDelta.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void INavigationHandler.OnNavigationStarted(NavigationEventData eventData)
+    {
+        Debug.LogFormat("OnNavigationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.NormalizedOffset.x,
+            eventData.NormalizedOffset.y,
+            eventData.NormalizedOffset.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void INavigationHandler.OnNavigationUpdated(NavigationEventData eventData)
+    {
+        Debug.LogFormat("OnNavigationUpdated\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.NormalizedOffset.x,
+            eventData.NormalizedOffset.y,
+            eventData.NormalizedOffset.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void INavigationHandler.OnNavigationCompleted(NavigationEventData eventData)
+    {
+        Debug.LogFormat("OnNavigationCompleted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.NormalizedOffset.x,
+            eventData.NormalizedOffset.y,
+            eventData.NormalizedOffset.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+
+    void INavigationHandler.OnNavigationCanceled(NavigationEventData eventData)
+    {
+        Debug.LogFormat("OnNavigationCanceled\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
+            eventData.InputSource,
+            eventData.SourceId,
+            eventData.NormalizedOffset.x,
+            eventData.NormalizedOffset.y,
+            eventData.NormalizedOffset.z);
+
+        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+    }
+}
+```
+
+### Motion Controllers Specific Input
+
+1. Create a new scene
+2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
+3. Create an empty GameObject
+4. Rename the GameObject to MotionControllerHandler
+5. Create a new script named `MotionControllerHandler`
+6. Attach the new `MotionControllerHandler` script to your MotionControllerHandler GameObject
+7. Open the new script in any text editor
+8. Implement the `ISelectHandler`, `IControllerTouchpadHandler`, `ISourcePositionHandler`, and `ISourceRotationHandler` interfaces
+9. Add logic for each event
+
+```
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
+
+public class MotionControllerHandler : MonoBehaviour, ISelectHandler, IControllerTouchpadHandler, ISourcePositionHandler, ISourceRotationHandler
+{
+    void IControllerInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
+    {
+        Debug.LogFormat("OnRotationChanged\r\nSource: {0}  SourceId: {1}  Input Position: {2}",
+            eventData.InputSource, eventData.SourceId, eventData.Position);
+    }
+
+    void ISelectHandler.OnSelectPressedAmountChanged(SelectPressedEventData eventData)
+    {
+        Debug.LogFormat("OnRotationChanged\r\nSource: {0}  SourceId: {1}  Select Press Amount: {2}",
+            eventData.InputSource, eventData.SourceId, eventData.PressedAmount);
+    }
+
+    void IControllerTouchpadHandler.OnTouchpadTouched(InputEventData eventData)
+    {
+        Debug.LogFormat("OnRotationChanged\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}",
+            eventData.InputSource, eventData.SourceId, eventData.PressType);
+    }
+
+    void IControllerTouchpadHandler.OnTouchpadReleased(InputEventData eventData)
+    {
+        Debug.LogFormat("OnRotationChanged\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}",
+            eventData.InputSource, eventData.SourceId, eventData.PressType);
+    }
+
+    void ISourcePositionHandler.OnPositionChanged(SourcePositionEventData eventData)
+    {
+        Debug.LogFormat("OnRotationChanged\r\nSource: {0}  SourceId: {1}  Pointer Rotation: {2}  Grip Rotation {3}",
+            eventData.InputSource, eventData.SourceId, eventData.PointerPosition, eventData.GripPosition);
+    }
+
+    void ISourceRotationHandler.OnRotationChanged(SourceRotationEventData eventData)
+    {
+        Debug.LogFormat("OnRotationChanged\r\nSource: {0}  SourceId: {1}  Pointer Rotation: {2}  Grip Rotation {3}",
+            eventData.InputSource, eventData.SourceId, eventData.PointerRotation, eventData.GripRotation);
+    }
+}
+```
 
 ### [Prefabs](Prefabs)
 Prefabs related to the input features.
