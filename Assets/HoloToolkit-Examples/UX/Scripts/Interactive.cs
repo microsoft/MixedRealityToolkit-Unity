@@ -284,6 +284,11 @@ namespace HoloToolkit.Examples.InteractiveElements
             OnDownEvent.Invoke();
         }
 
+        public virtual void OnInputPressed(InputEventData eventData)
+        {
+            // Nothing.
+        }
+
         /// <summary>
         /// All tab, hold, and gesture events are completed
         /// </summary>

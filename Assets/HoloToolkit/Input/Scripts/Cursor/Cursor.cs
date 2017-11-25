@@ -365,6 +365,10 @@ namespace HoloToolkit.Unity.InputModule
             OnCursorStateChange(CursorStateEnum.None);
         }
 
+        public void OnInputPressed(InputEventData eventData)
+        {
+        }
+
         /// <summary>
         /// Function for consuming the OnInputUp events
         /// </summary>

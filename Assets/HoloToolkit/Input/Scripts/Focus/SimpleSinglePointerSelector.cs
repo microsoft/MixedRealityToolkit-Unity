@@ -83,6 +83,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        public void OnInputPressed(InputEventData eventData)
+        {
+        }
+
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
             // Let the input fall to the next interactable object.

@@ -326,6 +326,10 @@ namespace HoloToolkit.Unity.InputModule
             isGazed = false;
         }
 
+        public void OnInputPressed(InputEventData eventData)
+        {
+        }
+
         public void OnInputUp(InputEventData eventData)
         {
             if (currentInputSource != null &&
