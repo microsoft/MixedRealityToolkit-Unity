@@ -232,6 +232,10 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
+        public void OnInputPressed(InputEventData eventData)
+        {
+        }
+
         public void OnInputUp(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))

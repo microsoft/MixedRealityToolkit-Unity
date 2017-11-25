@@ -35,12 +35,18 @@ namespace HoloToolkit.Unity.InputModule
             // Nothing.
         }
 
+        void IInputHandler.OnInputPressed(InputEventData eventData)
+        {
+            // Nothing.
+        }
+
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
             if (IsEnabled && eventData.PressType == InteractionSourcePressInfo.Select)
             {
                 ButtonPressed.RaiseEvent();
-                eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+                // Mark the event as used, so it doesn't fall through to other handlers.
+                eventData.Use();
             }
         }
     }

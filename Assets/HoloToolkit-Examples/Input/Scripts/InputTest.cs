@@ -15,6 +15,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
 
+        public void OnInputPressed(InputEventData eventData)
+        {
+            Debug.LogFormat("OnInputPressed\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId, eventData.PressType);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
         public void OnInputUp(InputEventData eventData)
         {
             Debug.LogFormat("OnInputUp\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId, eventData.PressType);

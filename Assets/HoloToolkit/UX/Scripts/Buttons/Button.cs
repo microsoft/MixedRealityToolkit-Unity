@@ -128,6 +128,10 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
+        public void OnInputPressed(InputEventData eventData)
+        {
+        }
+
         /// <summary>
         /// Handle on input up events from IInputSource
         /// </summary>

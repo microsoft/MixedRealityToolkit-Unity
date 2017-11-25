@@ -26,6 +26,10 @@ namespace HoloToolkit.Unity.Tests
             }
         }
 
+        public void OnInputPressed(InputEventData eventData)
+        {
+        }
+
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
             InteractionInputSource inputSource = eventData.InputSource as InteractionInputSource;
