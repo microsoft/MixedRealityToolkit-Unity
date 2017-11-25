@@ -256,11 +256,12 @@ public class InputHandler : MonoBehaviour, IInputClickHandler, IInputHandler
 2. Run the MRTK scene wizard via `MixedRealityToolkit/Configure/Apply Scene Settings`
 3. Create an empty GameObject
 4. Rename the GameObject to XboxControllerSource
-5. Create a new script named `XboxControllerHandler`
-6. Attach the `XboxControllerHandler` to your XboxControllerSource GameObject
-7. Open the new script in any text editor
-8. Your new `XboxControllerHandler` class should inherit from `XboxControllerHandlerBase`
-9. Add logic for handling source detection/loss and `XboxInputUpdate`
+5. Attach the `XboxControllerSource` to your XboxControllerSource GameObject
+6. Create a new script named `XboxControllerHandler`
+7. Attach the `XboxControllerHandler` to your XboxControllerSource GameObject
+8. Open the new script in any text editor
+9. Your new `XboxControllerHandler` class should inherit from `XboxControllerHandlerBase`
+10. Add logic for handling source detection/loss and `XboxInputUpdate`
 
 ```
 using UnityEngine;
