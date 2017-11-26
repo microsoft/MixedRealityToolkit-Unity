@@ -175,6 +175,9 @@ namespace HoloToolkit.Unity
 
         public static bool RestoreNugetPackages(string nugetPath, string storePath)
         {
+            Debug.Assert(File.Exists(nugetPath));
+            Debug.Assert(Directory.Exists(storePath));
+
             var nugetPInfo = new ProcessStartInfo
             {
                 FileName = nugetPath,
@@ -230,14 +233,17 @@ namespace HoloToolkit.Unity
             }
 
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
+            string assemblyCSharp = storePath + "/GeneratedProjects/UWP/Assembly-CSharp";
+            string assemblyCSharpFisrtpass = storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass";
+            bool restoreFirstpass = Directory.Exists(assemblyCSharpFisrtpass);
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do
             // this breaks the build in VS RTM
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET &&
                 (!RestoreNugetPackages(nugetPath, storePath) ||
                  !RestoreNugetPackages(nugetPath, storePath + "\\" + productName) ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp") ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass")))
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, assemblyCSharp) ||
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstpass && !RestoreNugetPackages(nugetPath, assemblyCSharpFisrtpass)))
             {
                 Debug.LogError("Failed to restore nuget packages");
                 EditorUtility.ClearProgressBar();
@@ -343,11 +349,12 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            // Assume package version always has a '.'.
+            // Assume package version always has a '.' between each number.
             // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
-            // Package versions are always of the form Major.Minor.Build.Revision
+            // Package versions are always of the form Major.Minor.Build.Revision.
+            // Note: Revision number reserved for Windows Store, and a value other than 0 will fail WACK.
             var version = new Version(versionAttr.Value);
-            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
+            var newVersion = new Version(version.Major, version.Minor, version.Build + 1, version.Revision);
 
             versionAttr.Value = newVersion.ToString();
             rootNode.Save(manifest);
