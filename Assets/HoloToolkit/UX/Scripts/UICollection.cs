@@ -52,7 +52,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Cached rect transform to use for collection
         /// </summary>
-        private RectTransform m_rectTransform;
+        private RectTransform rectTransform;
 
         private void Awake()
         {
@@ -63,12 +63,7 @@ namespace HoloToolkit.UI.Keyboard
         private void Start()
         {
             // Verify this is attached to a GameObject with a rect transform
-            m_rectTransform = GetComponent<RectTransform>();
-
-            if (m_rectTransform == null)
-            {
-                Debug.LogError("This component must be attached to a GameObject with a RectTransform component!");
-            }
+            rectTransform = GetComponent<RectTransform>();
 
             // Collect children items already added (likely added in the Editor)
             CollectItems();
@@ -77,10 +72,9 @@ namespace HoloToolkit.UI.Keyboard
 
         private void Update()
         {
-#if UNITY_EDITOR
+            if (!Application.isEditor) { return; }
             CollectItems();
             UpdateLayout();
-#endif
         }
 
         /// <summary>
@@ -136,13 +130,13 @@ namespace HoloToolkit.UI.Keyboard
                 if (childRect != null)
                 {
                     AddItem(childRect);
-                }                
+                }
             }
         }
 
         protected virtual void UpdateLayout()
         {
-            Rect rect = m_rectTransform.rect;
+            Rect rect = rectTransform.rect;
 
             Vector2 updatedSize = Vector2.zero;
             if (MaxWidth < 0.0f)
@@ -173,7 +167,7 @@ namespace HoloToolkit.UI.Keyboard
             float columnHeight = 0.0f;
             float maxPanelWidth = 0.0f;
 
-            for (int i = 0; i < Items.Count; i++ )
+            for (int i = 0; i < Items.Count; i++)
             {
 
                 // Ensure the anchors and pivot are set properly for positioning in the UICollection
@@ -210,7 +204,7 @@ namespace HoloToolkit.UI.Keyboard
             // Update the panel size
             float finalWidth = MaxWidth < 0.0f ? rect.width : maxPanelWidth;
             float finalHeight = MaxHeight < 0.0f ? rect.height : columnHeight + currentOffset.y;
-            m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight);
+            rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight);
         }
     }
 }

@@ -29,6 +29,7 @@ namespace HoloToolkit.Unity.InputModule
         #region Data
 
         private bool started;
+        private bool pointerWasChanged;
 
         private bool addedInputManagerListener;
         private IPointingSource currentPointer;
@@ -44,14 +45,12 @@ namespace HoloToolkit.Unity.InputModule
             started = true;
 
             InputManager.AssertIsInitialized();
-            GazeManager.AssertIsInitialized();
             FocusManager.AssertIsInitialized();
+            GazeManager.AssertIsInitialized();
 
             AddInputManagerListenerIfNeeded();
             FindCursorIfNeeded();
             ConnectBestAvailablePointer();
-
-            Debug.Assert(currentPointer != null, this);
         }
 
         private void OnEnable()
@@ -86,7 +85,7 @@ namespace HoloToolkit.Unity.InputModule
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            // Nothing to do on input up.
+            // Let the input fall to the next interactable object.
         }
 
         void IInputHandler.OnInputDown(InputEventData eventData)
@@ -172,17 +171,20 @@ namespace HoloToolkit.Unity.InputModule
                     Cursor.Pointer = newPointer;
                 }
             }
+
+            Debug.Assert(currentPointer != null, "No Pointer Set!");
         }
 
         private void ConnectBestAvailablePointer()
         {
             IPointingSource bestPointer = null;
+            var inputSources = InputManager.Instance.DetectedInputSources;
 
-            foreach (var detectedSource in InputManager.Instance.DetectedInputSources)
+            for (var i = 0; i < inputSources.Count; i++)
             {
-                if (SupportsPointingRay(detectedSource))
+                if (SupportsPointingRay(inputSources[i]))
                 {
-                    AttachInputSourcePointer(detectedSource);
+                    AttachInputSourcePointer(inputSources[i]);
                     bestPointer = inputSourcePointer;
                     break;
                 }
@@ -201,8 +203,6 @@ namespace HoloToolkit.Unity.InputModule
             // TODO: robertes: Investigate how this feels. Since "Down" will often be followed by "Click", is
             //       marking the event as used actually effective in preventing unintended app input during a
             //       pointer change?
-
-            bool pointerWasChanged;
 
             if (SupportsPointingRay(eventData))
             {
@@ -228,7 +228,6 @@ namespace HoloToolkit.Unity.InputModule
                     // TODO: robertes: see if we can treat voice separately from the other simple committers,
                     //       so voice doesn't steal from a pointing controller. I think input Kind would need
                     //       to come through with the event data.
-
                     SetPointer(GazeManager.Instance);
                     pointerWasChanged = true;
                 }

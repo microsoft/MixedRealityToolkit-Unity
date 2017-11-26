@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public Vector3 GazeOrigin
         {
-            get { return Ray.origin; }
+            get { return Rays[0].origin; }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public Vector3 GazeNormal
         {
-            get { return Ray.direction; }
+            get { return Rays[0].direction; }
         }
 
         /// <summary>
@@ -112,8 +112,14 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
+        public PointerResult Result { get; set; }
 
-        public Ray Ray { get; private set; }
+        [Obsolete("Will be removed in a later version. Use Rays instead.")]
+        public Ray Ray { get { return Rays[0]; } }
+
+        public RayStep[] Rays { get { return rays; } }
+
+        private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.zero) };
 
         public float? ExtentOverride
         {
@@ -124,6 +130,13 @@ namespace HoloToolkit.Unity.InputModule
         {
             get { return RaycastLayerMasks; }
         }
+
+        public bool InteractionEnabled
+        {
+            get { return true; }
+        }
+
+        public bool FocusLocked { get; set; }
 
         private float lastHitDistance = 2.0f;
 
@@ -174,7 +187,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (GazeTransform == null)
             {
-                Ray = default(Ray);
+                Rays[0] = default(RayStep);
             }
             else
             {
@@ -189,15 +202,25 @@ namespace HoloToolkit.Unity.InputModule
                     newGazeNormal = Stabilizer.StableRay.direction;
                 }
 
-                Ray = new Ray(newGazeOrigin, newGazeNormal);
+                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent(this)));
             }
 
             UpdateHitPosition();
         }
 
+        [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
         public void UpdatePointer()
         {
+        }
+
+        public virtual void OnPreRaycast()
+        {
             UpdateGazeInfo();
+        }
+
+        public virtual void OnPostRaycast()
+        {
+            // Nothing needed
         }
 
         public bool OwnsInput(BaseEventData eventData)
@@ -221,7 +244,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (focusDetails.Object != null)
             {
-                lastHitDistance = (focusDetails.Point - Ray.origin).magnitude;
+                lastHitDistance = (focusDetails.Point - Rays[0].origin).magnitude;
                 UpdateHitPosition();
                 HitNormal = focusDetails.Normal;
             }
@@ -229,7 +252,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdateHitPosition()
         {
-            HitPosition = (Ray.origin + (lastHitDistance * Ray.direction));
+            HitPosition = (Rays[0].origin + (lastHitDistance * Rays[0].direction));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Singleton behaviour class, used for components that should only have one instance.
     /// <remarks>Singleton classes live on through scene transitions and will mark their 
-    /// parent root GameObject with <see cref="GameObject.DontDestroyOnLoad"/></remarks>
+    /// parent root GameObject with <see cref="Object.DontDestroyOnLoad"/></remarks>
     /// </summary>
     /// <typeparam name="T">The Singleton Type</typeparam>
     public class Singleton<T> : MonoBehaviour where T : Singleton<T>
@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity
                     if (objects.Length == 1)
                     {
                         instance = objects[0];
-                        DontDestroyOnLoad(instance.gameObject.GetParentRoot());
+                        instance.gameObject.GetParentRoot().DontDestroyOnLoad();
                     }
                     else if (objects.Length > 1)
                     {
@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity
             {
                 instance = (T)this;
                 searchForInstance = false;
-                DontDestroyOnLoad(gameObject.GetParentRoot());
+                gameObject.GetParentRoot().DontDestroyOnLoad();
             }
         }
 

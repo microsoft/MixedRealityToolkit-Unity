@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity
     /// Designers and coders can share the names of the AudioEvents to enable rapid iteration on the application's
     /// sound similar to how XAML is used for user interfaces.
     /// </summary>
-    public partial class UAudioManager : UAudioManagerBase<AudioEvent>
+    public partial class UAudioManager : UAudioManagerBase<AudioEvent, AudioEventBank>
     {
         [Tooltip("The maximum number of AudioEvents that can be played at once. Zero (0) indicates there is no limit.")]
         [SerializeField]
@@ -441,25 +441,41 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Update the dictionary of available audio events.
+        /// </summary>
+        protected override void BanksChanged()
+        {
+            CreateEventsDictionary();
+        }
+
+        /// <summary>
         /// Create the Dictionary for quick lookup of AudioEvents.
         /// </summary>
         private void CreateEventsDictionary()
         {
-            eventsDictionary = new Dictionary<string, AudioEvent>(Events.Length);
-
-            for (int i = 0; i < Events.Length; i++)
+            int numEvents = 0;
+            for(int i=0; i<LoadedBanks.Count; i++)
             {
-                AudioEvent tempEvent = Events[i];
-                eventsDictionary.Add(tempEvent.Name, tempEvent);
+                numEvents += LoadedBanks[i].Events.Length;
+            }
+
+            eventsDictionary = new Dictionary<string, AudioEvent>(numEvents);
+
+            for (int b = 0; b < LoadedBanks.Count; b++)
+            {
+                for (int i = 0; i < LoadedBanks[b].Events.Length; i++)
+                {
+                    AudioEvent tempEvent = LoadedBanks[b].Events[i];
+                    try
+                    {
+                        eventsDictionary.Add(tempEvent.Name, tempEvent);
+                    }
+                    catch (ArgumentException)
+                    {
+                        Debug.LogErrorFormat("Name {0} already exists in Event dictionary", tempEvent.Name);
+                    }
+                }
             }
         }
-
-#if UNITY_EDITOR
-        [ContextMenu("Sort Events")]
-        private void AlphabetizeEventList()
-        {
-            Array.Sort<AudioEvent>(Events);
-        }
-#endif
     }
 }

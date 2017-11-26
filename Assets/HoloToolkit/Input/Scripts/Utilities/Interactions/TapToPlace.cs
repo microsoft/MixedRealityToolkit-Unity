@@ -134,6 +134,7 @@ namespace HoloToolkit.Unity.InputModule
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
             HandlePlacement();
+            eventData.Use();
         }
 
         private void HandlePlacement()

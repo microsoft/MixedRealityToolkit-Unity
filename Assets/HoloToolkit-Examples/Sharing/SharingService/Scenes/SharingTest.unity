@@ -109,6 +109,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &543313553
 GameObject:
@@ -173,7 +175,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &569724390
 GameObject:
@@ -203,7 +205,7 @@ Transform:
   - {fileID: 1076342369}
   - {fileID: 1376606040}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &632692716
 Prefab:
@@ -341,7 +343,7 @@ Prefab:
     - target: {fileID: 224469518390730572, guid: 9a2f56337670a294baaf9bba300b1c1c,
         type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224469518390730572, guid: 9a2f56337670a294baaf9bba300b1c1c,
         type: 2}
@@ -393,6 +395,11 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 223417620871411940, guid: 9a2f56337670a294baaf9bba300b1c1c,
+        type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1376606041}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9a2f56337670a294baaf9bba300b1c1c, type: 2}
   m_IsPrefabParent: 0
@@ -418,6 +425,7 @@ GameObject:
   - component: {fileID: 942915103}
   - component: {fileID: 942915102}
   - component: {fileID: 942915104}
+  - component: {fileID: 942915105}
   m_Layer: 0
   m_Name: WorldStage
   m_TagString: Untagged
@@ -484,6 +492,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9236b45f60c55874b93c630faf4d45b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &942915105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 942915099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 906323c940a3fad4f8f7e9e4fcd747f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &949629968
 Prefab:
   m_ObjectHideFlags: 0
@@ -521,7 +540,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
@@ -586,6 +605,11 @@ Prefab:
 --- !u!4 &1376606040 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab,
+    type: 2}
+  m_PrefabInternal: {fileID: 1376606039}
+--- !u!20 &1376606041 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 20049547090947856, guid: 3eddd1c29199313478dd3f912bfab2ab,
     type: 2}
   m_PrefabInternal: {fileID: 1376606039}
 --- !u!1001 &1703234099

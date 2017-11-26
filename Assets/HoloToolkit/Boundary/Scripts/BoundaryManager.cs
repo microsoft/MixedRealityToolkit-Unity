@@ -20,6 +20,8 @@ namespace HoloToolkit.Unity.Boundary
         [Tooltip("Quad prefab to display as the floor.")]
         public GameObject FloorQuad;
         private GameObject floorQuadInstance;
+        public float CurrentFloorHeightOffset { get { return newFloorHeight.y; } }
+        private Vector3 newFloorHeight;
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         [SerializeField]
@@ -81,10 +83,12 @@ namespace HoloToolkit.Unity.Boundary
 #endif
         }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         protected override void Awake()
         {
             base.Awake();
+            newFloorHeight = Vector3.zero;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 
             // Render the floor based on if you are in editor or immersive device.
             RenderFloorQuad();
@@ -94,20 +98,22 @@ namespace HoloToolkit.Unity.Boundary
 
             // Create a volume out of the specified user boundary.
             CalculateBoundaryVolume();
+#endif
         }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void RenderFloorQuad()
         {
             if (HolographicSettings.IsDisplayOpaque)
             {
                 // Defaulting coordinate system to RoomScale in immersive headsets.
-                // This puts the origin 0,0,0 on the floor if a floor has been established during RunSetup via MixedRealityPortal
+                // This puts the origin 0, 0, 0 on the floor if a floor has been established during RunSetup via MixedRealityPortal
                 XRDevice.SetTrackingSpaceType(TrackingSpaceType.RoomScale);
             }
             else
             {
                 // Defaulting coordinate system to Stationary for HoloLens.
-                // This puts the origin 0,0,0 at the first place where the user started the application.
+                // This puts the origin 0, 0, 0 at the first place where the user started the application.
                 XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
             }
 
@@ -124,21 +130,21 @@ namespace HoloToolkit.Unity.Boundary
                 {
                     // Inside immersive headset draw floor quad at Y value of dimensions.
                     Vector3 dimensions;
-                    // TODO: BUG: Unity: TryGetDimensions does not return true either.
-                    //if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions,
-                    //UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
-                    if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions,
-                        UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
+                    // TODO: BUG: Unity: TryGetDimensions does not return true in 2017.2.0f3 MRTP3
+                    if (UnityEngine.Experimental.XR.Boundary.TryGetDimensions(out dimensions, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                     {
-                        Debug.Log("Got dimensions of tracked area.  Drawing floor at height offset: " + dimensions.y);
-                        floorQuadInstance.transform.localPosition = new Vector3(0, dimensions.y, 0);
+                        newFloorHeight.y = dimensions.y;
+                        Debug.Log("Got dimensions of tracked area.  Drawing floor at height offset: " + CurrentFloorHeightOffset);
                     }
                     else
                     {
                         Debug.Log("Drawing floor at 0,0,0.");
-                        floorQuadInstance.transform.localPosition = Vector3.zero;
+                        newFloorHeight = Vector3.zero;
                     }
+
+                    floorQuadInstance.transform.localPosition = newFloorHeight;
                 }
+
                 floorQuadInstance.SetActive(true);
             }
         }
@@ -166,7 +172,7 @@ namespace HoloToolkit.Unity.Boundary
         public void CalculateBoundaryVolume()
         {
             // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
-            // But this always returns false with b8.
+            // But this always returns false with in 2017.2.0f3 MRTP3.
             //if (!UnityEngine.Experimental.XR.Boundary.configured)
             //{
             //    Debug.Log("Boundary not configured.");
