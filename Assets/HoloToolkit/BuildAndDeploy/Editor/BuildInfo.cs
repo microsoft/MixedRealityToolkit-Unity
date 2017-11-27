@@ -80,9 +80,9 @@ namespace HoloToolkit.Unity
                 BuildSLNUtilities.BuildSymbolMaster);
         }
 
-        public static IEnumerable<string> RemoveConfigurationSymbols(string symbolstring)
+        public static IEnumerable<string> RemoveConfigurationSymbols(string symbols)
         {
-            return symbolstring.Split(';').Except(new[]
+            return symbols.Split(';').Except(new[]
             {
                 BuildSLNUtilities.BuildSymbolDebug,
                 BuildSLNUtilities.BuildSymbolRelease,

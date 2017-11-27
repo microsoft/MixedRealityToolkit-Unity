@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployTools
     {
-        public static readonly string DefaultMSBuildVersion = "15.0";
+        public const string DefaultMSBuildVersion = "15.0";
 
         public static bool CanBuild()
         {
@@ -54,6 +54,14 @@ namespace HoloToolkit.Unity
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Do a build configured for Mixed Reality Applications, returns the error from BuildPipeline.BuildPlayer
+        /// </summary>
+        public static bool BuildSLN()
+        {
+            return BuildSLN(BuildDeployPrefs.BuildDirectory, false);
         }
 
         public static bool BuildSLN(string buildDirectory, bool showDialog = true)
@@ -291,9 +299,9 @@ namespace HoloToolkit.Unity
 
                 if (process.ExitCode == 0 &&
                     showDialog &&
-                    !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open Project Folder"))
+                    !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open AppX Folder"))
                 {
-                    Process.Start("explorer.exe", "/select," + storePath);
+                    Process.Start("explorer.exe", "/f /open," + Path.GetFullPath(BuildDeployPrefs.BuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
                 }
 
                 if (process.ExitCode != 0)
@@ -353,9 +361,10 @@ namespace HoloToolkit.Unity
             // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
             // Package versions are always of the form Major.Minor.Build.Revision.
             // Note: Revision number reserved for Windows Store, and a value other than 0 will fail WACK.
-            var version = new Version(versionAttr.Value);
+            var version = PlayerSettings.WSA.packageVersion;
             var newVersion = new Version(version.Major, version.Minor, version.Build + 1, version.Revision);
 
+            PlayerSettings.WSA.packageVersion = newVersion;
             versionAttr.Value = newVersion.ToString();
             rootNode.Save(manifest);
         }
