@@ -30,13 +30,13 @@ namespace HoloToolkit.Unity
                 "10.0.15063.0";
 #endif
 
-        private readonly string[] tabNames = {"Unity Build Options", "Appx Build Options", "Deploy Options", "Utilities"};
+        private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options", "Utilities" };
 
-        private readonly string[] scriptingBackendNames = {"IL2CPP", ".NET"};
+        private readonly string[] scriptingBackendNames = { "IL2CPP", ".NET" };
 
-        private readonly int[] scriptingBackendEnum = {(int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET};
+        private readonly int[] scriptingBackendEnum = { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET };
 
-        private readonly string[] deviceNames = {"Any Device", "PC", "Mobile", "HoloLens"};
+        private readonly string[] deviceNames = { "Any Device", "PC", "Mobile", "HoloLens" };
 
         private readonly List<string> builds = new List<string>(0);
 
@@ -151,9 +151,10 @@ namespace HoloToolkit.Unity
 
         private Vector2 scrollPosition;
 
-        private BuildDeployTab tab = BuildDeployTab.UnityBuildOptions;
+        private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
 
         private static DevicePortalConnections portalConnections;
+        private readonly List<string> appPackageDirectories = new List<string>(0);
 
         #endregion // Fields
 
@@ -244,11 +245,11 @@ namespace HoloToolkit.Unity
 
             #endregion
 
-            tab = (BuildDeployTab)GUILayout.Toolbar((int)tab, tabNames);
+            currentTab = (BuildDeployTab)GUILayout.Toolbar((int)currentTab, tabNames);
 
             GUILayout.Space(10);
 
-            switch (tab)
+            switch (currentTab)
             {
                 case BuildDeployTab.UnityBuildOptions:
                     UnityBuildGUI();
@@ -1001,15 +1002,13 @@ namespace HoloToolkit.Unity
 
             try
             {
-                var appPackageDirectories = new List<string>();
-                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory);
-
+                appPackageDirectories.Clear();
+                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
                 foreach (string appBuild in buildList)
                 {
-                    string appPackageDirectory = appBuild + @"\AppPackages";
-                    if (Directory.Exists(appPackageDirectory))
+                    if (appBuild.Contains("AppPackages") && !appBuild.Contains("AppPackages\\"))
                     {
-                        appPackageDirectories.AddRange(Directory.GetDirectories(appPackageDirectory));
+                        appPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
                     }
                 }
 

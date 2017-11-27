@@ -30,7 +30,16 @@ namespace HoloToolkit.Unity
 
         public static string AbsoluteBuildDirectory
         {
-            get { return Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), BuildDirectory)); }
+            get
+            {
+                string rootBuildDirectory = BuildDirectory;
+                int dirCharIndex = rootBuildDirectory.IndexOf("/", StringComparison.Ordinal);
+                if (dirCharIndex != -1)
+                {
+                    rootBuildDirectory = rootBuildDirectory.Substring(0, dirCharIndex);
+                }
+                return Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), rootBuildDirectory));
+            }
         }
 
         public static string MsBuildVersion
