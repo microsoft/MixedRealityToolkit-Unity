@@ -28,7 +28,7 @@
 - Exception will be major bug fixes on a case by case basis.
 - Please use the [working development branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) for daily feature work.
 - [Working development branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) will be snapshot every 3 weeks for stabilization into a separate branch. Working branch will still be open for contributions.
-- That stabilization branch will be worked on for 1 week.
+- That stabilization branch will be worked on for at least 1 week.
 - Only bug fixes will be accepted in the stabilization branch before being merged into master.
 
 - **Master branch releases** will align with **major Unity releases marking a release every 3 months**. Please read the [Unity roadmap](https://unity3d.com/unity/roadmap).
@@ -36,9 +36,9 @@
 	- Using the zip file available in the release notes
 	- Unity packages available in the release notes
 	- Syncing to the specific git tag you would like to lock on.
-- Release tag name convention: v1.Unity release major number.Unity release minor number.Iteration number
-	- For example: For Unity version 2017.1.0 our release tag would be **v1.2017.1.0**
-	- If we marked another release with the same Unity version: **v1.2017.1.1**
+- Release tag name convention: <Unity release major number>.<Unity release minor number>.Iteration number
+	- For example: For Unity version 2017.1.0 our release tag would be **2017.1.0.0**
+	- If we marked another release with the same Unity version: **2017.1.0.1**
 
 
 ### Development branches
