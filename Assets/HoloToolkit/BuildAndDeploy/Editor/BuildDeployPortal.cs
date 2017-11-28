@@ -33,33 +33,21 @@ namespace HoloToolkit.Unity
         // Device Portal API Resources
         // https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-api-hololens#holographic-os
         // https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-api-core
-
-        private static readonly string API_ProcessQuery = @"https://{0}/api/resourcemanager/processes";
-        private static readonly string API_PackagesQuery = @"https://{0}/api/appx/packagemanager/packages";
-        private static readonly string API_InstallQuery = @"https://{0}/api/app/packagemanager/package";
-        private static readonly string API_InstallStatusQuery = @"https://{0}/api/app/packagemanager/state";
-        private static readonly string API_AppQuery = @"https://{0}/api/taskmanager/app";
-        private static readonly string API_FileQuery = @"https://{0}/api/filesystem/apps/file?knownfolderid=LocalAppData&filename=UnityPlayer.log&packagefullname={1}&path=%5C%5CTempState";
-
-        [Obsolete("Use IsAppInstalled(string packageFamilyName, ConnectInfo targetDevice)")]
-        public static bool IsAppInstalled(string packageFamilyName, string targetIp)
-        {
-            return QueryAppDetails(packageFamilyName, new ConnectInfo(targetIp, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)) != null;
-        }
-
-        /// <summary>
-        /// Look at the device for a matching app name (if not there, then not installed)
-        /// </summary>
-        /// <param name="packageFamilyName"></param>
-        /// <param name="targetDevice"></param>
-        /// <returns></returns>
-        public static bool IsAppInstalled(string packageFamilyName, ConnectInfo targetDevice)
-        {
-            return QueryAppDetails(packageFamilyName, targetDevice) != null;
-        }
+        private static readonly string API_GetMachineNameQuery = @"{0}/api/os/machinename";
+        private static readonly string API_ProcessQuery = @"{0}/api/resourcemanager/processes";
+        private static readonly string API_PackagesQuery = @"{0}/api/appx/packagemanager/packages";
+        private static readonly string API_InstallQuery = @"{0}/api/app/packagemanager/package";
+        private static readonly string API_InstallStatusQuery = @"{0}/api/app/packagemanager/state";
+        private static readonly string API_AppQuery = @"{0}/api/taskmanager/app";
+        private static readonly string API_FileQuery = @"{0}/api/filesystem/apps/file?knownfolderid=LocalAppData&filename=UnityPlayer.log&packagefullname={1}&path=%5C%5CTempState";
 
         private static string GetBasicAuthHeader(ConnectInfo connectionInfo)
         {
+            if (BuildDeployPrefs.UseSSL)
+            {
+                return string.Empty;
+            }
+
             var auth = string.Format("{0}:{1}", connectionInfo.User, connectionInfo.Password);
             auth = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(auth));
             return string.Format("Basic {0}", auth);
@@ -78,6 +66,7 @@ namespace HoloToolkit.Unity
                 using (var webRequest = UnityWebRequest.Get(query))
                 {
                     webRequest.SetRequestHeader("Authorization", auth);
+                    webRequest.timeout = (int)TimeOut;
 #if UNITY_2017_2_OR_NEWER
                     webRequest.SendWebRequest();
 #else
@@ -133,6 +122,7 @@ namespace HoloToolkit.Unity
                 using (var webRequest = UnityWebRequest.Post(query, postData))
                 {
                     webRequest.SetRequestHeader("Authorization", auth);
+                    webRequest.timeout = (int)TimeOut;
 #if UNITY_2017_2_OR_NEWER
                     webRequest.SendWebRequest();
 #else
@@ -186,6 +176,7 @@ namespace HoloToolkit.Unity
                 using (var webRequest = UnityWebRequest.Delete(query))
                 {
                     webRequest.SetRequestHeader("Authorization", auth);
+                    webRequest.timeout = (int)TimeOut;
 #if UNITY_2017_2_OR_NEWER
                     webRequest.SendWebRequest();
 #else
@@ -226,6 +217,44 @@ namespace HoloToolkit.Unity
             return string.Empty;
         }
 
+        public static void LoginToWebPortal(ConnectInfo targetDevice)
+        {
+            //TODO: Figure out how to pass username and password to browser?
+            Process.Start(FinalizeUrl(targetDevice.IP));
+        }
+
+        public static MachineName GetMachineName(ConnectInfo targetDevice)
+        {
+            MachineName machineName = null;
+            string query = string.Format(API_GetMachineNameQuery, FinalizeUrl(targetDevice.IP));
+            string response = WebRequestGet(query, GetBasicAuthHeader(targetDevice));
+            bool success = !string.IsNullOrEmpty(response);
+            if (success)
+            {
+                machineName = JsonUtility.FromJson<MachineName>(response);
+                Debug.Log(machineName.ComputerName);
+            }
+
+            return machineName;
+        }
+
+        [Obsolete("Use IsAppInstalled(string packageFamilyName, ConnectInfo targetDevice)")]
+        public static bool IsAppInstalled(string packageFamilyName, string targetIp)
+        {
+            return QueryAppDetails(packageFamilyName, new ConnectInfo(targetIp, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)) != null;
+        }
+
+        /// <summary>
+        /// Look at the device for a matching app name (if not there, then not installed)
+        /// </summary>
+        /// <param name="packageFamilyName"></param>
+        /// <param name="targetDevice"></param>
+        /// <returns></returns>
+        public static bool IsAppInstalled(string packageFamilyName, ConnectInfo targetDevice)
+        {
+            return QueryAppDetails(packageFamilyName, targetDevice) != null;
+        }
+
         [Obsolete("IsAppRunning(string appName, ConnectInfo targetDevice)")]
         public static bool IsAppRunning(string appName, string targetDevice)
         {
@@ -234,7 +263,7 @@ namespace HoloToolkit.Unity
 
         public static bool IsAppRunning(string appName, ConnectInfo targetDevice)
         {
-            string response = WebRequestGet(string.Format(API_ProcessQuery, targetDevice.IP), GetBasicAuthHeader(targetDevice));
+            string response = WebRequestGet(string.Format(API_ProcessQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice));
             bool success = !string.IsNullOrEmpty(response);
 
             if (success)
@@ -256,7 +285,7 @@ namespace HoloToolkit.Unity
 
         private static AppInstallStatus GetInstallStatus(ConnectInfo targetDevice)
         {
-            string response = WebRequestGet(string.Format(API_InstallStatusQuery, targetDevice.IP), GetBasicAuthHeader(targetDevice));
+            string response = WebRequestGet(string.Format(API_InstallStatusQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice));
             bool success = !string.IsNullOrEmpty(response);
 
             if (success)
@@ -283,7 +312,7 @@ namespace HoloToolkit.Unity
 
         private static AppDetails QueryAppDetails(string packageFamilyName, ConnectInfo targetDevice)
         {
-            string response = WebRequestGet(string.Format(API_PackagesQuery, targetDevice.IP), GetBasicAuthHeader(targetDevice));
+            string response = WebRequestGet(string.Format(API_PackagesQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice));
             bool success = !string.IsNullOrEmpty(response);
 
             if (success)
@@ -427,7 +456,7 @@ namespace HoloToolkit.Unity
             }
 
             string query = string.Format("{0}?package={1}",
-                string.Format(API_InstallQuery, targetDevice),
+                string.Format(API_InstallQuery, FinalizeUrl(targetDevice.IP)),
                 WWW.EscapeURL(appDetails.PackageFullName));
 
             string response = WebRequestDelete(query, GetBasicAuthHeader(targetDevice));
@@ -452,8 +481,7 @@ namespace HoloToolkit.Unity
                 return false;
             }
 
-            // Query
-            string query = string.Format(API_AppQuery, targetDevice.IP);
+            // Prepare the data
             var formData = new List<IMultipartFormSection>
             {
                 new MultipartFormDataSection(
@@ -462,7 +490,7 @@ namespace HoloToolkit.Unity
                         WWW.EscapeURL(appDetails.PackageFullName)))
             };
 
-            string response = WebRequestPost(query, formData, GetBasicAuthHeader(targetDevice));
+            string response = WebRequestPost(string.Format(API_AppQuery, FinalizeUrl(targetDevice.IP)), formData, GetBasicAuthHeader(targetDevice));
             bool success = !string.IsNullOrEmpty(response);
 
             if (success)
@@ -489,7 +517,7 @@ namespace HoloToolkit.Unity
             }
 
             string query = string.Format("{0}?package={1}",
-                string.Format(API_AppQuery, targetDevice),
+                string.Format(API_AppQuery, FinalizeUrl(targetDevice.IP)),
                 WWW.EscapeURL(EncodeTo64(appDetails.PackageFullName)));
 
             string response = WebRequestDelete(query, GetBasicAuthHeader(targetDevice));
@@ -520,7 +548,7 @@ namespace HoloToolkit.Unity
                 return false;
             }
 
-            string response = WebRequestGet(string.Format(API_FileQuery, targetDevice.IP, appDetails.PackageFullName), GetBasicAuthHeader(targetDevice));
+            string response = WebRequestGet(string.Format(API_FileQuery, FinalizeUrl(targetDevice.IP), appDetails.PackageFullName), GetBasicAuthHeader(targetDevice));
             bool success = !string.IsNullOrEmpty(response);
 
             if (success)
@@ -530,6 +558,18 @@ namespace HoloToolkit.Unity
             }
 
             return success;
+        }
+
+        private static string FinalizeUrl(string targetUrl)
+        {
+            string ssl = BuildDeployPrefs.UseSSL ? "s" : string.Empty;
+
+            if (targetUrl.Contains("Local Machine"))
+            {
+                targetUrl = "127.0.0.1:10080";
+                ssl = string.Empty;
+            }
+            return string.Format(@"http{0}://{1}", ssl, targetUrl);
         }
 
         private static string EncodeTo64(string toEncode)

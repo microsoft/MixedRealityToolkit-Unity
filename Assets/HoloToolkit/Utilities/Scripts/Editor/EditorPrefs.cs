@@ -18,6 +18,16 @@ namespace HoloToolkit.Unity
             EditorPrefs.SetBool(Application.productName + key, value);
         }
 
+        public static void SetEditorPref(string key, float value)
+        {
+            EditorPrefs.SetFloat(Application.productName + key, value);
+        }
+
+        public static void SetEditorPref(string key, int value)
+        {
+            EditorPrefs.SetInt(Application.productName + key, value);
+        }
+
         public static string GetEditorPref(string key, string defaultValue)
         {
             if (EditorPrefs.HasKey(Application.productName + key))
@@ -37,6 +47,28 @@ namespace HoloToolkit.Unity
             }
 
             EditorPrefs.SetBool(Application.productName + key, defaultValue);
+            return defaultValue;
+        }
+
+        public static float GetEditorPref(string key, float defaultValue)
+        {
+            if (EditorPrefs.HasKey(Application.productName + key))
+            {
+                return EditorPrefs.GetFloat(Application.productName + key);
+            }
+
+            EditorPrefs.SetFloat(Application.productName + key, defaultValue);
+            return defaultValue;
+        }
+
+        public static int GetEditorPref(string key, int defaultValue)
+        {
+            if (EditorPrefs.HasKey(Application.productName + key))
+            {
+                return EditorPrefs.GetInt(Application.productName + key);
+            }
+
+            EditorPrefs.SetInt(Application.productName + key, defaultValue);
             return defaultValue;
         }
     }
