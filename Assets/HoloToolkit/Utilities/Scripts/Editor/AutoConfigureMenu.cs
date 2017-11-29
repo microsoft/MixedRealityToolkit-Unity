@@ -60,16 +60,6 @@ namespace HoloToolkit.Unity
             window.Show();
         }
 
-        /// <summary>
-        /// Adds Toolkit-specific Input Manager axes to the current project.
-        /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Configure/Edit Input Manager #&i", false, 3)]
-        public static void ShowInputManagerAxesWindow()
-        {
-            var window = (InputManagerAxesWindow)EditorWindow.GetWindow(typeof(InputManagerAxesWindow), true, "Edit Input Manager");
-            window.Show();
-        }
-
 #if UNITY_2017_1_OR_NEWER
         public int callbackOrder { get; private set; }
 
