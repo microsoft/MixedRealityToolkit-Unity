@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity.InputModule
             foreach (Touch touch in Input.touches)
             {
                 // Construct a ray from the current touch coordinates
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                Ray ray = CameraCache.Main.ScreenPointToRay(touch.position);
 
                 switch (touch.phase)
                 {
