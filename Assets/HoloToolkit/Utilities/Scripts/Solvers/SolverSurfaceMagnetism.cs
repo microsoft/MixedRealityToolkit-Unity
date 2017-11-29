@@ -41,7 +41,7 @@ namespace HoloToolkit.Unity
         public LayerMask MagneticSurface = 0;
 
         [Tooltip("Max distance to check for surfaces")]
-		public float MaxDistance = 3f;
+		public float MaxDistance = 3.0f;
 		[Tooltip("Closest distance to bring object")]
 		public float CloseDistance = 0.5f;
 
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity
 		public float MaximumNormalVariance = 0.5f;
 
 		[Tooltip("Radius to use for sphere cast")]
-		public float SphereSize = 1f;
+		public float SphereSize = 1.0f;
 
 		[Tooltip("When doing volume casts, use size override if non-zero instead of object's current scale")]
 		public float VolumeCastSizeOverride = 0;
@@ -206,11 +206,14 @@ namespace HoloToolkit.Unity
 		{
 			// Calculate the surface rotation
 			Vector3 newDir = -surfaceNormal;
-			if (IsNormalVertical(newDir))
-				newDir = rayDir;
+            if (IsNormalVertical(newDir))
+            {
+                newDir = rayDir;
+            }
 
-			newDir.y = 0;
-			Quaternion surfaceRot = Quaternion.LookRotation(newDir, Vector3.up);
+            newDir.y = 0;
+
+            Quaternion surfaceRot = Quaternion.LookRotation(newDir, Vector3.up);
 
 
 			if (orientationMode == OrientModeEnum.None)
