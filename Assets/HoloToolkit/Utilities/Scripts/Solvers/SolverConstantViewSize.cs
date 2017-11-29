@@ -7,8 +7,6 @@ using System.Collections;
 
 namespace HoloToolkit.Unity
 {
-    [RequireComponent(typeof(SolverHandler))]
-
     /// <summary>
     ///   ConstantViewSize solver scales to maintain a constant size relative to the view (currently tied to the Camera)
     /// </summary>
@@ -20,11 +18,13 @@ namespace HoloToolkit.Unity
 
         [Tooltip("If the object is closer than MinDistance, the distance used is clamped here")]
         public float MinDistance = 0.5f;
+
         [Tooltip("If the object is farther than MaxDistance, the distance used is clamped here")]
         public float MaxDistance = 3.5f;
 
         [Tooltip("Minimum scale value possible (world space scale)")]
         public float MinScale = 0.01f;
+
         [Tooltip("Maximum scale value possible (world space scale)")]
         public float MaxScale = 100f;
 
@@ -47,14 +47,20 @@ namespace HoloToolkit.Unity
 		// This value is subject to inaccuracies due to smoothing/interpolation/momentum
 		public float CurrentScalePercent
 		{
-			get { return objectScalePercent; }
+			get
+            {
+                return objectScalePercent;
+            }
 		}
 
 		// 0 to 1 between MinDistance and MaxDistance.  If current < max, object is potentially on a surface [or some other condition like interpolating] (since it may still be on surface, but scale percent may be clamped at max)
 		// This value is subject to inaccuracies due to smoothing/interpolation/momentum
 		public float CurrentDistancePercent
 		{
-			get { return objectDistancePercent; }
+			get
+            {
+                return objectDistancePercent;
+            }
 		}
 		#endregion
 
@@ -144,7 +150,7 @@ namespace HoloToolkit.Unity
 		/// <returns> Scale of vFOV </returns>
 		public float GetFOVScalar()
 		{
-            float camFOVrad = (Camera.main.aspect * Camera.main.fieldOfView) * Mathf.Deg2Rad;
+            float camFOVrad = (CameraCache.Main.aspect * CameraCache.Main.fieldOfView) * Mathf.Deg2Rad;
 
 			float sinfov = Mathf.Sin(camFOVrad / 2f);
 			float scalar = 2f * TargetViewPercentV * sinfov / objectSize;

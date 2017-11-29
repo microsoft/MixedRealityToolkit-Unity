@@ -1,151 +1,102 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity;
 
-public class CameraMotionInfo : Singleton<CameraMotionInfo> {
-
-    #region Public accessors
-    public Vector3 HeadVelocity { get { return headVelocity; } }
-    public Vector3 MoveDirection { get { return headMoveDirection; } }
-
-    public float HeadZoneSizeIdle = 0.2f;
-    public float HeadZoneSizeMin = 0.01f;
-    #endregion
-
-    #region Private members
-    private Vector3 headVelocity;
-    private Vector3 lastHeadPos;
-    private Vector3 lastHeadZone;
-    private Vector3 newHeadMoveDirection;
-    private float headZoneSize = 1f;
-    private Vector3 headMoveDirection = Vector3.one;
-    #endregion
-
-    /// <summary>
-    /// Sends raycast from Main camera and returns focusable object
-    /// </summary>
-    public RaycastHit RayCastFromHead()
+namespace HoloToolkit.Unity.InputModule
+{
+    public class CameraMotionInfo : Singleton<CameraMotionInfo>
     {
-        Transform head = Camera.main.transform;
+        #region Public accessors
+        public Vector3 HeadVelocity { get { return headVelocity; } }
+        public Vector3 MoveDirection { get { return headMoveDirection; } }
 
-        RaycastHit hitInfo;
+        public float HeadZoneSizeIdle = 0.2f;
+        public float HeadZoneSizeMin = 0.01f;
+        #endregion
 
-        Ray gazeRay = new Ray(head.position, head.forward);
+        #region Private members
+        private Vector3 headVelocity;
+        private Vector3 lastHeadPos;
+        private Vector3 lastHeadZone;
+        private Vector3 newHeadMoveDirection;
+        private float headZoneSize = 1f;
+        private Vector3 headMoveDirection = Vector3.one;
+        #endregion
 
-        if (Physics.Raycast(gazeRay, out hitInfo))
+        /// <summary>
+        /// Sends raycast from Main camera and returns RaycastHit containing focusable object
+        /// </summary>
+        public RaycastHit RayCastFromHead()
         {
-            Transform hitTransform = hitInfo.collider.transform;
+            return GazeManager.Instance.HitInfo;
+        }
+        
+        /// <summary>
+        /// Sends spherecast from Main camera and returns  RaycastHit containing focusable object
+        /// </summary>
+        public RaycastHit SphereCastFromHead(float radius)
+        {
+            RaycastHit hitInfo = default(RaycastHit);
 
-            // Traverse up parent path until interactible object found
-            while (hitTransform != null)
+            for (int i = 0; i < GazeManager.Instance.Rays.Length; i++)
             {
-                IFocusable focusable = hitTransform.GetComponent(typeof(IFocusable)) as IFocusable;
-
-                if (focusable != null)
+                if ( Physics.SphereCast(GazeManager.Instance.Rays[i].origin, radius, GazeManager.Instance.Rays[i].direction, out hitInfo) )
                 {
                     return hitInfo;
                 }
-
-                hitTransform = hitTransform.parent;
             }
+            return hitInfo;
         }
 
-        return hitInfo;
-    }
-
-    /// <summary>
-    /// Sends raycast from Main camera and returns focusable objects
-    /// </summary>
-    public RaycastHit[] RayCastAllFromHead()
-    {
-        Transform head = Camera.main.transform;
-        RaycastHit[] hitInfo;
-
-        Ray gazeRay = new Ray(head.position, head.forward);
-        hitInfo = Physics.RaycastAll(gazeRay);
-
-        return hitInfo;
-    }
-
-    /// <summary>
-    /// Sends spherecast from Main camera and returns focusable object
-    /// </summary>
-    public RaycastHit SphereCastFromHead(float radius)
-    {
-        Transform head = Camera.main.transform;
-        RaycastHit hitInfo;
-        Ray gazeRay = new Ray(head.position, head.forward);
-
-        if (Physics.SphereCast(gazeRay, radius, out hitInfo))
+        private void FixedUpdate()
         {
-            Transform hitTransform = hitInfo.collider.transform;
+            // Update headVelocity
+            Vector3 newHeadPos = CameraCache.Main.transform.position;
+            Vector3 headDelta = newHeadPos - lastHeadPos;
 
-            // Traverse up parent path until interactible object found
-            while (hitTransform != null)
+            float moveThreshold = 0.01f;
+            if (headDelta.sqrMagnitude < moveThreshold * moveThreshold)
             {
-                IFocusable focusable = hitTransform.GetComponent(typeof(IFocusable)) as IFocusable;
+                headDelta = Vector3.zero;
+            }
 
-                if (focusable != null)
+            if (Time.fixedDeltaTime > 0)
+            {
+                float adjustRate = 3f * Time.fixedDeltaTime;
+                headVelocity = headVelocity * (1f - adjustRate) + headDelta * adjustRate / Time.fixedDeltaTime;
+
+                float velThreshold = .1f;
+                if (headVelocity.sqrMagnitude < velThreshold * velThreshold)
                 {
-                    return hitInfo;
+                    headVelocity = Vector3.zero;
                 }
-
-                hitTransform = hitTransform.parent;
             }
-        }
 
-        return hitInfo;
-    }
+            lastHeadPos = CameraCache.Main.transform.position;
 
-    private void FixedUpdate()
-    {
-        // Update headVelocity
-        Vector3 newHeadPos = Camera.main.transform.position;
-        Vector3 headDelta = newHeadPos - lastHeadPos;
+            // Update headDirection
+            float headVelIdleThresh = 0.5f;
+            float headVelMoveThresh = 2f;
 
-        float moveThreshold = 0.01f;
-        if (headDelta.sqrMagnitude < moveThreshold * moveThreshold)
-        {
-            headDelta = Vector3.zero;
-        }
+            float velP = Mathf.Clamp01(Mathf.InverseLerp(headVelIdleThresh, headVelMoveThresh, headVelocity.magnitude));
+            float newHeadZoneSize = Mathf.Lerp(HeadZoneSizeIdle, HeadZoneSizeMin, velP);
+            headZoneSize = Mathf.Lerp(headZoneSize, newHeadZoneSize, Time.fixedDeltaTime);
 
-        if (Time.fixedDeltaTime > 0)
-        {
-            float adjustRate = 3f * Time.fixedDeltaTime;
-            headVelocity = headVelocity * (1f - adjustRate) + headDelta * adjustRate / Time.fixedDeltaTime;
-
-            float velThreshold = .1f;
-            if (headVelocity.sqrMagnitude < velThreshold * velThreshold)
+            Vector3 headZoneDelta = newHeadPos - lastHeadZone;
+            if (headZoneDelta.sqrMagnitude >= headZoneSize * headZoneSize)
             {
-                headVelocity = Vector3.zero;
+                newHeadMoveDirection = Vector3.Lerp(newHeadPos - lastHeadZone, headVelocity, velP).normalized;
+                lastHeadZone = newHeadPos;
             }
+
+            {
+                float adjustRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);
+                headMoveDirection = Vector3.Slerp(headMoveDirection, newHeadMoveDirection, adjustRate);
+            }
+
+            Debug.DrawLine(lastHeadPos, lastHeadPos + headMoveDirection * 10f, Color.Lerp(Color.red, Color.green, velP));
+            Debug.DrawLine(lastHeadPos, lastHeadPos + headVelocity, Color.yellow);
         }
-
-        lastHeadPos = Camera.main.transform.position;
-
-        // Update headDirection
-        float headVelIdleThresh = 0.5f;
-        float headVelMoveThresh = 2f;
-
-        float velP = Mathf.Clamp01(Mathf.InverseLerp(headVelIdleThresh, headVelMoveThresh, headVelocity.magnitude));
-        float newHeadZoneSize = Mathf.Lerp(HeadZoneSizeIdle, HeadZoneSizeMin, velP);
-        headZoneSize = Mathf.Lerp(headZoneSize, newHeadZoneSize, Time.fixedDeltaTime);
-
-        Vector3 headZoneDelta = newHeadPos - lastHeadZone;
-        if (headZoneDelta.sqrMagnitude >= headZoneSize * headZoneSize)
-        {
-            newHeadMoveDirection = Vector3.Lerp(newHeadPos - lastHeadZone, headVelocity, velP).normalized;
-            lastHeadZone = newHeadPos;
-        }
-
-        {
-            float adjustRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);
-            headMoveDirection = Vector3.Slerp(headMoveDirection, newHeadMoveDirection, adjustRate);
-        }
-
-        Debug.DrawLine(lastHeadPos, lastHeadPos + headMoveDirection * 10f, Color.Lerp(Color.red, Color.green, velP));
-        Debug.DrawLine(lastHeadPos, lastHeadPos + headVelocity, Color.yellow);
     }
 }

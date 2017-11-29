@@ -13,18 +13,14 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Waits for a controller to be instantiated, then attaches itself to a specified element
     /// </summary>
-    public class AttachToController : MonoBehaviour
+    public class AttachToController : ControllerFinder
     {
-        public InteractionSourceHandedness Handedness { get { return handedness; } }
-
-        public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
-
         [Header("AttachToController Elements")]
         [SerializeField]
-        protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+        protected new InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
 
         [SerializeField]
-        protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
+        protected new MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
         public bool SetChildrenInactiveWhenDetached = true;
 
@@ -40,49 +36,9 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         protected bool setScaleOnAttach = false;
 
-        public bool IsAttached { get; private set; }
-
-        private Transform elementTransform;
-        public Transform ElementTransform { get; private set; }
-
-        protected MotionControllerInfo controller;
-
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
-        protected virtual void OnEnable()
-        {
-            SetChildrenActive(false);
-
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
-            {
-                AttachElementToController(controller);
-            }
-#endif
-
-            MotionControllerVisualizer.Instance.OnControllerModelLoaded += AttachElementToController;
-            MotionControllerVisualizer.Instance.OnControllerModelUnloaded += DetachElementFromController;
-        }
-
-        protected virtual void OnDisable()
-        {
-            if (MotionControllerVisualizer.IsInitialized)
-            {
-                MotionControllerVisualizer.Instance.OnControllerModelLoaded -= AttachElementToController;
-                MotionControllerVisualizer.Instance.OnControllerModelUnloaded -= DetachElementFromController;
-            }
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (MotionControllerVisualizer.IsInitialized)
-            {
-                MotionControllerVisualizer.Instance.OnControllerModelLoaded -= AttachElementToController;
-                MotionControllerVisualizer.Instance.OnControllerModelUnloaded -= DetachElementFromController;
-            }
-        }
 
         private void AttachElementToController(MotionControllerInfo newController)
         {

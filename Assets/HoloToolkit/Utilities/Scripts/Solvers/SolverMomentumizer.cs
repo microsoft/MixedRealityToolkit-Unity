@@ -7,12 +7,10 @@ using System.Collections;
 
 namespace HoloToolkit.Unity
 {
-    [RequireComponent(typeof(SolverHandler))]
-
-	/// <summary>
-	///   Momentumizer solver applies accel/velocity/friction to simulate momentum for an object being moved by other solvers/components
-	/// </summary>
-	public class SolverMomentumizer : Solver
+    /// <summary>
+    ///   Momentumizer solver applies accel/velocity/friction to simulate momentum for an object being moved by other solvers/components
+    /// </summary>
+    public class SolverMomentumizer : Solver
 	{
 		[Tooltip("Friction to slow down the current velocity")]
 		public float resistance = 0.99f;
@@ -26,8 +24,7 @@ namespace HoloToolkit.Unity
 		[Tooltip("Instantly maintain a constant depth from the view point instead of simulating Z-velocity")]
 		public bool SnapZ = true;
 
-		Vector3 m_Velocity;
-
+		private Vector3 velocity;
 
 		public override void SolverUpdate()
 		{
@@ -37,14 +34,14 @@ namespace HoloToolkit.Unity
 		public override void SnapTo(Vector3 position, Quaternion rotation)
 		{
 			base.SnapTo(position, rotation);
-			m_Velocity = Vector3.zero;
+            velocity = Vector3.zero;
 		}
 
 		protected override void OnEnable()
 		{
 			base.OnEnable();
 
-			m_Velocity = Vector3.zero;
+            velocity = Vector3.zero;
 		}
 
 		private void CalculateMomentum()
@@ -71,25 +68,25 @@ namespace HoloToolkit.Unity
 			{
 				Vector3 deltaNorm = delta / deltaLen;
 
-				m_Velocity += deltaNorm * (solverHandler.DeltaTime * (accelRate + springiness * deltaLen));
+                velocity += deltaNorm * (solverHandler.DeltaTime * (accelRate + springiness * deltaLen));
 			}
 
 			// Resistance
-			float velMag = m_Velocity.magnitude;
+			float velMag = velocity.magnitude;
 			if (!Mathf.Approximately(velMag, 0))
 			{
-				Vector3 velNormal = m_Velocity / velMag;
+				Vector3 velNormal = velocity / velMag;
 				float powFactor = velMag > 1f ? Mathf.Pow(velMag, resistanceVelPower) : velMag;
-				m_Velocity -= velNormal * (powFactor * resistance * solverHandler.DeltaTime);
+                velocity -= velNormal * (powFactor * resistance * solverHandler.DeltaTime);
 			}
 
-			if (m_Velocity.sqrMagnitude < 0.001f)
+			if (velocity.sqrMagnitude < 0.001f)
 			{
-				m_Velocity = Vector3.zero;
+                velocity = Vector3.zero;
 			}
 
 			// Apply vel to the solver... no wait, the actual transform
-			transform.position += m_Velocity * solverHandler.DeltaTime;
+			transform.position += velocity * solverHandler.DeltaTime;
 		}
 
 	    private Vector3 getRefPos()

@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_2017_2_OR_NEWER
@@ -6,25 +8,24 @@ using UnityEngine.XR.WSA.Input;
 #else
 using UnityEngine.VR.WSA.Input;
 #endif
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.InputModule
 {
-    public class SolverControllerFinder : MonoBehaviour
+    public class ControllerFinder : MonoBehaviour
     {
         #region public members
-        public InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
+        public virtual InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
         public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
         public Transform ElementTransform { get; private set; }
-        public bool IsAttached { get { return isAttached; } }
+        public bool IsAttached { get { return isAttached; } set { isAttached = value; } }
         #endregion
 
         #region private members
         protected MotionControllerInfo controller;
         protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
         protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose; // This probably should be hard coded? Maybe?
+        protected Transform elementTransform;
         private bool isAttached = false;
-        private Transform elementTransform;
         #endregion
 
 

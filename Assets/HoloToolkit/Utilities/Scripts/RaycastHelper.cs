@@ -193,7 +193,7 @@ namespace HoloToolkit.Unity
 
 		public RaycastResultHelper(Collider collider, Vector3 point, Vector3 normal, float distance, Vector2 textureCoord, Vector2 textureCoord2, LayerMask surface)
 		{
-			this.layer = collider != null ? collider.gameObject.layer : Layers.Surface;
+			this.layer = collider != null ? collider.gameObject.layer : LayerExtensions.Surface;
 
 			if (this.layer == surface.value)
 			{

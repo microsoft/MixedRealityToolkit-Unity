@@ -7,9 +7,8 @@ using System.Collections;
 
 namespace HoloToolkit.Unity
 {
-
-	/// <summary>
-	///   RadialViewPoser solver locks a tag-along type object within a view cone
+    /// <summary>
+	/// RadialViewPoser solver locks a tag-along type object within a view cone
 	/// </summary>
 	public class SolverRadialView : Solver
 	{
@@ -69,7 +68,7 @@ namespace HoloToolkit.Unity
 			Vector3 ret = Vector3.one;
 			if (ReferenceDirection == ReferenceDirectionEnum.HeadMoveDirection && solverHandler.TrackedObjectToReference == SolverHandler.TrackedObjectToReferenceEnum.Head)
 			{
-                ret = Camera.main.GetComponent<CameraMotionInfo>().MoveDirection;
+                ret = Camera.main.GetComponent<InputModule.CameraMotionInfo>().MoveDirection;
 			}
 			else
 			{

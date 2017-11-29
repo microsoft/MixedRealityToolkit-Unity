@@ -4,6 +4,7 @@
 //
 using UnityEngine;
 using System.Collections;
+using HoloToolkit.Unity.InputModule;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
 #else
@@ -12,16 +13,14 @@ using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity
 {
-    [RequireComponent(typeof(SolverHandler))]
-
     /// <summary>
     ///   SolverBase is the base abstract class for all Solvers to derive from.  It provides state tracking, smoothing parameters
     ///   and implementation, automatic solver system integration, and update order.  Solvers may be used without a link,
     ///   as long as UpdateLinkedTransform is false.
     /// </summary>
+    [RequireComponent(typeof(SolverHandler))]
     public abstract class Solver : MonoBehaviour
     {
-
         #region public members
         [Tooltip("If true, the position and orientation will be calculated, but not applied, for other components to use")]
         public bool UpdateLinkedTransform = false;
@@ -55,7 +54,6 @@ namespace HoloToolkit.Unity
 
         #region private members
         protected SolverHandler solverHandler;
-        protected SolverHandler.TrackedObjectToReferenceEnum oldHandler;
         private float lifetime;
         #endregion
 
@@ -78,7 +76,7 @@ namespace HoloToolkit.Unity
         protected virtual void OnEnable()
         {
             //Ensure the Camera helper component exists
-            CameraMotionInfo cInfo = Camera.main.gameObject.EnsureComponent<CameraMotionInfo>();
+            CameraMotionInfo cInfo = CameraCache.Main.gameObject.EnsureComponent<CameraMotionInfo>();
 
             if (solverHandler != null)
             {
@@ -102,44 +100,44 @@ namespace HoloToolkit.Unity
                 switch (solverHandler.TrackedObjectToReference)
                 {
                     case SolverHandler.TrackedObjectToReferenceEnum.Head:
-                        while (Camera.main == null && Camera.main.transform == null)
+                        while (CameraCache.Main == null && CameraCache.Main.transform == null)
                         {
                             yield return null;
                         }
                         //Base transform target to camera transform
-                        solverHandler.TransformTarget = Camera.main.transform;
+                        solverHandler.TransformTarget = CameraCache.Main.transform;
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-                        if(GetComponent<SolverControllerFinder>() == null)
+                        if(GetComponent<ControllerFinder>() == null)
                         {
                             Debug.LogError("There is no component SolverControllerFinder on " + this.gameObject.name);
                             break;
                         }
-                        GetComponent<SolverControllerFinder>().Handedness = InteractionSourceHandedness.Left;
-                        GetComponent<SolverControllerFinder>().OnEnable();
-                        while (!GetComponent<SolverControllerFinder>().IsAttached && GetComponent<SolverControllerFinder>().ElementTransform == null)
+                        GetComponent<ControllerFinder>().Handedness = InteractionSourceHandedness.Left;
+                        GetComponent<ControllerFinder>().OnEnable();
+                        while (!GetComponent<ControllerFinder>().IsAttached && GetComponent<ControllerFinder>().ElementTransform == null)
                         {
                             yield return null;
                         }
                         //Base transform target to Motion controller transform
-                        solverHandler.TransformTarget = this.GetComponent<SolverControllerFinder>().ElementTransform;
+                        solverHandler.TransformTarget = this.GetComponent<ControllerFinder>().ElementTransform;
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
-                        if (GetComponent<SolverControllerFinder>() == null)
+                        if (GetComponent<ControllerFinder>() == null)
                         {
                             Debug.LogError("There is no component SolverControllerFinder on " + this.gameObject.name);
                             break;
                         }
-                        GetComponent<SolverControllerFinder>().Handedness = InteractionSourceHandedness.Right;
-                        GetComponent<SolverControllerFinder>().OnEnable();
-                        while (!GetComponent<SolverControllerFinder>().IsAttached && GetComponent<SolverControllerFinder>().ElementTransform == null)
+                        GetComponent<ControllerFinder>().Handedness = InteractionSourceHandedness.Right;
+                        GetComponent<ControllerFinder>().OnEnable();
+                        while (!GetComponent<ControllerFinder>().IsAttached && GetComponent<ControllerFinder>().ElementTransform == null)
                         {
                             yield return null;
                         }
                         //Base transform target to Motion controller transform
-                        solverHandler.TransformTarget = this.GetComponent<SolverControllerFinder>().ElementTransform;
+                        solverHandler.TransformTarget = this.GetComponent<ControllerFinder>().ElementTransform;
                         break;
                 }
         }

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 namespace HoloToolkit.Unity
 {
-
     public class SolverBodyLock : Solver
     {
         #region public enums
@@ -16,11 +15,11 @@ namespace HoloToolkit.Unity
         public enum OrrientationReference
         {
             /// <summary>
-            /// Orrient towards SolverHandler's tracked object or TargetTransform
+            /// Orient towards SolverHandler's tracked object or TargetTransform
             /// </summary>
             Default,
             /// <summary>
-            /// Orrient toward Camera.main instead of SolverHandler's properties.
+            /// Orient toward Camera.main instead of SolverHandler's properties.
             /// </summary>
 			CameraFacing,
         }

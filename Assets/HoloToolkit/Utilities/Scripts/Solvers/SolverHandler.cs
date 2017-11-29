@@ -2,30 +2,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity
 {
-    [RequireComponent(typeof(SolverControllerFinder))]
-
     public class SolverHandler : MonoBehaviour
     {
         #region public enums
         public enum TrackedObjectToReferenceEnum
         {
             /// <summary>
-            /// Calculates position and orrientation from the main camera
+            /// Calculates position and orientation from the main camera
             /// </summary>
             Head,
             /// <summary>
-            /// Calculates position and orrientation from the left motion controller
+            /// Calculates position and orientation from the left motion controller
             /// </summary>
             MotionControllerLeft,
             /// <summary>
-            /// Calculates position and orrientation from the right motion camera
+            /// Calculates position and orientation from the right motion camera
             /// </summary>
             MotionControllerRight
         }
@@ -51,7 +49,7 @@ namespace HoloToolkit.Unity
         [HideInInspector]
         public float DeltaTime { get; set; }
 
-        private float m_LastUpdateTime { get; set; }
+        private float LastUpdateTime { get; set; }
 
         private void Awake()
         {
@@ -64,8 +62,8 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            DeltaTime = Time.realtimeSinceStartup - m_LastUpdateTime;
-            m_LastUpdateTime = Time.realtimeSinceStartup;
+            DeltaTime = Time.realtimeSinceStartup - LastUpdateTime;
+            LastUpdateTime = Time.realtimeSinceStartup;
         }
 
         private void LateUpdate()
@@ -81,61 +79,54 @@ namespace HoloToolkit.Unity
             }
         }
 
-        //TODO - might not need this?
-//        public bool CompareTrackedObjectEnum(TrackedObjectToReferenceEnum e)
-//        {
-//        }
-
-    }
-
-
-    [System.Serializable]
-    public struct Vector3Smoothed
-    {
-        public Vector3 Current { get; set; }
-        public Vector3 Goal { get; set; }
-        public float SmoothTime { get; set; }
-
-        public Vector3Smoothed(Vector3 value, float smoothingTime)
+        [System.Serializable]
+        public struct Vector3Smoothed
         {
-            Current = value;
-            Goal = value;
-            SmoothTime = smoothingTime;
+            public Vector3 Current { get; set; }
+            public Vector3 Goal { get; set; }
+            public float SmoothTime { get; set; }
+
+            public Vector3Smoothed(Vector3 value, float smoothingTime)
+            {
+                Current = value;
+                Goal = value;
+                SmoothTime = smoothingTime;
+            }
+
+            public void Update(float deltaTime)
+            {
+                Current = Vector3.Lerp(Current, Goal, (System.Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
+            }
+
+            public void SetGoal(Vector3 newGoal)
+            {
+                Goal = newGoal;
+            }
         }
 
-        public void Update(float deltaTime)
+        [System.Serializable]
+        public struct QuaternionSmoothed
         {
-            Current = Vector3.Lerp(Current, Goal, (System.Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
-        }
+            public Quaternion Current { get; set; }
+            public Quaternion Goal { get; set; }
+            public float SmoothTime { get; set; }
 
-        public void SetGoal(Vector3 newGoal)
-        {
-            Goal = newGoal;
-        }
-    }
+            public QuaternionSmoothed(Quaternion value, float smoothingTime)
+            {
+                Current = value;
+                Goal = value;
+                SmoothTime = smoothingTime;
+            }
 
-    [System.Serializable]
-    public struct QuaternionSmoothed
-    {
-        public Quaternion Current { get; set; }
-        public Quaternion Goal { get; set; }
-        public float SmoothTime { get; set; }
+            public void Update(float deltaTime)
+            {
+                Current = Quaternion.Slerp(Current, Goal, (System.Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
+            }
 
-        public QuaternionSmoothed(Quaternion value, float smoothingTime)
-        {
-            Current = value;
-            Goal = value;
-            SmoothTime = smoothingTime;
-        }
-
-        public void Update(float deltaTime)
-        {
-            Current = Quaternion.Slerp(Current, Goal, (System.Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
-        }
-
-        public void SetGoal(Quaternion newGoal)
-        {
-            Goal = newGoal;
+            public void SetGoal(Quaternion newGoal)
+            {
+                Goal = newGoal;
+            }
         }
     }
 }
