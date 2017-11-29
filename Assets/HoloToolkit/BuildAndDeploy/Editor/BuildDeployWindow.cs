@@ -638,6 +638,9 @@ namespace HoloToolkit.Unity
                             }
 
                             newConnection.IP = ip;
+                            newConnection.User = targetDevice.User;
+                            newConnection.Password = targetDevice.Password;
+
                             if (machineName != null)
                             {
                                 newConnection.MachineName = machineName.ComputerName;
