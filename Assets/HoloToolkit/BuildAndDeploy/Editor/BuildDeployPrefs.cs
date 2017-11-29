@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity
                     EditorPrefs_ConnectInfos,
                     JsonUtility.ToJson(
                         new DevicePortalConnections(
-                            new ConnectInfo("127.0.0.1", string.Empty, string.Empty))));
+                            new ConnectInfo("127.0.0.1", string.Empty, string.Empty, "Local Machine"))));
             }
             set { EditorPrefsUtility.SetEditorPref(EditorPrefs_ConnectInfos, value); }
         }

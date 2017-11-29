@@ -8,15 +8,17 @@ namespace HoloToolkit.Unity
     [Serializable]
     public struct ConnectInfo
     {
-        public ConnectInfo(string ip, string user, string password)
+        public ConnectInfo(string ip, string user, string password, string machineName = "")
         {
             IP = ip;
             User = user;
             Password = password;
+            MachineName = string.IsNullOrEmpty(machineName) ? ip : machineName;
         }
 
         public string IP;
         public string User;
         public string Password;
+        public string MachineName;
     }
 }
