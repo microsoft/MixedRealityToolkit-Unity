@@ -117,9 +117,13 @@ namespace HoloToolkit.Unity.InputModule
         {
             PersistentTouch knownTouch = (ActiveTouches.Find(item => item.touchData.fingerId == id));
             if (knownTouch != null)
+            {
                 return knownTouch.touchData;
+            }
             else
+            {
                 return null;
+            }
         }
 
         protected void OnTappedEvent(int id, int tapCount)
