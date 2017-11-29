@@ -152,7 +152,7 @@ namespace HoloToolkit.Unity
 		{
             float camFOVrad = (CameraCache.Main.aspect * CameraCache.Main.fieldOfView) * Mathf.Deg2Rad;
 
-			float sinfov = Mathf.Sin(camFOVrad / 2f);
+			float sinfov = Mathf.Sin(camFOVrad * 0.5f);
 			float scalar = 2f * TargetViewPercentV * sinfov / objectSize;
 
 			return scalar;
