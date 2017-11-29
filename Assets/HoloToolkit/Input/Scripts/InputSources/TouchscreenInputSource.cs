@@ -21,27 +21,22 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Time in seconds to determine if the contact registers as a tap or a hold")]
         protected float MaxTapContactTime = 0.5f;
 
-        private List<PersistentTouch> ActiveTouches;
+        private List<PersistentTouch> ActiveTouches = new List<PersistentTouch>(0);
 
         private class PersistentTouch
         {
             public Touch touchData;
-            public Ray ray;
+            public Ray screenpointRay;
             public float lifetime;
-            public PersistentTouch(Touch t, Ray r)
+            public PersistentTouch(Touch touch, Ray ray)
             {
-                touchData = t;
-                ray = r;
+                touchData = touch;
+                this.screenpointRay = ray;
                 lifetime = 0.0f;
             }
         }
 
         #region Unity methods
-
-        protected virtual void Start()
-        {
-            ActiveTouches = new List<PersistentTouch>();
-        }
 
         protected virtual void Update()
         {
@@ -70,9 +65,9 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Event generation logic
 
-        public bool UpdateTouch(Touch t, Ray r)
+        public bool UpdateTouch(Touch touch, Ray ray)
         {
-            PersistentTouch knownTouch = (ActiveTouches.Find(item => item.touchData.fingerId == t.fingerId));
+            PersistentTouch knownTouch = (ActiveTouches.Find(item => item.touchData.fingerId == touch.fingerId));
             if (knownTouch != null)
             {
                 knownTouch.lifetime += Time.deltaTime;
@@ -81,36 +76,36 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                ActiveTouches.Add(new PersistentTouch(t, r));
-                OnHoldStartedEvent(t.fingerId);
+                ActiveTouches.Add(new PersistentTouch(touch, ray));
+                OnHoldStartedEvent(touch.fingerId);
                 return false;
             }
         }
 
-        public void RemoveTouch(Touch t)
+        public void RemoveTouch(Touch touch)
         {
-            PersistentTouch knownTouch = ActiveTouches.Find(item => item.touchData.fingerId == t.fingerId);
+            PersistentTouch knownTouch = ActiveTouches.Find(item => item.touchData.fingerId == touch.fingerId);
             if (knownTouch != null)
             {
-                if (t.phase == TouchPhase.Ended)
+                if (touch.phase == TouchPhase.Ended)
                 {
                     if (knownTouch.lifetime < kContactEpsilon)
                     {
-                        OnHoldCanceledEvent(t.fingerId);
+                        OnHoldCanceledEvent(touch.fingerId);
                     }
                     else if (knownTouch.lifetime < MaxTapContactTime)
                     {
-                        OnHoldCanceledEvent(t.fingerId);
-                        OnTappedEvent(t.fingerId, t.tapCount);
+                        OnHoldCanceledEvent(touch.fingerId);
+                        OnTappedEvent(touch.fingerId, touch.tapCount);
                     }
                     else
                     {
-                        OnHoldCompletedEvent(t.fingerId);
+                        OnHoldCompletedEvent(touch.fingerId);
                     }
                 }
                 else
                 {
-                    OnHoldCanceledEvent(t.fingerId);
+                    OnHoldCanceledEvent(touch.fingerId);
                 }
                 ActiveTouches.Remove(knownTouch);
             }
@@ -174,7 +169,7 @@ namespace HoloToolkit.Unity.InputModule
             PersistentTouch knownTouch = (ActiveTouches.Find(item => item.touchData.fingerId == sourceId));
             if (knownTouch != null)
             {
-                pointingRay = knownTouch.ray;
+                pointingRay = knownTouch.screenpointRay;
                 return true;
             }
             pointingRay = default(Ray);
