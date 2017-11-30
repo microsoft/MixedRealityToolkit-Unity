@@ -1,4 +1,7 @@
-﻿// Very fast unlit shader.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+// Very fast unlit shader.
 // No lighting, lightmap support, etc.
 // Compiles down to only performing the operations you're actually using.
 // Uses material property drawers rather than a custom editor for ease of maintenance.
