@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 4977849313536866}
   - component: {fileID: 20049547090947856}
   m_Layer: 0
-  m_Name: RaycastCamera
+  m_Name: UIRaycastCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
