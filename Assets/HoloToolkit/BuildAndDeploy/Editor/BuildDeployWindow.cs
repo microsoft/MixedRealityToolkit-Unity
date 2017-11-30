@@ -40,6 +40,8 @@ namespace HoloToolkit.Unity
 
         private readonly List<string> builds = new List<string>(0);
 
+        private readonly List<string> appPackageDirectories = new List<string>(0);
+
         private enum BuildDeployTab
         {
             UnityBuildOptions,
@@ -87,19 +89,9 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private static bool ShouldLaunchAppBeEnabled
+        private static bool DevicePortalConnectionEnabled
         {
-            get { return portalConnections.Connections.Count > 0 && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
-        }
-
-        private static bool ShouldWebPortalBeEnabled
-        {
-            get { return portalConnections.Connections.Count > 0 && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
-        }
-
-        private static bool ShouldLogViewBeEnabled
-        {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get { return (portalConnections.Connections.Count > 1 || IsHoloLensConnectedUsb) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
 
         private static bool CanInstall
@@ -153,7 +145,6 @@ namespace HoloToolkit.Unity
         private static bool isAppRunning;
         private static int currentConnectionInfoIndex;
         private static DevicePortalConnections portalConnections;
-        private readonly List<string> appPackageDirectories = new List<string>(0);
 
         #endregion // Fields
 
@@ -261,6 +252,13 @@ namespace HoloToolkit.Unity
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+        private void Update()
+        {
+            if (Time.realtimeSinceStartup - timeLastUpdatedBuilds > UpdateBuildsPeriod)
+            {
+                UpdateBuilds();
             }
         }
 
@@ -607,57 +605,62 @@ namespace HoloToolkit.Unity
 
             if (GUILayout.Button(new GUIContent("Add USB HoloLens", "Pairs the USB connected HoloLens with the Build Window so you can deploy via USB"), GUILayout.Width(quarterWidth)))
             {
-                var newConnection = new ConnectInfo();
-
-                foreach (var targetDevice in portalConnections.Connections)
+                EditorApplication.delayCall += () =>
                 {
-                    if (!targetDevice.IP.Contains("Local Machine"))
-                    {
-                        break;
-                    }
+                    var newConnection = new ConnectInfo();
 
-                    var machineName = BuildDeployPortal.GetMachineName(targetDevice);
-                    var networkInfo = BuildDeployPortal.GetNetworkInfo(targetDevice);
-                    if (networkInfo != null)
+                    foreach (var targetDevice in portalConnections.Connections)
                     {
-                        var newIps = new List<string>();
-                        foreach (var adapter in networkInfo.Adapters)
+                        if (IsLocalConnection(targetDevice))
                         {
-                            newIps.AddRange(from address in adapter.IpAddresses where !address.IpAddress.Contains("0.0.0.0") select address.IpAddress);
+                            continue;
                         }
 
-                        foreach (var ip in newIps)
+                        var machineName = BuildDeployPortal.GetMachineName(targetDevice);
+                        var networkInfo = BuildDeployPortal.GetNetworkInfo(targetDevice);
+
+                        if (networkInfo != null)
                         {
-                            if (portalConnections.Connections.Any(connection => connection.IP == ip))
+                            var newIps = new List<string>();
+                            foreach (var adapter in networkInfo.Adapters)
                             {
-                                continue;
+                                newIps.AddRange(from address in adapter.IpAddresses where !address.IpAddress.Contains("0.0.0.0") select address.IpAddress);
                             }
 
-                            newConnection.IP = ip;
-                            newConnection.User = targetDevice.User;
-                            newConnection.Password = targetDevice.Password;
-
-                            if (machineName != null)
+                            foreach (var ip in newIps)
                             {
-                                newConnection.MachineName = machineName.ComputerName;
+                                if (portalConnections.Connections.Any(connection => connection.IP == ip))
+                                {
+                                    continue;
+                                }
+
+                                newConnection.IP = ip;
+                                newConnection.User = targetDevice.User;
+                                newConnection.Password = targetDevice.Password;
+
+                                if (machineName != null)
+                                {
+                                    newConnection.MachineName = machineName.ComputerName;
+                                }
                             }
                         }
                     }
-                }
 
-                if (!string.IsNullOrEmpty(newConnection.IP))
-                {
-                    portalConnections.Connections.Add(newConnection);
-                    for (var i = 0; i < portalConnections.Connections.Count; i++)
+                    if (IsValidIpAddress(newConnection.IP))
                     {
-                        var connectInfo = portalConnections.Connections[i];
-                        if (connectInfo.IP == newConnection.IP)
+                        portalConnections.Connections.Add(newConnection);
+                        for (var i = 0; i < portalConnections.Connections.Count; i++)
                         {
-                            currentConnectionInfoIndex = i;
+                            if (portalConnections.Connections[i].IP == newConnection.IP)
+                            {
+                                currentConnectionInfoIndex = i;
+                                break;
+                            }
                         }
+
+                        UpdatePortalConnections();
                     }
-                    UpdatePortalConnections();
-                }
+                };
             }
 
             GUI.enabled = true;
@@ -672,14 +675,15 @@ namespace HoloToolkit.Unity
 
             currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps, GUILayout.Width(halfWidth - 48));
             var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
-            bool isLocalConnection = currentConnection.IP.Contains("127.0.0.1") || currentConnection.IP.Contains("Local Machine");
+            bool isLocalConnection = IsLocalConnection(currentConnection);
 
             if (isLocalConnection)
             {
                 currentConnection.MachineName = "Local Machine";
             }
 
-            GUI.enabled = currentConnection.IP != "0.0.0.0";
+            GUI.enabled = IsValidIpAddress(currentConnection.IP);
+
             if (GUILayout.Button("+", GUILayout.Width(20)))
             {
                 portalConnections.Connections.Add(new ConnectInfo("0.0.0.0", currentConnection.User, currentConnection.Password));
@@ -708,7 +712,9 @@ namespace HoloToolkit.Unity
             GUILayout.Label(currentConnection.MachineName, GUILayout.Width(halfWidth));
 
             GUILayout.EndHorizontal();
-            // Username/Password (and save seeings, if changed)
+
+            GUI.SetNextControlName("Connection Info");
+
             previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 64;
             GUILayout.BeginHorizontal();
@@ -720,13 +726,6 @@ namespace HoloToolkit.Unity
                 currentConnection.IP,
                 GUILayout.Width(halfWidth));
             GUI.enabled = true;
-            // If it's local, add the port if we're connected to the HoloLens
-            if (currentConnection.IP.Contains("127.0.0.1"))
-            {
-                currentConnection.IP = "Local Machine";
-                UpdatePortalConnections();
-                Repaint();
-            }
 
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
@@ -737,7 +736,6 @@ namespace HoloToolkit.Unity
             GUILayout.FlexibleSpace();
             currentConnection.Password = EditorGUILayout.PasswordField("Password", currentConnection.Password, GUILayout.Width(halfWidth));
             GUILayout.EndHorizontal();
-
             GUILayout.BeginHorizontal();
 
             EditorGUIUtility.labelWidth = 86;
@@ -751,12 +749,25 @@ namespace HoloToolkit.Unity
             {
                 BuildDeployPrefs.FullReinstall = fullReinstall;
 
+                // Format our local connection
+                if (currentConnection.IP.Contains("127.0.0.1"))
+                {
+                    currentConnection.IP = "Local Machine";
+                    UpdatePortalConnections();
+                    Repaint();
+                }
+
                 if (!isLocalConnection &&
-                    !currentConnection.IP.Contains("0.0.0.0") &&
+                    IsValidIpAddress(currentConnection.IP) &&
+                    IsCredentialsValid(currentConnection) &&
                     currentConnection.MachineName.Contains(currentConnection.IP))
                 {
                     var machineName = BuildDeployPortal.GetMachineName(currentConnection);
-                    currentConnection.MachineName = machineName.ComputerName;
+
+                    if (machineName != null)
+                    {
+                        currentConnection.MachineName = machineName.ComputerName;
+                    }
                 }
 
                 portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
@@ -768,7 +779,7 @@ namespace HoloToolkit.Unity
             GUILayout.FlexibleSpace();
 
             // Open web portal
-            GUI.enabled = ShouldWebPortalBeEnabled && CanInstall;
+            GUI.enabled = DevicePortalConnectionEnabled && CanInstall;
 
             if (GUILayout.Button("Open Device Portal", GUILayout.Width(quarterWidth)))
             {
@@ -779,7 +790,7 @@ namespace HoloToolkit.Unity
 
             GUILayout.EndHorizontal();
 
-            // Build list (with install buttons)
+            // Build list
             if (builds.Count == 0)
             {
                 GUILayout.Label("*** No builds found in build directory", EditorStyles.boldLabel);
@@ -804,14 +815,13 @@ namespace HoloToolkit.Unity
                     GUI.enabled = CanInstall;
                     if (GUILayout.Button("Install", GUILayout.Width(96)))
                     {
-                        string thisBuildLocation = fullBuildLocation;
-                        EditorApplication.delayCall += () => InstallAppOnDevicesList(thisBuildLocation, portalConnections);
+                        EditorApplication.delayCall += () => InstallAppOnDevicesList(fullBuildLocation, portalConnections);
                     }
 
                     GUI.enabled = true;
 
                     // Uninstall...
-                    GUI.enabled = ShouldLogViewBeEnabled && CanInstall;
+                    GUI.enabled = CanInstall;
 
                     if (GUILayout.Button("Uninstall", GUILayout.Width(96)))
                     {
@@ -821,9 +831,9 @@ namespace HoloToolkit.Unity
                     GUI.enabled = true;
 
                     // Launch app...
-                    GUI.enabled = ShouldLaunchAppBeEnabled && CanInstall;
+                    GUI.enabled = CanInstall;
 
-                    if (GUILayout.Button(isAppRunning ? "Kill App" : "Launch App", GUILayout.Width(96)))
+                    if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
                     {
                         EditorApplication.delayCall += () =>
                         {
@@ -843,30 +853,25 @@ namespace HoloToolkit.Unity
                     GUI.enabled = true;
 
                     // Log file
-                    string localLogPath = string.Empty;
-                    bool localLogExists = false;
 
-                    bool remoteDeviceDetected = portalConnections.Connections.Count > 1 || IsHoloLensConnectedUsb;
-                    bool isLocalBuild = BuildDeployPrefs.BuildPlatform == BuildPlatformEnum.x64.ToString();
+                    string localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
+                    bool localLogExists = File.Exists(localLogPath);
 
-                    if (!remoteDeviceDetected)
-                    {
-                        localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
-                        localLogExists = File.Exists(localLogPath);
-                    }
-
-                    GUI.enabled = ShouldLogViewBeEnabled && (remoteDeviceDetected || isLocalBuild && localLogExists);
+                    GUI.enabled = DevicePortalConnectionEnabled || localLogExists;
 
                     if (GUILayout.Button("View Log", GUILayout.Width(96)))
                     {
-                        if (remoteDeviceDetected)
+                        foreach (var connection in portalConnections.Connections)
                         {
-                            EditorApplication.delayCall += () => OpenLogFileForIPs(portalConnections);
-                        }
+                            if (IsLocalConnection(connection))
+                            {
+                                EditorApplication.delayCall += () => Process.Start(localLogPath);
+                            }
+                            else
+                            {
 
-                        if (localLogExists)
-                        {
-                            EditorApplication.delayCall += () => Process.Start(localLogPath);
+                                EditorApplication.delayCall += () => OpenLogFileForIPs(portalConnections);
+                            }
                         }
                     }
 
@@ -914,18 +919,34 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private void UpdatePortalConnections()
+        private void UpdateBuilds()
         {
-            targetIps = new string[portalConnections.Connections.Count];
-            if (currentConnectionInfoIndex > portalConnections.Connections.Count - 1)
+            builds.Clear();
+
+            try
             {
-                currentConnectionInfoIndex = portalConnections.Connections.Count - 1;
+                appPackageDirectories.Clear();
+                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
+                foreach (string appBuild in buildList)
+                {
+                    if (appBuild.Contains("AppPackages") && !appBuild.Contains("AppPackages\\"))
+                    {
+                        appPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
+                    }
+                }
+
+                IEnumerable<string> selectedDirectories =
+                    from string directory in appPackageDirectories
+                    orderby Directory.GetLastWriteTime(directory) descending
+                    select Path.GetFullPath(directory);
+                builds.AddRange(selectedDirectories);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // unused
             }
 
-            for (int i = 0; i < targetIps.Length; i++)
-            {
-                targetIps[i] = portalConnections.Connections[i].IP;
-            }
+            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
 
         private string CalcMostRecentBuild()
@@ -946,6 +967,55 @@ namespace HoloToolkit.Unity
             }
 
             return mostRecentBuild;
+        }
+
+        private void UpdatePortalConnections()
+        {
+            targetIps = new string[portalConnections.Connections.Count];
+            if (currentConnectionInfoIndex > portalConnections.Connections.Count - 1)
+            {
+                currentConnectionInfoIndex = portalConnections.Connections.Count - 1;
+            }
+
+            for (int i = 0; i < targetIps.Length; i++)
+            {
+                targetIps[i] = portalConnections.Connections[i].MachineName;
+            }
+        }
+
+        private static bool IsLocalConnection(ConnectInfo connection)
+        {
+            return connection.IP.Contains("Local Machine") || connection.IP.Contains("127.0.0.1");
+        }
+
+        private static bool IsCredentialsValid(ConnectInfo connection)
+        {
+            return !string.IsNullOrEmpty(connection.User) && !string.IsNullOrEmpty(connection.IP);
+        }
+
+        private static bool IsValidIpAddress(string ip)
+        {
+            if (ip.Contains("Local Machine"))
+            {
+                return true;
+            }
+
+            if (ip.Contains("0.0.0.0"))
+            {
+                return false;
+            }
+
+            var subAddresses = ip.Split('.');
+
+            if (subAddresses.Length > 3)
+            {
+                if (subAddresses.Any(subAddress => subAddress.Equals("0")))
+                {
+                    return false;
+                }
+            }
+
+            return false;
         }
 
         private static string CalcPackageFamilyName()
@@ -992,6 +1062,7 @@ namespace HoloToolkit.Unity
         private static void InstallAppOnDevicesList(string buildPath, DevicePortalConnections targetList)
         {
             string packageFamilyName = CalcPackageFamilyName();
+            Debug.Log(packageFamilyName);
 
             if (string.IsNullOrEmpty(packageFamilyName))
             {
@@ -1008,13 +1079,33 @@ namespace HoloToolkit.Unity
             {
                 for (int i = 0; i < targetList.Connections.Count; i++)
                 {
-                    if (targetList.Connections[i].IP.Contains("Local Machine") && !IsHoloLensConnectedUsb || buildPath.Contains("x64"))
+                    if (IsLocalConnection(targetList.Connections[i]) && !IsHoloLensConnectedUsb || buildPath.Contains("x64"))
                     {
+                        FileInfo[] installerFiles = new DirectoryInfo(buildPath).GetFiles("*.ps1");
+                        if (installerFiles.Length == 1)
+                        {
+                            var pInfo = new ProcessStartInfo
+                            {
+                                FileName = "powershell.exe",
+                                CreateNoWindow = false,
+                                Arguments = string.Format("-executionpolicy bypass -File \"{0}\"", installerFiles[0].FullName)
+                            };
+
+                            var process = new Process { StartInfo = pInfo };
+
+                            process.Start();
+                        }
+
                         continue;
                     }
 
+                    if (buildPath.Contains("x64"))
+                    {
+                        return;
+                    }
+
                     EditorUtility.DisplayProgressBar("Installing on devices",
-                        string.Format("Installing ({0})", targetList.Connections[i].MachineName), i / (float)targetList.Connections.Count);
+                                        string.Format("Installing ({0})", targetList.Connections[i].MachineName), i / (float)targetList.Connections.Count);
 
                     // Get the appx path
                     FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");
@@ -1053,8 +1144,19 @@ namespace HoloToolkit.Unity
                 {
                     string ip = targetList.Connections[i].IP;
 
-                    if (ip.Contains("Local Machine") && !IsHoloLensConnectedUsb)
+                    if (IsLocalConnection(targetList.Connections[i]) && !IsHoloLensConnectedUsb)
                     {
+                        var pInfo = new ProcessStartInfo
+                        {
+                            FileName = "powershell.exe",
+                            CreateNoWindow = true,
+                            Arguments = string.Format("-windowstyle hidden -nologo Get-AppxPackage *{0}* | Remove-AppxPackage", packageFamilyName)
+                        };
+
+                        var process = new Process { StartInfo = pInfo };
+
+                        process.Start();
+
                         continue;
                     }
 
@@ -1071,44 +1173,6 @@ namespace HoloToolkit.Unity
             }
 
             EditorUtility.ClearProgressBar();
-        }
-
-        private void UpdateBuilds()
-        {
-            builds.Clear();
-
-            try
-            {
-                appPackageDirectories.Clear();
-                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
-                foreach (string appBuild in buildList)
-                {
-                    if (appBuild.Contains("AppPackages") && !appBuild.Contains("AppPackages\\"))
-                    {
-                        appPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
-                    }
-                }
-
-                IEnumerable<string> selectedDirectories =
-                    from string directory in appPackageDirectories
-                    orderby Directory.GetLastWriteTime(directory) descending
-                    select Path.GetFullPath(directory);
-                builds.AddRange(selectedDirectories);
-            }
-            catch (DirectoryNotFoundException)
-            {
-                // unused
-            }
-
-            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
-        }
-
-        private void Update()
-        {
-            if (Time.realtimeSinceStartup - timeLastUpdatedBuilds > UpdateBuildsPeriod)
-            {
-                UpdateBuilds();
-            }
         }
 
         private static void OpenDevicePortal(DevicePortalConnections targetDevices)
@@ -1139,7 +1203,7 @@ namespace HoloToolkit.Unity
                 }
                 else
                 {
-                    if (!targetDevices.Connections[i].IP.Contains("Local Machine"))
+                    if (!targetDevices.Connections[i].IP.Contains("Local Machine") || usbMachine != null)
                     {
                         BuildDeployPortal.OpenWebPortal(targetDevices.Connections[i]);
                     }
@@ -1158,9 +1222,7 @@ namespace HoloToolkit.Unity
 
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                string targetIP = targetDevices.Connections[i].IP;
-
-                if (targetIP.Contains("Local Machine") && !IsHoloLensConnectedUsb)
+                if (IsLocalConnection(targetDevices.Connections[i]) && !IsHoloLensConnectedUsb)
                 {
                     continue;
                 }
@@ -1187,19 +1249,15 @@ namespace HoloToolkit.Unity
 
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                if (targetDevices.Connections[i].IP.Contains("Local Machine") && !IsHoloLensConnectedUsb)
-                {
-                    continue;
-                }
-
-                if (BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevices.Connections[i]))
+                if ((!IsLocalConnection(targetDevices.Connections[i]) || IsHoloLensConnectedUsb) &&
+                     BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevices.Connections[i]))
                 {
                     BuildDeployPortal.KillApp(packageFamilyName, targetDevices.Connections[i], false);
                 }
             }
         }
 
-        public static void OpenLogFileForIPs(DevicePortalConnections targetDevices)
+        private static void OpenLogFileForIPs(DevicePortalConnections targetDevices)
         {
             string packageFamilyName = CalcPackageFamilyName();
 
@@ -1210,12 +1268,10 @@ namespace HoloToolkit.Unity
 
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                if (targetDevices.Connections[i].IP.Contains("Local Machine") && !IsHoloLensConnectedUsb)
+                if (!IsLocalConnection(targetDevices.Connections[i]) || IsHoloLensConnectedUsb)
                 {
-                    continue;
+                    BuildDeployPortal.DeviceLogFile_View(packageFamilyName, targetDevices.Connections[i]);
                 }
-
-                BuildDeployPortal.DeviceLogFile_View(packageFamilyName, targetDevices.Connections[i]);
             }
         }
 

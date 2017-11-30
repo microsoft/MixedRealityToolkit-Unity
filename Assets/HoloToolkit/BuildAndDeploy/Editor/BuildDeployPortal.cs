@@ -527,7 +527,7 @@ namespace HoloToolkit.Unity
 
             if (appDetails == null)
             {
-                Debug.LogError("Application not found");
+                Debug.LogWarning("Application not found");
                 return false;
             }
 
