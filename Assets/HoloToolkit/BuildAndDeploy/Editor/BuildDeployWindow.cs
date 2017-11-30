@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
                 "10.0.15063.0";
 #endif
 
-        private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options", "Utilities" };
+        private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
 
         private readonly string[] scriptingBackendNames = { "IL2CPP", ".NET" };
 
@@ -44,8 +44,7 @@ namespace HoloToolkit.Unity
         {
             UnityBuildOptions,
             AppxBuildOptions,
-            DeployOptions,
-            Utilities
+            DeployOptions
         }
 
         private enum BuildPlatformEnum
@@ -116,22 +115,21 @@ namespace HoloToolkit.Unity
             get
             {
                 bool isConnected = false;
+
                 if (USBDeviceListener.USBDevices != null)
                 {
-                    foreach (USBDeviceInfo device in USBDeviceListener.USBDevices)
+                    if (USBDeviceListener.USBDevices.Any(device => device.Name.Equals("Microsoft HoloLens")))
                     {
-                        if (device.Name.Equals("Microsoft HoloLens"))
-                        {
-                            return true;
-                        }
+                        isConnected = true;
                     }
+
+                    SessionState.SetBool("HoloLensUsbConnected", isConnected);
                 }
                 else
                 {
                     isConnected = SessionState.GetBool("HoloLensUsbConnected", false);
                 }
 
-                SessionState.SetBool("HoloLensUsbConnected", isConnected);
                 return isConnected;
             }
         }
@@ -142,7 +140,6 @@ namespace HoloToolkit.Unity
 
         private int halfWidth;
         private int quarterWidth;
-        private static int currentConnectionInfoIndex;
 
         private float timeLastUpdatedBuilds;
 
@@ -153,6 +150,8 @@ namespace HoloToolkit.Unity
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
 
+        private static bool isAppRunning;
+        private static int currentConnectionInfoIndex;
         private static DevicePortalConnections portalConnections;
         private readonly List<string> appPackageDirectories = new List<string>(0);
 
@@ -260,9 +259,6 @@ namespace HoloToolkit.Unity
                 case BuildDeployTab.DeployOptions:
                     DeployGUI();
                     break;
-                case BuildDeployTab.Utilities:
-                    UtilitiesGUI();
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -289,7 +285,7 @@ namespace HoloToolkit.Unity
 
             if (GUILayout.Button("Open Build Directory", GUILayout.Width(halfWidth)))
             {
-                Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
+                EditorApplication.delayCall += () => Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
             }
 
             GUI.enabled = true;
@@ -307,8 +303,7 @@ namespace HoloToolkit.Unity
 
                 if (File.Exists(slnFilename))
                 {
-                    var slnFile = new FileInfo(slnFilename);
-                    Process.Start(slnFile.FullName);
+                    EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
                 }
                 else if (EditorUtility.DisplayDialog(
                     "Solution Not Found",
@@ -590,7 +585,7 @@ namespace HoloToolkit.Unity
 
             if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(halfWidth)))
             {
-                Process.Start("explorer.exe", "/f /open," + appxBuildPath);
+                EditorApplication.delayCall += () => Process.Start("explorer.exe", "/f /open," + appxBuildPath);
             }
 
             GUI.enabled = true;
@@ -620,6 +615,7 @@ namespace HoloToolkit.Unity
                     {
                         break;
                     }
+
                     var machineName = BuildDeployPortal.GetMachineName(targetDevice);
                     var networkInfo = BuildDeployPortal.GetNetworkInfo(targetDevice);
                     if (networkInfo != null)
@@ -708,7 +704,9 @@ namespace HoloToolkit.Unity
             GUILayout.Space(5);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
+
             GUILayout.Label(currentConnection.MachineName, GUILayout.Width(halfWidth));
+
             GUILayout.EndHorizontal();
             // Username/Password (and save seeings, if changed)
             previousLabelWidth = EditorGUIUtility.labelWidth;
@@ -769,12 +767,12 @@ namespace HoloToolkit.Unity
 
             GUILayout.FlexibleSpace();
 
-            // Uninstall...
-            GUI.enabled = ShouldLogViewBeEnabled && CanInstall;
+            // Open web portal
+            GUI.enabled = ShouldWebPortalBeEnabled && CanInstall;
 
-            if (GUILayout.Button("Uninstall Application Now", GUILayout.Width(halfWidth)))
+            if (GUILayout.Button("Open Device Portal", GUILayout.Width(quarterWidth)))
             {
-                EditorApplication.delayCall += () => UninstallAppOnDevicesList(portalConnections);
+                EditorApplication.delayCall += () => OpenDevicePortal(portalConnections);
             }
 
             GUI.enabled = true;
@@ -812,93 +810,77 @@ namespace HoloToolkit.Unity
 
                     GUI.enabled = true;
 
+                    // Uninstall...
+                    GUI.enabled = ShouldLogViewBeEnabled && CanInstall;
+
+                    if (GUILayout.Button("Uninstall", GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () => UninstallAppOnDevicesList(portalConnections);
+                    }
+
+                    GUI.enabled = true;
+
+                    // Launch app...
+                    GUI.enabled = ShouldLaunchAppBeEnabled && CanInstall;
+
+                    if (GUILayout.Button(isAppRunning ? "Kill App" : "Launch App", GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            if (isAppRunning)
+                            {
+                                KillAppOnIPs(portalConnections);
+                            }
+                            else
+                            {
+                                LaunchAppOnIPs(portalConnections);
+                            }
+                        };
+
+                        isAppRunning = !isAppRunning;
+                    }
+
+                    GUI.enabled = true;
+
+                    // Log file
+                    string localLogPath = string.Empty;
+                    bool localLogExists = false;
+
+                    bool remoteDeviceDetected = portalConnections.Connections.Count > 1 || IsHoloLensConnectedUsb;
+                    bool isLocalBuild = BuildDeployPrefs.BuildPlatform == BuildPlatformEnum.x64.ToString();
+
+                    if (!remoteDeviceDetected)
+                    {
+                        localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
+                        localLogExists = File.Exists(localLogPath);
+                    }
+
+                    GUI.enabled = ShouldLogViewBeEnabled && (remoteDeviceDetected || isLocalBuild && localLogExists);
+
+                    if (GUILayout.Button("View Log", GUILayout.Width(96)))
+                    {
+                        if (remoteDeviceDetected)
+                        {
+                            EditorApplication.delayCall += () => OpenLogFileForIPs(portalConnections);
+                        }
+
+                        if (localLogExists)
+                        {
+                            EditorApplication.delayCall += () => Process.Start(localLogPath);
+                        }
+                    }
+
+                    GUI.enabled = true;
+
                     GUILayout.Space(8);
                     GUILayout.Label(new GUIContent(packageName + " (" + directoryDate + ")"));
                     EditorGUILayout.EndHorizontal();
                 }
+
                 GUILayout.EndScrollView();
                 GUILayout.EndVertical();
             }
 
-
-            GUILayout.EndVertical();
-        }
-
-        private void UtilitiesGUI()
-        {
-            GUILayout.BeginVertical();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            // Open web portal
-            GUI.enabled = ShouldWebPortalBeEnabled && CanInstall;
-
-            if (GUILayout.Button("Open Device Portal", GUILayout.Width(halfWidth)))
-            {
-                EditorApplication.delayCall += () => OpenDevicePortal(portalConnections);
-            }
-
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
-            GUILayout.Space(4);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            // Launch app...
-            GUI.enabled = ShouldLaunchAppBeEnabled && CanInstall;
-
-            if (GUILayout.Button("Launch Application", GUILayout.Width(halfWidth)))
-            {
-                // If already running, kill it (button is a toggle)
-                if (IsAppRunning_FirstIPCheck(PlayerSettings.productName, portalConnections))
-                {
-                    KillAppOnIPs(portalConnections);
-                }
-                else
-                {
-                    LaunchAppOnIPs(portalConnections);
-                }
-            }
-
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
-            GUILayout.Space(4);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            // Log file
-            string localLogPath = string.Empty;
-            bool localLogExists = false;
-
-            bool remoteDeviceDetected = portalConnections.Connections.Count > 1 || IsHoloLensConnectedUsb;
-            bool isLocalBuild = BuildDeployPrefs.BuildPlatform == BuildPlatformEnum.x64.ToString();
-
-            if (!remoteDeviceDetected)
-            {
-                localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
-                localLogExists = File.Exists(localLogPath);
-            }
-
-            GUI.enabled = ShouldLogViewBeEnabled && (remoteDeviceDetected || isLocalBuild && localLogExists);
-
-            if (GUILayout.Button("View Log File", GUILayout.Width(halfWidth)))
-            {
-                if (remoteDeviceDetected)
-                {
-                    OpenLogFileForIPs(portalConnections);
-                }
-
-                if (localLogExists)
-                {
-                    Process.Start(localLogPath);
-                }
-            }
-
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
@@ -1016,31 +998,23 @@ namespace HoloToolkit.Unity
                 return;
             }
 
+            // Uninstall
+            if (BuildDeployPrefs.FullReinstall)
+            {
+                UninstallAppOnDevicesList(targetList);
+            }
+
             try
             {
                 for (int i = 0; i < targetList.Connections.Count; i++)
                 {
-                    bool completedUninstall = false;
-                    string ip = targetList.Connections[i].IP;
-
-                    if (ip.Contains("Local Machine") && !IsHoloLensConnectedUsb)
+                    if (targetList.Connections[i].IP.Contains("Local Machine") && !IsHoloLensConnectedUsb || buildPath.Contains("x64"))
                     {
                         continue;
                     }
 
-                    if (BuildDeployPrefs.FullReinstall && BuildDeployPortal.IsAppInstalled(packageFamilyName, targetList.Connections[i]))
-                    {
-                        EditorUtility.DisplayProgressBar("Installing on devices", "Uninstall (" + ip + ")", i / (float)targetList.Connections.Count);
-                        if (!BuildDeployPortal.UninstallApp(packageFamilyName, targetList.Connections[i]))
-                        {
-                            Debug.LogError("Uninstall failed - skipping install (" + ip + ")");
-                            continue;
-                        }
-
-                        completedUninstall = true;
-                    }
-
-                    EditorUtility.DisplayProgressBar("Installing on devices", "Install (" + ip + ")", (i + (completedUninstall ? 0.5f : 0.0f)) / targetList.Connections.Count);
+                    EditorUtility.DisplayProgressBar("Installing on devices",
+                        string.Format("Installing ({0})", targetList.Connections[i].MachineName), i / (float)targetList.Connections.Count);
 
                     // Get the appx path
                     FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");
@@ -1048,7 +1022,7 @@ namespace HoloToolkit.Unity
 
                     if (files.Length == 0)
                     {
-                        Debug.LogError("No APPX found in folder build folder (" + buildPath + ")");
+                        Debug.LogErrorFormat("No APPX found in folder build folder ({0})", buildPath);
                         return;
                     }
 
@@ -1084,13 +1058,16 @@ namespace HoloToolkit.Unity
                         continue;
                     }
 
-                    EditorUtility.DisplayProgressBar("Uninstalling application", "Uninstall (" + ip + ")", i / (float)targetList.Connections.Count);
-                    BuildDeployPortal.UninstallApp(packageFamilyName, targetList.Connections[i]);
+                    if (BuildDeployPortal.IsAppInstalled(packageFamilyName, targetList.Connections[i]))
+                    {
+                        EditorUtility.DisplayProgressBar("Installing on devices", string.Format("Uninstalling ({0})", ip), i / (float)targetList.Connections.Count);
+                        BuildDeployPortal.UninstallApp(packageFamilyName, targetList.Connections[i], false);
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.LogError(ex.ToString());
+                Debug.LogError(e.ToString());
             }
 
             EditorUtility.ClearProgressBar();
@@ -1136,7 +1113,12 @@ namespace HoloToolkit.Unity
 
         private static void OpenDevicePortal(DevicePortalConnections targetDevices)
         {
-            MachineName usbMachine = BuildDeployPortal.GetMachineName(targetDevices.Connections.FirstOrDefault(targetDevice => targetDevice.IP.Contains("Local Machine")));
+            MachineName usbMachine = null;
+
+            if (IsHoloLensConnectedUsb)
+            {
+                usbMachine = BuildDeployPortal.GetMachineName(targetDevices.Connections.FirstOrDefault(targetDevice => targetDevice.IP.Contains("Local Machine")));
+            }
 
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
@@ -1165,19 +1147,8 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private static bool IsAppRunning_FirstIPCheck(string appName, DevicePortalConnections targetDevices)
-        {
-            return BuildDeployPortal.IsAppRunning(appName, targetDevices.Connections[currentConnectionInfoIndex]);
-        }
-
         private static void LaunchAppOnIPs(DevicePortalConnections targetDevices)
         {
-            if (!IsHoloLensConnectedUsb)
-            {
-                Debug.LogWarning("No suitable device found.");
-                return;
-            }
-
             string packageFamilyName = CalcPackageFamilyName();
 
             if (string.IsNullOrEmpty(packageFamilyName))
@@ -1194,10 +1165,14 @@ namespace HoloToolkit.Unity
                     continue;
                 }
 
-                Debug.Log("Launching app on: " + targetIP);
-                BuildDeployPortal.LaunchApp(
-                    packageFamilyName,
-                    new ConnectInfo(targetIP, targetDevices.Connections[i].User, targetDevices.Connections[i].Password));
+                if (BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevices.Connections[i]))
+                {
+                    Debug.LogFormat(" {0} is already running on {1}", packageFamilyName, targetDevices.Connections[i].MachineName);
+                    return;
+                }
+
+                Debug.LogFormat("Launching {0} on {1}", packageFamilyName, targetDevices.Connections[i].MachineName);
+                BuildDeployPortal.LaunchApp(packageFamilyName, targetDevices.Connections[i], false);
             }
         }
 
@@ -1217,8 +1192,10 @@ namespace HoloToolkit.Unity
                     continue;
                 }
 
-                Debug.LogFormat("Killing app {0} on: {1}", packageFamilyName, targetDevices.Connections[i].IP);
-                BuildDeployPortal.KillApp(packageFamilyName, targetDevices.Connections[i]);
+                if (BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevices.Connections[i]))
+                {
+                    BuildDeployPortal.KillApp(packageFamilyName, targetDevices.Connections[i], false);
+                }
             }
         }
 
