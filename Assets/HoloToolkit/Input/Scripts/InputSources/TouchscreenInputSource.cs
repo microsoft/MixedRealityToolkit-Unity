@@ -67,7 +67,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool UpdateTouch(Touch touch, Ray ray)
         {
-            PersistentTouch knownTouch = (ActiveTouches.Find(item => item.touchData.fingerId == touch.fingerId));
+            PersistentTouch knownTouch = GetPersistentTouch(touch.fingerId);
             if (knownTouch != null)
             {
                 knownTouch.lifetime += Time.deltaTime;
@@ -84,7 +84,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RemoveTouch(Touch touch)
         {
-            PersistentTouch knownTouch = ActiveTouches.Find(item => item.touchData.fingerId == touch.fingerId);
+            PersistentTouch knownTouch = GetPersistentTouch(touch.fingerId);
             if (knownTouch != null)
             {
                 if (touch.phase == TouchPhase.Ended)
@@ -113,9 +113,21 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Event generation logic
 
+        private PersistentTouch GetPersistentTouch(int id)
+        {
+            for (int i = 0; i < ActiveTouches.Count; ++i)
+            {
+                if (ActiveTouches[i].touchData.fingerId == id)
+                {
+                    return ActiveTouches[i];
+                }
+            }
+            return null;
+        }
+
         private Touch? GetTouch(int id)
         {
-            PersistentTouch knownTouch = (ActiveTouches.Find(item => item.touchData.fingerId == id));
+            PersistentTouch knownTouch = GetPersistentTouch(id);
             if (knownTouch != null)
             {
                 return knownTouch.touchData;
@@ -170,7 +182,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
-            PersistentTouch knownTouch = (ActiveTouches.Find(item => item.touchData.fingerId == sourceId));
+            PersistentTouch knownTouch = GetPersistentTouch((int)sourceId);
             if (knownTouch != null)
             {
                 pointingRay = knownTouch.screenpointRay;
