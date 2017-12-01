@@ -660,6 +660,7 @@ namespace HoloToolkit.Unity
                         }
 
                         UpdatePortalConnections();
+                        Repaint();
                     }
                 };
             }
