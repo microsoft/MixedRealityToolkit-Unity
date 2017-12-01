@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity.Buttons
         public ConfidenceLevel ConfidenceLevel = ConfidenceLevel.Medium;
 
         /// <summary>
-        /// Variable to keep track of previous button text incase the button text changes after registration.
+        /// Variable to keep track of previous button text in case the button text changes after registration.
         /// </summary>
         private string prevButtonText;
 

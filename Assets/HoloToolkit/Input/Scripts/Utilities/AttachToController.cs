@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -15,13 +13,15 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : MonoBehaviour
     {
+#if UNITY_2017_2_OR_NEWER
         public InteractionSourceHandedness Handedness { get { return handedness; } }
-
-        public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
 
         [Header("AttachToController Elements")]
         [SerializeField]
         protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+
+#endif
+        public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
 
         [SerializeField]
         protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
@@ -50,17 +50,16 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         protected virtual void OnEnable()
         {
             SetChildrenActive(false);
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
             {
                 AttachElementToController(controller);
             }
-#endif
 
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AttachElementToController;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += DetachElementFromController;
@@ -139,5 +138,6 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+#endif
     }
 }

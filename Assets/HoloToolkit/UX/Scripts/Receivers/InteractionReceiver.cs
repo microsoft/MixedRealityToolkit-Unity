@@ -66,7 +66,7 @@ namespace HoloToolkit.Unity.Receivers
         }
 
         /// <summary>
-        /// On disable remove all linked interacibles from the delegate functions
+        /// On disable remove all linked interactables from the delegate functions
         /// </summary>
         public virtual void OnDisable()
         {

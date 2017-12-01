@@ -8,10 +8,10 @@ using HoloToolkit.Unity;
 namespace HoloToolkit.Examples.InteractiveElements
 {
     /// <summary>
-    /// GestureInteractiveControl receiveds gesture updates from GestureInteractive.
+    /// GestureInteractiveControl receives gesture updates from GestureInteractive.
     /// 
     /// We take raw gesture data and convert it into simple values that can be acted on, like
-    /// perctage dragged from origin position, angle or vector from origin point, and distance from origin point.
+    /// percentage dragged from origin position, angle or vector from origin point, and distance from origin point.
     /// 
     /// These values can be flattened for 2D UI elements and rotated based on user orientation
     /// 
@@ -59,14 +59,14 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         /// <summary>
         /// The amount we expect the user to drag from the origin point of the gesture.
-        /// This value calulates the CurrentPercent, based on the gesture's CurrentDistance compared the the MaxGestureDistance.
+        /// This value calculates the CurrentPercent, based on the gesture's CurrentDistance compared the MaxGestureDistance.
         /// </summary>
         [Tooltip("The distance in world space to compare the gesture's delta to")]
         public float MaxGestureDistance = 0.15f;
         
         /// <summary>
         /// The Vector to align the gesture to, uses the dot product of the gesture direction and this vector.
-        /// Use this to restric the basic values that are returned to a specific direction or range of directions.
+        /// Use this to restrict the basic values that are returned to a specific direction or range of directions.
         /// </summary>
         [Tooltip("The vector to align the gesture to, only used when the Aligned GestureDataType is selected.")]
         public Vector3 AlignmentVector = new Vector3(1,1,1);
@@ -166,7 +166,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <param name="currentGesturePosition">the current gesture position</param>
         /// <param name="startHeadOrigin">the origin of the camera when the gesture started</param>
         /// <param name="startHeadRay">the camera forward when the gesture started</param>
-        /// <param name="gestureState">curent gesture state</param>
+        /// <param name="gestureState">current gesture state</param>
         public virtual void ManipulationUpdate(Vector3 startGesturePosition, Vector3 currentGesturePosition, Vector3 startHeadOrigin, Vector3 startHeadRay, GestureInteractive.GestureManipulationState gestureState)
         {
             if (gestureState == GestureInteractive.GestureManipulationState.Start || (!GestureStarted && gestureState != GestureInteractive.GestureManipulationState.Start))
@@ -194,7 +194,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Returns a data set about the current gesture information compared to a specific vector.
         /// For instance, to compare if the gesture is moving vertically or horizontally,
-        /// create two isntances of this data set and compare the distance for each.
+        /// create two instances of this data set and compare the distance for each.
         /// If the vertical percentage is greater than the horizontal percentage then the gesture is moving vertically.
         /// </summary>
         /// <param name="alignmentVector"></param>
@@ -225,7 +225,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <returns>Matix4x4</returns>
         public Matrix4x4 GetCameraMatrix()
         {
-            // get the preferred body direciton
+            // get the preferred body direction
             Vector3 up = Vector3.up;
             Vector3 forward = MainCamera.transform.forward;
             // protecting from a weird cross value
@@ -279,7 +279,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         }
 
         /// <summary>
-        /// A way to programatically override a gesture, used for keywork gestures.
+        /// A way to programmatically override a gesture, used for keyword gestures.
         /// </summary>
         /// <param name="gestureVector"></param>
         public void SetGestureVector(Vector3 gestureVector)
@@ -303,13 +303,13 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         /// <summary>
         /// a place holder function for taking value and settings a gesture direction.
-        /// Used by the keywork gesture system so that we can have multiple keywords for a single control.
+        /// Used by the keyword gesture system so that we can have multiple keywords for a single control.
         /// For instance: forward/backward or Min/Center/Max
         /// </summary>
         /// <param name="gestureValue"></param>
         public virtual void setGestureValue(int gestureValue)
         {
-            // override to convert keywork index to vectors.
+            // override to convert keyword index to vectors.
             switch (gestureValue)
             {
                 case 0:
@@ -336,7 +336,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <returns></returns>
         protected Vector3 DirectionVectorToZPlane(Vector3 directionVector, bool flipX, bool flipY)
         {
-            // set the direciton based on camera and gesture updates
+            // set the direction based on camera and gesture updates
             float cameraDirectionX = flipX ? -directionVector.x : directionVector.x;
             float cameraDirectionY = flipY ? -directionVector.y : directionVector.y;
             return MainCamera.transform.forward * cameraDirectionY + MainCamera.transform.right * cameraDirectionX;
@@ -350,7 +350,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <returns></returns>
         public Vector3 GesturePosition(Vector3 gesturePosition)
         {
-            // rotate the screen space mouse position to world space, based on the camera direciton and compress pixels to world 
+            // rotate the screen space mouse position to world space, based on the camera direction and compress pixels to world 
             // get current angle from forward - returns an absolute value of 0 - 180
             float angleDiff = Vector3.Angle(Vector3.forward, MainCamera.transform.forward);
             // make sure angle works 360 degrees, find the left or right side

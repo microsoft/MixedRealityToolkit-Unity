@@ -9,7 +9,7 @@ namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
     /// Cycle through a list of colors and apply the current color to the material
-    /// Supports ColorTransition for animaiton and easing. Auto detected, just add it to the component
+    /// Supports ColorTransition for animation and easing. Auto detected, just add it to the component
     /// </summary>
     public class CycleColors : CycleArray<Color>
     {

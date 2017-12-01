@@ -8,9 +8,9 @@ namespace GLTF
 	public class Buffer : GLTFChildOfRootProperty
 	{
 		/// <summary>
-		/// The uri of the buffer.
+		/// The URI of the buffer.
 		/// Relative paths are relative to the .gltf file.
-		/// Instead of referencing an external file, the uri can also be a data-uri.
+		/// Instead of referencing an external file, the URI can also be a data-URI.
 		/// </summary>
 		public string Uri;
 

@@ -89,7 +89,7 @@ namespace GLTF
 
             if (scene == null)
             {
-                throw new Exception("No default scene in gltf file.");
+                throw new Exception("No default scene in glTF file.");
             }
 
             if (_lastLoadedScene == null)
@@ -457,9 +457,9 @@ namespace GLTF
         private const string Base64StringInitializer = "^data:[a-z-]+/[a-z-]+;base64,";
 
         /// <summary>
-        ///  Get the absolute path to a gltf uri reference.
+        ///  Get the absolute path to a glTF URI reference.
         /// </summary>
-        /// <param name="relativePath">The relative path stored in the uri.</param>
+        /// <param name="relativePath">The relative path stored in the URI.</param>
         /// <returns></returns>
         private string AbsolutePath(string relativePath)
         {

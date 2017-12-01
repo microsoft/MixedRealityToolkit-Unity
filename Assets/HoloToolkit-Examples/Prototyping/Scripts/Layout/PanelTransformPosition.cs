@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
-    /// Takes size values, similar to RectTransorm position values or pixel values used in desiger tools and applies them to primitive objects.
+    /// Takes size values, similar to RectTransorm position values or pixel values used in designer tools and applies them to primitive objects.
     /// 
     /// A quick way to align and anchor 3D objects in Unity for mocking up UI and click-throughs.
     /// This solution is not as robust as Unity's RectTransform layout system,

@@ -11,6 +11,7 @@
 UWP/
 WindowsStoreApp/
 UnityGenerated/
+UnityPackageManager/
 project.json
 project.lock.json
 
