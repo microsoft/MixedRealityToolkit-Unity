@@ -154,7 +154,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Clears the current session, removing any users being tracked.
         /// This should be called whenever the current session changes, to reset this class
-        /// and handle a new curren session.
+        /// and handle a new current session.
         /// </summary>
         private void ClearCurrentSession()
         {

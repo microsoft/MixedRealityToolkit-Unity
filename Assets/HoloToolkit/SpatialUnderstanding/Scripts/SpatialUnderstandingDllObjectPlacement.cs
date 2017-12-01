@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Encapsulates the object placement queries of the understanding dll.
+    /// Encapsulates the object placement queries of the understanding DLL.
     /// These queries will not be valid until after scanning is finalized.
     /// </summary>
     public static class SpatialUnderstandingDllObjectPlacement
@@ -459,11 +459,11 @@ namespace HoloToolkit.Unity
         /// locations that satisfy the type and rules are selected
         /// by optimizing within the constraint list.
         /// 
-        /// Objects placed with with Solver_PlaceObject persist until removed
+        /// Objects placed with Solver_PlaceObject persist until removed
         /// and are considered in subsequent queries by some rules and constraints.
         /// </summary>
         /// <param name="objectName">Name of the object placement query</param>
-        /// <param name="placementDefinition">The placement defintion, of type ObjectPlacementDefinition</param>
+        /// <param name="placementDefinition">The placement definition, of type ObjectPlacementDefinition</param>
         /// <param name="placementRuleCount">Length of the provided placementRules array</param>
         /// <param name="placementRules">Array of ObjectPlacementRule structures, defining the rules</param>
         /// <param name="constraintCount">Length of the provided placementConstraints array</param>
@@ -483,7 +483,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Removed a solved object. 
         /// 
-        /// Objects placed with with Solver_PlaceObject persist until removed
+        /// Objects placed with Solver_PlaceObject persist until removed
         /// and are considered in subsequent queries by some rules and constraints.
         /// </summary>
         /// <param name="objectName"></param>
@@ -495,7 +495,7 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Removed all solved object placements.
         /// 
-        /// Objects placed with with Solver_PlaceObject persist until removed
+        /// Objects placed with Solver_PlaceObject persist until removed
         /// and are considered in subsequent queries by some rules and constraints.
         /// </summary>
         [DllImport("SpatialUnderstanding")]

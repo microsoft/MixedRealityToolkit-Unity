@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity
     public class AudioEventPropertyDrawer : PropertyDrawer
     {
         /// <summary>
-        /// Stored list of event names as GUIContent for dispaly
+        /// Stored list of event names as GUIContent for display
         /// </summary>
         private static GUIContent[] AudioEventNames;
 

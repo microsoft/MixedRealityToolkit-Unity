@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity
 
         private NotSupportedException NewWriteDeniedException()
         {
-            return new NotSupportedException("ReadOnlyHashSet<TElement> is not directly writeable.");
+            return new NotSupportedException("ReadOnlyHashSet<TElement> is not directly writable.");
         }
     }
 

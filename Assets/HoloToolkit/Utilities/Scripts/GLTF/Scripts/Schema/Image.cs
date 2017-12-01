@@ -9,8 +9,8 @@ namespace GLTF
 	public class Image : GLTFChildOfRootProperty
 	{
 		/// <summary>
-		/// The uri of the image.  Relative paths are relative to the .gltf file.
-		/// Instead of referencing an external file, the uri can also be a data-uri.
+		/// The URI of the image.  Relative paths are relative to the .gltf file.
+		/// Instead of referencing an external file, the URI can also be a data-URI.
 		/// The image format must be jpg, png, bmp, or gif.
 		/// </summary>
 		public string Uri;
@@ -23,7 +23,7 @@ namespace GLTF
 
 		/// <summary>
 		/// The index of the bufferView that contains the image.
-		/// Use this instead of the image's uri property.
+		/// Use this instead of the image's URI property.
 		/// </summary>
 		public BufferViewId BufferView;
 

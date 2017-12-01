@@ -214,7 +214,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                     int dataSize = networkDataReader.ReadInt32();
                     if (dataSize < 0)
                     {
-                        Debug.Log("Super bad super big datasize");
+                        Debug.Log("Super bad super big data size");
                     }
 
                     // Need to allocate a new buffer with the dataSize.

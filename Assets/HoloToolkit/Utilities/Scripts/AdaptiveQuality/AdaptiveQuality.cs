@@ -6,10 +6,10 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Main components for controlling the quality of the system to maintain a steady framerate.
-    /// Calulates a QualityLevel based on the reported framerate and the refreshrate of the device inside the provided thresholds.
+    /// Main components for controlling the quality of the system to maintain a steady frame rate.
+    /// Calculates a QualityLevel based on the reported frame rate and the refresh rate of the device inside the provided thresholds.
     /// A QualityChangedEvent is triggered whenever the quality level changes.
-    /// Uses the GpuTimingCamera component to measure gpu time of the frame, if the Camera doesnt already have this component, it is automatically added.
+    /// Uses the GpuTimingCamera component to measure GPU time of the frame, if the Camera doesn't already have this component, it is automatically added.
     /// </summary>
 
     public class AdaptiveQuality : MonoBehaviour
@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity
         {
             QualityLevel = StartQualityLevel;
 
-            //Store our refreshrate
+            // Store our refresh rate
 
 #if UNITY_2017_2_OR_NEWER
             RefreshRate = (int)UnityEngine.XR.XRDevice.refreshRate;
@@ -72,13 +72,13 @@ namespace HoloToolkit.Unity
             }
             frameTimeQuota = 1.0f / RefreshRate;
 
-            //Assume main camera if no camera was setup
+            // Assume main camera if no camera was setup
             if (adaptiveCamera == null)
             {
                 adaptiveCamera = Camera.main;
             }
 
-            //Make sure we have the GpuTimingCamera component attached to our camera with the correct timing tag
+            // Make sure we have the GpuTimingCamera component attached to our camera with the correct timing tag
             GpuTimingCamera gpuCamera = adaptiveCamera.GetComponent<GpuTimingCamera>();
             if (gpuCamera == null || gpuCamera.TimingTag.CompareTo(TimingTag) != 0)
             {
@@ -93,14 +93,14 @@ namespace HoloToolkit.Unity
 
         private bool LastFramesBelowThreshold(int frameCount)
         {
-            //Make sure we have enough new frames since last change
+            // Make sure we have enough new frames since last change
             if (lastFrames.Count < frameCount || frameCountSinceLastLevelUpdate < frameCount)
             {
                 return false;
             }
 
             float maxTime = frameTimeQuota * MinFrameTimeThreshold;
-            //See if all our frames are below the threshold
+            // See if all our frames are below the threshold
             foreach (var frameTime in lastFrames)
             {
                 if (frameTime >= maxTime)
@@ -114,7 +114,7 @@ namespace HoloToolkit.Unity
 
         private void UpdateQualityLevel(int delta)
         {
-            //Change and clamp the new quality level
+            // Change and clamp the new quality level
             int prevQualityLevel = QualityLevel;
             QualityLevel = Mathf.Clamp(QualityLevel + delta, MinQualityLevel, MaxQualityLevel);
 

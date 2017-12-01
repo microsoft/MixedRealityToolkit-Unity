@@ -30,7 +30,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private IInputSource mCurrentInputSource;
         private uint mCurrentInputSourceId;
 
-        [Tooltip("Sets the time before the gesture starts after a press has occured, handy when a select event is also being used")]
+        [Tooltip("Sets the time before the gesture starts after a press has occurred, handy when a select event is also being used")]
         public float StartDelay;
 
         [Tooltip("The GestureInteractiveControl to send gesture updates to")]

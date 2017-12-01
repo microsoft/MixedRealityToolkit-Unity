@@ -123,7 +123,7 @@ namespace GLTF
 
 			if (reader.Read() && reader.TokenType != JsonToken.StartObject)
 			{
-				throw new Exception("gltf json must be an object");
+				throw new Exception("glTF JSON must be an object");
 			}
 
 			while (reader.Read() && reader.TokenType == JsonToken.PropertyName)
