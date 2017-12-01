@@ -157,13 +157,13 @@ namespace HoloToolkit.Unity.InputModule
                     }
 
                     Vector3 newPosition;
-                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && ValidPosition(newPosition)) // issue #1290
+                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && ValidPosition(newPosition))
                     {
                         currentController.ControllerParent.transform.localPosition = newPosition;
                     }
 
                     Quaternion newRotation;
-                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && ValidRotation(newRotation)) // #issue #1290
+                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && ValidRotation(newRotation))
                     {
                         currentController.ControllerParent.transform.localRotation = newRotation;
                     }
@@ -171,7 +171,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
-		#region Validation for Rotation and Position Issue # 1290
 		private bool ValidRotation(Quaternion newRotation)
 		{
 			return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w) &&
@@ -183,7 +182,6 @@ namespace HoloToolkit.Unity.InputModule
 			return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z) &&
 				!float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
 		}
-		#endregion
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 		private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
