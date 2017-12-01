@@ -607,11 +607,11 @@ namespace HoloToolkit.Unity
             {
                 EditorApplication.delayCall += () =>
                 {
-                    var newConnection = new ConnectInfo();
+                    var newConnection = default(ConnectInfo);
 
                     foreach (var targetDevice in portalConnections.Connections)
                     {
-                        if (IsLocalConnection(targetDevice))
+                        if (!IsLocalConnection(targetDevice))
                         {
                             continue;
                         }
@@ -631,6 +631,7 @@ namespace HoloToolkit.Unity
                             {
                                 if (portalConnections.Connections.Any(connection => connection.IP == ip))
                                 {
+                                    Debug.LogFormat("Already paired");
                                     continue;
                                 }
 
@@ -712,8 +713,6 @@ namespace HoloToolkit.Unity
             GUILayout.Label(currentConnection.MachineName, GUILayout.Width(halfWidth));
 
             GUILayout.EndHorizontal();
-
-            GUI.SetNextControlName("Connection Info");
 
             previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 64;
@@ -977,7 +976,8 @@ namespace HoloToolkit.Unity
                 currentConnectionInfoIndex = portalConnections.Connections.Count - 1;
             }
 
-            for (int i = 0; i < targetIps.Length; i++)
+            targetIps[0] = "Local Machine";
+            for (int i = 1; i < targetIps.Length; i++)
             {
                 targetIps[i] = portalConnections.Connections[i].MachineName;
             }
@@ -995,6 +995,11 @@ namespace HoloToolkit.Unity
 
         private static bool IsValidIpAddress(string ip)
         {
+            if (string.IsNullOrEmpty(ip))
+            {
+                return false;
+            }
+
             if (ip.Contains("Local Machine"))
             {
                 return true;
@@ -1009,9 +1014,9 @@ namespace HoloToolkit.Unity
 
             if (subAddresses.Length > 3)
             {
-                if (subAddresses.Any(subAddress => subAddress.Equals("0")))
+                if (subAddresses.Any(subAddress => !subAddress.Equals("0")))
                 {
-                    return false;
+                    return true;
                 }
             }
 
