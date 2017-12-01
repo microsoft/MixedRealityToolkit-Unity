@@ -174,12 +174,14 @@ namespace HoloToolkit.Unity.InputModule
 		#region Validation for Rotation and Position Issue # 1290
 		private bool ValidRotation(Quaternion newRotation)
 		{
-			return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w);
+			return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w) &&
+				!float.IsInfinity(newRotation.x) && !float.IsInfinity(newRotation.y) && !float.IsInfinity(newRotation.z) && !float.IsInfinity(newRotation.w);
 		}
 
 		private bool ValidPosition(Vector3 newPosition)
 		{
-			return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z);
+			return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z) &&
+				!float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
 		}
 		#endregion
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
