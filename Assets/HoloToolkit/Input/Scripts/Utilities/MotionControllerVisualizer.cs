@@ -157,13 +157,13 @@ namespace HoloToolkit.Unity.InputModule
                     }
 
                     Vector3 newPosition;
-                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
+                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && ValidPosition(newPosition)) // issue #1290
                     {
                         currentController.ControllerParent.transform.localPosition = newPosition;
                     }
 
                     Quaternion newRotation;
-                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
+                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && ValidRotation(newRotation)) // #issue #1290
                     {
                         currentController.ControllerParent.transform.localRotation = newRotation;
                     }
@@ -171,9 +171,19 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
+		#region Validation for Rotation and Position Issue # 1290
+		private bool ValidRotation(Quaternion newRotation)
+		{
+			return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w);
+		}
 
+		private bool ValidPosition(Vector3 newPosition)
+		{
+			return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z);
+		}
+		#endregion
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
+		private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
             StartTrackingController(obj.state.source);
         }
@@ -438,7 +448,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 #endif
 
-        public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
+		public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
         {
             GameObject touchVisualizer;
             if (TouchpadTouchedOverride != null)
