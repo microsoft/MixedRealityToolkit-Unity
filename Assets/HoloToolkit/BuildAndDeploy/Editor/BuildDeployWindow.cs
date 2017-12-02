@@ -268,7 +268,8 @@ namespace HoloToolkit.Unity
 
             #endregion
 
-            currentTab = (BuildDeployTab)GUILayout.Toolbar((int)currentTab, tabNames);
+            currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_MRTK_BuildWindow_Tab", (int)currentTab), tabNames);
+            SessionState.SetInt("_MRTK_BuildWindow_Tab", (int)currentTab);
 
             GUILayout.Space(10);
 
@@ -694,6 +695,7 @@ namespace HoloToolkit.Unity
                             if (portalConnections.Connections[i].IP == newConnection.IP)
                             {
                                 currentConnectionInfoIndex = i;
+                                SessionState.SetInt("_MRTK_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
                                 break;
                             }
                         }
@@ -712,8 +714,11 @@ namespace HoloToolkit.Unity
             bool useSSL = EditorGUILayout.Toggle(useSSLLabel, BuildDeployPrefs.UseSSL);
             EditorGUIUtility.labelWidth = previousLabelWidth;
 
-            currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps, GUILayout.Width(halfWidth - 48));
+            currentConnectionInfoIndex = EditorGUILayout.Popup(
+                SessionState.GetInt("_MRTK_BuildWindow_CurrentDeviceIndex", 0), targetIps, GUILayout.Width(halfWidth - 48));
+
             var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
 
             if (currentConnectionIsLocal)
@@ -792,6 +797,7 @@ namespace HoloToolkit.Unity
 
             if (EditorGUI.EndChangeCheck())
             {
+                SessionState.SetInt("_MRTK_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
                 BuildDeployPrefs.TargetAllConnections = processAll;
                 BuildDeployPrefs.FullReinstall = fullReinstall;
                 BuildDeployPrefs.UseSSL = useSSL;
@@ -803,7 +809,7 @@ namespace HoloToolkit.Unity
                     UpdatePortalConnections();
                 }
 
-                if (!currentConnectionIsLocal &&
+                if (!IsLocalConnection(currentConnection) &&
                     IsValidIpAddress(currentConnection.IP) &&
                     IsCredentialsValid(currentConnection) &&
                     currentConnection.MachineName.Contains(currentConnection.IP))
@@ -817,8 +823,6 @@ namespace HoloToolkit.Unity
                 }
 
                 portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
-                BuildDeployPrefs.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
-
                 UpdatePortalConnections();
             }
 
@@ -1078,6 +1082,7 @@ namespace HoloToolkit.Unity
                 targetIps[i] = portalConnections.Connections[i].MachineName;
             }
 
+            BuildDeployPrefs.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
             Repaint();
         }
 
