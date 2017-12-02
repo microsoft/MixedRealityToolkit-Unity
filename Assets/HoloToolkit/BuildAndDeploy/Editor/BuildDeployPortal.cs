@@ -94,7 +94,12 @@ namespace HoloToolkit.Unity
 
                     if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
                     {
-                        string response = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => string.Format("{0}{1}: {2}\n", current, header.Key, header.Value));
+                        string response = string.Empty;
+                        var responseHeaders = webRequest.GetResponseHeaders();
+                        if (responseHeaders != null)
+                        {
+                            response = responseHeaders.Aggregate(string.Empty, (current, header) => string.Format("{0}{1}: {2}\n", current, header.Key, header.Value));
+                        }
 
                         Debug.LogErrorFormat("Network Error: {0}\n{1}", webRequest.error, response);
                         return string.Empty;
@@ -171,7 +176,12 @@ namespace HoloToolkit.Unity
 
                     if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
                     {
-                        string response = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => string.Format("{0}{1}: {2}\n", current, header.Key, header.Value));
+                        string response = string.Empty;
+                        var responseHeaders = webRequest.GetResponseHeaders();
+                        if (responseHeaders != null)
+                        {
+                            response = responseHeaders.Aggregate(string.Empty, (current, header) => string.Format("{0}{1}: {2}\n", current, header.Key, header.Value));
+                        }
 
                         Debug.LogErrorFormat("Network Error: {0}\n{1}", webRequest.error, response);
                         return string.Empty;
@@ -233,7 +243,12 @@ namespace HoloToolkit.Unity
 
                     if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
                     {
-                        string response = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => string.Format("{0}{1}: {2}\n", current, header.Key, header.Value));
+                        string response = string.Empty;
+                        var responseHeaders = webRequest.GetResponseHeaders();
+                        if (responseHeaders != null)
+                        {
+                            response = responseHeaders.Aggregate(string.Empty, (current, header) => string.Format("{0}{1}: {2}\n", current, header.Key, header.Value));
+                        }
 
                         Debug.LogErrorFormat("Network Error: {0}\n{1}", webRequest.error, response);
                         return false;
