@@ -22,6 +22,7 @@ namespace HoloToolkit.Unity
         private const string EditorPrefs_DevicePwd = "_BuildDeployWindow_DevicePwd";
         private const string EditorPrefs_FullReinstall = "_BuildDeployWindow_FullReinstall";
         private const string EditorPrefs_UseSSL = "_BuildDeployWindow_UseSSL";
+        private const string EditorPrefs_ProcessAll = "_BuildDeployWindow_ProcessAll";
 
         public static string BuildDirectory
         {
@@ -115,8 +116,14 @@ namespace HoloToolkit.Unity
 
         public static bool UseSSL
         {
-            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_UseSSL, true); }
+            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_UseSSL, false); }
             set { EditorPrefsUtility.SetEditorPref(EditorPrefs_UseSSL, value); }
+        }
+
+        public static bool TargetAllConnections
+        {
+            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_ProcessAll, false); }
+            set { EditorPrefsUtility.SetEditorPref(EditorPrefs_ProcessAll, value); }
         }
     }
 }

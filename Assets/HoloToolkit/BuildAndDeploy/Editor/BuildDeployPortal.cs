@@ -42,9 +42,9 @@ namespace HoloToolkit.Unity
         private static readonly string API_FileQuery = @"{0}/api/filesystem/apps/file?knownfolderid=LocalAppData&filename=UnityPlayer.log&packagefullname={1}&path=%5C%5CTempState";
         private static readonly string API_IpConfigQuery = @"{0}/api/networking/ipconfig";
 
-        private static string GetBasicAuthHeader(ConnectInfo connectionInfo)
+        private static string GetBasicAuthHeader(ConnectInfo connectionInfo, bool isGetRequest = false)
         {
-            var auth = string.Format("{0}:{1}", connectionInfo.User, connectionInfo.Password);
+            var auth = string.Format("{0}{1}:{2}", BuildDeployPrefs.UseSSL && !isGetRequest ? "auto-" : "", connectionInfo.User, connectionInfo.Password);
             auth = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(auth));
             return string.Format("Basic {0}", auth);
         }
@@ -84,9 +84,16 @@ namespace HoloToolkit.Unity
                         EditorUtility.ClearProgressBar();
                     }
 
-                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401 && webRequest.responseCode != 403)
+                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
                     {
                         Debug.LogError("Network Error: " + webRequest.error);
+
+                        var responseHeaders = webRequest.GetResponseHeaders();
+
+                        foreach (var header in responseHeaders)
+                        {
+                            Debug.LogFormat("{0}: {1}", header.Key, header.Value);
+                        }
                     }
 
                     switch (webRequest.responseCode)
@@ -97,9 +104,6 @@ namespace HoloToolkit.Unity
                         case 401:
                             Debug.LogError("Unauthorized: Access is denied due to invalid credentials.");
                             break;
-                        case 403:
-                            RequestDeviceCert();
-                            break;
                         default:
                             Debug.LogError(webRequest.responseCode);
                             break;
@@ -108,7 +112,7 @@ namespace HoloToolkit.Unity
             }
             catch (Exception e)
             {
-                Debug.LogError(e.Message);
+                Debug.LogException(e);
             }
 
             return string.Empty;
@@ -120,6 +124,7 @@ namespace HoloToolkit.Unity
         /// <param name="query">Full Query to GET</param>
         /// <param name="postData"></param>
         /// <param name="auth">Authorization Header</param>
+        /// <param name="showDialog"></param>
         /// <returns>Response string.</returns>
         private static string WebRequestPost(string query, List<IMultipartFormSection> postData, string auth, bool showDialog = true)
         {
@@ -151,9 +156,16 @@ namespace HoloToolkit.Unity
 
                     EditorUtility.ClearProgressBar();
 
-                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401 && webRequest.responseCode != 403)
+                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
                     {
                         Debug.LogError("Network Error: " + webRequest.error);
+
+                        var responseHeaders = webRequest.GetResponseHeaders();
+
+                        foreach (var header in responseHeaders)
+                        {
+                            Debug.LogFormat("{0}: {1}", header.Key, header.Value);
+                        }
                     }
 
                     switch (webRequest.responseCode)
@@ -163,9 +175,6 @@ namespace HoloToolkit.Unity
                         case 401:
                             Debug.LogError("Unauthorized: Access is denied due to invalid credentials.");
                             break;
-                        case 403:
-                            RequestDeviceCert();
-                            break;
                         default:
                             Debug.LogError(webRequest.responseCode);
                             break;
@@ -174,7 +183,7 @@ namespace HoloToolkit.Unity
             }
             catch (Exception e)
             {
-                Debug.LogError(e.Message);
+                Debug.LogException(e);
             }
 
             return string.Empty;
@@ -211,9 +220,16 @@ namespace HoloToolkit.Unity
 
                     EditorUtility.ClearProgressBar();
 
-                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401 && webRequest.responseCode != 403)
+                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
                     {
                         Debug.LogError("Network Error: " + webRequest.error);
+
+                        var responseHeaders = webRequest.GetResponseHeaders();
+
+                        foreach (var header in responseHeaders)
+                        {
+                            Debug.LogErrorFormat("{0}: {1}", header.Key, header.Value);
+                        }
                     }
 
                     switch (webRequest.responseCode)
@@ -223,9 +239,6 @@ namespace HoloToolkit.Unity
                         case 401:
                             Debug.LogError("Unauthorized: Access is denied due to invalid credentials.");
                             break;
-                        case 403:
-                            RequestDeviceCert();
-                            break;
                         default:
                             Debug.LogError(webRequest.responseCode);
                             break;
@@ -234,20 +247,10 @@ namespace HoloToolkit.Unity
             }
             catch (Exception e)
             {
-                Debug.LogError(e.Message);
+                Debug.LogException(e);
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Sends a request to download the devices cert.
-        /// Only works for locally connected devices.
-        /// </summary>
-        /// <returns></returns>
-        public static void RequestDeviceCert()
-        {
-            Debug.LogError("Invalid Cert Detected! You need to download and install the root certificate for your device via USB.");
         }
 
         public static void OpenWebPortal(ConnectInfo targetDevice)
@@ -260,7 +263,7 @@ namespace HoloToolkit.Unity
         {
             MachineName machineName = null;
             string query = string.Format(API_GetMachineNameQuery, FinalizeUrl(targetDevice.IP));
-            string response = WebRequestGet(query, GetBasicAuthHeader(targetDevice), false);
+            string response = WebRequestGet(query, GetBasicAuthHeader(targetDevice, true), false);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -295,7 +298,7 @@ namespace HoloToolkit.Unity
 
         public static bool IsAppRunning(string appName, ConnectInfo targetDevice)
         {
-            string response = WebRequestGet(string.Format(API_ProcessQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice), false);
+            string response = WebRequestGet(string.Format(API_ProcessQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice, true), false);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -316,7 +319,7 @@ namespace HoloToolkit.Unity
 
         private static AppInstallStatus GetInstallStatus(ConnectInfo targetDevice)
         {
-            string response = WebRequestGet(string.Format(API_InstallStatusQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice), false);
+            string response = WebRequestGet(string.Format(API_InstallStatusQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice, true), false);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -344,7 +347,7 @@ namespace HoloToolkit.Unity
 
         private static AppDetails QueryAppDetails(string packageFamilyName, ConnectInfo targetDevice)
         {
-            string response = WebRequestGet(string.Format(API_PackagesQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice), false);
+            string response = WebRequestGet(string.Format(API_PackagesQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice, true), false);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -365,8 +368,8 @@ namespace HoloToolkit.Unity
         public static bool InstallApp(string appFullPath, ConnectInfo targetDevice, bool waitForDone = true)
         {
             bool success = false;
-            MachineName targetMachineName = GetMachineName(targetDevice);
 
+            // TODO: Update this method to use UnityWebRequests
             try
             {
                 // Calc the cert and dep paths
@@ -434,8 +437,7 @@ namespace HoloToolkit.Unity
                 {
                     if (www.uploadProgress < 1)
                     {
-                        EditorUtility.DisplayProgressBar("Connecting to Device Portal",
-                            "Uploading...", www.uploadProgress);
+                        EditorUtility.DisplayProgressBar("Connecting to Device Portal", "Uploading...", www.uploadProgress);
                     }
 
                     Thread.Sleep(10);
@@ -447,7 +449,15 @@ namespace HoloToolkit.Unity
 
                     if (!string.IsNullOrEmpty(www.error))
                     {
+                        EditorUtility.ClearProgressBar();
                         Debug.LogError(www.error);
+
+                        foreach (var header in www.responseHeaders)
+                        {
+                            Debug.LogErrorFormat("{0}: {1}", header.Key, header.Value);
+                        }
+
+                        return false;
                     }
                 }
 
@@ -460,14 +470,14 @@ namespace HoloToolkit.Unity
 
                     if (status == AppInstallStatus.InstallSuccess)
                     {
-                        Debug.LogFormat("Successfully installed {0} on {1}.", fileName, targetMachineName.ComputerName);
+                        Debug.LogFormat("Successfully installed {0} on {1}.", fileName, targetDevice.MachineName);
                         success = true;
                         break;
                     }
 
                     if (status == AppInstallStatus.InstallFail)
                     {
-                        Debug.LogErrorFormat("Failed to install {0} on {1}.\n", fileName, targetMachineName.ComputerName);
+                        Debug.LogErrorFormat("Failed to install {0} on {1}.\n", fileName, targetDevice.MachineName);
                         break;
                     }
 
@@ -479,7 +489,7 @@ namespace HoloToolkit.Unity
             }
             catch (Exception e)
             {
-                Debug.LogError(e.Message);
+                Debug.LogException(e);
                 success = false;
             }
 
@@ -535,15 +545,9 @@ namespace HoloToolkit.Unity
                 string.Format("?appid={0}&package={1}",
                 WWW.EscapeURL(EncodeTo64(appDetails.PackageRelativeId)),
                 WWW.EscapeURL(appDetails.PackageFullName));
-            string response = WebRequestPost(query, null, GetBasicAuthHeader(targetDevice), false);
-            bool success = !string.IsNullOrEmpty(response);
+            WebRequestPost(query, null, GetBasicAuthHeader(targetDevice), false);
 
-            if (success)
-            {
-                Debug.Log(response);
-            }
-
-            return success;
+            return IsAppRunning(PlayerSettings.productName, targetDevice);
         }
 
         [Obsolete("KillApp(string packageFamilyName, ConnectInfo targetDevice)")]
@@ -552,6 +556,13 @@ namespace HoloToolkit.Unity
             return KillApp(packageFamilyName, new ConnectInfo(targetIp, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
         }
 
+        /// <summary>
+        /// Kills the target application on the target device.
+        /// </summary>
+        /// <param name="packageFamilyName"></param>
+        /// <param name="targetDevice"></param>
+        /// <param name="showDialog"></param>
+        /// <returns>true, if application was successfully stopped.</returns>
         public static bool KillApp(string packageFamilyName, ConnectInfo targetDevice, bool showDialog = true)
         {
             AppDetails appDetails = QueryAppDetails(packageFamilyName, targetDevice);
@@ -584,6 +595,16 @@ namespace HoloToolkit.Unity
 
         public static bool DeviceLogFile_View(string packageFamilyName, ConnectInfo targetDevice)
         {
+            EditorUtility.DisplayProgressBar("Download Log", "Downloading Log File for " + packageFamilyName, 0.25f);
+
+            AppDetails appDetails = QueryAppDetails(packageFamilyName, targetDevice);
+            if (appDetails == null)
+            {
+                Debug.LogWarningFormat("{0} not installed on target device", packageFamilyName);
+                EditorUtility.ClearProgressBar();
+                return false;
+            }
+
             string logFile = string.Format("{0}/{1}_{2}{3}{4}{5}{6}{7}_deviceLog.txt",
                 Application.temporaryCachePath,
                 targetDevice.MachineName,
@@ -594,14 +615,7 @@ namespace HoloToolkit.Unity
                 DateTime.Now.Minute,
                 DateTime.Now.Second);
 
-            AppDetails appDetails = QueryAppDetails(packageFamilyName, targetDevice);
-            if (appDetails == null)
-            {
-                Debug.LogError("Application not found on target device (" + packageFamilyName + ")");
-                return false;
-            }
-
-            string response = WebRequestGet(string.Format(API_FileQuery, FinalizeUrl(targetDevice.IP), appDetails.PackageFullName), GetBasicAuthHeader(targetDevice));
+            string response = WebRequestGet(string.Format(API_FileQuery, FinalizeUrl(targetDevice.IP), appDetails.PackageFullName), GetBasicAuthHeader(targetDevice, true));
             bool success = !string.IsNullOrEmpty(response);
 
             if (success)
@@ -610,12 +624,14 @@ namespace HoloToolkit.Unity
                 Process.Start(logFile);
             }
 
+            EditorUtility.ClearProgressBar();
+
             return success;
         }
 
         public static NetworkInfo GetNetworkInfo(ConnectInfo targetDevice)
         {
-            string response = WebRequestGet(string.Format(API_IpConfigQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice), false);
+            string response = WebRequestGet(string.Format(API_IpConfigQuery, FinalizeUrl(targetDevice.IP)), GetBasicAuthHeader(targetDevice, true), false);
             if (!string.IsNullOrEmpty(response))
             {
                 return JsonUtility.FromJson<NetworkInfo>(response);
