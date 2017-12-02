@@ -116,7 +116,7 @@ namespace HoloToolkit.Unity
 
         public static bool UseSSL
         {
-            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_UseSSL, false); }
+            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_UseSSL, true); }
             set { EditorPrefsUtility.SetEditorPref(EditorPrefs_UseSSL, value); }
         }
 

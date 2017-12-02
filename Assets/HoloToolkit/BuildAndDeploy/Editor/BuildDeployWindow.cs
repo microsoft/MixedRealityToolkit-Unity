@@ -56,7 +56,7 @@ namespace HoloToolkit.Unity
 
         private readonly GUIContent versionNumberLabel = new GUIContent("Version Number", "Major.Minor.Build.Revision\nNote: Revision should always be zero because it's reserved by Windows Store.");
 
-        private readonly GUIContent pairHoloLensUsbLabel = new GUIContent("Add USB HoloLens", "Pairs the USB connected HoloLens with the Build Window so you can deploy via USB");
+        private readonly GUIContent pairHoloLensUsbLabel = new GUIContent("Pair HoloLens", "Pairs the USB connected HoloLens with the Build Window so you can deploy via USB");
 
         private readonly GUIContent useSSLLabel = new GUIContent("Use SSL?", "Use SLL to communicate with Device Portal");
 
