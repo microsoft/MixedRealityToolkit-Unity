@@ -18,13 +18,13 @@ namespace HoloToolkit.Unity.Examples
             // Check if the device type is HoloLens or Immersive HMD
             if (HolographicSettings.IsDisplayOpaque)
             {
-                // Optimize the default postion of the objects for Immersive HMD
+                // Optimize the default position of the objects for Immersive HMD
                 containerObject.transform.position = new Vector3(0.05f, 1.2f, 1.08f);
 
             }
             else
             {
-                // Optimize the default postion of the objects for HoloLens
+                // Optimize the default position of the objects for HoloLens
                 containerObject.transform.position = new Vector3(0.05f, -0.65f, 1.65f);
 
                 // Remove skybox for HoloLens

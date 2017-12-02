@@ -125,7 +125,7 @@ namespace HoloToolkit.Unity.Buttons
                 UnityEditor.EditorGUILayout.BeginVertical(UnityEditor.EditorStyles.helpBox);
                 UnityEditor.EditorGUILayout.LabelField("Animation states:", UnityEditor.EditorStyles.miniBoldLabel);
 
-                // Draw the editor for all the anim actions
+                // Draw the editor for all the animation actions
                 for (int i = 0; i < acb.AnimActions.Length; i++) {
                     acb.AnimActions[i] = DrawAnimActionEditor(acb.AnimActions[i], animParams);
                 }

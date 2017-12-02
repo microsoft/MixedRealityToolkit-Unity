@@ -24,7 +24,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("Interactives that will be managed by this controller")]
         public List<InteractiveToggle> Interactives;
 
-        [Tooltip("Currently selected indeices or default starting indices")]
+        [Tooltip("Currently selected indices or default starting indices")]
         public List<int> SelectedIndices = new List<int>() { 0 };
 
         [Tooltip("exposed selection changed event")]

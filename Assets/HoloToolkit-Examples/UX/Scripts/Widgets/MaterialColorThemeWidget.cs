@@ -27,7 +27,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         void Awake()
         {
-            // get the color tweener
+            // get the color blender
             if (ColorBlender == null)
             {
                 ColorBlender = GetComponent<ColorTransition>();
@@ -93,7 +93,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         }
 
         /// <summary>
-        /// Clean up the materal is created dynamically
+        /// Clean up the material is created dynamically
         /// </summary>
         private void OnDestroy()
         {

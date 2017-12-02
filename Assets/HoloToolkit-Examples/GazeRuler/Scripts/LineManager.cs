@@ -9,7 +9,7 @@ using HoloToolkit.Unity.InputModule;
 namespace HoloToolkit.Examples.GazeRuler
 {
     /// <summary>
-    /// mananger all lines in the scene
+    /// Manages all lines in the scene
     /// </summary>
     public class LineManager : Singleton<LineManager>, IGeometry
     {

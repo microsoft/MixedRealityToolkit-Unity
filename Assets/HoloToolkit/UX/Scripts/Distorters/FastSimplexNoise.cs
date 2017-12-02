@@ -5,7 +5,7 @@
 using System;
 
 /// <summary>
-/// A conglimeration of open-source simplex libraries in C# with an emphasis on performance
+/// A conglomeration of open-source simplex libraries in C# with an emphasis on performance
 /// </summary>
 public class FastSimplexNoise
 {

@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="audioSource">The AudioSource on which the minimum gain will be set.</param>
         /// <param name="room">The desired minimum gain, in decibels.</param>
-        [Obsolete("This spatializer paramerter is no longer used, volume attenuation is controlled by the unity volume curve.")]
+        [Obsolete("This spatializer parameter is no longer used, volume attenuation is controlled by the unity volume curve.")]
         public static void SetMinGain(AudioSource audioSource, float gain)
         {
         }
@@ -69,7 +69,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="audioSource">The AudioSource on which the maximum gain will be set.</param>
         /// <param name="room">The desired maximum gain, in decibels.</param>
-        [Obsolete("This spatializer paramerter is no longer used, volume attenuation is controlled by the unity volume curve.")]
+        [Obsolete("This spatializer parameter is no longer used, volume attenuation is controlled by the unity volume curve.")]
         public static void SetMaxGain(AudioSource audioSource, float gain)
         {
         }
@@ -79,7 +79,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="audioSource">The AudioSource on which the unity gain distance will be set.</param>
         /// <param name="room">The distance, in meters, at which the AudioSource gain will be 0 decibels.</param>
-        [Obsolete("This spatializer paramerter is no longer used, volume attenuation is controlled by the unity volume curve.")]
+        [Obsolete("This spatializer parameter is no longer used, volume attenuation is controlled by the unity volume curve.")]
         public static void SetUnityGainDistance(AudioSource audioSource, float distance)
         {
         }

@@ -17,12 +17,12 @@ namespace HoloToolkit.Examples.Prototyping
     /// Call Start Running();
     /// 
     /// Features:
-    ///     - Independant adjustment speeds of position and rotation, feels really cool.
+    ///     - Independent adjustment speeds of position and rotation, feels really cool.
     ///     - Force the object to remain vertical or lock the x axis rotation.
     ///     - Link to an interactive object to add manual controls.
     ///     - Force the object to face to reference object or maintain it's existing direction
     ///     - Force the object to be in front or at the reference object's transform.forward.
-    ///     - Add magnitism to bring the object closer to the reference object
+    ///     - Add magnetism to bring the object closer to the reference object
     /// </summary>
     public class MoveWithObject : MonoBehaviour
     {
@@ -53,10 +53,10 @@ namespace HoloToolkit.Examples.Prototyping
         [Tooltip("Force the object to keep relative to the reference object's transform.forward")]
         public bool KeepInFront = true;
 
-        [Tooltip("Magnitism speed to move closer to the reference object")]
+        [Tooltip("Magnetism speed to move closer to the reference object")]
         public float Magnetism = 0;
 
-        [Tooltip("Minimum distance to stay away from the reference object if magnitism is used")]
+        [Tooltip("Minimum distance to stay away from the reference object if magnetism is used")]
         public float MagnetismPaddingDistance = 1f;
 
         // the position different between the objects position and the reference object's transform.forward
@@ -71,7 +71,7 @@ namespace HoloToolkit.Examples.Prototyping
         // the offset distance at start
         private float mOffsetDistance = 0;
 
-        // the amount of magnitism to apply
+        // the amount of magnetism to apply
         private float mMagnetismPercentage = 1;
 
         private Vector3 mNormalzedOffsetDirection;
