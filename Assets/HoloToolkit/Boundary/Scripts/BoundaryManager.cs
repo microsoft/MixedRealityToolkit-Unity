@@ -109,7 +109,7 @@ namespace HoloToolkit.Unity.Boundary
         private void SetBoundaryRendering()
         {
 #if UNITY_2017_2_OR_NEWER
-            // TODO: BUG: Unity: configured bool always returns false in 2017.2.0p1-MRTP4.
+            // TODO: BUG: Unity: configured bool always returns false in 2017.2.0p2-MRTP5.
             if (UnityEngine.Experimental.XR.Boundary.configured)
             {
                 UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
@@ -156,7 +156,7 @@ namespace HoloToolkit.Unity.Boundary
         public void CalculateBoundaryVolume()
         {
             // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
-            // But this always returns false with in 2017.2.0p1-MRTP4.
+            // But this always returns false with in 2017.2.0p2-MRTP5.
             //if (!UnityEngine.Experimental.XR.Boundary.configured)
             //{
             //    Debug.Log("Boundary not configured.");
@@ -173,6 +173,8 @@ namespace HoloToolkit.Unity.Boundary
 
             // Get all the bounds setup by the user.
             var boundaryGeometry = new List<Vector3>(0);
+            // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
+            // But this always returns false with in 2017.2.0p2-MRTP5.
             if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry))
             {
                 if (boundaryGeometry.Count > 0)
