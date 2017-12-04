@@ -1,18 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditorInternal.VR;
-#endif
 using UnityEngine;
 
-#if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
-#else
-using UnityEngine.VR.WSA;
-#endif
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -68,23 +60,10 @@ namespace HoloToolkit.Unity.InputModule
         {
             CurrentDisplayType = DisplayType.Opaque;
 
-            if (!Application.isEditor)
-            {
-                // Runtime HoloLens detection
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
-                if (!HolographicSettings.IsDisplayOpaque)
+            if (!HolographicSettings.IsDisplayOpaque)
 #endif
-                {
-                    CurrentDisplayType = DisplayType.Transparent;
-                }
-#endif
-            }
-
-#if UNITY_EDITOR
-            // Editor Hololens Remoting detection
-            var window = EditorWindow.GetWindow<HolographicEmulationWindow>(typeof(HolographicEmulationWindow));
-            if (window != null && window.emulationMode == EmulationMode.RemoteDevice)
             {
                 CurrentDisplayType = DisplayType.Transparent;
             }
