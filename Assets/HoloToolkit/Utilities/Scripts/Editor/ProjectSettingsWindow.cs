@@ -33,25 +33,26 @@ namespace HoloToolkit.Unity
         /// </summary>
         private readonly InputManagerAxis[] newInputAxes =
         {
-            new InputManagerAxis() { Name = "CONTROLLER_LEFT_STICK_HORIZONTAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 1 },
-            new InputManagerAxis() { Name = "CONTROLLER_LEFT_STICK_VERTICAL", Dead = 0.19f, Sensitivity = 1, Invert = true, Type = AxisType.JoystickAxis, Axis = 2 },
-            new InputManagerAxis() { Name = "CONTROLLER_LEFT_STICK_CLICK", PositiveButton = "joystick button 8", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_STICK_HORIZONTAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 4 },
-            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_STICK_VERTICAL", Dead = 0.19f, Sensitivity = 1, Invert = true, Type = AxisType.JoystickAxis, Axis = 5 },
-            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_STICK_CLICK", PositiveButton = "joystick button 9", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "CONTROLLER_LEFT_MENU", PositiveButton = "joystick button 6", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_MENU", PositiveButton = "joystick button 7", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "CONTROLLER_LEFT_TRIGGER", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 9 },
-            new InputManagerAxis() { Name = "CONTROLLER_RIGHT_TRIGGER", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 10 },
-            new InputManagerAxis() { Name = "XBOX_SHARED_TRIGGER", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 3 },
-            new InputManagerAxis() { Name = "XBOX_LEFT_BUMPER", PositiveButton = "joystick button 4", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "XBOX_RIGHT_BUMPER", PositiveButton = "joystick button 5", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "XBOX_A", PositiveButton = "joystick button 0", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "XBOX_B", PositiveButton = "joystick button 1", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "XBOX_X", PositiveButton = "joystick button 2", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "XBOX_Y", PositiveButton = "joystick button 3", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = "XBOX_DPAD_HORIZONTAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 6 },
-            new InputManagerAxis() { Name = "XBOX_DPAD_VERTICAL", Dead = 0.19f, Sensitivity = 1, Type = AxisType.JoystickAxis, Axis = 7 }
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_HORIZONTAL,  Dead = 0.19f, Sensitivity = 1, Invert = false, Type = AxisType.JoystickAxis, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_VERTICAL,    Dead = 0.19f, Sensitivity = 1, Invert = true,  Type = AxisType.JoystickAxis, Axis = 2 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.XBOX_SHARED_TRIGGER,               Dead = 0.19f, Sensitivity = 1, Invert = false, Type = AxisType.JoystickAxis, Axis = 3 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_HORIZONTAL, Dead = 0.19f, Sensitivity = 1, Invert = false, Type = AxisType.JoystickAxis, Axis = 4 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_VERTICAL,   Dead = 0.19f, Sensitivity = 1, Invert = true,  Type = AxisType.JoystickAxis, Axis = 5 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.XBOX_DPAD_HORIZONTAL,              Dead = 0.19f, Sensitivity = 1, Invert = false, Type = AxisType.JoystickAxis, Axis = 6 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.XBOX_DPAD_VERTICAL,                Dead = 0.19f, Sensitivity = 1, Invert = false, Type = AxisType.JoystickAxis, Axis = 7 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_LEFT_TRIGGER,           Dead = 0.19f, Sensitivity = 1, Invert = false, Type = AxisType.JoystickAxis, Axis = 9 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_RIGHT_TRIGGER,          Dead = 0.19f, Sensitivity = 1, Invert = false, Type = AxisType.JoystickAxis, Axis = 10 },
+
+            new InputManagerAxis() { Name = InputMappingAxisUtility.XBOX_A,                          PositiveButton = "joystick button 0", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.XBOX_B,                          PositiveButton = "joystick button 1", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.XBOX_X,                          PositiveButton = "joystick button 2", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.XBOX_Y,                          PositiveButton = "joystick button 3", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_LEFT_BUMPER_OR_GRIP,  PositiveButton = "joystick button 4", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_RIGHT_BUMPER_OR_GRIP, PositiveButton = "joystick button 5", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_LEFT_MENU,            PositiveButton = "joystick button 6", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_RIGHT_MENU,           PositiveButton = "joystick button 7", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_CLICK,     PositiveButton = "joystick button 8", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
+            new InputManagerAxis() { Name = InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_CLICK,    PositiveButton = "joystick button 9", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = AxisType.KeyOrMouseButton, Axis = 1 },
         };
 
         /// <summary>
@@ -183,7 +184,7 @@ namespace HoloToolkit.Unity
 #endif
                         while (!webRequest.isDone)
                         {
-                            if (webRequest.downloadProgress != -1)
+                            if (webRequest.downloadProgress > -1)
                             {
                                 EditorUtility.DisplayProgressBar(
                                     "Downloading the SharingService executable from GitHub",

@@ -30,26 +30,6 @@ namespace HoloToolkit.Unity.InputModule
         public static string XboxView { get; private set; }
         public static string XboxMenu { get; private set; }
 
-        private const string CONTROLLER_LEFT_STICK_HORIZONTAL = "CONTROLLER_LEFT_STICK_HORIZONTAL";
-        private const string CONTROLLER_LEFT_STICK_VERTICAL = "CONTROLLER_LEFT_STICK_VERTICAL";
-        private const string CONTROLLER_RIGHT_STICK_HORIZONTAL = "CONTROLLER_RIGHT_STICK_HORIZONTAL";
-        private const string CONTROLLER_RIGHT_STICK_VERTICAL = "CONTROLLER_RIGHT_STICK_VERTICAL";
-        private const string XBOX_DPAD_HORIZONTAL = "XBOX_DPAD_HORIZONTAL";
-        private const string XBOX_DPAD_VERTICAL = "XBOX_DPAD_VERTICAL";
-        private const string CONTROLLER_LEFT_TRIGGER = "CONTROLLER_LEFT_TRIGGER";
-        private const string CONTROLLER_RIGHT_TRIGGER = "CONTROLLER_RIGHT_TRIGGER";
-        private const string XBOX_SHARED_TRIGGER = "XBOX_SHARED_TRIGGER";
-        private const string XBOX_A = "XBOX_A";
-        private const string XBOX_B = "XBOX_B";
-        private const string XBOX_X = "XBOX_X";
-        private const string XBOX_Y = "XBOX_Y";
-        private const string CONTROLLER_LEFT_MENU = "CONTROLLER_LEFT_MENU";
-        private const string CONTROLLER_RIGHT_MENU = "CONTROLLER_RIGHT_MENU";
-        private const string CONTROLLER_LEFT_BUMPER_OR_GRIP = "CONTROLLER_LEFT_BUMPER_OR_GRIP";
-        private const string CONTROLLER_RIGHT_BUMPER_OR_GRIP = "CONTROLLER_RIGHT_BUMPER_OR_GRIP";
-        private const string CONTROLLER_LEFT_STICK_CLICK = "CONTROLLER_LEFT_STICK_CLICK";
-        private const string CONTROLLER_RIGHT_STICK_CLICK = "CONTROLLER_RIGHT_STICK_CLICK";
-
         public static string GetMapping(XboxControllerMappingTypes type)
         {
             switch (type)
@@ -106,61 +86,61 @@ namespace HoloToolkit.Unity.InputModule
                 case XboxControllerMappingTypes.None:
                     break;
                 case XboxControllerMappingTypes.XboxLeftStickHorizontal:
-                    XboxLeftStickHorizontal = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_STICK_HORIZONTAL : value;
+                    XboxLeftStickHorizontal = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_LEFT_STICK_HORIZONTAL : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftStickVertical:
-                    XboxLeftStickVertical = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_STICK_VERTICAL : value;
+                    XboxLeftStickVertical = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_LEFT_STICK_VERTICAL : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightStickHorizontal:
-                    XboxRightStickHorizontal = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_STICK_HORIZONTAL : value;
+                    XboxRightStickHorizontal = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_HORIZONTAL : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightStickVertical:
-                    XboxRightStickVertical = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_STICK_VERTICAL : value;
+                    XboxRightStickVertical = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_VERTICAL : value;
                     break;
                 case XboxControllerMappingTypes.XboxDpadHorizontal:
-                    XboxDpadHorizontal = string.IsNullOrEmpty(value) ? XBOX_DPAD_HORIZONTAL : value;
+                    XboxDpadHorizontal = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.XBOX_DPAD_HORIZONTAL : value;
                     break;
                 case XboxControllerMappingTypes.XboxDpadVertical:
-                    XboxDpadVertical = string.IsNullOrEmpty(value) ? XBOX_DPAD_VERTICAL : value;
+                    XboxDpadVertical = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.XBOX_DPAD_VERTICAL : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftTrigger:
-                    XboxLeftTrigger = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_TRIGGER : value;
+                    XboxLeftTrigger = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_LEFT_TRIGGER : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightTrigger:
-                    XboxRightTrigger = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_TRIGGER : value;
+                    XboxRightTrigger = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_RIGHT_TRIGGER : value;
                     break;
                 case XboxControllerMappingTypes.XboxSharedTrigger:
-                    XboxSharedTrigger = string.IsNullOrEmpty(value) ? XBOX_SHARED_TRIGGER : value;
+                    XboxSharedTrigger = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.XBOX_SHARED_TRIGGER : value;
                     break;
                 case XboxControllerMappingTypes.XboxA:
-                    XboxA = string.IsNullOrEmpty(value) ? XBOX_A : value;
+                    XboxA = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.XBOX_A : value;
                     break;
                 case XboxControllerMappingTypes.XboxB:
-                    XboxB = string.IsNullOrEmpty(value) ? XBOX_B : value;
+                    XboxB = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.XBOX_B : value;
                     break;
                 case XboxControllerMappingTypes.XboxX:
-                    XboxX = string.IsNullOrEmpty(value) ? XBOX_X : value;
+                    XboxX = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.XBOX_X : value;
                     break;
                 case XboxControllerMappingTypes.XboxY:
-                    XboxY = string.IsNullOrEmpty(value) ? XBOX_Y : value;
+                    XboxY = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.XBOX_Y : value;
                     break;
                 case XboxControllerMappingTypes.XboxView:
-                    XboxView = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_MENU : value;
+                    XboxView = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_LEFT_MENU : value;
                     break;
                 case XboxControllerMappingTypes.XboxMenu:
-                    XboxMenu = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_MENU : value;
+                    XboxMenu = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_RIGHT_MENU : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftBumper:
-                    XboxLeftBumper = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_BUMPER_OR_GRIP : value;
+                    XboxLeftBumper = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_LEFT_BUMPER_OR_GRIP : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightBumper:
-                    XboxRightBumper = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_BUMPER_OR_GRIP : value;
+                    XboxRightBumper = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_RIGHT_BUMPER_OR_GRIP : value;
                     break;
                 case XboxControllerMappingTypes.XboxLeftStickClick:
-                    XboxLeftStickClick = string.IsNullOrEmpty(value) ? CONTROLLER_LEFT_STICK_CLICK : value;
+                    XboxLeftStickClick = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_LEFT_STICK_CLICK : value;
                     break;
                 case XboxControllerMappingTypes.XboxRightStickClick:
-                    XboxRightStickClick = string.IsNullOrEmpty(value) ? CONTROLLER_RIGHT_STICK_CLICK : value;
+                    XboxRightStickClick = string.IsNullOrEmpty(value) ? InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_CLICK : value;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("type", type, null);
