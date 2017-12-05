@@ -7,8 +7,8 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Highlight
-  m_Shader: {fileID: 4800000, guid: f326278a838e87c499393f30a8e72127, type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _EMISSION
+  m_Shader: {fileID: 4800000, guid: 06790e211e4a6df409b1e04bc91c4810, type: 3}
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _EMISSION _USECOLOR_ON _USEMAINTEX_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -60,6 +60,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
+    - _ColorWriteMask: 15
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -76,6 +78,9 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _UseColor: 1
+    - _UseMainTex: 1
+    - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.69225776, g: 0.88096607, b: 0.9705882, a: 1}
