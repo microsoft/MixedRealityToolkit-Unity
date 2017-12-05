@@ -11,6 +11,9 @@ using UnityEngine.VR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
+    /// <summary>
+    /// ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms
+    /// </summary>
     public class ControllerFinder : MonoBehaviour
     {
         #region public members
@@ -23,7 +26,7 @@ namespace HoloToolkit.Unity.InputModule
         #region private members
         protected MotionControllerInfo controller;
         protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
-        protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose; // This probably should be hard coded? Maybe?
+        protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
         protected Transform elementTransform;
         private bool isAttached = false;
         #endregion

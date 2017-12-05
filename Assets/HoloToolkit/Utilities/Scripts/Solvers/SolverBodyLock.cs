@@ -8,11 +8,15 @@ using System.Collections.Generic;
 
 namespace HoloToolkit.Unity
 {
+    /// <summary>
+    /// SolverBodyLock provides a solver that follows the TrackedObject/TargetTransform. Adjusting "LerpTime"
+    /// properties changes how quickly the object moves to the TracketObject/TargetTransform's position.
+    /// </summary>
     public class SolverBodyLock : Solver
     {
         #region public enums
         [HideInInspector]
-        public enum OrrientationReference
+        public enum OrientationReference
         {
             /// <summary>
             /// Orient towards SolverHandler's tracked object or TargetTransform
@@ -25,10 +29,15 @@ namespace HoloToolkit.Unity
         }
         #endregion
 
+
         #region public members
-        public OrrientationReference Orrientation = OrrientationReference.Default;
+        [Tooltip("The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.")]
+        public OrientationReference Orrientation = OrientationReference.Default;
+        [Tooltip("XYZ offset for this object in relation to the TrackedObject/TargetTransform")]
         public Vector3 offset;
+        [Tooltip("RotationTether snaps the object to be in front of TrackedObject regardless of the object's local rotation.")]
         public bool RotationTether = false;
+        [Tooltip("TetherAngleSteps is the divison of steps this object can tether to. Higher the number, the more snapple steps.")]
         [Range(4, 12)]
         public int TetherAngleSteps = 6;
         #endregion
@@ -40,7 +49,7 @@ namespace HoloToolkit.Unity
 
             if (RotationTether)
             {
-                float targetYRotation = GetOrreintationRef().eulerAngles.y;
+                float targetYRotation = GetOreintationRef().eulerAngles.y;
                 float tetherYRotation = desiredRot.eulerAngles.y;
                 float angleDiff = Mathf.DeltaAngle(targetYRotation, tetherYRotation);
                 float tetherAngleLimit = 360f / TetherAngleSteps;
@@ -63,9 +72,9 @@ namespace HoloToolkit.Unity
             UpdateWorkingRotToGoal();
         }
 
-        private Transform GetOrreintationRef()
+        private Transform GetOreintationRef()
         {
-            if(Orrientation == OrrientationReference.CameraFacing)
+            if(Orrientation == OrientationReference.CameraFacing)
             {
                 return Camera.main.transform;
             }
