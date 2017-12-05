@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : MonoBehaviour
     {
-#if UNITY_2017_2_OR_NEWER
+#if  UNITY_WSA && UNITY_2017_2_OR_NEWER
         public InteractionSourceHandedness Handedness { get { return handedness; } }
 
         [Header("AttachToController Elements")]

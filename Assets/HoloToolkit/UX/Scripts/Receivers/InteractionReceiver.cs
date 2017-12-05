@@ -70,8 +70,15 @@ namespace HoloToolkit.Unity.Receivers
         /// </summary>
         public virtual void OnDisable()
         {
-            InputManager.Instance.RemoveGlobalListener(gameObject);
-            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
+            if (InputManager.IsInitialized)
+            {
+                InputManager.Instance.RemoveGlobalListener(gameObject);
+            }
+
+            if (FocusManager.IsInitialized)
+            {
+                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
+            }
         }
 
         /// <summary>
