@@ -1,4 +1,4 @@
-Shader "Spatial Mapping/Spatial Mappping Tap"
+Shader "Spatial Mapping/Spatial Mapping Tap"
 {
 	Properties
 	{

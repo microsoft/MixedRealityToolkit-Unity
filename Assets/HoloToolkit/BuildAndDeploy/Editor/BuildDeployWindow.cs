@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Build window - supports SLN creation, APPX from SLN, Deploy on device, and misc helper utilities associated with the build/deploy/test iteration loop
-    /// Requires the device to be set in developer mode & to have secure connections disabled (in the security tab in the device portal)
+    /// Requires the device to be set in developer mode and to have secure connections disabled (in the security tab in the device portal)
     /// </summary>
     public class BuildDeployWindow : EditorWindow
     {

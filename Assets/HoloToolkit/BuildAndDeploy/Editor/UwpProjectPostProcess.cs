@@ -64,7 +64,7 @@ namespace HoloToolkit.Unity
 
                 if (node.Attributes.Count == 0 && node["Configuration"] != null && node["Platform"] != null)
                 {
-                    // Update the defaults to Release and x86 so that we can run NuGet restore ok.
+                    // Update the defaults to Release and x86 so that we can run NuGet restore.
                     node["Configuration"].InnerText = "Release";
                     node["Platform"].InnerText = "x86";
                 }

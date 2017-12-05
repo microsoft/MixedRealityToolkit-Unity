@@ -53,9 +53,9 @@ namespace HoloToolkit.Unity.UX
 
             if (onWillRenderHelper == null)
             {   // OnWillRenderObject won't be called unless there's a renderer attached
-                // and if the renderer's bounds are visbile.
+                // and if the renderer's bounds are visible.
                 // So we create a simple 1-triangle mesh to ensure it's always called.
-                // Hackey, but it works.
+                // Hacky, but it works.
                 onWillRenderHelper = gameObject.AddComponent<MeshRenderer>();
                 onWillRenderHelper.receiveShadows = false;
                 onWillRenderHelper.shadowCastingMode = ShadowCastingMode.Off;

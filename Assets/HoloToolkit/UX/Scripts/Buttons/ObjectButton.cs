@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.Buttons
     /// <summary>
     /// Prefab button has a set of prefabs of linked objects created or linked to the different states.  Simply reference
     /// the prefab object or the instanced game object to the state and it will be toggled active or inactive based on the
-    /// currrent state.
+    /// current state.
     /// </summary>
     public class ObjectButton : Button
     {

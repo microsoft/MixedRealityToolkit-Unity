@@ -492,7 +492,7 @@ namespace HoloToolkit.Sharing.Tests
         }
 
         /// <summary>
-        /// Initializes the room api.
+        /// Initializes the room API.
         /// </summary>
         private IEnumerator InitRoomApi()
         {
@@ -755,12 +755,12 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (SharingStage.Instance.ShowDetailedLogs)
             {
-                Debug.LogFormat("Anchor Manager: Looking for cahced anchor {0}...", anchorName);
+                Debug.LogFormat("Anchor Manager: Looking for cached anchor {0}...", anchorName);
             }
 
             if (AnchorDebugText != null)
             {
-                AnchorDebugText.text += string.Format("\nLooking for cahced anchor {0}...", anchorName);
+                AnchorDebugText.text += string.Format("\nLooking for cached anchor {0}...", anchorName);
             }
 
             string[] ids = anchorStore.GetAllIds();

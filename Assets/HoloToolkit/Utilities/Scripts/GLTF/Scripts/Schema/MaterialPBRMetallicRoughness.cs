@@ -28,7 +28,7 @@ namespace GLTF
 		public TextureInfo BaseColorTexture;
 
 		/// <summary>
-		/// The metalness of the material.
+		/// The metallicness of the material.
 		/// A value of 1.0 means the material is a metal.
 		/// A value of 0.0 means the material is a dielectric.
 		/// Values in between are for blending between metals and dielectrics such as
@@ -47,7 +47,7 @@ namespace GLTF
 
 		/// <summary>
 		/// The metallic-roughness texture has two components.
-		/// The first component (R) contains the metallic-ness of the material.
+		/// The first component (R) contains the metallicness of the material.
 		/// The second component (G) contains the roughness of the material.
 		/// These values are linear.
 		/// If the third component (B) and/or the fourth component (A) are present,

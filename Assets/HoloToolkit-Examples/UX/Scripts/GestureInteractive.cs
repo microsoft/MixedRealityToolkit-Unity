@@ -30,7 +30,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private IInputSource mCurrentInputSource;
         private uint mCurrentInputSourceId;
 
-        [Tooltip("Sets the time before the gesture starts after a press has occured, handy when a select event is also being used")]
+        [Tooltip("Sets the time before the gesture starts after a press has occurred, handy when a select event is also being used")]
         public float StartDelay;
 
         [Tooltip("The GestureInteractiveControl to send gesture updates to")]
@@ -127,8 +127,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Start the gesture
         /// </summary>
-        /// <param name="ticker"></param>
-        /// <param name="type"></param>
         private void HandleStartGesture()
         {
             InputManager.Instance.ClearModalInputStack();
@@ -208,8 +206,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             mTempInputSource = null;
 
-            Vector3 handPosition;
-            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
+            Vector3 handPosition = GetCurrentHandPosition();
 
             mCurrentHandPosition = handPosition;
             Control.ManipulationUpdate(
@@ -266,8 +263,11 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
+#if UNITY_2017_2_OR_NEWER
             mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
-
+#else
+            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
+#endif
             return handPosition;
         }
 

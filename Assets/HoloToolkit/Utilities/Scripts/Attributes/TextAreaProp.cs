@@ -10,7 +10,7 @@ using UnityEditor;
 
 namespace HoloToolkit.Unity
 {
-    // Displays a text property as a textarea
+    // Displays a text property as a text area
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class TextAreaProp : DrawOverrideAttribute
     {

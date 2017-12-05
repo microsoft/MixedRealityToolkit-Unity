@@ -142,7 +142,7 @@ namespace HoloToolkit.Unity
             // For MSBuild 15+ we should to use vswhere to give us the correct instance
             string output = @"/C vswhere -version " + msBuildVersion + " -products * -requires Microsoft.Component.MSBuild -property installationPath";
 
-            // get the right program files path based on whether the pc is x86 or x64
+            // get the right program files path based on whether the PC is x86 or x64
             string programFiles = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer";
 
             var vswherePInfo = new ProcessStartInfo

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Changes the VR viewport to correlate to the requested quality, trying to maintain a steady framerate by reducing the amount of pixels rendered.
+    /// Changes the VR viewport to correlate to the requested quality, trying to maintain a steady frame rate by reducing the amount of pixels rendered.
     /// Uses the AdaptiveQuality component to respond to quality change events.
     /// At MaxQualityLevel, the viewport will be set to 1.0 and will linearly drop of to MinViewportSize at MinQualityLevel
     /// Note, that it is ok to have the quality levels in this component correlate to a subset of the levels reported from the AdaptiveQuality component
