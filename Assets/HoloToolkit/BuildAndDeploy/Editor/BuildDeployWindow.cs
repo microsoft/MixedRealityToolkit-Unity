@@ -806,31 +806,43 @@ namespace HoloToolkit.Unity
                 if (currentConnection.IP.Contains("127.0.0.1"))
                 {
                     currentConnection.IP = "Local Machine";
-                    UpdatePortalConnections();
-                }
-
-                if (!IsLocalConnection(currentConnection) &&
-                    IsValidIpAddress(currentConnection.IP) &&
-                    IsCredentialsValid(currentConnection) &&
-                    currentConnection.MachineName.Contains(currentConnection.IP))
-                {
-                    var machineName = BuildDeployPortal.GetMachineName(currentConnection);
-
-                    if (machineName != null)
-                    {
-                        currentConnection.MachineName = machineName.ComputerName;
-                    }
                 }
 
                 portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
                 UpdatePortalConnections();
+                Repaint();
             }
 
             GUILayout.FlexibleSpace();
 
-            // Open web portal
+            // Connect
+            if (!IsLocalConnection(currentConnection))
+            {
+                GUI.enabled = IsValidIpAddress(currentConnection.IP) && IsCredentialsValid(currentConnection);
+
+                if (GUILayout.Button("Connect", GUILayout.Width(quarterWidth)))
+                {
+                    EditorApplication.delayCall += () =>
+                    {
+                        var machineName = BuildDeployPortal.GetMachineName(currentConnection);
+
+                        if (machineName != null)
+                        {
+                            currentConnection.MachineName = machineName.ComputerName;
+                        }
+
+                        portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
+                        UpdatePortalConnections();
+                        Repaint();
+                    };
+                }
+
+                GUI.enabled = true;
+            }
+
             GUI.enabled = DevicePortalConnectionEnabled && CanInstall;
 
+            // Open web portal
             if (GUILayout.Button("Open Device Portal", GUILayout.Width(quarterWidth)))
             {
                 EditorApplication.delayCall += () => OpenDevicePortal(portalConnections);
@@ -1114,16 +1126,7 @@ namespace HoloToolkit.Unity
             }
 
             var subAddresses = ip.Split('.');
-
-            if (subAddresses.Length > 3)
-            {
-                if (subAddresses.Any(subAddress => !subAddress.Equals("0")))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return subAddresses.Length > 3;
         }
 
         private static string CalcPackageFamilyName()
