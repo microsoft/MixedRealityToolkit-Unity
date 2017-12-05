@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity
             InstallFail
         }
 
-        private const float TimeOut = 6.0f;
+        private const float TimeOut = 10.0f;
         private const float MaxWaitTime = 20.0f;
 
         // Device Portal API Resources
@@ -72,6 +72,7 @@ namespace HoloToolkit.Unity
                 {
                     webRequest.SetRequestHeader("Authorization", auth);
                     webRequest.timeout = (int)TimeOut;
+
 #if UNITY_2017_2_OR_NEWER
                     webRequest.SendWebRequest();
 #else
@@ -163,7 +164,7 @@ namespace HoloToolkit.Unity
                         if (webRequest.uploadProgress > -1 && showDialog)
                         {
                             EditorUtility.DisplayProgressBar("Connecting to Device Portal",
-                                                             "Uploading...", webRequest.downloadProgress);
+                                                             "Uploading...", webRequest.uploadProgress);
                         }
                         else if (webRequest.downloadProgress > -1 && showDialog)
                         {
@@ -224,6 +225,7 @@ namespace HoloToolkit.Unity
                 {
                     webRequest.SetRequestHeader("Authorization", auth);
                     webRequest.timeout = (int)TimeOut;
+
 #if UNITY_2017_2_OR_NEWER
                     webRequest.SendWebRequest();
 #else
