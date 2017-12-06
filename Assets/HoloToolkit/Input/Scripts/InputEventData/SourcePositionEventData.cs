@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 pointerPosition, Vector3 gripPosition)
+        public void Initialize(IInputSource inputSource, uint sourceId, Vector3 pointerPosition, Vector3 gripPosition, object[] tag = null)
         {
             BaseInitialize(inputSource, sourceId, tag);
             PointerPosition = pointerPosition;
