@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, object[] tag)
+        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, object[] tag = null)
         {
             Reset();
             InputSource = inputSource;

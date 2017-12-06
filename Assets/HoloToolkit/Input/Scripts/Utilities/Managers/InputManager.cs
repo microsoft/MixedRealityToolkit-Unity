@@ -917,7 +917,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationHypothesis(IInputSource source, uint sourceId, string dictationHypothesis, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationHypothesis, dictationAudioClip);
+            dictationEventData.Initialize(source, sourceId, dictationHypothesis, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
@@ -933,7 +933,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationResult(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip);
+            dictationEventData.Initialize(source, sourceId, dictationResult, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationResultEventHandler);
@@ -949,7 +949,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationComplete(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip);
+            dictationEventData.Initialize(source, sourceId, dictationResult, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
@@ -965,7 +965,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationError(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip);
+            dictationEventData.Initialize(source, sourceId, dictationResult, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);
