@@ -27,7 +27,7 @@ namespace GLTF
 		public NormalTextureInfo NormalTexture;
 
 		/// <summary>
-		/// The occlusion map is a greyscale texture, with white indicating areas that
+		/// The occlusion map is a gray-scale texture, with white indicating areas that
 		/// should receive full indirect lighting and black indicating no indirect
 		/// lighting.
 		/// </summary>

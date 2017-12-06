@@ -55,7 +55,7 @@ namespace HoloToolkit.Examples.Prototyping
         // animation ticker
         private float mLerpTimeCounter;
 
-        // cached start value, updates everytime a new animation starts
+        // cached start value, updates every time a new animation starts
         private Vector3 mStartValue;
 
         /// <summary>

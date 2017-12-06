@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace HoloToolkit.Sharing.Utilities
 {
     /// <summary>
-    /// Utility for connecting to Sharing Service by Ip Address from inside application at runtime.
+    /// Utility for connecting to Sharing Service by IP Address from inside application at runtime.
     /// </summary>
     public class ManualIpConfiguration : MonoBehaviour
     {

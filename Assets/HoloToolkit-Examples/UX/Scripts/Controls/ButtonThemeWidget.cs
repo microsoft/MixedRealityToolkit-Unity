@@ -25,7 +25,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("Color transition animation component: optional")]
         public ColorTransition ColorBlender;
 
-        [Tooltip("position animaiton component: optional")]
+        [Tooltip("position animation component: optional")]
         public MoveToPosition MovePosition;
 
         [Tooltip("scale animation component: optional")]
@@ -44,7 +44,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private string mCheckScaleThemeTag = "";
 
         /// <summary>
-        /// Get animaiton components
+        /// Get animation components
         /// </summary>
         private void Awake()
         {
@@ -99,7 +99,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         }
 
         /// <summary>
-        /// set states or start animaitons
+        /// set states or start animations
         /// </summary>
         /// <param name="state"></param>
         public override void SetState(Interactive.ButtonStateEnum state)

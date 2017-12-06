@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Class to encapsulate an interpolating Vector3 property.
-    /// TODO: Remove if reduncatnt to InterpolatedVector3.cs
+    /// TODO: Remove if redundant to InterpolatedVector3.cs
     /// </summary>
     public class Vector3Interpolated
     {

@@ -8,9 +8,9 @@ using HoloToolkit.Unity;
 namespace HoloToolkit.Examples.Prototyping
 {
     /// <summary>
-    /// CycleArray is a class for incramenting through component properties sequentially or assigning specific elements in the array.
-    /// A good use-case is updating visuals on a gameobject easily through the UnityEditor.
-    /// Use with Interactive or InteractiveEffects for consistant visual feedback patterns
+    /// CycleArray is a class for incrementing through component properties sequentially or assigning specific elements in the array.
+    /// A good use-case is updating visuals on a GameObject easily through the UnityEditor.
+    /// Use with Interactive or InteractiveEffects for consistent visual feedback patterns
     /// </summary>
     public class CycleArray<Type> : MonoBehaviour, ICycle
     {
@@ -31,7 +31,7 @@ namespace HoloToolkit.Examples.Prototyping
         public int DefaultIndex = 0;
         
         /// <summary>
-        /// the current index of the appied item in the array
+        /// the current index of the applied item in the array
         /// </summary>
         public int Index { get; set;}
 
@@ -108,7 +108,7 @@ namespace HoloToolkit.Examples.Prototyping
         }
 
         /// <summary>
-        /// Move to the previsou item in the array
+        /// Move to the previous item in the array
         /// </summary>
         public virtual void MovePrevious()
         {

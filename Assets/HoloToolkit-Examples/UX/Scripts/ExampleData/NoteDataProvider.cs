@@ -17,7 +17,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         public InteractiveSet SourceSet;
 
         /// <summary>
-        /// some test data - imagine this comming from a web-service 
+        /// some test data - imagine this coming from a web-service 
         /// or some input menu
         /// </summary>
         public Dictionary<string, List<string>> Data = new Dictionary<string, List<string>>

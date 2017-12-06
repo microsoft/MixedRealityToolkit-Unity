@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule
         /// The fade control allows us to fade out and fade in the scene.
         /// This is done to improve comfort when using an immersive display.
         /// </summary>
-        private FadeScript fadeControl;
+        private FadeManager fadeControl;
 
         private bool isTeleportValid;
         private IPointingSource currentPointingSource;
@@ -61,8 +61,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            fadeControl = FadeScript.Instance;
+            FadeManager.AssertIsInitialized();
 
+            fadeControl = FadeManager.Instance;
+
+            // If our FadeManager is missing, or if we're on the HoloLens
+            // Remove this component.
 #if UNITY_2017_2_OR_NEWER
             if (!XRDevice.isPresent ||
 #if UNITY_WSA
@@ -73,11 +77,6 @@ namespace HoloToolkit.Unity.InputModule
             if (VRDevice.isPresent || fadeControl == null)
 #endif
             {
-                if (fadeControl == null)
-                {
-                    Debug.LogError("The MixedRealityTeleport script on " + name + " requires a FadeScript object.");
-                }
-
                 Destroy(this);
                 return;
             }
