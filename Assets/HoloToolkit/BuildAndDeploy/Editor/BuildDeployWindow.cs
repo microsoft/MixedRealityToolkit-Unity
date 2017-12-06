@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity
 
         private readonly List<string> builds = new List<string>(0);
 
-        private readonly List<string> appPackageDirectories = new List<string>(0);
+        private static readonly List<string> appPackageDirectories = new List<string>(0);
 
         #region Labels
 
@@ -1131,6 +1131,11 @@ namespace HoloToolkit.Unity
 
         private static string CalcPackageFamilyName()
         {
+            if (appPackageDirectories.Count == 0)
+            {
+                return string.Empty;
+            }
+
             // Find the manifest
             string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
 
