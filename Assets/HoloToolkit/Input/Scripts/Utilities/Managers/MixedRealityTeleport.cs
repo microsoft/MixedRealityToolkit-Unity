@@ -27,16 +27,28 @@ namespace HoloToolkit.Unity.InputModule
     public class MixedRealityTeleport : Singleton<MixedRealityTeleport>, IControllerInputHandler
     {
         [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
-        public string LeftThumbstickX = "CONTROLLER_LEFT_STICK_HORIZONTAL";
+        public XboxControllerMappingTypes HorizontalStrafe = XboxControllerMappingTypes.XboxLeftStickHorizontal;
 
         [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
-        public string LeftThumbstickY = "CONTROLLER_LEFT_STICK_VERTICAL";
+        public XboxControllerMappingTypes VerticalStrafe = XboxControllerMappingTypes.XboxLeftStickVertical;
 
         [Tooltip("Name of the thumbstick axis to check for rotation.")]
-        public string RightThumbstickX = "CONTROLLER_RIGHT_STICK_HORIZONTAL";
+        public XboxControllerMappingTypes HorizontalRotation = XboxControllerMappingTypes.XboxRightStickHorizontal;
 
         [Tooltip("Name of the thumbstick axis to check for rotation.")]
-        public string RightThumbstickY = "CONTROLLER_RIGHT_STICK_VERTICAL";
+        public XboxControllerMappingTypes VerticalRotation = XboxControllerMappingTypes.XboxRightStickVertical;
+
+        [Tooltip("Custom Input Mapping for horizontal teleport and strafe")]
+        public string LeftThumbstickX = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_HORIZONTAL;
+
+        [Tooltip("Custom Input Mapping for vertical teleport and strafe")]
+        public string LeftThumbstickY = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_VERTICAL;
+
+        [Tooltip("Custom Input Mapping for horizontal rotation")]
+        public string RightThumbstickX = InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_VERTICAL;
+
+        [Tooltip("Custom Input Mapping for vertical rotation")]
+        public string RightThumbstickY = InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_HORIZONTAL;
 
         public bool EnableTeleport = true;
         public bool EnableRotation = true;
@@ -48,6 +60,9 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private GameObject teleportMarker;
         private Animator animationController;
+
+        [SerializeField]
+        private bool useCustomMapping;
 
         /// <summary>
         /// The fade control allows us to fade out and fade in the scene.
@@ -113,8 +128,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (EnableTeleport && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(LeftThumbstickX);
-                float leftY = Input.GetAxis(LeftThumbstickY);
+                float leftX = Input.GetAxis(HorizontalStrafe == XboxControllerMappingTypes.None ? XboxControllerMapping.GetMapping(HorizontalStrafe) : LeftThumbstickX);
+                float leftY = Input.GetAxis(VerticalStrafe == XboxControllerMappingTypes.None ? XboxControllerMapping.GetMapping(VerticalStrafe) : LeftThumbstickY);
 
                 if (currentPointingSource == null && leftY > 0.8 && Math.Abs(leftX) < 0.3)
                 {
@@ -131,8 +146,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (EnableStrafe && currentPointingSource == null && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(LeftThumbstickX);
-                float leftY = Input.GetAxis(LeftThumbstickY);
+                float leftX = Input.GetAxis(HorizontalStrafe == XboxControllerMappingTypes.None ? XboxControllerMapping.GetMapping(HorizontalStrafe) : LeftThumbstickX);
+                float leftY = Input.GetAxis(VerticalStrafe == XboxControllerMappingTypes.None ? XboxControllerMapping.GetMapping(VerticalStrafe) : LeftThumbstickY);
 
                 if (leftX < -0.8 && Math.Abs(leftY) < 0.3)
                 {
@@ -150,8 +165,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (EnableRotation && currentPointingSource == null && !fadeControl.Busy)
             {
-                float rightX = Input.GetAxis(RightThumbstickX);
-                float rightY = Input.GetAxis(RightThumbstickY);
+                float rightX = Input.GetAxis(HorizontalRotation == XboxControllerMappingTypes.None ? XboxControllerMapping.GetMapping(HorizontalRotation) : RightThumbstickX);
+                float rightY = Input.GetAxis(VerticalRotation == XboxControllerMappingTypes.None ? XboxControllerMapping.GetMapping(VerticalRotation) : RightThumbstickY);
 
                 if (rightX < -0.8 && Math.Abs(rightY) < 0.3)
                 {
