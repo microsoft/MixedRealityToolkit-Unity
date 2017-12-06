@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 normalizedOffset)
+        public void Initialize(IInputSource inputSource, uint sourceId, Vector3 normalizedOffset, object[] tag = null)
         {
             BaseInitialize(inputSource, sourceId, tag);
             NormalizedOffset = normalizedOffset;
