@@ -31,12 +31,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             initialPosition = transform.position;
         }
 
-        public override void OnSourceDetected(SourceStateEventData eventData)
-        {
-            base.OnSourceDetected(eventData);
-            Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", GamePadName, eventData.SourceId);
-        }
-
         public override void OnSourceLost(SourceStateEventData eventData)
         {
             Debug.LogFormat("Joystick {0} with id: \"{1}\" Disconnected", GamePadName, eventData.SourceId);
@@ -46,6 +40,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public override void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
+            if (string.IsNullOrEmpty(GamePadName))
+            {
+                Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", eventData.GamePadName, eventData.SourceId);
+            }
+
             base.OnXboxInputUpdate(eventData);
 
             // Reset our new vectors

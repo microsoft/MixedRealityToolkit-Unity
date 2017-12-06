@@ -87,11 +87,21 @@ namespace HoloToolkit.Unity.InputModule
             switch (CurrentGestureState)
             {
                 case GestureState.NavigationStarted:
+                {
                     NavigationCompleted = true;
-                    StopCoroutine(HandStartedRoutine);
-                    StopCoroutine(HoldCompletedRoutine);
+                    if (HandStartedRoutine != null)
+                    {
+                        StopCoroutine(HandStartedRoutine);
+                    }
+
+                    if (HoldCompletedRoutine != null)
+                    {
+                        StopCoroutine(HoldCompletedRoutine);
+                    }
+
                     InputManager.Instance.RaiseNavigationCompleted(eventData.InputSource, eventData.SourceId, Vector3.zero);
                     break;
+                }
                 case GestureState.HoldStarted:
                     StopCoroutine(HandStartedRoutine);
                     InputManager.Instance.RaiseHoldCanceled(eventData.InputSource, eventData.SourceId);
@@ -100,10 +110,20 @@ namespace HoloToolkit.Unity.InputModule
                     InputManager.Instance.RaiseHoldCompleted(eventData.InputSource, eventData.SourceId);
                     break;
                 default:
-                    StopCoroutine(HandStartedRoutine);
-                    StopCoroutine(HoldCompletedRoutine);
+                {
+                    if (HandStartedRoutine != null)
+                    {
+                        StopCoroutine(HandStartedRoutine);
+                    }
+
+                    if (HoldCompletedRoutine != null)
+                    {
+                        StopCoroutine(HoldCompletedRoutine);
+                    }
+
                     InputManager.Instance.RaiseInputClicked(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select, 1);
                     break;
+                }
             }
 
             Reset();

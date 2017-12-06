@@ -167,9 +167,7 @@ namespace HoloToolkit.Unity.InputModule
 
             for (var i = 0; i < joystickNames.Length; i++)
             {
-                if (string.IsNullOrEmpty(joystickNames[i]) ||
-                    gamePadInputDatas.ContainsKey((uint)i) ||
-                    joystickNames[i].Contains(MotionControllerLeft) ||
+                if (joystickNames[i].Contains(MotionControllerLeft) ||
                     joystickNames[i].Contains(MotionControllerRight))
                 {
                     // If we don't have any matching joystick types, continue.
