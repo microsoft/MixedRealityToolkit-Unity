@@ -17,15 +17,19 @@ namespace HoloToolkit.Unity.InputModule
     public class ControllerFinder : MonoBehaviour
     {
         #region public members
-        public virtual InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
         public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
         public Transform ElementTransform { get; private set; }
         public bool IsAttached { get { return isAttached; } set { isAttached = value; } }
         #endregion
 
+    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        public virtual InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
+        protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+    
+    #endif
+
         #region private members
         protected MotionControllerInfo controller;
-        protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
         protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
         protected Transform elementTransform;
         private bool isAttached = false;
@@ -34,13 +38,12 @@ namespace HoloToolkit.Unity.InputModule
 
         public virtual void OnEnable()
         {
-            #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
             {
                 AddControllerTransform(controller);
             }
-            #endif
 
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
@@ -91,6 +94,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 
         }
-
+    #endif
     }
 }

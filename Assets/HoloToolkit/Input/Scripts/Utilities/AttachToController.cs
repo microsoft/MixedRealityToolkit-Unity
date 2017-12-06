@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿'// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
@@ -15,9 +15,11 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : ControllerFinder
     {
+    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         [Header("AttachToController Elements")]
         [SerializeField]
         protected new InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+    #endif
 
         [SerializeField]
         protected new MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
@@ -39,7 +41,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
-
+    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void AttachElementToController(MotionControllerInfo newController)
         {
             if (!IsAttached && newController.Handedness == handedness)
@@ -95,5 +97,6 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+    #endif
     }
 }
