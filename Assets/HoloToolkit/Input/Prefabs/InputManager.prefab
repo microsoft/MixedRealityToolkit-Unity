@@ -73,6 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4187953886819872}
   - component: {fileID: 114367590399833948}
+  - component: {fileID: 114512526664342106}
   m_Layer: 0
   m_Name: XboxControllerInputSource
   m_TagString: Untagged
@@ -422,6 +423,22 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!114 &114512526664342106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1329858366469352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03fe91f227bf8af44afc939d2303cbb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsGlobalListener: 1
+  HoldStartedInterval: 2
+  HoldCompletedInterval: 3
+  SelectButton: 10
+  HorizontalNavigationAxis: 1
 --- !u!114 &114708646396671696
 MonoBehaviour:
   m_ObjectHideFlags: 1
