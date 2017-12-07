@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114000013868099214}
   - component: {fileID: 114708646396671696}
   - component: {fileID: 114742747811649402}
+  - component: {fileID: 114150358717966790}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -272,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b160d197a8ca1894796ae263bafec0ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultEventOrigin: 
 --- !u!114 &114000012864906760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -305,6 +307,19 @@ MonoBehaviour:
   UseGazeManager: 1
   DefaultPlaneDistance: 2
   DrawGizmos: 0
+--- !u!114 &114150358717966790
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011070707148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad0dd43a66cc11e4c8c6a7423650558c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CursorPrefab: {fileID: 114611684728110934, guid: a611e772ef8ddf64d8106a9cbb70f31c,
+    type: 2}
 --- !u!114 &114345042324023316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -361,7 +376,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011070707148}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a23bf9a6a8497a4490fdbd42c41357e, type: 3}
   m_Name: 

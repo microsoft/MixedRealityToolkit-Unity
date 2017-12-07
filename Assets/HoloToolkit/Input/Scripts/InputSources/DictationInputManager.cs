@@ -260,6 +260,12 @@ namespace HoloToolkit.Unity.InputModule
             return true;
         }
 
+        public bool TryGetSourceHandedness (uint sourceId, out InteractionSourceHandedness sourceHandedness)
+        {
+            sourceHandedness = default(InteractionSourceHandedness);
+            return false;
+        }
+
         public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
         {
             return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;

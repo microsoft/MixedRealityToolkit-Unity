@@ -19,6 +19,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public abstract bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind);
 
+        public abstract bool TryGetSourceHandedness(uint sourceId, out InteractionSourceHandedness sourceHandedness);
+
         public abstract bool TryGetPointerPosition(uint sourceId, out Vector3 position);
 
         public abstract bool TryGetPointerRotation(uint sourceId, out Quaternion rotation);

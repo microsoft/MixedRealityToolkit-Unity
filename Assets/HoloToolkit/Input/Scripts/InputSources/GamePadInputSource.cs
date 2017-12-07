@@ -44,9 +44,15 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Base Input Source Methods
 
+        public override bool TryGetSourceHandedness(uint sourceId, out InteractionSourceHandedness sourceHandedness)
+        {
+            sourceHandedness = InteractionSourceHandedness.Unknown;
+            return true;
+        }
+
         public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
-            sourceKind = InteractionSourceInfo.Controller;
+            sourceKind = InteractionSourceInfo.Gamepad;
             return true;
         }
 

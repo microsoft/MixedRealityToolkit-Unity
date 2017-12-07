@@ -19,9 +19,9 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, double pressedAmount)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, double pressedAmount, string eventOrigin = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, sourceId, tag, eventOrigin);
             PressedAmount = pressedAmount;
         }
     }

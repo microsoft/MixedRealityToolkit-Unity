@@ -256,7 +256,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             loadingControllers.Add(GenerateKey(source));
 
-            if (AlwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
+            if (AlwaysUseAlternateLeftModel && source.handedness == UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Left)
             {
                 if (AlternateLeftController == null)
                 {
@@ -268,7 +268,7 @@ namespace HoloToolkit.Unity.InputModule
                     LoadAlternateControllerModel(source);
                 }
             }
-            else if (AlwaysUseAlternateRightModel && source.handedness == InteractionSourceHandedness.Right)
+            else if (AlwaysUseAlternateRightModel && source.handedness == UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Right)
             {
                 if (AlternateRightController == null)
                 {
@@ -368,17 +368,17 @@ namespace HoloToolkit.Unity.InputModule
 
             yield return gltfScript.LoadModel();
 
-            FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
+            FinishControllerSetup(controllerModelGameObject, (InteractionSourceHandedness)source.handedness, GenerateKey(source));
         }
 
         private void LoadAlternateControllerModel(InteractionSource source)
         {
             GameObject controllerModelGameObject;
-            if (source.handedness == InteractionSourceHandedness.Left && AlternateLeftController != null)
+            if ((InteractionSourceHandedness)source.handedness == InteractionSourceHandedness.Left && AlternateLeftController != null)
             {
                 controllerModelGameObject = Instantiate(AlternateLeftController);
             }
-            else if (source.handedness == InteractionSourceHandedness.Right && AlternateRightController != null)
+            else if ((InteractionSourceHandedness)source.handedness == InteractionSourceHandedness.Right && AlternateRightController != null)
             {
                 controllerModelGameObject = Instantiate(AlternateRightController);
             }
@@ -388,7 +388,7 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
+            FinishControllerSetup(controllerModelGameObject, (InteractionSourceHandedness)source.handedness, GenerateKey(source));
         }
 
         private string GenerateKey(InteractionSource source)

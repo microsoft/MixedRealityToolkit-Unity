@@ -21,6 +21,8 @@ namespace HoloToolkit.Unity.InputModule
         [Obsolete("Use FocusManager.TryGetFocusDetails")]
         public bool IsGazingAtObject { get; private set; }
 
+        public Cursor CursorOverride { get; set; }
+
         /// <summary>
         /// Dispatched when focus shifts to a new object, or focus on current object
         /// is lost.

@@ -55,6 +55,7 @@ namespace HoloToolkit.Unity.InputModule
         public bool SupportsGrasp;
         public bool RaiseEventsBasedOnVisibility;
         public InteractionSourceInfo SourceKind;
+        public InteractionSourceHandedness SourceHandedness;
 
         public Vector3 ControllerPosition;
         public Quaternion ControllerRotation;
@@ -112,6 +113,14 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             return supportedInputInfo;
+        }
+
+        public override bool TryGetSourceHandedness(uint sourceId, out InteractionSourceHandedness sourceHandedness)
+        {
+            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+
+            sourceHandedness = SourceHandedness;
+            return true;
         }
 
         public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
