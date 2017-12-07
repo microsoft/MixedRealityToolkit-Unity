@@ -10,10 +10,8 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Implement this interface to register your pointer as a pointing source. This could be gaze based or motion controller based.
     /// </summary>
-    public interface IPointingSource
+    public interface IPointingSource : IFocuser
     {
-        bool InteractionEnabled { get; }
-
         float? ExtentOverride { get; }
 
         [Obsolete("Will be removed in a later version. For equivalent behavior have Rays return a RayStep array with a single element.")]
@@ -33,7 +31,5 @@ namespace HoloToolkit.Unity.InputModule
         void OnPostRaycast();
 
         bool OwnsInput(BaseEventData eventData);
-
-        bool FocusLocked { get; set; }
     }
 }

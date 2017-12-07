@@ -17,9 +17,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, InteractionSourcePressInfo pressType)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, InteractionSourcePressInfo pressType, MixedRealityInputType sourceType = MixedRealityInputType.Other, string eventOrigin = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, sourceId, tag, sourceType, eventOrigin);
             PressType = pressType;
         }
     }

@@ -5,6 +5,21 @@ using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
+    public enum MixedRealityInputType
+    {
+        Other,
+        LeftController,
+        RightController,
+        Voice,
+        Hand,
+        Head,
+        Mouse,
+        Gamepad,
+        Keyboard,
+        TouchScreen,
+        // TODO - implement left and right hands for Hololens
+    }
+
     /// <summary>
     /// Base class of all input events.
     /// </summary>
@@ -25,16 +40,28 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public object Tag { get; private set; }
 
+        /// <summary>
+        /// An optional, input-source-independent tag to be associated with this event.
+        /// </summary>
+        public string EventOrigin { get; private set; }
+
+        /// <summary>
+        /// An optional, input-source-dependent tag to be associated with this input source
+        /// </summary>
+        public MixedRealityInputType SourceType { get; private set; }
+
         public BaseInputEventData(EventSystem eventSystem) : base(eventSystem)
         {
         }
 
-        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, object tag)
+        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, object tag, MixedRealityInputType sourceType, string eventOrigin)
         {
             Reset();
             InputSource = inputSource;
             SourceId = sourceId;
             Tag = tag;
+            EventOrigin = eventOrigin;
+            SourceType = sourceType;
         }
     }
 }

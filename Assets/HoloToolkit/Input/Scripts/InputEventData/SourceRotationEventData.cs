@@ -21,9 +21,9 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Quaternion pointerRotation, Quaternion gripRotation)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Quaternion pointerRotation, Quaternion gripRotation, MixedRealityInputType sourceType = MixedRealityInputType.Other, string eventOrigin = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, sourceId, tag, sourceType, eventOrigin);
             PointerRotation = pointerRotation;
             GripRotation = gripRotation;
         }

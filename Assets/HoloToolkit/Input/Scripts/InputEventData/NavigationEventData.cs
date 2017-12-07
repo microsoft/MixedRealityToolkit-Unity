@@ -29,9 +29,9 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 normalizedOffset)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 normalizedOffset, MixedRealityInputType sourceType = MixedRealityInputType.Other, string eventOrigin = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, sourceId, tag, sourceType, eventOrigin);
             NormalizedOffset = normalizedOffset;
         }
     }
