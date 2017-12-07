@@ -6,7 +6,7 @@ using System;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Controller axis and button types.
+    /// Xbox Controller axis and button types.
     /// </summary>
     [Flags]
     public enum XboxControllerMappingTypes
