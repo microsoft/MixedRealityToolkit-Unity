@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
+using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.UX
 { 
@@ -31,6 +32,7 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         [DropDownComponent(true, true)]
         protected LineBase lineBase;
+        [SerializeField]
         [DropDownComponent(true, true)]
         protected FocusPointerInput input;
 
@@ -160,12 +162,14 @@ namespace HoloToolkit.Unity.UX
 
         public override bool OwnsInput(BaseInputEventData eventData)
         {
+            Debug.Assert(input != null, "Input cannot be null for LinePointer");
+
             if (eventData == null)
             {
                 return false;
             }
-            
-            return InteractionEnabled && (eventData.EventOrigin == EventOrign || eventData.SourceId == input.SourceId);
+
+            return InteractionEnabled && eventData.SourceId == input.SourceId;
         }
 
         public static bool CheckForFocusable(GameObject gameObject, out IFocusable target)

@@ -105,6 +105,12 @@ namespace HoloToolkit.Unity.UX
         protected override void OnDisable()
         {
             base.OnDisable();
+
+            if (!InputManager.IsInitialized)
+            {
+                return;
+            }
+
             InputManager.Instance.RemoveEventOrigin(SourceId, pointer.EventOrign);
             InputManager.Instance.RemoveGlobalListener(gameObject);
         }

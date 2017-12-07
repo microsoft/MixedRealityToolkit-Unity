@@ -229,6 +229,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   lineCastResolution: 25
   lineBase: {fileID: 114023736100485690}
+  input: {fileID: 114416834852078844}
 --- !u!114 &114416834852078844
 MonoBehaviour:
   m_ObjectHideFlags: 1
