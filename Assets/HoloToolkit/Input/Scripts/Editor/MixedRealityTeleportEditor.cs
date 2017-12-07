@@ -9,6 +9,8 @@ namespace HoloToolkit.Unity.InputModule
     [CustomEditor(typeof(MixedRealityTeleport))]
     public class MixedRealityTeleportEditor : Editor
     {
+        private readonly GUIContent verticalRotationLabel = new GUIContent("Vertical Rotation", "Used to check the Horizontal Rotation and the intent of the user to rotate in that direction");
+
         private static MixedRealityTeleport mixedRealityTeleport;
         private static SerializedProperty teleportMakerPrefab;
         private static SerializedProperty useCustomMappingProperty;
@@ -70,14 +72,14 @@ namespace HoloToolkit.Unity.InputModule
                 mixedRealityTeleport.LeftThumbstickX = EditorGUILayout.TextField("Horizontal Strafe", mixedRealityTeleport.LeftThumbstickX);
                 mixedRealityTeleport.LeftThumbstickY = EditorGUILayout.TextField("Forward Movement", mixedRealityTeleport.LeftThumbstickY);
                 mixedRealityTeleport.RightThumbstickX = EditorGUILayout.TextField("Horizontal Rotation", mixedRealityTeleport.RightThumbstickX);
-                mixedRealityTeleport.RightThumbstickY = EditorGUILayout.TextField("Rotation", mixedRealityTeleport.RightThumbstickY);
+                mixedRealityTeleport.RightThumbstickY = EditorGUILayout.TextField(verticalRotationLabel, mixedRealityTeleport.RightThumbstickY);
             }
             else
             {
                 mixedRealityTeleport.HorizontalStrafe = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Horizontal Strafe", mixedRealityTeleport.HorizontalStrafe);
                 mixedRealityTeleport.ForwardMovement = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Forward Movement", mixedRealityTeleport.ForwardMovement);
                 mixedRealityTeleport.HorizontalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Horizontal Rotation", mixedRealityTeleport.HorizontalRotation);
-                mixedRealityTeleport.VerticalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Rotation", mixedRealityTeleport.VerticalRotation);
+                mixedRealityTeleport.VerticalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup(verticalRotationLabel, mixedRealityTeleport.VerticalRotation);
             }
 
             serializedObject.ApplyModifiedProperties();
