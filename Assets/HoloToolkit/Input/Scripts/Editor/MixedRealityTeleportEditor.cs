@@ -13,6 +13,7 @@ namespace HoloToolkit.Unity.InputModule
         private static SerializedProperty teleportMakerPrefab;
         private static SerializedProperty useCustomMappingProperty;
         private static bool useCustomMapping;
+        private static bool mappingOverride;
 
         private void OnEnable()
         {
@@ -43,7 +44,25 @@ namespace HoloToolkit.Unity.InputModule
 
             EditorGUILayout.LabelField("Teleport Controller Mappings", new GUIStyle("Label") { fontStyle = FontStyle.Bold });
 
+            // Use custom mappings if users have already edited their axis mappings
+            if (!mappingOverride &&
+                (mixedRealityTeleport.LeftThumbstickX != InputMappingAxisUtility.CONTROLLER_LEFT_STICK_HORIZONTAL && mixedRealityTeleport.LeftThumbstickX != string.Empty ||
+                 mixedRealityTeleport.LeftThumbstickY != InputMappingAxisUtility.CONTROLLER_LEFT_STICK_VERTICAL && mixedRealityTeleport.LeftThumbstickY != string.Empty ||
+                 mixedRealityTeleport.RightThumbstickX != InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_HORIZONTAL && mixedRealityTeleport.RightThumbstickX != string.Empty ||
+                 mixedRealityTeleport.RightThumbstickY != InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_VERTICAL && mixedRealityTeleport.RightThumbstickY != string.Empty))
+            {
+                useCustomMapping = true;
+            }
+
+            EditorGUI.BeginChangeCheck();
+
             useCustomMapping = EditorGUILayout.Toggle("Use Custom Mappings", useCustomMapping);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                mappingOverride = !useCustomMapping;
+            }
+
             useCustomMappingProperty.boolValue = useCustomMapping;
 
             if (useCustomMapping)
