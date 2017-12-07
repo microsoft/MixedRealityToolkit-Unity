@@ -1,4 +1,8 @@
-﻿using HoloToolkit.Unity.InputModule;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
@@ -11,15 +15,15 @@ namespace HoloToolkit.Unity.UX
     /// <summary>
     /// Routes controller input to a physics pointer
     /// </summary>
-    public class FocusPointerInput : AttachToController
+    public class FocusPointerInput : AttachToController, IInputHandler
     {
         [SerializeField]
         [DropDownComponent(true,true)]
         private ControllerPointerBase pointer = null;
         [SerializeField]
-        private InteractionSourcePressType activeHoldType = InteractionSourcePressType.Select;
+        private InteractionSourcePressInfo activeHoldType = InteractionSourcePressInfo.Select;
         [SerializeField]
-        private InteractionSourcePressType selectPressType = InteractionSourcePressType.Select;
+        private InteractionSourcePressInfo selectPressType = InteractionSourcePressInfo.Select;
 
         [SerializeField]
         private bool interactionRequiresHold = false;
@@ -31,10 +35,9 @@ namespace HoloToolkit.Unity.UX
                 Debug.LogError("Pointer cannot be null.");
                 return;
             }
-            
+
             // Subscribe to interaction events
-            InteractionManager.InteractionSourcePressed += InteractionSourcePressed;
-            InteractionManager.InteractionSourceReleased += InteractionSourceReleased;
+            InputManager.Instance.AddGlobalListener(gameObject);
         }
 
         protected override void OnDetachFromController()
@@ -45,9 +48,40 @@ namespace HoloToolkit.Unity.UX
                 return;
             }
 
-            // Subscribe to interaction events
-            InteractionManager.InteractionSourcePressed -= InteractionSourcePressed;
-            InteractionManager.InteractionSourceReleased -= InteractionSourceReleased;
+            // Unsubscribe from interaction events
+            InputManager.Instance.RemoveGlobalListener(gameObject);
+        }
+
+        public void OnInputDown(InputEventData eventData)
+        {
+            if (eventData.SourceId == SourceId)
+            {
+                if (interactionRequiresHold && eventData.PressType == activeHoldType)
+                {
+                    pointer.InteractionEnabled = true;
+                }
+
+                if (eventData.PressType == selectPressType)
+                {
+                    pointer.OnSelectPressed();
+                }
+            }
+        }
+
+        public void OnInputUp(InputEventData eventData)
+        {
+            if (eventData.SourceId == SourceId)
+            {
+                if (interactionRequiresHold && eventData.PressType == activeHoldType)
+                {
+                    pointer.InteractionEnabled = false;
+                }
+
+                if (eventData.PressType == selectPressType)
+                {
+                    pointer.OnSelectReleased();
+                }
+            }
         }
 
         private void Update()
@@ -60,61 +94,21 @@ namespace HoloToolkit.Unity.UX
 
             if (pointer.InteractionEnabled)
             {
-                InputManager.Instance.ApplyEventOrigin(controller.SourceId, pointer.EventOrign);
+                InputManager.Instance.ApplyEventOrigin(SourceId, pointer.EventOrign);
             }
             else
             {
-                InputManager.Instance.RemoveEventOrigin(controller.SourceId, pointer.EventOrign);
+                InputManager.Instance.RemoveEventOrigin(SourceId, pointer.EventOrign);
             }
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            InputManager.Instance.RemoveEventOrigin(controller.SourceId, pointer.EventOrign);
-
+            InputManager.Instance.RemoveEventOrigin(SourceId, pointer.EventOrign);
+            InputManager.Instance.RemoveGlobalListener(gameObject);
         }
-
-        /// <summary>
-        /// Presses active
-        /// </summary>
-        /// <param name="obj"></param>
-        private void InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
-        {
-            if ((InputModule.InteractionSourceHandedness)obj.state.source.handedness == handedness)
-            {
-                if (obj.pressType == activeHoldType && interactionRequiresHold)
-                {
-                    pointer.InteractionEnabled = true;
-                }
-
-                if (obj.pressType == selectPressType)
-                {
-                    pointer.OnSelectPressed();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Releases active
-        /// </summary>
-        /// <param name="obj"></param>
-        private void InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
-        {
-            if ((InputModule.InteractionSourceHandedness)obj.state.source.handedness == handedness)
-            {
-                if (obj.pressType == activeHoldType && interactionRequiresHold)
-                {
-                    pointer.InteractionEnabled = false;
-                }
-
-                if (obj.pressType == selectPressType)
-                {
-                    pointer.OnSelectReleased();
-                }
-            }
-        }
-
+        
         #region custom editor
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(FocusPointerInput))]

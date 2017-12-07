@@ -110,7 +110,7 @@ MonoBehaviour:
   eventOrigin: Pointer
   prioritizedLayerMasksOverride:
   - serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   lineColorSelected:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 1, a: 1}
@@ -310,7 +310,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  WidthMultiplier: 0.25
+  WidthMultiplier: 0.025
   ColorOffset: 0
   WidthOffset: 0
   RotationOffset: 0

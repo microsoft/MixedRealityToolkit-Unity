@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
-using System;
-using HoloToolkit.Unity.UX;
-using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.UX
@@ -162,6 +160,11 @@ namespace HoloToolkit.Unity.UX
 
         public override bool OwnsInput(BaseInputEventData eventData)
         {
+            if (eventData == null)
+            {
+                return false;
+            }
+            
             return InteractionEnabled && (eventData.EventOrigin == EventOrign || eventData.SourceId == input.SourceId);
         }
 
