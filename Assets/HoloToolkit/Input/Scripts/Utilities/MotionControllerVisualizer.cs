@@ -358,7 +358,7 @@ namespace HoloToolkit.Unity.InputModule
 
             yield return gltfScript.LoadModel();
 
-            FinishControllerSetup(controllerModelGameObject, (InteractionSourceHandedness)source.handedness, GenerateKey(source));
+            FinishControllerSetup(controllerModelGameObject, (InteractionSourceHandedness)source.handedness, source.id, GenerateKey(source));
         }
 
         private void LoadAlternateControllerModel(InteractionSource source)
@@ -378,7 +378,7 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            FinishControllerSetup(controllerModelGameObject, (InteractionSourceHandedness)source.handedness, GenerateKey(source));
+            FinishControllerSetup(controllerModelGameObject, (InteractionSourceHandedness)source.handedness, source.id, GenerateKey(source));
         }
 
         private string GenerateKey(InteractionSource source)
@@ -386,7 +386,7 @@ namespace HoloToolkit.Unity.InputModule
             return source.vendorId + "/" + source.productId + "/" + source.productVersion + "/" + source.handedness;
         }
 
-        private void FinishControllerSetup(GameObject controllerModelGameObject, InteractionSourceHandedness handedness, string dictionaryKey)
+        private void FinishControllerSetup(GameObject controllerModelGameObject, InteractionSourceHandedness handedness, uint sourceId, string dictionaryKey)
         {
             var parentGameObject = new GameObject
             {
@@ -396,7 +396,7 @@ namespace HoloToolkit.Unity.InputModule
             parentGameObject.transform.parent = transform;
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
-            var newControllerInfo = new MotionControllerInfo(parentGameObject, handedness);
+            var newControllerInfo = new MotionControllerInfo(parentGameObject, handedness, sourceId);
 
             newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>());
 

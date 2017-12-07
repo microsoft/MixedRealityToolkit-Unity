@@ -18,6 +18,7 @@ namespace HoloToolkit.Unity.InputModule
     {
         public readonly GameObject ControllerParent;
         public readonly InteractionSourceHandedness Handedness;
+        public readonly uint SourceId;
 
         private GameObject home;
         private Transform homePressed;
@@ -63,10 +64,11 @@ namespace HoloToolkit.Unity.InputModule
         private Vector2 lastTouchpadPosition;
         private double lastSelectPressedAmount;
 
-        public MotionControllerInfo(GameObject controllerParent, InteractionSourceHandedness handedness)
+        public MotionControllerInfo(GameObject controllerParent, InteractionSourceHandedness handedness, uint sourceId)
         {
             ControllerParent = controllerParent;
             Handedness = handedness;
+            SourceId = sourceId;
         }
 
         public enum ControllerElementEnum

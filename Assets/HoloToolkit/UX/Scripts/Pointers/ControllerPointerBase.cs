@@ -9,6 +9,8 @@ namespace HoloToolkit.Unity.UX
 {
     public abstract class ControllerPointerBase : MonoBehaviour, IPointingSource
     {
+        public string EventOrign { get { return eventOrigin; } }
+
         [Header("Interaction")]
         [SerializeField]
         protected bool interactionEnabled = true;
@@ -23,6 +25,8 @@ namespace HoloToolkit.Unity.UX
         protected Transform raycastOrigin;
         [SerializeField]
         protected InputModule.Cursor cursorOverride;
+        [SerializeField]
+        private string eventOrigin = "Pointer";
 
         // True if select is pressed right now
         protected bool selectPressed = false;
