@@ -814,7 +814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HorizontalStrafe: 1
-  VerticalStrafe: 2
+  ForwardMovement: 2
   HorizontalRotation: 3
   VerticalRotation: 4
   LeftThumbstickX: CONTROLLER_LEFT_STICK_HORIZONTAL
