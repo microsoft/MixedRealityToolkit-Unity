@@ -57,8 +57,8 @@ namespace HoloToolkit.Unity.InputModule
             {
                 mixedRealityTeleport.HorizontalStrafe = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Horizontal Strafe", mixedRealityTeleport.HorizontalStrafe);
                 mixedRealityTeleport.ForwardMovement = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Forward Movement", mixedRealityTeleport.ForwardMovement);
-                mixedRealityTeleport.VerticalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Horizontal Rotation", mixedRealityTeleport.VerticalRotation);
-                mixedRealityTeleport.HorizontalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Rotation", mixedRealityTeleport.HorizontalRotation);
+                mixedRealityTeleport.HorizontalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Horizontal Rotation", mixedRealityTeleport.HorizontalRotation);
+                mixedRealityTeleport.VerticalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Rotation", mixedRealityTeleport.VerticalRotation);
             }
 
             serializedObject.ApplyModifiedProperties();
