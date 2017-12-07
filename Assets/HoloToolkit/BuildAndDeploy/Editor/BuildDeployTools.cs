@@ -242,8 +242,8 @@ namespace HoloToolkit.Unity
 
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
             string assemblyCSharp = storePath + "/GeneratedProjects/UWP/Assembly-CSharp";
-            string assemblyCSharpFisrtpass = storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass";
-            bool restoreFirstPass = Directory.Exists(assemblyCSharpFisrtpass);
+            string assemblyCSharpFirstPass = storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass";
+            bool restoreFirstPass = Directory.Exists(assemblyCSharpFirstPass);
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do
             // this breaks the build in VS RTM
@@ -251,7 +251,7 @@ namespace HoloToolkit.Unity
                 (!RestoreNugetPackages(nugetPath, storePath) ||
                  !RestoreNugetPackages(nugetPath, storePath + "\\" + productName) ||
                  EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, assemblyCSharp) ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !RestoreNugetPackages(nugetPath, assemblyCSharpFisrtpass)))
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !RestoreNugetPackages(nugetPath, assemblyCSharpFirstPass)))
             {
                 Debug.LogError("Failed to restore nuget packages");
                 EditorUtility.ClearProgressBar();
