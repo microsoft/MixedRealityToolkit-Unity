@@ -19,6 +19,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseRayStabilizer RayStabilizer { get; set; }
 
+        public Cursor CursorOverride { get; set; }
+
         public bool OwnAllInput { get; set; }
 
         [Obsolete("Will be removed in a later version. Use Rays instead.")]

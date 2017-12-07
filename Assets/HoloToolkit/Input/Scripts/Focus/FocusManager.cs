@@ -197,6 +197,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         private readonly List<PointerData> pointers = new List<PointerData>(0);
+        private readonly List<IPointingSource> pointingSources = new List<IPointingSource>();
 
         /// <summary>
         /// GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
@@ -247,6 +248,8 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Accessors
 
+        public List<IPointingSource> PointingSources { get { return pointingSources; } }
+
         public void RegisterPointer(IPointingSource pointingSource)
         {
             Debug.Assert(pointingSource != null, "Can't register a pointer if you give us one.");
@@ -283,6 +286,7 @@ namespace HoloToolkit.Unity.InputModule
                 pointer = new PointerData(pointingSource);
             }
 
+            pointingSources.Add(pointingSource);
             pointers.Add(pointer);
         }
 
@@ -301,6 +305,7 @@ namespace HoloToolkit.Unity.InputModule
             // Should we be protecting against unregistering the GazeManager?
 
             pointers.RemoveAt(pointerIndex);
+            pointingSources.RemoveAt(pointerIndex);
 
             // Raise focus events if needed:
 
