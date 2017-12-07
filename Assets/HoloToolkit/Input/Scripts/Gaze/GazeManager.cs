@@ -225,10 +225,10 @@ namespace HoloToolkit.Unity.InputModule
             // Nothing needed
         }
 
-        public bool OwnsInput(BaseEventData eventData)
+        public bool OwnsInput(BaseInputEventData eventData)
         {
             // NOTE: This is a simple pointer and not meant to be used simultaneously with others.
-            return true;
+            return isActiveAndEnabled;
         }
 
         /// <summary>

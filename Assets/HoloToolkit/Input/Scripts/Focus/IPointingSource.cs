@@ -25,7 +25,5 @@ namespace HoloToolkit.Unity.InputModule
         void OnPreRaycast();
 
         void OnPostRaycast();
-
-        bool OwnsInput(BaseEventData eventData);
     }
 }
