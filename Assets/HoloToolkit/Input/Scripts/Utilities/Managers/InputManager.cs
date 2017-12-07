@@ -61,83 +61,7 @@ namespace HoloToolkit.Unity.InputModule
         private readonly List<InputSourceInfo> detectedInputSources = new List<InputSourceInfo>(0);
         public List<InputSourceInfo> DetectedInputSources { get { return detectedInputSources; } }
 
-        #region event origin and input source types
-
-        /// <summary>
-        /// Retrieves the MixedRealityInputType associated with this input source, or a default if none is found
-        /// </summary>
-        /// <param name="inputSourceId"></param>
-        /// <returns></returns>
-        public MixedRealityInputType GetInputSourceType(uint inputSourceId) {
-            if (inputSourceTypes.ContainsKey(inputSourceId)) {
-                return inputSourceTypes[inputSourceId];
-            }
-            return MixedRealityInputType.Other;
-        }
-
-        /// <summary>
-        /// Finds the most plausible MixedRealityInputType for an input source and adds it to inputSourceTypes
-        /// TODO: this seems VERY prone to error - find a better way? Bake into IInputSource.TryGetSourceKind?
-        /// </summary>
-        /// <param name="newSource"></param>
-        private void DetermineInputSourceType(InputSourceInfo newSource) {
-            MixedRealityInputType inputType = MixedRealityInputType.Other;                    
-            InteractionSourceInfo sourceKind = InteractionSourceInfo.Other;
-            if (newSource.InputSource.TryGetSourceKind (newSource.SourceId, out sourceKind)) {
-                switch (sourceKind) {
-                    case InteractionSourceInfo.Controller:
-                        // This narrows it down to:
-                        // LeftController
-                        // RightController
-                        // Gamepad
-                        // 
-                        // Use the device's supported input and handedness to determine which it is
-                        if (newSource.InputSource.SupportsInputInfo(newSource.SourceId, SupportedInputInfo.Position)) {
-                            // Get the device's handedness
-                        } else {
-                            // Only gamepad would NOT support position
-                            inputType = MixedRealityInputType.Gamepad;
-                        }
-                        break;
-
-                    case InteractionSourceInfo.Hand:
-                        inputType = MixedRealityInputType.Hand;
-                        break;
-
-                    case InteractionSourceInfo.Voice:
-                        inputType = MixedRealityInputType.Voice;
-                        break;
-
-                    case InteractionSourceInfo.Other:
-                    default:
-                        // This narrows it down to:
-                        // Hand
-                        // Head
-                        //
-                        // Only head supports pointing
-                        // TODO find out if this is true?
-                        if (newSource.InputSource.SupportsInputInfo(newSource.SourceId, SupportedInputInfo.Pointing)) {
-                            inputType = MixedRealityInputType.Head;
-                        } else {
-                            inputType = MixedRealityInputType.Hand;
-                        }
-                        break;
-                }
-            }
-
-            // Add the lookup
-            if (!inputSourceTypes.ContainsKey(newSource.SourceId)) {
-                inputSourceTypes.Add(newSource.SourceId, inputType);
-            } else {
-                inputSourceTypes[newSource.SourceId] = inputType;
-            }
-        }
-
-        private void RemoveInputSourceType (uint inputSourceId) {
-            if (inputSourceTypes.ContainsKey(inputSourceId)) {
-                inputSourceTypes.Remove(inputSourceId);
-            }
-        }
+        #region event origin
 
         /// <summary>
         /// Applies a string to the device associated with inputSourceId
@@ -183,21 +107,12 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Source types are defined each time a new device is found
-        /// </summary>
-        private Dictionary<uint, MixedRealityInputType> inputSourceTypes = new Dictionary<uint, MixedRealityInputType>();
-
-        /// <summary>
         /// User-defined strings set in ApplyEventOrigin
         /// </summary>
         private Dictionary<uint, string> userEventOriginDictionary = new Dictionary<uint, string>();
 
         [SerializeField]
         private string defaultEventOrigin = string.Empty;
-
-        private void ApplyDefaultEventOrigin(InputSourceInfo newSource) {
-            return;
-        }
 
         #endregion
 
@@ -373,7 +288,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Unity APIs
 
-        public void HandleEvent<T>(BaseInputEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             if (!Instance.enabled || disabledRefCount > 0)
             {
@@ -541,7 +456,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseInputClicked(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, int tapCount, object[] tags = null)
         {
             // Create input event
-            sourceClickedEventData.Initialize(source, sourceId, tags, pressType, tapCount, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            sourceClickedEventData.Initialize(source, sourceId, tags, pressType, tapCount, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceClickedEventData, OnInputClickedEventHandler);
@@ -559,7 +474,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseSourceUp(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, object[] tags = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, tags, pressType, GetInputSourceType (sourceId), GetEventOrigin(sourceId));
+            inputEventData.Initialize(source, sourceId, tags, pressType, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnSourceUpEventHandler);
@@ -589,7 +504,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseSourceDown(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, object[] tags = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, tags, pressType, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            inputEventData.Initialize(source, sourceId, tags, pressType, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnSourceDownEventHandler);
@@ -644,11 +559,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 InputSourceInfo newInputSource = new InputSourceInfo(source, sourceId);
                 detectedInputSources.Add(newInputSource);
-                DetermineInputSourceType(newInputSource);
             }
 
             // Create input event
-            sourceStateEventData.Initialize(source, sourceId, tags, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            sourceStateEventData.Initialize(source, sourceId, tags, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
@@ -669,13 +583,12 @@ namespace HoloToolkit.Unity.InputModule
                 if (detectedInputSources[iDetected].Matches(source, sourceId))
                 {
                     detectedInputSources.RemoveAt(iDetected);
-                    RemoveInputSourceType(sourceId);
                     break;
                 }
             }
 
             // Create input event
-            sourceStateEventData.Initialize(source, sourceId, tags, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            sourceStateEventData.Initialize(source, sourceId, tags, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
@@ -695,7 +608,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseManipulationStarted(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            manipulationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
@@ -711,7 +624,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseManipulationUpdated(IInputSource source, uint sourceId, Vector3 cumulativeDelta, object[] tags = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, tags, cumulativeDelta, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            manipulationEventData.Initialize(source, sourceId, tags, cumulativeDelta, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
@@ -727,7 +640,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseManipulationCompleted(IInputSource source, uint sourceId, Vector3 cumulativeDelta, object[] tags = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, tags, cumulativeDelta, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            manipulationEventData.Initialize(source, sourceId, tags, cumulativeDelta, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
@@ -743,7 +656,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseManipulationCanceled(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            manipulationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
@@ -763,7 +676,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseHoldStarted(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            holdEventData.Initialize(source, sourceId, tags, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            holdEventData.Initialize(source, sourceId, tags, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(holdEventData, OnHoldStartedEventHandler);
@@ -779,7 +692,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseHoldCompleted(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            holdEventData.Initialize(source, sourceId, tags, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            holdEventData.Initialize(source, sourceId, tags, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(holdEventData, OnHoldCompletedEventHandler);
@@ -795,7 +708,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseHoldCanceled(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            holdEventData.Initialize(source, sourceId, tags, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            holdEventData.Initialize(source, sourceId, tags, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(holdEventData, OnHoldCanceledEventHandler);
@@ -815,7 +728,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseNavigationStarted(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            navigationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
@@ -831,7 +744,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseNavigationUpdated(IInputSource source, uint sourceId, Vector3 normalizedOffset, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, tags, normalizedOffset, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            navigationEventData.Initialize(source, sourceId, tags, normalizedOffset, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationUpdatedEventHandler);
@@ -847,7 +760,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseNavigationCompleted(IInputSource source, uint sourceId, Vector3 normalizedOffset, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, tags, normalizedOffset, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            navigationEventData.Initialize(source, sourceId, tags, normalizedOffset, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCompletedEventHandler);
@@ -863,7 +776,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseNavigationCanceled(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            navigationEventData.Initialize(source, sourceId, tags, Vector3.zero, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
@@ -883,7 +796,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseInputPositionChanged(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, Vector2 position, object[] tags = null)
         {
             // Create input event
-            inputPositionEventData.Initialize(source, sourceId, tags, pressType, position, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            inputPositionEventData.Initialize(source, sourceId, tags, pressType, position, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPositionEventData, OnInputPositionChangedEventHandler);
@@ -899,7 +812,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseSelectPressedAmountChanged(IInputSource source, uint sourceId, double pressedAmount, object[] tags = null)
         {
             // Create input event
-            selectPressedEventData.Initialize(source, sourceId, tags, pressedAmount, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            selectPressedEventData.Initialize(source, sourceId, tags, pressedAmount, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(selectPressedEventData, OnSelectPressedAmountChangedEventHandler);
@@ -915,7 +828,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseTouchpadTouched(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, tags, InteractionSourcePressInfo.Touchpad, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            inputEventData.Initialize(source, sourceId, tags, InteractionSourcePressInfo.Touchpad, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnTouchpadTouchedEventHandler);
@@ -931,7 +844,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseTouchpadReleased(IInputSource source, uint sourceId, object[] tags = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, tags, InteractionSourcePressInfo.Touchpad, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            inputEventData.Initialize(source, sourceId, tags, InteractionSourcePressInfo.Touchpad, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnTouchpadReleasedEventHandler);
@@ -947,7 +860,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseSourcePositionChanged(IInputSource source, uint sourceId, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
         {
             // Create input event
-            sourcePositionEventData.Initialize(source, sourceId, tags, pointerPosition, gripPosition, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            sourcePositionEventData.Initialize(source, sourceId, tags, pointerPosition, gripPosition, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
@@ -963,7 +876,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseSourceRotationChanged(IInputSource source, uint sourceId, Quaternion pointerRotation, Quaternion gripRotation, object[] tags = null)
         {
             // Create input event
-            sourceRotationEventData.Initialize(source, sourceId, tags, pointerRotation, gripRotation, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            sourceRotationEventData.Initialize(source, sourceId, tags, pointerRotation, gripRotation, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
@@ -983,7 +896,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseGamePadDetected(IInputSource source, uint sourceId, string gamePadName)
         {
             // Create input event
-            gamePadEventData.Initialize(source, sourceId, gamePadName, null, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            gamePadEventData.Initialize(source, sourceId, gamePadName, null, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(gamePadEventData, OnGamePadDetectedEventHandler);
@@ -999,7 +912,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseGamePadLost(IInputSource source, uint sourceId, string gamePadName)
         {
             // Create input event
-            gamePadEventData.Initialize(source, sourceId, gamePadName, null, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            gamePadEventData.Initialize(source, sourceId, gamePadName, null, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(gamePadEventData, OnGamePadLostEventHandler);
@@ -1017,7 +930,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseXboxInputUpdate(IInputSource source, uint sourceId, XboxControllerData inputData)
         {
             // Create input event
-            xboxControllerEventData.Initialize(source, sourceId, inputData, null, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            xboxControllerEventData.Initialize(source, sourceId, inputData, null, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(xboxControllerEventData, OnXboxAxisUpdateHandler);
@@ -1060,7 +973,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationHypothesis(IInputSource source, uint sourceId, string dictationHypothesis, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationHypothesis, dictationAudioClip, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            dictationEventData.Initialize(source, sourceId, tags, dictationHypothesis, dictationAudioClip, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
@@ -1076,7 +989,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationResult(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationResultEventHandler);
@@ -1092,7 +1005,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationComplete(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
@@ -1108,7 +1021,7 @@ namespace HoloToolkit.Unity.InputModule
         public void RaiseDictationError(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip, GetInputSourceType(sourceId), GetEventOrigin(sourceId));
+            dictationEventData.Initialize(source, sourceId, tags, dictationResult, dictationAudioClip, GetEventOrigin(sourceId));
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);

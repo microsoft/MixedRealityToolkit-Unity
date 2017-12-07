@@ -44,9 +44,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public SemanticMeaning[] SemanticMeanings { get; private set; }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, MixedRealityInputType sourceType = MixedRealityInputType.Other, string eventOrigin = null)
+        public void Initialize(IInputSource inputSource, uint sourceId, object tag, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, string eventOrigin = null)
         {
-            BaseInitialize(inputSource, sourceId, tag, sourceType, eventOrigin);
+            BaseInitialize(inputSource, sourceId, tag, eventOrigin);
             Confidence = confidence;
             PhraseDuration = phraseDuration;
             PhraseStartTime = phraseStartTime;

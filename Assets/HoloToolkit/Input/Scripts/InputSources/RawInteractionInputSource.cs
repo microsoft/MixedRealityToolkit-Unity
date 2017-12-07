@@ -113,6 +113,11 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
+        public override bool TryGetSourceHandedness(uint sourceId, out InteractionSourceHandedness sourceHandedness)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
         {
             throw new NotImplementedException();

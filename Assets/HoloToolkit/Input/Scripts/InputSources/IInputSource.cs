@@ -26,6 +26,14 @@ namespace HoloToolkit.Unity.InputModule
         bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind);
 
         /// <summary>
+        /// Returns handedness for input source. Not all input sources will have handedness.
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <param name="sourceHandedness"></param>
+        /// <returns></returns>
+        bool TryGetSourceHandedness(uint sourceId, out InteractionSourceHandedness sourceHandedness);
+
+        /// <summary>
         /// Returns the position of the input source, if available.
         /// Not all input sources support positional information, and those that do may not always have it available.
         /// </summary>

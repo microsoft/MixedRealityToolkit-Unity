@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
         {
-            if (obj.pressType == pressType && obj.state.source.handedness == handedness)
+            if (obj.pressType == pressType && (InteractionSourceHandedness)obj.state.source.handedness == handedness)
             {
                 GrabStart();
             }
@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         private void InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
         {
-            if (obj.pressType == pressType && obj.state.source.handedness == handedness)
+            if (obj.pressType == pressType && (InteractionSourceHandedness)obj.state.source.handedness == handedness)
             {
                 TrySetThrowableObject(GrabbedObjects.Count > 0 ? GrabbedObjects[0] : null, obj.state.sourcePose);
                 GrabEnd();
