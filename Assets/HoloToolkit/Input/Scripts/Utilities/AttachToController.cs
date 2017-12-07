@@ -19,6 +19,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
 
+        public uint SourceId { get { return controller != null ? controller.SourceId : 0; } }
+
         [Header("AttachToController Elements")]
         [SerializeField]
         protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;

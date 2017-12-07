@@ -33,6 +33,8 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         [DropDownComponent(true, true)]
         protected LineBase lineBase;
+        [DropDownComponent(true, true)]
+        protected FocusPointerInput input;
 
         protected LineRendererBase[] lineRenderers;
         protected DistorterGravity distorterGravity;
@@ -94,7 +96,7 @@ namespace HoloToolkit.Unity.UX
             float clearWorldLength = 0f;
             distorterGravity.enabled = false;
             Gradient lineColor = lineColorNoTarget;
-            IPointerSpecificFocusable target = null;
+            IFocusable target = null;
 
             if (InteractionEnabled)
             {
@@ -126,7 +128,7 @@ namespace HoloToolkit.Unity.UX
                     // Clamp the end of the parabola to the result hit's point
                     lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, lineCastResolution);
 
-                    if (CheckForPointerSpecificFocusable(Result.End.Object, out target))
+                    if (CheckForFocusable(Result.End.Object, out target))
                     {
                         lineColor = lineColorValid;
                     }
@@ -158,9 +160,14 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-        public static bool CheckForPointerSpecificFocusable(GameObject gameObject, out IPointerSpecificFocusable target)
+        public override bool OwnsInput(BaseInputEventData eventData)
         {
-            target = gameObject.GetComponent(typeof(IPointerSpecificFocusable)) as IPointerSpecificFocusable;
+            return InteractionEnabled && (eventData.EventOrigin == EventOrign || eventData.SourceId == input.SourceId);
+        }
+
+        public static bool CheckForFocusable(GameObject gameObject, out IFocusable target)
+        {
+            target = gameObject.GetComponent(typeof(IFocusable)) as IFocusable;
             return target != null;
         }
 

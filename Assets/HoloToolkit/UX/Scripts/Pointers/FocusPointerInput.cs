@@ -52,6 +52,12 @@ namespace HoloToolkit.Unity.UX
 
         private void Update()
         {
+            if (!InputManager.IsInitialized)
+                return;
+
+            if (!IsAttached)
+                return;
+
             if (pointer.InteractionEnabled)
             {
                 InputManager.Instance.ApplyEventOrigin(controller.SourceId, pointer.EventOrign);
