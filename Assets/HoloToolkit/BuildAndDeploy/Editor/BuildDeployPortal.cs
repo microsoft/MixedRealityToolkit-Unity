@@ -93,7 +93,13 @@ namespace HoloToolkit.Unity
                         EditorUtility.ClearProgressBar();
                     }
 
-                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
+                    if (
+#if UNITY_2017_2_OR_NEWER
+                        webRequest.isNetworkError || webRequest.isHttpError && 
+#else
+                        webRequest.isError &&
+#endif
+                        webRequest.responseCode != 401)
                     {
                         string response = string.Empty;
                         var responseHeaders = webRequest.GetResponseHeaders();
@@ -175,7 +181,13 @@ namespace HoloToolkit.Unity
 
                     EditorUtility.ClearProgressBar();
 
-                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
+                    if (
+#if UNITY_2017_2_OR_NEWER
+                        webRequest.isNetworkError || webRequest.isHttpError && 
+#else
+                        webRequest.isError &&
+#endif
+                        webRequest.responseCode != 401)
                     {
                         string response = string.Empty;
                         var responseHeaders = webRequest.GetResponseHeaders();
@@ -243,7 +255,13 @@ namespace HoloToolkit.Unity
 
                     EditorUtility.ClearProgressBar();
 
-                    if (webRequest.isNetworkError || webRequest.isHttpError && webRequest.responseCode != 401)
+                    if (
+#if UNITY_2017_2_OR_NEWER
+                        webRequest.isNetworkError || webRequest.isHttpError && 
+#else
+                        webRequest.isError &&
+#endif
+                        webRequest.responseCode != 401)
                     {
                         string response = string.Empty;
                         var responseHeaders = webRequest.GetResponseHeaders();

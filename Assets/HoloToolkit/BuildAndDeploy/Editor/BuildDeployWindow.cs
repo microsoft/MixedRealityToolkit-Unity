@@ -540,7 +540,7 @@ namespace HoloToolkit.Unity
             }
 
             EditorGUILayout.LabelField(versionNumberLabel, GUILayout.Width(96));
-            Vector3Int newVersion = Vector3Int.zero;
+            Vector3 newVersion = Vector3.zero;
 
             EditorGUI.BeginChangeCheck();
 
@@ -550,7 +550,7 @@ namespace HoloToolkit.Unity
 
             if (EditorGUI.EndChangeCheck())
             {
-                PlayerSettings.WSA.packageVersion = new Version(newVersion.x, newVersion.y, newVersion.z, 0);
+                PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
             }
 
             GUI.enabled = false;
