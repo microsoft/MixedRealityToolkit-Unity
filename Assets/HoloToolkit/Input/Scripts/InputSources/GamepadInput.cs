@@ -15,12 +15,12 @@ using UnityEngine.VR.WSA.Input;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// GamepadInput class maps Xbox gamepad buttons to the GestureRecognizer.
+    /// GamepadInput class maps Xbox GamePad buttons to the GestureRecognizer.
     /// Gamepad button A press and release maps to tap gesture.
     /// Gamepad button A pressed maps to hold started, completed, canceled gesture.
     /// Gamepad button A pressed plus left joystick rotate maps to navigation gesture.
     /// </summary>
-    [Obsolete("Please use GamePadInputSource or XboxControllerInputSource")]
+    [Obsolete("Please use XboxControllerHandlerBase")]
     public class GamepadInput : BaseInputSource
     {
         [Tooltip("Game pad button to press for air tap.")]
@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private InputManager inputManager;
 
-        enum GestureState
+        private enum GestureState
         {
             APressed,
             NavigationStarted,
@@ -58,7 +58,7 @@ namespace HoloToolkit.Unity.InputModule
             HoldCanceled
         }
 
-        GestureState currentGestureState;
+        private GestureState currentGestureState;
 
         protected virtual void Start()
         {
@@ -137,9 +137,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (displacementAlongX != 0.0f || displacementAlongY != 0.0f || navigationStarted)
             {
-                Vector3 normalizedOffset = new Vector3(displacementAlongX,
-                    displacementAlongY,
-                    0.0f);
+                Vector3 normalizedOffset = new Vector3(displacementAlongX, displacementAlongY, 0.0f);
 
                 if (!navigationStarted)
                 {
