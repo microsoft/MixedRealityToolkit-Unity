@@ -319,8 +319,9 @@ namespace HoloToolkit.Unity.InputModule
 
             foreach (IFocusTarget target in currentFocusTargets)
             {
-                // Skip any that can't have focus
-                if (!target.FocusEnabled)
+                // Skip any that don't have focus
+                // (IFocusTargets may override focus status via FocusEnabled)
+                if (!target.HasFocus)
                 {
                     continue;
                 }
