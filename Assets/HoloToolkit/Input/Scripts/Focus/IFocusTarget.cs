@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using HoloToolkit.Unity.InputModule;
+using System.Collections.ObjectModel;
 
 public interface IFocusTarget : IEventSystemHandler
 {
@@ -16,7 +18,7 @@ public interface IFocusTarget : IEventSystemHandler
 
     void ResetFocus();
 
-    List<IFocuser> Focusers { get; }
+    ReadOnlyCollection<IFocuser> Focusers { get; }
 
     // This will be automatically implemented by MonoBehavior
     GameObject gameObject { get; }

@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdateActivePointers()
         {
-            var pointingSources = FocusManager.Instance.PointingSources;
+            var pointingSources = FocusManager.Instance.ActivePointingSources;
 
             // Make sure our pointing sources have the correct cursors
             for (int i = 0; i < pointingSources.Count; i++)

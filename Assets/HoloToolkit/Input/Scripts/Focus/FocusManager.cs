@@ -197,7 +197,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         private readonly List<PointerData> pointers = new List<PointerData>(0);
-        private readonly List<IPointingSource> pointingSources = new List<IPointingSource>();
+        private readonly List<IPointingSource> activePointingSources = new List<IPointingSource>();
 
         /// <summary>
         /// GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
@@ -250,7 +250,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Accessors
 
-        public List<IPointingSource> PointingSources { get { return pointingSources; } }
+        public List<IPointingSource> ActivePointingSources { get { return activePointingSources; } }
 
         public void RegisterPointer(IPointingSource pointingSource)
         {
@@ -287,8 +287,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 pointer = new PointerData(pointingSource);
             }
-
-            pointingSources.Add(pointingSource);
+            
             pointers.Add(pointer);
         }
 
@@ -307,7 +306,6 @@ namespace HoloToolkit.Unity.InputModule
             // Should we be protecting against unregistering the GazeManager?
 
             pointers.RemoveAt(pointerIndex);
-            pointingSources.RemoveAt(pointerIndex);
 
             // Raise focus events if needed:
 
@@ -467,6 +465,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdatePointers()
         {
+            activePointingSources.Clear();
+
             bool gazeManagerIsRegistered = false;
 
             for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
@@ -476,6 +476,11 @@ namespace HoloToolkit.Unity.InputModule
                 if (pointer == gazeManagerPointingData)
                 {
                     gazeManagerIsRegistered = true;
+                }
+
+                if (pointer.PointingSource.InteractionEnabled)
+                {
+                    activePointingSources.Add(pointer.PointingSource);
                 }
 
                 UpdatePointer(pointer);

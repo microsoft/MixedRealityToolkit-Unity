@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
+using System.Collections.ObjectModel;
 
 public class FocusableTarget : MonoBehaviour, IFocusTarget, IInputHandler
 {
@@ -10,7 +13,10 @@ public class FocusableTarget : MonoBehaviour, IFocusTarget, IInputHandler
     public virtual void OnFocusEnter(FocusEventData eventData)
     {
         Debug.Log("Focuser Enter: " + eventData.Focuser);
-        focusers.Add(eventData.Focuser);
+        if (!focusers.Contains(eventData.Focuser))
+        {
+            focusers.Add(eventData.Focuser);
+        }
     }
 
     public virtual void OnFocusExit(FocusEventData eventData)
@@ -49,11 +55,11 @@ public class FocusableTarget : MonoBehaviour, IFocusTarget, IInputHandler
 
     private List<IFocuser> focusers;
 
-    public List<IFocuser> Focusers
+    public ReadOnlyCollection<IFocuser> Focusers
     {
         get
         {
-            return focusers;
+            return focusers.AsReadOnly();
         }
     }
 
