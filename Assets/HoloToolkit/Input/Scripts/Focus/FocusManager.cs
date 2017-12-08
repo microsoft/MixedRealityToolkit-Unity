@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static HoloToolkit.Unity.InputModule.InputManager;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -212,6 +211,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
+        private readonly HashSet<InputManager.FocusEvent> pendingOverallFocusEnterSetInfo = new HashSet<InputManager.FocusEvent>();
+        private readonly HashSet<InputManager.FocusEvent> pendingOverallFocusExitSetInfo = new HashSet<InputManager.FocusEvent>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
 
         /// <summary>
@@ -423,7 +424,7 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public delegate void FocusEnteredMethodInfo(FocusEvent focusedObject);
+        public delegate void FocusEnteredMethodInfo(InputManager.FocusEvent focusedObject);
         public event FocusEnteredMethod FocusEnteredInfo;
         public delegate void FocusEnteredMethod(GameObject focusedObject);
         public event FocusEnteredMethod FocusEntered;
@@ -719,6 +720,9 @@ namespace HoloToolkit.Unity.InputModule
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
             Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
 
+            Debug.Assert(pendingOverallFocusExitSetInfo.Count == 0);
+            Debug.Assert(pendingOverallFocusEnterSetInfo.Count == 0);
+
             // NOTE: We compute the set of events to send before sending the first event
             //       just in case someone responds to the event by adding/removing a
             //       pointer which would change the structures we're iterating over.
@@ -730,18 +734,21 @@ namespace HoloToolkit.Unity.InputModule
                 if (pointer.PreviousEndObject != pointer.End.Object)
                 {
                     pendingPointerSpecificFocusChange.Add(pointer);
-
+                    
                     // Initially, we assume all pointer-specific focus changes will result
                     // also result in an overall focus change...
 
                     if (pointer.PreviousEndObject != null)
                     {
                         pendingOverallFocusExitSet.Add(pointer.PreviousEndObject);
+                        pendingOverallFocusExitSetInfo.Add(new InputManager.FocusEvent(pointer.PointingSource, pointer.PreviousEndObject));
                     }
 
                     if (pointer.End.Object != null)
                     {
                         pendingOverallFocusEnterSet.Add(pointer.End.Object);
+                        pendingOverallFocusEnterSetInfo.Add(new InputManager.FocusEvent(pointer.PointingSource, pointer.End.Object));
+
                     }
                 }
             }
@@ -769,6 +776,17 @@ namespace HoloToolkit.Unity.InputModule
                 RaiseFocusEnteredEvents(enter);
             }
 
+
+            //foreach (FocusEvent exit in pendingOverallFocusExitSetInfo)
+            //{
+            //    RaiseFocusExitedEvents(exit);
+            //}
+
+            foreach (InputManager.FocusEvent enter in pendingOverallFocusEnterSetInfo)
+            {
+                RaiseFocusEnteredEventsInfo(enter);
+            }
+
             for (int iChange = 0; iChange < pendingPointerSpecificFocusChange.Count; iChange++)
             {
                 PointerData change = pendingPointerSpecificFocusChange[iChange];
@@ -778,6 +796,8 @@ namespace HoloToolkit.Unity.InputModule
 
             pendingOverallFocusEnterSet.Clear();
             pendingOverallFocusExitSet.Clear();
+            pendingOverallFocusEnterSetInfo.Clear();
+            pendingOverallFocusExitSetInfo.Clear();
             pendingPointerSpecificFocusChange.Clear();
         }
 
@@ -801,15 +821,25 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void RaiseFocusEnteredEvents(FocusEvent focusedObject)
+        private void RaiseFocusEnteredEventsInfo(InputManager.FocusEvent focusedObject)
         {
             InputManager.Instance.RaiseFocusEnter(focusedObject);
             //Debug.Log("Focus Enter: " + focusedObject.name);
             if (FocusEntered != null)
             {
-                FocusEntered(focusedObject);
+                FocusEntered(focusedObject.Target);
             }
         }
+
+        //private void RaiseFocusExitedEvents(FocusEvent unfocusedObject)
+        //{
+        //    InputManager.Instance.RaiseFocusExit(unfocusedObject);
+        //    //Debug.Log("Focus Exit: " + unfocusedObject.name);
+        //    if (FocusExited != null)
+        //    {
+        //        FocusExited(unfocusedObject.Target);
+        //    }
+        //}
 
         private void RaisePointerSpecificFocusChangedEvents(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {

@@ -441,6 +441,18 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        //public void RaiseFocusExit(FocusEvent deFocusedObject)
+        //{
+        //    ExecuteEvents.ExecuteHierarchy(deFocusedObject, null, OnFocusExitEventHandler);
+
+        //    PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
+
+        //    if (pointerInputEventData != null)
+        //    {
+        //        ExecuteEvents.ExecuteHierarchy(deFocusedObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
+        //    }
+        //}
+
         private static readonly ExecuteEvents.EventFunction<IPointerSpecificFocusable> OnPointerSpecificFocusEnterEventHandler =
             delegate (IPointerSpecificFocusable handler, BaseEventData eventData)
             {
