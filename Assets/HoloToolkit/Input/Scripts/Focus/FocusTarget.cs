@@ -6,7 +6,7 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System.Collections.ObjectModel;
 
-public class FocusableTarget : MonoBehaviour, IFocusTarget, IInputHandler
+public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
 {
     public new GameObject gameObject;
 

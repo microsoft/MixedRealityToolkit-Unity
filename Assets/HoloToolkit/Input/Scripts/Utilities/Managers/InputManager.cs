@@ -37,6 +37,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private int disabledRefCount;
 
+        private FocusEventData focusEventData;
         private InputEventData inputEventData;
         private InputClickedEventData sourceClickedEventData;
         private SourceStateEventData sourceStateEventData;
@@ -369,13 +370,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 Focuser = focuser;
                 Target = target;
-                EventData = new FocusEventData(EventSystem.current);
-                EventData.Initialize(focuser as IPointingSource);
             }
 
             public IFocuser Focuser { get; private set; }
             public GameObject Target { get; private set; }
-            public FocusEventData EventData { get; private set; }
         }
 
         private static readonly ExecuteEvents.EventFunction<IFocusable> OnFocusEnterEventHandler =
@@ -409,13 +407,13 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseFocusEnter(FocusEvent focusedObject)
         {
-            ExecuteEvents.ExecuteHierarchy(focusedObject.Target, focusedObject.EventData, OnFocusEnterEventHandlerInfo);
+            ExecuteEvents.ExecuteHierarchy(focusedObject.Target.gameObject, null, OnFocusEnterEventHandlerInfo);
 
             PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
 
             if (pointerInputEventData != null)
             {
-                ExecuteEvents.ExecuteHierarchy(focusedObject.Target, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
+                ExecuteEvents.ExecuteHierarchy(focusedObject.Target.gameObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
             }
         }
 

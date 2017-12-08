@@ -43,27 +43,30 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdateActivePointers()
         {
-            var pointingSources = FocusManager.Instance.ActivePointingSources;
+            var activeFocusers = FocusManager.Instance.ActiveFocusers;
 
             // Make sure our pointing sources have the correct cursors
-            for (int i = 0; i < pointingSources.Count; i++)
+            for (int i = 0; i < activeFocusers.Count; i++)
             {
-                IPointingSource pointingSource = pointingSources[i];
-                Cursor associatedCursor = null;
-                Cursor cursorPrefab = pointingSource.CursorOverride != null ? pointingSource.CursorOverride : CursorPrefab;
+                IPointingSource pointingSource = (IPointingSource)activeFocusers[i];
+                if (pointingSource != null)
+                {
+                    Cursor associatedCursor = null;
+                    Cursor cursorPrefab = pointingSource.CursorOverride != null ? pointingSource.CursorOverride : CursorPrefab;
 
-                // See if there's an associated cursor of the correct type associated with this pointer
-                // If one doesn't exist, or if the existing cursor was destroyed, create one
-                if (!cursors.TryGetValue(pointingSource, out associatedCursor) || associatedCursor == null)
-                {
-                    associatedCursor = CreateCursor(pointingSource, cursorPrefab);
-                }
-                else if (associatedCursor.name != cursorPrefab.name)
-                {
-                    // The desired cursor prefab has changed - destroy the existing cursor and instantiate a new one
-                    cursors.Remove(pointingSource);
-                    GameObject.Destroy(associatedCursor.gameObject);
-                    associatedCursor = CreateCursor(pointingSource, cursorPrefab);
+                    // See if there's an associated cursor of the correct type associated with this pointer
+                    // If one doesn't exist, or if the existing cursor was destroyed, create one
+                    if (!cursors.TryGetValue(pointingSource, out associatedCursor) || associatedCursor == null)
+                    {
+                        associatedCursor = CreateCursor(pointingSource, cursorPrefab);
+                    }
+                    else if (associatedCursor.name != cursorPrefab.name)
+                    {
+                        // The desired cursor prefab has changed - destroy the existing cursor and instantiate a new one
+                        cursors.Remove(pointingSource);
+                        GameObject.Destroy(associatedCursor.gameObject);
+                        associatedCursor = CreateCursor(pointingSource, cursorPrefab);
+                    }
                 }
             }
 
