@@ -7,16 +7,17 @@ namespace HoloToolkit.Examples.InteractiveElements
     [RequireComponent(typeof(InteractiveSet))]
     public class InteractiveGroup : MonoBehaviour
     {
+        [Tooltip("Gameobject containing GridLayoutGroup")]
+        public GameObject grid;
+
         [Tooltip("Prefab for your interactive.")]
         public GameObject InteractivePrefab;
 
+        [Tooltip("scale for new instance of InteractivePrefab")]
+        public Vector3 prefabScale = new Vector3(2000, 2000, 2000);
+
         [Tooltip("Data to fill the InteractiveSet.")]
         public List<string> Titles = new List<string>();
-
-        [Tooltip("number of elements after which we start a new column")]
-        public int Rows = 3;
-
-        public Vector2 Offsets = new Vector2(0.00f, 0.00f);
 
         private void Start()
         {
@@ -56,7 +57,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             for (int i = Interactives.Count; i < Titles.Count; i++)
             {
-                GameObject PrefabInst = Instantiate(InteractivePrefab, gameObject.transform) as GameObject;
+                GameObject PrefabInst = Instantiate(InteractivePrefab, grid.transform) as GameObject;
+                PrefabInst.transform.localScale = prefabScale;
                 InteractiveToggle InterInst = PrefabInst.GetComponent<InteractiveToggle>();
                 if (InterInst == null)
                 {
@@ -78,9 +80,6 @@ namespace HoloToolkit.Examples.InteractiveElements
             RemoveInteractives(Titles.Count);
             CreateInteractives();
 
-            int rows = System.Math.Min(Rows, Titles.Count);
-            int columns = (Titles.Count - 1) / Rows + 1;
-
             for (int i = 0; i < Interactives.Count; i++)
             {
                 // Set title
@@ -88,20 +87,6 @@ namespace HoloToolkit.Examples.InteractiveElements
                 Interactive interactive = Interactives[i];
                 interactive.SetTitle(title);
                 interactive.Keyword = title;
-                
-                // For setting the layout
-                int j = i % rows;
-
-                Vector2 Distance = new Vector2(Offsets.x, Offsets.y);
-                Collider collider = interactive.gameObject.GetComponent<Collider>();
-                if (collider != null)
-                {
-                    Distance.x += collider.bounds.size.x;
-                    Distance.y += collider.bounds.size.y;
-                }
-                interactive.gameObject.transform.localPosition = new Vector3(
-                    ((i / rows) - ((columns - 1) * 0.5f)) * Distance.x,
-                    -(j - (rows - 1) * 0.5f) * Distance.y);
             }
             GetInteractiveSet().SelectedIndices.Clear();
             GetInteractiveSet().UpdateInteractives();
