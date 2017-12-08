@@ -56,7 +56,7 @@ public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
         }
     }
 
-    private List<IFocuser> focusers;
+    private List<IFocuser> focusers = new List<IFocuser>();
 
     public ReadOnlyCollection<IFocuser> Focusers
     {

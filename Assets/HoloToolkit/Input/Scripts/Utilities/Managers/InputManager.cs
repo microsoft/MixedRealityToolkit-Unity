@@ -252,6 +252,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InitializeEventDatas()
         {
+            focusEventData = new FocusEventData(EventSystem.current);
             inputEventData = new InputEventData(EventSystem.current);
             sourceClickedEventData = new InputClickedEventData(EventSystem.current);
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
@@ -338,7 +339,6 @@ namespace HoloToolkit.Unity.InputModule
                 // If none own the event data, don't send the event to this target
                 if (!atLeastOneFocuserOwnsEvent)
                 {
-                    Debug.Log("No focusers owned event " + eventData.GetType().Name + " for target " + target.GetType().Name + " - moving on");
                     continue;
                 }
                 
@@ -436,15 +436,17 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnFocusEnter(casted);
             };
 
-        public void RaiseFocusEnter(FocusEvent focusedObject)
+        public void RaiseFocusEnter(FocusEvent focusedEvent)
         {
-            ExecuteEvents.ExecuteHierarchy(focusedObject.Target.gameObject, null, OnFocusEnterEventHandlerInfo);
+            focusEventData.Initialize(focusedEvent.Focuser, focusedEvent.Target);
+
+            ExecuteEvents.ExecuteHierarchy(focusedEvent.Target.gameObject, focusEventData, OnFocusEnterEventHandlerInfo);
 
             PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
 
             if (pointerInputEventData != null)
             {
-                ExecuteEvents.ExecuteHierarchy(focusedObject.Target.gameObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
+                ExecuteEvents.ExecuteHierarchy(focusedEvent.Target.gameObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
             }
         }
 
@@ -470,17 +472,19 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        //public void RaiseFocusExit(FocusEvent deFocusedObject)
-        //{
-        //    ExecuteEvents.ExecuteHierarchy(deFocusedObject, null, OnFocusExitEventHandler);
+        public void RaiseFocusExit(FocusEvent deFocusedEvent)
+        {
+            focusEventData.Initialize(deFocusedEvent.Focuser, deFocusedEvent.Target);
 
-        //    PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
+            ExecuteEvents.ExecuteHierarchy(deFocusedEvent.Target.gameObject, focusEventData, OnFocusExitEventHandler);
 
-        //    if (pointerInputEventData != null)
-        //    {
-        //        ExecuteEvents.ExecuteHierarchy(deFocusedObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
-        //    }
-        //}
+            PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
+
+            if (pointerInputEventData != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(deFocusedEvent.Target.gameObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
+            }
+        }
 
         private static readonly ExecuteEvents.EventFunction<IPointerSpecificFocusable> OnPointerSpecificFocusEnterEventHandler =
             delegate (IPointerSpecificFocusable handler, BaseEventData eventData)
