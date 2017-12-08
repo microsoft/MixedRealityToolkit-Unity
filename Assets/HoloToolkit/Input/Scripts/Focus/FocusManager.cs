@@ -136,7 +136,7 @@ namespace HoloToolkit.Unity.InputModule
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
-                PreviousEndObject = End.Object;
+                PreviousEndObject = End.Target;
                 RayStepIndex = rayStepIndex;
 
                 StartPoint = sourceRay.origin;
@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = hit.point,
                     Normal = hit.normal,
-                    Object = hit.transform.gameObject
+                    Target = hit.transform.gameObject
                 };
             }
 
@@ -159,13 +159,13 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = hit.point,
                     Normal = hit.normal,
-                    Object = result.gameObject
+                    Target = result.gameObject
                 };
             }
 
             public void UpdateHit(float extent)
             {
-                PreviousEndObject = End.Object;
+                PreviousEndObject = End.Target;
 
                 RayStep firstStep = PointingSource.Rays[0];
                 RayStep finalStep = PointingSource.Rays[PointingSource.Rays.Length - 1];
@@ -176,7 +176,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = finalStep.terminus,
                     Normal = (-finalStep.direction),
-                    Object = null
+                    Target = null
                 };
             }
 
@@ -191,7 +191,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     Point = End.Point,
                     Normal = End.Normal,
-                    Object = null
+                    Target = null
                 };
             }
         }
@@ -318,15 +318,15 @@ namespace HoloToolkit.Unity.InputModule
 
             // Raise focus events if needed:
 
-            if (pointer.End.Object != null)
+            if (pointer.End.Target != null)
             {
-                GameObject unfocusedObject = pointer.End.Object;
+                GameObject unfocusedObject = pointer.End.Target;
 
                 bool objectIsStillFocusedByOtherPointer = false;
 
                 for (int iOther = 0; iOther < pointers.Count; iOther++)
                 {
-                    if (pointers[iOther].End.Object == unfocusedObject)
+                    if (pointers[iOther].End.Target == unfocusedObject)
                     {
                         objectIsStillFocusedByOtherPointer = true;
                         break;
@@ -369,13 +369,17 @@ namespace HoloToolkit.Unity.InputModule
             PointerInputEventData pointerInputEventData = GetSpecificPointerEventData(pointingSource);
 
             Debug.Assert(pointerInputEventData != null);
-            pointerInputEventData.selectedObject = details.Value.Object;
+            pointerInputEventData.selectedObject = details.Value.Target.gameObject;
 
-            return details.Value.Object;
+            return details.Value.Target.gameObject;
         }
 
         public bool TryGetPointingSource(BaseInputEventData eventData, out IPointingSource pointingSource)
         {
+            for (int i = 0; i < activeFocusers.Count; i++)
+            {
+
+            }
             for (int i = 0; i < pointers.Count; i++)
             {
                 if (pointers[i].PointingSource.OwnsInput(eventData))
@@ -409,7 +413,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (GetPointerData(pointingSource, out pointerData))
             {
-                focusedObject = pointerData.End.Object;
+                focusedObject = pointerData.End.Target.gameObject;
             }
 
             return focusedObject;
@@ -668,7 +672,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.End.Target == null || overridePhysicsRaycast) && uiRaycastResult.isValid && uiRaycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
@@ -704,7 +708,7 @@ namespace HoloToolkit.Unity.InputModule
             // If we have a raycast result, check if we need to overwrite the physics raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                if (pointer.End.Object != null)
+                if (pointer.End.Target != null)
                 {
                     // Check layer prioritization
                     if (prioritizedLayerMasks.Length > 1)
@@ -768,9 +772,9 @@ namespace HoloToolkit.Unity.InputModule
                 PointerData pointer = pointers[iPointer];
 
                 // Check for an active focus target
-                if (pointer.End.Object != null)
+                if (pointer.End.Target != null)
                 {
-                    IFocusTarget focusTarget = (IFocusTarget)pointer.End.Object.GetComponent(typeof(IFocusTarget));
+                    IFocusTarget focusTarget = (IFocusTarget)pointer.End.Target.GetComponent(typeof(IFocusTarget));
                     if (focusTarget != null)
                     {
                         // Add this to our current focus targets regardless of whether focus is enabled
@@ -783,7 +787,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if (pointer.PreviousEndObject != pointer.End.Object)
+                if (pointer.PreviousEndObject != pointer.End.Target)
                 {
                     pendingPointerSpecificFocusChange.Add(pointer);
                     
@@ -796,10 +800,10 @@ namespace HoloToolkit.Unity.InputModule
                         pendingOverallFocusExitSetInfo.Add(new InputManager.FocusEvent(pointer.PointingSource, pointer.PreviousEndObject));
                     }
 
-                    if (pointer.End.Object != null)
+                    if (pointer.End.Target != null)
                     {
-                        pendingOverallFocusEnterSet.Add(pointer.End.Object);
-                        pendingOverallFocusEnterSetInfo.Add(new InputManager.FocusEvent(pointer.PointingSource, pointer.End.Object));
+                        pendingOverallFocusEnterSet.Add(pointer.End.Target);
+                        pendingOverallFocusEnterSetInfo.Add(new InputManager.FocusEvent(pointer.PointingSource, pointer.End.Target));
 
                     }
                 }
@@ -831,7 +835,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 PointerData pointer = pointers[iPointer];
 
-                pendingOverallFocusExitSet.Remove(pointer.End.Object);
+                pendingOverallFocusExitSet.Remove(pointer.End.Target);
 
                 pendingOverallFocusEnterSet.Remove(pointer.PreviousEndObject);
             }
@@ -874,7 +878,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 PointerData change = pendingPointerSpecificFocusChange[iChange];
 
-                RaisePointerSpecificFocusChangedEvents(change.PointingSource, change.PreviousEndObject, change.End.Object);
+                RaisePointerSpecificFocusChangedEvents(change.PointingSource, change.PreviousEndObject, change.End.Target);
             }
 
             pendingOverallFocusEnterSet.Clear();

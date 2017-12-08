@@ -302,7 +302,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(currentPointingSource);
 
-            if (focusDetails.Object != null && (Vector3.Dot(focusDetails.Normal, Vector3.up) > 0.90f))
+            if (focusDetails.Target != null && (Vector3.Dot(focusDetails.Normal, Vector3.up) > 0.90f))
             {
                 isTeleportValid = true;
 

@@ -297,59 +297,71 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             Debug.Assert(!eventData.used);
-            
-            // Use focused object when OverrideFocusedObject is null.
-            GameObject focusedObject = (OverrideFocusedObject == null) ? FocusManager.Instance.TryGetFocusedObject(eventData) : OverrideFocusedObject;
 
-            // Send the event to global listeners
-            for (int i = 0; i < globalListeners.Count; i++)
+            // Go through each focus target from the focus manager
+            var currentFocusTargets = FocusManager.Instance.CurrentFocusTargets;
+
+            foreach (IFocusTarget target in currentFocusTargets)
             {
-                // Global listeners should only get events on themselves, as opposed to their hierarchy.
-                ExecuteEvents.Execute(globalListeners[i], eventData, eventHandler);
-            }
+                // Skip any that can't have focus
+                if (!target.FocusEnabled)
+                {
+                    continue;
+                }
+                
+                // TODO: determine focus override behavior in context of multi-pointers
+                GameObject focusedObject = target.gameObject;
 
-            if (eventData.used)
-            {
-                // All global listeners get a chance to see the event, but if any of them marked it used, we stop
-                // the event from going any further.
-                return;
-            }
+                // Send the event to global listeners
+                for (int i = 0; i < globalListeners.Count; i++)
+                {
+                    // Global listeners should only get events on themselves, as opposed to their hierarchy.
+                    ExecuteEvents.Execute(globalListeners[i], eventData, eventHandler);
+                }
 
-            // TODO: robertes: consider whether modal and fallback input should flow to each handler until used
-            //       or it should flow to just the topmost handler on the stack as it does today.
+                if (eventData.used)
+                {
+                    // All global listeners get a chance to see the event, but if any of them marked it used, we stop
+                    // the event from going any further.
+                    return;
+                }
 
-            // Handle modal input if one exists
-            if (modalInputStack.Count > 0)
-            {
-                GameObject modalInput = modalInputStack.Peek();
+                // TODO: robertes: consider whether modal and fallback input should flow to each handler until used
+                //       or it should flow to just the topmost handler on the stack as it does today.
 
-                // If there is a focused object in the hierarchy of the modal handler, start the event
-                // bubble there
-                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                // Handle modal input if one exists
+                if (modalInputStack.Count > 0)
+                {
+                    GameObject modalInput = modalInputStack.Peek();
+
+                    // If there is a focused object in the hierarchy of the modal handler, start the event
+                    // bubble there
+                    if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                    {
+                        if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
+                        {
+                            return;
+                        }
+                    }
+                    // Otherwise, just invoke the event on the modal handler itself
+                    else
+                    {
+                        if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler) && eventData.used)
+                        {
+                            return;
+                        }
+                    }
+                }
+
+                // If event was not handled by modal, pass it on to the current focused object
+                if (focusedObject != null)
                 {
                     if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
                     {
                         return;
                     }
                 }
-                // Otherwise, just invoke the event on the modal handler itself
-                else
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler) && eventData.used)
-                    {
-                        return;
-                    }
-                }
-            }
-
-            // If event was not handled by modal, pass it on to the current focused object
-            if (focusedObject != null)
-            {
-                if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
-                {
-                    return;
-                }
-            }
+            }           
 
             // If event was not handled by the focused object, pass it on to any fallback handlers
             if (fallbackInputStack.Count > 0)

@@ -241,10 +241,10 @@ namespace HoloToolkit.Unity.InputModule
         {
             HitInfo = hitInfo;
             HitObject = isRegisteredForFocus
-                ? focusDetails.Object
+                ? focusDetails.Target
                 : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.
 
-            if (focusDetails.Object != null)
+            if (focusDetails.Target != null)
             {
                 lastHitDistance = (focusDetails.Point - Rays[0].origin).magnitude;
                 UpdateHitPosition();

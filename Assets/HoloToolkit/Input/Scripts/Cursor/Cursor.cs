@@ -286,7 +286,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void UpdateCursorTransform()
         {
             FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(Pointer);
-            GameObject newTargetedObject = focusDetails.Object;
+            GameObject newTargetedObject = focusDetails.Target;
             Vector3 lookForward = Vector3.forward;
 
             // Normalize scale on before update
