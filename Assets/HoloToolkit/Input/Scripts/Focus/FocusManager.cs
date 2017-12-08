@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static HoloToolkit.Unity.InputModule.InputManager;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -422,6 +423,8 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
+        public delegate void FocusEnteredMethodInfo(FocusEvent focusedObject);
+        public event FocusEnteredMethod FocusEnteredInfo;
         public delegate void FocusEnteredMethod(GameObject focusedObject);
         public event FocusEnteredMethod FocusEntered;
 
@@ -789,6 +792,16 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         private void RaiseFocusEnteredEvents(GameObject focusedObject)
+        {
+            InputManager.Instance.RaiseFocusEnter(focusedObject);
+            //Debug.Log("Focus Enter: " + focusedObject.name);
+            if (FocusEntered != null)
+            {
+                FocusEntered(focusedObject);
+            }
+        }
+
+        private void RaiseFocusEnteredEvents(FocusEvent focusedObject)
         {
             InputManager.Instance.RaiseFocusEnter(focusedObject);
             //Debug.Log("Focus Enter: " + focusedObject.name);

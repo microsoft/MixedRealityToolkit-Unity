@@ -363,6 +363,21 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Focus Events
 
+        public struct FocusEvent
+        {
+            public FocusEvent(IFocuser focuser, GameObject target)
+            {
+                Focuser = focuser;
+                Target = target;
+                EventData = new FocusEventData(EventSystem.current);
+                EventData.Initialize(focuser as IPointingSource);
+            }
+
+            public IFocuser Focuser { get; private set; }
+            public GameObject Target { get; private set; }
+            public FocusEventData EventData { get; private set; }
+        }
+
         private static readonly ExecuteEvents.EventFunction<IFocusable> OnFocusEnterEventHandler =
             delegate (IFocusable handler, BaseEventData eventData)
             {
@@ -382,6 +397,25 @@ namespace HoloToolkit.Unity.InputModule
             if (pointerInputEventData != null)
             {
                 ExecuteEvents.ExecuteHierarchy(focusedObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
+            }
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IFocusTarget> OnFocusEnterEventHandlerInfo =
+            delegate (IFocusTarget handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                handler.OnFocusEnter(casted);
+            };
+
+        public void RaiseFocusEnter(FocusEvent focusedObject)
+        {
+            ExecuteEvents.ExecuteHierarchy(focusedObject.Target, focusedObject.EventData, OnFocusEnterEventHandlerInfo);
+
+            PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
+
+            if (pointerInputEventData != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(focusedObject.Target, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
             }
         }
 
