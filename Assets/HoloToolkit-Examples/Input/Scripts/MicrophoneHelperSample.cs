@@ -8,7 +8,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.Examples
 {
     public class MicrophoneHelperSample : MonoBehaviour
     {
