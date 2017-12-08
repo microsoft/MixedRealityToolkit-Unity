@@ -331,6 +331,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     if (focuser.OwnsInput(eventData))
                     {
+                        Debug.Log("Focuser " + focuser.GetType().Name + " owns input type " + eventData.GetType().Name + " when targeting item " + target.gameObject.name);
                         atLeastOneFocuserOwnsEvent = true;
                         break;
                     }
@@ -339,6 +340,7 @@ namespace HoloToolkit.Unity.InputModule
                 // If none own the event data, don't send the event to this target
                 if (!atLeastOneFocuserOwnsEvent)
                 {
+                    Debug.Log("No focuser trained on target " + target.gameObject.name + " owns input type " + eventData.GetType().Name + ", moving on");
                     continue;
                 }
                 
@@ -359,6 +361,7 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
                         {
+                            Debug.Log("Executed event data from modal input stack object " + modalInput.name + " as child of " + focusedObject.name);
                             return;
                         }
                     }
@@ -367,6 +370,7 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler) && eventData.used)
                         {
+                            Debug.Log("Executed event data from modal input stack object " + modalInput.name);
                             return;
                         }
                     }

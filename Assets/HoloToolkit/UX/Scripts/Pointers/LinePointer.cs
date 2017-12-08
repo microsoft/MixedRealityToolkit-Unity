@@ -96,7 +96,7 @@ namespace HoloToolkit.Unity.UX
             float clearWorldLength = 0f;
             distorterGravity.enabled = false;
             Gradient lineColor = lineColorNoTarget;
-            IFocusable target = null;
+            IFocusTarget focusTarget = null;
 
             if (InteractionEnabled)
             {
@@ -128,7 +128,7 @@ namespace HoloToolkit.Unity.UX
                     // Clamp the end of the parabola to the result hit's point
                     lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, lineCastResolution);
 
-                    if (CheckForFocusable(Result.End.Target, out target))
+                    if (FocusManager.GetFocusTargetFromGameObject (Result.End.Target, out focusTarget))
                     {
                         lineColor = lineColorValid;
                     }
@@ -170,12 +170,6 @@ namespace HoloToolkit.Unity.UX
             }
 
             return InteractionEnabled && eventData.SourceId == input.SourceId;
-        }
-
-        public static bool CheckForFocusable(GameObject gameObject, out IFocusable target)
-        {
-            target = gameObject.GetComponent(typeof(IFocusable)) as IFocusable;
-            return target != null;
         }
 
         #region custom editor

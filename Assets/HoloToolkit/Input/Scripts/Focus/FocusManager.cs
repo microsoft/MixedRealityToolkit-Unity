@@ -774,8 +774,8 @@ namespace HoloToolkit.Unity.InputModule
                 // Check for an active focus target
                 if (pointer.End.Target != null)
                 {
-                    IFocusTarget focusTarget = (IFocusTarget)pointer.End.Target.GetComponent(typeof(IFocusTarget));
-                    if (focusTarget != null)
+                    IFocusTarget focusTarget = null;
+                    if (GetFocusTargetFromGameObject(pointer.End.Target, out focusTarget))
                     {
                         // Add this to our current focus targets regardless of whether focus is enabled
                         currentFocusTargets.Add(focusTarget);
@@ -1025,6 +1025,26 @@ namespace HoloToolkit.Unity.InputModule
                     sceneCanvases[i].worldCamera = UIRaycastCamera;
                 }
             }
+        }
+
+        public static bool GetFocusTargetFromGameObject (GameObject gameObject, out IFocusTarget target)
+        {
+            // TODO: Discuss restrictions on IFocusTarget objects to avoid this costly search
+            // Perhaps requiring a collider on the same object as the IFocusTarget script?
+
+            target = (IFocusTarget)gameObject.GetComponent(typeof(IFocusTarget));
+
+            if (target == null)
+            {
+                // See if any objects on the parent are a focus target
+                while (target == null && gameObject.transform.parent != null)
+                {
+                    gameObject = gameObject.transform.parent.gameObject;
+                    target = (IFocusTarget)gameObject.GetComponent(typeof(IFocusTarget));
+                }
+            }
+
+            return target != null;
         }
 
         #endregion
