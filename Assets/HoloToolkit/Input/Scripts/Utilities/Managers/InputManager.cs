@@ -298,6 +298,21 @@ namespace HoloToolkit.Unity.InputModule
 
             Debug.Assert(!eventData.used);
 
+            // Send the event to global listeners
+            for (int i = 0; i < globalListeners.Count; i++)
+            {
+                // Global listeners should only get events on themselves, as opposed to their hierarchy.
+                ExecuteEvents.Execute(globalListeners[i], eventData, eventHandler);
+            }
+
+            if (eventData.used)
+            {
+                // All global listeners get a chance to see the event, but if any of them marked it used, we stop
+                // the event from going any further.
+                return;
+            }
+
+
             // Go through each focus target from the focus manager
             var currentFocusTargets = FocusManager.Instance.CurrentFocusTargets;
 
@@ -308,23 +323,27 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     continue;
                 }
+
+                // Check whether any of the focusers in the target own this event data
+                bool atLeastOneFocuserOwnsEvent = false;
+                foreach (IFocuser focuser in target.Focusers)
+                {
+                    if (focuser.OwnsInput(eventData))
+                    {
+                        atLeastOneFocuserOwnsEvent = true;
+                        break;
+                    }
+                }
+
+                // If none own the event data, don't send the event to this target
+                if (!atLeastOneFocuserOwnsEvent)
+                {
+                    Debug.Log("No focusers owned event " + eventData.GetType().Name + " for target " + target.GetType().Name + " - moving on");
+                    continue;
+                }
                 
                 // TODO: determine focus override behavior in context of multi-pointers
                 GameObject focusedObject = target.gameObject;
-
-                // Send the event to global listeners
-                for (int i = 0; i < globalListeners.Count; i++)
-                {
-                    // Global listeners should only get events on themselves, as opposed to their hierarchy.
-                    ExecuteEvents.Execute(globalListeners[i], eventData, eventHandler);
-                }
-
-                if (eventData.used)
-                {
-                    // All global listeners get a chance to see the event, but if any of them marked it used, we stop
-                    // the event from going any further.
-                    return;
-                }
 
                 // TODO: robertes: consider whether modal and fallback input should flow to each handler until used
                 //       or it should flow to just the topmost handler on the stack as it does today.

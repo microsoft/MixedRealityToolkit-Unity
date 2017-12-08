@@ -10,6 +10,9 @@ public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
 {
     public new GameObject gameObject;
 
+    [SerializeField]
+    private bool focusEnabled = true;
+
     public virtual void OnFocusEnter(FocusEventData eventData)
     {
         Debug.Log("Focuser Enter: " + eventData.Focuser);
@@ -43,7 +46,7 @@ public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
         Debug.Log("Up");
     }
 
-    public bool FocusEnabled { get; set; }
+    public bool FocusEnabled { get { return focusEnabled; } set {  FocusEnabled = value; } }
 
     public bool HasFocus
     {
