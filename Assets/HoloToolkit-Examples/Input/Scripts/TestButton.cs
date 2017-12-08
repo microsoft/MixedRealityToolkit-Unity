@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// receive pressed and released events.
     /// This class is an example of how an animated button can be created using the input module and Unity.
     /// </summary>
-    public class TestButton : FocusTarget, IInputClickHandler, IFocusable
+    public class TestButton : FocusTarget, IInputClickHandler
     {
         public Transform ToolTip;
         public Renderer ToolTipRenderer;
@@ -34,21 +34,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private AnimatorControllerParameter[] animatorHashes;
         private Material cachedToolTipMaterial;
-
-        private bool focused;
-        public bool Focused
-        {
-            get { return focused; }
-            set
-            {
-                if (focused != value)
-                {
-                    focused = value;
-                    UpdateButtonAnimation();
-                }
-            }
-        }
-
+        
         private bool stayFocused;
         public bool StayFocused
         {
@@ -119,17 +105,17 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void Update()
         {
-            if (ToolTipRenderer != null && (Focused && toolTipTimer < ToolTipFadeTime) || (!Focused && toolTipTimer > 0.0f))
+            if (ToolTipRenderer != null && (HasFocus && toolTipTimer < ToolTipFadeTime) || (!HasFocus && toolTipTimer > 0.0f))
             {
                 // Calculate the new time delta
-                toolTipTimer = toolTipTimer + (Focused ? Time.deltaTime : -Time.deltaTime);
+                toolTipTimer = toolTipTimer + (HasFocus ? Time.deltaTime : -Time.deltaTime);
 
                 // Stop the timer if it exceeds the limit.  Clamp doesn't work here since time can be outside the normal range in some situations
-                if (Focused && toolTipTimer > ToolTipFadeTime)
+                if (HasFocus && toolTipTimer > ToolTipFadeTime)
                 {
                     toolTipTimer = ToolTipFadeTime;
                 }
-                else if (!Focused && toolTipTimer < 0.0f)
+                else if (!HasFocus && toolTipTimer < 0.0f)
                 {
                     toolTipTimer = 0.0f;
                 }
@@ -181,7 +167,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 {
                     if (animatorHashes[i].nameHash == focusedButtonId)
                     {
-                        ButtonAnimator.SetBool(focusedButtonId, Focused);
+                        ButtonAnimator.SetBool(focusedButtonId, HasFocus);
                     }
 
                     if (animatorHashes[i].nameHash == selectedButtonId)
@@ -214,23 +200,25 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
-            Focused = true;
+            base.OnFocusEnter(eventData);
 
             // The first time the button is focused and the timer hasn't started, start the timer in a delayed mode
-            if (Focused && toolTipTimer == 0.0f)
+            if (HasFocus && toolTipTimer == 0.0f)
             {
                 toolTipTimer = -ToolTipDelayTime;
             }
 
+            UpdateButtonAnimation();
             UpdateVisuals();
         }
 
-        public void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
-            Focused = false;
+            base.OnFocusExit(eventData);
 
+            UpdateButtonAnimation();
             UpdateVisuals();
         }
 

@@ -853,10 +853,15 @@ namespace HoloToolkit.Unity.InputModule
             }
 
 
-            //foreach (FocusEvent exit in pendingOverallFocusExitSetInfo)
-            //{
-            //    RaiseFocusExitedEvents(exit);
-            //}
+            foreach (InputManager.FocusEvent exit in pendingOverallFocusExitSetInfo)
+            {
+                RaiseFocusExitedEvents(exit);
+            }
+
+            foreach (InputManager.FocusEvent enter in pendingOverallFocusEnterSetInfo)
+            {
+                RaiseFocusEnteredEventsInfo(enter);
+            }
 
             // Handle our global focus gained / lost events
             if (FocusGained != null)
@@ -873,11 +878,6 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     FocusLost(unfocusedObject);
                 }
-            }
-
-            foreach (InputManager.FocusEvent enter in pendingOverallFocusEnterSetInfo)
-            {
-                RaiseFocusEnteredEventsInfo(enter);
             }
 
             for (int iChange = 0; iChange < pendingPointerSpecificFocusChange.Count; iChange++)

@@ -25,10 +25,7 @@ public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
     public virtual void OnFocusExit(FocusEventData eventData)
     {
         Debug.Log("Focuser Exit: " + eventData.Focuser);
-        if(focusers.Contains(eventData.Focuser))
-        {
-            focusers.Remove(eventData.Focuser);
-        }
+        focusers.Remove(eventData.Focuser);
     }
 
     public void ResetFocus()
@@ -46,13 +43,13 @@ public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
         Debug.Log("Up");
     }
 
-    public bool FocusEnabled { get { return focusEnabled; } set {  FocusEnabled = value; } }
+    public virtual bool FocusEnabled { get { return focusEnabled; } set { focusEnabled = value; } }
 
-    public bool HasFocus
+    public virtual bool HasFocus
     {
         get
         {
-            throw new System.NotImplementedException();
+            return FocusEnabled && focusers.Count > 0;
         }
     }
 
