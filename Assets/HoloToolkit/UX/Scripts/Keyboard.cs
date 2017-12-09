@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
+using System.Collections;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
@@ -152,6 +153,16 @@ namespace HoloToolkit.UI.Keyboard
         private float m_MinDistance = 0.25f;
 
         /// <summary>
+        /// Inactivity time that makes the keyboard disappear automatically.
+        /// </summary>
+        public float CloseOnInactivityTime = 15;
+
+        /// <summary>
+        /// Time on which the keyboard should close on inactivity
+        /// </summary>
+        private float _closingTime;
+
+        /// <summary>
         /// Event fired when shift key on keyboard is pressed.
         /// </summary>
         public event Action<bool> OnKeyboardShifted = delegate { };
@@ -182,6 +193,7 @@ namespace HoloToolkit.UI.Keyboard
             get { return m_IsCapslocked; }
         }
 
+
         /// <summary>
         /// The position of the caret in the text field.
         /// </summary>
@@ -206,6 +218,21 @@ namespace HoloToolkit.UI.Keyboard
 
 
         /// <summary>
+        /// The default color of the mike key.
+        /// </summary>        
+        private Color _defaultColor;
+
+        /// <summary>
+        /// The image on the mike key.
+        /// </summary>
+        private Image _recordImage;
+
+        /// <summary>
+        /// User can add an audio source to the keyboard to have a click be heard on tapping a key 
+        /// </summary>
+        private AudioSource _audioSource;
+
+        /// <summary>
         /// Deactivate on Awake.
         /// </summary>
         protected override void Awake()
@@ -218,8 +245,46 @@ namespace HoloToolkit.UI.Keyboard
             RectTransform rect = GetComponent<RectTransform>();
             m_ObjectBounds = new Vector3(canvasBounds.size.x * rect.localScale.x, canvasBounds.size.y * rect.localScale.y, canvasBounds.size.z * rect.localScale.z);
 
+            // Actually find microphone key in the keyboard
+            var dicationButton = RecursiveFindChild(gameObject.transform, "Dictation");
+            if (dicationButton != null)
+            {
+                var dicationIcon = dicationButton.transform.Find("keyboard_closeIcon");
+                if (dicationButton != null)
+                {
+                    _recordImage = dicationButton.GetComponentsInChildren<Image>()[1];
+                    var material = new Material(_recordImage.material);
+                    _defaultColor = material.color;
+                    _recordImage.material = material;
+                }
+            }
+
+
             // Keep keyboard deactivated until needed
             gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Recursive find. Potentially move to a child class.
+        /// </summary>
+        GameObject RecursiveFindChild(Transform parent, string childName)
+        {
+            GameObject foundObject = null;
+
+            for(int i = 0; i < parent.childCount && foundObject == null; i++)
+            {
+                var child = parent.GetChild(i);
+                if(child.name == childName)
+                {
+                    foundObject = child.gameObject;
+                }
+                else
+                {
+                    foundObject = RecursiveFindChild(child, childName);
+                }
+            }
+
+            return foundObject;
         }
 
         /// <summary>
@@ -256,6 +321,7 @@ namespace HoloToolkit.UI.Keyboard
                 Vector3 relPos = transform.InverseTransformPoint(nearPoint);
                 InputFieldSlide.TargetPoint = relPos;
             }
+            CheckForCloseOnInactivityTimeExpired();
         }
 
         private void UpdateCaratPosition(int newPos)
@@ -280,11 +346,26 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="confidence">Confidence dictation has in it's translation.</param>
         private void OnDictationResult(string text, ConfidenceLevel confidence)
         {
+            ResetClosingTime();
             if (text != null)
             {
-                InputField.text.Insert(InputField.caretPosition, text);
-                InputField.caretPosition += text.Length;
+                m_CaretPosition = InputField.caretPosition;
+
+                InputField.text = InputField.text.Insert(m_CaretPosition, text);
+                m_CaretPosition += text.Length;
+
+                UpdateCaratPosition(m_CaretPosition);
             }
+        }
+
+        /// <summary>
+        /// Called when dictation is completed
+        /// </summary>
+        /// <param name="cause">reason why dication was ended</param>
+        private void OnDictationComplete(DictationCompletionCause cause)
+        {
+            ResetClosingTime();
+            SetMicrophoneDefault();
         }
 #endif
 
@@ -311,14 +392,18 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void PresentKeyboard()
         {
+            ResetClosingTime();
             gameObject.SetActive(true);
             ActivateSpecificKeyboard(LayoutType.Alpha);
 
             OnPlacement(this, EventArgs.Empty);
 
-            InputField.ActivateInputField();
+            //This bring up the default keyboard in MR so the user is presented with TWO keyboards
+            //InputField.ActivateInputField();
 
+            SetMicrophoneDefault();
         }
+
 
         /// <summary>
         /// Presents the default keyboard to the camera, with start text.
@@ -464,15 +549,34 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void BeginDictation()
         {
+            ResetClosingTime();
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             if (m_Dictation == null)
             {
                 m_Dictation = new DictationRecognizer();
                 m_Dictation.DictationResult += OnDictationResult;
+                m_Dictation.DictationComplete += OnDictationComplete;
             }
 
             m_Dictation.Start();
+            SetMicrophoneRecording();
 #endif
+        }
+
+        /// <summary>
+        /// Set mike default look
+        /// </summary>
+        private void SetMicrophoneDefault()
+        {
+            _recordImage.color = _defaultColor;
+        }
+
+        /// <summary>
+        /// Set mike recording look (red)
+        /// </summary>
+        private void SetMicrophoneRecording()
+        {
+            _recordImage.color = Color.red;
         }
 
         /// <summary>
@@ -486,6 +590,7 @@ namespace HoloToolkit.UI.Keyboard
             {
                 m_Dictation.Stop();
             }
+            SetMicrophoneDefault();
 #endif
         }
 
@@ -497,6 +602,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="valueKey">The valueKey of the pressed key.</param>
         public void AppendValue(KeyboardValueKey valueKey)
         {
+            IndicateActivty();
             string value = "";
 
             // Shift value should only be applied if a shift value is present.
@@ -528,6 +634,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="functionKey">The functionKey of the pressed key.</param>
         public void FunctionKey(KeyboardKeyFunc functionKey)
         {
+            IndicateActivty();
             switch (functionKey.m_ButtonFunction)
             {
                 case KeyboardKeyFunc.Function.Enter:
@@ -789,8 +896,14 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Close()
         {
+            if (m_Dictation != null)
+            {
+                m_Dictation.Stop();
+                SetMicrophoneDefault();
+                m_Dictation.Dispose();
+                m_Dictation = null;
+            }
             OnClosed(this, EventArgs.Empty);
-
             gameObject.SetActive(false);
         }
 
@@ -806,6 +919,23 @@ namespace HoloToolkit.UI.Keyboard
         }
 
         #endregion
+
+        /// <summary>
+        /// Method to set the sizes by code, as the properties are private. 
+        /// Useful for scaling 'from the outside', for instance taking care of differences between
+        /// immersive headsets and HoloLens
+        /// </summary>
+        /// <param name="minScale">Min scale factor</param>
+        /// <param name="maxScale">Max scale factor</param>
+        /// <param name="minDistance">Min distance from camera</param>
+        /// <param name="maxDistance">Max distance from camera</param>
+        public void SetScaleSizeValues( float minScale, float maxScale, float minDistance, float maxDistance)
+        {
+            m_MinScale = minScale;
+            m_MaxScale = maxScale;
+            m_MinDistance = minDistance;
+            m_MaxDistance = maxDistance;
+        }
 
         #region Keyboard Layout Modes
 
@@ -901,5 +1031,40 @@ namespace HoloToolkit.UI.Keyboard
         }
 
         #endregion Keyboard Layout Modes
+
+        /// <summary>
+        /// Respond to keyboard activity: reset timeout timer, play sound
+        /// </summary>
+        private void IndicateActivty()
+        {
+            ResetClosingTime();
+            if (_audioSource == null)
+            {
+                _audioSource = GetComponent<AudioSource>();
+            }
+            if( _audioSource != null)
+            {
+                _audioSource.Play();
+            }
+        }
+
+        /// <summary>
+        /// Reset inactivity closing timer
+        /// </summary>
+        private void ResetClosingTime()
+        {
+            _closingTime = Time.time + CloseOnInactivityTime;
+        }
+
+        /// <summary>
+        /// Check if the keyboard has been left alone for too long and close
+        /// </summary>
+        private void CheckForCloseOnInactivityTimeExpired()
+        {
+            if( Time.time > _closingTime )
+            {
+                Close();
+            }
+        }
     }
 }
