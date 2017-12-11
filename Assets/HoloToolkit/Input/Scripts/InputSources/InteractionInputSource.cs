@@ -406,6 +406,7 @@ namespace HoloToolkit.Unity.InputModule
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceHandedness = (InteractionSourceHandedness)sourceData.Handedness;
+
                 return true;
             }
 

@@ -203,6 +203,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: disableWhileActive.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4671461304012674, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0.07368911
@@ -239,6 +244,11 @@ Prefab:
       propertyPath: m_Name
       value: NavigationPointerRight
       objectReference: {fileID: 0}
+    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: disableWhileActive.Array.data[0]
+      value: 
+      objectReference: {fileID: 1052760834}
     - target: {fileID: 114498623830712114, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: handedness
@@ -2867,6 +2877,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: distorters.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: disableWhileActive.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4671461304012674, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0.07368911
@@ -2905,289 +2925,167 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: lineColorSelected.key0.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorSelected.key0.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
       propertyPath: lineColorSelected.key1.a
-      value: 0.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorSelected.atime1
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorValid.key0.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorValid.key0.g
-      value: 0
+      value: 5975
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorValid.key1.a
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorValid.atime1
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorNoTarget.key0.r
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorNoTarget.key0.g
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorNoTarget.key0.b
-      value: 0.5
+      value: 5590
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorNoTarget.key1.a
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorNoTarget.atime1
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorLockFocus.key0.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorLockFocus.key0.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorLockFocus.key1.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorLockFocus.key1.b
-      value: 0
+      value: 5397
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorLockFocus.key1.a
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorLockFocus.atime1
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineBase
-      value: 
-      objectReference: {fileID: 1013886395}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: input
-      value: 
-      objectReference: {fileID: 1013886396}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorHotSpot.key0.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorHotSpot.key0.b
-      value: 0
+      value: 6168
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorHotSpot.key1.a
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorHotSpot.atime1
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorInvalid.key0.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineColorInvalid.key0.b
-      value: 0
+      value: 5783
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorInvalid.key1.a
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
       propertyPath: lineColorInvalid.atime1
+      value: 6168
+      objectReference: {fileID: 0}
+    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: disableWhileActive.Array.data[0]
+      value: 
+      objectReference: {fileID: 2036775182}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: distorters.Array.data[0]
+      value: 
+      objectReference: {fileID: 1684983966}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: Start.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: parabolaMain
+      propertyPath: Start.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: Start.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: End.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: End.y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: End.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: Height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: LineMaterial
       value: 
-      objectReference: {fileID: 1013886395}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+      objectReference: {fileID: 0}
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[0].time
-      value: -1
+      propertyPath: lineRenderer
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[0].value
+      propertyPath: pointerOrientation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: LineEndClamp
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[1].time
-      value: -0.32164186
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[1].value
-      value: 0.8785377
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[1].inSlope
-      value: -0.5637193
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[1].outSlope
-      value: -0.5637193
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[2].inSlope
-      value: -0.31191197
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[2].outSlope
-      value: -0.31191197
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[3].time
+      propertyPath: LineColor.key0.r
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: parabolaRotationArc.m_Curve.Array.data[3].value
-      value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[0].time
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[0].value
+      propertyPath: LineColor.key0.g
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[1].time
-      value: -0.2786141
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[1].value
-      value: 0.7495847
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[1].inSlope
-      value: -1.155138
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[1].outSlope
-      value: -1.155138
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[2].inSlope
-      value: -1.0439224
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[2].outSlope
-      value: -1.0439224
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[3].time
-      value: 0.14129369
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[3].value
-      value: -0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[3].inSlope
-      value: -0.18748377
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[3].outSlope
-      value: -0.18748377
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[4].time
+      propertyPath: LineColor.key0.a
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
         type: 2}
-      propertyPath: parabolaHeightArc.m_Curve.Array.data[4].value
-      value: -0.125
+      propertyPath: LineColor.key2.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: LineColor.atime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+        type: 2}
+      propertyPath: LineColor.atime2
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1013886395 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1013886394}
-  m_Script: {fileID: 11500000, guid: 080153f9f59bd554bad10c8b12d0441b, type: 3}
---- !u!114 &1013886396 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114498623830712114, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1013886394}
-  m_Script: {fileID: 11500000, guid: 67c1695499429c74794eea34b1239ead, type: 3}
 --- !u!1 &1034531161
 GameObject:
   m_ObjectHideFlags: 0
@@ -5382,6 +5280,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupMenu: {fileID: 459490606}
   button: {fileID: 1662841316}
+--- !u!114 &1684983966 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114664944855189834, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+    type: 2}
+  m_PrefabInternal: {fileID: 1013886394}
+  m_Script: {fileID: 11500000, guid: 3be3fb966fbcc0f44add9a39d15cd3d0, type: 3}
 --- !u!1 &1691577136
 GameObject:
   m_ObjectHideFlags: 0

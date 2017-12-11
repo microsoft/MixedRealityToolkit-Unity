@@ -17,34 +17,34 @@ namespace HoloToolkit.Unity.Controllers
 
         private void CalculateParabola()
         {
-            //// Make sure our parabola only rotates on y/x axis
-            //// NOTE: Parabola's custom line transform field should be set to a transform OTHER than its gameObject's transform
-            //Vector3 eulerAngles = transform.eulerAngles;
-            //eulerAngles.z = 0f;
-            //eulerAngles.x = 0f;
-            ////parabolaMain.LineTransform.eulerAngles = eulerAngles;
+            // Make sure our parabola only rotates on y/x axis
+            // NOTE: Parabola's custom line transform field should be set to a transform OTHER than its gameObject's transform
+            Vector3 eulerAngles = transform.eulerAngles;
+            eulerAngles.z = 0f;
+            eulerAngles.x = 0f;
+            parabolaMain.LineTransform.eulerAngles = eulerAngles;
 
-            //// Get the rotation of the actual pointer
-            //// If we're pointing up (x < 0) then extend the length of the parabola
-            //float adjustedParabolaDistance = parabolaDistance;
-            //float adjustedParabolaHeight = parabolaHeight;
-            //float adjustedParabolaDropDist = parabolaDropDist;
+            // Get the rotation of the actual pointer
+            // If we're pointing up (x < 0) then extend the length of the parabola
+            float adjustedParabolaDistance = parabolaDistance;
+            float adjustedParabolaHeight = parabolaHeight;
+            float adjustedParabolaDropDist = parabolaDropDist;
 
-            //eulerAngles = transform.eulerAngles;
-            //float arc = Mathf.DeltaAngle(0f, eulerAngles.x) / 360;
-            //adjustedParabolaDistance += (parabolaRotationArc.Evaluate(arc) * parabolaRotationArcMultiplier);
-            //adjustedParabolaHeight += (parabolaHeightArc.Evaluate(arc) * parabolaHeightArcMultiplier);
-            //adjustedParabolaDropDist += (parabolaDropDistArc.Evaluate(arc) * parabolaDropDistArcMultiplier);
+            eulerAngles = transform.eulerAngles;
+            float arc = Mathf.DeltaAngle(0f, eulerAngles.x) / 360;
+            adjustedParabolaDistance += (parabolaRotationArc.Evaluate(arc) * parabolaRotationArcMultiplier);
+            adjustedParabolaHeight += (parabolaHeightArc.Evaluate(arc) * parabolaHeightArcMultiplier);
+            adjustedParabolaDropDist += (parabolaDropDistArc.Evaluate(arc) * parabolaDropDistArcMultiplier);
 
-            //// Set up our parabola
-            //// First point is always origin
-            //parabolaMain.FirstPoint = PointerOrigin;
-            //Vector3 parabolaTarget = PointerOrigin + (parabolaMain.LineTransform.forward * adjustedParabolaDistance) + (Vector3.down * adjustedParabolaDropDist);
-            //// Use the x rotation as the distance
+            // Set up our parabola
+            // First point is always origin
+            parabolaMain.FirstPoint = PointerOrigin;
+            Vector3 parabolaTarget = PointerOrigin + (parabolaMain.LineTransform.forward * adjustedParabolaDistance) + (Vector3.down * adjustedParabolaDropDist);
+            // Use the x rotation as the distance
 
-            //// Set the distance of the parabola based on how far back it's tipped
-            //parabolaMain.LastPoint = parabolaTarget;
-            //parabolaMain.Height = adjustedParabolaHeight;
+            // Set the distance of the parabola based on how far back it's tipped
+            parabolaMain.LastPoint = parabolaTarget;
+            parabolaMain.Height = adjustedParabolaHeight;
         }
 
         public override void OnSelectPressed()

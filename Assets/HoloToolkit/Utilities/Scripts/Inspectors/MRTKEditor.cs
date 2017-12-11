@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
 {
 #if UNITY_EDITOR
     /// <summary>
-    /// To use this class in a Monobehavior or ScriptableObject, add this line at the bottom of your class:
+    /// To use this class in a MonoBehavior or ScriptableObject, add this line at the bottom of your class:
     /// 
     /// public class ClassName {
     /// ...
@@ -27,8 +27,20 @@ namespace HoloToolkit.Unity
     public class MRTKEditor : Editor
     {
         #region static vars
+        const string mrtkShowEditorKey = "_Show_MRTK_Editors";
+
         // Toggles custom editors on / off
-        public static bool ShowCustomEditors { get; private set; }
+        public static bool ShowCustomEditors
+        {
+            get
+            {
+                return GetEditorPref(mrtkShowEditorKey, true);
+            }
+            private set
+            {
+                SetEditorPref(mrtkShowEditorKey, value);
+            }
+        }
         public static bool CustomEditorActive { get; private set; }
         public static GameObject lastTarget;
 
@@ -1011,6 +1023,26 @@ namespace HoloToolkit.Unity
             }
             return rotation;
         }
+        #endregion
+
+        #region editor prefs
+
+        private static void SetEditorPref(string key, bool value)
+        {
+            EditorPrefs.SetBool(Application.productName + key, value);
+        }
+
+        private static bool GetEditorPref(string key, bool defaultValue)
+        {
+            if (EditorPrefs.HasKey(Application.productName + key))
+            {
+                return EditorPrefs.GetBool(Application.productName + key);
+            }
+
+            EditorPrefs.SetBool(Application.productName + key, defaultValue);
+            return defaultValue;
+        }
+
         #endregion
     }
 #endif

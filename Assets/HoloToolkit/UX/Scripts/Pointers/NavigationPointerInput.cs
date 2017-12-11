@@ -1,5 +1,4 @@
-﻿using HoloToolkit.Unity.Controllers;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.UX
@@ -85,10 +84,12 @@ namespace HoloToolkit.Unity.UX
         {
             if (eventData.SourceId == SourceId && eventData.PressType == InteractionSourcePressInfo.Thumbstick)
             {
-                Vector2 newThumbstick = Vector2.zero;
-                bool thumbstickPressed = false;
-                if (eventData.InputSource.TryGetThumbstick(SourceId, out thumbstickPressed, out newThumbstick)) {
-                    thumbstickPosition = newThumbstick;
+                InteractionSourceHandedness sourceHandedness = InteractionSourceHandedness.Unknown;
+                // Make sure it's the correct hand
+                if (eventData.InputSource.TryGetSourceHandedness(eventData.SourceId, out sourceHandedness) && sourceHandedness == handedness)
+                {
+                    bool thumbstickPressed = false;
+                    eventData.InputSource.TryGetThumbstick(eventData.SourceId, out thumbstickPressed, out thumbstickPosition);
                 }
             }
         }

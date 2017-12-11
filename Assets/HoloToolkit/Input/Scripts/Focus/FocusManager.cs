@@ -369,9 +369,9 @@ namespace HoloToolkit.Unity.InputModule
             PointerInputEventData pointerInputEventData = GetSpecificPointerEventData(pointingSource);
 
             Debug.Assert(pointerInputEventData != null);
-            pointerInputEventData.selectedObject = details.Value.Target.gameObject;
+            pointerInputEventData.selectedObject = details.Value.Target;
 
-            return details.Value.Target.gameObject;
+            return details.Value.Target;
         }
 
         public bool TryGetPointingSource(BaseInputEventData eventData, out IPointingSource pointingSource)
@@ -409,7 +409,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (GetPointerData(pointingSource, out pointerData))
             {
-                focusedObject = pointerData.End.Target.gameObject;
+                focusedObject = pointerData.End.Target;
             }
 
             return focusedObject;
