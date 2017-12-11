@@ -207,6 +207,7 @@ namespace HoloToolkit.Unity
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 List<Type> missingTypes = new List<Type>();
+                List<Type> missingSingletons = new List<Type>();
                 foreach (UseWithAttribute attribute in targetType.GetCustomAttributes(typeof(UseWithAttribute), true))
                 {
                     Component targetGo = (Component)target;
@@ -224,6 +225,15 @@ namespace HoloToolkit.Unity
                         }
                     }
                 }
+                foreach (RequireSingletonAttribute attribute in targetType.GetCustomAttributes(typeof(RequireSingletonAttribute), true))
+                {
+                    Component singleton = (Component)GameObject.FindObjectOfType(attribute.SingletonType);
+                    if (singleton == null)
+                    {
+                        missingSingletons.Add(attribute.SingletonType);
+                    }
+                }
+
                 if (missingTypes.Count > 0)
                 {
                     string warningMessage = "This class is designed to be accompanied by scripts of (or inheriting from) types: \n";
@@ -236,6 +246,20 @@ namespace HoloToolkit.Unity
                     warningMessage += "\nIt may not function correctly without them.";
                     DrawWarning(warningMessage);
                 }
+
+                if (missingSingletons.Count > 0)
+                {
+                    string errorMessage = "This class is designed to be accompanied by the following singletons:\n";
+                    for (int i = 0; i < missingSingletons.Count; i++)
+                    {
+                        errorMessage += " - " + missingSingletons[i].FullName;
+                        if (i < missingSingletons.Count - 1)
+                            errorMessage += "\n";
+                    }
+                    errorMessage += "\nIt will not function correctly without them.";
+                    DrawError(errorMessage);
+                }
+
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
             }

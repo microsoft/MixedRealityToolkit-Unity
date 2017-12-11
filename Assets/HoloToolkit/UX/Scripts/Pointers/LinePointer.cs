@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.UX
         protected LineBase lineBase;
         [SerializeField]
         [DropDownComponent(true, true)]
-        protected FocusPointerInput input;
+        protected AttachToController input;
 
         protected LineRendererBase[] lineRenderers;
         protected DistorterGravity distorterGravity;
