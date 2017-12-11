@@ -49,6 +49,7 @@ namespace HoloToolkit.Unity.Controllers
             else
             {
                 animator.SetBool("Disabled", true);
+                return;
             }
 
             transform.position = pointer.NavigationTarget;
