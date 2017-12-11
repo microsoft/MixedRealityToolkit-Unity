@@ -3,7 +3,14 @@
 
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
+
+#if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA;
+#else
 using UnityEngine.VR.WSA;
+#endif
+#endif
 
 namespace HoloToolkit.Unity
 {
@@ -131,11 +138,11 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (GazeManager.Instance != null)
+                if (GazeManager.IsInitialized)
                 {
                     return GazeManager.Instance.GazeOrigin;
                 }
-                return Camera.main.transform.position;
+                return CameraCache.Main.transform.position;
             }
         }
 
@@ -146,11 +153,11 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (GazeManager.Instance != null)
+                if (GazeManager.IsInitialized)
                 {
                     return GazeManager.Instance.GazeNormal;
                 }
-                return Camera.main.transform.forward;
+                return CameraCache.Main.transform.forward;
             }
         }
 
@@ -161,7 +168,7 @@ namespace HoloToolkit.Unity
         /// <returns>True if gaze is supported and an object was hit by gaze, otherwise false.</returns>
         private bool TryGetGazeHitPosition(out Vector3 hitPosition)
         {
-            if (GazeManager.Instance != null)
+            if (GazeManager.IsInitialized)
             {
                 hitPosition = GazeManager.Instance.HitPosition;
                 return true;
@@ -182,9 +189,11 @@ namespace HoloToolkit.Unity
             {
                 velocity = UpdateVelocity(deltaTime);
             }
-            
+
+#if UNITY_WSA
             // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
             HolographicSettings.SetFocusPointForFrame(planePosition, -GazeNormal, velocity);
+#endif
         }
 
         /// <summary>
@@ -206,7 +215,7 @@ namespace HoloToolkit.Unity
             {
                 focusPointDistance = DefaultPlaneDistance;
             }
-            
+
             float lerpPower = focusPointDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
                                                                         : LerpStabilizationPlanePowerCloser;
 
@@ -215,7 +224,9 @@ namespace HoloToolkit.Unity
 
             planePosition = gazeOrigin + (gazeDirection * currentPlaneDistance);
 
+#if UNITY_WSA
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
+#endif
         }
 
         /// <summary>
@@ -233,7 +244,9 @@ namespace HoloToolkit.Unity
             currentPlaneDistance = Mathf.Lerp(currentPlaneDistance, DefaultPlaneDistance, lerpPower * deltaTime);
 
             planePosition = gazeOrigin + (gazeNormal * currentPlaneDistance);
+#if UNITY_WSA
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
+#endif
         }
 
         /// <summary>

@@ -1,18 +1,21 @@
 # =============== #
 # Unity generated #
 # =============== #
-Temp/
-Obj/
-Bin/
-Builds/
-UnityGenerated/
-Library/
-Assets/AssetStoreTools*
-App/
+[Tt]emp/
+[Oo]bj/
+[Bb]in/
+[Bb]uilds/
+[Bb]uild/
+[Ll]ibrary/
+[Aa]pp/
 UWP/
-/WindowsStoreApp
+WindowsStoreApp/
+UnityGenerated/
+UnityPackageManager/
 project.json
 project.lock.json
+WSATestCertificate.pfx
+WSATestCertificate.pfx.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -33,11 +36,10 @@ obj/
 *.ipch
 *.opensdf
 *.sdf
-*.obj
 *.tlog
 *.log
 *.idb
 *.opendb
-WSATestCertificate.pfx
-WSATestCertificate.pfx.meta
-/Assets/HoloToolkit-Examples/FastConfigurableShader/Scenes/FastConfigurableTest
+
+Assets/ThirdParty/
+Assets/ThirdParty.meta

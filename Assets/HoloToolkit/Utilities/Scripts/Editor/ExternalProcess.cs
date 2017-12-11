@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -31,10 +30,10 @@ namespace HoloToolkit.Unity
 
         private IntPtr mHandle;
 
-        /*
-        * First some static utility functions, used by some other code as well.
-        * They are related to "external processes" so they appear here.
-        */
+        /// <summary>
+        /// First some static utility functions, used by some other code as well.
+        /// They are related to "external processes" so they appear here.
+        /// </summary>
         private static string sAppDataPath;
 
         public static void Launch(string appName)
@@ -136,9 +135,11 @@ namespace HoloToolkit.Unity
             return relativePath.OriginalString;
         }
 
-        /*
-        * The actual ExternalProcess class.
-        */
+        /// <summary>
+        /// The actual ExternalProcess class.
+        /// </summary>
+        /// <param name="appName"></param>
+        /// <returns></returns>
         public static ExternalProcess CreateExternalProcess(string appName)
         {
             return CreateExternalProcess(appName, null);
@@ -291,4 +292,3 @@ namespace HoloToolkit.Unity
         }
     }
 }
-#endif

@@ -112,7 +112,8 @@ namespace HoloToolkit.Unity
             {
                 matEditor.ShaderProperty(vertexColorEnabled, Styles.vertexColorEnabled);
 
-                CustomMaterialEditor.TextureWithToggleableColorAutoScaleOffsetSingleLine(matEditor, Styles.main,
+                CustomMaterialEditor.TextureWithToggleableColorAutoScaleOffsetSingleLine(matEditor,
+                                                                                         Styles.main,
                                                                                          mainTexture,
                                                                                          mainColorEnabled, mainColor,
                                                                                          textureScaleAndOffset);
@@ -179,7 +180,7 @@ namespace HoloToolkit.Unity
 
             ShaderGUIUtils.BeginHeader("Global");
             {
-                CustomMaterialEditor.TextureScaleOffsetVector4Property(matEditor, Styles.textureScaleAndOffset, textureScaleAndOffset);
+                CustomMaterialEditor.TextureScaleOffsetVector4Property(matEditor, textureScaleAndOffset);
             }
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
@@ -434,7 +435,7 @@ namespace HoloToolkit.Unity
             public static GUIContent main = new GUIContent("Albedo", "Albedo (RGB) and Transparency (A)");
             public static GUIContent alphaCutoffText = new GUIContent("Alpha Cutoff", "Threshold for alpha cutoff");
 
-            public static GUIContent occlusionMap = new GUIContent("Occlusion Map", "Additional texture to be overlayed on the main texture");
+            public static GUIContent occlusionMap = new GUIContent("Occlusion Map", "Additional texture to be overlaid on the main texture");
 
             public static GUIContent ambientLightingEnabled = new GUIContent("Ambient", "Scene ambient lighting");
             public static GUIContent diffuseLightingEnabled = new GUIContent("Diffuse", "Diffuse (lambertian) lighting from directional lights");

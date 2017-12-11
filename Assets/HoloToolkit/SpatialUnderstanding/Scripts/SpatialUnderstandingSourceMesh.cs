@@ -9,16 +9,16 @@ using HoloToolkit.Unity.SpatialMapping;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Provides the input meshes to the spatial understanding dll.
+    /// Provides the input meshes to the spatial understanding DLL.
     /// The component relies on the spatial mapping module. It maintains
-    /// a mesh list in the required dll format which is updated from 
+    /// a mesh list in the required DLL format which is updated from 
     /// the spatial mapping's SurfaceObject list.
     /// </summary>
     public class SpatialUnderstandingSourceMesh : MonoBehaviour
     {
         // Privates
         /// <summary>
-        /// Internal list of meshes that is passed to the dll. This is
+        /// Internal list of meshes that is passed to the DLL. This is
         /// kept up to date with spatial mapping's SurfaceObject list.
         /// </summary>
         private readonly List<SpatialUnderstandingDll.MeshData> inputMeshList = new List<SpatialUnderstandingDll.MeshData>();
@@ -143,7 +143,7 @@ namespace HoloToolkit.Unity
 
         /// <summary>
         /// Update the internal mesh list and provides an array pointer in
-        /// the form the dll will accept.
+        /// the form the DLL will accept.
         /// </summary>
         /// <param name="meshCount">Number of meshes contains in the return mesh list</param>
         /// <param name="meshList">Marshalled mesh list pointer. Valid only with the caller's function context</param>

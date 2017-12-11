@@ -17,54 +17,76 @@ namespace HoloToolkit.Unity
         [Tooltip("How fast the object will move to the target position.")]
         public float MoveSpeed = 2.0f;
 
+        /// <summary>
+        /// When moving, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.
+        /// </summary>
+        [SerializeField]
         [Tooltip("When moving, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
-        public bool UseUnscaledTime = true;
+        private bool useUnscaledTime = true;
 
+        /// <summary>
+        /// Used to initialize the initial position of the SphereBasedTagalong before being hidden on LateUpdate.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Used to initialize the initial position of the SphereBasedTagalong before being hidden on LateUpdate.")]
+        private bool hideOnStart;
+
+        [SerializeField]
         [Tooltip("Display the sphere in red wireframe for debugging purposes.")]
-        public bool DebugDisplaySphere = false;
+        private bool debugDisplaySphere;
 
+        [SerializeField]
         [Tooltip("Display a small green cube where the target position is.")]
-        public bool DebugDisplayTargetPosition = false;
+        private bool debugDisplayTargetPosition;
 
         private Vector3 targetPosition;
         private Vector3 optimalPosition;
         private float initialDistanceToCamera;
 
-        void Start()
+        private void Start()
         {
-            initialDistanceToCamera = Vector3.Distance(this.transform.position, Camera.main.transform.position);
+            initialDistanceToCamera = Vector3.Distance(transform.position, CameraCache.Main.transform.position);
         }
 
-        void Update()
+        private void Update()
         {
-            optimalPosition = Camera.main.transform.position + Camera.main.transform.forward * initialDistanceToCamera;
+            optimalPosition = CameraCache.Main.transform.position + CameraCache.Main.transform.forward * initialDistanceToCamera;
+            Vector3 offsetDir = transform.position - optimalPosition;
 
-            Vector3 offsetDir = this.transform.position - optimalPosition;
             if (offsetDir.magnitude > SphereRadius)
             {
                 targetPosition = optimalPosition + offsetDir.normalized * SphereRadius;
 
-                float deltaTime = UseUnscaledTime
+                float deltaTime = useUnscaledTime
                     ? Time.unscaledDeltaTime
                     : Time.deltaTime;
 
-                this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, MoveSpeed * deltaTime);
+                transform.position = Vector3.Lerp(transform.position, targetPosition, MoveSpeed * deltaTime);
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (hideOnStart)
+            {
+                hideOnStart = !hideOnStart;
+                gameObject.SetActive(false);
             }
         }
 
         public void OnDrawGizmos()
         {
-            if (Application.isPlaying == false) return;
+            if (Application.isPlaying == false) { return; }
 
             Color oldColor = Gizmos.color;
 
-            if (DebugDisplaySphere)
+            if (debugDisplaySphere)
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawWireSphere(optimalPosition, SphereRadius);
             }
 
-            if (DebugDisplayTargetPosition)
+            if (debugDisplayTargetPosition)
             {
                 Gizmos.color = Color.green;
                 Gizmos.DrawCube(targetPosition, new Vector3(0.1f, 0.1f, 0.1f));

@@ -56,17 +56,17 @@ namespace HoloToolkit.Unity.InputModule
         private const float DirectionStandardDeviationReset = 0.1f;
 
         /// <summary>
-        /// We must have at least this many samples with a standard deviation below the above constants to stabalize
+        /// We must have at least this many samples with a standard deviation below the above constants to stabilize
         /// </summary>
         private const int MinimumSamplesRequiredToStabalize = 30;
 
         /// <summary>
-        /// When not stabalizing this is the 'lerp' applied to the position and direction of the gaze to smooth it over time.
+        /// When not stabilizing this is the 'lerp' applied to the position and direction of the gaze to smooth it over time.
         /// </summary>
         private const float UnstabalizedLerpFactor = 0.3f;
 
         /// <summary>
-        /// When stabalizing we will use the standard deviation of the position and direction to create the lerp value.
+        /// When stabilizing we will use the standard deviation of the position and direction to create the lerp value.
         /// By default this value will be low and the cursor will be too sluggish, so we 'boost' it by this value.
         /// </summary>
         private const float StabalizedLerpBoost = 10.0f;
@@ -79,15 +79,12 @@ namespace HoloToolkit.Unity.InputModule
 
         /// <summary>
         /// Updates the StablePosition and StableRotation based on GazeSample values.
-        /// Call this method with Raycasthit parameters to get stable values.
+        /// Call this method with RaycastHit parameters to get stable values.
         /// </summary>
-        /// <param name="position">Position value from a RaycastHit point.</param>
-        /// <param name="rotation">Rotation value from a RaycastHit rotation.</param>
-        public override void UpdateStability(Vector3 position, Quaternion rotation)
+        /// <param name="gazePosition">Position value from a RaycastHit point.</param>
+        /// <param name="gazeDirection">Direction value from a RaycastHit rotation.</param>
+        public override void UpdateStability(Vector3 gazePosition, Vector3 gazeDirection)
         {
-            Vector3 gazePosition = position;
-            Vector3 gazeDirection = rotation * Vector3.forward;
-
             positionRollingStats.AddSample(gazePosition);
             directionRollingStats.AddSample(gazeDirection);
 
@@ -96,14 +93,14 @@ namespace HoloToolkit.Unity.InputModule
                 (positionRollingStats.CurrentStandardDeviation > PositionStandardDeviationReset || // the standard deviation of positions is high or...
                  directionRollingStats.CurrentStandardDeviation > DirectionStandardDeviationReset)) // the standard deviation of directions is high
             {
-                // We've detected that the user's gaze is no longer fixed, so stop stabalizing so that gaze is responsive.
+                // We've detected that the user's gaze is no longer fixed, so stop stabilizing so that gaze is responsive.
                 //Debug.LogFormat("Reset {0} {1} {2} {3}", positionRollingStats.standardDeviation, positionRollingStats.standardDeviationsAway, directionRollignStats.standardDeviation, directionRollignStats.standardDeviationsAway);
                 positionRollingStats.Reset();
                 directionRollingStats.Reset();
             }
             else if (positionRollingStats.ActualSampleCount > MinimumSamplesRequiredToStabalize)
             {
-                // We've detected that the user's gaze is fairly fixed, so start stabalizing.  The more fixed the gaze the less the cursor will move.
+                // We've detected that the user's gaze is fairly fixed, so start stabilizing.  The more fixed the gaze the less the cursor will move.
                 lerpPower = StabalizedLerpBoost * (positionRollingStats.CurrentStandardDeviation + directionRollingStats.CurrentStandardDeviation);
             }
 

@@ -6,9 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Streams;
 #endif
 
 namespace HoloToolkit.Unity.SpatialMapping
@@ -30,7 +31,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             get
             {
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
                 return ApplicationData.Current.RoamingFolder.Path;
 #else
                 return Application.persistentDataPath;
@@ -153,13 +154,14 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             Stream stream = null;
 
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
             Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {
                                 StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
                                 StorageFile file = await folder.GetFileAsync(fileName);
-                                stream = await file.OpenStreamForReadAsync();
+                                IRandomAccessStreamWithContentType randomAccessStream = await file.OpenReadAsync();
+                                stream = randomAccessStream.AsStreamForRead();
                             });
             task.Wait();
             task.Result.Wait();
@@ -180,13 +182,14 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             Stream stream = null;
 
-#if !UNITY_EDITOR && UNITY_METRO
+#if !UNITY_EDITOR && UNITY_WSA
             Task<Task> task = Task<Task>.Factory.StartNew(
                             async () =>
                             {
                                 StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderName);
                                 StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-                                stream = await file.OpenStreamForWriteAsync();
+                                IRandomAccessStream randomAccessStream = await file.OpenAsync(FileAccessMode.ReadWrite);
+                                stream = randomAccessStream.AsStreamForWrite();
                             });
             task.Wait();
             task.Result.Wait();
