@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright (c) Microsoft Corporation. All rights reserved.
-=======
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
->>>>>>> 3ec95ee58034fe4c2b6fd2e921efd7467f53f870
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
