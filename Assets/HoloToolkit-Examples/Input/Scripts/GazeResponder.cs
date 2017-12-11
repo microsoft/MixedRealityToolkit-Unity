@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// This class implements IFocusable to respond to gaze changes.
     /// It highlights the object being gazed at.
     /// </summary>
-    public class GazeResponder : MonoBehaviour, IFocusable
+    public class GazeResponder : FocusTarget
     {
         private Material[] defaultMaterials;
 
@@ -18,8 +18,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
             defaultMaterials = GetComponent<Renderer>().materials;
         }
 
-        public void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
                 // Highlight the material when gaze enters using the shader property.
@@ -27,8 +29,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
+            base.OnFocusExit(eventData);
+
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
                 // Remove highlight on material when gaze exits.

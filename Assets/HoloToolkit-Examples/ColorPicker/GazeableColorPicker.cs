@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Examples.ColorPicker
 {
-    public class GazeableColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
+    public class GazeableColorPicker : FocusTarget, IInputClickHandler
     {
         public Renderer rendererComponent;
 
@@ -17,11 +17,9 @@ namespace HoloToolkit.Examples.ColorPicker
         public PickedColorCallback OnGazedColor = new PickedColorCallback();
         public PickedColorCallback OnPickedColor = new PickedColorCallback();
 
-        private bool gazing = false;
-
         private void Update()
         {
-            if (gazing == false) return;
+            if (HasFocus == false) return;
             UpdatePickedColor(OnGazedColor);
         }
 
@@ -40,17 +38,7 @@ namespace HoloToolkit.Examples.ColorPicker
             Color col = texture.GetPixel((int)pixelUV.x, (int)pixelUV.y);
             cb.Invoke(col);
         }
-
-        public void OnFocusEnter()
-        {
-            gazing = true;
-        }
-
-        public void OnFocusExit()
-        {
-            gazing = false;
-        }
-
+        
         public void OnInputClicked(InputClickedEventData eventData)
         {
             UpdatePickedColor(OnPickedColor);

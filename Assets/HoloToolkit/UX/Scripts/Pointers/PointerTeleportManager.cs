@@ -37,7 +37,6 @@ namespace HoloToolkit.Unity.UX
         private Transform helperTransform;
 
         private NavigationPointer currentPointer;
-        private float orientationOffset = 0f;
 
         private Vector3 startPosition;
         private Vector3 startRotation;
@@ -58,7 +57,10 @@ namespace HoloToolkit.Unity.UX
         {
             if (state != TeleportStateEnum.None)
             {
-                return;
+                if (pointerBehavior == TeleportPointerBehaviorEnum.Override)
+                {
+                    return;
+                }
             }
 
             currentPointer = newPointer;
@@ -94,7 +96,6 @@ namespace HoloToolkit.Unity.UX
             Debug.Assert(playBounds != null, "Can't teleport without a valid playbounds transform.");
 
             state = TeleportStateEnum.Initiating;
-            orientationOffset = 0f;
 
             if (OnTeleportInitiate != null)
             {

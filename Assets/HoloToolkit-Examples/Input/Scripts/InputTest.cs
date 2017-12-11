@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// Test behaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
-    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler
+    public class InputTest : FocusTarget, IInputHandler, IInputClickHandler, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler
     {
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
@@ -41,13 +41,17 @@ namespace HoloToolkit.Unity.InputModule.Tests
             Debug.Log("OnPointerClick: " + pointerEventData.pointerId);
         }
 
-        public void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             Debug.Log("OnFocusEnter");
         }
 
-        public void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
+            base.OnFocusExit(eventData);
+
             Debug.Log("OnFocusExit");
         }
 

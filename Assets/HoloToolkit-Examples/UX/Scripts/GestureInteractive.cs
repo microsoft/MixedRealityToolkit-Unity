@@ -228,7 +228,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             else
             {
                 base.OnInputUp(null);
-                base.OnFocusExit();
+                base.ResetFocus();
             }
 
             mCurrentInputSource = null;
@@ -239,23 +239,23 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Works like an Interactive if no manipulation has begun
         /// </summary>
-        public override void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
             //base.OnGazeLeave();
             if (mCurrentInputSource == null)
             {
-                base.OnFocusExit();
+                base.OnFocusExit(eventData);
             }
         }
 
         /// <summary>
         /// Interactive
         /// </summary>
-        public override void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
             if (mCurrentInputSource == null)
             {
-                base.OnFocusEnter();
+                base.OnFocusEnter(eventData);
             }
         }
 

@@ -16,8 +16,7 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
         #region Data
-
-        private bool started;
+        
         private bool addedInputManagerListener;
         private Dictionary<IPointingSource, Cursor> cursors = new Dictionary<IPointingSource, Cursor>();
         private List<KeyValuePair<IPointingSource, Cursor>> destroyedCursors = new List<KeyValuePair<IPointingSource, Cursor>>();
@@ -28,8 +27,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            started = true;
-
             InputManager.AssertIsInitialized();
             FocusManager.AssertIsInitialized();
         }

@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.Buttons
     /// <summary>
     /// Base class for buttons.
     /// </summary>
-    public abstract class Button : MonoBehaviour, IInputHandler, IPointerSpecificFocusable, IHoldHandler, ISourceStateHandler, IInputClickHandler
+    public abstract class Button : FocusTarget, IHoldHandler, ISourceStateHandler, IInputClickHandler
     {
         #region Public Members
 
@@ -206,37 +206,47 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// FocusManager SendMessage("FocusEnter") receiver.
         /// </summary>
-        public void OnFocusEnter(PointerSpecificEventData eventData)
+        public override void OnFocusEnter(FocusEventData eventData)
         {
-            if (!m_disabled)
-            {
-                ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-                this.OnStateChange(newState);
+            base.OnFocusEnter(eventData);
 
-                _bFocused = true;
+            if (HasFocus)
+            {
+                if (!m_disabled)
+                {
+                    ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+                    this.OnStateChange(newState);
+
+                    _bFocused = true;
+                }
             }
         }
 
         /// <summary>
         /// FocusManager SendMessage("FocusExit") receiver.
         /// </summary>
-        public void OnFocusExit(PointerSpecificEventData eventData)
+        public override void OnFocusExit(FocusEventData eventData)
         {
-             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
+            base.OnFocusExit(eventData);
+
+            if (!HasFocus)
             {
-                if (ButtonState == ButtonStateEnum.Pressed)
+                if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
                 {
-                    DoButtonCanceled();
+                    if (ButtonState == ButtonStateEnum.Pressed)
+                    {
+                        DoButtonCanceled();
+                    }
+
+                    ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+
+                    if (RequireGaze || ButtonState != ButtonStateEnum.Pressed)
+                    {
+                        this.OnStateChange(newState);
+                    }
+
+                    _bFocused = false;
                 }
-
-                ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
-
-                if (RequireGaze || ButtonState != ButtonStateEnum.Pressed)
-                {
-                    this.OnStateChange(newState);
-                }
-
-                _bFocused = false;
             }
         }
 

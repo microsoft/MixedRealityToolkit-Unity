@@ -7,7 +7,7 @@ using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.UX
 {
-    public abstract class ControllerPointerBase : MonoBehaviour, IPointingSource
+    public abstract class ControllerPointerBase : MonoBehaviour, InputModule.IPointingSource
     {
         public string EventOrign { get { return eventOrigin; } }
 

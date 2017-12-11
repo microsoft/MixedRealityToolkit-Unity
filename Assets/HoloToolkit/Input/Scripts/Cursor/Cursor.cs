@@ -195,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.InputEnabled += OnInputEnabled;
             InputManager.Instance.InputDisabled += OnInputDisabled;
 
-            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
+            FocusManager.Instance.FocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (FocusManager.IsInitialized)
             {
-                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
+                FocusManager.Instance.FocusChanged -= OnPointerSpecificFocusChanged;
             }
         }
 

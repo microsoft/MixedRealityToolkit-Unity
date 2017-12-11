@@ -19,7 +19,7 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on
     /// individual elements of the Interactive GameObject
     /// </summary>
-    public class Interactive : MonoBehaviour, IInputClickHandler, IFocusable, IInputHandler
+    public class Interactive : FocusTarget, IInputClickHandler, IInputHandler
     {
 
         public GameObject ParentObject;
@@ -177,31 +177,41 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// The gameObject received gaze
         /// </summary>
-        public virtual void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             if (!IsEnabled)
             {
                 return;
             }
 
-            HasGaze = true;
+            if (HasFocus)
+            {
+                HasGaze = true;
 
-            SetKeywordListener(true);
+                SetKeywordListener(true);
 
-            UpdateEffects();
+                UpdateEffects();
+            }
         }
 
         /// <summary>
         /// The gameObject no longer has gaze
         /// </summary>
-        public virtual void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
-            HasGaze = false;
-            EndHoldDetection();
-            mRollOffTimer = 0;
-            mCheckRollOff = true;
-            SetKeywordListener(false);
-            UpdateEffects();
+            base.OnFocusExit(eventData);
+            
+            if (!HasFocus)
+            {
+                HasGaze = false;
+                EndHoldDetection();
+                mRollOffTimer = 0;
+                mCheckRollOff = true;
+                SetKeywordListener(false);
+                UpdateEffects();
+            }
         }
 
         private void SetKeywordListener(bool listen)
@@ -539,7 +549,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         protected virtual void OnDisable()
         {
-            OnFocusExit();
+            ResetFocus();
         }
     }
 }

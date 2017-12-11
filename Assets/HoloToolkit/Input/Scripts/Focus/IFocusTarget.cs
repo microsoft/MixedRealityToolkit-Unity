@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using HoloToolkit.Unity.InputModule;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 public interface IFocusTarget : IEventSystemHandler
 {
@@ -18,7 +18,7 @@ public interface IFocusTarget : IEventSystemHandler
 
     void ResetFocus();
 
-    ReadOnlyCollection<IFocuser> Focusers { get; }
+    List<IFocuser> Focusers { get; }
 
     // This will be automatically implemented by MonoBehavior
     GameObject gameObject { get; }

@@ -20,12 +20,12 @@ namespace HoloToolkit.Unity.Examples
             txt = textObjectState.GetComponentInChildren<TextMesh>();
         }
 
-        protected override void FocusEnter(GameObject obj, PointerSpecificEventData eventData) {
+        protected override void FocusEnter(GameObject obj, FocusChangedEventData eventData) {
             Debug.Log(obj.name + " : FocusEnter");
             txt.text = obj.name + " : FocusEnter";
         }
 
-        protected override void FocusExit(GameObject obj, PointerSpecificEventData eventData) {
+        protected override void FocusExit(GameObject obj, FocusChangedEventData eventData) {
             Debug.Log(obj.name + " : FocusExit");
             txt.text = obj.name + " : FocusExit";
         }

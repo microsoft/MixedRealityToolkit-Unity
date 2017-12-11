@@ -6,43 +6,8 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using System.Collections.ObjectModel;
 
-public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
+public class FocusTarget : MonoBehaviour, IFocusTarget
 {
-    public new GameObject gameObject;
-
-    [SerializeField]
-    private bool focusEnabled = true;
-
-    public virtual void OnFocusEnter(FocusEventData eventData)
-    {
-        Debug.Log("Focuser Enter: " + eventData.Focuser);
-        if (!focusers.Contains(eventData.Focuser))
-        {
-            focusers.Add(eventData.Focuser);
-        }
-    }
-
-    public virtual void OnFocusExit(FocusEventData eventData)
-    {
-        Debug.Log("Focuser Exit: " + eventData.Focuser);
-        focusers.Remove(eventData.Focuser);
-    }
-
-    public void ResetFocus()
-    {
-
-    }
-
-    public void OnInputDown(InputEventData eventData)
-    {
-        Debug.Log("Down");
-    }
-
-    public void OnInputUp(InputEventData eventData)
-    {
-        Debug.Log("Up");
-    }
-
     public virtual bool FocusEnabled { get { return focusEnabled; } set { focusEnabled = value; } }
 
     public virtual bool HasFocus
@@ -53,14 +18,38 @@ public class FocusTarget : MonoBehaviour, IFocusTarget, IInputHandler
         }
     }
 
-    private List<IFocuser> focusers = new List<IFocuser>();
-
-    public ReadOnlyCollection<IFocuser> Focusers
+    public List<IFocuser> Focusers
     {
         get
         {
-            return focusers.AsReadOnly();
+            // TODO: potentially cache a readonly collection to prevent manipulation
+            return focusers;
         }
+    }
+
+    private List<IFocuser> focusers = new List<IFocuser>();
+
+    [SerializeField]
+    private bool focusEnabled = true;
+
+    public virtual void OnFocusEnter(FocusEventData eventData)
+    {
+        //Debug.Log("Focuser Enter: " + eventData.Focuser);
+        if (!focusers.Contains(eventData.Focuser))
+        {
+            focusers.Add(eventData.Focuser);
+        }
+    }
+
+    public virtual void OnFocusExit(FocusEventData eventData)
+    {
+        //Debug.Log("Focuser Exit: " + eventData.Focuser);
+        focusers.Remove(eventData.Focuser);
+    }
+
+    public void ResetFocus()
+    {
+        focusers.Clear();
     }
 
 }
