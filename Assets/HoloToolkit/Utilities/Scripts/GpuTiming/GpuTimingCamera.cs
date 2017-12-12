@@ -11,6 +11,10 @@ namespace HoloToolkit.Unity
 	public class GpuTimingCamera : MonoBehaviour
 	{
 		public string TimingTag = "Frame";
+        public float LastFrameTime
+        {
+            get { return System.Convert.ToSingle(GpuTiming.GetTime(TimingTag));}
+        }
 
 		private Camera timingCamera;
 
@@ -24,7 +28,7 @@ namespace HoloToolkit.Unity
 		{
 			if (timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Left || timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
 			{
-				GpuTiming.BeginSample(TimingTag);
+                GpuTiming.BeginSample(TimingTag);
 			}
 		}
 
@@ -32,7 +36,7 @@ namespace HoloToolkit.Unity
 		{
 			if (timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right || timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
 			{
-				GpuTiming.EndSample();
+                GpuTiming.EndSample();
 			}
 		}
 	}
