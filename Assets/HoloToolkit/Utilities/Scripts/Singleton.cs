@@ -11,7 +11,8 @@ namespace HoloToolkit.Unity
     /// parent root GameObject with <see cref="Object.DontDestroyOnLoad"/></remarks>
     /// </summary>
     /// <typeparam name="T">The Singleton Type</typeparam>
-    public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+    [DisallowMultipleComponent]
+    public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         private static T instance;
 
@@ -26,20 +27,29 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (!IsInitialized && searchForInstance)
+                if (IsInitialized)
                 {
-                    searchForInstance = false;
-                    T[] objects = FindObjectsOfType<T>();
-                    if (objects.Length == 1)
-                    {
-                        instance = objects[0];
-                        instance.gameObject.GetParentRoot().DontDestroyOnLoad();
-                    }
-                    else if (objects.Length > 1)
-                    {
-                        Debug.LogErrorFormat("Expected exactly 1 {0} but found {1}.", typeof(T).Name, objects.Length);
-                    }
+                    return instance;
                 }
+
+                if (!searchForInstance)
+                {
+                    return null;
+                }
+
+                // likly first time
+                T[] objects = FindObjectsOfType<T>();
+                searchForInstance = false;
+
+                if (objects.Length == 1)
+                {
+                    objects[0].Initialize();
+                }
+                else if (objects.Length > 1)
+                {
+                    Debug.LogErrorFormat("Expected exactly 1 {0} but found {1}.", typeof(T).Name, objects.Length);
+                }
+
                 return instance;
             }
         }
@@ -62,11 +72,34 @@ namespace HoloToolkit.Unity
             }
         }
 
+        [SerializeField]
+        private bool DontDestroyParentRootOnLoad = true;
+
+        private object initilizedLock = new object();
+
+        protected void Initialize()
+        {
+            lock (initilizedLock)
+            {
+                if (!IsInitialized)
+                {
+                    instance = (T)this;
+                    InitializeInternal();
+                    if (DontDestroyParentRootOnLoad)
+                    {
+                        instance.gameObject.GetParentRoot().DontDestroyOnLoad();;
+                    }
+                }
+            }
+        }
+
+        protected abstract void InitializeInternal();
+
         /// <summary>
         /// Base Awake method that sets the Singleton's unique instance.
         /// Called by Unity when initializing a MonoBehaviour.
-        /// Scripts that extend Singleton should be sure to call base.Awake() to ensure the
-        /// static Instance reference is properly created.
+        /// Scripts that extend Singleton should be sure to call base.Awake() unless they want
+        /// lazy initialization
         /// </summary>
         protected virtual void Awake()
         {
@@ -85,9 +118,8 @@ namespace HoloToolkit.Unity
             }
             else if (!IsInitialized)
             {
-                instance = (T)this;
+                Initialize();
                 searchForInstance = false;
-                gameObject.GetParentRoot().DontDestroyOnLoad();
             }
         }
 

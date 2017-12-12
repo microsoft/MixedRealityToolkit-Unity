@@ -18,6 +18,10 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         // Privates
         private List<string> customShapeDefinitions = new List<string>();
 
+        protected override void InitializeInternal()
+        {
+        }
+
         // Functions
         private void Start()
         {

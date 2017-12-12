@@ -95,6 +95,10 @@ namespace HoloToolkit.Unity
         /// </summary>
         private Vector3 targetOverridePreviousPosition;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         /// <summary>
         /// Updates the focus point for every frame after all objects have finished moving.
         /// </summary>

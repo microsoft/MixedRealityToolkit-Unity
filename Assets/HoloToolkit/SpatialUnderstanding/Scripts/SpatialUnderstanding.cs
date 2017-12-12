@@ -116,6 +116,10 @@ namespace HoloToolkit.Unity
 
         private float timeSinceLastUpdate = 0.0f;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         // Functions
         protected override void Awake()
         {

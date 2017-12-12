@@ -72,6 +72,10 @@ namespace HoloToolkit.Unity.Boundary
             }
         }
 
+        protected override void InitializeInternal()
+        {
+        }
+
         private void SetBoundaryRendering()
         {
 #if UNITY_2017_2_OR_NEWER
