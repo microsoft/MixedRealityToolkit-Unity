@@ -4,7 +4,7 @@
 | Target Unity release  | Release timeframe | Master release tag | Toolkit release features |
 | --- | --- | --- | --- |
 | 2017.2.0 | COMPLETED       | v1.2017.2.0        | <ul><li>Updated master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
-| 2017.3.0              | End Dec 2017      | v1.2017.3.0        | <ul><li>360 video player prefabs.</li><li>Scriptable foveated rendering prefabs.</li></ul>|
+| 2017.3.0              | End Dec 2017      | 2017.3.0        | <ul><li>360 video player prefabs.</li><li>Scriptable foveated rendering prefabs.</li></ul>|
 
 ### Dev_Unity_2017.2.0 branch - COMPLETED
 
