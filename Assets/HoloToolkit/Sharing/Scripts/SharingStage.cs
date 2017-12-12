@@ -388,6 +388,10 @@ namespace HoloToolkit.Sharing
 
         #endregion // Event Callbacks
 
+        protected override void InitializeInternal()
+        {
+        }
+
         private void ManagerInit(bool setConnection)
         {
             var config = new ClientConfig(ClientRole);

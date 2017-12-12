@@ -72,6 +72,8 @@ namespace HoloToolkit.Unity.Boundary
             }
         }
 
+
+
         private void SetBoundaryRendering()
         {
 #if UNITY_2017_2_OR_NEWER
@@ -202,6 +204,10 @@ namespace HoloToolkit.Unity.Boundary
 
             // Ensuring that we set height of the bounds volume to be say 10 feet tall.
             boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));
+        }
+
+        protected override void InitializeInternal()
+        {
         }
 #endif
     }

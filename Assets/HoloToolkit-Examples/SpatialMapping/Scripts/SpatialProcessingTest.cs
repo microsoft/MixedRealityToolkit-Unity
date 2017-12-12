@@ -26,6 +26,10 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
         /// </summary>
         private bool meshesProcessed = false;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         /// <summary>
         /// GameObject initialization.
         /// </summary>

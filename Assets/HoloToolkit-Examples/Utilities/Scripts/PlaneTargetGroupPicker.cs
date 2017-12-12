@@ -18,6 +18,10 @@ namespace HoloToolkit.Unity.Tests
 
         private Coroutine displayForSecondsCoroutine;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         public void PickNewTarget()
         {
             PlaneTargetGroup newGroup = null;

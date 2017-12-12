@@ -52,6 +52,10 @@ namespace HoloToolkit.Unity.SpatialMapping
         private static readonly float FrameTime = .008f;
 #endif
 
+        protected override void InitializeInternal()
+        {
+        }
+
         // GameObject initialization.
         private void Start()
         {

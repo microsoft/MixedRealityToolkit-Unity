@@ -50,6 +50,10 @@ namespace HoloToolkit.Sharing.Utilities
             }
         }
 
+        protected override void InitializeInternal()
+        {
+        }
+
         private void Start()
         {
             // SharingStage should be valid at this point, but we may not be connected.

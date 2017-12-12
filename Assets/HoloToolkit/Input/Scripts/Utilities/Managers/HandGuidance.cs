@@ -37,6 +37,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private uint? currentlyTrackedHand;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         protected override void Awake()
         {
             base.Awake();
