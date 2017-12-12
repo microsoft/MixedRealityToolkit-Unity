@@ -111,7 +111,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             print("press Q to start stream to audio source, W will stop that stream");
             print("press A to start a recording and S to stop that recording and save it to a wav file.");
             print("Since this all goes through the AudioSource, you can mute the mic while using it there, or do anything else you would do with an AudioSource");
-            print("In this demo, we start the stream automatically, and then change the size of the gameobject based on microphone signal amplitude");
+            print("In this demo, we start the stream automatically, and then change the size of the GameObject based on microphone signal amplitude");
             isRunning = true;
         }
 

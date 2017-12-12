@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
 {
 #if UNITY_EDITOR
     /// <summary>
-    /// To use this class in a Monobehavior or ScriptableObject, add this line at the bottom of your class:
+    /// To use this class in a MonoBehavior or ScriptableObject, add this line at the bottom of your class:
     /// 
     /// public class ClassName {
     /// ...
@@ -727,7 +727,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Displays a help window explaning profile objects
+        /// Displays a help window explaining profile objects
         /// </summary>
         private static void LaunchProfileHelp()
         {

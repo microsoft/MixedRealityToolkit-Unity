@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.InputModule
                  "instead of the targeted object's normal at point of contact.")]
         public bool UseGazeBasedNormal = false;
 
-        [Tooltip("Should the cursor be hidding when this object is focused.")]
+        [Tooltip("Should the cursor be hiding when this object is focused.")]
         public bool HideCursorOnFocus = false;
 
         [Tooltip("Cursor animation parameters to set when this object is focused. Leave empty for none.")]

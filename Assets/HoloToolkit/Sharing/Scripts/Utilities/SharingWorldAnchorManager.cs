@@ -22,7 +22,7 @@ using UnityEngine.VR.WSA.Sharing;
 namespace HoloToolkit.Sharing
 {
     /// <summary>
-    /// Wrapper around world anchor store to streamline some of the persistence api busy work.
+    /// Wrapper around world anchor store to streamline some of the persistence API busy work.
     /// </summary>
     public class SharingWorldAnchorManager : WorldAnchorManager
     {
