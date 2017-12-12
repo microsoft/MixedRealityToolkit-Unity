@@ -36,6 +36,11 @@ namespace HoloToolkit.Unity
 
         public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
         {
+            if (!WindowsApiChecker.UniversalApiContractV4_IsAvailable)
+            {
+                return;
+            }
+
 #if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
@@ -69,6 +74,11 @@ namespace HoloToolkit.Unity
 
         public static void StopHaptics(this InteractionSource interactionSource)
         {
+            if (!WindowsApiChecker.UniversalApiContractV4_IsAvailable)
+            {
+                return;
+            }
+
 #if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
@@ -90,18 +100,21 @@ namespace HoloToolkit.Unity
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
 
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
             {
-                IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-
-                foreach (SpatialInteractionSourceState sourceState in sources)
+                UnityEngine.WSA.Application.InvokeOnUIThread(() =>
                 {
-                    if (sourceState.Source.Id.Equals(interactionSource.id))
+                    IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+
+                    foreach (SpatialInteractionSourceState sourceState in sources)
                     {
-                        returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
+                        if (sourceState.Source.Id.Equals(interactionSource.id))
+                        {
+                            returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
+                        }
                     }
-                }
-            }, true);
+                }, true);
+            }
 
             return returnValue;
         }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
@@ -9,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// Test behaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
-    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler
+    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler
     {
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
@@ -30,6 +31,14 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}  TapCount: {3}", eventData.InputSource, eventData.SourceId, eventData.PressType, eventData.TapCount);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        /// <summary>
+        /// Just a public method called by the Unity OnClick Event.
+        /// </summary>
+        public void OnPointerClick(PointerEventData pointerEventData)
+        {
+            Debug.Log("OnPointerClick: " + pointerEventData.pointerId);
         }
 
         public void OnFocusEnter()
@@ -74,7 +83,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnManipulationStarted(ManipulationEventData eventData)
         {
-            Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}", 
+            Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
                 eventData.SourceId,
                 eventData.CumulativeDelta.x,

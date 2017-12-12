@@ -508,6 +508,11 @@ Prefab:
       propertyPath: m_FontData.m_HorizontalOverflow
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 223000013180475572, guid: 022450106439a8946ae18a9e20cc92d8,
+        type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1635556076}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 022450106439a8946ae18a9e20cc92d8, type: 2}
   m_IsPrefabParent: 0
@@ -607,6 +612,11 @@ Prefab:
 --- !u!4 &1635556075 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab,
+    type: 2}
+  m_PrefabInternal: {fileID: 1635556074}
+--- !u!20 &1635556076 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 20049547090947856, guid: 3eddd1c29199313478dd3f912bfab2ab,
     type: 2}
   m_PrefabInternal: {fileID: 1635556074}
 --- !u!1001 &1763047398

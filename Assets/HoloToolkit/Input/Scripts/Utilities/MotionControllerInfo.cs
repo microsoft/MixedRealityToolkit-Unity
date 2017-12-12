@@ -2,6 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -11,7 +16,8 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class MotionControllerInfo
     {
-        public GameObject ControllerParent;
+        public readonly GameObject ControllerParent;
+        public readonly InteractionSourceHandedness Handedness;
 
         private GameObject home;
         private Transform homePressed;
@@ -44,6 +50,7 @@ namespace HoloToolkit.Unity.InputModule
         private Transform touchpadTouchYMin;
         private Transform touchpadTouchYMax;
         private GameObject touchpadTouchVisualizer;
+        private GameObject pointingPose;
 
         // These values are used to determine if a button's state has changed.
         private bool wasGrasped;
@@ -56,6 +63,86 @@ namespace HoloToolkit.Unity.InputModule
         private Vector2 lastTouchpadPosition;
         private double lastSelectPressedAmount;
 
+        public MotionControllerInfo(GameObject controllerParent, InteractionSourceHandedness handedness)
+        {
+            ControllerParent = controllerParent;
+            Handedness = handedness;
+        }
+
+        public enum ControllerElementEnum
+        {
+            // Controller button elements
+            Home,
+            Menu,
+            Grasp,
+            Thumbstick,
+            Select,
+            Touchpad,
+            // Controller body elements & poses
+            PointingPose
+        }
+
+        public bool TryGetElement(ControllerElementEnum element, out Transform elementTransform)
+        {
+            switch (element)
+            {
+                // control elements
+                case ControllerElementEnum.Home:
+                    if (home != null)
+                    {
+                        elementTransform = home.transform;
+                        return true;
+                    }
+                    break;
+                case ControllerElementEnum.Menu:
+                    if (menu != null)
+                    {
+                        elementTransform = menu.transform;
+                        return true;
+                    }
+                    break;
+                case ControllerElementEnum.Select:
+                    if (select != null)
+                    {
+                        elementTransform = select.transform;
+                        return true;
+                    }
+                    break;
+                case ControllerElementEnum.Grasp:
+                    if (grasp != null)
+                    {
+                        elementTransform = grasp.transform;
+                        return true;
+                    }
+                    break;
+                case ControllerElementEnum.Thumbstick:
+                    if (thumbstickPress != null)
+                    {
+                        elementTransform = thumbstickPress.transform;
+                        return true;
+                    }
+                    break;
+                case ControllerElementEnum.Touchpad:
+                    if (touchpadPress != null)
+                    {
+                        elementTransform = touchpadPress.transform;
+                        return true;
+                    }
+                    break;
+                // body elements & poses
+                case ControllerElementEnum.PointingPose:
+                    if (pointingPose != null)
+                    {
+                        elementTransform = pointingPose.transform;
+                        return true;
+                    }
+                    break;
+            }
+
+            elementTransform = null;
+            return false;
+        }
+
         /// <summary>
         /// Iterates through the Transform array to find specifically named GameObjects.
         /// These GameObjects specify the animation bounds and the GameObject to modify for button,
@@ -63,7 +150,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="childTransforms">The transforms of the glTF model.</param>
         /// <param name="visualizerScript">The script containing references to any objects to spawn.</param>
-        public void LoadInfo(Transform[] childTransforms, MotionControllerVisualizer visualizerScript)
+        public void LoadInfo(Transform[] childTransforms)
         {
             foreach (Transform child in childTransforms)
             {
@@ -75,6 +162,12 @@ namespace HoloToolkit.Unity.InputModule
                 // visualizer.
                 switch (child.name.ToLower())
                 {
+                    case "touch":
+                        touchpadTouchVisualizer = MotionControllerVisualizer.Instance.SpawnTouchpadVisualizer(child);
+                        break;
+                    case "pointing_pose":
+                        pointingPose = child.gameObject;
+                        break;
                     case "pressed":
                         switch (child.parent.name.ToLower())
                         {
@@ -190,9 +283,6 @@ namespace HoloToolkit.Unity.InputModule
                                 break;
                         }
                         break;
-                    case "touch":
-                        touchpadTouchVisualizer = visualizerScript.SpawnTouchpadVisualizer(child);
-                        break;
                 }
             }
         }
@@ -288,6 +378,15 @@ namespace HoloToolkit.Unity.InputModule
         {
             buttonGameObject.transform.localPosition = newTransform.localPosition;
             buttonGameObject.transform.localRotation = newTransform.localRotation;
+        }
+
+        public void SetRenderersVisible(bool visible)
+        {
+            MeshRenderer[] renderers = ControllerParent.GetComponentsInChildren<MeshRenderer>();
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].enabled = visible;
+            }
         }
     }
 }

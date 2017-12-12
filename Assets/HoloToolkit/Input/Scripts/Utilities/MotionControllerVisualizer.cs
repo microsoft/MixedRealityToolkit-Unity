@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR_WIN
-using System;
 using System.Runtime.InteropServices;
 #endif
 
@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity.InputModule
     /// and animates the controller position, rotation, button presses, and
     /// thumbstick/touchpad interactions, where applicable.
     /// </summary>
-    public class MotionControllerVisualizer : MonoBehaviour
+    public class MotionControllerVisualizer : Singleton<MotionControllerVisualizer>
     {
         [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
         public bool AnimateControllerModel = true;
@@ -52,16 +52,24 @@ namespace HoloToolkit.Unity.InputModule
         protected UnityEngine.Material GLTFMaterial;
 
         // This will be used to keep track of our controllers, indexed by their unique source ID.
-        private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
-        private List<uint> loadingControllers = new List<uint>();
+        private Dictionary<string, MotionControllerInfo> controllerDictionary = new Dictionary<string, MotionControllerInfo>(0);
+        private List<string> loadingControllers = new List<string>();
+
+        private MotionControllerInfo leftControllerModel;
+        private MotionControllerInfo rightControllerModel;
+
+        public event Action<MotionControllerInfo> OnControllerModelLoaded;
+        public event Action<MotionControllerInfo> OnControllerModelUnloaded;
 
 #if UNITY_EDITOR_WIN
         [DllImport("MotionControllerModel")]
         private static extern bool TryGetMotionControllerModel([In] uint controllerId, [Out] out uint outputSize, [Out] out IntPtr outputBuffer);
 #endif
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             foreach (var sourceState in InteractionManager.GetCurrentReading())
             {
@@ -97,8 +105,10 @@ namespace HoloToolkit.Unity.InputModule
             UpdateControllerState();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
@@ -119,7 +129,7 @@ namespace HoloToolkit.Unity.InputModule
             foreach (var sourceState in InteractionManager.GetCurrentReading())
             {
                 MotionControllerInfo currentController;
-                if (sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(sourceState.source.id, out currentController))
+                if (sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(GenerateKey(sourceState.source), out currentController))
                 {
                     if (AnimateControllerModel)
                     {
@@ -170,9 +180,33 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StartTrackingController(InteractionSource source)
         {
-            if (source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(source.id) && !loadingControllers.Contains(source.id))
+            string key = GenerateKey(source);
+
+            MotionControllerInfo controllerInfo;
+            if (source.kind == InteractionSourceKind.Controller)
             {
-                StartCoroutine(LoadControllerModel(source));
+                if (!controllerDictionary.ContainsKey(key) && !loadingControllers.Contains(key))
+                {
+                    StartCoroutine(LoadControllerModel(source));
+                }
+                else if (controllerDictionary.TryGetValue(key, out controllerInfo))
+                {
+                    if (controllerInfo.Handedness == InteractionSourceHandedness.Left)
+                    {
+                        leftControllerModel = controllerInfo;
+                    }
+                    else if (controllerInfo.Handedness == InteractionSourceHandedness.Right)
+                    {
+                        rightControllerModel = controllerInfo;
+                    }
+
+                    controllerInfo.ControllerParent.SetActive(true);
+
+                    if (OnControllerModelLoaded != null)
+                    {
+                        OnControllerModelLoaded(controllerInfo);
+                    }
+                }
             }
         }
 
@@ -186,20 +220,32 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSource source = obj.state.source;
             if (source.kind == InteractionSourceKind.Controller)
             {
-                MotionControllerInfo controller;
-                if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
+                MotionControllerInfo controllerInfo;
+                if (controllerDictionary != null && controllerDictionary.TryGetValue(GenerateKey(source), out controllerInfo))
                 {
-                    controllerDictionary.Remove(source.id);
+                    if (OnControllerModelUnloaded != null)
+                    {
+                        OnControllerModelUnloaded(controllerInfo);
+                    }
 
-                    Destroy(controller.ControllerParent);
+                    if (controllerInfo.Handedness == InteractionSourceHandedness.Left)
+                    {
+                        leftControllerModel = null;
+                    }
+                    else if (controllerInfo.Handedness == InteractionSourceHandedness.Right)
+                    {
+                        rightControllerModel = null;
+                    }
+
+                    controllerInfo.ControllerParent.SetActive(false);
                 }
             }
         }
 
         private IEnumerator LoadControllerModel(InteractionSource source)
         {
-            loadingControllers.Add(source.id);
-            
+            loadingControllers.Add(GenerateKey(source));
+
             if (AlwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
             {
                 if (AlternateLeftController == null)
@@ -304,8 +350,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
 
-            controllerModelGameObject = new GameObject();
-            controllerModelGameObject.name = "glTFController";
+            controllerModelGameObject = new GameObject { name = "glTFController" };
             GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
             gltfScript.ColorMaterial = GLTFMaterial;
             gltfScript.NoColorMaterial = GLTFMaterial;
@@ -313,7 +358,7 @@ namespace HoloToolkit.Unity.InputModule
 
             yield return gltfScript.LoadModel();
 
-            FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
+            FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }
 
         private void LoadAlternateControllerModel(InteractionSource source)
@@ -329,15 +374,19 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                loadingControllers.Remove(source.id);
+                loadingControllers.Remove(GenerateKey(source));
                 return;
             }
 
-            FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
+            FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }
-#endif
 
-        private void FinishControllerSetup(GameObject controllerModelGameObject, string handedness, uint id)
+        private string GenerateKey(InteractionSource source)
+        {
+            return source.vendorId + "/" + source.productId + "/" + source.productVersion + "/" + source.handedness;
+        }
+
+        private void FinishControllerSetup(GameObject controllerModelGameObject, InteractionSourceHandedness handedness, string dictionaryKey)
         {
             var parentGameObject = new GameObject
             {
@@ -347,15 +396,47 @@ namespace HoloToolkit.Unity.InputModule
             parentGameObject.transform.parent = transform;
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
-            var newControllerInfo = new MotionControllerInfo() { ControllerParent = parentGameObject };
-            if (AnimateControllerModel)
+            var newControllerInfo = new MotionControllerInfo(parentGameObject, handedness);
+
+            newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>());
+
+            if (handedness == InteractionSourceHandedness.Left)
             {
-                newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
+                leftControllerModel = newControllerInfo;
+            }
+            else if (handedness == InteractionSourceHandedness.Right)
+            {
+                rightControllerModel = newControllerInfo;
             }
 
-            loadingControllers.Remove(id);
-            controllerDictionary.Add(id, newControllerInfo);
+            if (OnControllerModelLoaded != null)
+            {
+                OnControllerModelLoaded(newControllerInfo);
+            }
+
+            loadingControllers.Remove(dictionaryKey);
+            controllerDictionary.Add(dictionaryKey, newControllerInfo);
         }
+
+        public bool TryGetControllerModel(InteractionSourceHandedness handedness, out MotionControllerInfo controller)
+        {
+            if (handedness == InteractionSourceHandedness.Left && leftControllerModel != null)
+            {
+                controller = leftControllerModel;
+                return true;
+            }
+            else if (handedness == InteractionSourceHandedness.Right && rightControllerModel != null)
+            {
+                controller = rightControllerModel;
+                return true;
+            }
+            else
+            {
+                controller = null;
+                return false;
+            }
+        }
+#endif
 
         public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
         {

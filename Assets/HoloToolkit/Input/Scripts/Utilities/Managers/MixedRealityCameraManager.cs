@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
     public class MixedRealityCameraManager : Singleton<MixedRealityCameraManager>
     {
         [Tooltip("The near clipping plane distance for an opaque display.")]
-        public float NearClipPlane_OpaqueDisplay = 0.3f;
+        public float NearClipPlane_OpaqueDisplay = 0.1f;
 
         [Tooltip("Values for Camera.clearFlags, determining what to clear when rendering a Camera for an opaque display.")]
         public CameraClearFlags CameraClearFlags_OpaqueDisplay = CameraClearFlags.Skybox;

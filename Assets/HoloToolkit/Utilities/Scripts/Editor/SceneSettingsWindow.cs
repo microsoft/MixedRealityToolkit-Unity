@@ -95,6 +95,7 @@ namespace HoloToolkit.Unity
                 }
 
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(InputSystemPrefabGUID)));
+                FocusManager.Instance.UpdateCanvasEventSystems();
             }
 
             if (Values[SceneSetting.AddDefaultCursor])
