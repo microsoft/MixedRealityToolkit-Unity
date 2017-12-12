@@ -74,6 +74,10 @@ namespace HoloToolkit.Unity.InputModule
             UpdateFocusedObjects();
         }
 
+        protected override void InitializeInternal()
+        {
+        }
+
         #endregion
 
         #region Settings

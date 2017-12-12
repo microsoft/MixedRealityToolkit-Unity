@@ -85,6 +85,10 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         public event EventHandler<PropertyChangedEventArgsEx<SpatialMappingSource>> SourceChanged;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         // Called when the GameObject is first created.
         protected override void Awake()
         {

@@ -44,6 +44,10 @@ namespace HoloToolkit.Unity
         private float fadeInTime;
         private Action fadeInAction;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         private void Start()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER

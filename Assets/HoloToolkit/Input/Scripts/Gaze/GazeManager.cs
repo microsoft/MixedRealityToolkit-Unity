@@ -127,6 +127,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private float lastHitDistance = 2.0f;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         protected override void Awake()
         {
             base.Awake();

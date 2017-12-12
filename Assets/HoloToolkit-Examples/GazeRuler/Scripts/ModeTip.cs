@@ -17,6 +17,10 @@ namespace HoloToolkit.Examples.GazeRuler
         private int fadeTime = 100;
         private Material material;
 
+        protected override void InitializeInternal()
+        {
+        }
+
         private void Start()
         {
             text = GetComponent<TextMesh>();

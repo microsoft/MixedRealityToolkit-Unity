@@ -26,6 +26,10 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private Dictionary<long, RemoteHeadInfo> remoteHeads = new Dictionary<long, RemoteHeadInfo>();
 
+        protected override void InitializeInternal()
+        {
+        }
+
         private void Start()
         {
             CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = UpdateHeadTransform;
