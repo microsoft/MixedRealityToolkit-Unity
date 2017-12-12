@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.UI.Keyboard
 {
     /// <summary>
-    /// Axis slider is a script to lock a bar acros a specific axis.
+    /// Axis slider is a script to lock a bar across a specific axis.
     /// </summary>
     public class AxisSlider : MonoBehaviour
     {

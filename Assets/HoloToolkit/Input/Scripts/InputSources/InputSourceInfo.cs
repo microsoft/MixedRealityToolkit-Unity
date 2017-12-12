@@ -12,8 +12,7 @@ namespace HoloToolkit.Unity.InputModule
         public IInputSource InputSource;
         public uint SourceId;
 
-        public InputSourceInfo(IInputSource inputSource, uint sourceId) :
-            this()
+        public InputSourceInfo(IInputSource inputSource, uint sourceId) : this()
         {
             InputSource = inputSource;
             SourceId = sourceId;

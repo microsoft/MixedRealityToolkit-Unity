@@ -382,7 +382,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         /// <summary>
-        /// Createx and exports the anchor at the specified world position
+        /// Creates and exports the anchor at the specified world position
         /// </summary>
         /// <param name="worldPos">The position to place the anchor</param>
         private void ExportAnchorAtPosition(Vector3 worldPos)
@@ -394,7 +394,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 DestroyImmediate(worldAnchor);
             }
 
-            // Move the object to the specifid place
+            // Move the object to the specified place
             objectToAnchor.transform.position = worldPos;
 
             // Attach a new anchor

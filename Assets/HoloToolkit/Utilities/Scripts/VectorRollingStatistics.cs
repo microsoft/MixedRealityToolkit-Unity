@@ -131,7 +131,7 @@ namespace HoloToolkit.Unity
 
             // And calculate new averages and standard deviations
             // (note that calculating a standard deviation of a Vector3 might not 
-            // be done properly, but the logic is working for the gaze stabalization scenario)
+            // be done properly, but the logic is working for the gaze stabilization scenario)
             Average = cumulativeFrame / ActualSampleCount;
             float newStandardDev = Mathf.Sqrt((cumulativeFrameSquared / ActualSampleCount - Average.Mul(Average)).magnitude);
             StandardDeviationDeltaAfterLatestSample = oldStandardDeviation - newStandardDev;

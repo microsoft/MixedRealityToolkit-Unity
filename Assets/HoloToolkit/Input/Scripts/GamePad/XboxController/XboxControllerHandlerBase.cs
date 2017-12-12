@@ -2,131 +2,207 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public class XboxControllerHandlerBase : MonoBehaviour, IXboxControllerHandler
+    public class XboxControllerHandlerBase : GamePadHandlerBase, IXboxControllerHandler
     {
+        protected enum GestureState
+        {
+            SelectButtonPressed,
+            NavigationStarted,
+            NavigationCompleted,
+            HoldStarted,
+            HoldCompleted,
+            HoldCanceled
+        }
+
         [SerializeField]
-        [Tooltip("Is Gaze required for controller input?")]
-        protected bool IsGlobalListener = true;
+        [Tooltip("Elapsed time for hold started gesture in seconds.")]
+        protected float HoldStartedInterval = 2.0f;
 
-        protected string GamePadName;
+        [SerializeField]
+        [Tooltip("Elapsed time for hold completed gesture in seconds.")]
+        protected float HoldCompletedInterval = 3.0f;
 
-        protected virtual void Start()
+        [SerializeField]
+        [Tooltip("The action button that is used to select.  Analogous to air tap on HoloLens and trigger press with motion controllers.")]
+        protected XboxControllerMappingTypes SelectButton = XboxControllerMappingTypes.XboxA;
+
+        [SerializeField]
+        [Tooltip("The Horizontal Axis that navigation events take place")]
+        protected XboxControllerMappingTypes HorizontalNavigationAxis = XboxControllerMappingTypes.XboxLeftStickHorizontal;
+
+        [Tooltip("The Vertical Axis that navigation events take place")]
+        protected XboxControllerMappingTypes VerticalNavigationAxis = XboxControllerMappingTypes.XboxLeftStickVertical;
+
+        protected GestureState CurrentGestureState;
+
+        protected bool HoldStarted;
+        protected bool RaiseOnce;
+        protected bool NavigationStarted;
+        protected bool NavigationCompleted;
+        protected Vector3 NormalizedOffset;
+
+        protected Coroutine HandStartedRoutine;
+        protected Coroutine HoldCompletedRoutine;
+
+        public virtual void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
-            if (IsGlobalListener)
+            if (string.IsNullOrEmpty(GamePadName))
             {
-                InputManager.Instance.AddGlobalListener(gameObject);
+                GamePadName = eventData.GamePadName;
             }
+
+            if (XboxControllerMapping.GetButton_Down(SelectButton, eventData))
+            {
+                InputManager.Instance.RaiseSourceDown(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select);
+            }
+
+            if (XboxControllerMapping.GetButton_Pressed(SelectButton, eventData))
+            {
+                HandleNavigation(eventData);
+
+                if (!HoldStarted && !RaiseOnce && !NavigationStarted)
+                {
+                    HandStartedRoutine = StartCoroutine(HandleHoldStarted(eventData));
+                }
+            }
+
+            if (XboxControllerMapping.GetButton_Up(SelectButton, eventData))
+            {
+                HandleSelectButtonReleased(eventData);
+            }
+
+            // Consume this event
+            eventData.Use();
         }
 
-        public virtual void OnGamePadDetected(GamePadEventData eventData)
+        protected virtual void HandleSelectButtonReleased(XboxControllerEventData eventData)
         {
-            GamePadName = eventData.GamePadName;
+            InputManager.Instance.RaiseSourceUp(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select);
+
+            switch (CurrentGestureState)
+            {
+                case GestureState.NavigationStarted:
+                {
+                    NavigationCompleted = true;
+                    if (HandStartedRoutine != null)
+                    {
+                        StopCoroutine(HandStartedRoutine);
+                    }
+
+                    if (HoldCompletedRoutine != null)
+                    {
+                        StopCoroutine(HoldCompletedRoutine);
+                    }
+
+                    InputManager.Instance.RaiseNavigationCompleted(eventData.InputSource, eventData.SourceId, Vector3.zero);
+                    break;
+                }
+                case GestureState.HoldStarted:
+                    StopCoroutine(HandStartedRoutine);
+                    InputManager.Instance.RaiseHoldCanceled(eventData.InputSource, eventData.SourceId);
+                    break;
+                case GestureState.HoldCompleted:
+                    InputManager.Instance.RaiseHoldCompleted(eventData.InputSource, eventData.SourceId);
+                    break;
+                default:
+                {
+                    if (HandStartedRoutine != null)
+                    {
+                        StopCoroutine(HandStartedRoutine);
+                    }
+
+                    if (HoldCompletedRoutine != null)
+                    {
+                        StopCoroutine(HoldCompletedRoutine);
+                    }
+
+                    InputManager.Instance.RaiseInputClicked(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select, 1);
+                    break;
+                }
+            }
+
+            Reset();
         }
 
-        public virtual void OnGamePadLost(GamePadEventData eventData)
+        protected void Reset()
         {
-            GamePadName = string.Empty;
+            HoldStarted = false;
+            RaiseOnce = false;
+            NavigationStarted = false;
         }
 
-        public virtual void OnXboxAxisUpdate(XboxControllerEventData eventData)
+        protected virtual IEnumerator HandleHoldStarted(XboxControllerEventData eventData)
         {
+            yield return new WaitForSeconds(HoldStartedInterval);
+
+            if (RaiseOnce || CurrentGestureState == GestureState.HoldStarted || CurrentGestureState == GestureState.NavigationStarted)
+            {
+                yield break;
+            }
+
+            HoldStarted = true;
+
+            CurrentGestureState = GestureState.HoldStarted;
+            InputManager.Instance.RaiseHoldStarted(eventData.InputSource, eventData.SourceId);
+            RaiseOnce = true;
+
+            HoldCompletedRoutine = StartCoroutine(HandleHoldCompleted());
         }
 
+        protected virtual IEnumerator HandleHoldCompleted()
+        {
+            yield return new WaitForSeconds(HoldCompletedInterval);
+
+            CurrentGestureState = GestureState.HoldCompleted;
+        }
+
+        protected virtual void HandleNavigation(XboxControllerEventData eventData)
+        {
+            if (NavigationCompleted) { return; }
+
+            float displacementAlongX = XboxControllerMapping.GetAxis(HorizontalNavigationAxis, eventData);
+            float displacementAlongY = XboxControllerMapping.GetAxis(VerticalNavigationAxis, eventData);
+
+            if (displacementAlongX == 0.0f && displacementAlongY == 0.0f && !NavigationStarted) { return; }
+
+            NormalizedOffset.x = displacementAlongX;
+            NormalizedOffset.y = displacementAlongY;
+            NormalizedOffset.z = 0f;
+
+            if (!NavigationStarted)
+            {
+                CurrentGestureState = GestureState.NavigationStarted;
+                NavigationStarted = true;
+
+                // Raise navigation started event.
+                InputManager.Instance.RaiseNavigationStarted(eventData.InputSource, eventData.SourceId);
+            }
+
+            // Raise navigation updated event.
+            InputManager.Instance.RaiseNavigationUpdated(eventData.InputSource, eventData.SourceId, NormalizedOffset);
+        }
+
+        [Obsolete("Use XboxControllerMapping.GetButton_Up")]
         protected static bool OnButton_Up(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
         {
-            switch (buttonType)
-            {
-                case XboxControllerMappingTypes.None:
-                    return false;
-                case XboxControllerMappingTypes.XboxA:
-                    return eventData.XboxA_Up;
-                case XboxControllerMappingTypes.XboxB:
-                    return eventData.XboxB_Up;
-                case XboxControllerMappingTypes.XboxX:
-                    return eventData.XboxX_Up;
-                case XboxControllerMappingTypes.XboxY:
-                    return eventData.XboxY_Up;
-                case XboxControllerMappingTypes.XboxView:
-                    return eventData.XboxView_Up;
-                case XboxControllerMappingTypes.XboxMenu:
-                    return eventData.XboxMenu_Up;
-                case XboxControllerMappingTypes.XboxLeftBumper:
-                    return eventData.XboxLeftBumper_Up;
-                case XboxControllerMappingTypes.XboxRightBumper:
-                    return eventData.XboxRightBumper_Up;
-                case XboxControllerMappingTypes.XboxLeftStickClick:
-                    return eventData.XboxLeftStick_Up;
-                case XboxControllerMappingTypes.XboxRightStickClick:
-                    return eventData.XboxRightStick_Up;
-                default:
-                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
-            }
+            return XboxControllerMapping.GetButton_Up(buttonType, eventData);
         }
 
+        [Obsolete("Use XboxControllerMapping.GetButton_Pressed")]
         protected static bool OnButton_Pressed(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
         {
-            switch (buttonType)
-            {
-                case XboxControllerMappingTypes.None:
-                    return false;
-                case XboxControllerMappingTypes.XboxA:
-                    return eventData.XboxA_Pressed;
-                case XboxControllerMappingTypes.XboxB:
-                    return eventData.XboxB_Pressed;
-                case XboxControllerMappingTypes.XboxX:
-                    return eventData.XboxX_Pressed;
-                case XboxControllerMappingTypes.XboxY:
-                    return eventData.XboxY_Pressed;
-                case XboxControllerMappingTypes.XboxView:
-                    return eventData.XboxView_Pressed;
-                case XboxControllerMappingTypes.XboxMenu:
-                    return eventData.XboxMenu_Pressed;
-                case XboxControllerMappingTypes.XboxLeftBumper:
-                    return eventData.XboxLeftBumper_Pressed;
-                case XboxControllerMappingTypes.XboxRightBumper:
-                    return eventData.XboxRightBumper_Pressed;
-                case XboxControllerMappingTypes.XboxLeftStickClick:
-                    return eventData.XboxLeftStick_Pressed;
-                case XboxControllerMappingTypes.XboxRightStickClick:
-                    return eventData.XboxRightStick_Pressed;
-                default:
-                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
-            }
+            return XboxControllerMapping.GetButton_Pressed(buttonType, eventData);
         }
 
+        [Obsolete("Use XboxControllerMapping.GetButton_Down")]
         protected static bool OnButton_Down(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
         {
-            switch (buttonType)
-            {
-                case XboxControllerMappingTypes.None:
-                    return false;
-                case XboxControllerMappingTypes.XboxA:
-                    return eventData.XboxA_Down;
-                case XboxControllerMappingTypes.XboxB:
-                    return eventData.XboxB_Down;
-                case XboxControllerMappingTypes.XboxX:
-                    return eventData.XboxX_Down;
-                case XboxControllerMappingTypes.XboxY:
-                    return eventData.XboxY_Down;
-                case XboxControllerMappingTypes.XboxView:
-                    return eventData.XboxView_Down;
-                case XboxControllerMappingTypes.XboxMenu:
-                    return eventData.XboxMenu_Down;
-                case XboxControllerMappingTypes.XboxLeftBumper:
-                    return eventData.XboxLeftBumper_Down;
-                case XboxControllerMappingTypes.XboxRightBumper:
-                    return eventData.XboxRightBumper_Down;
-                case XboxControllerMappingTypes.XboxLeftStickClick:
-                    return eventData.XboxLeftStick_Down;
-                case XboxControllerMappingTypes.XboxRightStickClick:
-                    return eventData.XboxRightStick_Down;
-                default:
-                    throw new ArgumentOutOfRangeException("buttonType", buttonType, null);
-            }
+            return XboxControllerMapping.GetButton_Down(buttonType, eventData);
         }
     }
 }

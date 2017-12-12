@@ -626,7 +626,7 @@ namespace HoloToolkit.Unity
         /// <returns>The coroutine.</returns>
         private IEnumerator RecordEventInstanceCoroutine(ActiveEvent activeEvent)
         {
-            // Unity has no callback for an audioclip ending, so we have to estimate it ahead of time.
+            // Unity has no callback for an AudioClip ending, so we have to estimate it ahead of time.
             // Changing the pitch during playback will alter actual playback time.
             ActiveEvents.Add(activeEvent);
 

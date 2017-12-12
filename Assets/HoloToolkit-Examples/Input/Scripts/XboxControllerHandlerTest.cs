@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class XboxControllerHandlerTest : XboxControllerHandlerBase
     {
-
+        [Header("Xbox Controller Test Options")]
         [SerializeField]
         private float movementSpeedMultiplier = 1f;
 
@@ -18,7 +18,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
         [SerializeField]
         private XboxControllerMappingTypes resetButton = XboxControllerMappingTypes.XboxY;
 
-        public Text DebugText;
+        [SerializeField]
+        private Text debugText;
+
         private Vector3 initialPosition;
         private Vector3 newPosition;
         private Vector3 newRotation;
@@ -29,41 +31,44 @@ namespace HoloToolkit.Unity.InputModule.Tests
             initialPosition = transform.position;
         }
 
-        public override void OnGamePadDetected(GamePadEventData eventData)
+        public override void OnSourceLost(SourceStateEventData eventData)
         {
-            base.OnGamePadDetected(eventData);
-            Debug.LogFormat("Joystick \"{0}\" Connected with id: {1}", eventData.GamePadName, eventData.SourceId);
+            Debug.LogFormat("Joystick {0} with id: \"{1}\" Disconnected", GamePadName, eventData.SourceId);
+            base.OnSourceLost(eventData);
+            debugText.text = "No Controller Connected";
         }
 
-        public override void OnGamePadLost(GamePadEventData eventData)
+        public override void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
-            base.OnGamePadLost(eventData);
-            Debug.LogFormat("Joystick \"{0}\" Disconnected with id: {1}", eventData.GamePadName, eventData.SourceId);
-            DebugText.text = "No Controller Connected";
-        }
+            if (string.IsNullOrEmpty(GamePadName))
+            {
+                Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", eventData.GamePadName, eventData.SourceId);
+            }
 
-        public override void OnXboxAxisUpdate(XboxControllerEventData eventData)
-        {
-            base.OnXboxAxisUpdate(eventData);
+            base.OnXboxInputUpdate(eventData);
+
+            // Reset our new vectors
             newPosition = Vector3.zero;
             newRotation = Vector3.zero;
 
+            // Assign new Position Data
             newPosition.x += eventData.XboxLeftStickHorizontalAxis * movementSpeedMultiplier;
             newPosition.z += eventData.XboxLeftStickVerticalAxis * movementSpeedMultiplier;
             newPosition.y += eventData.XboxSharedTriggerAxis * movementSpeedMultiplier;
 
             transform.position += newPosition;
 
+            // Assign new rotation data
             newRotation.y += eventData.XboxRightStickHorizontalAxis * rotationSpeedMultiplier;
 
             transform.rotation *= Quaternion.Euler(newRotation);
 
-            if (OnButton_Up(resetButton, eventData))
+            if (XboxControllerMapping.GetButton_Up(resetButton, eventData))
             {
                 transform.position = initialPosition;
             }
 
-            DebugText.text =
+            debugText.text =
                 string.Format(
                     "{19}\n" +
                     "LS Horizontal: {0:0.000} Vertical: {1:0.000}\n" +

@@ -202,7 +202,7 @@ namespace HoloToolkit.Unity
         {
             try
             {
-                // Calc the cert and dep paths
+                // Calculate the cert and dependency paths
                 string fileName = Path.GetFileName(appFullPath);
                 string certFullPath = Path.ChangeExtension(appFullPath, ".cer");
                 string certName = Path.GetFileName(certFullPath);

@@ -244,7 +244,7 @@ namespace HoloToolkit.Unity
             emitter = ApplyAudioEmitterTransform(emitter);
             if (emitter == null)
             {
-                //if emitter is null, use the uaudiomanager gameobject(2dsound)
+                //if emitter is null, use the uaudiomanager GameObject (2dsound)
                 emitter = gameObject;
             }
 
