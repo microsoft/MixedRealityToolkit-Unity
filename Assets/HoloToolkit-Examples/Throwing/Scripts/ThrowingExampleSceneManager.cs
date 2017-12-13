@@ -12,8 +12,7 @@ public class ThrowingExampleSceneManager : MonoBehaviour
     private readonly Dictionary<uint, int> modelIndecies = new Dictionary<uint, int>();
     private readonly Dictionary<uint, bool> isDetatched = new Dictionary<uint, bool>();
 
-    // Use this for initialization
-    void Start ()
+    private void Start ()
     {
 		if (ThrowingAssets.Length == 0)
         {

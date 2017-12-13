@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -11,6 +12,8 @@ namespace HoloToolkit.Unity
         private int currentShaderLevel = 0;
         private Renderer objectRenderer;
 
+        private List<Material> createdMaterials = new List<Material>();
+
         private void Awake()
         {
             objectRenderer = GetComponent<Renderer>();
@@ -21,11 +24,6 @@ namespace HoloToolkit.Unity
 
             AdaptivePerformance.Instance.OnPerformanceBucketChanged.AddListener(PerformanceBucketChanged);
             ApplyBucket(AdaptivePerformance.Instance.GetCurrentBucket());
-        }
-
-        private void OnDestroy()
-        {
-            AdaptivePerformance.Instance.OnPerformanceBucketChanged.RemoveListener(PerformanceBucketChanged);
         }
 
         private void PerformanceBucketChanged(PerformanceBucket perfBucket)
@@ -50,9 +48,20 @@ namespace HoloToolkit.Unity
             {
                 // to create an instance do Instantiate()
                 // objectRenderer.material = Instantiate(materialList[newShaderLevel]);
+                // createdMaterials.Add(objectRenderer.material);
                 objectRenderer.material = materialList[newShaderLevel];
                 currentShaderLevel = newShaderLevel;
                 Debug.LogFormat("[ShaderControl.PerformanceBucketChanged ({0})]", newShaderLevel);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            AdaptivePerformance.Instance.OnPerformanceBucketChanged.RemoveListener(PerformanceBucketChanged);
+
+            foreach (var mat in createdMaterials)
+            {
+                Destroy(mat);
             }
         }
     }
