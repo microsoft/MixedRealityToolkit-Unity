@@ -25,7 +25,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private Vector3 newPosition;
         private Vector3 newRotation;
 
-        private void Start()
+        protected virtual void Start()
         {
             initialPosition = transform.position;
         }
