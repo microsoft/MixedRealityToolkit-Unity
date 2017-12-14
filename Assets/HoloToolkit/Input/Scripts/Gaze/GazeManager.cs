@@ -230,6 +230,24 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
+        /// Sends spherecast from Main camera and returns  RaycastHit containing focusable object
+        /// </summary>
+        /// <param name="radius"> Radius of the Sphere to case from head</param>
+        public RaycastHit SphereCastFromHead(float radius)
+        {
+            RaycastHit hitInfo = default(RaycastHit);
+
+            for (int i = 0; i < Rays.Length; i++)
+            {
+                if (Physics.SphereCast(Rays[i].origin, radius, Rays[i].direction, out hitInfo))
+                {
+                    return hitInfo;
+                }
+            }
+            return hitInfo;
+        }
+
+        /// <summary>
         /// Notifies this gaze manager of its new hit details.
         /// </summary>
         /// <param name="focusDetails">Details of the current focus.</param>
