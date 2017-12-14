@@ -50,16 +50,18 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+
         protected virtual void OnEnable()
         {
             SetChildrenActive(false);
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
             {
                 AttachElementToController(controller);
             }
+#endif 
 
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AttachElementToController;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += DetachElementFromController;
@@ -85,8 +87,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private void AttachElementToController(MotionControllerInfo newController)
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            // Check handedness
             if (!IsAttached && newController.Handedness == handedness)
             {
+                // Get specific element of the controller
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
                     Debug.LogError("Unable to find element of type " + element + " under controller " + newController.ControllerParent.name + "; not attaching.");
@@ -111,10 +116,12 @@ namespace HoloToolkit.Unity.InputModule
 
                 IsAttached = true;
             }
+#endif
         }
 
         private void DetachElementFromController(MotionControllerInfo oldController)
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (IsAttached && oldController.Handedness == handedness)
             {
                 OnDetachFromController();
@@ -126,6 +133,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 IsAttached = false;
             }
+#endif
         }
 
         private void SetChildrenActive(bool isActive)
@@ -138,6 +146,5 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
-#endif
     }
 }

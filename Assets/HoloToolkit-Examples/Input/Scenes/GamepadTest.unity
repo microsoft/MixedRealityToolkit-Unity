@@ -275,6 +275,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906323c940a3fad4f8f7e9e4fcd747f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containerObject: {fileID: 0}
+  alignmentType: 0
+  stationarySpaceTypePosition: {x: 0, y: 0, z: 0}
+  roomScaleSpaceTypePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &648067039
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +287,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 648067040}
-  - component: {fileID: 648067041}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -305,24 +308,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &648067041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 648067039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnimateControllerModel: 1
-  AlwaysUseAlternateLeftModel: 0
-  AlwaysUseAlternateRightModel: 0
-  AlternateLeftController: {fileID: 0}
-  AlternateRightController: {fileID: 0}
-  TouchpadTouchedOverride: {fileID: 0}
-  GLTFMaterial: {fileID: 0}
 --- !u!4 &844015981 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab,
@@ -586,7 +571,7 @@ MonoBehaviour:
   - serializedVersion: 2
     m_Bits: 4294967291
   registeredPointers: []
-  autoRegisterGazePointerIfNoneFound: 1
+  autoRegisterGazePointerIfNoPointersRegistered: 1
   debugDrawPointingRays: 0
   debugDrawPointingRayColors: []
   uiRaycastCamera: {fileID: 0}
