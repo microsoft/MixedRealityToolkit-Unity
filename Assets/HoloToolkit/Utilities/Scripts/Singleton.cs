@@ -75,11 +75,11 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private bool DontDestroyParentRootOnLoad = true;
 
-        private object initilizedLock = new object();
+        private object initializedLock = new object();
 
         protected void Initialize()
         {
-            lock (initilizedLock)
+            lock (initializedLock)
             {
                 if (!IsInitialized)
                 {
