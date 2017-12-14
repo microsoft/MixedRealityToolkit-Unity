@@ -25,9 +25,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private Vector3 newPosition;
         private Vector3 newRotation;
 
-        protected override void Start()
+        private void Start()
         {
-            base.Start();
             initialPosition = transform.position;
         }
 
