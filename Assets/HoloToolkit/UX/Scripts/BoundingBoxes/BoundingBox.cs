@@ -59,14 +59,7 @@ namespace HoloToolkit.Unity.UX
                 if (target != value)
                 {
                     // Send a message to the new / old targets
-                    if (value != null)
-                    {
-                        value.SendMessage("OnTargetSelected", SendMessageOptions.DontRequireReceiver);
-                    }
-                    if (target != null)
-                    {
-                        target.SendMessage("OnTargetDeselected", SendMessageOptions.DontRequireReceiver);
-                    }
+                    // TODO send OnTargetSelected / Deselected events
                     target = value;
                 }
 
