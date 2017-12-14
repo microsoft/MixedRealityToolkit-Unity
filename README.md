@@ -19,8 +19,8 @@ _Note: The latest release should work for both HoloLens and Windows Mixed Realit
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?label=Latest%20Master%20Branch%20Release&colorB=9acd32
 [![Github Release][mrtk-version-badge]][github-rel]
 
-[unity-download]:                 http://beta.unity3d.com/download/a07ad30bae31/download.html
-[unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.0p2%20MRTP5-green.svg
+[unity-download]:                 https://unity3d.com/unity/whats-new/unity-2017.2.1
+[unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.1f1-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 > Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality.
