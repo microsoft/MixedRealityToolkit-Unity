@@ -84,7 +84,11 @@ namespace HoloToolkit.Unity.Boundary
             }
             else
             {
-                XRDevice.SetTrackingSpaceType(transparentTrackingSpaceType);
+                // Removed for now, until the HoloLens tracking space type story is more clear.
+                //XRDevice.SetTrackingSpaceType(transparentTrackingSpaceType);
+
+                enabled = false;
+                return;
             }
 
             // Render the floor based on if you are in editor or immersive device.
