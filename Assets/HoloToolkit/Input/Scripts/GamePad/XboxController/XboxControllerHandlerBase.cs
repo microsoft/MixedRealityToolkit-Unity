@@ -11,12 +11,10 @@ namespace HoloToolkit.Unity.InputModule
     {
         protected enum GestureState
         {
+            SelectButtonUnpressed,
             SelectButtonPressed,
             NavigationStarted,
-            NavigationCompleted,
-            HoldStarted,
-            HoldCompleted,
-            HoldCanceled
+            HoldStarted
         }
 
         [SerializeField]
@@ -38,16 +36,11 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The Vertical Axis that navigation events take place")]
         protected XboxControllerMappingTypes VerticalNavigationAxis = XboxControllerMappingTypes.XboxLeftStickVertical;
 
-        protected GestureState CurrentGestureState;
+        protected GestureState CurrentGestureState = GestureState.SelectButtonUnpressed;
 
-        protected bool HoldStarted;
-        protected bool RaiseOnce;
-        protected bool NavigationStarted;
-        protected bool NavigationCompleted;
         protected Vector3 NormalizedOffset;
 
-        protected Coroutine HandStartedRoutine;
-        protected Coroutine HoldCompletedRoutine;
+        protected Coroutine HoldStartedRoutine;
 
         public virtual void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
@@ -58,17 +51,16 @@ namespace HoloToolkit.Unity.InputModule
 
             if (XboxControllerMapping.GetButton_Down(SelectButton, eventData))
             {
+                CurrentGestureState = GestureState.SelectButtonPressed;
+
                 InputManager.Instance.RaiseSourceDown(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select);
+
+                HoldStartedRoutine = StartCoroutine(HandleHoldStarted(eventData));
             }
 
             if (XboxControllerMapping.GetButton_Pressed(SelectButton, eventData))
             {
                 HandleNavigation(eventData);
-
-                if (!HoldStarted && !RaiseOnce && !NavigationStarted)
-                {
-                    HandStartedRoutine = StartCoroutine(HandleHoldStarted(eventData));
-                }
             }
 
             if (XboxControllerMapping.GetButton_Up(SelectButton, eventData))
@@ -84,107 +76,69 @@ namespace HoloToolkit.Unity.InputModule
         {
             InputManager.Instance.RaiseSourceUp(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select);
 
+            if (HoldStartedRoutine != null)
+            {
+                StopCoroutine(HoldStartedRoutine);
+            }
+
             switch (CurrentGestureState)
             {
                 case GestureState.NavigationStarted:
-                {
-                    NavigationCompleted = true;
-                    if (HandStartedRoutine != null)
-                    {
-                        StopCoroutine(HandStartedRoutine);
-                    }
-
-                    if (HoldCompletedRoutine != null)
-                    {
-                        StopCoroutine(HoldCompletedRoutine);
-                    }
-
                     InputManager.Instance.RaiseNavigationCompleted(eventData.InputSource, eventData.SourceId, Vector3.zero);
                     break;
-                }
                 case GestureState.HoldStarted:
-                    StopCoroutine(HandStartedRoutine);
-                    InputManager.Instance.RaiseHoldCanceled(eventData.InputSource, eventData.SourceId);
-                    break;
-                case GestureState.HoldCompleted:
                     InputManager.Instance.RaiseHoldCompleted(eventData.InputSource, eventData.SourceId);
                     break;
                 default:
-                {
-                    if (HandStartedRoutine != null)
-                    {
-                        StopCoroutine(HandStartedRoutine);
-                    }
-
-                    if (HoldCompletedRoutine != null)
-                    {
-                        StopCoroutine(HoldCompletedRoutine);
-                    }
-
                     InputManager.Instance.RaiseInputClicked(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select, 1);
                     break;
-                }
             }
 
-            Reset();
-        }
-
-        protected void Reset()
-        {
-            HoldStarted = false;
-            RaiseOnce = false;
-            NavigationStarted = false;
+            CurrentGestureState = GestureState.SelectButtonUnpressed;
         }
 
         protected virtual IEnumerator HandleHoldStarted(XboxControllerEventData eventData)
         {
             yield return new WaitForSeconds(HoldStartedInterval);
 
-            if (RaiseOnce || CurrentGestureState == GestureState.HoldStarted || CurrentGestureState == GestureState.NavigationStarted)
+            if (CurrentGestureState == GestureState.HoldStarted || CurrentGestureState == GestureState.NavigationStarted)
             {
                 yield break;
             }
 
-            HoldStarted = true;
-
             CurrentGestureState = GestureState.HoldStarted;
+
             InputManager.Instance.RaiseHoldStarted(eventData.InputSource, eventData.SourceId);
-            RaiseOnce = true;
-
-            HoldCompletedRoutine = StartCoroutine(HandleHoldCompleted());
-        }
-
-        protected virtual IEnumerator HandleHoldCompleted()
-        {
-            yield return new WaitForSeconds(HoldCompletedInterval);
-
-            CurrentGestureState = GestureState.HoldCompleted;
         }
 
         protected virtual void HandleNavigation(XboxControllerEventData eventData)
         {
-            if (NavigationCompleted) { return; }
-
             float displacementAlongX = XboxControllerMapping.GetAxis(HorizontalNavigationAxis, eventData);
             float displacementAlongY = XboxControllerMapping.GetAxis(VerticalNavigationAxis, eventData);
 
-            if (displacementAlongX == 0.0f && displacementAlongY == 0.0f && !NavigationStarted) { return; }
+            if (displacementAlongX == 0.0f && displacementAlongY == 0.0f && CurrentGestureState != GestureState.NavigationStarted) { return; }
 
             NormalizedOffset.x = displacementAlongX;
             NormalizedOffset.y = displacementAlongY;
             NormalizedOffset.z = 0f;
 
-            if (!NavigationStarted)
+            if (CurrentGestureState != GestureState.NavigationStarted)
             {
+                if (CurrentGestureState == GestureState.HoldStarted)
+                {
+                    InputManager.Instance.RaiseHoldCanceled(eventData.InputSource, eventData.SourceId);
+                }
+
                 CurrentGestureState = GestureState.NavigationStarted;
-                NavigationStarted = true;
 
                 // Raise navigation started event.
                 InputManager.Instance.RaiseNavigationStarted(eventData.InputSource, eventData.SourceId);
             }
-
-            // Raise navigation updated event.
-            InputManager.Instance.RaiseNavigationUpdated(eventData.InputSource, eventData.SourceId, NormalizedOffset);
+            else
+            {
+                // Raise navigation updated event.
+                InputManager.Instance.RaiseNavigationUpdated(eventData.InputSource, eventData.SourceId, NormalizedOffset);
+            }
         }
 
         [Obsolete("Use XboxControllerMapping.GetButton_Up")]
