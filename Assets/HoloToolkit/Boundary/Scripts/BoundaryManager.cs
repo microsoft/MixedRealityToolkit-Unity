@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity.Boundary
                 // Removed for now, until the HoloLens tracking space type story is more clear.
                 //XRDevice.SetTrackingSpaceType(transparentTrackingSpaceType);
 
-                enabled = false;
+                Destroy(this);
                 return;
             }
 
