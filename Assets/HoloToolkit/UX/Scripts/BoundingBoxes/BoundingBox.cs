@@ -70,8 +70,9 @@ namespace HoloToolkit.Unity.UX
                     target = value;
                 }
 
-                if (!isActiveAndEnabled)
+                if (!isActiveAndEnabled) {
                     return;
+                }
 
                 if (target != null)
                 {
@@ -130,11 +131,69 @@ namespace HoloToolkit.Unity.UX
                 if (flattenedAxis != value)
                 {
                     flattenedAxis = value;
-                    if (OnFlattenedAxisChange != null)
+                    if (OnFlattenedAxisChange != null) {
                         OnFlattenedAxisChange();
+                    }
                 }
             }
         }
+
+        #endregion
+
+        #region protected
+
+        [Header("Objects")]
+        [Tooltip("The target object")]
+        [SerializeField]
+        protected GameObject target;
+
+        [Tooltip("The transform used to scale the bounding box (will be auto-generated)")]
+        [SerializeField]
+        protected Transform scaleTransform = null;
+
+        [Header("Flattening & Padding")]
+        [Tooltip("Flattening behavior setting.")]
+        [SerializeField]
+        protected FlattenModeEnum flattenPreference = FlattenModeEnum.FlattenAuto;
+
+        [Tooltip("The relative % size of an axis must meet before being auto-flattened")]
+        [SerializeField]
+        protected float flattenAxisThreshold = 0.025f;
+
+        [Tooltip("The relative % size of a flattened axis")]
+        [SerializeField]
+        protected float flattenedAxisThickness = 0.01f;
+
+        [Tooltip("How much to pad the scale of the box to fit around objects (as % of largest dimension)")]
+        [SerializeField]
+        protected float scalePadding = 0.05f;
+
+        [Tooltip("How much to pad the scale of the box on an axis that's flattened")]
+        [SerializeField]
+        protected float flattenedScalePadding = 0f;
+
+        [Header("Bounds Calculation")]
+        [Tooltip("Method used to calculate the bounds of the object.")]
+        [SerializeField]
+        protected BoundsCalculationMethodEnum boundsCalculationMethod = BoundsCalculationMethodEnum.MeshFilterBounds;
+
+        [Tooltip("Layer for drawing & colliders")]
+        [SerializeField]
+        [Range(0, 31)]
+        protected int physicsLayer = 0;
+
+        [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
+        [SerializeField]
+        [Range(0, 31)]
+        protected int ignoreLayer = 2;//Ignore Raycast
+
+        protected Vector3 targetBoundsWorldCenter = Vector3.zero;
+        protected Vector3 targetBoundsLocalScale = Vector3.zero;
+
+        protected Bounds localTargetBounds = new Bounds();
+        protected List<Vector3> boundsPoints = new List<Vector3>();
+
+        protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
 
         #endregion
 
@@ -143,7 +202,7 @@ namespace HoloToolkit.Unity.UX
         /// <summary>
         /// Override so we're not overwhelmed by button gizmos
         /// </summary>
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
             // nothing
@@ -163,7 +222,7 @@ namespace HoloToolkit.Unity.UX
                 }
             }
         }
-        #endif
+#endif
 
         protected virtual void Update()
         {
@@ -174,11 +233,13 @@ namespace HoloToolkit.Unity.UX
 
         protected virtual void CreateTransforms()
         {
-            if (scaleTransform == null)
+            if (scaleTransform == null) {
                 scaleTransform = transform.Find("Scale");
+            }
 
-            if (scaleTransform == null)
+            if (scaleTransform == null) {
                 scaleTransform = new GameObject("Scale").transform;
+            }
 
             scaleTransform.parent = transform;
         }
@@ -199,93 +260,18 @@ namespace HoloToolkit.Unity.UX
             {
                 case BoundsCalculationMethodEnum.RendererBounds:
                 default:
-                    Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
-                    for (int i = 0; i < renderers.Length; ++i)
-                    {
-                        var rendererObj = renderers[i];
-                        if (rendererObj.gameObject.layer == ignoreLayer)
-                            continue;
-
-                        rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
-                        boundsPoints.AddRange(corners);
-                    }
+                    GetRenderBoundsPoints(target, boundsPoints, ignoreLayer);
                     break;
 
                 case BoundsCalculationMethodEnum.Colliders:
-                    Collider[] colliders = target.GetComponentsInChildren<Collider>();
-                    for (int i = 0; i < colliders.Length; i++)
-                    {
-                        switch (colliders[i].GetType().Name)
-                        {
-                            case "SphereCollider":
-                                SphereCollider sc = colliders[i] as SphereCollider;
-                                Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
-                                sphereBounds.GetFacePositions(sc.transform, ref corners);
-                                boundsPoints.AddRange(corners);
-                                break;
-
-                            case "BoxCollider":
-                                BoxCollider bc = colliders[i] as BoxCollider;
-                                Bounds boxBounds = new Bounds(bc.center, bc.size);
-                                boxBounds.GetCornerPositions(bc.transform, ref corners);
-                                boundsPoints.AddRange(corners);
-                                break;
-
-                            case "MeshCollider":
-                                MeshCollider mc = colliders[i] as MeshCollider;
-                                Bounds meshBounds = mc.sharedMesh.bounds;
-                                meshBounds.GetCornerPositions(mc.transform, ref corners);
-                                boundsPoints.AddRange(corners);
-                                break;
-
-                            case "CapsuleCollider":
-                                CapsuleCollider cc = colliders[i] as CapsuleCollider;
-                                Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
-                                switch (cc.direction)
-                                {
-                                    case 0:
-                                        capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
-                                        break;
-
-                                    case 1:
-                                        capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
-                                        break;
-
-                                    case 2:
-                                        capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
-                                        break;
-                                }
-                                capsuleBounds.GetFacePositions(cc.transform, ref corners);
-                                boundsPoints.AddRange(corners);
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
+                    GetColliderBoundsPoints(target, boundsPoints, ignoreLayer);
                     break;
 
                 case BoundsCalculationMethodEnum.MeshFilterBounds:
-                    MeshFilter[] meshFilters = target.GetComponentsInChildren<MeshFilter>();
-                    for (int i = 0; i < meshFilters.Length; i++)
-                    {
-                        var meshFilterObj = meshFilters[i];
-                        if (meshFilterObj.gameObject.layer == ignoreLayer)
-                            continue;
-
-                        Bounds meshBounds = meshFilterObj.sharedMesh.bounds;
-                        meshBounds.GetCornerPositions(meshFilterObj.transform, ref corners);
-                        boundsPoints.AddRange(corners);
-                    }
-                    RectTransform[] rectTransforms = target.GetComponentsInChildren<RectTransform>();
-                    for (int i = 0; i < rectTransforms.Length; i++)
-                    {
-                        rectTransforms[i].GetWorldCorners(rectTransformCorners);
-                        boundsPoints.AddRange(rectTransformCorners);
-                    }
+                    GetMeshFilterBoundsPoints(target, boundsPoints, ignoreLayer);
                     break;
             }
-            
+
             if (boundsPoints.Count > 0)
             {
                 // We now have a list of all points in world space
@@ -365,9 +351,9 @@ namespace HoloToolkit.Unity.UX
         protected virtual void UpdateScaleTransform()
         {
             // If we don't have a target, nothing to do here
-            if (target == null)
+            if (target == null) {
                 return;
-
+            }
             // Get position of object based on renderers
             transform.position = targetBoundsWorldCenter;
             Vector3 scale = targetBoundsLocalScale;
@@ -415,60 +401,102 @@ namespace HoloToolkit.Unity.UX
             transform.eulerAngles = rotation;
         }
 
-        [Header("Objects")]
-        [Tooltip("The target object")]
-        [SerializeField]
-        protected GameObject target;
+        #endregion
 
-        [Tooltip("The transform used to scale the bounding box (will be auto-generated)")]
-        [SerializeField]
-        protected Transform scaleTransform = null;
+        #region static utility functions
 
-        [Header ("Flattening & Padding")]
-        [Tooltip("Flattening behavior setting.")]
-        [SerializeField]
-        protected FlattenModeEnum flattenPreference = FlattenModeEnum.FlattenAuto;
+        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, int ignoreLayer)
+        {
+            Collider[] colliders = target.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                switch (colliders[i].GetType().Name)
+                {
+                    case "SphereCollider":
+                        SphereCollider sc = colliders[i] as SphereCollider;
+                        Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
+                        sphereBounds.GetFacePositions(sc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
 
-        [Tooltip("The relative % size of an axis must meet before being auto-flattened")]
-        [SerializeField]
-        protected float flattenAxisThreshold = 0.025f;
+                    case "BoxCollider":
+                        BoxCollider bc = colliders[i] as BoxCollider;
+                        Bounds boxBounds = new Bounds(bc.center, bc.size);
+                        boxBounds.GetCornerPositions(bc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
 
-        [Tooltip("The relative % size of a flattened axis")]
-        [SerializeField]
-        protected float flattenedAxisThickness = 0.01f;
+                    case "MeshCollider":
+                        MeshCollider mc = colliders[i] as MeshCollider;
+                        Bounds meshBounds = mc.sharedMesh.bounds;
+                        meshBounds.GetCornerPositions(mc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
 
-        [Tooltip("How much to pad the scale of the box to fit around objects (as % of largest dimension)")]
-        [SerializeField]
-        protected float scalePadding = 0.05f;
+                    case "CapsuleCollider":
+                        CapsuleCollider cc = colliders[i] as CapsuleCollider;
+                        Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
+                        switch (cc.direction)
+                        {
+                            case 0:
+                                capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
+                                break;
 
-        [Tooltip("How much to pad the scale of the box on an axis that's flattened")]
-        [SerializeField]
-        protected float flattenedScalePadding = 0f;
+                            case 1:
+                                capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
+                                break;
 
-        [Header("Bounds Calculation")]
-        [Tooltip("Method used to calculate the bounds of the object.")]
-        [SerializeField]
-        protected BoundsCalculationMethodEnum boundsCalculationMethod = BoundsCalculationMethodEnum.MeshFilterBounds;
+                            case 2:
+                                capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
+                                break;
+                        }
+                        capsuleBounds.GetFacePositions(cc.transform, ref corners);
+                        boundsPoints.AddRange(corners);
+                        break;
 
-        [Tooltip("Layer for drawing & colliders")]
-        [SerializeField]
-        [Range(0,31)]
-        protected int physicsLayer = 0;
+                    default:
+                        break;
+                }
+            }
+        }
 
-        [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
-        [SerializeField]
-        [Range(0, 31)]
-        protected int ignoreLayer = 2;//Ignore Raycast
+        public static void GetRenderBoundsPoints(GameObject target, List<Vector3> boundsPoints, int ignoreLayer)
+        {
+            Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; ++i)
+            {
+                var rendererObj = renderers[i];
+                if (rendererObj.gameObject.layer == ignoreLayer)
+                    continue;
 
-        protected Vector3 targetBoundsWorldCenter = Vector3.zero;
-        protected Vector3 targetBoundsLocalScale = Vector3.zero;
+                rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
+                boundsPoints.AddRange(corners);
+            }
+        }
 
-        protected Vector3[] corners = null;
-        protected Vector3[] rectTransformCorners = new Vector3[4];
-        protected Bounds localTargetBounds = new Bounds();
-        protected List<Vector3> boundsPoints = new List<Vector3>();
+        public static void GetMeshFilterBoundsPoints(GameObject target, List<Vector3> boundsPoints, int ignoreLayer)
+        {
+            MeshFilter[] meshFilters = target.GetComponentsInChildren<MeshFilter>();
+            for (int i = 0; i < meshFilters.Length; i++)
+            {
+                var meshFilterObj = meshFilters[i];
+                if (meshFilterObj.gameObject.layer == ignoreLayer)
+                    continue;
 
-        protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
+                Bounds meshBounds = meshFilterObj.sharedMesh.bounds;
+                meshBounds.GetCornerPositions(meshFilterObj.transform, ref corners);
+                boundsPoints.AddRange(corners);
+            }
+            RectTransform[] rectTransforms = target.GetComponentsInChildren<RectTransform>();
+            for (int i = 0; i < rectTransforms.Length; i++)
+            {
+                rectTransforms[i].GetWorldCorners(rectTransformCorners);
+                boundsPoints.AddRange(rectTransformCorners);
+            }
+        }
+
+        private static Vector3[] corners = null;
+        private static Vector3[] rectTransformCorners = new Vector3[4];
 
         #endregion
 

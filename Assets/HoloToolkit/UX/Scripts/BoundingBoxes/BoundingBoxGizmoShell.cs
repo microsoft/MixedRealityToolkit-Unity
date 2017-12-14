@@ -44,19 +44,19 @@ namespace HoloToolkit.Unity.UX
 
         #endregion
 
-        #region private
+        #region protected
 
         [SerializeField]
-        private Renderer edgeRenderer;
+        protected Renderer edgeRenderer;
 
         [SerializeField]
-        private GameObject xyzHandlesObject;
+        protected GameObject xyzHandlesObject;
         [SerializeField]
-        private GameObject xyHandlesObject;
+        protected GameObject xyHandlesObject;
         [SerializeField]
-        private GameObject xzHandlesObject;
+        protected GameObject xzHandlesObject;
         [SerializeField]
-        private GameObject zyHandlesObject;
+        protected GameObject zyHandlesObject;
 
         #endregion
 

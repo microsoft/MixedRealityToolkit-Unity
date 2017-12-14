@@ -1,9 +1,13 @@
-﻿using System;
+﻿//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+//
+
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace MRDL
+namespace HoloToolkit.Unity.UX
 {
     public class Duplicator : MonoBehaviour
     {
@@ -39,10 +43,45 @@ namespace MRDL
         public GameObject Target {
             get {
                 if (transform.childCount > 0)
+                {
                     return transform.GetChild(0).gameObject;
+                }
                 return null;
             }
         }
+
+        [Header("Idle & Activation settings")]
+        [SerializeField]
+        protected ActivateModeEnum activateMode = ActivateModeEnum.Auto;
+        [SerializeField]
+        protected float autoActivateRadius = 0.05f;
+        [SerializeField]
+        protected float removeRadius = 0.25f;
+        [SerializeField]
+        protected float restorePosSpeed = 1f;
+        [SerializeField]
+        protected float activeTimeout = 0.5f;
+        [SerializeField]
+        protected AnimationCurve restoreCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+        [Header("Duplication settings")]
+        [SerializeField]
+        private bool limitDuplicates = false;
+        [SerializeField]
+        protected int maxDuplicates = 10;
+        [SerializeField]
+        protected float duplicateSpeed = 0.5f;
+        [SerializeField]
+        protected AnimationCurve duplicateGrowCurve = AnimationCurve.EaseInOut(0f, 0.001f, 1f, 1f);
+
+        [Header("Current state")]
+        [SerializeField]
+        protected StateEnum state = StateEnum.Idle;
+
+        protected Vector3 targetPos;
+        protected Vector3 targetScale;
+        protected Quaternion targetRot;
+        protected int numDuplicates;
 
         protected void OnEnable() {
             StartCoroutine(UpdateTarget());
@@ -187,44 +226,13 @@ namespace MRDL
                     break;
             }
 
-            if (Application.isPlaying)
+            if (Application.isPlaying) {
                 return;
+            }
 
-            if (Target != null)
+            if (Target != null) {
                 StoreTarget();
+            }
         }
-
-        [Header("Idle & Activation settings")]
-        [SerializeField]
-        protected ActivateModeEnum activateMode = ActivateModeEnum.Auto;
-        [SerializeField]
-        protected float autoActivateRadius = 0.05f;
-        [SerializeField]
-        protected float removeRadius = 0.25f;
-        [SerializeField]
-        protected float restorePosSpeed = 1f;
-        [SerializeField]
-        protected float activeTimeout = 0.5f;
-        [SerializeField]
-        protected AnimationCurve restoreCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-
-        [Header("Duplication settings")]
-        [SerializeField]
-        private bool limitDuplicates = false;
-        [SerializeField]
-        protected int maxDuplicates = 10;
-        [SerializeField]
-        protected float duplicateSpeed = 0.5f;
-        [SerializeField]
-        protected AnimationCurve duplicateGrowCurve = AnimationCurve.EaseInOut(0f, 0.001f, 1f, 1f);
-
-        [Header("Current state")]
-        [SerializeField]
-        protected StateEnum state = StateEnum.Idle;
-
-        protected Vector3 targetPos;
-        protected Vector3 targetScale;
-        protected Quaternion targetRot;
-        protected int numDuplicates;
     }
 }
