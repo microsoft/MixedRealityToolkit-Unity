@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity.InputModule
                 GamePadName = eventData.GamePadName;
             }
 
-            if (eventData.XboxA_Down)
+            if (XboxControllerMapping.GetButton_Down(SelectButton, eventData))
             {
                 CurrentGestureState = GestureState.SelectButtonPressed;
 
@@ -58,12 +58,12 @@ namespace HoloToolkit.Unity.InputModule
                 HoldStartedRoutine = StartCoroutine(HandleHoldStarted(eventData));
             }
 
-            if (eventData.XboxA_Pressed)
+            if (XboxControllerMapping.GetButton_Pressed(SelectButton, eventData))
             {
                 HandleNavigation(eventData);
             }
 
-            if (eventData.XboxA_Up)
+            if (XboxControllerMapping.GetButton_Up(SelectButton, eventData))
             {
                 HandleSelectButtonReleased(eventData);
             }
