@@ -83,13 +83,13 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             for (int i = 0; i < Interactives.Count; i++)
             {
-                // set title
+                // Set title
                 string title = Titles[i];
                 Interactive interactive = Interactives[i];
                 interactive.SetTitle(title);
                 interactive.Keyword = title;
                 
-                // layouting
+                // For setting the layout
                 int j = i % rows;
 
                 Vector2 Distance = new Vector2(Offsets.x, Offsets.y);
@@ -114,9 +114,9 @@ namespace HoloToolkit.Examples.InteractiveElements
  
 
         /// <summary>
-        /// remove unused Interactives from scene
+        /// Remove unused Interactives from scene
         /// </summary>
-        /// <param name="keep">number of Iteractives that will NOT be deleted</param>
+        /// <param name="keep">Number of Interactives that will NOT be deleted</param>
         private void RemoveInteractives(int keep = 0)
         {
             for (int i = Interactives.Count - 1; i >= keep; i--)

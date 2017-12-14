@@ -92,7 +92,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Ensures an interpolator on either the parent or on the gameobject itself and returns it.
+        /// Ensures an interpolator on either the parent or on the GameObject itself and returns it.
         /// </summary>
         private Interpolator EnsureInterpolator()
         {
@@ -200,7 +200,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
         /// </summary>
-        /// <returns>Placement position infront of the user</returns>
+        /// <returns>Placement position in front of the user</returns>
         private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
             RaycastHit hitInfo;
@@ -216,8 +216,8 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="origin">Origin of the raycast</param>
         /// <param name="direction">Direction of the raycast</param>
-        /// <param name="spatialMapHit">Result of the raycast when a hit occured</param>
-        /// <returns>Wheter it found a hit or not</returns>
+        /// <param name="spatialMapHit">Result of the raycast when a hit occurred</param>
+        /// <returns>Whether it found a hit or not</returns>
         private static bool SpatialMappingRaycast(Vector3 origin, Vector3 direction, out RaycastHit spatialMapHit)
         {
             if (SpatialMappingManager.Instance != null)
@@ -234,12 +234,12 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Get placement position either from GazeManager hit or infront of the user as backup
+        /// Get placement position either from GazeManager hit or in front of the user as backup
         /// </summary>
         /// <param name="headPosition">Position of the users head</param>
         /// <param name="gazeDirection">Gaze direction of the user</param>
-        /// <param name="defaultGazeDistance">Default placement distance infront of the user</param>
-        /// <returns>Placement position infront of the user</returns>
+        /// <param name="defaultGazeDistance">Default placement distance in front of the user</param>
+        /// <returns>Placement position in front of the user</returns>
         private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
             if (GazeManager.Instance.HitObject != null)

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Encapsulates the shape detection queries of the understanding dll.
+    /// Encapsulates the shape detection queries of the understanding DLL.
     /// Shapes are defined by the user with AddShape and the analysis is 
     /// initiated with ActivateShapeAnalysis. These queries will not be 
     /// valid until after scanning is finalized.
@@ -743,7 +743,7 @@ namespace HoloToolkit.Unity
 
             /// <summary>
             /// Constructs a constraint requiring the components shapes longest edges to
-            /// have the same length, within the difference difference parameter. 
+            /// have the same length, within the difference parameter. 
             /// 
             /// The difference is defined as the ratio of the longest edges of the two components.
             /// </summary>

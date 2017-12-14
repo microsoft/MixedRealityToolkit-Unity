@@ -10,7 +10,7 @@ using System;
 namespace HoloToolkit.Examples.InteractiveElements
 {
     /// <summary>
-    /// An InteractiveThemeWidget for swaping colors on a TextMesh based on Interactive state
+    /// An InteractiveThemeWidget for swapping colors on a TextMesh based on Interactive state
     /// </summary>
     public class TextMeshColorThemeWidget : InteractiveThemeWidget
     {

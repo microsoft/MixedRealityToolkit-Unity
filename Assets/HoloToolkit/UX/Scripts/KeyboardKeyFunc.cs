@@ -42,7 +42,7 @@ namespace HoloToolkit.UI.Keyboard
         public Function m_ButtonFunction = Function.UNDEFINED;
 
         /// <summary>
-        /// Reference to gameobject's Button component.
+        /// Reference to GameObject's Button component.
         /// </summary>
         private Button m_Button = null;
 

@@ -225,7 +225,7 @@ namespace HoloToolkit.Sharing.Spawning
 
             dataModel.GameObject = instance;
 
-            // Set the data model on the various ISyncModelAccessor components of the spawned game obejct
+            // Set the data model on the various ISyncModelAccessor components of the spawned GameObject
             ISyncModelAccessor[] syncModelAccessors = instance.GetComponentsInChildren<ISyncModelAccessor>(true);
             if (syncModelAccessors.Length <= 0)
             {

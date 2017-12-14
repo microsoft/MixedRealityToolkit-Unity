@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -15,13 +13,15 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : MonoBehaviour
     {
+#if  UNITY_WSA && UNITY_2017_2_OR_NEWER
         public InteractionSourceHandedness Handedness { get { return handedness; } }
-
-        public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
 
         [Header("AttachToController Elements")]
         [SerializeField]
         protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+
+#endif
+        public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
 
         [SerializeField]
         protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
@@ -50,6 +50,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
+
         protected virtual void OnEnable()
         {
             SetChildrenActive(false);
@@ -60,7 +61,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 AttachElementToController(controller);
             }
-#endif
+#endif 
 
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AttachElementToController;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += DetachElementFromController;
@@ -86,8 +87,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private void AttachElementToController(MotionControllerInfo newController)
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            // Check handedness
             if (!IsAttached && newController.Handedness == handedness)
             {
+                // Get specific element of the controller
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
                     Debug.LogError("Unable to find element of type " + element + " under controller " + newController.ControllerParent.name + "; not attaching.");
@@ -112,10 +116,12 @@ namespace HoloToolkit.Unity.InputModule
 
                 IsAttached = true;
             }
+#endif
         }
 
         private void DetachElementFromController(MotionControllerInfo oldController)
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (IsAttached && oldController.Handedness == handedness)
             {
                 OnDetachFromController();
@@ -127,6 +133,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 IsAttached = false;
             }
+#endif
         }
 
         private void SetChildrenActive(bool isActive)

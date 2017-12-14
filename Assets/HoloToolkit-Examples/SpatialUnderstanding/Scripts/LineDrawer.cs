@@ -127,7 +127,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                     return;
                 }
 
-                // Calc the forward distance for the animation start point
+                // Calculate the forward distance for the animation start point
                 Vector3 rayPos = CameraCache.Main.transform.position;
                 Vector3 rayVec = CameraCache.Main.transform.forward * InitialPositionForwardMaxDistance;
                 IntPtr raycastResultPtr = HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
@@ -267,7 +267,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 return Draw_Box(box.Center, box.Rotation, box.Color, box.HalfSize, box.LineWidth);
             }
 
-            // Draw it using the current anim state
+            // Draw it using the current animation state
             return Draw_Box(
                 box.AnimPosition.Evaluate(box.Time),
                 box.Rotation * Quaternion.AngleAxis(360.0f * box.AnimRotation.Evaluate(box.Time), Vector3.up),
@@ -347,7 +347,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void Lines_LineDataToMesh()
         {
-            // Alloc them up
+            // Allocate them up
             Vector3[] verts = new Vector3[lineData.Lines.Count * 8];
             int[] tris = new int[lineData.Lines.Count * 12 * 3];
             Color[] colors = new Color[verts.Length];
@@ -355,7 +355,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             // Build the data
             for (int i = 0; i < lineData.Lines.Count; ++i)
             {
-                // Base index calcs
+                // Base index calculations
                 int vert = i * 8;
                 int v0 = vert;
                 int tri = i * 12 * 3;
@@ -365,7 +365,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 Vector3 normX = Vector3.Cross((Mathf.Abs(dirUnit.y) >= 0.99f) ? Vector3.right : Vector3.up, dirUnit).normalized;
                 Vector3 normy = Vector3.Cross(normX, dirUnit);
 
-                // Verts
+                // Vertices
                 verts[vert] = lineData.Lines[i].p0 + normX * lineData.Lines[i].lineWidth + normy * lineData.Lines[i].lineWidth; colors[vert] = lineData.Lines[i].c0; ++vert;
                 verts[vert] = lineData.Lines[i].p0 - normX * lineData.Lines[i].lineWidth + normy * lineData.Lines[i].lineWidth; colors[vert] = lineData.Lines[i].c0; ++vert;
                 verts[vert] = lineData.Lines[i].p0 - normX * lineData.Lines[i].lineWidth - normy * lineData.Lines[i].lineWidth; colors[vert] = lineData.Lines[i].c0; ++vert;
@@ -429,7 +429,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             lineData.Filter.mesh = mesh;
 
-            // If no tris, hide it
+            // If no triangles, hide it
             lineData.Renderer.enabled = (lineData.Lines.Count == 0) ? false : true;
 
             // Line index reset

@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Point light")]
         public GameObject Light;
 
-        [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disapprear.")]
+        [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disappear.")]
         public float DistanceScaleFactor = 0.3f;
 
         [Tooltip("The scale both elements will be at their default state")]

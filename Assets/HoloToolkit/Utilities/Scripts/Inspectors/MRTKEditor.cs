@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity
 {
 #if UNITY_EDITOR
     /// <summary>
-    /// To use this class in a Monobehavior or ScriptableObject, add this line at the bottom of your class:
+    /// To use this class in a MonoBehavior or ScriptableObject, add this line at the bottom of your class:
     /// 
     /// public class ClassName {
     /// ...
@@ -27,8 +27,20 @@ namespace HoloToolkit.Unity
     public class MRTKEditor : Editor
     {
         #region static vars
+        const string mrtkShowEditorKey = "_Show_MRTK_Editors";
+
         // Toggles custom editors on / off
-        public static bool ShowCustomEditors { get; private set; }
+        public static bool ShowCustomEditors
+        {
+            get
+            {
+                return GetEditorPref(mrtkShowEditorKey, true);
+            }
+            private set
+            {
+                SetEditorPref(mrtkShowEditorKey, value);
+            }
+        }
         public static bool CustomEditorActive { get; private set; }
         public static GameObject lastTarget;
 
@@ -75,7 +87,7 @@ namespace HoloToolkit.Unity
 
         public override void OnInspectorGUI()
         {
-            // Set this to true so 
+            // Set this to true so we can track which kind of headers to draw
             CustomEditorActive = true;
 
             try
@@ -86,8 +98,10 @@ namespace HoloToolkit.Unity
 
                 if (ShowCustomEditors)
                 {
+                    BeginInspectorStyle();
                     DrawCustomEditor();
                     DrawCustomFooter();
+                    EndInspectorStyle();
                 }
                 else
                 {
@@ -109,11 +123,28 @@ namespace HoloToolkit.Unity
             DrawCustomSceneGUI();
         }
 
+        protected virtual void BeginInspectorStyle()
+        {
+            // Empty by default
+        }
+
+        protected virtual void EndInspectorStyle()
+        {
+            // Empty by default
+        }
+
+        protected virtual bool DisplayHeader { get { return true; } }
+
         /// <summary>
         /// Draws buttons for turning custom editors on/off, as well as DocType, Tutorial and UseWith attributes
         /// </summary>
         private void DrawInspectorHeader()
         {
+            if (!DisplayHeader)
+            {
+                return;
+            }
+
             EditorGUILayout.Space();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button(ShowCustomEditors ? "Toggle Custom Editors (ON)" : "Toggle Custom Editors (OFF)", ShowCustomEditors ? toggleButtonOnStyle : toggleButtonOffStyle))
@@ -411,10 +442,8 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected void SaveChanges()
         {
-            if (serializedObject.ApplyModifiedProperties())
-            {
-                EditorUtility.SetDirty(target);
-            }
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(target);
         }
 
         #region drawing
@@ -698,7 +727,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Displays a help window explaning profile objects
+        /// Displays a help window explaining profile objects
         /// </summary>
         private static void LaunchProfileHelp()
         {
@@ -987,6 +1016,26 @@ namespace HoloToolkit.Unity
             }
             return rotation;
         }
+        #endregion
+
+        #region editor prefs
+        
+        private static void SetEditorPref(string key, bool value)
+        {
+            EditorPrefs.SetBool(Application.productName + key, value);
+        }
+
+        private static bool GetEditorPref(string key, bool defaultValue)
+        {
+            if (EditorPrefs.HasKey(Application.productName + key))
+            {
+                return EditorPrefs.GetBool(Application.productName + key);
+            }
+
+            EditorPrefs.SetBool(Application.productName + key, defaultValue);
+            return defaultValue;
+        }
+
         #endregion
     }
 #endif

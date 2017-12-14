@@ -11,7 +11,7 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// <summary>
     /// InteractiveToggleButton expands InteractiveToggle to expose a gaze, down and up state events in the inspector.
     /// 
-    /// Beyong the basic button functionality, Interactive also maintains the notion of selection and enabled, which allow for more robust UI features.
+    /// Beyond the basic button functionality, Interactive also maintains the notion of selection and enabled, which allow for more robust UI features.
     /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on
     /// individual elements of the Interactive GameObject
     /// </summary>
