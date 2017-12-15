@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private bool closeOnNonTargetedTap;
 
         /// <summary>
-        /// alled when 'place' is selected
+        /// Called when 'place' is selected
         /// </summary>
         private Action activatedCallback;
 

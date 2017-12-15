@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Encapsulates the topology queries of the understanding dll.
+    /// Encapsulates the topology queries of the understanding DLL.
     /// These queries will not be valid until after scanning is finalized.
     /// </summary>
     public static class SpatialUnderstandingDllTopology

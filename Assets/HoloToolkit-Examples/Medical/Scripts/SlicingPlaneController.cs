@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
 {
     /// <summary>
     /// Controls slicing planes for use in volumetric rendering
-    /// Planes represent maniuplatable viewable regions of the volume
+    /// Planes represent manipulatable viewable regions of the volume
     /// </summary>
     public class SlicingPlaneController : MonoBehaviour, IManipulationHandler
     {

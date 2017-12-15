@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System.Collections.Generic;
 using System.IO;
@@ -39,7 +37,7 @@ namespace HoloToolkit.Unity
 
             if (!File.Exists(filename))
             {
-                UnityEngine.Debug.LogWarningFormat("Unabled to find file \"{0}\", double check that the build suceeded and that the C# Projects are set to be generated.", filename);
+                UnityEngine.Debug.LogWarningFormat("Unable to find file \"{0}\", double check that the build succeeded and that the C# Projects are set to be generated.", filename);
                 return;
             }
 
@@ -48,7 +46,7 @@ namespace HoloToolkit.Unity
 
             if (projectDocument.DocumentElement == null)
             {
-                UnityEngine.Debug.LogWarningFormat("Unabled to load file \"{0}\", double check that the build suceeded and that the C# Projects are set to be generated.", filename);
+                UnityEngine.Debug.LogWarningFormat("Unable to load file \"{0}\", double check that the build succeeded and that the C# Projects are set to be generated.", filename);
                 return;
             }
 
@@ -65,7 +63,7 @@ namespace HoloToolkit.Unity
 
                 if (node.Attributes.Count == 0 && node["Configuration"] != null && node["Platform"] != null)
                 {
-                    // Update the defaults to Release and x86 so that we can run NuGet restore ok.
+                    // Update the defaults to Release and x86 so that we can run NuGet restore.
                     node["Configuration"].InnerText = "Release";
                     node["Platform"].InnerText = "x86";
                 }

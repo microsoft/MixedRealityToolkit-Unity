@@ -8,7 +8,7 @@ using HoloToolkit.Unity.UX;
 using UnityEditor;
 
 /// <summary>
-/// Base class for line editors (splines, bezeirs, parabolas, etc)
+/// Base class for line editors (splines, Beziers, parabolas, etc)
 /// </summary>
 public class LineBaseEditor : MRTKEditor
 {

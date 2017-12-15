@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity.InputModule;
@@ -43,7 +42,7 @@ namespace HoloToolkit.Unity.Buttons
         public ConfidenceLevel ConfidenceLevel = ConfidenceLevel.Medium;
 
         /// <summary>
-        /// Variable to keep track of previous button text incase the button text changes after registration.
+        /// Variable to keep track of previous button text in case the button text changes after registration.
         /// </summary>
         private string prevButtonText;
 

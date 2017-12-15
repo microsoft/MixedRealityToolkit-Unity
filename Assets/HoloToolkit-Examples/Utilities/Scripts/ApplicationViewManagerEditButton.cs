@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.Tests
         public delegate void LaunchXmlView(string result);
 
         /// <summary>
-        /// Event to subscribe to when a text result is returned from the xml view.
+        /// Event to subscribe to when a text result is returned from the XML view.
         /// </summary>
         public event LaunchXmlView OnResult;
 

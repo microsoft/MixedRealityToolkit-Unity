@@ -247,7 +247,7 @@ namespace HoloToolkit.Examples.Prototyping
         }
 
         /// <summary>
-        /// Animate the fadeing
+        /// Animate the fading
         /// </summary>
         private void Update()
         {

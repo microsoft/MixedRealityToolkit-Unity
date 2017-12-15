@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Called before calling MicStartStream or MicstartRecording to initialize microphone
         /// </summary>
-        /// <param name="category">One of the entries in the StreamCategory enumeratio</param>
+        /// <param name="category">One of the entries in the StreamCategory enumeration</param>
         /// <returns>error code or 0</returns>
         [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicInitializeDefault(int category);
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Call this to start receiving data from a microphone. Then, each frame, call MicGetFrame.
         /// </summary>
-        /// <param name="keepData">If true, all data will stay in the queue, if the client code is running behind. This can lead to significant audio lag, so is not appropriate for low-latency situations like reall-time voice chat.</param>
+        /// <param name="keepData">If true, all data will stay in the queue, if the client code is running behind. This can lead to significant audio lag, so is not appropriate for low-latency situations like real-time voice chat.</param>
         /// <param name="previewOnDevice">If true, the audio from the microphone will be played through your speakers.</param>
         /// <param name="micsignal">Optional (can be null): This callback will be called when data is ready for MicGetFrame</param>
         /// <returns>error code or 0</returns>
@@ -57,7 +57,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Call this to start receiving data from a microphone. Then, each frame, call MicGetFrame.
         /// </summary>
-        /// <param name="keepData">If true, all data will stay in the queue, if the client code is running behind. This can lead to significant audio lag, so is not appropriate for low-latency situations like reall-time voice chat.</param>
+        /// <param name="keepData">If true, all data will stay in the queue, if the client code is running behind. This can lead to significant audio lag, so is not appropriate for low-latency situations like real-time voice chat.</param>
         /// <param name="previewOnDevice">If true, the audio from the microphone will be played through your speakers.</param>
         /// <returns>error code or 0</returns>
         public static int MicStartStream(bool keepData, bool previewOnDevice)
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Begins recording microphone data to the specified file.
         /// </summary>
         /// <param name="filename">The file will be saved to this name. Specify only the wav file's name with extensions, aka "myfile.wav", not full path</param>
-        /// <param name="previewOnDevice">If true, will play micstream in speakers</param>
+        /// <param name="previewOnDevice">If true, will play mic stream in speakers</param>
         /// <returns></returns>
         [DllImport("MicStreamSelector", ExactSpelling = true)]
         public static extern int MicStartRecording(string filename, bool previewOnDevice);
@@ -122,7 +122,7 @@ namespace HoloToolkit.Unity.InputModule
         public static extern int MicResume();
 
         /// <summary>
-        /// Sets apmlification factor for microphone samples returned by MicGetFrame (and/or file specified with MicStartRecording)
+        /// Sets amplification factor for microphone samples returned by MicGetFrame (and/or file specified with MicStartRecording)
         /// </summary>
         /// <param name="g">gain factor</param>
         /// <returns>error code or 0</returns>
@@ -132,7 +132,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Queries the default microphone audio frame sample size. Useful if doing default initializations with callbacks to know how much data it wants to hand you.
         /// </summary>
-        /// <returns>the number of samles in the default audio buffer</returns>
+        /// <returns>the number of samples in the default audio buffer</returns>
         [DllImport("MicStreamSelector", ExactSpelling = true)]
         private static extern int MicGetDefaultBufferSize();
 

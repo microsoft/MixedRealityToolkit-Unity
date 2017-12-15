@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.InputModule
     public interface IInputSource
     {
         /// <summary>
-        /// Returns the input info that that the input source can provide.
+        /// Returns the input info that the input source can provide.
         /// </summary>
         SupportedInputInfo GetSupportedInputInfo(uint sourceId);
 

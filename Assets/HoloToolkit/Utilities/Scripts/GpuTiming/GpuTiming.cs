@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
 		/// Gets the latest available sample time for the given event. 
 		/// </summary>
 		/// <param name="eventId">Name of the event.</param>
-		/// <returns>Time in miliseconds.</returns>
+		/// <returns>Time in milliseconds.</returns>
 		public static double GetTime(string eventId)
 		{
 			int eventValue;

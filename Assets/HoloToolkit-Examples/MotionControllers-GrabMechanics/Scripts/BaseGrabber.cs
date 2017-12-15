@@ -133,7 +133,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         /// <summary>
         /// If the correct grabbing button is pressed, we set the GrabState.
-        /// Grab behaviour depends on the combination of GrabState, and a grabbable trigger entered
+        /// Grab behavior depends on the combination of GrabState, and a grabbable trigger entered
         /// </summary>
         protected virtual void GrabEnd()
         {

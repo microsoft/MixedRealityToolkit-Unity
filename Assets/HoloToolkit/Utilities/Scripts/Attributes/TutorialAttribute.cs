@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace HoloToolkit.Unity
 {
-    // Provides a clickable link to a tuturoial in the inspector header
+    // Provides a clickable link to a tutorial in the inspector header
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class TutorialAttribute : Attribute
     {

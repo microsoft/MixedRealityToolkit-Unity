@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Applies recommended scene settings to the current scenes
+        /// Applies recommended scene settings to the current scenes.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Configure/Apply Mixed Reality Scene Settings #&s", false, 1)]
         public static void ShowSceneSettingsWindow()
@@ -41,7 +41,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Applies recommended project settings to the current project
+        /// Applies recommended project settings to the current project.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Configure/Apply Mixed Reality Project Settings #&p", false, 0)]
         public static void ShowProjectSettingsWindow()
@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Applies recommended capability settings to the current project
+        /// Applies recommended capability settings to the current project.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Configure/Apply UWP Capability Settings #&c", false, 2)]
         public static void ShowCapabilitySettingsWindow()

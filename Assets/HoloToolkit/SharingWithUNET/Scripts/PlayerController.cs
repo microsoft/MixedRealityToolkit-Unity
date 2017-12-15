@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #pragma warning restore 0414
 
         /// <summary>
-        /// Called to set the Ip address
+        /// Called to set the IP address
         /// </summary>
         /// <param name="playerIp"></param>
         [Command]
@@ -154,7 +154,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         /// <summary>
-        /// Called when the player Ip address changes
+        /// Called when the player IP address changes
         /// </summary>
         /// <param name="update">The updated IP address</param>
         void PlayerIpChanged(string update)
@@ -204,7 +204,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         {
             if (SharedCollection.Instance == null)
             {
-                Debug.LogError("This script required a SharedCollection script attached to a gameobject in the scene");
+                Debug.LogError("This script required a SharedCollection script attached to a GameObject in the scene");
                 Destroy(this);
                 return;
             }
@@ -212,7 +212,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             if (isLocalPlayer)
             {
                 // If we are the local player then we want to have airtaps 
-                // sent to this object so that projeciles can be spawned.
+                // sent to this object so that projectiles can be spawned.
                 InputManager.Instance.AddGlobalListener(gameObject);
                 InitializeLocalPlayer();
             }
@@ -275,7 +275,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             {
                 Debug.Log("Setting instance for local player ");
                 _Instance = this;
-                Debug.LogFormat("Set local player name {0} ip {1}", networkDiscovery.broadcastData, networkDiscovery.LocalIp);
+                Debug.LogFormat("Set local player name {0} IP {1}", networkDiscovery.broadcastData, networkDiscovery.LocalIp);
                 CmdSetPlayerName(networkDiscovery.broadcastData);
                 CmdSetPlayerIp(networkDiscovery.LocalIp);
 #if UNITY_WSA

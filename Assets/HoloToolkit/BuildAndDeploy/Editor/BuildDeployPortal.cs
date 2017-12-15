@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Collections.Generic;
@@ -202,7 +200,7 @@ namespace HoloToolkit.Unity
         {
             try
             {
-                // Calc the cert and dep paths
+                // Calculate the cert and dependency paths
                 string fileName = Path.GetFileName(appFullPath);
                 string certFullPath = Path.ChangeExtension(appFullPath, ".cer");
                 string certName = Path.GetFileName(certFullPath);

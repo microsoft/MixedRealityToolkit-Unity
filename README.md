@@ -19,10 +19,12 @@ _Note: The latest release should work for both HoloLens and Windows Mixed Realit
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?label=Latest%20Master%20Branch%20Release&colorB=9acd32
 [![Github Release][mrtk-version-badge]][github-rel]
 
-[unity-download]:                 http://beta.unity3d.com/download/a07ad30bae31/download.html
-[unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.0p2%20MRTP5-green.svg
+[unity-download]:                 https://unity3d.com/unity/whats-new/unity-2017.2.1
+[unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.1f1-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
+> Check out the MRTK [Roadmap](/Roadmap.md) for Unity.
+>
 > Check out the updates from the [Fall Creators update](/FallCreatorsUpdate.md) for Windows Mixed Reality.
 >
 > Check out the [Breaking Changes](/BreakingChanges.md) from the previous release.
@@ -34,7 +36,7 @@ The Mixed Reality Toolkit for Unity includes many API's to accelerate the develo
 
 | [![Input](External/ReadMeImages/MRTK170802_Short_03.png)](Assets/HoloToolkit/Input/README.md)  [Input](Assets/HoloToolkit/Input/README.md)                                               | [![Sharing](External/ReadMeImages/MRTK170802_Short_04.png)](Assets/HoloToolkit/Sharing/README.md) [Sharing](Assets/HoloToolkit/Sharing/README.md)   | [![Spatial Mapping](External/ReadMeImages/MRTK170802_Short_05.png)](Assets/HoloToolkit/SpatialMapping/README.md) [Spatial Mapping](Assets/HoloToolkit/SpatialMapping/README.md)| 
 | :--- | :--- | :--- |
-| Scripts that leverage inputs such as gaze, gesture, voice and motion controllers. | Sharing library enables collaboration across multiple devices. | Scripts that allow applications to bring the real world into the digital using HoloLens. | 
+| Scripts that leverage inputs such as gaze, gesture, voice and motion controllers. Includes the Mixed Reality camera prefabs. | Sharing library enables collaboration across multiple devices. | Scripts that allow applications to bring the real world into the digital using HoloLens. | 
 | [![Spatial Sound](External/ReadMeImages/MRTK170802_Short_09.png)](Assets/HoloToolkit/SpatialSound/README.md) [Spatial Sound](Assets/HoloToolkit/SpatialSound/README.md) | [![UX Controls](External/ReadMeImages/MRTK170802_Short_10.png)](Assets/HoloToolkit/UX/README.md) [UX Controls](Assets/HoloToolkit/UX/README.md)| [![Utilities](External/ReadMeImages/MRTK170802_Short_11.png)](Assets/HoloToolkit/Utilities/README.md) [Utilities](Assets/HoloToolkit/Utilities/README.md) | 
 | Scripts to help plug spatial audio into your application. | Building blocks for creating good UX in your application like common controls. | Common helpers and tools that you can leverage in your application. |
 | [![Spatial Understanding](External/ReadMeImages/MRTK170802_Short_06.png)](Assets/HoloToolkit/SpatialUnderstanding/README.md) [Spatial Understanding](Assets/HoloToolkit/SpatialUnderstanding/README.md)| [![Build](External/ReadMeImages/MRTK170802_Short_12.png)](Assets/HoloToolkit/BuildAndDeploy/README.md) [Build](Assets/HoloToolkit/BuildAndDeploy/README.md)| [![Boundary](External/ReadMeImages/MRTK170802_Short_07.png)](Assets/HoloToolkit/Boundary/README.md) [Boundary](Assets/HoloToolkit/Boundary/README.md)                       |
@@ -64,49 +66,6 @@ The MRTK includes many great samples and starter scenes to demonstrate the uses 
 | A sample virtual keyboard, similar to system keyboard in Windows Mixed Reality shell  | Example UI buttons and controls for use in Mixed Reality | Scene construction demo on how to make occluded windows |
 
 Check out the [Examples](/Assets/HoloToolkit-Examples) folder for more details.
-
-# Roadmaps
-### Master branch
-| Target Unity release  | Release timeframe | Master release tag | Toolkit release features |
-| --- | --- | --- | --- |
-| 2017.2.0 | (current)       | v1.2017.2.0        | <ul><li>Updated master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
-| 2017.3.0              | End Dec 2017      | v1.2017.3.0        | <ul><li>360 video player prefabs.</li><li>Scriptable foveated rendering prefabs.</li></ul>|
-
-### Dev_Unity_2017.2.0 branch
-
-| Target Unity release  | Release timeframe | Branch release tag | Branch pre-release features | Status |
-| --- | --- | --- | --- | --- |
-| 2017.2.1              | Mid Oct 2017      | v1.Dev.2017.2.1 | <ul><li>Merge branch into master.</li></ul>| Complete |
-
-# Future work planning
-- Updating landing page for the ReadMe.md to help app developers find content better.
-- Updating API documentation using tools like Doxygen and not writing them manually. This is something we will work with all of you on.
-- Update Wiki to host API documentation instead.
-- Move reusable features from [Mixed Reality Design Labs](https://github.com/Microsoft/MRDesignLabs_Unity) project into toolkit.
-- Improved samples and test cases
-
-# Release cadence
-### Master branch
-- **Master branch releases** will align with **major Unity releases marking a release every 3 months**. Please read the [Unity roadmap](https://unity3d.com/unity/roadmap).
-- Each release will be marked as a GitHub [release tag](https://github.com/Microsoft/HoloToolkit-Unity/releases). You can consume this release by:
-	- Using the zip file available in the release notes
-	- Unity packages available in the release notes
-	- Syncing to the specific git tag you would like to lock on.
-- Release tag name convention: v1.Unity release major number.Unity release minor number.Iteration number
-	- For example: For Unity version 2017.1.0 our release tag would be **v1.2017.1.0**
-	- If we marked another release with the same Unity version: **v1.2017.1.1**
-- Unity packages for each release will be published to the Unity asset store.
-- Unity packages for each feature area like Input/SpatialMapping will also be added to the release notes.
-- Academy content will be updated with each major toolkit release.
-
-### Development branches
-- Development branches are great for incubating features before they make their way into master.
-- These branches can be feature work or experimental features.
-- Development branches might not be on the same Unity versions as master.
-- For being merged into Master the dev branch will have to follow the cadence laid out for master.
-- Development branches might choose to mark releases on a faster cadence based on customer/project needs.
-- Recommend marking a development branch tag every 2 weeks as needed to ensure stability before making up to master.
-- Development branches might be deleted once merged into master. If more work is pending, it's ok to continue working in them.
 
 **External\How To** docs folder is meant to help everyone with migrating forward or any simple doubts they might have about the process.
 Please feel free to grow all these sections. We can't wait to see your additions!

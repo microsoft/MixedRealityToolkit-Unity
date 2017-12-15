@@ -164,7 +164,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         }
 
         /// <summary>
-        /// The direction of the observed volume, if an oriented box is choosen.
+        /// The direction of the observed volume, if an oriented box is chosen.
         /// </summary>
         [SerializeField]
         [Tooltip("The direction of the observation volume.")]

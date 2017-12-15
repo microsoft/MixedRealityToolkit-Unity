@@ -14,7 +14,7 @@ namespace GLTF
 		public Color AmbientFactor = Color.white;
 
 		/// <summary>
-		/// Texture used to store pre-computed direct lighting
+		/// Texture used to store precomputed direct lighting
 		/// </summary>
 		public TextureInfo LightmapTexture;
 
