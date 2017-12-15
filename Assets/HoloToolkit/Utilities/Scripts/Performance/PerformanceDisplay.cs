@@ -2,6 +2,7 @@
 
 namespace HoloToolkit.Unity
 {
+    [RequireComponent(typeof(UnityEngine.UI.Text))]
     public class PerformanceDisplay : MonoBehaviour
     {
         public float DisplayInterval = 0.5f;

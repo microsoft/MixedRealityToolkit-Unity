@@ -171,15 +171,12 @@ namespace HoloToolkit.Unity
             if (TargetFrameRate == 0)
             {
                 TargetFrameRate = 60;
-                if (!Application.isEditor)
-                {
-                    Debug.LogWarning("Could not retrieve the HMD's native refresh rate. Assuming " + TargetFrameRate + " Hz.");
-                }
+                Debug.LogWarning("Could not retrieve the HMD's native refresh rate. Assuming " + TargetFrameRate + " Hz.");
             }
 
             if (null == hmdCamera)
             {
-                hmdCamera = Camera.main;
+                hmdCamera = CameraCache.Main;
             }
 
             //Make sure we have the GpuTimingCamera component attached to our camera with the correct timing tag
