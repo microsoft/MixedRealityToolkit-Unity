@@ -19,8 +19,6 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         protected new InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
 #endif
-        public new MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
-
         [SerializeField]
         protected new MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
@@ -52,28 +50,29 @@ namespace HoloToolkit.Unity.InputModule
         protected override void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (!IsAttached)
+            if (!IsAttached && newController.Handedness == handedness)
             {
                 base.AddControllerTransform(newController);
+
+                SetChildrenActive(true);
+
+                // Parent ourselves under the element and set our offsets
+                transform.parent = ElementTransform;
+                transform.localPosition = positionOffset;
+                transform.localEulerAngles = rotationOffset;
+
+                if (setScaleOnAttach)
+                {
+                    transform.localScale = scale;
+                }
+
+                // Announce that we're attached
+                OnAttachToController();
+
+                IsAttached = true;
             }
-
-            SetChildrenActive(true);
-
-            // Parent ourselves under the element and set our offsets
-            transform.parent = ElementTransform;
-            transform.localPosition = positionOffset;
-            transform.localEulerAngles = rotationOffset;
-
-            if (setScaleOnAttach)
-            {
-                transform.localScale = scale;
-            }
-
-            // Announce that we're attached
-            OnAttachToController();
-
-            IsAttached = true;
 #endif
+
         }
 
         protected override void RemoveControllerTransform(MotionControllerInfo oldController)
@@ -81,6 +80,8 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (IsAttached && oldController.Handedness == handedness)
             {
+                base.RemoveControllerTransform(oldController);
+
                 OnDetachFromController();
 
                 transform.parent = null;
