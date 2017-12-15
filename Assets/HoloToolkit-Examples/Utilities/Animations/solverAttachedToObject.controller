@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: sovlerAttachedToObject
+  m_Name: solverAttachedToObject
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:

@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
 
-        public virtual void OnEnable()
+        protected virtual void OnEnable()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.

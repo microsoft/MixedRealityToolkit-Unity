@@ -43,7 +43,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
-        public override void OnEnable()
+        protected override void OnEnable()
         {
             SetChildrenActive(false);
             base.OnEnable();
