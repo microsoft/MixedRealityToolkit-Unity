@@ -12,11 +12,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnEnable()
         {
-            InputManager.Instance.AddGlobalListener(gameObject);
-        }
-
-        protected virtual void Start()
-        {
             if (IsGlobalListener)
             {
                 InputManager.Instance.AddGlobalListener(gameObject);
