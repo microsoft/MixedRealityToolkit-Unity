@@ -4,7 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/HoloToolkit-Examples/Input/Scenes/TouchscreenTest.unity
-    guid: db8bab349123b4644aaad0cabfa74479
+  m_Scenes: []
