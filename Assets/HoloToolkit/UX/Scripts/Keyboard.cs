@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
 using System.Collections;
-
+using HoloToolkit.Unity.InputModule;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -22,7 +22,7 @@ namespace HoloToolkit.UI.Keyboard
     ///       To retrieve the input from the Keyboard, subscribe to the textEntered event. Note that
     ///       tapping 'Close' on the Keyboard will not fire the textEntered event. You must tap 'Enter' to
     ///       get the textEntered event.
-    public class Keyboard : Singleton<Keyboard>
+    public class Keyboard : Singleton<Keyboard>, IDictationHandler
     {
         /// <summary>
         /// Layout type enum for the type of keyboard layout to use.  
@@ -203,7 +203,6 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Reference to dictation recognizer.
         /// </summary>
-        private DictationRecognizer m_Dictation = null;
 #endif
 
         /// <summary>
@@ -324,7 +323,7 @@ namespace HoloToolkit.UI.Keyboard
             CheckForCloseOnInactivityTimeExpired();
         }
 
-        private void UpdateCaratPosition(int newPos)
+        private void UpdateCaretPosition(int newPos)
         {
             InputField.caretPosition = newPos;
         }
@@ -338,14 +337,22 @@ namespace HoloToolkit.UI.Keyboard
             Clear();
         }
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+
         /// <summary>
-        /// Event fired when dictation completed.
+        /// Called when dictation hypothesis is found. Not used here
         /// </summary>
-        /// <param name="text">Speech to Text</param>
-        /// <param name="confidence">Confidence dictation has in it's translation.</param>
-        private void OnDictationResult(string text, ConfidenceLevel confidence)
+        /// <param name="eventData">Dictation event data</param>
+        public void OnDictationHypothesis(DictationEventData eventData)
         {
+        }
+
+        /// <summary>
+        /// Called when dication result is obtained
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        public void OnDictationResult(DictationEventData eventData)
+        {
+            var text = eventData.DictationResult;
             ResetClosingTime();
             if (text != null)
             {
@@ -354,20 +361,27 @@ namespace HoloToolkit.UI.Keyboard
                 InputField.text = InputField.text.Insert(m_CaretPosition, text);
                 m_CaretPosition += text.Length;
 
-                UpdateCaratPosition(m_CaretPosition);
+                UpdateCaretPosition(m_CaretPosition);
             }
         }
 
         /// <summary>
-        /// Called when dictation is completed
+        /// Called when dication is completed
         /// </summary>
-        /// <param name="cause">reason why dication was ended</param>
-        private void OnDictationComplete(DictationCompletionCause cause)
+        /// <param name="eventData">Dictation event data</param>
+        public void OnDictationComplete(DictationEventData eventData)
         {
             ResetClosingTime();
             SetMicrophoneDefault();
         }
-#endif
+
+        /// <summary>
+        /// Called on dictation error. Not used here.
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        public void OnDictationError(DictationEventData eventData)
+        {
+        }
 
         /// <summary>
         /// Destroy unmanaged memory links.
@@ -375,11 +389,9 @@ namespace HoloToolkit.UI.Keyboard
         protected override void OnDestroy()
         {
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-            // HACK Must manually call destroy on DictationRecognizer according to the documentation.
-            if (m_Dictation != null)
+            if (IsMicrophoneActive())
             {
-                m_Dictation.Dispose();
-                m_Dictation = null;
+                StartCoroutine(DictationInputManager.StopRecording());
             }
 #endif
             base.OnDestroy();
@@ -550,17 +562,14 @@ namespace HoloToolkit.UI.Keyboard
         private void BeginDictation()
         {
             ResetClosingTime();
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-            if (m_Dictation == null)
-            {
-                m_Dictation = new DictationRecognizer();
-                m_Dictation.DictationResult += OnDictationResult;
-                m_Dictation.DictationComplete += OnDictationComplete;
-            }
-
-            m_Dictation.Start();
+            StartCoroutine(DictationInputManager.StartRecording());
             SetMicrophoneRecording();
-#endif
+        }
+
+        private bool IsMicrophoneActive()
+        {
+            var result =  _recordImage.color != _defaultColor;
+            return result;
         }
 
         /// <summary>
@@ -582,14 +591,10 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Terminate dictation mode.
         /// </summary>
-        /// TODO: Something needs to call this.
         public void EndDictation()
         {
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-            if (m_Dictation.Status == SpeechSystemStatus.Running)
-            {
-                m_Dictation.Stop();
-            }
+            StartCoroutine(DictationInputManager.StopRecording());
             SetMicrophoneDefault();
 #endif
         }
@@ -625,7 +630,7 @@ namespace HoloToolkit.UI.Keyboard
             InputField.text = InputField.text.Insert(m_CaretPosition, value);
             m_CaretPosition += value.Length;
 
-            UpdateCaratPosition(m_CaretPosition);
+            UpdateCaretPosition(m_CaretPosition);
         }
 
         /// <summary>
@@ -682,7 +687,7 @@ namespace HoloToolkit.UI.Keyboard
                 case KeyboardKeyFunc.Function.Dictate:
                     {
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-                        if (m_Dictation != null && m_Dictation.Status == SpeechSystemStatus.Running)
+                        if (IsMicrophoneActive())
                         {
                             EndDictation();
                         }
@@ -760,7 +765,7 @@ namespace HoloToolkit.UI.Keyboard
                 {
                     --m_CaretPosition;
                     InputField.text = InputField.text.Remove(m_CaretPosition, 1);
-                    UpdateCaratPosition(m_CaretPosition);
+                    UpdateCaretPosition(m_CaretPosition);
                 }
             }
         }
@@ -806,7 +811,7 @@ namespace HoloToolkit.UI.Keyboard
                 InputField.text = InputField.text.Insert(m_CaretPosition, enterString);
                 m_CaretPosition += enterString.Length;
 
-                UpdateCaratPosition(m_CaretPosition);
+                UpdateCaretPosition(m_CaretPosition);
             }
 
         }
@@ -844,7 +849,7 @@ namespace HoloToolkit.UI.Keyboard
             m_CaretPosition = InputField.caretPosition;
             InputField.text = InputField.text.Insert(m_CaretPosition++, " ");
 
-            UpdateCaratPosition(m_CaretPosition);
+            UpdateCaretPosition(m_CaretPosition);
         }
 
         /// <summary>
@@ -859,7 +864,7 @@ namespace HoloToolkit.UI.Keyboard
             InputField.text = InputField.text.Insert(m_CaretPosition, tabString);
             m_CaretPosition += tabString.Length;
 
-            UpdateCaratPosition(m_CaretPosition);
+            UpdateCaretPosition(m_CaretPosition);
         }
 
         /// <summary>
@@ -872,7 +877,7 @@ namespace HoloToolkit.UI.Keyboard
             if (m_CaretPosition > 0)
             {
                 --m_CaretPosition;
-                UpdateCaratPosition(m_CaretPosition);
+                UpdateCaretPosition(m_CaretPosition);
             }
         }
 
@@ -886,7 +891,7 @@ namespace HoloToolkit.UI.Keyboard
             if (m_CaretPosition < InputField.text.Length)
             {
                 ++m_CaretPosition;
-                UpdateCaratPosition(m_CaretPosition);
+                UpdateCaretPosition(m_CaretPosition);
             }
         }
 
@@ -896,13 +901,11 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void Close()
         {
-            if (m_Dictation != null)
+            if (IsMicrophoneActive())
             {
-                m_Dictation.Stop();
-                SetMicrophoneDefault();
-                m_Dictation.Dispose();
-                m_Dictation = null;
+                StartCoroutine(DictationInputManager.StopRecording());
             }
+            SetMicrophoneDefault();
             OnClosed(this, EventArgs.Empty);
             gameObject.SetActive(false);
         }
@@ -1066,5 +1069,7 @@ namespace HoloToolkit.UI.Keyboard
                 Close();
             }
         }
+
+
     }
 }
