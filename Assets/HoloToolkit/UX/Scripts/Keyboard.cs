@@ -5,11 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
-using System.Collections;
 using HoloToolkit.Unity.InputModule;
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-using UnityEngine.Windows.Speech;
-#endif
 
 namespace HoloToolkit.UI.Keyboard
 {
@@ -199,12 +195,6 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private int m_CaretPosition = 0;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-        /// <summary>
-        /// Reference to dictation recognizer.
-        /// </summary>
-#endif
-
         /// <summary>
         /// The starting scale of the keyboard.
         /// </summary>
@@ -388,12 +378,10 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         protected override void OnDestroy()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsMicrophoneActive())
             {
                 StartCoroutine(DictationInputManager.StopRecording());
             }
-#endif
             base.OnDestroy();
         }
 
@@ -593,10 +581,8 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void EndDictation()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
             StartCoroutine(DictationInputManager.StopRecording());
             SetMicrophoneDefault();
-#endif
         }
 
         #endregion Dictation
@@ -686,7 +672,6 @@ namespace HoloToolkit.UI.Keyboard
 
                 case KeyboardKeyFunc.Function.Dictate:
                     {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
                         if (IsMicrophoneActive())
                         {
                             EndDictation();
@@ -695,7 +680,6 @@ namespace HoloToolkit.UI.Keyboard
                         {
                             BeginDictation();
                         }
-#endif
                         break;
                     }
 
