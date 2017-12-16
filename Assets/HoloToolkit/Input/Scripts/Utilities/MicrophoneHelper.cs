@@ -1,9 +1,7 @@
-﻿
-//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-//
+﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
+//*********************************************************
 //
 // This sample code is a modified version of an official UWP sample which can be found on:
 // https://github.com/Microsoft/Windows-universal-samples/blob/master/Samples/SpeechRecognitionAndSynthesis/cs/AudioCapturePermissions.cs
