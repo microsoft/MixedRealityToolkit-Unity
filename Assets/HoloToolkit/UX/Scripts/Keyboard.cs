@@ -235,46 +235,23 @@ namespace HoloToolkit.UI.Keyboard
             m_ObjectBounds = new Vector3(canvasBounds.size.x * rect.localScale.x, canvasBounds.size.y * rect.localScale.y, canvasBounds.size.z * rect.localScale.z);
 
             // Actually find microphone key in the keyboard
-            var dicationButton = RecursiveFindChild(gameObject.transform, "Dictation");
+            var dicationButton = Utils.GetChildRecursive(gameObject.transform, "Dictation");
             if (dicationButton != null)
             {
-                var dicationIcon = dicationButton.transform.Find("keyboard_closeIcon");
-                if (dicationButton != null)
+                var dicationIcon = dicationButton.Find("keyboard_closeIcon");
+                if (dicationIcon != null)
                 {
-                    _recordImage = dicationButton.GetComponentsInChildren<Image>()[1];
+                    _recordImage = dicationIcon.GetComponentInChildren<Image>();
                     var material = new Material(_recordImage.material);
                     _defaultColor = material.color;
                     _recordImage.material = material;
                 }
             }
 
-
             // Keep keyboard deactivated until needed
             gameObject.SetActive(false);
         }
 
-        /// <summary>
-        /// Recursive find. Potentially move to a child class.
-        /// </summary>
-        GameObject RecursiveFindChild(Transform parent, string childName)
-        {
-            GameObject foundObject = null;
-
-            for(int i = 0; i < parent.childCount && foundObject == null; i++)
-            {
-                var child = parent.GetChild(i);
-                if(child.name == childName)
-                {
-                    foundObject = child.gameObject;
-                }
-                else
-                {
-                    foundObject = RecursiveFindChild(child, childName);
-                }
-            }
-
-            return foundObject;
-        }
 
         /// <summary>
         /// Set up Dictation, CanvasEX, and automatically select the TextInput object.
@@ -556,7 +533,7 @@ namespace HoloToolkit.UI.Keyboard
 
         private bool IsMicrophoneActive()
         {
-            var result =  _recordImage.color != _defaultColor;
+            var result = _recordImage.color != _defaultColor;
             return result;
         }
 
@@ -916,7 +893,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="maxScale">Max scale factor</param>
         /// <param name="minDistance">Min distance from camera</param>
         /// <param name="maxDistance">Max distance from camera</param>
-        public void SetScaleSizeValues( float minScale, float maxScale, float minDistance, float maxDistance)
+        public void SetScaleSizeValues(float minScale, float maxScale, float minDistance, float maxDistance)
         {
             m_MinScale = minScale;
             m_MaxScale = maxScale;
@@ -1029,7 +1006,7 @@ namespace HoloToolkit.UI.Keyboard
             {
                 _audioSource = GetComponent<AudioSource>();
             }
-            if( _audioSource != null)
+            if (_audioSource != null)
             {
                 _audioSource.Play();
             }
@@ -1048,7 +1025,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void CheckForCloseOnInactivityTimeExpired()
         {
-            if( Time.time > _closingTime )
+            if (Time.time > _closingTime)
             {
                 Close();
             }
