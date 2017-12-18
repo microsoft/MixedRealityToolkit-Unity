@@ -117,6 +117,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Awake();
 
+            Result = new FocusResult();
+
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
             {
@@ -130,6 +132,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!FindGazeTransform())
             {
+                Debug.Log("Didn't find gaze transform");
                 return;
             }
 

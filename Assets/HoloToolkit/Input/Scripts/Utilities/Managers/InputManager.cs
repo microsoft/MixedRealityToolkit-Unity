@@ -313,77 +313,64 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-
-            // Go through each focus target from the focus manager
-            var currentFocusTargets = FocusManager.Instance.CurrentFocusTargets;
-
-            foreach (IFocusTarget target in currentFocusTargets)
+            // If we have an override focus object
+            if (OverrideFocusedObject != null)
             {
-                // Skip any that don't have focus
-                // (IFocusTargets may override focus status via FocusEnabled)
-                if (!target.HasFocus)
+                // Execute focus events on the override object only
+                if (ExecuteFocusEvents<T>(eventData, eventHandler, OverrideFocusedObject))
                 {
-                    continue;
+                    return;
                 }
+            }
+            else
+            {
+                // Otherwise, check if we have focus targets from the focus manager
+                List<IFocusTarget> currentFocusTargets = FocusManager.Instance.CurrentFocusTargets;
 
-                // Check whether any of the focusers in the target own this event data
-                bool atLeastOneFocuserOwnsEvent = false;
-                foreach (IFocuser focuser in target.Focusers)
+                if (currentFocusTargets.Count == 0)
                 {
-                    if (focuser.OwnsInput(eventData))
+                    // If there are no focus targets, execute events on a null target so modal input still receives events
+                    ExecuteFocusEvents<T>(eventData, eventHandler, null);
+                }
+                else
+                {
+                    // Otherwise execute events on each focus target
+                    foreach (IFocusTarget target in currentFocusTargets)
                     {
-                        //Debug.Log("Focuser " + focuser.GetType().Name + " owns input type " + eventData.GetType().Name + " when targeting item " + target.gameObject.name);
-                        atLeastOneFocuserOwnsEvent = true;
-                        break;
-                    }
-                }
-
-                // If none own the event data, don't send the event to this target
-                if (!atLeastOneFocuserOwnsEvent)
-                {
-                    //Debug.Log("No focuser trained on target " + target.gameObject.name + " owns input type " + eventData.GetType().Name + ", moving on");
-                    continue;
-                }
-                
-                // TODO: determine focus override behavior in context of multi-pointers
-                GameObject focusedObject = target.gameObject;
-
-                // TODO: robertes: consider whether modal and fallback input should flow to each handler until used
-                //       or it should flow to just the topmost handler on the stack as it does today.
-
-                // Handle modal input if one exists
-                if (modalInputStack.Count > 0)
-                {
-                    GameObject modalInput = modalInputStack.Peek();
-
-                    // If there is a focused object in the hierarchy of the modal handler, start the event
-                    // bubble there
-                    if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
-                    {
-                        if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
+                        // Skip any that don't have focus
+                        // (IFocusTargets may override focus status via FocusEnabled)
+                        if (!target.HasFocus)
                         {
+                            continue;
+                        }
+
+                        // Check whether any of the focusers in the target own this event data
+                        bool atLeastOneFocuserOwnsEvent = false;
+                        foreach (IFocuser focuser in target.Focusers)
+                        {
+                            if (focuser.OwnsInput(eventData))
+                            {
+                                atLeastOneFocuserOwnsEvent = true;
+                                break;
+                            }
+                        }
+
+                        // If none own the event data, don't send the event to this target
+                        if (!atLeastOneFocuserOwnsEvent)
+                        {
+                            continue;
+                        }
+
+                        GameObject focusedObject = target.gameObject;
+
+                        if (ExecuteFocusEvents<T>(eventData, eventHandler, focusedObject))
+                        {
+                            // If executing the focus events consumes the event, we're done
                             return;
                         }
                     }
-                    // Otherwise, just invoke the event on the modal handler itself
-                    else
-                    {
-                        if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler) && eventData.used)
-                        {
-                            return;
-                        }
-                    }
                 }
-
-                // If event was not handled by modal, pass it on to the current focused object
-                if (focusedObject != null)
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
-                    {
-                        return;
-                    }
-                }
-            }           
+            }
 
             // If event was not handled by the focused object, pass it on to any fallback handlers
             if (fallbackInputStack.Count > 0)
@@ -394,6 +381,46 @@ namespace HoloToolkit.Unity.InputModule
                     return;
                 }
             }
+        }
+
+        private bool ExecuteFocusEvents<T>(BaseInputEventData eventData, ExecuteEvents.EventFunction<T> eventHandler, GameObject focusedObject) where T : IEventSystemHandler
+        {
+            Debug.Assert(!eventData.used);
+
+            // Handle modal input if one exists
+            if (modalInputStack.Count > 0)
+            {
+                GameObject modalInput = modalInputStack.Peek();
+
+                // If there is a focused object in the hierarchy of the modal handler, start the event
+                // bubble there
+                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                {
+                    if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
+                    {
+                        return true;
+                    }
+                }
+                // Otherwise, just invoke the event on the modal handler itself
+                else
+                {
+                    if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler) && eventData.used)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            // If event was not handled by modal, pass it on to the current focused object
+            if (focusedObject != null)
+            {
+                if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #region Focus Events

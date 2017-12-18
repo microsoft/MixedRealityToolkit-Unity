@@ -51,10 +51,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            /*if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && Gaze.IsInitialized)
+            if (focusers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazePointer.IsInitialized)
             {
                 RegisterFocuser(GazePointer.Instance);
-            }*/
+            }
         }
 
         private void Update()
