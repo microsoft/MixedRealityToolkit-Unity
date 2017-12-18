@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// An optional, input-source-dependent object to be associated with this event.
         /// </summary>
-        public object Tag { get; private set; }
+        public object[] Tag { get; private set; }
 
         /// <summary>
         /// An optional, input-source-independent tag to be associated with this event.
@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, object tag, string eventOrigin)
+        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, string eventOrigin, object[] tag = null)
         {
             Reset();
             InputSource = inputSource;
