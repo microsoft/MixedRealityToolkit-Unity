@@ -18,8 +18,6 @@ namespace HoloToolkit.Unity.InputModule
 
         LayerMask[] PrioritizedLayerMasksOverride { get; }
 
-        PointerResult Result { get; set; }
-
         Cursor CursorOverride { get; }
 
         void OnPreRaycast();

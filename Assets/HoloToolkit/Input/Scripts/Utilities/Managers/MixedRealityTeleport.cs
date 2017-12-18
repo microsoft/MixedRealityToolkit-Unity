@@ -119,10 +119,11 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (currentPointingSource == null && leftY > 0.8 && Math.Abs(leftX) < 0.3)
                 {
-                    if (FocusManager.Instance.TryGetSinglePointer(out currentPointingSource))
+                    throw new NotImplementedException();
+                    /*if (FocusManager.Instance.TryGetSinglePointer(out currentPointingSource))
                     {
                         StartTeleport();
-                    }
+                    }*/
                 }
                 else if (currentPointingSource != null && new Vector2(leftX, leftY).magnitude < 0.2)
                 {
@@ -173,10 +174,15 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     if (currentPointingSource == null && eventData.Position.y > 0.8 && Math.Abs(eventData.Position.x) < 0.3)
                     {
-                        if (FocusManager.Instance.TryGetPointingSource(eventData, out currentPointingSource))
+                        IFocuser focuser = null;
+                        if (FocusManager.Instance.TryGetFocuser(eventData, out focuser))
                         {
-                            currentSourceId = eventData.SourceId;
-                            StartTeleport();
+                            currentPointingSource = focuser as IPointingSource;
+                            if (currentPointingSource != null)
+                            {
+                                currentSourceId = eventData.SourceId;
+                                StartTeleport();
+                            }
                         }
                     }
                     else if (currentPointingSource != null && currentSourceId == eventData.SourceId && eventData.Position.magnitude < 0.2)
@@ -300,13 +306,11 @@ namespace HoloToolkit.Unity.InputModule
 
         private void PositionMarker()
         {
-            FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(currentPointingSource);
-
-            if (focusDetails.Target != null && (Vector3.Dot(focusDetails.Normal, Vector3.up) > 0.90f))
+            if (currentPointingSource.Result.Target != null && (Vector3.Dot(currentPointingSource.Result.Normal, Vector3.up) > 0.90f))
             {
                 isTeleportValid = true;
 
-                teleportMarker.transform.position = focusDetails.Point;
+                teleportMarker.transform.position = currentPointingSource.Result.Point;
             }
             else
             {

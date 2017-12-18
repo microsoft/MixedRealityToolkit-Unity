@@ -465,7 +465,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="focuser"></param>
         /// <param name="oldFocusedObject"></param>
         /// <param name="newFocusedObject"></param>
-        public void RaiseFocusChangedEvents(IPointingSource focuser, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void RaiseFocusChangedEvents(IFocuser focuser, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusChangedEventData.Initialize(focuser, oldFocusedObject, newFocusedObject);
             ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusChangedEventData, OnFocusChangedEventHandler);
@@ -509,17 +509,19 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputEventData, OnSourceUpEventHandler);
 
             // UI events
-            IPointingSource pointingSource;
-            FocusManager.Instance.TryGetPointingSource(inputEventData, out pointingSource);
-            PointerInputEventData pointerInputEventData = FocusManager.Instance.GetSpecificPointerEventData(pointingSource);
-            if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+            IFocuser focuser;
+            if (FocusManager.Instance.TryGetFocuser(inputEventData, out focuser))
             {
-                pointerInputEventData.InputSource = source;
-                pointerInputEventData.SourceId = sourceId;
+                PointerInputEventData pointerInputEventData = focuser.Result.UnityUIPointerData;
+                if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+                {
+                    pointerInputEventData.InputSource = source;
+                    pointerInputEventData.SourceId = sourceId;
 
-                ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
-                ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
-                pointerInputEventData.Clear();
+                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
+                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
+                    pointerInputEventData.Clear();
+                }
             }
         }
 
@@ -539,23 +541,25 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputEventData, OnSourceDownEventHandler);
 
             // UI events
-            IPointingSource pointingSource;
-            FocusManager.Instance.TryGetPointingSource(inputEventData, out pointingSource);
-            PointerInputEventData pointerInputEventData = FocusManager.Instance.GetSpecificPointerEventData(pointingSource);
-            if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+            IFocuser focuser;
+            if (FocusManager.Instance.TryGetFocuser(inputEventData, out focuser))
             {
-                pointerInputEventData.InputSource = source;
-                pointerInputEventData.SourceId = sourceId;
-                pointerInputEventData.pointerId = (int)sourceId;
+                PointerInputEventData pointerInputEventData = focuser.Result.UnityUIPointerData;
+                if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+                {
+                    pointerInputEventData.InputSource = source;
+                    pointerInputEventData.SourceId = sourceId;
+                    pointerInputEventData.pointerId = (int)sourceId;
 
-                pointerInputEventData.eligibleForClick = true;
-                pointerInputEventData.delta = Vector2.zero;
-                pointerInputEventData.dragging = false;
-                pointerInputEventData.useDragThreshold = true;
-                pointerInputEventData.pressPosition = pointerInputEventData.position;
-                pointerInputEventData.pointerPressRaycast = pointerInputEventData.pointerCurrentRaycast;
+                    pointerInputEventData.eligibleForClick = true;
+                    pointerInputEventData.delta = Vector2.zero;
+                    pointerInputEventData.dragging = false;
+                    pointerInputEventData.useDragThreshold = true;
+                    pointerInputEventData.pressPosition = pointerInputEventData.position;
+                    pointerInputEventData.pointerPressRaycast = pointerInputEventData.pointerCurrentRaycast;
 
-                ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerDownHandler);
+                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerDownHandler);
+                }
             }
         }
 

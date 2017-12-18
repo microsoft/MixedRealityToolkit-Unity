@@ -25,7 +25,7 @@ namespace HoloToolkit.Examples.ColorPicker
 
         private void UpdatePickedColor(PickedColorCallback cb)
         {
-            RaycastHit hit = GazeManager.Instance.HitInfo;
+            RaycastHit hit = GazePointer.Instance.HitInfo;
 
             if (hit.transform.gameObject != rendererComponent.gameObject) { return; }
 

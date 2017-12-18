@@ -65,10 +65,8 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(cursor.Pointer);
-
                 // Else, consider the modifiers on the cursor modifier, but don't snap
-                position = focusDetails.Point + HostTransform.TransformVector(CursorOffset);
+                position = cursor.Pointer.Result.Point + HostTransform.TransformVector(CursorOffset);
             }
 
             return position;

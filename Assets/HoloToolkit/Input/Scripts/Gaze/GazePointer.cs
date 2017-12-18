@@ -8,37 +8,11 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
+    /// Gaze handles everything related to a gaze ray that can interact with other objects.
     /// </summary>
-    public class GazeManager : Singleton<GazeManager>, IPointingSource
+    public class GazePointer : Singleton<GazePointer>, IPointingSource
     {
-        [Obsolete("Use FocusManager.PointerSpecificFocusChangedMethod")]
-        public delegate void FocusedChangedDelegate(GameObject previousObject, GameObject newObject);
-
-        /// <summary>
-        /// Indicates whether the user is currently gazing at an object.
-        /// </summary>
-        [Obsolete("Use FocusManager.TryGetFocusDetails")]
-        public bool IsGazingAtObject { get; private set; }
-
         public Cursor CursorOverride { get; set; }
-
-        /// <summary>
-        /// Dispatched when focus shifts to a new object, or focus on current object
-        /// is lost.
-        /// </summary>
-        [Obsolete("Use FocusManager.PointerSpecificFocusChanged")]
-#pragma warning disable 618
-#pragma warning disable 67
-        public event FocusedChangedDelegate FocusedObjectChanged;
-#pragma warning restore 67
-#pragma warning restore 618
-
-        /// <summary>
-        /// Unity UI pointer event.  This will be null if the EventSystem is not defined in the scene.
-        /// </summary>
-        [Obsolete("Use FocusManager.UnityUIPointerEvent")]
-        public PointerEventData UnityUIPointerEvent { get; private set; }
 
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.
@@ -114,10 +88,7 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
-        public PointerResult Result { get; set; }
-
-        [Obsolete("Will be removed in a later version. Use Rays instead.")]
-        public Ray Ray { get { return Rays[0]; } }
+        public FocusResult Result { get; set; }
 
         public RayStep[] Rays { get { return rays; } }
 
@@ -210,11 +181,6 @@ namespace HoloToolkit.Unity.InputModule
             UpdateHitPosition();
         }
 
-        [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
-        public void UpdatePointer()
-        {
-        }
-
         public virtual void OnPreRaycast()
         {
             UpdateGazeInfo();
@@ -234,21 +200,21 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Notifies this gaze manager of its new hit details.
         /// </summary>
-        /// <param name="focusDetails">Details of the current focus.</param>
+        /// <param name="result">Details of the current focus.</param>
         /// <param name="hitInfo">Details of the focus raycast hit.</param>
         /// <param name="isRegisteredForFocus">Whether or not this gaze manager is registered as a focus pointer.</param>
-        public void UpdateHitDetails(FocusDetails focusDetails, RaycastHit hitInfo, bool isRegisteredForFocus)
+        public void UpdateFocusResult(FocusResult result, RaycastHit hitInfo, bool isRegisteredForFocus)
         {
             HitInfo = hitInfo;
             HitObject = isRegisteredForFocus
-                ? focusDetails.Target
+                ? result.Target
                 : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.
 
-            if (focusDetails.Target != null)
+            if (result.Target != null)
             {
-                lastHitDistance = (focusDetails.Point - Rays[0].origin).magnitude;
+                lastHitDistance = (result.Point - Rays[0].origin).magnitude;
                 UpdateHitPosition();
-                HitNormal = focusDetails.Normal;
+                HitNormal = result.Normal;
             }
         }
 

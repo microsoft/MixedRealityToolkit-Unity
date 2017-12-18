@@ -14,4 +14,6 @@ public interface IFocuser
     bool FocusLocked { get; set; }
     
     bool OwnsInput(BaseInputEventData eventData);
+
+    FocusResult Result { get; set; }
 }

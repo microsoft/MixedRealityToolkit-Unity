@@ -138,9 +138,9 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (GazeManager.IsInitialized)
+                if (GazePointer.IsInitialized)
                 {
-                    return GazeManager.Instance.GazeOrigin;
+                    return GazePointer.Instance.GazeOrigin;
                 }
                 return CameraCache.Main.transform.position;
             }
@@ -153,9 +153,9 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                if (GazeManager.IsInitialized)
+                if (GazePointer.IsInitialized)
                 {
-                    return GazeManager.Instance.GazeNormal;
+                    return GazePointer.Instance.GazeNormal;
                 }
                 return CameraCache.Main.transform.forward;
             }
@@ -168,9 +168,9 @@ namespace HoloToolkit.Unity
         /// <returns>True if gaze is supported and an object was hit by gaze, otherwise false.</returns>
         private bool TryGetGazeHitPosition(out Vector3 hitPosition)
         {
-            if (GazeManager.IsInitialized)
+            if (GazePointer.IsInitialized)
             {
-                hitPosition = GazeManager.Instance.HitPosition;
+                hitPosition = GazePointer.Instance.HitPosition;
                 return true;
             }
             hitPosition = Vector3.zero;

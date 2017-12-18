@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.Tests
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
             inputManagerContainer.AddComponent<InputManager>();
-            inputManagerContainer.AddComponent<GazeManager>();
+            inputManagerContainer.AddComponent<GazePointer>();
             inputManagerContainer.AddComponent<FocusManager>();
             inputManagerContainer.AddComponent<EventSystem>();
 
@@ -216,7 +216,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var handler = CreateCubeTestHandler().CallInitialization();
 
-            GazeManager.Instance.gameObject.CallUpdate();
+            GazePointer.Instance.gameObject.CallUpdate();
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(handler));

@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer associated with this event.
         /// </summary>
-        public IPointingSource Focuser { get; private set; }
+        public IFocuser Focuser { get; private set; }
         public GameObject OldFocusedObject { get; private set; }
         public GameObject NewFocusedObject { get; private set; }
 
@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public void Initialize(IPointingSource focuser, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void Initialize(IFocuser focuser, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             Reset();
             Focuser = focuser;

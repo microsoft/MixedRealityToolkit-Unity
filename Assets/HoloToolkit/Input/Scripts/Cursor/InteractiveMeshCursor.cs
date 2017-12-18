@@ -138,7 +138,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // handle scale of main cursor go
-            float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
+            float distance = Vector3.Distance(GazePointer.Instance.GazeOrigin, transform.position);
             float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
             transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
         }

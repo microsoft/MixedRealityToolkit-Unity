@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity.UX
         {
             if (FocusManager.Instance != null)
             {
-                FocusManager.Instance.RegisterPointer(this);
+                FocusManager.Instance.RegisterFocuser(this);
             }
 
             selectPressed = false;
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.UX
         {
             if (FocusManager.Instance != null)
             {
-                FocusManager.Instance.UnregisterPointer(this);
+                FocusManager.Instance.UnregisterFocuser(this);
             }
 
             selectPressed = false;
@@ -77,7 +77,7 @@ namespace HoloToolkit.Unity.UX
 
         public virtual float? ExtentOverride { get { return PointerExtent; } }
 
-        public PointerResult Result { get; set; }
+        public FocusResult Result { get; set; }
 
         public InputModule.Cursor CursorOverride
         {

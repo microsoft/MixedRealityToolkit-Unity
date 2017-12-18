@@ -373,11 +373,13 @@ namespace HoloToolkit.Unity.InputModule
             currentInputSource = eventData.InputSource;
             currentInputSourceId = eventData.SourceId;
 
-            FocusDetails? details = FocusManager.Instance.TryGetFocusDetails(eventData);
+            Vector3 initialDraggingPosition = HostTransform.position;
 
-            Vector3 initialDraggingPosition = (details == null)
-                ? HostTransform.position
-                : details.Value.Point;
+            FocusResult result = null;
+            if (FocusManager.Instance.TryGetFocusResult(eventData, out result))
+            {
+                initialDraggingPosition = result.Point;
+            }
 
             StartDragging(initialDraggingPosition);
         }

@@ -242,9 +242,9 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>Placement position infront of the user</returns>
         private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
-            if (GazeManager.Instance.HitObject != null)
+            if (GazePointer.Instance.HitObject != null)
             {
-                return GazeManager.Instance.HitPosition;
+                return GazePointer.Instance.HitPosition;
             }
             return headPosition + gazeDirection * defaultGazeDistance;
         }

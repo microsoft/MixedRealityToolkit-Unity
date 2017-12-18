@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity.InputModule
 
             InputManager.AssertIsInitialized();
             FocusManager.AssertIsInitialized();
-            GazeManager.AssertIsInitialized();
+            GazePointer.AssertIsInitialized();
 
             AddInputManagerListenerIfNeeded();
             FindCursorIfNeeded();
@@ -156,14 +156,14 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentPointer != null)
                 {
-                    FocusManager.Instance.UnregisterPointer(currentPointer);
+                    FocusManager.Instance.UnregisterFocuser(currentPointer);
                 }
 
                 currentPointer = newPointer;
 
                 if (newPointer != null)
                 {
-                    FocusManager.Instance.RegisterPointer(newPointer);
+                    FocusManager.Instance.RegisterFocuser(newPointer);
                 }
 
                 if (Cursor != null)
@@ -192,7 +192,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (bestPointer == null)
             {
-                bestPointer = GazeManager.Instance;
+                bestPointer = GazePointer.Instance;
             }
 
             SetPointer(bestPointer);
@@ -228,7 +228,7 @@ namespace HoloToolkit.Unity.InputModule
                     // TODO: robertes: see if we can treat voice separately from the other simple committers,
                     //       so voice doesn't steal from a pointing controller. I think input Kind would need
                     //       to come through with the event data.
-                    SetPointer(GazeManager.Instance);
+                    SetPointer(GazePointer.Instance);
                     pointerWasChanged = true;
                 }
             }
@@ -285,7 +285,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool IsGazePointerActive
         {
-            get { return ReferenceEquals(currentPointer, GazeManager.Instance); }
+            get { return ReferenceEquals(currentPointer, GazePointer.Instance); }
         }
 
         #endregion

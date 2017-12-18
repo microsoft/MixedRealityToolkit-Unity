@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public PointerResult Result { get; set; }
+        public FocusResult Result { get; set; }
 
         public float? ExtentOverride { get; set; }
 

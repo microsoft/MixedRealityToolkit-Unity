@@ -70,7 +70,7 @@ namespace HoloToolkit.Unity.UX
                 }
                 else
                 {
-                    return Result.End.Point;
+                    return Result.Point;
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace HoloToolkit.Unity.UX
                 }
                 else
                 {
-                    return Result.End.Normal;
+                    return Result.Normal;
                 }
             }
         }
@@ -217,13 +217,13 @@ namespace HoloToolkit.Unity.UX
                 lineBase.enabled = true;
 
                 // If we hit something
-                if (Result.End.Target != null)
+                if (Result.Target != null)
                 {
                     // Check if it's in our valid layers
-                    if (((1 << Result.End.Target.layer) & validLayers.value) != 0)
+                    if (((1 << Result.Target.layer) & validLayers.value) != 0)
                     {
                         // See if it's a hot spot
-                        if (NavigationPointer.CheckForHotSpot(Result.End.Target, out targetHotSpot) && targetHotSpot.IsActive)
+                        if (NavigationPointer.CheckForHotSpot(Result.Target, out targetHotSpot) && targetHotSpot.IsActive)
                         {
                             HitResult = NavigationSurfaceResultEnum.HotSpot;
                             // Turn on gravity, point it at hotspot
@@ -234,7 +234,7 @@ namespace HoloToolkit.Unity.UX
                         {
                             // If it's NOT a hotspot, check if the hit normal is too steep 
                             // (Hotspots override dot requirements)
-                            if (Vector3.Dot(Result.End.Normal, Vector3.up) < minValidDot)
+                            if (Vector3.Dot(Result.Normal, Vector3.up) < minValidDot)
                             {
                                 HitResult = NavigationSurfaceResultEnum.Invalid;
                             }
@@ -244,7 +244,7 @@ namespace HoloToolkit.Unity.UX
                             }
                         }
                     }
-                    else if (((1 << Result.End.Target.layer) & invalidLayers) != 0)
+                    else if (((1 << Result.Target.layer) & invalidLayers) != 0)
                     {
                         HitResult = NavigationSurfaceResultEnum.Invalid;
                     }
@@ -258,9 +258,9 @@ namespace HoloToolkit.Unity.UX
                     {
                         if (i == Result.RayStepIndex)
                         {
-                            Debug.DrawLine(Result.StartPoint + Vector3.up * 0.1f, Result.End.Point + Vector3.up * 0.1f, (HitResult != NavigationSurfaceResultEnum.None) ? Color.yellow : Color.cyan);
+                            Debug.DrawLine(Result.StartPoint + Vector3.up * 0.1f, Result.Point + Vector3.up * 0.1f, (HitResult != NavigationSurfaceResultEnum.None) ? Color.yellow : Color.cyan);
                             // Only add the distance between the start point and the hit
-                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.End.Point);
+                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.Point);
                         }
                         else if (i < Result.RayStepIndex)
                         {

@@ -134,7 +134,7 @@ namespace HoloToolkit.Unity.InputModule
         private void Start()
         {
             RegisterManagers();
-            TryLoadPointerIfNeeded();
+            //TryLoadPointerIfNeeded();
         }
 
         private void Update()
@@ -150,7 +150,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (FocusManager.IsInitialized && Pointer != null)
             {
-                OnPointerSpecificFocusChanged(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
+                OnPointerSpecificFocusChanged(Pointer, null, Pointer.Result.Target);
             }
             OnCursorStateChange(CursorStateEnum.None);
         }
@@ -195,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.InputEnabled += OnInputEnabled;
             InputManager.Instance.InputDisabled += OnInputDisabled;
 
-            FocusManager.Instance.FocusChanged += OnPointerSpecificFocusChanged;
+            //FocusManager.Instance.FocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -210,13 +210,13 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
 
-            if (FocusManager.IsInitialized)
+            /*if (FocusManager.IsInitialized)
             {
                 FocusManager.Instance.FocusChanged -= OnPointerSpecificFocusChanged;
-            }
+            }*/
         }
 
-        private void TryLoadPointerIfNeeded()
+        /*private void TryLoadPointerIfNeeded()
         {
             if (Pointer != null)
             {
@@ -248,7 +248,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // No options available, so we leave Pointer unset. It will need to be set programmatically later.
             }
-        }
+        }*/
 
         /// <summary>
         /// Updates the currently targeted object and cursor modifier upon getting
@@ -285,8 +285,12 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-            FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(Pointer);
-            GameObject newTargetedObject = focusDetails.Target;
+            if (Pointer == null)
+            {
+                return;
+            }
+
+            GameObject newTargetedObject = Pointer.Result.Target;
             Vector3 lookForward = Vector3.forward;
 
             // Normalize scale on before update
@@ -316,10 +320,10 @@ namespace HoloToolkit.Unity.InputModule
                     // If no modifier is on the target, just use the hit result to set cursor position
                     // Get the look forward by using distance between pointer origin and target position
                     // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
-                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].origin, focusDetails.Point);
+                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].origin, Pointer.Result.Point);
                     lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
-                    targetPosition = focusDetails.Point + (lookForward * SurfaceCursorDistance);
-                    Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, LookRotationBlend);
+                    targetPosition = Pointer.Result.Point + (lookForward * SurfaceCursorDistance);
+                    Vector3 lookRotation = Vector3.Slerp(Pointer.Result.Normal, lookForward, LookRotationBlend);
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
                 }
             }

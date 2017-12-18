@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnSelectObject()
         {
             OnClearSelection();
-            selectedObject = GazeManager.Instance.HitObject;
+            selectedObject = GazePointer.Instance.HitObject;
             SendMessageToSelectedObject("OnSelectObject");
         }
 

@@ -25,7 +25,7 @@ namespace HoloToolkit.Examples.GazeRuler
         /// <param name="TextPrefab"></param>
         public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
         {
-            var hitPoint = GazeManager.Instance.HitPosition;
+            var hitPoint = GazePointer.Instance.HitPosition;
             var point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
             var newPoint = new Point
             {
