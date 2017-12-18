@@ -109,39 +109,30 @@ namespace HoloToolkit.Unity
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-                        if(GetComponent<ControllerFinder>() == null)
-                        {
-                            Debug.LogError("There is no component SolverControllerFinder on " + this.gameObject.name);
-                            break;
-                        }
-                        GetComponent<ControllerFinder>().Handedness = InteractionSourceHandedness.Left;
-                        GetComponent<ControllerFinder>().OnEnable();
-                        while (GetComponent<ControllerFinder>().ElementTransform == null)
+                        solverHandler.Handedness = InteractionSourceHandedness.Left;
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                        while (solverHandler.ElementTransform == null)
                         {
                             yield return null;
                         }
                         //Base transform target to Motion controller transform
-                        solverHandler.TransformTarget = this.GetComponent<ControllerFinder>().ElementTransform;
+                        solverHandler.TransformTarget = solverHandler.ElementTransform;
+#endif
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
-                        if (GetComponent<ControllerFinder>() == null)
-                        {
-                            Debug.LogError("There is no component SolverControllerFinder on " + this.gameObject.name);
-                            break;
-                        }
-                        GetComponent<ControllerFinder>().Handedness = InteractionSourceHandedness.Right;
-                        GetComponent<ControllerFinder>().OnEnable();
-                        while (!GetComponent<ControllerFinder>().ElementTransform == null)
+                        solverHandler.Handedness = InteractionSourceHandedness.Right;
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                        while (solverHandler.ElementTransform != null)
                         {
                             yield return null;
                         }
                         //Base transform target to Motion controller transform
-                        solverHandler.TransformTarget = this.GetComponent<ControllerFinder>().ElementTransform;
+                        solverHandler.TransformTarget = solverHandler.ElementTransform;
+#endif
                         break;
                 }
         }
-
 
         // SolverLink will pass transform through
         // Should be overridden in derived classes, but SolverBase can be used to flush shared transform to real transform

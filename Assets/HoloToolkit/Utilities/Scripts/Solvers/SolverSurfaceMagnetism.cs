@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
-    [RequireComponent(typeof(SolverHandler))]
 
 	/// <summary>
 	///   SurfaceMagnetism casts rays to Surfaces in the world align the object to the surface.

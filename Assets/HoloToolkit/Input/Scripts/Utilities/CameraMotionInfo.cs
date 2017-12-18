@@ -28,7 +28,6 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 headVelocity;
         private Vector3 lastHeadPos;
         private Vector3 newHeadMoveDirection;
-        private float headZoneSize = 1f;
         private Vector3 headMoveDirection = Vector3.one;
         #endregion
 

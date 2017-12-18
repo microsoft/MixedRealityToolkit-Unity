@@ -9,7 +9,10 @@ using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity
 {
-    public class SolverHandler : MonoBehaviour
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+    [RequireComponent(typeof(ControllerFinder))]
+#endif
+    public class SolverHandler : ControllerFinder
     {
         #region public enums
         public enum TrackedObjectToReferenceEnum
@@ -58,6 +61,11 @@ namespace HoloToolkit.Unity
             GoalScale = Vector3.one;
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = 0.0f;
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
         }
 
         private void Update()
