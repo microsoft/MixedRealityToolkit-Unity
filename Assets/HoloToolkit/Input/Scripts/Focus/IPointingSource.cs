@@ -23,5 +23,7 @@ namespace HoloToolkit.Unity.InputModule
         void OnPreRaycast();
 
         void OnPostRaycast();
+
+        PointerResult Result { get; set; }
     }
 }

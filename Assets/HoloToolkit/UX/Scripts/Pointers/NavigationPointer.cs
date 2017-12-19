@@ -217,13 +217,13 @@ namespace HoloToolkit.Unity.UX
                 lineBase.enabled = true;
 
                 // If we hit something
-                if (Result.Target != null)
+                if (Target != null)
                 {
                     // Check if it's in our valid layers
-                    if (((1 << Result.Target.layer) & validLayers.value) != 0)
+                    if (((1 << Target.layer) & validLayers.value) != 0)
                     {
                         // See if it's a hot spot
-                        if (NavigationPointer.CheckForHotSpot(Result.Target, out targetHotSpot) && targetHotSpot.IsActive)
+                        if (NavigationPointer.CheckForHotSpot(Target, out targetHotSpot) && targetHotSpot.IsActive)
                         {
                             HitResult = NavigationSurfaceResultEnum.HotSpot;
                             // Turn on gravity, point it at hotspot
@@ -244,7 +244,7 @@ namespace HoloToolkit.Unity.UX
                             }
                         }
                     }
-                    else if (((1 << Result.Target.layer) & invalidLayers) != 0)
+                    else if (((1 << Target.layer) & invalidLayers) != 0)
                     {
                         HitResult = NavigationSurfaceResultEnum.Invalid;
                     }

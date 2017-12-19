@@ -150,7 +150,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (FocusManager.IsInitialized && Pointer != null)
             {
-                OnPointerSpecificFocusChanged(Pointer, null, Pointer.Result.Target);
+                OnPointerSpecificFocusChanged(Pointer, null, Pointer.Target);
             }
             OnCursorStateChange(CursorStateEnum.None);
         }
@@ -290,7 +290,7 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            GameObject newTargetedObject = Pointer.Result.Target;
+            GameObject newTargetedObject = Pointer.Target;
             Vector3 lookForward = Vector3.forward;
 
             // Normalize scale on before update

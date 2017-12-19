@@ -24,10 +24,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (eventData.PressType == InteractionSourcePressInfo.Select)
             {
-                FocusResult result = null;
-                if (FocusManager.Instance.TryGetFocusResult(eventData, out result))
+                IFocuser focuser = null;
+                if (FocusManager.Instance.TryGetFocuser(eventData, out focuser) && focuser is IPointingSource)
                 {
-                    particles.transform.position = result.Point;
+                    IPointingSource pointer = focuser as IPointingSource;
+                    particles.transform.position = pointer.Result.Point;
                     particles.Emit(60);
 
                     eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.

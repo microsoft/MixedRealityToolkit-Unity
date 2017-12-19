@@ -306,7 +306,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void PositionMarker()
         {
-            if (currentPointingSource.Result.Target != null && (Vector3.Dot(currentPointingSource.Result.Normal, Vector3.up) > 0.90f))
+            if (currentPointingSource.Target != null && (Vector3.Dot(currentPointingSource.Result.Normal, Vector3.up) > 0.90f))
             {
                 isTeleportValid = true;
 

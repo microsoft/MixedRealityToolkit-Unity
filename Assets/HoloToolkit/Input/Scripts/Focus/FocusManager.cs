@@ -47,6 +47,8 @@ namespace HoloToolkit.Unity.InputModule
                     RegisterFocuser(pointingSource);
                 }
             }
+
+            pointerInputEventData = new PointerInputEventData(EventSystem.current);
         }
 
         private void Start()
@@ -180,6 +182,13 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
+            // If this is a pointer, initialize the pointer data here
+            if (focuser is IPointingSource)
+            {
+                IPointingSource pointingSource = focuser as IPointingSource;
+                pointingSource.Result = new PointerResult(pointingSource);
+            }
+
             /*if (pointingSource is Gaze)
             {
                 if (gazeManagerPointingData == null)
@@ -222,28 +231,12 @@ namespace HoloToolkit.Unity.InputModule
 
             // Raise focus events if needed:
 
-            if (focuser.Result.Target != null)
+            if (focuser.Target != null)
             {
-                RaiseFocusExitedEvents(new InputManager.FocusEvent(focuser, focuser.Result.Target));
+                RaiseFocusExitedEvents(new InputManager.FocusEvent(focuser, focuser.Target));
 
-                RaiseFocusChangedEvents(focuser, focuser.Result.Target, null);
+                RaiseFocusChangedEvents(focuser, focuser.Target, null);
             }
-        }
-
-        public bool TryGetFocusResult(BaseInputEventData eventData, out FocusResult result)
-        {
-            result = null;
-
-            for (int i = 0; i < focusers.Count; i++)
-            {
-                if (focusers[i].OwnsInput(eventData))
-                {
-                    result = focusers[i].Result;
-                    break;
-                }
-            }
-
-            return result != null;
         }
 
         public bool TryGetFocuser(BaseInputEventData eventData, out IFocuser focuser)
@@ -264,6 +257,8 @@ namespace HoloToolkit.Unity.InputModule
         public delegate void FocusMethodInfo(InputManager.FocusEvent focusedObject);
         public event FocusMethodInfo FocusEnteredInfo;
         public event FocusMethodInfo FocusExitedInfo;
+
+        private PointerInputEventData pointerInputEventData;
 
         /// <summary>
         /// Called when a focus target without focus gains focus from one or more focusers
@@ -288,13 +283,6 @@ namespace HoloToolkit.Unity.InputModule
             }*/
             return null;
         }
-
-        /*public PointerInputEventData GetSpecificFocuserEventData(IFocuser focuser)
-        {
-            return focuser.Result.UnityUIPointerData;
-            PointerData pointerEventData;
-            return GetPointerData(pointer, out pointerEventData) ? pointerEventData.UnityUIPointerData : null;
-        }*/
 
         public float GetPointingExtent(IPointingSource pointingSource)
         {
@@ -494,7 +482,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.Result.Target == null || overridePhysicsRaycast) && uiRaycastResult.isValid && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.Target == null || overridePhysicsRaycast) && uiRaycastResult.isValid && uiRaycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
@@ -519,18 +507,18 @@ namespace HoloToolkit.Unity.InputModule
             UIRaycastCamera.transform.forward = step.direction;
 
             // We always raycast from the center of the camera.
-            pointer.Result.UnityUIPointerData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
+            pointerInputEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
-            uiRaycastResult = EventSystem.current.Raycast(pointer.Result.UnityUIPointerData, prioritizedLayerMasks);
-            pointer.Result.UnityUIPointerData.pointerCurrentRaycast = uiRaycastResult;
+            uiRaycastResult = EventSystem.current.Raycast(pointerInputEventData, prioritizedLayerMasks);
+            pointerInputEventData.pointerCurrentRaycast = uiRaycastResult;
 
             overridePhysicsRaycast = false;
 
             // If we have a raycast result, check if we need to overwrite the physics raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                if (pointer.Result.Target != null)
+                if (pointer.Target != null)
                 {
                     // Check layer prioritization
                     if (prioritizedLayerMasks.Length > 1)
@@ -590,10 +578,10 @@ namespace HoloToolkit.Unity.InputModule
                 IFocuser focuser = focusers[iFocuser];
 
                 // Check for an active focus target
-                if (focuser.Result.Target != null)
+                if (focuser.Target != null)
                 {
                     IFocusTarget focusTarget = null;
-                    if (GetFocusTargetFromGameObject(focuser.Result.Target, out focusTarget))
+                    if (GetFocusTargetFromGameObject(focuser.Target, out focusTarget))
                     {
                         // Add this to our current focus targets regardless of whether focus is enabled
                         currentFocusTargets.Add(focusTarget);
@@ -605,19 +593,19 @@ namespace HoloToolkit.Unity.InputModule
                     }
                 }
 
-                if (focuser.Result.PreviousTarget != focuser.Result.Target)
+                if (focuser.PreviousTarget != focuser.Target)
                 {                    
                     // Initially, we assume all pointer-specific focus changes will result
                     // also result in an overall focus change...
 
-                    if (focuser.Result.PreviousTarget != null)
+                    if (focuser.PreviousTarget != null)
                     {
-                        pendingFocusExitSet.Add(new InputManager.FocusEvent(focuser, focuser.Result.PreviousTarget));
+                        pendingFocusExitSet.Add(new InputManager.FocusEvent(focuser, focuser.PreviousTarget));
                     }
 
-                    if (focuser.Result.Target != null)
+                    if (focuser.Target != null)
                     {
-                        pendingFocusEnterSet.Add(new InputManager.FocusEvent(focuser, focuser.Result.Target));
+                        pendingFocusEnterSet.Add(new InputManager.FocusEvent(focuser, focuser.Target));
 
                     }
                 }

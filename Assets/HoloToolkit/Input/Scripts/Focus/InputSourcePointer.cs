@@ -34,7 +34,11 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public FocusResult Result { get; set; }
+        public PointerResult Result { get; set; }
+
+        public GameObject Target { get; set; }
+
+        public GameObject PreviousTarget { get; set; }
 
         public float? ExtentOverride { get; set; }
 

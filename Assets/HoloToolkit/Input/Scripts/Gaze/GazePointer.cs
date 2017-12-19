@@ -88,7 +88,12 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
-        public FocusResult Result { get; set; }
+
+        public PointerResult Result { get; set; }
+
+        public GameObject Target { get; set; }
+
+        public GameObject PreviousTarget { get; set; }
 
         public RayStep[] Rays { get { return rays; } }
 
@@ -117,7 +122,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             base.Awake();
 
-            Result = new FocusResult();
+            Result = new PointerResult();
 
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
@@ -206,14 +211,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="result">Details of the current focus.</param>
         /// <param name="hitInfo">Details of the focus raycast hit.</param>
         /// <param name="isRegisteredForFocus">Whether or not this gaze manager is registered as a focus pointer.</param>
-        public void UpdateFocusResult(FocusResult result, RaycastHit hitInfo, bool isRegisteredForFocus)
+        public void UpdateFocusResult(PointerResult result, RaycastHit hitInfo, bool isRegisteredForFocus)
         {
             HitInfo = hitInfo;
             HitObject = isRegisteredForFocus
-                ? result.Target
+                ? result.PointingSource.Target
                 : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.
 
-            if (result.Target != null)
+            if (result.PointingSource.Target != null)
             {
                 lastHitDistance = (result.Point - Rays[0].origin).magnitude;
                 UpdateHitPosition();

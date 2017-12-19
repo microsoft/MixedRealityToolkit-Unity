@@ -77,7 +77,11 @@ namespace HoloToolkit.Unity.UX
 
         public virtual float? ExtentOverride { get { return PointerExtent; } }
 
-        public FocusResult Result { get; set; }
+        public GameObject Target { get; set; }
+
+        public GameObject PreviousTarget { get; set; }
+
+        public PointerResult Result { get; set; }
 
         public InputModule.Cursor CursorOverride
         {

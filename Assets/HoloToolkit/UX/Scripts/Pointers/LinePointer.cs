@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity.UX
                 }
 
                 // If we hit something
-                if (Result.Target != null)
+                if (Target != null)
                 {
                     // Use the step index to determine the length of the hit
                     for (int i = 0; i <= Result.RayStepIndex; i++)
@@ -128,7 +128,7 @@ namespace HoloToolkit.Unity.UX
                     // Clamp the end of the parabola to the result hit's point
                     lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, lineCastResolution);
 
-                    if (FocusManager.GetFocusTargetFromGameObject (Result.Target, out focusTarget))
+                    if (FocusManager.GetFocusTargetFromGameObject (Target, out focusTarget))
                     {
                         lineColor = lineColorValid;
                     }
@@ -136,7 +136,7 @@ namespace HoloToolkit.Unity.UX
                     if (FocusLocked)
                     {
                         distorterGravity.enabled = true;
-                        distorterGravity.WorldCenterOfGravity = Result.Target.transform.position;
+                        distorterGravity.WorldCenterOfGravity = Target.transform.position;
                     }
                 }
                 else

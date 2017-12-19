@@ -7,41 +7,38 @@ using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
+    /// <summary>
+    /// Class used to store pointing source data
+    /// Handled by FocusManager
+    /// </summary>
     [Serializable]
-    public class FocusResult
+    public struct PointerResult
     {
-        public IPointingSource PointingSource { get; protected set; }
+        public PointerResult (IPointingSource pointingSource)
+        {
+            PointingSource = pointingSource;
+            StartPoint = Vector3.zero;
+            Point = Vector3.zero;
+            Normal = Vector3.forward;
+            LastRaycastHit = default(RaycastHit);
+            RayStepIndex = 0;
+        }
 
-        public Vector3 StartPoint { get; protected set; }
+        public IPointingSource PointingSource { get; private set; }
 
-        public Vector3 Point { get; protected set; }
+        public Vector3 StartPoint { get; private set; }
 
-        public Vector3 Normal { get; protected set; }
+        public Vector3 Point { get; private set; }
 
-        public GameObject Target { get; protected set; }
+        public Vector3 Normal { get; private set; }
         
-        public GameObject PreviousTarget { get; protected set; }
-        
-        public RaycastHit LastRaycastHit { get; protected set; }
+        public RaycastHit LastRaycastHit { get; private set; }
 
         /// <summary>
         /// The index of the step that produced the last raycast hit
         /// 0 when no raycast hit
         /// </summary>
-        public int RayStepIndex { get; protected set; }
-
-        public PointerInputEventData UnityUIPointerData
-        {
-            get
-            {
-                if (pointerData == null)
-                {
-                    pointerData = new PointerInputEventData(EventSystem.current);
-                }
-
-                return pointerData;
-            }
-        }
+        public int RayStepIndex { get; private set; }
 
         public void Initialize (IPointingSource pointingSource)
         {
@@ -56,13 +53,15 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="rayStepIndex"></param>
         public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
         {
+            Debug.Assert(PointingSource != null);
+
             LastRaycastHit = hit;
-            PreviousTarget = Target;
+            PointingSource.PreviousTarget = PointingSource.Target;
             RayStepIndex = rayStepIndex;
             StartPoint = sourceRay.origin;
             Point = hit.point;
             Normal = hit.normal;
-            Target = hit.transform.gameObject;
+            PointingSource.Target = hit.transform.gameObject;
         }
 
         /// <summary>
@@ -74,6 +73,8 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="rayStepIndex"></param>
         public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
         {
+            Debug.Assert(PointingSource != null);
+
             // We do not update the PreviousEndObject here because
             // it's already been updated in the first physics raycast.
 
@@ -81,7 +82,7 @@ namespace HoloToolkit.Unity.InputModule
             StartPoint = sourceRay.origin;
             Point = hit.point;
             Normal = hit.normal;
-            Target = result.gameObject;
+            PointingSource.Target = result.gameObject;
         }
 
         /// <summary>
@@ -90,7 +91,9 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="extent"></param>
         public void UpdateHit(float extent)
         {
-            PreviousTarget = Target;
+            Debug.Assert(PointingSource != null);
+
+            PointingSource.PreviousTarget = PointingSource.Target;
 
             RayStep firstStep = PointingSource.Rays[0];
             RayStep finalStep = PointingSource.Rays[PointingSource.Rays.Length - 1];
@@ -99,7 +102,7 @@ namespace HoloToolkit.Unity.InputModule
             StartPoint = firstStep.origin;
             Point = finalStep.terminus;
             Normal = (-finalStep.direction);
-            Target = null;
+            PointingSource.Target = null;
         }
 
         /// <summary>
@@ -108,14 +111,14 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="clearPreviousObject"></param>
         public void ResetFocusedObjects(bool clearPreviousObject = true)
         {
+            Debug.Assert(PointingSource != null);
+
             if (clearPreviousObject)
             {
-                PreviousTarget = null;
+                PointingSource.PreviousTarget = null;
             }
 
-            Target = null;
+            PointingSource.Target = null;
         }
-
-        private PointerInputEventData pointerData;
     }
 }

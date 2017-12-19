@@ -51,6 +51,7 @@ namespace HoloToolkit.Unity.InputModule
         private FocusChangedEventData focusChangedEventData;
         private InputPositionEventData inputPositionEventData;
         private SelectPressedEventData selectPressedEventData;
+        private PointerInputEventData pointerInputEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
@@ -266,6 +267,7 @@ namespace HoloToolkit.Unity.InputModule
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             gamePadEventData = new GamePadEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
+            pointerInputEventData = new PointerInputEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
@@ -539,9 +541,9 @@ namespace HoloToolkit.Unity.InputModule
             IFocuser focuser;
             if (FocusManager.Instance.TryGetFocuser(inputEventData, out focuser))
             {
-                PointerInputEventData pointerInputEventData = focuser.Result.UnityUIPointerData;
-                if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+                if (pressType == InteractionSourcePressInfo.Select)
                 {
+                    pointerInputEventData.Reset();
                     pointerInputEventData.InputSource = source;
                     pointerInputEventData.SourceId = sourceId;
 
@@ -571,9 +573,9 @@ namespace HoloToolkit.Unity.InputModule
             IFocuser focuser;
             if (FocusManager.Instance.TryGetFocuser(inputEventData, out focuser))
             {
-                PointerInputEventData pointerInputEventData = focuser.Result.UnityUIPointerData;
-                if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+                if (pressType == InteractionSourcePressInfo.Select)
                 {
+                    pointerInputEventData.Reset();
                     pointerInputEventData.InputSource = source;
                     pointerInputEventData.SourceId = sourceId;
                     pointerInputEventData.pointerId = (int)sourceId;

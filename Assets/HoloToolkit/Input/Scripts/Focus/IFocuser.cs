@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using HoloToolkit.Unity.InputModule;
+using UnityEngine;
 
 /// <summary>
 /// Implement this to register your object as a focuser
@@ -15,5 +16,7 @@ public interface IFocuser
     
     bool OwnsInput(BaseInputEventData eventData);
 
-    FocusResult Result { get; set; }
+    GameObject Target { get; set; }
+
+    GameObject PreviousTarget { get; set; }
 }

@@ -375,10 +375,14 @@ namespace HoloToolkit.Unity.InputModule
 
             Vector3 initialDraggingPosition = HostTransform.position;
 
-            FocusResult result = null;
-            if (FocusManager.Instance.TryGetFocusResult(eventData, out result))
+            IFocuser focuser = null;
+            if (FocusManager.Instance.TryGetFocuser(eventData, out focuser))
             {
-                initialDraggingPosition = result.Point;
+                IPointingSource pointer = focuser as IPointingSource;
+                if (pointer != null)
+                {
+                    initialDraggingPosition = pointer.Result.Point;
+                }
             }
 
             StartDragging(initialDraggingPosition);
