@@ -51,9 +51,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-            bool spawnControllers = false;
-
-            spawnControllers = Application.isEditor && simulateHandsInEditor;
+            bool spawnControllers = Application.isEditor && simulateHandsInEditor;
 
             if (spawnControllers)
             {
