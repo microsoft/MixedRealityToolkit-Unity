@@ -251,16 +251,12 @@ namespace HoloToolkit.Unity
             if (string.IsNullOrEmpty(texturePath)) { return string.Empty; }
 
             var iconSize = GetUWPImageTypeSize(type, scale);
+
             if (iconSize == Vector2.zero) { return string.Empty; }
 
             if (iconSize.x == 1240 && iconSize.y == 1240 || iconSize.x == 2480 && iconSize.y == 1200) { return texturePath; }
 
             string filePath = string.Format("{0}/{1}_AppIcon_{2}x{3}.png", _outputDirectoryName, Application.productName, iconSize.x, iconSize.y);
-            if (iconSize.y == 3200)
-            {
-                Debug.LogWarning(type.ToString() + "Scale: " + scale);
-            }
-
             filePath = filePath.Replace(Application.dataPath, "Assets");
 
             if (File.Exists(filePath))
