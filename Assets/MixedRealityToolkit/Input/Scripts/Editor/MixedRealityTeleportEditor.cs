@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     [CustomEditor(typeof(MixedRealityTeleport))]
     public class MixedRealityTeleportEditor : Editor

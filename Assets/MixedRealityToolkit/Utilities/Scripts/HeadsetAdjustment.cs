@@ -3,9 +3,9 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using MixedRealityToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandler
     {

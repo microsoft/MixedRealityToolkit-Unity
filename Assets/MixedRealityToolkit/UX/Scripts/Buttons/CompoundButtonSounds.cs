@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// A convenient way to play sounds in response to button actions / states

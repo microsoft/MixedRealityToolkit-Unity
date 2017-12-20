@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Extensions methods for the Unity Component class.

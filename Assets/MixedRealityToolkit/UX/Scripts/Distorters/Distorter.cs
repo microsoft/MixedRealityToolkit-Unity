@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.UX
+namespace MixedRealityToolkit.UX
 {
     public abstract class Distorter : MonoBehaviour, IComparable<Distorter>
     {

@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Currently active AudioEvents along with their AudioSource components for instance limiting events

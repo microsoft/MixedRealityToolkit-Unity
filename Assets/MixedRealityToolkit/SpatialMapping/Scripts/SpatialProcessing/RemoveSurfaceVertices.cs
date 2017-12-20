@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// RemoveSurfaceVertices will remove any vertices from the Spatial Mapping Mesh that fall within the bounding volume.

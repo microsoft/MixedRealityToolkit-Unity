@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Cursor Interface for handling input events and setting visibility.

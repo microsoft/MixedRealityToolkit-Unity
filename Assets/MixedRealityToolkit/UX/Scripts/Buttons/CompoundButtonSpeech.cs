@@ -3,10 +3,10 @@
 
 using UnityEngine;
 using UnityEngine.Windows.Speech;
-using MixedRealityToolkit.Unity.InputModule;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// This class will automatically link buttons to speech keywords

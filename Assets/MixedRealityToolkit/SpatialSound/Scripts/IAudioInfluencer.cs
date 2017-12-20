@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Interface that is implemented by any class that wishes to influence how an audio source sounds.

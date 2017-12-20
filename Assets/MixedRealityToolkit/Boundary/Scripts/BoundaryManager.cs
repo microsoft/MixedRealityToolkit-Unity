@@ -9,7 +9,7 @@ using UnityEngine.XR;
 using UnityEngine.XR.WSA;
 #endif
 
-namespace MixedRealityToolkit.Unity.Boundary
+namespace MixedRealityToolkit.Boundary
 {
     /// <summary>
     /// Places a floor quad to ground the scene.

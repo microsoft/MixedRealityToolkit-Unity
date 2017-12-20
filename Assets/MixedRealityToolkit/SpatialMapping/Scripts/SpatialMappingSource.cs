@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     public class SpatialMappingSource : MonoBehaviour
     {

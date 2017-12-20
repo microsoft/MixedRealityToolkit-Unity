@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Examples
+namespace MixedRealityToolkit.Examples
 {
     public class MicrophoneHelperSample : MonoBehaviour
     {

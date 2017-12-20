@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// A cursor that looks and acts more like the shell cursor.

@@ -10,7 +10,7 @@ using UnityEngine.XR;
 using UnityEngine.VR;
 #endif
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// This class is used to select input for the Editor and applications built outside of the UWP build target.

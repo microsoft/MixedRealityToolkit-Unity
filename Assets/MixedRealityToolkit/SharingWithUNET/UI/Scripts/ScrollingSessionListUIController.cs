@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-namespace MixedRealityToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// Controls a scrollable list of sessions.

@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// Editor extension class to enable multi-selection of the 'Draw Planes' and 'Destroy Planes' options in the Inspector.

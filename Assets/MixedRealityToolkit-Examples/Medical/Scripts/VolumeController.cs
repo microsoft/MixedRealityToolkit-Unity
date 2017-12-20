@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Configures volume variables in shader

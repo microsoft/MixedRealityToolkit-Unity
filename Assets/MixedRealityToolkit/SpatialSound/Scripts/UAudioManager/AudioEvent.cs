@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// The different rules for how audio should be played back.

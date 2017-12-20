@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Interface to implement to react to focus enter/exit.

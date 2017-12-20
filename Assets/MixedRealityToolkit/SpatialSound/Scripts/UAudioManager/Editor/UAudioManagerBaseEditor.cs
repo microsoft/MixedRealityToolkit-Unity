@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public class UAudioManagerBaseEditor<TEvent, TBank> : Editor where TEvent : AudioEvent, new() where TBank : AudioBank<TEvent>, new()
     {

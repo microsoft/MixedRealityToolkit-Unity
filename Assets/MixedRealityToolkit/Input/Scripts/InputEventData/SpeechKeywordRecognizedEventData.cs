@@ -4,7 +4,7 @@
 using System;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Describes an input event that involves keyword recognition.

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// Controls little bullets fired into the world.

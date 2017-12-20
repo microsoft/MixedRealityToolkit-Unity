@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
 #if UNITY_EDITOR
     /// <summary>

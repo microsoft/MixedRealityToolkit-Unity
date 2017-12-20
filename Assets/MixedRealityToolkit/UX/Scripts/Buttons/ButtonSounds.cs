@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// A convenient way to play sounds in response to button actions / states

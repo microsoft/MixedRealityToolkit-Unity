@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     [RequireComponent(typeof(CompoundButton))]
     public class CompoundButtonText : ProfileButtonBase<ButtonTextProfile>

@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Displays a prop as editable in the inspector
     [AttributeUsage(AttributeTargets.Property)]

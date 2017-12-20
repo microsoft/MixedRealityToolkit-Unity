@@ -5,7 +5,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Capability Settings.

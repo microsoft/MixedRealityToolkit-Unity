@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using MixedRealityToolkit.Unity.SpatialMapping;
+using MixedRealityToolkit.SpatialMapping;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Provides the input meshes to the spatial understanding DLL.

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// This type of grab uses a parent child relationship and also immediately orients the child's forward to the parent's forward position

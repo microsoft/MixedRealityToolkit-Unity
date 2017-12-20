@@ -11,7 +11,7 @@ using Windows.Networking;
 using Windows.Foundation;
 #endif
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// RemoteMeshSource will try to send meshes from the HoloLens to a remote system that is running the Unity editor.

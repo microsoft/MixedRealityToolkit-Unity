@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using UnityEngine;
-using MixedRealityToolkit.Unity.UX;
+using MixedRealityToolkit.UX;
 #if UNITY_EDITOR
 using UnityEditor;
 

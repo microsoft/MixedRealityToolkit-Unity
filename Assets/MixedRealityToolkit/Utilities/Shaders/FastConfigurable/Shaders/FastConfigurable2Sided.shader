@@ -169,6 +169,6 @@ Shader "MixedRealityToolkit/Fast Configurable 2 Sided"
         }
     } 
 
-	CustomEditor "MixedRealityToolkit.Unity.FastConfigurable2SidedGUI"
+	CustomEditor "MixedRealityToolkit.FastConfigurable2SidedGUI"
     Fallback "VertexLit" //for shadows
 }

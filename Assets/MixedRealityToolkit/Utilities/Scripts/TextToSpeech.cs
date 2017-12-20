@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// The well-known voices that can be used by <see cref="TextToSpeech"/>.

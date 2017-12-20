@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using UnityEngine;
 
 namespace MixedRealityToolkit.Sharing.Tests

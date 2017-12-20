@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Defines the controller mapping for the input source.

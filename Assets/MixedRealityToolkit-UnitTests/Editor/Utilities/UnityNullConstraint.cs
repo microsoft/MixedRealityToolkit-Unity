@@ -4,7 +4,7 @@
 using NUnit.Framework.Constraints;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests
 {
     /// <summary>
     /// Extend Is to add UnityNull as static property

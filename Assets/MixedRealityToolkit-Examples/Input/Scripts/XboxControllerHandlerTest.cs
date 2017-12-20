@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.InputModule.Tests
 {
     public class XboxControllerHandlerTest : XboxControllerHandlerBase
     {

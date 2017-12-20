@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Adds a 'default' button to a color gradient that will supply default color values
     [AttributeUsage(AttributeTargets.Field)]

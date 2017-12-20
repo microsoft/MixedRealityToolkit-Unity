@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     [RequireComponent(typeof(RemoteMeshTarget))]
     public partial class RemoteMappingManager : Singleton<RemoteMappingManager>

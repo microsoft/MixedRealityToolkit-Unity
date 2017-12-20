@@ -4,9 +4,9 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using MixedRealityToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// Base class for buttons.

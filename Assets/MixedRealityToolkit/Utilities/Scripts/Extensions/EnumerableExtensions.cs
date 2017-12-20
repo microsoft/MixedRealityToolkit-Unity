@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public static class EnumerableExtensions
     {

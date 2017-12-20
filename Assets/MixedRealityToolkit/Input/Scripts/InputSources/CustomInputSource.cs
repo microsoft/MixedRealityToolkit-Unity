@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Input source for fake input source information, which gives details about current source state and position.

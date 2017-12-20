@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.InputModule.Tests
 {
     /// <summary>
     /// Test MonoBehaviour that simply prints out a message very time a supported event is received from the input module.

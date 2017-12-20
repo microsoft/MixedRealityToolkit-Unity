@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;

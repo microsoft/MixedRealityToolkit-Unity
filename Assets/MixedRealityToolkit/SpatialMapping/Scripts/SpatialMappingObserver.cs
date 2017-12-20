@@ -13,7 +13,7 @@ using UnityEngine.VR.WSA;
 #endif
 #endif
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// Spatial Mapping Observer states.

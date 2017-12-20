@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.Unity.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.InputModule.Examples.Grabbables
 {
     /// <summary>
     /// Intended usage: scripts that inherit from this can be attached to the controller, or any object with a collider 

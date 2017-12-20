@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.UX
+namespace MixedRealityToolkit.UX
 {
     [ExecuteInEditMode]
     public class LineObjectFollower : MonoBehaviour

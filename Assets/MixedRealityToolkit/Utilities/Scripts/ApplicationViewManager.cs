@@ -11,7 +11,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 #endif
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public delegate void ReturnValueCallback<TReturnValue>(TReturnValue returnValue);
 

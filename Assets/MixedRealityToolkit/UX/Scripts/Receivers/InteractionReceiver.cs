@@ -4,9 +4,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using MixedRealityToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule;
 
-namespace MixedRealityToolkit.Unity.Receivers
+namespace MixedRealityToolkit.Receivers
 {
     /// <summary>
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something

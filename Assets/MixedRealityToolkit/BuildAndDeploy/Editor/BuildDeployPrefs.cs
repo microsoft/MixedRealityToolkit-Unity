@@ -4,7 +4,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public static class BuildDeployPrefs
     {

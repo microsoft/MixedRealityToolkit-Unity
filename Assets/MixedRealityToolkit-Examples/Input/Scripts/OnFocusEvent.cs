@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MixedRealityToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.InputModule.Tests
 {
     public class OnFocusEvent : MonoBehaviour, IFocusable
     {

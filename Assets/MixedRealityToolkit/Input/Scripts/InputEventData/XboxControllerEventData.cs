@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     public class XboxControllerEventData : SourceStateEventData
     {

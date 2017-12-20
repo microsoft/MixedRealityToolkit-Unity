@@ -92,5 +92,5 @@ Shader "MixedRealityToolkit/EditorHands"
         ENDCG
         }
     }
-    CustomEditor "MixedRealityToolkit.Unity.EditorHandsMaterialInspector"
+    CustomEditor "MixedRealityToolkit.EditorHandsMaterialInspector"
 }

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Boundary.Tests
+namespace MixedRealityToolkit.Boundary.Tests
 {
     public class BoundaryTest : MonoBehaviour
     {

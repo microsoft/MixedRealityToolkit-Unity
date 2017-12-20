@@ -4,7 +4,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
 #if UNITY_WSA && !UNITY_EDITOR
 using System.Collections.Generic;

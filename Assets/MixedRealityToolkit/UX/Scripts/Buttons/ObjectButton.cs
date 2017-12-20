@@ -4,9 +4,9 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// Prefab button has a set of prefabs of linked objects created or linked to the different states.  Simply reference

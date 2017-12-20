@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.

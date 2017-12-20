@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Class implementing IPointingSource to demonstrate how to create a pointing source.

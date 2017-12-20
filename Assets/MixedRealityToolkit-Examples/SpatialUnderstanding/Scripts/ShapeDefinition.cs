@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
@@ -76,8 +76,8 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 return false;
             }
-            IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : MixedRealityToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
-            IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : MixedRealityToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
+            IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : MixedRealityToolkit.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
+            IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : MixedRealityToolkit.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
             if (SpatialUnderstandingDllShapes.AddShape(
                     shapeName,
                     (shapeComponents == null) ? 0 : shapeComponents.Count,

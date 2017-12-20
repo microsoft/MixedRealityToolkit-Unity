@@ -12,7 +12,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 #endif
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// MeshSaver is a static class containing methods used for saving and loading meshes.

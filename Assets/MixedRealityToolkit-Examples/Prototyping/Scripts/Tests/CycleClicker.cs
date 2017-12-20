@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
-using MixedRealityToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.Examples.Prototyping;
 
 namespace MixedRealityToolkit.Examples.InteractiveElements

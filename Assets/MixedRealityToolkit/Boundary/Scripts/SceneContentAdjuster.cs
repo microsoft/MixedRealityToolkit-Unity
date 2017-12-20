@@ -10,7 +10,7 @@ using UnityEngine.XR;
 using UnityEngine.VR;
 #endif
 
-namespace MixedRealityToolkit.Unity.Boundary
+namespace MixedRealityToolkit.Boundary
 {
     /// <summary>
     /// Use this script on GameObjects you wish to be aligned in certain ways depending on the application space type.

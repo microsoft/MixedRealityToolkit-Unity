@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Base class for custom drawing without property drawers - prevents the MRTKEditor from drawing a default property, supplies an alternative
     public abstract class DrawOverrideAttribute : Attribute

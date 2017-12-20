@@ -11,7 +11,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Show a hand guidance indicator when the user's hand is close to leaving the camera's view.

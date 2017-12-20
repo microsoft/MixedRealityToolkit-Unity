@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Collections
+namespace MixedRealityToolkit.Collections
 {
     /// <summary>
     /// A utility that stores transform information for objects in a collection

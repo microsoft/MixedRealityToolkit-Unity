@@ -3,7 +3,7 @@
 
 
 
-namespace MixedRealityToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// This script exists as a stub to allow other scripts to find 

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using System;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;

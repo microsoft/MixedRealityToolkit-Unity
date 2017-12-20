@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using System;
 
 namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview

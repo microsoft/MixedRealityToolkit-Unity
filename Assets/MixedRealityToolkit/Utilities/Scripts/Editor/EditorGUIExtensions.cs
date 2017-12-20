@@ -6,7 +6,7 @@ using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Extensions for the UnityEnditor.EditorGUI class.

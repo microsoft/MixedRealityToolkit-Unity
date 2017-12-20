@@ -5,7 +5,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     [CustomEditor(typeof(XboxControllerInputSource))]
     public class XboxControllerInputSourceEditor : Editor

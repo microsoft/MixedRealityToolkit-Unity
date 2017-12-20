@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Displays a text property as a text area
     [AttributeUsage(AttributeTargets.Property)]

@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Interface to implement to react to source state changes, such as when an input source is detected or lost.

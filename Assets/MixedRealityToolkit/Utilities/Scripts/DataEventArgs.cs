@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public static class DataEventArgs
     {

@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Shows / hides based on enum value of a named member
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

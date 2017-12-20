@@ -14,12 +14,12 @@ using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 #endif
 #if !UNITY_EDITOR
-using MixedRealityToolkit.Unity.SpatialMapping;
+using MixedRealityToolkit.SpatialMapping;
 #endif
 #endif
 
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Wrapper around world anchor store to streamline some of the persistence API busy work.

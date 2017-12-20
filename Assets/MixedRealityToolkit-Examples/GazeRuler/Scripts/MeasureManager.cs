@@ -3,10 +3,10 @@
 
 using UnityEngine;
 using System.Collections;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using System.Collections.Generic;
 using System;
-using MixedRealityToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule;
 
 namespace MixedRealityToolkit.Examples.GazeRuler
 {

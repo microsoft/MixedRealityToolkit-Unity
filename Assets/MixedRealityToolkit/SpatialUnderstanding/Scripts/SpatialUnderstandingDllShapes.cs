@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Collections.Generic;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Encapsulates the shape detection queries of the understanding DLL.

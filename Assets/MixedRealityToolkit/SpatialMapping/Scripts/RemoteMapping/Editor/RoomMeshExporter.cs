@@ -3,9 +3,9 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using MixedRealityToolkit.Unity.SpatialMapping;
+using MixedRealityToolkit.SpatialMapping;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public static class RoomMeshExporter
     {

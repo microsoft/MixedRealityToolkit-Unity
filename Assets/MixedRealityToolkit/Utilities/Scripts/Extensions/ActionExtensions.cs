@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Extensions for the action class.

@@ -4,7 +4,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.InputModule.Tests
 {
     public class ButtonTimedWaiter : MonoBehaviour
     {

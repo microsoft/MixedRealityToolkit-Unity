@@ -4,7 +4,7 @@
 using UnityEngine;
 using System;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// Anim controller button offers as simple way to link button states to animation controller parameters

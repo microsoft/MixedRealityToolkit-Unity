@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System;

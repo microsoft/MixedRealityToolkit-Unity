@@ -6,7 +6,7 @@ using System.Linq;
 using System.IO;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Processes a folder of "stacked" images representing 2D slices of a 3D volume and 

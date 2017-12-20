@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Displays a drop-down menu of GameObjects that are limited to the target object
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

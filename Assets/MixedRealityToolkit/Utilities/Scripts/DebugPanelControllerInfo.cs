@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public class DebugPanelControllerInfo : MonoBehaviour
     {

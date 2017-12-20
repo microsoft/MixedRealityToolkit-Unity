@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// SpeechInputSource allows you to specify keywords and methods in the Unity

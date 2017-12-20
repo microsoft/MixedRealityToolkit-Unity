@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
 namespace MixedRealityToolkit.Examples.Prototyping
 {

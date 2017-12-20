@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Encapsulate a single Unity AudioClip with playback settings.

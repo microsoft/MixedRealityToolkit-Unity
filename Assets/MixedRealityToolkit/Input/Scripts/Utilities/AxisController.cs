@@ -4,7 +4,7 @@
 using UnityEngine;
 using System;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// AxisController uses the keyboard, mouse, or joystick and allows

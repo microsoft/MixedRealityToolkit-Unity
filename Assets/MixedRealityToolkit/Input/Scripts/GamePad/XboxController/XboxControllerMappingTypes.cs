@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Xbox Controller axis and button types.

@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Helper class for custom shader editors

@@ -5,7 +5,7 @@ using System;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests
 {
     public class VectorExtensionsTests
     {

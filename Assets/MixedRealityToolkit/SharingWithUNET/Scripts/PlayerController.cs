@@ -3,9 +3,9 @@
 
 using UnityEngine;
 using UnityEngine.Networking;
-using MixedRealityToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule;
 
-namespace MixedRealityToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// Controls player behavior (local and remote).

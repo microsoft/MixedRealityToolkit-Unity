@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Adds a 'default' button to an animation curve that will supply default curve values
     [AttributeUsage(AttributeTargets.Field)]

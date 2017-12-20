@@ -8,7 +8,7 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Displays an enum value as a dropdown mask
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

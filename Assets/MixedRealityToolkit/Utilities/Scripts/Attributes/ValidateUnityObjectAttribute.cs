@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Validates object and displays an error or warning if validation fails
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

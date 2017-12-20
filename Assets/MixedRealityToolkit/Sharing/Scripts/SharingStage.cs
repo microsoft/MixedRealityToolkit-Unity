@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 using MixedRealityToolkit.Sharing.Utilities;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
 namespace MixedRealityToolkit.Sharing
 {

@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
 namespace MixedRealityToolkit.Sharing
 {

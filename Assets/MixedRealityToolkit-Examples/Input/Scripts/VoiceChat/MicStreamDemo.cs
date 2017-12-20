@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.InputModule.Tests
 {
     [RequireComponent(typeof(AudioSource))]
     public class MicStreamDemo : MonoBehaviour

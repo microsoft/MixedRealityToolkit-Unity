@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Sets the indent level for custom formatting
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

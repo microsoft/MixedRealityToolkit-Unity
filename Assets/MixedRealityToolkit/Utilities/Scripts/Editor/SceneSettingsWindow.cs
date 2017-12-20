@@ -6,10 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using MixedRealityToolkit.Unity.InputModule;
-using Cursor = MixedRealityToolkit.Unity.InputModule.Cursor;
+using MixedRealityToolkit.InputModule;
+using Cursor = MixedRealityToolkit.InputModule.Cursor;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply Mixed Reality Scene Settings.

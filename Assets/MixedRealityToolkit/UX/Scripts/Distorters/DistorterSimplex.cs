@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.UX
+namespace MixedRealityToolkit.UX
 {
     public class DistorterSimplex : Distorter
     {

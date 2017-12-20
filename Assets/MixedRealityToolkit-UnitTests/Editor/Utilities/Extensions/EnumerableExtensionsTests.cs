@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace MixedRealityToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests
 {
     public class EnumerableExtensionsTests
     {

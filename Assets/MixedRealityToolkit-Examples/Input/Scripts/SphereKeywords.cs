@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.InputModule.Tests
 {
     [RequireComponent(typeof(Renderer))]
     public class SphereKeywords : MonoBehaviour, ISpeechHandler

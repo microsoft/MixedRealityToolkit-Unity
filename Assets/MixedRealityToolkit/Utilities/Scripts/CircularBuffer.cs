@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Helper class for transmitting data over network.

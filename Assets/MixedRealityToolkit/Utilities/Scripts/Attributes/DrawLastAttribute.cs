@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Class used to send members to bottom of drawing queue
     [AttributeUsage(AttributeTargets.Field)]

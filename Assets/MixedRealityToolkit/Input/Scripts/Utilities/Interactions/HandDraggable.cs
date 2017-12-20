@@ -4,7 +4,7 @@
 using UnityEngine;
 using System;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Component that allows dragging an object with your hand on HoloLens.

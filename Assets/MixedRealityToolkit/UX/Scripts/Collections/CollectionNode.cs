@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.Collections
+namespace MixedRealityToolkit.Collections
 {
     /// <summary>
     /// Collection node is a data storage class for individual data about an object in the collection.

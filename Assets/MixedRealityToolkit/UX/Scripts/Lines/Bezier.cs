@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.UX
+namespace MixedRealityToolkit.UX
 {
     public class Bezier : LineBase
     {

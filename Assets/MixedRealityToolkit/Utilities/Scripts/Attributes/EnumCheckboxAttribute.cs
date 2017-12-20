@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Displays an enum value as a set of checkboxes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     public class EditorHandsMaterialInspector : ShaderGUI
     {

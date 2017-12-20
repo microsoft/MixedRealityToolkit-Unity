@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace MixedRealityToolkit.Unity.SpatialMapping.Tests
+namespace MixedRealityToolkit.SpatialMapping.Tests
 {
     /// <summary>
     /// Attach this component to a GameObject that contains some meshes (i.e.: the FakeSpatialMappingMesh.fbx).

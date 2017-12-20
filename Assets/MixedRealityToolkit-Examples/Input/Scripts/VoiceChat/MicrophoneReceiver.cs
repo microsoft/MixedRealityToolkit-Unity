@@ -4,7 +4,7 @@
 using System;
 using System.Threading;
 using UnityEngine;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
 namespace MixedRealityToolkit.Sharing.VoiceChat
 {

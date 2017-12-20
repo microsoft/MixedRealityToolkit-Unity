@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Hides a field in an MRDL inspector
     [AttributeUsage(AttributeTargets.Field)]

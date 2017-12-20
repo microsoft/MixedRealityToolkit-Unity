@@ -12,7 +12,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// GamepadInput class maps Xbox GamePad buttons to the GestureRecognizer.

@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// 3D integer class - operates similarly to Unity's Vector3D

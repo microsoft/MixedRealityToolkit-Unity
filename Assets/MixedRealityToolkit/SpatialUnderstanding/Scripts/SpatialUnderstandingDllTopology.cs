@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Collections.Generic;
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     /// <summary>
     /// Encapsulates the topology queries of the understanding DLL.

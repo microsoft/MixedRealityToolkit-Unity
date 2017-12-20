@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// KeyboardManager allows other scripts to register for (or inject) key events.

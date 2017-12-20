@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 using System.Collections.Generic;
-using MixedRealityToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule;
 
 namespace MixedRealityToolkit.Examples.GazeRuler
 {

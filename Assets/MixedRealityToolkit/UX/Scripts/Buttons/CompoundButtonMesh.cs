@@ -3,9 +3,9 @@
 
 using System;
 using UnityEngine;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// Mesh button is a mesh renderer interactable with state data for button state

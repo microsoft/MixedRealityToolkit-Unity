@@ -11,7 +11,7 @@ using System.Globalization;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
 namespace MixedRealityToolkit.Sharing.SyncModel
 {

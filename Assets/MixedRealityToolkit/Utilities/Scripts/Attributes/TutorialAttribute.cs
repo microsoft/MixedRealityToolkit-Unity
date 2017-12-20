@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Provides a clickable link to a tutorial in the inspector header
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]

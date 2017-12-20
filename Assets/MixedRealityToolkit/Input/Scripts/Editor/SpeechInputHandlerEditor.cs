@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.InputModule
+namespace MixedRealityToolkit.InputModule
 {
     [CustomEditor(typeof(SpeechInputHandler))]
     public class SpeechInputHandlerEditor : Editor

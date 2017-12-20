@@ -4,9 +4,9 @@
 using System;
 using System.Reflection;
 using UnityEngine;
-using MixedRealityToolkit.Unity;
+using MixedRealityToolkit;
 
-namespace MixedRealityToolkit.Unity.Buttons
+namespace MixedRealityToolkit.Buttons
 {
     /// <summary>
     /// Class that can be used to toggle between to button profiles for any target component inheriting from ProfileButtonBase

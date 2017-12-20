@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-namespace MixedRealityToolkit.Unity.Collections
+namespace MixedRealityToolkit.Collections
 {
     /// <summary>
     /// An Object Collection is simply a set of child objects organized with some

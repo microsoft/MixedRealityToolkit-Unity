@@ -6,7 +6,7 @@ using SysDiag = System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// SimpleMeshSerializer converts a UnityEngine.Mesh object to and from an array of bytes.

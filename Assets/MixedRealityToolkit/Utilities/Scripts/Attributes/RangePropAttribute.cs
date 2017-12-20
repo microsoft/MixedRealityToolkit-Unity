@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit.Unity
+namespace MixedRealityToolkit
 {
     // Displays an int or float property as a range
     [AttributeUsage(AttributeTargets.Property)]
