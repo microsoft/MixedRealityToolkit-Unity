@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using MixedRealityToolkit.SpatialMapping;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.SpatialUnderstanding
 {
     /// <summary>
     /// The SpatialUnderstanding class controls the state and flow of the 

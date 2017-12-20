@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.SpatialUnderstanding
 {
     /// <summary>
     /// Encapsulates the shape detection queries of the understanding DLL.

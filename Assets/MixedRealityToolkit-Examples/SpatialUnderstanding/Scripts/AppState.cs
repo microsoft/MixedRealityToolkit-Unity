@@ -4,6 +4,7 @@
 using MixedRealityToolkit;
 using MixedRealityToolkit.Input;
 using MixedRealityToolkit.SpatialMapping;
+using MixedRealityToolkit.SpatialUnderstanding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,19 +63,19 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             get
             {
                 // Only allow this when we are actually scanning
-                if ((SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Scanning) ||
-                    (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
+                if ((SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.SpatialUnderstanding.ScanStates.Scanning) ||
+                    (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
                 {
                     return false;
                 }
 
                 // Query the current playspace stats
-                IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                IntPtr statsPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
                 if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
                 {
                     return false;
                 }
-                SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
+                SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
 
                 // Check our preset requirements
                 if ((stats.TotalSurfaceArea > kMinAreaForComplete) ||
@@ -102,13 +103,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
                 }
 
                 // Scan state
-                if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                if (SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
                 {
-                    switch (SpatialUnderstanding.Instance.ScanState)
+                    switch (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState)
                     {
-                        case SpatialUnderstanding.ScanStates.Scanning:
+                        case SpatialUnderstanding.SpatialUnderstanding.ScanStates.Scanning:
                             // Get the scan stats
-                            IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                            IntPtr statsPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
                             if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
                             {
                                 return "playspace stats query failed";
@@ -120,12 +121,12 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
                                 return "When ready, air tap to finalize your playspace";
                             }
                             return "Walk around and scan in your playspace";
-                        case SpatialUnderstanding.ScanStates.Finishing:
+                        case SpatialUnderstanding.SpatialUnderstanding.ScanStates.Finishing:
                             return "Finalizing scan (please wait)";
-                        case SpatialUnderstanding.ScanStates.Done:
+                        case SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done:
                             return "Scan complete - Use the menu to run queries";
                         default:
-                            return "ScanState = " + SpatialUnderstanding.Instance.ScanState.ToString();
+                            return "ScanState = " + SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState.ToString();
                     }
                 }
                 return "";
@@ -136,7 +137,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             get
             {
-                if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning)
+                if (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Scanning)
                 {
                     if (trackedHandsCount > 0)
                     {
@@ -161,21 +162,21 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             get
             {
-                if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.None)
+                if (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.None)
                 {
                     return "";
                 }
 
                 // Scanning stats get second priority
-                if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-                    (SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
+                if ((SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Scanning) &&
+                    (SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
                 {
-                    IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                    IntPtr statsPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
                     if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
                     {
                         return "Playspace stats query failed";
                     }
-                    SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
+                    SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
 
                     // Start showing the stats when they are no longer zero
                     if (stats.TotalSurfaceArea > kMinAreaForStats)
@@ -262,8 +263,8 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private static void ToggleProcessedMesh()
         {
-            SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
-            Debug.Log("SpatialUnderstanding -> SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh=" + SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
+            SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
+            Debug.Log("SpatialUnderstanding -> SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh=" + SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
         }
 
         private void Update()
@@ -291,10 +292,10 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-                !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
+            if ((SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Scanning) &&
+                !SpatialUnderstanding.SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
             {
-                SpatialUnderstanding.Instance.RequestFinishScan();
+                SpatialUnderstanding.SpatialUnderstanding.Instance.RequestFinishScan();
             }
         }
     }

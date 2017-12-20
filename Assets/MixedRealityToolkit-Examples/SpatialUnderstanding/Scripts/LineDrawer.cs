@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MixedRealityToolkit;
 using System;
+using MixedRealityToolkit.SpatialUnderstanding;
 
 namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
@@ -122,7 +123,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             private void SetupAnimation()
             {
-                if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
                 {
                     return;
                 }
@@ -130,18 +131,18 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
                 // Calculate the forward distance for the animation start point
                 Vector3 rayPos = CameraCache.Main.transform.position;
                 Vector3 rayVec = CameraCache.Main.transform.forward * InitialPositionForwardMaxDistance;
-                IntPtr raycastResultPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
+                IntPtr raycastResultPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
                 SpatialUnderstandingDll.Imports.PlayspaceRaycast(
                     rayPos.x, rayPos.y, rayPos.z, rayVec.x, rayVec.y, rayVec.z,
                     raycastResultPtr);
-                SpatialUnderstandingDll.Imports.RaycastResult rayCastResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResult();
+                SpatialUnderstandingDll.Imports.RaycastResult rayCastResult = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResult();
                 Vector3 animOrigin = (rayCastResult.SurfaceType != SpatialUnderstandingDll.Imports.RaycastResult.SurfaceTypes.Invalid) ?
                     rayPos + rayVec.normalized * Mathf.Max((rayCastResult.IntersectPoint - rayPos).magnitude - 0.3f, 0.0f) :
                     rayPos + rayVec * InitialPositionForwardMaxDistance;
 
                 // Create the animation (starting it on the ground in front of the camera
-                SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-                SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+                SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+                SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
                 AnimPosition.AddKey(TimeDelay + 0.0f, new Vector3(animOrigin.x, alignment.FloorYValue, animOrigin.z));
                 AnimPosition.AddKey(TimeDelay + AnimationTime * 0.5f, new Vector3(animOrigin.x, alignment.FloorYValue + 1.25f, animOrigin.z));
                 AnimPosition.AddKey(TimeDelay + AnimationTime * 0.6f, new Vector3(animOrigin.x, alignment.FloorYValue + 1.0f, animOrigin.z));
