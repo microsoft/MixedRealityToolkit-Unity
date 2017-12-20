@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.SpacialSound
 {
     /// <summary>
     /// Class that implements IAudioInfluencer to provide an occlusion effect.

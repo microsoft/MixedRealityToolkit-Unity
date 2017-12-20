@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.SpacialSound
 {
     /// <summary>
     /// Class which supports IAudioInfluencers being used with audio sources.

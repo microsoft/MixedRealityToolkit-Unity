@@ -5,7 +5,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using UnityEngine;
-using MixedRealityToolkit;
+using MixedRealityToolkit.SpacialSound;
 using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.Sharing.VoiceChat

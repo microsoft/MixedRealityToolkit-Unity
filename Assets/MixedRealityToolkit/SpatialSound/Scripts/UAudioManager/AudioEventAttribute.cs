@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.SpacialSound
 {
     /// <summary>
     /// Attribute to mark up a string field to be drawn using the

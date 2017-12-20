@@ -2,9 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEditor;
-using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.SpacialSound
 {
     [CustomEditor(typeof(UAudioManager))]
     public class UAudioManagerEditor : UAudioManagerBaseEditor<AudioEvent, AudioEventBank>
