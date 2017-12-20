@@ -13,11 +13,6 @@ namespace HoloToolkit.Unity.UX
     public class BoundingBoxGizmo : MonoBehaviour
     {
         /// <summary>
-        /// Physics layer to use for rendering
-        /// </summary>
-        public int PhysicsLayer = 0;
-
-        /// <summary>
         /// The bounding box we're following
         /// </summary>
         [SerializeField]

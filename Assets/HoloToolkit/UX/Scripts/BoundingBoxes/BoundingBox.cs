@@ -170,11 +170,6 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         protected BoundsCalculationMethodEnum boundsCalculationMethod = BoundsCalculationMethodEnum.MeshFilterBounds;
 
-        [Tooltip("Layer for drawing & colliders")]
-        [SerializeField]
-        [Range(0, 31)]
-        protected int physicsLayer = 0;
-
         [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
         [SerializeField]
         [Range(0, 31)]

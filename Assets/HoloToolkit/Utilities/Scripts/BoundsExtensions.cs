@@ -408,9 +408,6 @@ public static class BoundsExtentions
     {
         Bounds tmpBounds = originalBounds;
 
-        //tmpBounds.Encapsulate(otherBounds.min);
-        //tmpBounds.Encapsulate(otherBounds.max);
-
         tmpBounds.Encapsulate(otherBounds);
 
         return tmpBounds;
