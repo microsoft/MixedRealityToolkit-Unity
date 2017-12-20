@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     public class PopupMenu : MonoBehaviour, IInputHandler
     {

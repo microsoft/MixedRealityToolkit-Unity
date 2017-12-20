@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// This script tells you if your head mounted display (HMD)

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     public class SpeechInputHandler : MonoBehaviour, ISpeechHandler
     {

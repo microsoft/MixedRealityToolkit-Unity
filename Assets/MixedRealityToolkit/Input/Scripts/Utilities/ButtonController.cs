@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
 
     /// <summary>
@@ -83,13 +83,13 @@ namespace MixedRealityToolkit.InputModule
         /// <returns>True if pressed.</returns>
         public bool Pressed()
         {
-            bool left = Input.GetMouseButton(0);
-            bool right = Input.GetMouseButton(1);
-            bool middle = Input.GetMouseButton(2);
-            bool control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-            bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            bool alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
-            bool space = Input.GetKey(KeyCode.Space);
+            bool left = UnityEngine.Input.GetMouseButton(0);
+            bool right = UnityEngine.Input.GetMouseButton(1);
+            bool middle = UnityEngine.Input.GetMouseButton(2);
+            bool control = UnityEngine.Input.GetKey(KeyCode.LeftControl) || UnityEngine.Input.GetKey(KeyCode.RightControl);
+            bool shift = UnityEngine.Input.GetKey(KeyCode.LeftShift) || UnityEngine.Input.GetKey(KeyCode.RightShift);
+            bool alt = UnityEngine.Input.GetKey(KeyCode.LeftAlt) || UnityEngine.Input.GetKey(KeyCode.RightAlt);
+            bool space = UnityEngine.Input.GetKey(KeyCode.Space);
             switch (buttonType)
             {
                 case ButtonType.Left:
@@ -107,7 +107,7 @@ namespace MixedRealityToolkit.InputModule
                 case ButtonType.Space:
                     return space;
                 case ButtonType.Return:
-                    return Input.GetKey(KeyCode.Return);
+                    return UnityEngine.Input.GetKey(KeyCode.Return);
                 case ButtonType.Focused:
                     return this.appHasFocus;
                 case ButtonType.ControlAndLeft:

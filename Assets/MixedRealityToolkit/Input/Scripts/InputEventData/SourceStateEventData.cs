@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Describes an source state event that has a source id. 

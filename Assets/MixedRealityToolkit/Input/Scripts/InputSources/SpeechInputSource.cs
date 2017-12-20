@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// SpeechInputSource allows you to specify keywords and methods in the Unity
@@ -142,7 +142,7 @@ namespace MixedRealityToolkit.InputModule
         {
             for (int index = Keywords.Length; --index >= 0;)
             {
-                if (Input.GetKeyDown(Keywords[index].KeyCode))
+                if (UnityEngine.Input.GetKeyDown(Keywords[index].KeyCode))
                 {
                     OnPhraseRecognized(recognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }

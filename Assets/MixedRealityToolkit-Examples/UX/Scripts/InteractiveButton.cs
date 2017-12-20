@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.Examples.InteractiveElements
 {

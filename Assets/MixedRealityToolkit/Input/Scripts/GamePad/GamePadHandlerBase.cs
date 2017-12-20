@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     public class GamePadHandlerBase : MonoBehaviour, ISourceStateHandler
     {

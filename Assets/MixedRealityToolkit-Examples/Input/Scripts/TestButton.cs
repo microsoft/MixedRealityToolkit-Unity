@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     /// <summary>
     /// Test button that can be added to any object to make it gaze interactable and 

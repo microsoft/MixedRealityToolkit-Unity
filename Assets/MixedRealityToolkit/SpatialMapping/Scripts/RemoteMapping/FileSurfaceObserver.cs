@@ -61,13 +61,13 @@ namespace MixedRealityToolkit.SpatialMapping
             // Keyboard commands for saving and loading a remotely generated mesh file.
 #if UNITY_EDITOR || UNITY_STANDALONE
             // S - saves the active mesh
-            if (Input.GetKeyUp(SaveFileKey))
+            if (UnityEngine.Input.GetKeyUp(SaveFileKey))
             {
                 MeshSaver.Save(MeshFileName, SpatialMappingManager.Instance.GetMeshes());
             }
 
             // L - loads the previously saved mesh into editor and sets it to be the spatial mapping source.
-            if (Input.GetKeyUp(LoadFileKey))
+            if (UnityEngine.Input.GetKeyUp(LoadFileKey))
             {
                 SpatialMappingManager.Instance.SetSpatialMappingSource(this);
                 Load(MeshFileName);

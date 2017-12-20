@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Input Manager is responsible for managing input sources and dispatching relevant events

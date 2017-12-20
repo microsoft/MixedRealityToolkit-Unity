@@ -12,7 +12,7 @@ using UnityEngine.VR.WSA.Input;
 using System.Collections.Generic;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Input source for gestures and interaction source information from the WSA APIs, which gives access to various system-supported gestures

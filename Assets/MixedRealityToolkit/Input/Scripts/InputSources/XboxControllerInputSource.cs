@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Xbox Controller support.
@@ -74,55 +74,55 @@ namespace MixedRealityToolkit.InputModule
             // If we have motion controllers connected we will not process Xbox controller input.
             if (gamePadInputDatas.Count != 1 || motionControllerCount > 0) { return; }
 
-            controllerData.XboxLeftStickHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickHorizontal);
-            controllerData.XboxLeftStickVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickVertical);
-            controllerData.XboxRightStickHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxRightStickHorizontal);
-            controllerData.XboxRightStickVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxRightStickVertical);
-            controllerData.XboxDpadHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxDpadHorizontal);
-            controllerData.XboxDpadVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxDpadVertical);
-            controllerData.XboxLeftTriggerAxis = Input.GetAxis(XboxControllerMapping.XboxLeftTrigger);
-            controllerData.XboxRightTriggerAxis = Input.GetAxis(XboxControllerMapping.XboxRightTrigger);
-            controllerData.XboxSharedTriggerAxis = Input.GetAxis(XboxControllerMapping.XboxSharedTrigger);
+            controllerData.XboxLeftStickHorizontalAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxLeftStickHorizontal);
+            controllerData.XboxLeftStickVerticalAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxLeftStickVertical);
+            controllerData.XboxRightStickHorizontalAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxRightStickHorizontal);
+            controllerData.XboxRightStickVerticalAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxRightStickVertical);
+            controllerData.XboxDpadHorizontalAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxDpadHorizontal);
+            controllerData.XboxDpadVerticalAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxDpadVertical);
+            controllerData.XboxLeftTriggerAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxLeftTrigger);
+            controllerData.XboxRightTriggerAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxRightTrigger);
+            controllerData.XboxSharedTriggerAxis = UnityEngine.Input.GetAxis(XboxControllerMapping.XboxSharedTrigger);
 
-            controllerData.XboxA_Down = Input.GetButtonDown(XboxControllerMapping.XboxA);
-            controllerData.XboxB_Down = Input.GetButtonDown(XboxControllerMapping.XboxB);
-            controllerData.XboxX_Down = Input.GetButtonDown(XboxControllerMapping.XboxX);
-            controllerData.XboxY_Down = Input.GetButtonDown(XboxControllerMapping.XboxY);
-            controllerData.XboxView_Down = Input.GetButtonDown(XboxControllerMapping.XboxView);
-            controllerData.XboxMenu_Down = Input.GetButtonDown(XboxControllerMapping.XboxMenu);
-            controllerData.XboxLeftBumper_Down = Input.GetButtonDown(XboxControllerMapping.XboxLeftBumper);
-            controllerData.XboxRightBumper_Down = Input.GetButtonDown(XboxControllerMapping.XboxRightBumper);
-            controllerData.XboxLeftStick_Down = Input.GetButtonDown(XboxControllerMapping.XboxLeftStickClick);
-            controllerData.XboxRightStick_Down = Input.GetButtonDown(XboxControllerMapping.XboxRightStickClick);
+            controllerData.XboxA_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxA);
+            controllerData.XboxB_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxB);
+            controllerData.XboxX_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxX);
+            controllerData.XboxY_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxY);
+            controllerData.XboxView_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxView);
+            controllerData.XboxMenu_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxMenu);
+            controllerData.XboxLeftBumper_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxLeftBumper);
+            controllerData.XboxRightBumper_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxRightBumper);
+            controllerData.XboxLeftStick_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxLeftStickClick);
+            controllerData.XboxRightStick_Down = UnityEngine.Input.GetButtonDown(XboxControllerMapping.XboxRightStickClick);
 
-            controllerData.XboxA_Pressed = Input.GetButton(XboxControllerMapping.XboxA);
-            controllerData.XboxB_Pressed = Input.GetButton(XboxControllerMapping.XboxB);
-            controllerData.XboxX_Pressed = Input.GetButton(XboxControllerMapping.XboxX);
-            controllerData.XboxY_Pressed = Input.GetButton(XboxControllerMapping.XboxY);
-            controllerData.XboxView_Pressed = Input.GetButton(XboxControllerMapping.XboxView);
-            controllerData.XboxMenu_Pressed = Input.GetButton(XboxControllerMapping.XboxMenu);
-            controllerData.XboxLeftBumper_Pressed = Input.GetButton(XboxControllerMapping.XboxLeftBumper);
-            controllerData.XboxRightBumper_Pressed = Input.GetButton(XboxControllerMapping.XboxRightBumper);
-            controllerData.XboxLeftStick_Pressed = Input.GetButton(XboxControllerMapping.XboxLeftStickClick);
-            controllerData.XboxRightStick_Pressed = Input.GetButton(XboxControllerMapping.XboxRightStickClick);
+            controllerData.XboxA_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxA);
+            controllerData.XboxB_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxB);
+            controllerData.XboxX_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxX);
+            controllerData.XboxY_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxY);
+            controllerData.XboxView_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxView);
+            controllerData.XboxMenu_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxMenu);
+            controllerData.XboxLeftBumper_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxLeftBumper);
+            controllerData.XboxRightBumper_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxRightBumper);
+            controllerData.XboxLeftStick_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxLeftStickClick);
+            controllerData.XboxRightStick_Pressed = UnityEngine.Input.GetButton(XboxControllerMapping.XboxRightStickClick);
 
-            controllerData.XboxA_Up = Input.GetButtonUp(XboxControllerMapping.XboxA);
-            controllerData.XboxB_Up = Input.GetButtonUp(XboxControllerMapping.XboxB);
-            controllerData.XboxX_Up = Input.GetButtonUp(XboxControllerMapping.XboxX);
-            controllerData.XboxY_Up = Input.GetButtonUp(XboxControllerMapping.XboxY);
-            controllerData.XboxView_Up = Input.GetButtonUp(XboxControllerMapping.XboxView);
-            controllerData.XboxMenu_Up = Input.GetButtonUp(XboxControllerMapping.XboxMenu);
-            controllerData.XboxLeftBumper_Up = Input.GetButtonUp(XboxControllerMapping.XboxLeftBumper);
-            controllerData.XboxRightBumper_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightBumper);
-            controllerData.XboxLeftStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxLeftStickClick);
-            controllerData.XboxRightStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightStickClick);
+            controllerData.XboxA_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxA);
+            controllerData.XboxB_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxB);
+            controllerData.XboxX_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxX);
+            controllerData.XboxY_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxY);
+            controllerData.XboxView_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxView);
+            controllerData.XboxMenu_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxMenu);
+            controllerData.XboxLeftBumper_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxLeftBumper);
+            controllerData.XboxRightBumper_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxRightBumper);
+            controllerData.XboxLeftStick_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxLeftStickClick);
+            controllerData.XboxRightStick_Up = UnityEngine.Input.GetButtonUp(XboxControllerMapping.XboxRightStickClick);
 
             InputManager.Instance.RaiseXboxInputUpdate(this, SourceId, controllerData);
         }
 
         protected override void RefreshDevices()
         {
-            var joystickNames = Input.GetJoystickNames();
+            var joystickNames = UnityEngine.Input.GetJoystickNames();
 
             if (joystickNames.Length <= 0) { return; }
 

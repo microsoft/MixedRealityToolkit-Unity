@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     /// <summary>
     /// This class shows how to handle focus events and speech input events.

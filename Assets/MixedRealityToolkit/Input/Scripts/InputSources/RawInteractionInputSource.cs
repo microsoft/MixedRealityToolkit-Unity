@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.VR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Input source for raw interactions sources information, which gives finer details about current source state and position

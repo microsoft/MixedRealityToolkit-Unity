@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Input.Examples.Grabbables
 {
     public class GrabbableMultiJoint : BaseGrabbable
     {

@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     /// <summary>
     /// This class implements IInputClickHandler to handle the tap gesture.

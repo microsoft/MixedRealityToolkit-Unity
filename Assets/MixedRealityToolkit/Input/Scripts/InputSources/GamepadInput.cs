@@ -12,7 +12,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// GamepadInput class maps Xbox GamePad buttons to the GestureRecognizer.
@@ -89,7 +89,7 @@ namespace MixedRealityToolkit.InputModule
         private void HandleGamepadAPressed()
         {
             // TODO: Should this handle Submit from Edit > ProjectSettings > Input ?
-            if (Input.GetButtonDown(GamePadButtonA))
+            if (UnityEngine.Input.GetButtonDown(GamePadButtonA))
             {
                 inputManager.RaiseSourceDown(this, GamePadId, InteractionSourcePressInfo.Select);
                 isAPressed = true;
@@ -124,8 +124,8 @@ namespace MixedRealityToolkit.InputModule
 
             try
             {
-                displacementAlongX = Input.GetAxis(NavigateAroundXAxisName);
-                displacementAlongY = Input.GetAxis(NavigateAroundYAxisName);
+                displacementAlongX = UnityEngine.Input.GetAxis(NavigateAroundXAxisName);
+                displacementAlongY = UnityEngine.Input.GetAxis(NavigateAroundYAxisName);
             }
             catch (Exception)
             {
@@ -154,7 +154,7 @@ namespace MixedRealityToolkit.InputModule
 
         private void HandleGamepadAReleased()
         {
-            if (Input.GetButtonUp(GamePadButtonA))
+            if (UnityEngine.Input.GetButtonUp(GamePadButtonA))
             {
                 inputManager.RaiseSourceUp(this, GamePadId, InteractionSourcePressInfo.Select);
 

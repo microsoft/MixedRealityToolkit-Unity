@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     public class TogglePopupMenu : MonoBehaviour
     {

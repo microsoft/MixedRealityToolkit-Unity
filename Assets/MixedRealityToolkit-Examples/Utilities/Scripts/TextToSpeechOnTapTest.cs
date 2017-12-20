@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     /// <summary>
     /// Tap Test for text to speech. This voice will appear to emanate from the object

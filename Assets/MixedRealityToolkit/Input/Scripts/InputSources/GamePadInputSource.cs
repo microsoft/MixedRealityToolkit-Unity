@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     public class GamePadInputSource : BaseInputSource
     {
@@ -66,7 +66,7 @@ namespace MixedRealityToolkit.InputModule
 
         protected virtual void RefreshDevices()
         {
-            var joystickNames = Input.GetJoystickNames();
+            var joystickNames = UnityEngine.Input.GetJoystickNames();
 
             if (joystickNames.Length <= 0) { return; }
 

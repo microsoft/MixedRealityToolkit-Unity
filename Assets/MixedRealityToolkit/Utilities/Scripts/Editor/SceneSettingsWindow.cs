@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using MixedRealityToolkit.InputModule;
-using Cursor = MixedRealityToolkit.InputModule.Cursor;
+using MixedRealityToolkit.Input;
+using Cursor = MixedRealityToolkit.Input.Cursor;
 
 namespace MixedRealityToolkit
 {

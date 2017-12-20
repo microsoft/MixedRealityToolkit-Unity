@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Describes an input event that involves keyword recognition.

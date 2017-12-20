@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     public class XboxControllerHandlerBase : GamePadHandlerBase, IXboxControllerHandler
     {

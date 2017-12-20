@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Tests;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     public class GestureResponder : MonoBehaviour, IInputClickHandler
     {

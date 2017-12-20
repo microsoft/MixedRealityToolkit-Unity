@@ -4,7 +4,7 @@
 using UnityEngine;
 using MixedRealityToolkit;
 using System.Collections.Generic;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.Examples.GazeRuler
 {

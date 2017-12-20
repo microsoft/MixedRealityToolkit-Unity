@@ -9,7 +9,7 @@ using System.Text;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Singleton class that implements the DictationRecognizer to convert the user's speech to text.

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit
 {

@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 using MixedRealityToolkit.SpatialMapping;
 using System;
 using System.Collections.Generic;
@@ -242,13 +242,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void Update_KeyboardInput(float deltaTime)
         {
             // Toggle SurfaceMapping & CustomUnderstandingMesh visibility
-            if (Input.GetKeyDown(KeyCode.BackQuote) &&
-                (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.BackQuote) &&
+                (!UnityEngine.Input.GetKey(KeyCode.LeftShift) && !UnityEngine.Input.GetKey(KeyCode.RightShift)))
             {
                 ToggleScannedMesh();
             }
-            else if (Input.GetKeyDown(KeyCode.BackQuote) &&
-                     (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.BackQuote) &&
+                     (UnityEngine.Input.GetKey(KeyCode.LeftShift) || UnityEngine.Input.GetKey(KeyCode.RightShift)))
             {
                 ToggleProcessedMesh();
             }

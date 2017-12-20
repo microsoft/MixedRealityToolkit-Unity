@@ -20,7 +20,7 @@ using Windows.Storage.Streams;
 #endif
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// This script spawns a specific GameObject when a controller is detected

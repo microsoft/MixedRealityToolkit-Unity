@@ -3,9 +3,9 @@
 
 using System.Collections;
 using MixedRealityToolkit;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 using UnityEngine;
-using Cursor = MixedRealityToolkit.InputModule.Cursor;
+using Cursor = MixedRealityToolkit.Input.Cursor;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;

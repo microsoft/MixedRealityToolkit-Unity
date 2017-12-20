@@ -4,7 +4,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.Buttons
 {

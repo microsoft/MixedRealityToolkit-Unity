@@ -69,7 +69,7 @@ namespace MixedRealityToolkit.SpatialMapping
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
             // Use the 'network' sourced mesh.  
-            if (Input.GetKeyUp(RemoteMappingKey))
+            if (UnityEngine.Input.GetKeyUp(RemoteMappingKey))
             {
                 SpatialMappingManager.Instance.SetSpatialMappingSource(remoteMeshTarget);
             }

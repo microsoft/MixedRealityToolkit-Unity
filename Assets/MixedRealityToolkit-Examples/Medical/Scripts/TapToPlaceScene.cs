@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 using UnityEngine;
 
 namespace MixedRealityToolkit
@@ -45,7 +45,7 @@ namespace MixedRealityToolkit
                 this.transform.rotation = facingRotation;
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (UnityEngine.Input.GetMouseButtonDown(0))
             {
                 Placing = false;
             }

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Flags used to indicate which input information is supported by an input source.

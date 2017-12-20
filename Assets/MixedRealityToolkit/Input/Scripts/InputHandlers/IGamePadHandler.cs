@@ -4,7 +4,7 @@
 using System;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     [Obsolete("Use ISourceStateHandler")]
     public interface IGamePadHandler : IEventSystemHandler

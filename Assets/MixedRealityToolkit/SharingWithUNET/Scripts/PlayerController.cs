@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.Networking;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.SharingWithUNET
 {

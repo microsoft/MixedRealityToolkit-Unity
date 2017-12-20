@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Tests
+namespace MixedRealityToolkit.Input.Tests
 {
     [RequireComponent(typeof(AudioSource))]
     public class MicStreamDemo : MonoBehaviour
@@ -119,19 +119,19 @@ namespace MixedRealityToolkit.InputModule.Tests
         {
             CheckForErrorOnCall(MicStream.MicSetGain(InputGain));
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Q))
             {
                 CheckForErrorOnCall(MicStream.MicStartStream(KeepAllData, false));
             }
-            else if (Input.GetKeyDown(KeyCode.W))
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.W))
             {
                 CheckForErrorOnCall(MicStream.MicStopStream());
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.A))
             {
                 CheckForErrorOnCall(MicStream.MicStartRecording(SaveFileName, false));
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.S))
             {
                 string outputPath = MicStream.MicStopRecording();
                 Debug.Log("Saved microphone audio to " + outputPath);

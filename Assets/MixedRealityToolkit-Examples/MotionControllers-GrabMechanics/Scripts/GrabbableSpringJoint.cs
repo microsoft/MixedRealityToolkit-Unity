@@ -3,7 +3,7 @@
 
 using System.Collections;
 using UnityEngine;
-namespace MixedRealityToolkit.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Input.Examples.Grabbables
 {
     /// <summary>
     /// This type of grab creates a temporary spring joint to attach the grabbed object to the grabber

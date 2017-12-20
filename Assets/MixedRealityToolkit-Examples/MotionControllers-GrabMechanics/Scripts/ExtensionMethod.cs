@@ -3,7 +3,7 @@
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine;
-using MixedRealityToolkit.InputModule.Examples.Grabbables;
+using MixedRealityToolkit.Input.Examples.Grabbables;
 using UnityEngine.XR.WSA.Input;
 
 public static class ExtensionMethods

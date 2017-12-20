@@ -5,7 +5,7 @@ using MixedRealityToolkit;
 using System.Collections.Generic;
 using UnityEngine;
 using MixedRealityToolkit.Receivers;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.Examples
 {

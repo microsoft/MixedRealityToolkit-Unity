@@ -18,7 +18,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// Script teleports the user to the location being gazed at when Y was pressed on a Gamepad.
@@ -128,8 +128,8 @@ namespace MixedRealityToolkit.InputModule
         {
             if (EnableTeleport && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
-                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
+                float leftX = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
+                float leftY = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
 
                 if (currentPointingSource == null && leftY > 0.8 && Math.Abs(leftX) < 0.3)
                 {
@@ -146,8 +146,8 @@ namespace MixedRealityToolkit.InputModule
 
             if (EnableStrafe && currentPointingSource == null && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
-                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
+                float leftX = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
+                float leftY = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
 
                 if (leftX < -0.8 && Math.Abs(leftY) < 0.3)
                 {
@@ -165,8 +165,8 @@ namespace MixedRealityToolkit.InputModule
 
             if (EnableRotation && currentPointingSource == null && !fadeControl.Busy)
             {
-                float rightX = Input.GetAxis(useCustomMapping ? RightThumbstickX : XboxControllerMapping.GetMapping(HorizontalRotation));
-                float rightY = Input.GetAxis(useCustomMapping ? RightThumbstickY : XboxControllerMapping.GetMapping(VerticalRotation));
+                float rightX = UnityEngine.Input.GetAxis(useCustomMapping ? RightThumbstickX : XboxControllerMapping.GetMapping(HorizontalRotation));
+                float rightY = UnityEngine.Input.GetAxis(useCustomMapping ? RightThumbstickY : XboxControllerMapping.GetMapping(VerticalRotation));
 
                 if (rightX < -0.8 && Math.Abs(rightY) < 0.3)
                 {

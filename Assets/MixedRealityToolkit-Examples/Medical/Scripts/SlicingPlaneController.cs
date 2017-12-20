@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 using UnityEngine;
 
 namespace MixedRealityToolkit
@@ -95,14 +95,14 @@ namespace MixedRealityToolkit
             var positionDeltaY = this.transform.localRotation * new Vector3(0.0f, movementDelta, 0.0f);
             var positionDeltaZ = this.transform.localRotation * new Vector3(0.0f, 0.0f, movementDelta);
 
-            if (Input.GetKey(KeyCode.L)) { this.transform.localPosition += positionDeltaX; }
-            if (Input.GetKey(KeyCode.J)) { this.transform.localPosition -= positionDeltaX; }
+            if (UnityEngine.Input.GetKey(KeyCode.L)) { this.transform.localPosition += positionDeltaX; }
+            if (UnityEngine.Input.GetKey(KeyCode.J)) { this.transform.localPosition -= positionDeltaX; }
 
-            if (Input.GetKey(KeyCode.I)) { this.transform.localPosition += positionDeltaY; }
-            if (Input.GetKey(KeyCode.K)) { this.transform.localPosition -= positionDeltaY; }
+            if (UnityEngine.Input.GetKey(KeyCode.I)) { this.transform.localPosition += positionDeltaY; }
+            if (UnityEngine.Input.GetKey(KeyCode.K)) { this.transform.localPosition -= positionDeltaY; }
 
-            if (Input.GetKey(KeyCode.RightBracket)) { this.transform.localPosition += positionDeltaZ; }
-            if (Input.GetKey(KeyCode.LeftBracket)) { this.transform.localPosition -= positionDeltaZ; }
+            if (UnityEngine.Input.GetKey(KeyCode.RightBracket)) { this.transform.localPosition += positionDeltaZ; }
+            if (UnityEngine.Input.GetKey(KeyCode.LeftBracket)) { this.transform.localPosition -= positionDeltaZ; }
         }
         public void OnManipulationStarted(ManipulationEventData eventData)
         {

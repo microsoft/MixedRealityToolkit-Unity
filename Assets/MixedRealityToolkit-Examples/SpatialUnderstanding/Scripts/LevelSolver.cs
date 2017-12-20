@@ -422,39 +422,39 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void Update_Queries()
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.R))
             {
                 Query_OnFloor();
             }
-            if (Input.GetKeyDown(KeyCode.T))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.T))
             {
                 Query_OnWall();
             }
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Y))
             {
                 Query_OnCeiling();
             }
-            if (Input.GetKeyDown(KeyCode.U))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.U))
             {
                 Query_OnEdge();
             }
-            if (Input.GetKeyDown(KeyCode.I))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.I))
             {
                 Query_OnFloorAndCeiling();
             }
-            if (Input.GetKeyDown(KeyCode.O))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.O))
             {
                 Query_RandomInAir_AwayFromMe();
             }
-            if (Input.GetKeyDown(KeyCode.P))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.P))
             {
                 Query_OnEdge_NearCenter();
             }
-            if (Input.GetKeyDown(KeyCode.LeftBracket))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftBracket))
             {
                 Query_OnFloor_AwayFromMe();
             }
-            if (Input.GetKeyDown(KeyCode.RightBracket))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.RightBracket))
             {
                 Query_OnFloor_NearMe();
             }

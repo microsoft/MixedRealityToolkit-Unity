@@ -8,7 +8,7 @@ using UnityEngine.XR.WSA.Input;
 using UnityEngine.VR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// This script keeps track of the GameObjects for each button on the controller.

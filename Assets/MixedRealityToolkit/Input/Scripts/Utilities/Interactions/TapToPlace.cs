@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MixedRealityToolkit.SpatialMapping;
 
-namespace MixedRealityToolkit.InputModule
+namespace MixedRealityToolkit.Input
 {
     /// <summary>
     /// The TapToPlace class is a basic way to enable users to move objects 

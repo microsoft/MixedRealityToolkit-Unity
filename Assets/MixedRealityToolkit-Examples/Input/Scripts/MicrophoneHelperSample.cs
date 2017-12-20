@@ -15,7 +15,7 @@ namespace MixedRealityToolkit.Examples
         private void Update()
 #endif
         {
-            if(Input.GetKeyDown(checkMicrophoneKey))
+            if(UnityEngine.Input.GetKeyDown(checkMicrophoneKey))
             {
 #if ENABLE_WINMD_SUPPORT
                 var status = await MicrophoneHelper.GetMicrophoneStatus();

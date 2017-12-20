@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Input.Examples.Grabbables
 {
     /// <summary>
     /// Intended usage: scripts that inherit from this can be attached to the controller, or any object with a collider 
@@ -194,7 +194,7 @@ namespace MixedRealityToolkit.InputModule.Examples.Grabbables
 #if UNITY_EDITOR
             if (UnityEditor.Selection.activeGameObject == gameObject)
             {
-                if (Input.GetKeyDown(KeyCode.G))
+                if (UnityEngine.Input.GetKeyDown(KeyCode.G))
                 {
                     if (GrabState == GrabStateEnum.Inactive)
                     {

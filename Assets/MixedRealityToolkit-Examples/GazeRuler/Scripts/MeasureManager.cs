@@ -6,7 +6,7 @@ using System.Collections;
 using MixedRealityToolkit;
 using System.Collections.Generic;
 using System;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.Examples.GazeRuler
 {

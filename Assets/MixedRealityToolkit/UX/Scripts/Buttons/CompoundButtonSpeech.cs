@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.Windows.Speech;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 using MixedRealityToolkit;
 
 namespace MixedRealityToolkit.Buttons

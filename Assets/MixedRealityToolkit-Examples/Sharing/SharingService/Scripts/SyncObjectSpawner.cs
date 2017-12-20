@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using MixedRealityToolkit.Sharing.Spawning;
-using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.Sharing.Tests
 {
