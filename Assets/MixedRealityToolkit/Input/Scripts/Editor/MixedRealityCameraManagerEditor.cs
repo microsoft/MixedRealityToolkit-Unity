@@ -5,7 +5,7 @@ using MixedRealityToolkit.Input;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Input
 {
     [CustomEditor(typeof(MixedRealityCameraManager))]
     public class MixedRealityCameraManagerEditor : Editor
