@@ -50,7 +50,7 @@ namespace HoloToolkit.Sharing.Utilities
             }
         }
 
-        protected virtual void Start()
+        private void Start()
         {
             // SharingStage should be valid at this point, but we may not be connected.
             if (SharingStage.Instance.IsConnected)
@@ -81,7 +81,7 @@ namespace HoloToolkit.Sharing.Utilities
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Events Arguments.</param>
-        protected void SharingManagerConnected(object sender = null, EventArgs e = null)
+        private void SharingManagerConnected(object sender = null, EventArgs e = null)
         {
             SharingStage.Instance.SharingManagerConnected -= SharingManagerConnected;
             SharingStage.Instance.SessionsTracker.ServerDisconnected += SessionTrackerDisconnected;
@@ -90,7 +90,7 @@ namespace HoloToolkit.Sharing.Utilities
         /// <summary>
         /// Called when the Session Tracker connects to a server.
         /// </summary>
-        protected virtual void SessionTrackerDisconnected()
+        private void SessionTrackerDisconnected()
         {
             SharingStage.Instance.SharingManagerConnected += SharingManagerConnected;
             SharingStage.Instance.SessionsTracker.ServerDisconnected -= SessionTrackerDisconnected;
@@ -101,7 +101,7 @@ namespace HoloToolkit.Sharing.Utilities
             }
         }
 
-        protected IEnumerator AutoConnect()
+        private IEnumerator AutoConnect()
         {
             if (SharingStage.Instance.ShowDetailedLogs)
             {

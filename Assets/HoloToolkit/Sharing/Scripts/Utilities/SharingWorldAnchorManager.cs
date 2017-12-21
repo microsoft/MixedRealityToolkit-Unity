@@ -200,11 +200,8 @@ namespace HoloToolkit.Sharing
                 SharingStage.Instance.SharingManagerConnected += Connected;
                 SharingStage.Instance.SharingManagerDisconnected -= Disconnected;
 
-                if (SharingStage.Instance.RoomManagerAdapter != null)
-                {
-                    SharingStage.Instance.RoomManagerAdapter.UserJoinedRoomEvent -= RoomManagerListener_OnRoomJoined;
-                    SharingStage.Instance.RoomManagerAdapter.UserLeftRoomEvent -= RoomManagerListener_OnLeftRoom;
-                }
+                SharingStage.Instance.RoomManagerAdapter.UserJoinedRoomEvent -= RoomManagerListener_OnRoomJoined;
+                SharingStage.Instance.RoomManagerAdapter.UserLeftRoomEvent -= RoomManagerListener_OnLeftRoom;
             }
 
             if (ShowDetailedLogs)

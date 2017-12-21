@@ -48,8 +48,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private Vector3 mAwakeScale;
 
-        protected override void Awake()
-        { 
+        private void Awake()
+        {
             mAwakeScale = transform.localScale;
         }
 
