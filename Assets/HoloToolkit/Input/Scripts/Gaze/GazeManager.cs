@@ -183,7 +183,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Updates the current gaze information, so that the gaze origin and normal are accurate.
         /// </summary>
-        protected virtual void UpdateGazeInfo()
+        private void UpdateGazeInfo()
         {
             if (GazeTransform == null)
             {
@@ -250,7 +250,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected void UpdateHitPosition()
+        private void UpdateHitPosition()
         {
             HitPosition = (Rays[0].origin + (lastHitDistance * Rays[0].direction));
         }
