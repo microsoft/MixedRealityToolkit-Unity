@@ -4,7 +4,7 @@
 #if UNITY_EDITOR
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Helper functions for file I/O

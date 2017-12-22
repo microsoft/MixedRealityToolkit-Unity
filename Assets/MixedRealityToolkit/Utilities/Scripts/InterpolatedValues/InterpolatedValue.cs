@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Base class that provides the common logic for interpolating between values. This class does not

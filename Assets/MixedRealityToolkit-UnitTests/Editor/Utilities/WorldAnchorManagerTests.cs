@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using MixedRealityToolkit.Common;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace MixedRealityToolkit.Tests
 {

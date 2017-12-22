@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Static class containing interpolation-related utility functions.

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Adds an FPS counter to the debug panel.

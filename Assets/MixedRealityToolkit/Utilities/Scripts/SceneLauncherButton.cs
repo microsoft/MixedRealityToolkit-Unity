@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using MixedRealityToolkit.Input;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     public class SceneLauncherButton : MonoBehaviour, IInputClickHandler
     {

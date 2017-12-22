@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     // Shows / hides based on whether named member is null
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

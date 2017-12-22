@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using GLTF;
 using System.Collections;
 using UnityEngine.XR.WSA.Input;
+using MixedRealityToolkit.Common;
 
 #if !UNITY_EDITOR
 using Windows.Foundation;

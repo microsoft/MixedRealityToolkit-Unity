@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System;
+using MixedRealityToolkit.Common;
 
 namespace MixedRealityToolkit.Input
 {

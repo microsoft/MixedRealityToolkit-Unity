@@ -18,7 +18,7 @@ using Windows.UI.Input.Spatial;
 #endif
 #endif
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Extensions for the InteractionSource class to add haptics and expose the renderable model.

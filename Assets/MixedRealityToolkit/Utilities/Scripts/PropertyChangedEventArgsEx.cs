@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     public static class PropertyChangedEventArgsEx
     {

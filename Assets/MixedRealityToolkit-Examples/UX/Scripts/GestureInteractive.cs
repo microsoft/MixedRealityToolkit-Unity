@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using MixedRealityToolkit;
 using MixedRealityToolkit.Input;
 using UnityEngine;
 using Cursor = MixedRealityToolkit.Input.Cursor;
+using MixedRealityToolkit.Common;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;

@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Sharing.Utilities;
 using System;
 using UnityEngine;
-using MixedRealityToolkit.Sharing.Utilities;
-using MixedRealityToolkit;
 
 namespace MixedRealityToolkit.Sharing
 {

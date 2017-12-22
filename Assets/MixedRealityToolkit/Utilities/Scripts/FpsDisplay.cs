@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Simple Behaviour which calculates the average frames per second over a number of frames and shows the FPS in a referenced Text control.

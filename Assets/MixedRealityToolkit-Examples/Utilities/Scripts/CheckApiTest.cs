@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,19 +12,19 @@ public class CheckApiTest : MonoBehaviour
 
     public void CheckV5Api()
     {
-        text.text = "UniversalApiContract\nVersion 5 available? " + MixedRealityToolkit.WindowsApiChecker.UniversalApiContractV5_IsAvailable;
+        text.text = "UniversalApiContract\nVersion 5 available? " + WindowsApiChecker.UniversalApiContractV5_IsAvailable;
         Debug.Log(text.text);
     }
 
     public void CheckV4Api()
     {
-        text.text = "UniversalApiContract\nVersion 4 available? " + MixedRealityToolkit.WindowsApiChecker.UniversalApiContractV4_IsAvailable;
+        text.text = "UniversalApiContract\nVersion 4 available? " + WindowsApiChecker.UniversalApiContractV4_IsAvailable;
         Debug.Log(text.text);
     }
 
     public void CheckV3Api()
     {
-        text.text = "UniversalApiContract\nVersion 3 available? " + MixedRealityToolkit.WindowsApiChecker.UniversalApiContractV3_IsAvailable;
+        text.text = "UniversalApiContract\nVersion 3 available? " + WindowsApiChecker.UniversalApiContractV3_IsAvailable;
         Debug.Log(text.text);
     }
 }

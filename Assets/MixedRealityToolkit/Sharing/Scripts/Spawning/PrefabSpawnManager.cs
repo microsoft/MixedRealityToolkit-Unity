@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using MixedRealityToolkit;
+using MixedRealityToolkit.Common;
 
 namespace MixedRealityToolkit.Sharing.Spawning
 {

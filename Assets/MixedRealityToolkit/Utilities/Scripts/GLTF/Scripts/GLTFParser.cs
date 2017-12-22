@@ -1,12 +1,10 @@
-using UnityEngine;
-using System.Collections;
+using Newtonsoft.Json;
 using System;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace GLTF
 {
-	public class GLTFParser
+    public class GLTFParser
 	{
 
 		private enum ChunkFormat : uint

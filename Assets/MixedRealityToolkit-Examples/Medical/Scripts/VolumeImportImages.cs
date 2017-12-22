@@ -2,8 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
-using System.Linq;
+using MixedRealityToolkit.Common;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace MixedRealityToolkit

@@ -6,7 +6,7 @@
 using System.Threading;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     public static class TextureScale
     {

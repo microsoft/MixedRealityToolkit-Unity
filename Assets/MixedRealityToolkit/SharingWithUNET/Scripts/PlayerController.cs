@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input;
 using UnityEngine;
 using UnityEngine.Networking;
-using MixedRealityToolkit.Input;
 
 namespace MixedRealityToolkit.SharingWithUNET
 {

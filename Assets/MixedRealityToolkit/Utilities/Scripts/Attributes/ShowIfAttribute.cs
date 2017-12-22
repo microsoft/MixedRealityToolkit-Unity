@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     // Base class for show / hide - shows or hides fields & properties in the editor based on the value of a member in the target object
     public abstract class ShowIfAttribute : Attribute

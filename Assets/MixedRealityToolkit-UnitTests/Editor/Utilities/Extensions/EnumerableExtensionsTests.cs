@@ -1,5 +1,6 @@
-﻿using System;
+﻿using MixedRealityToolkit.Common;
 using NUnit.Framework;
+using System;
 
 namespace MixedRealityToolkit.Tests
 {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using MixedRealityToolkit.Common;
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using System.Collections.Generic;

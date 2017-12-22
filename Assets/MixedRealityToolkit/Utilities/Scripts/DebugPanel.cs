@@ -4,12 +4,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Script to control writing the Debug.Log output to a control.
     /// </summary>
-    public class DebugPanel : SingleInstance<DebugPanel>
+    public class DebugPanel : Singleton<DebugPanel>
     {
         /// <summary>
         /// The text mesh we will write log messages to

@@ -19,7 +19,7 @@ using MixedRealityToolkit.SpatialMapping;
 #endif
 
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Wrapper around world anchor store to streamline some of the persistence API busy work.

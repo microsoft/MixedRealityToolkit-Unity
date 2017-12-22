@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using MixedRealityToolkit.Common;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;

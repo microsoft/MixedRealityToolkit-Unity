@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialMapping;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEditor;
 using UnityEngine;
-using MixedRealityToolkit.SpatialMapping;
 
 namespace MixedRealityToolkit
 {

@@ -12,7 +12,7 @@ using UnityEngine.VR.WSA;
 #endif
 #endif
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// StabilizationPlaneModifier handles the setting of the stabilization plane in several ways.

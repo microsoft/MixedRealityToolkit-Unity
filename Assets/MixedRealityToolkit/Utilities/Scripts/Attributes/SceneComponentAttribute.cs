@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     // Displays a drop-down menu of Component objects that are limited to the scene (no prefabs)
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

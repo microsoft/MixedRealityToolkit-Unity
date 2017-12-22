@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     [CustomEditor(typeof(SceneLauncher))]
     public class SceneLauncherEditor : Editor

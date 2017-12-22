@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     [Obsolete("Use FadeManager")]
     public class FadeScript : Singleton<FadeScript>

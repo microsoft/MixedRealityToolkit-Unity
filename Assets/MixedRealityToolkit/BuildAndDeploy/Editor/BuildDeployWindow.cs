@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -82,7 +83,8 @@ namespace MixedRealityToolkit
             {
                 bool isConnected = false;
 
-                if (USBDeviceListener.USBDevices != null)
+                if (
+                    USBDeviceListener.USBDevices != null)
                 {
                     foreach (USBDeviceInfo device in USBDeviceListener.USBDevices)
                     {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     public static class EventSystemExtensions
     {

@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     // Displays a drop-down list of available material properties from the material supplied in a named member
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

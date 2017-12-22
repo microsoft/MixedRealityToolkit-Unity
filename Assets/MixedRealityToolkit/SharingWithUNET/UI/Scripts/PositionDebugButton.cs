@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit;
-using System.Collections;
-using System.Collections.Generic;
+using MixedRealityToolkit.Common;
 using UnityEngine;
 
 namespace MixedRealityToolkit.SharingWithUNET
 {
-    public class PositionDebugButton : SingleInstance<PositionDebugButton>
+    public class PositionDebugButton : Singleton<PositionDebugButton>
     {
 
         public GameObject DisconnectedPosition { get; set; }

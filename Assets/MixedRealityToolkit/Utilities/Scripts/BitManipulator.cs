@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Helper class for bit manipulation.

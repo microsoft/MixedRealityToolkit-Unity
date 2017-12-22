@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using System.Collections.Generic;
-using UnityEngine;
+using MixedRealityToolkit.Common;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// Controls a scrollable list of sessions.
     /// </summary>
-    public class ScrollingSessionListUIController : SingleInstance<ScrollingSessionListUIController>
+    public class ScrollingSessionListUIController : Singleton<ScrollingSessionListUIController>
     {
         /// <summary>
         /// Object which controls finding sessions so we know what to put on our buttons.

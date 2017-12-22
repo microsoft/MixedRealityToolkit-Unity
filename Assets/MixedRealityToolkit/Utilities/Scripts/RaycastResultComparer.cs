@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     public struct ComparableRaycastResult
     {

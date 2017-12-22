@@ -3,7 +3,7 @@
 using UnityEngine;
 using MixedRealityToolkit.Input;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Toggles if the debug window is visible or not.

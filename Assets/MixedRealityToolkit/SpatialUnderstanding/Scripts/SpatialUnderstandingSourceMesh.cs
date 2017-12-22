@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialMapping;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using MixedRealityToolkit.SpatialMapping;
 
 namespace MixedRealityToolkit.SpatialUnderstanding
 {

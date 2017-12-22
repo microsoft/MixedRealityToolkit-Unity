@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using MixedRealityToolkit;
-using System.Collections.Generic;
-using System;
-using System.Collections.ObjectModel;
+using MixedRealityToolkit.Common;
 using MixedRealityToolkit.SpatialUnderstanding;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using UnityEngine;
 
 namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 {

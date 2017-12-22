@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 using MixedRealityToolkit.Input;
 using Cursor = MixedRealityToolkit.Input.Cursor;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply Mixed Reality Scene Settings.
