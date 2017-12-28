@@ -6,7 +6,7 @@ using SysDiag = System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// SimpleMeshSerializer converts a UnityEngine.Mesh object to and from an array of bytes.
@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
         /// <returns>Binary representation of the Mesh objects.</returns>
         public static byte[] Serialize(IEnumerable<Mesh> meshes)
         {
-            byte[] data = null;
+            byte[] data;
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -38,6 +38,36 @@ namespace HoloToolkit.Unity
                     foreach (Mesh mesh in meshes)
                     {
                         WriteMesh(writer, mesh);
+                    }
+
+                    stream.Position = 0;
+                    data = new byte[stream.Length];
+                    stream.Read(data, 0, data.Length);
+                }
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// Serializes a list of MeshFilter objects into a byte array.
+        /// Transforms vertices into world space before writing to the file.
+		/// Optionally transforms the vertices into the space of the supplied secondarySpace
+        /// </summary>
+        /// <param name="meshes">List of MeshFilter objects to be serialized.</param>
+        /// <param name="secondarySpace">New space to transform the vertices into.</param>
+        /// <returns>Binary representation of the Mesh objects.</returns>
+        public static byte[] Serialize(IEnumerable<MeshFilter> meshes, Transform secondarySpace = null)
+        {
+            byte[] data = null;
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    foreach (MeshFilter meshFilter in meshes)
+                    {
+                        WriteMesh(writer, meshFilter.sharedMesh, meshFilter.transform, secondarySpace);
                     }
 
                     stream.Position = 0;
@@ -77,13 +107,15 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="writer">BinaryWriter representing the data stream.</param>
         /// <param name="mesh">The Mesh object to be written.</param>
-        private static void WriteMesh(BinaryWriter writer, Mesh mesh)
+        /// <param name="transform">If provided, will transform all vertices into world space before writing.</param>
+        /// <param name="secondarySpace">Secondary space to transform the vertices into.</param>
+        private static void WriteMesh(BinaryWriter writer, Mesh mesh, Transform transform = null, Transform secondarySpace = null)
         {
             SysDiag.Debug.Assert(writer != null);
 
             // Write the mesh data.
             WriteMeshHeader(writer, mesh.vertexCount, mesh.triangles.Length);
-            WriteVertices(writer, mesh.vertices);
+            WriteVertices(writer, mesh.vertices, transform, secondarySpace);
             WriteTriangleIndicies(writer, mesh.triangles);
         }
 
@@ -148,15 +180,34 @@ namespace HoloToolkit.Unity
         /// </summary>
         /// <param name="reader">BinaryReader representing the data stream.</param>
         /// <param name="vertices">Array of Vector3 structures representing each vertex.</param>
-        private static void WriteVertices(BinaryWriter writer, Vector3[] vertices)
+        /// <param name="transform">If provided, will convert all vertices into world space before writing.</param>
+        /// <param name="secondarySpace">If provided, will convert the vertices local to this space.</param>
+        private static void WriteVertices(BinaryWriter writer, Vector3[] vertices, Transform transform = null, Transform secondarySpace = null)
         {
             SysDiag.Debug.Assert(writer != null);
 
-            foreach (Vector3 vertex in vertices)
+            if (transform != null)
             {
-                writer.Write(vertex.x);
-                writer.Write(vertex.y);
-                writer.Write(vertex.z);
+                for (int v = 0, vLength = vertices.Length; v < vLength; ++v)
+                {
+                    Vector3 vertex = transform.TransformPoint(vertices[v]);
+                    if (secondarySpace != null)
+                    {
+                        vertex = secondarySpace.InverseTransformPoint(vertex);
+                    }
+                    writer.Write(vertex.x);
+                    writer.Write(vertex.y);
+                    writer.Write(vertex.z);
+                }
+            }
+            else
+            {
+                foreach (Vector3 vertex in vertices)
+                {
+                    writer.Write(vertex.x);
+                    writer.Write(vertex.y);
+                    writer.Write(vertex.z);
+                }
             }
         }
 

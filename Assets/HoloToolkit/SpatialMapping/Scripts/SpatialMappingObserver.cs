@@ -1,11 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VR.WSA;
 
-namespace HoloToolkit.Unity
+#if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA;
+#else
+using UnityEngine.VR.WSA;
+#endif
+#endif
+
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// Spatial Mapping Observer states.
@@ -24,6 +32,27 @@ namespace HoloToolkit.Unity
     }
 
     /// <summary>
+    /// Spatial Mapping Volume Type
+    /// </summary>
+    public enum ObserverVolumeTypes
+    {
+        /// <summary>
+        /// The observed volume is an axis aligned box.
+        /// </summary>
+        AxisAlignedBox = 0,
+
+        /// <summary>
+        /// The observed volume is an oriented box.
+        /// </summary>
+        OrientedBox = 1,
+
+        /// <summary>
+        /// The observed volume is a sphere.
+        /// </summary>
+        Sphere = 2
+    }
+
+    /// <summary>
     /// The SpatialMappingObserver class encapsulates the SurfaceObserver into an easy to use
     /// object that handles managing the observed surfaces and the rendering of surface geometry.
     /// </summary>
@@ -32,94 +61,233 @@ namespace HoloToolkit.Unity
         [Tooltip("The number of triangles to calculate per cubic meter.")]
         public float TrianglesPerCubicMeter = 500f;
 
-        [Tooltip("The extents of the observation volume.")]
-        public Vector3 Extents = Vector3.one * 10.0f;
-
         [Tooltip("How long to wait (in sec) between Spatial Mapping updates.")]
         public float TimeBetweenUpdates = 3.5f;
-
-        /// <summary>
-        /// Our Surface Observer object for generating/updating Spatial Mapping data.
-        /// </summary>
-        private SurfaceObserver observer;
-
-        /// <summary>
-        /// A dictionary of surfaces that our Surface Observer knows about.
-        /// Key: surface id
-        /// Value: GameObject containing a Mesh, a MeshRenderer and a Material
-        /// </summary>
-        private Dictionary<int, GameObject> surfaces = new Dictionary<int, GameObject>();
-
-        /// <summary>
-        /// A queue of SurfaceData objects. SurfaceData objects are sent to the
-        /// SurfaceObserver to generate meshes of the environment.
-        /// </summary>
-        private Queue<SurfaceData> surfaceWorkQueue = new Queue<SurfaceData>();
-
-        /// <summary>
-        /// To prevent too many meshes from being generated at the same time, we will
-        /// only request one mesh to be created at a time.  This variable will track
-        /// if a mesh creation request is in flight.
-        /// </summary>
-        private bool surfaceWorkOutstanding = false;
-
-        /// <summary>
-        /// Used to track when the Observer was last updated.
-        /// </summary>
-        private float updateTime;
 
         /// <summary>
         /// Indicates the current state of the Surface Observer.
         /// </summary>
         public ObserverStates ObserverState { get; private set; }
 
-        private void Awake()
+        /// <summary>
+        /// Indicates the current type of the observed volume
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The shape of the observation volume.")]
+        private ObserverVolumeTypes observerVolumeType = ObserverVolumeTypes.AxisAlignedBox;
+        public ObserverVolumeTypes ObserverVolumeType
         {
-            observer = new SurfaceObserver();
-            ObserverState = ObserverStates.Stopped;
+            get
+            {
+                return observerVolumeType;
+            }
+            set
+            {
+                if (observerVolumeType != value)
+                {
+                    observerVolumeType = value;
+                    SwitchObservedVolume();
+                }
+            }
+        }
+
+#if UNITY_WSA
+        /// <summary>
+        /// Our Surface Observer object for generating/updating Spatial Mapping data.
+        /// </summary>
+        private SurfaceObserver observer;
+
+        /// <summary>
+        /// A queue of surfaces that need their meshes created (or updated).
+        /// </summary>
+        private readonly Queue<SurfaceId> surfaceWorkQueue = new Queue<SurfaceId>();
+#endif
+
+        /// <summary>
+        /// To prevent too many meshes from being generated at the same time, we will
+        /// only request one mesh to be created at a time.  This variable will track
+        /// if a mesh creation request is in flight.
+        /// </summary>
+        private SurfaceObject? outstandingMeshRequest = null;
+
+        /// <summary>
+        /// When surfaces are replaced or removed, rather than destroying them, we'll keep
+        /// one as a spare for use in outstanding mesh requests. That way, we'll have fewer
+        /// game object create/destroy cycles, which should help performance.
+        /// </summary>
+        private SurfaceObject? spareSurfaceObject = null;
+
+        /// <summary>
+        /// Used to track when the Observer was last updated.
+        /// </summary>
+        private float updateTime;
+
+        [SerializeField]
+        [Tooltip("The extents of the observation volume.")]
+        private Vector3 extents = Vector3.one * 10.0f;
+        public Vector3 Extents
+        {
+            get
+            {
+                return extents;
+            }
+            set
+            {
+                if (extents != value)
+                {
+                    extents = value;
+                    SwitchObservedVolume();
+                }
+            }
         }
 
         /// <summary>
-        /// Called when the GaemObject is initialized.
+        /// The origin of the observation volume.
         /// </summary>
-        private void Start()
+        [SerializeField]
+        [Tooltip("The origin of the observation volume.")]
+        private Vector3 origin = Vector3.zero;
+        public Vector3 Origin
         {
-            observer.SetVolumeAsAxisAlignedBox(Vector3.zero, Extents);
+            get
+            {
+                return origin;
+            }
+            set
+            {
+                if (origin != value)
+                {
+                    origin = value;
+                    SwitchObservedVolume();
+                }
+            }
         }
 
+        /// <summary>
+        /// The direction of the observed volume, if an oriented box is chosen.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The direction of the observation volume.")]
+        private Quaternion orientation = Quaternion.identity;
+        public Quaternion Orientation
+        {
+            get
+            {
+                return orientation;
+            }
+            set
+            {
+                if (orientation != value)
+                {
+                    orientation = value;
+                    // Only needs to be changed if the corresponding mode is active.
+                    if (ObserverVolumeType == ObserverVolumeTypes.OrientedBox)
+                    {
+                        SwitchObservedVolume();
+                    }
+                }
+            }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            ObserverState = ObserverStates.Stopped;
+        }
+
+#if UNITY_WSA
         /// <summary>
         /// Called once per frame.
         /// </summary>
         private void Update()
         {
-            // Only do processing if the observer is running.
-            if (ObserverState == ObserverStates.Running)
+            if ((ObserverState == ObserverStates.Running) && (outstandingMeshRequest == null))
             {
-                // If we don't have mesh creation in flight, but we could schedule mesh creation, do so.
-                if (surfaceWorkOutstanding == false && surfaceWorkQueue.Count > 0)
+                if (surfaceWorkQueue.Count > 0)
                 {
-                    // Pop the SurfaceData off the queue.  A more sophisticated algorithm could prioritize
+                    // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
                     // the queue based on distance to the user or some other metric.
-                    SurfaceData surfaceData = surfaceWorkQueue.Dequeue();
+                    SurfaceId surfaceID = surfaceWorkQueue.Dequeue();
 
-                    // If RequestMeshAsync succeeds, then we have successfully scheduled mesh creation.
-                    surfaceWorkOutstanding = observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady);
+                    string surfaceName = ("Surface-" + surfaceID.handle);
+
+                    SurfaceObject newSurface;
+                    WorldAnchor worldAnchor;
+
+                    if (spareSurfaceObject == null)
+                    {
+                        newSurface = CreateSurfaceObject(
+                            mesh: null,
+                            objectName: surfaceName,
+                            parentObject: transform,
+                            meshID: surfaceID.handle,
+                            drawVisualMeshesOverride: false
+                            );
+
+                        worldAnchor = newSurface.Object.AddComponent<WorldAnchor>();
+                    }
+                    else
+                    {
+                        newSurface = spareSurfaceObject.Value;
+                        spareSurfaceObject = null;
+
+                        Debug.Assert(!newSurface.Object.activeSelf);
+                        newSurface.Object.SetActive(true);
+
+                        Debug.Assert(newSurface.Filter.sharedMesh == null);
+                        Debug.Assert(newSurface.Collider.sharedMesh == null);
+                        newSurface.Object.name = surfaceName;
+                        Debug.Assert(newSurface.Object.transform.parent == transform);
+                        newSurface.ID = surfaceID.handle;
+                        newSurface.Renderer.enabled = false;
+
+                        worldAnchor = newSurface.Object.GetComponent<WorldAnchor>();
+                        Debug.Assert(worldAnchor != null);
+                    }
+
+                    var surfaceData = new SurfaceData(
+                        surfaceID,
+                        newSurface.Filter,
+                        worldAnchor,
+                        newSurface.Collider,
+                        TrianglesPerCubicMeter,
+                        _bakeCollider: true
+                        );
+
+                    if (observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady))
+                    {
+                        outstandingMeshRequest = newSurface;
+                    }
+                    else
+                    {
+                        Debug.LogErrorFormat("Mesh request for failed. Is {0} a valid Surface ID?", surfaceID.handle);
+
+                        Debug.Assert(outstandingMeshRequest == null);
+                        ReclaimSurface(newSurface);
+                    }
                 }
-                // If we don't have any other work to do, and enough time has passed since the previous
-                // update request, request updates for the spatial mapping data.
-                else if (surfaceWorkOutstanding == false && (Time.time - updateTime) >= TimeBetweenUpdates)
+                else if ((Time.unscaledTime - updateTime) >= TimeBetweenUpdates)
                 {
                     observer.Update(SurfaceObserver_OnSurfaceChanged);
-                    updateTime = Time.time;
+                    updateTime = Time.unscaledTime;
                 }
             }
         }
+#endif
 
         /// <summary>
         /// Starts the Surface Observer.
         /// </summary>
         public void StartObserving()
         {
+#if UNITY_WSA
+            if (observer == null)
+            {
+                observer = new SurfaceObserver();
+                SwitchObservedVolume();
+            }
+
             if (ObserverState != ObserverStates.Running)
             {
                 Debug.Log("Starting the observer.");
@@ -128,6 +296,7 @@ namespace HoloToolkit.Unity
                 // We want the first update immediately.
                 updateTime = 0;
             }
+#endif
         }
 
         /// <summary>
@@ -136,13 +305,97 @@ namespace HoloToolkit.Unity
         /// <remarks>Sets the Surface Observer state to ObserverStates.Stopped.</remarks>
         public void StopObserving()
         {
+#if UNITY_WSA
             if (ObserverState == ObserverStates.Running)
             {
                 Debug.Log("Stopping the observer.");
                 ObserverState = ObserverStates.Stopped;
+
+                surfaceWorkQueue.Clear();
+                updateTime = 0;
             }
+#endif
         }
 
+        /// <summary>
+        /// Cleans up all memory and objects associated with the observer.
+        /// </summary>
+        public void CleanupObserver()
+        {
+#if UNITY_WSA
+            StopObserving();
+
+            if (observer != null)
+            {
+                observer.Dispose();
+                observer = null;
+            }
+
+            if (outstandingMeshRequest != null)
+            {
+                CleanUpSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+            }
+
+            if (spareSurfaceObject != null)
+            {
+                CleanUpSurface(spareSurfaceObject.Value);
+                spareSurfaceObject = null;
+            }
+
+            Cleanup();
+#endif
+        }
+
+        /// <summary>
+        /// Can be called to override the default origin for the observed volume.  Can only be called while observer has been started.
+        /// Kept for compatibility with Examples/SpatialUnderstanding
+        /// </summary>
+        public bool SetObserverOrigin(Vector3 origin)
+        {
+            bool originUpdated = false;
+
+#if UNITY_WSA
+            if (observer != null)
+            {
+                Origin = origin;
+                originUpdated = true;
+            }
+#endif
+
+            return originUpdated;
+        }
+
+        /// <summary>
+        /// Change the observed volume according to ObserverVolumeType.
+        /// </summary>
+        private void SwitchObservedVolume()
+        {
+#if UNITY_WSA
+            if (observer == null)
+            {
+                return;
+            }
+
+            switch (observerVolumeType)
+            {
+                case ObserverVolumeTypes.AxisAlignedBox:
+                    observer.SetVolumeAsAxisAlignedBox(origin, extents);
+                    break;
+                case ObserverVolumeTypes.OrientedBox:
+                    observer.SetVolumeAsOrientedBox(origin, extents, orientation);
+                    break;
+                case ObserverVolumeTypes.Sphere:
+                    observer.SetVolumeAsSphere(origin, extents.magnitude); //workaround
+                    break;
+                default:
+                    observer.SetVolumeAsAxisAlignedBox(origin, extents);
+                    break;
+            }
+#endif
+        }
+
+#if UNITY_WSA
         /// <summary>
         /// Handles the SurfaceObserver's OnDataReady event.
         /// </summary>
@@ -151,21 +404,58 @@ namespace HoloToolkit.Unity
         /// <param name="elapsedCookTimeSeconds">Seconds between mesh cook request and propagation of this event.</param>
         private void SurfaceObserver_OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
         {
-            GameObject surface;
-            if (surfaces.TryGetValue(cookedData.id.handle, out surface))
+            if (outstandingMeshRequest == null)
             {
-                // Set the draw material for the renderer.
-                MeshRenderer renderer = surface.GetComponent<MeshRenderer>();
-                renderer.sharedMaterial = SpatialMappingManager.Instance.SurfaceMaterial;
-                renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+                Debug.LogErrorFormat("Got OnDataReady for surface {0} while no request was outstanding.",
+                    cookedData.id.handle
+                    );
 
-                if (SpatialMappingManager.Instance.CastShadows == false)
-                {
-                    renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                }
+                return;
             }
 
-            surfaceWorkOutstanding = false;
+            if (!IsMatchingSurface(outstandingMeshRequest.Value, cookedData))
+            {
+                Debug.LogErrorFormat("Got mismatched OnDataReady for surface {0} while request for surface {1} was outstanding.",
+                    cookedData.id.handle,
+                    outstandingMeshRequest.Value.ID
+                    );
+
+                ReclaimSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+
+                return;
+            }
+
+            if (ObserverState != ObserverStates.Running)
+            {
+                Debug.LogFormat("Got OnDataReady for surface {0}, but observer was no longer running.",
+                    cookedData.id.handle
+                    );
+
+                ReclaimSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+
+                return;
+            }
+
+            if (!outputWritten)
+            {
+                ReclaimSurface(outstandingMeshRequest.Value);
+                outstandingMeshRequest = null;
+
+                return;
+            }
+
+            Debug.Assert(outstandingMeshRequest.Value.Object.activeSelf);
+            outstandingMeshRequest.Value.Renderer.enabled = SpatialMappingManager.Instance.DrawVisualMeshes;
+
+            SurfaceObject? replacedSurface = UpdateOrAddSurfaceObject(outstandingMeshRequest.Value, destroyGameObjectIfReplaced: false);
+            outstandingMeshRequest = null;
+
+            if (replacedSurface != null)
+            {
+                ReclaimSurface(replacedSurface.Value);
+            }
         }
 
         /// <summary>
@@ -175,7 +465,7 @@ namespace HoloToolkit.Unity
         /// <param name="changeType">The type of change that occurred on the surface.</param>
         /// <param name="bounds">The bounds of the surface.</param>
         /// <param name="updateTime">The date and time at which the change occurred.</param>
-        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updateTime)
+        private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, DateTime updateTime)
         {
             // Verify that the client of the Surface Observer is expecting updates.
             if (ObserverState != ObserverStates.Running)
@@ -183,74 +473,58 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            GameObject surface;
-
             switch (changeType)
             {
-                // Adding and updating are nearly identical.  The only difference is if a new GameObject to contain
-                // the surface needs to be created.
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
-                    // Check to see if the surface is known to the observer.
-                    if (!surfaces.TryGetValue(id.handle, out surface))
-                    {
-                        // If we are adding a new surface, construct a GameObject
-                        // to represent its state and attach some Mesh-related
-                        // components to it.
-                        surface = AddSurfaceObject(null, string.Format("Surface-{0}", id.handle), transform);
-
-                        surface.AddComponent<WorldAnchor>();
-
-                        // Add the surface to our dictionary of known surfaces so
-                        // we can interact with it later.
-                        surfaces.Add(id.handle, surface);
-                    }
-
-                    // Add the request to create the mesh for this surface to our work queue.
-                    QueueSurfaceDataRequest(id, surface);
+                    surfaceWorkQueue.Enqueue(id);
                     break;
 
                 case SurfaceChange.Removed:
-                    // Always process surface removal events.
-                    if (surfaces.TryGetValue(id.handle, out surface))
+                    SurfaceObject? removedSurface = RemoveSurfaceIfFound(id.handle, destroyGameObject: false);
+                    if (removedSurface != null)
                     {
-                        RemoveSurfaceObject(surface);
-                        surfaces.Remove(id.handle);
+                        ReclaimSurface(removedSurface.Value);
                     }
+                    break;
+
+                default:
+                    Debug.LogErrorFormat("Unexpected {0} value: {1}.", changeType.GetType(), changeType);
                     break;
             }
         }
-
-        /// <summary>
-        /// Calls GetMeshAsync to update the SurfaceData and re-activate the surface object when ready.
-        /// </summary>
-        /// <param name="id">Identifier of the SurfaceData object to update.</param>
-        /// <param name="surface">The SurfaceData object to update.</param>
-        private void QueueSurfaceDataRequest(SurfaceId id, GameObject surface)
+        private bool IsMatchingSurface(SurfaceObject surfaceObject, SurfaceData surfaceData)
         {
-            SurfaceData surfaceData = new SurfaceData(id,
-                                                        surface.GetComponent<MeshFilter>(),
-                                                        surface.GetComponent<WorldAnchor>(),
-                                                        surface.GetComponent<MeshCollider>(),
-                                                        TrianglesPerCubicMeter,
-                                                        true);
-
-            surfaceWorkQueue.Enqueue(surfaceData);
+            return (surfaceObject.ID == surfaceData.id.handle)
+                && (surfaceObject.Filter == surfaceData.outputMesh)
+                && (surfaceObject.Collider == surfaceData.outputCollider)
+                ;
         }
+#endif
 
         /// <summary>
         /// Called when the GameObject is unloaded.
         /// </summary>
         private void OnDestroy()
         {
-            // Stop the observer.
-            StopObserving();
+            CleanupObserver();
+        }
 
-            observer.Dispose();
-            observer = null;
+        private void ReclaimSurface(SurfaceObject availableSurface)
+        {
+            if (spareSurfaceObject == null)
+            {
+                CleanUpSurface(availableSurface, destroyGameObject: false);
 
-            // Clear our surface mesh collection.
-            surfaces.Clear();
+                availableSurface.Object.name = "Unused Surface";
+                availableSurface.Object.SetActive(false);
+
+                spareSurfaceObject = availableSurface;
+            }
+            else
+            {
+                CleanUpSurface(availableSurface);
+            }
         }
     }
 }

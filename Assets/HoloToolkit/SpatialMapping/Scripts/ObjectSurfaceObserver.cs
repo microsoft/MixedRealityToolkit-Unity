@@ -3,25 +3,32 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     public class ObjectSurfaceObserver : SpatialMappingSource
     {
         [Tooltip("The room model to use when loading meshes in Unity.")]
-        public GameObject roomModel;
+        public GameObject RoomModel;
 
-        // Use this for initialization.
+        [Tooltip("If greater than or equal to zero, surface objects will claim to be updated at this period. This is useful when working with libraries that respond to updates (such as the SpatialUnderstanding library). If negative, surfaces will not claim to be updated.")]
+        public float SimulatedUpdatePeriodInSeconds = -1;
+
         private void Start()
         {
-#if UNITY_EDITOR
-            // When in the Unity editor, try loading saved meshes from a model.
-            Load(roomModel);
-
-            if (GetMeshFilters().Count > 0)
-            {
-                SpatialMappingManager.Instance.SetSpatialMappingSource(this);
-            }
+#if UNITY_2017_2_OR_NEWER
+            if (!UnityEngine.XR.XRDevice.isPresent && Application.isEditor)
+#else
+            if (!UnityEngine.VR.VRDevice.isPresent && Application.isEditor)
 #endif
+            {
+                // When in the Unity editor and not remoting, try loading saved meshes from a model.
+                Load(RoomModel);
+
+                if (GetMeshFilters().Count > 0)
+                {
+                    SpatialMappingManager.Instance.SetSpatialMappingSource(this);
+                }
+            }
         }
 
         /// <summary>
@@ -36,35 +43,21 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            GameObject roomObject = GameObject.Instantiate(roomModel);
+            GameObject roomObject = Instantiate(roomModel);
             Cleanup();
 
             try
             {
                 MeshFilter[] roomFilters = roomObject.GetComponentsInChildren<MeshFilter>();
 
-                foreach (MeshFilter filter in roomFilters)
+                for (int iMesh = 0; iMesh < roomFilters.Length; iMesh++)
                 {
-                    GameObject surface = AddSurfaceObject(filter.sharedMesh, "roomMesh-" + surfaceObjects.Count, transform);
-                    Renderer renderer = surface.GetComponent<MeshRenderer>();
-
-                    if (SpatialMappingManager.Instance.DrawVisualMeshes == false)
-                    {
-                        renderer.enabled = false;
-                    }
-
-                    if (SpatialMappingManager.Instance.CastShadows == false)
-                    {
-                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                    }
-
-                    // Reset the surface mesh collider to fit the updated mesh. 
-                    // Unity tribal knowledge indicates that to change the mesh assigned to a
-                    // mesh collider, the mesh must first be set to null.  Presumably there
-                    // is a side effect in the setter when setting the shared mesh to null.
-                    MeshCollider collider = surface.GetComponent<MeshCollider>();
-                    collider.sharedMesh = null;
-                    collider.sharedMesh = surface.GetComponent<MeshFilter>().sharedMesh;
+                    AddSurfaceObject(CreateSurfaceObject(
+                        mesh: roomFilters[iMesh].sharedMesh,
+                        objectName: "roomMesh-" + iMesh,
+                        parentObject: transform,
+                        meshID: iMesh
+                        ));
                 }
             }
             catch
@@ -73,9 +66,27 @@ namespace HoloToolkit.Unity
             }
             finally
             {
-                if (roomModel != null && roomObject != null)
+                if (roomObject != null)
                 {
-                    GameObject.DestroyImmediate(roomObject);
+                    DestroyImmediate(roomObject);
+                }
+            }
+        }
+
+        private float lastUpdateUnscaledTimeInSeconds = 0;
+
+        private void Update()
+        {
+            if (SimulatedUpdatePeriodInSeconds >= 0)
+            {
+                if ((Time.unscaledTime - lastUpdateUnscaledTimeInSeconds) >= SimulatedUpdatePeriodInSeconds)
+                {
+                    for (int iSurface = 0; iSurface < SurfaceObjects.Count; iSurface++)
+                    {
+                        UpdateOrAddSurfaceObject(SurfaceObjects[iSurface]);
+                    }
+
+                    lastUpdateUnscaledTimeInSeconds = Time.unscaledTime;
                 }
             }
         }

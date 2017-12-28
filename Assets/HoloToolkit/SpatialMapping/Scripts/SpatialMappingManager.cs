@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// The SpatialMappingManager class allows applications to use a SurfaceObserver or a stored 
@@ -19,16 +21,20 @@ namespace HoloToolkit.Unity
         public int PhysicsLayer = 31;
 
         [Tooltip("The material to use for rendering spatial mapping data.")]
-        public Material surfaceMaterial;
+        [SerializeField]
+        private Material surfaceMaterial;
 
         [Tooltip("Determines if the surface observer should be automatically started.")]
-        public bool autoStartObserver = true;
+        [SerializeField]
+        private bool autoStartObserver = true;
 
         [Tooltip("Determines if spatial mapping data will be rendered.")]
-        public bool drawVisualMeshes = false;
+        [SerializeField]
+        private bool drawVisualMeshes = false;
 
         [Tooltip("Determines if spatial mapping data will cast shadows.")]
-        public bool castShadows = false;
+        [SerializeField]
+        private bool castShadows = false;
 
         /// <summary>
         /// Used for gathering real-time Spatial Mapping data on the HoloLens.
@@ -42,13 +48,48 @@ namespace HoloToolkit.Unity
         public float StartTime { get; private set; }
 
         /// <summary>
+        /// SurfaceMappingObserver GET
+        /// </summary>
+        public SpatialMappingObserver SurfaceObserver { get { return surfaceObserver; } }
+
+        /// <summary>
         /// The current source of spatial mapping data.
         /// </summary>
-        public SpatialMappingSource Source { get; private set; }
+        public SpatialMappingSource Source
+        {
+            get { return source; }
+
+            private set
+            {
+                if (source != value)
+                {
+                    UpdateRendering(false);
+
+                    var oldSource = source;
+                    source = value;
+
+                    UpdateRendering(DrawVisualMeshes);
+
+                    var handlers = SourceChanged;
+                    if (handlers != null)
+                    {
+                        handlers(this, PropertyChangedEventArgsEx.Create(() => Source, oldSource, source));
+                    }
+                }
+            }
+        }
+        private SpatialMappingSource source;
+
+        /// <summary>
+        /// Occurs when <see cref="Source" /> changes.
+        /// </summary>
+        public event EventHandler<PropertyChangedEventArgsEx<SpatialMappingSource>> SourceChanged;
 
         // Called when the GameObject is first created.
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             surfaceObserver = gameObject.GetComponent<SpatialMappingObserver>();
             Source = surfaceObserver;
         }
@@ -133,34 +174,23 @@ namespace HoloToolkit.Unity
         /// <param name="mappingSource">The source to switch to. Null means return to the live stream if possible.</param>
         public void SetSpatialMappingSource(SpatialMappingSource mappingSource)
         {
-            UpdateRendering(false);
-
-            if (mappingSource == null)
-            {
-                Source = surfaceObserver;
-            }
-            else
-            {
-                Source = mappingSource;
-            }
-
-            UpdateRendering(DrawVisualMeshes);
+            Source = (mappingSource ?? surfaceObserver);
         }
 
         /// <summary>
         /// Sets the material used by all Spatial Mapping meshes.
         /// </summary>
-        /// <param name="surfaceMaterial">New material to apply.</param>
-        public void SetSurfaceMaterial(Material surfaceMaterial)
+        /// <param name="setSurfaceMaterial">New material to apply.</param>
+        public void SetSurfaceMaterial(Material setSurfaceMaterial)
         {
-            SurfaceMaterial = surfaceMaterial;
+            SurfaceMaterial = setSurfaceMaterial;
             if (DrawVisualMeshes)
             {
-                foreach (Renderer renderer in Source.GetMeshRenderers())
+                foreach (MeshRenderer sourceRenderer in Source.GetMeshRenderers())
                 {
-                    if (renderer != null)
+                    if (sourceRenderer != null)
                     {
-                        renderer.sharedMaterial = surfaceMaterial;
+                        sourceRenderer.sharedMaterial = setSurfaceMaterial;
                     }
                 }
             }
@@ -180,13 +210,19 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StartObserver()
         {
-#if !UNITY_EDITOR
+#if UNITY_WSA
+            // Allow observing if a device is present (Holographic Remoting)
+#if UNITY_2017_2_OR_NEWER
+            if (!UnityEngine.XR.XRDevice.isPresent) { return; }
+#else
+            if (!UnityEngine.VR.VRDevice.isPresent) { return; }
+#endif
+#endif
             if (!IsObserverRunning())
             {
                 surfaceObserver.StartObserving();
-                StartTime = Time.time;
+                StartTime = Time.unscaledTime;
             }
-#endif
         }
 
         /// <summary>
@@ -194,12 +230,26 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void StopObserver()
         {
-#if !UNITY_EDITOR
+#if UNITY_WSA
+            // Allow observing if a device is present (Holographic Remoting)
+#if UNITY_2017_2_OR_NEWER
+            if (!UnityEngine.XR.XRDevice.isPresent) { return; }
+#else
+            if (!UnityEngine.VR.VRDevice.isPresent) { return; }
+#endif
+#endif
             if (IsObserverRunning())
             {
                 surfaceObserver.StopObserving();
             }
-#endif
+        }
+
+        /// <summary>
+        /// Instructs the SurfaceObserver to stop and cleanup all meshes.
+        /// </summary>
+        public void CleanupObserver()
+        {
+            surfaceObserver.CleanupObserver();
         }
 
         /// <summary>
@@ -214,13 +264,22 @@ namespace HoloToolkit.Unity
             List<MeshFilter> meshFilters = GetMeshFilters();
 
             // Get all valid mesh filters for observed surfaces.
-            foreach (MeshFilter filter in meshFilters)
+            for (int i = 0; i < meshFilters.Count; i++)
             {
                 // GetMeshFilters ensures that both filter and filter.sharedMesh are not null.
-                meshes.Add(filter.sharedMesh);
+                meshes.Add(meshFilters[i].sharedMesh);
             }
 
             return meshes;
+        }
+
+        /// <summary>
+        /// Gets all the surface objects associated with the Spatial Mapping mesh.
+        /// </summary>
+        /// <returns>Collection of SurfaceObjects.</returns>
+        public ReadOnlyCollection<SpatialMappingSource.SurfaceObject> GetSurfaceObjects()
+        {
+            return Source.SurfaceObjects;
         }
 
         /// <summary>
@@ -235,20 +294,20 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Sets the Cast Shadows property for each Spatial Mapping mesh renderer.
         /// </summary>
-        private void SetShadowCasting(bool castShadows)
+        private void SetShadowCasting(bool canCastShadows)
         {
-            CastShadows = castShadows;
-            foreach (Renderer renderer in Source.GetMeshRenderers())
+            CastShadows = canCastShadows;
+            foreach (MeshRenderer sourceRenderer in Source.GetMeshRenderers())
             {
-                if (renderer != null)
+                if (sourceRenderer != null)
                 {
-                    if (castShadows)
+                    if (canCastShadows)
                     {
-                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                        sourceRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
                     }
                     else
                     {
-                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                        sourceRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     }
                 }
             }
@@ -258,18 +317,21 @@ namespace HoloToolkit.Unity
         /// Updates the rendering state on the currently enabled surfaces.
         /// Updates the material and shadow casting mode for each renderer.
         /// </summary>
-        /// <param name="Enable">True, if meshes should be rendered.</param>
-        private void UpdateRendering(bool Enable)
+        /// <param name="enable">True, if meshes should be rendered.</param>
+        private void UpdateRendering(bool enable)
         {
-            List<MeshRenderer> renderers = Source.GetMeshRenderers();
-            for (int index = 0; index < renderers.Count; index++)
+            if (Source != null)
             {
-                if (renderers[index] != null)
+                List<MeshRenderer> renderers = Source.GetMeshRenderers();
+                for (int index = 0; index < renderers.Count; index++)
                 {
-                    renderers[index].enabled = Enable;
-                    if (Enable)
+                    if (renderers[index] != null)
                     {
-                        renderers[index].sharedMaterial = SurfaceMaterial;
+                        renderers[index].enabled = enable;
+                        if (enable)
+                        {
+                            renderers[index].sharedMaterial = SurfaceMaterial;
+                        }
                     }
                 }
             }

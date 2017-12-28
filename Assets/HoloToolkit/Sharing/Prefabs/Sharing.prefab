@@ -5,12 +5,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 475158}
-  - 114: {fileID: 114000012667812730}
-  - 114: {fileID: 114000011012997360}
-  - 114: {fileID: 114000013602799446}
+  - component: {fileID: 475158}
+  - component: {fileID: 114000012667812730}
+  - component: {fileID: 114835164397381706}
   m_Layer: 0
   m_Name: Sharing
   m_TagString: Untagged
@@ -24,7 +23,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163528}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -42,17 +41,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 163528}
   m_IsPrefabParent: 1
---- !u!114 &114000011012997360
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b9c87aaa636d31488ddd2b3e3fe29e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114000012667812730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -66,9 +54,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClientRole: 0
   ServerAddress: localhost
+  defaultSessionName: DefaultSession
+  defaultRoomName: DefaultRoom
+  KeepRoomAlive: 0
   ServerPort: 20602
-  IsAudioEndpoint: 0
---- !u!114 &114000013602799446
+  connectOnAwake: 1
+  AutoDiscoverServer: 0
+  PingIntervalSec: 2
+  IsAudioEndpoint: 1
+  ShowDetailedLogs: 1
+--- !u!114 &114835164397381706
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -76,7 +71,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 163528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fa5da1314a4aa745a5be3f0f6ab6bd6, type: 3}
+  m_Script: {fileID: 11500000, guid: 07ae3de54e484bf46a26fc8f28d3fff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SessionName: Default
+  AnchorDebugText: {fileID: 0}
+  ShowDetailedLogs: 1
