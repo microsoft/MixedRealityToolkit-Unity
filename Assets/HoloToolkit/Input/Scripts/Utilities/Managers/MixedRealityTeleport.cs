@@ -230,28 +230,25 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void FinishTeleport()
-        {
-            if (currentPointingSource != null)
-            {
-                currentPointingSource = null;
+		private void FinishTeleport()
+		{
+			if (currentPointingSource != null)
+			{
+				currentPointingSource = null;
 
-                if (isTeleportValid)
-                {
-                    RaycastHit hitInfo;
-                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
+				if (isTeleportValid)
+				{
+					fadeControl.DoFade(0.25f, 0.5f, () =>
+					{
+						SetWorldPosition(teleportMarker.transform.position);
+					}, null);
+				}
 
-                    fadeControl.DoFade(0.25f, 0.5f, () =>
-                    {
-                        SetWorldPosition(hitPos);
-                    }, null);
-                }
+				DisableMarker();
+			}
+		}
 
-                DisableMarker();
-            }
-        }
-
-        public void DoRotation(float rotationAmount)
+		public void DoRotation(float rotationAmount)
         {
             if (rotationAmount != 0 && !fadeControl.Busy)
             {
@@ -281,20 +278,22 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        /// <summary>
-        /// Places the player in the specified position of the world
-        /// </summary>
-        /// <param name="worldPosition"></param>
-        public void SetWorldPosition(Vector3 worldPosition)
-        {
-            // There are two things moving the camera: the camera parent (that this script is attached to)
-            // and the user's head (which the MR device is attached to. :)). When setting the world position,
-            // we need to set it relative to the user's head in the scene so they are looking/standing where 
-            // we expect.
-            transform.position = worldPosition - (CameraCache.Main.transform.position - transform.position);
-        }
+		/// <summary>
+		/// Places the player in the specified position of the world
+		/// </summary>
+		/// <param name="worldPosition"></param>
+		public void SetWorldPosition(Vector3 worldPosition)
+		{
+			// There are two things moving the camera: the camera parent (that this script is attached to)
+			// and the user's head (which the MR device is attached to. :)). When setting the world position,
+			// we need to set it relative to the user's head in the scene so they are looking/standing where 
+			// we expect.
+			Vector3 newPosition = worldPosition - (CameraCache.Main.transform.position - transform.position);
+			newPosition.y = worldPosition.y;
+			transform.position = newPosition;
+		}
 
-        private void EnableMarker()
+		private void EnableMarker()
         {
             teleportMarker.SetActive(true);
             if (animationController != null)
