@@ -153,9 +153,15 @@ namespace HoloToolkit.UI.Keyboard
         private float m_MinDistance = 0.25f;
 
         /// <summary>
+        /// Make the keyboard disappear automatically after a timeout
+        /// </summary>
+        public bool CloseOnInactivity = true;
+
+        /// <summary>
         /// Inactivity time that makes the keyboard disappear automatically.
         /// </summary>
         public float CloseOnInactivityTime = 15;
+
 
         /// <summary>
         /// Time on which the keyboard should close on inactivity
@@ -245,13 +251,13 @@ namespace HoloToolkit.UI.Keyboard
             m_ObjectBounds = new Vector3(canvasBounds.size.x * rect.localScale.x, canvasBounds.size.y * rect.localScale.y, canvasBounds.size.z * rect.localScale.z);
 
             // Actually find microphone key in the keyboard
-            var dicationButton = RecursiveFindChild(gameObject.transform, "Dictation");
-            if (dicationButton != null)
+            var dictationButton = RecursiveFindChild(gameObject.transform, "Dictation");
+            if (dictationButton != null)
             {
-                var dicationIcon = dicationButton.transform.Find("keyboard_closeIcon");
-                if (dicationButton != null)
+                var dictationIcon = dictationButton.transform.Find("keyboard_closeIcon");
+                if (dictationButton != null)
                 {
-                    _recordImage = dicationButton.GetComponentsInChildren<Image>()[1];
+                    _recordImage = dictationButton.GetComponentsInChildren<Image>()[1];
                     var material = new Material(_recordImage.material);
                     _defaultColor = material.color;
                     _recordImage.material = material;
@@ -347,7 +353,7 @@ namespace HoloToolkit.UI.Keyboard
         }
 
         /// <summary>
-        /// Called when dication result is obtained
+        /// Called when dictation result is obtained
         /// </summary>
         /// <param name="eventData">Dictation event data</param>
         public void OnDictationResult(DictationEventData eventData)
@@ -366,7 +372,7 @@ namespace HoloToolkit.UI.Keyboard
         }
 
         /// <summary>
-        /// Called when dication is completed
+        /// Called when dictation is completed
         /// </summary>
         /// <param name="eventData">Dictation event data</param>
         public void OnDictationComplete(DictationEventData eventData)
@@ -607,7 +613,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="valueKey">The valueKey of the pressed key.</param>
         public void AppendValue(KeyboardValueKey valueKey)
         {
-            IndicateActivty();
+            IndicateActivity();
             string value = "";
 
             // Shift value should only be applied if a shift value is present.
@@ -639,7 +645,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="functionKey">The functionKey of the pressed key.</param>
         public void FunctionKey(KeyboardKeyFunc functionKey)
         {
-            IndicateActivty();
+            IndicateActivity();
             switch (functionKey.m_ButtonFunction)
             {
                 case KeyboardKeyFunc.Function.Enter:
@@ -1038,7 +1044,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// Respond to keyboard activity: reset timeout timer, play sound
         /// </summary>
-        private void IndicateActivty()
+        private void IndicateActivity()
         {
             ResetClosingTime();
             if (_audioSource == null)
@@ -1056,7 +1062,10 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void ResetClosingTime()
         {
-            _closingTime = Time.time + CloseOnInactivityTime;
+            if (CloseOnInactivity)
+            {
+                _closingTime = Time.time + CloseOnInactivityTime;
+            }
         }
 
         /// <summary>
@@ -1064,7 +1073,7 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void CheckForCloseOnInactivityTimeExpired()
         {
-            if( Time.time > _closingTime )
+            if( Time.time > _closingTime && CloseOnInactivity)
             {
                 Close();
             }
