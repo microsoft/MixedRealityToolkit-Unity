@@ -5,11 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
-using System.Collections;
 using HoloToolkit.Unity.InputModule;
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-using UnityEngine.Windows.Speech;
-#endif
 
 namespace HoloToolkit.UI.Keyboard
 {
@@ -205,12 +201,6 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private int m_CaretPosition = 0;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-        /// <summary>
-        /// Reference to dictation recognizer.
-        /// </summary>
-#endif
-
         /// <summary>
         /// The starting scale of the keyboard.
         /// </summary>
@@ -264,33 +254,10 @@ namespace HoloToolkit.UI.Keyboard
                 }
             }
 
-
             // Keep keyboard deactivated until needed
             gameObject.SetActive(false);
         }
 
-        /// <summary>
-        /// Recursive find. Potentially move to a child class.
-        /// </summary>
-        GameObject RecursiveFindChild(Transform parent, string childName)
-        {
-            GameObject foundObject = null;
-
-            for(int i = 0; i < parent.childCount && foundObject == null; i++)
-            {
-                var child = parent.GetChild(i);
-                if(child.name == childName)
-                {
-                    foundObject = child.gameObject;
-                }
-                else
-                {
-                    foundObject = RecursiveFindChild(child, childName);
-                }
-            }
-
-            return foundObject;
-        }
 
         /// <summary>
         /// Set up Dictation, CanvasEX, and automatically select the TextInput object.
@@ -394,12 +361,10 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         protected override void OnDestroy()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsMicrophoneActive())
             {
                 StartCoroutine(DictationInputManager.StopRecording());
             }
-#endif
             base.OnDestroy();
         }
 
@@ -574,7 +539,7 @@ namespace HoloToolkit.UI.Keyboard
 
         private bool IsMicrophoneActive()
         {
-            var result =  _recordImage.color != _defaultColor;
+            var result = _recordImage.color != _defaultColor;
             return result;
         }
 
@@ -599,10 +564,8 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void EndDictation()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
             StartCoroutine(DictationInputManager.StopRecording());
             SetMicrophoneDefault();
-#endif
         }
 
         #endregion Dictation
@@ -692,7 +655,6 @@ namespace HoloToolkit.UI.Keyboard
 
                 case KeyboardKeyFunc.Function.Dictate:
                     {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
                         if (IsMicrophoneActive())
                         {
                             EndDictation();
@@ -701,7 +663,6 @@ namespace HoloToolkit.UI.Keyboard
                         {
                             BeginDictation();
                         }
-#endif
                         break;
                     }
 
@@ -938,7 +899,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="maxScale">Max scale factor</param>
         /// <param name="minDistance">Min distance from camera</param>
         /// <param name="maxDistance">Max distance from camera</param>
-        public void SetScaleSizeValues( float minScale, float maxScale, float minDistance, float maxDistance)
+        public void SetScaleSizeValues(float minScale, float maxScale, float minDistance, float maxDistance)
         {
             m_MinScale = minScale;
             m_MaxScale = maxScale;
@@ -1051,7 +1012,7 @@ namespace HoloToolkit.UI.Keyboard
             {
                 _audioSource = GetComponent<AudioSource>();
             }
-            if( _audioSource != null)
+            if (_audioSource != null)
             {
                 _audioSource.Play();
             }
