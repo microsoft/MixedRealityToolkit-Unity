@@ -54,7 +54,14 @@ namespace HoloToolkit.Unity.InputModule
             bool spawnControllers = false;
 
 #if UNITY_2017_2_OR_NEWER
+#if UNITY_EDITOR
+            // If we are in the editor, then ensure that we can simulate hand input
+            // even if our build target is "standalone" (the default build target when opening
+            // the project).
+            spawnControllers = !XRDevice.isPresent && simulateHandsInEditor;
+#else
             spawnControllers = !XRDevice.isPresent && XRSettings.enabled && simulateHandsInEditor;
+#endif
 #else
             spawnControllers = simulateHandsInEditor;
 #endif
