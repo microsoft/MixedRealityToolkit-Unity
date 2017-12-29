@@ -8,13 +8,13 @@ namespace HoloToolkit.Examples.InteractiveElements
     public class InteractiveGroup : MonoBehaviour
     {
         [Tooltip("Gameobject containing GridLayoutGroup")]
-        public GameObject grid;
+        public GameObject Grid;
 
         [Tooltip("Prefab for your interactive.")]
         public GameObject InteractivePrefab;
 
         [Tooltip("scale for new instance of InteractivePrefab")]
-        public Vector3 prefabScale = new Vector3(2000, 2000, 2000);
+        public Vector3 PrefabScale = new Vector3(2000, 2000, 2000);
 
         [Tooltip("Data to fill the InteractiveSet.")]
         public List<string> Titles = new List<string>();
@@ -57,8 +57,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             for (int i = Interactives.Count; i < Titles.Count; i++)
             {
-                GameObject PrefabInst = Instantiate(InteractivePrefab, grid.transform) as GameObject;
-                PrefabInst.transform.localScale = prefabScale;
+                GameObject PrefabInst = Instantiate(InteractivePrefab, Grid.transform) as GameObject;
+                PrefabInst.transform.localScale = PrefabScale;
                 InteractiveToggle InterInst = PrefabInst.GetComponent<InteractiveToggle>();
                 if (InterInst == null)
                 {
