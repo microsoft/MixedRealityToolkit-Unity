@@ -5,11 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
-using System.Collections;
 using HoloToolkit.Unity.InputModule;
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-using UnityEngine.Windows.Speech;
-#endif
 
 namespace HoloToolkit.UI.Keyboard
 {
@@ -161,7 +157,7 @@ namespace HoloToolkit.UI.Keyboard
         /// Inactivity time that makes the keyboard disappear automatically.
         /// </summary>
         public float CloseOnInactivityTime = 15;
-        
+
         /// <summary>
         /// Time on which the keyboard should close on inactivity
         /// </summary>
@@ -213,7 +209,6 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private Vector3 m_ObjectBounds;
 
-
         /// <summary>
         /// The default color of the mike key.
         /// </summary>        
@@ -243,13 +238,13 @@ namespace HoloToolkit.UI.Keyboard
             m_ObjectBounds = new Vector3(canvasBounds.size.x * rect.localScale.x, canvasBounds.size.y * rect.localScale.y, canvasBounds.size.z * rect.localScale.z);
 
             // Actually find microphone key in the keyboard
-            var dictationButton = RecursiveFindChild(gameObject.transform, "Dictation");
+            var dictationButton = Utils.GetChildRecursive(gameObject.transform, "Dictation");
             if (dictationButton != null)
             {
-                var dictationIcon = dictationButton.transform.Find("keyboard_closeIcon");
-                if (dictationButton != null)
+                var dictationIcon = dictationButton.Find("keyboard_closeIcon");
+                if (dictationIcon != null)
                 {
-                    _recordImage = dictationButton.GetComponentsInChildren<Image>()[1];
+                    _recordImage = dictationIcon.GetComponentInChildren<Image>();
                     var material = new Material(_recordImage.material);
                     _defaultColor = material.color;
                     _recordImage.material = material;
@@ -260,28 +255,6 @@ namespace HoloToolkit.UI.Keyboard
             gameObject.SetActive(false);
         }
 
-        /// <summary>
-        /// Recursive find. Potentially move to a child class.
-        /// </summary>
-        GameObject RecursiveFindChild(Transform parent, string childName)
-        {
-            GameObject foundObject = null;
-
-            for (int i = 0; i < parent.childCount && foundObject == null; i++)
-            {
-                var child = parent.GetChild(i);
-                if (child.name == childName)
-                {
-                    foundObject = child.gameObject;
-                }
-                else
-                {
-                    foundObject = RecursiveFindChild(child, childName);
-                }
-            }
-
-            return foundObject;
-        }
 
         /// <summary>
         /// Set up Dictation, CanvasEX, and automatically select the TextInput object.
@@ -385,12 +358,10 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         protected override void OnDestroy()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsMicrophoneActive())
             {
                 StartCoroutine(DictationInputManager.StopRecording());
             }
-#endif
             base.OnDestroy();
         }
 
@@ -590,10 +561,8 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void EndDictation()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
             StartCoroutine(DictationInputManager.StopRecording());
             SetMicrophoneDefault();
-#endif
         }
 
         #endregion Dictation
@@ -683,7 +652,6 @@ namespace HoloToolkit.UI.Keyboard
 
                 case KeyboardKeyFunc.Function.Dictate:
                     {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
                         if (IsMicrophoneActive())
                         {
                             EndDictation();
@@ -692,7 +660,6 @@ namespace HoloToolkit.UI.Keyboard
                         {
                             BeginDictation();
                         }
-#endif
                         break;
                     }
 
