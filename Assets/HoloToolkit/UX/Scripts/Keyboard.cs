@@ -5,7 +5,11 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
+using System.Collections;
 using HoloToolkit.Unity.InputModule;
+#if UNITY_WSA || UNITY_STANDALONE_WIN
+using UnityEngine.Windows.Speech;
+#endif
 
 namespace HoloToolkit.UI.Keyboard
 {
@@ -157,8 +161,7 @@ namespace HoloToolkit.UI.Keyboard
         /// Inactivity time that makes the keyboard disappear automatically.
         /// </summary>
         public float CloseOnInactivityTime = 15;
-
-
+        
         /// <summary>
         /// Time on which the keyboard should close on inactivity
         /// </summary>
@@ -194,7 +197,6 @@ namespace HoloToolkit.UI.Keyboard
         {
             get { return m_IsCapslocked; }
         }
-
 
         /// <summary>
         /// The position of the caret in the text field.
@@ -258,6 +260,28 @@ namespace HoloToolkit.UI.Keyboard
             gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// Recursive find. Potentially move to a child class.
+        /// </summary>
+        GameObject RecursiveFindChild(Transform parent, string childName)
+        {
+            GameObject foundObject = null;
+
+            for (int i = 0; i < parent.childCount && foundObject == null; i++)
+            {
+                var child = parent.GetChild(i);
+                if (child.name == childName)
+                {
+                    foundObject = child.gameObject;
+                }
+                else
+                {
+                    foundObject = RecursiveFindChild(child, childName);
+                }
+            }
+
+            return foundObject;
+        }
 
         /// <summary>
         /// Set up Dictation, CanvasEX, and automatically select the TextInput object.
@@ -361,10 +385,12 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         protected override void OnDestroy()
         {
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsMicrophoneActive())
             {
                 StartCoroutine(DictationInputManager.StopRecording());
             }
+#endif
             base.OnDestroy();
         }
 
@@ -564,8 +590,10 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         public void EndDictation()
         {
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             StartCoroutine(DictationInputManager.StopRecording());
             SetMicrophoneDefault();
+#endif
         }
 
         #endregion Dictation
@@ -655,6 +683,7 @@ namespace HoloToolkit.UI.Keyboard
 
                 case KeyboardKeyFunc.Function.Dictate:
                     {
+#if UNITY_WSA || UNITY_STANDALONE_WIN
                         if (IsMicrophoneActive())
                         {
                             EndDictation();
@@ -663,6 +692,7 @@ namespace HoloToolkit.UI.Keyboard
                         {
                             BeginDictation();
                         }
+#endif
                         break;
                     }
 
@@ -1034,12 +1064,10 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private void CheckForCloseOnInactivityTimeExpired()
         {
-            if( Time.time > _closingTime && CloseOnInactivity)
+            if (Time.time > _closingTime && CloseOnInactivity)
             {
                 Close();
             }
         }
-
-
     }
 }
