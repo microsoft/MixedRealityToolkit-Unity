@@ -290,7 +290,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="worldPosition"></param>
         public void SetWorldPosition(Vector3 worldPosition)
         {
-            var orginaly = transform.position.y;
+            var originalY = transform.position.y;
 
             // There are two things moving the camera: the camera parent (that this script is attached to)
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
@@ -299,7 +299,7 @@ namespace HoloToolkit.Unity.InputModule
             var newPosition = worldPosition - (CameraCache.Main.transform.position - transform.position);
             if (StayOnTheFloor)
             {
-                newPosition.y = orginaly;
+                newPosition.y = originalY;
             }
             transform.position = newPosition;
         }
