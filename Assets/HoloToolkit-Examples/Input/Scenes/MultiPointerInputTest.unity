@@ -262,7 +262,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1586406594239866, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
@@ -975,12 +975,6 @@ MonoBehaviour:
   ObjectToScale: {fileID: 718516056}
   ScaleIncrement: 0.01
   ButtonAction: 0
---- !u!114 &201394089 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114664944855189834, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-    type: 2}
-  m_PrefabInternal: {fileID: 424219259}
-  m_Script: {fileID: 11500000, guid: 3be3fb966fbcc0f44add9a39d15cd3d0, type: 3}
 --- !u!1 &211779536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,11 +1497,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: distorters.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4671461304012674, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1543,46 +1532,6 @@ Prefab:
     - target: {fileID: 1586406594239866, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
       propertyPath: m_Name
       value: NavigationPointerLeft
-      objectReference: {fileID: 0}
-    - target: {fileID: 1586406594239866, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4418658049720718, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4418658049720718, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4418658049720718, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4418658049720718, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114444424106302830, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: distorters.Array.data[0]
-      value: 
-      objectReference: {fileID: 201394089}
-    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: LineMaterial
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114041993943882784, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-        type: 2}
-      propertyPath: lineRenderer
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3, type: 2}

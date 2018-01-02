@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.Controllers
         public override void OnPreRaycast() {
 
             UpdateParabola();
+
             base.OnPreRaycast();
         }
 
@@ -18,12 +19,8 @@ namespace HoloToolkit.Unity.Controllers
         {
             // Make sure our parabola only rotates on y/x axis
             // NOTE: Parabola's custom line transform field should be set to a transform OTHER than its gameObject's transform
-            Vector3 eulerAngles = transform.eulerAngles;
-            float arc = Mathf.DeltaAngle(0f, eulerAngles.x) / 90;
-            parabolaMain.Velocity = parabolaVelocityCurve.Evaluate(arc) * parabolaVelocityMultiplier;
-            eulerAngles.z = 0f;
-            eulerAngles.x = 0f;
-            parabolaMain.LineTransform.eulerAngles = eulerAngles;
+            parabolaMain.Direction = transform.forward + Vector3.up;
+            parabolaMain.LineTransform.eulerAngles = Vector3.zero;
         }
 
         public override void OnSelectPressed()

@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.UX
         {
             get
             {
-                return 1;
+                return 2;
             }
         }
 
@@ -29,6 +29,9 @@ namespace HoloToolkit.Unity.UX
             {
                 case 0:
                     return Start;
+
+                case 1:
+                    return GetPointInternal(1f);
 
                 default:
                     return Vector3.zero;

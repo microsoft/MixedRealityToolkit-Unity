@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1586406594239866}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.831, y: 0.184, z: -0.037}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4418658049720718}
@@ -137,7 +137,7 @@ MonoBehaviour:
   WidthOffset: 0
   RotationOffset: 0
   StepMode: 0
-  NumLineSteps: 32
+  NumLineSteps: 64
   InterpolationMode: 1
   StepLength: 0.05
   MaxLineSteps: 2048
@@ -299,7 +299,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 4
-  lineCastResolution: 25
+  lineCastResolution: 64
   lineBase: {fileID: 114444424106302830}
   input: {fileID: 114498623830712114}
   minValidDot: 0.2
@@ -385,14 +385,14 @@ MonoBehaviour:
       tangentMode: 0
     - serializedVersion: 2
       time: 1
-      value: 0.25
-      inSlope: 0
-      outSlope: 0
+      value: 0.5
+      inSlope: -0.8955804
+      outSlope: -0.8955804
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  parabolaVelocityMultiplier: 10
+  parabolaVelocityMultiplier: 3.3
   parabolaMain: {fileID: 114444424106302830}
 --- !u!114 &114444424106302830
 MonoBehaviour:
@@ -442,7 +442,7 @@ MonoBehaviour:
   loops: 0
   Start: {x: 0, y: 0, z: 0}
   Direction: {x: 0, y: 1, z: 1}
-  Velocity: 9.22
+  Velocity: 3
   TimeMultiplier: 1
   UseCustomGravity: 1
   Gravity: {x: 0, y: -9.8, z: 0}
