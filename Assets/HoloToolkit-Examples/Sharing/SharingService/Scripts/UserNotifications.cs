@@ -38,17 +38,17 @@ namespace HoloToolkit.Sharing.Tests
             usersTracker.UserLeft += NotifyUserLeft;
         }
 
-        private static void NotifyUserJoined(User user)
+        private void NotifyUserJoined(User user)
         {
-            if (user.IsValid() && localUser != user)
+            if (user.IsValid() && localUser.GetID() != user.GetID())
             {
                 Debug.LogFormat("[User Notifications] User {0} has joined the room.", user.GetName());
             }
         }
 
-        private static void NotifyUserLeft(User user)
+        private void NotifyUserLeft(User user)
         {
-            if (user.IsValid() && localUser != user)
+            if (user.IsValid() && localUser.GetID() != user.GetID())
             {
                 Debug.LogFormat("[User Notifications] User {0} has left the room.", user.GetName());
             }
