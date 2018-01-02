@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity
 
         #region public members
         [Tooltip("The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.")]
-        public OrientationReference Orrientation = OrientationReference.Default;
+        public OrientationReference Orientation = OrientationReference.Default;
         [Tooltip("XYZ offset for this object in relation to the TrackedObject/TargetTransform")]
         public Vector3 offset;
         [Tooltip("RotationTether snaps the object to be in front of TrackedObject regardless of the object's local rotation.")]
@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity
 
             if (RotationTether)
             {
-                float targetYRotation = GetOreintationRef().eulerAngles.y;
+                float targetYRotation = GetOrientationRef().eulerAngles.y;
                 float tetherYRotation = desiredRot.eulerAngles.y;
                 float angleDiff = Mathf.DeltaAngle(targetYRotation, tetherYRotation);
                 float tetherAngleLimit = 360f / TetherAngleSteps;
@@ -72,9 +72,9 @@ namespace HoloToolkit.Unity
             UpdateWorkingRotToGoal();
         }
 
-        private Transform GetOreintationRef()
+        private Transform GetOrientationRef()
         {
-            if (Orrientation == OrientationReference.CameraFacing)
+            if (Orientation == OrientationReference.CameraFacing)
             {
                 return CameraCache.Main.transform;
             }
