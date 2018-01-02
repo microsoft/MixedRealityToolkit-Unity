@@ -5,7 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Unity.InputModule;
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
 #else
 using UnityEngine.VR.WSA.Input;

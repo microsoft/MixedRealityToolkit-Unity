@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity
         {
             if (Orrientation == OrientationReference.CameraFacing)
             {
-                return Camera.main.transform;
+                return CameraCache.Main.transform;
             }
             return solverHandler.TransformTarget;
         }
