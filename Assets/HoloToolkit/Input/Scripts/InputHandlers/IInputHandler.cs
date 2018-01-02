@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     public interface IInputHandler : IEventSystemHandler
     {
         void OnInputDown(InputEventData eventData);
+        void OnInputPressed(InputEventData eventData);
         void OnInputUp(InputEventData eventData);
     }
 }

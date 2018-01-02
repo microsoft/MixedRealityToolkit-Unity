@@ -477,6 +477,24 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        private static readonly ExecuteEvents.EventFunction<IInputHandler> OnSourcePressedEventHandler =
+            delegate(IInputHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                handler.OnInputPressed(casted);
+            };
+
+        public void RaiseSourcePressed(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, sourceId, tags, pressType);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnSourcePressedEventHandler);
+
+            // Nothing to do for UI
+        }
+
         #endregion // Generic Input Events
 
         #region Source State Events

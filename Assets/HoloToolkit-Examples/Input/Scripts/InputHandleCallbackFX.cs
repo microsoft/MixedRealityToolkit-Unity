@@ -20,6 +20,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             // Nothing.
         }
 
+        void IInputHandler.OnInputPressed(InputEventData eventData)
+        {
+            // Nothing.
+        }
+
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
             if (eventData.PressType == InteractionSourcePressInfo.Select)

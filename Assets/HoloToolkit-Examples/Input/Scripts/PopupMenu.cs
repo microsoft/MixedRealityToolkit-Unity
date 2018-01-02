@@ -148,6 +148,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
+        void IInputHandler.OnInputPressed(InputEventData eventData)
+        {
+            // Noting.
+        }
+
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
             if (closeOnNonTargetedTap)
