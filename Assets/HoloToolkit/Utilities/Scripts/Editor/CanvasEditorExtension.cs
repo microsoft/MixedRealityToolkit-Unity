@@ -42,13 +42,22 @@ namespace HoloToolkit.Unity
                     if (userPermission)
                     {
                         canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
+                        var helper = canvas.gameObject.EnsureComponent<CanvasHelper>();
+                        helper.Canvas = canvas;
                     }
                 }
 
                 if (canvas.renderMode != RenderMode.WorldSpace || !userPermission)
                 {
-                    // Sets it back to MainCamera default
+                    // Sets it back to MainCamera default.
                     canvas.worldCamera = null;
+
+                    // Remove the helper if needed.
+                    var helper = canvas.GetComponent<CanvasHelper>();
+                    if (helper != null)
+                    {
+                        DestroyImmediate(helper);
+                    }
                 }
             }
         }
