@@ -25,7 +25,7 @@ namespace HoloToolkit.Unity
             /// <summary>
             /// Orient toward Camera.main instead of SolverHandler's properties.
             /// </summary>
-			CameraFacing,
+            CameraFacing,
         }
         #endregion
 
@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity
 
         private Transform GetOreintationRef()
         {
-            if(Orrientation == OrientationReference.CameraFacing)
+            if (Orrientation == OrientationReference.CameraFacing)
             {
                 return Camera.main.transform;
             }

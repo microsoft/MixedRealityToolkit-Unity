@@ -135,11 +135,8 @@ namespace HoloToolkit.Unity
         }
 
         // SolverLink will pass transform through
-        // Should be overridden in derived classes, but SolverBase can be used to flush shared transform to real transform
-        public virtual void SolverUpdate()
-        {
-            throw new System.Exception("Must implement SolverUpdate from Solver");
-        }
+        // Should be implemented in derived classes, but SolverBase can be used to flush shared transform to real transform
+        public abstract void SolverUpdate();
 
         /// <summary>
         ///    Tracks lifetime of the solver, disabling it when expired, and finally runs the orientation update logic

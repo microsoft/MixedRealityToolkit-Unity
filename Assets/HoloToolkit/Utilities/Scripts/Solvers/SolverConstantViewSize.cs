@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                Debug.LogError("ConstantViewSize: Object base size calculate was 0, defaulting to 1");
+                Debug.LogWarning("ConstantViewSize: Object base size calculate was 0, defaulting to 1");
                 objectSize = 1f;
             }
         }

@@ -89,6 +89,7 @@ namespace HoloToolkit.Unity
 
 		#region private members
         private BoxCollider m_BoxCollider;
+        private const float maxDot = 0.97f;
         #endregion
 
         protected override void Start()
@@ -156,19 +157,21 @@ namespace HoloToolkit.Unity
 		/// <returns>Vector3, a point on the ray besides the origin</returns>
 		Vector3 GetRaycastEndPoint()
 		{
-			Vector3 ret = Vector3.forward;
-			if (raycastDirection == RaycastDirectionEnum.CameraFacing)
-			{
-				ret = solverHandler.TransformTarget.position + solverHandler.TransformTarget.forward;
-			}
-			else if (raycastDirection == RaycastDirectionEnum.ToObject)
-			{
-				ret = transform.position;
-			}
-			else if (raycastDirection == RaycastDirectionEnum.ToLinkedPosition)
-			{
-				ret = solverHandler.GoalPosition;
-			}
+            Vector3 ret = Vector3.forward;
+            switch (raycastDirection)
+            {
+                case RaycastDirectionEnum.CameraFacing:
+                    ret = solverHandler.TransformTarget.position + solverHandler.TransformTarget.forward;
+                    break;
+
+                case RaycastDirectionEnum.ToObject:
+                    ret = transform.position;
+                    break;
+
+                case RaycastDirectionEnum.ToLinkedPosition:
+                    ret = solverHandler.GoalPosition;
+                    break;
+            }
 			return ret;
 		}
 
@@ -214,24 +217,22 @@ namespace HoloToolkit.Unity
 
             Quaternion surfaceRot = Quaternion.LookRotation(newDir, Vector3.up);
 
+            switch (orientationMode)
+            {
+                case OrientModeEnum.None:
+                    return solverHandler.GoalRotation;
 
-			if (orientationMode == OrientModeEnum.None)
-			{
-				return solverHandler.GoalRotation;
-			}
-			else if (orientationMode == OrientModeEnum.Vertical)
-			{
-				return surfaceRot;
-			}
-			else if (orientationMode == OrientModeEnum.Full)
-			{
-				return Quaternion.LookRotation(-surfaceNormal, Vector3.up);
-			}
-			else if (orientationMode == OrientModeEnum.Blended)
-			{
-				return Quaternion.Slerp(solverHandler.GoalRotation, surfaceRot, OrientBlend);
-			}
-			return Quaternion.identity;
+                case OrientModeEnum.Vertical:
+                    return surfaceRot;
+
+                case OrientModeEnum.Full:
+                    return Quaternion.LookRotation(-surfaceNormal, Vector3.up);
+
+                case OrientModeEnum.Blended:
+                    return Quaternion.Slerp(solverHandler.GoalRotation, surfaceRot, OrientBlend);
+                default:
+                    return Quaternion.identity;
+            }
 		}
 
 		/// <summary>
@@ -272,112 +273,118 @@ namespace HoloToolkit.Unity
 				return;
 			}
 
-			if (raycastMode == RaycastModeEnum.Simple)
-			{
-                // Do the cast!
-                RaycastResultHelper result;
-				bool bHit = DefaultRaycast(ray.origin, ray.direction, MaxDistance, MagneticSurface, out result);
+            float ScaleOverride = GetScaleOverride();
+            float len;
+            bool bHit;
+            RaycastResultHelper result;
+            Vector3 hitDelta;
 
-				OnSurface = bHit;
+            switch (raycastMode)
+            {
+                case RaycastModeEnum.Simple:
+                default:
 
-				if (UseTexCoordNormals)
-				{
-					result.OverrideNormalFromTextureCoord();
-				}
+                    // Do the cast!
+                    bHit = DefaultRaycast(ray.origin, ray.direction, MaxDistance, MagneticSurface, out result);
 
-				// Enforce CloseDistance
-				Vector3 hitDelta = result.Point - ray.origin;
-				float len = hitDelta.magnitude;
-				if (len < CloseDistance)
-				{
-					result.OverridePoint(ray.origin + ray.direction * CloseDistance);
-				}
+                    OnSurface = bHit;
 
-				// Apply results
-				if (bHit)
-				{
-					GoalPosition = result.Point + SurfaceNormalOffset * result.Normal + SurfaceRayOffset * ray.direction;
-					GoalRotation = CalculateMagnetismOrientation(ray.direction, result.Normal);
-				}
-			}
-			else if (raycastMode == RaycastModeEnum.Box)
-			{
-				float ScaleOverride = GetScaleOverride();
+                    if (UseTexCoordNormals)
+                    {
+                        result.OverrideNormalFromTextureCoord();
+                    }
 
-				Vector3 scale = transform.lossyScale;
-				if (ScaleOverride > 0)
-				{
-					scale = scale.normalized * ScaleOverride;
-				}
+                    // Enforce CloseDistance
+                    hitDelta = result.Point - ray.origin;
+                    len = hitDelta.magnitude;
+                    if (len < CloseDistance)
+                    {
+                        result.OverridePoint(ray.origin + ray.direction * CloseDistance);
+                    }
 
-				Quaternion orientation = orientationMode == OrientModeEnum.None ? Quaternion.LookRotation(ray.direction, Vector3.up) : CalculateMagnetismOrientation(ray.direction, Vector3.up);
-				Matrix4x4 targetMatrix = Matrix4x4.TRS(Vector3.zero, orientation, scale);
+                    // Apply results
+                    if (bHit)
+                    {
+                        GoalPosition = result.Point + SurfaceNormalOffset * result.Normal + SurfaceRayOffset * ray.direction;
+                        GoalRotation = CalculateMagnetismOrientation(ray.direction, result.Normal);
+                    }
+                    break;
 
-                if (m_BoxCollider == null)
-                    m_BoxCollider = this.GetComponent<BoxCollider>();
+                case RaycastModeEnum.Box:
+                    
+                    Vector3 scale = transform.lossyScale;
+                    if (ScaleOverride > 0)
+                    {
+                        scale = scale.normalized * ScaleOverride;
+                    }
 
-				Vector3 extents = m_BoxCollider.size;
+                    Quaternion orientation = orientationMode == OrientModeEnum.None ? Quaternion.LookRotation(ray.direction, Vector3.up) : CalculateMagnetismOrientation(ray.direction, Vector3.up);
+                    Matrix4x4 targetMatrix = Matrix4x4.TRS(Vector3.zero, orientation, scale);
 
-				Vector3[] positions;
-				Vector3[] normals;
-				bool[] hits;
+                    if (m_BoxCollider == null)
+                    {
+                        m_BoxCollider = this.GetComponent<BoxCollider>();
+                    }
 
-				if (RaycastHelper.CastBoxExtents(extents, transform.position, targetMatrix, ray, MaxDistance, MagneticSurface, DefaultRaycast, BoxRaysPerEdge, OrthoBoxCast, out positions, out normals, out hits))
-				{
-					Plane plane;
-					float distance;
+                    Vector3 extents = m_BoxCollider.size;
 
-					// place an unconstrained plane down the ray.  Never use vertical constrain.
-					FindPlacementPlane(ray.origin, ray.direction, positions, normals, hits, m_BoxCollider.size.x, MaximumNormalVariance, false, orientationMode == OrientModeEnum.None, out plane, out distance);
+                    Vector3[] positions;
+                    Vector3[] normals;
+                    bool[] hits;
 
-					// If placing on a horzizontal surface, need to adjust the calculated distance by half the app height
-					float verticalCorrectionOffset = 0;
-					if (IsNormalVertical(plane.normal) && !Mathf.Approximately(ray.direction.y, 0))
-					{
-						float boxSurfaceOffsetVert = targetMatrix.MultiplyVector(new Vector3(0, extents.y / 2f, 0)).magnitude;
-						Vector3 correctionVec = boxSurfaceOffsetVert * (ray.direction / ray.direction.y);
-						verticalCorrectionOffset = -correctionVec.magnitude;
-					}
+                    if (RaycastHelper.CastBoxExtents(extents, transform.position, targetMatrix, ray, MaxDistance, MagneticSurface, DefaultRaycast, BoxRaysPerEdge, OrthoBoxCast, out positions, out normals, out hits))
+                    {
+                        Plane plane;
+                        float distance;
 
-					float boxSurfaceOffset = targetMatrix.MultiplyVector(new Vector3(0, 0, extents.z / 2f)).magnitude;
+                        // place an unconstrained plane down the ray.  Never use vertical constrain.
+                        FindPlacementPlane(ray.origin, ray.direction, positions, normals, hits, m_BoxCollider.size.x, MaximumNormalVariance, false, orientationMode == OrientModeEnum.None, out plane, out distance);
 
-					// Apply boxSurfaceOffset to rayDir and not surfaceNormalDir to reduce sliding
-			        GoalPosition = ray.origin + ray.direction * Mathf.Max(CloseDistance, distance + SurfaceRayOffset + boxSurfaceOffset + verticalCorrectionOffset) + plane.normal * (0 * boxSurfaceOffset + SurfaceNormalOffset);
-					GoalRotation = CalculateMagnetismOrientation(ray.direction, plane.normal);
-					OnSurface = true;
-				}
-				else
-				{
-					OnSurface = false;
-				}
-			}
-			else if (raycastMode == RaycastModeEnum.Sphere)
-			{
-				// WIP!
+                        // If placing on a horzizontal surface, need to adjust the calculated distance by half the app height
+                        float verticalCorrectionOffset = 0;
+                        if (IsNormalVertical(plane.normal) && !Mathf.Approximately(ray.direction.y, 0))
+                        {
+                            float boxSurfaceOffsetVert = targetMatrix.MultiplyVector(new Vector3(0, extents.y / 2f, 0)).magnitude;
+                            Vector3 correctionVec = boxSurfaceOffsetVert * (ray.direction / ray.direction.y);
+                            verticalCorrectionOffset = -correctionVec.magnitude;
+                        }
 
-				float ScaleOverride = GetScaleOverride();
+                        float boxSurfaceOffset = targetMatrix.MultiplyVector(new Vector3(0, 0, extents.z / 2f)).magnitude;
 
-                // Do the cast!
-                RaycastResultHelper result;
-				float size = ScaleOverride > 0 ? ScaleOverride : transform.lossyScale.x * SphereSize;
-				bool bHit = DefaultSpherecast(ray.origin, ray.direction, size, MaxDistance, MagneticSurface, out result);
-				OnSurface = bHit;
+                        // Apply boxSurfaceOffset to rayDir and not surfaceNormalDir to reduce sliding
+                        GoalPosition = ray.origin + ray.direction * Mathf.Max(CloseDistance, distance + SurfaceRayOffset + boxSurfaceOffset + verticalCorrectionOffset) + plane.normal * (0 * boxSurfaceOffset + SurfaceNormalOffset);
+                        GoalRotation = CalculateMagnetismOrientation(ray.direction, plane.normal);
+                        OnSurface = true;
+                    }
+                    else
+                    {
+                        OnSurface = false;
+                    }
+                    break;
 
-				// Enforce CloseDistance
-				Vector3 hitDelta = result.Point - ray.origin;
-				float len = hitDelta.magnitude;
-				if (len < CloseDistance)
-				{
-					result.OverridePoint(ray.origin + ray.direction * CloseDistance);
-				}
+                case RaycastModeEnum.Sphere:
 
-				// Apply results
-				if (bHit)
-				{
-					GoalPosition = result.Point + SurfaceNormalOffset * result.Normal + SurfaceRayOffset * ray.direction;
-					GoalRotation = CalculateMagnetismOrientation(ray.direction, result.Normal);
-				}
-			}
+                    // Do the cast!
+                    float size = ScaleOverride > 0 ? ScaleOverride : transform.lossyScale.x * SphereSize;
+                    bHit = DefaultSpherecast(ray.origin, ray.direction, size, MaxDistance, MagneticSurface, out result);
+                    OnSurface = bHit;
+
+                    // Enforce CloseDistance
+                    hitDelta = result.Point - ray.origin;
+                    len = hitDelta.magnitude;
+                    if (len < CloseDistance)
+                    {
+                        result.OverridePoint(ray.origin + ray.direction * CloseDistance);
+                    }
+
+                    // Apply results
+                    if (bHit)
+                    {
+                        GoalPosition = result.Point + SurfaceNormalOffset * result.Normal + SurfaceRayOffset * ray.direction;
+                        GoalRotation = CalculateMagnetismOrientation(ray.direction, result.Normal);
+                    }
+                    break;
+            }
 
 			// Do frame to frame updates of transform, smoothly toward the goal, if desired
 			UpdateWorkingPosToGoal();
@@ -440,8 +447,6 @@ namespace HoloToolkit.Unity
 			}
 			averageNormal /= numHits;
 
-			// WIP: Shoot me if I don't just grab the first surface normal I find dammit
-
 			// Calculate variance of all normals
 			float variance = 0;
 			for (int i = 0; i < numRays; ++i)
@@ -466,7 +471,6 @@ namespace HoloToolkit.Unity
 			int lowIndex = -1;
 			float highAngle = float.NegativeInfinity;
 			int highIndex = -1;
-			float maxDot = 0.97f;
 
 			for (int i = 0; i < numRays; i++)
 			{

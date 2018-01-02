@@ -29,6 +29,11 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 lastHeadPos;
         private Vector3 newHeadMoveDirection;
         private Vector3 headMoveDirection = Vector3.one;
+
+        [SerializeField]
+        private bool debugDrawHeadVelocity = true;
+        [SerializeField]
+        private bool debugDrawHeadDirection = true;
         #endregion
 
         private void FixedUpdate()
@@ -64,8 +69,15 @@ namespace HoloToolkit.Unity.InputModule
 
             headMoveDirection = Vector3.Slerp(headMoveDirection, newHeadMoveDirection, dirAdjustRate);
 
-            Debug.DrawLine(lastHeadPos, lastHeadPos + headMoveDirection * 10f, Color.Lerp(Color.red, Color.green, velP));
-            Debug.DrawLine(lastHeadPos, lastHeadPos + headVelocity, Color.yellow);
+            if(debugDrawHeadDirection)
+            {
+                Debug.DrawLine(lastHeadPos, lastHeadPos + headMoveDirection * 10f, Color.Lerp(Color.red, Color.green, velP));
+            }
+
+            if(debugDrawHeadVelocity)
+            {
+                Debug.DrawLine(lastHeadPos, lastHeadPos + headVelocity, Color.yellow);
+            }
         }
     }
 }

@@ -9,9 +9,6 @@ using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity
 {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-    [RequireComponent(typeof(ControllerFinder))]
-#endif
     public class SolverHandler : ControllerFinder
     {
         #region public enums
