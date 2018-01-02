@@ -5,12 +5,7 @@ using System;
 using UnityEngine;
 
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
-#else
-using UnityEngine.VR;
-using UnityEngine.VR.WSA;
-#endif
 #endif
 
 namespace HoloToolkit.Unity
@@ -49,11 +44,7 @@ namespace HoloToolkit.Unity
         {
             // We want to check before calling base Awake
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
             if (!HolographicSettings.IsDisplayOpaque)
-#else
-            if (VRDevice.isPresent)
-#endif
             {
                 Destroy(gameObject);
                 return;

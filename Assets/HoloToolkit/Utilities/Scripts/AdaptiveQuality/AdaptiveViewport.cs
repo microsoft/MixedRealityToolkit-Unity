@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using System;
+
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -52,20 +52,12 @@ namespace HoloToolkit.Unity
                 qualityController.QualityChanged -= QualityChangedEvent;
             }
 
-#if UNITY_2017_2_OR_NEWER
             UnityEngine.XR.XRSettings.renderViewportScale = 1.0f;
-#else
-            UnityEngine.VR.VRSettings.renderViewportScale = 1.0f;
-#endif
         }
 
         protected void OnPreCull()
         {
-#if UNITY_2017_2_OR_NEWER
             UnityEngine.XR.XRSettings.renderViewportScale = CurrentScale;
-#else
-            UnityEngine.VR.VRSettings.renderViewportScale = CurrentScale;
-#endif
         }
 
         private void QualityChangedEvent(int newQuality, int previousQuality)

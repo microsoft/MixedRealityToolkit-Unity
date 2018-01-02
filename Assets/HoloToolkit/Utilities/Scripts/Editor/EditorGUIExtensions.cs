@@ -114,18 +114,9 @@ namespace HoloToolkit.Unity
             }
             else if (valueType.IsEnum)
             {
-                if (valueType.GetCustomAttributes(typeof(FlagsAttribute), true).Length > 0)
-                {
-#if UNITY_2017_3_OR_NEWER
-                    objValue = EditorGUI.EnumFlagsField(position, label, (Enum)objValue);
-#else
-                    objValue = EditorGUI.EnumMaskField(position, label, (Enum)objValue);
-#endif
-                }
-                else
-                {
-                    objValue = EditorGUI.EnumPopup(position, label, (Enum)objValue);
-                }
+                objValue = valueType.GetCustomAttributes(typeof(FlagsAttribute), true).Length > 0
+                    ? EditorGUI.EnumFlagsField(position, label, (Enum)objValue)
+                    : EditorGUI.EnumPopup(position, label, (Enum)objValue);
             }
             else if (valueType == typeof(Rect))
             {

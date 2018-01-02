@@ -7,16 +7,9 @@ using UnityEngine.Networking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
 using UnityEngine.XR.WSA.Sharing;
-#else
-using UnityEngine.VR;
-using UnityEngine.VR.WSA;
-using UnityEngine.VR.WSA.Persistence;
-using UnityEngine.VR.WSA.Sharing;
-#endif
 using HoloToolkit.Unity.SpatialMapping;
 #endif
 
@@ -180,11 +173,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
 
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque)
-#else
-            if (!VRDevice.isPresent)
-#endif
             {
                 AnchorEstablished = true;
             }
@@ -207,17 +196,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private void Update()
         {
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque)
             {
                 return;
             }
-#else
-            if (!VRDevice.isPresent)
-            {
-                return;
-            }
-#endif
 
             if (gotOne)
             {

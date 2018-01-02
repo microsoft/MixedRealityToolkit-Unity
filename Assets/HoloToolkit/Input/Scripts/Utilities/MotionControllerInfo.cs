@@ -2,10 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-#if UNITY_2017_2_OR_NEWER
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -17,11 +16,9 @@ namespace HoloToolkit.Unity.InputModule
     public class MotionControllerInfo
     {
         public readonly GameObject ControllerParent;
-
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         public readonly InteractionSourceHandedness Handedness;
 #endif
-
         private GameObject home;
         private Transform homePressed;
         private Transform homeUnpressed;
@@ -67,13 +64,13 @@ namespace HoloToolkit.Unity.InputModule
         private double lastSelectPressedAmount;
 
         public MotionControllerInfo(GameObject controllerParent
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             , InteractionSourceHandedness handedness
 #endif
             )
         {
             ControllerParent = controllerParent;
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             Handedness = handedness;
 #endif
         }
@@ -158,7 +155,6 @@ namespace HoloToolkit.Unity.InputModule
         /// thumbstick, and touchpad animation.
         /// </summary>
         /// <param name="childTransforms">The transforms of the glTF model.</param>
-        /// <param name="visualizerScript">The script containing references to any objects to spawn.</param>
         public void LoadInfo(Transform[] childTransforms)
         {
             foreach (Transform child in childTransforms)

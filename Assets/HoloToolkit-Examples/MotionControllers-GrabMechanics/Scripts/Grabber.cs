@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         [SerializeField]
         private LayerMask grabbableLayers = ~0;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         [SerializeField]
         private InteractionSourcePressType pressType;
 #endif
@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         protected override void OnEnable()
         {
             base.OnEnable();
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             InteractionManager.InteractionSourcePressed += InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased += InteractionSourceReleased;
 #endif
@@ -35,14 +35,14 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         protected override void OnDisable()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             InteractionManager.InteractionSourcePressed -= InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased -= InteractionSourceReleased;
 #endif
             base.OnDisable();
         }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         private void InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
         {
             if (obj.pressType == pressType && obj.state.source.handedness == handedness)
@@ -113,7 +113,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
             RemoveContact(bg);
         }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         public bool TrySetThrowableObject(BaseGrabbable grabbable, InteractionSourcePose poseInfo)
         {
             if (grabbable == null)

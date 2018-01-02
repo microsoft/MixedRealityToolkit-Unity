@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif
 
@@ -61,9 +61,7 @@ namespace HoloToolkit.Unity.InputModule
             CurrentDisplayType = DisplayType.Opaque;
 
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
             if (!HolographicSettings.IsDisplayOpaque)
-#endif
             {
                 CurrentDisplayType = DisplayType.Transparent;
             }

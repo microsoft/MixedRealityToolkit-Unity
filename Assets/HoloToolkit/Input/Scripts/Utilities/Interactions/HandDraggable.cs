@@ -122,7 +122,6 @@ namespace HoloToolkit.Unity.InputModule
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 inputPosition = Vector3.zero;
-#if UNITY_2017_2_OR_NEWER
             InteractionSourceInfo sourceKind;
             currentInputSource.TryGetSourceKind(currentInputSourceId, out sourceKind);
             switch (sourceKind)
@@ -134,9 +133,6 @@ namespace HoloToolkit.Unity.InputModule
                     currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
                     break;
             }
-#else
-            currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
-#endif
 
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
             handRefDistance = Vector3.Magnitude(inputPosition - pivotPosition);
@@ -201,7 +197,6 @@ namespace HoloToolkit.Unity.InputModule
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 inputPosition = Vector3.zero;
-#if UNITY_2017_2_OR_NEWER
             InteractionSourceInfo sourceKind;
             currentInputSource.TryGetSourceKind(currentInputSourceId, out sourceKind);
             switch (sourceKind)
@@ -213,9 +208,6 @@ namespace HoloToolkit.Unity.InputModule
                     currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
                     break;
             }
-#else
-            currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
-#endif
 
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
 
@@ -345,7 +337,6 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-#if UNITY_2017_2_OR_NEWER
             InteractionSourceInfo sourceKind;
             eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind);
             if (sourceKind != InteractionSourceInfo.Hand)
@@ -356,13 +347,6 @@ namespace HoloToolkit.Unity.InputModule
                     return;
                 }
             }
-#else
-            if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
-            {
-                // The input source must provide positional data for this script to be usable
-                return;
-            }
-#endif
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
 

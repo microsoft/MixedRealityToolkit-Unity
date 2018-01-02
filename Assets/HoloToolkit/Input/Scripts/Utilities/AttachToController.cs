@@ -2,7 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -13,7 +14,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : MonoBehaviour
     {
-#if  UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if  UNITY_WSA
         public InteractionSourceHandedness Handedness { get { return handedness; } }
 
         [Header("AttachToController Elements")]
@@ -50,12 +51,11 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
-
         protected virtual void OnEnable()
         {
             SetChildrenActive(false);
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
             {
@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void AttachElementToController(MotionControllerInfo newController)
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             // Check handedness
             if (!IsAttached && newController.Handedness == handedness)
             {
@@ -121,7 +121,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void DetachElementFromController(MotionControllerInfo oldController)
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (IsAttached && oldController.Handedness == handedness)
             {
                 OnDetachFromController();

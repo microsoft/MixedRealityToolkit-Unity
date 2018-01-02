@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
     /// </summary>
     public abstract class BaseUsable : MonoBehaviour
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         [SerializeField]
         private InteractionSourceHandedness handedness;
 
@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         protected virtual void OnEnable()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             InteractionManager.InteractionSourcePressed += UseInputStart;
             InteractionManager.InteractionSourceReleased += UseInputEnd;
 #endif
@@ -56,13 +56,13 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         protected virtual void OnDisable()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             InteractionManager.InteractionSourcePressed -= UseInputStart;
             InteractionManager.InteractionSourceReleased -= UseInputEnd;
 #endif
         }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
             if (/*obj.pressType == pressType && (*/handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness)

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
 using System.Collections.Generic;
 using UnityEngine.XR;
 using UnityEngine.XR.WSA;
@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.Boundary
         public GameObject FloorQuad;
         private GameObject floorQuadInstance;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         [SerializeField]
         [Tooltip("Approximate max Y height of your space.")]
         private float boundaryHeight = 10f;
@@ -77,7 +77,7 @@ namespace HoloToolkit.Unity.Boundary
         {
             base.Awake();
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (HolographicSettings.IsDisplayOpaque)
             {
                 XRDevice.SetTrackingSpaceType(opaqueTrackingSpaceType);
@@ -112,16 +112,14 @@ namespace HoloToolkit.Unity.Boundary
 
         private void SetBoundaryRendering()
         {
-#if UNITY_2017_2_OR_NEWER
             // TODO: BUG: Unity: configured bool always returns false in 2017.2.0p2-MRTP5.
             if (UnityEngine.Experimental.XR.Boundary.configured)
             {
                 UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
             }
-#endif
         }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         private void RenderFloorQuad()
         {
             if (FloorQuad != null && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale)

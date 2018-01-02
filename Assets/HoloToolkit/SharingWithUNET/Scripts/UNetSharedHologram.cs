@@ -49,15 +49,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
         public Vector3 movementOffset = Vector3.zero;
         private bool isOpaque;
 
-        // Use this for initialization
         private void Start()
         {
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
             isOpaque = UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
-#else
-            isOpaque = !UnityEngine.VR.VRDevice.isPresent;
-#endif
 #endif
             transform.SetParent(SharedCollection.Instance.transform, true);
             if (isServer)

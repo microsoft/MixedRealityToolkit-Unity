@@ -490,11 +490,7 @@ namespace GLTF
                     var www = UnityWebRequest.Get(AbsolutePath(uri));
                     www.downloadHandler = new DownloadHandlerTexture();
 
-#if UNITY_2017_2_OR_NEWER
                     yield return www.SendWebRequest();
-#else
-                    yield return www.Send();
-#endif
 
                     // HACK to enable mipmaps :(
                     var tempTexture = DownloadHandlerTexture.GetContent(www);
@@ -546,11 +542,7 @@ namespace GLTF
                 {
                     var www = UnityWebRequest.Get(AbsolutePath(uri));
 
-#if UNITY_2017_2_OR_NEWER
                     yield return www.SendWebRequest();
-#else
-                    yield return www.Send();
-#endif
 
                     bufferData = www.downloadHandler.data;
                 }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         public event Action<BaseGrabber> OnGrabStateChange;
         public event Action<BaseGrabber> OnContactStateChange;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         public InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
 #endif
 
@@ -80,7 +80,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         private GrabStateEnum prevGrabState = GrabStateEnum.Inactive;
         private GrabStateEnum prevContactState = GrabStateEnum.Inactive;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         [SerializeField]
         protected InteractionSourceHandedness handedness;
 #endif

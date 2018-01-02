@@ -5,11 +5,7 @@ using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
-#else
-using UnityEngine.VR.WSA;
-#endif
 #endif
 
 namespace HoloToolkit.Unity
