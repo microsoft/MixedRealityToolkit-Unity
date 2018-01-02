@@ -52,7 +52,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1266471159078920}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1586406594239866}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.07368911, y: -0.09961343, z: 1.9311874}
+  m_LocalPosition: {x: -2.831, y: 0.184, z: -0.037}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4418658049720718}
@@ -202,7 +202,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 9830
+    atime1: 5975
     atime2: 59753
     atime3: 65535
     atime4: 0
@@ -231,7 +231,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 9830
+    atime1: 5590
     atime2: 58789
     atime3: 65535
     atime4: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 9830
+    atime1: 5397
     atime2: 57632
     atime3: 65535
     atime4: 0
@@ -289,7 +289,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 9830
+    atime1: 6168
     atime2: 57825
     atime3: 65535
     atime4: 0
@@ -322,7 +322,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 9830
+    atime1: 5783
     atime2: 58789
     atime3: 65535
     atime4: 0
@@ -351,7 +351,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 9830
+    atime1: 6168
     atime2: 58211
     atime3: 65535
     atime4: 0
@@ -368,108 +368,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4
   disableWhileActive: []
-  parabolaDistance: 4
-  parabolaHeight: 1
-  parabolaDropDist: 3
-  parabolaRotationArc:
+  parabolaVelocityCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
       time: -1
       value: 1
+      inSlope: -0.928599
+      outSlope: 0
+      tangentMode: 69
+    - serializedVersion: 2
+      time: -0.25
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
-      time: -0.32164186
-      value: 0.8785377
-      inSlope: -0.5637193
-      outSlope: -0.5637193
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: -0.31191197
-      outSlope: -0.31191197
-      tangentMode: 0
-    - serializedVersion: 2
       time: 1
-      value: -0.1
+      value: 0.25
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  parabolaHeightArc:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: -1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: -0.2786141
-      value: 0.7495847
-      inSlope: -1.155138
-      outSlope: -1.155138
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: -1.0439224
-      outSlope: -1.0439224
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 0.14129369
-      value: -0.08
-      inSlope: -0.18748377
-      outSlope: -0.18748377
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: -0.125
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  parabolaDropDistArc:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: -1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: -0.35362574
-      value: 0.69000167
-      inSlope: -1.4916062
-      outSlope: -1.4916062
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  parabolaRotationArcMultiplier: 20
-  parabolaHeightArcMultiplier: 5
-  parabolaDropDistArcMultiplier: 16
+  parabolaVelocityMultiplier: 10
   parabolaMain: {fileID: 114444424106302830}
 --- !u!114 &114444424106302830
 MonoBehaviour:
@@ -479,7 +402,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1586406594239866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 080153f9f59bd554bad10c8b12d0441b, type: 3}
+  m_Script: {fileID: 11500000, guid: c10e66609ff772e4ba9fdc037fd280e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LineStartClamp: 0
@@ -518,9 +441,11 @@ MonoBehaviour:
   distorters: []
   loops: 0
   Start: {x: 0, y: 0, z: 0}
-  End: {x: 0, y: 0, z: 1}
-  UpDirection: {x: 0, y: 1, z: 0}
-  Height: 1
+  Direction: {x: 0, y: 1, z: 1}
+  Velocity: 9.22
+  TimeMultiplier: 1
+  UseCustomGravity: 1
+  Gravity: {x: 0, y: -9.8, z: 0}
 --- !u!114 &114498623830712114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -532,7 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67c1695499429c74794eea34b1239ead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 1
+  handedness: 2
   element: 6
   SetChildrenInactiveWhenDetached: 1
   positionOffset: {x: 0, y: 0, z: 0}
