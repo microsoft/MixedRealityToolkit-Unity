@@ -3,8 +3,9 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity.InputModule
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// The TapToPlace class is a basic way to enable users to move objects 
@@ -17,9 +18,6 @@ namespace HoloToolkit.Unity.InputModule
     [RequireComponent(typeof(Interpolator))]
     public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
-        [Tooltip("Select which layers you would like to Raycast against.")]
-        public LayerMask RaycastLayerMask = Physics.DefaultRaycastLayers;
-
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
 
@@ -36,6 +34,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
         public bool IsBeingPlaced;
+
+        [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
+        public bool AllowMeshVisualizationControl = true;
 
         [Tooltip("Should the center of the Collider be used instead of the gameObjects world transform.")]
         public bool UseColliderCenter;
@@ -91,7 +92,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Ensures an interpolator on either the parent or on the gameobject itself and returns it.
+        /// Ensures an interpolator on either the parent or on the GameObject itself and returns it.
         /// </summary>
         private Interpolator EnsureInterpolator()
         {
@@ -153,6 +154,7 @@ namespace HoloToolkit.Unity.InputModule
             layerCacheTarget.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
             InputManager.Instance.PushModalInputHandler(gameObject);
 
+            ToggleSpatialMesh();
             RemoveWorldAnchor();
         }
 
@@ -162,6 +164,7 @@ namespace HoloToolkit.Unity.InputModule
             layerCacheTarget.ApplyLayerCacheRecursively(layerCache);
             InputManager.Instance.PopModalInputHandler();
 
+            ToggleSpatialMesh();
             AttachWorldAnchor();
         }
 
@@ -184,13 +187,24 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
+        /// If the user is in placing mode, display the spatial mapping mesh.
+        /// </summary>
+        private void ToggleSpatialMesh()
+        {
+            if (SpatialMappingManager.Instance != null && AllowMeshVisualizationControl)
+            {
+                SpatialMappingManager.Instance.DrawVisualMeshes = IsBeingPlaced;
+            }
+        }
+
+        /// <summary>
         /// If we're using the spatial mapping, check to see if we got a hit, else use the gaze position.
         /// </summary>
-        /// <returns>Placement position infront of the user</returns>
-        private Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        /// <returns>Placement position in front of the user</returns>
+        private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
             RaycastHit hitInfo;
-            if (UpdateRaycast(headPosition, gazeDirection, out hitInfo))
+            if (SpatialMappingRaycast(headPosition, gazeDirection, out hitInfo))
             {
                 return hitInfo.point;
             }
@@ -202,30 +216,31 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="origin">Origin of the raycast</param>
         /// <param name="direction">Direction of the raycast</param>
-        /// <param name="spatialMapHit">Result of the raycast when a hit occured</param>
-        /// <returns>Wheter it found a hit or not</returns>
-        private bool UpdateRaycast(Vector3 origin, Vector3 direction, out RaycastHit hitInfo)
+        /// <param name="spatialMapHit">Result of the raycast when a hit occurred</param>
+        /// <returns>Whether it found a hit or not</returns>
+        private static bool SpatialMappingRaycast(Vector3 origin, Vector3 direction, out RaycastHit spatialMapHit)
         {
-            if (GazeManager.Instance != null)
+            if (SpatialMappingManager.Instance != null)
             {
-                if (Physics.Raycast(origin, direction, out hitInfo, 30.0f, RaycastLayerMask.value))
+                RaycastHit hitInfo;
+                if (Physics.Raycast(origin, direction, out hitInfo, 30.0f, SpatialMappingManager.Instance.LayerMask))
                 {
+                    spatialMapHit = hitInfo;
                     return true;
                 }
             }
-
-            hitInfo = new RaycastHit();
+            spatialMapHit = new RaycastHit();
             return false;
         }
 
         /// <summary>
-        /// Get placement position either from GazeManager hit or infront of the user as backup
+        /// Get placement position either from GazeManager hit or in front of the user as backup
         /// </summary>
         /// <param name="headPosition">Position of the users head</param>
         /// <param name="gazeDirection">Gaze direction of the user</param>
-        /// <param name="defaultGazeDistance">Default placement distance infront of the user</param>
-        /// <returns>Placement position infront of the user</returns>
-        private Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
+        /// <param name="defaultGazeDistance">Default placement distance in front of the user</param>
+        /// <returns>Placement position in front of the user</returns>
+        private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
             if (GazeManager.Instance.HitObject != null)
             {
