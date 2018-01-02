@@ -61,15 +61,16 @@ namespace HoloToolkit.Unity
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
             }
 
-            var mainCamera = CameraCache.Refresh(Camera.main);
+            if (Values[SceneSetting.CameraToOrigin])
+            {
 
-            if (mainCamera == null)
-            {
-                Debug.LogWarning("Could not find a valid \"MainCamera\"!  Unable to update camera position.");
-            }
-            else
-            {
-                if (Values[SceneSetting.CameraToOrigin])
+                var mainCamera = CameraCache.Refresh(Camera.main);
+
+                if (mainCamera == null)
+                {
+                    Debug.LogWarning("Could not find a valid \"MainCamera\"!  Unable to update camera position.");
+                }
+                else
                 {
                     mainCamera.transform.position = Vector3.zero;
                 }
@@ -101,18 +102,17 @@ namespace HoloToolkit.Unity
 
             if (Values[SceneSetting.UpdateCanvases])
             {
-                if (FocusManager.IsInitialized)
+                var focusManager = FindObjectOfType<FocusManager>();
+                if (focusManager != null)
                 {
                     FocusManager.Instance.UpdateCanvasEventSystems();
                 }
-                else
+
+                var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
+                foreach (Canvas canvas in sceneCanvases)
                 {
-                    var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
-                    foreach (Canvas canvas in sceneCanvases)
-                    {
-                        var helper = canvas.EnsureComponent<CanvasHelper>();
-                        helper.Canvas = canvas;
-                    }
+                    var helper = canvas.EnsureComponent<CanvasHelper>();
+                    helper.Canvas = canvas;
                 }
             }
 
