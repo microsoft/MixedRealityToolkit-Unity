@@ -80,12 +80,14 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
-            throw new System.NotImplementedException();
+            position = Vector3.zero;
+            return false;
         }
 
         public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
-            throw new System.NotImplementedException();
+            pointingRay = default(Ray);
+            return false;
         }
 
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)

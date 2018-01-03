@@ -184,7 +184,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
-            return SupportedInputInfo.None;
+            return SupportedInputInfo.Voice;
         }
 
         #endregion // Base Input Source Methods

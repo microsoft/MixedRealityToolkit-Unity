@@ -1,5 +1,9 @@
-﻿using HoloToolkit.Unity.InputModule;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
+
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -8,6 +12,7 @@ public abstract class BaseInteractionInputSource : BaseInputSource, IInteraction
 {
 #if UNITY_WSA
     public abstract bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind);
+#endif
 
     public abstract bool TryGetPointerRotation(uint sourceId, out Quaternion rotation);
 
@@ -24,5 +29,4 @@ public abstract class BaseInteractionInputSource : BaseInputSource, IInteraction
     public abstract bool TryGetGrasp(uint sourceId, out bool isPressed);
 
     public abstract bool TryGetMenu(uint sourceId, out bool isPressed);
-#endif
 }

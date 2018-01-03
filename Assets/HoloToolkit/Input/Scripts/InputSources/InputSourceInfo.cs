@@ -9,8 +9,8 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public struct InputSourceInfo : IInputSourceInfoProvider
     {
-        public IInputSource InputSource;
-        public uint SourceId;
+        public readonly IInputSource InputSource;
+        public readonly uint SourceId;
 
         public InputSourceInfo(IInputSource inputSource, uint sourceId) : this()
         {

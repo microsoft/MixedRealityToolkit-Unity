@@ -256,7 +256,12 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
         {
-            return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;
+            return (GetSupportedInputInfo(sourceId) & inputInfo) == inputInfo;
+        }
+
+        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        {
+            return SupportedInputInfo.Voice;
         }
 
         public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
@@ -265,66 +270,9 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
-        }
-
         public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
             pointingRay = default(Ray);
-            return false;
-        }
-
-        public bool TryGetGripPosition(uint sourceId, out Vector3 position)
-        {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
-        }
-
-        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
-        {
-            return SupportedInputInfo.None;
-        }
-
-        public bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
-        {
-            isPressed = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
-        {
-            isPressed = false;
-            isTouched = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
-        {
-            isPressed = false;
-            pressedAmount = 0.0;
-            return false;
-        }
-
-        public bool TryGetGrasp(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
-            return false;
-        }
-
-        public bool TryGetMenu(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
             return false;
         }
 

@@ -20,5 +20,6 @@ namespace HoloToolkit.Unity.InputModule
         Select = (1 << 5),
         Menu = (1 << 6),
         Grasp = (1 << 7),
+        Voice = (1 << 8)
     }
 }
