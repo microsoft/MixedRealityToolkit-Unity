@@ -3,11 +3,10 @@
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public enum InteractionSourceInfo
+    public enum Handedness
     {
-        Other = 0,
-        Hand = 1,
-        Voice = 2,
-        Controller = 3,
+        None,
+        Left,
+        Right
     }
 }

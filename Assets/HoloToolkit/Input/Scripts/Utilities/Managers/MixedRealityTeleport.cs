@@ -184,7 +184,9 @@ namespace HoloToolkit.Unity.InputModule
 
         void IControllerInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
         {
-            if (eventData.PressType == InteractionSourcePressInfo.Thumbstick)
+#if UNITY_WSA
+            if (eventData.InputType == InputType.Thumbstick)
+#endif
             {
                 if (EnableTeleport)
                 {

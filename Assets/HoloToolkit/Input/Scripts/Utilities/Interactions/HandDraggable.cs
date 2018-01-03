@@ -4,6 +4,10 @@
 using UnityEngine;
 using System;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -61,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 draggingPosition;
         private Quaternion draggingRotation;
 
-        private IInputSource currentInputSource;
+        private IInteractionInputSource currentInputSource;
         private uint currentInputSourceId;
         private Rigidbody hostRigidbody;
 
@@ -122,15 +126,15 @@ namespace HoloToolkit.Unity.InputModule
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 inputPosition = Vector3.zero;
-#if UNITY_2017_2_OR_NEWER
-            InteractionSourceInfo sourceKind;
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            InteractionSourceKind sourceKind;
             currentInputSource.TryGetSourceKind(currentInputSourceId, out sourceKind);
             switch (sourceKind)
             {
-                case InteractionSourceInfo.Hand:
+                case InteractionSourceKind.Hand:
                     currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
                     break;
-                case InteractionSourceInfo.Controller:
+                case InteractionSourceKind.Controller:
                     currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
                     break;
             }
@@ -201,15 +205,15 @@ namespace HoloToolkit.Unity.InputModule
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 inputPosition = Vector3.zero;
-#if UNITY_2017_2_OR_NEWER
-            InteractionSourceInfo sourceKind;
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            InteractionSourceKind sourceKind;
             currentInputSource.TryGetSourceKind(currentInputSourceId, out sourceKind);
             switch (sourceKind)
             {
-                case InteractionSourceInfo.Hand:
+                case InteractionSourceKind.Hand:
                     currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
                     break;
-                case InteractionSourceInfo.Controller:
+                case InteractionSourceKind.Controller:
                     currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
                     break;
             }
@@ -345,10 +349,10 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-#if UNITY_2017_2_OR_NEWER
-            InteractionSourceInfo sourceKind;
-            eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind);
-            if (sourceKind != InteractionSourceInfo.Hand)
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            InteractionSourceKind sourceKind;
+            ((InteractionInputSource)eventData.InputSource).TryGetSourceKind(eventData.SourceId, out sourceKind);
+            if (sourceKind != InteractionSourceKind.Hand)
             {
                 if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
                 {
@@ -366,7 +370,7 @@ namespace HoloToolkit.Unity.InputModule
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
 
-            currentInputSource = eventData.InputSource;
+            currentInputSource = (IInteractionInputSource)eventData.InputSource;
             currentInputSourceId = eventData.SourceId;
 
             FocusDetails? details = FocusManager.Instance.TryGetFocusDetails(eventData);

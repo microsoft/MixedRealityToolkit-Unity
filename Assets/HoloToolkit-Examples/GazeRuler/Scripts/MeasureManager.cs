@@ -89,17 +89,17 @@ namespace HoloToolkit.Examples.GazeRuler
             ModeTipObject.SetActive(true);
         }
 
-        public void OnHoldStarted(HoldEventData eventData)
+        public void OnHoldStarted(InputEventData eventData)
         {
             OnPolygonClose();
         }
 
-        public void OnHoldCompleted(HoldEventData eventData)
+        public void OnHoldCompleted(InputEventData eventData)
         {
             // Nothing to do
         }
 
-        public void OnHoldCanceled(HoldEventData eventData)
+        public void OnHoldCanceled(InputEventData eventData)
         {
             // Nothing to do
         }

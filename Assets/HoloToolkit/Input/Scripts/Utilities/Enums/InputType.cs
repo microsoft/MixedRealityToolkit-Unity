@@ -3,13 +3,14 @@
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public enum InteractionSourcePressInfo
+    public enum InputType
     {
-        None = 0,
-        Select = 1,
-        Menu = 2,
-        Grasp = 3,
-        Touchpad = 4,
-        Thumbstick = 5,
+        Unknown,
+        Button,
+        Mouse,
+        Thumbstick,
+        Touch,
+        Voice,
+        Gaze,
     }
 }

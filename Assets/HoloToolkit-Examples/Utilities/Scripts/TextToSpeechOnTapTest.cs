@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.
-            if (textToSpeech != null && eventData.PressType == InteractionSourcePressInfo.Select)
+            if (textToSpeech != null)
             {
                 // Create message
                 var msg = string.Format(

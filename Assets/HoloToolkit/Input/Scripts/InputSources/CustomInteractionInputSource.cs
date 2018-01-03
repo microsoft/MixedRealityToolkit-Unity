@@ -5,13 +5,17 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Input source for fake input source information, which gives details about current source state and position.
     /// </summary>
     [RequireComponent(typeof(CustomInputControl))]
-    public class CustomInputSource : BaseInputSource
+    public class CustomInteractionInputSource : BaseInteractionInputSource
     {
         // TODO: add thumbstick, touchpad, and trigger axis support.
         [Serializable]
@@ -54,7 +58,10 @@ namespace HoloToolkit.Unity.InputModule
         public bool SupportsMenuButton;
         public bool SupportsGrasp;
         public bool RaiseEventsBasedOnVisibility;
-        public InteractionSourceInfo SourceKind;
+
+#if UNITY_WSA
+        public InteractionSourceKind SourceKind;
+#endif
 
         public Vector3 ControllerPosition;
         public Quaternion ControllerRotation;
@@ -114,13 +121,15 @@ namespace HoloToolkit.Unity.InputModule
             return supportedInputInfo;
         }
 
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
+#if UNITY_WSA
+        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
             sourceKind = SourceKind;
             return true;
         }
+#endif
 
         public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
@@ -135,7 +144,21 @@ namespace HoloToolkit.Unity.InputModule
             position = Vector3.zero;
             return false;
         }
+        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        {
+            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
+            if (SupportsRay && (PointingRay != null))
+            {
+                pointingRay = (Ray)PointingRay;
+                return true;
+            }
+
+            pointingRay = default(Ray);
+            return false;
+        }
+
+#if UNITY_WSA
         public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
@@ -150,19 +173,6 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
-
-            if (SupportsRay && (PointingRay != null))
-            {
-                pointingRay = (Ray)PointingRay;
-                return true;
-            }
-
-            pointingRay = default(Ray);
-            return false;
-        }
 
         public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
@@ -247,6 +257,7 @@ namespace HoloToolkit.Unity.InputModule
             isPressed = false;
             return false;
         }
+#endif
 
         private void Awake()
         {
@@ -290,7 +301,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceDetected(this, controllerId);
+                InputManager.Instance.RaiseSourceDetected(this, controllerId, "Custom Input " + controllerId);
             }
         }
 
@@ -298,7 +309,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceLost(this, controllerId);
+                InputManager.Instance.RaiseSourceLost(this, controllerId, "Custom Input " + controllerId);
             }
         }
 
@@ -401,7 +412,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Select);
+                    InputManager.Instance.RaisePointerDown(this, controllerId);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -421,10 +432,10 @@ namespace HoloToolkit.Unity.InputModule
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, controllerId, InteractionSourcePressInfo.Select, 1);
+                        InputManager.Instance.RaiseInputClicked(this, controllerId, 1);
                     }
 
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressInfo.Select);
+                    InputManager.Instance.RaisePointerUp(this, controllerId);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -463,11 +474,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Menu);
+                    InputManager.Instance.RaisePointerDown(this, controllerId);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressInfo.Menu);
+                    InputManager.Instance.RaisePointerUp(this, controllerId);
                 }
             }
 
@@ -475,11 +486,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaiseSourceDown(this, controllerId, InteractionSourcePressInfo.Grasp);
+                    InputManager.Instance.RaisePointerDown(this, controllerId);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceUp(this, controllerId, InteractionSourcePressInfo.Grasp);
+                    InputManager.Instance.RaisePointerUp(this, controllerId);
                 }
             }
         }
@@ -494,11 +505,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentlyVisible)
                 {
-                    InputManager.Instance.RaiseSourceDetected(this, controllerId);
+                    InputManager.Instance.RaiseSourceDetected(this, controllerId, "Custom Input " + controllerId);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceLost(this, controllerId);
+                    InputManager.Instance.RaiseSourceLost(this, controllerId, "Custom Input " + controllerId);
                 }
 
                 visibilityChanged = false;

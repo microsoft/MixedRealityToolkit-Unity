@@ -254,12 +254,6 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IInputSource Implementation
 
-        public bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
-        {
-            sourceKind = InteractionSourceInfo.Voice;
-            return true;
-        }
-
         public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
         {
             return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;

@@ -91,7 +91,7 @@ namespace HoloToolkit.Unity.InputModule
             // TODO: Should this handle Submit from Edit > ProjectSettings > Input ?
             if (Input.GetButtonDown(GamePadButtonA))
             {
-                inputManager.RaiseSourceDown(this, GamePadId, InteractionSourcePressInfo.Select);
+                inputManager.RaisePointerDown(this, GamePadId);
                 isAPressed = true;
                 navigationCompleted = false;
                 currentGestureState = GestureState.APressed;
@@ -156,7 +156,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (Input.GetButtonUp(GamePadButtonA))
             {
-                inputManager.RaiseSourceUp(this, GamePadId, InteractionSourcePressInfo.Select);
+                inputManager.RaisePointerUp(this, GamePadId);
 
                 switch (currentGestureState)
                 {
@@ -182,7 +182,7 @@ namespace HoloToolkit.Unity.InputModule
                     default:
                         CancelInvoke("HandleHoldStarted");
                         CancelInvoke("HandleHoldCompleted");
-                        inputManager.RaiseInputClicked(this, GamePadId, InteractionSourcePressInfo.Select, 1);
+                        inputManager.RaiseInputClicked(this, GamePadId, 1);
                         Reset();
                         break;
                 }
@@ -227,73 +227,14 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
+            throw new NotImplementedException();
         }
 
         public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
-            pointingRay = new Ray(Vector3.zero, Vector3.zero);
-            return false;
+            throw new NotImplementedException();
         }
 
-        public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
-        {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
-        }
-
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
-        {
-            sourceKind = InteractionSourceInfo.Controller;
-            return true;
-        }
-
-        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
-        {
-            isPressed = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
-        {
-            isPressed = false;
-            isTouched = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
-        {
-            isPressed = false;
-            pressedAmount = 0.0;
-            return false;
-        }
-
-        public override bool TryGetGrasp(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
-            return false;
-        }
-
-        public override bool TryGetMenu(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
-            return false;
-        }
         #endregion BaseInputSource Events
     }
 }

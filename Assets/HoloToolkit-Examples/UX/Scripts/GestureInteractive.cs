@@ -27,7 +27,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         public enum GestureManipulationState { None, Start, Update, Lost }
         public GestureManipulationState GestureState { get; protected set; }
 
-        private IInputSource mCurrentInputSource;
+        private IInteractionInputSource mCurrentInputSource;
         private uint mCurrentInputSourceId;
 
         [Tooltip("Sets the time before the gesture starts after a press has occurred, handy when a select event is also being used")]
@@ -52,7 +52,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Cursor mCursor;
 
         private Coroutine mTicker;
-        private IInputSource mTempInputSource;
+        private IInteractionInputSource mTempInputSource;
         private uint mTempInputSourceId;
 
         protected override void Awake()
@@ -83,7 +83,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             base.OnInputDown(eventData);
 
-            mTempInputSource = eventData.InputSource;
+            mTempInputSource = (IInteractionInputSource)eventData.InputSource;
             mTempInputSourceId = eventData.SourceId;
 
             if (StartDelay > 0)
@@ -141,8 +141,11 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
+#if UNITY_WSA
             mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
-
+#else
+            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
+#endif
             mStartHandPosition = handPosition;
             mCurrentHandPosition = handPosition;
             Control.ManipulationUpdate(mStartHandPosition, mStartHandPosition, mStartHeadPosition, mStartHeadRay, GestureManipulationState.Start);
@@ -263,7 +266,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
 #else
             mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);

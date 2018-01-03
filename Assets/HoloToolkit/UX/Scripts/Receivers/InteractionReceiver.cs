@@ -254,7 +254,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnHoldStarted(HoldEventData eventData)
+        public void OnHoldStarted(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -262,7 +262,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnHoldCompleted(HoldEventData eventData)
+        public void OnHoldCompleted(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -270,7 +270,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnHoldCanceled(HoldEventData eventData)
+        public void OnHoldCanceled(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -351,9 +351,9 @@ namespace HoloToolkit.Unity.Receivers
         protected virtual void InputUp(GameObject obj, InputEventData eventData) { }
         protected virtual void InputClicked(GameObject obj, InputClickedEventData eventData) { }
 
-        protected virtual void HoldStarted(GameObject obj, HoldEventData eventData) { }
-        protected virtual void HoldCompleted(GameObject obj, HoldEventData eventData) { }
-        protected virtual void HoldCanceled(GameObject obj, HoldEventData eventData) { }
+        protected virtual void HoldStarted(GameObject obj, InputEventData eventData) { }
+        protected virtual void HoldCompleted(GameObject obj, InputEventData eventData) { }
+        protected virtual void HoldCanceled(GameObject obj, InputEventData eventData) { }
 
         protected virtual void ManipulationStarted(GameObject obj, ManipulationEventData eventData) { }
         protected virtual void ManipulationUpdated(GameObject obj, ManipulationEventData eventData) { }

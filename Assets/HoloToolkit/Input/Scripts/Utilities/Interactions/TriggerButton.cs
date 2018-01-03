@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity.InputModule
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (IsEnabled && eventData.PressType == InteractionSourcePressInfo.Select)
+            if (IsEnabled)
             {
                 ButtonPressed.RaiseEvent();
                 eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.

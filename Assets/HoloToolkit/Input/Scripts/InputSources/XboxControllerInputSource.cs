@@ -147,7 +147,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 foreach (var gamePadInputSource in gamePadInputDatas)
                 {
-                    InputManager.Instance.RaiseSourceLost(this, gamePadInputSource.Key);
+                    InputManager.Instance.RaiseSourceLost(this, gamePadInputSource.Key, gamePadInputSource.Value.GamePadName);
                 }
 
                 gamePadInputDatas.Clear();
@@ -188,7 +188,7 @@ namespace HoloToolkit.Unity.InputModule
                     controllerData = new XboxControllerData { GamePadName = joystickNames[i] };
                     gamePadInputDatas.Add(SourceId, controllerData);
 
-                    InputManager.Instance.RaiseSourceDetected(this, SourceId);
+                    InputManager.Instance.RaiseSourceDetected(this, SourceId, joystickNames[i]);
 
                     // Setup the Input Module to use our custom axis settings.
                     InputModule.forceModuleActive = true;

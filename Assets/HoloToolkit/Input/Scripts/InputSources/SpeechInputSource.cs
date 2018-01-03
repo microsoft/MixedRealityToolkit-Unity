@@ -170,21 +170,9 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Base Input Source Methods
 
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
-        {
-            sourceKind = InteractionSourceInfo.Voice;
-            return true;
-        }
-
         public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             position = Vector3.zero;
-            return false;
-        }
-
-        public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
             return false;
         }
 
@@ -194,55 +182,9 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
-        {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
-        }
-
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             return SupportedInputInfo.None;
-        }
-
-        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
-        {
-            isPressed = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
-        {
-            isPressed = false;
-            isTouched = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
-        {
-            isPressed = false;
-            pressedAmount = 0.0;
-            return false;
-        }
-
-        public override bool TryGetGrasp(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
-            return false;
-        }
-
-        public override bool TryGetMenu(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
-            return false;
         }
 
         #endregion // Base Input Source Methods

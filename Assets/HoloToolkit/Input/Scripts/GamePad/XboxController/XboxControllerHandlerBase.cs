@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 CurrentGestureState = GestureState.SelectButtonPressed;
 
-                InputManager.Instance.RaiseSourceDown(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select);
+                InputManager.Instance.RaisePointerDown(eventData.InputSource, eventData.SourceId);
 
                 HoldStartedRoutine = StartCoroutine(HandleHoldStarted(eventData));
             }
@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void HandleSelectButtonReleased(XboxControllerEventData eventData)
         {
-            InputManager.Instance.RaiseSourceUp(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select);
+            InputManager.Instance.RaisePointerUp(eventData.InputSource, eventData.SourceId);
 
             if (HoldStartedRoutine != null)
             {
@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity.InputModule
                     InputManager.Instance.RaiseHoldCompleted(eventData.InputSource, eventData.SourceId);
                     break;
                 default:
-                    InputManager.Instance.RaiseInputClicked(eventData.InputSource, eventData.SourceId, InteractionSourcePressInfo.Select, 1);
+                    InputManager.Instance.RaiseInputClicked(eventData.InputSource, eventData.SourceId, 1);
                     break;
             }
 

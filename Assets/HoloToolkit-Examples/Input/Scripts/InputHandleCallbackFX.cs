@@ -22,17 +22,14 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (eventData.PressType == InteractionSourcePressInfo.Select)
+            FocusDetails? focusDetails = FocusManager.Instance.TryGetFocusDetails(eventData);
+
+            if (focusDetails != null)
             {
-                FocusDetails? focusDetails = FocusManager.Instance.TryGetFocusDetails(eventData);
+                particles.transform.position = focusDetails.Value.Point;
+                particles.Emit(60);
 
-                if (focusDetails != null)
-                {
-                    particles.transform.position = focusDetails.Value.Point;
-                    particles.Emit(60);
-
-                    eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
-                }
+                eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
             }
         }
     }

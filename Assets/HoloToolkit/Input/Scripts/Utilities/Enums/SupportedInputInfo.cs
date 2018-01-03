@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.InputModule
         Rotation = (1 << 1),
         Pointing = (1 << 2),
         Thumbstick = (1 << 3),
-        Touchpad = (1 << 4),
+        Touch = (1 << 4),
         Select = (1 << 5),
         Menu = (1 << 6),
         Grasp = (1 << 7),

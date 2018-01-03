@@ -3,12 +3,16 @@
 
 using UnityEngine.EventSystems;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Describes an input event that involves a select press.
     /// </summary>
-    public class SelectPressedEventData : BaseInputEventData
+    public class SelectPressedEventData : InteractionInputEventData
     {
         /// <summary>
         /// The amount, from 0.0 to 1.0, that the select was pressed.
@@ -19,10 +23,12 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, double pressedAmount)
+#if UNITY_WSA
+        public void Initialize(IInputSource inputSource, uint sourceId, double pressedAmount, Handedness handedness, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            Initialize(inputSource, sourceId, InteractionSourcePressType.Select, handedness, tags);
             PressedAmount = pressedAmount;
         }
+#endif
     }
 }

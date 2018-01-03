@@ -6,6 +6,10 @@ using System.Collections;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.Buttons
 {
     /// <summary>
@@ -22,11 +26,13 @@ namespace HoloToolkit.Unity.Buttons
         [Tooltip("Current State of the Button")]
         public ButtonStateEnum ButtonState = ButtonStateEnum.Observation;
 
+#if UNITY_WSA
         /// <summary>
         /// Filter to apply for the correct button source
         /// </summary>
         [Tooltip("Filter for press info for click or press event")]
-        public InteractionSourcePressInfo ButtonPressFilter = InteractionSourcePressInfo.Select;
+        public InteractionSourcePressType ButtonPressFilter = InteractionSourcePressType.Select;
+#endif
 
         /// <summary>
         /// If true the interactable will deselect when you look off of the object
@@ -116,7 +122,9 @@ namespace HoloToolkit.Unity.Buttons
         {
             if (enabled)
             {
-                if(ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
+#if UNITY_WSA
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == ((InteractionInputEventData)eventData).PressType)
+#endif
                 {
                     DoButtonPressed();
 
@@ -135,7 +143,9 @@ namespace HoloToolkit.Unity.Buttons
         {
             if (enabled)
             {
-                if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
+#if UNITY_WSA
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == ((InteractionInputEventData)eventData).PressType)
+#endif
                 {
                     DoButtonReleased();
                 }
@@ -150,7 +160,9 @@ namespace HoloToolkit.Unity.Buttons
         {
             if (enabled)
             {
-                if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
+#if UNITY_WSA
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == ((InteractionInputClickedEventData)eventData).PressType)
+#endif
                 {
                     DoButtonPressed(true);
                 }
@@ -162,7 +174,7 @@ namespace HoloToolkit.Unity.Buttons
         /// Handle On Hold started from IHoldSource
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnHoldStarted(HoldEventData eventData)
+        public void OnHoldStarted(InputEventData eventData)
         {
             if (!m_disabled)
             {
@@ -174,7 +186,7 @@ namespace HoloToolkit.Unity.Buttons
         /// Handle On Hold started from IHoldSource
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnHoldCompleted(HoldEventData eventData)
+        public void OnHoldCompleted(InputEventData eventData)
         {
             if (!m_disabled && ButtonState == ButtonStateEnum.Pressed)
             {
@@ -186,11 +198,11 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-                /// <summary>
+        /// <summary>
         /// Handle On Hold started from IHoldSource
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnHoldCanceled(HoldEventData eventData)
+        public void OnHoldCanceled(InputEventData eventData)
         {
             if (!m_disabled && ButtonState == ButtonStateEnum.Pressed)
             {
@@ -221,7 +233,7 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
-             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
+            if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
             {
                 if (ButtonState == ButtonStateEnum.Pressed)
                 {
@@ -245,15 +257,17 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            InteractionSourceInfo sourceInfo;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo))
+#if UNITY_WSA
+            InteractionSourceKind sourceKind;
+            if (((InteractionInputSource)eventData.InputSource).TryGetSourceKind(eventData.SourceId, out sourceKind))
             {
-                if (sourceInfo == InteractionSourceInfo.Hand)
+                if (sourceKind == InteractionSourceKind.Hand)
                 {
                     _handCount++;
                     _bHandVisible = true;
                 }
             }
+#endif
         }
 
         /// <summary>
@@ -262,15 +276,17 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            InteractionSourceInfo sourceInfo;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo))
+#if UNITY_WSA
+            InteractionSourceKind sourceKind;
+            if (((InteractionInputSource)eventData.InputSource).TryGetSourceKind(eventData.SourceId, out sourceKind))
             {
-                if (sourceInfo == InteractionSourceInfo.Hand)
+                if (sourceKind == InteractionSourceKind.Hand)
                 {
                     _handCount--;
                     _bHandVisible = _handCount <= 0;
                 }
             }
+#endif
         }
         #endregion
 
@@ -287,7 +303,7 @@ namespace HoloToolkit.Unity.Buttons
                 OnButtonPressed(gameObject);
             }
 
-            if(OnButtonClicked != null)
+            if (OnButtonClicked != null)
             {
                 OnButtonClicked(gameObject);
             }
@@ -305,7 +321,7 @@ namespace HoloToolkit.Unity.Buttons
         {
             ButtonStateEnum newState;
 
-            if(_bFocused)
+            if (_bFocused)
             {
                 newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
             }
@@ -379,25 +395,25 @@ namespace HoloToolkit.Unity.Buttons
             switch (ButtonState)
             {
                 case ButtonStateEnum.Interactive:
-                {
-                    newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+                        break;
+                    }
                 case ButtonStateEnum.Targeted:
-                {
-                    newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+                        break;
+                    }
                 case ButtonStateEnum.Observation:
-                {
-                    newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+                        break;
+                    }
                 case ButtonStateEnum.ObservationTargeted:
-                {
-                    newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+                        break;
+                    }
             }
 
             OnStateChange(newState);

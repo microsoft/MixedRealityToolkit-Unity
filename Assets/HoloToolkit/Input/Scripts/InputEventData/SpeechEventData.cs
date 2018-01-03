@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Describes an input event that involves keyword recognition.
     /// </summary>
-    public class SpeechEventData : BaseInputEventData
+    public class SpeechEventData : InputEventData
     {
         /// <summary>
         /// The time it took for the phrase to be uttered.
@@ -44,9 +44,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public SemanticMeaning[] SemanticMeanings { get; private set; }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText)
+        public void Initialize(IInputSource inputSource, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            Initialize(inputSource, sourceId, tags);
             Confidence = confidence;
             PhraseDuration = phraseDuration;
             PhraseStartTime = phraseStartTime;
