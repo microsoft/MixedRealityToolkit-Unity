@@ -172,8 +172,7 @@ namespace HoloToolkit.Unity.UX
 
         [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
         [SerializeField]
-        [Range(0, 31)]
-        protected int ignoreLayer = 2;//Ignore Raycast
+        protected LayerMask ignoreLayers = LayerMask.NameToLayer("Ignore Raycast");
 
         protected Vector3 targetBoundsWorldCenter = Vector3.zero;
         protected Vector3 targetBoundsLocalScale = Vector3.zero;
@@ -248,15 +247,15 @@ namespace HoloToolkit.Unity.UX
             {
                 case BoundsCalculationMethodEnum.RendererBounds:
                 default:
-                    GetRenderBoundsPoints(target, boundsPoints, ignoreLayer);
+                    GetRenderBoundsPoints(target, boundsPoints, ignoreLayers);
                     break;
 
                 case BoundsCalculationMethodEnum.Colliders:
-                    GetColliderBoundsPoints(target, boundsPoints, ignoreLayer);
+                    GetColliderBoundsPoints(target, boundsPoints, ignoreLayers);
                     break;
 
                 case BoundsCalculationMethodEnum.MeshFilterBounds:
-                    GetMeshFilterBoundsPoints(target, boundsPoints, ignoreLayer);
+                    GetMeshFilterBoundsPoints(target, boundsPoints, ignoreLayers);
                     break;
             }
 
@@ -393,11 +392,16 @@ namespace HoloToolkit.Unity.UX
 
         #region static utility functions
 
-        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, int ignoreLayer)
+        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)
             {
+                if (ignoreLayers == (1 << colliders[i].gameObject.layer | ignoreLayers))
+                {
+                    continue;
+                }
+
                 switch (colliders[i].GetType().Name)
                 {
                     case "SphereCollider":
@@ -448,28 +452,32 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-        public static void GetRenderBoundsPoints(GameObject target, List<Vector3> boundsPoints, int ignoreLayer)
+        public static void GetRenderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < renderers.Length; ++i)
             {
                 var rendererObj = renderers[i];
-                if (rendererObj.gameObject.layer == ignoreLayer)
+                if (ignoreLayers == (1 << rendererObj.gameObject.layer | ignoreLayers))
+                {
                     continue;
+                }
 
                 rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
                 boundsPoints.AddRange(corners);
             }
         }
 
-        public static void GetMeshFilterBoundsPoints(GameObject target, List<Vector3> boundsPoints, int ignoreLayer)
+        public static void GetMeshFilterBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             MeshFilter[] meshFilters = target.GetComponentsInChildren<MeshFilter>();
             for (int i = 0; i < meshFilters.Length; i++)
             {
                 var meshFilterObj = meshFilters[i];
-                if (meshFilterObj.gameObject.layer == ignoreLayer)
+                if (ignoreLayers == (1 << meshFilterObj.gameObject.layer | ignoreLayers))
+                {
                     continue;
+                }
 
                 Bounds meshBounds = meshFilterObj.sharedMesh.bounds;
                 meshBounds.GetCornerPositions(meshFilterObj.transform, ref corners);

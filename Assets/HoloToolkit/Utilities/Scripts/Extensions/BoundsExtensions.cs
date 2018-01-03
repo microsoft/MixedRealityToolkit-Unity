@@ -5,7 +5,7 @@
 
 using UnityEngine;
 
-public static class BoundsExtentions
+public static class BoundsExtensions
 {
     // Corners
     public const int LBF = 0;
@@ -111,14 +111,14 @@ public static class BoundsExtentions
         }
 
         // Transform all the local points to world space.
-        positions[BoundsExtentions.LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
-        positions[BoundsExtentions.LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
-        positions[BoundsExtentions.LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
-        positions[BoundsExtentions.LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
-        positions[BoundsExtentions.RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
-        positions[BoundsExtentions.RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
-        positions[BoundsExtentions.RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
-        positions[BoundsExtentions.RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
+        positions[BoundsExtensions.LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
+        positions[BoundsExtensions.LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
+        positions[BoundsExtensions.LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
+        positions[BoundsExtensions.LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
+        positions[BoundsExtensions.RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
+        positions[BoundsExtensions.RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
+        positions[BoundsExtensions.RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
+        positions[BoundsExtensions.RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
     }
 
     /// <summary>
@@ -143,14 +143,14 @@ public static class BoundsExtentions
             positions = new Vector3[numPoints];
         }
 
-        positions[BoundsExtentions.LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
-        positions[BoundsExtentions.LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
-        positions[BoundsExtentions.LTF] = new Vector3(leftEdge, topEdge, frontEdge);
-        positions[BoundsExtentions.LTB] = new Vector3(leftEdge, topEdge, backEdge);
-        positions[BoundsExtentions.RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
-        positions[BoundsExtentions.RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
-        positions[BoundsExtentions.RTF] = new Vector3(rightEdge, topEdge, frontEdge);
-        positions[BoundsExtentions.RTB] = new Vector3(rightEdge, topEdge, backEdge);
+        positions[BoundsExtensions.LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
+        positions[BoundsExtensions.LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
+        positions[BoundsExtensions.LTF] = new Vector3(leftEdge, topEdge, frontEdge);
+        positions[BoundsExtensions.LTB] = new Vector3(leftEdge, topEdge, backEdge);
+        positions[BoundsExtensions.RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
+        positions[BoundsExtensions.RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
+        positions[BoundsExtensions.RTF] = new Vector3(rightEdge, topEdge, frontEdge);
+        positions[BoundsExtensions.RTB] = new Vector3(rightEdge, topEdge, backEdge);
     }
 
     public static void GetFacePositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
@@ -164,12 +164,12 @@ public static class BoundsExtentions
             positions = new Vector3[numPoints];
         }
 
-        positions[BoundsExtentions.TOP] = transform.TransformPoint(center + Vector3.up * extents.y);
-        positions[BoundsExtentions.BOT] = transform.TransformPoint(center + Vector3.down * extents.y);
-        positions[BoundsExtentions.LFT] = transform.TransformPoint(center + Vector3.left * extents.x);
-        positions[BoundsExtentions.RHT] = transform.TransformPoint(center + Vector3.right * extents.x);
-        positions[BoundsExtentions.FWD] = transform.TransformPoint(center + Vector3.forward * extents.z);
-        positions[BoundsExtentions.BCK] = transform.TransformPoint(center + Vector3.back * extents.z);
+        positions[BoundsExtensions.TOP] = transform.TransformPoint(center + Vector3.up * extents.y);
+        positions[BoundsExtensions.BOT] = transform.TransformPoint(center + Vector3.down * extents.y);
+        positions[BoundsExtensions.LFT] = transform.TransformPoint(center + Vector3.left * extents.x);
+        positions[BoundsExtensions.RHT] = transform.TransformPoint(center + Vector3.right * extents.x);
+        positions[BoundsExtensions.FWD] = transform.TransformPoint(center + Vector3.forward * extents.z);
+        positions[BoundsExtensions.BCK] = transform.TransformPoint(center + Vector3.back * extents.z);
     }
 
     /// <summary>
@@ -190,36 +190,36 @@ public static class BoundsExtentions
         float backEdge = center.z + extents.z;
 
         // Allocate the array if needed.
-        const int numPoints = BoundsExtentions.LTF_LTB + 1;
+        const int numPoints = BoundsExtensions.LTF_LTB + 1;
         if (positions == null || positions.Length != numPoints)
         {
             positions = new Vector3[numPoints];
         }
 
         // Transform all the local points to world space.
-        positions[BoundsExtentions.LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
-        positions[BoundsExtentions.LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
-        positions[BoundsExtentions.LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
-        positions[BoundsExtentions.LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
-        positions[BoundsExtentions.RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
-        positions[BoundsExtentions.RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
-        positions[BoundsExtentions.RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
-        positions[BoundsExtentions.RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
+        positions[BoundsExtensions.LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
+        positions[BoundsExtensions.LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
+        positions[BoundsExtensions.LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
+        positions[BoundsExtensions.LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
+        positions[BoundsExtensions.RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
+        positions[BoundsExtensions.RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
+        positions[BoundsExtensions.RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
+        positions[BoundsExtensions.RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
 
-        positions[BoundsExtentions.LTF_RTF] = Vector3.Lerp(positions[BoundsExtentions.LTF], positions[BoundsExtentions.RTF], 0.5f);
-        positions[BoundsExtentions.LBF_RBF] = Vector3.Lerp(positions[BoundsExtentions.LBF], positions[BoundsExtentions.RBF], 0.5f);
-        positions[BoundsExtentions.RTB_LTB] = Vector3.Lerp(positions[BoundsExtentions.RTB], positions[BoundsExtentions.LTB], 0.5f);
-        positions[BoundsExtentions.RBB_LBB] = Vector3.Lerp(positions[BoundsExtentions.RBB], positions[BoundsExtentions.LBB], 0.5f);
+        positions[BoundsExtensions.LTF_RTF] = Vector3.Lerp(positions[BoundsExtensions.LTF], positions[BoundsExtensions.RTF], 0.5f);
+        positions[BoundsExtensions.LBF_RBF] = Vector3.Lerp(positions[BoundsExtensions.LBF], positions[BoundsExtensions.RBF], 0.5f);
+        positions[BoundsExtensions.RTB_LTB] = Vector3.Lerp(positions[BoundsExtensions.RTB], positions[BoundsExtensions.LTB], 0.5f);
+        positions[BoundsExtensions.RBB_LBB] = Vector3.Lerp(positions[BoundsExtensions.RBB], positions[BoundsExtensions.LBB], 0.5f);
 
-        positions[BoundsExtentions.LTF_LBF] = Vector3.Lerp(positions[BoundsExtentions.LTF], positions[BoundsExtentions.LBF], 0.5f);
-        positions[BoundsExtentions.RTB_RBB] = Vector3.Lerp(positions[BoundsExtentions.RTB], positions[BoundsExtentions.RBB], 0.5f);
-        positions[BoundsExtentions.LTB_LBB] = Vector3.Lerp(positions[BoundsExtentions.LTB], positions[BoundsExtentions.LBB], 0.5f);
-        positions[BoundsExtentions.RTF_RBF] = Vector3.Lerp(positions[BoundsExtentions.RTF], positions[BoundsExtentions.RBF], 0.5f);
+        positions[BoundsExtensions.LTF_LBF] = Vector3.Lerp(positions[BoundsExtensions.LTF], positions[BoundsExtensions.LBF], 0.5f);
+        positions[BoundsExtensions.RTB_RBB] = Vector3.Lerp(positions[BoundsExtensions.RTB], positions[BoundsExtensions.RBB], 0.5f);
+        positions[BoundsExtensions.LTB_LBB] = Vector3.Lerp(positions[BoundsExtensions.LTB], positions[BoundsExtensions.LBB], 0.5f);
+        positions[BoundsExtensions.RTF_RBF] = Vector3.Lerp(positions[BoundsExtensions.RTF], positions[BoundsExtensions.RBF], 0.5f);
 
-        positions[BoundsExtentions.RBF_RBB] = Vector3.Lerp(positions[BoundsExtentions.RBF], positions[BoundsExtentions.RBB], 0.5f);
-        positions[BoundsExtentions.RTF_RTB] = Vector3.Lerp(positions[BoundsExtentions.RTF], positions[BoundsExtentions.RTB], 0.5f);
-        positions[BoundsExtentions.LBF_LBB] = Vector3.Lerp(positions[BoundsExtentions.LBF], positions[BoundsExtentions.LBB], 0.5f);
-        positions[BoundsExtentions.LTF_LTB] = Vector3.Lerp(positions[BoundsExtentions.LTF], positions[BoundsExtentions.LTB], 0.5f);
+        positions[BoundsExtensions.RBF_RBB] = Vector3.Lerp(positions[BoundsExtensions.RBF], positions[BoundsExtensions.RBB], 0.5f);
+        positions[BoundsExtensions.RTF_RTB] = Vector3.Lerp(positions[BoundsExtensions.RTF], positions[BoundsExtensions.RTB], 0.5f);
+        positions[BoundsExtensions.LBF_LBB] = Vector3.Lerp(positions[BoundsExtensions.LBF], positions[BoundsExtensions.LBB], 0.5f);
+        positions[BoundsExtensions.LTF_LTB] = Vector3.Lerp(positions[BoundsExtensions.LTF], positions[BoundsExtensions.LTB], 0.5f);
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ public static class BoundsExtentions
         float topEdge = 0;
 
         // Allocate the array if needed.
-        const int numPoints = BoundsExtentions.LB_LT + 1;
+        const int numPoints = BoundsExtensions.LB_LT + 1;
         if (positions == null || positions.Length != numPoints)
         {
             positions = new Vector3[numPoints];
@@ -254,10 +254,10 @@ public static class BoundsExtentions
                 bottomEdge = center.y - extents.y;
                 topEdge = center.y + extents.y;
                 // Transform all the local points to world space.
-                positions[BoundsExtentions.LT] = transform.TransformPoint(0, topEdge, leftEdge);
-                positions[BoundsExtentions.LB] = transform.TransformPoint(0, bottomEdge, leftEdge);
-                positions[BoundsExtentions.RT] = transform.TransformPoint(0, topEdge, rightEdge);
-                positions[BoundsExtentions.RB] = transform.TransformPoint(0, bottomEdge, rightEdge);
+                positions[BoundsExtensions.LT] = transform.TransformPoint(0, topEdge, leftEdge);
+                positions[BoundsExtensions.LB] = transform.TransformPoint(0, bottomEdge, leftEdge);
+                positions[BoundsExtensions.RT] = transform.TransformPoint(0, topEdge, rightEdge);
+                positions[BoundsExtensions.RB] = transform.TransformPoint(0, bottomEdge, rightEdge);
                 break;
 
             case Axis.Y:
@@ -266,10 +266,10 @@ public static class BoundsExtentions
                 bottomEdge = center.x - extents.x;
                 topEdge = center.x + extents.x;
                 // Transform all the local points to world space.
-                positions[BoundsExtentions.LT] = transform.TransformPoint(topEdge, 0, leftEdge);
-                positions[BoundsExtentions.LB] = transform.TransformPoint(bottomEdge, 0, leftEdge);
-                positions[BoundsExtentions.RT] = transform.TransformPoint(topEdge, 0, rightEdge);
-                positions[BoundsExtentions.RB] = transform.TransformPoint(bottomEdge, 0, rightEdge);
+                positions[BoundsExtensions.LT] = transform.TransformPoint(topEdge, 0, leftEdge);
+                positions[BoundsExtensions.LB] = transform.TransformPoint(bottomEdge, 0, leftEdge);
+                positions[BoundsExtensions.RT] = transform.TransformPoint(topEdge, 0, rightEdge);
+                positions[BoundsExtensions.RB] = transform.TransformPoint(bottomEdge, 0, rightEdge);
                 break;
 
             case Axis.Z:
@@ -278,17 +278,17 @@ public static class BoundsExtentions
                 bottomEdge = center.y - extents.y;
                 topEdge = center.y + extents.y;
                 // Transform all the local points to world space.
-                positions[BoundsExtentions.LT] = transform.TransformPoint(leftEdge, topEdge, 0);
-                positions[BoundsExtentions.LB] = transform.TransformPoint(leftEdge, bottomEdge, 0);
-                positions[BoundsExtentions.RT] = transform.TransformPoint(rightEdge, topEdge, 0);
-                positions[BoundsExtentions.RB] = transform.TransformPoint(rightEdge, bottomEdge, 0);
+                positions[BoundsExtensions.LT] = transform.TransformPoint(leftEdge, topEdge, 0);
+                positions[BoundsExtensions.LB] = transform.TransformPoint(leftEdge, bottomEdge, 0);
+                positions[BoundsExtensions.RT] = transform.TransformPoint(rightEdge, topEdge, 0);
+                positions[BoundsExtensions.RB] = transform.TransformPoint(rightEdge, bottomEdge, 0);
                 break;
         }
 
-        positions[BoundsExtentions.LT_RT] = Vector3.Lerp(positions[BoundsExtentions.LT], positions[BoundsExtentions.RT], 0.5f);
-        positions[BoundsExtentions.RT_RB] = Vector3.Lerp(positions[BoundsExtentions.RT], positions[BoundsExtentions.RB], 0.5f);
-        positions[BoundsExtentions.RB_LB] = Vector3.Lerp(positions[BoundsExtentions.RB], positions[BoundsExtentions.LB], 0.5f);
-        positions[BoundsExtentions.LB_LT] = Vector3.Lerp(positions[BoundsExtentions.LB], positions[BoundsExtentions.LT], 0.5f);
+        positions[BoundsExtensions.LT_RT] = Vector3.Lerp(positions[BoundsExtensions.LT], positions[BoundsExtensions.RT], 0.5f);
+        positions[BoundsExtensions.RT_RB] = Vector3.Lerp(positions[BoundsExtensions.RT], positions[BoundsExtensions.RB], 0.5f);
+        positions[BoundsExtensions.RB_LB] = Vector3.Lerp(positions[BoundsExtensions.RB], positions[BoundsExtensions.LB], 0.5f);
+        positions[BoundsExtensions.LB_LT] = Vector3.Lerp(positions[BoundsExtensions.LB], positions[BoundsExtensions.LT], 0.5f);
     }
 
     /// <summary>
@@ -404,7 +404,7 @@ public static class BoundsExtentions
     /// <param name="originalBounds"></param>
     /// <param name="otherBounds"></param>
     /// <returns></returns>
-    public static Bounds ExpandToContian(this Bounds originalBounds, Bounds otherBounds)
+    public static Bounds ExpandToContain(this Bounds originalBounds, Bounds otherBounds)
     {
         Bounds tmpBounds = originalBounds;
 
@@ -424,6 +424,13 @@ public static class BoundsExtentions
         return bounds.Contains(otherBounds.min) && bounds.Contains(otherBounds.max);
     }
 
+    /// <summary>
+    /// Checks to see whether point is closer to bounds or otherBounds
+    /// </summary>
+    /// <param name="bounds"></param>
+    /// <param name="point"></param>
+    /// <param name="otherBounds"></param>
+    /// <returns></returns>
     public static bool CloserToPoint(this Bounds bounds, Vector3 point, Bounds otherBounds)
     {
         Vector3 distToClosestPoint1 = bounds.ClosestPoint(point) - point;
