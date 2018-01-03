@@ -2,11 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 
 namespace HoloToolkit.Unity
 {
-    // Overrides the sorting layer of all renderers and child renderers
+    /// <summary>
+    /// Overrides the sorting layer of all renderers and child renderers
+    /// </summary>
     public class SortingLayerOverride : MonoBehaviour
     {
         // Grabs the last layer in the project
@@ -15,12 +16,13 @@ namespace HoloToolkit.Unity
         // Only is used if UseLastLayer is false
         public string TargetSortingLayerName = "Default";
 
+        [SerializeField]
         private Renderer[] renderers;
 
-
-        void Start()
+        private void Start()
         {
-            renderers = GetComponentsInChildren<Renderer>();
+            if (renderers == null)
+                renderers = GetComponentsInChildren<Renderer>();
 
             if (UseLastLayer && SortingLayer.layers.Length > 0)
             {
@@ -33,7 +35,6 @@ namespace HoloToolkit.Unity
             {
                 componentRenderer.sortingLayerName = TargetSortingLayerName;
             }
-
         }
     }
 }
