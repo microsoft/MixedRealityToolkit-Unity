@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpacialSound
+namespace MixedRealityToolkit.SpatialSound
 {
     public class UAudioProfiler : EditorWindow
     {

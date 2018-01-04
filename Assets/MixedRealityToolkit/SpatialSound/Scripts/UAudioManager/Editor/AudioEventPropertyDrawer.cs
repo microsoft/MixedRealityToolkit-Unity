@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpacialSound
+namespace MixedRealityToolkit.SpatialSound
 {
     /// <summary>
     /// By applying the [AudioEvent] attribute to a string field, this 

@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
+using MixedRealityToolkit.Input;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Input.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     /// <summary>
     /// This is an example of how to use navigation gesture for a continuous rotation response.

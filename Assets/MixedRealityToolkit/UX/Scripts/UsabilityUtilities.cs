@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.UX
 {
     /// <summary>
     /// A helper class for making applications more usable across different devices.

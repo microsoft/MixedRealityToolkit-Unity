@@ -102,7 +102,7 @@ namespace MixedRealityToolkit.Tests
         {
             Action<object> action = Raiseable;
             action.RaiseEvent(param1);
-            Assert.That(arg1, Is.EqualTo(param1));
+            Assert.That(arg1, NUnit.Framework.Is.EqualTo(param1));
         }
 
         [TestCase(1, 2)]
@@ -113,8 +113,8 @@ namespace MixedRealityToolkit.Tests
         {
             Action<object, object> action = Raiseable;
             action.RaiseEvent(param1, param2);
-            Assert.That(arg1, Is.EqualTo(param1));
-            Assert.That(arg2, Is.EqualTo(param2));
+            Assert.That(arg1, NUnit.Framework.Is.EqualTo(param1));
+            Assert.That(arg2, NUnit.Framework.Is.EqualTo(param2));
         }
 
         [TestCase(1, 2, 3)]
@@ -125,9 +125,9 @@ namespace MixedRealityToolkit.Tests
         {
             Action<object, object, object> action = Raiseable;
             action.RaiseEvent(param1, param2, param3);
-            Assert.That(arg1, Is.EqualTo(param1));
-            Assert.That(arg2, Is.EqualTo(param2));
-            Assert.That(arg3, Is.EqualTo(param3));
+            Assert.That(arg1, NUnit.Framework.Is.EqualTo(param1));
+            Assert.That(arg2, NUnit.Framework.Is.EqualTo(param2));
+            Assert.That(arg3, NUnit.Framework.Is.EqualTo(param3));
         }
 
         [TestCase(1, 2, 3, 4)]
@@ -137,10 +137,10 @@ namespace MixedRealityToolkit.Tests
         {
             Action<object, object, object, object> action = Raiseable;
             action.RaiseEvent(param1, param2, param3, param4);
-            Assert.That(arg1, Is.EqualTo(param1));
-            Assert.That(arg2, Is.EqualTo(param2));
-            Assert.That(arg3, Is.EqualTo(param3));
-            Assert.That(arg4, Is.EqualTo(param4));
+            Assert.That(arg1, NUnit.Framework.Is.EqualTo(param1));
+            Assert.That(arg2, NUnit.Framework.Is.EqualTo(param2));
+            Assert.That(arg3, NUnit.Framework.Is.EqualTo(param3));
+            Assert.That(arg4, NUnit.Framework.Is.EqualTo(param4));
         }
     }
 }

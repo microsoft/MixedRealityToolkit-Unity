@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Examples.Medical
 {
     /// <summary>
     /// Helper functions for dealing with volume data

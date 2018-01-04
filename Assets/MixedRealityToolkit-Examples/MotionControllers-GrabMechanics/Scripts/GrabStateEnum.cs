@@ -7,7 +7,7 @@
 /// create more specific grab behavior by adding additional scripts/components to the game object, such as scalableObject, rotatableObject, throwableObject 
 /// </summary>
 
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     public enum GrabStateEnum
     {

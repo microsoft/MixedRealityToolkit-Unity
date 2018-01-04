@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace MixedRealityToolkit.SpacialSound
+namespace MixedRealityToolkit.SpatialSound
 {
     /// <summary>
     /// The different rules for how audio should be played back.

@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class WorldAnchorManagerTests
     {
@@ -18,7 +18,7 @@ namespace MixedRealityToolkit.Tests
             const string expected = "AnchorName";
             var gameObject = new GameObject(expected);
             var result = WorldAnchorManager.GenerateAnchorName(gameObject);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.That(result, NUnit.Framework.Is.EqualTo(expected));
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace MixedRealityToolkit.Tests
             const string expected = "AnchorName";
             var gameObject = new GameObject();
             var result = WorldAnchorManager.GenerateAnchorName(gameObject, expected);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.That(result, NUnit.Framework.Is.EqualTo(expected));
         }
     }
 }

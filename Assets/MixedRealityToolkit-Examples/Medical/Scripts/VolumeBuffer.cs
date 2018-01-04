@@ -3,7 +3,7 @@
 
 using MixedRealityToolkit.Common;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Examples.Medical
 {
     /// <summary>
     /// Represents a 3D array of data

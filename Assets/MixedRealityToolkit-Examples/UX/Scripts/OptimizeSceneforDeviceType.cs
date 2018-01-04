@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Examples
+namespace MixedRealityToolkit.Examples.UX
 {
     [Obsolete("Use SceneContentAdjuster")]
     public class OptimizeSceneforDeviceType : MonoBehaviour

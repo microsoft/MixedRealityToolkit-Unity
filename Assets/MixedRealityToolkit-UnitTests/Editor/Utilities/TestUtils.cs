@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public static class TestUtils
     {

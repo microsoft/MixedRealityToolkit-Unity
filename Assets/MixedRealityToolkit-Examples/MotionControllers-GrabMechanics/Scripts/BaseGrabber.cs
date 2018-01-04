@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     /// <summary>
     /// Intended usage: scripts that inherit from this can be attached to the controller, or any object with a collider 

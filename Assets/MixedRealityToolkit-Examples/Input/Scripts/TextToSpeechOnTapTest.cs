@@ -2,9 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Input.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     /// <summary>
     /// Tap Test for text to speech. This voice will appear to emanate from the object

@@ -12,7 +12,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace MixedRealityToolkit.Examples.SpatialMappingComponent
+namespace MixedRealityToolkit.Examples.SpatialMapping
 {
     /// <summary>
     /// Simple test script for dropping cubes with physics to observe interactions

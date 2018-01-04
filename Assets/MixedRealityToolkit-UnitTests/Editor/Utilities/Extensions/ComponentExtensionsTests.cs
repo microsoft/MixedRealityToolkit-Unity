@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Tests.Utilities;
+using MixedRealityToolkit.Utilities;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -20,7 +22,7 @@ namespace MixedRealityToolkit.Tests
         {
             var gameObject = new GameObject();
             gameObject.EnsureComponent<BoxCollider>();
-            Assert.That(gameObject.GetComponent<BoxCollider>(), Is.Not.UnityNull());
+            Assert.That(gameObject.GetComponent<BoxCollider>(), NUnit.Framework.Is.Not.UnityNull());
         }
 
         [Test]
@@ -29,7 +31,7 @@ namespace MixedRealityToolkit.Tests
             var gameObject = new GameObject();
             gameObject.AddComponent<BoxCollider>();
             gameObject.EnsureComponent<BoxCollider>();
-            Assert.That(gameObject.GetComponents<BoxCollider>().Length, Is.EqualTo(1));
+            Assert.That(gameObject.GetComponents<BoxCollider>().Length, NUnit.Framework.Is.EqualTo(1));
         }
 
         [Test]
@@ -38,7 +40,7 @@ namespace MixedRealityToolkit.Tests
             var gameObject = new GameObject();
             var existingComponent = gameObject.AddComponent<BoxCollider>();
             var ensuredComponent = gameObject.EnsureComponent<BoxCollider>();
-            Assert.That(ensuredComponent, Is.EqualTo(existingComponent));
+            Assert.That(ensuredComponent, NUnit.Framework.Is.EqualTo(existingComponent));
         }
 
         [Test]
@@ -47,7 +49,7 @@ namespace MixedRealityToolkit.Tests
             var gameObject = new GameObject();
             var existingComponent = gameObject.AddComponent<BoxCollider>();
             var ensuredComponent = existingComponent.EnsureComponent<SphereCollider>();
-            Assert.That(ensuredComponent, Is.Not.UnityNull());
+            Assert.That(ensuredComponent, NUnit.Framework.Is.Not.UnityNull());
         }
     }
 }

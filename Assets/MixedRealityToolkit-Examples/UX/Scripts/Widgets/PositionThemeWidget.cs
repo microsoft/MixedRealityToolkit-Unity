@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using MixedRealityToolkit.Examples.Prototyping;
-using System;
+using MixedRealityToolkit.Examples.UX.Themes;
+using UnityEngine;
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Widgets
 {
     /// <summary>
     /// updates the button position based on the button theme

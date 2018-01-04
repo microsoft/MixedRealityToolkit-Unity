@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Controls
 {
     /// <summary>
     /// A theme for handling the label string on the toggle button

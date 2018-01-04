@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpacialSound
+namespace MixedRealityToolkit.SpatialSound
 {
     /// <summary>
     /// Interface that is implemented by any class that wishes to influence how an audio source sounds.

@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Examples.Prototyping;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Widgets
 {
     /// <summary>
     /// Updates the position of an element based on the Interactive focus state

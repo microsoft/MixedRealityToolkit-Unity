@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class UI : LineDrawer
     {

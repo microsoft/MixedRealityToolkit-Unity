@@ -8,7 +8,7 @@ using MixedRealityToolkit.Input;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// InteractiveToggle expands Interactive to expose selection or toggle states.

@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System.Collections;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     public class PlaneTargetGroupPicker : Singleton<PlaneTargetGroupPicker>
     {

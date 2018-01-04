@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class CameraCacheTests
     {
@@ -35,7 +35,7 @@ namespace MixedRealityToolkit.Tests
         public void GetMainCameraFromCache()
         {
             var mainCamera = TestUtils.CreateMainCamera();
-            Assert.That(CameraCache.Main, Is.EqualTo(mainCamera));
+            Assert.That(CameraCache.Main, NUnit.Framework.Is.EqualTo(mainCamera));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace MixedRealityToolkit.Tests
             var mainCamera = TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
             TestUtils.CreateMainCamera();
-            Assert.That(CameraCache.Main, Is.EqualTo(mainCamera));
+            Assert.That(CameraCache.Main, NUnit.Framework.Is.EqualTo(mainCamera));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace MixedRealityToolkit.Tests
             var unused = CameraCache.Main;
             var secondMainCamera = TestUtils.CreateMainCamera();
             Object.DestroyImmediate(mainCamera.gameObject);
-            Assert.That(CameraCache.Main, Is.EqualTo(secondMainCamera));
+            Assert.That(CameraCache.Main, NUnit.Framework.Is.EqualTo(secondMainCamera));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace MixedRealityToolkit.Tests
             var unused = CameraCache.Main;
             var secondMainCamera = TestUtils.CreateMainCamera();
             CameraCache.Refresh(secondMainCamera);
-            Assert.That(CameraCache.Main, Is.EqualTo(secondMainCamera));
+            Assert.That(CameraCache.Main, NUnit.Framework.Is.EqualTo(secondMainCamera));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace MixedRealityToolkit.Tests
             var secondMainCamera = TestUtils.CreateMainCamera();
             CameraCache.Refresh(secondMainCamera);
             Object.DestroyImmediate(secondMainCamera.gameObject);
-            Assert.That(CameraCache.Main, Is.EqualTo(mainCamera));
+            Assert.That(CameraCache.Main, NUnit.Framework.Is.EqualTo(mainCamera));
         }
     }
 }

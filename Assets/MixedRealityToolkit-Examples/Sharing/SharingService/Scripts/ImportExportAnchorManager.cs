@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Sharing;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -19,7 +20,7 @@ using UnityEngine.VR.WSA.Sharing;
 #endif
 #endif
 
-namespace MixedRealityToolkit.Sharing.Tests
+namespace MixedRealityToolkit.Examples.Sharing
 {
     /// <summary>
     /// Manages creating anchors and sharing the anchors with other clients.

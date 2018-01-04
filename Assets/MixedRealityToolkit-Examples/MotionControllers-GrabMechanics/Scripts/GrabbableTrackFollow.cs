@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     /// <summary>
     /// This type of grab makes the grabbed object track the position of the grabber

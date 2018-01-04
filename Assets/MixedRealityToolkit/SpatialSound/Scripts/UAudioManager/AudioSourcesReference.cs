@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpacialSound
+namespace MixedRealityToolkit.SpatialSound
 {
     /// <summary>
     /// The AudioSourcesReference class encapsulates a cache of references to audio source components on a given

@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Input.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     public class SimpleGridGenerator : MonoBehaviour
     {

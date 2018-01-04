@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MixedRealityToolkit.Input.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     public class OnFocusEvent : MonoBehaviour, IFocusable
     {

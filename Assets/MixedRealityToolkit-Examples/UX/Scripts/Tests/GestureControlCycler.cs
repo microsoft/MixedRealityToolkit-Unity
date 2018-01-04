@@ -2,12 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Examples.Prototyping;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Tests
 {
     /// <summary>
     /// Sample GestureInteractiveControl for scrubbing through ICylce components

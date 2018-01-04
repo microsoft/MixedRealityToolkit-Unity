@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Input;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     /// <summary>
     /// 1. Decides when to show the cursor.

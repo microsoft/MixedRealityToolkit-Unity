@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Examples.Medical
 {
     /// <summary>
     /// Keeps a game object within configured bounds

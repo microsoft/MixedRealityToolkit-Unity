@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// The base class for all profiles

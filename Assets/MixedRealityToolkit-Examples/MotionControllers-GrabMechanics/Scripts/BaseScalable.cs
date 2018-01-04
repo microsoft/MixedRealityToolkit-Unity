@@ -4,7 +4,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     /// <summary>
     /// class responsible for two hand scale. Objects with a child of this class attached 

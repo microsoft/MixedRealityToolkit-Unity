@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using MixedRealityToolkit.UX.Buttons;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

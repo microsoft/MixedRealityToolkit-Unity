@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     /// <summary>
     /// Extends from BaseUsable. This is a non-abstract script that's actually attached to usable object 

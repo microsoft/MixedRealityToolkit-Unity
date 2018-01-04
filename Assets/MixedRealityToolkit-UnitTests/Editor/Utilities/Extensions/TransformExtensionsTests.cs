@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Tests.Utilities;
+using MixedRealityToolkit.Utilities;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +54,7 @@ namespace MixedRealityToolkit.Tests
         public void IterateOne()
         {
             var root = Object.Instantiate(empty);
-            Assert.That(root.transform.EnumerateHierarchy().First(), Is.EqualTo(root.transform));
+            Assert.That(root.transform.EnumerateHierarchy().First(), NUnit.Framework.Is.EqualTo(root.transform));
         }
 
         [Test]
@@ -63,7 +65,7 @@ namespace MixedRealityToolkit.Tests
 
             foreach (var transform in root.transform.EnumerateHierarchy(ignoreList))
             {
-                Assert.That(transform, Is.EqualTo(root.transform));
+                Assert.That(transform, NUnit.Framework.Is.EqualTo(root.transform));
             }
         }
 
@@ -77,7 +79,7 @@ namespace MixedRealityToolkit.Tests
 
             foreach (var transform in root.transform.EnumerateHierarchy(ignoreList))
             {
-                Assert.That(transform, Is.EqualTo(root.transform));
+                Assert.That(transform, NUnit.Framework.Is.EqualTo(root.transform));
             }
         }
 
@@ -88,7 +90,7 @@ namespace MixedRealityToolkit.Tests
             var child = Object.Instantiate(empty, root.transform);
             foreach (var transform in root.transform.EnumerateHierarchy())
             {
-                Assert.That(transform, Is.EqualTo(root.transform).Or.EqualTo(child.transform));
+                Assert.That(transform, NUnit.Framework.Is.EqualTo(root.transform).Or.EqualTo(child.transform));
             }
         }
 
@@ -102,7 +104,7 @@ namespace MixedRealityToolkit.Tests
             }
 
             var hierarchyCount = root.transform.EnumerateHierarchy().Count();
-            Assert.That(hierarchyCount, Is.EqualTo(root.transform.hierarchyCount));
+            Assert.That(hierarchyCount, NUnit.Framework.Is.EqualTo(root.transform.hierarchyCount));
         }
 
         [Test]
@@ -118,7 +120,7 @@ namespace MixedRealityToolkit.Tests
             }
 
             var hierarchyCount = root.transform.EnumerateHierarchy().Count();
-            Assert.That(hierarchyCount, Is.EqualTo(root.transform.hierarchyCount));
+            Assert.That(hierarchyCount, NUnit.Framework.Is.EqualTo(root.transform.hierarchyCount));
         }
 
         [Test]
@@ -142,7 +144,7 @@ namespace MixedRealityToolkit.Tests
             }
 
             var hierarchyCount = root.transform.EnumerateHierarchy(ignoreList).Count();
-            Assert.That(hierarchyCount, Is.EqualTo(unignoredHierarchyCount));
+            Assert.That(hierarchyCount, NUnit.Framework.Is.EqualTo(unignoredHierarchyCount));
         }
 
         [Test]
@@ -168,7 +170,7 @@ namespace MixedRealityToolkit.Tests
             }
 
             var hierarchyCount = root.transform.EnumerateHierarchy(ignoreList).Count();
-            Assert.That(hierarchyCount, Is.EqualTo(root.transform.hierarchyCount - ignoreList.Count));
+            Assert.That(hierarchyCount, NUnit.Framework.Is.EqualTo(root.transform.hierarchyCount - ignoreList.Count));
         }
 
         [Test]
@@ -230,14 +232,14 @@ namespace MixedRealityToolkit.Tests
                 parent.name = names[i];
             }
 
-            Assert.That(parent.transform.GetFullPath(prefix: prefix, delimiter: delimiter), Is.EqualTo(result));
+            Assert.That(parent.transform.GetFullPath(prefix: prefix, delimiter: delimiter), NUnit.Framework.Is.EqualTo(result));
         }
 
         [Test]
         public void BoundsColliderEmpty()
         {
             var sut = new GameObject().transform.GetColliderBounds();
-            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.zero)));
+            Assert.That(sut, NUnit.Framework.Is.EqualTo(new Bounds(Vector3.zero, Vector3.zero)));
         }
 
         [Test]
@@ -246,7 +248,7 @@ namespace MixedRealityToolkit.Tests
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
             var sut = cube.transform.GetColliderBounds();
-            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
+            Assert.That(sut, NUnit.Framework.Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
         }
 
         [Test]
@@ -257,7 +259,7 @@ namespace MixedRealityToolkit.Tests
             cube.transform.SetParent(parent.transform);
 
             var sut = parent.transform.GetColliderBounds();
-            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
+            Assert.That(sut, NUnit.Framework.Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
         }
 
         [Test]
@@ -269,7 +271,7 @@ namespace MixedRealityToolkit.Tests
             cube.transform.SetParent(child.transform);
 
             var sut = parent.transform.GetColliderBounds();
-            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
+            Assert.That(sut, NUnit.Framework.Is.EqualTo(new Bounds(Vector3.zero, Vector3.one)));
         }
 
         [Test]
@@ -284,7 +286,7 @@ namespace MixedRealityToolkit.Tests
             cube2.transform.localPosition = Vector3.one * -0.5f;
 
             var sut = parent.transform.GetColliderBounds();
-            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.zero, Vector3.one * 2)));
+            Assert.That(sut, NUnit.Framework.Is.EqualTo(new Bounds(Vector3.zero, Vector3.one * 2)));
         }
 
         [Test]
@@ -294,7 +296,7 @@ namespace MixedRealityToolkit.Tests
             cube.transform.localPosition = Vector3.one * 2;
 
             var sut = cube.transform.GetColliderBounds();
-            Assert.That(sut, Is.EqualTo(new Bounds(Vector3.one * 2, Vector3.one)));
+            Assert.That(sut, NUnit.Framework.Is.EqualTo(new Bounds(Vector3.one * 2, Vector3.one)));
         }
 
         [Test]
@@ -303,8 +305,8 @@ namespace MixedRealityToolkit.Tests
             var transform1 = new GameObject().transform;
             var transform2 = new GameObject().transform;
 
-            Assert.That(transform1.IsParentOrChildOf(transform2), Is.False);
-            Assert.That(transform2.IsParentOrChildOf(transform1), Is.False);
+            Assert.That(transform1.IsParentOrChildOf(transform2), NUnit.Framework.Is.False);
+            Assert.That(transform2.IsParentOrChildOf(transform1), NUnit.Framework.Is.False);
         }
 
         [Test]
@@ -313,8 +315,8 @@ namespace MixedRealityToolkit.Tests
             var transform1 = new GameObject().transform;
             var transform2 = Object.Instantiate(empty, transform1).transform;
 
-            Assert.That(transform1.IsParentOrChildOf(transform2), Is.True);
-            Assert.That(transform2.IsParentOrChildOf(transform1), Is.True);
+            Assert.That(transform1.IsParentOrChildOf(transform2), NUnit.Framework.Is.True);
+            Assert.That(transform2.IsParentOrChildOf(transform1), NUnit.Framework.Is.True);
         }
 
         [Test]
@@ -324,8 +326,8 @@ namespace MixedRealityToolkit.Tests
             var transform2 = Object.Instantiate(empty, root).transform;
             var transform3 = Object.Instantiate(empty, transform2).transform;
 
-            Assert.That(transform2.IsParentOrChildOf(transform3), Is.True);
-            Assert.That(transform3.IsParentOrChildOf(transform2), Is.True);
+            Assert.That(transform2.IsParentOrChildOf(transform3), NUnit.Framework.Is.True);
+            Assert.That(transform3.IsParentOrChildOf(transform2), NUnit.Framework.Is.True);
         }
 
         [Test]
@@ -333,7 +335,7 @@ namespace MixedRealityToolkit.Tests
         {
             var root = new GameObject().transform;
 
-            Assert.That(root.IsParentOrChildOf(root), Is.True);
+            Assert.That(root.IsParentOrChildOf(root), NUnit.Framework.Is.True);
         }
     }
 }

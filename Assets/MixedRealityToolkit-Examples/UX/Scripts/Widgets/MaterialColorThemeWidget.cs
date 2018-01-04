@@ -2,12 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Examples.Prototyping;
-using System.Collections;
-using System.Collections.Generic;
+using MixedRealityToolkit.Examples.UX.Themes;
 using UnityEngine;
-using System;
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Widgets
 {
     /// <summary>
     /// Changes the color of a material based on the Interactive state and the assigned theme

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Sets global shader variables relating to calibration space transforms

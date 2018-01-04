@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.SpacialSound
+namespace MixedRealityToolkit.SpatialSound
 {
     /// <summary>
     /// Encapsulate a single Unity AudioClip with playback settings.

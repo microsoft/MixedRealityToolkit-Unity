@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Editor for FastConfigurable2Sided shader

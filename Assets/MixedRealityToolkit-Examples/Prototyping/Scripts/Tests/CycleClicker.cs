@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using MixedRealityToolkit.Input;
-using MixedRealityToolkit.Examples.Prototyping;
+using UnityEngine;
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.Prototyping
 {
     /// <summary>
     /// Advances a iCycle component on click

@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Input;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Examples.Medical
 {
     /// <summary>
     /// Lightweight game object placement

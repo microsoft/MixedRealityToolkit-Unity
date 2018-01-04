@@ -11,7 +11,7 @@ using MixedRealityToolkit.Common;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// GestureInteractive extends Interactive and handles more advanced gesture events.

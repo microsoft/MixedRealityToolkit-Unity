@@ -5,7 +5,7 @@ using MixedRealityToolkit.Input;
 using MixedRealityToolkit.UX.Receivers;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Examples
+namespace MixedRealityToolkit.Examples.UX
 {
     public class ButtonReceiverExample : InteractionReceiver
     {

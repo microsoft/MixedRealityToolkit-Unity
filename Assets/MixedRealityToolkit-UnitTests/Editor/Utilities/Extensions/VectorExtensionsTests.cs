@@ -15,7 +15,7 @@ namespace MixedRealityToolkit.Tests
             Vector2 value = new Vector2(2f, 3f);
             Vector2 scale = new Vector2(2f, 3f);
             Vector2 expected = new Vector2(4f, 9f);
-            Assert.That(value.Mul(scale), Is.EqualTo(expected));
+            Assert.That(value.Mul(scale), NUnit.Framework.Is.EqualTo(expected));
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace MixedRealityToolkit.Tests
             Vector2 value = new Vector2(2f, 3f);
             Vector2 scale = new Vector2(2f, 3f);
             Vector2 expected = new Vector2(1f, 1f);
-            Assert.That(value.Div(scale), Is.EqualTo(expected));
+            Assert.That(value.Div(scale), NUnit.Framework.Is.EqualTo(expected));
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace MixedRealityToolkit.Tests
             Vector3 value = new Vector3(2f, 3f, 4f);
             Vector3 scale = new Vector3(2f, 3f, 4f);
             Vector3 expected = new Vector3(4f, 9f, 16f);
-            Assert.That(value.Mul(scale), Is.EqualTo(expected));
+            Assert.That(value.Mul(scale), NUnit.Framework.Is.EqualTo(expected));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace MixedRealityToolkit.Tests
             Vector3 value = new Vector3(2f, 3f, 4f);
             Vector3 scale = new Vector3(2f, 3f, 4f);
             Vector3 expected = new Vector3(1f, 1f, 1f);
-            Assert.That(value.Div(scale), Is.EqualTo(expected));
+            Assert.That(value.Div(scale), NUnit.Framework.Is.EqualTo(expected));
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace MixedRealityToolkit.Tests
             Vector3 pivot = new Vector3(1f, 1f, 1f);
             Quaternion rotation = Quaternion.AngleAxis(180f, new Vector3(0f, 0f, 1f));
             Vector3 expected = new Vector3(2f, 2f, 0f);
-            Assert.That(point.RotateAround(pivot, rotation), Is.EqualTo(expected).Within(1f).Ulps);
+            Assert.That(point.RotateAround(pivot, rotation), NUnit.Framework.Is.EqualTo(expected).Within(1f).Ulps);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace MixedRealityToolkit.Tests
             Vector3 pivot = new Vector3(1f, 1f, 1f);
             Vector3 rotation = new Vector3(0f, 0f, 180f);
             Vector3 expected = new Vector3(2f, 2f, 0f);
-            Assert.That(point.RotateAround(pivot, rotation), Is.EqualTo(expected).Within(1f).Ulps);
+            Assert.That(point.RotateAround(pivot, rotation), NUnit.Framework.Is.EqualTo(expected).Within(1f).Ulps);
         }
 
         [Test]
@@ -94,56 +94,56 @@ namespace MixedRealityToolkit.Tests
         public void Vector2Collection_Average_Empty()
         {
             var vectors = new Vector2[] { };
-            Assert.That(VectorExtensions.Average(vectors), Is.EqualTo(Vector2.zero));
+            Assert.That(VectorExtensions.Average(vectors), NUnit.Framework.Is.EqualTo(Vector2.zero));
         }
 
         [Test]
         public void Vector3Collection_Average_Empty()
         {
             var vectors = new Vector3[] { };
-            Assert.That(VectorExtensions.Average(vectors), Is.EqualTo(Vector3.zero));
+            Assert.That(VectorExtensions.Average(vectors), NUnit.Framework.Is.EqualTo(Vector3.zero));
         }
 
         [Test]
         public void Vector2Collection_Average()
         {
             var vectors = new Vector2[] { new Vector2(1f, 2f), new Vector2(2f, 3f) };
-            Assert.That(VectorExtensions.Average(vectors), Is.EqualTo(new Vector2(1.5f, 2.5f)));
+            Assert.That(VectorExtensions.Average(vectors), NUnit.Framework.Is.EqualTo(new Vector2(1.5f, 2.5f)));
         }
 
         [Test]
         public void Vector3Collection_Average()
         {
             var vectors = new Vector3[] { new Vector3(1f, 2f, 3f), new Vector3(2f, 3f, 4f) };
-            Assert.That(VectorExtensions.Average(vectors), Is.EqualTo(new Vector3(1.5f, 2.5f, 3.5f)));
+            Assert.That(VectorExtensions.Average(vectors), NUnit.Framework.Is.EqualTo(new Vector3(1.5f, 2.5f, 3.5f)));
         }
 
         [Test]
         public void Vector2Collection_Median_Empty()
         {
             var vectors = new Vector2[] { };
-            Assert.That(VectorExtensions.Median(vectors), Is.EqualTo(Vector2.zero));
+            Assert.That(VectorExtensions.Median(vectors), NUnit.Framework.Is.EqualTo(Vector2.zero));
         }
 
         [Test]
         public void Vector3Collection_Median_Empty()
         {
             var vectors = new Vector3[] { };
-            Assert.That(VectorExtensions.Median(vectors), Is.EqualTo(Vector3.zero));
+            Assert.That(VectorExtensions.Median(vectors), NUnit.Framework.Is.EqualTo(Vector3.zero));
         }
 
         [Test]
         public void Vector2Collection_Median()
         {
             var vectors = new Vector2[] { new Vector3(10f, 10f), new Vector2(1f, 1f), new Vector2(5f, 5f) };
-            Assert.That(VectorExtensions.Median(vectors), Is.EqualTo(new Vector2(5f, 5f)));
+            Assert.That(VectorExtensions.Median(vectors), NUnit.Framework.Is.EqualTo(new Vector2(5f, 5f)));
         }
 
         [Test]
         public void Vector3Collection_Median()
         {
             var vectors = new Vector3[] { new Vector3(10f, 10f, 10f), new Vector3(1f, 1f, 1f), new Vector3(5f, 5f, 5f) };
-            Assert.That(VectorExtensions.Median(vectors), Is.EqualTo(new Vector3(5f, 5f, 5f)));
+            Assert.That(VectorExtensions.Median(vectors), NUnit.Framework.Is.EqualTo(new Vector3(5f, 5f, 5f)));
         }
 
     }

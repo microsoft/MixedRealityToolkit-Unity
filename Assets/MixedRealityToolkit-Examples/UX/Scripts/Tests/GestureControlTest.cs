@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
-using MixedRealityToolkit.Examples.Prototyping;
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Tests
 {
     /// <summary>
     /// A sample GestureInteractiveControl that moves and element in space using raw gesture data

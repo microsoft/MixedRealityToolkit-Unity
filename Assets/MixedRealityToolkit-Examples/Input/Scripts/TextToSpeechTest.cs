@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Input.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     public class TextToSpeechTest : MonoBehaviour
     {

@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace MixedRealityToolkit.SpacialSound
+namespace MixedRealityToolkit.SpatialSound
 {
     [CustomEditor(typeof(UAudioManager))]
     public class UAudioManagerEditor : UAudioManagerBaseEditor<AudioEvent, AudioEventBank>

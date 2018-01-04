@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     public class RotateMinMax : MonoBehaviour
     {

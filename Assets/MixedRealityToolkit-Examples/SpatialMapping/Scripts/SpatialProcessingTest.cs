@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpatialMapping.Tests
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// The SpatialProcessingTest class allows applications to scan the environment for a specified amount of time 

@@ -4,7 +4,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class TestUtilsTests
     {
@@ -65,7 +65,7 @@ namespace MixedRealityToolkit.Tests
         {
             TestUtils.ClearScene();
             var mainCamera = TestUtils.CreateMainCamera();
-            Assert.That(mainCamera, Is.EqualTo(Camera.main));
+            Assert.That(mainCamera, NUnit.Framework.Is.EqualTo(Camera.main));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace MixedRealityToolkit.Tests
             var reflectionTest = gameObject.AddComponent<ReflectionTestBehaviour>();
             gameObject.CallUpdate();
             gameObject.CallUpdate();
-            Assert.That(reflectionTest.UpdateCallCount, Is.EqualTo(2));
+            Assert.That(reflectionTest.UpdateCallCount, NUnit.Framework.Is.EqualTo(2));
         }
 
         [Test]

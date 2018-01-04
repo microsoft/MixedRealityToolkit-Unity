@@ -3,7 +3,7 @@
 
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Input;
-using MixedRealityToolkit.SpacialSound;
+using MixedRealityToolkit.SpatialSound;
 using System;
 using System.Globalization;
 using System.Threading;

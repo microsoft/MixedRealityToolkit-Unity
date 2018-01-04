@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Examples.Utilities
 {
     [RequireComponent(typeof(ApplicationViewManager))]
     public class ApplicationViewManagerEditButton : MonoBehaviour

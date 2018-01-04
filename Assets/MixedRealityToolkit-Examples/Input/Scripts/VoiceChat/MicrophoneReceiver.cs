@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
-using MixedRealityToolkit.SpacialSound;
+using MixedRealityToolkit.SpatialSound;
 using System;
 using System.Threading;
 using UnityEngine;

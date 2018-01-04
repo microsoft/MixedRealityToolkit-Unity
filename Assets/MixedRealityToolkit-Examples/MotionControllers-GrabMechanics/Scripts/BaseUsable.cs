@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     /// <summary>
     /// A usable object is one that can be "used" or activated while being grabbed/carried

@@ -4,7 +4,7 @@
 using UnityEngine;
 using MixedRealityToolkit.Input;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Examples.Input
 {
     [RequireComponent(typeof(SetGlobalListener))]
     public class HapticsTest : MonoBehaviour, IInputHandler

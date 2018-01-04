@@ -4,7 +4,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     /// <summary>
     /// This type of grab creates a temporary fixed joint to attach the grabbed object to the grabber

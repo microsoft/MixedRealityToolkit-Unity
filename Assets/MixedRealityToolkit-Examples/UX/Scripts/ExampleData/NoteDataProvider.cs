@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
+using MixedRealityToolkit.Examples.UX.Controls;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// NoteDataProvider takes the selected Label text of the pressed 

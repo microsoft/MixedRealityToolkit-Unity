@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Input;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Examples.Medical
 {
     /// <summary>
     /// Controls slicing planes for use in volumetric rendering

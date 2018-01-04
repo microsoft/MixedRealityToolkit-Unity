@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.UX
 {
     /// <summary>
     /// A MonoBehaviour which automatically scales an object for better usability across different devices.

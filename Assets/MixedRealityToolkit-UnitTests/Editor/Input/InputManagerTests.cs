@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using MixedRealityToolkit.Input;
+using MixedRealityToolkit.Tests.Utilities;
 using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Tests.Input
 {
     [TestFixture]
     public class InputManagerTests
@@ -40,7 +41,7 @@ namespace MixedRealityToolkit.Tests
             FireTestEvent();
             InputManager.Instance.PopInputDisable();
 
-            Assert.That(receivedEventSources, Is.Empty);
+            Assert.That(receivedEventSources, NUnit.Framework.Is.Empty);
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace MixedRealityToolkit.Tests
             FireTestEvent();
             InputManager.Instance.enabled = true;
 
-            Assert.That(receivedEventSources, Is.Empty);
+            Assert.That(receivedEventSources, NUnit.Framework.Is.Empty);
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace MixedRealityToolkit.Tests
 
             FireTestEvent();
 
-            Assert.That(receivedEventSources, Is.Not.Empty);
+            Assert.That(receivedEventSources, NUnit.Framework.Is.Not.Empty);
         }
 
         [Test]
@@ -72,7 +73,7 @@ namespace MixedRealityToolkit.Tests
 
             FireTestEvent();
 
-            Assert.That(receivedEventSources[0], Is.EqualTo(globalHandler));
+            Assert.That(receivedEventSources[0], NUnit.Framework.Is.EqualTo(globalHandler));
         }
 
         [Test]
@@ -83,7 +84,7 @@ namespace MixedRealityToolkit.Tests
 
             FireTestEvent();
 
-            Assert.That(receivedEventSources.Count, Is.EqualTo(2));
+            Assert.That(receivedEventSources.Count, NUnit.Framework.Is.EqualTo(2));
         }
 
         [Test]
@@ -94,8 +95,8 @@ namespace MixedRealityToolkit.Tests
 
             FireTestEvent();
 
-            Assert.That(receivedEventSources.Contains(globalHandler1), Is.True);
-            Assert.That(receivedEventSources.Contains(globalHandler2), Is.True);
+            Assert.That(receivedEventSources.Contains(globalHandler1), NUnit.Framework.Is.True);
+            Assert.That(receivedEventSources.Contains(globalHandler2), NUnit.Framework.Is.True);
         }
 
         [Test]
@@ -106,7 +107,7 @@ namespace MixedRealityToolkit.Tests
             InputManager.Instance.OverrideFocusedObject = focusedHandler;
             FireTestEvent();
 
-            Assert.That(receivedEventSources, Is.Not.Empty);
+            Assert.That(receivedEventSources, NUnit.Framework.Is.Not.Empty);
         }
 
         [Test]
@@ -118,7 +119,7 @@ namespace MixedRealityToolkit.Tests
             FireTestEvent();
             InputManager.Instance.PopModalInputHandler();
 
-            Assert.That(receivedEventSources, Is.Not.Empty);
+            Assert.That(receivedEventSources, NUnit.Framework.Is.Not.Empty);
         }
 
         [Test]
@@ -133,8 +134,8 @@ namespace MixedRealityToolkit.Tests
             InputManager.Instance.PopModalInputHandler();
             InputManager.Instance.PopModalInputHandler();
 
-            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
-            Assert.That(receivedEventSources[0], Is.EqualTo(modalHandler2));
+            Assert.That(receivedEventSources.Count, NUnit.Framework.Is.EqualTo(1));
+            Assert.That(receivedEventSources[0], NUnit.Framework.Is.EqualTo(modalHandler2));
         }
 
         [Test]
@@ -146,7 +147,7 @@ namespace MixedRealityToolkit.Tests
             FireTestEvent();
             InputManager.Instance.PopFallbackInputHandler();
 
-            Assert.That(receivedEventSources, Is.Not.Empty);
+            Assert.That(receivedEventSources, NUnit.Framework.Is.Not.Empty);
         }
 
         [Test]
@@ -160,8 +161,8 @@ namespace MixedRealityToolkit.Tests
             FireTestEvent();
             InputManager.Instance.PopModalInputHandler();
 
-            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
-            Assert.That(receivedEventSources[0], Is.EqualTo(modalHandler));
+            Assert.That(receivedEventSources.Count, NUnit.Framework.Is.EqualTo(1));
+            Assert.That(receivedEventSources[0], NUnit.Framework.Is.EqualTo(modalHandler));
         }
 
         [Test]
@@ -176,8 +177,8 @@ namespace MixedRealityToolkit.Tests
             FireTestEvent();
             InputManager.Instance.PopModalInputHandler();
 
-            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
-            Assert.That(receivedEventSources[0], Is.EqualTo(focusedHandler));
+            Assert.That(receivedEventSources.Count, NUnit.Framework.Is.EqualTo(1));
+            Assert.That(receivedEventSources[0], NUnit.Framework.Is.EqualTo(focusedHandler));
         }
 
         [Test]
@@ -193,19 +194,19 @@ namespace MixedRealityToolkit.Tests
             InputManager.Instance.PushFallbackInputHandler(fallbackHandler);
 
             FireTestEvent();
-            Assert.That(receivedEventSources, Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, focusedHandler }));
+            Assert.That(receivedEventSources, NUnit.Framework.Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, focusedHandler }));
 
             InputManager.Instance.PushModalInputHandler(modalHandler);
             FireTestEvent();
-            Assert.That(receivedEventSources, Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, modalHandler }));
+            Assert.That(receivedEventSources, NUnit.Framework.Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, modalHandler }));
 
             modalHandler.SetActive(false);
             FireTestEvent();
-            Assert.That(receivedEventSources, Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, focusedHandler }));
+            Assert.That(receivedEventSources, NUnit.Framework.Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, focusedHandler }));
 
             focusedHandler.SetActive(false);
             FireTestEvent();
-            Assert.That(receivedEventSources, Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, fallbackHandler }));
+            Assert.That(receivedEventSources, NUnit.Framework.Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, fallbackHandler }));
 
             InputManager.Instance.PopModalInputHandler();
             InputManager.Instance.PopFallbackInputHandler();
@@ -218,8 +219,8 @@ namespace MixedRealityToolkit.Tests
 
             GazeManager.Instance.gameObject.CallUpdate();
 
-            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
-            Assert.That(receivedEventSources[0], Is.EqualTo(handler));
+            Assert.That(receivedEventSources.Count, NUnit.Framework.Is.EqualTo(1));
+            Assert.That(receivedEventSources[0], NUnit.Framework.Is.EqualTo(handler));
         }
 
 

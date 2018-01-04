@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// GestureInteractiveControl receives gesture updates from GestureInteractive.

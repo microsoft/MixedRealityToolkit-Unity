@@ -2,11 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Sharing;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Sharing.Tests
+namespace MixedRealityToolkit.Examples.Sharing
 {
     /// <summary>
     /// Broadcasts the head transform of the local user to other users in the session,

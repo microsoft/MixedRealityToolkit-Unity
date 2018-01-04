@@ -14,7 +14,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
     {

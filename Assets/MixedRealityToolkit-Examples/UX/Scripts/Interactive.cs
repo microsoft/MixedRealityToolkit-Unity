@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using MixedRealityToolkit.Input;
+using MixedRealityToolkit.Examples.UX.Widgets;
+using MixedRealityToolkit.Examples.UX.Controls;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// Interactive exposes basic button type events to the Unity Editor and receives messages from the GestureManager and GazeManager.

@@ -5,7 +5,7 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class UnityNullConstraintTests
     {

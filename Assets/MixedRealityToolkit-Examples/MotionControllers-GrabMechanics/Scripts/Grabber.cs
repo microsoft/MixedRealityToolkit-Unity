@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.Input.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.GrabMechanics
 {
     /// <summary>
     /// Extends its behaviour from BaseGrabber. This is non-abstract script that's actually attached to the gameObject that will

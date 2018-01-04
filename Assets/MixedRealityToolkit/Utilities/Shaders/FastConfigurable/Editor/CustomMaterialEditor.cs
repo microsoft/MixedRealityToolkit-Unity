@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Helper class for custom material editors

@@ -1,11 +1,10 @@
 ﻿using MixedRealityToolkit.Common;
-using MixedRealityToolkit.SpatialMapping;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.SpatialMapping
 {
     public static class RoomMeshExporter
     {

@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MixedRealityToolkit.Examples
+namespace MixedRealityToolkit.Examples.SpatialMapping
 {
     public class LevelManager : MonoBehaviour
     {

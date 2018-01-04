@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Sharing.Spawning;
 using MixedRealityToolkit.Sharing.SyncModel;
 
-namespace MixedRealityToolkit.Sharing.Tests
+namespace MixedRealityToolkit.Examples.Sharing
 {
     /// <summary>
     /// Class that demonstrates a custom class using sync model attributes.

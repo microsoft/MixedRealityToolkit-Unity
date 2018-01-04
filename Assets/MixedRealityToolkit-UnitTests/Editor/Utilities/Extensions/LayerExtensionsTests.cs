@@ -35,7 +35,7 @@ namespace MixedRealityToolkit.Tests
                 LayerMask.GetMask("Default"),
                 LayerMask.GetMask("UI"),
             };
-            Assert.That(waterLayer.FindLayerListIndex(masks), Is.EqualTo(0));
+            Assert.That(waterLayer.FindLayerListIndex(masks), NUnit.Framework.Is.EqualTo(0));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace MixedRealityToolkit.Tests
                 LayerMask.GetMask("UI"),
                 LayerMask.GetMask("Water")
             };
-            Assert.That(waterLayer.FindLayerListIndex(masks), Is.EqualTo(masks.Length - 1));
+            Assert.That(waterLayer.FindLayerListIndex(masks), NUnit.Framework.Is.EqualTo(masks.Length - 1));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace MixedRealityToolkit.Tests
                 LayerMask.GetMask("Water"),
                 LayerMask.GetMask("UI")
             };
-            Assert.That(waterLayer.FindLayerListIndex(masks), Is.EqualTo(1));
+            Assert.That(waterLayer.FindLayerListIndex(masks), NUnit.Framework.Is.EqualTo(1));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace MixedRealityToolkit.Tests
                 LayerMask.GetMask("Default"),
                 LayerMask.GetMask("UI")
             };
-            Assert.That(waterLayer.FindLayerListIndex(masks), Is.EqualTo(-1));
+            Assert.That(waterLayer.FindLayerListIndex(masks), NUnit.Framework.Is.EqualTo(-1));
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace MixedRealityToolkit.Tests
         {
             var waterLayer = LayerMask.NameToLayer("Water");
             var masks = new LayerMask[] { };
-            Assert.That(waterLayer.FindLayerListIndex(masks), Is.EqualTo(-1));
+            Assert.That(waterLayer.FindLayerListIndex(masks), NUnit.Framework.Is.EqualTo(-1));
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace MixedRealityToolkit.Tests
                 LayerMask.GetMask("UI")
             };
             var combinedMask = LayerMask.GetMask("Ignore Raycast", "TransparentFX", "UI");
-            Assert.That(masks.Combine(), Is.EqualTo(combinedMask));
+            Assert.That(masks.Combine(), NUnit.Framework.Is.EqualTo(combinedMask));
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace MixedRealityToolkit.Tests
                 LayerMask.GetMask("UI")
             };
             var combinedMask = LayerMask.GetMask("UI");
-            Assert.That(masks.Combine(), Is.EqualTo(combinedMask));
+            Assert.That(masks.Combine(), NUnit.Framework.Is.EqualTo(combinedMask));
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace MixedRealityToolkit.Tests
         {
             var masks = new LayerMask[] { };
             var combinedMask = LayerMask.GetMask();
-            Assert.That(masks.Combine(), Is.EqualTo(combinedMask));
+            Assert.That(masks.Combine(), NUnit.Framework.Is.EqualTo(combinedMask));
         }
     }
 }

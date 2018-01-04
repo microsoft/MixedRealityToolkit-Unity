@@ -5,7 +5,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Editor for FastConfigurable shader

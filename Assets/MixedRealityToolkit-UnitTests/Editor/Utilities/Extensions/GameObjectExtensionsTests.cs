@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Tests.Utilities;
+using MixedRealityToolkit.Utilities;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,7 +76,7 @@ namespace MixedRealityToolkit.Tests
             var parent = Object.Instantiate(empty);
             parent.SetLayerRecursively(waterLayer);
 
-            Assert.That(parent.layer, Is.EqualTo(waterLayer.value));
+            Assert.That(parent.layer, NUnit.Framework.Is.EqualTo(waterLayer.value));
         }
 
         [Test]
@@ -84,7 +86,7 @@ namespace MixedRealityToolkit.Tests
             var child = Object.Instantiate(empty, parent.transform);
             parent.SetLayerRecursively(waterLayer);
 
-            Assert.That(child.layer, Is.EqualTo(waterLayer.value));
+            Assert.That(child.layer, NUnit.Framework.Is.EqualTo(waterLayer.value));
         }
 
         [Test]
@@ -100,7 +102,7 @@ namespace MixedRealityToolkit.Tests
 
             foreach (var transform in root.GetComponentsInChildren<Transform>())
             {
-                Assert.That(transform.gameObject.layer, Is.EqualTo(waterLayer.value));
+                Assert.That(transform.gameObject.layer, NUnit.Framework.Is.EqualTo(waterLayer.value));
             }
         }
 
@@ -112,8 +114,8 @@ namespace MixedRealityToolkit.Tests
             Dictionary<GameObject, int> layerCache;
             parent.SetLayerRecursively(waterLayer, out layerCache);
 
-            Assert.That(parent.layer, Is.EqualTo(waterLayer.value), "New parent layer is not correct");
-            Assert.That(layerCache[parent], Is.EqualTo(uiLayer.value), "Old parent layer is not correct");
+            Assert.That(parent.layer, NUnit.Framework.Is.EqualTo(waterLayer.value), "New parent layer is not correct");
+            Assert.That(layerCache[parent], NUnit.Framework.Is.EqualTo(uiLayer.value), "Old parent layer is not correct");
         }
 
         [Test]
@@ -127,9 +129,9 @@ namespace MixedRealityToolkit.Tests
             Dictionary<GameObject, int> layerCache;
             parent.SetLayerRecursively(waterLayer, out layerCache);
 
-            Assert.That(child.layer, Is.EqualTo(waterLayer.value), "New child layer is not correct");
-            Assert.That(layerCache[parent], Is.EqualTo(uiLayer.value), "Old parent layer is not correct");
-            Assert.That(layerCache[child], Is.EqualTo(transparentFxLayer.value), "Old child layer is not correct");
+            Assert.That(child.layer, NUnit.Framework.Is.EqualTo(waterLayer.value), "New child layer is not correct");
+            Assert.That(layerCache[parent], NUnit.Framework.Is.EqualTo(uiLayer.value), "Old parent layer is not correct");
+            Assert.That(layerCache[child], NUnit.Framework.Is.EqualTo(transparentFxLayer.value), "Old child layer is not correct");
         }
 
         [Test]
@@ -148,8 +150,8 @@ namespace MixedRealityToolkit.Tests
 
             foreach (var transform in root.GetComponentsInChildren<Transform>())
             {
-                Assert.That(transform.gameObject.layer, Is.EqualTo(waterLayer.value), "New layer is not correct.");
-                Assert.That(layerCache[transform.gameObject], Is.Not.EqualTo(waterLayer.value), "Old layer is not correct");
+                Assert.That(transform.gameObject.layer, NUnit.Framework.Is.EqualTo(waterLayer.value), "New layer is not correct.");
+                Assert.That(layerCache[transform.gameObject], NUnit.Framework.Is.Not.EqualTo(waterLayer.value), "Old layer is not correct");
             }
         }
 
@@ -163,7 +165,7 @@ namespace MixedRealityToolkit.Tests
             parent.SetLayerRecursively(waterLayer, out layerCache);
             parent.ApplyLayerCacheRecursively(layerCache);
 
-            Assert.That(parent.layer, Is.EqualTo(uiLayer.value));
+            Assert.That(parent.layer, NUnit.Framework.Is.EqualTo(uiLayer.value));
         }
 
         [Test]
@@ -178,8 +180,8 @@ namespace MixedRealityToolkit.Tests
             parent.SetLayerRecursively(waterLayer, out layerCache);
             parent.ApplyLayerCacheRecursively(layerCache);
 
-            Assert.That(parent.layer, Is.EqualTo(uiLayer.value), "Reapplied parent layer is not correct");
-            Assert.That(child.layer, Is.EqualTo(transparentFxLayer.value), "Reapplied child layer is not correct");
+            Assert.That(parent.layer, NUnit.Framework.Is.EqualTo(uiLayer.value), "Reapplied parent layer is not correct");
+            Assert.That(child.layer, NUnit.Framework.Is.EqualTo(transparentFxLayer.value), "Reapplied child layer is not correct");
         }
 
         [Test]
@@ -199,7 +201,7 @@ namespace MixedRealityToolkit.Tests
 
             foreach (var transform in root.GetComponentsInChildren<Transform>())
             {
-                Assert.That(transform.gameObject.layer, Is.Not.EqualTo(waterLayer.value));
+                Assert.That(transform.gameObject.layer, NUnit.Framework.Is.Not.EqualTo(waterLayer.value));
             }
         }
 
@@ -221,7 +223,7 @@ namespace MixedRealityToolkit.Tests
             }
 
 #pragma warning disable 618
-            Assert.That(parent.GetFullPath(), Is.EqualTo(result));
+            Assert.That(parent.GetFullPath(), NUnit.Framework.Is.EqualTo(result));
 #pragma warning restore 618
         }
     }

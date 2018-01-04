@@ -28,7 +28,7 @@ namespace MixedRealityToolkit.Tests
                 -5, -20, 100, 5
             };
 
-            Assert.That(items.MaxOrDefault(), Is.EqualTo(100));
+            Assert.That(items.MaxOrDefault(), NUnit.Framework.Is.EqualTo(100));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace MixedRealityToolkit.Tests
                 -20, -5, 5, 100
             };
 
-            Assert.That(items.MaxOrDefault(), Is.EqualTo(100));
+            Assert.That(items.MaxOrDefault(), NUnit.Framework.Is.EqualTo(100));
         }
     }
 }
