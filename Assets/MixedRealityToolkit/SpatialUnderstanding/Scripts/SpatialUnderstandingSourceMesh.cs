@@ -159,7 +159,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
             }
 
             // Convert to IntPtr
-            SpatialUnderstandingDll dll = SpatialUnderstanding.Instance.UnderstandingDLL;
+            SpatialUnderstandingDll dll = SpatialUnderstandingManager.Instance.UnderstandingDLL;
             meshCount = inputMeshList.Count;
             meshList = dll.PinMeshDataForMarshalling(inputMeshList);
 

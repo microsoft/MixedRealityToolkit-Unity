@@ -128,7 +128,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
                 ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
                 placement.Type = PlacementType.Place_OnShape;
                 placement.HalfDims = halfDims;
-                placement.PlacementParam_Str_0 = SpatialUnderstanding.Instance.UnderstandingDLL.PinString(shapeName);
+                placement.PlacementParam_Str_0 = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinString(shapeName);
                 placement.PlacementParam_Int_0 = componentIndex;
                 return placement;
             }

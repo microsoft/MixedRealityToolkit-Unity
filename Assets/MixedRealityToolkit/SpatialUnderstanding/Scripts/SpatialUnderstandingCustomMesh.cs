@@ -42,7 +42,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
             {
                 meshMaterial = value;
 
-                if (spatialUnderstanding.ScanState == SpatialUnderstanding.ScanStates.Done)
+                if (spatialUnderstanding.ScanState == SpatialUnderstandingManager.ScanStates.Done)
                 {
                     for (int i = 0; i < SurfaceObjects.Count; ++i)
                     {
@@ -112,7 +112,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <summary>
         /// For a cached SpatialUnderstanding.Instance.
         /// </summary>
-        private SpatialUnderstanding spatialUnderstanding;
+        private SpatialUnderstandingManager spatialUnderstanding;
 
         /// <summary>
         /// The spatial understanding mesh will be split into pieces so that we don't have to
@@ -217,7 +217,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
 
         private void Start()
         {
-            spatialUnderstanding = SpatialUnderstanding.Instance;
+            spatialUnderstanding = SpatialUnderstandingManager.Instance;
 #if UNITY_WSA
             if (gameObject.GetComponent<WorldAnchor>() == null)
             {
@@ -434,7 +434,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
             // Only update every so often
             if (IsImportActive || (ImportMeshPeriod <= 0.0f) ||
                 ((Time.time - timeLastImportedMesh) < ImportMeshPeriod) ||
-                (spatialUnderstanding.ScanState != SpatialUnderstanding.ScanStates.Scanning))
+                (spatialUnderstanding.ScanState != SpatialUnderstandingManager.ScanStates.Scanning))
             {
                 return;
             }

@@ -59,14 +59,14 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             ParentCanvas.gameObject.SetActive(false);
 
             // Events
-            SpatialUnderstanding.SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
+            SpatialUnderstandingManager.Instance.ScanStateChanged += OnScanStateChanged;
         }
 
         protected override void OnDestroy()
         {
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance != null)
+            if (SpatialUnderstandingManager.Instance != null)
             {
-                SpatialUnderstanding.SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
+                SpatialUnderstandingManager.Instance.ScanStateChanged -= OnScanStateChanged;
             }
 
             base.OnDestroy();
@@ -75,8 +75,8 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void OnScanStateChanged()
         {
             // If we are leaving the None state, go ahead and register shapes now
-            if ((SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done) &&
-                SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if ((SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done) &&
+                SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 // Make sure we've created our shapes
                 ShapeDefinition.Instance.CreateShapes();
@@ -93,12 +93,12 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             // Setup for queries
             SpatialUnderstandingDllTopology.TopologyResult[] resultsTopology = new SpatialUnderstandingDllTopology.TopologyResult[1];
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
 
             // Place on a wall (do it in a thread, as it can take a little while)
             SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef =
                 SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_OnWall(new Vector3(MenuWidth * 0.5f, MenuHeight * 0.5f, MenuMinDepth * 0.5f), 0.5f, 3.0f);
-            SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
+            SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
 
             var thread =
 #if UNITY_EDITOR || !UNITY_WSA
@@ -110,12 +110,12 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 if (SpatialUnderstandingDllObjectPlacement.Solver_PlaceObject(
                     "UIPlacement",
-                    SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placeOnWallDef),
+                    SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(placeOnWallDef),
                     0,
                     IntPtr.Zero,
                     0,
                     IntPtr.Zero,
-                    SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) == 0)
+                    SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) == 0)
                 {
                     placementResult = null;
                 }
@@ -162,8 +162,8 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             }
 
             // Final fallback just in front of the user
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
             Vector3 defaultPosition = cameraTransform.position + cameraTransform.forward * 2.0f;
             PlaceMenu(new Vector3(defaultPosition.x, Math.Max(defaultPosition.y, alignment.FloorYValue + 1.5f), defaultPosition.z), (new Vector3(cameraTransform.forward.x, 0.0f, cameraTransform.forward.z)).normalized, true);
             Debug.Log("PlaceMenu - InFrontOfUser");

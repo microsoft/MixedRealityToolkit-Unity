@@ -46,14 +46,14 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Alignment information
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
 
             // Box for the space
             float timeDelay = (float)lineBoxList.Count * AnimatedBox.DelayPerItem;
@@ -73,7 +73,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -85,7 +85,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minFacingClearance = 1.5f;
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindPositionsOnWalls(
                 minHeightOfWallSpace, minWidthOfWallSpace, minHeightAboveFloor, minFacingClearance,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -103,13 +103,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minFacingClearance = 0.5f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargePositionsOnWalls(
                 minHeightOfWallSpace, minWidthOfWallSpace, minHeightAboveFloor, minFacingClearance,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -123,13 +123,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr wallPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr wallPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int wallCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargestWall(
                 wallPtr);
             if (wallCount == 0)
@@ -158,13 +158,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minHeightAboveFloor = 1.0f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindPositionsOnFloor(
                 minWidthOfWallSpace, minHeightAboveFloor,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -176,7 +176,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         public void Query_Topology_FindLargestPositionsOnFloor()
         {
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargestPositionsOnFloor(
                 resultsTopology.Length, resultsTopologyPtr);
 
@@ -192,13 +192,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minFacingClearance = 1.0f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindPositionsSittable(
                 minHeight, maxHeight, minFacingClearance,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -213,13 +213,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minRadius = 0.1f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsShapePtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsShape);
+            IntPtr resultsShapePtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsShape);
             int shapeCount = SpatialUnderstandingDllShapes.QueryShape_FindPositionsOnShape(
                 shapeName, minRadius,
                 resultsShape.Length, resultsShapePtr);
@@ -231,13 +231,13 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         public void Query_Shape_FindShapeHalfDims(string shapeName)
         {
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsShapePtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsShape);
+            IntPtr resultsShapePtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsShape);
             int shapeCount = SpatialUnderstandingDllShapes.QueryShape_FindShapeHalfDims(
                 shapeName,
                 resultsShape.Length, resultsShapePtr);
@@ -252,7 +252,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -291,14 +291,14 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Alignment information
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
 
             // Add the line boxes (we may have more results than boxes - pick evenly across the results in that case)
             int lineInc = Mathf.CeilToInt((float)shapeCount / (float)DisplayResultMaxCount);
@@ -406,7 +406,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void Update()
         {
             // Queries
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 Update_Queries();
             }

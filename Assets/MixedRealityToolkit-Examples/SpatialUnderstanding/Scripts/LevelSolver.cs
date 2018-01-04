@@ -86,7 +86,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         public void ClearGeometry(bool clearAll = true)
         {
             placementResults.Clear();
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDllObjectPlacement.Solver_RemoveAllObjects();
             }
@@ -198,7 +198,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 ClearGeometry();
             }
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return false;
             }
@@ -206,14 +206,14 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             // New query
             if (SpatialUnderstandingDllObjectPlacement.Solver_PlaceObject(
                     placementName,
-                    SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placementDefinition),
+                    SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(placementDefinition),
                     (placementRules != null) ? placementRules.Count : 0,
-                    ((placementRules != null) && (placementRules.Count > 0)) ? SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placementRules.ToArray()) : IntPtr.Zero,
+                    ((placementRules != null) && (placementRules.Count > 0)) ? SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(placementRules.ToArray()) : IntPtr.Zero,
                     (placementConstraints != null) ? placementConstraints.Count : 0,
-                    ((placementConstraints != null) && (placementConstraints.Count > 0)) ? SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placementConstraints.ToArray()) : IntPtr.Zero,
-                    SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) > 0)
+                    ((placementConstraints != null) && (placementConstraints.Count > 0)) ? SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(placementConstraints.ToArray()) : IntPtr.Zero,
+                    SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) > 0)
             {
-                SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
+                SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
                 if (!isASync)
                 {
                     // If not running async, we can just add the results to the draw list right now
@@ -241,7 +241,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 return;
             }
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -250,8 +250,8 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // We will reject any above or below the ceiling/floor
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
 
             // Copy over the results
             for (int i = 0; i < queryStatus.QueryResult.Count; ++i)
@@ -334,8 +334,8 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         public void Query_OnFloorAndCeiling()
         {
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
             List<PlacementQuery> placementQuery = new List<PlacementQuery>();
             for (int i = 0; i < 4; ++i)
             {
@@ -462,7 +462,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         public bool InitializeSolver()
         {
             if (IsSolverInitialized ||
-                !SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                !SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return IsSolverInitialized;
             }
@@ -477,20 +477,20 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void Update()
         {
             // Can't do any of this till we're done with the scanning phase
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Done)
             {
                 return;
             }
 
             // Make sure the solver has been initialized
             if (!IsSolverInitialized &&
-                SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 InitializeSolver();
             }
 
             // Constraint queries
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 Update_Queries();
             }

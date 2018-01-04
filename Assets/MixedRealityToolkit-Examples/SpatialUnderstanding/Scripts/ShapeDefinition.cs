@@ -22,9 +22,9 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         // Functions
         private void Start()
         {
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance != null)
+            if (SpatialUnderstandingManager.Instance != null)
             {
-                SpatialUnderstanding.SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
+                SpatialUnderstandingManager.Instance.ScanStateChanged += OnScanStateChanged;
             }
         }
 
@@ -32,16 +32,16 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             base.OnDestroy();
 
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance != null)
+            if (SpatialUnderstandingManager.Instance != null)
             {
-                SpatialUnderstanding.SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
+                SpatialUnderstandingManager.Instance.ScanStateChanged -= OnScanStateChanged;
             }
         }
 
         public void CreateShapes()
         {
             if (HasCreatedShapes ||
-                !SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                !SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -54,7 +54,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void OnScanStateChanged()
         {
             // If we are leaving the None state, go ahead and register shapes now
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 // Create definitions and analyze
                 CreateShapes();
@@ -73,12 +73,12 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents,
             List<SpatialUnderstandingDllShapes.ShapeConstraint> shapeConstraints)
         {
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return false;
             }
-            IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
-            IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
+            IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
+            IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
             if (SpatialUnderstandingDllShapes.AddShape(
                     shapeName,
                     (shapeComponents == null) ? 0 : shapeComponents.Count,
@@ -95,7 +95,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void CreateCustomShapeDefinitions()
         {
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }

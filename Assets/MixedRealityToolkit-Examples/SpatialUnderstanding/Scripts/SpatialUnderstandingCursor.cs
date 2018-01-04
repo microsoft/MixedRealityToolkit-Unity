@@ -30,17 +30,17 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             RaycastResult result = base.CalculateRayIntersect();
 
             // Now use the understanding code
-            if (SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding &&
-                SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding &&
+                SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 Vector3 rayPos = CameraCache.Main.transform.position;
                 Vector3 rayVec = CameraCache.Main.transform.forward * RayCastLength;
-                IntPtr raycastResultPtr = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
+                IntPtr raycastResultPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
                 SpatialUnderstandingDll.Imports.PlayspaceRaycast(
                     rayPos.x, rayPos.y, rayPos.z,
                     rayVec.x, rayVec.y, rayVec.z,
                     raycastResultPtr);
-                rayCastResult = SpatialUnderstanding.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResult();
+                rayCastResult = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticRaycastResult();
 
                 float rayCastResultDist = Vector3.Distance(rayPos, rayCastResult.IntersectPoint);
                 float resultDist = Vector3.Distance(rayPos, result.Position);
@@ -116,15 +116,15 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstandingFeatureOverview
             base.LateUpdate();
 
             // Basic checks
-            if ((SpatialUnderstanding.SpatialUnderstanding.Instance == null) ||
-               ((SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.SpatialUnderstanding.ScanStates.Scanning) &&
-                (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.SpatialUnderstanding.ScanStates.Finishing) &&
-                (SpatialUnderstanding.SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.SpatialUnderstanding.ScanStates.Done)))
+            if ((SpatialUnderstandingManager.Instance == null) ||
+               ((SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Scanning) &&
+                (SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Finishing) &&
+                (SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Done)))
             {
                 CursorText.gameObject.SetActive(false);
                 return;
             }
-            if (!SpatialUnderstanding.SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }

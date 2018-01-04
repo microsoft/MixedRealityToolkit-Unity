@@ -100,7 +100,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
             {
                 ShapeComponentConstraint constraint = new ShapeComponentConstraint();
                 constraint.Type = ShapeComponentConstraintType.SurfaceNotPartOfShape;
-                constraint.Param_Str_0 = SpatialUnderstanding.Instance.UnderstandingDLL.PinString(shapeName);
+                constraint.Param_Str_0 = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinString(shapeName);
                 return constraint;
             }
 
@@ -633,7 +633,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
             public ShapeComponent(List<ShapeComponentConstraint> componentConstraints)
             {
                 ConstraintCount = componentConstraints.Count;
-                Constraints = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(componentConstraints.ToArray());
+                Constraints = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(componentConstraints.ToArray());
             }
 
             public int ConstraintCount;

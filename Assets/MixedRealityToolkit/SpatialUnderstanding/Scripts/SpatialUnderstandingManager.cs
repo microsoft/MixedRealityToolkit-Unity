@@ -14,7 +14,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
     /// </summary>
     [RequireComponent(typeof(SpatialUnderstandingSourceMesh))]
     [RequireComponent(typeof(SpatialUnderstandingCustomMesh))]
-    public class SpatialUnderstanding : Singleton<SpatialUnderstanding>
+    public class SpatialUnderstandingManager : Singleton<SpatialUnderstandingManager>
     {
         // Consts
         public const float ScanSearchDistance = 8.0f;
