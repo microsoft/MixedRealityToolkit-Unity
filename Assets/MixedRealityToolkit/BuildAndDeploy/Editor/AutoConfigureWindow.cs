@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Common
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Base class for auto configuration build windows.

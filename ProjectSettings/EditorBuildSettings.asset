@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MixedRealityToolkit-Examples/Input/Scenes/MotionControllerTest.unity
+    guid: 031f48e64bee7dc4da3a2cd4ffe42c03

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Common
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Configuration options derived from here: 

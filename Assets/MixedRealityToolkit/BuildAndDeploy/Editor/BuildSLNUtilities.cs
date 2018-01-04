@@ -12,7 +12,7 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Class containing various utility methods to build a WSA solution from a Unity project.

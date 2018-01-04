@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Build
 {
     public static class XdeGuestLocator
     {

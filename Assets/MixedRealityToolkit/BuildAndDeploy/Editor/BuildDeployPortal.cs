@@ -11,7 +11,7 @@ using System.Threading;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace MixedRealityToolkit
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Function used to communicate with the device through the REST API
