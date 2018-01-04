@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     [UseWith(typeof(LineBase))]
     public class LineParticles : LineRendererBase

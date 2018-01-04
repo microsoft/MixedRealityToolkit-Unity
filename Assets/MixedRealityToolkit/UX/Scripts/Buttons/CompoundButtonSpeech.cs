@@ -6,7 +6,7 @@ using MixedRealityToolkit.Input;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// This class will automatically link buttons to speech keywords

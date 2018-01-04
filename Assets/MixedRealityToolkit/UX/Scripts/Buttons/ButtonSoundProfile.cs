@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     public class ButtonSoundProfile : ButtonProfile
     {

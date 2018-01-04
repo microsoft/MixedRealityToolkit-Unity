@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.UI.Keyboard
+namespace MixedRealityToolkit.UX.Keyboard
 {
     public class SymbolKeyboard : MonoBehaviour
     {

@@ -10,7 +10,7 @@ using MixedRealityToolkit.Common;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace MixedRealityToolkit.UI.Keyboard
+namespace MixedRealityToolkit.UX.Keyboard
 {
     /// <summary>
     /// A simple general use keyboard that is ideal for AR/VR applications.

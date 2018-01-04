@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace MixedRealityToolkit.Collections
+namespace MixedRealityToolkit.UX.Collections
 {
     /// <summary>
     /// An Object Collection is simply a set of child objects organized with some

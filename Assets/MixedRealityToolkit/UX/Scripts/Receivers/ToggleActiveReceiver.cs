@@ -4,7 +4,7 @@
 using UnityEngine;
 using MixedRealityToolkit.Input;
 
-namespace MixedRealityToolkit.Receivers
+namespace MixedRealityToolkit.UX.Receivers
 {
     /// <summary>
     /// Simple receiver class for toggling a game object active or inactive.

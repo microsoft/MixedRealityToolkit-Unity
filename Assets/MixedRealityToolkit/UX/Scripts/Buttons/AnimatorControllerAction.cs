@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     [Serializable]
     public struct AnimatorControllerAction

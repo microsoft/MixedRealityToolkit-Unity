@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Sprite Button State Data Set

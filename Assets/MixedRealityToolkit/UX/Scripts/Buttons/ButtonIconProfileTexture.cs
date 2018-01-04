@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Reflection;
 #endif
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Icon profile that returns textures

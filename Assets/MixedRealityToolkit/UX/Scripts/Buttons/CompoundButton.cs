@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Concrete version of Button class used with other CompoundButton scripts (e.g., CompoundButtonMesh)

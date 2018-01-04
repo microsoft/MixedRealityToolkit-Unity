@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using UnityEditor;
-using MixedRealityToolkit.Collections;
+using MixedRealityToolkit.UX.Collections;
 
 [CustomEditor(typeof(ObjectCollection))]
 public class CollectionEditor : Editor

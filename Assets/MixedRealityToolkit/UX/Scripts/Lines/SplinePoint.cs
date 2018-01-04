@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     [Serializable]
     public struct SplinePoint

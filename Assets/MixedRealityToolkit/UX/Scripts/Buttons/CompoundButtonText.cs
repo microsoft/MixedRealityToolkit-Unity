@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     [RequireComponent(typeof(CompoundButton))]
     public class CompoundButtonText : ProfileButtonBase<ButtonTextProfile>

@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UI.Keyboard
+namespace MixedRealityToolkit.UX.Keyboard
 {
     public class SymbolDisableHighlight : MonoBehaviour
     {

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX
+namespace MixedRealityToolkit.UX.Distorters
 {
     public class DistorterWiggly : Distorter
     {

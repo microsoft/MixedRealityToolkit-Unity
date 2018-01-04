@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     public abstract class LineRendererBase : MonoBehaviour
     {

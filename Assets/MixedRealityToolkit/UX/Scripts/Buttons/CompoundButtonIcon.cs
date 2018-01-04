@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System.Collections;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(CompoundButton))]

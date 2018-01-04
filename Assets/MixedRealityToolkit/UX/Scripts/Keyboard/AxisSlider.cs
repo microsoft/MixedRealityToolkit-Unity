@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.UI.Keyboard
+namespace MixedRealityToolkit.UX.Keyboard
 {
     /// <summary>
     /// Axis slider is a script to lock a bar across a specific axis.

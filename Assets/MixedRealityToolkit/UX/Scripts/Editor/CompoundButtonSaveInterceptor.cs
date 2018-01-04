@@ -3,7 +3,7 @@
 
 using UnityEditor;
 using UnityEngine;
-using MixedRealityToolkit.Buttons;
+using MixedRealityToolkit.UX.Buttons;
 
 public class CompoundButtonSaveInterceptor : UnityEditor.AssetModificationProcessor
 {

@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit;
-using System.Collections.Generic;
-using UnityEngine;
-using MixedRealityToolkit.Receivers;
 using MixedRealityToolkit.Input;
+using MixedRealityToolkit.UX.Receivers;
+using UnityEngine;
 
 namespace MixedRealityToolkit.Examples
 {

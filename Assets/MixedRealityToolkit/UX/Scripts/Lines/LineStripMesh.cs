@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     [UseWith(typeof(LineBase))]
     public class LineStripMesh : LineRendererBase

@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace MixedRealityToolkit.UI.Keyboard
+namespace MixedRealityToolkit.UX.Keyboard
 {
     [CustomEditor(typeof(KeyboardInputField))]
     public class KeyboardInputFieldEditor : Editor

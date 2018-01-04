@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     public class ButtonTextProfile : ButtonProfile
     {

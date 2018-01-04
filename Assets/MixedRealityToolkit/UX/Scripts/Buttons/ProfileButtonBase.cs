@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Ensures a consistent profile field in compound buttons scripts which use a profile

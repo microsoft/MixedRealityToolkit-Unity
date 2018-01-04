@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections.Generic;
-using MixedRealityToolkit.Input;
 
-namespace MixedRealityToolkit.Receivers
+namespace MixedRealityToolkit.UX.Receivers
 {
     /// <summary>
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something

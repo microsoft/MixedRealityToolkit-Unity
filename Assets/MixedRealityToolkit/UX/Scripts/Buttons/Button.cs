@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using MixedRealityToolkit.Input;
 
-namespace MixedRealityToolkit.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Base class for buttons.

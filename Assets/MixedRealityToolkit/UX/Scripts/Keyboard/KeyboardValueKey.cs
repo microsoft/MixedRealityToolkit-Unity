@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UI.Keyboard
+namespace MixedRealityToolkit.UX.Keyboard
 {
     /// <summary>
     /// Represents a key on the keyboard that has a string value for input.
