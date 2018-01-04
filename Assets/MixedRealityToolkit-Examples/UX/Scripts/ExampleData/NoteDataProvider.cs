@@ -92,7 +92,7 @@ namespace MixedRealityToolkit.Examples.UX
             InteractiveSet interactiveSet = TargetGroup.GetInteractiveSet();
             foreach (int index in interactiveSet.SelectedIndices)
             {
-                Debug.Log("Send new note: " + TargetGroup.Titles[index]);
+                Debug.Log("Send new note: " + TargetGroup.Titles[index].Replace("\n", " "));
             }
             if (interactiveSet.SelectedIndices.Count == 0)
             {

@@ -653,7 +653,7 @@ PlayerSettings:
       InternetClientServer: False
       Location: False
       Microphone: True
-      MusicLibrary: False
+      MusicLibrary: True
       Objects3D: False
       PhoneCall: False
       PicturesLibrary: False
