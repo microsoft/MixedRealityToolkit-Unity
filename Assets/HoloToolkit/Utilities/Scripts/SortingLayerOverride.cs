@@ -21,8 +21,10 @@ namespace HoloToolkit.Unity
 
         private void Start()
         {
-            if (renderers == null)
+            if (renderers == null || renderers.Length == 0)
+            {
                 renderers = GetComponentsInChildren<Renderer>();
+            }
 
             if (UseLastLayer && SortingLayer.layers.Length > 0)
             {
