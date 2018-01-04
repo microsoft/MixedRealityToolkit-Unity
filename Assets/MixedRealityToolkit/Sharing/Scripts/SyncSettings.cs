@@ -74,7 +74,7 @@ namespace MixedRealityToolkit.Sharing.SyncModel
                 }
 
 #if UNITY_WSA && !UNITY_EDITOR
-                foreach (TypeInfo type in assembly.GetTypes())
+                foreach (TypeInfo type in assembly.GetTypesExtension())
 #else
                 foreach (Type type in assembly.GetTypes())
 #endif

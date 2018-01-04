@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using MixedRealityToolkit.Common;
 
 #if UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;

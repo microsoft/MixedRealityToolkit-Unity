@@ -3,7 +3,9 @@
 
 using MixedRealityToolkit.Common;
 using System;
+#if !UNITY_WSA && !UNITY_EDITOR
 using System.Reflection;
+#endif
 using UnityEngine;
 
 namespace MixedRealityToolkit.Buttons
@@ -112,9 +114,9 @@ namespace MixedRealityToolkit.Buttons
             // Get the profile field of the target component and set it to the on profile
             // Store all icons in iconLookup via reflection
 #if USE_WINRT
-            FieldInfo fieldInfo = Target.GetType().GetTypeInfo().GetField("Profile");
+            System.Reflection.FieldInfo fieldInfo = Target.GetType().GetTypeInfo().GetField("Profile");
 #else
-            FieldInfo fieldInfo = Target.GetType().GetField("Profile");
+            System.Reflection.FieldInfo fieldInfo = Target.GetType().GetField("Profile");
 #endif
             if (fieldInfo == null) {
                 Debug.LogError("Target component had no field type profile in CompoundButtonToggle");
@@ -138,7 +140,7 @@ namespace MixedRealityToolkit.Buttons
             protected override void DrawCustomFooter() {
                 CompoundButtonToggle toggle = (CompoundButtonToggle)target;
 
-                FieldInfo fieldInfo = null;
+                System.Reflection.FieldInfo fieldInfo = null;
                 Type profileType = null;
                 if (toggle.Target == null) {
                     DrawError("Target must be set.");
