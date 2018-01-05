@@ -38,6 +38,6 @@ namespace HoloToolkit.Unity
 
             EditorPrefs.SetBool(Application.productName + key, defaultValue);
             return defaultValue;
-        }        
+        }
     }
 }

@@ -227,7 +227,7 @@ namespace HoloToolkit.Unity
 
             return anchorName;
 #endif
-        }        
+        }
 
         /// <summary>
         /// Removes the anchor component from the GameObject and deletes the anchor from the anchor store.
