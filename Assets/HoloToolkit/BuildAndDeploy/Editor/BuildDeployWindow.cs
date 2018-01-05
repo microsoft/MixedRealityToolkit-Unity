@@ -401,6 +401,7 @@ namespace HoloToolkit.Unity
                     }
                 }
             }
+
             EditorGUILayout.LabelField("Required SDK Version: " + SdkVersion);
 
             // Throw exception if user has no Windows 10 SDK installed
