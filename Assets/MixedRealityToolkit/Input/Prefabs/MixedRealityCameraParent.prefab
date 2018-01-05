@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 33130031905284994}
   - component: {fileID: 23322403167181422}
   - component: {fileID: 114244653559405336}
+  - component: {fileID: 114180319962519104}
   m_Layer: 0
   m_Name: FadePlane
   m_TagString: Untagged
@@ -671,6 +672,19 @@ MonoBehaviour:
   transparentTrackingSpaceType: 0
   renderFloor: 1
   renderBoundary: 1
+--- !u!114 &114180319962519104
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1586147040494190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1cd1da56c40bf34ba82df9fe22d49cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseLastLayer: 1
+  TargetSortingLayerName: Default
 --- !u!114 &114225625019075894
 MonoBehaviour:
   m_ObjectHideFlags: 1
