@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Unity.SpatialMapping
 {
@@ -17,7 +18,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         {
             get
             {
-                return GetEditorPref(ExportDirectoryKey, ExportDirectoryDefault);
+                return EditorPrefsUtility.GetEditorPref(ExportDirectoryKey, ExportDirectoryDefault);
             }
             set
             {
@@ -26,24 +27,9 @@ namespace HoloToolkit.Unity.SpatialMapping
                     value = ExportDirectoryDefault;
                 }
 
-                SetEditorPref(ExportDirectoryKey, value);
+                EditorPrefsUtility.SetEditorPref(ExportDirectoryKey, value);
             }
-        }
-        public static string GetEditorPref(string key, string defaultValue)
-        {
-            if (EditorPrefs.HasKey(Application.productName + key))
-            {
-                return EditorPrefs.GetString(Application.productName + key);
-            }
-
-            EditorPrefs.SetString(Application.productName + key, defaultValue);
-            return defaultValue;
-        }
-
-        public static void SetEditorPref(string key, string value)
-        {
-            EditorPrefs.SetString(Application.productName + key, value);
-        }
+        }        
 
         private static bool MakeExportDirectory()
         {
