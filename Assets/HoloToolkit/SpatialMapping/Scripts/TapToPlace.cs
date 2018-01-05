@@ -3,9 +3,9 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity.SpatialMapping;
+using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity.InputModule
+namespace HoloToolkit.Unity.SpatialMapping
 {
     /// <summary>
     /// The TapToPlace class is a basic way to enable users to move objects 

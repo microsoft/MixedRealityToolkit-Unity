@@ -30,6 +30,9 @@ namespace HoloToolkit.Examples.InteractiveElements
         [Tooltip("exposed selection changed event")]
         public UnityEvent OnSelectionEvents;
 
+        // list of calls to remove events on recycled buttons
+        private Dictionary<InteractiveToggle, UnityAction> Calls = new Dictionary<InteractiveToggle, UnityAction>();
+
         private bool mHasInit = false;
 
         private void Start()
@@ -39,11 +42,18 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         public void UpdateInteractives()
         {
+            foreach (InteractiveToggle toggle in Calls.Keys)
+            {
+                toggle.OnSelectEvents.RemoveListener(Calls[toggle]);
+            }
+            Calls.Clear();
             for (int i = 0; i < Interactives.Count; ++i)
             {
                 int itemIndex = i;
                 // add selection event handler to each button
-                Interactives[i].OnSelectEvents.AddListener(() => HandleOnSelection(itemIndex));
+                UnityAction call = () => HandleOnSelection(itemIndex);
+                Calls.Add(Interactives[i], call);
+                Interactives[i].OnSelectEvents.AddListener(call);
                 if (Type == SelectionType.single)
                 {
                     Interactives[i].AllowDeselect = false;

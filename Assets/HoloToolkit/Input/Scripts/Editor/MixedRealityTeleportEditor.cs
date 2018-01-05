@@ -12,8 +12,27 @@ namespace HoloToolkit.Unity.InputModule
         private readonly GUIContent verticalRotationLabel = new GUIContent("Vertical Rotation", "Used to check the Horizontal Rotation and the intent of the user to rotate in that direction");
 
         private static MixedRealityTeleport mixedRealityTeleport;
+
         private static SerializedProperty teleportMakerPrefab;
         private static SerializedProperty useCustomMappingProperty;
+
+        private static SerializedProperty stayOnTheFloorProperty;
+        private static SerializedProperty enableTeleportProperty;
+        private static SerializedProperty enableStrafeProperty;
+        private static SerializedProperty strafeAmountProperty;
+        private static SerializedProperty enableRotationProperty;
+        private static SerializedProperty rotationSizeProperty;
+
+        private static SerializedProperty leftThumbstickXProperty;
+        private static SerializedProperty leftThumbstickYProperty;
+        private static SerializedProperty rightThumbstickXProperty;
+        private static SerializedProperty rightThumbstickYProperty;
+
+        private static SerializedProperty horizontalStrafeProperty;
+        private static SerializedProperty forwardMovementProperty;
+        private static SerializedProperty horizontalRotationProperty;
+        private static SerializedProperty verticalRotationProperty;
+
         private static bool useCustomMapping;
         private static bool mappingOverride;
 
@@ -21,9 +40,28 @@ namespace HoloToolkit.Unity.InputModule
         {
             mixedRealityTeleport = (MixedRealityTeleport)target;
 
-
             teleportMakerPrefab = serializedObject.FindProperty("teleportMarker");
             useCustomMappingProperty = serializedObject.FindProperty("useCustomMapping");
+
+            enableTeleportProperty = serializedObject.FindProperty("EnableTeleport");
+            enableStrafeProperty = serializedObject.FindProperty("EnableStrafe");
+            strafeAmountProperty = serializedObject.FindProperty("StrafeAmount");
+            enableRotationProperty = serializedObject.FindProperty("EnableRotation");
+            rotationSizeProperty = serializedObject.FindProperty("RotationSize");
+
+            stayOnTheFloorProperty = serializedObject.FindProperty("StayOnTheFloor");
+
+            leftThumbstickXProperty = serializedObject.FindProperty("LeftThumbstickX");
+            leftThumbstickYProperty = serializedObject.FindProperty("LeftThumbstickY");
+            rightThumbstickXProperty = serializedObject.FindProperty("RightThumbstickX");
+            rightThumbstickYProperty = serializedObject.FindProperty("RightThumbstickY");
+
+            horizontalStrafeProperty = serializedObject.FindProperty("HorizontalStrafe");
+            forwardMovementProperty = serializedObject.FindProperty("ForwardMovement");
+            horizontalRotationProperty = serializedObject.FindProperty("HorizontalRotation");
+            verticalRotationProperty = serializedObject.FindProperty("VerticalRotation");
+
+
         }
 
         public override void OnInspectorGUI()
@@ -34,15 +72,17 @@ namespace HoloToolkit.Unity.InputModule
 
             EditorGUILayout.LabelField("Teleport Options", new GUIStyle("Label") { fontStyle = FontStyle.Bold });
 
-            mixedRealityTeleport.EnableTeleport = EditorGUILayout.Toggle("Enable Teleport", mixedRealityTeleport.EnableTeleport);
+            EditorGUILayout.PropertyField(enableTeleportProperty, new GUIContent("Enable Teleport"));
+            EditorGUILayout.PropertyField(enableStrafeProperty, new GUIContent("Enable Strafe"));
+            EditorGUILayout.PropertyField(strafeAmountProperty, new GUIContent("Strafe Amount"));
 
-            mixedRealityTeleport.EnableStrafe = EditorGUILayout.Toggle("Enable Strafe", mixedRealityTeleport.EnableStrafe);
-            mixedRealityTeleport.StrafeAmount = EditorGUILayout.FloatField("Strafe Amount", mixedRealityTeleport.StrafeAmount);
+            EditorGUILayout.PropertyField(enableRotationProperty, new GUIContent("Enable Rotation"));
+            EditorGUILayout.PropertyField(rotationSizeProperty, new GUIContent("Rotation Amount"));
 
-            mixedRealityTeleport.EnableRotation = EditorGUILayout.Toggle("Enable Rotation", mixedRealityTeleport.EnableRotation);
-            mixedRealityTeleport.RotationSize = EditorGUILayout.FloatField("Rotation Amount", mixedRealityTeleport.RotationSize);
+            EditorGUILayout.PropertyField(stayOnTheFloorProperty, new GUIContent("Stay on the floor"));
 
             EditorGUILayout.PropertyField(teleportMakerPrefab);
+
 
             EditorGUILayout.LabelField("Teleport Controller Mappings", new GUIStyle("Label") { fontStyle = FontStyle.Bold });
 
@@ -69,17 +109,17 @@ namespace HoloToolkit.Unity.InputModule
 
             if (useCustomMapping)
             {
-                mixedRealityTeleport.LeftThumbstickX = EditorGUILayout.TextField("Horizontal Strafe", mixedRealityTeleport.LeftThumbstickX);
-                mixedRealityTeleport.LeftThumbstickY = EditorGUILayout.TextField("Forward Movement", mixedRealityTeleport.LeftThumbstickY);
-                mixedRealityTeleport.RightThumbstickX = EditorGUILayout.TextField("Horizontal Rotation", mixedRealityTeleport.RightThumbstickX);
-                mixedRealityTeleport.RightThumbstickY = EditorGUILayout.TextField(verticalRotationLabel, mixedRealityTeleport.RightThumbstickY);
+                EditorGUILayout.PropertyField(leftThumbstickXProperty, new GUIContent("Horizontal Strafe"));
+                EditorGUILayout.PropertyField(leftThumbstickYProperty, new GUIContent("Forward Movement"));
+                EditorGUILayout.PropertyField(rightThumbstickXProperty, new GUIContent("Horizontal Rotation"));
+                EditorGUILayout.PropertyField(rightThumbstickYProperty, new GUIContent(verticalRotationLabel));
             }
             else
             {
-                mixedRealityTeleport.HorizontalStrafe = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Horizontal Strafe", mixedRealityTeleport.HorizontalStrafe);
-                mixedRealityTeleport.ForwardMovement = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Forward Movement", mixedRealityTeleport.ForwardMovement);
-                mixedRealityTeleport.HorizontalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup("Horizontal Rotation", mixedRealityTeleport.HorizontalRotation);
-                mixedRealityTeleport.VerticalRotation = (XboxControllerMappingTypes)EditorGUILayout.EnumPopup(verticalRotationLabel, mixedRealityTeleport.VerticalRotation);
+                EditorGUILayout.PropertyField(horizontalStrafeProperty, new GUIContent("Horizontal Strafe"));
+                EditorGUILayout.PropertyField(forwardMovementProperty, new GUIContent("Forward Movement"));
+                EditorGUILayout.PropertyField(horizontalRotationProperty, new GUIContent("Horizontal Rotation"));
+                EditorGUILayout.PropertyField(verticalRotationProperty, new GUIContent("Verizontal Rotation"));
             }
 
             serializedObject.ApplyModifiedProperties();

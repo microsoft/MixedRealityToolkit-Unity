@@ -8,6 +8,46 @@ namespace HoloToolkit.Unity
 {
     public static class LayerExtensions
     {
+        private const int InvalidLayer = -1;
+
+        #region Local layers
+        private static int defaultLayer = InvalidLayer;
+        private static int surfaceLayer = InvalidLayer;
+        private static int interactionLayer = InvalidLayer;
+        private static int activationLayer = InvalidLayer;
+        #endregion
+
+        public static int Default
+        {
+            get
+            {
+                return GetLayerNumber(ref defaultLayer, "Default");
+            }
+        }
+
+        public static int Surface
+        {
+            get
+            {
+                return GetLayerNumber(ref surfaceLayer, "SR");
+            }
+        }
+        public static int Interaction
+        {
+            get
+            {
+                return GetLayerNumber(ref interactionLayer, "Interaction");
+            }
+        }
+
+        public static int Activation
+        {
+            get
+            {
+                return GetLayerNumber(ref activationLayer, "Activation");
+            }
+        }
+
         /// <summary>
         /// Look through the layerMaskList and find the index in that list for which the supplied layer is part of
         /// </summary>
@@ -49,6 +89,19 @@ namespace HoloToolkit.Unity
                 combinedLayerMask = combinedLayerMask | layer.value;
             }
             return combinedLayerMask;
+        }
+        public static LayerMask ToMask(int layer)
+        {
+            return 1 << layer;
+        }
+
+        private static int GetLayerNumber(ref int cache, string layerName)
+        {
+            if (cache == LayerExtensions.InvalidLayer)
+            {
+                cache = LayerMask.NameToLayer(layerName);
+            }
+            return cache;
         }
     }
 }
