@@ -3,10 +3,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
 #else
 using UnityEngine.VR.WSA.Input;
+#endif
 #endif
 
 namespace HoloToolkit.Unity.InputModule
