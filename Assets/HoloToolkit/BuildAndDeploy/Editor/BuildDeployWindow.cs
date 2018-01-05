@@ -323,7 +323,8 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            if (currentSDKVersionIndex == 0)
+            // Throw exception if user has no Windows 10 SDK installed
+            if (currentSDKVersionIndex < 0)
             {
                 Debug.LogErrorFormat("Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion);
             }
