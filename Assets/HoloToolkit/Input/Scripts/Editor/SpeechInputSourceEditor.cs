@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.InputModule
             persistentKeywordsProperty = serializedObject.FindProperty("PersistentKeywords");
             recognizerStart = serializedObject.FindProperty("RecognizerStart");
             confidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
-            keywordsAndKeys = serializedObject.FindProperty("Keywords");
+            keywordsAndKeys = serializedObject.FindProperty("keywords");
         }
 
         public override void OnInspectorGUI()
