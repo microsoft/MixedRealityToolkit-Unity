@@ -18,19 +18,14 @@ namespace HoloToolkit.Unity
             Revision = revision;
         }
 
-        [SerializeField]
         public int VendorId { get; private set; }
 
-        [SerializeField]
         public string Udid { get; private set; }
 
-        [SerializeField]
         public int ProductId { get; private set; }
 
-        [SerializeField]
         public string Name { get; private set; }
 
-        [SerializeField]
         public int Revision { get; private set; }
     }
 }

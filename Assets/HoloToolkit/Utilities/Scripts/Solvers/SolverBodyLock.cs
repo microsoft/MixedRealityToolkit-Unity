@@ -15,7 +15,6 @@ namespace HoloToolkit.Unity
     public class SolverBodyLock : Solver
     {
         #region public enums
-        [HideInInspector]
         public enum OrientationReference
         {
             /// <summary>
