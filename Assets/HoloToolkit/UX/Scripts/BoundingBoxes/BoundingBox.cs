@@ -172,7 +172,7 @@ namespace HoloToolkit.Unity.UX
 
         [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
         [SerializeField]
-        protected LayerMask ignoreLayers = LayerMask.NameToLayer("Ignore Raycast");
+        protected LayerMask ignoreLayers = (1 << 2); // Ignore Raycast Layer
 
         protected Vector3 targetBoundsWorldCenter = Vector3.zero;
         protected Vector3 targetBoundsLocalScale = Vector3.zero;

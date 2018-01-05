@@ -78,7 +78,7 @@ namespace HoloToolkit.Unity
         protected virtual void OnEnable()
         {
             //Ensure the Camera helper component exists
-            CameraMotionInfo cInfo = CameraCache.Main.gameObject.EnsureComponent<CameraMotionInfo>();
+            CameraCache.Main.gameObject.EnsureComponent<CameraMotionInfo>();
 
             if (solverHandler != null)
             {
