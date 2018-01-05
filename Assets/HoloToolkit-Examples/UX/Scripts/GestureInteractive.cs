@@ -52,7 +52,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Cursor mCursor;
 
         private Coroutine mTicker;
-        private IInteractionInputSource mTempInputSource;
+        private InteractionInputSource mTempInputSource;
         private uint mTempInputSourceId;
 
         protected override void Awake()
@@ -83,7 +83,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             base.OnInputDown(eventData);
 
-            mTempInputSource = (IInteractionInputSource)eventData.InputSource;
+            mTempInputSource = (InteractionInputSource)eventData.InputSource;
             mTempInputSourceId = eventData.SourceId;
 
             if (StartDelay > 0)
@@ -141,7 +141,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
-#if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
             mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
 #else
             mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
@@ -266,7 +266,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER
             mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
 #else
             mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);

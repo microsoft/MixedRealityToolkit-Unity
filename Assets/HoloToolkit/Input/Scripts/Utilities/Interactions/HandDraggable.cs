@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 draggingPosition;
         private Quaternion draggingRotation;
 
-        private IInteractionInputSource currentInputSource;
+        private InteractionInputSource currentInputSource;
         private uint currentInputSourceId;
         private Rigidbody hostRigidbody;
 
@@ -349,9 +349,11 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
+            var interactionInputSource = (InteractionInputSource)eventData.InputSource;
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionSourceKind sourceKind;
-            ((InteractionInputSource)eventData.InputSource).TryGetSourceKind(eventData.SourceId, out sourceKind);
+            interactionInputSource.TryGetSourceKind(eventData.SourceId, out sourceKind);
             if (sourceKind != InteractionSourceKind.Hand)
             {
                 if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
@@ -370,7 +372,7 @@ namespace HoloToolkit.Unity.InputModule
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
 
-            currentInputSource = (IInteractionInputSource)eventData.InputSource;
+            currentInputSource = interactionInputSource;
             currentInputSourceId = eventData.SourceId;
 
             FocusDetails? details = FocusManager.Instance.TryGetFocusDetails(eventData);
