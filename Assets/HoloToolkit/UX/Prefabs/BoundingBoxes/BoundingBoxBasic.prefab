@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  scaleTransform: {fileID: 0}
+  scaleTransform: {fileID: 4696603081318228}
   flattenPreference: 4
   flattenAxisThreshold: 0.025
   flattenedAxisThickness: 0.01
