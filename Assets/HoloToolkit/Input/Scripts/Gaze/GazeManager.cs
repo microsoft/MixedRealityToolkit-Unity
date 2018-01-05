@@ -36,7 +36,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Unity UI pointer event.  This will be null if the EventSystem is not defined in the scene.
         /// </summary>
         [Obsolete("Use FocusManager.UnityUIPointerEvent")]
-        public PointerEventData UnityUIPointerEvent { get; private set; }
+        public UnityEngine.EventSystems.PointerEventData UnityUIPointerEvent { get; private set; }
 
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.

@@ -81,7 +81,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 return;
             }
 
-            Interactives[index].OnInputClicked(null);
+            Interactives[index].OnPointerClicked(null);
         }
 
         /// <summary>

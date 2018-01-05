@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class OnFocusEvent : MonoBehaviour, IFocusable
+    public class OnFocusEvent : MonoBehaviour, IFocusHandler
     {
         public UnityEvent FocusEnterEvent;
         public UnityEvent FocusLostEvent;

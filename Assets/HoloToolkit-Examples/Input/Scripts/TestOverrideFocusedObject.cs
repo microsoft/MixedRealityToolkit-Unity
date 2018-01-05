@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class TestOverrideFocusedObject : MonoBehaviour, IInputClickHandler
+    public class TestOverrideFocusedObject : MonoBehaviour, IPointerHandler
     {
         private InputManager inputManager;
         private TextMesh textMesh;
@@ -22,7 +22,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             textMesh = FindObjectOfType<TextMesh>();
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if (textMesh != null && inputManager != null)
             {

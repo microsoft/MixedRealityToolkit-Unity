@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// This class shows how to handle focus events and speech input events.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
-    public class FocusedObjectTest : MonoBehaviour, IFocusable, ISpeechHandler, IPointerSpecificFocusable
+    public class FocusedObjectTest : MonoBehaviour, IFocusHandler, ISpeechHandler, IPointerSpecificFocusHandler
     {
         [Tooltip("Object color changes to this when focused.")]
         public Color FocusedColor = Color.red;
@@ -73,12 +73,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
             transform.localScale = scale;
         }
 
-        public void OnFocusEnter(PointerSpecificEventData eventData)
+        public void OnFocusEnter(PointerSpecificFocusEventData focusEventData)
         {
             cachedMaterial.SetColor("_Color", FocusedColor);
         }
 
-        public void OnFocusExit(PointerSpecificEventData eventData)
+        public void OnFocusExit(PointerSpecificFocusEventData focusEventData)
         {
             cachedMaterial.SetColor("_Color", originalColor);
         }

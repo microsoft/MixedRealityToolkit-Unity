@@ -7,7 +7,7 @@ using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity
 {
-    public class SceneLauncherButton : MonoBehaviour, IInputClickHandler
+    public class SceneLauncherButton : MonoBehaviour, IPointerHandler
     {
         public int SceneIndex { get; set; }
 
@@ -49,7 +49,11 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if (EnableDebug)
             {

@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.Tests
         void OnTest(BaseEventData eventData);
     }
 
-    public class TestEventHandler : MonoBehaviour, ITestEventSystemHandler, IFocusable
+    public class TestEventHandler : MonoBehaviour, ITestEventSystemHandler, IFocusHandler
     {
         public bool IsGlobal;
 

@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>
-    public class HandDraggable : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler
+    public class HandDraggable : MonoBehaviour, IFocusHandler, IInputHandler, ISourceStateHandler
     {
         /// <summary>
         /// Event triggered when dragging starts.
@@ -382,10 +382,11 @@ namespace HoloToolkit.Unity.InputModule
             StartDragging(initialDraggingPosition);
         }
 
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            // Nothing to do
-        }
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData) { }
+
+        public void OnSourceDetected(SourceStateEventData eventData) { }
 
         public void OnSourceLost(SourceStateEventData eventData)
         {

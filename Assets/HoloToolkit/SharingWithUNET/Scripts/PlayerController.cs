@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
     /// Controls player behavior (local and remote).
     /// </summary>
     [NetworkSettings(sendInterval = 0.033f)]
-    public class PlayerController : NetworkBehaviour, IInputClickHandler
+    public class PlayerController : NetworkBehaviour, IPointerHandler
     {
         private static PlayerController _Instance = null;
         /// <summary>
@@ -327,7 +327,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
             Destroy(nextBullet, 8.0f);
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if (isLocalPlayer)
             {

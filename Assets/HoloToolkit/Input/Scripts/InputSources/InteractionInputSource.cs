@@ -852,40 +852,40 @@ namespace HoloToolkit.Unity.InputModule
 
             if (sourceData.ThumbstickPositionUpdated)
             {
-                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, sourceData.Thumbstick.CurrentReading.Position, InputType.Thumbstick, (Handedness)args.state.source.handedness);
+                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, sourceData.Thumbstick.CurrentReading.Position, InteractionSourcePressType.Thumbstick, (Handedness)args.state.source.handedness);
             }
 
             if (sourceData.TouchpadPositionUpdated)
             {
-                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, sourceData.Touchpad.CurrentReading.AxisButton.Position, InputType.Touch, (Handedness)args.state.source.handedness);
+                InputManager.Instance.RaiseInputPositionChanged(this, sourceData.SourceId, sourceData.Touchpad.CurrentReading.AxisButton.Position, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
             }
 
             if (sourceData.TouchpadTouchedUpdated)
             {
                 if (sourceData.Touchpad.CurrentReading.Touched)
                 {
-                    InputManager.Instance.RaiseTouchpadTouched(this, sourceData.SourceId, (Handedness)args.state.source.handedness);
+                    InputManager.Instance.RaiseOnInputDown(this, sourceData.SourceId, (Handedness)args.state.source.handedness);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseTouchpadReleased(this, sourceData.SourceId, (Handedness)args.state.source.handedness);
+                    InputManager.Instance.RaiseOnInputUp(this, sourceData.SourceId, (Handedness)args.state.source.handedness);
                 }
             }
 
             if (sourceData.SelectPressedAmountUpdated)
             {
-                InputManager.Instance.RaiseSelectPressedAmountChanged(this, sourceData.SourceId, sourceData.Select.CurrentReading.PressedAmount, (Handedness)args.state.source.handedness);
+                InputManager.Instance.RaiseOnInputPressed(this, sourceData.SourceId, sourceData.Select.CurrentReading.PressedAmount, (Handedness)args.state.source.handedness);
             }
         }
 
         private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
         {
-            InputManager.Instance.RaisePointerUp(this, args.state.source.id);
+            InputManager.Instance.RaisePointerUp(this, args.state.source.id, args.pressType, (Handedness)args.state.source.handedness);
         }
 
         private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
         {
-            InputManager.Instance.RaisePointerDown(this, args.state.source.id);
+            InputManager.Instance.RaisePointerDown(this, args.state.source.id, args.pressType, (Handedness)args.state.source.handedness);
         }
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
@@ -912,62 +912,62 @@ namespace HoloToolkit.Unity.InputModule
 
         protected void GestureRecognizer_Tapped(TappedEventArgs args)
         {
-            InputManager.Instance.RaiseInputClicked(this, args.source.id, args.tapCount);
+            InputManager.Instance.RaiseInputClicked(this, args.source.id, args.tapCount, (Handedness)args.source.handedness);
         }
 
         protected void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
-            InputManager.Instance.RaiseHoldStarted(this, args.source.id);
+            InputManager.Instance.RaiseHoldStarted(this, args.source.id/*, (Handedness)args.source.handedness*/);
         }
 
         protected void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
         {
-            InputManager.Instance.RaiseHoldCanceled(this, args.source.id);
+            InputManager.Instance.RaiseHoldCanceled(this, args.source.id/*, (Handedness)args.source.handedness*/);
         }
 
         protected void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs args)
         {
-            InputManager.Instance.RaiseHoldCompleted(this, args.source.id);
+            InputManager.Instance.RaiseHoldCompleted(this, args.source.id/*, (Handedness)args.source.handedness*/);
         }
 
         protected void GestureRecognizer_ManipulationStarted(ManipulationStartedEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationStarted(this, args.source.id);
+            InputManager.Instance.RaiseManipulationStarted(this, args.source.id/*, (Handedness)args.source.handedness*/);
         }
 
         protected void GestureRecognizer_ManipulationUpdated(ManipulationUpdatedEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationUpdated(this, args.source.id, args.cumulativeDelta);
+            InputManager.Instance.RaiseManipulationUpdated(this, args.source.id, args.cumulativeDelta/*, (Handedness)args.source.handedness*/);
         }
 
         protected void GestureRecognizer_ManipulationCompleted(ManipulationCompletedEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationCompleted(this, args.source.id, args.cumulativeDelta);
+            InputManager.Instance.RaiseManipulationCompleted(this, args.source.id, args.cumulativeDelta/*, (Handedness)args.source.handedness*/);
         }
 
         protected void GestureRecognizer_ManipulationCanceled(ManipulationCanceledEventArgs args)
         {
-            InputManager.Instance.RaiseManipulationCanceled(this, args.source.id);
+            InputManager.Instance.RaiseManipulationCanceled(this, args.source.id/*, (Handedness)args.source.handedness*/);
         }
 
         protected void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationStarted(this, args.source.id);
+            InputManager.Instance.RaiseNavigationStarted(this, args.source.id/*, (Handedness)args.source.handedness*/);
         }
 
         protected void NavigationGestureRecognizer_NavigationUpdated(NavigationUpdatedEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationUpdated(this, args.source.id, args.normalizedOffset);
+            InputManager.Instance.RaiseNavigationUpdated(this, args.source.id, args.normalizedOffset/*, (Handedness)args.source.handedness*/);
         }
 
         protected void NavigationGestureRecognizer_NavigationCompleted(NavigationCompletedEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationCompleted(this, args.source.id, args.normalizedOffset);
+            InputManager.Instance.RaiseNavigationCompleted(this, args.source.id, args.normalizedOffset/*, (Handedness)args.source.handedness*/);
         }
 
         protected void NavigationGestureRecognizer_NavigationCanceled(NavigationCanceledEventArgs args)
         {
-            InputManager.Instance.RaiseNavigationCanceled(this, args.source.id);
+            InputManager.Instance.RaiseNavigationCanceled(this, args.source.id/*, (Handedness)args.source.handedness*/);
         }
 
         #endregion //Raise GestureRecognizer Events

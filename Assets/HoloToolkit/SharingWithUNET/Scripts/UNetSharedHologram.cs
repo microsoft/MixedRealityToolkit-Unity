@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 namespace HoloToolkit.Unity.SharingWithUNET
 {
-    public class UNetSharedHologram : NetworkBehaviour, IInputClickHandler
+    public class UNetSharedHologram : NetworkBehaviour, IPointerHandler
     {
         /// <summary>
         /// The position relative to the shared world anchor.
@@ -99,7 +99,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
             return retval;
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if (isOpaque == false)
             {

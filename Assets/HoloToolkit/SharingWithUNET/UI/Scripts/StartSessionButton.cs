@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
     /// <summary>
     /// Starts a session when the user taps the control this script is attached to.
     /// </summary>
-    public class StartSessionButton : MonoBehaviour, IInputClickHandler
+    public class StartSessionButton : MonoBehaviour, IPointerHandler
     {
         /// <summary>
         /// Script which controls hosting and discovering sessions.
@@ -33,11 +33,15 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #endif
         }
 
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
         /// <summary>
         /// Called when a click event is detected
         /// </summary>
         /// <param name="eventData">Information about the click.</param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if (networkDiscovery.running)
             {

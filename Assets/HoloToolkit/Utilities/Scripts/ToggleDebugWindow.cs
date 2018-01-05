@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Toggles if the debug window is visible or not.
     /// </summary>
-    public class ToggleDebugWindow : MonoBehaviour, IInputClickHandler
+    public class ToggleDebugWindow : MonoBehaviour, IPointerHandler
     {
         /// <summary>
         /// Current state of the debug window.
@@ -25,11 +25,15 @@ namespace HoloToolkit.Unity
             UpdateChildren();
         }
 
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
         /// <summary>
         /// When the user clicks this control, we toggle the state of the DebugWindow
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(PointerEventData eventData)
         {
             debugEnabled = !debugEnabled;
             UpdateChildren();

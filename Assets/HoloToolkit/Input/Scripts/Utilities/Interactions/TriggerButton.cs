@@ -30,10 +30,11 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        void IInputHandler.OnInputDown(InputEventData eventData)
-        {
-            // Nothing.
-        }
+        void IInputHandler.OnInputDown(InputEventData eventData) { }
+
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {

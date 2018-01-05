@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.Buttons
     /// <summary>
     /// Base class for buttons.
     /// </summary>
-    public abstract class Button : MonoBehaviour, IInputHandler, IPointerSpecificFocusable, IHoldHandler, ISourceStateHandler, IInputClickHandler
+    public abstract class Button : MonoBehaviour, IInputHandler, IFocusHandler, IHoldHandler, ISourceStateHandler, IPointerHandler
     {
         #region Public Members
 
@@ -123,17 +123,21 @@ namespace HoloToolkit.Unity.Buttons
             if (enabled)
             {
 #if UNITY_WSA
-                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == ((InteractionInputEventData)eventData).PressType)
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == eventData.PressType)
 #endif
                 {
                     DoButtonPressed();
 
                     // Set state to Pressed
                     ButtonStateEnum newState = ButtonStateEnum.Pressed;
-                    this.OnStateChange(newState);
+                    OnStateChange(newState);
                 }
             }
         }
+
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData) { }
 
         /// <summary>
         /// Handle on input up events from IInputSource
@@ -144,7 +148,7 @@ namespace HoloToolkit.Unity.Buttons
             if (enabled)
             {
 #if UNITY_WSA
-                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == ((InteractionInputEventData)eventData).PressType)
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == eventData.PressType)
 #endif
                 {
                     DoButtonReleased();
@@ -152,23 +156,26 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
         /// <summary>
         /// Handle clicked event
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if (enabled)
             {
 #if UNITY_WSA
-                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == ((InteractionInputClickedEventData)eventData).PressType)
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == eventData.PressType)
 #endif
                 {
                     DoButtonPressed(true);
                 }
             }
         }
-
 
         /// <summary>
         /// Handle On Hold started from IHoldSource
@@ -194,7 +201,7 @@ namespace HoloToolkit.Unity.Buttons
 
                 // Unset state from pressed.
                 ButtonStateEnum newState = ButtonStateEnum.Targeted;
-                this.OnStateChange(newState);
+                OnStateChange(newState);
             }
         }
 
@@ -210,19 +217,19 @@ namespace HoloToolkit.Unity.Buttons
                 // Unset state from pressed.
 
                 ButtonStateEnum newState = ButtonStateEnum.Targeted;
-                this.OnStateChange(newState);
+                OnStateChange(newState);
             }
         }
 
         /// <summary>
         /// FocusManager SendMessage("FocusEnter") receiver.
         /// </summary>
-        public void OnFocusEnter(PointerSpecificEventData eventData)
+        void IFocusHandler.OnFocusEnter()
         {
             if (!m_disabled)
             {
                 ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-                this.OnStateChange(newState);
+                OnStateChange(newState);
 
                 _bFocused = true;
             }
@@ -231,7 +238,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// FocusManager SendMessage("FocusExit") receiver.
         /// </summary>
-        public void OnFocusExit(PointerSpecificEventData eventData)
+        void IFocusHandler.OnFocusExit()
         {
             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
             {
@@ -244,7 +251,7 @@ namespace HoloToolkit.Unity.Buttons
 
                 if (RequireGaze || ButtonState != ButtonStateEnum.Pressed)
                 {
-                    this.OnStateChange(newState);
+                    OnStateChange(newState);
                 }
 
                 _bFocused = false;
@@ -296,7 +303,7 @@ namespace HoloToolkit.Unity.Buttons
         protected void DoButtonPressed(bool bRelease = false)
         {
             ButtonStateEnum newState = ButtonStateEnum.Pressed;
-            this.OnStateChange(newState);
+            OnStateChange(newState);
 
             if (OnButtonPressed != null)
             {
@@ -330,7 +337,7 @@ namespace HoloToolkit.Unity.Buttons
                 newState = _bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
             }
 
-            this.OnStateChange(newState);
+            OnStateChange(newState);
 
             if (OnButtonReleased != null)
             {

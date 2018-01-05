@@ -8,16 +8,14 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Event dispatched associated with a specific pointer.
     /// </summary>
-    public class PointerSpecificEventData : BaseEventData
+    public class PointerSpecificFocusEventData : BaseEventData
     {
         /// <summary>
         /// The pointer associated with this event.
         /// </summary>
         public IPointingSource Pointer { get; private set; }
 
-        public PointerSpecificEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
+        public PointerSpecificFocusEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(IPointingSource pointer)
         {

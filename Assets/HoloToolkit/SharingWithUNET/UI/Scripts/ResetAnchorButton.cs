@@ -9,13 +9,17 @@ namespace HoloToolkit.Unity.SharingWithUNET
     /// <summary>
     /// Triggers resetting the shared anchor when clicked.
     /// </summary>
-    public class ResetAnchorButton : MonoBehaviour, IInputClickHandler
+    public class ResetAnchorButton : MonoBehaviour, IPointerHandler
     {
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
         /// <summary>
         /// When clicked we will reset the anchor if we are the server
         /// </summary>
         /// <param name="eventData">Information about the event</param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if (NetworkDiscoveryWithAnchors.Instance.isServer)
             {

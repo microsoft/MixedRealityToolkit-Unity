@@ -19,7 +19,7 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on
     /// individual elements of the Interactive GameObject
     /// </summary>
-    public class Interactive : MonoBehaviour, IInputClickHandler, IFocusable, IInputHandler
+    public class Interactive : MonoBehaviour, IPointerHandler, IFocusHandler, IInputHandler
     {
 
         public GameObject ParentObject;
@@ -151,10 +151,11 @@ namespace HoloToolkit.Examples.InteractiveElements
             UpdateEffects();
         }
 
-        /// <summary>
-        /// An OnTap event occurred
-        /// </summary>
-        public virtual void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public virtual void OnPointerClicked(PointerEventData eventData)
         {
             if (!IsEnabled)
             {
@@ -284,6 +285,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             OnDownEvent.Invoke();
         }
 
+        public virtual void OnInputPressed(InputPressedEventData eventData) { }
+
+        public virtual void OnInputPositionChanged(InputPositionEventData eventData) { }
+
         /// <summary>
         /// All tab, hold, and gesture events are completed
         /// </summary>
@@ -402,7 +407,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             {
                 if (mKeywordDictionary == null)
                 {
-                    OnInputClicked(null);
+                    OnPointerClicked(null);
                 }
             }
         }

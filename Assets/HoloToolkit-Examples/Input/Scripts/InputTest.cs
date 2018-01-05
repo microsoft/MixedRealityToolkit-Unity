@@ -10,78 +10,102 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// Test MonoBehaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
-    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler
+    public class InputTest : MonoBehaviour, IInputHandler, IPointerHandler, IFocusHandler, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler
     {
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
 
-        public void OnInputUp(InputEventData eventData)
+        void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            Debug.LogFormat("OnInputUp\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId);
+            Debug.LogFormat("RaiseOnInputUp\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnInputDown(InputEventData eventData)
+        void IInputHandler.OnInputDown(InputEventData eventData)
         {
-            Debug.LogFormat("OnInputDown\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}", eventData.InputSource, eventData.SourceId);
+            Debug.LogFormat("OnInputDown\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData)
         {
-            Debug.LogFormat("OnInputClicked\r\nSource: {0}  SourceId: {1}  InteractionPressKind: {2}  TapCount: {3}", eventData.InputSource, eventData.SourceId, eventData.TapCount);
+            Debug.LogFormat("OnInputPressed\r\nSource: {0}  SourceId: {1}  PressedAmount: {2}", eventData.InputSource, eventData.SourceId, eventData.PressedAmount);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
+        {
+            Debug.LogFormat("OnInputPressed\r\nSource: {0}  SourceId: {1}  InputPosition: {2}", eventData.InputSource, eventData.SourceId, eventData.InputPosition);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        void IPointerHandler.OnPointerUp(PointerEventData eventData)
+        {
+            Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        void IPointerHandler.OnPointerDown(PointerEventData eventData)
+        {
+            Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        void IPointerHandler.OnPointerClicked(PointerEventData eventData)
+        {
+            Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}  ClickCount: {2}", eventData.InputSource, eventData.SourceId, eventData.ClickCount);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         /// <summary>
         /// Just a public method called by the Unity OnClick Event.
         /// </summary>
-        public void OnPointerClick(PointerEventData pointerEventData)
+        void IPointerClickHandler.OnPointerClick(UnityEngine.EventSystems.PointerEventData pointerEventData)
         {
             Debug.Log("OnPointerClick: " + pointerEventData.pointerId);
         }
 
-        public void OnFocusEnter()
+        void IFocusHandler.OnFocusEnter()
         {
             Debug.Log("OnFocusEnter");
         }
 
-        public void OnFocusExit()
+        void IFocusHandler.OnFocusExit()
         {
             Debug.Log("OnFocusExit");
         }
 
-        public void OnSourceDetected(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
             Debug.LogFormat("OnSourceDetected\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnSourceLost(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             Debug.LogFormat("OnSourceLost\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnHoldStarted(InputEventData eventData)
+        void IHoldHandler.OnHoldStarted(InputEventData eventData)
         {
             Debug.LogFormat("OnHoldStarted\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnHoldCompleted(InputEventData eventData)
+        void IHoldHandler.OnHoldCompleted(InputEventData eventData)
         {
             Debug.LogFormat("OnHoldCompleted\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnHoldCanceled(InputEventData eventData)
+        void IHoldHandler.OnHoldCanceled(InputEventData eventData)
         {
             Debug.LogFormat("OnHoldCanceled\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnManipulationStarted(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationStarted(ManipulationEventData eventData)
         {
             Debug.LogFormat("OnManipulationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
@@ -93,7 +117,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnManipulationUpdated(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationUpdated(ManipulationEventData eventData)
         {
             if (LogGesturesUpdateEvents)
             {
@@ -108,7 +132,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnManipulationCompleted(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationCompleted(ManipulationEventData eventData)
         {
             Debug.LogFormat("OnManipulationCompleted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
@@ -120,7 +144,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnManipulationCanceled(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationCanceled(ManipulationEventData eventData)
         {
             Debug.LogFormat("OnManipulationCanceled\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
@@ -132,7 +156,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnNavigationStarted(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationStarted(NavigationEventData eventData)
         {
             Debug.LogFormat("OnNavigationStarted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
@@ -144,7 +168,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnNavigationUpdated(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationUpdated(NavigationEventData eventData)
         {
             if (LogGesturesUpdateEvents)
             {
@@ -159,7 +183,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnNavigationCompleted(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationCompleted(NavigationEventData eventData)
         {
             Debug.LogFormat("OnNavigationCompleted\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,
@@ -171,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnNavigationCanceled(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationCanceled(NavigationEventData eventData)
         {
             Debug.LogFormat("OnNavigationCanceled\r\nSource: {0}  SourceId: {1}\r\nCumulativeDelta: {2} {3} {4}",
                 eventData.InputSource,

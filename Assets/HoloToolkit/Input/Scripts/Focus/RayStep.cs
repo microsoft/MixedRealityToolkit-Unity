@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity
     [Serializable]
     public struct RayStep
     {
-        public RayStep(Vector3 origin, Vector3 terminus)
+        public RayStep(Vector3 origin, Vector3 terminus) : this()
         {
             this.origin = origin;
             this.terminus = terminus;

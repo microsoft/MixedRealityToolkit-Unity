@@ -366,7 +366,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Function for consuming the OnInputUp events
+        /// Function for consuming the RaiseOnInputUp events
         /// </summary>
         /// <param name="eventData"></param>
         public virtual void OnInputUp(InputEventData eventData)
@@ -390,14 +390,34 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Function for receiving OnInputClicked events from InputManager
+        /// Function for receiving OnInputPressed events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnInputClicked(InputClickedEventData eventData)
-        {
-            // Open input socket for other cool stuff...
-        }
+        public virtual void OnInputPressed(InputPressedEventData eventData) { }
 
+        /// <summary>
+        /// Function for receiving OnInputPositionChanged events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnInputPositionChanged(InputPositionEventData eventData) { }
+
+        /// <summary>
+        /// Function for receiving OnPointerClicked events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerClicked(PointerEventData eventData) { }
+
+        /// <summary>
+        /// Function for receiving OnPointerUp events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerUp(PointerEventData eventData) { }
+
+        /// <summary>
+        /// Function for receiving OnPointerDown events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerDown(PointerEventData eventData) { }
 
         /// <summary>
         /// Input source detected callback for the cursor

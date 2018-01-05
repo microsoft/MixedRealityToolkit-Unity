@@ -6,10 +6,10 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     /// <summary>
-    /// This class implements IFocusable to respond to gaze changes.
+    /// This class implements IFocusHandler to respond to gaze changes.
     /// It highlights the object being gazed at.
     /// </summary>
-    public class GazeResponder : MonoBehaviour, IFocusable
+    public class GazeResponder : MonoBehaviour, IFocusHandler
     {
         private Material[] defaultMaterials;
 

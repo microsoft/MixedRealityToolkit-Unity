@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Script teleports the user to the location being gazed at when Y was pressed on a Gamepad.
     /// </summary>
     [RequireComponent(typeof(SetGlobalListener))]
-    public class MixedRealityTeleport : Singleton<MixedRealityTeleport>, IControllerInputHandler
+    public class MixedRealityTeleport : Singleton<MixedRealityTeleport>, IInputHandler
     {
         [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
         public XboxControllerMappingTypes HorizontalStrafe = XboxControllerMappingTypes.XboxLeftStickHorizontal;
@@ -182,15 +182,19 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        void IControllerInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
+        void IInputHandler.OnInputUp(InputEventData eventData) { }
+
+        void IInputHandler.OnInputDown(InputEventData eventData) { }
+
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
         {
-#if UNITY_WSA
-            if (eventData.InputType == InputType.Thumbstick)
-#endif
+            if ((InputType)eventData.Tags[0] == InputType.Thumbstick)
             {
                 if (EnableTeleport)
                 {
-                    if (currentPointingSource == null && eventData.Position.y > 0.8 && Math.Abs(eventData.Position.x) < 0.3)
+                    if (currentPointingSource == null && eventData.InputPosition.y > 0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
                     {
                         if (FocusManager.Instance.TryGetPointingSource(eventData, out currentPointingSource))
                         {
@@ -198,7 +202,7 @@ namespace HoloToolkit.Unity.InputModule
                             StartTeleport();
                         }
                     }
-                    else if (currentPointingSource != null && currentSourceId == eventData.SourceId && eventData.Position.magnitude < 0.2)
+                    else if (currentPointingSource != null && currentSourceId == eventData.SourceId && eventData.InputPosition.magnitude < 0.2)
                     {
                         FinishTeleport();
                     }
@@ -206,7 +210,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (EnableStrafe && currentPointingSource == null)
                 {
-                    if (eventData.Position.y < -0.8 && Math.Abs(eventData.Position.x) < 0.3)
+                    if (eventData.InputPosition.y < -0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
                     {
                         DoStrafe(Vector3.back * StrafeAmount);
                     }
@@ -214,11 +218,11 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (EnableRotation && currentPointingSource == null)
                 {
-                    if (eventData.Position.x < -0.8 && Math.Abs(eventData.Position.y) < 0.3)
+                    if (eventData.InputPosition.x < -0.8 && Math.Abs(eventData.InputPosition.y) < 0.3)
                     {
                         DoRotation(-RotationSize);
                     }
-                    else if (eventData.Position.x > 0.8 && Math.Abs(eventData.Position.y) < 0.3)
+                    else if (eventData.InputPosition.x > 0.8 && Math.Abs(eventData.InputPosition.y) < 0.3)
                     {
                         DoRotation(RotationSize);
                     }

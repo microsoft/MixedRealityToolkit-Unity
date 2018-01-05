@@ -8,19 +8,22 @@ namespace HoloToolkit.Unity.SharingWithUNET
     /// <summary>
     /// Attached to the 'up' and 'down' arrows in the scroll control
     /// </summary>
-    public class ScrollSessionListButton : MonoBehaviour, IInputClickHandler
+    public class ScrollSessionListButton : MonoBehaviour, IPointerHandler
     {
-
         /// <summary>
         /// Whether we are scrolling up (-1) in the list or down (1) in the list
         /// </summary>
         public int Direction;
 
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
         /// <summary>
         /// Called when the user clicks the control
         /// </summary>
         /// <param name="eventData">information about the click</param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(PointerEventData eventData)
         {
             ScrollingSessionListUIController.Instance.ScrollSessions(Direction);
             eventData.Use();

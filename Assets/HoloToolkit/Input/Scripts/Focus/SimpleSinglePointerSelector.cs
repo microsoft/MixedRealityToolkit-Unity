@@ -93,6 +93,10 @@ namespace HoloToolkit.Unity.InputModule
             HandleInputAction(eventData);
         }
 
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
+
         #endregion
 
         #region Utilities
@@ -178,7 +182,7 @@ namespace HoloToolkit.Unity.InputModule
         private void ConnectBestAvailablePointer()
         {
             IPointingSource bestPointer = null;
-            var inputSources = InputManager.Instance.DetectedInputSources;
+            var inputSources = InputManager.DetectedInputSources;
 
             for (var i = 0; i < inputSources.Count; i++)
             {

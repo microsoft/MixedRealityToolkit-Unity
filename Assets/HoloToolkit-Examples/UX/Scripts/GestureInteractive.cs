@@ -158,7 +158,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         public override void OnInputUp(InputEventData eventData)
         {
-            //base.OnInputUp(eventData);
+            //base.RaiseOnInputUp(eventData);
             if (mCurrentInputSource != null && (eventData == null || eventData.SourceId == mCurrentInputSourceId))
             {
                 HandleRelease(false);

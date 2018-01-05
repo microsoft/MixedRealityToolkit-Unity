@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Interpolator))]
-    public class TapToPlace : MonoBehaviour, IInputClickHandler
+    public class TapToPlace : MonoBehaviour, IPointerHandler
     {
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
@@ -129,7 +129,11 @@ namespace HoloToolkit.Unity.InputModule
             interpolator.SetTargetRotation(Quaternion.Euler(0, cameraTransform.localEulerAngles.y, 0));
         }
 
-        public virtual void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public virtual void OnPointerClicked(PointerEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;

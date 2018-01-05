@@ -4,29 +4,39 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     public class InputPositionEventData : InputEventData
     {
         /// <summary>
-        /// Two values, from -1.0 to 1.0 in the X-axis and Y-axis, representing where the input control is positioned.
+        /// Two values, typically from -1.0 to 1.0 in the X-axis and Y-axis, representing where the input control is positioned.
         /// </summary>
-        public Vector2 Position { get; private set; }
+        public Vector2 InputPosition { get; private set; }
 
-        public Handedness Handedness { get; private set; }
+        public InputPositionEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public InputType InputType { get; private set; }
-
-        public InputPositionEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
-
-        public void Initialize(IInputSource inputSource, uint sourceId, Vector2 position, InputType inputType, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, uint sourceId, Vector2 inputPosition, object[] tags = null)
         {
             Initialize(inputSource, sourceId, tags);
-            Position = position;
-            InputType = inputType;
-            Handedness = handedness;
+            InputPosition = inputPosition;
         }
+
+        public void Initialize(IInputSource inputSource, uint sourceId, Vector2 inputPosition, Handedness handedness, object[] tags = null)
+        {
+            Initialize(inputSource, sourceId, handedness, tags);
+            InputPosition = inputPosition;
+        }
+
+#if UNITY_WSA
+        public void Initialize(IInputSource inputSource, uint sourceId, Vector2 inputPosition, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            Initialize(inputSource, sourceId, pressType, handedness, tags);
+            InputPosition = inputPosition;
+        }
+#endif
     }
 }

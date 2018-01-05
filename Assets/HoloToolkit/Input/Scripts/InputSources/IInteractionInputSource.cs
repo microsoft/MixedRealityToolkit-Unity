@@ -1,7 +1,10 @@
-﻿using HoloToolkit.Unity.InputModule;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
+using HoloToolkit.Unity.InputModule;
 
 #if UNITY_WSA
-using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -9,6 +12,7 @@ public interface IInteractionInputSource : IInputSource
 {
 #if UNITY_WSA
     bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind);
+#endif
 
     /// <summary>
     /// Returns the position of the input source, if available.
@@ -42,5 +46,4 @@ public interface IInteractionInputSource : IInputSource
     bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedValue);
     bool TryGetGrasp(uint sourceId, out bool isPressed);
     bool TryGetMenu(uint sourceId, out bool isPressed);
-#endif
 }

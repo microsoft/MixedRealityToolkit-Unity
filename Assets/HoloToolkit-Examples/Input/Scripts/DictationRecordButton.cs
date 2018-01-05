@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class DictationRecordButton : MonoBehaviour, IInputClickHandler, IDictationHandler
+    public class DictationRecordButton : MonoBehaviour, IPointerHandler, IDictationHandler
     {
         [SerializeField]
         [Range(0.1f, 5f)]
@@ -37,7 +37,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             buttonRenderer = GetComponent<Renderer>();
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             ToggleRecording();
         }

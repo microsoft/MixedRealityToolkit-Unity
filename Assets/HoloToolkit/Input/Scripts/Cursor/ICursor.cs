@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Cursor Interface for handling input events and setting visibility.
     /// </summary>
-    public interface ICursor : IInputHandler, IInputClickHandler, ISourceStateHandler
+    public interface ICursor : IInputHandler, IPointerHandler, ISourceStateHandler
     {
         /// <summary>
         /// The pointer this cursor is associated with.

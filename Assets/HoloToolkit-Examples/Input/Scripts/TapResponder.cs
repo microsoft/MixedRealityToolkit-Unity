@@ -7,12 +7,16 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     /// <summary>
-    /// This class implements IInputClickHandler to handle the tap gesture.
+    /// This class implements IPointerHandler to handle the tap gesture.
     /// It increases the scale of the object when tapped.
     /// </summary>
-    public class TapResponder : MonoBehaviour, IInputClickHandler
+    public class TapResponder : MonoBehaviour, IPointerHandler
     {
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             // Increase the scale of the object just as a response.
             gameObject.transform.localScale += 0.05f * gameObject.transform.localScale;

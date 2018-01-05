@@ -9,25 +9,25 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Lightweight game object placement
     /// </summary>
-    public class TapToPlaceScene : MonoBehaviour, IInputClickHandler
+    public class TapToPlaceScene : MonoBehaviour, IPointerHandler
     {
         public float DistanceFromHead = 1.0f;
 
         public bool Placing = true;
 
-        Quaternion initialRotation;
+        private Quaternion initialRotation;
 
         public void SetPlacing(bool placing)
         {
-            this.Placing = placing;
+            Placing = placing;
         }
 
         private void OnEnable()
         {
-            this.initialRotation = this.transform.rotation;
+            initialRotation = transform.rotation;
         }
 
-        void Update()
+        private void Update()
         {
             if (Placing)
             {
@@ -36,13 +36,13 @@ namespace HoloToolkit.Unity
                 var forward = cameraTransform.forward;
                 var scenePosition = headPosition + DistanceFromHead * forward;
 
-                var facingRotation = cameraTransform.localRotation * this.initialRotation;
+                var facingRotation = cameraTransform.localRotation * initialRotation;
                 //only yaw
                 facingRotation.x = 0;
                 facingRotation.z = 0;
 
-                this.transform.position = scenePosition;
-                this.transform.rotation = facingRotation;
+                transform.position = scenePosition;
+                transform.rotation = facingRotation;
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -51,7 +51,11 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             Placing = false;
         }

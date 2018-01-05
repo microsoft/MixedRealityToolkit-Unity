@@ -15,7 +15,7 @@ using UnityEngine.Windows.Speech;
 
 namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 {
-    public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
+    public class AppState : Singleton<AppState>, ISourceStateHandler, IPointerHandler
     {
         // Consts
         public float kMinAreaForStats = 5.0f;
@@ -289,7 +289,11 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
                 !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)

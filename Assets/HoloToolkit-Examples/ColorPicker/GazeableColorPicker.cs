@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Examples.ColorPicker
 {
-    public class GazeableColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
+    public class GazeableColorPicker : MonoBehaviour, IFocusHandler, IPointerHandler
     {
         public Renderer rendererComponent;
 
@@ -51,7 +51,11 @@ namespace HoloToolkit.Examples.ColorPicker
             gazing = false;
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(PointerEventData eventData) { }
+
+        public void OnPointerDown(PointerEventData eventData) { }
+
+        public void OnPointerClicked(PointerEventData eventData)
         {
             UpdatePickedColor(OnPickedColor);
         }
