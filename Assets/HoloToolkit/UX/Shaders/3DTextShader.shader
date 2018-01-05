@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 ///
-/// Basic 3D Text shader with proper z-shorting
+/// Basic 3D Text shader with proper z-sorting
 ///
 Shader "MixedRealityToolkit/3DTextShader"
 {
