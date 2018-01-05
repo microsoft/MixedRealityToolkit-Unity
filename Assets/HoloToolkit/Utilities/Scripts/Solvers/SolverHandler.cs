@@ -116,7 +116,7 @@ namespace HoloToolkit.Unity
             public Quaternion Goal { get; set; }
             public float SmoothTime { get; set; }
 
-            public QuaternionSmoothed(Quaternion value, float smoothingTime)
+            public QuaternionSmoothed(Quaternion value, float smoothingTime) : this()
             {
                 Current = value;
                 Goal = value;
