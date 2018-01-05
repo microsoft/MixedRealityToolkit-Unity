@@ -33,8 +33,6 @@ namespace HoloToolkit.Unity
         /// <remarks>This is manually parsing the Unity generated MSBuild projects, which means it will be fragile to changes.</remarks>
         private static void UpdateProjectFile(string filename)
         {
-            //UnityEngine.Debug.LogFormat("Update Project File: {0}", filename);
-
             if (!File.Exists(filename))
             {
                 UnityEngine.Debug.LogWarningFormat("Unable to find file \"{0}\", double check that the build succeeded and that the C# Projects are set to be generated.", filename);
@@ -59,7 +57,10 @@ namespace HoloToolkit.Unity
             foreach (XmlNode node in projectDocument.DocumentElement.ChildNodes)
             {
                 // Everything we are looking for is inside a PropertyGroup...
-                if (node.Name != "PropertyGroup" || node.Attributes == null) { continue; }
+                if (node.Name != "PropertyGroup" || node.Attributes == null)
+                {
+                    continue;
+                }
 
                 if (node.Attributes.Count == 0 && node["Configuration"] != null && node["Platform"] != null)
                 {
@@ -82,7 +83,7 @@ namespace HoloToolkit.Unity
             WriteXmlDocumentToFile(projectDocument, filename);
         }
 
-        private static void UpdateDefineConstants(XmlElement defineConstants, string configuration, string platform)
+        private static void UpdateDefineConstants(XmlNode defineConstants, string configuration, string platform)
         {
             if (defineConstants == null)
             {
@@ -101,7 +102,7 @@ namespace HoloToolkit.Unity
             //UnityEngine.Debug.LogFormat("Updating defines for Configuration|Platform: {0}|{1} => {2}", configuration, platform, defineConstants.InnerText);
         }
 
-        private static void WriteXmlDocumentToFile(XmlDocument document, string fullPath)
+        private static void WriteXmlDocumentToFile(XmlNode document, string fullPath)
         {
             FileStream fileStream = null;
             try
