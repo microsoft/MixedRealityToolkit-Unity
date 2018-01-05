@@ -154,15 +154,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  scaleTransform: {fileID: 4696603081318228}
+  scaleTransform: {fileID: 0}
   flattenPreference: 4
   flattenAxisThreshold: 0.025
   flattenedAxisThickness: 0.01
   scalePadding: 0.05
   flattenedScalePadding: 0
   boundsCalculationMethod: 0
-  physicsLayer: 0
-  ignoreLayer: 2
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 4
 --- !u!114 &114547907076679292
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,5 +175,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8afaaf647e592574d8a56bc26e61f82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PhysicsLayer: 0
   boundingBox: {fileID: 114030465538688920}
