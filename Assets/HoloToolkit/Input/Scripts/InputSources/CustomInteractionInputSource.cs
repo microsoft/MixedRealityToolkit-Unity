@@ -158,7 +158,6 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-#if UNITY_WSA
         public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
@@ -257,7 +256,6 @@ namespace HoloToolkit.Unity.InputModule
             isPressed = false;
             return false;
         }
-#endif
 
         private void Awake()
         {

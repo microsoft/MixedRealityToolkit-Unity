@@ -514,14 +514,17 @@ namespace HoloToolkit.Unity.InputModule
             sourceKind = default(InteractionSourceKind);
             return false;
         }
+#endif
 
         public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.PointerRotation, out rotation))
             {
                 return true;
             }
+#endif
 
             rotation = default(Quaternion);
             return false;
@@ -529,28 +532,35 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.GripPosition, out position))
             {
                 return true;
             }
+#endif
+
             position = default(Vector3);
             return false;
         }
 
         public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.GripRotation, out rotation))
             {
                 return true;
             }
+#endif
+
             rotation = default(Quaternion);
             return false;
         }
 
         public override bool TryGetThumbstick(uint sourceId, out bool thumbstickPressed, out Vector2 thumbstickPosition)
         {
+#if UNITY_WSA
             SourceData sourceData;
             AxisButton2D thumbstick;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Thumbstick, out thumbstick))
@@ -559,6 +569,7 @@ namespace HoloToolkit.Unity.InputModule
                 thumbstickPosition = thumbstick.Position;
                 return true;
             }
+#endif
             thumbstickPressed = false;
             thumbstickPosition = Vector2.zero;
             return false;
@@ -566,6 +577,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetTouchpad(uint sourceId, out bool touchpadPressed, out bool touchpadTouched, out Vector2 touchpadPosition)
         {
+#if UNITY_WSA
             SourceData sourceData;
             TouchpadData touchpad;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Touchpad, out touchpad))
@@ -575,6 +587,7 @@ namespace HoloToolkit.Unity.InputModule
                 touchpadPosition = touchpad.AxisButton.Position;
                 return true;
             }
+#endif
             touchpadPressed = false;
             touchpadTouched = false;
             touchpadPosition = Vector2.zero;
@@ -583,6 +596,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetSelect(uint sourceId, out bool selectPressed, out double selectPressedAmount)
         {
+#if UNITY_WSA
             SourceData sourceData;
             AxisButton1D select;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Select, out select))
@@ -591,6 +605,7 @@ namespace HoloToolkit.Unity.InputModule
                 selectPressedAmount = select.PressedAmount;
                 return true;
             }
+#endif
             selectPressed = false;
             selectPressedAmount = 0;
             return false;
@@ -598,26 +613,31 @@ namespace HoloToolkit.Unity.InputModule
 
         public override bool TryGetGrasp(uint sourceId, out bool graspPressed)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Grasp, out graspPressed))
             {
                 return true;
             }
+#endif
             graspPressed = false;
             return false;
         }
 
         public override bool TryGetMenu(uint sourceId, out bool menuPressed)
         {
+#if UNITY_WSA
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Menu, out menuPressed))
             {
                 return true;
             }
+#endif
             menuPressed = false;
             return false;
         }
 
+#if UNITY_WSA
         private bool TryGetReading<TReading>(SourceCapability<TReading> capability, out TReading reading)
         {
             if (capability.IsAvailable)
