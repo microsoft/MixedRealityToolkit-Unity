@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     public static class PropertyChangedEventArgsEx
     {
