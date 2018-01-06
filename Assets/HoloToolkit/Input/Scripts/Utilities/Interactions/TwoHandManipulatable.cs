@@ -1,4 +1,7 @@
-﻿using System;
+﻿// #defines for features that are not yet implemented
+#define TODO_ROTATE_FACE_USER
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -175,7 +178,7 @@ namespace HoloToolkit.Unity.InputModule
                         OnOneHandMoveStarted();
                         break;
                     case State.Start:
-                        OnStartStateEntered();
+                        OnManipulationEnded();
                         break;
                     case State.RotatingScaling:
                     case State.MovingRotatingScaling:
@@ -215,6 +218,72 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+
+        private void OnTwoHandManipulationUpdated()
+        {
+            var targetRotation = HostTransform.rotation;
+            var targetPosition = HostTransform.position;
+            var targetScale = HostTransform.localScale;
+
+            if ((currentState & State.Moving) > 0)
+            {
+                targetPosition = m_moveLogic.Update(GetHandsCentroid(), targetPosition);
+            }
+            if ((currentState & State.Rotating) > 0)
+            {
+                targetRotation = m_rotateLogic.Update(m_handsPressedMap, HostTransform, targetRotation);
+            }
+            if ((currentState & State.Scaling) > 0)
+            {
+                targetScale = m_scaleLogic.Update(m_handsPressedMap);
+            }
+
+            HostTransform.position = targetPosition;
+            HostTransform.rotation = targetRotation;
+            HostTransform.localScale = targetScale;
+        }
+
+        private void OnOneHandMoveUpdated()
+        {
+            var targetPosition = m_moveLogic.Update(m_handsPressedMap.Values.First(), HostTransform.position);
+
+            HostTransform.position = targetPosition;
+
+#if !TODO_ROTATE_FACE_USER
+            // TODO: Rotate object to face user as needed.
+            TryRotateObjectToFaceUser();
+#endif
+
+        }
+
+        private void OnTwoHandManipulationEnded()
+        {
+            
+        }
+
+        private Vector3 GetHandsCentroid()
+        {
+            Vector3 result = m_handsPressedMap.Values.Aggregate(Vector3.zero, (current, state) => current + state);
+            return result / m_handsPressedMap.Count;
+        }
+
+        private void OnTwoHandManipulationStarted(State newState)
+        {
+            if ((newState & State.Rotating) > 0)
+            {
+                m_rotateLogic.Setup(m_handsPressedMap, HostTransform);
+            }
+            if ((newState & State.Moving) > 0)
+            {
+                m_moveLogic.Setup(GetHandsCentroid(), HostTransform);
+            }
+            if ((newState & State.Scaling) > 0)
+            {
+                m_scaleLogic.Setup(m_handsPressedMap, HostTransform);
+            }
+            OnManipulationStarted();
+        }
+
         private void OnOneHandMoveStarted()
         {
             Assert.IsTrue(m_handsPressedMap.Count == 1);
@@ -236,10 +305,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 StoppedManipulating();
             }
-        }
-        private void OnStartStateEntered()
-        {
-            OnManipulationEnded();
         }
     }
 
@@ -281,7 +346,7 @@ namespace HoloToolkit.Unity.InputModule
             m_rotationConstraint = rotationConstraint;
         }
 
-        public void Setup(Dictionary<uint, Vector3> handsPressedMap, GameObject manipulationRoot)
+        public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
 
             if (m_rotationConstraint == RotationConstraint.XOrYBasedOnInitialHandPosition)
@@ -310,7 +375,7 @@ namespace HoloToolkit.Unity.InputModule
             m_previousHandlebarRotation = GetHandlebarDirection(handsPressedMap, manipulationRoot);
         }
 
-        private Vector3 ProjectHandlebarGivenConstraint(RotationConstraint constraint, Vector3 handlebarRotation, GameObject manipulationRoot)
+        private Vector3 ProjectHandlebarGivenConstraint(RotationConstraint constraint, Vector3 handlebarRotation, Transform manipulationRoot)
         {
             Vector3 result = handlebarRotation;
             switch (constraint)
@@ -328,7 +393,7 @@ namespace HoloToolkit.Unity.InputModule
             return Camera.main.transform.TransformDirection(result);
         }
 
-        private Vector3 GetHandlebarDirection(Dictionary<uint, Vector3> handsPressedMap, GameObject manipulationRoot)
+        private Vector3 GetHandlebarDirection(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
             Assert.IsTrue(handsPressedMap.Count > 1);
             var handsEnumerator = handsPressedMap.Values.GetEnumerator();
@@ -345,7 +410,7 @@ namespace HoloToolkit.Unity.InputModule
             return hand2 - hand1;
         }
 
-        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, GameObject manipulationRoot, Quaternion currentRotation)
+        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot, Quaternion currentRotation)
         {
             var handlebarDirection = GetHandlebarDirection(handsPressedMap, manipulationRoot);
             var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(m_currentRotationConstraint, handlebarDirection,
@@ -395,7 +460,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private const float DistanceScale = 2f;
 
-        public void Setup(Vector3 startHandPositionMeters, GameObject manipulationRoot)
+        public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)
         {
             var newHandPosition = startHandPositionMeters;
 
@@ -403,9 +468,9 @@ namespace HoloToolkit.Unity.InputModule
             var pivotPosition = GetHandPivotPosition();
 
             m_handRefDistance = Vector3.Distance(newHandPosition, pivotPosition);
-            m_objRefDistance = Vector3.Distance(manipulationRoot.transform.position, pivotPosition);
+            m_objRefDistance = Vector3.Distance(manipulationRoot.position, pivotPosition);
 
-            var objDirectoin = Vector3.Normalize(manipulationRoot.transform.position - pivotPosition);
+            var objDirectoin = Vector3.Normalize(manipulationRoot.position - pivotPosition);
             var handDirection = Vector3.Normalize(newHandPosition - pivotPosition);
 
             // We transform the forward vector of the object, the direction of the object, and the direction of the hand
@@ -415,7 +480,7 @@ namespace HoloToolkit.Unity.InputModule
 
             // Store the original rotation between the hand an object
             m_gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirectoin);
-            m_draggingPosition = manipulationRoot.transform.position;
+            m_draggingPosition = manipulationRoot.position;
         }
 
         public Vector3 Update(Vector3 centroid, Vector3 manipulationObjectPosition)
@@ -464,7 +529,7 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 m_startObjectScale;
         private float m_startHandDistanceMeters;
 
-        public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, GameObject manipulationRoot)
+        public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
             m_startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
             m_startObjectScale = manipulationRoot.transform.localScale;

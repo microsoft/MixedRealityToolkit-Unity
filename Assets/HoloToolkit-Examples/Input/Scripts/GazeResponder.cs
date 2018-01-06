@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
                 // Highlight the material when gaze enters using the shader property.
-                defaultMaterials[i].SetFloat("_Gloss", 10.0f);
+                defaultMaterials[i].SetFloat("_Gloss", 5.0f);
             }
         }
 
