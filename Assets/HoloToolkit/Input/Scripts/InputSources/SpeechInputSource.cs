@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
     /// </summary>
-    public partial class SpeechInputSource : BaseInputSource
+    public class SpeechInputSource : BaseInputSource
     {
         /// <summary>
         /// Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.
@@ -28,9 +28,11 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.")]
         public bool PersistentKeywords;
 
-        // This enumeration gives the manager two different ways to handle the recognizer. Both will
-        // set up the recognizer and add all keywords. The first causes the recognizer to start
-        // immediately. The second allows the recognizer to be manually started at a later time.
+        /// <summary>
+        /// This enumeration gives the manager two different ways to handle the recognizer. Both will
+        /// set up the recognizer and add all keywords. The first causes the recognizer to start
+        /// immediately. The second allows the recognizer to be manually started at a later time.
+        /// </summary>
         public enum RecognizerStartBehavior { AutoStart, ManualStart }
 
         [Tooltip("Whether the recognizer should be activated on start.")]
@@ -40,15 +42,24 @@ namespace HoloToolkit.Unity.InputModule
         public KeywordAndKeyCode[] Keywords;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-
-        [Tooltip("The confidence level for the keyword recognizer.")]
-        // The serialized data of this field will be lost when switching between platforms and re-serializing this class.
+        /// <summary>
+        /// The serialized data of this field will be lost when switching between platforms and re-serializing this class.
+        /// </summary>
         [SerializeField]
+        [Tooltip("The confidence level for the keyword recognizer.")]
         private ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium;
 
         private KeywordRecognizer keywordRecognizer;
 
-        #region Unity Methods
+        #region Monobehaviour Implementatinos
+
+        protected virtual void OnEnable()
+        {
+            if (keywordRecognizer != null && RecognizerStart == RecognizerStartBehavior.AutoStart)
+            {
+                StartKeywordRecognizer();
+            }
+        }
 
         protected virtual void Start()
         {
@@ -85,7 +96,21 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
-                ProcessKeyBindings();
+                for (int index = Keywords.Length; --index >= 0;)
+                {
+                    if (Input.GetKeyDown(Keywords[index].KeyCode))
+                    {
+                        OnPhraseRecognized(recognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
+                    }
+                }
+            }
+        }
+
+        protected virtual void OnDisable()
+        {
+            if (keywordRecognizer != null)
+            {
+                StopKeywordRecognizer();
             }
         }
 
@@ -99,32 +124,17 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected virtual void OnDisable()
-        {
-            if (keywordRecognizer != null)
-            {
-                StopKeywordRecognizer();
-            }
-        }
-
-        protected virtual void OnEnable()
-        {
-            if (keywordRecognizer != null && RecognizerStart == RecognizerStartBehavior.AutoStart)
-            {
-                StartKeywordRecognizer();
-            }
-        }
-
-        #endregion // Unity Methods
-
-        #region Event Callbacks
+        #endregion Monobehaviour Implementatinos
 
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
             OnPhraseRecognized(args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
         }
 
-        #endregion // Event Callbacks
+        protected virtual void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
+        {
+            InputManager.Instance.RaiseSpeechKeywordPhraseRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+        }
 
         /// <summary>
         /// Make sure the keyword recognizer is off, then start it.
@@ -135,17 +145,6 @@ namespace HoloToolkit.Unity.InputModule
             if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Start();
-            }
-        }
-
-        private void ProcessKeyBindings()
-        {
-            for (int index = Keywords.Length; --index >= 0;)
-            {
-                if (Input.GetKeyDown(Keywords[index].KeyCode))
-                {
-                    OnPhraseRecognized(recognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
-                }
             }
         }
 
@@ -161,11 +160,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
-        {
-            InputManager.Instance.RaiseSpeechKeywordPhraseRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
-        }
-
 #endif
 
         #region Base Input Source Methods
@@ -175,6 +169,6 @@ namespace HoloToolkit.Unity.InputModule
             return SupportedInputInfo.Voice;
         }
 
-        #endregion // Base Input Source Methods
+        #endregion Base Input Source Methods
     }
 }
