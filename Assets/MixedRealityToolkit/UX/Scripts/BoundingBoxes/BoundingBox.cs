@@ -2,8 +2,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using MixedRealityToolkit.Common;
 using System;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -172,7 +172,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
         [SerializeField]
-        protected LayerMask ignoreLayers = LayerMask.NameToLayer("Ignore Raycast");
+        protected LayerMask ignoreLayers = (1 << 2); // Ignore Raycast Layer
 
         protected Vector3 targetBoundsWorldCenter = Vector3.zero;
         protected Vector3 targetBoundsLocalScale = Vector3.zero;
@@ -495,6 +495,5 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private static Vector3[] rectTransformCorners = new Vector3[4];
 
         #endregion
-
     }
 }

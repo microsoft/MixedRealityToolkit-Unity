@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using UnityEngine;
 
 namespace MixedRealityToolkit.Build
 {
@@ -18,19 +17,14 @@ namespace MixedRealityToolkit.Build
             Revision = revision;
         }
 
-        [SerializeField]
         public int VendorId { get; private set; }
 
-        [SerializeField]
         public string Udid { get; private set; }
 
-        [SerializeField]
         public int ProductId { get; private set; }
 
-        [SerializeField]
         public string Name { get; private set; }
 
-        [SerializeField]
         public int Revision { get; private set; }
     }
 }

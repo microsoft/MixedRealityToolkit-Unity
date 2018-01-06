@@ -1,7 +1,6 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using MixedRealityToolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,15 +36,10 @@ namespace MixedRealityToolkit.Common.Solver
         #endregion
 
         private List<Solver> m_Solvers = new List<Solver>();
-        [HideInInspector]
         public Vector3 GoalPosition { get; set; }
-        [HideInInspector]
         public Quaternion GoalRotation { get; set; }
-        [HideInInspector]
         public Vector3 GoalScale { get; set; }
-        [HideInInspector]
         public Vector3Smoothed AltScale { get; set; }
-        [HideInInspector]
         public float DeltaTime { get; set; }
 
         private float LastUpdateTime { get; set; }
