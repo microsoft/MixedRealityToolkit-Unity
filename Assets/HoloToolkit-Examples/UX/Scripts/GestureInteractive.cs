@@ -27,7 +27,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         public enum GestureManipulationState { None, Start, Update, Lost }
         public GestureManipulationState GestureState { get; protected set; }
 
-        private IInteractionInputSource mCurrentInputSource;
+        private IInputSource mCurrentInputSource;
         private uint mCurrentInputSourceId;
 
         [Tooltip("Sets the time before the gesture starts after a press has occurred, handy when a select event is also being used")]
@@ -52,7 +52,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Cursor mCursor;
 
         private Coroutine mTicker;
-        private InteractionInputSource mTempInputSource;
+        private IInputSource mTempInputSource;
         private uint mTempInputSourceId;
 
         protected override void Awake()
@@ -83,7 +83,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             base.OnInputDown(eventData);
 
-            mTempInputSource = (InteractionInputSource)eventData.InputSource;
+            mTempInputSource = eventData.InputSource;
             mTempInputSourceId = eventData.SourceId;
 
             if (StartDelay > 0)
@@ -141,11 +141,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
-#if UNITY_2017_2_OR_NEWER
-            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
-#else
-            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
-#endif
+            InteractionInputSources.Instance.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
             mStartHandPosition = handPosition;
             mCurrentHandPosition = handPosition;
             Control.ManipulationUpdate(mStartHandPosition, mStartHandPosition, mStartHeadPosition, mStartHeadRay, GestureManipulationState.Start);
@@ -158,7 +154,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         public override void OnInputUp(InputEventData eventData)
         {
-            //base.RaiseOnInputUp(eventData);
+            base.OnInputUp(eventData);
+
             if (mCurrentInputSource != null && (eventData == null || eventData.SourceId == mCurrentInputSourceId))
             {
                 HandleRelease(false);
@@ -171,16 +168,13 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// required by ISourceStateHandler
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            // Nothing to do
-        }
+        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 
         /// <summary>
         /// Stops the gesture when the source is lost
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnSourceLost(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             if (mCurrentInputSource != null && eventData.SourceId == mCurrentInputSourceId)
             {
@@ -189,6 +183,10 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             CleanUpTicker();
         }
+
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
         /// <summary>
         /// manages the timer
@@ -266,11 +264,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
-#if UNITY_2017_2_OR_NEWER
-            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
-#else
-            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
-#endif
+            InteractionInputSources.Instance.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
             return handPosition;
         }
 

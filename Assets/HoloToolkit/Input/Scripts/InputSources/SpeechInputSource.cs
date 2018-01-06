@@ -163,26 +163,14 @@ namespace HoloToolkit.Unity.InputModule
 
         protected void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
-            InputManager.Instance.RaiseSpeechKeywordPhraseRecognized(this, 0, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            InputManager.Instance.RaiseSpeechKeywordPhraseRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
         }
 
 #endif
 
         #region Base Input Source Methods
 
-        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
-        {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        {
-            pointingRay = default(Ray);
-            return false;
-        }
-
-        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        public override SupportedInputInfo GetSupportedInputInfo()
         {
             return SupportedInputInfo.Voice;
         }

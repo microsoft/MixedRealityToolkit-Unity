@@ -10,15 +10,13 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
-        public abstract SupportedInputInfo GetSupportedInputInfo(uint sourceId);
+        public uint SourceId { get; protected set; }
 
-        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
+        public abstract SupportedInputInfo GetSupportedInputInfo();
+
+        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
         {
-            return (GetSupportedInputInfo(sourceId) & inputInfo) == inputInfo;
+            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
         }
-
-        public abstract bool TryGetPointerPosition(uint sourceId, out Vector3 position);
-
-        public abstract bool TryGetPointingRay(uint sourceId, out Ray pointingRay);
     }
 }

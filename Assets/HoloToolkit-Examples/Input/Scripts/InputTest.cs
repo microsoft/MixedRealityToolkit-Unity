@@ -87,6 +87,18 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData)
+        {
+            Debug.LogFormat("OnSourcePositionChanged\r\nSource: {0}  SourceId: {1}  Pointer Position: {2} Grip Position: {3}", eventData.InputSource, eventData.SourceId, eventData.PointerPosition, eventData.GripPosition);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData)
+        {
+            Debug.LogFormat("OnSourceRotationChanged\r\nSource: {0}  SourceId: {1}  Pointer Rotation: {2} Grip Rotation: {3}", eventData.InputSource, eventData.SourceId, eventData.PointerRotation, eventData.GripRotation);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
         void IHoldHandler.OnHoldStarted(InputEventData eventData)
         {
             Debug.LogFormat("OnHoldStarted\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);

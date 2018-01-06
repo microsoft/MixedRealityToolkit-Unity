@@ -33,8 +33,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool addedInputManagerListener;
         private IPointingSource currentPointer;
-
-        private readonly InputSourcePointer inputSourcePointer = new InputSourcePointer();
+        private InputSourcePointer inputSourcePointer;
 
         #endregion
 
@@ -77,11 +76,19 @@ namespace HoloToolkit.Unity.InputModule
 
         void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
+            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Pointing))
             {
-                ConnectBestAvailablePointer();
+                inputSourcePointer = (InputSourcePointer)eventData.InputSource;
+                if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
+                {
+                    ConnectBestAvailablePointer();
+                }
             }
         }
+
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
@@ -188,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (SupportsPointingRay(inputSources[i]))
                 {
-                    AttachInputSourcePointer(inputSources[i]);
+                    AttachInputSourcePointer();
                     bestPointer = inputSourcePointer;
                     break;
                 }
@@ -216,7 +223,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
                 else
                 {
-                    AttachInputSourcePointer(eventData);
+                    AttachInputSourcePointer();
                     SetPointer(inputSourcePointer);
                     pointerWasChanged = true;
                 }
@@ -249,33 +256,16 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool SupportsPointingRay(BaseInputEventData eventData)
         {
-            return SupportsPointingRay(eventData.InputSource, eventData.SourceId);
+            return SupportsPointingRay(eventData.InputSource);
         }
 
-        private bool SupportsPointingRay(InputSourceInfo source)
+        private bool SupportsPointingRay(IInputSource inputSource)
         {
-            return SupportsPointingRay(source.InputSource, source.SourceId);
+            return inputSource.SupportsInputInfo(SupportedInputInfo.Pointing);
         }
 
-        private bool SupportsPointingRay(IInputSource inputSource, uint sourceId)
+        private void AttachInputSourcePointer()
         {
-            return inputSource.SupportsInputInfo(sourceId, SupportedInputInfo.Pointing);
-        }
-
-        private void AttachInputSourcePointer(BaseInputEventData eventData)
-        {
-            AttachInputSourcePointer(eventData.InputSource, eventData.SourceId);
-        }
-
-        private void AttachInputSourcePointer(InputSourceInfo source)
-        {
-            AttachInputSourcePointer(source.InputSource, source.SourceId);
-        }
-
-        private void AttachInputSourcePointer(IInputSource inputSource, uint sourceId)
-        {
-            inputSourcePointer.InputSource = inputSource;
-            inputSourcePointer.InputSourceId = sourceId;
             inputSourcePointer.RayStabilizer = ControllerPointerStabilizer;
             inputSourcePointer.OwnAllInput = false;
             inputSourcePointer.ExtentOverride = null;
@@ -284,7 +274,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool IsInputSourcePointerActive
         {
-            get { return (currentPointer == inputSourcePointer); }
+            get { return (currentPointer.SourceId == inputSourcePointer.SourceId); }
         }
 
         private bool IsGazePointerActive

@@ -19,9 +19,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public SourceRotationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, Quaternion pointerRotation, Quaternion gripRotation, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, Quaternion pointerRotation, Quaternion gripRotation, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, handedness, tags);
+            Initialize(inputSource, handedness, tags);
             PointerRotation = pointerRotation;
             GripRotation = gripRotation;
         }

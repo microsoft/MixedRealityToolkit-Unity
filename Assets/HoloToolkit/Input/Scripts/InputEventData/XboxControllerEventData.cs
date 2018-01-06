@@ -54,9 +54,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public XboxControllerEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, XboxControllerData inputData, object[] tags = null)
+        public void Initialize(IInputSource inputSource, XboxControllerData inputData, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, tags);
+            Initialize(inputSource, tags);
 
             GamePadName = inputData.GamePadName;
 

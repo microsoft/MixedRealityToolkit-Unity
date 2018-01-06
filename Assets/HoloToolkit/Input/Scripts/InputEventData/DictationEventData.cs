@@ -19,9 +19,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public DictationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
+        public void Initialize(IInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, tags);
+            Initialize(inputSource, tags);
             DictationResult = dictationResult;
             DictationAudioClip = dictationAudioClip;
         }

@@ -450,6 +450,10 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        public virtual void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
+
         /// <summary>
         /// Internal update to check for cursor state changes
         /// </summary>

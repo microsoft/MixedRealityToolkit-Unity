@@ -15,8 +15,6 @@ namespace HoloToolkit.Unity.InputModule
         protected const string MotionControllerLeft = "Spatial Controller - Left";
         protected const string MotionControllerRight = "Spatial Controller - Right";
 
-        protected uint SourceId;
-
         [SerializeField]
         [Tooltip("Time in seconds to determine if an Input Device has been connected or disconnected")]
         protected float DeviceRefreshInterval = 3.0f;
@@ -78,21 +76,9 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Base Input Source Methods
 
-        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        public override SupportedInputInfo GetSupportedInputInfo()
         {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        {
-            pointingRay = default(Ray);
-            return false;
-        }
-
-        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
-        {
-            return SupportedInputInfo.None;
+            return SupportedInputInfo.Thumbstick;
         }
 
         #endregion // Base Input Source Methods

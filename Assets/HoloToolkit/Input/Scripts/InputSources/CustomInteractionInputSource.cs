@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Input source for fake input source information, which gives details about current source state and position.
     /// </summary>
     [RequireComponent(typeof(CustomInputControl))]
-    public class CustomInteractionInputSource : BaseInteractionInputSource
+    public class CustomInteractionInputSource : BaseInputSource
     {
         // TODO: add thumbstick, touchpad, and trigger axis support.
         [Serializable]
@@ -87,10 +87,8 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The total amount of input source movement that needs to happen to signal intent to start a manipulation. This is a distance, but not a distance in any one direction.")]
         private float manipulationStartMovementThreshold = 0.03f;
 
-        public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        public override SupportedInputInfo GetSupportedInputInfo()
         {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
-
             var supportedInputInfo = SupportedInputInfo.None;
 
             if (SupportsPosition)
@@ -121,141 +119,141 @@ namespace HoloToolkit.Unity.InputModule
             return supportedInputInfo;
         }
 
-#if UNITY_WSA
-        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //#if UNITY_WSA
+        //        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        //        {
+        //            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            sourceKind = SourceKind;
-            return true;
-        }
-#endif
+        //            sourceKind = SourceKind;
+        //            return true;
+        //        }
+        //#endif
 
-        public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsPosition)
-            {
-                position = ControllerPosition;
-                return true;
-            }
+        //    if (SupportsPosition)
+        //    {
+        //        position = ControllerPosition;
+        //        return true;
+        //    }
 
-            position = Vector3.zero;
-            return false;
-        }
-        public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //    position = Vector3.zero;
+        //    return false;
+        //}
+        //public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsRay && (PointingRay != null))
-            {
-                pointingRay = (Ray)PointingRay;
-                return true;
-            }
+        //    if (SupportsRay && (PointingRay != null))
+        //    {
+        //        pointingRay = (Ray)PointingRay;
+        //        return true;
+        //    }
 
-            pointingRay = default(Ray);
-            return false;
-        }
+        //    pointingRay = default(Ray);
+        //    return false;
+        //}
 
-        public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsRotation)
-            {
-                rotation = ControllerRotation;
-                return true;
-            }
+        //    if (SupportsRotation)
+        //    {
+        //        rotation = ControllerRotation;
+        //        return true;
+        //    }
 
-            rotation = Quaternion.identity;
-            return false;
-        }
+        //    rotation = Quaternion.identity;
+        //    return false;
+        //}
 
 
-        public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsPosition)
-            {
-                position = ControllerPosition;
-                return true;
-            }
+        //    if (SupportsPosition)
+        //    {
+        //        position = ControllerPosition;
+        //        return true;
+        //    }
 
-            position = Vector3.zero;
-            return false;
-        }
+        //    position = Vector3.zero;
+        //    return false;
+        //}
 
-        public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsRotation)
-            {
-                rotation = ControllerRotation;
-                return true;
-            }
+        //    if (SupportsRotation)
+        //    {
+        //        rotation = ControllerRotation;
+        //        return true;
+        //    }
 
-            rotation = Quaternion.identity;
-            return false;
-        }
+        //    rotation = Quaternion.identity;
+        //    return false;
+        //}
 
-        public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            isPressed = false;
-            position = Vector2.zero;
-            return false;
-        }
+        //    isPressed = false;
+        //    position = Vector2.zero;
+        //    return false;
+        //}
 
-        public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            isPressed = false;
-            isTouched = false;
-            position = Vector2.zero;
-            return false;
-        }
+        //    isPressed = false;
+        //    isTouched = false;
+        //    position = Vector2.zero;
+        //    return false;
+        //}
 
-        public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            isPressed = false;
-            pressedAmount = 0;
-            return false;
-        }
+        //    isPressed = false;
+        //    pressedAmount = 0;
+        //    return false;
+        //}
 
-        public override bool TryGetGrasp(uint sourceId, out bool isPressed)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetGrasp(uint sourceId, out bool isPressed)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsGrasp)
-            {
-                isPressed = currentButtonStates.IsGrasped;
-                return true;
-            }
+        //    if (SupportsGrasp)
+        //    {
+        //        isPressed = currentButtonStates.IsGrasped;
+        //        return true;
+        //    }
 
-            isPressed = false;
-            return false;
-        }
+        //    isPressed = false;
+        //    return false;
+        //}
 
-        public override bool TryGetMenu(uint sourceId, out bool isPressed)
-        {
-            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        //public override bool TryGetMenu(uint sourceId, out bool isPressed)
+        //{
+        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsMenuButton)
-            {
-                isPressed = currentButtonStates.IsMenuButtonDown;
-                return true;
-            }
+        //    if (SupportsMenuButton)
+        //    {
+        //        isPressed = currentButtonStates.IsMenuButtonDown;
+        //        return true;
+        //    }
 
-            isPressed = false;
-            return false;
-        }
+        //    isPressed = false;
+        //    return false;
+        //}
 
         private void Awake()
         {
@@ -299,7 +297,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceDetected(this, controllerId, "Custom Input " + controllerId);
+                InputManager.Instance.RaiseSourceDetected(this, "Custom Input " + controllerId);
             }
         }
 
@@ -307,7 +305,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceLost(this, controllerId, "Custom Input " + controllerId);
+                InputManager.Instance.RaiseSourceLost(this, "Custom Input " + controllerId);
             }
         }
 
@@ -410,7 +408,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(this, controllerId);
+                    InputManager.Instance.RaisePointerDown(this);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -418,22 +416,22 @@ namespace HoloToolkit.Unity.InputModule
                     // A gesture is always either a click, a hold or a manipulation.
                     if (currentButtonStates.ManipulationInProgress)
                     {
-                        InputManager.Instance.RaiseManipulationCompleted(this, controllerId, currentButtonStates.CumulativeDelta);
+                        InputManager.Instance.RaiseManipulationCompleted(this, currentButtonStates.CumulativeDelta);
                         currentButtonStates.ManipulationInProgress = false;
                     }
                     // Clicks and holds are based on time, and both are overruled by manipulations.
                     else if (currentButtonStates.HoldInProgress)
                     {
-                        InputManager.Instance.RaiseHoldCompleted(this, controllerId);
+                        InputManager.Instance.RaiseHoldCompleted(this);
                         currentButtonStates.HoldInProgress = false;
                     }
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, controllerId, 1);
+                        InputManager.Instance.RaiseInputClicked(this, 1);
                     }
 
-                    InputManager.Instance.RaisePointerUp(this, controllerId);
+                    InputManager.Instance.RaisePointerUp(this);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -448,23 +446,23 @@ namespace HoloToolkit.Unity.InputModule
                         // Starting a manipulation will cancel an existing hold.
                         if (currentButtonStates.HoldInProgress)
                         {
-                            InputManager.Instance.RaiseHoldCanceled(this, controllerId);
+                            InputManager.Instance.RaiseHoldCanceled(this);
                             currentButtonStates.HoldInProgress = false;
                         }
 
-                        InputManager.Instance.RaiseManipulationStarted(this, controllerId);
+                        InputManager.Instance.RaiseManipulationStarted(this);
                         currentButtonStates.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.
                     else if (!currentButtonStates.HoldInProgress && (time - currentButtonStates.SelectDownStartTime >= MaxClickDuration))
                     {
-                        InputManager.Instance.RaiseHoldStarted(this, controllerId);
+                        InputManager.Instance.RaiseHoldStarted(this);
                         currentButtonStates.HoldInProgress = true;
                     }
                 }
                 else
                 {
-                    InputManager.Instance.RaiseManipulationUpdated(this, controllerId, currentButtonStates.CumulativeDelta);
+                    InputManager.Instance.RaiseManipulationUpdated(this, currentButtonStates.CumulativeDelta);
                 }
             }
 
@@ -472,11 +470,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(this, controllerId);
+                    InputManager.Instance.RaisePointerDown(this);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(this, controllerId);
+                    InputManager.Instance.RaisePointerUp(this);
                 }
             }
 
@@ -484,11 +482,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaisePointerDown(this, controllerId);
+                    InputManager.Instance.RaisePointerDown(this);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(this, controllerId);
+                    InputManager.Instance.RaisePointerUp(this);
                 }
             }
         }
@@ -503,11 +501,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentlyVisible)
                 {
-                    InputManager.Instance.RaiseSourceDetected(this, controllerId, "Custom Input " + controllerId);
+                    InputManager.Instance.RaiseSourceDetected(this, "Custom Input " + controllerId);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceLost(this, controllerId, "Custom Input " + controllerId);
+                    InputManager.Instance.RaiseSourceLost(this, "Custom Input " + controllerId);
                 }
 
                 visibilityChanged = false;

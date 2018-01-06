@@ -35,5 +35,9 @@ namespace HoloToolkit.Unity.InputModule
         {
             GamePadName = string.Empty;
         }
+
+        public virtual void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
     }
 }

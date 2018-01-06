@@ -19,22 +19,22 @@ namespace HoloToolkit.Unity.InputModule
 
         public InputPositionEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, Vector2 inputPosition, object[] tags = null)
+        public void Initialize(IInputSource inputSource, Vector2 inputPosition, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, tags);
+            Initialize(inputSource, tags);
             InputPosition = inputPosition;
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, Vector2 inputPosition, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, Vector2 inputPosition, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, handedness, tags);
+            Initialize(inputSource, handedness, tags);
             InputPosition = inputPosition;
         }
 
 #if UNITY_WSA
-        public void Initialize(IInputSource inputSource, uint sourceId, Vector2 inputPosition, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, Vector2 inputPosition, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, pressType, handedness, tags);
+            Initialize(inputSource, pressType, handedness, tags);
             InputPosition = inputPosition;
         }
 #endif

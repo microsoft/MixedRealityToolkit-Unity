@@ -20,9 +20,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public SourcePositionEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, Vector3 pointerPosition, Vector3 gripPosition, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, Vector3 pointerPosition, Vector3 gripPosition, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, handedness, tags);
+            Initialize(inputSource, handedness, tags);
             PointerPosition = pointerPosition;
             GripPosition = gripPosition;
         }

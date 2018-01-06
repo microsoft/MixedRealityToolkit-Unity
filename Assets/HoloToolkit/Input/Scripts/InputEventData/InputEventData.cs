@@ -16,20 +16,20 @@ namespace HoloToolkit.Unity.InputModule
     {
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object[] tags = null)
+        public void Initialize(IInputSource inputSource, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, tags);
+            BaseInitialize(inputSource, tags);
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, Handedness handedness, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, handedness, tags);
+            BaseInitialize(inputSource, handedness, tags);
         }
 
 #if UNITY_WSA
-        public void Initialize(IInputSource inputSource, uint sourceId, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, pressType, handedness, tags);
+            BaseInitialize(inputSource, pressType, handedness, tags);
         }
 #endif
     }

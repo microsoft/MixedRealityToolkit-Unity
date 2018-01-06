@@ -225,7 +225,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             InputManager.Instance.RemoveGlobalListener(gameObject);
         }
 
-        private void Update_DebugDisplay(float deltaTime)
+        private void Update_DebugDisplay()
         {
             // Basic checks
             if (DebugDisplay == null)
@@ -242,13 +242,11 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void Update_KeyboardInput(float deltaTime)
         {
             // Toggle SurfaceMapping & CustomUnderstandingMesh visibility
-            if (Input.GetKeyDown(KeyCode.BackQuote) &&
-                (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
+            if (Input.GetKeyDown(KeyCode.BackQuote) && (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
             {
                 ToggleScannedMesh();
             }
-            else if (Input.GetKeyDown(KeyCode.BackQuote) &&
-                     (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            else if (Input.GetKeyDown(KeyCode.BackQuote) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
                 ToggleProcessedMesh();
             }
@@ -268,32 +266,36 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void Update()
         {
-            Update_DebugDisplay(Time.deltaTime);
+            Update_DebugDisplay();
             Update_KeyboardInput(Time.deltaTime);
         }
 
-        public void OnSourceDetected(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
             // If the source has positional info and there is currently no visible source
-            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Position))
             {
                 trackedHandsCount++;
             }
         }
 
-        public void OnSourceLost(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Position))
             {
                 trackedHandsCount--;
             }
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
-        public void OnPointerClicked(PointerEventData eventData)
+        void IPointerHandler.OnPointerUp(PointerEventData eventData) { }
+
+        void IPointerHandler.OnPointerDown(PointerEventData eventData) { }
+
+        void IPointerHandler.OnPointerClicked(PointerEventData eventData)
         {
             if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
                 !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)

@@ -21,7 +21,6 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// </summary>
     public class Interactive : MonoBehaviour, IPointerHandler, IFocusHandler, IInputHandler
     {
-
         public GameObject ParentObject;
 
         /// <summary>

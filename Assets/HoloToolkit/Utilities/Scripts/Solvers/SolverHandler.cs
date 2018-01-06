@@ -84,7 +84,7 @@ namespace HoloToolkit.Unity
             public Vector3 Goal { get; set; }
             public float SmoothTime { get; set; }
 
-            public Vector3Smoothed(Vector3 value, float smoothingTime)
+            public Vector3Smoothed(Vector3 value, float smoothingTime) : this()
             {
                 Current = value;
                 Goal = value;
@@ -109,7 +109,7 @@ namespace HoloToolkit.Unity
             public Quaternion Goal { get; set; }
             public float SmoothTime { get; set; }
 
-            public QuaternionSmoothed(Quaternion value, float smoothingTime)
+            public QuaternionSmoothed(Quaternion value, float smoothingTime) : this()
             {
                 Current = value;
                 Goal = value;

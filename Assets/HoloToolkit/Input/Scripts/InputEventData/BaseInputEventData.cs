@@ -37,11 +37,11 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        protected void BaseInitialize(IInputSource inputSource, uint sourceId, object[] tags)
+        protected void BaseInitialize(IInputSource inputSource, object[] tags)
         {
             Reset();
             InputSource = inputSource;
-            SourceId = sourceId;
+            SourceId = InputSource.SourceId;
             Tags = tags;
             Handedness = Handedness.None;
 #if UNITY_WSA
@@ -49,11 +49,11 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-        protected void BaseInitialize(IInputSource inputSource, uint sourceId, Handedness handedness, object[] tags)
+        protected void BaseInitialize(IInputSource inputSource, Handedness handedness, object[] tags)
         {
             Reset();
             InputSource = inputSource;
-            SourceId = sourceId;
+            SourceId = InputSource.SourceId;
             Tags = tags;
             Handedness = handedness;
 #if UNITY_WSA
@@ -62,11 +62,11 @@ namespace HoloToolkit.Unity.InputModule
         }
 
 #if UNITY_WSA
-        protected void BaseInitialize(IInputSource inputSource, uint sourceId, InteractionSourcePressType pressType, Handedness handedness, object[] tags)
+        protected void BaseInitialize(IInputSource inputSource, InteractionSourcePressType pressType, Handedness handedness, object[] tags)
         {
             Reset();
             InputSource = inputSource;
-            SourceId = sourceId;
+            SourceId = InputSource.SourceId;
             Tags = tags;
             Handedness = handedness;
             PressType = pressType;

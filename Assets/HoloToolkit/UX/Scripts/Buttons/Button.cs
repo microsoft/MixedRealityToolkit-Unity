@@ -266,7 +266,7 @@ namespace HoloToolkit.Unity.Buttons
         {
 #if UNITY_WSA
             InteractionSourceKind sourceKind;
-            if (((InteractionInputSource)eventData.InputSource).TryGetSourceKind(eventData.SourceId, out sourceKind))
+            if (InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind))
             {
                 if (sourceKind == InteractionSourceKind.Hand)
                 {
@@ -285,7 +285,7 @@ namespace HoloToolkit.Unity.Buttons
         {
 #if UNITY_WSA
             InteractionSourceKind sourceKind;
-            if (((InteractionInputSource)eventData.InputSource).TryGetSourceKind(eventData.SourceId, out sourceKind))
+            if (InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind))
             {
                 if (sourceKind == InteractionSourceKind.Hand)
                 {
@@ -295,6 +295,11 @@ namespace HoloToolkit.Unity.Buttons
             }
 #endif
         }
+
+        public void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
+
         #endregion
 
         /// <summary>

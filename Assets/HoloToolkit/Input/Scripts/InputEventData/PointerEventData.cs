@@ -3,6 +3,10 @@
 
 using UnityEngine.EventSystems;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -17,16 +21,24 @@ namespace HoloToolkit.Unity.InputModule
 
         public PointerEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, int clickCount, object[] tags = null)
+        public void Initialize(IInputSource inputSource, int clickCount, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, tags);
+            Initialize(inputSource, tags);
             ClickCount = clickCount;
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, int clickCount, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, int clickCount, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, handedness, tags);
+            Initialize(inputSource, handedness, tags);
             ClickCount = clickCount;
         }
+
+#if UNITY_WSA
+        public void Initialize(IInputSource inputSource, int clickCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            Initialize(inputSource, pressType, handedness, tags);
+            ClickCount = clickCount;
+        }
+#endif
     }
 }

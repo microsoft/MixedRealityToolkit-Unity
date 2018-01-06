@@ -18,21 +18,23 @@ namespace HoloToolkit.Unity.InputModule
 
         public InputPressedEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, double pressedAmount, object[] tags = null)
+        public void Initialize(IInputSource inputSource, double pressedAmount, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, tags);
+            Initialize(inputSource, tags);
             PressedAmount = pressedAmount;
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, double pressAmount, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, double pressedAmount, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, pressAmount, handedness, tags);
+            Initialize(inputSource, handedness, tags);
+            PressedAmount = pressedAmount;
         }
 
 #if UNITY_WSA
-        public void Initialize(IInputSource inputSource, uint sourceId, double pressAmount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, double pressedAmount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, pressAmount, pressType, handedness, tags);
+            Initialize(inputSource, pressType, handedness, tags);
+            PressedAmount = pressedAmount;
         }
 #endif
     }

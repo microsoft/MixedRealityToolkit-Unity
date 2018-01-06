@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 CurrentGestureState = GestureState.SelectButtonPressed;
 
-                InputManager.Instance.RaisePointerDown(eventData.InputSource, eventData.SourceId);
+                InputManager.Instance.RaisePointerDown(eventData.InputSource);
 
                 HoldStartedRoutine = StartCoroutine(HandleHoldStarted(eventData));
             }
@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void HandleSelectButtonReleased(XboxControllerEventData eventData)
         {
-            InputManager.Instance.RaisePointerUp(eventData.InputSource, eventData.SourceId);
+            InputManager.Instance.RaisePointerUp(eventData.InputSource);
 
             if (HoldStartedRoutine != null)
             {
@@ -84,13 +84,13 @@ namespace HoloToolkit.Unity.InputModule
             switch (CurrentGestureState)
             {
                 case GestureState.NavigationStarted:
-                    InputManager.Instance.RaiseNavigationCompleted(eventData.InputSource, eventData.SourceId, Vector3.zero);
+                    InputManager.Instance.RaiseNavigationCompleted(eventData.InputSource, Vector3.zero);
                     break;
                 case GestureState.HoldStarted:
-                    InputManager.Instance.RaiseHoldCompleted(eventData.InputSource, eventData.SourceId);
+                    InputManager.Instance.RaiseHoldCompleted(eventData.InputSource);
                     break;
                 default:
-                    InputManager.Instance.RaiseInputClicked(eventData.InputSource, eventData.SourceId, 1);
+                    InputManager.Instance.RaiseInputClicked(eventData.InputSource, 1);
                     break;
             }
 
@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity.InputModule
 
             CurrentGestureState = GestureState.HoldStarted;
 
-            InputManager.Instance.RaiseHoldStarted(eventData.InputSource, eventData.SourceId);
+            InputManager.Instance.RaiseHoldStarted(eventData.InputSource);
         }
 
         protected virtual void HandleNavigation(XboxControllerEventData eventData)
@@ -126,18 +126,18 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (CurrentGestureState == GestureState.HoldStarted)
                 {
-                    InputManager.Instance.RaiseHoldCanceled(eventData.InputSource, eventData.SourceId);
+                    InputManager.Instance.RaiseHoldCanceled(eventData.InputSource);
                 }
 
                 CurrentGestureState = GestureState.NavigationStarted;
 
                 // Raise navigation started event.
-                InputManager.Instance.RaiseNavigationStarted(eventData.InputSource, eventData.SourceId);
+                InputManager.Instance.RaiseNavigationStarted(eventData.InputSource);
             }
             else
             {
                 // Raise navigation updated event.
-                InputManager.Instance.RaiseNavigationUpdated(eventData.InputSource, eventData.SourceId, NormalizedOffset);
+                InputManager.Instance.RaiseNavigationUpdated(eventData.InputSource, NormalizedOffset);
             }
         }
 

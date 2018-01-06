@@ -86,7 +86,7 @@ namespace HoloToolkit.Unity.InputModule
             if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
                 hasFailed = true;
-                InputManager.Instance.RaiseDictationError(Instance, 0, "Dictation recognizer has failed!");
+                InputManager.Instance.RaiseDictationError(Instance, "Dictation recognizer has failed!");
             }
         }
 
@@ -135,7 +135,7 @@ namespace HoloToolkit.Unity.InputModule
 
             while (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
-                InputManager.Instance.RaiseDictationError(Instance, 0, "Dictation recognizer failed to start!");
+                InputManager.Instance.RaiseDictationError(Instance, "Dictation recognizer failed to start!");
                 yield break;
             }
 
@@ -199,7 +199,7 @@ namespace HoloToolkit.Unity.InputModule
             // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
             dictationResult = textSoFar.ToString() + " " + text + "...";
 
-            InputManager.Instance.RaiseDictationHypothesis(Instance, 0, dictationResult);
+            InputManager.Instance.RaiseDictationHypothesis(Instance, dictationResult);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace HoloToolkit.Unity.InputModule
 
             dictationResult = textSoFar.ToString();
 
-            InputManager.Instance.RaiseDictationResult(Instance, 0, dictationResult);
+            InputManager.Instance.RaiseDictationResult(Instance, dictationResult);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace HoloToolkit.Unity.InputModule
                 dictationResult = "Dictation has timed out. Please try again.";
             }
 
-            InputManager.Instance.RaiseDictationComplete(Instance, 0, dictationResult, dictationAudioClip);
+            InputManager.Instance.RaiseDictationComplete(Instance, dictationResult, dictationAudioClip);
             textSoFar = null;
             dictationResult = string.Empty;
         }
@@ -245,7 +245,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             dictationResult = error + "\nHRESULT: " + hresult.ToString();
 
-            InputManager.Instance.RaiseDictationError(Instance, 0, dictationResult);
+            InputManager.Instance.RaiseDictationError(Instance, dictationResult);
             textSoFar = null;
             dictationResult = string.Empty;
         }
@@ -254,26 +254,16 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IInputSource Implementation
 
-        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo(sourceId) & inputInfo) == inputInfo;
-        }
+        public uint SourceId { get; protected set; }
 
-        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        public SupportedInputInfo GetSupportedInputInfo()
         {
             return SupportedInputInfo.Voice;
         }
 
-        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
         {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        {
-            pointingRay = default(Ray);
-            return false;
+            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
         }
 
         #endregion // IInputSource Implementation

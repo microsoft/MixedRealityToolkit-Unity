@@ -17,17 +17,15 @@ namespace HoloToolkit.Unity.Tests
         {
 
 #if UNITY_WSA
-            InteractionInputSource inputSource = (InteractionInputSource)eventData.InputSource;
-
-            if (inputSource != null)
+            if (InteractionInputSources.IsInitialized)
             {
                 switch (eventData.PressType)
                 {
                     case InteractionSourcePressType.Grasp:
-                        inputSource.StartHaptics(eventData.SourceId, 1.0f);
+                        InteractionInputSources.Instance.StartHaptics(eventData.SourceId, 1.0f);
                         return;
                     case InteractionSourcePressType.Menu:
-                        inputSource.StartHaptics(eventData.SourceId, 1.0f, 1.0f);
+                        InteractionInputSources.Instance.StartHaptics(eventData.SourceId, 1.0f, 1.0f);
                         return;
                 }
             }
@@ -41,7 +39,7 @@ namespace HoloToolkit.Unity.Tests
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
 #if UNITY_WSA
-            InteractionInputSource inputSource = eventData.InputSource as InteractionInputSource;
+            InteractionInputSources inputSource = eventData.InputSource as InteractionInputSources;
             if (inputSource != null)
             {
                 if (eventData.PressType == InteractionSourcePressType.Grasp)

@@ -13,9 +13,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public GamePadEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource source, uint sourceId, string gamePadName, object[] tags = null)
+        public void Initialize(IInputSource source, string gamePadName, object[] tags = null)
         {
-            Initialize(source, sourceId, tags);
+            Initialize(source, tags);
             GamePadName = gamePadName;
         }
     }

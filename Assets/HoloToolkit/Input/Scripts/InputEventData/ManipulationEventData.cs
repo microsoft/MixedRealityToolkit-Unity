@@ -19,9 +19,15 @@ namespace HoloToolkit.Unity.InputModule
 
         public ManipulationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, Vector3 cumulativeDelta, object[] tags = null)
+        public void Initialize(IInputSource inputSource, Vector3 cumulativeDelta, object[] tags = null)
         {
-            Initialize(inputSource, sourceId, tags);
+            Initialize(inputSource, tags);
+            CumulativeDelta = cumulativeDelta;
+        }
+
+        public void Initialize(IInputSource inputSource, Vector3 cumulativeDelta, Handedness handedness, object[] tags = null)
+        {
+            Initialize(inputSource, handedness, tags);
             CumulativeDelta = cumulativeDelta;
         }
     }
