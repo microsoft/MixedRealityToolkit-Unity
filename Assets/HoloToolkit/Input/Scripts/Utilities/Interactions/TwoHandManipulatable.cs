@@ -53,7 +53,10 @@ namespace HoloToolkit.Unity.InputModule
         private MoveSphericalCoordsLogic m_moveLogic;
         private ScaleLogic m_scaleLogic;
         private HandlebarRotateLogic m_rotateLogic;
-        private readonly Dictionary<uint, Vector3> m_handsPressedMap = new Dictionary<uint, Vector3>();
+        // Maps input id -> position of hand
+        private readonly Dictionary<uint, Vector3> m_handsPressedLocationsMap = new Dictionary<uint, Vector3>();
+        // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
+        private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
 
         private void Awake()
         {
@@ -64,6 +67,17 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Update()
         {
+            // Update positions of all hands
+            foreach (var key in m_handsPressedInputSourceMap.Keys)
+            {
+                var inputSource = m_handsPressedInputSourceMap[key];
+                Vector3 inputPosition = Vector3.zero;
+                if (inputSource.TryGetGripPosition(key, out inputPosition))
+                {
+                    m_handsPressedLocationsMap[key] = inputPosition;
+                }
+            }
+
             if (currentState != State.Start)
             {
                 UpdateStateMachine();
@@ -79,16 +93,21 @@ namespace HoloToolkit.Unity.InputModule
         public void OnInputDown(InputEventData eventData)
         {
             // Add to hand map
-            m_handsPressedMap[eventData.SourceId] = GetInputPosition(eventData);
-
+            m_handsPressedLocationsMap[eventData.SourceId] = GetInputPosition(eventData);
+            m_handsPressedInputSourceMap[eventData.SourceId] = eventData.InputSource;
             UpdateStateMachine();
         }
 
         public void OnInputUp(InputEventData eventData)
         {
-            if (m_handsPressedMap.ContainsKey(eventData.SourceId))
+            if (m_handsPressedLocationsMap.ContainsKey(eventData.SourceId))
             {
-                m_handsPressedMap.Remove(eventData.SourceId);
+                m_handsPressedLocationsMap.Remove(eventData.SourceId);
+            }
+
+            if (m_handsPressedInputSourceMap.ContainsKey(eventData.SourceId))
+            {
+                m_handsPressedInputSourceMap.Remove(eventData.SourceId);
             }
             UpdateStateMachine();
         }
@@ -99,16 +118,16 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if (m_handsPressedMap.ContainsKey(eventData.SourceId))
+            if (m_handsPressedLocationsMap.ContainsKey(eventData.SourceId))
             {
-                m_handsPressedMap.Remove(eventData.SourceId);
+                m_handsPressedLocationsMap.Remove(eventData.SourceId);
             }
             UpdateStateMachine();
         }
 
         private void UpdateStateMachine()
         {
-            var handsPressedCount = m_handsPressedMap.Count;
+            var handsPressedCount = m_handsPressedLocationsMap.Count;
             State newState = currentState;
             switch (currentState)
             {
@@ -231,11 +250,11 @@ namespace HoloToolkit.Unity.InputModule
             }
             if ((currentState & State.Rotating) > 0)
             {
-                targetRotation = m_rotateLogic.Update(m_handsPressedMap, HostTransform, targetRotation);
+                targetRotation = m_rotateLogic.Update(m_handsPressedLocationsMap, HostTransform, targetRotation);
             }
             if ((currentState & State.Scaling) > 0)
             {
-                targetScale = m_scaleLogic.Update(m_handsPressedMap);
+                targetScale = m_scaleLogic.Update(m_handsPressedLocationsMap);
             }
 
             HostTransform.position = targetPosition;
@@ -245,7 +264,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnOneHandMoveUpdated()
         {
-            var targetPosition = m_moveLogic.Update(m_handsPressedMap.Values.First(), HostTransform.position);
+            var targetPosition = m_moveLogic.Update(m_handsPressedLocationsMap.Values.First(), HostTransform.position);
 
             HostTransform.position = targetPosition;
 
@@ -258,20 +277,20 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnTwoHandManipulationEnded()
         {
-            
+
         }
 
         private Vector3 GetHandsCentroid()
         {
-            Vector3 result = m_handsPressedMap.Values.Aggregate(Vector3.zero, (current, state) => current + state);
-            return result / m_handsPressedMap.Count;
+            Vector3 result = m_handsPressedLocationsMap.Values.Aggregate(Vector3.zero, (current, state) => current + state);
+            return result / m_handsPressedLocationsMap.Count;
         }
 
         private void OnTwoHandManipulationStarted(State newState)
         {
             if ((newState & State.Rotating) > 0)
             {
-                m_rotateLogic.Setup(m_handsPressedMap, HostTransform);
+                m_rotateLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
             if ((newState & State.Moving) > 0)
             {
@@ -279,16 +298,16 @@ namespace HoloToolkit.Unity.InputModule
             }
             if ((newState & State.Scaling) > 0)
             {
-                m_scaleLogic.Setup(m_handsPressedMap, HostTransform);
+                m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
             OnManipulationStarted();
         }
 
         private void OnOneHandMoveStarted()
         {
-            Assert.IsTrue(m_handsPressedMap.Count == 1);
+            Assert.IsTrue(m_handsPressedLocationsMap.Count == 1);
 
-            m_moveLogic.Setup(m_handsPressedMap.Values.First(), HostTransform);
+            m_moveLogic.Setup(m_handsPressedLocationsMap.Values.First(), HostTransform);
 
             OnManipulationStarted();
         }
