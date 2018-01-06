@@ -100,15 +100,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnInputUp(InputEventData eventData)
         {
-            if (m_handsPressedLocationsMap.ContainsKey(eventData.SourceId))
-            {
-                m_handsPressedLocationsMap.Remove(eventData.SourceId);
-            }
-
-            if (m_handsPressedInputSourceMap.ContainsKey(eventData.SourceId))
-            {
-                m_handsPressedInputSourceMap.Remove(eventData.SourceId);
-            }
+            RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
         }
 
@@ -116,12 +108,22 @@ namespace HoloToolkit.Unity.InputModule
         {
         }
 
+        private void RemoveSourceIdFromHandMap(uint sourceId)
+        {
+            if (m_handsPressedLocationsMap.ContainsKey(sourceId))
+            {
+                m_handsPressedLocationsMap.Remove(sourceId);
+            }
+
+            if (m_handsPressedInputSourceMap.ContainsKey(sourceId))
+            {
+                m_handsPressedInputSourceMap.Remove(sourceId);
+            }
+        }
+
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if (m_handsPressedLocationsMap.ContainsKey(eventData.SourceId))
-            {
-                m_handsPressedLocationsMap.Remove(eventData.SourceId);
-            }
+            RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
         }
 
