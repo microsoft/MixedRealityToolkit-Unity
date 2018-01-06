@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: FadeMaterial
-  m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 12b108cec233bd944b76dc17324e5012, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON _USECOLOR_ON
     _USEDIFFUSE_ON _USEMAINCOLOR_ON
   m_LightmapFlags: 4

@@ -30,7 +30,7 @@ After following a demo to download a .room file you will be able to convert that
 Process: Select GameObject(s) with MeshFilters then export.
 
 1. Highlight the GameObject(s) containing MeshFilters you want to export to the Wavefront (.obj) file.
-2. In the Unity menu context, click HoloToolkit > Export > Export Selection To Wavefront (.obj).
+2. In the Unity menu context, click Mixed Reality Toolkit > Export > Export Selection To Wavefront (.obj).
 3. File / Folder menu will open and there will be a file named "Selection.obj" containing all MeshFilters saved in a single file.
 
 Note that this could be done while in play mode. Therefore you could enter play mode, load any saved spatial meshes, select said meshes in the hierarchy panel, then export selection to file.
@@ -40,7 +40,7 @@ After following a demo to download a .room file you will be able to convert that
 
 Process: Download then export.
 
-1. In the Unity menu context, click HoloToolkit > Export > Export Room (.room) To Wavefront (.obj)...
+1. In the Unity menu context, click Mixed Reality Toolkit > Export > Export Room (.room) To Wavefront (.obj)...
 2. A open file dialog will pop up in the location where Room (.room) files are saved / located for your project.
 3. Select the Room (.room) file you wish to export.
 4. Click Open.

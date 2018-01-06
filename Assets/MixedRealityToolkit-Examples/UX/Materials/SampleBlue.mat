@@ -7,8 +7,9 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: SampleBlue
-  m_Shader: {fileID: 4800000, guid: 30a212a88e1063a428c85e50b1e427f2, type: 3}
-  m_ShaderKeywords: _EMISSION _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON
+  m_Shader: {fileID: 4800000, guid: 12b108cec233bd944b76dc17324e5012, type: 3}
+  m_ShaderKeywords: _EMISSION _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON _USEDIFFUSE_ON
+    _USEMAINCOLOR_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,6 +20,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CubeMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -42,6 +47,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -58,14 +67,21 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecularMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaTest: 0
     - _BlendOp: 0
     - _BumpScale: 1
+    - _CalibrationSpaceReflections: 0
     - _ColorWriteMask: 15
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _ForcePerPixel: 0
     - _Gloss: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -76,6 +92,8 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _ReflectionScale: 2
+    - _RimPower: 0.7
     - _Shade4: 0
     - _SmoothnessTextureChannel: 0
     - _Specular: 10
@@ -86,17 +104,23 @@ Material:
     - _UseBumpMap: 0
     - _UseDiffuse: 1
     - _UseEmissionColor: 0
+    - _UseEmissionMap: 0
     - _UseEmissionTex: 0
     - _UseGlossMap: 0
     - _UseMainColor: 1
     - _UseMainTex: 0
     - _UseOcclusionMap: 0
+    - _UseReflections: 0
+    - _UseRimLighting: 0
     - _UseSpecular: 0
+    - _UseSpecularMap: 0
     - _UseVertexColor: 0
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0, g: 0.66896534, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecularColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _TextureScaleOffset: {r: 1, g: 1, b: 0, a: 0}

@@ -7,11 +7,12 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Fast Configurable - Ambient Diffuse Emission
-  m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 12b108cec233bd944b76dc17324e5012, type: 3}
   m_ShaderKeywords: _EMISSION _MAINTEX_OFFSET_ON _MAINTEX_SCALE_ON _MainTex_ON _MainTex_SCALE_ON
     _USEAMBIENT_ON _USEDIFFUSE_ON _USEEMISSIONCOLOR_ON _USEMAINTEX_ON _USEMISSIONMAP_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []

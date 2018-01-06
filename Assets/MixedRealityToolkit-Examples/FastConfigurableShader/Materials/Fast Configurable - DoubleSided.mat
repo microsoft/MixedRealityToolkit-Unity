@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Fast Configurable - DoubleSided
-  m_Shader: {fileID: 4800000, guid: b41b88257b4affd458eb5ec647d29517, type: 3}
+  m_Shader: {fileID: 4800000, guid: 12b108cec233bd944b76dc17324e5012, type: 3}
   m_ShaderKeywords: _FORCEPERPIXEL_ON _SHADE4_ON _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON
     _USEDIFFUSE_ON
   m_LightmapFlags: 4
@@ -73,6 +73,7 @@ Material:
     - _BumpScale: 1
     - _CalibrationSpaceReflections: 0
     - _ColorWriteMask: 15
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
