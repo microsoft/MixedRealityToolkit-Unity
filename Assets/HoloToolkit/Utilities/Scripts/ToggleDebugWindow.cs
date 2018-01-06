@@ -25,15 +25,15 @@ namespace HoloToolkit.Unity
             UpdateChildren();
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
         /// <summary>
         /// When the user clicks this control, we toggle the state of the DebugWindow
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             debugEnabled = !debugEnabled;
             UpdateChildren();

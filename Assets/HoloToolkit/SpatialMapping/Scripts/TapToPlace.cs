@@ -129,11 +129,11 @@ namespace HoloToolkit.Unity.SpatialMapping
             interpolator.SetTargetRotation(Quaternion.Euler(0, cameraTransform.localEulerAngles.y, 0));
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
-        public virtual void OnPointerClicked(PointerEventData eventData)
+        public virtual void OnPointerClicked(ClickEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;

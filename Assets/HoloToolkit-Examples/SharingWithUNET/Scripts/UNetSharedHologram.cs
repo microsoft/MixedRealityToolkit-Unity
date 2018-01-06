@@ -99,11 +99,11 @@ namespace HoloToolkit.Unity.SharingWithUNET
             return retval;
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (isOpaque == false)
             {

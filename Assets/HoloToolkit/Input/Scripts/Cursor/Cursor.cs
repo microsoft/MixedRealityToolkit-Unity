@@ -405,19 +405,19 @@ namespace HoloToolkit.Unity.InputModule
         /// Function for receiving OnPointerClicked events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerClicked(PointerEventData eventData) { }
+        public virtual void OnPointerClicked(ClickEventData eventData) { }
 
         /// <summary>
         /// Function for receiving OnPointerUp events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerUp(PointerEventData eventData) { }
+        public virtual void OnPointerUp(ClickEventData eventData) { }
 
         /// <summary>
         /// Function for receiving OnPointerDown events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerDown(PointerEventData eventData) { }
+        public virtual void OnPointerDown(ClickEventData eventData) { }
 
         /// <summary>
         /// Input source detected callback for the cursor

@@ -10,8 +10,8 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IPointerHandler : IEventSystemHandler
     {
-        void OnPointerUp(PointerEventData eventData);
-        void OnPointerDown(PointerEventData eventData);
-        void OnPointerClicked(PointerEventData eventData);
+        void OnPointerUp(ClickEventData eventData);
+        void OnPointerDown(ClickEventData eventData);
+        void OnPointerClicked(ClickEventData eventData);
     }
 }

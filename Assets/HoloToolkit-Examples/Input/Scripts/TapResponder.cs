@@ -12,11 +12,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// </summary>
     public class TapResponder : MonoBehaviour, IPointerHandler
     {
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             // Increase the scale of the object just as a response.
             gameObject.transform.localScale += 0.05f * gameObject.transform.localScale;

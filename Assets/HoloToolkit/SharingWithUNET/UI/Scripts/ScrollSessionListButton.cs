@@ -15,15 +15,15 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         public int Direction;
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
         /// <summary>
         /// Called when the user clicks the control
         /// </summary>
         /// <param name="eventData">information about the click</param>
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             ScrollingSessionListUIController.Instance.ScrollSessions(Direction);
             eventData.Use();

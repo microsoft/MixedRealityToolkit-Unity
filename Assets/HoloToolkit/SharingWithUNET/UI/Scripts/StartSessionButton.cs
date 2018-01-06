@@ -33,15 +33,15 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #endif
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
         /// <summary>
         /// Called when a click event is detected
         /// </summary>
         /// <param name="eventData">Information about the click.</param>
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (networkDiscovery.running)
             {

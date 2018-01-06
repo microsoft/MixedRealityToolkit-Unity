@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity.InputModule
         private SourceRotationEventData sourceRotationEventData;
         private SourcePositionEventData sourcePositionEventData;
 
-        private PointerEventData pointerEventData;
+        private ClickEventData clickEventData;
         private PointerSpecificFocusEventData pointerSpecificFocusEventData;
 
         private InputEventData inputEventData;
@@ -211,7 +211,7 @@ namespace HoloToolkit.Unity.InputModule
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
 
-            pointerEventData = new PointerEventData(EventSystem.current);
+            clickEventData = new ClickEventData(EventSystem.current);
             pointerSpecificFocusEventData = new PointerSpecificFocusEventData(EventSystem.current);
 
             inputEventData = new InputEventData(EventSystem.current);
@@ -485,7 +485,7 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IPointerHandler> OnPointerDownEventHandler =
             delegate (IPointerHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<PointerEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
                 handler.OnPointerDown(casted);
             };
 
@@ -551,17 +551,17 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IPointerHandler> OnInputClickedEventHandler =
             delegate (IPointerHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<PointerEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
                 handler.OnPointerClicked(casted);
             };
 
         public void RaiseInputClicked(IInputSource source, int tapCount, Handedness handedness = Handedness.None, object[] tags = null)
         {
             // Create input event
-            pointerEventData.Initialize(source, tapCount, handedness, tags);
+            clickEventData.Initialize(source, tapCount, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(pointerEventData, OnInputClickedEventHandler);
+            HandleEvent(clickEventData, OnInputClickedEventHandler);
 
             // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
         }
@@ -569,7 +569,7 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IPointerHandler> OnPointerUpEventHandler =
             delegate (IPointerHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<PointerEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
                 handler.OnPointerUp(casted);
             };
 

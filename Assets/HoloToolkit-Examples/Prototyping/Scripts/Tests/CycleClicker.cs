@@ -17,11 +17,11 @@ namespace HoloToolkit.Examples.InteractiveElements
         public GameObject CycleObject;
         private ICycle mCycleComp;
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             mCycleComp = CycleObject.GetComponent<ICycle>();
 

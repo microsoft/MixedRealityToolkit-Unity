@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
-using PointerEventData = HoloToolkit.Unity.InputModule.PointerEventData;
 
 namespace HoloToolkit.Unity.Receivers
 {
@@ -251,11 +250,11 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -358,7 +357,7 @@ namespace HoloToolkit.Unity.Receivers
 
         protected virtual void InputDown(GameObject obj, InputEventData eventData) { }
         protected virtual void InputUp(GameObject obj, InputEventData eventData) { }
-        protected virtual void InputClicked(GameObject obj, PointerEventData eventData) { }
+        protected virtual void InputClicked(GameObject obj, ClickEventData eventData) { }
 
         protected virtual void HoldStarted(GameObject obj, InputEventData eventData) { }
         protected virtual void HoldCompleted(GameObject obj, InputEventData eventData) { }

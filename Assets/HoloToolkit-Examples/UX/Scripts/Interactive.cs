@@ -150,11 +150,11 @@ namespace HoloToolkit.Examples.InteractiveElements
             UpdateEffects();
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
-        public virtual void OnPointerClicked(PointerEventData eventData)
+        public virtual void OnPointerClicked(ClickEventData eventData)
         {
             if (!IsEnabled)
             {

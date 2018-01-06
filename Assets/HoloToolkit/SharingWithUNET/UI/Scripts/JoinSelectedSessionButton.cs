@@ -77,15 +77,15 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
         /// <summary>
         /// When the button is clicked try to join the selected session
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             ScrollingSessionListUIController.Instance.JoinSelectedSession();
             eventData.Use();

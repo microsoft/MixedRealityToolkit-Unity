@@ -17,11 +17,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             textToSpeech = GetComponent<TextToSpeech>();
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.

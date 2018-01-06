@@ -80,7 +80,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             AllowSelection = allowSelect;
         }
 
-        public override void OnPointerClicked(PointerEventData eventData)
+        public override void OnPointerClicked(ClickEventData eventData)
         {
             if (PassiveMode || !IsEnabled)
             {

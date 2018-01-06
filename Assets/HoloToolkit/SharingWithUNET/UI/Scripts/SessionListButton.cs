@@ -88,16 +88,16 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
-        public void OnPointerUp(PointerEventData eventData) { }
+        public void OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(PointerEventData eventData) { }
+        public void OnPointerDown(ClickEventData eventData) { }
 
         /// <summary>
         /// When the user clicks a session this will route that information to the 
         /// scrolling UI control so it knows which session is selected.
         /// </summary>
         /// <param name="eventData">Information about the click.</param>
-        public void OnPointerClicked(PointerEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             scrollingUIController.SetSelectedSession(SessionInfo);
             eventData.Use();

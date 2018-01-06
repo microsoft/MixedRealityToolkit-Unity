@@ -291,11 +291,11 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
-        void IPointerHandler.OnPointerUp(PointerEventData eventData) { }
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
 
-        void IPointerHandler.OnPointerDown(PointerEventData eventData) { }
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
 
-        void IPointerHandler.OnPointerClicked(PointerEventData eventData)
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
                 !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)

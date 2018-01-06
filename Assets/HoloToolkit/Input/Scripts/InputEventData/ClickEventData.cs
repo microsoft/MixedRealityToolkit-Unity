@@ -12,14 +12,14 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Describes an input event that involves a tap.
     /// </summary>
-    public class PointerEventData : InputEventData
+    public class ClickEventData : InputEventData
     {
         /// <summary>
         /// Number of Clicks or Taps that triggered the event.
         /// </summary>
         public int ClickCount { get; private set; }
 
-        public PointerEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public ClickEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(IInputSource inputSource, int clickCount, object[] tags = null)
         {

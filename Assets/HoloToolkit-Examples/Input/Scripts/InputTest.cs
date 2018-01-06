@@ -39,19 +39,19 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        void IPointerHandler.OnPointerUp(PointerEventData eventData)
+        void IPointerHandler.OnPointerUp(ClickEventData eventData)
         {
             Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        void IPointerHandler.OnPointerDown(PointerEventData eventData)
+        void IPointerHandler.OnPointerDown(ClickEventData eventData)
         {
             Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        void IPointerHandler.OnPointerClicked(PointerEventData eventData)
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}  ClickCount: {2}", eventData.InputSource, eventData.SourceId, eventData.ClickCount);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
