@@ -124,7 +124,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        #endregion Monobehaviour Implementatinos
+        #endregion Monobehaviour Implementations
 
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
         {
