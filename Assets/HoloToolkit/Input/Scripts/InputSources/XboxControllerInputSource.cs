@@ -2,17 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    /// <summary>
-    /// Xbox Controller support.
-    /// <remarks>Only supports one connected device at a time.</remarks>
-    /// <remarks>Make sure to enable the <see cref="HumanInterfaceDevice"/> capability before using when targeting HoloLens device.</remarks>
-    /// </summary>
-    public class XboxControllerInputSource : GamePadInputSource
+    public class XboxControllerInputSource : MonoBehaviour
     {
         [Serializable]
         private class MappingEntry
@@ -21,36 +15,13 @@ namespace HoloToolkit.Unity.InputModule
             public string Value = string.Empty;
         }
 
-        private readonly Dictionary<uint, XboxControllerData> gamePadInputDatas = new Dictionary<uint, XboxControllerData>(0);
-
         private XboxControllerData controllerData;
-
-        public XboxControllerMappingTypes HorizontalAxis { get { return horizontalAxis; } }
-        public XboxControllerMappingTypes VerticalAxis { get { return verticalAxis; } }
-        public XboxControllerMappingTypes CancelButton { get { return cancelButton; } }
-        public XboxControllerMappingTypes SubmitButton { get { return submitButton; } }
-
-        [SerializeField]
-        private XboxControllerMappingTypes horizontalAxis = XboxControllerMappingTypes.XboxDpadHorizontal;
-
-        [SerializeField]
-        private XboxControllerMappingTypes verticalAxis = XboxControllerMappingTypes.XboxDpadVertical;
-
-        [SerializeField]
-        private XboxControllerMappingTypes submitButton = XboxControllerMappingTypes.XboxA;
-
-        [SerializeField]
-        private XboxControllerMappingTypes cancelButton = XboxControllerMappingTypes.XboxB;
 
         [SerializeField]
         private MappingEntry[] mapping;
 
-        private int motionControllerCount = 0;
-
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             if (mapping != null)
             {
                 for (var i = 0; i < Enum.GetNames(typeof(XboxControllerMappingTypes)).Length; i++)
@@ -58,22 +29,10 @@ namespace HoloToolkit.Unity.InputModule
                     XboxControllerMapping.SetMapping((XboxControllerMappingTypes)i, mapping[i].Value);
                 }
             }
-
-            PreviousForceActiveState = InputModule.forceModuleActive;
-            PreviousHorizontalAxis = InputModule.horizontalAxis;
-            PreviousVerticalAxis = InputModule.verticalAxis;
-            PreviousSubmitButton = InputModule.submitButton;
-            PreviousCancelButton = InputModule.cancelButton;
         }
 
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
-
-            // We will only register the first device we find.  Input is taken from joystick 1.
-            // If we have motion controllers connected we will not process Xbox controller input.
-            if (gamePadInputDatas.Count != 1 || motionControllerCount > 0) { return; }
-
             controllerData.XboxLeftStickHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickHorizontal);
             controllerData.XboxLeftStickVerticalAxis = Input.GetAxis(XboxControllerMapping.XboxLeftStickVertical);
             controllerData.XboxRightStickHorizontalAxis = Input.GetAxis(XboxControllerMapping.XboxRightStickHorizontal);
@@ -116,106 +75,6 @@ namespace HoloToolkit.Unity.InputModule
             controllerData.XboxRightBumper_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightBumper);
             controllerData.XboxLeftStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxLeftStickClick);
             controllerData.XboxRightStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightStickClick);
-        }
-
-        protected override void RefreshDevices()
-        {
-            var joystickNames = Input.GetJoystickNames();
-
-            if (joystickNames.Length <= 0) { return; }
-
-            bool devicesChanged = LastDeviceList == null;
-
-            if (LastDeviceList != null && joystickNames.Length == LastDeviceList.Length)
-            {
-                for (int i = 0; i < LastDeviceList.Length; i++)
-                {
-                    if (!joystickNames[i].Equals(LastDeviceList[i]))
-                    {
-                        devicesChanged = true;
-                        if (LastDeviceList == null)
-                        {
-                            LastDeviceList = joystickNames;
-                        }
-                    }
-                }
-            }
-
-            if (LastDeviceList != null && devicesChanged)
-            {
-                foreach (var gamePadInputSource in gamePadInputDatas)
-                {
-                    InputManager.Instance.RaiseSourceLost(this);
-                }
-
-                gamePadInputDatas.Clear();
-
-                if (gamePadInputDatas.Count == 0)
-                {
-                    // Reset our input module to it's previous state.
-                    InputModule.forceModuleActive = PreviousForceActiveState;
-                    InputModule.verticalAxis = PreviousVerticalAxis;
-                    InputModule.horizontalAxis = PreviousHorizontalAxis;
-                    InputModule.submitButton = PreviousSubmitButton;
-                    InputModule.cancelButton = PreviousCancelButton;
-                }
-            }
-
-            motionControllerCount = 0;
-
-            for (var i = 0; i < joystickNames.Length; i++)
-            {
-                if (joystickNames[i].Contains(MotionControllerLeft) ||
-                    joystickNames[i].Contains(MotionControllerRight))
-                {
-                    // If we don't have any matching joystick types, continue.
-                    // If we have motion controllers connected we override the xbox input.
-                    motionControllerCount++;
-                    continue;
-                }
-
-                if (joystickNames[i].Contains(XboxController) ||
-                    joystickNames[i].Contains(XboxOneForWindows) ||
-                    joystickNames[i].Contains(XboxBluetoothGamePad) ||
-                    joystickNames[i].Contains(XboxWirelessController))
-                {
-                    // We will only register the first device we find.  Input is taken from all joysticks.
-                    if (gamePadInputDatas.Count != 0) { return; }
-
-                    SourceId = (uint)i;
-                    controllerData = new XboxControllerData();
-                    gamePadInputDatas.Add(SourceId, controllerData);
-                    Name = joystickNames[i];
-
-                    InputManager.Instance.RaiseSourceDetected(this);
-
-                    // Setup the Input Module to use our custom axis settings.
-                    InputModule.forceModuleActive = true;
-
-                    if (verticalAxis != XboxControllerMappingTypes.None)
-                    {
-                        InputModule.verticalAxis = XboxControllerMapping.GetMapping(verticalAxis);
-                    }
-
-                    if (horizontalAxis != XboxControllerMappingTypes.None)
-                    {
-                        InputModule.horizontalAxis = XboxControllerMapping.GetMapping(horizontalAxis);
-                    }
-
-                    if (submitButton != XboxControllerMappingTypes.None)
-                    {
-                        InputModule.submitButton = XboxControllerMapping.GetMapping(submitButton);
-                    }
-
-                    if (cancelButton != XboxControllerMappingTypes.None)
-                    {
-                        InputModule.cancelButton = XboxControllerMapping.GetMapping(cancelButton);
-                    }
-                }
-            }
-
-            LastDeviceList = joystickNames;
-            LastDeviceUpdateCount = joystickNames.Length;
         }
     }
 }

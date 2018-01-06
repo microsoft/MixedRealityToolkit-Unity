@@ -41,12 +41,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
-        private static readonly List<IInputSource> detectedInputSources = new List<IInputSource>(0);
+        private static readonly Dictionary<uint, IInputSource> detectedInputSources = new Dictionary<uint, IInputSource>(0);
 
         /// <summary>
         /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
         /// </summary>
-        public static List<IInputSource> DetectedInputSources { get { return detectedInputSources; } }
+        public static Dictionary<uint, IInputSource> DetectedInputSources { get { return detectedInputSources; } }
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -77,8 +77,6 @@ namespace HoloToolkit.Unity.InputModule
         private DictationEventData dictationEventData;
 #endif
 
-        #region Private Methods
-
         private void InitializeEventDatas()
         {
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
@@ -100,40 +98,6 @@ namespace HoloToolkit.Unity.InputModule
             dictationEventData = new DictationEventData(EventSystem.current);
 #endif
         }
-
-        private static void AddSource(IInputSource newSource)
-        {
-            bool alreadyDetected = false;
-
-            for (int i = 0; i < detectedInputSources.Count; i++)
-            {
-                if (detectedInputSources[i].SourceId == newSource.SourceId)
-                {
-                    alreadyDetected = true;
-                    Debug.LogError("Duplicate Source Id Detected!");
-                    break;
-                }
-            }
-
-            if (!alreadyDetected)
-            {
-                detectedInputSources.Add(newSource);
-            }
-        }
-
-        private static void RemoveSource(IInputSource source)
-        {
-            for (int i = 0; i < detectedInputSources.Count; i++)
-            {
-                if (detectedInputSources[i].SourceId == source.SourceId)
-                {
-                    detectedInputSources.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-
-        #endregion Private Methods
 
         #region Monobehavior Implementations
 
@@ -371,9 +335,30 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Input Source Events
 
+        /// <summary>
+        /// Generates a new unique source id.
+        /// </summary>
+        /// <returns></returns>
+        public static uint GenerateNewSourceId()
+        {
+            var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
+
+            foreach (var inputSource in detectedInputSources)
+            {
+                if (inputSource.Key == newId)
+                {
+                    return GenerateNewSourceId();
+                }
+            }
+
+            return newId;
+        }
+
         public void RaiseSourceDetected(IInputSource source, object[] tags = null)
         {
-            AddSource(source);
+            Debug.Assert(!detectedInputSources.ContainsKey(source.SourceId));
+
+            detectedInputSources.Add(source.SourceId, source);
 
             // Create input event
             sourceStateEventData.Initialize(source, tags);
@@ -391,7 +376,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceLost(IInputSource source, object[] tags = null)
         {
-            RemoveSource(source);
+            Debug.Assert(detectedInputSources.ContainsKey(source.SourceId));
+
+            detectedInputSources.Remove(source.SourceId);
 
             // Create input event
             sourceStateEventData.Initialize(source, tags);

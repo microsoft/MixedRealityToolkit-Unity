@@ -75,6 +75,11 @@ namespace HoloToolkit.Unity.InputModule
             Microphone.GetDeviceCaps(DeviceName, out minSamplingRate, out samplingRate);
         }
 
+        private void Start()
+        {
+            SourceId = InputManager.GenerateNewSourceId();
+        }
+
         private void LateUpdate()
         {
             if (IsListening && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)

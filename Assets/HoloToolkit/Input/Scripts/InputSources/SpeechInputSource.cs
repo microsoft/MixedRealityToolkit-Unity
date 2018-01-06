@@ -68,6 +68,8 @@ namespace HoloToolkit.Unity.InputModule
                 gameObject.DontDestroyOnLoad();
             }
 
+            SourceId = InputManager.GenerateNewSourceId();
+
             int keywordCount = Keywords.Length;
             if (keywordCount > 0)
             {

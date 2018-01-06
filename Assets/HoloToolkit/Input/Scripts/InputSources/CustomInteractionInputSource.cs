@@ -299,6 +299,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
+                SourceId = InputManager.GenerateNewSourceId();
                 InputManager.Instance.RaiseSourceDetected(this);
             }
         }
@@ -503,6 +504,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentlyVisible)
                 {
+                    SourceId = InputManager.GenerateNewSourceId();
                     InputManager.Instance.RaiseSourceDetected(this);
                 }
                 else

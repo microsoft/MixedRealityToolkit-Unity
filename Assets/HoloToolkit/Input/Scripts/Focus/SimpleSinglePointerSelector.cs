@@ -191,9 +191,9 @@ namespace HoloToolkit.Unity.InputModule
             IPointingSource bestPointer = null;
             var inputSources = InputManager.DetectedInputSources;
 
-            for (var i = 0; i < inputSources.Count; i++)
+            foreach (var inputSource in inputSources)
             {
-                if (SupportsPointingRay(inputSources[i]))
+                if (SupportsPointingRay(inputSource.Value))
                 {
                     AttachInputSourcePointer();
                     bestPointer = inputSourcePointer;
@@ -211,10 +211,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void HandleInputAction(InputEventData eventData)
         {
-            // TODO: robertes: Investigate how this feels. Since "Down" will often be followed by "Click", is
-            //       marking the event as used actually effective in preventing unintended app input during a
-            //       pointer change?
-
             if (SupportsPointingRay(eventData))
             {
                 if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
@@ -236,9 +232,6 @@ namespace HoloToolkit.Unity.InputModule
                 }
                 else
                 {
-                    // TODO: robertes: see if we can treat voice separately from the other simple committers,
-                    //       so voice doesn't steal from a pointing controller. I think input Kind would need
-                    //       to come through with the event data.
                     SetPointer(GazeManager.Instance);
                     pointerWasChanged = true;
                 }
@@ -246,6 +239,10 @@ namespace HoloToolkit.Unity.InputModule
 
             if (pointerWasChanged)
             {
+                // TODO: robertes: Investigate how this feels. Since "Down" will often be followed by "Click", is
+                //       marking the event as used actually effective in preventing unintended app input during a
+                //       pointer change?
+
                 // Since this input resulted in a pointer change, we mark the event as used to
                 // prevent it from falling through to other handlers to prevent potentially
                 // unintended input from reaching handlers that aren't being pointed at by
