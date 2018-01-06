@@ -132,7 +132,7 @@ namespace HoloToolkit.Unity.InputModule
                 throw new NotImplementedException();
             }
 
-            public void ResetUpdatedBooleans()
+            public void Reset()
             {
                 ThumbstickPositionUpdated = false;
                 TouchpadPositionUpdated = false;
@@ -726,7 +726,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             InputSource sourceData = GetOrAddInteractionSource(args.state.source);
 
-            sourceData.ResetUpdatedBooleans();
+            sourceData.Reset();
 
             UpdateInteractionSource(args.state, sourceData);
 
