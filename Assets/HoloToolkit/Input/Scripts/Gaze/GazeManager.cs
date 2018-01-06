@@ -109,17 +109,17 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool FocusLocked { get; set; }
 
-        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        public bool TryGetPointerPosition(out Vector3 position)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        public bool TryGetPointingRay(out Ray pointingRay)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
+        public bool TryGetPointerRotation(out Quaternion rotation)
         {
             throw new NotImplementedException();
         }

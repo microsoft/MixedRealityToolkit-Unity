@@ -1186,6 +1186,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (detectedInputSources[i].SourceId == newSource.SourceId)
                 {
                     alreadyDetected = true;
+                    Debug.LogError("Duplicate Source Id Detected!");
                     break;
                 }
             }

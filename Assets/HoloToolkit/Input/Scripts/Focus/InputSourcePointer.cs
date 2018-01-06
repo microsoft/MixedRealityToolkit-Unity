@@ -29,17 +29,18 @@ namespace HoloToolkit.Unity.InputModule
         public bool InteractionEnabled { get { return true; } }
 
         public bool FocusLocked { get; set; }
-        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+
+        public bool TryGetPointerPosition(out Vector3 position)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        public bool TryGetPointingRay(out Ray pointingRay)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
+        public bool TryGetPointerRotation(out Quaternion rotation)
         {
             throw new System.NotImplementedException();
         }
@@ -49,7 +50,7 @@ namespace HoloToolkit.Unity.InputModule
         public virtual void OnPreRaycast()
         {
             Ray pointingRay;
-            if (TryGetPointingRay(SourceId, out pointingRay))
+            if (TryGetPointingRay(out pointingRay))
             {
                 rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
             }
