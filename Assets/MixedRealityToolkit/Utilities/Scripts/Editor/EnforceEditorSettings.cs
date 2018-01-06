@@ -9,12 +9,12 @@ using UnityEditor;
 namespace MixedRealityToolkit.Common
 {
     /// <summary>
-    /// Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.
+    /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.
     /// </summary>
     [InitializeOnLoad]
     public class EnforceEditorSettings
     {
-        private const string AssemblyReloadTimestampKey = "_HoloToolkit_Editor_LastAssemblyReload";
+        private const string AssemblyReloadTimestampKey = "_MixedRealityToolkit_Editor_LastAssemblyReload";
 
         static EnforceEditorSettings()
         {
@@ -29,7 +29,7 @@ namespace MixedRealityToolkit.Common
             {
                 if (EditorUtility.DisplayDialog(
                         "Force Text Asset Serialization?",
-                        "HoloToolkit is easier to maintain if the asset serialization mode for this project is set to \"Force Text\". Would you like to make this change?",
+                        "The Mixed Reality Toolkit is easier to maintain if the asset serialization mode for this project is set to \"Force Text\". Would you like to make this change?",
                         "Force Text Serialization",
                         "Later"))
                 {
@@ -42,7 +42,7 @@ namespace MixedRealityToolkit.Common
             {
                 if (EditorUtility.DisplayDialog(
                     "Make Meta Files Visible?",
-                    "HoloToolkit would like to make meta files visible so they can be more easily handled with common version control systems. Would you like to make this change?",
+                    "The Mixed Reality Toolkit would like to make meta files visible so they can be more easily handled with common version control systems. Would you like to make this change?",
                     "Enable Visible Meta Files",
                     "Later"))
                 {

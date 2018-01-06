@@ -191,6 +191,10 @@ namespace MixedRealityToolkit.Boundary
                     }
                 }
             }
+            else
+            {
+                Debug.Log("TryGetGeometry always returns false.");
+            }
 
             // Ensuring that we set height of the bounds volume to be say 10 feet tall.
             boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));

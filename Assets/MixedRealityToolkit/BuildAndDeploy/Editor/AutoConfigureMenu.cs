@@ -23,7 +23,7 @@ namespace MixedRealityToolkit.Build
 #endif
 
         /// <summary>
-        /// Displays a help page for the HoloToolkit.
+        /// Displays a help page for the Mixed Reality Toolkit.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Configure/Show Help", false, 3)]
         public static void ShowHelp()

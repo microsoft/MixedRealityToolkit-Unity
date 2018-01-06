@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MixedRealityToolkit.Common
 {
     // The easiest way to use this script is to drop in the HeadsUpDirectionIndicator prefab
-    // from the HoloToolKit. If you're having issues with the prefab or can't find it,
+    // from the Mixed Reality Toolkit. If you're having issues with the prefab or can't find it,
     // you can simply create an empty GameObject and attach this script. You'll need to
     // create your own pointer object which can by any 3D game object. You'll need to adjust
     // the depth, margin and pivot variables to affect the right appearance. After that you

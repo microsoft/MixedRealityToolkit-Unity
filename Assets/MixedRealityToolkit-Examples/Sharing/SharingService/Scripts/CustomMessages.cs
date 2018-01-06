@@ -17,7 +17,7 @@ namespace MixedRealityToolkit.Examples.Sharing
         /// <summary>
         /// Message enum containing our information bytes to share.
         /// The first message type has to start with UserMessageIDStart
-        /// so as not to conflict with HoloToolkit internal messages.
+        /// so as not to conflict with Mixed Reality Toolkit internal messages.
         /// </summary>
         public enum TestMessageID : byte
         {

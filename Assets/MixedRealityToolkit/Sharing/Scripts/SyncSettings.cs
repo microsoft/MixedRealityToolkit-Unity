@@ -10,7 +10,7 @@ using MixedRealityToolkit.Common;
 namespace MixedRealityToolkit.Sharing.SyncModel
 {
     /// <summary>
-    /// Collection of sharing sync settings, used by the HoloToolkit Sharing sync system
+    /// Collection of sharing sync settings, used by the Mixed Reality Toolkit Sharing sync system
     /// to figure out which data model classes need to be instantiated when receiving
     /// data that inherits from SyncObject.
     /// </summary>

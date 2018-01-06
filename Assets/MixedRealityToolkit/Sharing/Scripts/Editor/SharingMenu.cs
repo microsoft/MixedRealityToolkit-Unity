@@ -13,12 +13,12 @@ namespace MixedRealityToolkit.Sharing
         [MenuItem("Mixed Reality Toolkit/Sharing Service/Launch Sharing Service", false, 100)]
         public static void LaunchSessionServer()
         {
-            string filePathName = @"External\HoloToolkit\Sharing\Server\SharingService.exe";
+            string filePathName = @"External\MixedRealityToolkit\Sharing\Server\SharingService.exe";
 
             if (!File.Exists(filePathName))
             {
                 Debug.LogError("Sharing service does not exist at location: " + filePathName);
-                Debug.LogError("Please enable the Sharing Service via HoloToolkit -> Configure -> Apply Project Settings.");
+                Debug.LogError("Please enable the Sharing Service via Mixed Reality Toolkit -> Configure -> Apply Project Settings.");
                 return;
             }
 
@@ -28,12 +28,12 @@ namespace MixedRealityToolkit.Sharing
         [MenuItem("Mixed Reality Toolkit/Sharing Service/Launch Session Manager", false, 101)]
         public static void LaunchSessionUI()
         {
-            string filePathName = @"External\HoloToolkit\Sharing\Tools\SessionManager\x86\SessionManager.UI.exe";
+            string filePathName = @"External\MixedRealityToolkit\Sharing\Tools\SessionManager\x86\SessionManager.UI.exe";
 
             if (!File.Exists(filePathName))
             {
                 Debug.LogError("Session Manager UI does not exist at location: " + filePathName);
-                Debug.LogError("Please enable the Sharing Service via HoloToolkit -> Configure -> Apply Project Settings.");
+                Debug.LogError("Please enable the Sharing Service via Mixed Reality Toolkit -> Configure -> Apply Project Settings.");
                 return;
             }
 
@@ -43,12 +43,12 @@ namespace MixedRealityToolkit.Sharing
         [MenuItem("Mixed Reality Toolkit/Sharing Service/Launch Profiler", false, 103)]
         public static void LaunchProfilerX()
         {
-            string filePathName = @"External\HoloToolkit\Sharing\Tools\Profiler\x86\ProfilerX.exe";
+            string filePathName = @"External\MixedRealityToolkit\Sharing\Tools\Profiler\x86\ProfilerX.exe";
 
             if (!File.Exists(filePathName))
             {
                 Debug.LogError("Profiler does not exist at location: " + filePathName);
-                Debug.LogError("Please enable the Sharing Service via HoloToolkit -> Configure -> Apply Project Settings.");
+                Debug.LogError("Please enable the Sharing Service via Mixed Reality Toolkit -> Configure -> Apply Project Settings.");
                 return;
             }
 

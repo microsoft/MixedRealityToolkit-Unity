@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.Win32;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -18,7 +18,7 @@ namespace MixedRealityToolkit.Build
     /// </summary>
     public class BuildDeployTools
     {
-        public static readonly string DefaultMSBuildVersion = "15.0";
+        public const string DefaultMSBuildVersion = "15.0";
 
         public static bool CanBuild()
         {
@@ -54,6 +54,14 @@ namespace MixedRealityToolkit.Build
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Do a build configured for Mixed Reality Applications, returns the error from BuildPipeline.BuildPlayer
+        /// </summary>
+        public static bool BuildSLN()
+        {
+            return BuildSLN(BuildDeployPrefs.BuildDirectory, false);
         }
 
         public static bool BuildSLN(string buildDirectory, bool showDialog = true)
@@ -175,6 +183,9 @@ namespace MixedRealityToolkit.Build
 
         public static bool RestoreNugetPackages(string nugetPath, string storePath)
         {
+            Debug.Assert(File.Exists(nugetPath));
+            Debug.Assert(Directory.Exists(storePath));
+
             var nugetPInfo = new ProcessStartInfo
             {
                 FileName = nugetPath,
@@ -230,14 +241,17 @@ namespace MixedRealityToolkit.Build
             }
 
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
+            string assemblyCSharp = storePath + "/GeneratedProjects/UWP/Assembly-CSharp";
+            string assemblyCSharpFirstPass = storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass";
+            bool restoreFirstPass = Directory.Exists(assemblyCSharpFirstPass);
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do
             // this breaks the build in VS RTM
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET &&
                 (!RestoreNugetPackages(nugetPath, storePath) ||
                  !RestoreNugetPackages(nugetPath, storePath + "\\" + productName) ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp") ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass")))
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, assemblyCSharp) ||
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !RestoreNugetPackages(nugetPath, assemblyCSharpFirstPass)))
             {
                 Debug.LogError("Failed to restore nuget packages");
                 EditorUtility.ClearProgressBar();
@@ -285,9 +299,9 @@ namespace MixedRealityToolkit.Build
 
                 if (process.ExitCode == 0 &&
                     showDialog &&
-                    !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open Project Folder"))
+                    !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open AppX Folder"))
                 {
-                    Process.Start("explorer.exe", "/select," + storePath);
+                    Process.Start("explorer.exe", "/f /open," + Path.GetFullPath(BuildDeployPrefs.BuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
                 }
 
                 if (process.ExitCode != 0)
@@ -343,12 +357,14 @@ namespace MixedRealityToolkit.Build
                 return;
             }
 
-            // Assume package version always has a '.'.
+            // Assume package version always has a '.' between each number.
             // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
-            // Package versions are always of the form Major.Minor.Build.Revision
-            var version = new Version(versionAttr.Value);
-            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
+            // Package versions are always of the form Major.Minor.Build.Revision.
+            // Note: Revision number reserved for Windows Store, and a value other than 0 will fail WACK.
+            var version = PlayerSettings.WSA.packageVersion;
+            var newVersion = new Version(version.Major, version.Minor, version.Build + 1, version.Revision);
 
+            PlayerSettings.WSA.packageVersion = newVersion;
             versionAttr.Value = newVersion.ToString();
             rootNode.Save(manifest);
         }

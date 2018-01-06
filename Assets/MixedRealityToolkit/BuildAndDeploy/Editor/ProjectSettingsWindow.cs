@@ -13,11 +13,11 @@ using UnityEngine.Networking;
 namespace MixedRealityToolkit.Build
 {
     /// <summary>
-    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Project Settings.
+    /// Renders the UI and handles update logic for Mixed Reality Toolkit/Configure/Apply Mixed Reality Project Settings.
     /// </summary>
     public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
     {
-        private const string SharingServiceURL = "https://raw.githubusercontent.com/Microsoft/MixedRealityToolkit-Unity/master/External/HoloToolkit/Sharing/Server/SharingService.exe";
+        private const string SharingServiceURL = "https://raw.githubusercontent.com/Microsoft/MixedRealityToolkit-Unity/master/External/MixedRealityToolkit/Sharing/Server/SharingService.exe";
 
         /// <summary>
         /// This is used to keep a local list of axis names, so we don't have to keep iterating through each SerializedProperty.
@@ -167,7 +167,7 @@ namespace MixedRealityToolkit.Build
             EditorPrefsUtility.SetEditorPref(Names[ProjectSetting.SharingServices], Values[ProjectSetting.SharingServices]);
             if (Values[ProjectSetting.SharingServices])
             {
-                string sharingServiceDirectory = Directory.GetParent(Path.GetFullPath(Application.dataPath)).FullName + "\\External\\HoloToolkit\\Sharing\\Server";
+                string sharingServiceDirectory = Directory.GetParent(Path.GetFullPath(Application.dataPath)).FullName + "\\External\\MixedRealityToolkit\\Sharing\\Server";
                 string sharingServicePath = sharingServiceDirectory + "\\SharingService.exe";
                 if (!File.Exists(sharingServicePath) &&
                     EditorUtility.DisplayDialog("Attention!",

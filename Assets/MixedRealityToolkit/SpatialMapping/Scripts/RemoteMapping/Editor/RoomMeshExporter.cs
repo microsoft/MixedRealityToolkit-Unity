@@ -28,7 +28,7 @@ namespace MixedRealityToolkit.SpatialMapping
 
                 EditorPrefsUtility.SetEditorPref(ExportDirectoryKey, value);
             }
-        }
+        }        
 
         private static bool MakeExportDirectory()
         {

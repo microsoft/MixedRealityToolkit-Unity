@@ -251,12 +251,18 @@ namespace MixedRealityToolkit.Common
             if (string.IsNullOrEmpty(texturePath)) { return string.Empty; }
 
             var iconSize = GetUWPImageTypeSize(type, scale);
+
             if (iconSize == Vector2.zero) { return string.Empty; }
 
             if (iconSize.x == 1240 && iconSize.y == 1240 || iconSize.x == 2480 && iconSize.y == 1200) { return texturePath; }
 
-            string filePath = string.Format("{0}/{1}_{2}x{3}.png", _outputDirectoryName, type.ToString(), iconSize.x, iconSize.y);
+            string filePath = string.Format("{0}/{1}_AppIcon_{2}x{3}.png", _outputDirectoryName, Application.productName, iconSize.x, iconSize.y);
             filePath = filePath.Replace(Application.dataPath, "Assets");
+
+            if (File.Exists(filePath))
+            {
+                return filePath;
+            }
 
             // Create copy of original image
             try
@@ -284,7 +290,7 @@ namespace MixedRealityToolkit.Common
 
                 if (rawData.Length > 204800)
                 {
-                    Debug.LogWarningFormat("{0} exceeds the minimum file size of 204,800 bytes, please use a smaller image for generating your icons.", clone.name);
+                    Debug.LogWarningFormat("{0} exceeds the minimum file size of 204,800 bytes, please use a smaller image for generating your icons.", filePath);
                 }
             }
             catch (Exception e)
@@ -309,7 +315,12 @@ namespace MixedRealityToolkit.Common
                 case PlayerSettings.WSAImageType.UWPSquare71x71Logo:
                 case PlayerSettings.WSAImageType.UWPSquare150x150Logo:
                 case PlayerSettings.WSAImageType.UWPSquare310x310Logo:
+                case PlayerSettings.WSAImageType.PhoneAppIcon:
+                case PlayerSettings.WSAImageType.PhoneSmallTile:
+                case PlayerSettings.WSAImageType.PhoneMediumTile:
+                case PlayerSettings.WSAImageType.PhoneWideTile:
                     return _newAppIconPath;
+                case PlayerSettings.WSAImageType.PhoneSplashScreen:
                 case PlayerSettings.WSAImageType.SplashScreenImage:
                 case PlayerSettings.WSAImageType.StoreTileWideLogo:
                 case PlayerSettings.WSAImageType.UWPWide310x150Logo:
@@ -325,12 +336,6 @@ namespace MixedRealityToolkit.Common
                     {
                         return _newAppIconPath;
                     }
-                case PlayerSettings.WSAImageType.PhoneAppIcon:
-                case PlayerSettings.WSAImageType.PhoneSmallTile:
-                case PlayerSettings.WSAImageType.PhoneMediumTile:
-                case PlayerSettings.WSAImageType.PhoneWideTile:
-                case PlayerSettings.WSAImageType.PhoneSplashScreen:
-                    return string.Empty;
                 default:
                     throw new ArgumentOutOfRangeException("type", type, null);
             }
@@ -394,19 +399,22 @@ namespace MixedRealityToolkit.Common
                 case PlayerSettings.WSAImageType.SplashScreenImage:
                     return CreateSize(new Vector2(620, 300), scaleFactor);
                 case PlayerSettings.WSAImageType.PhoneSplashScreen:
-                default:
-                    var size = CreateSquareSize(0, scaleFactor);
-
-                    if (size == Vector2.zero)
+                    switch (scale)
                     {
-                        Debug.LogWarningFormat("Invalid image size for {0} with scale {1}", type, scale);
+                        case PlayerSettings.WSAImageScale._100:
+                        case PlayerSettings.WSAImageScale._140:
+                        case PlayerSettings.WSAImageScale._240:
+                            return CreateSize(new Vector2(480, 800), scaleFactor);
+                        default:
+                            return Vector2.zero;
                     }
-
-                    return size;
+                default:
+                    Debug.LogWarningFormat("Invalid image size for {0} with scale {1}X{2}", type, scale, scaleFactor);
+                    return Vector2.zero;
             }
         }
 
-        private static Vector2 CreateSquareSize(int size, float scaleFactor = 0f)
+        private static Vector2 CreateSquareSize(int size, float scaleFactor = 1f)
         {
             var newSize = new Vector2(size * scaleFactor, size * scaleFactor);
             newSize.x = (float)Math.Ceiling(newSize.x);
@@ -414,7 +422,7 @@ namespace MixedRealityToolkit.Common
             return newSize;
         }
 
-        private static Vector2 CreateSize(Vector2 size, float scaleFactor = 0f)
+        private static Vector2 CreateSize(Vector2 size, float scaleFactor = 1f)
         {
             var newSize = new Vector2(size.x * scaleFactor, size.y * scaleFactor);
             newSize.x = (float)Math.Ceiling(newSize.x);
