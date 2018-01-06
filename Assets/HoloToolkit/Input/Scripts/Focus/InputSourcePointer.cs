@@ -14,6 +14,8 @@ namespace HoloToolkit.Unity.InputModule
     {
         public uint SourceId { get; protected set; }
 
+        public string Name { get; protected set; }
+
         public BaseRayStabilizer RayStabilizer { get; set; }
 
         public bool OwnAllInput { get; set; }

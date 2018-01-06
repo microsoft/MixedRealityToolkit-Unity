@@ -11,6 +11,8 @@ namespace HoloToolkit.Unity.InputModule
     {
         uint SourceId { get; }
 
+        string Name { get; }
+
         /// <summary>
         /// Returns the input info that the input source can provide.
         /// </summary>

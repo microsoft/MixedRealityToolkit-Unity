@@ -41,7 +41,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (string.IsNullOrEmpty(GamePadName))
             {
-                Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", eventData.GamePadName, eventData.SourceId);
+                Debug.LogFormat("Joystick {0} with id: \"{1}\" Connected", eventData.InputSource.Name, eventData.SourceId);
             }
 
             base.OnXboxInputUpdate(eventData);

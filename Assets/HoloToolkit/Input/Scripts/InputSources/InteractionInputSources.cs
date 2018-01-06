@@ -60,10 +60,12 @@ namespace HoloToolkit.Unity.InputModule
             {
                 Source = source;
                 SourceId = source.id;
+                Name = string.Format("{0} {1}", source.handedness, source.kind);
             }
 #endif
 
             public uint SourceId { get; private set; }
+            public string Name { get; private set; }
 
             public SupportedInputInfo GetSupportedInputInfo()
             {
@@ -222,7 +224,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion IInputSource Capabilities and InputSource
 
-        #region MonoBehaviour APIs
+        #region MonoBehaviour Implementation
 
         protected override void Awake()
         {
@@ -307,7 +309,7 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                InputManager.Instance.RaiseSourceLost(GetOrAddInteractionSource(states[i].source), string.Format("{0} {1}", states[i].source.handedness, states[i].source.kind));
+                InputManager.Instance.RaiseSourceLost(GetOrAddInteractionSource(states[i].source));
                 // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
                 sourceIdToData.Remove(states[i].source.id);
             }
@@ -346,7 +348,7 @@ namespace HoloToolkit.Unity.InputModule
             base.OnDestroy();
         }
 
-        #endregion MonoBehaviour APIs
+        #endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Make sure the gesture recognizer is off, then start it.
@@ -609,8 +611,7 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                var sourceData = GetOrAddInteractionSource(states[i].source);
-                InputManager.Instance.RaiseSourceDetected(sourceData, string.Format("{0} {1}", sourceData.Source.handedness, sourceData.Source.kind));
+                InputManager.Instance.RaiseSourceDetected(GetOrAddInteractionSource(states[i].source));
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
@@ -817,7 +818,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
-            InputManager.Instance.RaiseSourceLost(GetOrAddInteractionSource(args.state.source), string.Format("{0} {1}", args.state.source.kind, args.state.source.id));
+            InputManager.Instance.RaiseSourceLost(GetOrAddInteractionSource(args.state.source));
 
             // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
             sourceIdToData.Remove(args.state.source.id);
@@ -830,7 +831,7 @@ namespace HoloToolkit.Unity.InputModule
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             UpdateInteractionSource(args.state, sourceData);
 
-            InputManager.Instance.RaiseSourceDetected(sourceData, string.Format("{0} {1}", args.state.source.kind, args.state.source.id));
+            InputManager.Instance.RaiseSourceDetected(sourceData);
         }
 
         #endregion InteractionManager Events

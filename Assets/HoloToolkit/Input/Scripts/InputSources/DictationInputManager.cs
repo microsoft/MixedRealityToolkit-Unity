@@ -256,6 +256,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public uint SourceId { get; protected set; }
 
+        public string Name { get { return "Dictation"; } }
+
         public SupportedInputInfo GetSupportedInputInfo()
         {
             return SupportedInputInfo.Voice;
@@ -266,6 +268,6 @@ namespace HoloToolkit.Unity.InputModule
             return (GetSupportedInputInfo() & inputInfo) == inputInfo;
         }
 
-        #endregion // IInputSource Implementation
+        #endregion IInputSource Implementation
     }
 }

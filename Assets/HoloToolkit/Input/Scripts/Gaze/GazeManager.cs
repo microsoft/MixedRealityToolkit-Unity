@@ -238,6 +238,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public uint SourceId { get; protected set; }
 
+        public string Name { get { return "Gaze"; } }
+
         public SupportedInputInfo GetSupportedInputInfo()
         {
             return SupportedInputInfo.Pointing;

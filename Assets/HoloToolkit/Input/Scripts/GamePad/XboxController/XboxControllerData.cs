@@ -8,8 +8,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public struct XboxControllerData
     {
-        public string GamePadName { get; set; }
-
         public float XboxLeftStickHorizontalAxis { get; set; }
         public float XboxLeftStickVerticalAxis { get; set; }
         public float XboxRightStickHorizontalAxis { get; set; }

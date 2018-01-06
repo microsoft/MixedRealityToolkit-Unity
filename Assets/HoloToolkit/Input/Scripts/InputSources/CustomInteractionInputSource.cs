@@ -263,6 +263,8 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
+            Name = "Custom Input " + controllerId;
+
             manualController = GetComponent<CustomInputControl>();
 
             currentButtonStates = new ButtonStates();
@@ -297,7 +299,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceDetected(this, "Custom Input " + controllerId);
+                InputManager.Instance.RaiseSourceDetected(this);
             }
         }
 
@@ -305,7 +307,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceLost(this, "Custom Input " + controllerId);
+                InputManager.Instance.RaiseSourceLost(this);
             }
         }
 
@@ -501,11 +503,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentlyVisible)
                 {
-                    InputManager.Instance.RaiseSourceDetected(this, "Custom Input " + controllerId);
+                    InputManager.Instance.RaiseSourceDetected(this);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceLost(this, "Custom Input " + controllerId);
+                    InputManager.Instance.RaiseSourceLost(this);
                 }
 
                 visibilityChanged = false;

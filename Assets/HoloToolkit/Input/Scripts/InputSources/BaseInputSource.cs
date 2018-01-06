@@ -12,6 +12,8 @@ namespace HoloToolkit.Unity.InputModule
     {
         public uint SourceId { get; protected set; }
 
+        public string Name { get; protected set; }
+
         public abstract SupportedInputInfo GetSupportedInputInfo();
 
         public bool SupportsInputInfo(SupportedInputInfo inputInfo)

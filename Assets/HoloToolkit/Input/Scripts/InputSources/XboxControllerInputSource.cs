@@ -116,8 +116,6 @@ namespace HoloToolkit.Unity.InputModule
             controllerData.XboxRightBumper_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightBumper);
             controllerData.XboxLeftStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxLeftStickClick);
             controllerData.XboxRightStick_Up = Input.GetButtonUp(XboxControllerMapping.XboxRightStickClick);
-
-            InputManager.Instance.RaiseXboxInputUpdate(this, controllerData);
         }
 
         protected override void RefreshDevices()
@@ -147,7 +145,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 foreach (var gamePadInputSource in gamePadInputDatas)
                 {
-                    InputManager.Instance.RaiseSourceLost(this, gamePadInputSource.Value.GamePadName);
+                    InputManager.Instance.RaiseSourceLost(this);
                 }
 
                 gamePadInputDatas.Clear();
@@ -185,10 +183,11 @@ namespace HoloToolkit.Unity.InputModule
                     if (gamePadInputDatas.Count != 0) { return; }
 
                     SourceId = (uint)i;
-                    controllerData = new XboxControllerData { GamePadName = joystickNames[i] };
+                    controllerData = new XboxControllerData();
                     gamePadInputDatas.Add(SourceId, controllerData);
+                    Name = joystickNames[i];
 
-                    InputManager.Instance.RaiseSourceDetected(this, joystickNames[i]);
+                    InputManager.Instance.RaiseSourceDetected(this);
 
                     // Setup the Input Module to use our custom axis settings.
                     InputModule.forceModuleActive = true;

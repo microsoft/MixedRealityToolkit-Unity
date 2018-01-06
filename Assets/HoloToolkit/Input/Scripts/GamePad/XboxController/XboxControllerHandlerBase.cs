@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (string.IsNullOrEmpty(GamePadName))
             {
-                GamePadName = eventData.GamePadName;
+                GamePadName = eventData.InputSource.Name;
             }
 
             if (XboxControllerMapping.GetButton_Down(SelectButton, eventData))
