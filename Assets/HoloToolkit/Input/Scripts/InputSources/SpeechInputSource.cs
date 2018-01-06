@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private KeywordRecognizer keywordRecognizer;
 
-        #region Monobehaviour Implementatinos
+        #region Monobehaviour Implementations
 
         protected virtual void OnEnable()
         {
