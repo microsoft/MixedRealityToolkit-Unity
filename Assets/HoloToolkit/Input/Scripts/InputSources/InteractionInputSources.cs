@@ -168,58 +168,22 @@ namespace HoloToolkit.Unity.InputModule
             public TReading CurrentReading;
         }
 
+        private struct AxisButton1D
+        {
+            public bool Pressed;
+            public double PressedAmount;
+        }
+
         private struct AxisButton2D
         {
             public bool Pressed;
             public Vector2 Position;
-
-            public static AxisButton2D GetThumbstick(InteractionSourceState interactionSource)
-            {
-                return new AxisButton2D
-                {
-                    Pressed = interactionSource.thumbstickPressed,
-                    Position = interactionSource.thumbstickPosition
-                };
-            }
-
-            public static AxisButton2D GetTouchpad(InteractionSourceState interactionSource)
-            {
-                return new AxisButton2D
-                {
-                    Pressed = interactionSource.touchpadPressed,
-                    Position = interactionSource.touchpadPosition
-                };
-            }
         }
 
         private struct TouchpadData
         {
             public AxisButton2D AxisButton;
             public bool Touched;
-
-            public static TouchpadData GetTouchpad(InteractionSourceState interactionSource)
-            {
-                return new TouchpadData
-                {
-                    AxisButton = AxisButton2D.GetTouchpad(interactionSource),
-                    Touched = interactionSource.touchpadTouched
-                };
-            }
-        }
-
-        private struct AxisButton1D
-        {
-            public bool Pressed;
-            public double PressedAmount;
-
-            public static AxisButton1D GetSelect(InteractionSourceState interactionSource)
-            {
-                return new AxisButton1D
-                {
-                    Pressed = interactionSource.selectPressed,
-                    PressedAmount = interactionSource.selectPressedAmount,
-                };
-            }
         }
 
         #endregion IInputSource Capabilities and InputSource
@@ -653,13 +617,11 @@ namespace HoloToolkit.Unity.InputModule
 
             Vector3 newPointerPosition;
             sourceData.PointerPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);
-
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.PointerPosition.IsSupported |= sourceData.PointerPosition.IsAvailable;
 
             Vector3 newGripPosition;
             sourceData.GripPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newGripPosition, InteractionSourceNode.Grip);
-
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripPosition.IsSupported |= sourceData.GripPosition.IsAvailable;
 
@@ -671,7 +633,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (sourceData.PointerPosition.IsAvailable || sourceData.GripPosition.IsAvailable)
             {
-                sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
+                sourceData.PositionUpdated = sourceData.PointerPosition.CurrentReading != newPointerPosition || sourceData.GripPosition.CurrentReading != newGripPosition;
             }
 
             sourceData.PointerPosition.CurrentReading = newPointerPosition;
@@ -679,12 +641,11 @@ namespace HoloToolkit.Unity.InputModule
 
             Quaternion newPointerRotation;
             sourceData.PointerRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newPointerRotation, InteractionSourceNode.Pointer);
-
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.PointerRotation.IsSupported |= sourceData.PointerRotation.IsAvailable;
 
             Quaternion newGripRotation;
-            sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation, InteractionSourceNode.Grip);
+            sourceData.GripRotation.IsAvailable = interactionSourceState.sourcePose.TryGetRotation(out newGripRotation);
             // Using a heuristic for IsSupported, since the APIs don't yet support querying this capability directly.
             sourceData.GripRotation.IsSupported |= sourceData.GripRotation.IsAvailable;
 
@@ -696,7 +657,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (sourceData.PointerRotation.IsAvailable || sourceData.GripRotation.IsAvailable)
             {
-                sourceData.RotationUpdated = !(sourceData.PointerRotation.CurrentReading.Equals(newPointerRotation) && sourceData.GripRotation.CurrentReading.Equals(newGripRotation));
+                sourceData.RotationUpdated = sourceData.PointerRotation.CurrentReading != newPointerRotation || sourceData.GripRotation.CurrentReading != newGripRotation;
             }
 
             sourceData.PointerRotation.CurrentReading = newPointerRotation;
@@ -704,7 +665,7 @@ namespace HoloToolkit.Unity.InputModule
 
             Vector3 pointerForward = Vector3.zero;
             sourceData.PointingRay.IsSupported = interactionSourceState.source.supportsPointing;
-            sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable && interactionSourceState.sourcePose.TryGetForward(out pointerForward, InteractionSourceNode.Pointer);
+            sourceData.PointingRay.IsAvailable = sourceData.PointerPosition.IsAvailable;
 
             if (CameraCache.Main.transform.parent != null)
             {
@@ -717,9 +678,9 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.Thumbstick.IsAvailable = sourceData.Thumbstick.IsSupported;
             if (sourceData.Thumbstick.IsAvailable)
             {
-                AxisButton2D newThumbstick = AxisButton2D.GetThumbstick(interactionSourceState);
-                sourceData.ThumbstickPositionUpdated = sourceData.Thumbstick.CurrentReading.Position != newThumbstick.Position;
-                sourceData.Thumbstick.CurrentReading = newThumbstick;
+                sourceData.ThumbstickPositionUpdated = sourceData.Thumbstick.CurrentReading.Position != interactionSourceState.thumbstickPosition;
+                sourceData.Thumbstick.CurrentReading.Position = interactionSourceState.thumbstickPosition;
+                sourceData.Thumbstick.CurrentReading.Pressed = interactionSourceState.thumbstickPressed;
             }
             else
             {
@@ -731,10 +692,11 @@ namespace HoloToolkit.Unity.InputModule
 
             if (sourceData.Touchpad.IsAvailable)
             {
-                TouchpadData newTouchpad = TouchpadData.GetTouchpad(interactionSourceState);
-                sourceData.TouchpadPositionUpdated = !sourceData.Touchpad.CurrentReading.AxisButton.Position.Equals(newTouchpad.AxisButton.Position);
-                sourceData.TouchpadTouchedUpdated = !sourceData.Touchpad.CurrentReading.Touched.Equals(newTouchpad.Touched);
-                sourceData.Touchpad.CurrentReading = newTouchpad;
+                sourceData.TouchpadPositionUpdated = sourceData.Touchpad.CurrentReading.AxisButton.Position != interactionSourceState.touchpadPosition;
+                sourceData.TouchpadTouchedUpdated = sourceData.Touchpad.CurrentReading.Touched != interactionSourceState.touchpadTouched;
+                sourceData.Touchpad.CurrentReading.Touched = interactionSourceState.touchpadTouched;
+                sourceData.Touchpad.CurrentReading.AxisButton.Pressed = interactionSourceState.touchpadPressed;
+                sourceData.Touchpad.CurrentReading.AxisButton.Position = interactionSourceState.touchpadPosition;
             }
             else
             {
@@ -743,9 +705,9 @@ namespace HoloToolkit.Unity.InputModule
 
             sourceData.Select.IsSupported = true; // All input mechanisms support "select".
             sourceData.Select.IsAvailable = sourceData.Select.IsSupported;
-            AxisButton1D newSelect = AxisButton1D.GetSelect(interactionSourceState);
-            sourceData.SelectPressedAmountUpdated = !sourceData.Select.CurrentReading.PressedAmount.Equals(newSelect.PressedAmount);
-            sourceData.Select.CurrentReading = newSelect;
+            sourceData.SelectPressedAmountUpdated = !sourceData.Select.CurrentReading.PressedAmount.Equals(interactionSourceState.selectPressedAmount);
+            sourceData.Select.CurrentReading.Pressed = interactionSourceState.selectPressed;
+            sourceData.Select.CurrentReading.PressedAmount = interactionSourceState.selectPressedAmount;
 
             sourceData.Grasp.IsSupported = interactionSourceState.source.supportsGrasp;
             sourceData.Grasp.IsAvailable = sourceData.Grasp.IsSupported;
