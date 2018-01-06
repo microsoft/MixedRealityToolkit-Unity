@@ -356,6 +356,6 @@ MonoBehaviour:
   buttonType: 6
   InputManagerHorizontalAxisName: 
   InputManagerVerticalAxisName: 
-  Axis0Destination: 4
+  Axis0Destination: 5
   Axis1Destination: 6
   Axis2Destination: 6
