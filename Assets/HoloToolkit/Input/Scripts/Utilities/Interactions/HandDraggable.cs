@@ -84,11 +84,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 StopDragging();
             }
-
-            if (isGazed)
-            {
-                OnFocusExit();
-            }
         }
 
         private void Update()
@@ -299,7 +294,7 @@ namespace HoloToolkit.Unity.InputModule
             StoppedDragging.RaiseEvent();
         }
 
-        void IFocusHandler.OnFocusEnter()
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             if (!IsDraggingEnabled)
             {
@@ -314,7 +309,7 @@ namespace HoloToolkit.Unity.InputModule
             isGazed = true;
         }
 
-        public void OnFocusExit()
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             if (!IsDraggingEnabled)
             {
@@ -328,6 +323,8 @@ namespace HoloToolkit.Unity.InputModule
 
             isGazed = false;
         }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
@@ -359,7 +356,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+            if (!eventData.GenericInputPointingSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
             {
                 // The input source must provide positional data for this script to be usable
                 return;

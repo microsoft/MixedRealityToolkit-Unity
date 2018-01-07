@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Base class for an input source.
+    /// Base class for input sources that inherit from MonoBehaviour.
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {

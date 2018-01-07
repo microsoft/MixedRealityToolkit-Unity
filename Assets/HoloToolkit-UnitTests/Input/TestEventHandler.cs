@@ -31,15 +31,21 @@ namespace HoloToolkit.Unity.Tests
             {
                 eventData.Use();
             }
+
             EventFiredCallback(gameObject, eventData);
         }
 
-        public void OnFocusEnter()
+        public void OnFocusEnter(FocusEventData eventData)
         {
             EventFiredCallback(gameObject, null);
         }
 
-        public void OnFocusExit()
+        public void OnFocusExit(FocusEventData eventData)
+        {
+            EventFiredCallback(gameObject, null);
+        }
+
+        public void OnFocusChanged(FocusEventData eventData)
         {
             EventFiredCallback(gameObject, null);
         }

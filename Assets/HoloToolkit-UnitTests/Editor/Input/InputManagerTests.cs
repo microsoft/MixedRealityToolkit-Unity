@@ -19,14 +19,21 @@ namespace HoloToolkit.Unity.Tests
         {
             TestUtils.ClearScene();
             receivedEventSources = new List<GameObject>();
+
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
             inputManagerContainer.AddComponent<InputManager>();
-            inputManagerContainer.AddComponent<GazeManager>();
+            var gazeManager = inputManagerContainer.AddComponent<GazeManager>();
             inputManagerContainer.AddComponent<FocusManager>();
             inputManagerContainer.AddComponent<EventSystem>();
 
+            // Create a test cursor for gaze manager
+            var testCursorObj = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            var testCursor = testCursorObj.AddComponent<MeshCursor>();
+            gazeManager.Cursor = testCursor;
+
             inputManagerContainer.transform.position = inputManagerContainer.transform.forward * -5;
+
             //call awake and start 
             inputManagerContainer.CallInitialization();
         }
@@ -222,7 +229,6 @@ namespace HoloToolkit.Unity.Tests
             Assert.That(receivedEventSources[0], Is.EqualTo(handler));
         }
 
-
         private GameObject CreateTestHandler()
         {
             return SetTestHandler(new GameObject());
@@ -238,7 +244,6 @@ namespace HoloToolkit.Unity.Tests
             gameObject.AddComponent<TestEventHandler>().EventFiredCallback = OnEventFired;
             return gameObject;
         }
-
 
         private GameObject CreateGlobalTestHandler()
         {

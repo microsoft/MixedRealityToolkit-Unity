@@ -11,15 +11,23 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IPointingSource : IInputSource
     {
-        bool InteractionEnabled { get; }
+        Cursor Cursor { get; set; }
 
-        float? ExtentOverride { get; }
+        bool InteractionEnabled { get; }
 
         RayStep[] Rays { get; }
 
-        LayerMask[] PrioritizedLayerMasksOverride { get; }
+        float? ExtentOverride { get; set; }
+
+        LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
         PointerResult Result { get; set; }
+
+        BaseRayStabilizer RayStabilizer { get; set; }
+
+        bool FocusLocked { get; set; }
+
+        bool OwnAllInput { get; set; }
 
         void OnPreRaycast();
 
@@ -27,7 +35,7 @@ namespace HoloToolkit.Unity.InputModule
 
         bool OwnsInput(BaseEventData eventData);
 
-        bool FocusLocked { get; set; }
+        bool InputIsFromSource(InputEventData eventData);
 
         /// <summary>
         /// Returns the position of the input source, if available.

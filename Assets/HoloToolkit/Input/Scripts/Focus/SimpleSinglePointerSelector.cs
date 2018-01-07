@@ -33,7 +33,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool addedInputManagerListener;
         private IPointingSource currentPointer;
-        private InputSourcePointer inputSourcePointer;
 
         #endregion
 
@@ -78,7 +77,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Pointing))
             {
-                inputSourcePointer = (InputSourcePointer)eventData.InputSource;
+                var inputSourcePointer = (IPointingSource)eventData.InputSource;
                 if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
                 {
                     ConnectBestAvailablePointer();
@@ -196,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule
                 if (SupportsPointingRay(inputSource.Value))
                 {
                     AttachInputSourcePointer();
-                    bestPointer = inputSourcePointer;
+                    bestPointer = (IPointingSource)inputSource.Value;
                     break;
                 }
             }
@@ -213,14 +212,14 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (SupportsPointingRay(eventData))
             {
-                if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
+                if (IsInputSourcePointerActive && currentPointer.InputIsFromSource(eventData))
                 {
                     pointerWasChanged = false;
                 }
                 else
                 {
                     AttachInputSourcePointer();
-                    SetPointer(inputSourcePointer);
+                    SetPointer((IPointingSource)eventData.InputSource);
                     pointerWasChanged = true;
                 }
             }
@@ -263,15 +262,13 @@ namespace HoloToolkit.Unity.InputModule
 
         private void AttachInputSourcePointer()
         {
-            inputSourcePointer.RayStabilizer = ControllerPointerStabilizer;
-            inputSourcePointer.OwnAllInput = false;
-            inputSourcePointer.ExtentOverride = null;
-            inputSourcePointer.PrioritizedLayerMasksOverride = null;
+            currentPointer.RayStabilizer = ControllerPointerStabilizer;
+            currentPointer.OwnAllInput = false;
         }
 
         private bool IsInputSourcePointerActive
         {
-            get { return (currentPointer.SourceId == inputSourcePointer.SourceId); }
+            get { return currentPointer != null; }
         }
 
         private bool IsGazePointerActive

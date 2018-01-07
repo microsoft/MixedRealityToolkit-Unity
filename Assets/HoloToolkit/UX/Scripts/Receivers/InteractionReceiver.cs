@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 
@@ -12,7 +11,7 @@ namespace HoloToolkit.Unity.Receivers
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
     /// based on events from those interactable objects.  This is the base abstract class to extend from.
     /// </summary>
-    public abstract class InteractionReceiver : MonoBehaviour, IInputHandler, IHoldHandler, IPointerHandler, IManipulationHandler
+    public abstract class InteractionReceiver : MonoBehaviour, IFocusHandler, IInputHandler, IHoldHandler, IPointerHandler, IManipulationHandler, INavigationHandler
     {
         #region Public Members
         /// <summary>
@@ -61,7 +60,6 @@ namespace HoloToolkit.Unity.Receivers
         public virtual void OnEnable()
         {
             InputManager.Instance.AddGlobalListener(gameObject);
-            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -72,11 +70,6 @@ namespace HoloToolkit.Unity.Receivers
             if (InputManager.IsInitialized)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
-            }
-
-            if (FocusManager.IsInitialized)
-            {
-                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
             }
         }
 
@@ -205,32 +198,28 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        /// <summary>
-        /// Handle the pointer specific changes to fire focus enter and exit events
-        /// </summary>
-        /// <param name="pointer">The pointer associated with this focus change.</param>
-        /// <param name="oldFocusedObject">Object that was previously being focused.</param>
-        /// <param name="newFocusedObject">New object being focused.</param>
-        private void OnPointerSpecificFocusChanged(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        #region Global Listener Callbacks
+
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData) { }
+
+        void IFocusHandler.OnFocusExit(FocusEventData eventData) { }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData)
         {
-            PointerSpecificFocusEventData focusEventData = new PointerSpecificFocusEventData(EventSystem.current);
-            focusEventData.Initialize(pointer);
-
-            if (newFocusedObject != null && Isinteractable(newFocusedObject))
+            if (eventData.NewFocusedObject != null && Isinteractable(eventData.NewFocusedObject))
             {
-                FocusEnter(newFocusedObject, focusEventData);
+                FocusEnter(eventData.NewFocusedObject, eventData);
             }
 
-            if (oldFocusedObject != null && Isinteractable(oldFocusedObject))
+            if (eventData.OldFocusedObject != null && Isinteractable(eventData.OldFocusedObject))
             {
-                FocusExit(oldFocusedObject, focusEventData);
+                FocusExit(eventData.OldFocusedObject, eventData);
             }
 
-            CheckLockFocus(pointer);
+            CheckLockFocus(eventData.Pointer);
         }
 
-        #region Global Listener Callbacks
-        public void OnInputDown(InputEventData eventData)
+        void IInputHandler.OnInputDown(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -238,11 +227,11 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnInputPressed(InputPressedEventData eventData) { }
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
 
-        public void OnInputPositionChanged(InputPositionEventData eventData) { }
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
 
-        public void OnInputUp(InputEventData eventData)
+        void IInputHandler.OnInputUp(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -250,11 +239,11 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnPointerUp(ClickEventData eventData) { }
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(ClickEventData eventData) { }
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
 
-        public void OnPointerClicked(ClickEventData eventData)
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -262,7 +251,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnHoldStarted(InputEventData eventData)
+        void IHoldHandler.OnHoldStarted(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -270,7 +259,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnHoldCompleted(InputEventData eventData)
+        void IHoldHandler.OnHoldCompleted(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -278,7 +267,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnHoldCanceled(InputEventData eventData)
+        void IHoldHandler.OnHoldCanceled(InputEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -286,7 +275,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnManipulationStarted(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationStarted(ManipulationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -294,7 +283,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnManipulationUpdated(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationUpdated(ManipulationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -302,7 +291,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnManipulationCompleted(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationCompleted(ManipulationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -310,7 +299,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnManipulationCanceled(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationCanceled(ManipulationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -318,7 +307,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnNavigationStarted(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationStarted(NavigationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -326,7 +315,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnNavigationUpdated(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationUpdated(NavigationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -334,7 +323,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnNavigationCompleted(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationCompleted(NavigationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
@@ -342,18 +331,19 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        public void OnNavigationCanceled(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationCanceled(NavigationEventData eventData)
         {
             if (Isinteractable(eventData.selectedObject))
             {
                 NavigationCanceled(eventData.selectedObject, eventData);
             }
         }
-        #endregion
+
+        #endregion Global Listener Callbacks
 
         #region Protected Virtual Callback Functions
-        protected virtual void FocusEnter(GameObject obj, PointerSpecificFocusEventData focusEventData) { }
-        protected virtual void FocusExit(GameObject obj, PointerSpecificFocusEventData focusEventData) { }
+        protected virtual void FocusEnter(GameObject obj, FocusEventData focusEventData) { }
+        protected virtual void FocusExit(GameObject obj, FocusEventData focusEventData) { }
 
         protected virtual void InputDown(GameObject obj, InputEventData eventData) { }
         protected virtual void InputUp(GameObject obj, InputEventData eventData) { }

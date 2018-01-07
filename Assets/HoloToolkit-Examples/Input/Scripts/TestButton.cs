@@ -144,6 +144,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedToolTipMaterial);
+        }
+
         public void DehydrateButton()
         {
             if (ButtonAnimator != null && ButtonAnimator.isInitialized)
@@ -164,9 +169,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         }
 
         // Child classes can override to update button visuals
-        protected virtual void UpdateVisuals()
-        {
-        }
+        protected virtual void UpdateVisuals() { }
 
         private void UpdateButtonAnimation()
         {
@@ -197,11 +200,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnPointerUp(ClickEventData eventData) { }
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
 
-        public void OnPointerDown(ClickEventData eventData) { }
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
 
-        public void OnPointerClicked(ClickEventData eventData)
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             if (!EnableActivation)
             {
@@ -218,12 +221,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnFocusEnter()
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             Focused = true;
 
             // The first time the button is focused and the timer hasn't started, start the timer in a delayed mode
-            if (Focused && toolTipTimer == 0.0f)
+            if (Focused && toolTipTimer.Equals(0f))
             {
                 toolTipTimer = -ToolTipDelayTime;
             }
@@ -231,16 +234,14 @@ namespace HoloToolkit.Unity.InputModule.Tests
             UpdateVisuals();
         }
 
-        public void OnFocusExit()
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             Focused = false;
 
             UpdateVisuals();
         }
 
-        private void OnDestroy()
-        {
-            DestroyImmediate(cachedToolTipMaterial);
-        }
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
+
     }
 }

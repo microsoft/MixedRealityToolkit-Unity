@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public class XboxControllerHandlerBase : GamePadHandlerBase, IXboxControllerHandler
+    public class XboxControllerHandlerBase : GamePadHandlerBase
     {
         protected enum GestureState
         {

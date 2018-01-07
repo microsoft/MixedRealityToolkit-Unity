@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -108,29 +107,23 @@ namespace HoloToolkit.Unity.InputModule
         {
             public readonly IPointingSource PointingSource;
 
-            private PointerInputEventData pointerData;
-            public PointerInputEventData UnityUIPointerData
+            private GraphicInputEventData graphicData;
+            public GraphicInputEventData GraphicEventData
             {
                 get
                 {
-                    if (pointerData == null)
+                    if (graphicData == null)
                     {
-                        pointerData = new PointerInputEventData(EventSystem.current);
+                        graphicData = new GraphicInputEventData(EventSystem.current);
                     }
 
-                    return pointerData;
+                    return graphicData;
                 }
             }
 
             public PointerData(IPointingSource pointingSource)
             {
                 PointingSource = pointingSource;
-            }
-
-            [Obsolete("Use UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex) or UpdateHit (float extent)")]
-            public void UpdateHit(RaycastHit hit)
-            {
-                throw new NotImplementedException();
             }
 
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
@@ -163,7 +156,7 @@ namespace HoloToolkit.Unity.InputModule
                 };
             }
 
-            public void UpdateHit(float extent)
+            public void UpdateHit()
             {
                 PreviousEndObject = End.Object;
 
@@ -204,9 +197,6 @@ namespace HoloToolkit.Unity.InputModule
         /// to do a gaze raycast even if gaze isn't used for focus.
         /// </summary>
         private PointerData gazeManagerPointingData;
-
-        [Obsolete("Use GetGazePointerEventData or GetSpecificPointerEventData")]
-        public PointerInputEventData UnityUIPointerEvent { get; private set; }
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -321,10 +311,10 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
-                    RaiseFocusExitedEvents(unfocusedObject);
+                    InputManager.Instance.RaiseFocusExit(pointer.PointingSource, unfocusedObject);
                 }
 
-                RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, unfocusedObject, null);
+                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, unfocusedObject, null);
             }
         }
 
@@ -352,10 +342,10 @@ namespace HoloToolkit.Unity.InputModule
 
             IPointingSource pointingSource;
             TryGetPointingSource(eventData, out pointingSource);
-            PointerInputEventData pointerInputEventData = GetSpecificPointerEventData(pointingSource);
+            GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointingSource);
 
-            Debug.Assert(pointerInputEventData != null);
-            pointerInputEventData.selectedObject = details.Value.Object;
+            Debug.Assert(graphicInputEventData != null);
+            graphicInputEventData.selectedObject = details.Value.Object;
 
             return details.Value.Object;
         }
@@ -417,30 +407,15 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public delegate void FocusEnteredMethod(GameObject focusedObject);
-        public event FocusEnteredMethod FocusEntered;
-
-        public delegate void FocusExitedMethod(GameObject unfocusedObject);
-        public event FocusExitedMethod FocusExited;
-
-        public delegate void PointerSpecificFocusChangedMethod(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
-        public event PointerSpecificFocusChangedMethod PointerSpecificFocusChanged;
-
-        [Obsolete("Use either GetGazePointerEventData or GetSpecificPointerEventData")]
-        public PointerInputEventData GetPointerEventData()
+        public GraphicInputEventData GetGazePointerEventData()
         {
-            return GetGazePointerEventData();
+            return gazeManagerPointingData.GraphicEventData;
         }
 
-        public PointerInputEventData GetGazePointerEventData()
+        public GraphicInputEventData GetSpecificPointerGraphicEventData(IPointingSource pointer)
         {
-            return gazeManagerPointingData.UnityUIPointerData;
-        }
-
-        public PointerInputEventData GetSpecificPointerEventData(IPointingSource pointer)
-        {
-            PointerData pointerEventData;
-            return GetPointerData(pointer, out pointerEventData) ? pointerEventData.UnityUIPointerData : null;
+            PointerData pointerData;
+            return GetPointerData(pointer, out pointerData) ? pointerData.GraphicEventData : null;
         }
 
         public float GetPointingExtent(IPointingSource pointingSource)
@@ -575,7 +550,7 @@ namespace HoloToolkit.Unity.InputModule
             }
             else
             {
-                pointer.UpdateHit(GetPointingExtent(pointer.PointingSource));
+                pointer.UpdateHit();
             }
         }
 
@@ -629,8 +604,8 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid && 
-			     uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid &&
+                 uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
@@ -655,11 +630,11 @@ namespace HoloToolkit.Unity.InputModule
             UIRaycastCamera.transform.forward = step.direction;
 
             // We always raycast from the center of the camera.
-            pointer.UnityUIPointerData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
+            pointer.GraphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
-            uiRaycastResult = EventSystem.current.Raycast(pointer.UnityUIPointerData, prioritizedLayerMasks);
-            pointer.UnityUIPointerData.pointerCurrentRaycast = uiRaycastResult;
+            uiRaycastResult = EventSystem.current.Raycast(pointer.GraphicEventData, prioritizedLayerMasks);
+            pointer.GraphicEventData.pointerCurrentRaycast = uiRaycastResult;
 
             overridePhysicsRaycast = false;
 
@@ -720,7 +695,7 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     pendingPointerSpecificFocusChange.Add(pointer);
 
-                    // Initially, we assume all pointer-specific focus changes will result
+                    // Initially, we assume all pointer-specific focus changes will
                     // also result in an overall focus change...
 
                     if (pointer.PreviousEndObject != null)
@@ -747,57 +722,30 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Now we raise the events:
-
-            foreach (GameObject exit in pendingOverallFocusExitSet)
-            {
-                RaiseFocusExitedEvents(exit);
-            }
-
-            foreach (GameObject enter in pendingOverallFocusEnterSet)
-            {
-                RaiseFocusEnteredEvents(enter);
-            }
-
             for (int iChange = 0; iChange < pendingPointerSpecificFocusChange.Count; iChange++)
             {
                 PointerData change = pendingPointerSpecificFocusChange[iChange];
+                GameObject pendingUnfocusObject = change.PreviousEndObject;
+                GameObject pendingFocusObject = change.End.Object;
 
-                RaisePointerSpecificFocusChangedEvents(change.PointingSource, change.PreviousEndObject, change.End.Object);
+                if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
+                {
+                    InputManager.Instance.RaiseFocusExit(change.PointingSource, pendingUnfocusObject);
+                    pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
+                }
+
+                if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
+                {
+                    InputManager.Instance.RaiseFocusEnter(change.PointingSource, pendingFocusObject);
+                    pendingOverallFocusEnterSet.Remove(pendingFocusObject);
+                }
+
+                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
             }
 
-            pendingOverallFocusEnterSet.Clear();
-            pendingOverallFocusExitSet.Clear();
+            Debug.Assert(pendingOverallFocusExitSet.Count == 0);
+            Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
             pendingPointerSpecificFocusChange.Clear();
-        }
-
-        private void RaiseFocusExitedEvents(GameObject unfocusedObject)
-        {
-            InputManager.Instance.RaiseFocusExit(unfocusedObject);
-            //Debug.Log("Focus Exit: " + unfocusedObject.name);
-            if (FocusExited != null)
-            {
-                FocusExited(unfocusedObject);
-            }
-        }
-
-        private void RaiseFocusEnteredEvents(GameObject focusedObject)
-        {
-            InputManager.Instance.RaiseFocusEnter(focusedObject);
-            //Debug.Log("Focus Enter: " + focusedObject.name);
-            if (FocusEntered != null)
-            {
-                FocusEntered(focusedObject);
-            }
-        }
-
-        private void RaisePointerSpecificFocusChangedEvents(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
-        {
-            InputManager.Instance.RaisePointerSpecificFocusChangedEvents(pointer, oldFocusedObject, newFocusedObject);
-
-            if (PointerSpecificFocusChanged != null)
-            {
-                PointerSpecificFocusChanged(pointer, oldFocusedObject, newFocusedObject);
-            }
         }
 
         private bool GetPointerData(IPointingSource pointingSource, out PointerData pointerData)

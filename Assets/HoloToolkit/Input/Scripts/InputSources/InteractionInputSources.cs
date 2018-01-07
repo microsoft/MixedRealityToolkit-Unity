@@ -46,26 +46,22 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Dictionary linking each source ID to its data.
         /// </summary>
-        private readonly Dictionary<uint, InputSource> sourceIdToData = new Dictionary<uint, InputSource>(4);
+        private readonly Dictionary<uint, InteractionInputSource> sourceIdToData = new Dictionary<uint, InteractionInputSource>(4);
 
-        #region IInputSource Capabilities and InputSource
+        #region IInputSource Capabilities and GenericInputPointingSource
 
-        private class InputSource : IPointingSource
+        private class InteractionInputSource : GenericInputPointingSource
         {
 #if UNITY_WSA
             public readonly InteractionSource Source;
-            public InputSource(InteractionSource source)
+
+            public InteractionInputSource(InteractionSource source, uint sourceId, string name) : base(sourceId, name)
             {
                 Source = source;
-                SourceId = source.id;
-                Name = string.Format("{0} {1}", source.handedness, source.kind);
             }
 #endif
 
-            public uint SourceId { get; private set; }
-            public string Name { get; private set; }
-
-            public SupportedInputInfo GetSupportedInputInfo()
+            public override SupportedInputInfo GetSupportedInputInfo()
             {
                 var retVal = SupportedInputInfo.None;
                 retVal |= GetSupportFlag(PointerPosition, SupportedInputInfo.Position);
@@ -83,47 +79,6 @@ namespace HoloToolkit.Unity.InputModule
             private static SupportedInputInfo GetSupportFlag<TReading>(SourceCapability<TReading> capability, SupportedInputInfo flagIfSupported)
             {
                 return capability.IsSupported ? flagIfSupported : SupportedInputInfo.None;
-            }
-
-            public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-            {
-                return (GetSupportedInputInfo() & inputInfo) == inputInfo;
-            }
-
-            public bool InteractionEnabled { get; private set; }
-
-            public float? ExtentOverride { get; private set; }
-
-            public RayStep[] Rays { get; private set; }
-
-            public LayerMask[] PrioritizedLayerMasksOverride { get; private set; }
-
-            public PointerResult Result { get; set; }
-
-            public void OnPreRaycast() { }
-
-            public void OnPostRaycast() { }
-
-            public bool OwnsInput(BaseEventData eventData)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool FocusLocked { get; set; }
-
-            public bool TryGetPointerPosition(out Vector3 position)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool TryGetPointingRay(out Ray pointingRay)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool TryGetPointerRotation(out Quaternion rotation)
-            {
-                throw new NotImplementedException();
             }
 
             public void Reset()
@@ -180,7 +135,7 @@ namespace HoloToolkit.Unity.InputModule
             public bool Touched;
         }
 
-        #endregion IInputSource Capabilities and InputSource
+        #endregion IInputSource Capabilities and GenericInputPointingSource
 
         #region MonoBehaviour Implementation
 
@@ -345,7 +300,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-        #region InputSource Methods
+        #region GenericInputPointingSource Methods
 
         /// <summary>
         /// Get the Supported Input Info for the specified Input Source.
@@ -354,7 +309,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns><see cref="SupportedInputInfo"/></returns>
         public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             return sourceIdToData.TryGetValue(sourceId, out sourceData)
                     ? sourceData.GetSupportedInputInfo()
                     : SupportedInputInfo.None;
@@ -370,7 +325,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceKind = sourceData.Source.kind;
@@ -391,7 +346,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.PointingRay, out pointingRay))
             {
                 return true;
@@ -409,7 +364,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.PointerPosition, out position))
             {
                 return true;
@@ -427,7 +382,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.PointerRotation, out rotation))
             {
                 return true;
@@ -445,7 +400,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.GripPosition, out position))
             {
                 return true;
@@ -463,7 +418,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.GripRotation, out rotation))
             {
                 return true;
@@ -482,7 +437,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetThumbstick(uint sourceId, out bool thumbstickPressed, out Vector2 thumbstickPosition)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             AxisButton2D thumbstick;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Thumbstick, out thumbstick))
             {
@@ -506,7 +461,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetTouchpad(uint sourceId, out bool touchpadPressed, out bool touchpadTouched, out Vector2 touchpadPosition)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             TouchpadData touchpad;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Touchpad, out touchpad))
             {
@@ -531,7 +486,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetSelect(uint sourceId, out bool selectPressed, out double selectPressedAmount)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             AxisButton1D select;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Select, out select))
             {
@@ -553,7 +508,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetGrasp(uint sourceId, out bool graspPressed)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Grasp, out graspPressed))
             {
                 return true;
@@ -571,7 +526,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True if data is available.</returns>
         public bool TryGetMenu(uint sourceId, out bool menuPressed)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData) && TryGetReading(sourceData.Menu, out menuPressed))
             {
                 return true;
@@ -610,7 +565,7 @@ namespace HoloToolkit.Unity.InputModule
         public void StartHaptics(uint sourceId, float intensity)
         {
 #if UNITY_WSA
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceData.Source.StartHaptics(intensity);
@@ -627,7 +582,7 @@ namespace HoloToolkit.Unity.InputModule
         public void StartHaptics(uint sourceId, float intensity, float durationInSeconds)
         {
 #if UNITY_WSA
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceData.Source.StartHaptics(intensity, durationInSeconds);
@@ -642,7 +597,7 @@ namespace HoloToolkit.Unity.InputModule
         public void StopHaptics(uint sourceId)
         {
 #if UNITY_WSA
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceData.Source.StopHaptics();
@@ -650,7 +605,7 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-        #endregion InputSource Methods
+        #endregion GenericInputPointingSource Methods
 
         private void InitializeSources()
         {
@@ -683,12 +638,15 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="interactionSource">Interaction source for which data should be retrieved.</param>
         /// <returns>The source data requested.</returns>
-        private InputSource GetOrAddInteractionSource(InteractionSource interactionSource)
+        private InteractionInputSource GetOrAddInteractionSource(InteractionSource interactionSource)
         {
-            InputSource sourceData;
+            InteractionInputSource sourceData;
             if (!sourceIdToData.TryGetValue(interactionSource.id, out sourceData))
             {
-                sourceData = new InputSource(interactionSource);
+                sourceData = new InteractionInputSource(
+                        interactionSource,
+                        interactionSource.id,
+                        string.Format("{0} {1}", interactionSource.handedness, interactionSource.kind));
                 sourceIdToData.Add(sourceData.SourceId, sourceData);
             }
 
@@ -699,8 +657,8 @@ namespace HoloToolkit.Unity.InputModule
         /// Updates the source information.
         /// </summary>
         /// <param name="interactionSourceState">Interaction source to use to update the source information.</param>
-        /// <param name="sourceData">InputSource structure to update.</param>
-        private static void UpdateInteractionSource(InteractionSourceState interactionSourceState, InputSource sourceData)
+        /// <param name="sourceData">GenericInputPointingSource structure to update.</param>
+        private static void UpdateInteractionSource(InteractionSourceState interactionSourceState, InteractionInputSource sourceData)
         {
             Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
             Debug.Assert(interactionSourceState.source.kind == sourceData.Source.kind, "An UpdateSourceState call happened with mismatched source kind.");
@@ -814,7 +772,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
         {
-            InputSource sourceData = GetOrAddInteractionSource(args.state.source);
+            InteractionInputSource sourceData = GetOrAddInteractionSource(args.state.source);
 
             sourceData.Reset();
 

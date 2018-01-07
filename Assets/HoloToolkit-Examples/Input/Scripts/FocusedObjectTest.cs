@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// This class shows how to handle focus events and speech input events.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
-    public class FocusedObjectTest : MonoBehaviour, IFocusHandler, ISpeechHandler, IPointerSpecificFocusHandler
+    public class FocusedObjectTest : MonoBehaviour, IFocusHandler, ISpeechHandler
     {
         [Tooltip("Object color changes to this when focused.")]
         public Color FocusedColor = Color.red;
@@ -31,32 +31,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnFocusEnter()
-        {
-            cachedMaterial.SetColor("_Color", FocusedColor);
-        }
-
-        public void OnFocusExit()
-        {
-            cachedMaterial.SetColor("_Color", originalColor);
-        }
-
         private void OnDestroy()
         {
             DestroyImmediate(cachedMaterial);
-        }
-
-        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
-        {
-            switch (eventData.RecognizedText.ToLower())
-            {
-                case "make bigger":
-                    OnMakeBigger();
-                    break;
-                case "make smaller":
-                    OnMakeSmaller();
-                    break;
-            }
         }
 
         public void OnMakeBigger()
@@ -73,14 +50,29 @@ namespace HoloToolkit.Unity.InputModule.Tests
             transform.localScale = scale;
         }
 
-        public void OnFocusEnter(PointerSpecificFocusEventData focusEventData)
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             cachedMaterial.SetColor("_Color", FocusedColor);
         }
 
-        public void OnFocusExit(PointerSpecificFocusEventData focusEventData)
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             cachedMaterial.SetColor("_Color", originalColor);
+        }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
+
+        void ISpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            switch (eventData.RecognizedText.ToLower())
+            {
+                case "make bigger":
+                    OnMakeBigger();
+                    break;
+                case "make smaller":
+                    OnMakeSmaller();
+                    break;
+            }
         }
     }
 }

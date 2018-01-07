@@ -65,13 +65,13 @@ namespace HoloToolkit.Unity.InputModule
             base.OnCursorStateChange(state);
 
             // the cursor state has changed, reset the animation timer
-            if (mHasHand != this.IsHandVisible || mIsDown != this.IsInputSourceDown || mHasHover != (this.TargetedObject != null))
+            if (mHasHand != this.IsSourceDetected || mIsDown != this.IsPointerDown || mHasHover != (this.TargetedObject != null))
             {
                 mTimer = 0;
             }
 
-            mHasHand = this.IsHandVisible;
-            mIsDown = this.IsInputSourceDown;
+            mHasHand = this.IsSourceDetected;
+            mIsDown = this.IsPointerDown;
             mHasHover = this.TargetedObject != null;
 
             mTargetScale = mBaseScale * DefaultScale;
@@ -142,8 +142,8 @@ namespace HoloToolkit.Unity.InputModule
 
             // handle scale of main cursor go
             float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
-            float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
-            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
+            float smoothScaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
+            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothScaling);
         }
 
         /// <summary>

@@ -3,6 +3,10 @@
 
 using UnityEngine;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -13,14 +17,20 @@ namespace HoloToolkit.Unity.InputModule
         public CursorStateEnum CursorState { get { return cursorState; } }
         private CursorStateEnum cursorState = CursorStateEnum.None;
 
-        [SerializeField]
-        [Tooltip("Set this in the editor to an object with a component that implements IPointerSource to tell this cursor which pointer to follow. To set the pointer programmatically, set Pointer directly.")]
-        protected GameObject LoadPointer;
-
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
         /// </summary>
-        public IPointingSource Pointer { get; set; }
+        public IPointingSource Pointer
+        {
+            get { return pointer; }
+            set
+            {
+                pointer = value;
+                pointer.Cursor = this;
+            }
+        }
+
+        private IPointingSource pointer;
 
         /// <summary>
         /// Minimum distance for cursor if nothing is hit
@@ -88,14 +98,14 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Indicates if hand is current in the view
+        /// Indicates if the source is detected.
         /// </summary>
-        protected bool IsHandVisible;
+        protected bool IsSourceDetected;
 
         /// <summary>
-        /// Indicates air tap down
+        /// Indicates pointer or air tap down
         /// </summary>
-        protected bool IsInputSourceDown;
+        protected bool IsPointerDown;
 
         protected GameObject TargetedObject;
         protected ICursorModifier TargetedCursorModifier;
@@ -103,9 +113,7 @@ namespace HoloToolkit.Unity.InputModule
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
 
-        /// <summary>
-        /// Position, scale and rotational goals for cursor
-        /// </summary>
+        // Position, scale and rotational goals for cursor
         private Vector3 targetPosition;
         private Vector3 targetScale;
         private Quaternion targetRotation;
@@ -148,10 +156,11 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void OnEnable()
         {
-            if (FocusManager.IsInitialized && Pointer != null)
+            if (InputManager.IsInitialized && FocusManager.IsInitialized && Pointer != null)
             {
-                OnPointerSpecificFocusChanged(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
+                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
             }
+
             OnCursorStateChange(CursorStateEnum.None);
         }
 
@@ -163,7 +172,7 @@ namespace HoloToolkit.Unity.InputModule
             TargetedObject = null;
             TargetedCursorModifier = null;
             visibleHandsCount = 0;
-            IsHandVisible = false;
+            IsSourceDetected = false;
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
 
@@ -172,7 +181,7 @@ namespace HoloToolkit.Unity.InputModule
             UnregisterManagers();
         }
 
-        #endregion
+        #endregion MonoBehaviour Functions
 
         /// <summary>
         /// Register to events from the managers the cursor needs.
@@ -194,8 +203,6 @@ namespace HoloToolkit.Unity.InputModule
 
             InputManager.Instance.InputEnabled += OnInputEnabled;
             InputManager.Instance.InputDisabled += OnInputDisabled;
-
-            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -209,11 +216,6 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.InputDisabled -= OnInputDisabled;
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
-
-            if (FocusManager.IsInitialized)
-            {
-                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
-            }
         }
 
         private void TryLoadPointerIfNeeded()
@@ -222,17 +224,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 // Nothing to do. Keep the pointer that must have been set programmatically.
             }
-            else if (LoadPointer != null)
+            else if (GazeManager.IsInitialized)
             {
-                Pointer = LoadPointer.GetComponent<IPointingSource>();
-
-                if (Pointer == null)
-                {
-                    Debug.LogErrorFormat("Load pointer object \"{0}\" is missing its {1} component.",
-                        LoadPointer.name,
-                        typeof(IPointingSource).Name
-                        );
-                }
+                // We will default to the gaze manager for your pointing source.
+                Pointer = GazeManager.Instance;
             }
             else if (FocusManager.IsInitialized)
             {
@@ -244,28 +239,26 @@ namespace HoloToolkit.Unity.InputModule
                     Pointer = pointingSource;
                 }
             }
-            else
-            {
-                // No options available, so we leave Pointer unset. It will need to be set programmatically later.
-            }
         }
+
+
+        public virtual void OnFocusEnter(FocusEventData eventData) { }
+
+        public virtual void OnFocusExit(FocusEventData eventData) { }
 
         /// <summary>
         /// Updates the currently targeted object and cursor modifier upon getting
         /// an event indicating that the focused object has changed.
         /// </summary>
-        /// <param name="pointer">The pointer associated with this focus change.</param>
-        /// <param name="oldFocusedObject">Object that was previously being focused.</param>
-        /// <param name="newFocusedObject">New object being focused.</param>
-        protected virtual void OnPointerSpecificFocusChanged(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public virtual void OnFocusChanged(FocusEventData eventData)
         {
-            if (pointer == Pointer)
+            if (eventData.Pointer == Pointer)
             {
-                TargetedObject = newFocusedObject;
+                TargetedObject = eventData.NewFocusedObject;
 
-                CursorModifier newModifier = (newFocusedObject == null)
+                CursorModifier newModifier = (eventData.NewFocusedObject == null)
                     ? null
-                    : newFocusedObject.GetComponent<CursorModifier>();
+                    : eventData.NewFocusedObject.GetComponent<CursorModifier>();
 
                 OnActiveModifier(newModifier);
             }
@@ -287,7 +280,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(Pointer);
             GameObject newTargetedObject = focusDetails.Object;
-            Vector3 lookForward = Vector3.forward;
+            Vector3 lookForward;
 
             // Normalize scale on before update
             targetScale = Vector3.one;
@@ -352,7 +345,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             // Reset visible hands on disable
             visibleHandsCount = 0;
-            IsHandVisible = false;
+            IsSourceDetected = false;
 
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
@@ -366,40 +359,16 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Function for consuming the RaiseOnInputUp events
+        /// Function for receiving OnPointerDown events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnInputUp(InputEventData eventData)
+        public virtual void OnPointerDown(ClickEventData eventData)
         {
             if (Pointer != null && Pointer.OwnsInput(eventData))
             {
-                IsInputSourceDown = false;
+                IsPointerDown = true;
             }
         }
-
-        /// <summary>
-        /// Function for receiving OnInputDown events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnInputDown(InputEventData eventData)
-        {
-            if (Pointer != null && Pointer.OwnsInput(eventData))
-            {
-                IsInputSourceDown = true;
-            }
-        }
-
-        /// <summary>
-        /// Function for receiving OnInputPressed events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnInputPressed(InputPressedEventData eventData) { }
-
-        /// <summary>
-        /// Function for receiving OnInputPositionChanged events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnInputPositionChanged(InputPositionEventData eventData) { }
 
         /// <summary>
         /// Function for receiving OnPointerClicked events from InputManager
@@ -411,13 +380,13 @@ namespace HoloToolkit.Unity.InputModule
         /// Function for receiving OnPointerUp events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerUp(ClickEventData eventData) { }
-
-        /// <summary>
-        /// Function for receiving OnPointerDown events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnPointerDown(ClickEventData eventData) { }
+        public virtual void OnPointerUp(ClickEventData eventData)
+        {
+            if (Pointer != null && Pointer.OwnsInput(eventData))
+            {
+                IsPointerDown = false;
+            }
+        }
 
         /// <summary>
         /// Input source detected callback for the cursor
@@ -427,11 +396,16 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (Pointer != null && Pointer.OwnsInput(eventData))
             {
-                visibleHandsCount++;
-                IsHandVisible = true;
+#if UNITY_WSA
+                InteractionSourceKind sourceKind;
+                if (InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) && sourceKind == InteractionSourceKind.Hand)
+                {
+                    visibleHandsCount++;
+                }
+#endif
+                IsSourceDetected = true;
             }
         }
-
 
         /// <summary>
         /// Input source lost callback for the cursor
@@ -441,11 +415,18 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (Pointer != null && Pointer.OwnsInput(eventData))
             {
-                visibleHandsCount--;
+#if UNITY_WSA
+                InteractionSourceKind sourceKind;
+                if (InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) && sourceKind == InteractionSourceKind.Hand)
+                {
+                    visibleHandsCount--;
+                }
+#endif
+
                 if (visibleHandsCount == 0)
                 {
-                    IsHandVisible = false;
-                    IsInputSourceDown = false;
+                    IsSourceDetected = false;
+                    IsPointerDown = false;
                 }
             }
         }
@@ -473,21 +454,24 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (cursorState != CursorStateEnum.Contextual)
             {
-                if (IsInputSourceDown)
+                if (IsPointerDown)
                 {
                     return CursorStateEnum.Select;
                 }
-                else if (cursorState == CursorStateEnum.Select)
+
+                if (cursorState == CursorStateEnum.Select)
                 {
                     return CursorStateEnum.Release;
                 }
 
-                if (IsHandVisible)
+                if (IsSourceDetected)
                 {
                     return TargetedObject != null ? CursorStateEnum.InteractHover : CursorStateEnum.Interact;
                 }
+
                 return TargetedObject != null ? CursorStateEnum.ObserveHover : CursorStateEnum.Observe;
             }
+
             return CursorStateEnum.Contextual;
         }
 

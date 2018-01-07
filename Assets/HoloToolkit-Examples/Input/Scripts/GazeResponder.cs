@@ -18,7 +18,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
             defaultMaterials = GetComponent<Renderer>().materials;
         }
 
-        public void OnFocusEnter()
+        private void OnDestroy()
+        {
+            foreach (var material in defaultMaterials)
+            {
+                Destroy(material);
+            }
+        }
+
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
@@ -27,7 +35,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnFocusExit()
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
@@ -36,12 +44,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        private void OnDestroy()
-        {
-            foreach (var material in defaultMaterials)
-            {
-                Destroy(material);
-            }
-        }
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
     }
 }

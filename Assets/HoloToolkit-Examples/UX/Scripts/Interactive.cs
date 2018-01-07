@@ -177,7 +177,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// The gameObject received gaze
         /// </summary>
-        public virtual void OnFocusEnter()
+        /// <param name="eventData"></param>
+        public virtual void OnFocusEnter(FocusEventData eventData)
         {
             if (!IsEnabled)
             {
@@ -194,7 +195,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// The gameObject no longer has gaze
         /// </summary>
-        public virtual void OnFocusExit()
+        /// <param name="eventData"></param>
+        public virtual void OnFocusExit(FocusEventData eventData)
         {
             HasGaze = false;
             EndHoldDetection();
@@ -203,6 +205,8 @@ namespace HoloToolkit.Examples.InteractiveElements
             SetKeywordListener(false);
             UpdateEffects();
         }
+
+        public virtual void OnFocusChanged(FocusEventData eventData) { }
 
         private void SetKeywordListener(bool listen)
         {
@@ -543,7 +547,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         protected virtual void OnDisable()
         {
-            OnFocusExit();
+            OnFocusExit(null);
         }
     }
 }

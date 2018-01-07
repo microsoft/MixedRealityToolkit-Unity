@@ -221,10 +221,7 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        /// <summary>
-        /// FocusManager SendMessage("FocusEnter") receiver.
-        /// </summary>
-        void IFocusHandler.OnFocusEnter()
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             if (!m_disabled)
             {
@@ -235,10 +232,7 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        /// <summary>
-        /// FocusManager SendMessage("FocusExit") receiver.
-        /// </summary>
-        void IFocusHandler.OnFocusExit()
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
             {
@@ -257,6 +251,8 @@ namespace HoloToolkit.Unity.Buttons
                 _bFocused = false;
             }
         }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
 
         /// <summary>
         /// On Source detected see if it is a hand and increment hand count and set visibility

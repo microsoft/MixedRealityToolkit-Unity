@@ -12,6 +12,14 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GazeManager : Singleton<GazeManager>, IPointingSource
     {
+        [SerializeField]
+        [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
+        private GameObject cursorPrefab;
+
+        [SerializeField]
+        [Tooltip("Scene Cursor to use if you don't wish to instantiate the cursor during runtime.")]
+        private Cursor sceneCursor;
+
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.
         /// </summary>
@@ -86,9 +94,13 @@ namespace HoloToolkit.Unity.InputModule
 
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
+
+        LayerMask[] IPointingSource.PrioritizedLayerMasksOverride { get; set; }
         public PointerResult Result { get; set; }
+        public BaseRayStabilizer RayStabilizer { get; set; }
 
         public RayStep[] Rays { get { return rays; } }
+        float? IPointingSource.ExtentOverride { get; set; }
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.zero) };
 
@@ -102,12 +114,20 @@ namespace HoloToolkit.Unity.InputModule
             get { return RaycastLayerMasks; }
         }
 
+        public Cursor Cursor { get; set; }
+
         public bool InteractionEnabled
         {
             get { return true; }
         }
 
         public bool FocusLocked { get; set; }
+        public bool OwnAllInput { get; set; }
+
+        public bool InputIsFromSource(InputEventData eventData)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool TryGetPointerPosition(out Vector3 position)
         {
@@ -129,6 +149,21 @@ namespace HoloToolkit.Unity.InputModule
         protected override void Awake()
         {
             base.Awake();
+
+            if (sceneCursor != null)
+            {
+                Cursor = sceneCursor;
+                Debug.Assert(Cursor != null, "Failed to load cursor");
+            }
+
+            if (Cursor == null && cursorPrefab != null)
+            {
+                var cursorObj = Instantiate(cursorPrefab, transform);
+                Cursor = cursorObj.GetComponent<Cursor>();
+                Debug.Assert(Cursor != null, "Failed to load cursor");
+            }
+
+            Debug.Assert(Cursor != null, "You must either reference a cursor in the scene, or assign a prefab with a cursor component to the Gaze Manager.");
 
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
@@ -244,6 +279,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             return SupportedInputInfo.Pointing;
         }
+
         public bool SupportsInputInfo(SupportedInputInfo inputInfo)
         {
             return (GetSupportedInputInfo() & inputInfo) == inputInfo;

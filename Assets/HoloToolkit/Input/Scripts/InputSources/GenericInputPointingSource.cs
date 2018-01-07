@@ -1,20 +1,13 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    /// <summary>
-    /// Class implementing IPointingSource to demonstrate how to create a pointing source.
-    /// This is consumed by SimpleSinglePointerSelector.
-    /// </summary>
-    public class InputSourcePointer : IPointingSource
+    public class GenericInputPointingSource : GenericInputSource, IPointingSource
     {
-        public uint SourceId { get; protected set; }
+        public GenericInputPointingSource(uint sourceId, string name) : base(sourceId, name) { }
 
-        public string Name { get; protected set; }
+        public Cursor Cursor { get; set; }
 
         public BaseRayStabilizer RayStabilizer { get; set; }
 
@@ -43,6 +36,11 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         public bool TryGetPointerRotation(out Quaternion rotation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool InputIsFromSource(InputEventData eventData)
         {
             throw new System.NotImplementedException();
         }
@@ -78,16 +76,6 @@ namespace HoloToolkit.Unity.InputModule
             return (inputData != null)
                 && (inputData.InputSource == this)
                 && (inputData.SourceId == SourceId);
-        }
-
-        public SupportedInputInfo GetSupportedInputInfo()
-        {
-            return SupportedInputInfo.Pointing;
-        }
-
-        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
         }
     }
 }

@@ -10,8 +10,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
     {
         public UnityEvent FocusEnterEvent;
         public UnityEvent FocusLostEvent;
+        public UnityEvent<FocusEventData> FocusChangedEvent;
 
-        public void OnFocusEnter()
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             if (FocusEnterEvent != null)
             {
@@ -19,11 +20,19 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnFocusExit()
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             if (FocusLostEvent != null)
             {
                 FocusLostEvent.Invoke();
+            }
+        }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData)
+        {
+            if (FocusChangedEvent != null)
+            {
+                FocusChangedEvent.Invoke(eventData);
             }
         }
     }

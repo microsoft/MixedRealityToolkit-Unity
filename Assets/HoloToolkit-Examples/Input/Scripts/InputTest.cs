@@ -60,19 +60,29 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// <summary>
         /// Just a public method called by the Unity OnClick Event.
         /// </summary>
-        void IPointerClickHandler.OnPointerClick(UnityEngine.EventSystems.PointerEventData pointerEventData)
+        void IPointerClickHandler.OnPointerClick(PointerEventData pointerEventData)
         {
-            Debug.Log("OnPointerClick: " + pointerEventData.pointerId);
+            Debug.LogFormat("OnPointerClick: {0}", pointerEventData.pointerId);
+            pointerEventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        void IFocusHandler.OnFocusEnter()
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
-            Debug.Log("OnFocusEnter");
+            Debug.LogFormat("OnFocusEnter: {0}\r\nPointer: {0}  Pointer: {1}  SourceId: {2}", gameObject, eventData.Pointer, eventData.Pointer.SourceId);
         }
 
-        void IFocusHandler.OnFocusExit()
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
-            Debug.Log("OnFocusExit");
+            Debug.LogFormat("OnFocusExit: {0}\r\nPointer: {0}  Pointer: {1}  SourceId: {2}", gameObject, eventData.Pointer, eventData.Pointer.SourceId);
+        }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData)
+        {
+            Debug.LogFormat("OnSourceDetected\r\nPointer: {0}  Pointer SourceId: {1}  Old Focused Object: {2}  New Focused Object {3}",
+                            eventData.Pointer,
+                            eventData.Pointer.SourceId,
+                            eventData.OldFocusedObject,
+                            eventData.NewFocusedObject);
         }
 
         void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)

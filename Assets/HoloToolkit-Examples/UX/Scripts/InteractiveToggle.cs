@@ -129,19 +129,19 @@ namespace HoloToolkit.Examples.InteractiveElements
             ToggleLogic();
         }
 
-        public override void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
             if (((AllowDeselect && IsSelected) || !IsSelected ) &&!PassiveMode)
             {
-                base.OnFocusEnter();
+                base.OnFocusEnter(eventData);
             }
         }
 
-        public override void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
             if (((AllowDeselect && IsSelected) || !IsSelected) && !PassiveMode)
             {
-                base.OnFocusExit();
+                base.OnFocusExit(eventData);
             }
         }
 

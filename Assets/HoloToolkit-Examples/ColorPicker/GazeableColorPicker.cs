@@ -41,15 +41,17 @@ namespace HoloToolkit.Examples.ColorPicker
             cb.Invoke(col);
         }
 
-        public void OnFocusEnter()
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
             gazing = true;
         }
 
-        public void OnFocusExit()
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             gazing = false;
         }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
 
         public void OnPointerUp(ClickEventData eventData) { }
 

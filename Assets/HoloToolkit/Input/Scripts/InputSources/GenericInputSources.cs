@@ -7,7 +7,8 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// 
+    /// This class manages the Input Sources recognized by <see cref="Input.GetJoystickNames"/>.
+    /// <para> <remarks>The Windows Mixed Reality Spatial Controllers are handed in the <see cref="InteractionInputSources"/></remarks>.</para>
     /// </summary>
     public class GenericInputSources : Singleton<GenericInputSources>
     {
@@ -15,8 +16,16 @@ namespace HoloToolkit.Unity.InputModule
         protected const string XboxOneForWindows = "Xbox One For Windows";
         protected const string XboxBluetoothGamePad = "Xbox Bluetooth Gamepad";
         protected const string XboxWirelessController = "Xbox Wireless Controller";
+
         protected const string MotionControllerLeft = "Spatial Controller - Left";
         protected const string MotionControllerRight = "Spatial Controller - Right";
+
+        protected const string OpenVRControllerLeft = "OpenVR Controller - Left";
+        protected const string OpenVRControllerRight = "OpenVR Controller - Right";
+
+        protected const string OculusRemote = "Oculus Remote";
+        protected const string OculusTouchLeft = "Oculus Touch - Left";
+        protected const string OculusTouchRight = "Oculus Touch - Right";
 
         [SerializeField]
         [Tooltip("Time in seconds to determine if an Input Device has been connected or disconnected")]
@@ -25,33 +34,9 @@ namespace HoloToolkit.Unity.InputModule
 
         private float deviceRefreshTimer;
 
-        protected readonly Dictionary<string, InputSource> inputSources = new Dictionary<string, InputSource>(0);
+        protected readonly Dictionary<string, GenericInputPointingSource> InputSources = new Dictionary<string, GenericInputPointingSource>(0);
 
         #region Input Source Implementation
-
-        protected class InputSource : IInputSource
-        {
-            public InputSource(uint sourceId, string name)
-            {
-                SourceId = sourceId;
-                Name = name;
-            }
-
-            public uint SourceId { get; private set; }
-            public string Name { get; private set; }
-
-            public SupportedInputInfo SupportedInputInfo { get; private set; }
-
-            public SupportedInputInfo GetSupportedInputInfo()
-            {
-                return SupportedInputInfo;
-            }
-
-            public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-            {
-                return (GetSupportedInputInfo() & inputInfo) == inputInfo;
-            }
-        }
 
         #endregion
 
@@ -78,11 +63,11 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     if (!joystickNames[i].Equals(LastDeviceList[i]))
                     {
-                        InputSource source;
-                        if (inputSources.TryGetValue(joystickNames[i], out source))
+                        GenericInputPointingSource pointingSource;
+                        if (InputSources.TryGetValue(joystickNames[i], out pointingSource))
                         {
-                            InputManager.Instance.RaiseSourceLost(source);
-                            inputSources.Remove(joystickNames[i]);
+                            InputManager.Instance.RaiseSourceLost(pointingSource);
+                            InputSources.Remove(joystickNames[i]);
                         }
                     }
                 }
@@ -103,8 +88,8 @@ namespace HoloToolkit.Unity.InputModule
                     joystickNames[i].Contains(XboxBluetoothGamePad) ||
                     joystickNames[i].Contains(XboxWirelessController))
                 {
-                    var inputSource = new InputSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
-                    inputSources.Add(joystickNames[i], inputSource);
+                    var inputSource = new GenericInputPointingSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
+                    InputSources.Add(joystickNames[i], inputSource);
                     InputManager.Instance.RaiseSourceDetected(inputSource);
                 }
                 else

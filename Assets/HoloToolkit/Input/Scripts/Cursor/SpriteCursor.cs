@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected override void OnEnable()
         {
-            if(TargetRenderer == null)
+            if (TargetRenderer == null)
             {
                 TargetRenderer = GetComponentInChildren<SpriteRenderer>();
             }
@@ -75,7 +75,5 @@ namespace HoloToolkit.Unity.InputModule
                 TargetRenderer.color = stateDatum.CursorColor;
             }
         }
-
     }
-
 }
