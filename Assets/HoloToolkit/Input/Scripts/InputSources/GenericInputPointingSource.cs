@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
+    /// <summary>
+    /// Generic Input Pointing source that does not inherit from MonoBehaviour.
+    /// </summary>
     public class GenericInputPointingSource : GenericInputSource, IPointingSource
     {
         public GenericInputPointingSource(uint sourceId, string name) : base(sourceId, name) { }
@@ -55,7 +58,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (RayStabilizer != null)
             {
-                RayStabilizer.UpdateStability(rays[0].origin, rays[0].direction);
+                RayStabilizer.UpdateStability(rays[0].Origin, rays[0].Direction);
                 rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
             }
         }
