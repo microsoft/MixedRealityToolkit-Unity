@@ -73,12 +73,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         void IFocusHandler.OnFocusExit(FocusEventData eventData)
         {
-            Debug.LogFormat("OnFocusExit: {0}\r\nPointer: {0}  Pointer: {1}  SourceId: {2}", gameObject, eventData.Pointer, eventData.Pointer.SourceId);
+            Debug.LogFormat("OnFocusExit: {0}\r\nPointer: {0}  Pointer: {1}  SourceId: {2}", gameObject.name, eventData.Pointer, eventData.Pointer.SourceId);
         }
 
         void IFocusHandler.OnFocusChanged(FocusEventData eventData)
         {
-            Debug.LogFormat("OnSourceDetected\r\nPointer: {0}  Pointer SourceId: {1}  Old Focused Object: {2}  New Focused Object {3}",
+            Debug.LogFormat("OnFocusChanged\r\nPointer: {0}  Pointer SourceId: {1}  Old Focused Object: {2}  New Focused Object {3}",
                             eventData.Pointer,
                             eventData.Pointer.SourceId,
                             eventData.OldFocusedObject,

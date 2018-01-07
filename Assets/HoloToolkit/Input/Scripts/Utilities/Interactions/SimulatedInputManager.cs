@@ -1,26 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR;
-#else
-using UnityEngine.VR;
-#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
-    /// <summary>
-    /// This class is used to select input for the Editor and applications built outside of the UWP build target.
-    /// </summary>
-    public class CustomInputSelector : MonoBehaviour
+    public class SimulatedInputManager : Singleton<SimulatedInputManager>
     {
         private enum InputSourceType
         {
-            Hand,
-            Mouse
+            Hand
         }
 
         private enum InputSourceNumber
@@ -38,10 +31,7 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private InputSourceNumber sourceNumber;
 
-        public List<GameObject> Inputs = new List<GameObject>(0);
-
-        [SerializeField]
-        private GameObject mouse;
+        public List<GameObject> SimulatedInputs = new List<GameObject>(0);
 
         [SerializeField]
         private GameObject leftHand;
@@ -49,15 +39,12 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private GameObject rightHand;
 
-        private void Awake()
+        protected override void Awake()
         {
-            bool spawnControllers = false;
+            base.Awake();
 
-#if UNITY_2017_2_OR_NEWER
-            spawnControllers = !XRDevice.isPresent && XRSettings.enabled && simulateHandsInEditor;
-#else
-            spawnControllers = simulateHandsInEditor;
-#endif
+            bool spawnControllers =  !XRDevice.isPresent && XRSettings.enabled && simulateHandsInEditor;
+
             if (spawnControllers)
             {
                 sourceType = InputSourceType.Hand;
@@ -73,21 +60,15 @@ namespace HoloToolkit.Unity.InputModule
 
                     newRightInputSource.name = "Right_" + sourceType.ToString();
                     newRightInputSource.transform.SetParent(transform);
-                    Inputs.Add(newRightInputSource);
+                    SimulatedInputs.Add(newRightInputSource);
 
                     if (sourceNumber == InputSourceNumber.Two)
                     {
                         GameObject newLeftInputSource = Instantiate(leftHand);
                         newLeftInputSource.name = "Left_" + sourceType.ToString();
                         newLeftInputSource.transform.SetParent(transform);
-                        Inputs.Add(newLeftInputSource);
+                        SimulatedInputs.Add(newLeftInputSource);
                     }
-                    break;
-                case InputSourceType.Mouse:
-                    GameObject newMouseInputSource = Instantiate(mouse);
-                    newMouseInputSource.transform.SetParent(transform);
-                    Inputs.Add(newMouseInputSource);
-
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -95,3 +76,4 @@ namespace HoloToolkit.Unity.InputModule
         }
     }
 }
+#endif

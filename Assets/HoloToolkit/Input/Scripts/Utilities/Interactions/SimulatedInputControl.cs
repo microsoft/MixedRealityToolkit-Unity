@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Class for manually controlling inputs when running in the Unity editor.
     /// </summary>
-    public class CustomInputControl : MonoBehaviour
+    public class SimulatedInputControl : MonoBehaviour
     {
         public float ControllerReturnFactor = 0.25f;  /// [0.0,1.0] the closer this is to one the faster it brings the hand back to center
         public float ControllerTimeBeforeReturn = 0.5f;

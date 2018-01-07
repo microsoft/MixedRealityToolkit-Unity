@@ -16,41 +16,9 @@ namespace HoloToolkit.Unity.InputModule
     {
         #region MonoBehaviour Implementation
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            if (registeredPointers != null)
-            {
-                for (int iPointer = 0; iPointer < registeredPointers.Length; iPointer++)
-                {
-                    GameObject owner = registeredPointers[iPointer];
-
-                    if (owner == null)
-                    {
-                        Debug.LogError("AutoRegisteredPointers contains a null (\"None\") object.");
-                        break;
-                    }
-
-                    IPointingSource pointingSource = owner.GetComponent<IPointingSource>();
-
-                    if (pointingSource == null)
-                    {
-                        Debug.LogErrorFormat("AutoRegisteredPointers contains object \"{0}\" which is missing its {1} component.",
-                            owner.name,
-                            typeof(IPointingSource).Name
-                        );
-                        break;
-                    }
-
-                    RegisterPointer(pointingSource);
-                }
-            }
-        }
-
         private void Start()
         {
-            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
+            if (GazeManager.IsInitialized)
             {
                 RegisterPointer(GazeManager.Instance);
             }
@@ -62,7 +30,7 @@ namespace HoloToolkit.Unity.InputModule
             UpdateFocusedObjects();
         }
 
-        #endregion
+        #endregion MonoBehaviour Implementation
 
         #region Settings
 
@@ -86,12 +54,6 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.")]
         private LayerMask[] pointingRaycastLayerMasks = { Physics.DefaultRaycastLayers };
-
-        [SerializeField]
-        private GameObject[] registeredPointers = null;
-
-        [SerializeField]
-        private bool autoRegisterGazePointerIfNoPointersRegistered = true;
 
         [SerializeField]
         private bool debugDrawPointingRays = false;
