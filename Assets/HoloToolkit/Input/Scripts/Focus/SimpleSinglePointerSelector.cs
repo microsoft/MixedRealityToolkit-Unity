@@ -263,7 +263,6 @@ namespace HoloToolkit.Unity.InputModule
         private void AttachInputSourcePointer()
         {
             currentPointer.RayStabilizer = ControllerPointerStabilizer;
-            currentPointer.OwnAllInput = false;
         }
 
         private bool IsInputSourcePointerActive

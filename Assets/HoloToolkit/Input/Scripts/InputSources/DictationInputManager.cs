@@ -53,7 +53,26 @@ namespace HoloToolkit.Unity.InputModule
 
         private static bool isTransitioning;
         private static bool hasFailed;
-#endif
+
+#endif // UNITY_WSA || UNITY_STANDALONE_WIN
+
+        #region IInputSource Implementation
+
+        public uint SourceId { get; protected set; }
+
+        public string Name { get { return "Dictation"; } }
+
+        public SupportedInputInfo GetSupportedInputInfo()
+        {
+            return SupportedInputInfo.Voice;
+        }
+
+        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
+        {
+            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
+        }
+
+        #endregion IInputSource Implementation
 
         #region Unity Methods
 
@@ -193,6 +212,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #region Dictation Recognizer Callbacks
+
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 
         /// <summary>
@@ -254,25 +274,9 @@ namespace HoloToolkit.Unity.InputModule
             textSoFar = null;
             dictationResult = string.Empty;
         }
-#endif
+
+#endif // UNITY_WSA || UNITY_STANDALONE_WIN
+
         #endregion // Dictation Recognizer Callbacks
-
-        #region IInputSource Implementation
-
-        public uint SourceId { get; protected set; }
-
-        public string Name { get { return "Dictation"; } }
-
-        public SupportedInputInfo GetSupportedInputInfo()
-        {
-            return SupportedInputInfo.Voice;
-        }
-
-        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
-        }
-
-        #endregion IInputSource Implementation
     }
 }

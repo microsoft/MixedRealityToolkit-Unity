@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
@@ -108,6 +106,42 @@ namespace HoloToolkit.Unity.InputModule
             public bool PositionUpdated;
             public bool RotationUpdated;
             public bool SelectPressedAmountUpdated;
+
+            public override bool TryGetPointerPosition(out Vector3 position)
+            {
+                position = Vector3.zero;
+                if (PointerPosition.IsSupported && PointerPosition.IsAvailable)
+                {
+                    position = PointerPosition.CurrentReading;
+                    return true;
+                }
+
+                return false;
+            }
+
+            public override bool TryGetPointerRotation(out Quaternion rotation)
+            {
+                rotation = Quaternion.identity;
+                if (PointerRotation.IsSupported && PointerRotation.IsAvailable)
+                {
+                    rotation = PointerRotation.CurrentReading;
+                    return true;
+                }
+
+                return false;
+            }
+
+            public override bool TryGetPointingRay(out Ray pointingRay)
+            {
+                pointingRay = default(Ray);
+                if (PointingRay.IsSupported && PointingRay.IsAvailable)
+                {
+                    pointingRay = PointingRay.CurrentReading;
+                    return true;
+                }
+
+                return false;
+            }
         }
 
         private struct SourceCapability<TReading>
@@ -222,9 +256,9 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                InputManager.Instance.RaiseSourceLost(GetOrAddInteractionSource(states[i].source));
-                // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
-                sourceIdToData.Remove(states[i].source.id);
+                var source = GetOrAddInteractionSource(states[i].source);
+                InputManager.Instance.RaiseSourceLost(source);
+                sourceIdToData.Remove(source.SourceId);
             }
 #endif
         }
@@ -641,11 +675,12 @@ namespace HoloToolkit.Unity.InputModule
         private InteractionInputSource GetOrAddInteractionSource(InteractionSource interactionSource)
         {
             InteractionInputSource sourceData;
-            if (!sourceIdToData.TryGetValue(interactionSource.id, out sourceData))
+            uint sourceId = InputManager.GenerateNewSourceId();
+            if (!sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
                 sourceData = new InteractionInputSource(
                         interactionSource,
-                        interactionSource.id,
+                        sourceId,
                         string.Format("{0} {1}", interactionSource.handedness, interactionSource.kind));
                 sourceIdToData.Add(sourceData.SourceId, sourceData);
             }
@@ -660,7 +695,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="sourceData">GenericInputPointingSource structure to update.</param>
         private static void UpdateInteractionSource(InteractionSourceState interactionSourceState, InteractionInputSource sourceData)
         {
-            Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
+            Debug.Assert(interactionSourceState.source.id == sourceData.Source.id, "An UpdateSourceState call happened with mismatched source ID.");
             Debug.Assert(interactionSourceState.source.kind == sourceData.Source.kind, "An UpdateSourceState call happened with mismatched source kind.");
 
             Vector3 newPointerPosition;
@@ -828,10 +863,9 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
-            InputManager.Instance.RaiseSourceLost(GetOrAddInteractionSource(args.state.source));
-
-            // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
-            sourceIdToData.Remove(args.state.source.id);
+            var source = GetOrAddInteractionSource(args.state.source);
+            InputManager.Instance.RaiseSourceLost(source);
+            sourceIdToData.Remove(source.SourceId);
         }
 
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)

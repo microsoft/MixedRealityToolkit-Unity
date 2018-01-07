@@ -15,9 +15,11 @@ namespace HoloToolkit.Unity.InputModule
 
         bool InteractionEnabled { get; }
 
-        RayStep[] Rays { get; }
+        bool FocusLocked { get; set; }
 
         float? ExtentOverride { get; set; }
+
+        RayStep[] Rays { get; }
 
         LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
@@ -25,17 +27,13 @@ namespace HoloToolkit.Unity.InputModule
 
         BaseRayStabilizer RayStabilizer { get; set; }
 
-        bool FocusLocked { get; set; }
+        bool OwnsInput(BaseEventData eventData);
 
-        bool OwnAllInput { get; set; }
+        bool InputIsFromSource(InputEventData eventData);
 
         void OnPreRaycast();
 
         void OnPostRaycast();
-
-        bool OwnsInput(BaseEventData eventData);
-
-        bool InputIsFromSource(InputEventData eventData);
 
         /// <summary>
         /// Returns the position of the input source, if available.

@@ -162,7 +162,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-#endif
+#endif // UNITY_WSA || UNITY_STANDALONE_WIN
 
         #region Base Input Source Methods
 

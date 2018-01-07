@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
@@ -9,43 +12,38 @@ namespace HoloToolkit.Unity.InputModule
 
         public Cursor Cursor { get; set; }
 
-        public BaseRayStabilizer RayStabilizer { get; set; }
-
-        public bool OwnAllInput { get; set; }
-
-        public RayStep[] Rays { get { return rays; } }
-
-        public PointerResult Result { get; set; }
-
-        public float? ExtentOverride { get; set; }
-
-        public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
-
         public bool InteractionEnabled { get { return true; } }
 
         public bool FocusLocked { get; set; }
 
-        public bool TryGetPointerPosition(out Vector3 position)
-        {
-            throw new System.NotImplementedException();
-        }
+        public float? ExtentOverride { get; set; }
 
-        public bool TryGetPointingRay(out Ray pointingRay)
-        {
-            throw new System.NotImplementedException();
-        }
+        public RayStep[] Rays { get { return rays; } }
+        private readonly RayStep[] rays = { new RayStep(Vector3.zero, Vector3.forward) };
 
-        public bool TryGetPointerRotation(out Quaternion rotation)
+        public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
+
+        public PointerResult Result { get; set; }
+
+        public BaseRayStabilizer RayStabilizer { get; set; }
+
+        public bool OwnsInput(BaseEventData eventData)
         {
-            throw new System.NotImplementedException();
+            var inputData = (eventData as IInputSourceInfoProvider);
+
+            return (inputData != null)
+                   && (inputData.InputSource == this)
+                   && (inputData.SourceId == SourceId);
         }
 
         public bool InputIsFromSource(InputEventData eventData)
         {
-            throw new System.NotImplementedException();
-        }
+            var inputData = (eventData as IInputSourceInfoProvider);
 
-        private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
+            return (inputData != null)
+                && (inputData.InputSource == this)
+                && (inputData.SourceId == SourceId);
+        }
 
         public virtual void OnPreRaycast()
         {
@@ -64,18 +62,22 @@ namespace HoloToolkit.Unity.InputModule
 
         public virtual void OnPostRaycast() { }
 
-        public bool OwnsInput(BaseEventData eventData)
+        public virtual bool TryGetPointerPosition(out Vector3 position)
         {
-            return (OwnAllInput || InputIsFromSource(eventData));
+            position = Vector3.zero;
+            return false;
         }
 
-        public bool InputIsFromSource(BaseEventData eventData)
+        public virtual bool TryGetPointingRay(out Ray pointingRay)
         {
-            var inputData = (eventData as IInputSourceInfoProvider);
+            pointingRay = default(Ray);
+            return false;
+        }
 
-            return (inputData != null)
-                && (inputData.InputSource == this)
-                && (inputData.SourceId == SourceId);
+        public virtual bool TryGetPointerRotation(out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+            return false;
         }
     }
 }

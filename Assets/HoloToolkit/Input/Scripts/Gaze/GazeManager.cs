@@ -21,44 +21,6 @@ namespace HoloToolkit.Unity.InputModule
         private Cursor sceneCursor;
 
         /// <summary>
-        /// HitInfo property gives access to information at the object being gazed at, if any.
-        /// </summary>
-        public RaycastHit HitInfo { get; private set; }
-
-        /// <summary>
-        /// The game object that is currently being gazed at, if any.
-        /// </summary>
-        public GameObject HitObject { get; private set; }
-
-        /// <summary>
-        /// Position at which the gaze manager hit an object.
-        /// If no object is currently being hit, this will use the last hit distance.
-        /// </summary>
-        public Vector3 HitPosition { get; private set; }
-
-        /// <summary>
-        /// Normal of the point at which the gaze manager hit an object.
-        /// If no object is currently being hit, this will return the previous normal.
-        /// </summary>
-        public Vector3 HitNormal { get; private set; }
-
-        /// <summary>
-        /// Origin of the gaze.
-        /// </summary>
-        public Vector3 GazeOrigin
-        {
-            get { return Rays[0].origin; }
-        }
-
-        /// <summary>
-        /// Normal of the gaze.
-        /// </summary>
-        public Vector3 GazeNormal
-        {
-            get { return Rays[0].direction; }
-        }
-
-        /// <summary>
         /// Maximum distance at which the gaze can collide with an object.
         /// </summary>
         [Tooltip("Maximum distance at which the gaze can collide with an object.")]
@@ -83,7 +45,7 @@ namespace HoloToolkit.Unity.InputModule
         /// If left null, no stabilization will be performed.
         /// </summary>
         [Tooltip("Stabilizer, if any, used to smooth out the gaze ray data.")]
-        public BaseRayStabilizer Stabilizer = null;
+        public BaseRayStabilizer Stabilizer;
 
         /// <summary>
         /// Transform that should be used as the source of the gaze position and rotation.
@@ -95,60 +57,146 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("True to draw a debug view of the ray.")]
         public bool DebugDrawRay;
 
-        LayerMask[] IPointingSource.PrioritizedLayerMasksOverride { get; set; }
-        public PointerResult Result { get; set; }
-        public BaseRayStabilizer RayStabilizer { get; set; }
+        /// <summary>
+        /// HitInfo property gives access to information at the object being gazed at, if any.
+        /// </summary>
+        public RaycastHit HitInfo { get; private set; }
 
-        public RayStep[] Rays { get { return rays; } }
-        float? IPointingSource.ExtentOverride { get; set; }
+        /// <summary>
+        /// The game object that is currently being gazed at, if any.
+        /// </summary>
+        public GameObject HitObject { get; private set; }
 
-        private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.zero) };
+        /// <summary>
+        /// Position at which the gaze manager hit an object.
+        /// If no object is currently being hit, this will use the last hit distance.
+        /// </summary>
+        public Vector3 HitPosition { get; private set; }
+
+        /// <summary>
+        /// Normal of the point at which the gaze manager hit an object.
+        /// If no object is currently being hit, this will return the previous normal.
+        /// </summary>
+        public Vector3 HitNormal { get; private set; }
+
+        /// <summary>
+        /// Origin of the gaze.
+        /// </summary>
+        public Vector3 GazeOrigin { get { return Rays[0].origin; } }
+
+        /// <summary>
+        /// Normal of the gaze.
+        /// </summary>
+        public Vector3 GazeNormal { get { return Rays[0].direction; } }
+
+        private float lastHitDistance = 2.0f;
+
+        #region IInputSource Implementation
+
+        public uint SourceId { get; protected set; }
+
+        public string Name { get { return "Gaze"; } }
+
+        public SupportedInputInfo GetSupportedInputInfo()
+        {
+            return SupportedInputInfo.Pointing;
+        }
+
+        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
+        {
+            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
+        }
+
+        #endregion IInputSource Implementation
+
+        #region IPointingSource Implementation
+
+        public Cursor Cursor { get; set; }
+
+        public bool InteractionEnabled { get { return true; } }
+
+        public bool FocusLocked { get; set; }
 
         public float? ExtentOverride
         {
             get { return MaxGazeCollisionDistance; }
+            set
+            {
+                if (value.HasValue)
+                {
+                    MaxGazeCollisionDistance = value.Value;
+                }
+            }
         }
+
+        public RayStep[] Rays { get { return rays; } }
+        private readonly RayStep[] rays = { new RayStep(Vector3.zero, Vector3.zero) };
 
         public LayerMask[] PrioritizedLayerMasksOverride
         {
-            get { return RaycastLayerMasks; }
+            get
+            {
+                return RaycastLayerMasks;
+            }
+
+            set
+            {
+                RaycastLayerMasks = value;
+            }
         }
 
-        public Cursor Cursor { get; set; }
+        public PointerResult Result { get; set; }
 
-        public bool InteractionEnabled
+        public BaseRayStabilizer RayStabilizer { get; set; }
+
+        public bool OwnsInput(BaseEventData eventData)
         {
-            get { return true; }
-        }
+            var inputData = (eventData as IInputSourceInfoProvider);
 
-        public bool FocusLocked { get; set; }
-        public bool OwnAllInput { get; set; }
+            return (inputData != null)
+                   && (inputData.SourceId == SourceId);
+        }
 
         public bool InputIsFromSource(InputEventData eventData)
         {
-            throw new NotImplementedException();
+            var inputData = (eventData as IInputSourceInfoProvider);
+
+            return (inputData != null)
+                && (inputData.SourceId == SourceId);
         }
+
+        public virtual void OnPreRaycast()
+        {
+            UpdateGazeInfo();
+        }
+
+        public virtual void OnPostRaycast() { }
 
         public bool TryGetPointerPosition(out Vector3 position)
         {
-            throw new NotImplementedException();
+            position = GazeTransform.position;
+            return true;
         }
 
         public bool TryGetPointingRay(out Ray pointingRay)
         {
-            throw new NotImplementedException();
+            pointingRay = new Ray(GazeOrigin, GazeNormal);
+            return true;
         }
 
         public bool TryGetPointerRotation(out Quaternion rotation)
         {
-            throw new NotImplementedException();
+            rotation = Quaternion.identity;
+            return false;
         }
 
-        private float lastHitDistance = 2.0f;
+        #endregion IPointingSource Implementation
 
         protected override void Awake()
         {
             base.Awake();
+
+            SourceId = InputManager.GenerateNewSourceId();
 
             if (sceneCursor != null)
             {
@@ -162,8 +210,6 @@ namespace HoloToolkit.Unity.InputModule
                 Cursor = cursorObj.GetComponent<Cursor>();
                 Debug.Assert(Cursor != null, "Failed to load cursor");
             }
-
-            Debug.Assert(Cursor != null, "You must either reference a cursor in the scene, or assign a prefab with a cursor component to the Gaze Manager.");
 
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
@@ -229,22 +275,6 @@ namespace HoloToolkit.Unity.InputModule
             UpdateHitPosition();
         }
 
-        public virtual void OnPreRaycast()
-        {
-            UpdateGazeInfo();
-        }
-
-        public virtual void OnPostRaycast()
-        {
-            // Nothing needed
-        }
-
-        public bool OwnsInput(BaseEventData eventData)
-        {
-            // NOTE: This is a simple pointer and not meant to be used simultaneously with others.
-            return true;
-        }
-
         /// <summary>
         /// Notifies this gaze manager of its new hit details.
         /// </summary>
@@ -269,20 +299,6 @@ namespace HoloToolkit.Unity.InputModule
         private void UpdateHitPosition()
         {
             HitPosition = (Rays[0].origin + (lastHitDistance * Rays[0].direction));
-        }
-
-        public uint SourceId { get; protected set; }
-
-        public string Name { get { return "Gaze"; } }
-
-        public SupportedInputInfo GetSupportedInputInfo()
-        {
-            return SupportedInputInfo.Pointing;
-        }
-
-        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
         }
     }
 }
