@@ -25,17 +25,29 @@ namespace HoloToolkit.Unity
             return PrioritizeRaycastResult(layerMasks);
         }
 
-        private static RaycastResult PrioritizeRaycastResult(LayerMask[] layerMaskPrio)
+        private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority)
         {
             ComparableRaycastResults.Clear();
-            foreach (var raycastResult in RaycastResults)
+            for (var i = 0; i < RaycastResults.Count; i++)
             {
-                if (raycastResult.gameObject == null) { continue; }
-                var layerMaskIndex = raycastResult.gameObject.layer.FindLayerListIndex(layerMaskPrio);
+                if (RaycastResults[i].gameObject == null) { continue; }
+
+                var layerMaskIndex = RaycastResults[i].gameObject.layer.FindLayerListIndex(priority);
                 if (layerMaskIndex == -1) { continue; }
-                ComparableRaycastResults.Add(new ComparableRaycastResult(raycastResult, layerMaskIndex));
+
+                ComparableRaycastResults.Add(new ComparableRaycastResult(RaycastResults[i], layerMaskIndex));
             }
-            return ComparableRaycastResults.MaxOrDefault(RaycastResultComparer).RaycastResult;
+
+            ComparableRaycastResult maxResult = default(ComparableRaycastResult);
+            for (int i = 0; i < ComparableRaycastResults.Count; i++)
+            {
+                if (RaycastResultComparer.Compare(maxResult, ComparableRaycastResults[i]) < 0)
+                {
+                    maxResult = ComparableRaycastResults[i];
+                }
+            }
+
+            return maxResult.RaycastResult;
         }
     }
 }
