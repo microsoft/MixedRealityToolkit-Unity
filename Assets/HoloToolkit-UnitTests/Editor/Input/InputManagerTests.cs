@@ -225,7 +225,8 @@ namespace HoloToolkit.Unity.Tests
 
             GazeManager.Instance.gameObject.CallUpdate();
 
-            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
+            // We receive two events 1. OnFocusEnter/OnFocusExit 2. OnFocusChanged
+            Assert.That(receivedEventSources.Count, Is.EqualTo(2));
             Assert.That(receivedEventSources[0], Is.EqualTo(handler));
         }
 
