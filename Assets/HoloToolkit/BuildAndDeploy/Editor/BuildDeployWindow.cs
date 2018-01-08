@@ -306,7 +306,7 @@ namespace HoloToolkit.Unity
             // SDK and MS Build Version(and save setting, if it's changed)
             string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
 
-            int currentSDKVersionIndex = 0;
+            int currentSDKVersionIndex = -1;
 
             for (var i = 0; i < windowsSdkPaths.Length; i++)
             {
@@ -323,7 +323,7 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            if (currentSDKVersionIndex == 0)
+            if (currentSDKVersionIndex == -1)
             {
                 Debug.LogErrorFormat("Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion);
             }
