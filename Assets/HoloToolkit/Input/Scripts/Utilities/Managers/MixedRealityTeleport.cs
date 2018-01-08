@@ -4,18 +4,11 @@
 
 using System;
 using UnityEngine;
-
-#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR;
+
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Input;
-#endif
-#else
-using UnityEngine.VR;
-#if UNITY_WSA
-using UnityEngine.VR.WSA.Input;
-#endif
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -27,16 +20,16 @@ namespace HoloToolkit.Unity.InputModule
     public class MixedRealityTeleport : Singleton<MixedRealityTeleport>, IInputHandler
     {
         [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
-        public XboxControllerMappingTypes HorizontalStrafe = XboxControllerMappingTypes.XboxLeftStickHorizontal;
+        public XboxControllerInputType HorizontalStrafe = XboxControllerInputType.XboxLeftStickHorizontal;
 
         [Tooltip("Name of the thumbstick axis to check for movement forwards and backwards.")]
-        public XboxControllerMappingTypes ForwardMovement = XboxControllerMappingTypes.XboxLeftStickVertical;
+        public XboxControllerInputType ForwardMovement = XboxControllerInputType.XboxLeftStickVertical;
 
         [Tooltip("Name of the thumbstick axis to check for rotation.")]
-        public XboxControllerMappingTypes HorizontalRotation = XboxControllerMappingTypes.XboxRightStickHorizontal;
+        public XboxControllerInputType HorizontalRotation = XboxControllerInputType.XboxRightStickHorizontal;
 
         [Tooltip("Name of the thumbstick axis to check for rotation.")]
-        public XboxControllerMappingTypes VerticalRotation = XboxControllerMappingTypes.XboxRightStickVertical;
+        public XboxControllerInputType VerticalRotation = XboxControllerInputType.XboxRightStickVertical;
 
         [Tooltip("Custom Input Mapping for horizontal teleport and strafe")]
         public string LeftThumbstickX = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_HORIZONTAL;
@@ -85,15 +78,11 @@ namespace HoloToolkit.Unity.InputModule
 
             // If our FadeManager is missing, or if we're on the HoloLens
             // Remove this component.
-#if UNITY_2017_2_OR_NEWER
-            if (!XRDevice.isPresent ||
+            if (!XRDevice.isPresent || fadeControl == null
 #if UNITY_WSA
-                !HolographicSettings.IsDisplayOpaque ||
+                                    || !HolographicSettings.IsDisplayOpaque
 #endif
-                fadeControl == null)
-#else
-            if (VRDevice.isPresent || fadeControl == null)
-#endif
+                )
             {
                 Destroy(this);
                 return;
@@ -114,13 +103,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Update()
         {
-#if UNITY_WSA
-            if (InteractionManager.numSourceStates == 0)
-            {
-                HandleGamepad();
-            }
-#endif
-
             if (currentPointingSource != null)
             {
                 PositionMarker();
@@ -129,57 +111,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void HandleGamepad()
         {
-            if (EnableTeleport && !fadeControl.Busy)
-            {
-                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
-                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
-
-                if (currentPointingSource == null && leftY > 0.8 && Math.Abs(leftX) < 0.3)
-                {
-                    if (FocusManager.Instance.TryGetSinglePointer(out currentPointingSource))
-                    {
-                        StartTeleport();
-                    }
-                }
-                else if (currentPointingSource != null && new Vector2(leftX, leftY).magnitude < 0.2)
-                {
-                    FinishTeleport();
-                }
-            }
-
-            if (EnableStrafe && currentPointingSource == null && !fadeControl.Busy)
-            {
-                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
-                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
-
-                if (leftX < -0.8 && Math.Abs(leftY) < 0.3)
-                {
-                    DoStrafe(Vector3.left * StrafeAmount);
-                }
-                else if (leftX > 0.8 && Math.Abs(leftY) < 0.3)
-                {
-                    DoStrafe(Vector3.right * StrafeAmount);
-                }
-                else if (leftY < -0.8 && Math.Abs(leftX) < 0.3)
-                {
-                    DoStrafe(Vector3.back * StrafeAmount);
-                }
-            }
-
-            if (EnableRotation && currentPointingSource == null && !fadeControl.Busy)
-            {
-                float rightX = Input.GetAxis(useCustomMapping ? RightThumbstickX : XboxControllerMapping.GetMapping(HorizontalRotation));
-                float rightY = Input.GetAxis(useCustomMapping ? RightThumbstickY : XboxControllerMapping.GetMapping(VerticalRotation));
-
-                if (rightX < -0.8 && Math.Abs(rightY) < 0.3)
-                {
-                    DoRotation(-RotationSize);
-                }
-                else if (rightX > 0.8 && Math.Abs(rightY) < 0.3)
-                {
-                    DoRotation(RotationSize);
-                }
-            }
         }
 
         void IInputHandler.OnInputUp(InputEventData eventData) { }
@@ -190,42 +121,46 @@ namespace HoloToolkit.Unity.InputModule
 
         void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
         {
-            if ((InputType)eventData.Tags[0] == InputType.Thumbstick)
+#if UNITY_WSA
+            if (eventData.PressType != InteractionSourcePressType.Thumbstick)
+#endif
             {
-                if (EnableTeleport)
+                return;
+            }
+
+            if (EnableTeleport)
+            {
+                if (currentPointingSource == null && eventData.InputPosition.y > 0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
                 {
-                    if (currentPointingSource == null && eventData.InputPosition.y > 0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
+                    if (FocusManager.Instance.TryGetPointingSource(eventData, out currentPointingSource))
                     {
-                        if (FocusManager.Instance.TryGetPointingSource(eventData, out currentPointingSource))
-                        {
-                            currentSourceId = eventData.SourceId;
-                            StartTeleport();
-                        }
-                    }
-                    else if (currentPointingSource != null && currentSourceId == eventData.SourceId && eventData.InputPosition.magnitude < 0.2)
-                    {
-                        FinishTeleport();
+                        currentSourceId = eventData.SourceId;
+                        StartTeleport();
                     }
                 }
-
-                if (EnableStrafe && currentPointingSource == null)
+                else if (currentPointingSource != null && currentSourceId == eventData.SourceId && eventData.InputPosition.magnitude < 0.2)
                 {
-                    if (eventData.InputPosition.y < -0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
-                    {
-                        DoStrafe(Vector3.back * StrafeAmount);
-                    }
+                    FinishTeleport();
                 }
+            }
 
-                if (EnableRotation && currentPointingSource == null)
+            if (EnableStrafe && currentPointingSource == null)
+            {
+                if (eventData.InputPosition.y < -0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
                 {
-                    if (eventData.InputPosition.x < -0.8 && Math.Abs(eventData.InputPosition.y) < 0.3)
-                    {
-                        DoRotation(-RotationSize);
-                    }
-                    else if (eventData.InputPosition.x > 0.8 && Math.Abs(eventData.InputPosition.y) < 0.3)
-                    {
-                        DoRotation(RotationSize);
-                    }
+                    DoStrafe(Vector3.back * StrafeAmount);
+                }
+            }
+
+            if (EnableRotation && currentPointingSource == null)
+            {
+                if (eventData.InputPosition.x < -0.8 && Math.Abs(eventData.InputPosition.y) < 0.3)
+                {
+                    DoRotation(-RotationSize);
+                }
+                else if (eventData.InputPosition.x > 0.8 && Math.Abs(eventData.InputPosition.y) < 0.3)
+                {
+                    DoRotation(RotationSize);
                 }
             }
         }

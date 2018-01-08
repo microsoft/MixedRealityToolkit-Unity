@@ -324,8 +324,6 @@ MonoBehaviour:
   pointingRaycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291
-  registeredPointers: []
-  autoRegisterGazePointerIfNoPointersRegistered: 1
   debugDrawPointingRays: 0
   debugDrawPointingRayColors: []
   uiRaycastCamera: {fileID: 20049547090947856}

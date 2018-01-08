@@ -3,10 +3,6 @@
 
 using UnityEngine.EventSystems;
 
-#if UNITY_WSA
-using UnityEngine.XR.WSA.Input;
-#endif
-
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -24,12 +20,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public uint SourceId { get; private set; }
 
-#if UNITY_WSA
-        public InteractionSourcePressType PressType { get; private set; }
-#endif
-
-        public Handedness Handedness { get; private set; }
-
         /// <summary>
         /// An optional, input-source-dependent object to be associated with this event.
         /// </summary>
@@ -37,40 +27,12 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        protected void BaseInitialize(IInputSource inputSource, object[] tags)
+        public void Initialize(IInputSource inputSource, object[] tags)
         {
             Reset();
             InputSource = inputSource;
             SourceId = InputSource.SourceId;
             Tags = tags;
-            Handedness = Handedness.None;
-#if UNITY_WSA
-            PressType = InteractionSourcePressType.None;
-#endif
         }
-
-        protected void BaseInitialize(IInputSource inputSource, Handedness handedness, object[] tags)
-        {
-            Reset();
-            InputSource = inputSource;
-            SourceId = InputSource.SourceId;
-            Tags = tags;
-            Handedness = handedness;
-#if UNITY_WSA
-            PressType = InteractionSourcePressType.None;
-#endif
-        }
-
-#if UNITY_WSA
-        protected void BaseInitialize(IInputSource inputSource, InteractionSourcePressType pressType, Handedness handedness, object[] tags)
-        {
-            Reset();
-            InputSource = inputSource;
-            SourceId = InputSource.SourceId;
-            Tags = tags;
-            Handedness = handedness;
-            PressType = pressType;
-        }
-#endif
     }
 }

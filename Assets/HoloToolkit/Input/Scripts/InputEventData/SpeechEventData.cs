@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Describes an input event that involves keyword recognition.
     /// </summary>
-    public class SpeechEventData : InputEventData
+    public class SpeechEventData : BaseInputEventData
     {
         /// <summary>
         /// The time it took for the phrase to be uttered.

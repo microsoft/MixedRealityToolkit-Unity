@@ -32,13 +32,14 @@ namespace HoloToolkit.Unity.InputModule
         protected float DeviceRefreshInterval = 3.0f;
         protected string[] LastDeviceList;
 
+        protected BaseInputMapping<XboxControllerInputType> XboxControllerMapping;
+        protected BaseInputMapping<ViveControllerInputType> ViveControllerMapping;
+        protected BaseInputMapping<OculusControllerInputType> OculusControllerMapping;
+
+        protected readonly Dictionary<string, GenericInputSource> InputSources = new Dictionary<string, GenericInputSource>(0);
+        protected readonly Dictionary<string, GenericInputPointingSource> InputPointerSources = new Dictionary<string, GenericInputPointingSource>(0);
+
         private float deviceRefreshTimer;
-
-        protected readonly Dictionary<string, GenericInputPointingSource> InputSources = new Dictionary<string, GenericInputPointingSource>(0);
-
-        #region Input Source Implementation
-
-        #endregion
 
         protected virtual void Update()
         {
@@ -61,14 +62,19 @@ namespace HoloToolkit.Unity.InputModule
             {
                 for (int i = 0; i < LastDeviceList.Length; i++)
                 {
-                    if (!joystickNames[i].Equals(LastDeviceList[i]))
+                    if (joystickNames[i].Equals(LastDeviceList[i])) { continue; }
+
+                    GenericInputSource inputSource;
+                    GenericInputPointingSource pointingSource;
+                    if (InputSources.TryGetValue(joystickNames[i], out inputSource))
                     {
-                        GenericInputPointingSource pointingSource;
-                        if (InputSources.TryGetValue(joystickNames[i], out pointingSource))
-                        {
-                            InputManager.Instance.RaiseSourceLost(pointingSource);
-                            InputSources.Remove(joystickNames[i]);
-                        }
+                        InputManager.Instance.RaiseSourceLost(inputSource);
+                        InputSources.Remove(joystickNames[i]);
+                    }
+                    else if (InputPointerSources.TryGetValue(joystickNames[i], out pointingSource))
+                    {
+                        InputManager.Instance.RaiseSourceLost(pointingSource);
+                        InputPointerSources.Remove(joystickNames[i]);
                     }
                 }
             }
@@ -88,8 +94,18 @@ namespace HoloToolkit.Unity.InputModule
                     joystickNames[i].Contains(XboxBluetoothGamePad) ||
                     joystickNames[i].Contains(XboxWirelessController))
                 {
-                    var inputSource = new GenericInputPointingSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
+                    var inputSource = new GenericInputSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
                     InputSources.Add(joystickNames[i], inputSource);
+                    InputManager.Instance.RaiseSourceDetected(inputSource);
+                }
+                else if (joystickNames[i].Contains(OculusRemote) ||
+                         joystickNames[i].Contains(OculusTouchLeft) ||
+                         joystickNames[i].Contains(OculusTouchRight) ||
+                         joystickNames[i].Contains(OpenVRControllerLeft) ||
+                         joystickNames[i].Contains(OpenVRControllerRight))
+                {
+                    var inputSource = new GenericInputPointingSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
+                    InputPointerSources.Add(joystickNames[i], inputSource);
                     InputManager.Instance.RaiseSourceDetected(inputSource);
                 }
                 else

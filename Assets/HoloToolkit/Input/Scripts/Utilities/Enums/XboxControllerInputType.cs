@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Xbox Controller axis and button types.
     /// </summary>
     [Flags]
-    public enum XboxControllerMappingTypes
+    public enum XboxControllerInputType
     {
         None = 0,
         XboxLeftStickHorizontal = 1,

@@ -48,16 +48,6 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IEquality Implementation
 
-        public static bool operator ==(GenericInputSource left, GenericInputSource right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(GenericInputSource left, GenericInputSource right)
-        {
-            return !(left == right);
-        }
-
         public static bool Equals(IInputSource left, IInputSource right)
         {
             return left.Equals(right);

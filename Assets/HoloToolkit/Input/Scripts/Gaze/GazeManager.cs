@@ -240,6 +240,7 @@ namespace HoloToolkit.Unity.InputModule
             if (sceneCursor != null)
             {
                 Cursor = sceneCursor;
+                Cursor.transform.parent = GazeTransform;
                 Debug.Assert(Cursor != null, "Failed to load cursor");
             }
 

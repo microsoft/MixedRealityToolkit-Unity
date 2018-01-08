@@ -2,15 +2,13 @@
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public class GamePadHandlerBase : MonoBehaviour, ISourceStateHandler
+    public class GamePadHandlerBase : MonoBehaviour, ISourceStateHandler, IInputHandler
     {
         [SerializeField]
         [Tooltip("True, if gaze is not required for Input")]
         protected bool IsGlobalListener = true;
 
-        protected string GamePadName = string.Empty;
-
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             if (IsGlobalListener)
             {
@@ -26,18 +24,20 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public virtual void OnSourceDetected(SourceStateEventData eventData)
-        {
-            // Override and name your GamePad source.
-        }
+        public virtual void OnSourceDetected(SourceStateEventData eventData) { }
 
-        public virtual void OnSourceLost(SourceStateEventData eventData)
-        {
-            GamePadName = string.Empty;
-        }
+        public virtual void OnSourceLost(SourceStateEventData eventData) { }
 
         public virtual void OnSourcePositionChanged(SourcePositionEventData eventData) { }
 
         public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
+
+        public virtual void OnInputUp(InputEventData eventData) { }
+
+        public virtual void OnInputDown(InputEventData eventData) { }
+
+        public virtual void OnInputPressed(InputPressedEventData eventData) { }
+
+        public virtual void OnInputPositionChanged(InputPositionEventData eventData) { }
     }
 }
