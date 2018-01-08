@@ -552,8 +552,8 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             RaycastHit physicsHit = default(RaycastHit);
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer");
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer");
 
             // Check raycast for each step in the pointing source
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -606,7 +606,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.End.Point != Vector3.zero, string.Format("No pointer {0} end point found to raycast against!", pointer.PointingSource.GetType()));
+            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before you can process uGUI raycasting.");
 
             RaycastResult uiRaycastResult = default(RaycastResult);
@@ -614,8 +614,8 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer");
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer");
 
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -629,8 +629,8 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid && 
-			     uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid &&
+                 uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;

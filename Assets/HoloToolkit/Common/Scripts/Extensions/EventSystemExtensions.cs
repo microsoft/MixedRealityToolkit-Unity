@@ -10,7 +10,6 @@ namespace HoloToolkit.Unity
     public static class EventSystemExtensions
     {
         private static readonly List<RaycastResult> RaycastResults = new List<RaycastResult>();
-        private static readonly List<ComparableRaycastResult> ComparableRaycastResults = new List<ComparableRaycastResult>();
         private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         /// <summary>
@@ -27,7 +26,8 @@ namespace HoloToolkit.Unity
 
         private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority)
         {
-            ComparableRaycastResults.Clear();
+            ComparableRaycastResult maxResult = default(ComparableRaycastResult);
+
             for (var i = 0; i < RaycastResults.Count; i++)
             {
                 if (RaycastResults[i].gameObject == null) { continue; }
@@ -35,15 +35,11 @@ namespace HoloToolkit.Unity
                 var layerMaskIndex = RaycastResults[i].gameObject.layer.FindLayerListIndex(priority);
                 if (layerMaskIndex == -1) { continue; }
 
-                ComparableRaycastResults.Add(new ComparableRaycastResult(RaycastResults[i], layerMaskIndex));
-            }
+                var result = new ComparableRaycastResult(RaycastResults[i], layerMaskIndex);
 
-            ComparableRaycastResult maxResult = default(ComparableRaycastResult);
-            for (int i = 0; i < ComparableRaycastResults.Count; i++)
-            {
-                if (RaycastResultComparer.Compare(maxResult, ComparableRaycastResults[i]) < 0)
+                if (maxResult.RaycastResult.module == null || RaycastResultComparer.Compare(maxResult, result) < 0)
                 {
-                    maxResult = ComparableRaycastResults[i];
+                    maxResult = result;
                 }
             }
 
