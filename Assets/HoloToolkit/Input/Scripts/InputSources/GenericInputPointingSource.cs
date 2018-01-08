@@ -14,6 +14,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public Cursor Cursor { get; set; }
 
+        public CursorModifier CursorModifier { get; set; }
+
         public bool InteractionEnabled { get { return true; } }
 
         public bool FocusLocked { get; set; }

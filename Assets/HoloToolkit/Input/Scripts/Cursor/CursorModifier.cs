@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Component that can be added to any game object with a collider to modify 
     /// how a cursor reacts when on that collider.
     /// </summary>
-    public class CursorModifier : MonoBehaviour, ICursorModifier
+    public class CursorModifier : MonoBehaviour, ICursorModifier, IFocusHandler
     {
         [Tooltip("Transform for which this cursor modifier applies its various properties.")]
         public Transform HostTransform;
@@ -105,5 +105,17 @@ namespace HoloToolkit.Unity.InputModule
             rotation = GetModifiedRotation(cursor);
             scale = GetModifiedScale(cursor);
         }
+
+        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
+        {
+            eventData.Pointer.CursorModifier = this;
+        }
+
+        void IFocusHandler.OnFocusExit(FocusEventData eventData)
+        {
+            eventData.Pointer.CursorModifier = null;
+        }
+
+        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
     }
 }

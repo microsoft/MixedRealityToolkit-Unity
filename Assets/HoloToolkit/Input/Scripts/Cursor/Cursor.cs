@@ -252,15 +252,10 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public virtual void OnFocusChanged(FocusEventData eventData)
         {
-            if (eventData.Pointer == Pointer)
+            if (eventData.Pointer.SourceId == Pointer.SourceId)
             {
                 TargetedObject = eventData.NewFocusedObject;
-
-                CursorModifier newModifier = (eventData.NewFocusedObject == null)
-                    ? null
-                    : eventData.NewFocusedObject.GetComponent<CursorModifier>();
-
-                OnActiveModifier(newModifier);
+                OnActiveModifier(eventData.Pointer.CursorModifier);
             }
         }
 
