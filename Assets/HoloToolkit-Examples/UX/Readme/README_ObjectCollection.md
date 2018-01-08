@@ -24,7 +24,7 @@ You can also use 2D images with Object collection. For example, you can easily d
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity/blob/master/External/ReadMeImages/ObjectCollection_Layout_2DImages.jpg" alt="ObjectCollection">
 
 ## Ways to use Object collection ##
-You can find the examples in the scene **ObjectCollection_Examples.unity**. In this scene, you can find the **ObjectCollection.cs** script under **Assets/HoloToolkit/UX/Scripts/Collections**
+You can find the examples in the scene **ObjectCollection_Examples.unity**. In this scene, you can find the **ObjectCollection.cs** script under **Assets/MixedRealityToolkit/UX/Scripts/Collections**
 
 1. To create a collection, simply create an empty GameObject and assign the ObjectCollection.cs script to it. 
 2. Then you can add any object(s) as a child of the GameObject. 

@@ -1,10 +1,10 @@
-HoloToolkit.Sharing                        {#mainpage}
+MixedRealityToolkit.Sharing                        {#mainpage}
 ============
 ## Description
 
-The HoloToolkit.Sharing library allows applications to span multiple devices, and enables holographic collaboration.  
+The MixedRealityToolkit.Sharing library allows applications to span multiple devices, and enables holographic collaboration.  
 
-Originally developed for OnSight, a collaboration between SOTA (a Microsoft studio) and NASA to enhance their existing Mars rover planning tool with HoloLens, HoloToolkit.Sharing enables users to use multiple devices for a task by allowing the apps running on each device communicate and stay in sync seamlessly in real time.  
+Originally developed for OnSight, a collaboration between SOTA (a Microsoft studio) and NASA to enhance their existing Mars rover planning tool with HoloLens, MixedRealityToolkit.Sharing enables users to use multiple devices for a task by allowing the apps running on each device communicate and stay in sync seamlessly in real time.  
 
 Users can also collaborate with other users (who are also using multiple devices) who may be in the same room or working remotely.  
 
@@ -35,7 +35,7 @@ Supported Languages, Platforms and Chip Architectures:
 ### Synchronization System
 Synchronize data across all participants in session
 * Everyone in session guaranteed to see the same thing
-* Automatic conflict resolution for simultanious conflicting remote changes
+* Automatic conflict resolution for simultaneous conflicting remote changes
 * Real-time: See remote changes as they happen
 * Shared data sets automatically merged when new users join a session
 * Responsive: no delay in your own changes
@@ -52,4 +52,4 @@ Connect devices just by looking at them
 * Can also detect location in 3D space using built-in fiducial marker support
 
 ### Profiler
-Profiling and debugging an experience that spans multiple devices is challenging.  So HoloToolkit.Sharing provides an app that can connect to multiple devices at once and aggregates their timings and debug output in a single place
+Profiling and debugging an experience that spans multiple devices is challenging.  So MixedRealityToolkit.Sharing provides an app that can connect to multiple devices at once and aggregates their timings and debug output in a single place

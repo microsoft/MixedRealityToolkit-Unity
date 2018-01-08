@@ -1,5 +1,5 @@
 # InteractiveElements Example
-[![Interactive button demos](/External/ReadMeImages/MRTK_InteractiveButtons.jpg)](/Assets/HoloToolkit-Examples/UX/README_InteractiveButtonComponents.md)
+[![Interactive button demos](/External/ReadMeImages/MRTK_InteractiveButtons.jpg)](/Assets/MixedRealityToolkit-Examples/UX/README_InteractiveButtonComponents.md)
 This example shows how to create 3D interactive elements that provide all the user feedback we expect from modern UI elements. This is not an official set of UI controls, but a baseline set of controls, a starting point for building truly immersive 3D UI that fits the theme and design language of our own Holographic applications.
 
 The base components are extendable and easy to use for prototyping or UI development.
@@ -21,11 +21,11 @@ The InteractiveButtonComponents showcase the control prefabs and their full rang
 The basic interactive for simple clicking to make things happen.
 
 #### ToggleButton:
-An extention of the Button that provides a selected state. When focused on the ToggleButton, say "toggle button" to active using voice commands.
+An extension of the Button that provides a selected state. When focused on the ToggleButton, say "toggle button" to active using voice commands.
 
 #### RaidalButton:
 ToggleButtons or an InteractiveToggle can be used to create a few different types of components like Tabs, Check Boxes and Radials.
-RadialButtons normally are clicked once then become unresponsive, similar to a Tab, until another RadialButton is selected. This sample allows for deselecting for the sake of the demonstration.
+RadialButtons normally are clicked once then become unresponsive, similar to a Tab, until another RadialButton is selected. This sample allows for de-selecting for the sake of the demonstration.
 
 #### CheckBox:
 Very common component that can be found on many forms, such as confirming a condition before submitting data.

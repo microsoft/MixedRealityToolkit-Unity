@@ -1,4 +1,4 @@
-HoloToolkit Input                        {#mainpage}
+MixedRealityToolkit Input                        {#mainpage}
 ============
 
 ## Description

@@ -1,4 +1,4 @@
-HoloToolkit Utilities                        {#mainpage}
+MixedRealityToolkit Utilities                        {#mainpage}
 ============
 
 ## Description

@@ -53,7 +53,7 @@ The various classes can be linked to a prefab from the editor by specifying whic
 
 ## Sync Model
 
-HoloToolkit.Sharing has the ability to synchronize data across any application connected to a given session. Conflict resolution is automatically handled by the framework, at whichever level the conflict occurs.
+MixedRealityToolkit.Sharing has the ability to synchronize data across any application connected to a given session. Conflict resolution is automatically handled by the framework, at whichever level the conflict occurs.
 
 ### Primitive Types
 The following primitives are natively supported by the sync system. The C# class that corresponds to each primitive is written in parentheses.
@@ -90,4 +90,4 @@ For any type inheriting from SyncObject, you can easily add new children primiti
 		public SyncFloat FloatValue;
 	}
 
-Any SyncPrimitive tagged with the [SyncData] attribute will automatically be added to the data model and synced in the current HoloToolkit.Sharing session.
+Any SyncPrimitive tagged with the [SyncData] attribute will automatically be added to the data model and synced in the current MixedRealityToolkit.Sharing session.

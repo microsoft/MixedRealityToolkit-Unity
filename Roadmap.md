@@ -32,7 +32,7 @@
 - Only bug fixes will be accepted in the stabilization branch before being merged into master.
 
 - **Master branch releases** will align with **major Unity releases marking a release every 3 months**. Please read the [Unity roadmap](https://unity3d.com/unity/roadmap).
-- Each release will be marked as a GitHub [release tag](https://github.com/Microsoft/HoloToolkit-Unity/releases). You can consume this release by:
+- Each release will be marked as a GitHub [release tag](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases). You can consume this release by:
 	- Using the zip file available in the release notes
 	- Unity packages available in the release notes
 	- Syncing to the specific git tag you would like to lock on.

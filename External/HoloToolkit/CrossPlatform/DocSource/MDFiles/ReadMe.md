@@ -1,4 +1,4 @@
-HoloToolkit CrossPlatform                        {#mainpage}
+MixedRealityToolkit CrossPlatform                        {#mainpage}
 ============
 
 ## Description

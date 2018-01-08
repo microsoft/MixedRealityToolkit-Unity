@@ -7,7 +7,7 @@ In it, add this line:
 
 	ServerAddress <machineName>
 
-Next time you run your app, it will attempt to connect to the session server at that address.  If there is no config file present, it will attempt to connect to the address specified in code when creating the instance of SharingManager.  If none is specified, HoloToolkit.Sharing defaults to looking for the session server at localhost.  
+Next time you run your app, it will attempt to connect to the session server at that address.  If there is no config file present, it will attempt to connect to the address specified in code when creating the instance of SharingManager.  If none is specified, MixedRealityToolkit.Sharing defaults to looking for the session server at localhost.  
 
 All config options (and their default values):
 

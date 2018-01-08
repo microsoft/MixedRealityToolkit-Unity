@@ -1,9 +1,9 @@
-# HoloToolkit-UnitTests
-This folder will host unit tests that test individual HoloToolkit-Unity components.
+# MixedRealityToolkit-UnitTests
+This folder will host unit tests that test individual MixedRealityToolkit-Unity components.
 
 #### Creating a unit test:
 
-1. Unit tests can be located anywhere under an Editor folder but consider placing it under the HoloToolkit-UnitTests\Editor folder so that HoloToolkit-Unity can be easily deployed without the tests if required.
+1. Unit tests can be located anywhere under an Editor folder but consider placing it under the MixedRealityToolkit-UnitTests\Editor folder so that MixedRealityToolkit-Unity can be easily deployed without the tests if required.
 2. Use the **NUnit 2.6.4** features to create the tests.
 3. Cover us much as possible the new code so that other people can test your code even without knowing its internals.
 4. Execute all the tests before submitting a pull request.

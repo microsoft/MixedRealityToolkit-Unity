@@ -1,4 +1,4 @@
-HoloToolkit Utilities                        {#mainpage}
+MixedRealityToolkit Utilities                        {#mainpage}
 ============
 
 ## Description
@@ -7,9 +7,9 @@ When placing holograms in the physical world it is often desirable to go beyond 
 
 During the development of Young Conker and Fragments, Asobo Studios faced this problem head on, developing a room solver for this purpose. Each of these games had game specific needs, but they shared core spatial understanding technology. 
 
-The HoloToolkit.SpatialUnderstanding library encapsulates this technology, allowing you to quickly find empty spaces on the walls, place objects on the ceiling, identify placed for character to sit, and a myriad of other spatial understanding queries. 
+The MixedRealityToolkit.SpatialUnderstanding library encapsulates this technology, allowing you to quickly find empty spaces on the walls, place objects on the ceiling, identify placed for character to sit, and a myriad of other spatial understanding queries. 
 
-All of the source code is included, allowing you to customize it to your needs and share your improvements with the community. The code for the C++ solver has been wrapped into a UWP dll and exposed to Unity with a drop in prefab contained within the HoloToolkit.
+All of the source code is included, allowing you to customize it to your needs and share your improvements with the community. The code for the C++ solver has been wrapped into a UWP dll and exposed to Unity with a drop in prefab contained within the MixedRealityToolkit.
 
 ## Prefabs
 

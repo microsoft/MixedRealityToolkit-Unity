@@ -48,7 +48,7 @@ Used to specify how hard the system should try to ensure that the messages arriv
 
 
 ### MessageChannel
-Messages in the same channel sent with an ordered or sequenced level of reliability will arrive in the order sent.  HoloToolkit.Sharing internal 
+Messages in the same channel sent with an ordered or sequenced level of reliability will arrive in the order sent.  MixedRealityToolkit.Sharing internal 
 ones are defined here; user-defined channels should start at UserMessageChannelStart.  Note that ordered messages in different channels can arrive 
 in a different order from each other.  This can create hard to find bugs, so only used channels other than Default for messages that really 
 require it.  

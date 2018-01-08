@@ -39,7 +39,7 @@ To run the SceneLauncher:
 
 ### [Scripts](Scripts)
 ---
-Utilitiy Scripts.
+Utility Scripts.
 
 #### [Editor](Scripts/Editor)
 ---
@@ -52,7 +52,7 @@ Configuration options derived from Microsoft Documentation [Configuring a Unity 
 Base class for auto configuration build windows.
 
 ##### CapabilitySettingsWindow.cs
-Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Capability Settings.
+Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply HoloLens Capability Settings.
 
 ##### EditorGUIExtensions.cs
 Extensions for the UnityEnditor.EditorGUI class.
@@ -61,7 +61,7 @@ Extensions for the UnityEnditor.EditorGUI class.
 Extensions for the UnityEditor.EditorGUILayout class.
 
 ##### EnforceEditorSettings.cs
-Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.
+Sets Force Text Serialization and visible meta files in all projects that use the MixedRealityToolkit.
 
 ##### ExternalProcess.cs
 Helper class for launching external processes inside of the unity editor.
@@ -70,10 +70,10 @@ Helper class for launching external processes inside of the unity editor.
 Extensions for the UnityEngine.LayerMask class.
 
 ##### ProjectSettingsWindow.cs
-Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Project Settings.
+Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply HoloLens Project Settings.
 
 ##### SceneSettingsWindow.cs
-Renders the UI and handles update logic for HoloToolkit/Configure/Apply HoloLens Scene Settings.
+Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply HoloLens Scene Settings.
 
 #### [Extensions](Scripts/Extensions)
 
@@ -120,12 +120,12 @@ TODO: Remove if redundant to InterpolatedQuaternion.cs
 
 ##### Vector3Interpolated.cs
 Class to encapsulate an interpolating Vector3 property.
-TODO: Remove if reduncatnt to InterpolatedVector3.cs
+TODO: Remove if redundant to InterpolatedVector3.cs
 
 ---
 
 #### ApplicationViewManager.cs
-Switchs app to a XAML page view, and waits for a return value from it.
+Switches app to a XAML page view, and waits for a return value from it.
 
 #### Billboard.cs
 Rotates a hologram so it is always facing towards the camera.
@@ -156,10 +156,10 @@ Causes a GameObject to activate or disable depending on the settings and type of
 Causes a hologram to maintain a fixed angular size, which is to say it occupies the same pixels in the view regardless of its distance from the camera.
 
 #### FpsDisplay.cs
-Simple Behaviour which calculates the average frames per second over a number of frames and shows the FPS in a referenced Text control.
+Simple MonoBehaviour which calculates the average frames per second over a number of frames and shows the FPS in a referenced Text control.
 
 #### HeadsUpDirectionIndicator.cs
-Spawns a user specified "pointer" object and startup and alligns it to aim at a target object which keeping the pointer in view at all times.
+Spawns a user specified "pointer" object and startup and aligns it to aim at a target object which keeping the pointer in view at all times.
 
 #### InterpolationUtilities.cs
 Static class containing interpolation-related utility functions.
@@ -219,7 +219,7 @@ Wrapper around world anchor store to streamline some of the persistence api busy
 #### macro.cginc
 Preprocessor macros to support shaders
 
-#### HoloToolkitCommon.cginc
+#### MixedRealityToolkitCommon.cginc
 Common shader functionality
 
 #### FastConfigurable.shader
@@ -231,7 +231,7 @@ Similar attributes for FastConfigurable with the benefit of 2 sides!
 #### WindowOcclusion.shader
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
-### [Tests](https://github.com/Microsoft/HoloToolkit-Unity/tree/master/Assets/HoloToolkit-Tests/Utilities/Scenes)
+### [Tests](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master/Assets/MixedRealityToolkit-Tests/Utilities/Scenes)
 ---
 Tests related to the utilities features. To use the scene:
 
