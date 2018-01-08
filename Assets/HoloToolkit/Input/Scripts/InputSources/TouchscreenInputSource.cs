@@ -38,6 +38,15 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Unity methods
 
+        protected virtual void Start()
+        {
+            // Disable the inputsource if not supported by the device
+            if (!Input.touchSupported)
+            {
+                this.enabled = false;
+            }
+        }
+
         protected virtual void Update()
         {
             foreach (Touch touch in Input.touches)
