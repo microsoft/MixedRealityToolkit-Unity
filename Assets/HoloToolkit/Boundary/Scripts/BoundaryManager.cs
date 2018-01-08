@@ -34,6 +34,7 @@ namespace HoloToolkit.Unity.Boundary
         private TrackingSpaceType opaqueTrackingSpaceType = TrackingSpaceType.RoomScale;
 
         //[SerializeField]
+        // Removed for now, until the HoloLens tracking space type story is more clear.
         // Defaulting coordinate system to Stationary for transparent headsets, like HoloLens.
         // This puts the origin (0, 0, 0) at the first place where the user started the application.
         //private TrackingSpaceType transparentTrackingSpaceType = TrackingSpaceType.Stationary;
