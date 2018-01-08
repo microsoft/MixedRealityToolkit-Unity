@@ -396,6 +396,15 @@ namespace HoloToolkit.Unity.InputModule
                     handler.OnSourceLost(casted);
                 };
 
+        public void RaiseSourcePositionChanged(IInputSource source, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
+        {
+            // Create input event
+            sourcePositionEventData.Initialize(source, pointerPosition, gripPosition, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+        }
+
         public void RaiseSourcePositionChanged(IInputSource source, Vector3 pointerPosition, Vector3 gripPosition, Handedness sourceHandedness, object[] tags = null)
         {
             // Create input event
