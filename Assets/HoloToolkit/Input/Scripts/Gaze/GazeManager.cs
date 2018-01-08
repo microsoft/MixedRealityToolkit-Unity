@@ -148,7 +148,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseRayStabilizer RayStabilizer { get; set; }
 
-        public bool OwnsInput(InputEventData eventData)
+        public bool OwnsInput(BaseInputEventData eventData)
         {
             return Equals(eventData.InputSource);
         }

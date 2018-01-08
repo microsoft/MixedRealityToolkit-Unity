@@ -261,7 +261,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <typeparam name="T">Event Handler Interface Type</typeparam>
         /// <param name="eventData">Event Data</param>
         /// <param name="eventHandler">Event Handler delegate</param>
-        public void HandleEvent<T>(InputEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        public void HandleEvent<T>(BaseInputEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             if (!Instance.enabled || disabledRefCount > 0)
             {

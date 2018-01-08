@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity.InputModule
 
         BaseRayStabilizer RayStabilizer { get; set; }
 
-        bool OwnsInput(InputEventData eventData);
+        bool OwnsInput(BaseInputEventData eventData);
 
         void OnPreRaycast();
 

@@ -275,7 +275,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public FocusDetails? TryGetFocusDetails(InputEventData eventData)
+        public FocusDetails? TryGetFocusDetails(BaseInputEventData eventData)
         {
             for (int i = 0; i < pointers.Count; i++)
             {
@@ -288,7 +288,7 @@ namespace HoloToolkit.Unity.InputModule
             return null;
         }
 
-        public GameObject TryGetFocusedObject(InputEventData eventData)
+        public GameObject TryGetFocusedObject(BaseInputEventData eventData)
         {
             FocusDetails? details = TryGetFocusDetails(eventData);
 
@@ -307,7 +307,7 @@ namespace HoloToolkit.Unity.InputModule
             return details.Value.Object;
         }
 
-        public bool TryGetPointingSource(InputEventData eventData, out IPointingSource pointingSource)
+        public bool TryGetPointingSource(BaseInputEventData eventData, out IPointingSource pointingSource)
         {
             for (int i = 0; i < pointers.Count; i++)
             {
