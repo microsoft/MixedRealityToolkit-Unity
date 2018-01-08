@@ -109,10 +109,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void HandleGamepad()
-        {
-        }
-
         void IInputHandler.OnInputUp(InputEventData eventData) { }
 
         void IInputHandler.OnInputDown(InputEventData eventData) { }

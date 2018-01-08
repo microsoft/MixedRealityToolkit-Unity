@@ -76,28 +76,30 @@ namespace HoloToolkit.Unity.InputModule
 
             for (var i = 0; i < joystickNames.Length; i++)
             {
-                if (joystickNames[i].Contains(MotionControllerLeft) ||
-                    joystickNames[i].Contains(MotionControllerRight))
+                if (joystickNames[i].Equals(MotionControllerLeft) ||
+                    joystickNames[i].Equals(MotionControllerRight))
                 {
-                    // If we don't have any matching joystick types, continue.
-                    // Skip any WMR motion controllers connected.  They're handled in the InteractionInputSources.
+                    // Skip any WMR motion controllers connected.
+                    // They're handled in InteractionInputSources.
                     continue;
                 }
 
-                if (joystickNames[i].Contains(XboxController) ||
-                    joystickNames[i].Contains(XboxOneForWindows) ||
-                    joystickNames[i].Contains(XboxBluetoothGamePad) ||
-                    joystickNames[i].Contains(XboxWirelessController))
+                // Joysticks without pointers
+                if (joystickNames[i].Equals(XboxController) ||
+                    joystickNames[i].Equals(XboxOneForWindows) ||
+                    joystickNames[i].Equals(XboxBluetoothGamePad) ||
+                    joystickNames[i].Equals(XboxWirelessController))
                 {
                     var inputSource = new GenericInputSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
                     InputSources.Add(inputSource);
                     InputManager.Instance.RaiseSourceDetected(inputSource);
                 }
-                else if (joystickNames[i].Contains(OculusRemote) ||
-                         joystickNames[i].Contains(OculusTouchLeft) ||
-                         joystickNames[i].Contains(OculusTouchRight) ||
-                         joystickNames[i].Contains(OpenVRControllerLeft) ||
-                         joystickNames[i].Contains(OpenVRControllerRight))
+                // Joysticks with pointers
+                else if (joystickNames[i].Equals(OculusRemote) ||
+                         joystickNames[i].Equals(OculusTouchLeft) ||
+                         joystickNames[i].Equals(OculusTouchRight) ||
+                         joystickNames[i].Equals(OpenVRControllerLeft) ||
+                         joystickNames[i].Equals(OpenVRControllerRight))
                 {
                     var inputSource = new GenericInputPointingSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
                     InputSources.Add(inputSource);
