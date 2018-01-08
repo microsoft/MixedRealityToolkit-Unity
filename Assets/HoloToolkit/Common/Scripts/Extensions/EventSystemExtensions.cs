@@ -10,7 +10,6 @@ namespace HoloToolkit.Unity
     public static class EventSystemExtensions
     {
         private static readonly List<RaycastResult> RaycastResults = new List<RaycastResult>();
-        private static readonly List<ComparableRaycastResult> ComparableRaycastResults = new List<ComparableRaycastResult>();
         private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         /// <summary>
@@ -25,17 +24,26 @@ namespace HoloToolkit.Unity
             return PrioritizeRaycastResult(layerMasks);
         }
 
-        private static RaycastResult PrioritizeRaycastResult(LayerMask[] layerMaskPrio)
+        private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority)
         {
-            ComparableRaycastResults.Clear();
-            foreach (var raycastResult in RaycastResults)
+            ComparableRaycastResult maxResult = default(ComparableRaycastResult);
+
+            for (var i = 0; i < RaycastResults.Count; i++)
             {
-                if (raycastResult.gameObject == null) { continue; }
-                var layerMaskIndex = raycastResult.gameObject.layer.FindLayerListIndex(layerMaskPrio);
+                if (RaycastResults[i].gameObject == null) { continue; }
+
+                var layerMaskIndex = RaycastResults[i].gameObject.layer.FindLayerListIndex(priority);
                 if (layerMaskIndex == -1) { continue; }
-                ComparableRaycastResults.Add(new ComparableRaycastResult(raycastResult, layerMaskIndex));
+
+                var result = new ComparableRaycastResult(RaycastResults[i], layerMaskIndex);
+
+                if (maxResult.RaycastResult.module == null || RaycastResultComparer.Compare(maxResult, result) < 0)
+                {
+                    maxResult = result;
+                }
             }
-            return ComparableRaycastResults.MaxOrDefault(RaycastResultComparer).RaycastResult;
+
+            return maxResult.RaycastResult;
         }
     }
 }
