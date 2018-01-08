@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -149,20 +148,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseRayStabilizer RayStabilizer { get; set; }
 
-        public bool OwnsInput(BaseEventData eventData)
+        public bool OwnsInput(InputEventData eventData)
         {
-            var inputData = (eventData as IInputSourceInfoProvider);
-
-            return (inputData != null)
-                   && (inputData.SourceId == SourceId);
-        }
-
-        public bool InputIsFromSource(InputEventData eventData)
-        {
-            var inputData = (eventData as IInputSourceInfoProvider);
-
-            return (inputData != null)
-                && (inputData.SourceId == SourceId);
+            return Equals(eventData.InputSource);
         }
 
         public virtual void OnPreRaycast()
@@ -191,6 +179,57 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion IPointingSource Implementation
+
+        #region IEquality Implementation
+
+        private bool Equals(IInputSource other)
+        {
+            return base.Equals(other) && SourceId == other.SourceId && string.Equals(Name, other.Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) { return false; }
+            if (ReferenceEquals(this, obj)) { return true; }
+            if (obj.GetType() != GetType()) { return false; }
+
+            return Equals((IInputSource)obj);
+        }
+
+        public static bool Equals(IInputSource left, IInputSource right)
+        {
+            return left.SourceId == right.SourceId;
+        }
+
+        bool IEqualityComparer.Equals(object x, object y)
+        {
+            var left = (IInputSource)x;
+            var right = (IInputSource)y;
+            if (left != null && right != null)
+            {
+                return Equals(left, right);
+            }
+
+            return false;
+        }
+
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)SourceId;
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        #endregion IEquality Implementation
 
         protected override void Awake()
         {

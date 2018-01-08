@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Interface for an input source.
     /// An input source can be anything that a user can use to interact with a device.
     /// </summary>
-    public interface IInputSource
+    public interface IInputSource : IEqualityComparer
     {
         uint SourceId { get; }
 

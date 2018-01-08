@@ -78,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule
             if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Pointing))
             {
                 var inputSourcePointer = (IPointingSource)eventData.InputSource;
-                if (IsInputSourcePointerActive && inputSourcePointer.InputIsFromSource(eventData))
+                if (IsInputSourcePointerActive && inputSourcePointer.OwnsInput(eventData))
                 {
                     ConnectBestAvailablePointer();
                 }
@@ -192,10 +192,10 @@ namespace HoloToolkit.Unity.InputModule
 
             foreach (var inputSource in inputSources)
             {
-                if (SupportsPointingRay(inputSource.Value))
+                if (SupportsPointingRay(inputSource))
                 {
                     AttachInputSourcePointer();
-                    bestPointer = (IPointingSource)inputSource.Value;
+                    bestPointer = (IPointingSource)inputSource;
                     break;
                 }
             }
@@ -212,7 +212,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (SupportsPointingRay(eventData))
             {
-                if (IsInputSourcePointerActive && currentPointer.InputIsFromSource(eventData))
+                if (IsInputSourcePointerActive && currentPointer.OwnsInput(eventData))
                 {
                     pointerWasChanged = false;
                 }

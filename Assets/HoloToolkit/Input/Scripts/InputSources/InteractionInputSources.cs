@@ -837,17 +837,17 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (sourceData.Touchpad.CurrentReading.Touched)
                 {
-                    InputManager.Instance.RaiseOnInputDown(sourceData, (Handedness)args.state.source.handedness);
+                    InputManager.Instance.RaiseOnInputDown(sourceData, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseOnInputUp(sourceData, (Handedness)args.state.source.handedness);
+                    InputManager.Instance.RaiseOnInputUp(sourceData, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
                 }
             }
 
             if (sourceData.SelectPressedAmountUpdated)
             {
-                InputManager.Instance.RaiseOnInputPressed(sourceData, sourceData.Select.CurrentReading.PressedAmount, (Handedness)args.state.source.handedness);
+                InputManager.Instance.RaiseOnInputPressed(sourceData, sourceData.Select.CurrentReading.PressedAmount, InteractionSourcePressType.Select, (Handedness)args.state.source.handedness);
             }
         }
 

@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -27,9 +26,7 @@ namespace HoloToolkit.Unity.InputModule
 
         BaseRayStabilizer RayStabilizer { get; set; }
 
-        bool OwnsInput(BaseEventData eventData);
-
-        bool InputIsFromSource(InputEventData eventData);
+        bool OwnsInput(InputEventData eventData);
 
         void OnPreRaycast();
 

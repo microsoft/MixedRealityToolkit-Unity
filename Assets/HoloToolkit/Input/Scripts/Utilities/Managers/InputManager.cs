@@ -41,12 +41,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
-        private static readonly Dictionary<uint, IInputSource> detectedInputSources = new Dictionary<uint, IInputSource>(0);
+        private static readonly HashSet<IInputSource> detectedInputSources = new HashSet<IInputSource>();
 
         /// <summary>
         /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
         /// </summary>
-        public static Dictionary<uint, IInputSource> DetectedInputSources { get { return detectedInputSources; } }
+        public static HashSet<IInputSource> DetectedInputSources { get { return detectedInputSources; } }
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -261,7 +261,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <typeparam name="T">Event Handler Interface Type</typeparam>
         /// <param name="eventData">Event Data</param>
         /// <param name="eventHandler">Event Handler delegate</param>
-        public void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        public void HandleEvent<T>(InputEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             if (!Instance.enabled || disabledRefCount > 0)
             {
@@ -347,7 +347,7 @@ namespace HoloToolkit.Unity.InputModule
 
             foreach (var inputSource in detectedInputSources)
             {
-                if (inputSource.Key == newId)
+                if (inputSource.SourceId == newId)
                 {
                     return GenerateNewSourceId();
                 }
@@ -358,9 +358,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceDetected(IInputSource source, object[] tags = null)
         {
-            Debug.Assert(!detectedInputSources.ContainsKey(source.SourceId));
+            Debug.Assert(!detectedInputSources.Contains(source), "This Input Source has already been registered!");
 
-            detectedInputSources.Add(source.SourceId, source);
+            detectedInputSources.Add(source);
 
             // Create input event
             sourceStateEventData.Initialize(source, tags);
@@ -378,9 +378,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceLost(IInputSource source, object[] tags = null)
         {
-            Debug.Assert(detectedInputSources.ContainsKey(source.SourceId));
+            Debug.Assert(detectedInputSources.Contains(source), "This Input Source was never registered!");
 
-            detectedInputSources.Remove(source.SourceId);
+            detectedInputSources.Remove(source);
 
             // Create input event
             sourceStateEventData.Initialize(source, tags);
@@ -530,21 +530,10 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnPointerDown(casted);
             };
 
-        private void ExecutePointerDown(IInputSource source, GraphicInputEventData graphicInputEventData)
+        private void ExecutePointerDown(GraphicInputEventData graphicInputEventData)
         {
             if (graphicInputEventData != null)
             {
-                graphicInputEventData.InputSource = source;
-                graphicInputEventData.SourceId = source.SourceId;
-                graphicInputEventData.pointerId = (int)source.SourceId;
-
-                graphicInputEventData.eligibleForClick = true;
-                graphicInputEventData.delta = Vector2.zero;
-                graphicInputEventData.dragging = false;
-                graphicInputEventData.useDragThreshold = true;
-                graphicInputEventData.pressPosition = graphicInputEventData.position;
-                graphicInputEventData.pointerPressRaycast = graphicInputEventData.pointerCurrentRaycast;
-
                 ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerDownHandler);
             }
         }
@@ -564,7 +553,7 @@ namespace HoloToolkit.Unity.InputModule
             // Create input event
             clickEventData.Initialize(source, tags);
 
-            ExecutePointerDown(source, HandlePointerDown());
+            ExecutePointerDown(HandlePointerDown());
         }
 
         public void RaisePointerDown(IInputSource source, Handedness handedness, object[] tags = null)
@@ -572,7 +561,7 @@ namespace HoloToolkit.Unity.InputModule
             // Create input event
             clickEventData.Initialize(source, handedness, tags);
 
-            ExecutePointerDown(source, HandlePointerDown());
+            ExecutePointerDown(HandlePointerDown());
         }
 
 #if UNITY_WSA
@@ -583,7 +572,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (pressType == InteractionSourcePressType.Select)
             {
-                ExecutePointerDown(source, HandlePointerDown());
+                ExecutePointerDown(HandlePointerDown());
             }
         }
 #endif
@@ -644,13 +633,10 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnPointerUp(casted);
             };
 
-        private void ExecutePointerUp(IInputSource source, GraphicInputEventData graphicInputEventData)
+        private void ExecutePointerUp(GraphicInputEventData graphicInputEventData)
         {
             if (graphicInputEventData != null)
             {
-                graphicInputEventData.InputSource = source;
-                graphicInputEventData.SourceId = source.SourceId;
-
                 ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerUpHandler);
                 ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerClickHandler);
                 graphicInputEventData.Clear();
@@ -672,7 +658,7 @@ namespace HoloToolkit.Unity.InputModule
             // Create input event
             clickEventData.Initialize(source, tags);
 
-            ExecutePointerUp(source, HandlePointerUp());
+            ExecutePointerUp(HandlePointerUp());
         }
 
         public void RaisePointerUp(IInputSource source, Handedness handedness, object[] tags = null)
@@ -680,7 +666,7 @@ namespace HoloToolkit.Unity.InputModule
             // Create input event
             clickEventData.Initialize(source, handedness, tags);
 
-            ExecutePointerUp(source, HandlePointerUp());
+            ExecutePointerUp(HandlePointerUp());
         }
 
 #if UNITY_WSA
@@ -691,7 +677,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (pressType == InteractionSourcePressType.Select)
             {
-                ExecutePointerUp(source, HandlePointerUp());
+                ExecutePointerUp(HandlePointerUp());
             }
         }
 #endif

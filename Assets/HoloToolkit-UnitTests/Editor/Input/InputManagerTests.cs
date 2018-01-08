@@ -257,7 +257,7 @@ namespace HoloToolkit.Unity.Tests
         private void FireTestEvent()
         {
             receivedEventSources = new List<GameObject>();
-            InputManager.Instance.HandleEvent(new BaseEventData(EventSystem.current), TestEventHandler.OnTestHandler);
+            InputManager.Instance.HandleEvent(new InputEventData(EventSystem.current), TestEventHandler.OnTestHandler);
         }
 
         private void OnEventFired(GameObject source, BaseEventData baseEventData)
