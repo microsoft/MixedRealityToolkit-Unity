@@ -1,4 +1,7 @@
-﻿// #defines for features that are not yet implemented
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+// #defines for features that are not yet implemented
 #define TODO_ROTATE_FACE_USER
 
 using System;
@@ -6,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -14,7 +16,9 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class TwoHandManipulatable : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
+        // Event that gets raised when the object begins moving
         public event Action StartedManipulating;
+        // Event that gets raised when the object stops moving
         public event Action StoppedManipulating;
 
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
@@ -81,6 +85,14 @@ namespace HoloToolkit.Unity.InputModule
             if (currentState != State.Start)
             {
                 UpdateStateMachine();
+            }
+        }
+
+        private void Start()
+        {
+            if (HostTransform == null)
+            {
+                HostTransform = transform;
             }
         }
 
