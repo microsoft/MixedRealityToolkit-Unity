@@ -11,9 +11,8 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GazeManager : Singleton<GazeManager>, IPointingSource
     {
-        [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
-        private GameObject cursorPrefab = null;
+        public GameObject CursorPrefab;
 
         /// <summary>
         /// Maximum distance at which the gaze can collide with an object.
@@ -232,11 +231,14 @@ namespace HoloToolkit.Unity.InputModule
 
             SourceId = InputManager.GenerateNewSourceId();
 
-            var cursorObj = Instantiate(cursorPrefab, transform);
-            Cursor = cursorObj.GetComponent<Cursor>();
-            Cursor.Pointer = this;
+            if (CursorPrefab != null)
+            {
+                var cursorObj = Instantiate(CursorPrefab, transform);
+                Cursor = cursorObj.GetComponent<Cursor>();
+                Cursor.Pointer = this;
 
-            Debug.Assert(Cursor != null, "Failed to load cursor");
+                Debug.Assert(Cursor != null, "Failed to load cursor");
+            }
 
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)

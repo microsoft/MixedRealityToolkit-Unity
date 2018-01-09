@@ -22,10 +22,13 @@ namespace HoloToolkit.Unity.Tests
 
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
-            inputManagerContainer.AddComponent<InputManager>();
-            inputManagerContainer.AddComponent<GazeManager>();
-            inputManagerContainer.AddComponent<FocusManager>();
             inputManagerContainer.AddComponent<EventSystem>();
+            inputManagerContainer.AddComponent<InputManager>();
+            inputManagerContainer.AddComponent<FocusManager>();
+            inputManagerContainer.AddComponent<GazeManager>();
+
+            //call awake and start 
+            inputManagerContainer.CallInitialization();
 
             // Create a test cursor
             var testCursorObj = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -33,9 +36,6 @@ namespace HoloToolkit.Unity.Tests
             testCursor.gameObject.CallInitialization();
 
             inputManagerContainer.transform.position = inputManagerContainer.transform.forward * -5;
-
-            //call awake and start 
-            inputManagerContainer.CallInitialization();
         }
 
         [Test]
