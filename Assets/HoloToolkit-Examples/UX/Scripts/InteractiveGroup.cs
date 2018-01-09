@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,9 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         private void Start()
         {
+            // note that simplifying this with the ??-operator does not work in Unity.
+            Grid = Grid == null ? transform.Find("Canvas/Grid").gameObject : Grid;
+
             Interactive interactive = InteractivePrefab.GetComponent<Interactive>();
             if (interactive == null)
             {
@@ -36,7 +40,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 UpdateData();
             }
         }
-
+        
         private List<InteractiveToggle> Interactives {
             get 
             {
