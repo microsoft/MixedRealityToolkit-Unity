@@ -40,7 +40,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Unity Methods
 
-        protected virtual void Start()
+        private void Start()
         {
             // Disable the input source if not supported by the device
             if (!Input.touchSupported)
@@ -49,7 +49,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected virtual void Update()
+        private void Update()
         {
             for (var i = 0; i < Input.touches.Length; i++)
             {
@@ -134,6 +134,12 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Base Input Source Implementation
 
+        /// <summary>
+        /// Searches through the list of active touches for the input with the matching sourceId.
+        /// </summary>
+        /// <param name="sourceId">T</param>
+        /// <param name="touch"></param>
+        /// <returns><see cref="TouchInputSource"/></returns>
         private bool TryGetTouchInputSource(int sourceId, out TouchInputSource touch)
         {
             foreach (var _touch in activeTouches)
@@ -149,6 +155,12 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
+        /// <summary>
+        /// Try to get the current Pointer Position input reading from the specified Input Source.
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <param name="position"></param>
+        /// <returns>True if data is available.</returns>
         public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             TouchInputSource knownTouch;
@@ -162,6 +174,12 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
+        /// <summary>
+        /// Try to get the current Pointing Ray input reading from the specified Input Source.
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <param name="pointingRay"></param>
+        /// <returns>True if data is available.</returns>
         public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
             TouchInputSource knownTouch;
@@ -170,10 +188,16 @@ namespace HoloToolkit.Unity.InputModule
                 pointingRay = knownTouch.ScreenPointRay;
                 return true;
             }
+
             pointingRay = default(Ray);
             return false;
         }
 
+        /// <summary>
+        /// Get the Supported Input Info for the specified Input Source.
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <returns><see cref="SupportedInputInfo"/></returns>
         public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             TouchInputSource knownTouch;
