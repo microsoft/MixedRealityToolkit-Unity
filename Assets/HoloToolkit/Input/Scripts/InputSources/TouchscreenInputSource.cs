@@ -125,6 +125,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
 
                     activeTouches.Remove(knownTouch);
+                    InputManager.Instance.RaiseSourceLost(knownTouch);
                 }
             }
         }
