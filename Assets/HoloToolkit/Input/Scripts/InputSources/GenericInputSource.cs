@@ -17,28 +17,22 @@ namespace HoloToolkit.Unity.InputModule
             Name = name;
         }
 
+        public GenericInputSource(uint sourceId, string name, SupportedInputInfo _supportedInputInfo)
+        {
+            SourceId = sourceId;
+            Name = name;
+            supportedInputInfo = _supportedInputInfo;
+        }
+
         public uint SourceId { get; private set; }
 
         public string Name { get; private set; }
 
-        public SupportedInputInfo SupportedInputInfo
-        {
-            get
-            {
-                return supportedInputInfo;
-            }
-            protected set
-            {
-                supportedInputInfo = value;
-            }
-        }
-
-        [SerializeField]
         private SupportedInputInfo supportedInputInfo;
 
         public virtual SupportedInputInfo GetSupportedInputInfo()
         {
-            return SupportedInputInfo;
+            return supportedInputInfo;
         }
 
         public bool SupportsInputInfo(SupportedInputInfo inputInfo)

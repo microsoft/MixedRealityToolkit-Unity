@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity.InputModule
                     joystickNames[i].Equals(XboxBluetoothGamePad) ||
                     joystickNames[i].Equals(XboxWirelessController))
                 {
-                    var inputSource = new GenericInputSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
+                    var inputSource = new GenericInputSource(InputManager.GenerateNewSourceId(), joystickNames[i], SupportedInputInfo.Thumbstick);
                     InputSources.Add(inputSource);
                     InputManager.Instance.RaiseSourceDetected(inputSource);
                 }
@@ -101,7 +101,16 @@ namespace HoloToolkit.Unity.InputModule
                          joystickNames[i].Equals(OpenVRControllerLeft) ||
                          joystickNames[i].Equals(OpenVRControllerRight))
                 {
-                    var inputSource = new GenericInputPointingSource(InputManager.GenerateNewSourceId(), joystickNames[i]);
+                    var inputSource = new GenericInputPointingSource(
+                        InputManager.GenerateNewSourceId(),
+                        joystickNames[i],
+                        SupportedInputInfo.Pointing |
+                        SupportedInputInfo.Position |
+                        SupportedInputInfo.Rotation |
+                        SupportedInputInfo.Menu |
+                        SupportedInputInfo.Grasp |
+                        SupportedInputInfo.Touch |
+                        SupportedInputInfo.Thumbstick);
                     InputSources.Add(inputSource);
                     InputManager.Instance.RaiseSourceDetected(inputSource);
                 }
