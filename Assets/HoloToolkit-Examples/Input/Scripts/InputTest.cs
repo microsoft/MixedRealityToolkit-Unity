@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// Test MonoBehaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
-    public class InputTest : MonoBehaviour, IInputHandler, IPointerHandler, IFocusHandler, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler
+    public class InputTest : MonoBehaviour, IInputHandler, IPointerHandler, IFocusHandler, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler
     {
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
@@ -41,13 +41,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         void IPointerHandler.OnPointerUp(ClickEventData eventData)
         {
-            Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            Debug.LogFormat("OnPointerUp\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         void IPointerHandler.OnPointerDown(ClickEventData eventData)
         {
-            Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
+            Debug.LogFormat("OnPointerDown\r\nSource: {0}  SourceId: {1}", eventData.InputSource, eventData.SourceId);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
@@ -55,15 +55,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             Debug.LogFormat("OnPointerClicked\r\nSource: {0}  SourceId: {1}  ClickCount: {2}", eventData.InputSource, eventData.SourceId, eventData.ClickCount);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
-        }
-
-        /// <summary>
-        /// Just a public method called by the Unity OnClick Event.
-        /// </summary>
-        void IPointerClickHandler.OnPointerClick(PointerEventData pointerEventData)
-        {
-            Debug.LogFormat("OnPointerClick: {0}", pointerEventData.pointerId);
-            pointerEventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         void IFocusHandler.OnFocusEnter(FocusEventData eventData)
