@@ -761,8 +761,6 @@ namespace HoloToolkit.Unity.InputModule
             var pointingSource = eventData.PointingSource;
             if (pointingSource == null) { return; }
 
-            Debug.LogFormat("Attempting to register {0}", eventData.PointingSource.Name);
-
             PointerData pointer = GetPointerData(pointingSource);
 
             Debug.Assert(pointer == null, "This pointing source is already registered!");
@@ -799,7 +797,6 @@ namespace HoloToolkit.Unity.InputModule
             var pointingSource = eventData.PointingSource;
 
             if (pointingSource == null) { return; }
-            Debug.LogFormat("Attempting to unregister {0}", eventData.PointingSource);
 
             PointerData pointer = GetPointerData(pointingSource);
             Debug.Assert(pointer != null, "Pointing Source was never registered!");

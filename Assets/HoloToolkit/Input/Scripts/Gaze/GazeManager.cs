@@ -253,7 +253,6 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.AssertIsInitialized();
             Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
 
-            Debug.LogWarning("Gaze On Enable");
             InputManager.Instance.RaiseSourceDetected(this);
         }
 
