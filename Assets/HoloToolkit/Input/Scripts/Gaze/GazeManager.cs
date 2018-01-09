@@ -150,6 +150,11 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseRayStabilizer RayStabilizer { get; set; }
 
+        public void RegisterPointer()
+        {
+            // Focus Manager already registers the gaze by default.
+        }
+
         public bool OwnsInput(BaseInputEventData eventData)
         {
             return Equals(eventData.InputSource);

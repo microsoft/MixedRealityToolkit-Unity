@@ -136,6 +136,10 @@ namespace HoloToolkit.Unity.InputModule
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
         public PointerResult Result { get; set; }
         public BaseRayStabilizer RayStabilizer { get; set; }
+        public void RegisterPointer()
+        {
+            throw new NotImplementedException();
+        }
 
         public bool OwnsInput(BaseInputEventData eventData)
         {
