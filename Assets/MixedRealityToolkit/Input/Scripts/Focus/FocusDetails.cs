@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Focus
 {
     /// <summary>
     /// FocusDetails struct contains information about which game object has the focus currently.

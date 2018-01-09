@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using Windows.Media.Capture;
 #endif
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Input.Utilities
 {
     public enum MicrophoneStatus
     {

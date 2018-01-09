@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.GamePad
 {
     /// <summary>
     /// Xbox Controller axis and button types.

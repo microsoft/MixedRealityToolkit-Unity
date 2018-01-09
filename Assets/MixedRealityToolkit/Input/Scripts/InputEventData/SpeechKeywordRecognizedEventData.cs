@@ -4,7 +4,7 @@
 using System;
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.EventData
 {
     /// <summary>
     /// Describes an input event that involves keyword recognition.

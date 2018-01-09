@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.GamePad
 {
     /// <summary>
     /// Data class that carries the input data for the event handler.

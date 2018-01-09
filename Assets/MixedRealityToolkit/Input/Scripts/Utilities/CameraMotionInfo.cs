@@ -2,12 +2,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using System.Collections;
-using System.Collections.Generic;
+using MixedRealityToolkit.Common;
 using UnityEngine;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities
 {
     /// <summary>
     /// CameraMotionInfo calculates the velocity and direction of the camera. 

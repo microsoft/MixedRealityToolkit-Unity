@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using MixedRealityToolkit.Input.Utilities.Managers;
+using MixedRealityToolkit.Common;
 
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
@@ -12,7 +14,7 @@ using UnityEngine.VR.WSA.Input;
 using System.Collections.Generic;
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// Input source for gestures and interaction source information from the WSA APIs, which gives access to various system-supported gestures

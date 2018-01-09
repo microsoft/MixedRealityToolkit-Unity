@@ -1,12 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.InputHandlers;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Interations
 {
     public class SpeechInputHandler : MonoBehaviour, ISpeechHandler
     {

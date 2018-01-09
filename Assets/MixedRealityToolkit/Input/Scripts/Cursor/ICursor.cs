@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.Focus;
+using MixedRealityToolkit.Input.InputHandlers;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Cursor
 {
     /// <summary>
     /// Cursor Interface for handling input events and setting visibility.

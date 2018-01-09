@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using HoloToolkit.Unity.InputModule;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolKit.Unity
+namespace MixedRealityToolkit.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityCameraManager))]
-    public class MixedRealityCameraManagerEditor : Editor
+    public class MixedRealityCameraManagerEditor : UnityEditor.Editor
     {
         private SerializedProperty opaqueNearClip;
         private SerializedProperty opaqueClearFlags;

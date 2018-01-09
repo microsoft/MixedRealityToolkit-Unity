@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.Utilities.Managers;
 using System;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// GamepadInput class maps Xbox GamePad buttons to the GestureRecognizer.
@@ -89,7 +90,7 @@ namespace HoloToolkit.Unity.InputModule
         private void HandleGamepadAPressed()
         {
             // TODO: Should this handle Submit from Edit > ProjectSettings > Input ?
-            if (Input.GetButtonDown(GamePadButtonA))
+            if (UnityEngine.Input.GetButtonDown(GamePadButtonA))
             {
                 inputManager.RaiseSourceDown(this, GamePadId, InteractionSourcePressInfo.Select);
                 isAPressed = true;
@@ -124,8 +125,8 @@ namespace HoloToolkit.Unity.InputModule
 
             try
             {
-                displacementAlongX = Input.GetAxis(NavigateAroundXAxisName);
-                displacementAlongY = Input.GetAxis(NavigateAroundYAxisName);
+                displacementAlongX = UnityEngine.Input.GetAxis(NavigateAroundXAxisName);
+                displacementAlongY = UnityEngine.Input.GetAxis(NavigateAroundYAxisName);
             }
             catch (Exception)
             {
@@ -154,7 +155,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void HandleGamepadAReleased()
         {
-            if (Input.GetButtonUp(GamePadButtonA))
+            if (UnityEngine.Input.GetButtonUp(GamePadButtonA))
             {
                 inputManager.RaiseSourceUp(this, GamePadId, InteractionSourcePressInfo.Select);
 

@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.InputSources;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Editor
 {
     [CustomEditor(typeof(SpeechInputSource))]
-    public class SpeechInputSourceEditor : Editor
+    public class SpeechInputSourceEditor : UnityEditor.Editor
     {
         private SerializedProperty persistentKeywordsProperty;
         private SerializedProperty recognizerStart;

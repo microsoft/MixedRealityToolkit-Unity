@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using GLTF;
 using System.Collections;
 using UnityEngine.XR.WSA.Input;
+using MixedRealityToolkit.Common;
 
 #if !UNITY_EDITOR
 using Windows.Foundation;
@@ -20,7 +21,7 @@ using Windows.Storage.Streams;
 #endif
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities
 {
     /// <summary>
     /// This script spawns a specific GameObject when a controller is detected

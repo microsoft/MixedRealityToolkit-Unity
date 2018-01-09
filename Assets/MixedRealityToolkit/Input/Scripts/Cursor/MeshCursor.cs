@@ -4,12 +4,12 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Cursor
 {
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public class MeshCursor : Cursor
+    public class MeshCursor : BaseCursor
     {
         [Serializable]
         public struct MeshCursorDatum

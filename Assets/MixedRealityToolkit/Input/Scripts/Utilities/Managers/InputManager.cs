@@ -1,6 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.Focus;
+using MixedRealityToolkit.Input.GamePad;
+using MixedRealityToolkit.Input.InputHandlers;
+using MixedRealityToolkit.Input.InputSources;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +16,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Managers
 {
     /// <summary>
     /// Input Manager is responsible for managing input sources and dispatching relevant events
@@ -725,8 +731,8 @@ namespace HoloToolkit.Unity.InputModule
             HandleEvent(inputPositionEventData, OnInputPositionChangedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<ISelectHandler> OnSelectPressedAmountChangedEventHandler =
-            delegate (ISelectHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<InputHandlers.ISelectHandler> OnSelectPressedAmountChangedEventHandler =
+            delegate (InputHandlers.ISelectHandler handler, BaseEventData eventData)
             {
                 SelectPressedEventData casted = ExecuteEvents.ValidateEventData<SelectPressedEventData>(eventData);
                 handler.OnSelectPressedAmountChanged(casted);

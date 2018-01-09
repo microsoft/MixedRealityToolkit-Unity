@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// Base class for an input source.

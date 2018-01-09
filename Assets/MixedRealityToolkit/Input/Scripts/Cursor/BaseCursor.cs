@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.Focus;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Cursor
 {
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public abstract class Cursor : MonoBehaviour, ICursor
+    public abstract class BaseCursor : MonoBehaviour, ICursor
     {
         public CursorStateEnum CursorState { get { return cursorState; } }
         private CursorStateEnum cursorState = CursorStateEnum.None;
@@ -460,9 +463,9 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (IsHandVisible)
                 {
-                    return TargetedObject != null ? CursorStateEnum.InteractHover : CursorStateEnum.Interact;
+                    return TargetedObject != null ? CursorStateEnum.InteractHover : BaseCursorStateEnum.Interact;
                 }
-                return TargetedObject != null ? CursorStateEnum.ObserveHover : CursorStateEnum.Observe;
+                return TargetedObject != null ? CursorStateEnum.ObserveHover : BaseCursorStateEnum.Observe;
             }
             return CursorStateEnum.Contextual;
         }

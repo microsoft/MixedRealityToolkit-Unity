@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// Flags used to indicate which input information is supported by an input source.

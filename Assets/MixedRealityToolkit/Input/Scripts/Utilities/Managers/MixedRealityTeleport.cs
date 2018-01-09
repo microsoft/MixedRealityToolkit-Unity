@@ -2,6 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.Focus;
+using MixedRealityToolkit.Input.GamePad;
+using MixedRealityToolkit.Input.InputHandlers;
+using MixedRealityToolkit.Input.InputSources;
+using MixedRealityToolkit.Utilities;
 using System;
 using UnityEngine;
 
@@ -18,7 +25,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Managers
 {
     /// <summary>
     /// Script teleports the user to the location being gazed at when Y was pressed on a Gamepad.
@@ -131,8 +138,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (EnableTeleport && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
-                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
+                float leftX = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
+                float leftY = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
 
                 if (currentPointingSource == null && leftY > 0.8 && Math.Abs(leftX) < 0.3)
                 {
@@ -149,8 +156,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (EnableStrafe && currentPointingSource == null && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
-                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
+                float leftX = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
+                float leftY = UnityEngine.Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
 
                 if (leftX < -0.8 && Math.Abs(leftY) < 0.3)
                 {
@@ -168,8 +175,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (EnableRotation && currentPointingSource == null && !fadeControl.Busy)
             {
-                float rightX = Input.GetAxis(useCustomMapping ? RightThumbstickX : XboxControllerMapping.GetMapping(HorizontalRotation));
-                float rightY = Input.GetAxis(useCustomMapping ? RightThumbstickY : XboxControllerMapping.GetMapping(VerticalRotation));
+                float rightX = UnityEngine.Input.GetAxis(useCustomMapping ? RightThumbstickX : XboxControllerMapping.GetMapping(HorizontalRotation));
+                float rightY = UnityEngine.Input.GetAxis(useCustomMapping ? RightThumbstickY : XboxControllerMapping.GetMapping(VerticalRotation));
 
                 if (rightX < -0.8 && Math.Abs(rightY) < 0.3)
                 {

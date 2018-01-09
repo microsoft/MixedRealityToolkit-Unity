@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities
 {
     /// <summary>
     /// Waits for a controller to be instantiated, then attaches itself to a specified element

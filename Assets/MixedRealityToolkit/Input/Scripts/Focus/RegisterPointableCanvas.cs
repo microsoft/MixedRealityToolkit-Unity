@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Focus
 {
     /// <summary>
     /// Script to register a Canvas component so it's capable of being focused at for 'point and commit' scenarios.

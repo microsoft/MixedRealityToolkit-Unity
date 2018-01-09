@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Interations
 {
     /// <summary>
     /// Since the InteractionSourcePose is internal to UnityEngine.VR.WSA.Input,

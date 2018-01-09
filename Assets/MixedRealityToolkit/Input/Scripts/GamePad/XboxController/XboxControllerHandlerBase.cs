@@ -1,11 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.InputHandlers;
+using MixedRealityToolkit.Input.InputSources;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.GamePad
 {
     public class XboxControllerHandlerBase : GamePadHandlerBase, IXboxControllerHandler
     {

@@ -4,8 +4,9 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using MixedRealityToolkit.Common;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Managers
 {
     /// <summary>
     /// KeyboardManager allows other scripts to register for (or inject) key events.
@@ -131,13 +132,13 @@ namespace HoloToolkit.Unity.InputModule
                 switch (keyCheck.KeyEvent)
                 {
                     case KeyEvent.KeyHeld:
-                        eventTriggered = Input.GetKey(keyCheck.KeyCode);
+                        eventTriggered = UnityEngine.Input.GetKey(keyCheck.KeyCode);
                         break;
                     case KeyEvent.KeyDown:
-                        eventTriggered = Input.GetKeyDown(keyCheck.KeyCode);
+                        eventTriggered = UnityEngine.Input.GetKeyDown(keyCheck.KeyCode);
                         break;
                     case KeyEvent.KeyUp:
-                        eventTriggered = Input.GetKeyUp(keyCheck.KeyCode);
+                        eventTriggered = UnityEngine.Input.GetKeyUp(keyCheck.KeyCode);
                         break;
                 }
 

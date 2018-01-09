@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using System;
+using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities
 {
     /// <summary>
     /// AxisController uses the keyboard, mouse, or joystick and allows
@@ -237,7 +237,7 @@ namespace HoloToolkit.Unity.InputModule
             else if (AxisTypeIsMouseScroll)
             {
                 if (ShouldControl())
-                    rot.x += Input.GetAxis("Mouse ScrollWheel");
+                    rot.x += UnityEngine.Input.GetAxis("Mouse ScrollWheel");
             }
             else if (AxisTypeIsMouse)
             {
@@ -304,13 +304,13 @@ namespace HoloToolkit.Unity.InputModule
 
             // Use frame-to-frame mouse delta in pixels to determine mouse rotation. The traditional
             // GetAxis("Mouse X") method doesn't work under Remote Desktop.
-            Vector3 mousePositionDelta = Input.mousePosition - this.lastMousePosition;
-            this.lastMousePosition = Input.mousePosition;
+            Vector3 mousePositionDelta = UnityEngine.Input.mousePosition - this.lastMousePosition;
+            this.lastMousePosition = UnityEngine.Input.mousePosition;
 
             if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
             {
-                mousePositionDelta.x = Input.GetAxis("Mouse X");
-                mousePositionDelta.y = Input.GetAxis("Mouse Y");
+                mousePositionDelta.x = UnityEngine.Input.GetAxis("Mouse X");
+                mousePositionDelta.y = UnityEngine.Input.GetAxis("Mouse Y");
             }
             else
             {
@@ -325,12 +325,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private float GetKeyDir(KeyCode neg, KeyCode pos)
         {
-            return Input.GetKey(neg) ? -1.0f : Input.GetKey(pos) ? 1.0f : 0.0f;
+            return UnityEngine.Input.GetKey(neg) ? -1.0f : UnityEngine.Input.GetKey(pos) ? 1.0f : 0.0f;
         }
 
         private float GetKeyDir(string neg, string pos)
         {
-            return Input.GetKey(neg) ? -1.0f : Input.GetKey(pos) ? 1.0f : 0.0f;
+            return UnityEngine.Input.GetKey(neg) ? -1.0f : UnityEngine.Input.GetKey(pos) ? 1.0f : 0.0f;
         }
 
         private void InputManagerAxisCheck()
@@ -342,7 +342,7 @@ namespace HoloToolkit.Unity.InputModule
                 inputManagerHorizontalAxisApproved = true;
                 try
                 {
-                    Input.GetAxis(InputManagerHorizontalAxisName);
+                    UnityEngine.Input.GetAxis(InputManagerHorizontalAxisName);
                 }
                 catch (Exception)
                 {
@@ -355,7 +355,7 @@ namespace HoloToolkit.Unity.InputModule
                 inputManagerVerticalAxisApproved = true;
                 try
                 {
-                    Input.GetAxis(InputManagerVerticalAxisName);
+                    UnityEngine.Input.GetAxis(InputManagerVerticalAxisName);
                 }
                 catch (Exception)
                 {
@@ -371,11 +371,11 @@ namespace HoloToolkit.Unity.InputModule
             Vector3 rot = Vector3.zero;
             if (inputManagerHorizontalAxisApproved)
             {
-                rot.x += InputManagerAxisSensitivity * InputCurve(Input.GetAxis(InputManagerHorizontalAxisName));
+                rot.x += InputManagerAxisSensitivity * InputCurve(UnityEngine.Input.GetAxis(InputManagerHorizontalAxisName));
             }
             if (inputManagerVerticalAxisApproved)
             {
-                rot.y += InputManagerAxisSensitivity * InputCurve(Input.GetAxis(InputManagerVerticalAxisName));
+                rot.y += InputManagerAxisSensitivity * InputCurve(UnityEngine.Input.GetAxis(InputManagerVerticalAxisName));
             }
             return rot;
         }
@@ -454,41 +454,41 @@ namespace HoloToolkit.Unity.InputModule
             }
             else if (this.buttonType <= ButtonController.ButtonType.Middle)
             {
-                return Input.GetMouseButton((int)this.buttonType);
+                return UnityEngine.Input.GetMouseButton((int)this.buttonType);
             }
             else if (this.buttonType == ButtonController.ButtonType.Control)
             {
-                return Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+                return UnityEngine.Input.GetKey(KeyCode.LeftControl) || UnityEngine.Input.GetKey(KeyCode.RightControl);
             }
             else if (this.buttonType == ButtonController.ButtonType.Shift)
             {
-                return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                return UnityEngine.Input.GetKey(KeyCode.LeftShift) || UnityEngine.Input.GetKey(KeyCode.RightShift);
             }
             else if (this.buttonType == ButtonController.ButtonType.Alt)
             {
-                return Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+                return UnityEngine.Input.GetKey(KeyCode.LeftAlt) || UnityEngine.Input.GetKey(KeyCode.RightAlt);
             }
             else if (this.buttonType == ButtonController.ButtonType.Space)
             {
-                return Input.GetKey(KeyCode.Space);
+                return UnityEngine.Input.GetKey(KeyCode.Space);
             }
             else if (this.buttonType == ButtonController.ButtonType.Return)
             {
-                return Input.GetKey(KeyCode.Return);
+                return UnityEngine.Input.GetKey(KeyCode.Return);
             }
             else if (this.buttonType == ButtonController.ButtonType.Focused)
             {
                 if (!this.usingMouse)
                 {
                     // any kind of click will capture focus
-                    return Input.GetMouseButtonDown((int)ButtonController.ButtonType.Left)
-                        || Input.GetMouseButtonDown((int)ButtonController.ButtonType.Right)
-                        || Input.GetMouseButtonDown((int)ButtonController.ButtonType.Middle);
+                    return UnityEngine.Input.GetMouseButtonDown((int)ButtonController.ButtonType.Left)
+                        || UnityEngine.Input.GetMouseButtonDown((int)ButtonController.ButtonType.Right)
+                        || UnityEngine.Input.GetMouseButtonDown((int)ButtonController.ButtonType.Middle);
                 }
                 else
                 {
                     // pressing escape will stop capture
-                    return !Input.GetKeyDown(KeyCode.Escape);
+                    return !UnityEngine.Input.GetKeyDown(KeyCode.Escape);
                 }
             }
 
@@ -520,7 +520,7 @@ namespace HoloToolkit.Unity.InputModule
                     // hide the cursor
                     UnityEngine.Cursor.visible = false;
 
-                    this.lastMousePosition = Input.mousePosition;
+                    this.lastMousePosition = UnityEngine.Input.mousePosition;
                 }
                 else
                 {

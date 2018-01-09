@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Cursor
 {
     /// <summary>
     /// Data struct for cursor state information for the Animated Cursor, which leverages the Unity animation system..

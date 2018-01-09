@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.Utilities.Interations;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// Input source for fake input source information, which gives details about current source state and position.

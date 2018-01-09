@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using UnityEngine;
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Managers
 {
     /// <summary>
     /// This script tells you if your head mounted display (HMD)

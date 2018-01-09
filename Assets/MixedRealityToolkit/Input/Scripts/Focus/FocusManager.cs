@@ -1,12 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.Gaze;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Focus
 {
     /// <summary>
     /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor

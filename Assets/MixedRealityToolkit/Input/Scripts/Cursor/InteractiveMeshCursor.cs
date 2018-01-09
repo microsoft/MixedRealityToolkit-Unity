@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
+using MixedRealityToolkit.Input.Gaze;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Cursor
 {
     /// <summary>
     /// A cursor that looks and acts more like the shell cursor.
     /// A two part cursor with visual feedback for all cursor states
     /// </summary>
-    public class InteractiveMeshCursor : Cursor
+    public class InteractiveMeshCursor : BaseCursor
     {
         [Tooltip("The ring or outer element")]
         public GameObject Ring;

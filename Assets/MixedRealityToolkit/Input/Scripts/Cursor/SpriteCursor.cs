@@ -4,12 +4,12 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Cursor
 {
     /// <summary>
     /// Object that represents a cursor comprised of sprites and colors for each state
     /// </summary>
-    public class SpriteCursor : Cursor
+    public class SpriteCursor : BaseCursor
     {
         [Serializable]
         public struct SpriteCursorDatum

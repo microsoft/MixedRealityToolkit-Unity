@@ -11,7 +11,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities
 {
     /// <summary>
     /// This script keeps track of the GameObjects for each button on the controller.

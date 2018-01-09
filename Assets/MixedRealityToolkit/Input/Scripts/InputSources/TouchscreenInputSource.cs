@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// Input source supporting basic touchscreen input:
@@ -41,7 +43,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void Start()
         {
             // Disable the inputsource if not supported by the device
-            if (!Input.touchSupported)
+            if (!UnityEngine.Input.touchSupported)
             {
                 this.enabled = false;
             }
@@ -49,7 +51,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void Update()
         {
-            foreach (Touch touch in Input.touches)
+            foreach (Touch touch in UnityEngine.Input.touches)
             {
                 // Construct a ray from the current touch coordinates
                 Ray ray = CameraCache.Main.ScreenPointToRay(touch.position);

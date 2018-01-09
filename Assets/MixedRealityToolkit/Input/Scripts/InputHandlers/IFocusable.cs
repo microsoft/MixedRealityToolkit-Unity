@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputHandlers
 {
     /// <summary>
     /// Interface to implement to react to focus enter/exit.

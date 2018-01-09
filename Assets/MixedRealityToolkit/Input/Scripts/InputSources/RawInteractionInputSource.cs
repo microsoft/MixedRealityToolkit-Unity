@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.VR.WSA.Input;
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// Input source for raw interactions sources information, which gives finer details about current source state and position

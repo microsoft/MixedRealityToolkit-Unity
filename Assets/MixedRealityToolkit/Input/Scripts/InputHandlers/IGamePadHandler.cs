@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.EventData;
 using System;
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputHandlers
 {
     [Obsolete("Use ISourceStateHandler")]
     public interface IGamePadHandler : IEventSystemHandler

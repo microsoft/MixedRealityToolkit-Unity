@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Interations
 {
     /// <summary>
     /// Class for manually controlling the camera when not running on HoloLens (in editor). 

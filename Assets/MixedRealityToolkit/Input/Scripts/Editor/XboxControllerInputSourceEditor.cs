@@ -1,14 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.InputSources;
 using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Editor
 {
     [CustomEditor(typeof(XboxControllerInputSource))]
-    public class XboxControllerInputSourceEditor : Editor
+    public class XboxControllerInputSourceEditor : UnityEditor.Editor
     {
         private SerializedProperty horizontalAxisProperty;
         private SerializedProperty verticalAxisProperty;

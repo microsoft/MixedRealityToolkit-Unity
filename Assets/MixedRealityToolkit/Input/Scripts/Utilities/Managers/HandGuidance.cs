@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -11,7 +12,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Utilities.Managers
 {
     /// <summary>
     /// Show a hand guidance indicator when the user's hand is close to leaving the camera's view.

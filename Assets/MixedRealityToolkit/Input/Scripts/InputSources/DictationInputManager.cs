@@ -3,13 +3,15 @@
 
 using System.Collections;
 using UnityEngine;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input.Utilities.Managers;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using System.Text;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.InputSources
 {
     /// <summary>
     /// Singleton class that implements the DictationRecognizer to convert the user's speech to text.

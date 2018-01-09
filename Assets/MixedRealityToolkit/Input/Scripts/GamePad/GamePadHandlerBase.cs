@@ -1,6 +1,12 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace HoloToolkit.Unity.InputModule
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.InputHandlers;
+using MixedRealityToolkit.Input.Utilities.Managers;
+using UnityEngine;
+
+namespace MixedRealityToolkit.Input.GamePad
 {
     public class GamePadHandlerBase : MonoBehaviour, ISourceStateHandler
     {

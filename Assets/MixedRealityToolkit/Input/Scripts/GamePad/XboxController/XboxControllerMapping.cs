@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Utilities;
 using System;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.GamePad
 {
     /// <summary>
     /// Defines the controller mapping for the input source.

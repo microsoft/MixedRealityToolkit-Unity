@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Focus
 {
     /// <summary>
     /// Implement this interface to register your pointer as a pointing source. This could be gaze based or motion controller based.

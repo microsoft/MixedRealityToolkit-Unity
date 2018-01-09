@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Input.Focus;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Gaze
 {
     /// <summary>
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.

@@ -1,9 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Input.Cursor;
+using MixedRealityToolkit.Input.EventData;
+using MixedRealityToolkit.Input.Gaze;
+using MixedRealityToolkit.Input.InputHandlers;
+using MixedRealityToolkit.Input.InputSources;
+using MixedRealityToolkit.Input.Utilities.Managers;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Focus
 {
     /// <summary>
     /// Script shows how to create your own 'point and commit' style pointer which can steal cursor focus
@@ -19,7 +25,7 @@ namespace HoloToolkit.Unity.InputModule
         public BaseRayStabilizer ControllerPointerStabilizer;
 
         [Tooltip("The cursor, if any, which should follow the selected pointer.")]
-        public Cursor Cursor;
+        public BaseCursor Cursor;
 
         [Tooltip("True to search for a cursor if one isn't explicitly set.")]
         public bool SearchForCursorIfUnset = true;
@@ -127,7 +133,7 @@ namespace HoloToolkit.Unity.InputModule
                     GetType().Name
                     );
 
-                Cursor[] foundCursors = FindObjectsOfType<Cursor>();
+                BaseCursor[] foundCursors = FindObjectsOfType<BaseCursor>();
 
                 if ((foundCursors == null) || (foundCursors.Length == 0))
                 {

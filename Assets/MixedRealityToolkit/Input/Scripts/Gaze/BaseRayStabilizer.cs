@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule
+namespace MixedRealityToolkit.Input.Gaze
 {
     /// <summary>
     /// A base class for a stabilizer that takes an input position and rotation, and performs operations on them
