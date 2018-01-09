@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void Initialize(IInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             DictationResult = dictationResult;
             DictationAudioClip = dictationAudioClip;
         }

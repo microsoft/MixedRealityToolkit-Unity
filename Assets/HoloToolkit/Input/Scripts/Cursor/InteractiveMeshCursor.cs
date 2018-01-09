@@ -65,14 +65,14 @@ namespace HoloToolkit.Unity.InputModule
             base.OnCursorStateChange(state);
 
             // the cursor state has changed, reset the animation timer
-            if (mHasHand != this.IsSourceDetected || mIsDown != this.IsPointerDown || mHasHover != (this.TargetedObject != null))
+            if (mHasHand != IsHandDetected || mIsDown != IsPointerDown || mHasHover != (TargetedObject != null))
             {
                 mTimer = 0;
             }
 
-            mHasHand = this.IsSourceDetected;
-            mIsDown = this.IsPointerDown;
-            mHasHover = this.TargetedObject != null;
+            mHasHand = IsHandDetected;
+            mIsDown = IsPointerDown;
+            mHasHover = TargetedObject != null;
 
             mTargetScale = mBaseScale * DefaultScale;
             bool showRing = false;
@@ -136,7 +136,7 @@ namespace HoloToolkit.Unity.InputModule
                     mTimer = ScaleTime;
                 }
 
-                Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer/ScaleTime);
+                Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
                 Dot.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
             }
 

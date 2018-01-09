@@ -22,9 +22,18 @@ namespace HoloToolkit.Unity.InputModule
 
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
+        public void Initialize(IInputSource inputSource, object[] tags)
+        {
+            BaseInitialize(inputSource, tags);
+            Handedness = Handedness.None;
+#if UNITY_WSA
+            PressType = InteractionSourcePressType.None;
+#endif
+        }
+
         public void Initialize(IInputSource inputSource, Handedness handedness, object[] tags)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             Handedness = handedness;
 #if UNITY_WSA
             PressType = InteractionSourcePressType.None;
@@ -34,7 +43,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA
         public void Initialize(IInputSource inputSource, InteractionSourcePressType pressType, Handedness handedness, object[] tags)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             Handedness = handedness;
             PressType = pressType;
         }

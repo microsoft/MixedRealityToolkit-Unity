@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void Initialize(IInputSource inputSource, int clickCount, object[] tags = null)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             ClickCount = clickCount;
         }
 

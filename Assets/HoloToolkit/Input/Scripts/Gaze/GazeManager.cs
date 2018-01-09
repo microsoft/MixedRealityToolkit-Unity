@@ -13,11 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     {
         [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
-        private GameObject cursorPrefab;
-
-        [SerializeField]
-        [Tooltip("Scene Cursor to use if you don't wish to instantiate the cursor during runtime.")]
-        private Cursor sceneCursor;
+        private GameObject cursorPrefab = null;
 
         /// <summary>
         /// Maximum distance at which the gaze can collide with an object.
@@ -150,16 +146,6 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseRayStabilizer RayStabilizer { get; set; }
 
-        public void RegisterPointer()
-        {
-            // Focus Manager already registers the gaze by default.
-        }
-
-        public bool OwnsInput(BaseInputEventData eventData)
-        {
-            return Equals(eventData.InputSource);
-        }
-
         public virtual void OnPreRaycast()
         {
             UpdateGazeInfo();
@@ -238,25 +224,19 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion IEquality Implementation
 
+        #region Monobehaiour Implementation
+
         protected override void Awake()
         {
             base.Awake();
 
             SourceId = InputManager.GenerateNewSourceId();
 
-            if (sceneCursor != null)
-            {
-                Cursor = sceneCursor;
-                Cursor.transform.parent = GazeTransform;
-                Debug.Assert(Cursor != null, "Failed to load cursor");
-            }
+            var cursorObj = Instantiate(cursorPrefab, transform);
+            Cursor = cursorObj.GetComponent<Cursor>();
+            Cursor.Pointer = this;
 
-            if (Cursor == null && cursorPrefab != null)
-            {
-                var cursorObj = Instantiate(cursorPrefab, transform);
-                Cursor = cursorObj.GetComponent<Cursor>();
-                Debug.Assert(Cursor != null, "Failed to load cursor");
-            }
+            Debug.Assert(Cursor != null, "Failed to load cursor");
 
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
@@ -265,6 +245,16 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             FindGazeTransform();
+        }
+
+        private void Start()
+        {
+            FocusManager.AssertIsInitialized();
+            InputManager.AssertIsInitialized();
+            Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
+
+            Debug.LogWarning("Gaze On Enable");
+            InputManager.Instance.RaiseSourceDetected(this);
         }
 
         private void Update()
@@ -277,6 +267,33 @@ namespace HoloToolkit.Unity.InputModule
             if (DebugDrawRay)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
+            }
+        }
+
+        private void OnDisable()
+        {
+            InputManager.Instance.RaiseSourceLost(this);
+        }
+
+        #endregion Monobehaiour Implementation
+
+        #region Utilities
+
+        /// <summary>
+        /// Notifies this gaze manager of its new hit details.
+        /// </summary>
+        /// <param name="focusDetails">Details of the current focus.</param>
+        /// <param name="hitInfo">Details of the focus raycast hit.</param>
+        public void UpdateHitDetails(FocusDetails focusDetails, RaycastHit hitInfo)
+        {
+            HitInfo = hitInfo;
+            HitObject = focusDetails.Object;
+
+            if (focusDetails.Object != null)
+            {
+                lastHitDistance = (focusDetails.Point - Rays[0].Origin).magnitude;
+                UpdateHitPosition();
+                HitNormal = focusDetails.Normal;
             }
         }
 
@@ -322,30 +339,11 @@ namespace HoloToolkit.Unity.InputModule
             UpdateHitPosition();
         }
 
-        /// <summary>
-        /// Notifies this gaze manager of its new hit details.
-        /// </summary>
-        /// <param name="focusDetails">Details of the current focus.</param>
-        /// <param name="hitInfo">Details of the focus raycast hit.</param>
-        /// <param name="isRegisteredForFocus">Whether or not this gaze manager is registered as a focus pointer.</param>
-        public void UpdateHitDetails(FocusDetails focusDetails, RaycastHit hitInfo, bool isRegisteredForFocus)
-        {
-            HitInfo = hitInfo;
-            HitObject = isRegisteredForFocus
-                ? focusDetails.Object
-                : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.
-
-            if (focusDetails.Object != null)
-            {
-                lastHitDistance = (focusDetails.Point - Rays[0].Origin).magnitude;
-                UpdateHitPosition();
-                HitNormal = focusDetails.Normal;
-            }
-        }
-
         private void UpdateHitPosition()
         {
             HitPosition = (Rays[0].Origin + (lastHitDistance * Rays[0].Direction));
         }
+
+        #endregion Utilities
     }
 }

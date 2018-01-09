@@ -13,7 +13,11 @@ namespace HoloToolkit.Unity.InputModule
     {
         public uint SourceId { get; protected set; }
 
-        public string Name { get; protected set; }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
 
         public abstract SupportedInputInfo GetSupportedInputInfo();
 
@@ -23,21 +27,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #region IEquality Implementation
-
-        public static bool operator ==(BaseInputSource left, BaseInputSource right)
-        {
-            if (((object)left) == null || ((object)right) == null)
-            {
-                return Equals(left, right);
-            }
-
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(BaseInputSource left, BaseInputSource right)
-        {
-            return !(left == right);
-        }
 
         private bool Equals(IInputSource other)
         {

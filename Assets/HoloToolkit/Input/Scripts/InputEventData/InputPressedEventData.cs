@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void Initialize(IInputSource inputSource, double pressedAmount, object[] tags = null)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             PressedAmount = pressedAmount;
         }
 

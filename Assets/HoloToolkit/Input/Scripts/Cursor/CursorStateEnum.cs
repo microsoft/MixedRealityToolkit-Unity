@@ -14,23 +14,23 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         None = -1,
         /// <summary>
-        /// Not IsSourceDetected
+        /// Not IsHandDetected
         /// </summary>
         Observe,
         /// <summary>
-        /// Not IsSourceDetected AND not IsPointerDown AND TargetedObject exists
+        /// Not IsHandDetected AND not IsPointerDown AND TargetedObject exists
         /// </summary>
         ObserveHover,
         /// <summary>
-        /// IsSourceDetected AND not IsPointerDown AND TargetedObject is NULL
+        /// IsHandDetected AND not IsPointerDown AND TargetedObject is NULL
         /// </summary>
         Interact,
         /// <summary>
-        /// IsSourceDetected AND not IsPointerDown AND TargetedObject exists
+        /// IsHandDetected AND not IsPointerDown AND TargetedObject exists
         /// </summary>
         InteractHover,
         /// <summary>
-        /// IsSourceDetected AND IsPointerDown
+        /// IsHandDetected AND IsPointerDown
         /// </summary>
         Select,
         /// <summary>

@@ -10,10 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GenericInputPointingSource : GenericInputSource, IPointingSource
     {
-        public GenericInputPointingSource(uint sourceId, string name) : base(sourceId, name)
-        {
-            RegisterPointer();
-        }
+        public GenericInputPointingSource(uint sourceId, string name) : base(sourceId, name) { }
 
         public GenericInputPointingSource(uint sourceId, string name, SupportedInputInfo supportedInputInfo) : base(sourceId, name, supportedInputInfo) { }
 
@@ -35,16 +32,6 @@ namespace HoloToolkit.Unity.InputModule
         public PointerResult Result { get; set; }
 
         public BaseRayStabilizer RayStabilizer { get; set; }
-
-        public void RegisterPointer()
-        {
-            FocusManager.Instance.RegisterPointer(this);
-        }
-
-        public bool OwnsInput(BaseInputEventData eventData)
-        {
-            return Equals(eventData.InputSource);
-        }
 
         public virtual void OnPreRaycast()
         {

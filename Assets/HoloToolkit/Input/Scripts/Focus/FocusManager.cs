@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,28 +13,8 @@ namespace HoloToolkit.Unity.InputModule
     /// or pointing ray enabled motion controllers.
     /// If you don't have pointing ray enabled controllers, it defaults to GazeManager.
     /// </summary>
-    public class FocusManager : Singleton<FocusManager>
+    public class FocusManager : Singleton<FocusManager>, ISourceStateHandler
     {
-        #region MonoBehaviour Implementation
-
-        private void Start()
-        {
-            if (GazeManager.IsInitialized)
-            {
-                RegisterPointer(GazeManager.Instance);
-            }
-        }
-
-        private void Update()
-        {
-            UpdatePointers();
-            UpdateFocusedObjects();
-        }
-
-        #endregion MonoBehaviour Implementation
-
-        #region Settings
-
         /// <summary>
         /// Maximum distance at which the pointer can collide with an object.
         /// </summary>
@@ -61,11 +42,58 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private Color[] debugDrawPointingRayColors = null;
 
-        #endregion
+        /// <summary>
+        /// GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
+        /// of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
+        /// to do a gaze raycast even if gaze isn't used for focus.
+        /// </summary>
+        private PointerData gazeManagerPointingData;
 
-        #region Data
+        private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
+        private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
+        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
+        private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
 
-        private class PointerData : PointerResult
+        /// <summary>
+        /// Cached vector 3 reference to the new raycast position.
+        /// <remarks>Only used to update UI raycast results.</remarks>
+        /// </summary>
+        private Vector3 newUiRaycastPosition = Vector3.zero;
+
+        /// <summary>
+        /// Camera to use for raycasting uGUI pointer events.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Camera to use for raycasting uGUI pointer events.")]
+        private Camera uiRaycastCamera;
+
+        /// <summary>
+        /// The Camera the Event System uses to raycast against.
+        /// <para><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></para>
+        /// </summary>
+        public Camera UIRaycastCamera
+        {
+            get
+            {
+                if (uiRaycastCamera == null)
+                {
+                    Debug.LogWarning("No UIRaycastCamera assigned! Falling back to the UIRaycastCamera.\n" +
+                                     "It's highly recommended to use the UIRaycastCamera found on the EventSystem of this InputManager.");
+                    uiRaycastCamera = GetComponentInChildren<Camera>();
+                }
+
+                return uiRaycastCamera;
+            }
+        }
+
+        /// <summary>
+        /// To tap on a hologram even when not focused on,
+        /// set OverrideFocusedObject to desired game object.
+        /// If it's null, then focused object will be used.
+        /// </summary>
+        public GameObject OverrideFocusedObject { get; set; }
+
+        private class PointerData : PointerResult, IEquatable<PointerData>
         {
             public readonly IPointingSource PointingSource;
             private FocusDetails focusDetails;
@@ -79,6 +107,8 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         graphicData = new GraphicInputEventData(EventSystem.current);
                     }
+
+                    Debug.Assert(graphicData != null);
 
                     return graphicData;
                 }
@@ -144,146 +174,59 @@ namespace HoloToolkit.Unity.InputModule
                 focusDetails.Object = null;
                 End = focusDetails;
             }
+
+            public bool Equals(PointerData other)
+            {
+                if (ReferenceEquals(null, other)) return false;
+                if (ReferenceEquals(this, other)) return true;
+                return PointingSource.SourceId == other.PointingSource.SourceId;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((PointerData)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return PointingSource != null ? PointingSource.GetHashCode() : 0;
+            }
         }
 
-        private readonly List<PointerData> pointers = new List<PointerData>(0);
+        #region MonoBehaviour Implementation
 
-        /// <summary>
-        /// GazeManager is a little special, so we keep track of it even if it's not a registered pointer. For the sake
-        /// of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
-        /// to do a gaze raycast even if gaze isn't used for focus.
-        /// </summary>
-        private PointerData gazeManagerPointingData;
-
-        private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
-        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
-        private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
-
-        /// <summary>
-        /// Cached vector 3 reference to the new raycast position.
-        /// <remarks>Only used to update UI raycast results.</remarks>
-        /// </summary>
-        private Vector3 newUiRaycastPosition = Vector3.zero;
-
-        /// <summary>
-        /// Private uiRaycastCamera used primarily for UI pointer data.
-        /// </summary>
-        [SerializeField]
-        private Camera uiRaycastCamera;
-
-        /// <summary>
-        /// The Camera the Event System uses to raycast against.
-        /// <remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks>
-        /// </summary>
-        public Camera UIRaycastCamera
+        private void Start()
         {
-            get
-            {
-                if (uiRaycastCamera == null)
-                {
-                    Debug.LogWarning("No UIRaycastCamera assigned! Falling back to the RaycastCamera.\n" +
-                                     "It's highly recommended to use the RaycastCamera found on the EventSystem of this InputManager.");
-                    uiRaycastCamera = GetComponentInChildren<Camera>();
-                }
-
-                return uiRaycastCamera;
-            }
+            // Register the cursor as a global listener to get source events.
+            InputManager.Instance.AddGlobalListener(gameObject);
         }
 
-        #endregion
-
-        #region Accessors
-
-        public void RegisterPointer(IPointingSource pointingSource)
+        private void Update()
         {
-            Debug.Assert(pointingSource != null, "Can't register a pointer if you give us one.");
-
-            int pointerIndex;
-            PointerData pointer;
-
-            if (TryGetPointerIndex(pointingSource, out pointerIndex))
-            {
-                // This pointing source is already registered and active.
-                return;
-            }
-
-            if (pointingSource.SourceId == GazeManager.Instance.SourceId)
-            {
-                if (gazeManagerPointingData == null)
-                {
-                    if (GazeManager.IsInitialized)
-                    {
-                        gazeManagerPointingData = new PointerData(GazeManager.Instance);
-                    }
-                }
-                else
-                {
-                    Debug.Assert(gazeManagerPointingData.PointingSource.SourceId == GazeManager.Instance.SourceId);
-                    gazeManagerPointingData.ResetFocusedObjects();
-                }
-
-                Debug.Assert(gazeManagerPointingData != null);
-                pointer = gazeManagerPointingData;
-            }
-            else
-            {
-                pointer = new PointerData(pointingSource);
-            }
-
-            pointers.Add(pointer);
+            UpdatePointers();
+            UpdateFocusedObjects();
         }
 
-        public void UnregisterPointer(IPointingSource pointingSource)
-        {
-            Debug.Assert(pointingSource != null, "Can't unregister a pointer if you give us one.");
+        #endregion MonoBehaviour Implementation
 
-            int pointerIndex;
-            TryGetPointerIndex(pointingSource, out pointerIndex);
-            Debug.Assert(pointerIndex >= 0, "Invalid pointer index!");
+        #region Focus Details by EventData
 
-            PointerData pointer = GetPointerData(pointingSource);
-
-            // Don't unregister the Gaze Pointer.
-            if (pointer.PointingSource.SourceId == gazeManagerPointingData.PointingSource.SourceId)
-            {
-                return;
-            }
-
-            pointers.RemoveAt(pointerIndex);
-
-            // Raise focus events if needed:
-
-            if (pointer.End.Object != null)
-            {
-                GameObject unfocusedObject = pointer.End.Object;
-
-                bool objectIsStillFocusedByOtherPointer = false;
-
-                for (int iOther = 0; iOther < pointers.Count; iOther++)
-                {
-                    if (pointers[iOther].End.Object == unfocusedObject)
-                    {
-                        objectIsStillFocusedByOtherPointer = true;
-                        break;
-                    }
-                }
-
-                if (!objectIsStillFocusedByOtherPointer)
-                {
-                    InputManager.Instance.RaiseFocusExit(pointer.PointingSource, unfocusedObject);
-                }
-
-                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(pointer.PointingSource, unfocusedObject, null);
-            }
-        }
-
+        /// <summary>
+        /// Try to get the focus details based on the specified event data.
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <param name="focusDetails"></param>
+        /// <returns>True, if event data pointer input source is registered.</returns>
         public bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails)
         {
-            for (int i = 0; i < pointers.Count; i++)
+            foreach (var pointer in pointers)
             {
-                if (pointers[i].PointingSource.OwnsInput(eventData))
+                if (pointer.PointingSource.SourceId == eventData.SourceId)
                 {
-                    focusDetails = pointers[i].End;
+                    focusDetails = pointer.End;
                     return true;
                 }
             }
@@ -292,8 +235,15 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
-        public GameObject TryGetFocusedObject(BaseInputEventData eventData)
+        /// <summary>
+        /// Gets the currently focused object based on specified the event data.
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <returns>Currently focused <see cref="GameObject"/> for the events input source.</returns>
+        public GameObject GetFocusedObject(BaseInputEventData eventData)
         {
+            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
+
             FocusDetails focusDetails;
             if (!TryGetFocusDetails(eventData, out focusDetails)) { return null; }
 
@@ -308,13 +258,19 @@ namespace HoloToolkit.Unity.InputModule
             return focusDetails.Object;
         }
 
+        /// <summary>
+        /// Try to get the registered pointer source that raised the event.
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <param name="pointingSource"></param>
+        /// <returns>True, if event datas pointer input source is registered.</returns>
         public bool TryGetPointingSource(BaseInputEventData eventData, out IPointingSource pointingSource)
         {
-            for (int i = 0; i < pointers.Count; i++)
+            foreach (var pointer in pointers)
             {
-                if (pointers[i].PointingSource.OwnsInput(eventData))
+                if (pointer.PointingSource.SourceId == eventData.SourceId)
                 {
-                    pointingSource = pointers[i].PointingSource;
+                    pointingSource = pointer.PointingSource;
                     return true;
                 }
             }
@@ -322,15 +278,19 @@ namespace HoloToolkit.Unity.InputModule
             pointingSource = null;
             return false;
         }
+
+        #endregion Focus Details by EventData
+
+        #region Focus Details by IPointingSource
+
         /// <summary>
-        /// Gets the currently focused object for the pointing source.
-        /// <para><remarks>If the pointing source is not registered, then the Gaze's <see cref="FocusDetails"/> is returned.</remarks></para>
+        /// Get the pointing extent for the specified pointing source.
         /// </summary>
         /// <param name="pointingSource"></param>
-        /// <returns>Current <see cref="FocusDetails"/></returns>
-        public FocusDetails GetFocusDetails(IPointingSource pointingSource)
+        /// <returns></returns>
+        public float GetPointingExtent(IPointingSource pointingSource)
         {
-            return GetPointerData(pointingSource).End;
+            return pointingSource.ExtentOverride ?? pointingExtent;
         }
 
         /// <summary>
@@ -341,7 +301,37 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>Currently Focused Object.</returns>
         public GameObject GetFocusedObject(IPointingSource pointingSource)
         {
-            return GetPointerData(pointingSource).End.Object;
+            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
+
+            FocusDetails focusDetails;
+            if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
+
+            GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointingSource);
+            Debug.Assert(graphicInputEventData != null);
+            graphicInputEventData.selectedObject = focusDetails.Object;
+
+            return focusDetails.Object;
+        }
+
+        /// <summary>
+        /// Gets the currently focused object for the pointing source.
+        /// <para><remarks>If the pointing source is not registered, then the Gaze's <see cref="FocusDetails"/> is returned.</remarks></para>
+        /// </summary>
+        /// <param name="pointingSource"></param>
+        /// <param name="focusDetails"></param>
+        public bool TryGetFocusDetails(IPointingSource pointingSource, out FocusDetails focusDetails)
+        {
+            foreach (var pointer in pointers)
+            {
+                if (pointer.PointingSource.SourceId == pointingSource.SourceId)
+                {
+                    focusDetails = pointer.End;
+                    return true;
+                }
+            }
+
+            focusDetails = default(FocusDetails);
+            return false;
         }
 
         /// <summary>
@@ -352,52 +342,83 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (pointers.Count == 1)
             {
-                pointingSource = pointers[0].PointingSource;
-                return true;
+                foreach (var pointer in pointers)
+                {
+                    pointingSource = pointer.PointingSource;
+                    return true;
+                }
             }
 
             pointingSource = null;
             return false;
         }
 
-        public GraphicInputEventData GetGazeGraphicInputEventData()
-        {
-            return gazeManagerPointingData.GraphicEventData;
-        }
-
         /// <summary>
-        /// Get the Graphic Event Data for this Pointer.
+        /// Get the Graphic Event Data for the specified pointing source.
         /// </summary>
         /// <param name="pointer"></param>
         /// <returns></returns>
         public GraphicInputEventData GetSpecificPointerGraphicEventData(IPointingSource pointer)
         {
-            return GetPointerData(pointer).GraphicEventData;
+            var pointerData = GetPointerData(pointer);
+            return pointerData == null ? null : pointerData.GraphicEventData;
         }
 
-        public float GetPointingExtent(IPointingSource pointingSource)
-        {
-            return pointingSource.ExtentOverride ?? pointingExtent;
-        }
-
-        #endregion
+        #endregion Focus Details by IPointingSource
 
         #region Utilities
 
+        /// <summary>
+        /// Helper for assigning world space canvases event cameras.
+        /// <remarks>Can be used at runtime.</remarks>
+        /// </summary>
+        public void UpdateCanvasEventSystems()
+        {
+            Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before updating your canvases.");
+
+            // This will also find disabled GameObjects in the scene.
+            var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
+
+            for (var i = 0; i < sceneCanvases.Length; i++)
+            {
+                if (sceneCanvases[i].isRootCanvas && sceneCanvases[i].renderMode == RenderMode.WorldSpace)
+                {
+                    sceneCanvases[i].worldCamera = UIRaycastCamera;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns the registered PointerData for the provided pointing input source.
+        /// </summary>
+        /// <param name="pointingSource"></param>
+        /// <returns>Pointer Data if the pointing source is registered.</returns>
+        private PointerData GetPointerData(IPointingSource pointingSource)
+        {
+            foreach (var pointer in pointers)
+            {
+                if (pointer.PointingSource.SourceId == pointingSource.SourceId)
+                {
+                    return pointer;
+                }
+            }
+
+            return null;
+        }
+
         private void UpdatePointers()
         {
-            bool gazeManagerIsRegistered = false;
+            int pointerCount = 0;
 
-            for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
+            foreach (var pointer in pointers)
             {
-                PointerData pointer = pointers[iPointer];
-
-                if (pointer == gazeManagerPointingData)
-                {
-                    gazeManagerIsRegistered = true;
-                }
-
                 UpdatePointer(pointer);
+
+                if (pointer.Equals(gazeManagerPointingData))
+                {
+                    Debug.Assert(gazeManagerPointingData.PointingSource.SourceId == GazeManager.Instance.SourceId);
+                    GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerPointingData.LastRaycastHit);
+                }
 
                 if (debugDrawPointingRays)
                 {
@@ -405,7 +426,7 @@ namespace HoloToolkit.Unity.InputModule
 
                     if ((debugDrawPointingRayColors != null) && (debugDrawPointingRayColors.Length > 0))
                     {
-                        rayColor = debugDrawPointingRayColors[iPointer % debugDrawPointingRayColors.Length];
+                        rayColor = debugDrawPointingRayColors[pointerCount++ % debugDrawPointingRayColors.Length];
                     }
                     else
                     {
@@ -414,18 +435,6 @@ namespace HoloToolkit.Unity.InputModule
 
                     Debug.DrawRay(pointer.StartPoint, (pointer.End.Point - pointer.StartPoint), rayColor);
                 }
-            }
-
-            if (gazeManagerPointingData != null)
-            {
-                Debug.Assert(ReferenceEquals(gazeManagerPointingData.PointingSource, GazeManager.Instance));
-
-                if (!gazeManagerIsRegistered)
-                {
-                    UpdatePointer(gazeManagerPointingData);
-                }
-
-                GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerPointingData.LastRaycastHit, gazeManagerIsRegistered);
             }
         }
 
@@ -460,7 +469,7 @@ namespace HoloToolkit.Unity.InputModule
                     if (EventSystem.current != null)
                     {
                         // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
-                        RaycastUnityUI(pointer, prioritizedLayerMasks);
+                        RaycastGraphics(pointer, prioritizedLayerMasks);
                     }
 
                     // Set the pointer's result last
@@ -477,7 +486,9 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
-        private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        /// <param name="pointer"></param>
+        /// <param name="prioritizedLayerMasks"></param>
+        private static void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
             bool isHit = false;
             int rayStepIndex = 0;
@@ -511,7 +522,14 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private bool RaycastPhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        /// <summary>
+        /// Raycasts each physics <see cref="RayStep"/>
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="prioritizedLayerMasks"></param>
+        /// <param name="physicsHit"></param>
+        /// <returns></returns>
+        private static bool RaycastPhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
         {
             return prioritizedLayerMasks.Length == 1
                 // If there is only one priority, don't prioritize
@@ -520,12 +538,58 @@ namespace HoloToolkit.Unity.InputModule
                 : TryGetPrioritizedHit(Physics.RaycastAll(step.Origin, step.Direction, step.Length, Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
         }
 
-        private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        /// <summary>
+        /// Tries to ge the prioritized raycast hit based on the prioritized layer masks.
+        /// <para><remarks>Sorts all hit objects first by layerMask, then by distance.</remarks></para>
+        /// </summary>
+        /// <param name="hits"></param>
+        /// <param name="priorityLayers"></param>
+        /// <param name="raycastHit"></param>
+        /// <returns>The minimum distance hit within the first layer that has hits</returns>
+        private static bool TryGetPrioritizedHit(RaycastHit[] hits, LayerMask[] priorityLayers, out RaycastHit raycastHit)
+        {
+            raycastHit = default(RaycastHit);
+
+            if (hits.Length == 0)
+            {
+                return false;
+            }
+
+            for (int layerMaskIdx = 0; layerMaskIdx < priorityLayers.Length; layerMaskIdx++)
+            {
+                RaycastHit? minHit = null;
+
+                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
+                {
+                    RaycastHit hit = hits[hitIdx];
+                    if (hit.transform.gameObject.layer.IsInLayerMask(priorityLayers[layerMaskIdx]) &&
+                        (minHit == null || hit.distance < minHit.Value.distance))
+                    {
+                        minHit = hit;
+                    }
+                }
+
+                if (minHit != null)
+                {
+                    raycastHit = minHit.Value;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Perform a Unity Graphics Raycast to determine which uGUI element is currently being gazed at, if any.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <param name="prioritizedLayerMasks"></param>
+        private void RaycastGraphics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
             Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before you can process uGUI raycasting.");
 
-            RaycastResult uiRaycastResult = default(RaycastResult);
+            RaycastResult raycastResult = default(RaycastResult);
             bool overridePhysicsRaycast = false;
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
@@ -536,7 +600,7 @@ namespace HoloToolkit.Unity.InputModule
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
             {
-                if (RaycastUnityUIStep(pointer, pointer.PointingSource.Rays[i], prioritizedLayerMasks, out overridePhysicsRaycast, out uiRaycastResult))
+                if (RaycastUnityUIStep(pointer, pointer.PointingSource.Rays[i], prioritizedLayerMasks, out overridePhysicsRaycast, out raycastResult))
                 {
                     rayStepIndex = i;
                     rayStep = pointer.PointingSource.Rays[i];
@@ -545,22 +609,22 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid &&
-                 uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.End.Object == null || overridePhysicsRaycast) && raycastResult.isValid &&
+                 raycastResult.module != null && raycastResult.module.eventCamera == UIRaycastCamera)
             {
-                newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
-                newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
-                newUiRaycastPosition.z = uiRaycastResult.distance;
+                newUiRaycastPosition.x = raycastResult.screenPosition.x;
+                newUiRaycastPosition.y = raycastResult.screenPosition.y;
+                newUiRaycastPosition.z = raycastResult.distance;
 
                 Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
 
                 var hitInfo = new RaycastHit
                 {
                     point = worldPos,
-                    normal = -uiRaycastResult.gameObject.transform.forward
+                    normal = -raycastResult.gameObject.transform.forward
                 };
 
-                pointer.UpdateHit(uiRaycastResult, hitInfo, rayStep, rayStepIndex);
+                pointer.UpdateHit(raycastResult, hitInfo, rayStep, rayStepIndex);
             }
         }
 
@@ -618,6 +682,9 @@ namespace HoloToolkit.Unity.InputModule
             return false;
         }
 
+        /// <summary>
+        /// Raises the Focus Events to the Input Manger if needed.
+        /// </summary>
         private void UpdateFocusedObjects()
         {
             Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
@@ -628,10 +695,8 @@ namespace HoloToolkit.Unity.InputModule
             //       just in case someone responds to the event by adding/removing a
             //       pointer which would change the structures we're iterating over.
 
-            for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
+            foreach (var pointer in pointers)
             {
-                PointerData pointer = pointers[iPointer];
-
                 if (pointer.PreviousEndObject != pointer.End.Object)
                 {
                     pendingPointerSpecificFocusChange.Add(pointer);
@@ -653,10 +718,8 @@ namespace HoloToolkit.Unity.InputModule
 
             // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
-            for (int iPointer = 0; iPointer < pointers.Count; iPointer++)
+            foreach (var pointer in pointers)
             {
-                PointerData pointer = pointers[iPointer];
-
                 pendingOverallFocusExitSet.Remove(pointer.End.Object);
 
                 pendingOverallFocusEnterSet.Remove(pointer.PreviousEndObject);
@@ -689,91 +752,88 @@ namespace HoloToolkit.Unity.InputModule
             pendingPointerSpecificFocusChange.Clear();
         }
 
-        /// <summary>
-        /// If the IInputSource Pointer is registered and can be found, we return it.
-        /// Otherwise, we return the GazeManager PointerData.
-        /// </summary>
-        /// <param name="pointingSource"></param>
-        /// <returns></returns>
-        private PointerData GetPointerData(IPointingSource pointingSource)
-        {
-            int pointerIndex;
+        #endregion Accessors
 
-            return TryGetPointerIndex(pointingSource, out pointerIndex)
-                ? pointers[pointerIndex]
-                : gazeManagerPointingData;
-        }
+        #region ISourceState Implementation
 
-        private bool TryGetPointerIndex(IPointingSource pointingSource, out int pointerIndex)
+        public void OnSourceDetected(SourceStateEventData eventData)
         {
-            for (int i = 0; i < pointers.Count; i++)
+            var pointingSource = eventData.PointingSource;
+            if (pointingSource == null) { return; }
+
+            Debug.LogFormat("Attempting to register {0}", eventData.PointingSource.Name);
+
+            PointerData pointer = GetPointerData(pointingSource);
+
+            Debug.Assert(pointer == null, "This pointing source is already registered!");
+
+            // Special Registration for Gaze
+            if (pointingSource.SourceId == GazeManager.Instance.SourceId)
             {
-                if (pointingSource.SourceId == pointers[i].PointingSource.SourceId)
+                if (gazeManagerPointingData == null)
                 {
-                    pointerIndex = i;
-                    return true;
-                }
-            }
-
-            pointerIndex = -1;
-            return false;
-        }
-
-        private bool TryGetPrioritizedHit(RaycastHit[] hits, LayerMask[] layerMasks, out RaycastHit raycastHit)
-        {
-            raycastHit = default(RaycastHit);
-
-            if (hits.Length == 0)
-            {
-                return false;
-            }
-
-            // Return the minimum distance hit within the first layer that has hits.
-            // In other words, sort all hit objects first by layerMask, then by distance.
-            for (int layerMaskIdx = 0; layerMaskIdx < layerMasks.Length; layerMaskIdx++)
-            {
-                RaycastHit? minHit = null;
-
-                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
-                {
-                    RaycastHit hit = hits[hitIdx];
-                    if (hit.transform.gameObject.layer.IsInLayerMask(layerMasks[layerMaskIdx]) &&
-                        (minHit == null || hit.distance < minHit.Value.distance))
+                    if (GazeManager.IsInitialized)
                     {
-                        minHit = hit;
+                        gazeManagerPointingData = new PointerData(GazeManager.Instance);
+                    }
+                }
+                else
+                {
+                    Debug.Assert(gazeManagerPointingData.PointingSource.SourceId == GazeManager.Instance.SourceId);
+                    gazeManagerPointingData.ResetFocusedObjects();
+                }
+
+                Debug.Assert(gazeManagerPointingData != null);
+                pointer = gazeManagerPointingData;
+            }
+            else
+            {
+                pointer = new PointerData(pointingSource);
+            }
+
+            pointers.Add(pointer);
+        }
+
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            var pointingSource = eventData.PointingSource;
+
+            if (pointingSource == null) { return; }
+            Debug.LogFormat("Attempting to unregister {0}", eventData.PointingSource);
+
+            PointerData pointer = GetPointerData(pointingSource);
+            Debug.Assert(pointer != null, "Pointing Source was never registered!");
+
+            // Raise focus events if needed
+            if (pointer.End.Object != null)
+            {
+                GameObject unfocusedObject = pointer.End.Object;
+                bool objectIsStillFocusedByOtherPointer = false;
+
+                foreach (var otherPointer in pointers)
+                {
+                    if (otherPointer.End.Object == unfocusedObject)
+                    {
+                        objectIsStillFocusedByOtherPointer = true;
+                        break;
                     }
                 }
 
-                if (minHit != null)
+                if (!objectIsStillFocusedByOtherPointer)
                 {
-                    raycastHit = minHit.Value;
-                    return true;
+                    InputManager.Instance.RaiseFocusExit(pointingSource, unfocusedObject);
                 }
+
+                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(pointingSource, unfocusedObject, null);
             }
 
-            return false;
+            pointers.Remove(pointer);
         }
 
-        /// <summary>
-        /// Helper for assigning world space canvases event cameras.
-        /// <remarks>Can be used at runtime.</remarks>
-        /// </summary>
-        public void UpdateCanvasEventSystems()
-        {
-            Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before updating your canvases.");
+        public void OnSourcePositionChanged(SourcePositionEventData eventData) { }
 
-            // This will also find disabled GameObjects in the scene.
-            var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
+        public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
-            for (var i = 0; i < sceneCanvases.Length; i++)
-            {
-                if (sceneCanvases[i].isRootCanvas && sceneCanvases[i].renderMode == RenderMode.WorldSpace)
-                {
-                    sceneCanvases[i].worldCamera = UIRaycastCamera;
-                }
-            }
-        }
-
-        #endregion
+        #endregion ISourceState Implementation
     }
 }

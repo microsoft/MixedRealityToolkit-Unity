@@ -261,9 +261,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void PositionMarker()
         {
-            FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(currentPointingSource);
-
-            if (focusDetails.Object != null && (Vector3.Dot(focusDetails.Normal, Vector3.up) > 0.90f))
+            FocusDetails focusDetails;
+            if (FocusManager.Instance.TryGetFocusDetails(currentPointingSource, out focusDetails) &&
+                focusDetails.Object != null &&
+                Vector3.Dot(focusDetails.Normal, Vector3.up) > 0.90f)
             {
                 isTeleportValid = true;
 

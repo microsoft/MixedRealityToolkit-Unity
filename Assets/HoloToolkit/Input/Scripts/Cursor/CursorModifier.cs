@@ -55,23 +55,20 @@ namespace HoloToolkit.Unity.InputModule
 
         public Vector3 GetModifiedPosition(ICursor cursor)
         {
-            Vector3 position;
-
             if (SnapCursor)
             {
                 // Snap if the targeted object has a cursor modifier that supports snapping
-                position = HostTransform.position +
-                           HostTransform.TransformVector(CursorOffset);
+                return HostTransform.position + HostTransform.TransformVector(CursorOffset);
             }
-            else
+
+            FocusDetails focusDetails;
+            if (FocusManager.Instance.TryGetFocusDetails(cursor.Pointer, out focusDetails))
             {
-                FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(cursor.Pointer);
-
                 // Else, consider the modifiers on the cursor modifier, but don't snap
-                position = focusDetails.Point + HostTransform.TransformVector(CursorOffset);
+                return focusDetails.Point + HostTransform.TransformVector(CursorOffset);
             }
 
-            return position;
+            return Vector3.zero;
         }
 
         public Quaternion GetModifiedRotation(ICursor cursor)

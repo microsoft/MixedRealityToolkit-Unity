@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void Initialize(IInputSource inputSource, Vector2 inputPosition, object[] tags = null)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             InputPosition = inputPosition;
         }
 

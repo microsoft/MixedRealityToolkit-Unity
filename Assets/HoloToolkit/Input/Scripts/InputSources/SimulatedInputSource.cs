@@ -3,7 +3,6 @@
 
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
@@ -15,7 +14,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Input source for fake input source information, which gives details about current source state and position.
     /// </summary>
     [RequireComponent(typeof(SimulatedInputControl))]
-    public class SimulatedInputSource : BaseInputSource, IPointingSource
+    public class SimulatedInputSource : BaseInputSource
     {
         // TODO: add thumbstick, touchpad, and trigger axis support.
         [Serializable]
@@ -65,7 +64,6 @@ namespace HoloToolkit.Unity.InputModule
 
         public Vector3 ControllerPosition;
         public Quaternion ControllerRotation;
-
         public Ray? PointingRay;
 
         [SerializeField]
@@ -124,74 +122,6 @@ namespace HoloToolkit.Unity.InputModule
             return true;
         }
 #endif
-
-        #region IPointerSource Implementation
-
-        public Cursor Cursor { get; set; }
-        public CursorModifier CursorModifier { get; set; }
-        public bool InteractionEnabled { get; private set; }
-        public bool FocusLocked { get; set; }
-        public float? ExtentOverride { get; set; }
-        public RayStep[] Rays { get; private set; }
-        public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
-        public PointerResult Result { get; set; }
-        public BaseRayStabilizer RayStabilizer { get; set; }
-        public void RegisterPointer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool OwnsInput(BaseInputEventData eventData)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnPreRaycast()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnPostRaycast()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool TryGetPointerPosition(out Vector3 position)
-        {
-            if (SupportsPosition)
-            {
-                position = ControllerPosition;
-                return true;
-            }
-
-            position = Vector3.zero;
-            return false;
-        }
-        public bool TryGetPointingRay(out Ray pointingRay)
-        {
-            if (SupportsRay && (PointingRay != null))
-            {
-                pointingRay = (Ray)PointingRay;
-                return true;
-            }
-
-            pointingRay = default(Ray);
-            return false;
-        }
-
-        public bool TryGetPointerRotation(out Quaternion rotation)
-        {
-            if (SupportsRotation)
-            {
-                rotation = ControllerRotation;
-                return true;
-            }
-
-            rotation = Quaternion.identity;
-            return false;
-        }
-
-        #endregion IPointerSource Implementation
 
         public bool TryGetGripPosition(out Vector3 position)
         {
@@ -416,7 +346,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(this);
+                    InputManager.Instance.RaisePointerDown(GazeManager.Instance);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -436,10 +366,10 @@ namespace HoloToolkit.Unity.InputModule
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(this, 1);
+                        InputManager.Instance.RaiseInputClicked(GazeManager.Instance, 1);
                     }
 
-                    InputManager.Instance.RaisePointerUp(this);
+                    InputManager.Instance.RaisePointerUp(GazeManager.Instance);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -478,11 +408,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(this);
+                    InputManager.Instance.RaisePointerDown(GazeManager.Instance);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(this);
+                    InputManager.Instance.RaisePointerUp(GazeManager.Instance);
                 }
             }
 
@@ -490,11 +420,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaisePointerDown(this);
+                    InputManager.Instance.RaisePointerDown(GazeManager.Instance);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(this);
+                    InputManager.Instance.RaisePointerUp(GazeManager.Instance);
                 }
             }
         }

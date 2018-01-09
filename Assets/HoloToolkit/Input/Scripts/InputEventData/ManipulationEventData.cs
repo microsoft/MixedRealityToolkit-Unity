@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void Initialize(IInputSource inputSource, Vector3 cumulativeDelta, object[] tags = null)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             CumulativeDelta = cumulativeDelta;
         }
 

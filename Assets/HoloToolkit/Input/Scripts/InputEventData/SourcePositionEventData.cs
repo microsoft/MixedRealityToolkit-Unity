@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void Initialize(IInputSource inputSource, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
         {
-            Initialize(inputSource, tags);
+            BaseInitialize(inputSource, tags);
             PointerPosition = pointerPosition;
             GripPosition = gripPosition;
         }

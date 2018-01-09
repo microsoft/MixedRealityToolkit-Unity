@@ -79,6 +79,7 @@ namespace HoloToolkit.Unity.Tests
 
             FireTestEvent();
 
+            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(globalHandler));
         }
 
@@ -110,7 +111,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var focusedHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             FireTestEvent();
 
             Assert.That(receivedEventSources, Is.Not.Empty);
@@ -162,7 +163,7 @@ namespace HoloToolkit.Unity.Tests
             var focusedHandler = CreateTestHandler().CallInitialization();
             var modalHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushModalInputHandler(modalHandler);
             FireTestEvent();
             InputManager.Instance.PopModalInputHandler();
@@ -178,7 +179,7 @@ namespace HoloToolkit.Unity.Tests
             var modalHandler = CreateTestHandler().CallInitialization();
             focusedHandler.transform.SetParent(modalHandler.transform);
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushModalInputHandler(modalHandler);
             FireTestEvent();
             InputManager.Instance.PopModalInputHandler();
@@ -196,7 +197,7 @@ namespace HoloToolkit.Unity.Tests
             var modalHandler = CreateTestHandler().CallInitialization();
             var fallbackHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushFallbackInputHandler(fallbackHandler);
 
             FireTestEvent();
@@ -221,13 +222,12 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void FocusChangeFullIntegration()
         {
-            var handler = CreateCubeTestHandler().CallInitialization();
+            var focusedHandler = CreateCubeTestHandler().CallInitialization();
 
-            GazeManager.Instance.gameObject.CallUpdate();
+            InputManager.Instance.RaisePointerSpecificFocusChangedEvents(GazeManager.Instance, null, focusedHandler);
 
-            // We receive two events 1. OnFocusEnter/OnFocusExit 2. OnFocusChanged
-            Assert.That(receivedEventSources.Count, Is.EqualTo(2));
-            Assert.That(receivedEventSources[0], Is.EqualTo(handler));
+            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
+            Assert.That(receivedEventSources[0], Is.EqualTo(focusedHandler));
         }
 
         private GameObject CreateTestHandler()

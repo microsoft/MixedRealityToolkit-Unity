@@ -27,7 +27,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, object[] tags)
+        protected void BaseInitialize(IInputSource inputSource, object[] tags)
         {
             Reset();
             InputSource = inputSource;

@@ -26,27 +26,20 @@ namespace HoloToolkit.Unity.InputModule
         public event Action InputDisabled;
 
         /// <summary>
-        /// To tap on a hologram even when not focused on,
-        /// set OverrideFocusedObject to desired game object.
-        /// If it's null, then focused object will be used.
+        /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
         /// </summary>
-        public GameObject OverrideFocusedObject { get; set; }
+        public static HashSet<IInputSource> DetectedInputSources { get { return detectedInputSources; } }
+        private static readonly HashSet<IInputSource> detectedInputSources = new HashSet<IInputSource>();
 
         /// <summary>
         /// Global listeners listen to all events and ignore the fact that other components might have consumed them.
         /// </summary>
-        private readonly List<GameObject> globalListeners = new List<GameObject>(0);
+        public static List<GameObject> GlobalListeners { get { return globalListeners; } }
+        private static readonly List<GameObject> globalListeners = new List<GameObject>(0);
 
-        private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
+        private static readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
 
-        private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
-
-        private static readonly HashSet<IInputSource> detectedInputSources = new HashSet<IInputSource>();
-
-        /// <summary>
-        /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
-        /// </summary>
-        public static HashSet<IInputSource> DetectedInputSources { get { return detectedInputSources; } }
+        private static readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -270,10 +263,8 @@ namespace HoloToolkit.Unity.InputModule
 
             Debug.Assert(!eventData.used);
 
-            // Use focused object when OverrideFocusedObject is null.
-            GameObject focusedObject = (OverrideFocusedObject == null)
-                    ? FocusManager.Instance.TryGetFocusedObject(eventData)
-                    : OverrideFocusedObject;
+
+            GameObject focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
 
             // Send the event to global listeners
             for (int i = 0; i < globalListeners.Count; i++)
@@ -358,12 +349,25 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceDetected(IInputSource source, object[] tags = null)
         {
-            Debug.Assert(!detectedInputSources.Contains(source), "This Input Source has already been registered!");
-
-            detectedInputSources.Add(source);
-
             // Create input event
             sourceStateEventData.Initialize(source, tags);
+
+            AddSource(source);
+        }
+
+        public void RaiseSourceDetected(IPointingSource source, object[] tags = null)
+        {
+            // Create input event
+            sourceStateEventData.Initialize(source, tags);
+
+            AddSource(source);
+        }
+
+        private void AddSource(IInputSource source)
+        {
+            Debug.Assert(!detectedInputSources.Contains(source), string.Format("{0} has already been registered with the Input Manager!", source.Name));
+
+            detectedInputSources.Add(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
@@ -378,12 +382,25 @@ namespace HoloToolkit.Unity.InputModule
 
         public void RaiseSourceLost(IInputSource source, object[] tags = null)
         {
-            Debug.Assert(detectedInputSources.Contains(source), "This Input Source was never registered!");
-
-            detectedInputSources.Remove(source);
-
             // Create input event
             sourceStateEventData.Initialize(source, tags);
+
+            RemoveSource(source);
+        }
+
+        public void RaiseSourceLost(IPointingSource source, object[] tags = null)
+        {
+            // Create input event
+            sourceStateEventData.Initialize(source, tags);
+
+            RemoveSource(source);
+        }
+
+        private void RemoveSource(IInputSource source)
+        {
+            Debug.Assert(detectedInputSources.Contains(source), string.Format("{0} was never registered with the Input Manager!", source.Name));
+
+            detectedInputSources.Remove(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
