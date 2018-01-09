@@ -241,7 +241,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-
         public virtual void OnFocusEnter(FocusEventData eventData) { }
 
         public virtual void OnFocusExit(FocusEventData eventData) { }

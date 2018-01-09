@@ -17,11 +17,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            FocusDetails? focusDetails = FocusManager.Instance.TryGetFocusDetails(eventData);
-
-            if (focusDetails != null)
+            FocusDetails focusDetails;
+            if (FocusManager.Instance.TryGetFocusDetails(eventData, out focusDetails))
             {
-                particles.transform.position = focusDetails.Value.Point;
+                particles.transform.position = focusDetails.Point;
                 particles.Emit(60);
 
                 eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.

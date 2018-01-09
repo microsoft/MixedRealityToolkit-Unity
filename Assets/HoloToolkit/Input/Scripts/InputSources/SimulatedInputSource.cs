@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Input source for fake input source information, which gives details about current source state and position.
     /// </summary>
     [RequireComponent(typeof(SimulatedInputControl))]
-    public class SimulatedInputSource : BaseInputSource
+    public class SimulatedInputSource : BaseInputSource, IPointingSource
     {
         // TODO: add thumbstick, touchpad, and trigger axis support.
         [Serializable]
@@ -71,8 +71,6 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private ButtonStates currentButtonStates;
 
-        private uint controllerId;
-
         private SimulatedInputControl manualController;
 
         private bool currentlyVisible;
@@ -119,141 +117,147 @@ namespace HoloToolkit.Unity.InputModule
             return supportedInputInfo;
         }
 
-        //#if UNITY_WSA
-        //        public override bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
-        //        {
-        //            Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+#if UNITY_WSA
+        public bool TryGetSourceKind(out InteractionSourceKind sourceKind)
+        {
+            sourceKind = SourceKind;
+            return true;
+        }
+#endif
 
-        //            sourceKind = SourceKind;
-        //            return true;
-        //        }
-        //#endif
+        #region IPointerSource Implementation
 
-        //public override bool TryGetPointerPosition(uint sourceId, out Vector3 position)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        public Cursor Cursor { get; set; }
+        public CursorModifier CursorModifier { get; set; }
+        public bool InteractionEnabled { get; private set; }
+        public bool FocusLocked { get; set; }
+        public float? ExtentOverride { get; set; }
+        public RayStep[] Rays { get; private set; }
+        public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
+        public PointerResult Result { get; set; }
+        public BaseRayStabilizer RayStabilizer { get; set; }
 
-        //    if (SupportsPosition)
-        //    {
-        //        position = ControllerPosition;
-        //        return true;
-        //    }
+        public bool OwnsInput(BaseInputEventData eventData)
+        {
+            throw new NotImplementedException();
+        }
 
-        //    position = Vector3.zero;
-        //    return false;
-        //}
-        //public override bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        public void OnPreRaycast()
+        {
+            throw new NotImplementedException();
+        }
 
-        //    if (SupportsRay && (PointingRay != null))
-        //    {
-        //        pointingRay = (Ray)PointingRay;
-        //        return true;
-        //    }
+        public void OnPostRaycast()
+        {
+            throw new NotImplementedException();
+        }
 
-        //    pointingRay = default(Ray);
-        //    return false;
-        //}
+        public bool TryGetPointerPosition(out Vector3 position)
+        {
+            if (SupportsPosition)
+            {
+                position = ControllerPosition;
+                return true;
+            }
 
-        //public override bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+            position = Vector3.zero;
+            return false;
+        }
+        public bool TryGetPointingRay(out Ray pointingRay)
+        {
+            if (SupportsRay && (PointingRay != null))
+            {
+                pointingRay = (Ray)PointingRay;
+                return true;
+            }
 
-        //    if (SupportsRotation)
-        //    {
-        //        rotation = ControllerRotation;
-        //        return true;
-        //    }
+            pointingRay = default(Ray);
+            return false;
+        }
 
-        //    rotation = Quaternion.identity;
-        //    return false;
-        //}
+        public bool TryGetPointerRotation(out Quaternion rotation)
+        {
+            if (SupportsRotation)
+            {
+                rotation = ControllerRotation;
+                return true;
+            }
 
+            rotation = Quaternion.identity;
+            return false;
+        }
 
-        //public override bool TryGetGripPosition(uint sourceId, out Vector3 position)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        #endregion IPointerSource Implementation
 
-        //    if (SupportsPosition)
-        //    {
-        //        position = ControllerPosition;
-        //        return true;
-        //    }
+        public bool TryGetGripPosition(out Vector3 position)
+        {
+            if (SupportsPosition)
+            {
+                position = ControllerPosition;
+                return true;
+            }
 
-        //    position = Vector3.zero;
-        //    return false;
-        //}
+            position = Vector3.zero;
+            return false;
+        }
 
-        //public override bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        public bool TryGetGripRotation(out Quaternion rotation)
+        {
+            if (SupportsRotation)
+            {
+                rotation = ControllerRotation;
+                return true;
+            }
 
-        //    if (SupportsRotation)
-        //    {
-        //        rotation = ControllerRotation;
-        //        return true;
-        //    }
+            rotation = Quaternion.identity;
+            return false;
+        }
 
-        //    rotation = Quaternion.identity;
-        //    return false;
-        //}
+        public bool TryGetThumbstick(out bool isPressed, out Vector2 position)
+        {
+            isPressed = false;
+            position = Vector2.zero;
+            return false;
+        }
 
-        //public override bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        public bool TryGetTouchpad(out bool isPressed, out bool isTouched, out Vector2 position)
+        {
+            isPressed = false;
+            isTouched = false;
+            position = Vector2.zero;
+            return false;
+        }
 
-        //    isPressed = false;
-        //    position = Vector2.zero;
-        //    return false;
-        //}
+        public bool TryGetSelect(out bool isPressed, out double pressedAmount)
+        {
+            isPressed = false;
+            pressedAmount = 0;
+            return false;
+        }
 
-        //public override bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        public bool TryGetGrasp(out bool isPressed)
+        {
+            if (SupportsGrasp)
+            {
+                isPressed = currentButtonStates.IsGrasped;
+                return true;
+            }
 
-        //    isPressed = false;
-        //    isTouched = false;
-        //    position = Vector2.zero;
-        //    return false;
-        //}
+            isPressed = false;
+            return false;
+        }
 
-        //public override bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
+        public bool TryGetMenu(out bool isPressed)
+        {
+            if (SupportsMenuButton)
+            {
+                isPressed = currentButtonStates.IsMenuButtonDown;
+                return true;
+            }
 
-        //    isPressed = false;
-        //    pressedAmount = 0;
-        //    return false;
-        //}
-
-        //public override bool TryGetGrasp(uint sourceId, out bool isPressed)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
-
-        //    if (SupportsGrasp)
-        //    {
-        //        isPressed = currentButtonStates.IsGrasped;
-        //        return true;
-        //    }
-
-        //    isPressed = false;
-        //    return false;
-        //}
-
-        //public override bool TryGetMenu(uint sourceId, out bool isPressed)
-        //{
-        //    Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
-
-        //    if (SupportsMenuButton)
-        //    {
-        //        isPressed = currentButtonStates.IsMenuButtonDown;
-        //        return true;
-        //    }
-
-        //    isPressed = false;
-        //    return false;
-        //}
+            isPressed = false;
+            return false;
+        }
 
         private void Awake()
         {
@@ -263,14 +267,12 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            Name = "Custom Input " + controllerId;
+            SourceId = InputManager.GenerateNewSourceId();
 
             manualController = GetComponent<SimulatedInputControl>();
-
             currentButtonStates = new ButtonStates();
             currentlyVisible = false;
             visibilityChanged = false;
-            controllerId = (uint)Random.value;
         }
 
         private void Update()
@@ -299,7 +301,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                SourceId = InputManager.GenerateNewSourceId();
                 InputManager.Instance.RaiseSourceDetected(this);
             }
         }
@@ -504,7 +505,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentlyVisible)
                 {
-                    SourceId = InputManager.GenerateNewSourceId();
                     InputManager.Instance.RaiseSourceDetected(this);
                 }
                 else

@@ -547,41 +547,39 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private GraphicInputEventData HandlePointerDown()
+        private GraphicInputEventData HandlePointerDown(IPointingSource pointingSource)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(clickEventData, OnPointerDownEventHandler);
 
-            IPointingSource pointingSource;
-            FocusManager.Instance.TryGetPointingSource(clickEventData, out pointingSource);
             return FocusManager.Instance.GetSpecificPointerGraphicEventData(pointingSource);
         }
 
-        public void RaisePointerDown(IInputSource source, object[] tags = null)
+        public void RaisePointerDown(IPointingSource source, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, tags);
 
-            ExecutePointerDown(HandlePointerDown());
+            ExecutePointerDown(HandlePointerDown(source));
         }
 
-        public void RaisePointerDown(IInputSource source, Handedness handedness, object[] tags = null)
+        public void RaisePointerDown(IPointingSource source, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, handedness, tags);
 
-            ExecutePointerDown(HandlePointerDown());
+            ExecutePointerDown(HandlePointerDown(source));
         }
 
 #if UNITY_WSA
-        public void RaisePointerDown(IInputSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaisePointerDown(IPointingSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, pressType, handedness, tags);
 
             if (pressType == InteractionSourcePressType.Select)
             {
-                ExecutePointerDown(HandlePointerDown());
+                ExecutePointerDown(HandlePointerDown(source));
             }
         }
 #endif
@@ -605,7 +603,7 @@ namespace HoloToolkit.Unity.InputModule
             // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
         }
 
-        public void RaiseInputClicked(IInputSource source, int tapCount, object[] tags = null)
+        public void RaiseInputClicked(IPointingSource source, int tapCount, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, tapCount, tags);
@@ -613,7 +611,7 @@ namespace HoloToolkit.Unity.InputModule
             HandleClick();
         }
 
-        public void RaiseInputClicked(IInputSource source, int tapCount, Handedness handedness, object[] tags = null)
+        public void RaiseInputClicked(IPointingSource source, int tapCount, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, tapCount, handedness, tags);
@@ -622,7 +620,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
 #if UNITY_WSA
-        public void RaiseInputClicked(IInputSource source, int tapCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaiseInputClicked(IPointingSource source, int tapCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, tapCount, pressType, handedness, tags);
@@ -652,41 +650,39 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private GraphicInputEventData HandlePointerUp()
+        private GraphicInputEventData HandlePointerUp(IPointingSource pointingSource)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(clickEventData, OnPointerUpEventHandler);
 
-            IPointingSource pointingSource;
-            FocusManager.Instance.TryGetPointingSource(clickEventData, out pointingSource);
             return FocusManager.Instance.GetSpecificPointerGraphicEventData(pointingSource);
         }
 
-        public void RaisePointerUp(IInputSource source, object[] tags = null)
+        public void RaisePointerUp(IPointingSource source, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, tags);
 
-            ExecutePointerUp(HandlePointerUp());
+            ExecutePointerUp(HandlePointerUp(source));
         }
 
-        public void RaisePointerUp(IInputSource source, Handedness handedness, object[] tags = null)
+        public void RaisePointerUp(IPointingSource source, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, handedness, tags);
 
-            ExecutePointerUp(HandlePointerUp());
+            ExecutePointerUp(HandlePointerUp(source));
         }
 
 #if UNITY_WSA
-        public void RaisePointerUp(IInputSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaisePointerUp(IPointingSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(source, pressType, handedness, tags);
 
             if (pressType == InteractionSourcePressType.Select)
             {
-                ExecutePointerUp(HandlePointerUp());
+                ExecutePointerUp(HandlePointerUp(source));
             }
         }
 #endif

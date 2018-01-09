@@ -33,6 +33,11 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected override void OnEnable()
         {
+            if (CursorStateData == null)
+            {
+                CursorStateData = new SpriteCursorDatum[0];
+            }
+
             if (TargetRenderer == null)
             {
                 TargetRenderer = GetComponentInChildren<SpriteRenderer>();

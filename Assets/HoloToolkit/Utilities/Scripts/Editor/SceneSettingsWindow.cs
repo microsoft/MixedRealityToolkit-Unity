@@ -107,8 +107,6 @@ namespace HoloToolkit.Unity
                 }
 
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(DefaultCursorPrefabGUID)));
-
-                FindObjectOfType<InputManager>().GetComponent<SimpleSinglePointerSelector>().Cursor = FindObjectOfType<Cursor>();
             }
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
