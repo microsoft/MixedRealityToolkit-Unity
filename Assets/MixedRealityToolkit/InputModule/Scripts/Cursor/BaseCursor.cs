@@ -463,9 +463,9 @@ namespace MixedRealityToolkit.InputModule.Cursor
 
                 if (IsHandVisible)
                 {
-                    return TargetedObject != null ? CursorStateEnum.InteractHover : BaseCursorStateEnum.Interact;
+                    return TargetedObject != null ? CursorStateEnum.InteractHover : CursorStateEnum.Interact;
                 }
-                return TargetedObject != null ? CursorStateEnum.ObserveHover : BaseCursorStateEnum.Observe;
+                return TargetedObject != null ? CursorStateEnum.ObserveHover : CursorStateEnum.Observe;
             }
             return CursorStateEnum.Contextual;
         }
