@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
     #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        public virtual InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
+        public InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
         protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
     
     #endif
