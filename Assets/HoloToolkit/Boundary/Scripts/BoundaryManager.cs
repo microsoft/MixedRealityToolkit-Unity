@@ -33,10 +33,11 @@ namespace HoloToolkit.Unity.Boundary
         // This puts the origin (0, 0, 0) on the floor if a floor has been established during setup via MixedRealityPortal.
         private TrackingSpaceType opaqueTrackingSpaceType = TrackingSpaceType.RoomScale;
 
-        [SerializeField]
+        //[SerializeField]
+        // Removed for now, until the HoloLens tracking space type story is more clear.
         // Defaulting coordinate system to Stationary for transparent headsets, like HoloLens.
         // This puts the origin (0, 0, 0) at the first place where the user started the application.
-        private TrackingSpaceType transparentTrackingSpaceType = TrackingSpaceType.Stationary;
+        //private TrackingSpaceType transparentTrackingSpaceType = TrackingSpaceType.Stationary;
 #endif
 
         // Testing in the editor found that this moved the floor out of the way enough, and it is only

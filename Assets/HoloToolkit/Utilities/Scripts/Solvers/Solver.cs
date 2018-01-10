@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity
                 switch (solverHandler.TrackedObjectToReference)
                 {
                     case SolverHandler.TrackedObjectToReferenceEnum.Head:
-                        while (CameraCache.Main == null && CameraCache.Main.transform == null)
+                        while (CameraCache.Main == null || CameraCache.Main.transform == null)
                         {
                             yield return null;
                         }
@@ -111,8 +111,8 @@ namespace HoloToolkit.Unity
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-                        solverHandler.Handedness = InteractionSourceHandedness.Left;
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                        solverHandler.Handedness = InteractionSourceHandedness.Left;
                         while (solverHandler.ElementTransform == null)
                         {
                             yield return null;
@@ -123,8 +123,8 @@ namespace HoloToolkit.Unity
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
-                        solverHandler.Handedness = InteractionSourceHandedness.Right;
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                        solverHandler.Handedness = InteractionSourceHandedness.Right;
                         while (solverHandler.ElementTransform != null)
                         {
                             yield return null;
