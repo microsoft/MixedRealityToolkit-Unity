@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public class MeshCursor : Cursor
+    public class MeshCursor : BaseCursor
     {
         [Serializable]
         public struct MeshCursorDatum

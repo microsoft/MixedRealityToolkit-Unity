@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public GenericInputPointingSource(uint sourceId, string name, SupportedInputInfo supportedInputInfo) : base(sourceId, name, supportedInputInfo) { }
 
-        public Cursor Cursor { get; set; }
+        public BaseCursor BaseCursor { get; set; }
 
         public CursorModifier CursorModifier { get; set; }
 

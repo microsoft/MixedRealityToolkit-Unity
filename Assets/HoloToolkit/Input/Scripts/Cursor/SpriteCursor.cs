@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Object that represents a cursor comprised of sprites and colors for each state
     /// </summary>
-    public class SpriteCursor : Cursor
+    public class SpriteCursor : BaseCursor
     {
         [Serializable]
         public struct SpriteCursorDatum

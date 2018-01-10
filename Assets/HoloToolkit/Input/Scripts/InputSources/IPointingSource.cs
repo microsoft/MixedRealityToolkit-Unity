@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IPointingSource : IInputSource
     {
-        Cursor Cursor { get; set; }
+        BaseCursor BaseCursor { get; set; }
 
         CursorModifier CursorModifier { get; set; }
 

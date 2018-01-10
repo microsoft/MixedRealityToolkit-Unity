@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Animated cursor is a cursor driven using an animator to inject state information
     /// and animate accordingly
     /// </summary>
-    public class AnimatedCursor : Cursor
+    public class AnimatedCursor : BaseCursor
     {
         /// <summary>
         /// Enabled state Data when enabling

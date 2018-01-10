@@ -5,8 +5,6 @@ using System.Collections;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-using Cursor = HoloToolkit.Unity.InputModule.Cursor;
-
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -49,7 +47,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 mStartHeadRay;
         private Vector3 mStartHandPosition;
         private Vector3 mCurrentHandPosition;
-        private Cursor mCursor;
+        private BaseCursor mBaseCursor;
 
         private Coroutine mTicker;
         private IInputSource mTempInputSource;
@@ -280,12 +278,12 @@ namespace HoloToolkit.Examples.InteractiveElements
             // TODO: Update Cursor Modifier to handle HideOnGesture, then calculate visibility so cursors can handle this correctly
             if (state)
             {
-                mCursor = FindObjectOfType<Cursor>();
+                mBaseCursor = FindObjectOfType<BaseCursor>();
             }
 
-            if (HideCursorOnManipulation && mCursor != null)
+            if (HideCursorOnManipulation && mBaseCursor != null)
             {
-                mCursor.SetVisibility(!state);
+                mBaseCursor.SetVisibility(!state);
             }
         }
 

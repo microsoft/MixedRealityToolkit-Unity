@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// A cursor that looks and acts more like the shell cursor.
     /// A two part cursor with visual feedback for all cursor states
     /// </summary>
-    public class InteractiveMeshCursor : Cursor
+    public class InteractiveMeshCursor : BaseCursor
     {
         [Tooltip("The ring or outer element")]
         public GameObject Ring;

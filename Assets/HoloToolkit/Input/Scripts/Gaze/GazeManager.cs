@@ -105,7 +105,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IPointingSource Implementation
 
-        public Cursor Cursor { get; set; }
+        public BaseCursor BaseCursor { get; set; }
 
         public CursorModifier CursorModifier { get; set; }
 
@@ -234,10 +234,10 @@ namespace HoloToolkit.Unity.InputModule
             if (CursorPrefab != null)
             {
                 var cursorObj = Instantiate(CursorPrefab, transform);
-                Cursor = cursorObj.GetComponent<Cursor>();
-                Cursor.Pointer = this;
+                BaseCursor = cursorObj.GetComponent<BaseCursor>();
+                BaseCursor.Pointer = this;
 
-                Debug.Assert(Cursor != null, "Failed to load cursor");
+                Debug.Assert(BaseCursor != null, "Failed to load cursor");
             }
 
             // Add default RaycastLayers as first layerPriority

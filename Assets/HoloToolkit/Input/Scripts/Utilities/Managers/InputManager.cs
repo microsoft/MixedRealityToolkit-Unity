@@ -519,9 +519,9 @@ namespace HoloToolkit.Unity.InputModule
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
             // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.Cursor != null)
+            if (pointer.BaseCursor != null)
             {
-                ExecuteEvents.ExecuteHierarchy(pointer.Cursor.gameObject, focusEventData, OnPointerSpecificFocusChangedEventHandler);
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnPointerSpecificFocusChangedEventHandler);
             }
 
             // Raise Focus Events on the old and new focused objects.
