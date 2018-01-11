@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     /// <summary>
     /// A wrapper for <see cref="HashSet{T}"/> that doesn't allow modification of the set. This is

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     /// <summary>
     /// Helper class for bit manipulation.

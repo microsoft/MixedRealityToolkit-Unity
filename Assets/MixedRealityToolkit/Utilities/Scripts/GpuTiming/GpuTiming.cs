@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties.GpuTiming
 {
-	/// <summary>
-	/// Encapsulates access to GPU timing methods.
-	/// </summary>
-	public static class GpuTiming
+    /// <summary>
+    /// Encapsulates access to GPU timing methods.
+    /// </summary>
+    public static class GpuTiming
 	{
 		[DllImport("GpuTiming")]
 		private static extern IntPtr GetRenderEventFunc();

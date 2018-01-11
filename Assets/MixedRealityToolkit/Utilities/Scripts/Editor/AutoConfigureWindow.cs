@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     /// <summary>
     /// Base class for auto configuration build windows.

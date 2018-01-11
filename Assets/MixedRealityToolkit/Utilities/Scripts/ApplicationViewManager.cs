@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using UnityEngine;
+
 #if !UNITY_EDITOR && UNITY_WSA
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -11,7 +13,8 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 #endif
-namespace HoloToolkit.Unity
+
+namespace MixedRealityToolkit.Utilties
 {
     public delegate void ReturnValueCallback<TReturnValue>(TReturnValue returnValue);
 

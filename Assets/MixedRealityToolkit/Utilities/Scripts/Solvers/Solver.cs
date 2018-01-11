@@ -1,10 +1,12 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using UnityEngine;
+
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.InputModule.Utilities;
 using System.Collections;
-using HoloToolkit.Unity.InputModule;
+using UnityEngine;
+
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
@@ -13,7 +15,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties.Solvers
 {
     /// <summary>
     ///   SolverBase is the base abstract class for all Solvers to derive from.  It provides state tracking, smoothing parameters

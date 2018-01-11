@@ -1,14 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties.GpuTiming
 {
-	/// <summary>
-	/// Tracks the GPU time spent rendering a camera.
-	/// For stereo rendering sampling is made from the beginning of the left eye to the end of the right eye.
-	/// </summary>
-	public class GpuTimingCamera : MonoBehaviour
+    /// <summary>
+    /// Tracks the GPU time spent rendering a camera.
+    /// For stereo rendering sampling is made from the beginning of the left eye to the end of the right eye.
+    /// </summary>
+    public class GpuTimingCamera : MonoBehaviour
 	{
 		public string TimingTag = "Frame";
 

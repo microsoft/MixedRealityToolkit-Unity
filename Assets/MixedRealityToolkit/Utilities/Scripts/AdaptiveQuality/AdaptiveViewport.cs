@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using System;
+
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties.AdaptiveQuality
 {
     /// <summary>
     /// Changes the VR viewport to correlate to the requested quality, trying to maintain a steady frame rate by reducing the amount of pixels rendered.

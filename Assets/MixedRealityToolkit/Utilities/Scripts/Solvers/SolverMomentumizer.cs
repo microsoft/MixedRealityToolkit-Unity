@@ -1,16 +1,14 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using UnityEngine;
-using System.Collections;
 
-namespace HoloToolkit.Unity
+using UnityEngine;
+
+namespace MixedRealityToolkit.Utilties.Solvers
 {
-	/// <summary>
-	///   Momentumizer solver applies accel/velocity/friction to simulate momentum for an object being moved by other solvers/components
-	/// </summary>
-	public class SolverMomentumizer : Solver
+    /// <summary>
+    ///   Momentumizer solver applies accel/velocity/friction to simulate momentum for an object being moved by other solvers/components
+    /// </summary>
+    public class SolverMomentumizer : Solver
 	{
 		[Tooltip("Friction to slow down the current velocity")]
 		public float resistance = 0.99f;

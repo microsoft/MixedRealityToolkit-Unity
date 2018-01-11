@@ -7,16 +7,18 @@ using UnityEngine;
 using UnityEngine.XR.WSA;
 #endif
 
-public class DisplayDependentObjectActivator : MonoBehaviour
+namespace MixedRealityToolkit.Utilties
 {
-    [SerializeField]
-    protected bool OpaqueDisplay = true;
-
-    [SerializeField]
-    protected bool TransparentDisplay = false;
-
-    protected void Awake()
+    public class DisplayDependentObjectActivator : MonoBehaviour
     {
+        [SerializeField]
+        protected bool OpaqueDisplay = true;
+
+        [SerializeField]
+        protected bool TransparentDisplay = false;
+
+        protected void Awake()
+        {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         if ((HolographicSettings.IsDisplayOpaque && !OpaqueDisplay) ||
             (!HolographicSettings.IsDisplayOpaque && !TransparentDisplay))
@@ -24,5 +26,6 @@ public class DisplayDependentObjectActivator : MonoBehaviour
             gameObject.SetActive(false);
         }
 #endif
+        }
     }
 }

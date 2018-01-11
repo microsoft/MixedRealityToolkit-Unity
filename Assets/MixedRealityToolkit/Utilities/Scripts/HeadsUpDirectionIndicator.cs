@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     // The easiest way to use this script is to drop in the HeadsUpDirectionIndicator prefab
     // from the HoloToolKit. If you're having issues with the prefab or can't find it,

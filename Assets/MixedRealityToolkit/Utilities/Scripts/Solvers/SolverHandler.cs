@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties.Solvers
 {
     public class SolverHandler : ControllerFinder
     {

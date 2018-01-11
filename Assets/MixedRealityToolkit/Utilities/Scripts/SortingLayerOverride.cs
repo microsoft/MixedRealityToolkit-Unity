@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     /// <summary>
     /// Overrides the sorting layer of all renderers and child renderers

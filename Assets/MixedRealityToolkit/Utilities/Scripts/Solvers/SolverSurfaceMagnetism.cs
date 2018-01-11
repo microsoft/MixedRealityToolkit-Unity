@@ -1,12 +1,10 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties.Solvers
 {
-
     /// <summary>
     ///   SurfaceMagnetism casts rays to Surfaces in the world align the object to the surface.
     /// </summary>

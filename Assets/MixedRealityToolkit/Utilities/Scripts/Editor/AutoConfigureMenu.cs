@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     /// <summary>
     /// Configuration options derived from here: 

@@ -6,7 +6,7 @@ using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     /// <summary>
     /// Extensions for the UnityEnditor.EditorGUI class.

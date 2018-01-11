@@ -1,12 +1,10 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace HoloToolkit.Unity
+using MixedRealityToolkit.Common;
+using UnityEngine;
+
+namespace MixedRealityToolkit.Utilties.Solvers
 {
     /// <summary>
     /// SolverBodyLock provides a solver that follows the TrackedObject/TargetTransform. Adjusting "LerpTime"

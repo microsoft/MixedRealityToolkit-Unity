@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     [CustomEditor(typeof(HeadsetAdjustment))]
     public class HeadsetAdjustmentEditor : Editor

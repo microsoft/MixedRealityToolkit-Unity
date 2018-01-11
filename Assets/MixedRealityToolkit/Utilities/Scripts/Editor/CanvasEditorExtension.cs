@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule.Focus;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties
 {
     /// <summary>
     /// Helper class to assign the UIRaycastCamera when creating a new canvas object and assigning the world space render mode.

@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilties.AdaptiveQuality
 {
     /// <summary>
     /// Main components for controlling the quality of the system to maintain a steady frame rate.
