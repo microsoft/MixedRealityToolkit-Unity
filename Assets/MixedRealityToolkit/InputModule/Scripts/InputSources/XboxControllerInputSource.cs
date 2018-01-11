@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.InputModule.GamePad;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

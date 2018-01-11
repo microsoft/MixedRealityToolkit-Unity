@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 using System.Collections.Generic;
 using UnityEngine;
 

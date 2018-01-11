@@ -3,7 +3,6 @@
 
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 using UnityEngine;
 
 namespace MixedRealityToolkit.InputModule.Cursor

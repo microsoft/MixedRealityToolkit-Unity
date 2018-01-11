@@ -4,7 +4,6 @@
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

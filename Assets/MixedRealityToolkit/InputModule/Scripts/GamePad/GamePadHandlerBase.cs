@@ -3,7 +3,6 @@
 
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 using UnityEngine;
 
 namespace MixedRealityToolkit.InputModule.GamePad

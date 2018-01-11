@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 using MixedRealityToolkit.Common;
 
 #if UNITY_WSA

@@ -6,7 +6,6 @@ using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Gaze;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 using UnityEngine;
 
 namespace MixedRealityToolkit.InputModule.Focus

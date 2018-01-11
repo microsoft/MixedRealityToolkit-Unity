@@ -4,7 +4,6 @@
 using System.Collections;
 using UnityEngine;
 using MixedRealityToolkit.Common;
-using MixedRealityToolkit.InputModule.Utilities.Managers;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using System.Text;

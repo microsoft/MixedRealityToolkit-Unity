@@ -25,7 +25,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace MixedRealityToolkit.InputModule.Utilities.Managers
+namespace MixedRealityToolkit.InputModule
 {
     /// <summary>
     /// Script teleports the user to the location being gazed at when Y was pressed on a Gamepad.
