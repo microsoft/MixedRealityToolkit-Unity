@@ -132,13 +132,13 @@ namespace MixedRealityToolkit.InputModule.Utilities.Managers
                 switch (keyCheck.KeyEvent)
                 {
                     case KeyEvent.KeyHeld:
-                        eventTriggered = UnityEngine.Input.GetKey(keyCheck.KeyCode);
+                        eventTriggered = Input.GetKey(keyCheck.KeyCode);
                         break;
                     case KeyEvent.KeyDown:
-                        eventTriggered = UnityEngine.Input.GetKeyDown(keyCheck.KeyCode);
+                        eventTriggered = Input.GetKeyDown(keyCheck.KeyCode);
                         break;
                     case KeyEvent.KeyUp:
-                        eventTriggered = UnityEngine.Input.GetKeyUp(keyCheck.KeyCode);
+                        eventTriggered = Input.GetKeyUp(keyCheck.KeyCode);
                         break;
                 }
 

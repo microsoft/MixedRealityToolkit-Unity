@@ -237,7 +237,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
             else if (AxisTypeIsMouseScroll)
             {
                 if (ShouldControl())
-                    rot.x += UnityEngine.Input.GetAxis("Mouse ScrollWheel");
+                    rot.x += Input.GetAxis("Mouse ScrollWheel");
             }
             else if (AxisTypeIsMouse)
             {
@@ -304,13 +304,13 @@ namespace MixedRealityToolkit.InputModule.Utilities
 
             // Use frame-to-frame mouse delta in pixels to determine mouse rotation. The traditional
             // GetAxis("Mouse X") method doesn't work under Remote Desktop.
-            Vector3 mousePositionDelta = UnityEngine.Input.mousePosition - this.lastMousePosition;
-            this.lastMousePosition = UnityEngine.Input.mousePosition;
+            Vector3 mousePositionDelta = Input.mousePosition - this.lastMousePosition;
+            this.lastMousePosition = Input.mousePosition;
 
             if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
             {
-                mousePositionDelta.x = UnityEngine.Input.GetAxis("Mouse X");
-                mousePositionDelta.y = UnityEngine.Input.GetAxis("Mouse Y");
+                mousePositionDelta.x = Input.GetAxis("Mouse X");
+                mousePositionDelta.y = Input.GetAxis("Mouse Y");
             }
             else
             {
@@ -325,12 +325,12 @@ namespace MixedRealityToolkit.InputModule.Utilities
 
         private float GetKeyDir(KeyCode neg, KeyCode pos)
         {
-            return UnityEngine.Input.GetKey(neg) ? -1.0f : UnityEngine.Input.GetKey(pos) ? 1.0f : 0.0f;
+            return Input.GetKey(neg) ? -1.0f : Input.GetKey(pos) ? 1.0f : 0.0f;
         }
 
         private float GetKeyDir(string neg, string pos)
         {
-            return UnityEngine.Input.GetKey(neg) ? -1.0f : UnityEngine.Input.GetKey(pos) ? 1.0f : 0.0f;
+            return Input.GetKey(neg) ? -1.0f : Input.GetKey(pos) ? 1.0f : 0.0f;
         }
 
         private void InputManagerAxisCheck()
@@ -342,7 +342,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
                 inputManagerHorizontalAxisApproved = true;
                 try
                 {
-                    UnityEngine.Input.GetAxis(InputManagerHorizontalAxisName);
+                    Input.GetAxis(InputManagerHorizontalAxisName);
                 }
                 catch (Exception)
                 {
@@ -355,7 +355,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
                 inputManagerVerticalAxisApproved = true;
                 try
                 {
-                    UnityEngine.Input.GetAxis(InputManagerVerticalAxisName);
+                    Input.GetAxis(InputManagerVerticalAxisName);
                 }
                 catch (Exception)
                 {
@@ -371,11 +371,11 @@ namespace MixedRealityToolkit.InputModule.Utilities
             Vector3 rot = Vector3.zero;
             if (inputManagerHorizontalAxisApproved)
             {
-                rot.x += InputManagerAxisSensitivity * InputCurve(UnityEngine.Input.GetAxis(InputManagerHorizontalAxisName));
+                rot.x += InputManagerAxisSensitivity * InputCurve(Input.GetAxis(InputManagerHorizontalAxisName));
             }
             if (inputManagerVerticalAxisApproved)
             {
-                rot.y += InputManagerAxisSensitivity * InputCurve(UnityEngine.Input.GetAxis(InputManagerVerticalAxisName));
+                rot.y += InputManagerAxisSensitivity * InputCurve(Input.GetAxis(InputManagerVerticalAxisName));
             }
             return rot;
         }
@@ -454,41 +454,41 @@ namespace MixedRealityToolkit.InputModule.Utilities
             }
             else if (this.buttonType <= ButtonController.ButtonType.Middle)
             {
-                return UnityEngine.Input.GetMouseButton((int)this.buttonType);
+                return Input.GetMouseButton((int)this.buttonType);
             }
             else if (this.buttonType == ButtonController.ButtonType.Control)
             {
-                return UnityEngine.Input.GetKey(KeyCode.LeftControl) || UnityEngine.Input.GetKey(KeyCode.RightControl);
+                return Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
             }
             else if (this.buttonType == ButtonController.ButtonType.Shift)
             {
-                return UnityEngine.Input.GetKey(KeyCode.LeftShift) || UnityEngine.Input.GetKey(KeyCode.RightShift);
+                return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             }
             else if (this.buttonType == ButtonController.ButtonType.Alt)
             {
-                return UnityEngine.Input.GetKey(KeyCode.LeftAlt) || UnityEngine.Input.GetKey(KeyCode.RightAlt);
+                return Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
             }
             else if (this.buttonType == ButtonController.ButtonType.Space)
             {
-                return UnityEngine.Input.GetKey(KeyCode.Space);
+                return Input.GetKey(KeyCode.Space);
             }
             else if (this.buttonType == ButtonController.ButtonType.Return)
             {
-                return UnityEngine.Input.GetKey(KeyCode.Return);
+                return Input.GetKey(KeyCode.Return);
             }
             else if (this.buttonType == ButtonController.ButtonType.Focused)
             {
                 if (!this.usingMouse)
                 {
                     // any kind of click will capture focus
-                    return UnityEngine.Input.GetMouseButtonDown((int)ButtonController.ButtonType.Left)
-                        || UnityEngine.Input.GetMouseButtonDown((int)ButtonController.ButtonType.Right)
-                        || UnityEngine.Input.GetMouseButtonDown((int)ButtonController.ButtonType.Middle);
+                    return Input.GetMouseButtonDown((int)ButtonController.ButtonType.Left)
+                        || Input.GetMouseButtonDown((int)ButtonController.ButtonType.Right)
+                        || Input.GetMouseButtonDown((int)ButtonController.ButtonType.Middle);
                 }
                 else
                 {
                     // pressing escape will stop capture
-                    return !UnityEngine.Input.GetKeyDown(KeyCode.Escape);
+                    return !Input.GetKeyDown(KeyCode.Escape);
                 }
             }
 
@@ -520,7 +520,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
                     // hide the cursor
                     UnityEngine.Cursor.visible = false;
 
-                    this.lastMousePosition = UnityEngine.Input.mousePosition;
+                    this.lastMousePosition = Input.mousePosition;
                 }
                 else
                 {

@@ -89,7 +89,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         private void HandleGamepadAPressed()
         {
             // TODO: Should this handle Submit from Edit > ProjectSettings > Input ?
-            if (UnityEngine.Input.GetButtonDown(GamePadButtonA))
+            if (Input.GetButtonDown(GamePadButtonA))
             {
                 inputManager.RaiseSourceDown(this, GamePadId, InteractionSourcePressInfo.Select);
                 isAPressed = true;
@@ -124,8 +124,8 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             try
             {
-                displacementAlongX = UnityEngine.Input.GetAxis(NavigateAroundXAxisName);
-                displacementAlongY = UnityEngine.Input.GetAxis(NavigateAroundYAxisName);
+                displacementAlongX = Input.GetAxis(NavigateAroundXAxisName);
+                displacementAlongY = Input.GetAxis(NavigateAroundYAxisName);
             }
             catch (Exception)
             {
@@ -154,7 +154,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
         private void HandleGamepadAReleased()
         {
-            if (UnityEngine.Input.GetButtonUp(GamePadButtonA))
+            if (Input.GetButtonUp(GamePadButtonA))
             {
                 inputManager.RaiseSourceUp(this, GamePadId, InteractionSourcePressInfo.Select);
 

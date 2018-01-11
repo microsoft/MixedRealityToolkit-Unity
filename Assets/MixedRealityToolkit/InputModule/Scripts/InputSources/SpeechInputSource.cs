@@ -142,7 +142,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         {
             for (int index = Keywords.Length; --index >= 0;)
             {
-                if (UnityEngine.Input.GetKeyDown(Keywords[index].KeyCode))
+                if (Input.GetKeyDown(Keywords[index].KeyCode))
                 {
                     OnPhraseRecognized(recognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, Keywords[index].Keyword);
                 }

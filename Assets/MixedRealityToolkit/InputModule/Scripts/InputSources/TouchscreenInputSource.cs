@@ -42,7 +42,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         protected virtual void Start()
         {
             // Disable the inputsource if not supported by the device
-            if (!UnityEngine.Input.touchSupported)
+            if (!Input.touchSupported)
             {
                 this.enabled = false;
             }
@@ -50,7 +50,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
         protected virtual void Update()
         {
-            foreach (Touch touch in UnityEngine.Input.touches)
+            foreach (Touch touch in Input.touches)
             {
                 // Construct a ray from the current touch coordinates
                 Ray ray = CameraCache.Main.ScreenPointToRay(touch.position);

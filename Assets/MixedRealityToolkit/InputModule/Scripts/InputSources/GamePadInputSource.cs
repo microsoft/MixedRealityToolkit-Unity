@@ -66,7 +66,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
         protected virtual void RefreshDevices()
         {
-            var joystickNames = UnityEngine.Input.GetJoystickNames();
+            var joystickNames = Input.GetJoystickNames();
 
             if (joystickNames.Length <= 0) { return; }
 
