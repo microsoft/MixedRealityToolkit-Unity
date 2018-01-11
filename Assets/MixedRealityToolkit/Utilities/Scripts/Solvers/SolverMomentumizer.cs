@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.Solvers
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
     ///   Momentumizer solver applies accel/velocity/friction to simulate momentum for an object being moved by other solvers/components

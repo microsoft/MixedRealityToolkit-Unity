@@ -13,7 +13,7 @@ using MixedRealityToolkit.Common;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Cursor;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply Mixed Reality Scene Settings.

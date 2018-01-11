@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Class used to send members to bottom of drawing queue
     [AttributeUsage(AttributeTargets.Field)]

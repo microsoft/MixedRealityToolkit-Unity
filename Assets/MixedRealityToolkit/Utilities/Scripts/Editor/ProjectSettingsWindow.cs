@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Project Settings.

@@ -5,7 +5,7 @@ using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Toggles if the debug window is visible or not.

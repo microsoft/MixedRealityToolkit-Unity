@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Indicates which components this class ought to be used with (though are not strictly required)
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]

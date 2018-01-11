@@ -6,7 +6,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     public class SceneLauncher : Singleton<SceneLauncher>
     {

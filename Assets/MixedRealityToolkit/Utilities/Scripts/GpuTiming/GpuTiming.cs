@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.GpuTiming
+namespace MixedRealityToolkit.Utilities.GpuTiming
 {
     /// <summary>
     /// Encapsulates access to GPU timing methods.

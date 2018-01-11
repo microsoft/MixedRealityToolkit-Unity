@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Shows / hides based on whether named member is null
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

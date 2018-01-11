@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using MixedRealityToolkit.UtiltiesInspectors;
+using MixedRealityToolkit.UtilitiesInspectors;
 using UnityEditor;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     [CustomPropertyDrawer(typeof(HeaderAttribute))]
     public class CustomHeaderDrawer : DecoratorDrawer

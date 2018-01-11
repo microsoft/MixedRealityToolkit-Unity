@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace MixedRealityToolkit.UtiltiesInspectors
+namespace MixedRealityToolkit.UtilitiesInspectors
 {
     /// <summary>
     /// Base class for profile inspectors

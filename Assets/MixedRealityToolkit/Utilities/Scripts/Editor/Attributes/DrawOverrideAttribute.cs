@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Base class for custom drawing without property drawers - prevents the MRTKEditor from drawing a default property, supplies an alternative
     public abstract class DrawOverrideAttribute : Attribute

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.Solvers
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
     ///   SurfaceMagnetism casts rays to Surfaces in the world align the object to the surface.

@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.Solvers
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
     ///   ConstantViewSize solver scales to maintain a constant size relative to the view (currently tied to the Camera)

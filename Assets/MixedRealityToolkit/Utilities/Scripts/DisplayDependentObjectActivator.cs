@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA;
 #endif
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     public class DisplayDependentObjectActivator : MonoBehaviour
     {

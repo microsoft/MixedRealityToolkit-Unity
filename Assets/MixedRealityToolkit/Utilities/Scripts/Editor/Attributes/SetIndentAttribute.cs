@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Sets the indent level for custom formatting
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

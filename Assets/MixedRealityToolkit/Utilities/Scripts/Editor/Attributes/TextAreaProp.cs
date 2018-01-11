@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Displays a text property as a text area
     [AttributeUsage(AttributeTargets.Property)]

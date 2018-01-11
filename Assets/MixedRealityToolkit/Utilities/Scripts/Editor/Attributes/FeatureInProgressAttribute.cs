@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Marks a field as 'not implemented' in editor without hiding it
     // Used for features that are in-progress but not fully completed

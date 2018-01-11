@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Provides a clickable link to documentation in the inspector header
     [AttributeUsage(AttributeTargets.Class)]

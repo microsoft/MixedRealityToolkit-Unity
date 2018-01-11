@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Displays an enum value as a set of checkboxes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

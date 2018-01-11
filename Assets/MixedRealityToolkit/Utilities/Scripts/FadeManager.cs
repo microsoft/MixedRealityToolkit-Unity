@@ -14,7 +14,7 @@ using UnityEngine.VR.WSA;
 #endif
 #endif
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     public class FadeManager : Singleton<FadeManager>
     {

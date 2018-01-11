@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.AdaptiveQuality
+namespace MixedRealityToolkit.Utilities.AdaptiveQuality
 {
     /// <summary>
     /// Main components for controlling the quality of the system to maintain a steady frame rate.

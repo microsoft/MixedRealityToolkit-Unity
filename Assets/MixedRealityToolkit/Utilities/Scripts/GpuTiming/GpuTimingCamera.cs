@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.GpuTiming
+namespace MixedRealityToolkit.Utilities.GpuTiming
 {
     /// <summary>
     /// Tracks the GPU time spent rendering a camera.

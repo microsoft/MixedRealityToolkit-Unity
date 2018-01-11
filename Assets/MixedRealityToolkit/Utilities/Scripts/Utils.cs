@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Miscellaneous utility methods.

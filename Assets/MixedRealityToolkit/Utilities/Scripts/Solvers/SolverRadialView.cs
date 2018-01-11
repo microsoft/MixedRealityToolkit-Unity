@@ -4,7 +4,7 @@
 using MixedRealityToolkit.InputModule.Utilities;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.Solvers
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone

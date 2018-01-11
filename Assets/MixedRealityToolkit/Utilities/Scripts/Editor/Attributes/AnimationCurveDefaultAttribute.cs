@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Adds a 'default' button to an animation curve that will supply default curve values
     [AttributeUsage(AttributeTargets.Field)]

@@ -15,7 +15,7 @@ using UnityEngine.VR.WSA.Input;
 #endif
 #endif
 
-namespace MixedRealityToolkit.Utilties.Solvers
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
     ///   SolverBase is the base abstract class for all Solvers to derive from.  It provides state tracking, smoothing parameters

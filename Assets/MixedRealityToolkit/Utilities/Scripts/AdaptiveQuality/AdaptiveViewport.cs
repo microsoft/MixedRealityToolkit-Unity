@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.AdaptiveQuality
+namespace MixedRealityToolkit.Utilities.AdaptiveQuality
 {
     /// <summary>
     /// Changes the VR viewport to correlate to the requested quality, trying to maintain a steady frame rate by reducing the amount of pixels rendered.

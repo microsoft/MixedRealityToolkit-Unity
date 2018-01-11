@@ -4,7 +4,7 @@
 using System;
 using System.Reflection;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Validates object and displays an error or warning if validation fails
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

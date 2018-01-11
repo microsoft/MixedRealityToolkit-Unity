@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Hides a field in an MRDL inspector
     [AttributeUsage(AttributeTargets.Field)]

@@ -4,7 +4,7 @@
 using System;
 using MixedRealityToolkit.Common.Extensions;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Shows / hides based on enum value of a named member
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

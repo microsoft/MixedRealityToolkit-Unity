@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common.Extensions;
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     public struct RaycastResultHelper
     {

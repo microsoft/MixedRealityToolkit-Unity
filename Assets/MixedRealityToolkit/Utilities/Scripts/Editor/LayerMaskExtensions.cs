@@ -4,7 +4,7 @@
 using System.Text;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Extensions for the UnityEngine.LayerMask class.

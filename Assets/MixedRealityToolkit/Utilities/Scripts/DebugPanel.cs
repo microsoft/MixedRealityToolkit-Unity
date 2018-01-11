@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Script to control writing the Debug.Log output to a control.

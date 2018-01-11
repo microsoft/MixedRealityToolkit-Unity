@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Utilties.Attributes;
-using MixedRealityToolkit.UtiltiesInspectors;
+using MixedRealityToolkit.Utilities.Attributes;
+using MixedRealityToolkit.UtilitiesInspectors;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(EnumFlagsAttribute))]

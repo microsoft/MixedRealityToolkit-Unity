@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     // Displays a drop-down list of available material properties from the material supplied in a named member
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

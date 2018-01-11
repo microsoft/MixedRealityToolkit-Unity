@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     // The easiest way to use this script is to drop in the HeadsUpDirectionIndicator prefab
     // from the HoloToolKit. If you're having issues with the prefab or can't find it,

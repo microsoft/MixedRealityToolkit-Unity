@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using MixedRealityToolkit.Utilties.Attributes;
+using MixedRealityToolkit.Utilities.Attributes;
 using MixedRealityToolkit.UX.Buttons;
 using UnityEditor;
 
-namespace MixedRealityToolkit.UtiltiesInspectors
+namespace MixedRealityToolkit.UtilitiesInspectors
 {
 #if UNITY_EDITOR
     /// <summary>

@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Property drawer for in-editor display/editing of Int3 data

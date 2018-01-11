@@ -5,7 +5,7 @@ using MixedRealityToolkit.InputModule.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.Solvers
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     public class SolverHandler : ControllerFinder
     {

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilties.Attributes
+namespace MixedRealityToolkit.Utilities.Attributes
 {
     /// <summary>
     /// Attribute which flags a member with desired use of the OpenLocalFolderEdtor
