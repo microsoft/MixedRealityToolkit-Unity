@@ -1,11 +1,10 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using UnityEngine;
-using System.Collections;
 
-namespace HoloToolkit.Unity
+using MixedRealityToolkit.InputModule.Utilities;
+using UnityEngine;
+
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone
@@ -68,7 +67,7 @@ namespace HoloToolkit.Unity
             Vector3 ret = Vector3.one;
             if (ReferenceDirection == ReferenceDirectionEnum.HeadMoveDirection && solverHandler.TrackedObjectToReference == SolverHandler.TrackedObjectToReferenceEnum.Head)
             {
-                ret = Camera.main.GetComponent<InputModule.CameraMotionInfo>().MoveDirection;
+                ret = Camera.main.GetComponent<CameraMotionInfo>().MoveDirection;
             }
             else
             {

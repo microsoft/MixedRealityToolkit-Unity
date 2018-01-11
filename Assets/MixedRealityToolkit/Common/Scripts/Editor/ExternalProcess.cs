@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.Editor
 {
     /// <summary>
     /// Helper class for launching external processes inside of the unity editor.

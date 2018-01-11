@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Adds an FPS counter to the debug panel.

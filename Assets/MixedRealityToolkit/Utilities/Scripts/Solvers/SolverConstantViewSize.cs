@@ -1,11 +1,10 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using UnityEngine;
-using System.Collections;
 
-namespace HoloToolkit.Unity
+using MixedRealityToolkit.Common;
+using UnityEngine;
+
+namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
     ///   ConstantViewSize solver scales to maintain a constant size relative to the view (currently tied to the Camera)

@@ -19,7 +19,7 @@ using HoloToolkit.Unity.SpatialMapping;
 #endif
 
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// Wrapper around world anchor store to streamline some of the persistence API busy work.

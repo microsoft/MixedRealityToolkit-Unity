@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.Extensions
 {
     /// <summary>
     /// Extensions methods for the Unity Component class.

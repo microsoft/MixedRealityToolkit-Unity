@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using UnityEngine;
+
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Toggles if the debug window is visible or not.

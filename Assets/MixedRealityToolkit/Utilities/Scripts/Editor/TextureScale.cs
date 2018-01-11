@@ -6,7 +6,7 @@
 using System.Threading;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilities
 {
     public static class TextureScale
     {

@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilities
 {
     [CustomEditor(typeof(SceneLauncher))]
     public class SceneLauncherEditor : Editor

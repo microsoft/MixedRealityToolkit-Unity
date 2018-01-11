@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// A behaviour designed to help child behaviours take certain actions only after Start has been called.

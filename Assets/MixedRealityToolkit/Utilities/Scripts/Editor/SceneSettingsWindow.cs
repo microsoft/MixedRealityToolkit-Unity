@@ -6,10 +6,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using HoloToolkit.Unity.InputModule;
-using Cursor = HoloToolkit.Unity.InputModule.Cursor;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Common.Extensions;
+using Cursor = MixedRealityToolkit.InputModule.Cursor;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.InputModule.Focus;
+using MixedRealityToolkit.InputModule.Cursor;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply Mixed Reality Scene Settings.
@@ -100,7 +104,7 @@ namespace HoloToolkit.Unity
 
             if (Values[SceneSetting.AddDefaultCursor])
             {
-                var cursors = FindObjectsOfType<Cursor>();
+                var cursors = FindObjectsOfType<BaseCursor>();
                 foreach (var cursor in cursors)
                 {
                     DestroyImmediate(cursor.gameObject.GetParentRoot());
@@ -108,7 +112,7 @@ namespace HoloToolkit.Unity
 
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(DefaultCursorPrefabGUID)));
 
-                FindObjectOfType<InputManager>().GetComponent<SimpleSinglePointerSelector>().Cursor = FindObjectOfType<Cursor>();
+                FindObjectOfType<InputManager>().GetComponent<SimpleSinglePointerSelector>().Cursor = FindObjectOfType<BaseCursor>();
             }
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());

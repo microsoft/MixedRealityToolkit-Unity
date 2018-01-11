@@ -58,8 +58,8 @@ namespace HoloToolkit.Unity
             // Preallocate the array that will be used to collect RaycastHit structures.
             hits = new RaycastHit[MaxObjects];
         }
-	
-	    private void Update() 
+    
+        private void Update() 
         {
             DateTime now = DateTime.Now;
 
@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity
                 previousInfluencers = influencers;
                 lastUpdate = now;
             }
-	    }
+        }
 
         /// <summary>
         /// Removes the effects applied by specified audio influencers.

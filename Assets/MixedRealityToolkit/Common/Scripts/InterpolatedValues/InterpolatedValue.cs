@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.InterpolatedValues
 {
     /// <summary>
     /// Base class that provides the common logic for interpolating between values. This class does not

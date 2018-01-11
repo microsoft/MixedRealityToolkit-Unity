@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// The purpose of this class is to provide a cached reference to the main camera. Calling Camera.main

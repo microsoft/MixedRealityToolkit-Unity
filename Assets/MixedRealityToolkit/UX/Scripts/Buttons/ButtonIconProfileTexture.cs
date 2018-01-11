@@ -118,7 +118,7 @@ namespace HoloToolkit.Unity.Buttons
 
             // Store all icons in iconLookup via reflection
 #if ENABLE_WINMD_SUPPORT && !UNITY_EDITOR
-		    var fields = GetType().GetTypeInfo().DeclaredFields;
+            var fields = GetType().GetTypeInfo().DeclaredFields;
 #else
             var fields = this.GetType().GetFields();
 #endif

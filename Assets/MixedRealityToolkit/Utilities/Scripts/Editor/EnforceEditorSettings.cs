@@ -5,8 +5,9 @@ using System;
 using System.Globalization;
 using UnityEngine;
 using UnityEditor;
+using MixedRealityToolkit.Common.Editor;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.

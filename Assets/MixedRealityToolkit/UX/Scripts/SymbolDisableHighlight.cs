@@ -43,7 +43,7 @@ namespace HoloToolkit.UI.Keyboard
         {
             if (m_TextField != null)
             {
-	            m_StartingColor = m_TextField.color;
+                m_StartingColor = m_TextField.color;
             }
 
             if (m_ImageField != null)
@@ -71,7 +71,7 @@ namespace HoloToolkit.UI.Keyboard
         {
             if (m_TextField != null && m_Button != null)
             {
-	            m_TextField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
+                m_TextField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
             }
 
             if (m_ImageField != null && m_Button != null)
@@ -79,5 +79,5 @@ namespace HoloToolkit.UI.Keyboard
                 m_ImageField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
             }
         }
-	}
+    }
 }

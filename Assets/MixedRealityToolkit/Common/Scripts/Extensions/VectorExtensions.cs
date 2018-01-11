@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.Extensions
 {
     /// <summary>
     /// A collection of useful extension methods for Unity's Vector structs.

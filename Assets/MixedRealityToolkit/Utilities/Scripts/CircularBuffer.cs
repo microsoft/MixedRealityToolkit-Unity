@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Utilities
 {
     /// <summary>
     /// Helper class for transmitting data over network.

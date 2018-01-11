@@ -296,7 +296,7 @@ namespace HoloToolkit.Unity
             [StructLayout(LayoutKind.Sequential, Pack = 1)]
             public class PlayspaceStats
             {
-                public int IsWorkingOnStats;				// 0 if still working on creating the stats
+                public int IsWorkingOnStats;                // 0 if still working on creating the stats
 
                 public float HorizSurfaceArea;              // In m2 : All horizontal faces UP between Ground – 0.15 and Ground + 1.f (include Ground and convenient horiz surface)
                 public float TotalSurfaceArea;              // In m2 : All !
@@ -345,13 +345,13 @@ namespace HoloToolkit.Unity
                     Other,
                     Floor,
                     FloorLike,          // Not part of the floor topology, but close to the floor and looks like the floor
-                    Platform,			// Horizontal platform between the ground and the ceiling
+                    Platform,            // Horizontal platform between the ground and the ceiling
                     Ceiling,
                     WallExternal,
                     WallLike,           // Not part of the external wall surface
                 };
                 public SurfaceTypes SurfaceType;
-                float SurfaceArea;		// Zero if unknown (not part of the topology analysis)
+                float SurfaceArea;        // Zero if unknown (not part of the topology analysis)
                 public Vector3 IntersectPoint;
                 public Vector3 IntersectNormal;
             };
@@ -425,7 +425,7 @@ namespace HoloToolkit.Unity
 
             /// <summary>
             /// Extracting the mesh is a two step process, the first generates the mesh for extraction & saves it off.
-            ///	The caller is able to see vertex counts, etc. so they can allocate the proper amount of memory.
+            ///    The caller is able to see vertex counts, etc. so they can allocate the proper amount of memory.
             /// The second call, the caller provides buffers of the appropriate size (or larger), passing in the 
             /// buffer sizes for validation.
             /// </summary>
