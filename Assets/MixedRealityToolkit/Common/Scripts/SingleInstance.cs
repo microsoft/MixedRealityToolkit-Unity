@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common
 {
     /// <summary>
     /// A simplified version of the Singleton class which doesn't depend on the Instance being set in Awake

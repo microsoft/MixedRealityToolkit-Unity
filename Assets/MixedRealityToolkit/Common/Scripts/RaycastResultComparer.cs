@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common
 {
     public struct ComparableRaycastResult
     {

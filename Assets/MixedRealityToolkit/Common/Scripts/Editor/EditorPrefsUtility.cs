@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.Editor
 {
     public static class EditorPrefsUtility
     {

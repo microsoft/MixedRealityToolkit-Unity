@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.InterpolatedValues
 {
     /// <summary>
     /// Provides interpolation over Vector2.

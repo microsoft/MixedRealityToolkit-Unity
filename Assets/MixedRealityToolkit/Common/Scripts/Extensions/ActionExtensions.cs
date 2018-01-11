@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.Extensions
 {
     /// <summary>
     /// Extensions for the action class.
