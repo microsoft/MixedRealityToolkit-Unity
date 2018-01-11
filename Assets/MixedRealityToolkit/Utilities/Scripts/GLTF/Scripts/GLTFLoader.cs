@@ -190,12 +190,12 @@ namespace GLTF
             }
 
             /* TODO: implement camera (probably a flag to disable for VR as well)
-			if (camera != null)
-			{
-				GameObject cameraObj = camera.Value.Create();
-				cameraObj.transform.parent = nodeObj.transform;
-			}
-			*/
+            if (camera != null)
+            {
+                GameObject cameraObj = camera.Value.Create();
+                cameraObj.transform.parent = nodeObj.transform;
+            }
+            */
 
             if (node.Children != null)
             {

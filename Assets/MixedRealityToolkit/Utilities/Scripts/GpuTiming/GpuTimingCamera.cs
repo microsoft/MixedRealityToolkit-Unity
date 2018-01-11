@@ -10,31 +10,31 @@ namespace MixedRealityToolkit.Utilities.GpuTiming
     /// For stereo rendering sampling is made from the beginning of the left eye to the end of the right eye.
     /// </summary>
     public class GpuTimingCamera : MonoBehaviour
-	{
-		public string TimingTag = "Frame";
+    {
+        public string TimingTag = "Frame";
 
-		private Camera timingCamera;
+        private Camera timingCamera;
 
-		private void Start()
-		{
-			timingCamera = GetComponent<Camera>();
-			Debug.Assert(timingCamera, "GpuTimingComponent must be attached to a Camera.");
-		}
+        private void Start()
+        {
+            timingCamera = GetComponent<Camera>();
+            Debug.Assert(timingCamera, "GpuTimingComponent must be attached to a Camera.");
+        }
 
-		protected void OnPreRender()
-		{
-			if (timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Left || timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
-			{
-				GpuTiming.BeginSample(TimingTag);
-			}
-		}
+        protected void OnPreRender()
+        {
+            if (timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Left || timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
+            {
+                GpuTiming.BeginSample(TimingTag);
+            }
+        }
 
-		protected void OnPostRender()
-		{
-			if (timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right || timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
-			{
-				GpuTiming.EndSample();
-			}
-		}
-	}
+        protected void OnPostRender()
+        {
+            if (timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right || timingCamera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
+            {
+                GpuTiming.EndSample();
+            }
+        }
+    }
 }

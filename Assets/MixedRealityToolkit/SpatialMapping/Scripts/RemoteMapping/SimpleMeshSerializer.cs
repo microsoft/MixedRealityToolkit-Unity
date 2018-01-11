@@ -52,7 +52,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Serializes a list of MeshFilter objects into a byte array.
         /// Transforms vertices into world space before writing to the file.
-		/// Optionally transforms the vertices into the space of the supplied secondarySpace
+        /// Optionally transforms the vertices into the space of the supplied secondarySpace
         /// </summary>
         /// <param name="meshes">List of MeshFilter objects to be serialized.</param>
         /// <param name="secondarySpace">New space to transform the vertices into.</param>
