@@ -92,7 +92,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             ToggleLogic();
         }
 
-        public void ToggleLogic()
+        public virtual void ToggleLogic()
         {
             if (AllowSelection)
             {
