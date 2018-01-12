@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.UX.Distorters;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     public abstract class LineBase : MonoBehaviour
     {
@@ -408,7 +408,7 @@ namespace HoloToolkit.Unity.UX
 
             Vector3 firstPos = GetPoint(0f);
             Vector3 lastPos = firstPos;
-            Gizmos.color = Color.Lerp (LineBaseEditor.DefaultDisplayLineColor, Color.clear, 0.25f);
+            Gizmos.color = Color.Lerp (Color.white, Color.clear, 0.25f);
             int numSteps = 16;
 
             for (int i = 1; i < numSteps; i++)

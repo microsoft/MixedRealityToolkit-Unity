@@ -4,7 +4,7 @@
 using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     public class Line : LineBase
     {
@@ -62,19 +62,5 @@ namespace HoloToolkit.Unity.UX
         {
             return transform.up;
         }
-
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(Line))]
-        public class CustomEditor : LineBaseEditor {
-            protected override void DrawCustomSceneGUI()
-            {
-                base.DrawCustomSceneGUI();
-
-                LineBase line = (LineBase)target;
-                line.FirstPoint = SquareMoveHandle(line.FirstPoint);
-                line.LastPoint = SquareMoveHandle(line.LastPoint);
-            }
-        }
-#endif
     }
 }

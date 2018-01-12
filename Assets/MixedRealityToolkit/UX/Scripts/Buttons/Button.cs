@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.UX.Buttons.Enums;
 using System;
 using System.Collections;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Base class for buttons.

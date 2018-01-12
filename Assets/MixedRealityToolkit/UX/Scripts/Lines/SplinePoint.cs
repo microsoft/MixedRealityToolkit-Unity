@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     [Serializable]
     public struct SplinePoint

@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Utilities.Attributes;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     [UseWith(typeof(LineBase))]
     public class LineMeshes : LineRendererBase
@@ -144,10 +144,5 @@ namespace HoloToolkit.Unity.UX
             onWillRenderMesh.vertices = meshVertices;
             onWillRenderMesh.RecalculateBounds();
         }
-
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(LineMeshes))]
-        public class CustomEditor : MRTKEditor { }
-#endif
     }
 }

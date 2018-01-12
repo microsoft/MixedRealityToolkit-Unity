@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     public class Ellipse : LineBase
     {
@@ -52,10 +52,5 @@ namespace HoloToolkit.Unity.UX
             }
             return distance;
         }
-
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(Ellipse))]
-        public class CustomEditor : LineBaseEditor { }
-#endif
     }
 }

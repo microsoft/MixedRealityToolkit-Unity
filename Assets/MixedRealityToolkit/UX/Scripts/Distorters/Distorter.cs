@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Distorters
 {
     public abstract class Distorter : MonoBehaviour, IComparable<Distorter>
     {

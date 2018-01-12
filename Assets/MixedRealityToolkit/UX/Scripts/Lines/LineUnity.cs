@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.Utilities.Attributes;
 using System.Collections;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     [UseWith(typeof(LineBase))]
     public class LineUnity : LineRendererBase
@@ -105,11 +106,5 @@ namespace HoloToolkit.Unity.UX
                 yield return null;
             }
         }
-
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(LineUnity))]
-        public class CustomEditor : MRTKEditor { }
-#endif
-
     }
 }

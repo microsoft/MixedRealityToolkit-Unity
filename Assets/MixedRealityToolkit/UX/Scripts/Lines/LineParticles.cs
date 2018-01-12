@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Utilities.Attributes;
+using MixedRealityToolkit.Common.Extensions;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     [UseWith(typeof(LineBase))]
     public class LineParticles : LineRendererBase

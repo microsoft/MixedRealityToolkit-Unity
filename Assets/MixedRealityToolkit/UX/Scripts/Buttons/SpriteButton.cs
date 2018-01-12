@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.UX.Buttons.Datums;
+using MixedRealityToolkit.UX.Buttons.Enums;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Sprite button is a sprite renderer interactable with state data for button state

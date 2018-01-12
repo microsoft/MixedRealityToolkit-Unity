@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Utilities.Attributes;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Lines
 {
     public class Rectangle : LineBase
     {
@@ -167,13 +167,6 @@ namespace HoloToolkit.Unity.UX
         }
 
 #if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(Rectangle))]
-        public class CustomEditor : LineBaseEditor
-        {
-            // Use FromSource step mode for rectangles since interpolated looks weird
-            protected override StepModeEnum EditorStepMode { get { return StepModeEnum.FromSource; } }
-        }
-
         protected override void OnDrawGizmos()
         {
             // Show gizmos if this object is not selected
@@ -198,7 +191,7 @@ namespace HoloToolkit.Unity.UX
 
             Vector3 firstPos = GetPoint(0);
             Vector3 lastPos = firstPos;
-            Gizmos.color = Color.Lerp(LineBaseEditor.DefaultDisplayLineColor, Color.clear, 0.25f);
+            Gizmos.color = Color.Lerp(Color.white, Color.clear, 0.25f);
 
             for (int i = 1; i < NumPoints; i++)
             {
