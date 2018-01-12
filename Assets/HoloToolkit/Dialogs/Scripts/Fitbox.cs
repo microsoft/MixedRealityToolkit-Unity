@@ -103,6 +103,8 @@ namespace HoloToolkit.Unity.Dialogs
             }
             // Destroy the Fitbox
             Destroy(gameObject);
+
+            eventData.Use();
         }
     }
 }
