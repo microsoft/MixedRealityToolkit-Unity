@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build.DataStructures
 {
     [Serializable]
     public class DevicePortalConnections

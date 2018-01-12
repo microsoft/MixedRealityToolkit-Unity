@@ -1,19 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.InputModule.Cursor;
+using MixedRealityToolkit.InputModule.Focus;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using UnityEditor.SceneManagement;
-using MixedRealityToolkit.InputModule;
-using MixedRealityToolkit.Common.Extensions;
-using Cursor = MixedRealityToolkit.InputModule.Cursor;
-using MixedRealityToolkit.Common;
-using MixedRealityToolkit.InputModule.Focus;
-using MixedRealityToolkit.InputModule.Cursor;
 
-namespace MixedRealityToolkit.Utilities
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply Mixed Reality Scene Settings.

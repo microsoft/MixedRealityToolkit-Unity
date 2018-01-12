@@ -3,12 +3,12 @@
 
 using System;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Implements functionality for building HoloLens applications
     /// </summary>
-    public static class HoloToolkitCommands
+    public static class MixedRealityToolkitCommands
     {
         /// <summary>
         /// Do a build configured for the HoloLens, returns the error from BuildPipeline.BuildPlayer

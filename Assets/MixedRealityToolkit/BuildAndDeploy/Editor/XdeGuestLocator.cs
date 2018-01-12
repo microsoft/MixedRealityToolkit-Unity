@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Emulator Utility Class

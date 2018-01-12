@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.Hardware;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build.USB
 {
     [InitializeOnLoad]
     public class USBDeviceListener

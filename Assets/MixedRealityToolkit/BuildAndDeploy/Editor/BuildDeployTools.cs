@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Contains utility functions for building for the device
