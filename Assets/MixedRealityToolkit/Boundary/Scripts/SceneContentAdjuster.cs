@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using MixedRealityToolkit.Common;
 
 #if UNITY_2017_2_OR_NEWER
 using System.Collections;
@@ -10,7 +11,7 @@ using UnityEngine.XR;
 using UnityEngine.VR;
 #endif
 
-namespace HoloToolkit.Unity.Boundary
+namespace MixedRealityToolkit.Boundary
 {
     /// <summary>
     /// Use this script on GameObjects you wish to be aligned in certain ways depending on the application space type.
