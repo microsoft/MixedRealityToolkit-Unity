@@ -7,16 +7,43 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.Dialogs
 {
-    // Used to place the scene origin on startup
-    // Adapted from Holoacadamy's fitbox
+
+    /// <summary>
+    /// 
+    /// Used to place the scene origin on startup
+    /// 
+    /// A Fitbox can be used to allow the user to move to a position and place content in that position.
+    /// 
+    /// A Fitbox covers a healthy portion of the screen and follows the users gaze(but doesnt screen lock).  It initially disables the content associated with it.
+    /// It can be used to give important guidance to the user before allowing him/her to continue with the application.
+    /// Once a user clicks on the Fitbox, it will dissapear and allow the user to view the scene.Additionally you can set a flag to reposition the scene object relative to where the Fitbox was dismissed.  Some have used it as a type of splash screen before showing a initial set of menus or content.
+    /// 
+    /// Fitbox has three properties that can be set in the editor.
+    ///     bool MoveCollectionOnDismiss
+    ///     GameObject StartupObject
+    ///     float Distance 
+    ///     
+    /// StartupObject refers to The scene object to activate and possibly reposition
+    /// MoveCollectionOnDismiss toggles wether you want to reposition the StartupObject to the place where the Fitbox was clicked on (defaults to false) 
+    /// Distance refers to the distance at which you want the Fitbox, and subsequent content, to display in front of the user. This is fed to the interpolator. (defaults to 1.0f )
+    /// 
+    /// Fitbox requires an Interpolator, A Holotoolkit MonoBehaviour that interpolates a transform's position, rotation or scale.
+    /// and helps the fitbox smoothly stay in front of the user wherever he/she moves
+    /// 
+    /// A FitBox also has a child object Quad whose material can be set to a logo or some image representing guidance to the user
+    /// You could replace this with your own child objects.
+    /// 
+    /// If the user moves anywhere the fitbox will stay at the same distance set in front of the user and this is where the followup content may be moved to if MoveCollectionOnDismiss is set to true
+    ///
+    /// </summary>
     public class Fitbox : MonoBehaviour, IInputClickHandler
     {
         [Tooltip("Reposition the scene object relative to where the Fitbox was dismissed.")]
         public bool MoveCollectionOnDismiss = false;
         [Tooltip("The scene object to activate and reposition.")]
         public GameObject StartupObject;
-
-        private float Distance = 1.0f;
+        [Tooltip("The distance at which you want the Fitbox, and subsequent content display in front of the user.")]
+        public float Distance = 1.0f;
         private Interpolator interpolator;
         // The offset from the Camera to the StartupObject when
         // the app starts up. This is used to place the StartupObject
