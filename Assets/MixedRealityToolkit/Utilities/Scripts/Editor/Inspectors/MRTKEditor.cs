@@ -9,7 +9,7 @@ using MixedRealityToolkit.Utilities.Attributes;
 using MixedRealityToolkit.UX.Buttons;
 using UnityEditor;
 
-namespace MixedRealityToolkit.UtilitiesInspectors
+namespace MixedRealityToolkit.Utilities.Inspectors
 {
 #if UNITY_EDITOR
     /// <summary>

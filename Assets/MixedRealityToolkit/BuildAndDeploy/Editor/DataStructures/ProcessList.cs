@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build.DataStructures
 {
     [Serializable]
     public class ProcessList

@@ -8,6 +8,7 @@ using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.GamePad;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.Utilities;
 using System;
 using UnityEngine;

@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Build.DataStructures;
+using MixedRealityToolkit.Build.USB;
+using MixedRealityToolkit.Common.Editor;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +14,7 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build
 {
     /// <summary>
     /// Build window - supports SLN creation, APPX from SLN, Deploy on device, and misc helper utilities associated with the build/deploy/test iteration loop

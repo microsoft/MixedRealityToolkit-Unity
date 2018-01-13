@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using MixedRealityToolkit.UX.Buttons.Enums;
+using MixedRealityToolkit.UX.Buttons.Utilities;
 using System;
+using UnityEngine;
 
-namespace HoloToolkit.Unity.Buttons
+namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Anim controller button offers as simple way to link button states to animation controller parameters

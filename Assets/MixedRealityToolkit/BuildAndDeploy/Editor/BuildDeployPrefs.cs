@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Build.DataStructures;
+using MixedRealityToolkit.Common.Editor;
 using System;
 using System.IO;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build
 {
     public static class BuildDeployPrefs
     {

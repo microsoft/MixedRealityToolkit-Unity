@@ -1,13 +1,12 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using System;
 
+using MixedRealityToolkit.Common.Extensions;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.BoundingBoxes
 {
     /// <summary>
     /// Base class for bounding box objects
@@ -496,11 +495,5 @@ namespace HoloToolkit.Unity.UX
 
         #endregion
 
-        #region custom editor
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(BoundingBox))]
-        public class CustomEditor : MRTKEditor  { }
-#endif
-        #endregion
     }
 }

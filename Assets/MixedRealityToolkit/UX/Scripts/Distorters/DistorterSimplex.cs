@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Utilities;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.UX
+namespace MixedRealityToolkit.UX.Distorters
 {
     public class DistorterSimplex : Distorter
     {
+        private FastSimplexNoise noise = new FastSimplexNoise();
+
         public float ScaleMultiplier = 10f;
         public float SpeedMultiplier = 1f;
         public float StrengthMultiplier = 0.5f;
@@ -40,6 +43,5 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-        private FastSimplexNoise noise = new FastSimplexNoise();
     }
 }

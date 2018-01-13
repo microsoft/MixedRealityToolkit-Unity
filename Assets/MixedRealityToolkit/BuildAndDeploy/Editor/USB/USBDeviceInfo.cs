@@ -2,9 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Build.USB
 {
     [Serializable]
     public class USBDeviceInfo
