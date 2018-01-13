@@ -36,6 +36,18 @@ namespace MixedRealityToolkit.UX.Lines
             }
         }
 
+        public SplinePoint[] Points
+        {
+            get
+            {
+                return points;
+            }
+            set
+            {
+                points = value;
+            }
+        }
+
         public void ForceUpdateAlignment()
         {
             if (AlignControlPoints)

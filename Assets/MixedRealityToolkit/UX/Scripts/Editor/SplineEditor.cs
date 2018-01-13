@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using MixedRealityToolkit.UX.Lines;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Lines
+namespace MixedRealityToolkit.UX.EditorScripts
 {
     [UnityEditor.CustomEditor(typeof(Spline))]
     public class SplineEditor : LineBaseEditor
@@ -34,8 +38,8 @@ namespace MixedRealityToolkit.UX.Lines
                     newPoints[1].Point = newPoints[2].Point - (direction * distance);
                     newPoints[0].Point = newPoints[1].Point - (direction * distance);
                     pointsList.AddRange(newPoints);
-                    pointsList.AddRange(line.points);
-                    line.points = pointsList.ToArray();
+                    pointsList.AddRange(line.Points);
+                    line.Points = pointsList.ToArray();
                 }
                 if (line.NumPoints > 4)
                 {
@@ -43,11 +47,11 @@ namespace MixedRealityToolkit.UX.Lines
                     {
                         // Using lists for maximum clarity
                         pointsList.Clear();
-                        pointsList.AddRange(line.points);
+                        pointsList.AddRange(line.Points);
                         pointsList.RemoveAt(0);
                         pointsList.RemoveAt(0);
                         pointsList.RemoveAt(0);
-                        line.points = pointsList.ToArray();
+                        line.Points = pointsList.ToArray();
                     }
                 }
 
@@ -61,21 +65,21 @@ namespace MixedRealityToolkit.UX.Lines
                 UnityEditor.EditorGUILayout.BeginVertical();
                 GUI.color = (editPositions ? defaultColor : disabledColor);
                 editPositions = UnityEditor.EditorGUILayout.Toggle("Edit Positions", editPositions);
-                for (int i = 0; i < line.points.Length; i++)
+                for (int i = 0; i < line.Points.Length; i++)
                 {
                     GUI.color = (i % 3 == 0) ? handleColorCircle : handleColorSquare;
                     if (editPositions)
                     {
                         GUI.color = Color.Lerp(GUI.color, defaultColor, 0.75f);
                         // highlight points that are overlapping
-                        for (int j = 0; j < line.points.Length; j++)
+                        for (int j = 0; j < line.Points.Length; j++)
                         {
                             if (j == i)
                             {
                                 continue;
                             }
 
-                            if (Vector3.Distance(line.points[j].Point, line.points[i].Point) < overlappingPointThreshold)
+                            if (Vector3.Distance(line.Points[j].Point, line.Points[i].Point) < overlappingPointThreshold)
                             {
                                 overlappingPointIndexes.Add(i);
                                 overlappingPointIndexes.Add(j);
@@ -83,12 +87,12 @@ namespace MixedRealityToolkit.UX.Lines
                                 break;
                             }
                         }
-                        line.points[i].Point = UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Point);
+                        line.Points[i].Point = UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Point);
                     }
                     else
                     {
                         GUI.color = Color.Lerp(GUI.color, disabledColor, 0.75f);
-                        UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Point);
+                        UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Point);
                     }
                 }
                 UnityEditor.EditorGUILayout.EndVertical();
@@ -98,18 +102,18 @@ namespace MixedRealityToolkit.UX.Lines
                 UnityEditor.EditorGUILayout.BeginVertical();
                 editRotations = UnityEditor.EditorGUILayout.Toggle("Edit Rotations", editRotations);
                 GUI.color = (editRotations ? defaultColor : disabledColor);
-                for (int i = 0; i < line.points.Length; i++)
+                for (int i = 0; i < line.Points.Length; i++)
                 {
                     GUI.color = (i % 3 == 0) ? handleColorCircle : handleColorSquare;
                     if (editRotations)
                     {
                         GUI.color = Color.Lerp(GUI.color, defaultColor, 0.75f);
-                        line.points[i].Rotation = Quaternion.Euler(UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Rotation.eulerAngles));
+                        line.Points[i].Rotation = Quaternion.Euler(UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Rotation.eulerAngles));
                     }
                     else
                     {
                         GUI.color = Color.Lerp(GUI.color, disabledColor, 0.75f);
-                        UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.points[i].Rotation.eulerAngles);
+                        UnityEditor.EditorGUILayout.Vector3Field(string.Empty, line.Points[i].Rotation.eulerAngles);
                     }
                 }
                 UnityEditor.EditorGUILayout.EndVertical();
@@ -127,7 +131,7 @@ namespace MixedRealityToolkit.UX.Lines
                         // Move them slightly out of the way
                         foreach (int overlappoingPointIndex in overlappingPointIndexes)
                         {
-                            line.points[overlappoingPointIndex].Point += (UnityEngine.Random.onUnitSphere * overlappingPointThreshold * 2);
+                            line.Points[overlappoingPointIndex].Point += (UnityEngine.Random.onUnitSphere * overlappingPointThreshold * 2);
                         }
                     }
                 }
@@ -145,9 +149,9 @@ namespace MixedRealityToolkit.UX.Lines
                     newPoints[0].Point = line.LastPoint + (direction * distance);
                     newPoints[1].Point = newPoints[0].Point + (direction * distance);
                     newPoints[2].Point = newPoints[1].Point + (direction * distance);
-                    pointsList.AddRange(line.points);
+                    pointsList.AddRange(line.Points);
                     pointsList.AddRange(newPoints);
-                    line.points = pointsList.ToArray();
+                    line.Points = pointsList.ToArray();
                 }
                 if (line.NumPoints > 4)
                 {
@@ -155,11 +159,11 @@ namespace MixedRealityToolkit.UX.Lines
                     {
                         // Using lists for maximum clarity
                         pointsList.Clear();
-                        pointsList.AddRange(line.points);
+                        pointsList.AddRange(line.Points);
                         pointsList.RemoveAt(pointsList.Count - 1);
                         pointsList.RemoveAt(pointsList.Count - 1);
                         pointsList.RemoveAt(pointsList.Count - 1);
-                        line.points = pointsList.ToArray();
+                        line.Points = pointsList.ToArray();
                     }
                 }
             }
@@ -207,7 +211,7 @@ namespace MixedRealityToolkit.UX.Lines
 
                 if (editRotations)
                 {
-                    line.points[i].Rotation = RotationHandle(line.GetPoint(i), line.points[i].Rotation);
+                    line.Points[i].Rotation = RotationHandle(line.GetPoint(i), line.Points[i].Rotation);
                 }
             }
         }

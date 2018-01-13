@@ -145,5 +145,25 @@ namespace MixedRealityToolkit.UX.Buttons.Profiles
                 }
             }
         }
+
+#if UNITY_EDITOR
+        public override string DrawIconSelectField(string iconName)
+        {
+            int selectedIconIndex = -1;
+            List<string> iconKeys = GetIconKeys();
+            for (int i = 0; i < iconKeys.Count; i++)
+            {
+                if (iconName == iconKeys[i])
+                {
+                    selectedIconIndex = i;
+                    break;
+                }
+            }
+            int newIconIndex = UnityEditor.EditorGUILayout.Popup("Icon", selectedIconIndex, iconKeys.ToArray());
+            // This will automatically set the icon in the editor view
+            iconName = (newIconIndex < 0 ? string.Empty : iconKeys[newIconIndex]);
+            return iconName;
+        }
+#endif
     }
 }

@@ -150,8 +150,10 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
             // Instantiate our local material now, if we don't have one
             if (instantiatedMaterial == null)
             {
-                instantiatedMaterial = new Material(Profile.IconMaterial);
-                instantiatedMaterial.name = Profile.IconMaterial.name;
+                instantiatedMaterial = new Material(Profile.IconMaterial)
+                {
+                    name = Profile.IconMaterial.name
+                };
             }
             targetIconRenderer.sharedMaterial = instantiatedMaterial;
             
