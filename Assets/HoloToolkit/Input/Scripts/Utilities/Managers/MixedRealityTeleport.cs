@@ -117,9 +117,11 @@ namespace HoloToolkit.Unity.InputModule
 
         void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData)
         {
+            if (
 #if UNITY_WSA
-            if (eventData.PressType != InteractionSourcePressType.Thumbstick)
+                eventData.PressType != InteractionSourcePressType.Thumbstick ||
 #endif
+                eventData.InputPositionType != InputPositionType.Thumbstick)
             {
                 return;
             }
