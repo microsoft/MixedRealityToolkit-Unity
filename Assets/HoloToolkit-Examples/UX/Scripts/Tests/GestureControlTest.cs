@@ -75,10 +75,10 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         protected override void Update()
         {
-            if (mHasGaze != Button.HasGaze)
+            if (mHasGaze != Button.HasFocus)
             {
-                EffectDot.SetActive(Button.HasGaze);
-                mHasGaze = Button.HasGaze;
+                EffectDot.SetActive(Button.HasFocus);
+                mHasGaze = Button.HasFocus;
             }
 
             if (mTickerCount < mTickerTime)

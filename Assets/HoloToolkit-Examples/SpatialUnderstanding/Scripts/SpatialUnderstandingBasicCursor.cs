@@ -66,7 +66,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             var result = new RaycastResult
             {
-                Hit = (GazeManager.Instance.HitObject == null) ? false : true,
+                Hit = (GazeManager.Instance.GazeTarget == null) ? false : true,
                 Position = GazeManager.Instance.HitPosition,
                 Normal = GazeManager.Instance.GazeNormal
             };

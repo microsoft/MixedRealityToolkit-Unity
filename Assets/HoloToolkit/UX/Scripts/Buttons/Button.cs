@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.Buttons
     /// <summary>
     /// Base class for buttons.
     /// </summary>
-    public abstract class Button : MonoBehaviour, IInputHandler, IFocusHandler, IHoldHandler, ISourceStateHandler, IPointerHandler
+    public abstract class Button : FocusTarget, IInputHandler, IHoldHandler, ISourceStateHandler, IPointerHandler
     {
         #region Public Members
 
@@ -221,8 +221,10 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             if (!m_disabled)
             {
                 ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
@@ -232,7 +234,7 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        void IFocusHandler.OnFocusExit(FocusEventData eventData)
+        public override void OnFocusExit(FocusEventData eventData)
         {
             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
             {
@@ -251,8 +253,6 @@ namespace HoloToolkit.Unity.Buttons
                 _bFocused = false;
             }
         }
-
-        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
 
         /// <summary>
         /// On Source detected see if it is a hand and increment hand count and set visibility

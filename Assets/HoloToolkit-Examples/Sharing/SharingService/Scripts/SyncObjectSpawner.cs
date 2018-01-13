@@ -59,7 +59,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         public void DeleteSyncObject()
         {
-            GameObject hitObject = GazeManager.Instance.HitObject;
+            GameObject hitObject = GazeManager.Instance.GazeTarget;
             if (hitObject != null)
             {
                 var syncModelAccessor = hitObject.GetComponent<DefaultSyncModelAccessor>();

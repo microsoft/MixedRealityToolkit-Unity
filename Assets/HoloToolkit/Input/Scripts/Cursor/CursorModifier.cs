@@ -9,10 +9,28 @@ namespace HoloToolkit.Unity.InputModule
     /// Component that can be added to any game object with a collider to modify 
     /// how a cursor reacts when on that collider.
     /// </summary>
-    public class CursorModifier : MonoBehaviour, ICursorModifier, IFocusHandler
+    public class CursorModifier : MonoBehaviour, ICursorModifier, IFocusChangedHandler
     {
+        [SerializeField]
         [Tooltip("Transform for which this cursor modifier applies its various properties.")]
-        public Transform HostTransform;
+        private Transform hostTransform;
+
+        /// <summary>
+        /// Transform for which this cursor modifies applies its various properties.
+        /// </summary>
+        public Transform HostTransform
+        {
+            get
+            {
+                if (hostTransform == null)
+                {
+                    hostTransform = transform;
+                }
+
+                return hostTransform;
+            }
+            set { hostTransform = value; }
+        }
 
         [Tooltip("How much a cursor should be offset from the surface of the object when overlapping.")]
         public Vector3 CursorOffset = Vector3.zero;
@@ -36,13 +54,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Cursor animation parameters to set when this object is focused. Leave empty for none.")]
         public AnimatorParameter[] CursorParameters;
 
-        private void Awake()
-        {
-            if (HostTransform == null)
-            {
-                HostTransform = transform;
-            }
-        }
+        #region ICursorModifier Implementation
 
         /// <summary>
         /// Return whether or not hide the cursor
@@ -73,22 +85,13 @@ namespace HoloToolkit.Unity.InputModule
 
         public Quaternion GetModifiedRotation(ICursor cursor)
         {
-            Quaternion rotation;
-
             RayStep lastStep = cursor.Pointer.Rays[cursor.Pointer.Rays.Length - 1];
             Vector3 forward = UseGazeBasedNormal ? -lastStep.Direction : HostTransform.rotation * CursorNormal;
 
-            // Determine the cursor forward
-            if (forward.magnitude > 0)
-            {
-                rotation = Quaternion.LookRotation(forward, Vector3.up);
-            }
-            else
-            {
-                rotation = cursor.Rotation;
-            }
-
-            return rotation;
+            // Determine the cursor forward rotation
+            return forward.magnitude > 0
+                ? Quaternion.LookRotation(forward, Vector3.up)
+                : cursor.Rotation;
         }
 
         public Vector3 GetModifiedScale(ICursor cursor)
@@ -103,16 +106,23 @@ namespace HoloToolkit.Unity.InputModule
             scale = GetModifiedScale(cursor);
         }
 
-        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
+        #endregion ICursorModifier Implementation
+
+        #region IFocusChangedHandler Implementation
+
+        void IFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
-            eventData.Pointer.CursorModifier = this;
+            if (eventData.NewFocusedObject == this)
+            {
+                eventData.Pointer.CursorModifier = this;
+            }
+
+            if (eventData.NewFocusedObject == null && eventData.OldFocusedObject == this)
+            {
+                eventData.Pointer.CursorModifier = null;
+            }
         }
 
-        void IFocusHandler.OnFocusExit(FocusEventData eventData)
-        {
-            eventData.Pointer.CursorModifier = null;
-        }
-
-        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
+        #endregion IFocusChangedHandler Implementation
     }
 }

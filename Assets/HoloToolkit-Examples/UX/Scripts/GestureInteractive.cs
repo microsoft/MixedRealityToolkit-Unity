@@ -53,10 +53,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         private IInputSource mTempInputSource;
         private uint mTempInputSourceId;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             // get the gestureInteractiveControl if not previously set
             // This could reside on another GameObject, so we will not require this to exist on this game object.
             if (Control == null)
@@ -217,7 +215,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             InputManager.Instance.ClearModalInputStack();
 
-            if (HasGaze)
+            if (HasFocus)
             {
                 base.OnInputUp(null);
             }
@@ -312,7 +310,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             base.KeywordRecognizer_OnPhraseRecognized(args);
 
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
-            if ((!KeywordRequiresGaze || HasGaze) && mKeywordDictionary != null)
+            if ((!KeywordRequiresGaze || HasFocus) && mKeywordDictionary != null)
             {
                 int index;
                 if (mKeywordDictionary.TryGetValue(args.text, out index))

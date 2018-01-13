@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
         public float MaxGazeCollisionDistance = 10.0f;
 
         /// <summary>
-        /// The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.
+        /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
         ///
         /// Example Usage:
         ///
@@ -31,7 +31,7 @@ namespace HoloToolkit.Unity.InputModule
         /// int nonSR = Physics.DefaultRaycastLayers & ~sr;
         /// GazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
         /// </summary>
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.\n\nExample Usage:\n\n// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)\n\nint sr = LayerMask.GetMask(\"SR\");\nint nonSR = Physics.DefaultRaycastLayers & ~sr;\nGazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };")]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.\n\nExample Usage:\n\n// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)\n\nint sr = LayerMask.GetMask(\"SR\");\nint nonSR = Physics.DefaultRaycastLayers & ~sr;\nGazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };")]
         public LayerMask[] RaycastLayerMasks = { Physics.DefaultRaycastLayers };
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The game object that is currently being gazed at, if any.
         /// </summary>
-        public GameObject HitObject { get; private set; }
+        public GameObject GazeTarget { get; private set; }
 
         /// <summary>
         /// Position at which the gaze manager hit an object.
@@ -140,6 +140,8 @@ namespace HoloToolkit.Unity.InputModule
                 RaycastLayerMasks = value;
             }
         }
+
+        public IFocusHandler FocusTarget { get; set; }
 
         public PointerResult Result { get; set; }
 
@@ -288,7 +290,7 @@ namespace HoloToolkit.Unity.InputModule
         public void UpdateHitDetails(FocusDetails focusDetails, RaycastHit hitInfo)
         {
             HitInfo = hitInfo;
-            HitObject = focusDetails.Object;
+            GazeTarget = focusDetails.Object;
 
             if (focusDetails.Object != null)
             {

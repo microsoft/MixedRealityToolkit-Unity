@@ -7,9 +7,9 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Examples.ColorPicker
 {
-    public class GazeableColorPicker : MonoBehaviour, IFocusHandler, IPointerHandler
+    public class GazeableColorPicker : FocusTarget, IPointerHandler
     {
-        public Renderer rendererComponent;
+        public Renderer RendererComponent;
 
         [System.Serializable]
         public class PickedColorCallback : UnityEvent<Color> { }
@@ -17,11 +17,9 @@ namespace HoloToolkit.Examples.ColorPicker
         public PickedColorCallback OnGazedColor = new PickedColorCallback();
         public PickedColorCallback OnPickedColor = new PickedColorCallback();
 
-        private bool gazing = false;
-
         private void Update()
         {
-            if (gazing == false) return;
+            if (!HasFocus) { return; }
             UpdatePickedColor(OnGazedColor);
         }
 
@@ -29,9 +27,9 @@ namespace HoloToolkit.Examples.ColorPicker
         {
             RaycastHit hit = GazeManager.Instance.HitInfo;
 
-            if (hit.transform.gameObject != rendererComponent.gameObject) { return; }
+            if (hit.transform.gameObject != RendererComponent.gameObject) { return; }
 
-            var texture = (Texture2D)rendererComponent.material.mainTexture;
+            var texture = (Texture2D)RendererComponent.material.mainTexture;
 
             Vector2 pixelUV = hit.textureCoord;
             pixelUV.x *= texture.width;
@@ -41,23 +39,11 @@ namespace HoloToolkit.Examples.ColorPicker
             cb.Invoke(col);
         }
 
-        void IFocusHandler.OnFocusEnter(FocusEventData eventData)
-        {
-            gazing = true;
-        }
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
 
-        void IFocusHandler.OnFocusExit(FocusEventData eventData)
-        {
-            gazing = false;
-        }
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
 
-        void IFocusHandler.OnFocusChanged(FocusEventData eventData) { }
-
-        public void OnPointerUp(ClickEventData eventData) { }
-
-        public void OnPointerDown(ClickEventData eventData) { }
-
-        public void OnPointerClicked(ClickEventData eventData)
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             UpdatePickedColor(OnPickedColor);
         }
