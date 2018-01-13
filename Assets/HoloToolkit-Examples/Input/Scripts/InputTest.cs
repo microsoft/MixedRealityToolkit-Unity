@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public override void OnFocusChanged(FocusEventData eventData)
         {
             base.OnFocusChanged(eventData);
-            Debug.LogFormat("OnFocusChanged\r\nPointer: {0} | Pointer SourceId: {1}\n" +
+            Debug.LogFormat("OnBeforeFocusChange\r\nPointer: {0} | Pointer SourceId: {1}\n" +
                             "Old Focused Object: {2} | New Focused Object: {3} | Pointer Focus Count {4}\n",
                             eventData.Pointer, eventData.Pointer.SourceId,
                             eventData.OldFocusedObject == null ? "None" : eventData.OldFocusedObject.name,

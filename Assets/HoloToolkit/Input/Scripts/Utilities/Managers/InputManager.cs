@@ -459,7 +459,7 @@ namespace HoloToolkit.Unity.InputModule
         #region Focus Events
 
         /// <summary>
-        /// Raise the event OnFocusChanged to the game object when focus enters it.
+        /// Raise the event OnBeforeFocusChange to the game object when focus enters it.
         /// </summary>
         /// <param name="pointer">The pointer that focused the GameObject.</param>
         /// <param name="focusedObject">The GameObject that is focused.</param>
@@ -509,39 +509,74 @@ namespace HoloToolkit.Unity.InputModule
                 };
 
         /// <summary>
+        /// Raise the Pre Focus Changed Event.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <param name="oldFocusedObject"></param>
+        /// <param name="newFocusedObject"></param>
+        public void RaisePreFocusChangedEvent(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        {
+            focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
+
+            // Raise Focus Events on the old and new focused objects.
+            if (oldFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(oldFocusedObject, focusEventData, OnPreFocusChangedHandler);
+            }
+
+            if (newFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusEventData, OnPreFocusChangedHandler);
+            }
+
+            // Raise Focus Events on the pointers cursor if it has one.
+            if (pointer.BaseCursor != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnPreFocusChangedHandler);
+            }
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IFocusChangedHandler> OnPreFocusChangedHandler =
+                delegate (IFocusChangedHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                    handler.OnBeforeFocusChange(casted);
+                };
+
+        /// <summary>
         /// Raise focus enter and exit events for when an input (that supports pointing) points to a game object.
         /// </summary>
         /// <param name="pointer"></param>
         /// <param name="oldFocusedObject"></param>
         /// <param name="newFocusedObject"></param>
-        public void RaisePointerSpecificFocusChangedEvents(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void OnFocusChangedEvent(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
-
-            // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnPointerSpecificFocusChangedEventHandler);
-            }
 
             // Raise Focus Events on the old and new focused objects.
             if (oldFocusedObject != null)
             {
-                ExecuteEvents.ExecuteHierarchy(oldFocusedObject, focusEventData, OnPointerSpecificFocusChangedEventHandler);
+                ExecuteEvents.ExecuteHierarchy(oldFocusedObject, focusEventData, OnFocusChangedHandler);
             }
 
             if (newFocusedObject != null)
             {
-                ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusEventData, OnPointerSpecificFocusChangedEventHandler);
+                ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusEventData, OnFocusChangedHandler);
+            }
+
+            // Raise Focus Events on the pointers cursor if it has one.
+            if (pointer.BaseCursor != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnFocusChangedHandler);
             }
         }
 
-        private static readonly ExecuteEvents.EventFunction<IFocusHandler> OnPointerSpecificFocusChangedEventHandler =
-                delegate (IFocusHandler handler, BaseEventData eventData)
-                {
-                    var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                    handler.OnFocusChanged(casted);
-                };
+        private static readonly ExecuteEvents.EventFunction<IFocusChangedHandler> OnFocusChangedHandler =
+            delegate (IFocusChangedHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                handler.OnFocusChanged(casted);
+            };
 
         #endregion Focus Events
 

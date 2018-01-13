@@ -49,9 +49,9 @@ namespace HoloToolkit.Unity.Tests
             EventFiredCallback(gameObject, null);
         }
 
-        public override void OnFocusChanged(FocusEventData eventData)
+        public override void OnBeforeFocusChange(FocusEventData eventData)
         {
-            base.OnFocusChanged(eventData);
+            base.OnBeforeFocusChange(eventData);
 
             EventFiredCallback(gameObject, null);
         }

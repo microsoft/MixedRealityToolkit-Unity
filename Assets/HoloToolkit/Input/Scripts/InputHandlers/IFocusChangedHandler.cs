@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public interface IFocusChangedHandler : IEventSystemHandler
     {
+        void OnBeforeFocusChange(FocusEventData eventData);
         void OnFocusChanged(FocusEventData eventData);
     }
 }

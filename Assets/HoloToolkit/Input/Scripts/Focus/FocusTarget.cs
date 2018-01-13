@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public virtual void OnFocusExit(FocusEventData eventData) { }
 
-        public virtual void OnFocusChanged(FocusEventData eventData)
+        public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
             // If we're the new target object
             // Add the pointer to the list of focusers
@@ -64,5 +64,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+
+        public virtual void OnFocusChanged(FocusEventData eventData) { }
     }
 }

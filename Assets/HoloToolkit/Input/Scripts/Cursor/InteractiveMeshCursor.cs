@@ -114,9 +114,9 @@ namespace HoloToolkit.Unity.InputModule
             Dot.SetActive(!showRing);
 
             // added observation of CursorModifier
-            if (TargetedCursorModifier != null && mHasHover)
+            if (Pointer.CursorModifier != null && mHasHover)
             {
-                ElementVisibility(!TargetedCursorModifier.GetCursorVisibility());
+                ElementVisibility(!Pointer.CursorModifier.GetCursorVisibility());
             }
         }
 

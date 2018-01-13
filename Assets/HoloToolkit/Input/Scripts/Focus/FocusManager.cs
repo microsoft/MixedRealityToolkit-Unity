@@ -122,7 +122,6 @@ namespace HoloToolkit.Unity.InputModule
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
-                CurrentPointerTarget = focusDetails.Object;
                 PreviousPointerTarget = End.Object;
                 RayStepIndex = rayStepIndex;
                 StartPoint = sourceRay.Origin;
@@ -131,6 +130,7 @@ namespace HoloToolkit.Unity.InputModule
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = hit.transform.gameObject;
                 End = focusDetails;
+                CurrentPointerTarget = End.Object;
             }
 
             public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
@@ -149,7 +149,6 @@ namespace HoloToolkit.Unity.InputModule
 
             public void UpdateHit()
             {
-                CurrentPointerTarget = focusDetails.Object;
                 PreviousPointerTarget = End.Object;
 
                 RayStep firstStep = PointingSource.Rays[0];
@@ -162,12 +161,11 @@ namespace HoloToolkit.Unity.InputModule
                 focusDetails.Normal = -finalStep.Direction;
                 focusDetails.Object = null;
                 End = focusDetails;
+                CurrentPointerTarget = End.Object;
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                CurrentPointerTarget = null;
-
                 if (clearPreviousObject)
                 {
                     PreviousPointerTarget = null;
@@ -177,6 +175,7 @@ namespace HoloToolkit.Unity.InputModule
                 focusDetails.Normal = End.Normal;
                 focusDetails.Object = null;
                 End = focusDetails;
+                CurrentPointerTarget = null;
             }
 
             public bool Equals(PointerData other)
@@ -736,6 +735,8 @@ namespace HoloToolkit.Unity.InputModule
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
+                InputManager.Instance.RaisePreFocusChangedEvent(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
+
                 if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
                 {
                     InputManager.Instance.RaiseFocusExit(change.PointingSource, pendingUnfocusObject);
@@ -748,7 +749,7 @@ namespace HoloToolkit.Unity.InputModule
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
+                InputManager.Instance.OnFocusChangedEvent(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -825,7 +826,7 @@ namespace HoloToolkit.Unity.InputModule
                     InputManager.Instance.RaiseFocusExit(pointingSource, unfocusedObject);
                 }
 
-                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(pointingSource, unfocusedObject, null);
+                InputManager.Instance.RaisePreFocusChangedEvent(pointingSource, unfocusedObject, null);
             }
 
             pointers.Remove(pointer);
