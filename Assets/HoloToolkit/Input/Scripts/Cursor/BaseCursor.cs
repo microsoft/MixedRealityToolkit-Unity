@@ -19,21 +19,6 @@ namespace HoloToolkit.Unity.InputModule
         private CursorStateEnum cursorState = CursorStateEnum.None;
 
         /// <summary>
-        /// The pointer that this cursor should follow and process input from.
-        /// </summary>
-        public IPointingSource Pointer
-        {
-            get { return pointer; }
-            set
-            {
-                pointer = value;
-                pointer.BaseCursor = this;
-            }
-        }
-
-        private IPointingSource pointer;
-
-        /// <summary>
         /// Minimum distance for cursor if nothing is hit
         /// </summary>
         [Header("Cursor Distance")]
@@ -83,21 +68,6 @@ namespace HoloToolkit.Unity.InputModule
         [Header("Transform References")]
         public Transform PrimaryCursorVisual;
 
-        public Vector3 Position
-        {
-            get { return transform.position; }
-        }
-
-        public Quaternion Rotation
-        {
-            get { return transform.rotation; }
-        }
-
-        public Vector3 LocalScale
-        {
-            get { return transform.localScale; }
-        }
-
         /// <summary>
         /// Indicates if the source is detected.
         /// </summary>
@@ -119,6 +89,38 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 targetScale;
         private Quaternion targetRotation;
 
+        #region ICursor Implementation
+
+        /// <summary>
+        /// The pointer that this cursor should follow and process input from.
+        /// </summary>
+        public IPointingSource Pointer
+        {
+            get { return pointer; }
+            set
+            {
+                pointer = value;
+                pointer.BaseCursor = this;
+            }
+        }
+
+        private IPointingSource pointer;
+
+        public Vector3 Position
+        {
+            get { return transform.position; }
+        }
+
+        public Quaternion Rotation
+        {
+            get { return transform.rotation; }
+        }
+
+        public Vector3 LocalScale
+        {
+            get { return transform.localScale; }
+        }
+
         /// <summary>
         /// Indicates if the cursor should be visible
         /// </summary>
@@ -131,7 +133,117 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        #region MonoBehaviour Functions
+        #endregion ICursor Implementation
+
+        #region ISourceStateHandler Implementation
+
+        /// <summary>
+        /// Input source detected callback for the cursor
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnSourceDetected(SourceStateEventData eventData)
+        {
+#if UNITY_WSA
+            var inputSource = (SimulatedInputSource)eventData.InputSource;
+
+            InteractionSourceKind sourceKind;
+            if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
+                inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
+                && sourceKind == InteractionSourceKind.Hand)
+            {
+                visibleHandsCount++;
+            }
+#endif
+
+            if (visibleHandsCount > 0)
+            {
+                IsHandDetected = true;
+            }
+        }
+
+        /// <summary>
+        /// Input source lost callback for the cursor
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnSourceLost(SourceStateEventData eventData)
+        {
+#if UNITY_WSA
+            var inputSource = (SimulatedInputSource)eventData.InputSource;
+
+            InteractionSourceKind sourceKind;
+            if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
+                 inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
+                && sourceKind == InteractionSourceKind.Hand)
+            {
+                visibleHandsCount--;
+            }
+#endif
+
+            if (visibleHandsCount == 0)
+            {
+                IsHandDetected = false;
+                IsPointerDown = false;
+            }
+        }
+
+        public virtual void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
+
+        #endregion ISourceStateHandler Implementation
+
+        #region IFocusChangedHandler Implementation
+
+        /// <summary>
+        /// Updates the currently targeted object and cursor modifier upon getting
+        /// an event indicating that the focused object has changed.
+        /// </summary>
+        public virtual void OnFocusChanged(FocusEventData eventData)
+        {
+            if (Pointer.SourceId == eventData.Pointer.SourceId)
+            {
+                TargetedObject = eventData.NewFocusedObject;
+                OnActiveModifier(eventData.Pointer.CursorModifier);
+            }
+        }
+
+        #endregion IFocusChangedHandler Implementation
+
+        #region IPointerHandler Implementation
+
+        /// <summary>
+        /// Function for receiving OnPointerDown events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerDown(ClickEventData eventData)
+        {
+            if (Pointer.SourceId == eventData.SourceId)
+            {
+                IsPointerDown = true;
+            }
+        }
+
+        /// <summary>
+        /// Function for receiving OnPointerClicked events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerClicked(ClickEventData eventData) { }
+
+        /// <summary>
+        /// Function for receiving OnPointerUp events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerUp(ClickEventData eventData)
+        {
+            if (Pointer.SourceId == eventData.SourceId)
+            {
+                IsPointerDown = false;
+            }
+        }
+
+        #endregion IPointerHandler Implementation
+
+        #region MonoBehaviour Impementation
 
         private void Awake()
         {
@@ -182,7 +294,7 @@ namespace HoloToolkit.Unity.InputModule
             UnregisterManagers();
         }
 
-        #endregion MonoBehaviour Functions
+        #endregion MonoBehaviour Impementation
 
         /// <summary>
         /// Register to events from the managers the cursor needs.
@@ -216,23 +328,6 @@ namespace HoloToolkit.Unity.InputModule
                 InputManager.Instance.InputEnabled -= OnInputEnabled;
                 InputManager.Instance.InputDisabled -= OnInputDisabled;
                 InputManager.Instance.RemoveGlobalListener(gameObject);
-            }
-        }
-
-        public virtual void OnFocusEnter(FocusEventData eventData) { }
-
-        public virtual void OnFocusExit(FocusEventData eventData) { }
-
-        /// <summary>
-        /// Updates the currently targeted object and cursor modifier upon getting
-        /// an event indicating that the focused object has changed.
-        /// </summary>
-        public virtual void OnFocusChanged(FocusEventData eventData)
-        {
-            if (Pointer.SourceId == eventData.Pointer.SourceId)
-            {
-                TargetedObject = eventData.NewFocusedObject;
-                OnActiveModifier(eventData.Pointer.CursorModifier);
             }
         }
 
@@ -337,89 +432,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             OnCursorStateChange(CursorStateEnum.None);
         }
-
-        /// <summary>
-        /// Function for receiving OnPointerDown events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnPointerDown(ClickEventData eventData)
-        {
-            if (Pointer.SourceId == eventData.SourceId)
-            {
-                IsPointerDown = true;
-            }
-        }
-
-        /// <summary>
-        /// Function for receiving OnPointerClicked events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnPointerClicked(ClickEventData eventData) { }
-
-        /// <summary>
-        /// Function for receiving OnPointerUp events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnPointerUp(ClickEventData eventData)
-        {
-            if (Pointer.SourceId == eventData.SourceId)
-            {
-                IsPointerDown = false;
-            }
-        }
-
-        /// <summary>
-        /// Input source detected callback for the cursor
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnSourceDetected(SourceStateEventData eventData)
-        {
-#if UNITY_WSA
-            var inputSource = (SimulatedInputSource)eventData.InputSource;
-
-            InteractionSourceKind sourceKind;
-            if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
-                inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
-                && sourceKind == InteractionSourceKind.Hand)
-            {
-                visibleHandsCount++;
-            }
-#endif
-
-            if (visibleHandsCount > 0)
-            {
-                IsHandDetected = true;
-            }
-        }
-
-        /// <summary>
-        /// Input source lost callback for the cursor
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnSourceLost(SourceStateEventData eventData)
-        {
-#if UNITY_WSA
-            var inputSource = (SimulatedInputSource)eventData.InputSource;
-
-            InteractionSourceKind sourceKind;
-            if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
-                 inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
-                && sourceKind == InteractionSourceKind.Hand)
-            {
-                visibleHandsCount--;
-            }
-#endif
-
-            if (visibleHandsCount == 0)
-            {
-                IsHandDetected = false;
-                IsPointerDown = false;
-            }
-        }
-
-        public virtual void OnSourcePositionChanged(SourcePositionEventData eventData) { }
-
-        public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
         /// <summary>
         /// Internal update to check for cursor state changes

@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
         private float pointingExtent = 10f;
 
         /// <summary>
-        /// The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.
+        /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
         ///
         /// Example Usage:
         ///
@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         /// GazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
         /// </summary>
         [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.")]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
         private LayerMask[] pointingRaycastLayerMasks = { Physics.DefaultRaycastLayers };
 
         [SerializeField]
@@ -122,7 +122,8 @@ namespace HoloToolkit.Unity.InputModule
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
-                PreviousEndObject = End.Object;
+                CurrentPointerTarget = focusDetails.Object;
+                PreviousPointerTarget = End.Object;
                 RayStepIndex = rayStepIndex;
                 StartPoint = sourceRay.Origin;
 
@@ -134,7 +135,7 @@ namespace HoloToolkit.Unity.InputModule
 
             public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
-                // We do not update the PreviousEndObject here because
+                // We do not update the PreviousPointerTarget here because
                 // it's already been updated in the first physics raycast.
 
                 RayStepIndex = rayStepIndex;
@@ -148,7 +149,8 @@ namespace HoloToolkit.Unity.InputModule
 
             public void UpdateHit()
             {
-                PreviousEndObject = End.Object;
+                CurrentPointerTarget = focusDetails.Object;
+                PreviousPointerTarget = End.Object;
 
                 RayStep firstStep = PointingSource.Rays[0];
                 RayStep finalStep = PointingSource.Rays[PointingSource.Rays.Length - 1];
@@ -164,9 +166,11 @@ namespace HoloToolkit.Unity.InputModule
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
+                CurrentPointerTarget = null;
+
                 if (clearPreviousObject)
                 {
-                    PreviousEndObject = null;
+                    PreviousPointerTarget = null;
                 }
 
                 focusDetails.Point = End.Point;
@@ -609,7 +613,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && raycastResult.isValid &&
+            if ((pointer.CurrentPointerTarget == null || overridePhysicsRaycast) && raycastResult.isValid &&
                  raycastResult.module != null && raycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = raycastResult.screenPosition.x;
@@ -646,7 +650,7 @@ namespace HoloToolkit.Unity.InputModule
             // If we have a raycast result, check if we need to overwrite the physics raycast info
             if (uiRaycastResult.gameObject != null)
             {
-                if (pointer.End.Object != null)
+                if (pointer.CurrentPointerTarget != null)
                 {
                     // Check layer prioritization
                     if (prioritizedLayerMasks.Length > 1)
@@ -697,21 +701,21 @@ namespace HoloToolkit.Unity.InputModule
 
             foreach (var pointer in pointers)
             {
-                if (pointer.PreviousEndObject != pointer.End.Object)
+                if (pointer.PreviousPointerTarget != pointer.CurrentPointerTarget)
                 {
                     pendingPointerSpecificFocusChange.Add(pointer);
 
                     // Initially, we assume all pointer-specific focus changes will
                     // also result in an overall focus change...
 
-                    if (pointer.PreviousEndObject != null)
+                    if (pointer.PreviousPointerTarget != null)
                     {
-                        pendingOverallFocusExitSet.Add(pointer.PreviousEndObject);
+                        pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget);
                     }
 
-                    if (pointer.End.Object != null)
+                    if (pointer.CurrentPointerTarget != null)
                     {
-                        pendingOverallFocusEnterSet.Add(pointer.End.Object);
+                        pendingOverallFocusEnterSet.Add(pointer.CurrentPointerTarget);
                     }
                 }
             }
@@ -720,17 +724,17 @@ namespace HoloToolkit.Unity.InputModule
 
             foreach (var pointer in pointers)
             {
-                pendingOverallFocusExitSet.Remove(pointer.End.Object);
+                pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
 
-                pendingOverallFocusEnterSet.Remove(pointer.PreviousEndObject);
+                pendingOverallFocusEnterSet.Remove(pointer.PreviousPointerTarget);
             }
 
             // Now we raise the events:
             for (int iChange = 0; iChange < pendingPointerSpecificFocusChange.Count; iChange++)
             {
                 PointerData change = pendingPointerSpecificFocusChange[iChange];
-                GameObject pendingUnfocusObject = change.PreviousEndObject;
-                GameObject pendingFocusObject = change.End.Object;
+                GameObject pendingUnfocusObject = change.PreviousPointerTarget;
+                GameObject pendingFocusObject = change.CurrentPointerTarget;
 
                 if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
                 {
@@ -802,14 +806,14 @@ namespace HoloToolkit.Unity.InputModule
             Debug.Assert(pointer != null, "Pointing Source was never registered!");
 
             // Raise focus events if needed
-            if (pointer.End.Object != null)
+            if (pointer.CurrentPointerTarget != null)
             {
-                GameObject unfocusedObject = pointer.End.Object;
+                GameObject unfocusedObject = pointer.CurrentPointerTarget;
                 bool objectIsStillFocusedByOtherPointer = false;
 
                 foreach (var otherPointer in pointers)
                 {
-                    if (otherPointer.End.Object == unfocusedObject)
+                    if (otherPointer.CurrentPointerTarget == unfocusedObject)
                     {
                         objectIsStillFocusedByOtherPointer = true;
                         break;

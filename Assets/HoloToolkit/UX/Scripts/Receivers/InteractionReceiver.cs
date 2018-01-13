@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.Receivers
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
     /// based on events from those interactable objects.  This is the base abstract class to extend from.
     /// </summary>
-    public abstract class InteractionReceiver : MonoBehaviour, IFocusHandler, IInputHandler, IHoldHandler, IPointerHandler, IManipulationHandler, INavigationHandler
+    public abstract class InteractionReceiver : FocusTarget, IInputHandler, IHoldHandler, IPointerHandler, IManipulationHandler, INavigationHandler
     {
         #region Public Members
         /// <summary>
@@ -200,12 +200,10 @@ namespace HoloToolkit.Unity.Receivers
 
         #region Global Listener Callbacks
 
-        void IFocusHandler.OnFocusEnter(FocusEventData eventData) { }
-
-        void IFocusHandler.OnFocusExit(FocusEventData eventData) { }
-
-        void IFocusHandler.OnFocusChanged(FocusEventData eventData)
+        public override void OnFocusChanged(FocusEventData eventData)
         {
+            base.OnFocusChanged(eventData);
+
             if (eventData.NewFocusedObject != null && Isinteractable(eventData.NewFocusedObject))
             {
                 FocusEnter(eventData.NewFocusedObject, eventData);

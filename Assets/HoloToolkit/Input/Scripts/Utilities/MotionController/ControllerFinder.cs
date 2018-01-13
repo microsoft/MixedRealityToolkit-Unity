@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
@@ -23,11 +21,10 @@ namespace HoloToolkit.Unity.InputModule
         public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
         #endregion
 
-    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        public virtual InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
-        protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
-    
-    #endif
+        public Handedness Handedness { get { return handedness; } set { handedness = value; } }
+
+        [SerializeField]
+        protected Handedness handedness = Handedness.Left;
 
         #region private members
         protected MotionControllerInfo controller;
@@ -35,12 +32,11 @@ namespace HoloToolkit.Unity.InputModule
         private Transform elementTransform;
         #endregion
 
-
         protected virtual void OnEnable()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel((InteractionSourceHandedness)Handedness.Left, out controller))
             {
                 AddControllerTransform(controller);
             }
@@ -70,7 +66,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (newController.Handedness == handedness)
+            if (newController.Handedness == (InteractionSourceHandedness)handedness)
             {
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
@@ -88,7 +84,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void RemoveControllerTransform(MotionControllerInfo oldController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (oldController.Handedness == handedness)
+            if (oldController.Handedness == (InteractionSourceHandedness)handedness)
             {
                 controller = null;
                 ElementTransform = null;

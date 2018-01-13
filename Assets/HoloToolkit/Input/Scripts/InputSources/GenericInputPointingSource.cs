@@ -29,6 +29,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
+        public IFocusHandler FocusTarget { get; set; }
+
         public PointerResult Result { get; set; }
 
         public BaseRayStabilizer RayStabilizer { get; set; }

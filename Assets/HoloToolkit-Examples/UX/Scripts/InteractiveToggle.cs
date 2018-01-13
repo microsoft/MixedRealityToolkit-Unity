@@ -19,7 +19,6 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// </summary>
     public class InteractiveToggle : Interactive
     {
-
         /// <summary>
         /// Sets the button to act like a navigation button or toggle type button
         /// </summary>
@@ -31,10 +30,6 @@ namespace HoloToolkit.Examples.InteractiveElements
             set
             {
                 AllowSelection = value;
-                if (AllowSelection == false)
-                {
-                    HasGaze = false;
-                }
             }
         }
 
@@ -112,11 +107,6 @@ namespace HoloToolkit.Examples.InteractiveElements
                     {
                         OnSelection.Invoke();
                     }
-
-                    if (!AllowDeselect)
-                    {
-                        HasGaze = false;
-                    }
                 }
             }
 
@@ -170,7 +160,6 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
             else
             {
-                HasGaze = false;
                 HasDown = false;
                 UpdateEffects();
             }
@@ -196,7 +185,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             base.KeywordRecognizer_OnPhraseRecognized(args);
             
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
-            if ((!KeywordRequiresGaze || HasGaze) && mKeywordDictionary != null)
+            if ((!KeywordRequiresGaze || HasFocus) && mKeywordDictionary != null)
             {
                 int index;
 

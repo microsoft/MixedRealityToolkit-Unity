@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            IsHighlighted = GazeManager.Instance.HitObject == gameObject;
+            IsHighlighted = GazeManager.Instance.GazeTarget == gameObject;
         }
 
         private bool IsHighlighted

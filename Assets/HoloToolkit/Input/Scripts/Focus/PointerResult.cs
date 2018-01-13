@@ -13,7 +13,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public FocusDetails End { get; protected set; }
 
-        public GameObject PreviousEndObject { get; protected set; }
+        public GameObject CurrentPointerTarget { get; protected set; }
+
+        public GameObject PreviousPointerTarget { get; protected set; }
 
         public RaycastHit LastRaycastHit { get; protected set; }
 

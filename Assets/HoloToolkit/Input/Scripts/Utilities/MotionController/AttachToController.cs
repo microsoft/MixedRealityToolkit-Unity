@@ -13,11 +13,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : ControllerFinder
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        [Header("AttachToController Elements")]
-        [SerializeField]
-        protected new InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
-#endif
         [SerializeField]
         protected new MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
@@ -46,7 +41,7 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel((InteractionSourceHandedness)handedness, out controller))
             {
                 AddControllerTransform(controller);
             }
@@ -58,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule
         protected override void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (!IsAttached && newController.Handedness == handedness)
+            if (!IsAttached && newController.Handedness == (InteractionSourceHandedness)handedness)
             {
                 base.AddControllerTransform(newController);
 
@@ -85,7 +80,7 @@ namespace HoloToolkit.Unity.InputModule
         protected override void RemoveControllerTransform(MotionControllerInfo oldController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (IsAttached && oldController.Handedness == handedness)
+            if (IsAttached && oldController.Handedness == (InteractionSourceHandedness)handedness)
             {
                 base.RemoveControllerTransform(oldController);
 
