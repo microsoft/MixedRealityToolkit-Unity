@@ -200,9 +200,9 @@ namespace HoloToolkit.Unity.Receivers
 
         #region Global Listener Callbacks
 
-        public override void OnFocusChanged(FocusEventData eventData)
+        public override void OnBeforeFocusChange(FocusEventData eventData)
         {
-            base.OnFocusChanged(eventData);
+            base.OnBeforeFocusChange(eventData);
 
             if (eventData.NewFocusedObject != null && Isinteractable(eventData.NewFocusedObject))
             {

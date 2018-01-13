@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Cursor Modifier Interface that provides basic overrides for cursor behavior.
     /// </summary>
-    public interface ICursorModifier
+    public interface ICursorModifier : IFocusChangedHandler
     {
         /// <summary>
         /// Indicates whether the cursor should be visible or not.

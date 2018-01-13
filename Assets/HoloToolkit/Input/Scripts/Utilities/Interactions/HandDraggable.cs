@@ -313,8 +313,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        public override void OnFocusChanged(FocusEventData eventData) { }
-
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
             if (eventData.SourceId == currentInputSourceId)

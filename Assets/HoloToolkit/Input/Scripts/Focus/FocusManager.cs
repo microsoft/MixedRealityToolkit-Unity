@@ -735,6 +735,8 @@ namespace HoloToolkit.Unity.InputModule
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
+                InputManager.Instance.RaisePreFocusChangedEvent(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
+
                 if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
                 {
                     InputManager.Instance.RaiseFocusExit(change.PointingSource, pendingUnfocusObject);
@@ -747,7 +749,7 @@ namespace HoloToolkit.Unity.InputModule
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
+                InputManager.Instance.OnFocusChangedEvent(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -824,7 +826,7 @@ namespace HoloToolkit.Unity.InputModule
                     InputManager.Instance.RaiseFocusExit(pointingSource, unfocusedObject);
                 }
 
-                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(pointingSource, unfocusedObject, null);
+                InputManager.Instance.RaisePreFocusChangedEvent(pointingSource, unfocusedObject, null);
             }
 
             pointers.Remove(pointer);

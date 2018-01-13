@@ -79,7 +79,6 @@ namespace HoloToolkit.Unity.InputModule
         protected bool IsPointerDown;
 
         protected GameObject TargetedObject;
-        protected ICursorModifier TargetedCursorModifier;
 
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
@@ -198,14 +197,15 @@ namespace HoloToolkit.Unity.InputModule
         /// Updates the currently targeted object and cursor modifier upon getting
         /// an event indicating that the focused object has changed.
         /// </summary>
-        public virtual void OnFocusChanged(FocusEventData eventData)
+        public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
             if (Pointer.SourceId == eventData.Pointer.SourceId)
             {
                 TargetedObject = eventData.NewFocusedObject;
-                OnActiveModifier(eventData.Pointer.CursorModifier);
             }
         }
+
+        public virtual void OnFocusChanged(FocusEventData eventData) { }
 
         #endregion IFocusChangedHandler Implementation
 
@@ -269,11 +269,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void OnEnable()
         {
-            if (InputManager.IsInitialized && FocusManager.IsInitialized && Pointer != null)
-            {
-                InputManager.Instance.RaisePointerSpecificFocusChangedEvents(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
-            }
-
             OnCursorStateChange(CursorStateEnum.None);
         }
 
@@ -283,7 +278,6 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnDisable()
         {
             TargetedObject = null;
-            TargetedCursorModifier = null;
             visibleHandsCount = 0;
             IsHandDetected = false;
             OnCursorStateChange(CursorStateEnum.Contextual);
@@ -332,15 +326,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Override function when a new modifier is found or no modifier is valid
-        /// </summary>
-        /// <param name="modifier"></param>
-        protected virtual void OnActiveModifier(CursorModifier modifier)
-        {
-            TargetedCursorModifier = modifier;
-        }
-
-        /// <summary>
         /// Update the cursor's transform
         /// </summary>
         protected virtual void UpdateCursorTransform()
@@ -364,7 +349,6 @@ namespace HoloToolkit.Unity.InputModule
             if (newTargetedObject == null)
             {
                 TargetedObject = null;
-                TargetedCursorModifier = null;
 
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, DefaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, DefaultCursorDistance);
@@ -375,9 +359,9 @@ namespace HoloToolkit.Unity.InputModule
                 // Update currently targeted object
                 TargetedObject = newTargetedObject;
 
-                if (TargetedCursorModifier != null)
+                if (Pointer.CursorModifier != null)
                 {
-                    TargetedCursorModifier.GetModifiedTransform(this, out targetPosition, out targetRotation, out targetScale);
+                    Pointer.CursorModifier.GetModifiedTransform(this, out targetPosition, out targetRotation, out targetScale);
                 }
                 else
                 {

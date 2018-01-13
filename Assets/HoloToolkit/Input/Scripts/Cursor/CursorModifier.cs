@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -9,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Component that can be added to any game object with a collider to modify 
     /// how a cursor reacts when on that collider.
     /// </summary>
-    public class CursorModifier : MonoBehaviour, ICursorModifier, IFocusChangedHandler
+    public class CursorModifier : MonoBehaviour, ICursorModifier
     {
         [SerializeField]
         [Tooltip("Transform for which this cursor modifier applies its various properties.")]
@@ -110,18 +111,20 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IFocusChangedHandler Implementation
 
-        void IFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
+        void IFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
         {
-            if (eventData.NewFocusedObject == this)
+            if (eventData.NewFocusedObject == gameObject)
             {
                 eventData.Pointer.CursorModifier = this;
             }
 
-            if (eventData.NewFocusedObject == null && eventData.OldFocusedObject == this)
+            if (eventData.OldFocusedObject == gameObject)
             {
                 eventData.Pointer.CursorModifier = null;
             }
         }
+
+        void IFocusChangedHandler.OnFocusChanged(FocusEventData eventData) { }
 
         #endregion IFocusChangedHandler Implementation
     }

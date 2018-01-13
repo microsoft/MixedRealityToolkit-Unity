@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 6, y: 6, z: 6}
@@ -596,6 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -880,6 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -1453,6 +1455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -2093,7 +2096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: -0.5, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 1.5, y: 1.5, z: 1.5}
@@ -2112,6 +2115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -2720,6 +2724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -2934,6 +2939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   LogGesturesUpdateEvents: 0
 --- !u!1 &1071729350
 GameObject:
@@ -3224,6 +3230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -3575,6 +3582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   LogGesturesUpdateEvents: 0
 --- !u!114 &1282283562
 MonoBehaviour:
@@ -3587,6 +3595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d5a0a60fbe897549ad0bfe2039f12b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   HostTransform: {fileID: 0}
   DistanceScale: 2
   RotationMode: 0
@@ -3739,6 +3748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -3858,6 +3868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -3895,7 +3906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 4, y: 4, z: 4}
@@ -4802,6 +4813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -5020,6 +5032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -5454,6 +5467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   LogGesturesUpdateEvents: 0
 --- !u!114 &1950385220
 MonoBehaviour:
@@ -5466,6 +5480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d5a0a60fbe897549ad0bfe2039f12b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   HostTransform: {fileID: 0}
   DistanceScale: 2
   RotationMode: 0

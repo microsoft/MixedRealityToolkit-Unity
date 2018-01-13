@@ -32,9 +32,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public override void OnFocusChanged(FocusEventData eventData)
+        public override void OnBeforeFocusChange(FocusEventData eventData)
         {
-            base.OnFocusChanged(eventData);
+            base.OnBeforeFocusChange(eventData);
 
             if (FocusChangedEvent != null)
             {
