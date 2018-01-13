@@ -10,24 +10,36 @@ using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
+    public enum InputPositionType
+    {
+        None,
+        Touch,
+        Thumbstick
+    }
+
     public class InputPositionEventData : InputEventData
     {
+        public InputPositionType InputPositionType { get; private set; }
+
         /// <summary>
         /// Two values, typically from -1.0 to 1.0 in the X-axis and Y-axis, representing where the input control is positioned.
+        /// Typically this is Touch or Joystick data.
         /// </summary>
         public Vector2 InputPosition { get; private set; }
 
         public InputPositionEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, Vector2 inputPosition, object[] tags = null)
+        public void Initialize(IInputSource inputSource, InputPositionType inputType, Vector2 inputPosition, object[] tags = null)
         {
             BaseInitialize(inputSource, tags);
+            InputPositionType = inputType;
             InputPosition = inputPosition;
         }
 
-        public void Initialize(IInputSource inputSource, Vector2 inputPosition, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, InputPositionType inputType, Vector2 inputPosition, Handedness handedness, object[] tags = null)
         {
             Initialize(inputSource, handedness, tags);
+            InputPositionType = inputType;
             InputPosition = inputPosition;
         }
 
@@ -36,6 +48,16 @@ namespace HoloToolkit.Unity.InputModule
         {
             Initialize(inputSource, pressType, handedness, tags);
             InputPosition = inputPosition;
+
+            switch (pressType)
+            {
+                case InteractionSourcePressType.Thumbstick:
+                    InputPositionType = InputPositionType.Thumbstick;
+                    break;
+                case InteractionSourcePressType.Touchpad:
+                    InputPositionType = InputPositionType.Touch;
+                    break;
+            }
         }
 #endif
     }

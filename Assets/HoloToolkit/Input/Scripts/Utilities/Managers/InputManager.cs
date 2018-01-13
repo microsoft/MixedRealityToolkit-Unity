@@ -835,19 +835,19 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnInputPositionChanged(casted);
             };
 
-        public void RaiseInputPositionChanged(IInputSource source, Vector2 inputPosition, object[] tags = null)
+        public void RaiseInputPositionChanged(IInputSource source, InputPositionType inputType, Vector2 inputPosition, object[] tags = null)
         {
             // Create input event
-            inputPositionEventData.Initialize(source, inputPosition, tags);
+            inputPositionEventData.Initialize(source, inputType, inputPosition, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPositionEventData, OnInputPositionChanged);
         }
 
-        public void RaiseInputPositionChanged(IInputSource source, Vector2 inputPosition, Handedness handedness, object[] tags = null)
+        public void RaiseInputPositionChanged(IInputSource source, InputPositionType inputType, Vector2 inputPosition, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            inputPositionEventData.Initialize(source, inputPosition, handedness, tags);
+            inputPositionEventData.Initialize(source, inputType, inputPosition, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPositionEventData, OnInputPositionChanged);

@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using System.Collections.Generic;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
-using System.Collections.Generic;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -57,6 +57,10 @@ namespace HoloToolkit.Unity.InputModule
             {
                 Source = source;
             }
+#else
+            public InteractionInputSource(uint sourceId, string name) : base(sourceId, name) { }
+
+            public InteractionInputSource(uint sourceId, string name, SupportedInputInfo supportedInputInfo) : base(sourceId, name, supportedInputInfo) { }
 #endif
 
             public override SupportedInputInfo GetSupportedInputInfo()
@@ -728,7 +732,6 @@ namespace HoloToolkit.Unity.InputModule
 
             return sourceData;
         }
-#endif
 
         /// <summary>
         /// Updates the source information.
@@ -842,8 +845,6 @@ namespace HoloToolkit.Unity.InputModule
             sourceData.Menu.IsAvailable = sourceData.Menu.IsSupported;
             sourceData.Menu.CurrentReading = sourceData.Menu.IsAvailable && interactionSourceState.menuPressed;
         }
-
-#if UNITY_WSA
 
         #region InteractionManager Events
 
