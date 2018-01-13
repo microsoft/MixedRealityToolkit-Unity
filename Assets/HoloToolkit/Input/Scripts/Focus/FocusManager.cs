@@ -122,7 +122,6 @@ namespace HoloToolkit.Unity.InputModule
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
-                CurrentPointerTarget = focusDetails.Object;
                 PreviousPointerTarget = End.Object;
                 RayStepIndex = rayStepIndex;
                 StartPoint = sourceRay.Origin;
@@ -131,6 +130,7 @@ namespace HoloToolkit.Unity.InputModule
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = hit.transform.gameObject;
                 End = focusDetails;
+                CurrentPointerTarget = End.Object;
             }
 
             public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
@@ -149,7 +149,6 @@ namespace HoloToolkit.Unity.InputModule
 
             public void UpdateHit()
             {
-                CurrentPointerTarget = focusDetails.Object;
                 PreviousPointerTarget = End.Object;
 
                 RayStep firstStep = PointingSource.Rays[0];
@@ -162,12 +161,11 @@ namespace HoloToolkit.Unity.InputModule
                 focusDetails.Normal = -finalStep.Direction;
                 focusDetails.Object = null;
                 End = focusDetails;
+                CurrentPointerTarget = End.Object;
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                CurrentPointerTarget = null;
-
                 if (clearPreviousObject)
                 {
                     PreviousPointerTarget = null;
@@ -177,6 +175,7 @@ namespace HoloToolkit.Unity.InputModule
                 focusDetails.Normal = End.Normal;
                 focusDetails.Object = null;
                 End = focusDetails;
+                CurrentPointerTarget = null;
             }
 
             public bool Equals(PointerData other)
