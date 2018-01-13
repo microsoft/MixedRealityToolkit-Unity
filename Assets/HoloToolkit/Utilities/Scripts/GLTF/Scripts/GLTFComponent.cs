@@ -21,17 +21,27 @@ namespace UnityGLTF
 
         public bool addColliders = false;
 
+        public Stream GLTFStream = null;
+
+        public bool IsLoaded { get; set; }
+
         IEnumerator Start()
         {
             GLTFSceneImporter loader = null;
-            FileStream gltfStream = null;
+
             if (UseStream)
             {
-                var fullPath = Application.streamingAssetsPath + Url;
-                gltfStream = File.OpenRead(fullPath);
+                string fullPath = "";
+
+                if (GLTFStream == null)
+                {
+                    fullPath = Path.Combine(Application.streamingAssetsPath, Url);
+                    GLTFStream = File.OpenRead(fullPath);
+                }
+
                 loader = new GLTFSceneImporter(
                     fullPath,
-                    gltfStream,
+                    GLTFStream,
                     gameObject.transform,
                     addColliders
                     );
@@ -51,13 +61,25 @@ namespace UnityGLTF
             loader.MaximumLod = MaximumLod;
             yield return loader.Load(-1, Multithreaded);
 
-            if (gltfStream != null)
+            if (GLTFStream != null)
             {
 #if WINDOWS_UWP
-                gltfStream.Dispose();
+                GLTFStream.Dispose();
 #else
-                gltfStream.Close();
+                GLTFStream.Close();
 #endif
+
+                GLTFStream = null;
+            }
+            
+            IsLoaded = true;
+        }
+
+        public IEnumerator WaitForModelLoad()
+        {
+            while (!IsLoaded)
+            {
+                yield return null;
             }
         }
     }
