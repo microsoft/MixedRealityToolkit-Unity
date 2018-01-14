@@ -16,8 +16,6 @@ namespace MixedRealityToolkit.UX.Buttons.Profiles
     /// </summary>
     public class ButtonIconProfileTexture : ButtonIconProfile
     {
-        private static float textureSize = 50f;
-
         [Header("Navigation icons")]
         public Texture2D GlobalNavButton;
         public Texture2D ChevronUp;

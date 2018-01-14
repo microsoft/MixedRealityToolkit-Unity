@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace MixedRealityToolkit.InputModule.Editor
+namespace MixedRealityToolkit.InputModule.EditorScript
 {
     public class EditorHandsMaterialInspector : ShaderGUI
     {

@@ -3,7 +3,7 @@
 
 using MixedRealityToolkit.Build.DataStructures;
 using MixedRealityToolkit.Build.USB;
-using MixedRealityToolkit.Common.Editor;
+using MixedRealityToolkit.Common.EditorScript;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

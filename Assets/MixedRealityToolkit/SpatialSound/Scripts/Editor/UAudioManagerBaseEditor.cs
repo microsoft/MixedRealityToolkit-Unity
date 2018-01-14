@@ -5,7 +5,7 @@ using MixedRealityToolkit.SpatialSound.Sources;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpatialSound.EditorScripts
+namespace MixedRealityToolkit.SpatialSound.EditorScript
 {
     public class UAudioManagerBaseEditor<TEvent, TBank> : Editor where TEvent : AudioEvent, new() where TBank : AudioBank<TEvent>, new()
     {

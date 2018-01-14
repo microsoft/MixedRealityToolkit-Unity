@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using MixedRealityToolkit.UtilitiesInspectors;
+using MixedRealityToolkit.Utilities.Inspectors.EditorScript;
 using UnityEditor;
+using UnityEngine;
 
-namespace MixedRealityToolkit.Utilities
+namespace MixedRealityToolkit.Utilities.EditorScript
 {
     [CustomPropertyDrawer(typeof(HeaderAttribute))]
     public class CustomHeaderDrawer : DecoratorDrawer
@@ -19,8 +19,10 @@ namespace MixedRealityToolkit.Utilities
         {
             if (headerStyle == null)
             {
-                headerStyle = new GUIStyle(EditorStyles.boldLabel);
-                headerStyle.alignment = TextAnchor.LowerLeft;
+                headerStyle = new GUIStyle(EditorStyles.boldLabel)
+                {
+                    alignment = TextAnchor.LowerLeft
+                };
             }
 
             // If we're using MRDL custom editors, don't show the header

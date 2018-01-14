@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Common.Editor;
+using MixedRealityToolkit.Common.EditorScript;
 using MixedRealityToolkit.SpatialMapping.RemoteMapping;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace HoloToolkit.Unity.SpatialMapping.EditorScript
 {
     public static class RoomMeshExporter
     {

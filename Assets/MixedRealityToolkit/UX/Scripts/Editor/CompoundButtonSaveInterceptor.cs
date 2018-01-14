@@ -4,7 +4,7 @@
 using MixedRealityToolkit.UX.Buttons.Utilities;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.EditorScripts
+namespace MixedRealityToolkit.UX.EditorScript
 {
     public class CompoundButtonSaveInterceptor : UnityEditor.AssetModificationProcessor
     {

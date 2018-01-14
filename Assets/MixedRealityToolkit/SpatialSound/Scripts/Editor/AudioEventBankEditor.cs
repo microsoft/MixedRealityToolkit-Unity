@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpatialSound.EditorScripts
+namespace MixedRealityToolkit.SpatialSound.EditorScript
 {
     /// <summary>
     /// Inspector for the AudioBank

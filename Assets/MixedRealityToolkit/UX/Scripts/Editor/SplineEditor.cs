@@ -5,7 +5,7 @@ using MixedRealityToolkit.UX.Lines;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.EditorScripts
+namespace MixedRealityToolkit.UX.EditorScript
 {
     [UnityEditor.CustomEditor(typeof(Spline))]
     public class SplineEditor : LineBaseEditor

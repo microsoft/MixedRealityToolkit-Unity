@@ -5,7 +5,7 @@ using MixedRealityToolkit.InputModule.Focus;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilities
+namespace MixedRealityToolkit.Utilities.EditorScript
 {
     /// <summary>
     /// Helper class to assign the UIRaycastCamera when creating a new canvas object and assigning the world space render mode.

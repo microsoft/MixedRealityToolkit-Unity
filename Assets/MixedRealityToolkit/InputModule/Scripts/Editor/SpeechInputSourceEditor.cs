@@ -5,7 +5,7 @@ using MixedRealityToolkit.InputModule.InputSources;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Editor
+namespace MixedRealityToolkit.InputModule.EditorScript
 {
     [CustomEditor(typeof(SpeechInputSource))]
     public class SpeechInputSourceEditor : UnityEditor.Editor

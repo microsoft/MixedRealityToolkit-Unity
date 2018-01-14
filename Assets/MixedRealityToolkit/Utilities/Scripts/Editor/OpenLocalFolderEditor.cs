@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilities
+namespace MixedRealityToolkit.Utilities.EditorScript
 {
     /// <summary>
     /// Property drawer for selection of a local input folder with the resultant path stored in a string
