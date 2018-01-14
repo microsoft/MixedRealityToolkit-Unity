@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: 1411840681}
   - component: {fileID: 1411840678}
   m_Layer: 0
-  m_Name: ContentYouWantToShowAfterClickOnModal
+  m_Name: ContentYouWantToShowAfterClick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -568,7 +568,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1750349926176868, guid: 63a5bc37d85c4514ca816122a473bad5, type: 2}
       propertyPath: m_Name
-      value: ContentStartPositionModal
+      value: ContentStartPosition
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 63a5bc37d85c4514ca816122a473bad5, type: 2}
