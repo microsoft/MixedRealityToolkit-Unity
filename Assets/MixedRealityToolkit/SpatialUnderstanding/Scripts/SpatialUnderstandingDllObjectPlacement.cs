@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
 using System;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialUnderstanding
 {
     /// <summary>
     /// Encapsulates the object placement queries of the understanding DLL.
@@ -67,9 +65,11 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_OnFloor(Vector3 halfDims)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_OnFloor;
-                placement.HalfDims = halfDims;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_OnFloor,
+                    HalfDims = halfDims
+                };
                 return placement;
             }
 
@@ -92,14 +92,16 @@ namespace HoloToolkit.Unity
                 float marginLeft = 0.0f,
                 float marginRight = 0.0f)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_OnWall;
-                placement.HalfDims = halfDims;
-                placement.PlacementParam_Float_0 = heightMin;
-                placement.PlacementParam_Float_1 = heightMax;
-                placement.PlacementParam_Float_2 = marginLeft;
-                placement.PlacementParam_Float_3 = marginRight;
-                placement.WallFlags = (int)wallTypes;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_OnWall,
+                    HalfDims = halfDims,
+                    PlacementParam_Float_0 = heightMin,
+                    PlacementParam_Float_1 = heightMax,
+                    PlacementParam_Float_2 = marginLeft,
+                    PlacementParam_Float_3 = marginRight,
+                    WallFlags = (int)wallTypes
+                };
                 return placement;
             }
 
@@ -111,9 +113,11 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_OnCeiling(Vector3 halfDims)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_OnCeiling;
-                placement.HalfDims = halfDims;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_OnCeiling,
+                    HalfDims = halfDims
+                };
                 return placement;
             }
 
@@ -127,11 +131,13 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_OnShape(Vector3 halfDims, string shapeName, int componentIndex)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_OnShape;
-                placement.HalfDims = halfDims;
-                placement.PlacementParam_Str_0 = SpatialUnderstanding.Instance.UnderstandingDLL.PinString(shapeName);
-                placement.PlacementParam_Int_0 = componentIndex;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_OnShape,
+                    HalfDims = halfDims,
+                    PlacementParam_Str_0 = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinString(shapeName),
+                    PlacementParam_Int_0 = componentIndex
+                };
                 return placement;
             }
 
@@ -144,12 +150,14 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_OnEdge(Vector3 halfDims, Vector3 halfDimsBottom)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_OnEdge;
-                placement.HalfDims = halfDims;
-                placement.PlacementParam_Float_0 = halfDimsBottom.x;
-                placement.PlacementParam_Float_1 = halfDimsBottom.y;
-                placement.PlacementParam_Float_2 = halfDimsBottom.z;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_OnEdge,
+                    HalfDims = halfDims,
+                    PlacementParam_Float_0 = halfDimsBottom.x,
+                    PlacementParam_Float_1 = halfDimsBottom.y,
+                    PlacementParam_Float_2 = halfDimsBottom.z
+                };
                 return placement;
             }
 
@@ -162,12 +170,14 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_OnFloorAndCeiling(Vector3 halfDims, Vector3 halfDimsBottom)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_OnFloorAndCeiling;
-                placement.HalfDims = halfDims;
-                placement.PlacementParam_Float_0 = halfDimsBottom.x;
-                placement.PlacementParam_Float_1 = halfDimsBottom.y;
-                placement.PlacementParam_Float_2 = halfDimsBottom.z;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_OnFloorAndCeiling,
+                    HalfDims = halfDims,
+                    PlacementParam_Float_0 = halfDimsBottom.x,
+                    PlacementParam_Float_1 = halfDimsBottom.y,
+                    PlacementParam_Float_2 = halfDimsBottom.z
+                };
                 return placement;
             }
 
@@ -180,9 +190,11 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_RandomInAir(Vector3 halfDims)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_RandomInAir;
-                placement.HalfDims = halfDims;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_RandomInAir,
+                    HalfDims = halfDims
+                };
                 return placement;
             }
 
@@ -195,9 +207,11 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_InMidAir(Vector3 halfDims)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_InMidAir;
-                placement.HalfDims = halfDims;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_InMidAir,
+                    HalfDims = halfDims
+                };
                 return placement;
             }
 
@@ -209,9 +223,11 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement definition</returns>
             public static ObjectPlacementDefinition Create_UnderPlatformEdge(Vector3 halfDims)
             {
-                ObjectPlacementDefinition placement = new ObjectPlacementDefinition();
-                placement.Type = PlacementType.Place_UnderPlatformEdge;
-                placement.HalfDims = halfDims;
+                ObjectPlacementDefinition placement = new ObjectPlacementDefinition
+                {
+                    Type = PlacementType.Place_UnderPlatformEdge,
+                    HalfDims = halfDims
+                };
                 return placement;
             }
 
@@ -254,10 +270,12 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement rule</returns>
             public static ObjectPlacementRule Create_AwayFromPosition(Vector3 position, float minDistance)
             {
-                ObjectPlacementRule rule = new ObjectPlacementRule();
-                rule.Type = ObjectPlacementRuleType.Rule_AwayFromPosition;
-                rule.RuleParam_Vec3_0 = position;
-                rule.RuleParam_Float_0 = minDistance;
+                ObjectPlacementRule rule = new ObjectPlacementRule
+                {
+                    Type = ObjectPlacementRuleType.Rule_AwayFromPosition,
+                    RuleParam_Vec3_0 = position,
+                    RuleParam_Float_0 = minDistance
+                };
                 return rule;
             }
 
@@ -270,10 +288,12 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement rule</returns>
             public static ObjectPlacementRule Create_AwayFromWalls(float minDistance, float minWallHeight = 0.0f)
             {
-                ObjectPlacementRule rule = new ObjectPlacementRule();
-                rule.Type = ObjectPlacementRuleType.Rule_AwayFromWalls;
-                rule.RuleParam_Float_0 = minDistance;
-                rule.RuleParam_Float_1 = minWallHeight;
+                ObjectPlacementRule rule = new ObjectPlacementRule
+                {
+                    Type = ObjectPlacementRuleType.Rule_AwayFromWalls,
+                    RuleParam_Float_0 = minDistance,
+                    RuleParam_Float_1 = minWallHeight
+                };
                 return rule;
             }
 
@@ -285,9 +305,11 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement rule</returns>
             public static ObjectPlacementRule Create_AwayFromOtherObjects(float minDistance)
             {
-                ObjectPlacementRule rule = new ObjectPlacementRule();
-                rule.Type = ObjectPlacementRuleType.Rule_AwayFromOtherObjects;
-                rule.RuleParam_Float_0 = minDistance;
+                ObjectPlacementRule rule = new ObjectPlacementRule
+                {
+                    Type = ObjectPlacementRuleType.Rule_AwayFromOtherObjects,
+                    RuleParam_Float_0 = minDistance
+                };
                 return rule;
             }
 
@@ -330,11 +352,13 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement constraint</returns>
             public static ObjectPlacementConstraint Create_NearPoint(Vector3 position, float minDistance = 0.0f, float maxDistance = 0.0f)
             {
-                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint();
-                constraint.Type = ObjectPlacementConstraintType.Constraint_NearPoint;
-                constraint.RuleParam_Vec3_0 = position;
-                constraint.RuleParam_Float_0 = minDistance;
-                constraint.RuleParam_Float_1 = maxDistance;
+                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint
+                {
+                    Type = ObjectPlacementConstraintType.Constraint_NearPoint,
+                    RuleParam_Vec3_0 = position,
+                    RuleParam_Float_0 = minDistance,
+                    RuleParam_Float_1 = maxDistance
+                };
                 return constraint;
             }
 
@@ -350,12 +374,14 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement constraint</returns>
             public static ObjectPlacementConstraint Create_NearWall(float minDistance = 0.0f, float maxDistance = 0.0f, float minWallHeight = 0.0f, bool includeVirtualWalls = false)
             {
-                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint();
-                constraint.Type = ObjectPlacementConstraintType.Constraint_NearWall;
-                constraint.RuleParam_Float_0 = minDistance;
-                constraint.RuleParam_Float_1 = maxDistance;
-                constraint.RuleParam_Float_2 = minWallHeight;
-                constraint.RuleParam_Int_0 = includeVirtualWalls ? 1 : 0;
+                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint
+                {
+                    Type = ObjectPlacementConstraintType.Constraint_NearWall,
+                    RuleParam_Float_0 = minDistance,
+                    RuleParam_Float_1 = maxDistance,
+                    RuleParam_Float_2 = minWallHeight,
+                    RuleParam_Int_0 = includeVirtualWalls ? 1 : 0
+                };
                 return constraint;
             }
 
@@ -366,8 +392,10 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement constraint</returns>
             public static ObjectPlacementConstraint Create_AwayFromWalls()
             {
-                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint();
-                constraint.Type = ObjectPlacementConstraintType.Constraint_AwayFromWalls;
+                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint
+                {
+                    Type = ObjectPlacementConstraintType.Constraint_AwayFromWalls
+                };
                 return constraint;
             }
 
@@ -380,10 +408,12 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement constraint</returns>
             public static ObjectPlacementConstraint Create_NearCenter(float minDistance = 0.0f, float maxDistance = 0.0f)
             {
-                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint();
-                constraint.Type = ObjectPlacementConstraintType.Constraint_NearCenter;
-                constraint.RuleParam_Float_0 = minDistance;
-                constraint.RuleParam_Float_1 = maxDistance;
+                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint
+                {
+                    Type = ObjectPlacementConstraintType.Constraint_NearCenter,
+                    RuleParam_Float_0 = minDistance,
+                    RuleParam_Float_1 = maxDistance
+                };
                 return constraint;
             }
 
@@ -394,8 +424,10 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement constraint</returns>
             public static ObjectPlacementConstraint Create_AwayFromOtherObjects()
             {
-                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint();
-                constraint.Type = ObjectPlacementConstraintType.Constraint_AwayFromOtherObjects;
+                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint
+                {
+                    Type = ObjectPlacementConstraintType.Constraint_AwayFromOtherObjects
+                };
                 return constraint;
             }
 
@@ -407,9 +439,11 @@ namespace HoloToolkit.Unity
             /// <returns>Constructed object placement constraint</returns>
             public static ObjectPlacementConstraint Create_AwayFromPoint(Vector3 position)
             {
-                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint();
-                constraint.Type = ObjectPlacementConstraintType.Constraint_AwayFromPoint;
-                constraint.RuleParam_Vec3_0 = position;
+                ObjectPlacementConstraint constraint = new ObjectPlacementConstraint
+                {
+                    Type = ObjectPlacementConstraintType.Constraint_AwayFromPoint,
+                    RuleParam_Vec3_0 = position
+                };
                 return constraint;
             }
 

@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialMapping;
 using System;
 using UnityEngine;
-using HoloToolkit.Unity.SpatialMapping;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialUnderstanding
 {
     /// <summary>
     /// The SpatialUnderstanding class controls the state and flow of the 
@@ -13,7 +14,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     [RequireComponent(typeof(SpatialUnderstandingSourceMesh))]
     [RequireComponent(typeof(SpatialUnderstandingCustomMesh))]
-    public class SpatialUnderstanding : Singleton<SpatialUnderstanding>
+    public class SpatialUnderstandingManager : Singleton<SpatialUnderstandingManager>
     {
         // Consts
         public const float ScanSearchDistance = 8.0f;

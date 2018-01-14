@@ -5,8 +5,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.SpatialMapping;
+using MixedRealityToolkit.SpatialMapping;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialUnderstanding
 {
     /// <summary>
     /// Provides the input meshes to the spatial understanding DLL.
@@ -158,7 +159,7 @@ namespace HoloToolkit.Unity
             }
 
             // Convert to IntPtr
-            SpatialUnderstandingDll dll = SpatialUnderstanding.Instance.UnderstandingDLL;
+            SpatialUnderstandingDll dll = SpatialUnderstandingManager.Instance.UnderstandingDLL;
             meshCount = inputMeshList.Count;
             meshList = dll.PinMeshDataForMarshalling(inputMeshList);
 
