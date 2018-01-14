@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common.Extensions;
 using System;
 using System.Collections.Generic;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing
+namespace MixedRealityToolkit.Sharing
 {
     /// <summary>
     /// The ServerSessionsTracker manages the list of sessions on the server and the users in these sessions.

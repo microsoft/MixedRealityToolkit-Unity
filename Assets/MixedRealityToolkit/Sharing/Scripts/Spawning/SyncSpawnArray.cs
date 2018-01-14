@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Sharing.SyncModel;
 using System;
 using UnityEngine;
-using HoloToolkit.Sharing.SyncModel;
 
-namespace HoloToolkit.Sharing.Spawning
+namespace MixedRealityToolkit.Sharing.Spawning
 {
     /// <summary>
     /// This array is meant to hold SyncSpawnedObject and objects of subclasses.

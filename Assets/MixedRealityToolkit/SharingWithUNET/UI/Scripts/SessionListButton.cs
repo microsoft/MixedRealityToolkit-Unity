@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// Represents a button on a list of sessions.  Tapping the button indicates the selected session

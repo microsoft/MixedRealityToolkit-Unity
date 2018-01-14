@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common.Extensions;
 using System;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing.SyncModel
+namespace MixedRealityToolkit.Sharing.SyncModel
 {
     /// <summary>
     /// This class implements the Transform object primitive for the syncing system.

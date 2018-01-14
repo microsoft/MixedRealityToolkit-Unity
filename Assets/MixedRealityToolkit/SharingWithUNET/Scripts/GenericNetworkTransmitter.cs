@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Common;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +14,7 @@ using Windows.Foundation;
 using System.Threading.Tasks;
 #endif
 
-namespace HoloToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// For a UWP application this should allow us to send or receive data given a server IP address.

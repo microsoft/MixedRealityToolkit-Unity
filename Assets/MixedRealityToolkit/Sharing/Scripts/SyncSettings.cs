@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.Sharing.SyncModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace HoloToolkit.Sharing.SyncModel
+namespace MixedRealityToolkit.Sharing
 {
     /// <summary>
     /// Collection of sharing sync settings, used by the HoloToolkit Sharing sync system

@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.Sharing.Utilities;
 using System;
 using UnityEngine;
-using HoloToolkit.Sharing.Utilities;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing
+namespace MixedRealityToolkit.Sharing
 {
     /// <summary>
     /// The SharingStage is in charge of managing the core networking layer for the application.

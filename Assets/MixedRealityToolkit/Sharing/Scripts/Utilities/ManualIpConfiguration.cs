@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HoloToolkit.Sharing.Utilities
+namespace MixedRealityToolkit.Sharing.Utilities
 {
     /// <summary>
     /// Utility for connecting to Sharing Service by IP Address from inside application at runtime.
