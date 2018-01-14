@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     public class ObjectSurfaceObserver : SpatialMappingSource
     {

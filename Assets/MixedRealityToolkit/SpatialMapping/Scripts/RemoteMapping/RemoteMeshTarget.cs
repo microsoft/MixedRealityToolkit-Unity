@@ -10,7 +10,7 @@ using System.Net.Sockets;
 #endif
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
 {
     /// <summary>
     /// RemoteMeshTarget will listen for meshes being sent from a remote system (HoloLens).

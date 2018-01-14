@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -13,7 +11,7 @@ using UnityEngine.VR.WSA;
 #endif
 #endif
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     /// <summary>
     /// Spatial Mapping Observer states.

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using UnityEngine;
 
 #if !UNITY_EDITOR && UNITY_WSA
@@ -11,7 +12,7 @@ using Windows.Networking;
 using Windows.Foundation;
 #endif
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
 {
     /// <summary>
     /// RemoteMeshSource will try to send meshes from the HoloLens to a remote system that is running the Unity editor.
