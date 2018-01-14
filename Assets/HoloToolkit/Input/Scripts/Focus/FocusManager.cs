@@ -218,27 +218,6 @@ namespace HoloToolkit.Unity.InputModule
         #region Focus Details by EventData
 
         /// <summary>
-        /// Try to get the focus details based on the specified event data.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <param name="focusDetails"></param>
-        /// <returns>True, if event data pointer input source is registered.</returns>
-        public bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails)
-        {
-            foreach (var pointer in pointers)
-            {
-                if (pointer.PointingSource.SourceId == eventData.SourceId)
-                {
-                    focusDetails = pointer.End;
-                    return true;
-                }
-            }
-
-            focusDetails = default(FocusDetails);
-            return false;
-        }
-
-        /// <summary>
         /// Gets the currently focused object based on specified the event data.
         /// </summary>
         /// <param name="eventData"></param>
@@ -259,6 +238,27 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             return focusDetails.Object;
+        }
+
+        /// <summary>
+        /// Try to get the focus details based on the specified event data.
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <param name="focusDetails"></param>
+        /// <returns>True, if event data pointer input source is registered.</returns>
+        public bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails)
+        {
+            foreach (var pointer in pointers)
+            {
+                if (pointer.PointingSource.SourceId == eventData.SourceId)
+                {
+                    focusDetails = pointer.End;
+                    return true;
+                }
+            }
+
+            focusDetails = default(FocusDetails);
+            return false;
         }
 
         /// <summary>
