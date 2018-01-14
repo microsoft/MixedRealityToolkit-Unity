@@ -45,7 +45,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnPointerClicked(ClickEventData eventData)
         {
             OnClearSelection();
-            if (eventData.selectedObject == gameObject)
+
+            if (FocusManager.Instance.GetFocusedObject(eventData) == gameObject)
             {
                 OnSelectObject();
             }
