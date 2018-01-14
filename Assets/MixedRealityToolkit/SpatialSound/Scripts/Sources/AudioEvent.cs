@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound.Sources
 {
     /// <summary>
     /// The different rules for how audio should be played back.

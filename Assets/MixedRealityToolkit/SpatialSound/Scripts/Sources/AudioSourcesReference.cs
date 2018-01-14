@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound.Sources
 {
     /// <summary>
     /// The AudioSourcesReference class encapsulates a cache of references to audio source components on a given

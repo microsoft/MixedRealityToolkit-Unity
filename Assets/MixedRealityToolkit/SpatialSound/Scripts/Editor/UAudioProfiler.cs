@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.SpatialSound.Sources;
+using MixedRealityToolkit.Utilities;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound.EditorScripts
 {
     public class UAudioProfiler : EditorWindow
     {
@@ -64,9 +66,11 @@ namespace HoloToolkit.Unity
             for (int i = 0; i < currentEvents.Length; i++)
             {
                 ActiveEvent currentEvent = activeEvents[i];
-                ProfilerEvent tempEvent = new ProfilerEvent();
-                tempEvent.EventName = currentEvent.AudioEvent.Name;
-                tempEvent.EmitterName = currentEvent.AudioEmitter.name;
+                ProfilerEvent tempEvent = new ProfilerEvent
+                {
+                    EventName = currentEvent.AudioEvent.Name,
+                    EmitterName = currentEvent.AudioEmitter.name
+                };
 
                 // The bus might be null, Unity defaults to Editor-hidden master bus.
                 if (currentEvent.AudioEvent.AudioBus == null)

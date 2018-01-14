@@ -1,10 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 
-namespace HoloToolkit.Unity
+using MixedRealityToolkit.SpatialSound.Sources;
+using MixedRealityToolkit.Utilities;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+namespace MixedRealityToolkit.SpatialSound.EditorScripts
 {
     /// <summary>
     /// Inspector for the AudioBank
@@ -313,8 +316,10 @@ namespace HoloToolkit.Unity
         {
             TEvent tempEvent = new TEvent();
             TEvent[] tempEventArray = new TEvent[EditorEvents.Length + 1];
-            tempEvent.Container = new AudioContainer();
-            tempEvent.Container.Sounds = new UAudioClip[0];
+            tempEvent.Container = new AudioContainer
+            {
+                Sounds = new UAudioClip[0]
+            };
             EditorEvents.CopyTo(tempEventArray, 0);
             tempEventArray[EditorEvents.Length] = tempEvent;
             this.eventNames = new string[tempEventArray.Length];

@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 
-namespace HoloToolkit.Unity
+using MixedRealityToolkit.SpatialSound.Attributes;
+using MixedRealityToolkit.SpatialSound.Sources;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+namespace MixedRealityToolkit.SpatialSound.EditorScripts
 {
     /// <summary>
     /// By applying the [AudioEvent] attribute to a string field, this 

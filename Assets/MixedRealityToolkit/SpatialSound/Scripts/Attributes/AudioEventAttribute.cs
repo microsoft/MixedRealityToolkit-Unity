@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound.Attributes
 {
     /// <summary>
     /// Attribute to mark up a string field to be drawn using the
