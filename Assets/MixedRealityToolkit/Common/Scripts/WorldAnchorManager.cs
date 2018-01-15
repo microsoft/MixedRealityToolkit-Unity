@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common.Extensions;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -14,7 +15,7 @@ using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 #endif
 #if !UNITY_EDITOR
-using HoloToolkit.Unity.SpatialMapping;
+using MixedRealityToolkit.SpatialMapping;
 #endif
 #endif
 

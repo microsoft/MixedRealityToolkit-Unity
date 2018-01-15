@@ -10,6 +10,7 @@ using UnityEngine;
 
 #if UNITY_WSA && !UNITY_EDITOR
 using System.Collections.Generic;
+using MixedRealityToolkit.Common.Extensions;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;

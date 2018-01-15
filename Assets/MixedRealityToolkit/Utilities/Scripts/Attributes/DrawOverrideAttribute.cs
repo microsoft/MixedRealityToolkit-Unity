@@ -4,7 +4,10 @@
 using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 
 namespace MixedRealityToolkit.Utilities.Attributes
 {

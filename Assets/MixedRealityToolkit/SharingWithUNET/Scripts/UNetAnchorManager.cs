@@ -8,6 +8,9 @@ using UnityEngine.Networking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using MixedRealityToolkit.SpatialMapping;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
@@ -18,7 +21,6 @@ using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.VR.WSA.Sharing;
 #endif
-using HoloToolkit.Unity.SpatialMapping;
 #endif
 
 namespace MixedRealityToolkit.SharingWithUNET

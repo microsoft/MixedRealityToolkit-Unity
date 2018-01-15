@@ -5,6 +5,7 @@
 #if !UNITY_2017_2_OR_NEWER
 using UnityEngine.VR.WSA.Input;
 #else
+using MixedRealityToolkit.Utilities;
 using UnityEngine.XR.WSA.Input;
 #if !UNITY_EDITOR
 using System;

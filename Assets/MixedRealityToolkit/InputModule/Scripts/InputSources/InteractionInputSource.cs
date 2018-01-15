@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
 
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
