@@ -108,12 +108,14 @@ namespace HoloToolkit.Unity.InputModule
             m_handsPressedLocationsMap[eventData.SourceId] = GetInputPosition(eventData);
             m_handsPressedInputSourceMap[eventData.SourceId] = eventData.InputSource;
             UpdateStateMachine();
+            eventData.Use();
         }
 
         public void OnInputUp(InputEventData eventData)
         {
             RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
+            eventData.Use();
         }
 
         public void OnSourceDetected(SourceStateEventData eventData)
@@ -137,6 +139,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
+            eventData.Use();
         }
 
         private void UpdateStateMachine()
@@ -331,6 +334,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 StartedManipulating();
             }
+            InputManager.Instance.PushModalInputHandler(gameObject);
         }
         private void OnManipulationEnded()
         {
@@ -338,6 +342,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 StoppedManipulating();
             }
+            InputManager.Instance.PopModalInputHandler();
         }
     }
 
