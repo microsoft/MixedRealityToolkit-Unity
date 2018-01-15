@@ -18,7 +18,7 @@ namespace MixedRealityToolkit.Build
     /// </summary>
     public class ProjectSettingsWindow : AutoConfigureWindow<ProjectSettingsWindow.ProjectSetting>
     {
-        private const string SharingServiceURL = "https://raw.githubusercontent.com/Microsoft/MixedRealityToolkit-Unity/master/External/MixedRealityToolkit/Sharing/Server/SharingService.exe";
+        private const string SharingServiceURL = "https://raw.githubusercontent.com/Microsoft/MixedRealityToolkit-Unity/Dev_Working_Branch/External/MixedRealityToolkit/Sharing/Server/SharingService.exe";
 
         /// <summary>
         /// This is used to keep a local list of axis names, so we don't have to keep iterating through each SerializedProperty.

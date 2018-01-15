@@ -411,7 +411,7 @@ Used to assign a Unity Event to a keyword stored in the SpeechInputSource compon
 ##### TriggerButton.cs
 Very simple class that implements basic logic for a trigger button.
 
-### [Test Prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master/Assets/MixedRealityToolkit-Tests/Input/Prefabs)
+### [Test Prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch/Assets/MixedRealityToolkit-Tests/Input/Prefabs)
 
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
@@ -423,7 +423,7 @@ You can simply drop this into your scene and be able to send arbitrary messages 
 Keyword manager pre-wired to send messages to object being currently selected via SelectedObjectMessageSender component.
 You can simply drop this into your scene and be able to send arbitrary messages to currently selected object.
 
-### [Test Scripts](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master/Assets/MixedRealityToolkit-Tests/Input/Scripts)
+### [Test Scripts](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch/Assets/MixedRealityToolkit-Tests/Input/Scripts)
 
 #### FocusedObjectMessageSender.cs
 Sends Unity message to currently focused object.
@@ -458,7 +458,7 @@ It increases the scale of the object when tapped.
 This class implements INavigationHandler to handle the navigation gesture.
 It rotates the object left or right based on X movement.
 
-### [Tests](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master/Assets/MixedRealityToolkit-Tests/Input/Scenes)
+### [Tests](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch/Assets/MixedRealityToolkit-Tests/Input/Scenes)
 Tests related to the input features. To use the scene:
 
 1. Navigate to the Tests folder.

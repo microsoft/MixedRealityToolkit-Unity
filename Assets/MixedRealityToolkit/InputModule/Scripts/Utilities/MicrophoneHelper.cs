@@ -4,7 +4,7 @@
 //*********************************************************
 //
 // This sample code is a modified version of an official UWP sample which can be found on:
-// https://github.com/Microsoft/Windows-universal-samples/blob/master/Samples/SpeechRecognitionAndSynthesis/cs/AudioCapturePermissions.cs
+// https://github.com/Microsoft/Windows-universal-samples/blob/Dev_Working_Branch/Samples/SpeechRecognitionAndSynthesis/cs/AudioCapturePermissions.cs
 //
 //*********************************************************
 
