@@ -8,7 +8,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping.EditorScript
+namespace MixedRealityToolkit.SpatialMapping.EditorScript
 {
     public static class RoomMeshExporter
     {

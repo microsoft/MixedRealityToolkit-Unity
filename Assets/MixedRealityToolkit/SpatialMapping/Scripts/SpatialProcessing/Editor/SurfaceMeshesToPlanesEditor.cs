@@ -4,7 +4,7 @@
 using MixedRealityToolkit.SpatialMapping.SpatialProcessing;
 using UnityEditor;
 
-namespace HoloToolkit.Unity.SpatialMapping.EditorScript
+namespace MixedRealityToolkit.SpatialMapping.EditorScript
 {
     /// <summary>
     /// Editor extension class to enable multi-selection of the 'Draw Planes' and 'Destroy Planes' options in the Inspector.
