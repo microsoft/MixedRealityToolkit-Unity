@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using MixedRealityToolkit.SpatialMapping.SpatialProcessing;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping.Tests
+namespace MixedRealityToolkit.Examples.SpatialMapping
 {
     /// <summary>
     /// Attach this component to a GameObject that contains some meshes (i.e.: the FakeSpatialMappingMesh.fbx).

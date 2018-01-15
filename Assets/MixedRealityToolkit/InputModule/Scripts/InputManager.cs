@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.GamePad;
@@ -251,7 +252,7 @@ namespace MixedRealityToolkit.InputModule
             Debug.Assert(!eventData.used);
 
             // Use focused object when OverrideFocusedObject is null.
-            GameObject focusedObject = (OverrideFocusedObject == null) ? FocusManager.Instance.TryGetFocusedObject(eventData) : OverrideFocusedObject;
+            GameObject focusedObject = OverrideFocusedObject ?? FocusManager.Instance.TryGetFocusedObject(eventData);
 
             // Send the event to global listeners
             for (int i = 0; i < globalListeners.Count; i++)

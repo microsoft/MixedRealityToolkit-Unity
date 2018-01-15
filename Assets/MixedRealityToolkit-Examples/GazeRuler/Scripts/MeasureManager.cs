@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity;
-using System.Collections.Generic;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
 using System;
-using HoloToolkit.Unity.InputModule;
+using UnityEngine;
 
-namespace HoloToolkit.Examples.GazeRuler
+namespace MixedRealityToolkit.Examples.GazeRuler
 {
     /// <summary>
     /// manager all measure tools here

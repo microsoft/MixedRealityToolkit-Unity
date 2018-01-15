@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.Examples.InputModule
 {
     /// <summary>
     /// Test MonoBehaviour that simply prints out a message very time a supported event is received from the input module.

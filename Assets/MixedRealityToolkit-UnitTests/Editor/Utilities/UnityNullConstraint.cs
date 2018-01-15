@@ -4,12 +4,12 @@
 using NUnit.Framework.Constraints;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     /// <summary>
     /// Extend Is to add UnityNull as static property
     /// </summary>
-    public class Is : NUnit.Framework.Is
+    public class IsNot : NUnit.Framework.Is
     {
         /// <summary>
         /// Returns a constraint that checks unity objects for null

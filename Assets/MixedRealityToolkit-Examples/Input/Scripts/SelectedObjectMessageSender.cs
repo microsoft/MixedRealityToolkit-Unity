@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.Gaze;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.Examples.InputModule
 {
     /// <summary>
     /// SelectedObjectMessageSender class sends a Unity message to currently selected object.

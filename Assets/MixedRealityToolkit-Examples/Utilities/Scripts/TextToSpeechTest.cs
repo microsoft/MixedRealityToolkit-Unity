@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using MixedRealityToolkit.Utilities;
 using System;
+using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.Examples.Utilities
 {
     public class TextToSpeechTest : MonoBehaviour
     {

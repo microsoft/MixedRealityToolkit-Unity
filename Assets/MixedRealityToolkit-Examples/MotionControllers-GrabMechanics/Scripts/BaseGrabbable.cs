@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.Grabbables
 {
     /// <summary>
     /// //Intended Usage//

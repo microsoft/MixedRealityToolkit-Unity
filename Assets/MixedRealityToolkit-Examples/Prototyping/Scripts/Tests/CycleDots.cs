@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping.Tests
 {
     /// <summary>
     /// Cycles through gameObjects to update the ColorColors and CycleScale on each dot according to the selected index.

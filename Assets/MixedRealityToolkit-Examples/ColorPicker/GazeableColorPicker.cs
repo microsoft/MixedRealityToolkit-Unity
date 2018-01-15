@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.Gaze;
+using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Examples.ColorPicker
+namespace MixedRealityToolkit.Examples.ColorPicker
 {
     public class GazeableColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
     {

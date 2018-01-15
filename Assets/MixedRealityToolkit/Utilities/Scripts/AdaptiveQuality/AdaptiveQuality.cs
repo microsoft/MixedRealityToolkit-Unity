@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Utilities.GpuTiming;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -132,7 +133,7 @@ namespace MixedRealityToolkit.Utilities.AdaptiveQuality
 
         private void UpdateAdaptiveQuality()
         {
-            float lastAppFrameTime = (float)GpuTiming.GetTime("Frame");
+            float lastAppFrameTime = (float)Utilities.GpuTiming.GpuTiming.GetTime("Frame");
 
             if (lastAppFrameTime <= 0)
             {

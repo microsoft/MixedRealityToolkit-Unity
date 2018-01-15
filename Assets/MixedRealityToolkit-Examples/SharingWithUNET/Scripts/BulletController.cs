@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.SharingWithUNET;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.Examples.SharingWithUNET
 {
     /// <summary>
     /// Controls little bullets fired into the world.

@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using HoloToolkit.Unity;
-using System.Collections.Generic;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialUnderstanding;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UnityEngine;
 
-namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class ShapeDefinition : Singleton<ShapeDefinition>
     {
@@ -21,9 +22,9 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         // Functions
         private void Start()
         {
-            if (SpatialUnderstanding.Instance != null)
+            if (SpatialUnderstandingManager.Instance != null)
             {
-                SpatialUnderstanding.Instance.ScanStateChanged += OnScanStateChanged;
+                SpatialUnderstandingManager.Instance.ScanStateChanged += OnScanStateChanged;
             }
         }
 
@@ -31,16 +32,16 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             base.OnDestroy();
 
-            if (SpatialUnderstanding.Instance != null)
+            if (SpatialUnderstandingManager.Instance != null)
             {
-                SpatialUnderstanding.Instance.ScanStateChanged -= OnScanStateChanged;
+                SpatialUnderstandingManager.Instance.ScanStateChanged -= OnScanStateChanged;
             }
         }
 
         public void CreateShapes()
         {
             if (HasCreatedShapes ||
-                !SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                !SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -53,7 +54,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void OnScanStateChanged()
         {
             // If we are leaving the None state, go ahead and register shapes now
-            if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 // Create definitions and analyze
                 CreateShapes();
@@ -72,12 +73,12 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             List<SpatialUnderstandingDllShapes.ShapeComponent> shapeComponents,
             List<SpatialUnderstandingDllShapes.ShapeConstraint> shapeConstraints)
         {
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return false;
             }
-            IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
-            IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
+            IntPtr shapeComponentsPtr = (shapeComponents == null) ? IntPtr.Zero : SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(shapeComponents.ToArray());
+            IntPtr shapeConstraintsPtr = (shapeConstraints == null) ? IntPtr.Zero : SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(shapeConstraints.ToArray());
             if (SpatialUnderstandingDllShapes.AddShape(
                     shapeName,
                     (shapeComponents == null) ? 0 : shapeComponents.Count,
@@ -94,7 +95,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void CreateCustomShapeDefinitions()
         {
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }

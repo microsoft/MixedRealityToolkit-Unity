@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Examples
+namespace MixedRealityToolkit.Examples.SpatialMapping
 {
     [RequireComponent(typeof(TextMesh))]
     public class DebugText : MonoBehaviour

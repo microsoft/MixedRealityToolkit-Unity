@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Gaze;
 using System;

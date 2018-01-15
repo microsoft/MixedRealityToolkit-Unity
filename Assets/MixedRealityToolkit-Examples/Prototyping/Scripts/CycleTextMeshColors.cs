@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping
 {
     /// <summary>
     /// Sets the color of a TextMesh object based on the selected value in the array

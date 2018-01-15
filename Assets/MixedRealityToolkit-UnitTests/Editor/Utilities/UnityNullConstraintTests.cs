@@ -5,7 +5,7 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class UnityNullConstraintTests
     {
@@ -22,7 +22,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var gameObject = new GameObject();
             Object.DestroyImmediate(gameObject);
-            Assert.That(gameObject, Is.UnityNull);
+            Assert.That(gameObject, IsNot.UnityNull);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void TestActualNull()
         {
-            Assert.That(null, Is.UnityNull);
+            Assert.That(null, IsNot.UnityNull);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.Tests
         public void TestChainedCompare()
         {
             var obj = CreateDestroyedObject();
-            Assert.That(obj, Is.UnityNull.And.Not.Null);
+            Assert.That(obj, IsNot.UnityNull.And.Not.Null);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var transform = new GameObject().transform;
             Object.DestroyImmediate(transform.gameObject);
-            Assert.That(transform, Is.UnityNull);
+            Assert.That(transform, IsNot.UnityNull);
         }
 
         private static GameObject CreateDestroyedObject()

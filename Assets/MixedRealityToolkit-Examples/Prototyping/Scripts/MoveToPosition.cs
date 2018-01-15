@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping
 {
     /// <summary>
     /// A position animation component that supports easing and local position

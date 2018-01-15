@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.Utilities;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.Examples.Utilities
 {
     /// <summary>
     /// Tap Test for text to speech. This voice will appear to emanate from the object

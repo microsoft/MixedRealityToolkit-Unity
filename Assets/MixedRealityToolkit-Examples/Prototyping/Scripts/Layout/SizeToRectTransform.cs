@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping.Layout
 {
     /// <summary>
     /// A sizing and layout system for RectTransforms that help in building and laying out UI

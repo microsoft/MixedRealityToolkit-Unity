@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Examples.Prototyping;
-using System.Collections;
-using System.Collections.Generic;
+using MixedRealityToolkit.Examples.Prototyping;
 using UnityEngine;
-namespace HoloToolkit.Examples.InteractiveElements
+
+namespace MixedRealityToolkit.Examples.UX.Widgets
 {
     /// <summary>
     /// Updates the position of an element based on the Interactive focus state

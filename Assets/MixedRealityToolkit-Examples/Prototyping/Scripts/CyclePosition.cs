@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping
 {
     /// <summary>
     /// updates the position of an object based on currently selected values from the array.

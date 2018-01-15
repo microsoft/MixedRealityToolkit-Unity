@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
+using MixedRealityToolkit.InputModule.EventData;
 using UnityEngine.Events;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// InteractiveToggleButton expands InteractiveToggle to expose a gaze, down and up state events in the inspector.

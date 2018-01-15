@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class ReflectionTestBehaviour : MonoBehaviour
     {

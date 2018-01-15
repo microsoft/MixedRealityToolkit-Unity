@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialUnderstanding;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class LevelSolver : LineDrawer
     {
@@ -87,7 +86,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         public void ClearGeometry(bool clearAll = true)
         {
             placementResults.Clear();
-            if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 SpatialUnderstandingDllObjectPlacement.Solver_RemoveAllObjects();
             }
@@ -199,7 +198,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 ClearGeometry();
             }
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return false;
             }
@@ -207,14 +206,14 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             // New query
             if (SpatialUnderstandingDllObjectPlacement.Solver_PlaceObject(
                     placementName,
-                    SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placementDefinition),
+                    SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(placementDefinition),
                     (placementRules != null) ? placementRules.Count : 0,
-                    ((placementRules != null) && (placementRules.Count > 0)) ? SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placementRules.ToArray()) : IntPtr.Zero,
+                    ((placementRules != null) && (placementRules.Count > 0)) ? SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(placementRules.ToArray()) : IntPtr.Zero,
                     (placementConstraints != null) ? placementConstraints.Count : 0,
-                    ((placementConstraints != null) && (placementConstraints.Count > 0)) ? SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(placementConstraints.ToArray()) : IntPtr.Zero,
-                    SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) > 0)
+                    ((placementConstraints != null) && (placementConstraints.Count > 0)) ? SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(placementConstraints.ToArray()) : IntPtr.Zero,
+                    SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticObjectPlacementResultPtr()) > 0)
             {
-                SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
+                SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
                 if (!isASync)
                 {
                     // If not running async, we can just add the results to the draw list right now
@@ -242,7 +241,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 return;
             }
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -251,8 +250,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // We will reject any above or below the ceiling/floor
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
 
             // Copy over the results
             for (int i = 0; i < queryStatus.QueryResult.Count; ++i)
@@ -335,8 +334,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         public void Query_OnFloorAndCeiling()
         {
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
             List<PlacementQuery> placementQuery = new List<PlacementQuery>();
             for (int i = 0; i < 4; ++i)
             {
@@ -463,7 +462,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         public bool InitializeSolver()
         {
             if (IsSolverInitialized ||
-                !SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                !SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return IsSolverInitialized;
             }
@@ -478,20 +477,20 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void Update()
         {
             // Can't do any of this till we're done with the scanning phase
-            if (SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Done)
             {
                 return;
             }
 
             // Make sure the solver has been initialized
             if (!IsSolverInitialized &&
-                SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 InitializeSolver();
             }
 
             // Constraint queries
-            if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 Update_Queries();
             }

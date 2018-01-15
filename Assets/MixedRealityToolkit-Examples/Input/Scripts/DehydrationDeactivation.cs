@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.Examples.InputModule
 {
     public class DehydrationDeactivation : StateMachineBehaviour
     {

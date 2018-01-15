@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.Examples.InputModule
 {
     public class ButtonObjectScaler : MonoBehaviour
     {
@@ -17,9 +17,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private float ScaleIncrement = 1.0f;
 
         [SerializeField]
-        private buttonAction ButtonAction = buttonAction.Reset;
+        private ButtonAction buttonAction = ButtonAction.Reset;
 
-        private enum buttonAction { Reset, Grow, Shrink };
+        private enum ButtonAction { Reset, Grow, Shrink };
 
         private Vector3 InitialScale;
 
@@ -45,16 +45,16 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (ObjectToScale)
             {
-                switch (ButtonAction)
+                switch (buttonAction)
                 {
-                    case buttonAction.Reset:
+                    case ButtonAction.Reset:
                         Debug.Log(InitialScale);
                         ObjectToScale.transform.localScale = InitialScale;
                         break;
-                    case buttonAction.Grow:
+                    case ButtonAction.Grow:
                         ObjectToScale.transform.localScale = new Vector3((ObjectToScale.transform.localScale.x + ScaleIncrement), (ObjectToScale.transform.localScale.y + ScaleIncrement), (ObjectToScale.transform.localScale.z + ScaleIncrement));
                         break;
-                    case buttonAction.Shrink:
+                    case ButtonAction.Shrink:
                         if ((ObjectToScale.transform.localScale.x - ScaleIncrement) < 0.0f)
                         {
                             ObjectToScale.transform.localScale = new Vector3(0, 0, 0);

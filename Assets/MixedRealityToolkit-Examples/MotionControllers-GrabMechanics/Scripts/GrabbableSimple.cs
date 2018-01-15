@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.Grabbables
 {
     /// <summary>
     /// This type of grab makes the grabbed object follow the position and rotation of the grabber, but does not create a parent child relationship

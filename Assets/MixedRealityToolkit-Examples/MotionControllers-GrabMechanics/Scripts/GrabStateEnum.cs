@@ -7,7 +7,7 @@
 /// create more specific grab behavior by adding additional scripts/components to the game object, such as scalableObject, rotatableObject, throwableObject 
 /// </summary>
 
-namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.Grabbables
 {
     public enum GrabStateEnum
     {

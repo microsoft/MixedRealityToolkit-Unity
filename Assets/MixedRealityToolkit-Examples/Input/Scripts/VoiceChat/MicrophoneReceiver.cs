@@ -1,12 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Sharing;
+using MixedRealityToolkit.SpatialSound.Extensions;
+using MixedRealityToolkit.Utilities;
 using System;
 using System.Threading;
 using UnityEngine;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing.VoiceChat
+namespace MixedRealityToolkit.Examples.InputModule.VoiceChat
 {
     /// <summary>
     /// Receives and plays voice data transmitted through the session server. This data comes from other clients running the MicrophoneTransmitter behaviour.

@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.SpatialUnderstanding;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class SpaceVisualizer : LineDrawer
     {
@@ -45,14 +45,14 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Alignment information
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
 
             // Box for the space
             float timeDelay = (float)lineBoxList.Count * AnimatedBox.DelayPerItem;
@@ -72,7 +72,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -84,7 +84,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minFacingClearance = 1.5f;
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindPositionsOnWalls(
                 minHeightOfWallSpace, minWidthOfWallSpace, minHeightAboveFloor, minFacingClearance,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -102,13 +102,13 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minFacingClearance = 0.5f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargePositionsOnWalls(
                 minHeightOfWallSpace, minWidthOfWallSpace, minHeightAboveFloor, minFacingClearance,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -122,13 +122,13 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr wallPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr wallPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int wallCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargestWall(
                 wallPtr);
             if (wallCount == 0)
@@ -157,13 +157,13 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minHeightAboveFloor = 1.0f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindPositionsOnFloor(
                 minWidthOfWallSpace, minHeightAboveFloor,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -175,7 +175,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         public void Query_Topology_FindLargestPositionsOnFloor()
         {
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargestPositionsOnFloor(
                 resultsTopology.Length, resultsTopologyPtr);
 
@@ -191,13 +191,13 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minFacingClearance = 1.0f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            IntPtr resultsTopologyPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsTopology);
             int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindPositionsSittable(
                 minHeight, maxHeight, minFacingClearance,
                 resultsTopology.Length, resultsTopologyPtr);
@@ -212,13 +212,13 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             float minRadius = 0.1f;
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsShapePtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsShape);
+            IntPtr resultsShapePtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsShape);
             int shapeCount = SpatialUnderstandingDllShapes.QueryShape_FindPositionsOnShape(
                 shapeName, minRadius,
                 resultsShape.Length, resultsShapePtr);
@@ -230,13 +230,13 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         public void Query_Shape_FindShapeHalfDims(string shapeName)
         {
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Query
-            IntPtr resultsShapePtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsShape);
+            IntPtr resultsShapePtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.PinObject(resultsShape);
             int shapeCount = SpatialUnderstandingDllShapes.QueryShape_FindShapeHalfDims(
                 shapeName,
                 resultsShape.Length, resultsShapePtr);
@@ -251,7 +251,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
@@ -290,14 +290,14 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             ClearGeometry();
 
             // Only if we're enabled
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }
 
             // Alignment information
-            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+            SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+            SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
 
             // Add the line boxes (we may have more results than boxes - pick evenly across the results in that case)
             int lineInc = Mathf.CeilToInt((float)shapeCount / (float)DisplayResultMaxCount);
@@ -405,7 +405,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         private void Update()
         {
             // Queries
-            if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 Update_Queries();
             }

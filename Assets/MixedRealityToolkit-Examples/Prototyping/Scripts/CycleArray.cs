@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping
 {
     /// <summary>
     /// CycleArray is a class for incrementing through component properties sequentially or assigning specific elements in the array.
