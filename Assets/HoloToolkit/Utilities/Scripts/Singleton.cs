@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Singleton behaviour class, used for components that should only have one instance.
+    /// Singleton behavior class, used for components that should only have one instance.
     /// <remarks>Singleton classes live on through scene transitions and will mark their 
     /// parent root GameObject with <see cref="Object.DontDestroyOnLoad"/></remarks>
     /// </summary>
@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity
                     return null;
                 }
 
-                // likly first time
+                // likely first time
                 T[] objects = FindObjectsOfType<T>();
                 searchForInstance = false;
 

@@ -28,10 +28,6 @@ namespace HoloToolkit.Sharing.Tests
 
         protected override void InitializeInternal()
         {
-        }
-
-        private void Start()
-        {
             CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = UpdateHeadTransform;
 
             // SharingStage should be valid at this point, but we may not be connected.
@@ -43,6 +39,12 @@ namespace HoloToolkit.Sharing.Tests
             {
                 SharingStage.Instance.SharingManagerConnected += Connected;
             }
+        }
+
+        protected override void Awake()
+        {
+            // We don't want lazy evaluational for this class 
+            base.Awake();
         }
 
         private void Connected(object sender = null, EventArgs e = null)

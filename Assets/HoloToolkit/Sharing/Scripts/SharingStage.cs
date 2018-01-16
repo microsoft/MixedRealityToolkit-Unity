@@ -220,12 +220,8 @@ namespace HoloToolkit.Sharing
             get { return Manager != null && Connection != null && Connection.IsConnected(); }
         }
 
-        #region Unity Methods
-
-        protected override void Awake()
+        protected override void InitializeInternal()
         {
-            base.Awake();
-
             AppInstanceUniqueId = Guid.NewGuid().ToString();
             logWriter = new ConsoleLogWriter { ShowDetailedLogs = ShowDetailedLogs };
 
@@ -237,6 +233,14 @@ namespace HoloToolkit.Sharing
             {
                 ManagerInit(connectOnAwake);
             }
+        }
+
+        #region Unity Methods
+
+        protected override void Awake()
+        {
+            // We don't want lazy initialization for this class
+            base.Awake();
         }
 
         private void OnEnable()
@@ -387,10 +391,6 @@ namespace HoloToolkit.Sharing
         }
 
         #endregion // Event Callbacks
-
-        protected override void InitializeInternal()
-        {
-        }
 
         private void ManagerInit(bool setConnection)
         {
