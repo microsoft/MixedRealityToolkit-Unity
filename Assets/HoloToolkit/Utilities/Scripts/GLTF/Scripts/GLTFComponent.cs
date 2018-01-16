@@ -9,7 +9,7 @@ namespace UnityGLTF
     /// </summary>
     class GLTFComponent : MonoBehaviour
     {
-        public string Url;
+        public string Url = "";
         public bool Multithreaded = true;
         public bool UseStream = false;
 

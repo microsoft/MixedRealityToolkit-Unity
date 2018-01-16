@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 #if WINDOWS_UWP
-using Windows.System.Threading;
+using System.Threading.Tasks;
 #else
 using System.Threading;
 #endif
@@ -21,7 +21,7 @@ namespace UnityGLTF
             _workerThreadRunning = true;
 
 #if WINDOWS_UWP
-			ThreadPool.RunAsync((_) =>
+            Task.Factory.StartNew(() =>
 #else
             ThreadPool.QueueUserWorkItem((_) =>
 #endif
