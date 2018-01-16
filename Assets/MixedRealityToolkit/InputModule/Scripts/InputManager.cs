@@ -252,7 +252,7 @@ namespace MixedRealityToolkit.InputModule
             Debug.Assert(!eventData.used);
 
             // Use focused object when OverrideFocusedObject is null.
-            GameObject focusedObject = OverrideFocusedObject ?? FocusManager.Instance.TryGetFocusedObject(eventData);
+            GameObject focusedObject = (OverrideFocusedObject == null) ? FocusManager.Instance.TryGetFocusedObject(eventData) : OverrideFocusedObject;
 
             // Send the event to global listeners
             for (int i = 0; i < globalListeners.Count; i++)

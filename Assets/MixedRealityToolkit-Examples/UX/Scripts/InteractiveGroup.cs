@@ -24,7 +24,7 @@ namespace MixedRealityToolkit.Examples.UX
         private void Start()
         {
             // note that simplifying this with the ??-operator does not work in Unity.
-            Grid = Grid ?? transform.Find("Canvas/Grid").gameObject;
+            Grid = Grid == null ? transform.Find("Canvas/Grid").gameObject : Grid;
 
             Interactive interactive = InteractivePrefab.GetComponent<Interactive>();
             if (interactive == null)
@@ -38,13 +38,14 @@ namespace MixedRealityToolkit.Examples.UX
                 UpdateData();
             }
         }
-        
-        private List<InteractiveToggle> Interactives {
-            get 
+
+        private List<InteractiveToggle> Interactives
+        {
+            get
             {
                 return GetInteractiveSet().Interactives;
             }
-            set 
+            set
             {
                 GetInteractiveSet().Interactives = value;
             }
@@ -71,7 +72,7 @@ namespace MixedRealityToolkit.Examples.UX
                         gameObject.name + " to use it in an InteractiveGroup.");
                 }
                 else
-                { 
+                {
                     Interactives.Add(InterInst);
                 }
             }
@@ -101,7 +102,7 @@ namespace MixedRealityToolkit.Examples.UX
         {
             RemoveInteractives();
         }
- 
+
 
         /// <summary>
         /// Remove unused Interactives from scene

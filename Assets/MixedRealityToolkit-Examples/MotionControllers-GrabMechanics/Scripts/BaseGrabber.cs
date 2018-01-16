@@ -60,7 +60,7 @@ namespace MixedRealityToolkit.Examples.Grabbables
         {
             get
             {
-                return grabAttachSpot ?? transform;
+                return grabAttachSpot != null ? grabAttachSpot : transform;
             }
         }
 
