@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common;
 using System;
 using System.Collections;
-using HoloToolkit.Unity;
 using UnityEngine;
 
-namespace HoloToolkit.Sharing.Utilities
+namespace MixedRealityToolkit.Sharing.Utilities
 {
     /// <summary>
     /// Utility class for automatically joining shared sessions without needing to go through a lobby.

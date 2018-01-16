@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     public static class DataEventArgs
     {

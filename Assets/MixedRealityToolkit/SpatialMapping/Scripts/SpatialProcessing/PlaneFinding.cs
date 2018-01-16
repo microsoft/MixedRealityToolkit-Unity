@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping.SpatialProcessing
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct OrientedBoundingBox

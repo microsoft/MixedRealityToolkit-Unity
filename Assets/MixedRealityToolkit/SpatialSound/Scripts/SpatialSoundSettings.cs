@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound
 {
     /// <summary>
     /// Room sizes for the Microsoft Spatial Sound Spatializer.

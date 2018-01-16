@@ -4,7 +4,7 @@
 using MixedRealityToolkit.UX.Keyboard;
 using UnityEditor;
 
-namespace MixedRealityToolkit.UX.EditorScripts
+namespace MixedRealityToolkit.UX.EditorScript
 {
     [CustomEditor(typeof(KeyboardInputField))]
     public class KeyboardInputFieldEditor : Editor

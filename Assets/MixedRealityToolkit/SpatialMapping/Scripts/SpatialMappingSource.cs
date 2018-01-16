@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.SpatialMapping.RemoteMapping;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping
 {
     public class SpatialMappingSource : MonoBehaviour
     {
@@ -91,10 +93,12 @@ namespace HoloToolkit.Unity.SpatialMapping
             bool? castShadowsOverride = null
             )
         {
-            SurfaceObject surfaceObject = new SurfaceObject();
-            surfaceObject.ID = meshID;
+            SurfaceObject surfaceObject = new SurfaceObject
+            {
+                ID = meshID,
 
-            surfaceObject.Object = new GameObject(objectName, componentsRequiredForSurfaceMesh);
+                Object = new GameObject(objectName, componentsRequiredForSurfaceMesh)
+            };
             surfaceObject.Object.transform.SetParent(parentObject);
             surfaceObject.Object.layer = SpatialMappingManager.Instance.PhysicsLayer;
 

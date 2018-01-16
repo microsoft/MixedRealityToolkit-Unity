@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound.Sources
 {
     /// <summary>
     /// Encapsulate a single Unity AudioClip with playback settings.

@@ -5,7 +5,7 @@ using MixedRealityToolkit.InputModule.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Editor
+namespace MixedRealityToolkit.InputModule.EditorScript
 {
     [CustomPropertyDrawer(typeof(KeywordAndKeyCode))]
     public class KeywordAndKeyCodeDrawer : PropertyDrawer

@@ -6,7 +6,7 @@ using SysDiag = System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
 {
     /// <summary>
     /// SimpleMeshSerializer converts a UnityEngine.Mesh object to and from an array of bytes.
@@ -137,9 +137,11 @@ namespace HoloToolkit.Unity.SpatialMapping
             int[] triangleIndices = ReadTriangleIndicies(reader, triangleIndexCount);
 
             // Create the mesh.
-            Mesh mesh = new Mesh();
-            mesh.vertices = vertices;
-            mesh.triangles = triangleIndices;
+            Mesh mesh = new Mesh
+            {
+                vertices = vertices,
+                triangles = triangleIndices
+            };
             // Reconstruct the normals from the vertices and triangles.
             mesh.RecalculateNormals();
 

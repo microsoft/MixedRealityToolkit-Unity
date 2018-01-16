@@ -5,7 +5,7 @@ using MixedRealityToolkit.UX.Collections;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.EditorScripts
+namespace MixedRealityToolkit.UX.EditorScript
 {
     [CustomEditor(typeof(ObjectCollection))]
     public class CollectionEditor : Editor

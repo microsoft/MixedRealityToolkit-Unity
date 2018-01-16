@@ -3,7 +3,7 @@
 
 using MixedRealityToolkit.UX.Lines;
 
-namespace MixedRealityToolkit.UX.EditorScripts
+namespace MixedRealityToolkit.UX.EditorScript
 {
     [UnityEditor.CustomEditor(typeof(Rectangle))]
     public class RectangleEditor : LineBaseEditor

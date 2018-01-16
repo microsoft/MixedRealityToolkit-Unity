@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Sharing.SyncModel
+namespace MixedRealityToolkit.Sharing.SyncModel
 {
     /// <summary>
     /// The SyncArray class provides the functionality of an array in the data model.

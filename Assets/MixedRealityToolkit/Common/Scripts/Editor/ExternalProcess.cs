@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Common.Editor
+namespace MixedRealityToolkit.Common.EditorScript
 {
     /// <summary>
     /// Helper class for launching external processes inside of the unity editor.

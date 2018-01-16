@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
 using System;
 
-namespace HoloToolkit.Sharing
+namespace MixedRealityToolkit.Sharing
 {
     /// <summary>
     /// C# wrapper for the Sharing SyncListener, making changes available through the Action class.

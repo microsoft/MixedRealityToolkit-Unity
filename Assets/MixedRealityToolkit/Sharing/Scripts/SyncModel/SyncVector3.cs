@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Sharing.SyncModel
+namespace MixedRealityToolkit.Sharing.SyncModel
 {
     /// <summary>
     /// This class implements the Vector3 object primitive for the syncing system.

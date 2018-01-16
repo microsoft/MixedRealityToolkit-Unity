@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.SpatialSound.Extensions;
+using MixedRealityToolkit.SpatialSound.Sources;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound
 {
     /// <summary>
     /// UAudioManagerBase provides the base functionality for UAudioManager classes.

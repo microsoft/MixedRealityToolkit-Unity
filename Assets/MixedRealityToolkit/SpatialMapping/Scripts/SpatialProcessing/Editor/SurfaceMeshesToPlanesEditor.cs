@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.SpatialMapping.SpatialProcessing;
 using UnityEditor;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace HoloToolkit.Unity.SpatialMapping.EditorScript
 {
     /// <summary>
     /// Editor extension class to enable multi-selection of the 'Draw Planes' and 'Destroy Planes' options in the Inspector.

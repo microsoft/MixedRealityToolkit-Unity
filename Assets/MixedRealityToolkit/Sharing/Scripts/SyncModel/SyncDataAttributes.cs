@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Sharing.SyncModel
+namespace MixedRealityToolkit.Sharing.SyncModel
 {
     /// <summary>
     /// Used to markup SyncPrimitives within a class.

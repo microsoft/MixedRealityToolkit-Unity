@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Build.DataStructures;
-using MixedRealityToolkit.Common.Editor;
+using MixedRealityToolkit.Common.EditorScript;
 using System;
 using System.IO;
 using UnityEngine;

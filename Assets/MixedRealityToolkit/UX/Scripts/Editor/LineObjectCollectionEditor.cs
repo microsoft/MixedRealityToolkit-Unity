@@ -2,11 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.UX.Lines;
+using UnityEditor;
 
-namespace MixedRealityToolkit.UX.EditorScripts
+namespace MixedRealityToolkit.UX.EditorScript
 {
     [UnityEditor.CustomEditor(typeof(LineObjectCollection))]
-    public class LineObjectCollectionEditor : UnityEditor.Editor
+    public class LineObjectCollectionEditor : Editor
     {
         public void OnSceneGUI()
         {

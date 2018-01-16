@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common.InterpolatedValues;
+using MixedRealityToolkit.Sharing.SyncModel;
 using UnityEngine;
-using HoloToolkit.Unity;
-using HoloToolkit.Sharing.SyncModel;
 
-namespace HoloToolkit.Sharing
+namespace MixedRealityToolkit.Sharing.Unity
 {
     /// <summary>
     /// Synchronizer to update and broadcast a transform object through our data model.

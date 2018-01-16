@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Sharing.SyncModel;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using HoloToolkit.Sharing.SyncModel;
 
-namespace HoloToolkit.Sharing
+namespace MixedRealityToolkit.Sharing.EditorScript
 {
     [CustomEditor(typeof(SharingStage))]
     public class SharingStageEditor : Editor

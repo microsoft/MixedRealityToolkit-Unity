@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.SpatialSound.Extensions
 {
     /// <summary>
     /// A shortcut to assign a clip to an AudioSource component and play the source

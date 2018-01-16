@@ -12,7 +12,7 @@ using Windows.Networking;
 using Windows.Networking.Connectivity;
 #endif
 
-namespace HoloToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.SharingWithUNET
 {
     /// <summary>
     /// Inherits from UNet's NetworkDiscovery script. 

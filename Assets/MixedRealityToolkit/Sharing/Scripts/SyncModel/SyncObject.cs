@@ -5,15 +5,16 @@
 #define USE_WINRT
 #endif
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing.SyncModel
+namespace MixedRealityToolkit.Sharing.SyncModel
 {
     /// <summary>
     /// The SyncObject class is a container object that can hold multiple SyncPrimitives.

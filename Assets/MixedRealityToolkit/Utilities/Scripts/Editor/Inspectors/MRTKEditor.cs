@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Utilities.Attributes;
+using MixedRealityToolkit.UX.Buttons.Profiles;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
-using MixedRealityToolkit.Utilities.Attributes;
-using MixedRealityToolkit.UX.Buttons;
 using UnityEditor;
+using UnityEngine;
 
-namespace MixedRealityToolkit.Utilities.Inspectors
+namespace MixedRealityToolkit.Utilities.Inspectors.EditorScript
 {
 #if UNITY_EDITOR
     /// <summary>
@@ -605,9 +605,11 @@ namespace MixedRealityToolkit.Utilities.Inspectors
 
         public static void DrawDivider()
         {
-            GUIStyle styleHR = new GUIStyle(GUI.skin.box);
-            styleHR.stretchWidth = true;
-            styleHR.fixedHeight = 2;
+            GUIStyle styleHR = new GUIStyle(GUI.skin.box)
+            {
+                stretchWidth = true,
+                fixedHeight = 2
+            };
             GUILayout.Box("", styleHR);
         }
 
@@ -620,16 +622,22 @@ namespace MixedRealityToolkit.Utilities.Inspectors
                 toggleButtonOnStyle = new GUIStyle(toggleButtonOffStyle);
                 toggleButtonOnStyle.normal.background = toggleButtonOnStyle.active.background;
 
-                sectionStyle = new GUIStyle(EditorStyles.foldout);
-                sectionStyle.fontStyle = FontStyle.Bold;
+                sectionStyle = new GUIStyle(EditorStyles.foldout)
+                {
+                    fontStyle = FontStyle.Bold
+                };
 
-                toolTipStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
-                toolTipStyle.fontStyle = FontStyle.Normal;
-                toolTipStyle.alignment = TextAnchor.LowerLeft;
+                toolTipStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel)
+                {
+                    fontStyle = FontStyle.Normal,
+                    alignment = TextAnchor.LowerLeft
+                };
 
-                inProgressStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
-                inProgressStyle.fontStyle = FontStyle.Italic;
-                inProgressStyle.alignment = TextAnchor.LowerLeft;
+                inProgressStyle = new GUIStyle(EditorStyles.wordWrappedMiniLabel)
+                {
+                    fontStyle = FontStyle.Italic,
+                    alignment = TextAnchor.LowerLeft
+                };
             }
         }
 

@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Common.Editor
+namespace MixedRealityToolkit.Common.EditorScript
 {
     public static class EditorPrefsUtility
     {

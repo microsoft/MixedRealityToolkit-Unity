@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Common;
 
 #if UNITY_WSA
 using System;
@@ -19,7 +19,7 @@ using UnityEngine.VR.WSA.Sharing;
 #endif
 
 
-namespace HoloToolkit.Sharing
+namespace MixedRealityToolkit.Sharing.Utilities
 {
     /// <summary>
     /// Wrapper around world anchor store to streamline some of the persistence API busy work.

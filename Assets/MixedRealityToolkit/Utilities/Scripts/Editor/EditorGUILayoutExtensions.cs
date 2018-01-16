@@ -6,7 +6,7 @@ using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Utilities
+namespace MixedRealityToolkit.Utilities.EditorScript
 {
     /// <summary>
     /// Extensions for the UnityEditor.EditorGUILayout class.

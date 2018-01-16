@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping.SpatialProcessing
 {
     /// <summary>
     /// All possible plane types that a SurfacePlane can be.
