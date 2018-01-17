@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Examples.Prototyping;
-using System.Collections;
-using System.Collections.Generic;
+using MixedRealityToolkit.Examples.Prototyping;
+using MixedRealityToolkit.Examples.UX.Themes;
 using UnityEngine;
-using System;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Widgets
 {
     /// <summary>
     /// An InteractiveThemeWidget for swapping colors on a TextMesh based on Interactive state

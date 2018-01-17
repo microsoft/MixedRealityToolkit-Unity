@@ -8,7 +8,7 @@ using System.Collections;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.Grabbables
 {
     /// <summary>
     /// ForceRotate inherits from BaseUsable because the object to be manipulated must first be

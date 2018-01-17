@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.Utilities;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Examples.Utilities
 {
     [RequireComponent(typeof(ApplicationViewManager))]
     public class ApplicationViewManagerEditButton : MonoBehaviour

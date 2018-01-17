@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity.InputModule;
-using HoloToolkit.Examples.Prototyping;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.Prototyping.Tests
 {
     /// <summary>
     /// Advances a iCycle component on click

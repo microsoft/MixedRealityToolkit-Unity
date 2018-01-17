@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
+using MixedRealityToolkit.Common.Extensions;
 using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests.Utilities.Extensions
 {
     public class GameObjectExtensionsTests
     {

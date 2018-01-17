@@ -2,13 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine.Events;
-using HoloToolkit.Unity.InputModule;
+using MixedRealityToolkit.InputModule.EventData;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// InteractiveToggle expands Interactive to expose selection or toggle states.

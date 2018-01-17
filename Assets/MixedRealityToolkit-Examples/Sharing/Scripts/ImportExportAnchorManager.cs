@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Sharing;
 using System;
 using System.Collections;
 using UnityEngine;
-using HoloToolkit.Unity;
 
 #if UNITY_WSA && !UNITY_EDITOR
 using System.Collections.Generic;
+using MixedRealityToolkit.Common.Extensions;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
@@ -19,7 +22,7 @@ using UnityEngine.VR.WSA.Sharing;
 #endif
 #endif
 
-namespace HoloToolkit.Sharing.Tests
+namespace MixedRealityToolkit.Examples.Sharing
 {
     /// <summary>
     /// Manages creating anchors and sharing the anchors with other clients.

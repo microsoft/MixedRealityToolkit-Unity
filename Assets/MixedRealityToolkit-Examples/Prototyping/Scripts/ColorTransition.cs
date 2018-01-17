@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping
 {
     /// <summary>
     /// A color blending animation component, handles multiple materials
@@ -60,13 +59,15 @@ namespace HoloToolkit.Examples.Prototyping
 
             for (int i = 0; i < Materials.Length; ++i)
             {
-                ColorTransitionData data = new ColorTransitionData();
-                data.StartColor = Materials[i].color;
-                data.Percentage = 0;
-                data.Time = TransitionTime;
-                data.Count = TransitionTime;
-                data.Material = Materials[i];
-                data.Name = Materials[i].name;
+                ColorTransitionData data = new ColorTransitionData
+                {
+                    StartColor = Materials[i].color,
+                    Percentage = 0,
+                    Time = TransitionTime,
+                    Count = TransitionTime,
+                    Material = Materials[i],
+                    Name = Materials[i].name
+                };
 
                 int SpaceIndex = data.Name.IndexOf(" ");
                 if (SpaceIndex > -1)

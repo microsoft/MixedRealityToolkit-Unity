@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     public enum SelectionType
     {

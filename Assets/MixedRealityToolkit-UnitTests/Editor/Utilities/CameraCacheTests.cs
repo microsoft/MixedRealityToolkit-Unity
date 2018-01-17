@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class CameraCacheTests
     {
@@ -17,7 +18,7 @@ namespace HoloToolkit.Unity.Tests
         [Test]
         public void GetNullCameraFromCache()
         {
-            Assert.That(CameraCache.Main, Is.UnityNull);
+            Assert.That(CameraCache.Main, IsNot.UnityNull);
         }
 
         [Test]
@@ -27,7 +28,7 @@ namespace HoloToolkit.Unity.Tests
             var mainCamera = TestUtils.CreateMainCamera();
             var unused = CameraCache.Main;
             Object.DestroyImmediate(mainCamera.gameObject);
-            Assert.That(CameraCache.Main, Is.UnityNull);
+            Assert.That(CameraCache.Main, IsNot.UnityNull);
         }
 
         [Test]

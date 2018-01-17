@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace MixedRealityToolkit.Examples.InputModule.VoiceChat
 {
     [RequireComponent(typeof(AudioSource))]
     public class MicStreamDemo : MonoBehaviour

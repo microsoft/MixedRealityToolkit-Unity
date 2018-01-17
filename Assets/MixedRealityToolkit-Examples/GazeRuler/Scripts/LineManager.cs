@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.InputModule.Gaze;
 using System.Collections.Generic;
-using HoloToolkit.Unity.InputModule;
+using UnityEngine;
 
-namespace HoloToolkit.Examples.GazeRuler
+namespace MixedRealityToolkit.Examples.GazeRuler
 {
     /// <summary>
     /// Manages all lines in the scene

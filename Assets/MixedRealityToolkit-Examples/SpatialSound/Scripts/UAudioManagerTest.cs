@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.SpatialSound;
+using MixedRealityToolkit.SpatialSound.Attributes;
 using System.Collections;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Examples.SpatialSound
 {
     public class UAudioManagerTest : MonoBehaviour
     {

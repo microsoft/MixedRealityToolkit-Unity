@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Examples.Prototyping;
-using System.Collections;
+using MixedRealityToolkit.Examples.Prototyping;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Tests
 {
     /// <summary>
     /// Sample GestureInteractiveControl for scrubbing through ICylce components
@@ -38,9 +37,11 @@ namespace HoloToolkit.Examples.InteractiveElements
                 ICycle cycle = CycleControllers[i].GetComponent<ICycle>();
                 if (cycle != null)
                 {
-                    CycleData data = new CycleData();
-                    data.Controller = cycle;
-                    data.Index = cycle.Index;
+                    CycleData data = new CycleData
+                    {
+                        Controller = cycle,
+                        Index = cycle.Index
+                    };
                     mCycleList.Add(data);
                 }
             }

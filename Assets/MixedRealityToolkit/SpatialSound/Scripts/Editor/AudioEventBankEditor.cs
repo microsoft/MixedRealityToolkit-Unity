@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.SpatialSound.Sources;
-using MixedRealityToolkit.Utilities;
+using MixedRealityToolkit.Utilities.EditorScript;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;

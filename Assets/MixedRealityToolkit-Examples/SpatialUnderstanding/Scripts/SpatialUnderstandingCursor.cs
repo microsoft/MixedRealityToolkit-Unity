@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialUnderstanding;
 using System;
-using HoloToolkit.Unity;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
-namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class SpatialUnderstandingCursor : SpatialUnderstandingBasicCursor
     {
@@ -29,17 +30,17 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             RaycastResult result = base.CalculateRayIntersect();
 
             // Now use the understanding code
-            if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding &&
-                SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done)
+            if (SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding &&
+                SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Done)
             {
                 Vector3 rayPos = CameraCache.Main.transform.position;
                 Vector3 rayVec = CameraCache.Main.transform.forward * RayCastLength;
-                IntPtr raycastResultPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
+                IntPtr raycastResultPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
                 SpatialUnderstandingDll.Imports.PlayspaceRaycast(
                     rayPos.x, rayPos.y, rayPos.z,
                     rayVec.x, rayVec.y, rayVec.z,
                     raycastResultPtr);
-                rayCastResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResult();
+                rayCastResult = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticRaycastResult();
 
                 float rayCastResultDist = Vector3.Distance(rayPos, rayCastResult.IntersectPoint);
                 float resultDist = Vector3.Distance(rayPos, result.Position);
@@ -79,11 +80,12 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                     if (canvasRaycaster != null)
                     {
                         // Cast only against this canvas
-                        PointerEventData pData = new PointerEventData(EventSystem.current);
-
-                        pData.position = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-                        pData.delta = Vector2.zero;
-                        pData.scrollDelta = Vector2.zero;
+                        PointerEventData pData = new PointerEventData(EventSystem.current)
+                        {
+                            position = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f),
+                            delta = Vector2.zero,
+                            scrollDelta = Vector2.zero
+                        };
 
                         List<UnityEngine.EventSystems.RaycastResult> canvasHits = new List<UnityEngine.EventSystems.RaycastResult>();
                         canvasRaycaster.Raycast(pData, canvasHits);
@@ -115,15 +117,15 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             base.LateUpdate();
 
             // Basic checks
-            if ((SpatialUnderstanding.Instance == null) ||
-               ((SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Scanning) &&
-                (SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Finishing) &&
-                (SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Done)))
+            if ((SpatialUnderstandingManager.Instance == null) ||
+               ((SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Scanning) &&
+                (SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Finishing) &&
+                (SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Done)))
             {
                 CursorText.gameObject.SetActive(false);
                 return;
             }
-            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
             {
                 return;
             }

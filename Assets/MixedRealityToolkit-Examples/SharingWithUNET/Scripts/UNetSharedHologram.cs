@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
-using HoloToolkit.Unity.SpatialMapping;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.SharingWithUNET;
+using MixedRealityToolkit.SpatialMapping;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace HoloToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.Examples.SharingWithUNET
 {
     public class UNetSharedHologram : NetworkBehaviour, IInputClickHandler
     {

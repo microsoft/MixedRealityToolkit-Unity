@@ -1,7 +1,11 @@
-﻿using System;
-using NUnit.Framework;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace HoloToolkit.Unity.Tests
+using MixedRealityToolkit.Common.Extensions;
+using NUnit.Framework;
+using System;
+
+namespace MixedRealityToolkit.Tests.Utilities.Extensions
 {
     public class EnumerableExtensionsTests
     {

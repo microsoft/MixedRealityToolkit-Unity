@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Sharing;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Sharing;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Sharing.Tests
+namespace MixedRealityToolkit.Examples.Sharing
 {
     /// <summary>
     /// Broadcasts the head transform of the local user to other users in the session,
@@ -113,9 +115,11 @@ namespace HoloToolkit.Sharing.Tests
             // Get the head info if its already in the list, otherwise add it
             if (!remoteHeads.TryGetValue(userId, out headInfo))
             {
-                headInfo = new RemoteHeadInfo();
-                headInfo.UserID = userId;
-                headInfo.HeadObject = CreateRemoteHead();
+                headInfo = new RemoteHeadInfo
+                {
+                    UserID = userId,
+                    HeadObject = CreateRemoteHead()
+                };
 
                 remoteHeads.Add(userId, headInfo);
             }

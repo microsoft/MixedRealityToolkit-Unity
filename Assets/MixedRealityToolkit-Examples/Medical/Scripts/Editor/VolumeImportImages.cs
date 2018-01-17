@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
-using System.Linq;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Utilities.EditorScript;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Examples.Medical.EditorScript
 {
     /// <summary>
     /// Processes a folder of "stacked" images representing 2D slices of a 3D volume and 
@@ -87,4 +88,3 @@ namespace HoloToolkit.Unity
         }
     }
 }
-#endif

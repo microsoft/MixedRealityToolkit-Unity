@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialUnderstanding;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class LineDrawer : MonoBehaviour
     {
@@ -122,7 +122,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
             private void SetupAnimation()
             {
-                if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                if (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
                 {
                     return;
                 }
@@ -130,18 +130,18 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 // Calculate the forward distance for the animation start point
                 Vector3 rayPos = CameraCache.Main.transform.position;
                 Vector3 rayVec = CameraCache.Main.transform.forward * InitialPositionForwardMaxDistance;
-                IntPtr raycastResultPtr = HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
-                HoloToolkit.Unity.SpatialUnderstandingDll.Imports.PlayspaceRaycast(
+                IntPtr raycastResultPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticRaycastResultPtr();
+                SpatialUnderstandingDll.Imports.PlayspaceRaycast(
                     rayPos.x, rayPos.y, rayPos.z, rayVec.x, rayVec.y, rayVec.z,
                     raycastResultPtr);
-                SpatialUnderstandingDll.Imports.RaycastResult rayCastResult = HoloToolkit.Unity.SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticRaycastResult();
-                Vector3 animOrigin = (rayCastResult.SurfaceType != HoloToolkit.Unity.SpatialUnderstandingDll.Imports.RaycastResult.SurfaceTypes.Invalid) ?
+                SpatialUnderstandingDll.Imports.RaycastResult rayCastResult = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticRaycastResult();
+                Vector3 animOrigin = (rayCastResult.SurfaceType != SpatialUnderstandingDll.Imports.RaycastResult.SurfaceTypes.Invalid) ?
                     rayPos + rayVec.normalized * Mathf.Max((rayCastResult.IntersectPoint - rayPos).magnitude - 0.3f, 0.0f) :
                     rayPos + rayVec * InitialPositionForwardMaxDistance;
 
                 // Create the animation (starting it on the ground in front of the camera
-                SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
-                SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
+                SpatialUnderstandingDll.Imports.QueryPlayspaceAlignment(SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignmentPtr());
+                SpatialUnderstandingDll.Imports.PlayspaceAlignment alignment = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceAlignment();
                 AnimPosition.AddKey(TimeDelay + 0.0f, new Vector3(animOrigin.x, alignment.FloorYValue, animOrigin.z));
                 AnimPosition.AddKey(TimeDelay + AnimationTime * 0.5f, new Vector3(animOrigin.x, alignment.FloorYValue + 1.25f, animOrigin.z));
                 AnimPosition.AddKey(TimeDelay + AnimationTime * 0.6f, new Vector3(animOrigin.x, alignment.FloorYValue + 1.0f, animOrigin.z));
@@ -416,8 +416,10 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             }
             else
             {
-                mesh = new Mesh();
-                mesh.name = "LineDrawer.Lines_LineDataToMesh";
+                mesh = new Mesh
+                {
+                    name = "LineDrawer.Lines_LineDataToMesh"
+                };
             }
 
             // Set them into the mesh

@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using UnityEngine;
-using System.Collections;
-using HoloToolkit.Unity;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// GestureInteractiveControl receives gesture updates from GestureInteractive.
@@ -203,9 +202,10 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <returns></returns>
         public GestureInteractiveData GetGestureData(Vector3 alignmentVector, float maxDistance, bool flipDirecationOnCameraForward)
         {
-            GestureInteractiveData data = new GestureInteractiveData(alignmentVector, maxDistance, flipDirecationOnCameraForward);
-
-            data.Direction = DirectionVector;
+            GestureInteractiveData data = new GestureInteractiveData(alignmentVector, maxDistance, flipDirecationOnCameraForward)
+            {
+                Direction = DirectionVector
+            };
             bool flipDirection = Vector3.Dot(Vector3.forward, StartHeadRay) < 0 && flipDirecationOnCameraForward;
 
             if (flipDirection)
@@ -307,7 +307,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// For instance: forward/backward or Min/Center/Max
         /// </summary>
         /// <param name="gestureValue"></param>
-        public virtual void setGestureValue(int gestureValue)
+        public virtual void SetGestureValue(int gestureValue)
         {
             // override to convert keyword index to vectors.
             switch (gestureValue)

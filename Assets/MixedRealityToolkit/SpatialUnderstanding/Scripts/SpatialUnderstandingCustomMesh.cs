@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.SpatialMapping;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity.SpatialMapping;
-using MixedRealityToolkit.SpatialMapping;
 
 #if UNITY_WSA
 #if UNITY_2017_2_OR_NEWER
@@ -111,7 +110,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         private float timeLastImportedMesh = 0;
 
         /// <summary>
-        /// For a cached SpatialUnderstanding.Instance.
+        /// For a cached SpatialUnderstandingManager.Instance.
         /// </summary>
         private SpatialUnderstandingManager spatialUnderstanding;
 

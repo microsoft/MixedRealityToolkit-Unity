@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.InputModule.Utilities;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Examples.InputModule
 {
-    [RequireComponent(typeof(SetGlobalListener))]
+    [RequireComponent(requiredComponent: typeof(SetGlobalListener))]
     public class HapticsTest : MonoBehaviour, IInputHandler
     {
         void IInputHandler.OnInputDown(InputEventData eventData)

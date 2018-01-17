@@ -2,16 +2,19 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using HoloToolkit.Unity;
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-using Cursor = HoloToolkit.Unity.InputModule.Cursor;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.InputModule.Cursor;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.Common;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     /// <summary>
     /// GestureInteractive extends Interactive and handles more advanced gesture events.
@@ -49,7 +52,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 mStartHeadRay;
         private Vector3 mStartHandPosition;
         private Vector3 mCurrentHandPosition;
-        private Cursor mCursor;
+        private BaseCursor mCursor;
 
         private Coroutine mTicker;
         private IInputSource mTempInputSource;
@@ -281,7 +284,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             // TODO: Update Cursor Modifier to handle HideOnGesture, then calculate visibility so cursors can handle this correctly
             if (state)
             {
-                mCursor = FindObjectOfType<Cursor>();
+                mCursor = FindObjectOfType<BaseCursor>();
             }
 
             if (HideCursorOnManipulation && mCursor != null)
@@ -320,7 +323,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 int index;
                 if (mKeywordDictionary.TryGetValue(args.text, out index))
                 {
-                    Control.setGestureValue(index);
+                    Control.SetGestureValue(index);
                 }
             }
         }

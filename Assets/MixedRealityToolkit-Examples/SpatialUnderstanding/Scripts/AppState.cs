@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity;
-using HoloToolkit.Unity.InputModule;
-using HoloToolkit.Unity.SpatialMapping;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.SpatialMapping;
+using MixedRealityToolkit.SpatialUnderstanding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +17,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
+namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
     public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
     {
@@ -62,19 +66,19 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             get
             {
                 // Only allow this when we are actually scanning
-                if ((SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Scanning) ||
-                    (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
+                if ((SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Scanning) ||
+                    (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding))
                 {
                     return false;
                 }
 
                 // Query the current playspace stats
-                IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                IntPtr statsPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
                 if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
                 {
                     return false;
                 }
-                SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
+                SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
 
                 // Check our preset requirements
                 if ((stats.TotalSurfaceArea > kMinAreaForComplete) ||
@@ -102,13 +106,13 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 }
 
                 // Scan state
-                if (SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+                if (SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding)
                 {
-                    switch (SpatialUnderstanding.Instance.ScanState)
+                    switch (SpatialUnderstandingManager.Instance.ScanState)
                     {
-                        case SpatialUnderstanding.ScanStates.Scanning:
+                        case SpatialUnderstandingManager.ScanStates.Scanning:
                             // Get the scan stats
-                            IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                            IntPtr statsPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
                             if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
                             {
                                 return "playspace stats query failed";
@@ -120,12 +124,12 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                                 return "When ready, air tap to finalize your playspace";
                             }
                             return "Walk around and scan in your playspace";
-                        case SpatialUnderstanding.ScanStates.Finishing:
+                        case SpatialUnderstandingManager.ScanStates.Finishing:
                             return "Finalizing scan (please wait)";
-                        case SpatialUnderstanding.ScanStates.Done:
+                        case SpatialUnderstandingManager.ScanStates.Done:
                             return "Scan complete - Use the menu to run queries";
                         default:
-                            return "ScanState = " + SpatialUnderstanding.Instance.ScanState.ToString();
+                            return "ScanState = " + SpatialUnderstandingManager.Instance.ScanState.ToString();
                     }
                 }
                 return "";
@@ -136,7 +140,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             get
             {
-                if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning)
+                if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Scanning)
                 {
                     if (trackedHandsCount > 0)
                     {
@@ -161,21 +165,21 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             get
             {
-                if (SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.None)
+                if (SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.None)
                 {
                     return "";
                 }
 
                 // Scanning stats get second priority
-                if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-                    (SpatialUnderstanding.Instance.AllowSpatialUnderstanding))
+                if ((SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Scanning) &&
+                    (SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding))
                 {
-                    IntPtr statsPtr = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
+                    IntPtr statsPtr = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceStatsPtr();
                     if (SpatialUnderstandingDll.Imports.QueryPlayspaceStats(statsPtr) == 0)
                     {
                         return "Playspace stats query failed";
                     }
-                    SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
+                    SpatialUnderstandingDll.Imports.PlayspaceStats stats = SpatialUnderstandingManager.Instance.UnderstandingDLL.GetStaticPlayspaceStats();
 
                     // Start showing the stats when they are no longer zero
                     if (stats.TotalSurfaceArea > kMinAreaForStats)
@@ -262,8 +266,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private static void ToggleProcessedMesh()
         {
-            SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
-            Debug.Log("SpatialUnderstanding -> SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh=" + SpatialUnderstanding.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
+            SpatialUnderstandingManager.Instance.UnderstandingCustomMesh.DrawProcessedMesh = !SpatialUnderstandingManager.Instance.UnderstandingCustomMesh.DrawProcessedMesh;
+            Debug.Log("SpatialUnderstanding -> SpatialUnderstandingManager.Instance.UnderstandingCustomMesh.DrawProcessedMesh=" + SpatialUnderstandingManager.Instance.UnderstandingCustomMesh.DrawProcessedMesh);
         }
 
         private void Update()
@@ -291,10 +295,10 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Scanning) &&
-                !SpatialUnderstanding.Instance.ScanStatsReportStillWorking)
+            if ((SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Scanning) &&
+                !SpatialUnderstandingManager.Instance.ScanStatsReportStillWorking)
             {
-                SpatialUnderstanding.Instance.RequestFinishScan();
+                SpatialUnderstandingManager.Instance.RequestFinishScan();
             }
         }
     }

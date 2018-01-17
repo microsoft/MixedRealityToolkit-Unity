@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX
 {
     [RequireComponent(typeof(InteractiveSet))]
     public class InteractiveGroup : MonoBehaviour
@@ -40,13 +38,14 @@ namespace HoloToolkit.Examples.InteractiveElements
                 UpdateData();
             }
         }
-        
-        private List<InteractiveToggle> Interactives {
-            get 
+
+        private List<InteractiveToggle> Interactives
+        {
+            get
             {
                 return GetInteractiveSet().Interactives;
             }
-            set 
+            set
             {
                 GetInteractiveSet().Interactives = value;
             }
@@ -73,7 +72,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                         gameObject.name + " to use it in an InteractiveGroup.");
                 }
                 else
-                { 
+                {
                     Interactives.Add(InterInst);
                 }
             }
@@ -103,7 +102,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             RemoveInteractives();
         }
- 
+
 
         /// <summary>
         /// Remove unused Interactives from scene

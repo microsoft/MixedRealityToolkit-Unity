@@ -1,11 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.SharingWithUNET;
 using UnityEngine;
 using UnityEngine.Networking;
-using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity.SharingWithUNET
+namespace MixedRealityToolkit.Examples.SharingWithUNET
 {
     /// <summary>
     /// Controls player behavior (local and remote).

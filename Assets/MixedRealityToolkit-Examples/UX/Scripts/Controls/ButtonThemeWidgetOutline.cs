@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Examples.Prototyping;
+using MixedRealityToolkit.Examples.UX.Themes;
+using MixedRealityToolkit.Examples.UX.Widgets;
 using UnityEngine;
-using System.Collections;
-using HoloToolkit.Examples.Prototyping;
-using System;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Controls
 {
     /// <summary>
     /// updates the button colors based on the button theme

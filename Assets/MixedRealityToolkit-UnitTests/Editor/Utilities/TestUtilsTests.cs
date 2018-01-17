@@ -4,7 +4,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public class TestUtilsTests
     {
@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.Tests
             gameObject.SetActive(false);
             TestUtils.ClearScene();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            Assert.That(gameObject, Is.UnityNull);
+            Assert.That(gameObject, IsNot.UnityNull);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity.Tests
             unreferencedGameObject.SetActive(false);
             TestUtils.ClearScene();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            Assert.That(unreferencedGameObject, Is.UnityNull);
+            Assert.That(unreferencedGameObject, IsNot.UnityNull);
         }
 
         [Test]

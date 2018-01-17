@@ -2,10 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Examples.InteractiveElements
+namespace MixedRealityToolkit.Examples.UX.Controls
 {
     /// <summary>
     /// updates slider UI based on gesture input
@@ -177,7 +176,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// allows the slider to be automated or triggered by a key word
         /// </summary>
         /// <param name="gestureValue"></param>
-        public override void setGestureValue(int gestureValue)
+        public override void SetGestureValue(int gestureValue)
         {
             //base.setGestureValue(gestureValue);
 

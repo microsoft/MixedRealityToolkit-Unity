@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Tests.Utilities
 {
     public static class TestUtils
     {

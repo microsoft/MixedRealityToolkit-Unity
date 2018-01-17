@@ -133,7 +133,7 @@ namespace MixedRealityToolkit.Common.Extensions
             return type.GetRuntimeProperty(propertyName);
         }
 
-        public static IEnumerable<TypeInfo> GetTypes(this Assembly assembly)
+        public static IEnumerable<TypeInfo> GetTypeInfos(this Assembly assembly)
         {
             return assembly.DefinedTypes;
         }

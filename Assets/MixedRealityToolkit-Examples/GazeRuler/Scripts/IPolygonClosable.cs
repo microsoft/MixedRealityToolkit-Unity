@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Examples.GazeRuler
+namespace MixedRealityToolkit.Examples.GazeRuler
 {
     /// <summary>
     /// any geometry class inherit this interface should be closeable

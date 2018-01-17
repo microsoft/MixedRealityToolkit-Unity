@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
 using System;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Examples.Medical
 {
     /// <summary>
     /// Helper functions for dealing with volume data
@@ -65,9 +67,11 @@ namespace HoloToolkit.Unity
         {
             var colorData = VolumeTextureUtils.ByteArrayToColor32Array(data, volumeSize, volumeSizePow2);
 
-            var tex = new Texture3D(volumeSizePow2.x, volumeSizePow2.y, volumeSizePow2.z, TextureFormat.RGBA4444, false);
-            tex.filterMode = FilterMode.Bilinear;
-            tex.wrapMode = TextureWrapMode.Clamp;
+            var tex = new Texture3D(volumeSizePow2.x, volumeSizePow2.y, volumeSizePow2.z, TextureFormat.RGBA4444, false)
+            {
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
 
             tex.SetPixels32(colorData);
             tex.Apply();

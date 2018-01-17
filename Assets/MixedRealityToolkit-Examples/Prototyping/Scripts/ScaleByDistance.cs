@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
-using HoloToolkit.Unity;
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.InputModule;
 using UnityEngine;
 
-namespace HoloToolkit.Examples.Prototyping
+namespace MixedRealityToolkit.Examples.Prototyping
 {
     /// <summary>
     /// Animates the scale of an object based on it's distance to the distance object. Could be used for scaling UI based on the users position.

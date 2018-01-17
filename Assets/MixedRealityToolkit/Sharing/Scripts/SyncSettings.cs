@@ -11,7 +11,7 @@ using System.Reflection;
 namespace MixedRealityToolkit.Sharing
 {
     /// <summary>
-    /// Collection of sharing sync settings, used by the HoloToolkit Sharing sync system
+    /// Collection of sharing sync settings, used by the MixedRealityToolkit Sharing sync system
     /// to figure out which data model classes need to be instantiated when receiving
     /// data that inherits from SyncObject.
     /// </summary>
@@ -75,7 +75,7 @@ namespace MixedRealityToolkit.Sharing
                 }
 
 #if UNITY_WSA && !UNITY_EDITOR
-                foreach (TypeInfo type in assembly.GetTypes())
+                foreach (TypeInfo type in assembly.GetTypeInfos())
 #else
                 foreach (Type type in assembly.GetTypes())
 #endif

@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.EditorScript
 {
     /// <summary>
     /// Editor for FastConfigurable2Sided shader

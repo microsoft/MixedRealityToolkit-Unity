@@ -8,6 +8,8 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
+using MixedRealityToolkit.Common.Extensions;
+
 namespace HoloToolkit.Sharing {
 
 public class NetworkConnectionListener : Listener {

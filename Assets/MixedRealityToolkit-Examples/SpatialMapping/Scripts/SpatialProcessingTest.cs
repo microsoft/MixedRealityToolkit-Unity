@@ -1,10 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
+using MixedRealityToolkit.SpatialMapping;
+using MixedRealityToolkit.SpatialMapping.SpatialProcessing;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpatialMapping.Tests
+namespace MixedRealityToolkit.Examples.SpatialMapping
 {
     /// <summary>
     /// The SpatialProcessingTest class allows applications to scan the environment for a specified amount of time 

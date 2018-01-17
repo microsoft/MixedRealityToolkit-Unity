@@ -8,7 +8,7 @@ using UnityEngine;
 namespace MixedRealityToolkit.Build
 {
     /// <summary>
-    /// Renders the UI and handles update logic for HoloToolkit/Configure/Apply Mixed Reality Capability Settings.
+    /// Renders the UI and handles update logic for MixedRealityToolkit/Configure/Apply UWP Capability Settings.
     /// </summary>
     public class CapabilitySettingsWindow : AutoConfigureWindow<PlayerSettings.WSACapability>
     {

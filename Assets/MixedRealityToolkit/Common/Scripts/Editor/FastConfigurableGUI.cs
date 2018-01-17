@@ -5,7 +5,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.EditorScript
 {
     /// <summary>
     /// Editor for FastConfigurable shader

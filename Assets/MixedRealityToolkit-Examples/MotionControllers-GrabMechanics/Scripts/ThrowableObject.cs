@@ -4,7 +4,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
+namespace MixedRealityToolkit.Examples.Grabbables
 {
     /// <summary>
     /// Extends its behaviour from BaseThrowable. This is a non-abstract script that can be attached to throwable object

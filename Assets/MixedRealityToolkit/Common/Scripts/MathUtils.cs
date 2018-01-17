@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -102,11 +103,13 @@ namespace MixedRealityToolkit.Common
             // TODO: test and replace with this simpler, more unity-friendly code
             //       Quaternion q = Quaternion.LookRotation(m.GetColumn(2),m.GetColumn(1));
 
-            Quaternion q = new Quaternion();
-            q.w = Mathf.Sqrt(Mathf.Max(0, 1 + m[0, 0] + m[1, 1] + m[2, 2])) / 2;
-            q.x = Mathf.Sqrt(Mathf.Max(0, 1 + m[0, 0] - m[1, 1] - m[2, 2])) / 2;
-            q.y = Mathf.Sqrt(Mathf.Max(0, 1 - m[0, 0] + m[1, 1] - m[2, 2])) / 2;
-            q.z = Mathf.Sqrt(Mathf.Max(0, 1 - m[0, 0] - m[1, 1] + m[2, 2])) / 2;
+            Quaternion q = new Quaternion
+            {
+                w = Mathf.Sqrt(Mathf.Max(0, 1 + m[0, 0] + m[1, 1] + m[2, 2])) / 2,
+                x = Mathf.Sqrt(Mathf.Max(0, 1 + m[0, 0] - m[1, 1] - m[2, 2])) / 2,
+                y = Mathf.Sqrt(Mathf.Max(0, 1 - m[0, 0] + m[1, 1] - m[2, 2])) / 2,
+                z = Mathf.Sqrt(Mathf.Max(0, 1 - m[0, 0] - m[1, 1] + m[2, 2])) / 2
+            };
             q.x *= Mathf.Sign(q.x * (m[2, 1] - m[1, 2]));
             q.y *= Mathf.Sign(q.y * (m[0, 2] - m[2, 0]));
             q.z *= Mathf.Sign(q.z * (m[1, 0] - m[0, 1]));

@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace MixedRealityToolkit.Common.EditorScript
 {
     /// <summary>
     /// Helper class for custom material editors
