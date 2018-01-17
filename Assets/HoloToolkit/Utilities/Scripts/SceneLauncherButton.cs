@@ -7,7 +7,7 @@ using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity
 {
-    public class SceneLauncherButton : MonoBehaviour, IInputClickHandler
+    public class SceneLauncherButton : MonoBehaviour, IPointerHandler
     {
         public int SceneIndex { get; set; }
 
@@ -38,7 +38,7 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            IsHighlighted = GazePointer.Instance.HitObject == gameObject;
+            IsHighlighted = GazeManager.Instance.GazeTarget == gameObject;
         }
 
         private bool IsHighlighted
@@ -49,7 +49,11 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (EnableDebug)
             {

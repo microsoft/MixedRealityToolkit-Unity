@@ -1,11 +1,10 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using System;
 
 /// <summary>
-/// A conglimeration of open-source simplex libraries in C# with an emphasis on performance
+/// A conglomeration of open-source simplex libraries in C# with an emphasis on performance
 /// </summary>
 public class FastSimplexNoise
 {

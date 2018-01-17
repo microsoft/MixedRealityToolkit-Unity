@@ -7,9 +7,9 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Examples.ColorPicker
 {
-    public class GazeableColorPicker : FocusTarget, IInputClickHandler
+    public class GazeableColorPicker : FocusTarget, IPointerHandler
     {
-        public Renderer rendererComponent;
+        public Renderer RendererComponent;
 
         [System.Serializable]
         public class PickedColorCallback : UnityEvent<Color> { }
@@ -19,17 +19,17 @@ namespace HoloToolkit.Examples.ColorPicker
 
         private void Update()
         {
-            if (HasFocus == false) return;
+            if (!HasFocus) { return; }
             UpdatePickedColor(OnGazedColor);
         }
 
         private void UpdatePickedColor(PickedColorCallback cb)
         {
-            RaycastHit hit = GazePointer.Instance.HitInfo;
+            RaycastHit hit = GazeManager.Instance.HitInfo;
 
-            if (hit.transform.gameObject != rendererComponent.gameObject) { return; }
+            if (hit.transform.gameObject != RendererComponent.gameObject) { return; }
 
-            var texture = (Texture2D)rendererComponent.material.mainTexture;
+            var texture = (Texture2D)RendererComponent.material.mainTexture;
 
             Vector2 pixelUV = hit.textureCoord;
             pixelUV.x *= texture.width;
@@ -38,8 +38,12 @@ namespace HoloToolkit.Examples.ColorPicker
             Color col = texture.GetPixel((int)pixelUV.x, (int)pixelUV.y);
             cb.Invoke(col);
         }
-        
-        public void OnInputClicked(InputClickedEventData eventData)
+
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             UpdatePickedColor(OnPickedColor);
         }

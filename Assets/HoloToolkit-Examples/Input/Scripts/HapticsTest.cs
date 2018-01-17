@@ -4,6 +4,10 @@
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.Tests
 {
     [RequireComponent(typeof(SetGlobalListener))]
@@ -11,31 +15,39 @@ namespace HoloToolkit.Unity.Tests
     {
         void IInputHandler.OnInputDown(InputEventData eventData)
         {
-            InteractionInputSource inputSource = eventData.InputSource as InteractionInputSource;
-            if (inputSource != null)
+
+#if UNITY_WSA
+            if (InteractionInputSources.IsInitialized)
             {
                 switch (eventData.PressType)
                 {
-                    case InteractionSourcePressInfo.Grasp:
-                        inputSource.StartHaptics(eventData.SourceId, 1.0f);
+                    case InteractionSourcePressType.Grasp:
+                        InteractionInputSources.Instance.StartHaptics(eventData.SourceId, 1.0f);
                         return;
-                    case InteractionSourcePressInfo.Menu:
-                        inputSource.StartHaptics(eventData.SourceId, 1.0f, 1.0f);
+                    case InteractionSourcePressType.Menu:
+                        InteractionInputSources.Instance.StartHaptics(eventData.SourceId, 1.0f, 1.0f);
                         return;
                 }
             }
+#endif
         }
+
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData) { }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            InteractionInputSource inputSource = eventData.InputSource as InteractionInputSource;
+#if UNITY_WSA
+            InteractionInputSources inputSource = eventData.InputSource as InteractionInputSources;
             if (inputSource != null)
             {
-                if (eventData.PressType == InteractionSourcePressInfo.Grasp)
+                if (eventData.PressType == InteractionSourcePressType.Grasp)
                 {
                     inputSource.StopHaptics(eventData.SourceId);
                 }
             }
+#endif
         }
     }
 }

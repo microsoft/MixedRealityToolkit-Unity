@@ -27,7 +27,7 @@ namespace GLTF
 		/// and the animation's interpolation is `\"LINEAR\"`, spherical linear
 		/// interpolation (slerp) should be used to interpolate quaternions. When
 		/// interpolation is `\"STEP\"`, animated value remains constant to the value
-		/// of the first point of the timeframe, until the next timeframe.
+		/// of the first point of the time-frame, until the next time-frame.
 		/// </summary>
 		public InterpolationType Interpolation;
 

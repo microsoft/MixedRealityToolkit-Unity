@@ -8,7 +8,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Base class of all input events.
     /// </summary>
-    public abstract class BaseInputEventData : BaseEventData, IInputSourceInfoProvider
+    public abstract class BaseInputEventData : BaseEventData
     {
         /// <summary>
         /// The source the input event originates from.
@@ -23,24 +23,16 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// An optional, input-source-dependent object to be associated with this event.
         /// </summary>
-        public object[] Tag { get; private set; }
+        public object[] Tags { get; private set; }
 
-        /// <summary>
-        /// An optional, input-source-independent tag to be associated with this event.
-        /// </summary>
-        public string EventOrigin { get; private set; }
+        public BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public BaseInputEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
-
-        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, string eventOrigin, object[] tag = null)
+        protected void BaseInitialize(IInputSource inputSource, object[] tags)
         {
             Reset();
             InputSource = inputSource;
-            SourceId = sourceId;
-            Tag = tag;
-            EventOrigin = eventOrigin;
+            SourceId = InputSource.SourceId;
+            Tags = tags;
         }
     }
 }

@@ -88,6 +88,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -404,6 +405,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906323c940a3fad4f8f7e9e4fcd747f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containerObject: {fileID: 0}
+  alignmentType: 0
+  stationarySpaceTypePosition: {x: 0, y: 0, z: 0}
+  roomScaleSpaceTypePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &134179067
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 6, y: 6, z: 6}
@@ -2399,7 +2404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: -0.5, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 1.5, y: 1.5, z: 1.5}
@@ -4310,7 +4315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 4, y: 4, z: 4}

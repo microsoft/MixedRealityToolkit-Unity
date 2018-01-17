@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     {
         public UnityEvent FocusEnterEvent;
         public UnityEvent FocusLostEvent;
+        public UnityEvent<FocusEventData> FocusChangedEvent;
 
         public override void OnFocusEnter(FocusEventData eventData)
         {
@@ -28,6 +29,16 @@ namespace HoloToolkit.Unity.InputModule.Tests
             if (FocusLostEvent != null)
             {
                 FocusLostEvent.Invoke();
+            }
+        }
+
+        public override void OnBeforeFocusChange(FocusEventData eventData)
+        {
+            base.OnBeforeFocusChange(eventData);
+
+            if (FocusChangedEvent != null)
+            {
+                FocusChangedEvent.Invoke(eventData);
             }
         }
     }

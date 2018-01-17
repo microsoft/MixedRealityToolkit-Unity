@@ -31,6 +31,7 @@ namespace HoloToolkit.Unity.Tests
             {
                 eventData.Use();
             }
+
             EventFiredCallback(gameObject, eventData);
         }
 
@@ -44,6 +45,13 @@ namespace HoloToolkit.Unity.Tests
         public override void OnFocusExit(FocusEventData eventData)
         {
             base.OnFocusExit(eventData);
+
+            EventFiredCallback(gameObject, null);
+        }
+
+        public override void OnBeforeFocusChange(FocusEventData eventData)
+        {
+            base.OnBeforeFocusChange(eventData);
 
             EventFiredCallback(gameObject, null);
         }

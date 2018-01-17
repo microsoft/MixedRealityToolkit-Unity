@@ -1,7 +1,6 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace HoloToolkit.Unity.Collections
 {
     /// <summary>
     /// A utility that stores transform information for objects in a collection
-    /// This info can then be used for non-destructive realtime manipulation
+    /// This info can then be used for non-destructive real-time manipulation
     /// Or to restore an earlier configuration gathered on startup
     /// </summary>
     public class ObjectCollectionDynamic : MonoBehaviour

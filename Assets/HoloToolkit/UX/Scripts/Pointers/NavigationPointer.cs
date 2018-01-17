@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
-using HoloToolkit.Unity.UX;
-using HoloToolkit.Unity;
 
 namespace HoloToolkit.Unity.UX
 {
@@ -70,7 +66,7 @@ namespace HoloToolkit.Unity.UX
                 }
                 else
                 {
-                    return Result.Point;
+                    return Result.StartPoint;
                 }
             }
         }
@@ -91,7 +87,7 @@ namespace HoloToolkit.Unity.UX
                 }
                 else
                 {
-                    return Result.Normal;
+                    return Result.StartPoint;
                 }
             }
         }
@@ -116,7 +112,8 @@ namespace HoloToolkit.Unity.UX
                     return Camera.main.transform.eulerAngles.y - pointerOrientation;
                 }
             }
-            set {
+            set
+            {
                 // Store pointer orientation as the difference between camera and input
                 pointerOrientation = value;
             }
@@ -217,13 +214,13 @@ namespace HoloToolkit.Unity.UX
                 lineBase.enabled = true;
 
                 // If we hit something
-                if (Target != null)
+                if (Result.CurrentPointerTarget != null)
                 {
                     // Check if it's in our valid layers
-                    if (((1 << Target.layer) & validLayers.value) != 0)
+                    if (((1 << Result.CurrentPointerTarget.layer) & validLayers.value) != 0)
                     {
                         // See if it's a hot spot
-                        if (NavigationPointer.CheckForHotSpot(Target, out targetHotSpot) && targetHotSpot.IsActive)
+                        if (CheckForHotSpot(Result.CurrentPointerTarget, out targetHotSpot) && targetHotSpot.IsActive)
                         {
                             HitResult = NavigationSurfaceResultEnum.HotSpot;
                             // Turn on gravity, point it at hotspot
@@ -234,7 +231,7 @@ namespace HoloToolkit.Unity.UX
                         {
                             // If it's NOT a hotspot, check if the hit normal is too steep 
                             // (Hotspots override dot requirements)
-                            if (Vector3.Dot(Result.Normal, Vector3.up) < minValidDot)
+                            if (Vector3.Dot(Result.StartPoint, Vector3.up) < minValidDot)
                             {
                                 HitResult = NavigationSurfaceResultEnum.Invalid;
                             }
@@ -244,7 +241,7 @@ namespace HoloToolkit.Unity.UX
                             }
                         }
                     }
-                    else if (((1 << Target.layer) & invalidLayers) != 0)
+                    else if (((1 << Result.CurrentPointerTarget.layer) & invalidLayers) != 0)
                     {
                         HitResult = NavigationSurfaceResultEnum.Invalid;
                     }
@@ -258,14 +255,14 @@ namespace HoloToolkit.Unity.UX
                     {
                         if (i == Result.RayStepIndex)
                         {
-                            Debug.DrawLine(Result.StartPoint + Vector3.up * 0.1f, Result.Point + Vector3.up * 0.1f, (HitResult != NavigationSurfaceResultEnum.None) ? Color.yellow : Color.cyan);
+                            Debug.DrawLine(Result.StartPoint + Vector3.up * 0.1f, Result.StartPoint + Vector3.up * 0.1f, (HitResult != NavigationSurfaceResultEnum.None) ? Color.yellow : Color.cyan);
                             // Only add the distance between the start point and the hit
-                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.Point);
+                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.StartPoint);
                         }
                         else if (i < Result.RayStepIndex)
                         {
                             // Add the full length of the step to our total distance
-                            clearWorldLength += rays[i].length;
+                            clearWorldLength += rays[i].Length;
                         }
                     }
 
@@ -295,17 +292,19 @@ namespace HoloToolkit.Unity.UX
             hotSpot = null;
 
             if (primeFocus == null)
+            {
                 return false;
+            }
 
             // First check the target directly
             hotSpot = primeFocus.GetComponent(typeof(INavigationHotSpot)) as INavigationHotSpot;
             if (hotSpot == null)
             {
                 // Then check the attached rigidbody, just in case
-                Collider c = primeFocus.GetComponent<Collider>();
-                if (c != null && c.attachedRigidbody != null)
+                var focusCollider = primeFocus.GetComponent<Collider>();
+                if (focusCollider != null && focusCollider.attachedRigidbody != null)
                 {
-                    hotSpot = c.attachedRigidbody.GetComponent(typeof(INavigationHotSpot)) as INavigationHotSpot;
+                    hotSpot = focusCollider.attachedRigidbody.GetComponent(typeof(INavigationHotSpot)) as INavigationHotSpot;
                 }
             }
 

@@ -151,7 +151,7 @@ namespace HoloToolkit.Unity.UX
 
         #region line drawing functions
 
-        public static Vector3 GetPointAlongPhysicalParabola (Vector3 start, Vector3 direction, float velocity, Vector3 gravity, float time)
+        public static Vector3 GetPointAlongPhysicalParabola(Vector3 start, Vector3 direction, float velocity, Vector3 gravity, float time)
         {
             return (start + ((direction.normalized * velocity) * time)) + (0.5f * gravity * (time * time));
         }

@@ -44,9 +44,9 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public SemanticMeaning[] SemanticMeanings { get; private set; }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, string eventOrigin, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, object[] tag = null)
+        public void Initialize(IInputSource inputSource, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, eventOrigin, tag);
+            BaseInitialize(inputSource, tags);
             Confidence = confidence;
             PhraseDuration = phraseDuration;
             PhraseStartTime = phraseStartTime;

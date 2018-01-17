@@ -7,7 +7,7 @@ using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity
 {
-    public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandler
+    public class HeadsetAdjustment : MonoBehaviour, IPointerHandler, ISpeechHandler
     {
         public string NextSceneName;
 
@@ -16,7 +16,11 @@ namespace HoloToolkit.Unity
             InputManager.Instance.AddGlobalListener(gameObject);
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             GotoNextScene();
         }

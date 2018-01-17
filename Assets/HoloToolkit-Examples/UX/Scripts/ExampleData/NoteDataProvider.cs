@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +20,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         public InteractiveSet SourceSet;
 
         /// <summary>
-        /// some test data - imagine this comming from a web-service 
+        /// some test data - imagine this coming from a web-service 
         /// or some input menu
         /// </summary>
         public Dictionary<string, List<string>> Data = new Dictionary<string, List<string>>
@@ -89,7 +92,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             InteractiveSet interactiveSet = TargetGroup.GetInteractiveSet();
             foreach (int index in interactiveSet.SelectedIndices)
             {
-                Debug.Log("Send new note: " + TargetGroup.Titles[index]);
+                Debug.Log("Send new note: " + TargetGroup.Titles[index].Replace("\n", " "));
             }
             if (interactiveSet.SelectedIndices.Count == 0)
             {

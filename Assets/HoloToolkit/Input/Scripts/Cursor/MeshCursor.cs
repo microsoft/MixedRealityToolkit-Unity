@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public class MeshCursor : Cursor
+    public class MeshCursor : BaseCursor
     {
         [Serializable]
         public struct MeshCursorDatum
@@ -34,7 +34,12 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected override void OnEnable()
         {
-            if(TargetRenderer == null)
+            if (CursorStateData == null)
+            {
+                CursorStateData = new MeshCursorDatum[0];
+            }
+
+            if (TargetRenderer == null)
             {
                 TargetRenderer = GetComponentInChildren<MeshRenderer>();
             }
@@ -73,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule
             if (TargetRenderer != null)
             {
                 MeshFilter mf = TargetRenderer.gameObject.GetComponent<MeshFilter>();
-                if(mf != null && stateDatum.CursorMesh != null)
+                if (mf != null && stateDatum.CursorMesh != null)
                 {
                     mf.mesh = stateDatum.CursorMesh;
                 }

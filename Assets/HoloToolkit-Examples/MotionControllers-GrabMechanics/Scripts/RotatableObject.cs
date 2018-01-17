@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
             if (baseGrabbable.GrabberPrimary != null)
             {
                 Debug.Log(" obj.state.source.handedness =====" + obj.state.source.handedness + "   **** GrabberPriumary Handedness === " + baseGrabbable.GrabberPrimary.Handedness);
-                if ((InteractionSourceHandedness)obj.state.source.handedness == baseGrabbable.GrabberPrimary.Handedness)
+                if (obj.state.source.handedness == baseGrabbable.GrabberPrimary.Handedness)
                 {
                     if (obj.state.touchpadTouched)
                     {

@@ -3,10 +3,9 @@
 
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.UX
-{ 
+{
     [RequireComponent(typeof(DistorterGravity))]
     [UseWith(typeof(LineBase))]
     [UseWith(typeof(LineRendererBase))]
@@ -96,7 +95,6 @@ namespace HoloToolkit.Unity.UX
             float clearWorldLength = 0f;
             distorterGravity.enabled = false;
             Gradient lineColor = lineColorNoTarget;
-            IFocusTarget focusTarget = null;
 
             if (InteractionEnabled)
             {
@@ -108,7 +106,7 @@ namespace HoloToolkit.Unity.UX
                 }
 
                 // If we hit something
-                if (Target != null)
+                if (Result.CurrentPointerTarget != null)
                 {
                     // Use the step index to determine the length of the hit
                     for (int i = 0; i <= Result.RayStepIndex; i++)
@@ -116,19 +114,19 @@ namespace HoloToolkit.Unity.UX
                         if (i == Result.RayStepIndex)
                         {
                             // Only add the distance between the start point and the hit
-                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.Point);
+                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.StartPoint);
                         }
                         else if (i < Result.RayStepIndex)
                         {
                             // Add the full length of the step to our total distance
-                            clearWorldLength += rays[i].length;
+                            clearWorldLength += rays[i].Length;
                         }
                     }
 
                     // Clamp the end of the parabola to the result hit's point
                     lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, lineCastResolution);
 
-                    if (FocusManager.GetFocusTargetFromGameObject (Target, out focusTarget))
+                    if (FocusTarget != null)
                     {
                         lineColor = lineColorValid;
                     }
@@ -136,7 +134,7 @@ namespace HoloToolkit.Unity.UX
                     if (FocusLocked)
                     {
                         distorterGravity.enabled = true;
-                        distorterGravity.WorldCenterOfGravity = Target.transform.position;
+                        distorterGravity.WorldCenterOfGravity = Result.CurrentPointerTarget.transform.position;
                     }
                 }
                 else
@@ -158,18 +156,6 @@ namespace HoloToolkit.Unity.UX
             {
                 lineRenderers[i].LineColor = lineColor;
             }
-        }
-
-        public override bool OwnsInput(BaseInputEventData eventData)
-        {
-            Debug.Assert(input != null, "Input cannot be null for LinePointer");
-
-            if (eventData == null)
-            {
-                return false;
-            }
-
-            return InteractionEnabled && eventData.SourceId == input.SourceId;
         }
 
         #region custom editor

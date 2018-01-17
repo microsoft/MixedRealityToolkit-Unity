@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private bool closeOnNonTargetedTap;
 
         /// <summary>
-        /// alled when 'place' is selected
+        /// Called when 'place' is selected
         /// </summary>
         private Action activatedCallback;
 
@@ -147,6 +147,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
+
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {

@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +11,7 @@ namespace HoloToolkit.Unity.InputModule
     /// A cursor that looks and acts more like the shell cursor.
     /// A two part cursor with visual feedback for all cursor states
     /// </summary>
-    public class InteractiveMeshCursor : Cursor
+    public class InteractiveMeshCursor : BaseCursor
     {
         [Tooltip("The ring or outer element")]
         public GameObject Ring;
@@ -19,7 +22,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Point light")]
         public GameObject Light;
 
-        [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disapprear.")]
+        [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disappear.")]
         public float DistanceScaleFactor = 0.3f;
 
         [Tooltip("The scale both elements will be at their default state")]
@@ -62,14 +65,14 @@ namespace HoloToolkit.Unity.InputModule
             base.OnCursorStateChange(state);
 
             // the cursor state has changed, reset the animation timer
-            if (mHasHand != this.IsHandVisible || mIsDown != this.IsInputSourceDown || mHasHover != (this.TargetedObject != null))
+            if (mHasHand != IsHandDetected || mIsDown != IsPointerDown || mHasHover != (TargetedObject != null))
             {
                 mTimer = 0;
             }
 
-            mHasHand = this.IsHandVisible;
-            mIsDown = this.IsInputSourceDown;
-            mHasHover = this.TargetedObject != null;
+            mHasHand = IsHandDetected;
+            mIsDown = IsPointerDown;
+            mHasHover = TargetedObject != null;
 
             mTargetScale = mBaseScale * DefaultScale;
             bool showRing = false;
@@ -111,9 +114,9 @@ namespace HoloToolkit.Unity.InputModule
             Dot.SetActive(!showRing);
 
             // added observation of CursorModifier
-            if (TargetedCursorModifier != null && mHasHover)
+            if (Pointer.CursorModifier != null && mHasHover)
             {
-                ElementVisibility(!TargetedCursorModifier.GetCursorVisibility());
+                ElementVisibility(!Pointer.CursorModifier.GetCursorVisibility());
             }
         }
 
@@ -133,14 +136,14 @@ namespace HoloToolkit.Unity.InputModule
                     mTimer = ScaleTime;
                 }
 
-                Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer/ScaleTime);
+                Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
                 Dot.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
             }
 
             // handle scale of main cursor go
-            float distance = Vector3.Distance(GazePointer.Instance.GazeOrigin, transform.position);
-            float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
-            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
+            float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
+            float smoothScaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
+            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothScaling);
         }
 
         /// <summary>

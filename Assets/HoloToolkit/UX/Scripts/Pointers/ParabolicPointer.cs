@@ -1,5 +1,4 @@
-﻿using HoloToolkit.Unity;
-using UnityEngine;
+﻿using UnityEngine;
 using HoloToolkit.Unity.UX;
 
 namespace HoloToolkit.Unity.Controllers
@@ -7,9 +6,9 @@ namespace HoloToolkit.Unity.Controllers
     [RequireComponent(typeof(ParabolaPhysical))]
     [RequireComponent(typeof(DistorterGravity))]
     public class ParabolicPointer : NavigationPointer
-    {        
-        public override void OnPreRaycast() {
-
+    {
+        public override void OnPreRaycast()
+        {
             UpdateParabola();
 
             base.OnPreRaycast();
@@ -54,14 +53,16 @@ namespace HoloToolkit.Unity.Controllers
         [Tooltip("Pointers that you want to disable while teleporting")]
         private ControllerPointerBase[] disableWhileActive;
 
-        [Header("Parabola settings")]
+        //[Header("Parabola settings")]
+        //[SerializeField]
+        //private AnimationCurve parabolaVelocityCurve = AnimationCurve.Linear(-1f, 1f, 1f, 1f);
+
+        //[SerializeField]
+        //[Range(1f, 36f)]
+        //private float parabolaVelocityMultiplier = 10f;
+
         [SerializeField]
-        private AnimationCurve parabolaVelocityCurve = AnimationCurve.Linear(-1f, 1f, 1f, 1f);
-        [SerializeField]
-        [Range(1f, 36f)]
-        private float parabolaVelocityMultiplier = 10f;
-        [SerializeField]
-        [DropDownComponent(true,true)]
+        [DropDownComponent(true, true)]
         private ParabolaPhysical parabolaMain;
 
         protected override void OnDrawGizmos()

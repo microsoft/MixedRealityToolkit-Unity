@@ -10,11 +10,20 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class SourceStateEventData : BaseInputEventData
     {
+        public IPointingSource PointingSource { get; private set; }
+
         public SourceStateEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, string eventOrigin, object[] tag = null)
+        public void Initialize(IInputSource inputSource, object[] tags)
         {
-            BaseInitialize(inputSource, sourceId, eventOrigin, tag);
+            BaseInitialize(inputSource, tags);
+            PointingSource = null;
+        }
+
+        public void Initialize(IPointingSource inputSource, object[] tags)
+        {
+            BaseInitialize(inputSource, tags);
+            PointingSource = inputSource;
         }
     }
 }

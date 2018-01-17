@@ -9,7 +9,7 @@ using HoloToolkit.Unity.InputModule;
 namespace HoloToolkit.Examples.GazeRuler
 {
     /// <summary>
-    /// mananger all lines in the scene
+    /// Manages all lines in the scene
     /// </summary>
     public class LineManager : Singleton<LineManager>, IGeometry
     {
@@ -24,7 +24,7 @@ namespace HoloToolkit.Examples.GazeRuler
         public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
         {
 
-            Vector3 hitPoint = GazePointer.Instance.HitPosition;
+            Vector3 hitPoint = GazeManager.Instance.HitPosition;
 
             GameObject point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
             if (lastPoint != null && lastPoint.IsStart)

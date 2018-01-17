@@ -5,8 +5,6 @@ using System.Collections;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-using Cursor = HoloToolkit.Unity.InputModule.Cursor;
-
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -30,7 +28,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private IInputSource mCurrentInputSource;
         private uint mCurrentInputSourceId;
 
-        [Tooltip("Sets the time before the gesture starts after a press has occured, handy when a select event is also being used")]
+        [Tooltip("Sets the time before the gesture starts after a press has occurred, handy when a select event is also being used")]
         public float StartDelay;
 
         [Tooltip("The GestureInteractiveControl to send gesture updates to")]
@@ -49,16 +47,14 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 mStartHeadRay;
         private Vector3 mStartHandPosition;
         private Vector3 mCurrentHandPosition;
-        private Cursor mCursor;
+        private BaseCursor mBaseCursor;
 
         private Coroutine mTicker;
         private IInputSource mTempInputSource;
         private uint mTempInputSourceId;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             // get the gestureInteractiveControl if not previously set
             // This could reside on another GameObject, so we will not require this to exist on this game object.
             if (Control == null)
@@ -127,8 +123,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Start the gesture
         /// </summary>
-        /// <param name="ticker"></param>
-        /// <param name="type"></param>
         private void HandleStartGesture()
         {
             InputManager.Instance.ClearModalInputStack();
@@ -143,8 +137,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartHeadRay = CameraCache.Main.transform.forward;
 
             Vector3 handPosition;
-            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
-
+            InteractionInputSources.Instance.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
             mStartHandPosition = handPosition;
             mCurrentHandPosition = handPosition;
             Control.ManipulationUpdate(mStartHandPosition, mStartHandPosition, mStartHeadPosition, mStartHeadRay, GestureManipulationState.Start);
@@ -157,7 +150,8 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         public override void OnInputUp(InputEventData eventData)
         {
-            //base.OnInputUp(eventData);
+            base.OnInputUp(eventData);
+
             if (mCurrentInputSource != null && (eventData == null || eventData.SourceId == mCurrentInputSourceId))
             {
                 HandleRelease(false);
@@ -170,16 +164,13 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// required by ISourceStateHandler
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            // Nothing to do
-        }
+        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 
         /// <summary>
         /// Stops the gesture when the source is lost
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnSourceLost(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             if (mCurrentInputSource != null && eventData.SourceId == mCurrentInputSourceId)
             {
@@ -188,6 +179,10 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             CleanUpTicker();
         }
+
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
         /// <summary>
         /// manages the timer
@@ -208,8 +203,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             mTempInputSource = null;
 
-            Vector3 handPosition;
-            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
+            Vector3 handPosition = GetCurrentHandPosition();
 
             mCurrentHandPosition = handPosition;
             Control.ManipulationUpdate(
@@ -221,14 +215,14 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             InputManager.Instance.ClearModalInputStack();
 
-            if (HasGaze)
+            if (HasFocus)
             {
                 base.OnInputUp(null);
             }
             else
             {
                 base.OnInputUp(null);
-                base.ResetFocus();
+                base.OnFocusExit(null);
             }
 
             mCurrentInputSource = null;
@@ -239,6 +233,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Works like an Interactive if no manipulation has begun
         /// </summary>
+        /// <param name="eventData"></param>
         public override void OnFocusExit(FocusEventData eventData)
         {
             //base.OnGazeLeave();
@@ -251,6 +246,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Interactive
         /// </summary>
+        /// <param name="eventData"></param>
         public override void OnFocusEnter(FocusEventData eventData)
         {
             if (mCurrentInputSource == null)
@@ -266,8 +262,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
-            mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
-
+            InteractionInputSources.Instance.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
             return handPosition;
         }
 
@@ -281,12 +276,12 @@ namespace HoloToolkit.Examples.InteractiveElements
             // TODO: Update Cursor Modifier to handle HideOnGesture, then calculate visibility so cursors can handle this correctly
             if (state)
             {
-                mCursor = FindObjectOfType<Cursor>();
+                mBaseCursor = FindObjectOfType<BaseCursor>();
             }
 
-            if (HideCursorOnManipulation && mCursor != null)
+            if (HideCursorOnManipulation && mBaseCursor != null)
             {
-                mCursor.SetVisibility(!state);
+                mBaseCursor.SetVisibility(!state);
             }
         }
 
@@ -315,7 +310,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             base.KeywordRecognizer_OnPhraseRecognized(args);
 
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
-            if ((!KeywordRequiresGaze || HasGaze) && mKeywordDictionary != null)
+            if ((!KeywordRequiresGaze || HasFocus) && mKeywordDictionary != null)
             {
                 int index;
                 if (mKeywordDictionary.TryGetValue(args.text, out index))

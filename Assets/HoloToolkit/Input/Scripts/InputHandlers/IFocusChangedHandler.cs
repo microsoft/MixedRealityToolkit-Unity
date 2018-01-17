@@ -6,10 +6,11 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Interface to implement to react to per-pointer focus enter/exit.
+    /// Interface to implement to react to focus changed events.
     /// </summary>
     public interface IFocusChangedHandler : IEventSystemHandler
     {
-        void OnFocusChanged(FocusChangedEventData eventData);
+        void OnBeforeFocusChange(FocusEventData eventData);
+        void OnFocusChanged(FocusEventData eventData);
     }
 }

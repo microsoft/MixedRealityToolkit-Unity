@@ -27,7 +27,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private MeshRenderer meshRenderer;
 
-        private GazePointer gaze;
+        private GazeManager gazeManager;
 
         protected virtual void Awake()
         {
@@ -48,14 +48,14 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         protected virtual void Start()
         {
-            gaze = GazePointer.Instance;
+            gazeManager = GazeManager.Instance;
 
-            if (gaze == null)
+            if (gazeManager == null)
             {
                 Debug.LogError("Must have a GazeManager somewhere in the scene.");
             }
 
-            if ((GazePointer.Instance.RaycastLayerMasks[0] & (1 << gameObject.layer)) != 0)
+            if ((GazeManager.Instance.RaycastLayerMasks[0] & (1 << gameObject.layer)) != 0)
             {
                 Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
                     LayerMask.LayerToName(gameObject.layer));
@@ -66,9 +66,9 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             var result = new RaycastResult
             {
-                Hit = (GazePointer.Instance.HitObject == null) ? false : true,
-                Position = GazePointer.Instance.HitPosition,
-                Normal = GazePointer.Instance.GazeNormal
+                Hit = (GazeManager.Instance.GazeTarget == null) ? false : true,
+                Position = GazeManager.Instance.HitPosition,
+                Normal = GazeManager.Instance.GazeNormal
             };
 
             return result;
@@ -76,7 +76,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         protected virtual void LateUpdate()
         {
-            if (meshRenderer == null || gaze == null)
+            if (meshRenderer == null || gazeManager == null)
             {
                 return;
             }

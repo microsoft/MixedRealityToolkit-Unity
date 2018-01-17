@@ -31,32 +31,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnFocusEnter()
-        {
-            cachedMaterial.SetColor("_Color", FocusedColor);
-        }
-
-        public void OnFocusExit()
-        {
-            cachedMaterial.SetColor("_Color", originalColor);
-        }
-
         private void OnDestroy()
         {
             DestroyImmediate(cachedMaterial);
-        }
-
-        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
-        {
-            switch (eventData.RecognizedText.ToLower())
-            {
-                case "make bigger":
-                    OnMakeBigger();
-                    break;
-                case "make smaller":
-                    OnMakeSmaller();
-                    break;
-            }
         }
 
         public void OnMakeBigger()
@@ -82,9 +59,21 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public override void OnFocusExit(FocusEventData eventData)
         {
-            base.OnFocusExit(eventData);
-
+            base.OnFocusEnter(eventData);
             cachedMaterial.SetColor("_Color", originalColor);
+        }
+
+        void ISpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            switch (eventData.RecognizedText.ToLower())
+            {
+                case "make bigger":
+                    OnMakeBigger();
+                    break;
+                case "make smaller":
+                    OnMakeSmaller();
+                    break;
+            }
         }
     }
 }

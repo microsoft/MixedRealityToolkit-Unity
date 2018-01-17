@@ -1,16 +1,10 @@
-﻿using HoloToolkit.Unity;
-using HoloToolkit.Unity.InputModule;
-using System;
+﻿using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.UX
 {
-    public abstract class ControllerPointerBase : MonoBehaviour, InputModule.IPointingSource
+    public abstract class ControllerPointerBase : BaseInputSource, IPointingSource
     {
-        public string EventOrign { get { return eventOrigin; } }
-
         [Header("Interaction")]
         [SerializeField]
         protected bool interactionEnabled = true;
@@ -24,9 +18,7 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         protected Transform raycastOrigin;
         [SerializeField]
-        protected InputModule.Cursor cursorOverride;
-        [SerializeField]
-        private string eventOrigin = "Pointer";
+        protected BaseCursor cursorOverride;
 
         // True if select is pressed right now
         protected bool selectPressed = false;
@@ -35,66 +27,44 @@ namespace HoloToolkit.Unity.UX
 
         protected virtual void OnEnable()
         {
-            if (FocusManager.Instance != null)
-            {
-                FocusManager.Instance.RegisterFocuser(this);
-            }
-
             selectPressed = false;
         }
 
         protected virtual void OnDisable()
         {
-            if (FocusManager.Instance != null)
-            {
-                FocusManager.Instance.UnregisterFocuser(this);
-            }
-
             selectPressed = false;
         }
 
         #region IPointingSource implementation
 
-        public RayStep[] Rays
-        {
-            get
-            {
-                return rays;
-            }
-        }
+        float? IPointingSource.ExtentOverride { get; set; }
+
+        public RayStep[] Rays { get { return rays; } }
+
+        LayerMask[] IPointingSource.PrioritizedLayerMasksOverride { get; set; }
+        public IFocusHandler FocusTarget { get; set; }
+
+        public BaseCursor BaseCursor { get; set; }
+        public CursorModifier CursorModifier { get; set; }
 
         public virtual bool InteractionEnabled
         {
-            get
-            {
-                return interactionEnabled;
-            }
-            set
-            {
-                interactionEnabled = value;
-            }
+            get { return interactionEnabled; }
+            set { interactionEnabled = value; }
         }
 
         public virtual float? ExtentOverride { get { return PointerExtent; } }
 
-        public GameObject Target { get; set; }
-
-        public GameObject PreviousTarget { get; set; }
-
         public PointerResult Result { get; set; }
 
-        public InputModule.Cursor CursorOverride
-        {
-            get
-            {
-                return cursorOverride;
-            }
-        }
+        public BaseRayStabilizer RayStabilizer { get; set; }
 
-        public LayerMask[] PrioritizedLayerMasksOverride { get { return prioritizedLayerMasksOverride; } }
+        public BaseCursor CursorOverride { get { return cursorOverride; } }
 
         [SerializeField]
         protected LayerMask[] prioritizedLayerMasksOverride = new LayerMask[1] { new LayerMask() };
+
+        public LayerMask[] PrioritizedLayerMasksOverride { get { return prioritizedLayerMasksOverride; } }
 
         protected RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
 
@@ -104,7 +74,20 @@ namespace HoloToolkit.Unity.UX
 
         public abstract void OnPostRaycast();
 
-        public abstract bool OwnsInput(BaseInputEventData eventData);
+        public bool TryGetPointerPosition(out Vector3 position)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool TryGetPointingRay(out Ray pointingRay)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool TryGetPointerRotation(out Quaternion rotation)
+        {
+            throw new System.NotImplementedException();
+        }
 
         #endregion
 
@@ -155,10 +138,15 @@ namespace HoloToolkit.Unity.UX
 
         public virtual float PointerExtent { get { return pointerExtent; } }
 
-        protected virtual void OnDrawGizmos()
-        {
+        [SerializeField]
+        private SupportedInputInfo supportedInputInfo;
 
+        public override SupportedInputInfo GetSupportedInputInfo()
+        {
+            return supportedInputInfo;
         }
+
+        protected virtual void OnDrawGizmos() { }
 
         #region custom editor
 #if UNITY_EDITOR

@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void EnableAndCheck(bool value)
         {
-            this.enabled = value;
+            enabled = value;
             if (value)
             {
                 InputManagerAxisCheck();
@@ -119,25 +119,25 @@ namespace HoloToolkit.Unity.InputModule
             // Workaround for Remote Desktop.  Ctrl-mouse, Shift-mouse, and Alt-mouse don't work, so they should be avoided.
             if (IsRunningUnderRemoteDesktop())
             {
-                if (this.buttonType == ButtonController.ButtonType.Control)
+                if (buttonType == ButtonController.ButtonType.Control)
                 {
-                    this.buttonType = ButtonController.ButtonType.Left;
+                    buttonType = ButtonController.ButtonType.Left;
                     Debug.LogWarning("Running under Remote Desktop, so changed AxisContol method to Left mouse button");
                 }
-                if (this.buttonType == ButtonController.ButtonType.Alt)
+                if (buttonType == ButtonController.ButtonType.Alt)
                 {
-                    this.buttonType = ButtonController.ButtonType.Right;
+                    buttonType = ButtonController.ButtonType.Right;
                     Debug.LogWarning("Running under Remote Desktop, so changed AxisContol method to Right mouse button");
                 }
-                if (this.buttonType == ButtonController.ButtonType.Shift)
+                if (buttonType == ButtonController.ButtonType.Shift)
                 {
-                    this.buttonType = ButtonController.ButtonType.Middle;
+                    buttonType = ButtonController.ButtonType.Middle;
                     Debug.LogWarning("Running under Remote Desktop, so changed AxisContol method to Middle mouse button");
                 }
             }
 
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
 #endif
         }
 
@@ -243,39 +243,39 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (ShouldControl())
                 {
-                    if (!this.usingMouse)
+                    if (!usingMouse)
                     {
                         OnStartMouseLook();
-                        this.usingMouse = true;
+                        usingMouse = true;
                     }
                     rot = MouseLookTick();
                 }
                 else
                 {
-                    if (this.usingMouse)
+                    if (usingMouse)
                     {
                         OnEndMouseLook();
-                        this.usingMouse = false;
+                        usingMouse = false;
                     }
                 }
             }
 
-            rot *= this.SensitivityScale;
+            rot *= SensitivityScale;
             return rot;
         }
 
         private void OnStartMouseLook()
         {
-            if (this.buttonType <= ButtonController.ButtonType.Middle)
+            if (buttonType <= ButtonController.ButtonType.Middle)
             {
-                // if mousebutton is either left, right or middle
+                // if mouse button is either left, right or middle
                 SetWantsMouseJumping(true);
             }
-            else if (this.buttonType <= ButtonController.ButtonType.Focused)
+            else if (buttonType <= ButtonController.ButtonType.Focused)
             {
-                // if mousebutton is either control, shift or focused
-                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-                UnityEngine.Cursor.visible = false;
+                // if mouse button is either control, shift or focused
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
 
             // do nothing if (this.MouseLookButton == MouseButton.None)
@@ -283,16 +283,16 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnEndMouseLook()
         {
-            if (this.buttonType <= ButtonController.ButtonType.Middle)
+            if (buttonType <= ButtonController.ButtonType.Middle)
             {
-                // if mousebutton is either left, right or middle
+                // if mouse button is either left, right or middle
                 SetWantsMouseJumping(false);
             }
-            else if (this.buttonType <= ButtonController.ButtonType.Focused)
+            else if (buttonType <= ButtonController.ButtonType.Focused)
             {
-                // if mousebutton is either control, shift or focused
-                UnityEngine.Cursor.lockState = CursorLockMode.None;
-                UnityEngine.Cursor.visible = true;
+                // if mouse button is either control, shift or focused
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
 
             // do nothing if (this.MouseLookButton == MouseButton.None)
@@ -304,10 +304,10 @@ namespace HoloToolkit.Unity.InputModule
 
             // Use frame-to-frame mouse delta in pixels to determine mouse rotation. The traditional
             // GetAxis("Mouse X") method doesn't work under Remote Desktop.
-            Vector3 mousePositionDelta = Input.mousePosition - this.lastMousePosition;
-            this.lastMousePosition = Input.mousePosition;
+            Vector3 mousePositionDelta = Input.mousePosition - lastMousePosition;
+            lastMousePosition = Input.mousePosition;
 
-            if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
+            if (Cursor.lockState == CursorLockMode.Locked)
             {
                 mousePositionDelta.x = Input.GetAxis("Mouse X");
                 mousePositionDelta.y = Input.GetAxis("Mouse Y");
@@ -444,41 +444,41 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>Whether the user is holding down the control button.</returns>
         public bool ShouldControl()
         {
-            if (!this.appHasFocus)
+            if (!appHasFocus)
             {
                 return false;
             }
-            else if (this.buttonType == ButtonController.ButtonType.None)
+            else if (buttonType == ButtonController.ButtonType.None)
             {
                 return true;
             }
-            else if (this.buttonType <= ButtonController.ButtonType.Middle)
+            else if (buttonType <= ButtonController.ButtonType.Middle)
             {
-                return Input.GetMouseButton((int)this.buttonType);
+                return Input.GetMouseButton((int)buttonType);
             }
-            else if (this.buttonType == ButtonController.ButtonType.Control)
+            else if (buttonType == ButtonController.ButtonType.Control)
             {
                 return Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
             }
-            else if (this.buttonType == ButtonController.ButtonType.Shift)
+            else if (buttonType == ButtonController.ButtonType.Shift)
             {
                 return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             }
-            else if (this.buttonType == ButtonController.ButtonType.Alt)
+            else if (buttonType == ButtonController.ButtonType.Alt)
             {
                 return Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
             }
-            else if (this.buttonType == ButtonController.ButtonType.Space)
+            else if (buttonType == ButtonController.ButtonType.Space)
             {
                 return Input.GetKey(KeyCode.Space);
             }
-            else if (this.buttonType == ButtonController.ButtonType.Return)
+            else if (buttonType == ButtonController.ButtonType.Return)
             {
                 return Input.GetKey(KeyCode.Return);
             }
-            else if (this.buttonType == ButtonController.ButtonType.Focused)
+            else if (buttonType == ButtonController.ButtonType.Focused)
             {
-                if (!this.usingMouse)
+                if (!usingMouse)
                 {
                     // any kind of click will capture focus
                     return Input.GetMouseButtonDown((int)ButtonController.ButtonType.Left)
@@ -497,7 +497,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void OnApplicationFocus(bool focusStatus)
         {
-            this.appHasFocus = focusStatus;
+            appHasFocus = focusStatus;
         }
 
         /// <summary>
@@ -505,31 +505,31 @@ namespace HoloToolkit.Unity.InputModule
         ///  It means that the cursor will be invisible when it is outside of the
         ///  Unity game view window, and visible when it breaches the outer edges.
         /// </summary>
-        /// <param name="wantsJumping">Wheter the mouse cursor should be visible over the game window.</param>
+        /// <param name="wantsJumping">Whether the mouse cursor should be visible over the game window.</param>
         private void SetWantsMouseJumping(bool wantsJumping)
         {
-            if (wantsJumping != this.isMouseJumping)
+            if (wantsJumping != isMouseJumping)
             {
-                this.isMouseJumping = wantsJumping;
+                isMouseJumping = wantsJumping;
 
                 if (wantsJumping)
                 {
                     // unlock the cursor if it was locked
-                    UnityEngine.Cursor.lockState = CursorLockMode.None;
+                    Cursor.lockState = CursorLockMode.None;
 
                     // hide the cursor
-                    UnityEngine.Cursor.visible = false;
+                    Cursor.visible = false;
 
-                    this.lastMousePosition = Input.mousePosition;
+                    lastMousePosition = Input.mousePosition;
                 }
                 else
                 {
                     // recenter the cursor (setting lockCursor has side-effects under the hood)
-                    UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-                    UnityEngine.Cursor.lockState = CursorLockMode.None;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.lockState = CursorLockMode.None;
 
                     // show the cursor
-                    UnityEngine.Cursor.visible = true;
+                    Cursor.visible = true;
                 }
 
 #if UNITY_EDITOR

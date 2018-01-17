@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
-            if (/*obj.pressType == pressType && (*/handedness == InteractionSourceHandedness.Unknown || handedness == (InteractionSourceHandedness)obj.state.source.handedness)
+            if (/*obj.pressType == pressType && (*/handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness)
             {
 
                 if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
@@ -78,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         private void UseInputEnd(InteractionSourceReleasedEventArgs obj)
         {
-            if (/*obj.pressType == pressType && */(InteractionSourceHandedness)obj.state.source.handedness == handedness)
+            if (/*obj.pressType == pressType && */obj.state.source.handedness == handedness)
             {
                 state = UseStateEnum.Inactive;
                 UseEnd();

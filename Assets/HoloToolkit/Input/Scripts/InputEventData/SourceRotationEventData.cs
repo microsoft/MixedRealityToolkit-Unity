@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Describes an input event that involves a source's rotation changing.
     /// </summary>
-    public class SourceRotationEventData : BaseInputEventData
+    public class SourceRotationEventData : InputEventData
     {
         /// <summary>
         /// The new rotation of the source.
@@ -17,13 +17,11 @@ namespace HoloToolkit.Unity.InputModule
         public Quaternion PointerRotation { get; private set; }
         public Quaternion GripRotation { get; private set; }
 
-        public SourceRotationEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
+        public SourceRotationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, string eventOrigin, Quaternion pointerRotation, Quaternion gripRotation, object[] tag = null)
+        public void Initialize(IInputSource inputSource, Quaternion pointerRotation, Quaternion gripRotation, Handedness handedness, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, eventOrigin, tag);
+            Initialize(inputSource, handedness, tags);
             PointerRotation = pointerRotation;
             GripRotation = gripRotation;
         }

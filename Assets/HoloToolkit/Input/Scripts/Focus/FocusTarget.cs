@@ -3,53 +3,68 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
-using System.Collections.ObjectModel;
 
-public class FocusTarget : MonoBehaviour, IFocusTarget
+namespace HoloToolkit.Unity.InputModule
 {
-    public virtual bool FocusEnabled { get { return focusEnabled; } set { focusEnabled = value; } }
-
-    public virtual bool HasFocus
+    /// <summary>
+    /// Base Component for handling Focus on GameObjects.
+    /// </summary>
+    public class FocusTarget : MonoBehaviour, IFocusHandler
     {
-        get
+        [SerializeField]
+        [Tooltip("Does this GameObject start with Focus Enabled?")]
+        private bool focusEnabled = true;
+
+        public virtual bool FocusEnabled
         {
-            return FocusEnabled && focusers.Count > 0;
+            get { return focusEnabled; }
+            set { focusEnabled = value; }
         }
-    }
 
-    public List<IFocuser> Focusers
-    {
-        get
+        private bool hasFocus;
+
+        public bool HasFocus { get { return FocusEnabled && hasFocus; } }
+
+        private readonly List<IPointingSource> focusers = new List<IPointingSource>(0);
+
+        public List<IPointingSource> Focusers { get { return focusers; } }
+
+        public virtual void OnFocusEnter(FocusEventData eventData) { }
+
+        public virtual void OnFocusExit(FocusEventData eventData) { }
+
+        public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
-            // TODO: potentially cache a readonly collection to prevent manipulation
-            return focusers;
+            // If we're the new target object
+            // Add the pointer to the list of focusers
+            // and update our hasFocus flag if focusing is enabled.
+            if (eventData.NewFocusedObject == this)
+            {
+                eventData.Pointer.FocusTarget = this;
+                Focusers.Add(eventData.Pointer);
+
+                if (focusEnabled)
+                {
+                    hasFocus = true;
+                }
+            }
+            // If we're the old focused target object
+            // update our flag and remove the pointer from our list.
+            else if (eventData.OldFocusedObject == this)
+            {
+                hasFocus = false;
+
+                Focusers.Remove(eventData.Pointer);
+
+                // If there is no new focused target
+                // clear the FocusTarget field from the Pointer.
+                if (eventData.NewFocusedObject == null)
+                {
+                    eventData.Pointer.FocusTarget = null;
+                }
+            }
         }
+
+        public virtual void OnFocusChanged(FocusEventData eventData) { }
     }
-
-    private List<IFocuser> focusers = new List<IFocuser>();
-
-    [SerializeField]
-    private bool focusEnabled = true;
-
-    public virtual void OnFocusEnter(FocusEventData eventData)
-    {
-        //Debug.Log("Focuser Enter: " + eventData.Focuser);
-        if (!focusers.Contains(eventData.Focuser))
-        {
-            focusers.Add(eventData.Focuser);
-        }
-    }
-
-    public virtual void OnFocusExit(FocusEventData eventData)
-    {
-        //Debug.Log("Focuser Exit: " + eventData.Focuser);
-        focusers.Remove(eventData.Focuser);
-    }
-
-    public void ResetFocus()
-    {
-        focusers.Clear();
-    }
-
 }

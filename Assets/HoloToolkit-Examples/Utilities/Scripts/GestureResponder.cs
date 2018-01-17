@@ -6,14 +6,18 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class GestureResponder : MonoBehaviour, IInputClickHandler
+    public class GestureResponder : MonoBehaviour, IPointerHandler
     {
         private void Start()
         {
             InputManager.Instance.PushFallbackInputHandler(gameObject);
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             PlaneTargetGroupPicker.Instance.PickNewTarget();
         }

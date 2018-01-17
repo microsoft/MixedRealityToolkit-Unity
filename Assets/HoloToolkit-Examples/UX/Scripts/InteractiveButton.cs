@@ -26,20 +26,21 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// The gameObject received gaze
         /// </summary>
+        /// <param name="eventData"></param>
         public override void OnFocusEnter(FocusEventData eventData)
         {
             base.OnFocusEnter(eventData);
-            
+
             OnGazeEnterEvents.Invoke();
         }
 
         /// <summary>
         /// The gameObject no longer has gaze
         /// </summary>
+        /// <param name="eventData"></param>
         public override void OnFocusExit(FocusEventData eventData)
         {
             base.OnFocusExit(eventData);
-
             OnGazeLeaveEvents.Invoke();
         }
 

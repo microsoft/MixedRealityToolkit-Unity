@@ -11,11 +11,11 @@ namespace HoloToolkit.Examples.Prototyping
     /// A sizing and layout system for RectTransforms that help in building and laying out UI
     /// 
     /// Unity has a robust layout system using RectTransforms, Grids and LayoutGroups.
-    /// This componet helps to layout 3D primitive objects into the RectTransform system for building more complex layouts.
+    /// This component helps to layout 3D primitive objects into the RectTransform system for building more complex layouts.
     /// 
     /// For best results, scale the canvas parent element to 0.0005, 0.0005, 0.0005.
     /// Create a child RectTransform and position and size as needed.
-    /// Place a regular Transform based element inside the child RectTransform with this componet to automatically size and anchor
+    /// Place a regular Transform based element inside the child RectTransform with this component to automatically size and anchor
     /// this element based on it's parent RectTransform settings.
     /// 
     /// This component also adds depth controls.

@@ -24,26 +24,9 @@ GameObject:
   - component: {fileID: 114000012434513746}
   - component: {fileID: 114000013868099214}
   - component: {fileID: 114708646396671696}
-  - component: {fileID: 114742747811649402}
-  - component: {fileID: 114150358717966790}
+  - component: {fileID: 114821864844007854}
   m_Layer: 0
   m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1000012022330152
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4000013985985722}
-  - component: {fileID: 114950568511066590}
-  m_Layer: 0
-  m_Name: MouseInputControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +42,7 @@ GameObject:
   - component: {fileID: 4000010261267946}
   - component: {fileID: 114000012864906760}
   m_Layer: 0
-  m_Name: GesturesInput
+  m_Name: InteractionSourcesManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +58,7 @@ GameObject:
   - component: {fileID: 4977849313536866}
   - component: {fileID: 20049547090947856}
   m_Layer: 0
-  m_Name: RaycastCamera
+  m_Name: UIRaycastCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +108,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4000011656901714}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011656901714
 Transform:
@@ -137,24 +120,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4000013985985722}
   - {fileID: 4000010261267946}
   - {fileID: 4532035439910448}
   - {fileID: 4521646291090770}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4000013985985722
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012022330152}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4000011656901714}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4521646291090770
@@ -169,7 +138,7 @@ Transform:
   m_Children:
   - {fileID: 4977849313536866}
   m_Father: {fileID: 4000011656901714}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4532035439910448
 Transform:
@@ -182,7 +151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4000011656901714}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4977849313536866
 Transform:
@@ -255,6 +224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1a2a33ffcac354298137001635a001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CursorPrefab: {fileID: 1000012072213228, guid: a611e772ef8ddf64d8106a9cbb70f31c,
+    type: 2}
   MaxGazeCollisionDistance: 10
   RaycastLayerMasks:
   - serializedVersion: 2
@@ -273,7 +244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b160d197a8ca1894796ae263bafec0ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultEventOrigin: 
 --- !u!114 &114000012864906760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -307,19 +277,6 @@ MonoBehaviour:
   UseGazeManager: 1
   DefaultPlaneDistance: 2
   DrawGizmos: 0
---- !u!114 &114150358717966790
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011070707148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad0dd43a66cc11e4c8c6a7423650558c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CursorPrefab: {fileID: 114611684728110934, guid: a611e772ef8ddf64d8106a9cbb70f31c,
-    type: 2}
 --- !u!114 &114345042324023316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -365,25 +322,9 @@ MonoBehaviour:
   pointingRaycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291
-  registeredPointers: []
-  autoRegisterGazePointerIfNoPointersRegistered: 1
   debugDrawPointingRays: 0
   debugDrawPointingRayColors: []
   uiRaycastCamera: {fileID: 20049547090947856}
---- !u!114 &114742747811649402
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011070707148}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a23bf9a6a8497a4490fdbd42c41357e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ControllerPointerStabilizer: {fileID: 114345042324023316}
-  Cursor: {fileID: 0}
-  SearchForCursorIfUnset: 1
 --- !u!114 &114749671304188880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -398,21 +339,18 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 5
---- !u!114 &114950568511066590
+--- !u!114 &114821864844007854
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012022330152}
+  m_GameObject: {fileID: 1000011070707148}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f5805aa1626bf74eac450bb9c04b44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   simulateHandsInEditor: 1
-  sourceType: 1
-  sourceNumber: 0
-  Inputs: []
-  mouse: {fileID: 1906025923057554, guid: 1c82f15755e170f4a8056a0b7f52cf0c, type: 2}
+  SimulatedInputs: []
   leftHand: {fileID: 1747030157760962, guid: 0ff07ad2c7f9337489d2f7559b172d5d, type: 2}
   rightHand: {fileID: 1198379067318554, guid: 6baba202b5cc7954193562351570ad62, type: 2}

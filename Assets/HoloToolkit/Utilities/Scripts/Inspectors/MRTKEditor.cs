@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity
 
         public override void OnInspectorGUI()
         {
-            // Set this to true so 
+            // Set this to true so we can track which kind of headers to draw
             CustomEditorActive = true;
 
             try
@@ -98,8 +98,10 @@ namespace HoloToolkit.Unity
 
                 if (ShowCustomEditors)
                 {
+                    BeginInspectorStyle();
                     DrawCustomEditor();
                     DrawCustomFooter();
+                    EndInspectorStyle();
                 }
                 else
                 {
@@ -121,11 +123,28 @@ namespace HoloToolkit.Unity
             DrawCustomSceneGUI();
         }
 
+        protected virtual void BeginInspectorStyle()
+        {
+            // Empty by default
+        }
+
+        protected virtual void EndInspectorStyle()
+        {
+            // Empty by default
+        }
+
+        protected virtual bool DisplayHeader { get { return true; } }
+
         /// <summary>
         /// Draws buttons for turning custom editors on/off, as well as DocType, Tutorial and UseWith attributes
         /// </summary>
         private void DrawInspectorHeader()
         {
+            if (!DisplayHeader)
+            {
+                return;
+            }
+
             EditorGUILayout.Space();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button(ShowCustomEditors ? "Toggle Custom Editors (ON)" : "Toggle Custom Editors (OFF)", ShowCustomEditors ? toggleButtonOnStyle : toggleButtonOffStyle))
@@ -219,7 +238,6 @@ namespace HoloToolkit.Unity
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 List<Type> missingTypes = new List<Type>();
-                List<Type> missingSingletons = new List<Type>();
                 foreach (UseWithAttribute attribute in targetType.GetCustomAttributes(typeof(UseWithAttribute), true))
                 {
                     Component targetGo = (Component)target;
@@ -237,15 +255,6 @@ namespace HoloToolkit.Unity
                         }
                     }
                 }
-                foreach (RequireSingletonAttribute attribute in targetType.GetCustomAttributes(typeof(RequireSingletonAttribute), true))
-                {
-                    Component singleton = (Component)GameObject.FindObjectOfType(attribute.SingletonType);
-                    if (singleton == null)
-                    {
-                        missingSingletons.Add(attribute.SingletonType);
-                    }
-                }
-
                 if (missingTypes.Count > 0)
                 {
                     string warningMessage = "This class is designed to be accompanied by scripts of (or inheriting from) types: \n";
@@ -258,20 +267,6 @@ namespace HoloToolkit.Unity
                     warningMessage += "\nIt may not function correctly without them.";
                     DrawWarning(warningMessage);
                 }
-
-                if (missingSingletons.Count > 0)
-                {
-                    string errorMessage = "This class is designed to be accompanied by the following singletons:\n";
-                    for (int i = 0; i < missingSingletons.Count; i++)
-                    {
-                        errorMessage += " - " + missingSingletons[i].FullName;
-                        if (i < missingSingletons.Count - 1)
-                            errorMessage += "\n";
-                    }
-                    errorMessage += "\nIt will not function correctly without them.";
-                    DrawError(errorMessage);
-                }
-
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
             }
@@ -447,10 +442,8 @@ namespace HoloToolkit.Unity
         /// </summary>
         protected void SaveChanges()
         {
-            if (serializedObject.ApplyModifiedProperties())
-            {
-                EditorUtility.SetDirty(target);
-            }
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(target);
         }
 
         #region drawing
@@ -734,7 +727,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Displays a help window explaning profile objects
+        /// Displays a help window explaining profile objects
         /// </summary>
         private static void LaunchProfileHelp()
         {
@@ -1026,7 +1019,7 @@ namespace HoloToolkit.Unity
         #endregion
 
         #region editor prefs
-
+        
         private static void SetEditorPref(string key, bool value)
         {
             EditorPrefs.SetBool(Application.productName + key, value);

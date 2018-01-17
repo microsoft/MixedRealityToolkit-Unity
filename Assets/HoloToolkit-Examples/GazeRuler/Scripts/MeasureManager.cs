@@ -2,9 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity;
-using System.Collections.Generic;
 using System;
 using HoloToolkit.Unity.InputModule;
 
@@ -13,7 +11,7 @@ namespace HoloToolkit.Examples.GazeRuler
     /// <summary>
     /// manager all measure tools here
     /// </summary>
-    public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputClickHandler
+    public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IPointerHandler
     {
         private IGeometry manager;
         public GeometryMode Mode;
@@ -89,26 +87,24 @@ namespace HoloToolkit.Examples.GazeRuler
             ModeTipObject.SetActive(true);
         }
 
-        public void OnHoldStarted(HoldEventData eventData)
+        public void OnHoldStarted(InputEventData eventData)
         {
             OnPolygonClose();
         }
 
-        public void OnHoldCompleted(HoldEventData eventData)
-        {
-            // Nothing to do
-        }
+        public void OnHoldCompleted(InputEventData eventData) { }
 
-        public void OnHoldCanceled(HoldEventData eventData)
-        {
-            // Nothing to do
-        }
+        public void OnHoldCanceled(InputEventData eventData) { }
 
-    public void OnInputClicked(InputClickedEventData eventData)
-    {
-        OnSelect();
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
+        {
+            OnSelect();
+        }
     }
-}
 
     public class Point
     {

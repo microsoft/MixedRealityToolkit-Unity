@@ -3,9 +3,9 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using HoloToolkit.Unity.SpatialMapping;
+using HoloToolkit.Unity;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.SpatialMapping
 {
     public static class RoomMeshExporter
     {
@@ -29,7 +29,7 @@ namespace HoloToolkit.Unity
 
                 EditorPrefsUtility.SetEditorPref(ExportDirectoryKey, value);
             }
-        }
+        }        
 
         private static bool MakeExportDirectory()
         {

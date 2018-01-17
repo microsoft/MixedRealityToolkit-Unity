@@ -88,6 +88,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -314,7 +315,7 @@ Transform:
   - {fileID: 432117534}
   - {fileID: 923071793}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &115626667
 MonoBehaviour:
@@ -327,6 +328,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906323c940a3fad4f8f7e9e4fcd747f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containerObject: {fileID: 0}
+  alignmentType: 0
+  stationarySpaceTypePosition: {x: 0, y: 0, z: 0}
+  roomScaleSpaceTypePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &134179067
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 6, y: 6, z: 6}
@@ -591,6 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -875,6 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -1279,7 +1286,7 @@ Transform:
   m_Children:
   - {fileID: 1124712522}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &423221176
 Prefab:
@@ -1415,7 +1422,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 432117531}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.049999237, y: 0.47200012, z: 1.1980001}
+  m_LocalPosition: {x: 0, y: 0, z: 1.1980001}
   m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children:
   - {fileID: 1034968948}
@@ -1448,6 +1455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -1606,63 +1614,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 461818661}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &485146270
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114742747811649402, guid: 3eddd1c29199313478dd3f912bfab2ab,
-        type: 2}
-      propertyPath: Cursor
-      value: 
-      objectReference: {fileID: 759629491}
-    - target: {fileID: 114950568511066590, guid: 3eddd1c29199313478dd3f912bfab2ab,
-        type: 2}
-      propertyPath: simulateHandsInEditor
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
-  m_IsPrefabParent: 0
 --- !u!20 &485146271 stripped
 Camera:
   m_PrefabParentObject: {fileID: 20049547090947856, guid: 3eddd1c29199313478dd3f912bfab2ab,
     type: 2}
-  m_PrefabInternal: {fileID: 485146270}
+  m_PrefabInternal: {fileID: 2025356978}
 --- !u!1 &502235477
 GameObject:
   m_ObjectHideFlags: 0
@@ -2140,7 +2096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: -0.5, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 1.5, y: 1.5, z: 1.5}
@@ -2159,6 +2115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -2313,54 +2270,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4000014213108822, guid: b3364a8b0a2a96a43b662045118b0a9e,
     type: 2}
   m_PrefabInternal: {fileID: 1637635550}
---- !u!1001 &759629490
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
-  m_IsPrefabParent: 0
---- !u!114 &759629491 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114611684728110934, guid: a611e772ef8ddf64d8106a9cbb70f31c,
-    type: 2}
-  m_PrefabInternal: {fileID: 759629490}
-  m_Script: {fileID: 11500000, guid: 0decd33ba8702954885a62b5bc1a778e, type: 3}
 --- !u!1 &764860894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2815,6 +2724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -3029,6 +2939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   LogGesturesUpdateEvents: 0
 --- !u!1 &1071729350
 GameObject:
@@ -3319,6 +3230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -3670,6 +3582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   LogGesturesUpdateEvents: 0
 --- !u!114 &1282283562
 MonoBehaviour:
@@ -3682,6 +3595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d5a0a60fbe897549ad0bfe2039f12b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   HostTransform: {fileID: 0}
   DistanceScale: 2
   RotationMode: 0
@@ -3834,6 +3748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -3953,6 +3868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -3990,7 +3906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: 0}
   CursorScaleOffset: {x: 4, y: 4, z: 4}
@@ -4897,6 +4813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -5115,6 +5032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e791f54304a18e44895bc2f08871229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   ToolTip: {fileID: 0}
   ToolTipRenderer: {fileID: 0}
   ToolTipFadeTime: 0.25
@@ -5549,6 +5467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe6b0fe7a14c644b480a52a13883b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   LogGesturesUpdateEvents: 0
 --- !u!114 &1950385220
 MonoBehaviour:
@@ -5561,6 +5480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d5a0a60fbe897549ad0bfe2039f12b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
   HostTransform: {fileID: 0}
   DistanceScale: 2
   RotationMode: 0
@@ -5786,6 +5706,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2006547558}
+--- !u!1001 &2025356978
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &2091656257
 GameObject:
   m_ObjectHideFlags: 0

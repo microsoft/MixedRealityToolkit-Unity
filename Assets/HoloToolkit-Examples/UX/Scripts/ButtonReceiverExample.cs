@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +19,12 @@ namespace HoloToolkit.Unity.Examples
             txt = textObjectState.GetComponentInChildren<TextMesh>();
         }
 
-        protected override void FocusEnter(GameObject obj, FocusChangedEventData eventData) {
+        protected override void FocusEnter(GameObject obj, FocusEventData focusEventData) {
             Debug.Log(obj.name + " : FocusEnter");
             txt.text = obj.name + " : FocusEnter";
         }
 
-        protected override void FocusExit(GameObject obj, FocusChangedEventData eventData) {
+        protected override void FocusExit(GameObject obj, FocusEventData focusEventData) {
             Debug.Log(obj.name + " : FocusExit");
             txt.text = obj.name + " : FocusExit";
         }

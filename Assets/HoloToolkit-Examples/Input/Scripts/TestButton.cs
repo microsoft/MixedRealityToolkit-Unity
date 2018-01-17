@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
     /// receive pressed and released events.
     /// This class is an example of how an animated button can be created using the input module and Unity.
     /// </summary>
-    public class TestButton : FocusTarget, IInputClickHandler
+    public class TestButton : FocusTarget, IPointerHandler
     {
         public Transform ToolTip;
         public Renderer ToolTipRenderer;
@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private AnimatorControllerParameter[] animatorHashes;
         private Material cachedToolTipMaterial;
-        
+
         private bool stayFocused;
         public bool StayFocused
         {
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        protected virtual void Awake()
+        private void Awake()
         {
             if (focusedButtonId == 0)
             {
@@ -130,6 +130,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedToolTipMaterial);
+        }
+
         public void DehydrateButton()
         {
             if (ButtonAnimator != null && ButtonAnimator.isInitialized)
@@ -150,9 +155,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         }
 
         // Child classes can override to update button visuals
-        protected virtual void UpdateVisuals()
-        {
-        }
+        protected virtual void UpdateVisuals() { }
 
         private void UpdateButtonAnimation()
         {
@@ -183,7 +186,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             if (!EnableActivation)
             {
@@ -204,27 +211,21 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             base.OnFocusEnter(eventData);
 
+
             // The first time the button is focused and the timer hasn't started, start the timer in a delayed mode
-            if (HasFocus && toolTipTimer == 0.0f)
+            if (HasFocus && toolTipTimer.Equals(0f))
             {
                 toolTipTimer = -ToolTipDelayTime;
             }
 
-            UpdateButtonAnimation();
             UpdateVisuals();
+            UpdateButtonAnimation();
         }
 
         public override void OnFocusExit(FocusEventData eventData)
         {
-            base.OnFocusExit(eventData);
-
-            UpdateButtonAnimation();
             UpdateVisuals();
-        }
-
-        private void OnDestroy()
-        {
-            DestroyImmediate(cachedToolTipMaterial);
+            UpdateButtonAnimation();
         }
     }
 }

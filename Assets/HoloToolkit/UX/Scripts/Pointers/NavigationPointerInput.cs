@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.UX
 {
     /// <summary>
     /// Routes controller input to a physics pointer
     /// </summary>
-    public class NavigationPointerInput : AttachToController, IControllerInputHandler
+    public class NavigationPointerInput : AttachToController, IInputHandler
     {
         // Pressing 'forward' on the thumbstick gives us an angle that doesn't quite feel like
         // the forward direction, so we apply this offset to make navigation feel more natural
         const float thumbstickAngleOffset = -82.5f;
 
         [SerializeField]
-        [DropDownComponent(true,true)]
+        [DropDownComponent(true, true)]
         private ControllerPointerBase pointer = null;
+
         [SerializeField]
         private float thumbstickThreshold = 0.05f;
 
@@ -49,7 +51,8 @@ namespace HoloToolkit.Unity.UX
         {
             processingInput = false;
 
-            if (Mathf.Abs(thumbstickPosition.y) > thumbstickThreshold || Mathf.Abs(thumbstickPosition.x) > thumbstickThreshold) {
+            if (Mathf.Abs(thumbstickPosition.y) > thumbstickThreshold || Mathf.Abs(thumbstickPosition.x) > thumbstickThreshold)
+            {
                 // Get the angle of the pointer input
                 float angle = Mathf.Atan2(thumbstickPosition.y, thumbstickPosition.x) * Mathf.Rad2Deg;
                 // Offset the angle so it's 'forward' facing
@@ -76,20 +79,27 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
+        public void OnInputUp(InputEventData eventData) { }
+
+        public void OnInputDown(InputEventData eventData) { }
+
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
         /// <summary>
         /// Updates target point orientation via thumbstick
         /// </summary>
-        /// <param name="obj"></param>
         public void OnInputPositionChanged(InputPositionEventData eventData)
         {
-            if (eventData.SourceId == SourceId && eventData.PressType == InteractionSourcePressInfo.Thumbstick)
+            if (eventData.SourceId == pointer.SourceId)
             {
-                InteractionSourceHandedness sourceHandedness = InteractionSourceHandedness.Unknown;
-                // Make sure it's the correct hand
-                if (eventData.InputSource.TryGetSourceHandedness(eventData.SourceId, out sourceHandedness) && sourceHandedness == handedness)
+#if UNITY_WSA
+                if (eventData.PressType == InteractionSourcePressType.Thumbstick)
+#endif
                 {
-                    bool thumbstickPressed = false;
-                    eventData.InputSource.TryGetThumbstick(eventData.SourceId, out thumbstickPressed, out thumbstickPosition);
+                    if (eventData.Handedness == handedness)
+                    {
+                        thumbstickPosition = eventData.InputPosition;
+                    }
                 }
             }
         }

@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -22,101 +26,20 @@ namespace HoloToolkit.Unity.InputModule
         public event Action InputDisabled;
 
         /// <summary>
+        /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
+        /// </summary>
+        public static HashSet<IInputSource> DetectedInputSources { get { return detectedInputSources; } }
+        private static readonly HashSet<IInputSource> detectedInputSources = new HashSet<IInputSource>();
+
+        /// <summary>
         /// Global listeners listen to all events and ignore the fact that other components might have consumed them.
         /// </summary>
-        private readonly List<GameObject> globalListeners = new List<GameObject>(0);
-        private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
-        private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
+        public static List<GameObject> GlobalListeners { get { return globalListeners; } }
+        private static readonly List<GameObject> globalListeners = new List<GameObject>(0);
 
-        /// <summary>
-        /// To tap on a hologram even when not focused on,
-        /// set OverrideFocusedObject to desired game object.
-        /// If it's null, then focused object will be used.
-        /// </summary>
-        public GameObject OverrideFocusedObject { get; set; }
+        private static readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
 
-        private int disabledRefCount;
-
-        private FocusEventData focusEventData;
-        private InputEventData inputEventData;
-        private InputClickedEventData sourceClickedEventData;
-        private SourceStateEventData sourceStateEventData;
-        private ManipulationEventData manipulationEventData;
-        private HoldEventData holdEventData;
-        private NavigationEventData navigationEventData;
-        private GamePadEventData gamePadEventData;
-        private XboxControllerEventData xboxControllerEventData;
-        private SourceRotationEventData sourceRotationEventData;
-        private SourcePositionEventData sourcePositionEventData;
-        private FocusChangedEventData focusChangedEventData;
-        private InputPositionEventData inputPositionEventData;
-        private SelectPressedEventData selectPressedEventData;
-        private PointerInputEventData pointerInputEventData;
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-        private SpeechEventData speechEventData;
-        private DictationEventData dictationEventData;
-#endif
-
-        /// <summary>
-        /// List of the input sources as detected by the input manager like hands or motion controllers.
-        /// </summary>
-        private readonly List<InputSourceInfo> detectedInputSources = new List<InputSourceInfo>(0);
-        public List<InputSourceInfo> DetectedInputSources { get { return detectedInputSources; } }
-
-        #region event origin
-
-        /// <summary>
-        /// Applies a string to the device associated with inputSourceId
-        /// This string will accompany events raised by this device until RemoveEventOrigin is called
-        /// </summary>
-        /// <param name="inputSourceId"></param>
-        /// <param name="eventOrigin"></param>
-        public void ApplyEventOrigin(uint inputSourceId, string eventOrigin) {
-            if (!userEventOriginDictionary.ContainsKey(inputSourceId)) {
-                userEventOriginDictionary.Add(inputSourceId, eventOrigin);
-            } else {
-                userEventOriginDictionary[inputSourceId] = eventOrigin;
-            }
-        }
-
-        /// <summary>
-        /// Removes an event origin string applied via ApplyEventOrigin
-        /// If leaveIfOriginIsDifferent is true, event origin string will not be removed unless it matches the original string
-        /// (This is to prevent pointers from removing tags that don't belong to them)
-        /// </summary>
-        /// <param name="inputSourceId"></param>
-        /// <param name="eventOrigin"></param>
-        /// <param name="leaveIfOriginIsDifferent"></param>
-        public void RemoveEventOrigin(uint inputSourceId, string eventOrigin, bool leaveIfOriginIsDifferent = true) {
-            if (userEventOriginDictionary.ContainsKey(inputSourceId)) {
-                if (!leaveIfOriginIsDifferent || userEventOriginDictionary[inputSourceId] == eventOrigin) {
-                    userEventOriginDictionary.Remove(inputSourceId);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns the event origin associated with this input source, or the default if none is found
-        /// </summary>
-        /// <param name="inputSourceId"></param>
-        /// <returns></returns>
-        private string GetEventOrigin(uint inputSourceId) {
-            if (userEventOriginDictionary.ContainsKey(inputSourceId)) {
-                return userEventOriginDictionary[inputSourceId];
-            } else {
-                return defaultEventOrigin;
-            }
-        }
-
-        /// <summary>
-        /// User-defined strings set in ApplyEventOrigin
-        /// </summary>
-        private Dictionary<uint, string> userEventOriginDictionary = new Dictionary<uint, string>();
-
-        [SerializeField]
-        private string defaultEventOrigin = string.Empty;
-
-        #endregion
+        private static readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -126,86 +49,68 @@ namespace HoloToolkit.Unity.InputModule
             get { return disabledRefCount <= 0; }
         }
 
-        /// <summary>
-        /// Should the Unity UI events be fired?
-        /// </summary>
-        [Obsolete("Will be removed in a future release.  If you need to know if a specific pointer should send Unity UI Events use FocusManager.Instance.GetSpecificPointerEventData()!=null")]
-        public bool ShouldSendUnityUiEvents { get { return FocusManager.Instance.GetGazePointerEventData() != null && EventSystem.current != null; } }
+        private int disabledRefCount;
 
-        /// <summary>
-        /// Push a game object into the modal input stack. Any input handlers
-        /// on the game object are given priority to input events before any focused objects.
-        /// </summary>
-        /// <param name="inputHandler">The input handler to push</param>
-        public void PushModalInputHandler(GameObject inputHandler)
+        private SourceStateEventData sourceStateEventData;
+        private SourcePositionEventData sourcePositionEventData;
+        private SourceRotationEventData sourceRotationEventData;
+
+        private ClickEventData clickEventData;
+        private FocusEventData focusEventData;
+
+        private InputEventData inputEventData;
+        private InputPressedEventData inputPressedEventData;
+        private InputPositionEventData inputPositionEventData;
+
+        private NavigationEventData navigationEventData;
+        private ManipulationEventData manipulationEventData;
+
+#if UNITY_WSA || UNITY_STANDALONE_WIN
+        private SpeechEventData speechEventData;
+        private DictationEventData dictationEventData;
+#endif
+
+        private void InitializeEventDatas()
         {
-            modalInputStack.Push(inputHandler);
+            sourceStateEventData = new SourceStateEventData(EventSystem.current);
+            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
+            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
+
+            clickEventData = new ClickEventData(EventSystem.current);
+            focusEventData = new FocusEventData(EventSystem.current);
+
+            inputEventData = new InputEventData(EventSystem.current);
+            inputPressedEventData = new InputPressedEventData(EventSystem.current);
+            inputPositionEventData = new InputPositionEventData(EventSystem.current);
+
+            navigationEventData = new NavigationEventData(EventSystem.current);
+            manipulationEventData = new ManipulationEventData(EventSystem.current);
+
+#if UNITY_WSA || UNITY_STANDALONE_WIN
+            speechEventData = new SpeechEventData(EventSystem.current);
+            dictationEventData = new DictationEventData(EventSystem.current);
+#endif
         }
 
-        /// <summary>
-        /// Remove the last game object from the modal input stack.
-        /// </summary>
-        public void PopModalInputHandler()
-        {
-            if (modalInputStack.Count > 0)
-            {
-                modalInputStack.Pop();
+        #region Monobehavior Implementations
 
+        protected override void Awake()
+        {
+            base.Awake();
+            InitializeEventDatas();
+        }
+
+        private void Start()
+        {
+            if (!FocusManager.IsInitialized)
+            {
+                Debug.LogError("InputManager requires an active FocusManager in the scene");
             }
         }
 
-        /// <summary>
-        /// Clear all modal input handlers off the stack.
-        /// </summary>
-        public void ClearModalInputStack()
-        {
-            modalInputStack.Clear();
-        }
+        #endregion Monobehavior Implementations
 
-        /// <summary>
-        /// Adds a global listener that will receive all input events, regardless
-        /// of which other game objects might have handled the event beforehand.
-        /// </summary>
-        /// <param name="listener">Listener to add.</param>
-        public void AddGlobalListener(GameObject listener)
-        {
-            globalListeners.Add(listener);
-        }
-
-        /// <summary>
-        /// Removes a global listener.
-        /// </summary>
-        /// <param name="listener">Listener to remove.</param>
-        public void RemoveGlobalListener(GameObject listener)
-        {
-            globalListeners.Remove(listener);
-        }
-
-        /// <summary>
-        /// Push a game object into the fallback input stack. Any input handlers on
-        /// the game object are given input events when no modal or focused objects consume the event.
-        /// </summary>
-        /// <param name="inputHandler">The input handler to push</param>
-        public void PushFallbackInputHandler(GameObject inputHandler)
-        {
-            fallbackInputStack.Push(inputHandler);
-        }
-
-        /// <summary>
-        /// Remove the last game object from the fallback input stack.
-        /// </summary>
-        public void PopFallbackInputHandler()
-        {
-            fallbackInputStack.Pop();
-        }
-
-        /// <summary>
-        /// Clear all fallback input handlers off the stack.
-        /// </summary>
-        public void ClearFallbackInputStack()
-        {
-            fallbackInputStack.Clear();
-        }
+        #region Input Disabled Options
 
         /// <summary>
         /// Push a disabled input state onto the input manager.
@@ -251,47 +156,104 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private void InitializeEventDatas()
+        #endregion Input Disabled Options
+
+        #region Global Listener Options
+
+        /// <summary>
+        /// Adds a global listener that will receive all input events, regardless
+        /// of which other game objects might have handled the event beforehand.
+        /// </summary>
+        /// <param name="listener">Listener to add.</param>
+        public void AddGlobalListener(GameObject listener)
         {
-            focusEventData = new FocusEventData(EventSystem.current);
-            inputEventData = new InputEventData(EventSystem.current);
-            sourceClickedEventData = new InputClickedEventData(EventSystem.current);
-            sourceStateEventData = new SourceStateEventData(EventSystem.current);
-            manipulationEventData = new ManipulationEventData(EventSystem.current);
-            navigationEventData = new NavigationEventData(EventSystem.current);
-            holdEventData = new HoldEventData(EventSystem.current);
-            focusChangedEventData = new FocusChangedEventData(EventSystem.current);
-            inputPositionEventData = new InputPositionEventData(EventSystem.current);
-            selectPressedEventData = new SelectPressedEventData(EventSystem.current);
-            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
-            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
-            gamePadEventData = new GamePadEventData(EventSystem.current);
-            xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
-            pointerInputEventData = new PointerInputEventData(EventSystem.current);
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-            speechEventData = new SpeechEventData(EventSystem.current);
-            dictationEventData = new DictationEventData(EventSystem.current);
-#endif
+            globalListeners.Add(listener);
         }
 
-        #region Unity APIs
-
-        protected override void Awake()
+        /// <summary>
+        /// Removes a global listener.
+        /// </summary>
+        /// <param name="listener">Listener to remove.</param>
+        public void RemoveGlobalListener(GameObject listener)
         {
-            base.Awake();
-            InitializeEventDatas();
+            globalListeners.Remove(listener);
         }
 
-        private void Start()
+        #endregion
+
+        #region Modal Input Options
+
+        /// <summary>
+        /// Push a game object into the modal input stack. Any input handlers
+        /// on the game object are given priority to input events before any focused objects.
+        /// </summary>
+        /// <param name="inputHandler">The input handler to push</param>
+        public void PushModalInputHandler(GameObject inputHandler)
         {
-            if (!FocusManager.IsInitialized)
+            modalInputStack.Push(inputHandler);
+        }
+
+        /// <summary>
+        /// Remove the last game object from the modal input stack.
+        /// </summary>
+        public void PopModalInputHandler()
+        {
+            if (modalInputStack.Count > 0)
             {
-                Debug.LogError("InputManager requires an active FocusManager in the scene");
+                modalInputStack.Pop();
+
             }
         }
 
-        #endregion // Unity APIs
+        /// <summary>
+        /// Clear all modal input handlers off the stack.
+        /// </summary>
+        public void ClearModalInputStack()
+        {
+            modalInputStack.Clear();
+        }
 
+        #endregion
+
+        #region Fallback Input Handler Options
+
+        /// <summary>
+        /// Push a game object into the fallback input stack. Any input handlers on
+        /// the game object are given input events when no modal or focused objects consume the event.
+        /// </summary>
+        /// <param name="inputHandler">The input handler to push</param>
+        public void PushFallbackInputHandler(GameObject inputHandler)
+        {
+            fallbackInputStack.Push(inputHandler);
+        }
+
+        /// <summary>
+        /// Remove the last game object from the fallback input stack.
+        /// </summary>
+        public void PopFallbackInputHandler()
+        {
+            fallbackInputStack.Pop();
+        }
+
+        /// <summary>
+        /// Clear all fallback input handlers off the stack.
+        /// </summary>
+        public void ClearFallbackInputStack()
+        {
+            fallbackInputStack.Clear();
+        }
+
+        #endregion Fallback Input Handler Options
+
+        #region Input Handlers
+
+        /// <summary>
+        /// The main function for handling and forwarding all events to their intended recipients.
+        /// <para><remarks>See: https://docs.unity3d.com/Manual/MessagingSystem.html </remarks></para>
+        /// </summary>
+        /// <typeparam name="T">Event Handler Interface Type</typeparam>
+        /// <param name="eventData">Event Data</param>
+        /// <param name="eventHandler">Event Handler delegate</param>
         public void HandleEvent<T>(BaseInputEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             if (!Instance.enabled || disabledRefCount > 0)
@@ -300,6 +262,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             Debug.Assert(!eventData.used);
+
+
+            GameObject focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
 
             // Send the event to global listeners
             for (int i = 0; i < globalListeners.Count; i++)
@@ -315,62 +280,38 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            // If we have an override focus object
-            if (OverrideFocusedObject != null)
-            {
-                // Execute focus events on the override object only
-                if (ExecuteFocusEvents<T>(eventData, eventHandler, OverrideFocusedObject))
-                {
-                    return;
-                }
-            }
-            else
-            {
-                // Otherwise, check if we have focus targets from the focus manager
-                List<IFocusTarget> currentFocusTargets = FocusManager.Instance.CurrentFocusTargets;
+            // TODO: robertes: consider whether modal and fallback input should flow to each handler until used
+            //       or it should flow to just the topmost handler on the stack as it does today.
 
-                if (currentFocusTargets.Count == 0)
+            // Handle modal input if one exists
+            if (modalInputStack.Count > 0)
+            {
+                GameObject modalInput = modalInputStack.Peek();
+
+                // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
+                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
                 {
-                    // If there are no focus targets, execute events on a null target so modal input still receives events
-                    ExecuteFocusEvents<T>(eventData, eventHandler, null);
+                    if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
+                    {
+                        return;
+                    }
                 }
+                // Otherwise, just invoke the event on the modal handler itself
                 else
                 {
-                    // Otherwise execute events on each focus target
-                    foreach (IFocusTarget target in currentFocusTargets)
+                    if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler) && eventData.used)
                     {
-                        // Skip any that don't have focus
-                        // (IFocusTargets may override focus status via FocusEnabled)
-                        if (!target.HasFocus)
-                        {
-                            continue;
-                        }
-
-                        // Check whether any of the focusers in the target own this event data
-                        bool atLeastOneFocuserOwnsEvent = false;
-                        foreach (IFocuser focuser in target.Focusers)
-                        {
-                            if (focuser.OwnsInput(eventData))
-                            {
-                                atLeastOneFocuserOwnsEvent = true;
-                                break;
-                            }
-                        }
-
-                        // If none own the event data, don't send the event to this target
-                        if (!atLeastOneFocuserOwnsEvent)
-                        {
-                            continue;
-                        }
-
-                        GameObject focusedObject = target.gameObject;
-
-                        if (ExecuteFocusEvents<T>(eventData, eventHandler, focusedObject))
-                        {
-                            // If executing the focus events consumes the event, we're done
-                            return;
-                        }
+                        return;
                     }
+                }
+            }
+
+            // If event was not handled by modal, pass it on to the current focused object
+            if (focusedObject != null)
+            {
+                if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
+                {
+                    return;
                 }
             }
 
@@ -385,216 +326,52 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private bool ExecuteFocusEvents<T>(BaseInputEventData eventData, ExecuteEvents.EventFunction<T> eventHandler, GameObject focusedObject) where T : IEventSystemHandler
-        {
-            Debug.Assert(!eventData.used);
-
-            // Handle modal input if one exists
-            if (modalInputStack.Count > 0)
-            {
-                GameObject modalInput = modalInputStack.Peek();
-
-                // If there is a focused object in the hierarchy of the modal handler, start the event
-                // bubble there
-                if (focusedObject != null && modalInput != null && focusedObject.transform.IsChildOf(modalInput.transform))
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
-                    {
-                        return true;
-                    }
-                }
-                // Otherwise, just invoke the event on the modal handler itself
-                else
-                {
-                    if (ExecuteEvents.ExecuteHierarchy(modalInput, eventData, eventHandler) && eventData.used)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            // If event was not handled by modal, pass it on to the current focused object
-            if (focusedObject != null)
-            {
-                if (ExecuteEvents.ExecuteHierarchy(focusedObject, eventData, eventHandler) && eventData.used)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        #region Focus Events
-
-        public struct FocusEvent
-        {
-            public FocusEvent(IFocuser focuser, GameObject target)
-            {
-                Focuser = focuser;
-                Target = target;
-            }
-
-            public IFocuser Focuser { get; private set; }
-            public GameObject Target { get; private set; }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IFocusTarget> OnFocusEnterEventHandlerInfo =
-            delegate (IFocusTarget handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                handler.OnFocusEnter(casted);
-            };
-
-        public void RaiseFocusEnter(FocusEvent focusedEvent)
-        {
-            focusEventData.Initialize(focusedEvent.Focuser, focusedEvent.Target);
-
-            ExecuteEvents.ExecuteHierarchy(focusedEvent.Target.gameObject, focusEventData, OnFocusEnterEventHandlerInfo);
-
-            PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
-
-            if (pointerInputEventData != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(focusedEvent.Target.gameObject, pointerInputEventData, ExecuteEvents.pointerEnterHandler);
-            }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IFocusTarget> OnFocusExitEventHandlerInfo =
-            delegate (IFocusTarget handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-                handler.OnFocusExit(casted);
-            };
-
-        public void RaiseFocusExit(FocusEvent deFocusedEvent)
-        {
-            focusEventData.Initialize(deFocusedEvent.Focuser, deFocusedEvent.Target);
-
-            ExecuteEvents.ExecuteHierarchy(deFocusedEvent.Target.gameObject, focusEventData, OnFocusExitEventHandlerInfo);
-
-            PointerInputEventData pointerInputEventData = FocusManager.Instance.GetGazePointerEventData();
-
-            if (pointerInputEventData != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(deFocusedEvent.Target.gameObject, pointerInputEventData, ExecuteEvents.pointerExitHandler);
-            }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IFocusChangedHandler> OnFocusChangedEventHandler =
-            delegate (IFocusChangedHandler handler, BaseEventData eventData)
-            {
-                FocusChangedEventData casted = ExecuteEvents.ValidateEventData<FocusChangedEventData>(eventData);
-                handler.OnFocusChanged(casted);
-            };
+        #region Input Source Events
 
         /// <summary>
-        /// Raise focus enter and exit events for when an input (that supports pointing) points to a game object.
+        /// Generates a new unique source id.
         /// </summary>
-        /// <param name="focuser"></param>
-        /// <param name="oldFocusedObject"></param>
-        /// <param name="newFocusedObject"></param>
-        public void RaiseFocusChangedEvents(IFocuser focuser, GameObject oldFocusedObject, GameObject newFocusedObject)
+        /// <returns></returns>
+        public static uint GenerateNewSourceId()
         {
-            focusChangedEventData.Initialize(focuser, oldFocusedObject, newFocusedObject);
-            ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusChangedEventData, OnFocusChangedEventHandler);
-        }
+            var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
 
-        #endregion // Focus Events
-
-        #region Generic Input Events
-
-        private static readonly ExecuteEvents.EventFunction<IInputClickHandler> OnInputClickedEventHandler =
-            delegate (IInputClickHandler handler, BaseEventData eventData)
+            foreach (var inputSource in detectedInputSources)
             {
-                var casted = ExecuteEvents.ValidateEventData<InputClickedEventData>(eventData);
-                handler.OnInputClicked(casted);
-            };
-
-        public void RaiseInputClicked(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, int tapCount, object[] tag = null)
-        {
-            // Create input event
-            sourceClickedEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), pressType, tapCount, tag);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceClickedEventData, OnInputClickedEventHandler);
-
-            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaiseSourceUp call the pointerClickHandler.
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IInputHandler> OnSourceUpEventHandler =
-            delegate (IInputHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
-                handler.OnInputUp(casted);
-            };
-
-        public void RaiseSourceUp(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, object[] tag = null)
-        {
-            // Create input event
-            inputEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), pressType, tag);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnSourceUpEventHandler);
-
-            // UI events
-            IFocuser focuser;
-            if (FocusManager.Instance.TryGetFocuser(inputEventData, out focuser))
-            {
-                if (pressType == InteractionSourcePressInfo.Select)
+                if (inputSource.SourceId == newId)
                 {
-                    pointerInputEventData.Reset();
-                    pointerInputEventData.InputSource = source;
-                    pointerInputEventData.SourceId = sourceId;
-
-                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
-                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
-                    pointerInputEventData.Clear();
+                    return GenerateNewSourceId();
                 }
             }
+
+            return newId;
         }
 
-        private static readonly ExecuteEvents.EventFunction<IInputHandler> OnSourceDownEventHandler =
-            delegate (IInputHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
-                handler.OnInputDown(casted);
-            };
-
-        public void RaiseSourceDown(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, object[] tag = null)
+        public void RaiseSourceDetected(IInputSource source, object[] tags = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), pressType, tag);
+            sourceStateEventData.Initialize(source, tags);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnSourceDownEventHandler);
-
-            // UI events
-            IFocuser focuser;
-            if (FocusManager.Instance.TryGetFocuser(inputEventData, out focuser))
-            {
-                if (pressType == InteractionSourcePressInfo.Select)
-                {
-                    pointerInputEventData.Reset();
-                    pointerInputEventData.InputSource = source;
-                    pointerInputEventData.SourceId = sourceId;
-                    pointerInputEventData.pointerId = (int)sourceId;
-
-                    pointerInputEventData.eligibleForClick = true;
-                    pointerInputEventData.delta = Vector2.zero;
-                    pointerInputEventData.dragging = false;
-                    pointerInputEventData.useDragThreshold = true;
-                    pointerInputEventData.pressPosition = pointerInputEventData.position;
-                    pointerInputEventData.pointerPressRaycast = pointerInputEventData.pointerCurrentRaycast;
-
-                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerDownHandler);
-                }
-            }
+            AddSource(source);
         }
 
-        #endregion // Generic Input Events
+        public void RaiseSourceDetected(IPointingSource source, object[] tags = null)
+        {
+            // Create input event
+            sourceStateEventData.Initialize(source, tags);
 
-        #region Source State Events
+            AddSource(source);
+        }
+
+        private void AddSource(IInputSource source)
+        {
+            Debug.Assert(!detectedInputSources.Contains(source), string.Format("{0} has already been registered with the Input Manager!", source.Name));
+
+            detectedInputSources.Add(source);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
+        }
 
         private static readonly ExecuteEvents.EventFunction<ISourceStateHandler> OnSourceDetectedEventHandler =
             delegate (ISourceStateHandler handler, BaseEventData eventData)
@@ -603,194 +380,629 @@ namespace HoloToolkit.Unity.InputModule
                 handler.OnSourceDetected(casted);
             };
 
-        public void RaiseSourceDetected(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseSourceLost(IInputSource source, object[] tags = null)
         {
-            // Manage list of detected sources
-            bool alreadyDetected = false;
-
-            for (int iDetected = 0; iDetected < detectedInputSources.Count; iDetected++)
-            {
-                if (detectedInputSources[iDetected].Matches(source, sourceId))
-                {
-                    alreadyDetected = true;
-                    break;
-                }
-            }
-
-            if (!alreadyDetected)
-            {
-                InputSourceInfo newInputSource = new InputSourceInfo(source, sourceId);
-                detectedInputSources.Add(newInputSource);
-            }
-
             // Create input event
-            sourceStateEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), tag);
+            sourceStateEventData.Initialize(source, tags);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
+            RemoveSource(source);
         }
 
-        private static readonly ExecuteEvents.EventFunction<ISourceStateHandler> OnSourceLostEventHandler =
-            delegate (ISourceStateHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
-                handler.OnSourceLost(casted);
-            };
-
-        public void RaiseSourceLost(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseSourceLost(IPointingSource source, object[] tags = null)
         {
-            // Manage list of detected sources
-            for (int iDetected = 0; iDetected < detectedInputSources.Count; iDetected++)
-            {
-                if (detectedInputSources[iDetected].Matches(source, sourceId))
-                {
-                    detectedInputSources.RemoveAt(iDetected);
-                    break;
-                }
-            }
-
             // Create input event
-            sourceStateEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), tag);
+            sourceStateEventData.Initialize(source, tags);
+
+            RemoveSource(source);
+        }
+
+        private void RemoveSource(IInputSource source)
+        {
+            Debug.Assert(detectedInputSources.Contains(source), string.Format("{0} was never registered with the Input Manager!", source.Name));
+
+            detectedInputSources.Remove(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
         }
 
-        #endregion
+        private static readonly ExecuteEvents.EventFunction<ISourceStateHandler> OnSourceLostEventHandler =
+                delegate (ISourceStateHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
+                    handler.OnSourceLost(casted);
+                };
 
-        #region Manipulation Events
-
-        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationStartedEventHandler =
-            delegate (IManipulationHandler handler, BaseEventData eventData)
-            {
-                ManipulationEventData casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
-                handler.OnManipulationStarted(casted);
-            };
-
-        public void RaiseManipulationStarted(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseSourcePositionChanged(IInputSource source, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), Vector3.zero, tag);
+            sourcePositionEventData.Initialize(source, pointerPosition, gripPosition, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationUpdatedEventHandler =
-            delegate (IManipulationHandler handler, BaseEventData eventData)
-            {
-                ManipulationEventData casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
-                handler.OnManipulationUpdated(casted);
-            };
-
-        public void RaiseManipulationUpdated(IInputSource source, uint sourceId, Vector3 cumulativeDelta, object[] tag = null)
+        public void RaiseSourcePositionChanged(IInputSource source, Vector3 pointerPosition, Vector3 gripPosition, Handedness sourceHandedness, object[] tags = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), cumulativeDelta, tag);
+            sourcePositionEventData.Initialize(source, pointerPosition, gripPosition, sourceHandedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationCompletedEventHandler =
-            delegate (IManipulationHandler handler, BaseEventData eventData)
-            {
-                ManipulationEventData casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
-                handler.OnManipulationCompleted(casted);
-            };
+        private static readonly ExecuteEvents.EventFunction<ISourceStateHandler> OnSourcePositionChangedEventHandler =
+                delegate (ISourceStateHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourcePositionEventData>(eventData);
+                    handler.OnSourcePositionChanged(casted);
+                };
 
-        public void RaiseManipulationCompleted(IInputSource source, uint sourceId, Vector3 cumulativeDelta, object[] tag = null)
+        public void RaiseSourceRotationChanged(IInputSource source, Quaternion pointerRotation, Quaternion gripRotation, Handedness sourceHandedness, object[] tags = null)
         {
             // Create input event
-            manipulationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), cumulativeDelta, tag);
+            sourceRotationEventData.Initialize(source, pointerRotation, gripRotation, sourceHandedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
+            HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationCanceledEventHandler =
-            delegate (IManipulationHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<ISourceStateHandler> OnSourceRotationChangedEventHandler =
+                delegate (ISourceStateHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourceRotationEventData>(eventData);
+                    handler.OnSourceRotationChanged(casted);
+                };
+
+        #endregion Input Source State Events
+
+        #region Focus Events
+
+        /// <summary>
+        /// Raise the event OnBeforeFocusChange to the game object when focus enters it.
+        /// </summary>
+        /// <param name="pointer">The pointer that focused the GameObject.</param>
+        /// <param name="focusedObject">The GameObject that is focused.</param>
+        public void RaiseFocusEnter(IPointingSource pointer, GameObject focusedObject)
+        {
+            focusEventData.Initialize(pointer);
+
+            ExecuteEvents.ExecuteHierarchy(focusedObject, focusEventData, OnFocusEnterEventHandler);
+
+            var graphicEventData = FocusManager.Instance.GetSpecificPointerGraphicEventData(pointer);
+            if (graphicEventData != null)
             {
-                ManipulationEventData casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
-                handler.OnManipulationCanceled(casted);
+                ExecuteEvents.ExecuteHierarchy(focusedObject, graphicEventData, ExecuteEvents.pointerEnterHandler);
+            }
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IFocusHandler> OnFocusEnterEventHandler =
+                delegate (IFocusHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                    handler.OnFocusEnter(casted);
+                };
+
+        /// <summary>
+        /// Raise the event OnFocusExit to the game object when focus exists it.
+        /// </summary>
+        /// <param name="pointer">The pointer that unfocused the GameObject.</param>
+        /// <param name="unfocusedObject">The GameObject that is unfocused.</param>
+        public void RaiseFocusExit(IPointingSource pointer, GameObject unfocusedObject)
+        {
+            focusEventData.Initialize(pointer);
+
+            ExecuteEvents.ExecuteHierarchy(unfocusedObject, focusEventData, OnFocusExitEventHandler);
+
+            var graphicEventData = FocusManager.Instance.GetSpecificPointerGraphicEventData(pointer);
+            if (graphicEventData != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(unfocusedObject, graphicEventData, ExecuteEvents.pointerExitHandler);
+            }
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IFocusHandler> OnFocusExitEventHandler =
+                delegate (IFocusHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                    handler.OnFocusExit(casted);
+                };
+
+        /// <summary>
+        /// Raise the Pre Focus Changed Event.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <param name="oldFocusedObject"></param>
+        /// <param name="newFocusedObject"></param>
+        public void RaisePreFocusChangedEvent(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        {
+            focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
+
+            // Raise Focus Events on the old and new focused objects.
+            if (oldFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(oldFocusedObject, focusEventData, OnPreFocusChangedHandler);
+            }
+
+            if (newFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusEventData, OnPreFocusChangedHandler);
+            }
+
+            // Raise Focus Events on the pointers cursor if it has one.
+            if (pointer.BaseCursor != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnPreFocusChangedHandler);
+            }
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IFocusChangedHandler> OnPreFocusChangedHandler =
+                delegate (IFocusChangedHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                    handler.OnBeforeFocusChange(casted);
+                };
+
+        /// <summary>
+        /// Raise focus enter and exit events for when an input (that supports pointing) points to a game object.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <param name="oldFocusedObject"></param>
+        /// <param name="newFocusedObject"></param>
+        public void OnFocusChangedEvent(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        {
+            focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
+
+            // Raise Focus Events on the old and new focused objects.
+            if (oldFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(oldFocusedObject, focusEventData, OnFocusChangedHandler);
+            }
+
+            if (newFocusedObject != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(newFocusedObject, focusEventData, OnFocusChangedHandler);
+            }
+
+            // Raise Focus Events on the pointers cursor if it has one.
+            if (pointer.BaseCursor != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnFocusChangedHandler);
+            }
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IFocusChangedHandler> OnFocusChangedHandler =
+            delegate (IFocusChangedHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+                handler.OnFocusChanged(casted);
             };
 
-        public void RaiseManipulationCanceled(IInputSource source, uint sourceId, object[] tag = null)
-        {
-            // Create input event
-            manipulationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), Vector3.zero, tag);
+        #endregion Focus Events
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
+        #region Pointers
+
+        #region Pointer Down
+
+        private static readonly ExecuteEvents.EventFunction<IPointerHandler> OnPointerDownEventHandler =
+            delegate (IPointerHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
+                handler.OnPointerDown(casted);
+            };
+
+        private void ExecutePointerDown(GraphicInputEventData graphicInputEventData)
+        {
+            if (graphicInputEventData != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerDownHandler);
+            }
         }
 
-        #endregion // Manipulation Events
+        private GraphicInputEventData HandlePointerDown(IPointingSource pointingSource)
+        {
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(clickEventData, OnPointerDownEventHandler);
+
+            return FocusManager.Instance.GetSpecificPointerGraphicEventData(pointingSource);
+        }
+
+        public void RaisePointerDown(IPointingSource source, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, tags);
+
+            ExecutePointerDown(HandlePointerDown(source));
+        }
+
+        public void RaisePointerDown(IPointingSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, handedness, tags);
+
+            ExecutePointerDown(HandlePointerDown(source));
+        }
+
+#if UNITY_WSA
+        public void RaisePointerDown(IPointingSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, pressType, handedness, tags);
+
+            if (pressType == InteractionSourcePressType.Select)
+            {
+                ExecutePointerDown(HandlePointerDown(source));
+            }
+        }
+#endif
+
+        #endregion Pointer Down
+
+        #region Pointer Click
+
+        private static readonly ExecuteEvents.EventFunction<IPointerHandler> OnInputClickedEventHandler =
+                delegate (IPointerHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
+                    handler.OnPointerClicked(casted);
+                };
+
+        private void HandleClick()
+        {
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(clickEventData, OnInputClickedEventHandler);
+
+            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
+        }
+
+        public void RaiseInputClicked(IPointingSource source, int tapCount, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, tapCount, tags);
+
+            HandleClick();
+        }
+
+        public void RaiseInputClicked(IPointingSource source, int tapCount, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, tapCount, handedness, tags);
+
+            HandleClick();
+        }
+
+#if UNITY_WSA
+        public void RaiseInputClicked(IPointingSource source, int tapCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, tapCount, pressType, handedness, tags);
+
+            HandleClick();
+        }
+#endif
+
+        #endregion Pointer Click
+
+        #region Pointer Up
+
+        private static readonly ExecuteEvents.EventFunction<IPointerHandler> OnPointerUpEventHandler =
+            delegate (IPointerHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
+                handler.OnPointerUp(casted);
+            };
+
+        private void ExecutePointerUp(GraphicInputEventData graphicInputEventData)
+        {
+            if (graphicInputEventData != null)
+            {
+                ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerUpHandler);
+                ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerClickHandler);
+                graphicInputEventData.Clear();
+            }
+        }
+
+        private GraphicInputEventData HandlePointerUp(IPointingSource pointingSource)
+        {
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(clickEventData, OnPointerUpEventHandler);
+
+            return FocusManager.Instance.GetSpecificPointerGraphicEventData(pointingSource);
+        }
+
+        public void RaisePointerUp(IPointingSource source, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, tags);
+
+            ExecutePointerUp(HandlePointerUp(source));
+        }
+
+        public void RaisePointerUp(IPointingSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, handedness, tags);
+
+            ExecutePointerUp(HandlePointerUp(source));
+        }
+
+#if UNITY_WSA
+        public void RaisePointerUp(IPointingSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            clickEventData.Initialize(source, pressType, handedness, tags);
+
+            if (pressType == InteractionSourcePressType.Select)
+            {
+                ExecutePointerUp(HandlePointerUp(source));
+            }
+        }
+#endif
+        #endregion Pointer Up
+
+        #endregion Pointers
+
+        #region Generic Input Events
+
+        #region Input Down
+
+        private static readonly ExecuteEvents.EventFunction<IInputHandler> OnInputDownEventHandler =
+            delegate (IInputHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                handler.OnInputDown(casted);
+            };
+
+        public void RaiseOnInputDown(IInputSource source, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputDownEventHandler);
+        }
+
+        public void RaiseOnInputDown(IInputSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputDownEventHandler);
+        }
+
+#if UNITY_WSA
+        public void RaiseOnInputDown(IInputSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, pressType, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputDownEventHandler);
+        }
+#endif
+        #endregion Input Down
+
+        #region Input Pressed
+
+        private static readonly ExecuteEvents.EventFunction<IInputHandler> OnInputPressedEventHandler =
+            delegate (IInputHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<InputPressedEventData>(eventData);
+                handler.OnInputDown(casted);
+            };
+
+        public void RaiseOnInputPressed(IInputSource source, double pressAmount, object[] tags = null)
+        {
+            // Create input event
+            inputPressedEventData.Initialize(source, pressAmount, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputPressedEventHandler);
+        }
+
+        public void RaiseOnInputPressed(IInputSource source, double pressAmount, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputPressedEventData.Initialize(source, pressAmount, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputPressedEventHandler);
+        }
+
+#if UNITY_WSA
+        public void RaiseOnInputPressed(IInputSource source, double pressAmount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputPressedEventData.Initialize(source, pressAmount, pressType, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputPressedEventHandler);
+        }
+#endif
+        #endregion Input Up
+
+        #region Input Up
+
+        private static readonly ExecuteEvents.EventFunction<IInputHandler> OnInputUpEventHandler =
+            delegate (IInputHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
+                handler.OnInputDown(casted);
+            };
+
+        public void RaiseOnInputUp(IInputSource source, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputUpEventHandler);
+        }
+
+        public void RaiseOnInputUp(IInputSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputUpEventHandler);
+        }
+
+#if UNITY_WSA
+        public void RaiseOnInputUp(IInputSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, pressType, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnInputUpEventHandler);
+        }
+#endif
+        #endregion Input Up
+
+        #region Input Position Changed
+
+        private static readonly ExecuteEvents.EventFunction<IInputHandler> OnInputPositionChanged =
+            delegate (IInputHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<InputPositionEventData>(eventData);
+                handler.OnInputPositionChanged(casted);
+            };
+
+        public void RaiseInputPositionChanged(IInputSource source, InputPositionType inputType, Vector2 inputPosition, object[] tags = null)
+        {
+            // Create input event
+            inputPositionEventData.Initialize(source, inputType, inputPosition, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputPositionEventData, OnInputPositionChanged);
+        }
+
+        public void RaiseInputPositionChanged(IInputSource source, InputPositionType inputType, Vector2 inputPosition, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputPositionEventData.Initialize(source, inputType, inputPosition, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputPositionEventData, OnInputPositionChanged);
+        }
+
+#if UNITY_WSA
+        public void RaiseInputPositionChanged(IInputSource source, Vector2 inputPosition, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputPositionEventData.Initialize(source, inputPosition, pressType, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputPositionEventData, OnInputPositionChanged);
+        }
+#endif
+        #endregion Input Position Changed
+
+        #endregion Generic Input Events
 
         #region Hold Events
 
         private static readonly ExecuteEvents.EventFunction<IHoldHandler> OnHoldStartedEventHandler =
             delegate (IHoldHandler handler, BaseEventData eventData)
             {
-                HoldEventData casted = ExecuteEvents.ValidateEventData<HoldEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 handler.OnHoldStarted(casted);
             };
 
-        public void RaiseHoldStarted(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseHoldStarted(IInputSource source, object[] tags = null)
         {
             // Create input event
-            holdEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), tag);
+            inputEventData.Initialize(source, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(holdEventData, OnHoldStartedEventHandler);
+            HandleEvent(inputEventData, OnHoldStartedEventHandler);
+        }
+
+        public void RaiseHoldStarted(IInputSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnHoldStartedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IHoldHandler> OnHoldCompletedEventHandler =
             delegate (IHoldHandler handler, BaseEventData eventData)
             {
-                HoldEventData casted = ExecuteEvents.ValidateEventData<HoldEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 handler.OnHoldCompleted(casted);
             };
 
-        public void RaiseHoldCompleted(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseHoldCompleted(IInputSource source, object[] tags = null)
         {
             // Create input event
-            holdEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), tag);
+            inputEventData.Initialize(source, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(holdEventData, OnHoldCompletedEventHandler);
+            HandleEvent(inputEventData, OnHoldCompletedEventHandler);
+        }
+
+        public void RaiseHoldCompleted(IInputSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnHoldCompletedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IHoldHandler> OnHoldCanceledEventHandler =
             delegate (IHoldHandler handler, BaseEventData eventData)
             {
-                HoldEventData casted = ExecuteEvents.ValidateEventData<HoldEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 handler.OnHoldCanceled(casted);
             };
 
-        public void RaiseHoldCanceled(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseHoldCanceled(IInputSource source, object[] tags = null)
         {
             // Create input event
-            holdEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), tag);
+            inputEventData.Initialize(source, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(holdEventData, OnHoldCanceledEventHandler);
+            HandleEvent(inputEventData, OnHoldCanceledEventHandler);
         }
 
-        #endregion // Hold Events
+        public void RaiseHoldCanceled(IInputSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            inputEventData.Initialize(source, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputEventData, OnHoldCanceledEventHandler);
+        }
+
+        #endregion Hold Events
 
         #region Navigation Events
 
         private static readonly ExecuteEvents.EventFunction<INavigationHandler> OnNavigationStartedEventHandler =
             delegate (INavigationHandler handler, BaseEventData eventData)
             {
-                NavigationEventData casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
                 handler.OnNavigationStarted(casted);
             };
 
-        public void RaiseNavigationStarted(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseNavigationStarted(IInputSource source, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), Vector3.zero, tag);
+            navigationEventData.Initialize(source, Vector3.zero, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
+        }
+
+        public void RaiseNavigationStarted(IInputSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            navigationEventData.Initialize(source, Vector3.zero, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
@@ -799,14 +1011,23 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<INavigationHandler> OnNavigationUpdatedEventHandler =
             delegate (INavigationHandler handler, BaseEventData eventData)
             {
-                NavigationEventData casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
                 handler.OnNavigationUpdated(casted);
             };
 
-        public void RaiseNavigationUpdated(IInputSource source, uint sourceId, Vector3 normalizedOffset, object[] tag = null)
+        public void RaiseNavigationUpdated(IInputSource source, Vector3 normalizedOffset, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), normalizedOffset, tag);
+            navigationEventData.Initialize(source, normalizedOffset, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(navigationEventData, OnNavigationUpdatedEventHandler);
+        }
+
+        public void RaiseNavigationUpdated(IInputSource source, Vector3 normalizedOffset, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            navigationEventData.Initialize(source, normalizedOffset, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationUpdatedEventHandler);
@@ -815,14 +1036,23 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<INavigationHandler> OnNavigationCompletedEventHandler =
             delegate (INavigationHandler handler, BaseEventData eventData)
             {
-                NavigationEventData casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
                 handler.OnNavigationCompleted(casted);
             };
 
-        public void RaiseNavigationCompleted(IInputSource source, uint sourceId, Vector3 normalizedOffset, object[] tag = null)
+        public void RaiseNavigationCompleted(IInputSource source, Vector3 normalizedOffset, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), normalizedOffset, tag);
+            navigationEventData.Initialize(source, normalizedOffset, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(navigationEventData, OnNavigationCompletedEventHandler);
+        }
+
+        public void RaiseNavigationCompleted(IInputSource source, Vector3 normalizedOffset, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            navigationEventData.Initialize(source, normalizedOffset, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCompletedEventHandler);
@@ -831,211 +1061,169 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<INavigationHandler> OnNavigationCanceledEventHandler =
             delegate (INavigationHandler handler, BaseEventData eventData)
             {
-                NavigationEventData casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
                 handler.OnNavigationCanceled(casted);
             };
 
-        public void RaiseNavigationCanceled(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseNavigationCanceled(IInputSource source, object[] tags = null)
         {
             // Create input event
-            navigationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), Vector3.zero, tag);
+            navigationEventData.Initialize(source, Vector3.zero, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
         }
 
-        #endregion // Navigation Events
-
-        #region Controller Events
-
-        private static readonly ExecuteEvents.EventFunction<IControllerInputHandler> OnInputPositionChangedEventHandler =
-            delegate (IControllerInputHandler handler, BaseEventData eventData)
-            {
-                InputPositionEventData casted = ExecuteEvents.ValidateEventData<InputPositionEventData>(eventData);
-                handler.OnInputPositionChanged(casted);
-            };
-
-        public void RaiseInputPositionChanged(IInputSource source, uint sourceId, InteractionSourcePressInfo pressType, Vector2 position, object[] tag = null)
+        public void RaiseNavigationCanceled(IInputSource source, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            inputPositionEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), pressType, position, tag);
+            navigationEventData.Initialize(source, Vector3.zero, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputPositionEventData, OnInputPositionChangedEventHandler);
+            HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<ISelectHandler> OnSelectPressedAmountChangedEventHandler =
-            delegate (ISelectHandler handler, BaseEventData eventData)
+        #endregion Navigation Events
+
+        #region Manipulation Events
+
+        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationStartedEventHandler =
+            delegate (IManipulationHandler handler, BaseEventData eventData)
             {
-                SelectPressedEventData casted = ExecuteEvents.ValidateEventData<SelectPressedEventData>(eventData);
-                handler.OnSelectPressedAmountChanged(casted);
+                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                handler.OnManipulationStarted(casted);
             };
 
-        public void RaiseSelectPressedAmountChanged(IInputSource source, uint sourceId, double pressedAmount, object[] tag = null)
+        public void RaiseManipulationStarted(IInputSource source, object[] tags = null)
         {
             // Create input event
-            selectPressedEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), pressedAmount, tag);
+            manipulationEventData.Initialize(source, Vector3.zero, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(selectPressedEventData, OnSelectPressedAmountChangedEventHandler);
+            HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IControllerTouchpadHandler> OnTouchpadTouchedEventHandler =
-            delegate (IControllerTouchpadHandler handler, BaseEventData eventData)
+        public void RaiseManipulationStarted(IInputSource source, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            manipulationEventData.Initialize(source, Vector3.zero, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationUpdatedEventHandler =
+            delegate (IManipulationHandler handler, BaseEventData eventData)
             {
-                InputEventData casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
-                handler.OnTouchpadTouched(casted);
+                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                handler.OnManipulationUpdated(casted);
             };
 
-        public void RaiseTouchpadTouched(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseManipulationUpdated(IInputSource source, Vector3 cumulativeDelta, object[] tags = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), InteractionSourcePressInfo.Touchpad, tag);
+            manipulationEventData.Initialize(source, cumulativeDelta, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnTouchpadTouchedEventHandler);
+            HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IControllerTouchpadHandler> OnTouchpadReleasedEventHandler =
-            delegate (IControllerTouchpadHandler handler, BaseEventData eventData)
+        public void RaiseManipulationUpdated(IInputSource source, Vector3 cumulativeDelta, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            manipulationEventData.Initialize(source, cumulativeDelta, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationCompletedEventHandler =
+            delegate (IManipulationHandler handler, BaseEventData eventData)
             {
-                InputEventData casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
-                handler.OnTouchpadReleased(casted);
+                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                handler.OnManipulationCompleted(casted);
             };
 
-        public void RaiseTouchpadReleased(IInputSource source, uint sourceId, object[] tag = null)
+        public void RaiseManipulationCompleted(IInputSource source, Vector3 cumulativeDelta, object[] tags = null)
         {
             // Create input event
-            inputEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), InteractionSourcePressInfo.Touchpad, tag);
+            manipulationEventData.Initialize(source, cumulativeDelta, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnTouchpadReleasedEventHandler);
+            HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<ISourcePositionHandler> OnSourcePositionChangedEventHandler =
-            delegate (ISourcePositionHandler handler, BaseEventData eventData)
+        public void RaiseManipulationCompleted(IInputSource source, Vector3 cumulativeDelta, Handedness handedness, object[] tags = null)
+        {
+            // Create input event
+            manipulationEventData.Initialize(source, cumulativeDelta, handedness, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IManipulationHandler> OnManipulationCanceledEventHandler =
+            delegate (IManipulationHandler handler, BaseEventData eventData)
             {
-                SourcePositionEventData casted = ExecuteEvents.ValidateEventData<SourcePositionEventData>(eventData);
-                handler.OnPositionChanged(casted);
+                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                handler.OnManipulationCanceled(casted);
             };
 
-        public void RaiseSourcePositionChanged(IInputSource source, uint sourceId, Vector3 pointerPosition, Vector3 gripPosition, object[] tag = null)
+        public void RaiseManipulationCanceled(IInputSource source, object[] tags = null)
         {
             // Create input event
-            sourcePositionEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), pointerPosition, gripPosition, tag);
+            manipulationEventData.Initialize(source, Vector3.zero, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+            HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<ISourceRotationHandler> OnSourceRotationChangedEventHandler =
-            delegate (ISourceRotationHandler handler, BaseEventData eventData)
-            {
-                SourceRotationEventData casted = ExecuteEvents.ValidateEventData<SourceRotationEventData>(eventData);
-                handler.OnRotationChanged(casted);
-            };
-
-        public void RaiseSourceRotationChanged(IInputSource source, uint sourceId, Quaternion pointerRotation, Quaternion gripRotation, object[] tag = null)
+        public void RaiseManipulationCanceled(IInputSource source, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            sourceRotationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), pointerRotation, gripRotation, tag);
+            manipulationEventData.Initialize(source, Vector3.zero, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
+            HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
         }
 
-        #endregion // Controller Events
-
-        #region GamePad Events
-
-        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadDetectedEventHandler =
-            delegate (IGamePadHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
-                handler.OnGamePadDetected(casted);
-            };
-
-        public void RaiseGamePadDetected(IInputSource source, uint sourceId, string gamePadName, object[] tag = null)
-        {
-            // Create input event
-            gamePadEventData.Initialize(source, sourceId, gamePadName, GetEventOrigin(sourceId), tag);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(gamePadEventData, OnGamePadDetectedEventHandler);
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IGamePadHandler> OnGamePadLostEventHandler =
-            delegate (IGamePadHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<GamePadEventData>(eventData);
-                handler.OnGamePadLost(casted);
-            };
-
-        public void RaiseGamePadLost(IInputSource source, uint sourceId, string gamePadName, object[] tag = null)
-        {
-            // Create input event
-            gamePadEventData.Initialize(source, sourceId, gamePadName, GetEventOrigin(sourceId), tag);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(gamePadEventData, OnGamePadLostEventHandler);
-        }
-
-        #region Xbox Controller Events
-
-        private static readonly ExecuteEvents.EventFunction<IXboxControllerHandler> OnXboxAxisUpdateHandler =
-            delegate (IXboxControllerHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<XboxControllerEventData>(eventData);
-                handler.OnXboxAxisUpdate(casted);
-            };
-
-        public void RaiseXboxInputUpdate(IInputSource source, uint sourceId, XboxControllerData inputData, object[] tag = null)
-        {
-            // Create input event
-            xboxControllerEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), inputData, tag);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(xboxControllerEventData, OnXboxAxisUpdateHandler);
-        }
-
-        #endregion // Xbox Controller Events
-
-        #endregion // GamePad Events
+        #endregion Manipulation Events
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
+
         #region Speech Events
 
         private static readonly ExecuteEvents.EventFunction<ISpeechHandler> OnSpeechKeywordRecognizedEventHandler =
             delegate (ISpeechHandler handler, BaseEventData eventData)
             {
-                SpeechEventData casted = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
-        public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, uint sourceId, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text, object[] tag = null)
+        public void RaiseSpeechKeywordPhraseRecognized(IInputSource source, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text, object[] tags = null)
         {
             // Create input event
-            speechEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), confidence, phraseDuration, phraseStartTime, semanticMeanings, text, tag);
+            speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, semanticMeanings, text, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
         }
 
-        #endregion // Speech Events
+        #endregion Speech Events
 
         #region Dictation Events
 
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationHypothesisEventHandler =
             delegate (IDictationHandler handler, BaseEventData eventData)
             {
-                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
                 handler.OnDictationHypothesis(casted);
             };
 
-        public void RaiseDictationHypothesis(IInputSource source, uint sourceId, string dictationHypothesis, AudioClip dictationAudioClip = null, object[] tag = null)
+        public void RaiseDictationHypothesis(IInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), dictationHypothesis, dictationAudioClip, tag);
+            dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
@@ -1044,14 +1232,14 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationResultEventHandler =
             delegate (IDictationHandler handler, BaseEventData eventData)
             {
-                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
                 handler.OnDictationResult(casted);
             };
 
-        public void RaiseDictationResult(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null, object[] tag = null)
+        public void RaiseDictationResult(IInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), dictationResult, dictationAudioClip, tag);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationResultEventHandler);
@@ -1060,14 +1248,14 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationCompleteEventHandler =
             delegate (IDictationHandler handler, BaseEventData eventData)
             {
-                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
                 handler.OnDictationComplete(casted);
             };
 
-        public void RaiseDictationComplete(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip, object[] tag = null)
+        public void RaiseDictationComplete(IInputSource source, string dictationResult, AudioClip dictationAudioClip, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), dictationResult, dictationAudioClip, tag);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
@@ -1076,20 +1264,23 @@ namespace HoloToolkit.Unity.InputModule
         private static readonly ExecuteEvents.EventFunction<IDictationHandler> OnDictationErrorEventHandler =
             delegate (IDictationHandler handler, BaseEventData eventData)
             {
-                DictationEventData casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<DictationEventData>(eventData);
                 handler.OnDictationError(casted);
             };
 
-        public void RaiseDictationError(IInputSource source, uint sourceId, string dictationResult, AudioClip dictationAudioClip = null, object[] tag = null)
+        public void RaiseDictationError(IInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, sourceId, GetEventOrigin(sourceId), dictationResult, dictationAudioClip, tag);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);
         }
 
-        #endregion // Dictation Events
+        #endregion Dictation Events
+
 #endif
+
+        #endregion Input Handlers
     }
 }

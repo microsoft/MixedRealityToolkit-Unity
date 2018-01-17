@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     /// <summary>
-    /// This class implements IFocusable to respond to gaze changes.
+    /// This class implements IFocusHandler to respond to gaze changes.
     /// It highlights the object being gazed at.
     /// </summary>
     public class GazeResponder : FocusTarget
@@ -18,6 +18,14 @@ namespace HoloToolkit.Unity.InputModule.Tests
             defaultMaterials = GetComponent<Renderer>().materials;
         }
 
+        private void OnDestroy()
+        {
+            foreach (var material in defaultMaterials)
+            {
+                Destroy(material);
+            }
+        }
+
         public override void OnFocusEnter(FocusEventData eventData)
         {
             base.OnFocusEnter(eventData);
@@ -25,7 +33,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
                 // Highlight the material when gaze enters using the shader property.
-                defaultMaterials[i].SetFloat("_Highlight", .35f);
+                defaultMaterials[i].SetFloat("_Gloss", 10.0f);
             }
         }
 
@@ -36,15 +44,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
                 // Remove highlight on material when gaze exits.
-                defaultMaterials[i].SetFloat("_Highlight", 0f);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            foreach (var material in defaultMaterials)
-            {
-                Destroy(material);
+                defaultMaterials[i].SetFloat("_Gloss", 1.0f);
             }
         }
     }
