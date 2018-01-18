@@ -18,7 +18,6 @@ namespace HoloToolkit.Unity
                                           "WorldCamera to use the FocusManager's UIRaycastCamera.\n";
 
         private Canvas canvas;
-        private bool userPermission;
 
         private void OnEnable()
         {
@@ -35,32 +34,26 @@ namespace HoloToolkit.Unity
             {
                 FocusManager.AssertIsInitialized();
 
-                // We only need to ask if the worldCamera is not already the UIRaycastCamera
-                if (canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
+                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
                 {
-                    if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace)
+                    if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
                     {
-                        userPermission = EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel");
-
-                        if (userPermission)
-                        {
-                            canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
-                            var helper = canvas.gameObject.EnsureComponent<CanvasHelper>();
-                            helper.Canvas = canvas;
-                        }
+                        canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
+                        var helper = canvas.gameObject.EnsureComponent<CanvasHelper>();
+                        helper.Canvas = canvas;
                     }
+                }
 
-                    if (canvas.renderMode != RenderMode.WorldSpace || !userPermission)
+                if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == FocusManager.Instance.UIRaycastCamera)
+                {
+                    // Sets it back to MainCamera default.
+                    canvas.worldCamera = null;
+
+                    // Remove the helper if needed.
+                    var helper = canvas.GetComponent<CanvasHelper>();
+                    if (helper != null)
                     {
-                        // Sets it back to MainCamera default.
-                        canvas.worldCamera = null;
-
-                        // Remove the helper if needed.
-                        var helper = canvas.GetComponent<CanvasHelper>();
-                        if (helper != null)
-                        {
-                            DestroyImmediate(helper);
-                        }
+                        DestroyImmediate(helper);
                     }
                 }
             }
