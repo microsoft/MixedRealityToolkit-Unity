@@ -4,7 +4,7 @@
 | Target Unity release  | Release timeframe | Master release tag | Toolkit release features |
 | --- | --- | --- | --- |
 | 2017.2.0 | COMPLETED       | v1.2017.2.0        | <ul><li>Updated master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
-| 2017.3.0              | End Jan 2013      | 2017.3.0        | <ul><li>Default to use Enable Depth Buffer Sharing.</li><li>Remove stabilization plane script from InputManager prefab.</li><li>Use reflection to enable setting via Configure window.</li><li>Editor and shader clean up work.</li><li>Namespace refactor work to MixedRealityToolkit instead of HoloToolkit.</li><li>Multi-pointer support for motion controllers.</li></ul>|
+| 2017.3.0              | End Jan 2018      | 2017.3.0        | <ul><li>Default to use Enable Depth Buffer Sharing.</li><li>Remove stabilization plane script from InputManager prefab.</li><li>Use reflection to enable setting via Configure window.</li><li>Editor and shader clean up work.</li><li>Namespace refactor work to MixedRealityToolkit instead of HoloToolkit.</li><li>Multi-pointer support for motion controllers.</li></ul>|
 | 2018.1.0              | End Feb 2018      | 2018.1.0        | <ul><li>Examples folder cleanup.</li></ul>|
 
 # Future work planning
