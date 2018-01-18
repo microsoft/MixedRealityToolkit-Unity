@@ -231,7 +231,7 @@ Similar attributes for FastConfigurable with the benefit of 2 sides!
 #### WindowOcclusion.shader
 A simple occlusion shader that can be used to hide other objects. This prevents other objects from being rendered by drawing invisible 'opaque' pixels to the depth buffer. This shader differs from Occlusion.shader in that it doesn't have any depth offset, so it should sort as expected with other objects adjacent to the window.
 
-### [Tests](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch/Assets/MixedRealityToolkit-Tests/Utilities/Scenes)
+### [Tests](../../MixedRealityToolkit-Tests/Utilities/Scenes)
 ---
 Tests related to the utilities features. To use the scene:
 

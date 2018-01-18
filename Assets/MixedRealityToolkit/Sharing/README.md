@@ -297,7 +297,7 @@ Collection of sharing sync settings, used by the MixedRealityToolkit Sharing syn
 #### SyncStateListener.cs
 C# wrapper for the Sharing SyncListener, making changes available through the Action class.
 
-### [Test Prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch/Assets/MixedRealityToolkit-Tests/Sharing/Prefabs)
+### [Test Prefabs](../../MixedRealityToolkit-Tests/Sharing/Prefabs)
 ---
 Prefabs used in the various test scenes, which you can use as inspiration to build your own.
 
@@ -308,7 +308,7 @@ Simple Cube prefab with a Transform, Mesh Filter, Box Collider, Mesh Renderer, a
 A simple Sphere prefab with a Transform, Mesh Filter, Sphere Collider, and Mesh Renderer components.
 Purposefully missing Default Sync Model Accessor component for SharingSpawnTest.
 
-### [Test Scripts](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch/Assets/MixedRealityToolkit-Tests/Sharing/Scripts)
+### [Test Scripts](../../MixedRealityToolkit-Tests/Sharing/Scripts)
 ---
 Test Scripts.
 
@@ -339,7 +339,7 @@ Class that demonstrates a custom class using sync model attributes.
 #### UserNotifications.cs
 Used to demonstrate how to get notifications when users leave and enter room.
 
-### [Tests](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch/Assets/MixedRealityToolkit-Tests/Sharing/Scenes)
+### [Tests](../../MixedRealityToolkit-Tests/Sharing/Scenes)
 ---
 Tests related to the sharing features. To use the each scene:
 
