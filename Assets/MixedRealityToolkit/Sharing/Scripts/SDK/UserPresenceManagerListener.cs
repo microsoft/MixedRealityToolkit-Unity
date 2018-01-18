@@ -8,9 +8,7 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
-using MixedRealityToolkit.Common.Extensions;
-
-namespace HoloToolkit.Sharing {
+namespace MixedRealityToolkit.Sharing {
 
 public class UserPresenceManagerListener : Listener {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;

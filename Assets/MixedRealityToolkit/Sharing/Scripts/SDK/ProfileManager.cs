@@ -8,7 +8,7 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
-namespace HoloToolkit.Sharing {
+namespace MixedRealityToolkit.Sharing {
 
 public class ProfileManager : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
