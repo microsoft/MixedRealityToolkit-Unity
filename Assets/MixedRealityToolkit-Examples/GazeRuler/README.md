@@ -6,11 +6,11 @@ GazeRuler is a project which can be used to measure spatial distance and area. I
 
 There are two measure modes in this app, including Line Mode and Geometry Mode. Line Mode is used to measure the distance between one spatial point and another point, when Geometry Mode is used to measure the area of spatial geometries.
 By default, Line Mode is on.
-![Line Mode](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/MixedRealityToolkit-Examples/GazeRuler/Demo/Line.jpg)
+![Line Mode](Demo/Line.jpg)
 
 After you see the tip text of Line Mode, you can air-tap to place one point and air-tap again to place another point. A line and tip of result will show automatically.
 
-![Geometry Mode](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/MixedRealityToolkit-Examples/GazeRuler/Demo/Geometry.jpg)
+![Geometry Mode](Demo/Geometry.jpg)
 If you want try Geometry Mode, what's you only need to do is say "change mode". Once your voice command is recognized, this app will change into Geometry Mode.
 In Geometry Mode, you also can air-tap to place one point and air-tap again to place more points. When you want finish the geometry, please hold your handle or say "close". The geometry will be finished automatically and return the result of the area of current geometry.
 You can go back to Line Mode by saying "change mode" again.

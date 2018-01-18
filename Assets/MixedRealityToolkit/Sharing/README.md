@@ -133,7 +133,7 @@ Please sync to latest XTools
 ### [Plugins](Plugins)
 ---
 Contains compiled architecture specific binaries for SharingClient.dll which are required by the Unity application for accessing sharing APIs.
-Binaries are compiled from the native [MixedRealityToolkit\Sharing](https://github.com/Microsoft/MixedRealityToolkit/tree/Dev_Working_Branch/Sharing).
+Binaries are compiled from the native [MixedRealityToolkit\Sharing](https://github.com/Microsoft/MixedRealityToolkit/tree/master/Sharing).
 
 ### [Prefabs](Prefabs)
 ---
@@ -166,7 +166,7 @@ Draws the default Sharing Stage Inspector and adds the SyncRoot Hierarchy view s
 
 #### [SDK](Scripts/SDK)
 ---
-Contains scripts compiled from the native [MixedRealityToolkit\Sharing](https://github.com/Microsoft/MixedRealityToolkit/tree/Dev_Working_Branch/Sharing) repository and using the SWIG tool to generate different language bindings.
+Contains scripts compiled from the native [MixedRealityToolkit\Sharing](https://github.com/Microsoft/MixedRealityToolkit/tree/master/Sharing) repository and using the SWIG tool to generate different language bindings.
 
 #### [Spawning](Scripts/Spawning)
 ---
