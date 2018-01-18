@@ -139,7 +139,7 @@ namespace HoloToolkit.Unity.InputModule
                 PreviousEndObject = End.Object;
                 RayStepIndex = rayStepIndex;
 
-                StartPoint = sourceRay.origin;
+                StartPoint = sourceRay.Origin;
                 End = new FocusDetails
                 {
                     Point = hit.point,
@@ -154,7 +154,7 @@ namespace HoloToolkit.Unity.InputModule
                 // it's already been updated in the first physics raycast.
 
                 RayStepIndex = rayStepIndex;
-                StartPoint = sourceRay.origin;
+                StartPoint = sourceRay.Origin;
                 End = new FocusDetails
                 {
                     Point = hit.point,
@@ -171,11 +171,11 @@ namespace HoloToolkit.Unity.InputModule
                 RayStep finalStep = PointingSource.Rays[PointingSource.Rays.Length - 1];
                 RayStepIndex = 0;
 
-                StartPoint = firstStep.origin;
+                StartPoint = firstStep.Origin;
                 End = new FocusDetails
                 {
-                    Point = finalStep.terminus,
-                    Normal = (-finalStep.direction),
+                    Point = finalStep.Terminus,
+                    Normal = (-finalStep.Direction),
                     Object = null
                 };
             }
@@ -587,12 +587,12 @@ namespace HoloToolkit.Unity.InputModule
             // If there is only one priority, don't prioritize
             if (prioritizedLayerMasks.Length == 1)
             {
-                isHit = Physics.Raycast(step.origin, step.direction, out physicsHit, step.length, prioritizedLayerMasks[0]);
+                isHit = Physics.Raycast(step.Origin, step.Direction, out physicsHit, step.Length, prioritizedLayerMasks[0]);
             }
             else
             {
                 // Raycast across all layers and prioritize
-                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(step.origin, step.direction, step.length, Physics.AllLayers), prioritizedLayerMasks);
+                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(step.Origin, step.Direction, step.Length, Physics.AllLayers), prioritizedLayerMasks);
                 isHit = hit.HasValue;
 
                 if (isHit)
@@ -651,8 +651,8 @@ namespace HoloToolkit.Unity.InputModule
         private bool RaycastUnityUIStep(PointerData pointer, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
         {
             // Move the uiRaycast camera to the current pointer's position.
-            UIRaycastCamera.transform.position = step.origin;
-            UIRaycastCamera.transform.forward = step.direction;
+            UIRaycastCamera.transform.position = step.Origin;
+            UIRaycastCamera.transform.forward = step.Direction;
 
             // We always raycast from the center of the camera.
             pointer.UnityUIPointerData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
