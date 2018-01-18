@@ -33,22 +33,39 @@ namespace HoloToolkit.Unity
             if (EditorGUI.EndChangeCheck() && FocusManager.Instance)
             {
                 FocusManager.AssertIsInitialized();
+                bool removeHelper = false;
 
+                // Update the world camera if we need to.
                 if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
                 {
                     if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
                     {
                         canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
-                        var helper = canvas.gameObject.EnsureComponent<CanvasHelper>();
-                        helper.Canvas = canvas;
+                    }
+                    else
+                    {
+                        removeHelper = true;
                     }
                 }
 
+                // Add the Canvas Helper if we need it.
+                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == FocusManager.Instance.UIRaycastCamera)
+                {
+                    var helper = canvas.gameObject.EnsureComponent<CanvasHelper>();
+                    helper.Canvas = canvas;
+                }
+
+                // Reset the world canvas if we need to.
                 if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == FocusManager.Instance.UIRaycastCamera)
                 {
                     // Sets it back to MainCamera default.
                     canvas.worldCamera = null;
+                    removeHelper = true;
+                }
 
+                // Remove the helper if we don't need it.
+                if (removeHelper)
+                {
                     // Remove the helper if needed.
                     var helper = canvas.GetComponent<CanvasHelper>();
                     if (helper != null)
