@@ -4,7 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/MixedRealityToolkit-Examples/MotionControllers-GrabMechanics/Scenes/GrabMechanics.unity
-    guid: b887e537a0283024681d70b9828818b0
+  m_Scenes: []
