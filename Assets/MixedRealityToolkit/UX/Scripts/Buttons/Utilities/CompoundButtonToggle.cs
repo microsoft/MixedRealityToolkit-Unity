@@ -112,7 +112,7 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
 
             // Get the profile field of the target component and set it to the on profile
             // Store all icons in iconLookup via reflection
-#if USE_WINRT
+#if WINDOWS_UWP
             FieldInfo fieldInfo = Target.GetType().GetTypeInfo().GetField("Profile");
 #else
             FieldInfo fieldInfo = Target.GetType().GetField("Profile");

@@ -1,11 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_WINRT && !UNITY_EDITOR
-#define USE_WINRT
-#endif
-
-using HoloToolkit.Sharing;
 using MixedRealityToolkit.Common.Extensions;
 using System;
 using System.Collections.Generic;
@@ -124,7 +119,7 @@ namespace MixedRealityToolkit.Sharing.SyncModel
             // Scan the type of object this is a look for the SyncDataAttribute
             Type baseType = GetType();
 
-#if USE_WINRT
+#if WINDOWS_UWP
             var typeFields = baseType.GetRuntimeFields();
 #else
             var typeFields = baseType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -134,7 +129,7 @@ namespace MixedRealityToolkit.Sharing.SyncModel
             {
                 SyncDataAttribute attribute = null;
 
-#if USE_WINRT
+#if WINDOWS_UWP
                 attribute = typeField.GetCustomAttribute<SyncDataAttribute>(true);
 #else
                 object[] customAttributes = typeField.GetCustomAttributes(typeof(SyncDataAttribute), true);
