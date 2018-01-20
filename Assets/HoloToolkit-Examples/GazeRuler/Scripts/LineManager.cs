@@ -24,7 +24,7 @@ namespace HoloToolkit.Examples.GazeRuler
         public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
         {
 
-            Vector3 hitPoint = GazeManager.Instance.HitPosition;
+            Vector3 hitPoint = GazeManager.HitPosition;
 
             GameObject point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
             if (lastPoint != null && lastPoint.IsStart)

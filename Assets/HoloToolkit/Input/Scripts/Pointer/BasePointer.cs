@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public class Pointer : IPointer
+    public class BasePointer : IPointer
     {
-        public Pointer(string pointerName, IInputSource inputSourceParent)
+        public BasePointer(string pointerName, IInputSource inputSourceParent)
         {
             PointerId = FocusManager.GenerateNewPointerId();
             PointerName = pointerName;
@@ -25,14 +25,19 @@ namespace HoloToolkit.Unity.InputModule
 
         public CursorModifier CursorModifier { get; set; }
 
-        public bool InteractionEnabled { get { return true; } }
+        public bool InteractionEnabled { get; set; }
 
         public bool FocusLocked { get; set; }
 
         public float? ExtentOverride { get; set; }
 
-        public RayStep[] Rays { get { return rays; } }
-        private readonly RayStep[] rays = { new RayStep(Vector3.zero, Vector3.forward) };
+        public RayStep[] Rays
+        {
+            get { return rays; }
+            protected set { rays = value; }
+        }
+
+        private RayStep[] rays = { new RayStep(Vector3.zero, Vector3.forward) };
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 

@@ -25,13 +25,11 @@ namespace HoloToolkit.Examples.ColorPicker
 
         private void UpdatePickedColor(PickedColorCallback cb)
         {
-            RaycastHit hit = GazeManager.Instance.HitInfo;
-
-            if (hit.transform.gameObject != RendererComponent.gameObject) { return; }
+            if (GazeManager.HitInfo.transform.gameObject != RendererComponent.gameObject) { return; }
 
             var texture = (Texture2D)RendererComponent.material.mainTexture;
 
-            Vector2 pixelUV = hit.textureCoord;
+            Vector2 pixelUV = GazeManager.HitInfo.textureCoord;
             pixelUV.x *= texture.width;
             pixelUV.y *= texture.height;
 
