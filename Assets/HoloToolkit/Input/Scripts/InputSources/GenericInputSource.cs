@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -11,22 +10,23 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GenericInputSource : IInputSource
     {
-        public GenericInputSource(uint sourceId, string name)
+        public GenericInputSource(string name)
         {
-            SourceId = sourceId;
-            Name = name;
+            SourceName = name;
         }
 
-        public GenericInputSource(uint sourceId, string name, SupportedInputInfo _supportedInputInfo)
+        public GenericInputSource(string name, SupportedInputInfo _supportedInputInfo)
         {
-            SourceId = sourceId;
-            Name = name;
+            SourceId = InputManager.GenerateNewSourceId();
+            SourceName = name;
             supportedInputInfo = _supportedInputInfo;
         }
 
         public uint SourceId { get; private set; }
 
-        public string Name { get; private set; }
+        public string SourceName { get; private set; }
+
+        public IPointer[] Pointers { get; set; }
 
         private SupportedInputInfo supportedInputInfo;
 
@@ -63,7 +63,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool Equals(IInputSource other)
         {
-            return other != null && SourceId == other.SourceId && string.Equals(Name, other.Name);
+            return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }
 
         int IEqualityComparer.GetHashCode(object obj)
@@ -77,10 +77,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 int hashCode = 0;
                 hashCode = (hashCode * 397) ^ (int)SourceId;
-                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
                 return hashCode;
             }
         }
+
         #endregion IEquality Implementation
     }
 }

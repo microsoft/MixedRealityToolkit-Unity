@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer this cursor is associated with.
         /// </summary>
-        IPointingSource Pointer { get; }
+        IPointer Pointer { get; }
 
         /// <summary>
         /// Position of the cursor.

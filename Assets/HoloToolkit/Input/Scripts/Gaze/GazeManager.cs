@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
-    public class GazeManager : Singleton<GazeManager>, IPointingSource
+    public class GazeManager : Singleton<GazeManager>, IInputSource
     {
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
         public GameObject CursorPrefab;
@@ -76,12 +76,12 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Origin of the gaze.
         /// </summary>
-        public Vector3 GazeOrigin { get { return Rays[0].Origin; } }
+        public Vector3 GazeOrigin { get { return Pointers[0].Rays[0].Origin; } }
 
         /// <summary>
         /// Normal of the gaze.
         /// </summary>
-        public Vector3 GazeNormal { get { return Rays[0].Direction; } }
+        public Vector3 GazeNormal { get { return Pointers[0].Rays[0].Direction; } }
 
         private float lastHitDistance = 2.0f;
 
@@ -89,7 +89,14 @@ namespace HoloToolkit.Unity.InputModule
 
         public uint SourceId { get; protected set; }
 
-        public string Name { get { return "Gaze"; } }
+        public string SourceName { get { return "Gaze"; } }
+
+        public IPointer[] Pointers
+        {
+            get { return pointers; }
+        }
+
+        private readonly IPointer[] pointers = new IPointer[1];
 
         public SupportedInputInfo GetSupportedInputInfo()
         {
@@ -105,71 +112,126 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IPointingSource Implementation
 
-        public BaseCursor BaseCursor { get; set; }
-
-        public CursorModifier CursorModifier { get; set; }
-
-        public bool InteractionEnabled { get { return true; } }
-
-        public bool FocusLocked { get; set; }
-
-        public float? ExtentOverride
+        private class GazePointer : IPointer
         {
-            get { return MaxGazeCollisionDistance; }
-            set
+            GazePointer()
             {
-                if (value.HasValue)
+                PointerId = FocusManager.GenerateNewPointerId();
+            }
+
+            public uint PointerId { get; private set; }
+
+            public string PointerName
+            {
+                get { return pointerName; }
+                set { pointerName = value; }
+            }
+            private string pointerName = "Gaze Pointer";
+
+            public IInputSource InputSourceParent { get { return Instance; } }
+            public BaseCursor BaseCursor { get; set; }
+
+            public CursorModifier CursorModifier { get; set; }
+
+            public bool InteractionEnabled { get { return true; } }
+
+            public bool FocusLocked { get; set; }
+
+            public float? ExtentOverride
+            {
+                get { return Instance.MaxGazeCollisionDistance; }
+                set
                 {
-                    MaxGazeCollisionDistance = value.Value;
+                    if (value.HasValue)
+                    {
+                        Instance.MaxGazeCollisionDistance = value.Value;
+                    }
                 }
             }
-        }
 
-        public RayStep[] Rays { get { return rays; } }
-        private readonly RayStep[] rays = { new RayStep(Vector3.zero, Vector3.zero) };
+            public RayStep[] Rays { get { return rays; } }
+            private readonly RayStep[] rays = { new RayStep(Vector3.zero, Vector3.zero) };
 
-        public LayerMask[] PrioritizedLayerMasksOverride
-        {
-            get
+            public LayerMask[] PrioritizedLayerMasksOverride
             {
-                return RaycastLayerMasks;
+                get { return Instance.RaycastLayerMasks; }
+                set { Instance.RaycastLayerMasks = value; }
             }
 
-            set
+            public IFocusHandler FocusTarget { get; set; }
+
+            public PointerResult Result { get; set; }
+
+            public BaseRayStabilizer RayStabilizer { get; set; }
+
+            public virtual void OnPreRaycast()
             {
-                RaycastLayerMasks = value;
+                Instance.UpdateGazeInfo();
             }
-        }
 
-        public IFocusHandler FocusTarget { get; set; }
+            public virtual void OnPostRaycast() { }
 
-        public PointerResult Result { get; set; }
+            public bool TryGetPointerPosition(out Vector3 position)
+            {
+                position = Instance.GazeTransform.position;
+                return true;
+            }
 
-        public BaseRayStabilizer RayStabilizer { get; set; }
+            public bool TryGetPointingRay(out Ray pointingRay)
+            {
+                pointingRay = new Ray(Instance.GazeOrigin, Instance.GazeNormal);
+                return true;
+            }
 
-        public virtual void OnPreRaycast()
-        {
-            UpdateGazeInfo();
-        }
+            public bool TryGetPointerRotation(out Quaternion rotation)
+            {
+                rotation = Quaternion.identity;
+                return false;
+            }
 
-        public virtual void OnPostRaycast() { }
+            #region IEquality Implementation
 
-        public bool TryGetPointerPosition(out Vector3 position)
-        {
-            position = GazeTransform.position;
-            return true;
-        }
+            public static bool Equals(IPointer left, IPointer right)
+            {
+                return left.Equals(right);
+            }
 
-        public bool TryGetPointingRay(out Ray pointingRay)
-        {
-            pointingRay = new Ray(GazeOrigin, GazeNormal);
-            return true;
-        }
+            bool IEqualityComparer.Equals(object left, object right)
+            {
+                return left.Equals(right);
+            }
 
-        public bool TryGetPointerRotation(out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) { return false; }
+                if (ReferenceEquals(this, obj)) { return true; }
+                if (obj.GetType() != GetType()) { return false; }
+
+                return Equals((IPointer)obj);
+            }
+
+            private bool Equals(IPointer other)
+            {
+                return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
+            }
+
+            int IEqualityComparer.GetHashCode(object obj)
+            {
+                return obj.GetHashCode();
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hashCode = 0;
+                    hashCode = (hashCode * 397) ^ (int)PointerId;
+                    hashCode = (hashCode * 397) ^ (PointerName != null ? PointerName.GetHashCode() : 0);
+                    return hashCode;
+                }
+            }
+
+            #endregion IEquality Implementation
         }
 
         #endregion IPointingSource Implementation
@@ -178,7 +240,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool Equals(IInputSource other)
         {
-            return base.Equals(other) && SourceId == other.SourceId && string.Equals(Name, other.Name);
+            return base.Equals(other) && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }
 
         public override bool Equals(object obj)
@@ -218,7 +280,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)SourceId;
-                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
                 return hashCode;
             }
         }
@@ -236,10 +298,10 @@ namespace HoloToolkit.Unity.InputModule
             if (CursorPrefab != null)
             {
                 var cursorObj = Instantiate(CursorPrefab, transform);
-                BaseCursor = cursorObj.GetComponent<BaseCursor>();
-                BaseCursor.Pointer = this;
+                Pointers[0].BaseCursor = cursorObj.GetComponent<BaseCursor>();
+                Pointers[0].BaseCursor.Pointer = Pointers[0];
 
-                Debug.Assert(BaseCursor != null, "Failed to load cursor");
+                Debug.Assert(Pointers[0].BaseCursor != null, "Failed to load cursor");
             }
 
             // Add default RaycastLayers as first layerPriority
@@ -294,7 +356,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (focusDetails.Object != null)
             {
-                lastHitDistance = (focusDetails.Point - Rays[0].Origin).magnitude;
+                lastHitDistance = (focusDetails.Point - Pointers[0].Rays[0].Origin).magnitude;
                 UpdateHitPosition();
                 HitNormal = focusDetails.Normal;
             }
@@ -321,7 +383,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (GazeTransform == null)
             {
-                Rays[0] = default(RayStep);
+                Pointers[0].Rays[0] = default(RayStep);
             }
             else
             {
@@ -336,7 +398,7 @@ namespace HoloToolkit.Unity.InputModule
                     newGazeNormal = Stabilizer.StableRay.direction;
                 }
 
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent(this)));
+                Pointers[0].Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent(Pointers[0])));
             }
 
             UpdateHitPosition();
@@ -344,7 +406,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void UpdateHitPosition()
         {
-            HitPosition = (Rays[0].Origin + (lastHitDistance * Rays[0].Direction));
+            HitPosition = (Pointers[0].Rays[0].Origin + (lastHitDistance * Pointers[0].Rays[0].Direction));
         }
 
         #endregion Utilities

@@ -63,14 +63,14 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             base.OnFocusEnter(eventData);
             Debug.LogFormat("OnFocusEnter: {0}\r\nPointer: {1} | SourceId: {2}",
-                            gameObject.name, eventData.Pointer, eventData.Pointer.SourceId);
+                            gameObject.name, eventData.Pointer, eventData.Pointer.PointerId);
         }
 
         public override void OnFocusExit(FocusEventData eventData)
         {
             base.OnFocusExit(eventData);
             Debug.LogFormat("OnFocusExit: {0}\r\nPointer: {0} | Pointer: {1} | SourceId: {2}",
-                            gameObject.name, eventData.Pointer, eventData.Pointer.SourceId);
+                            gameObject.name, eventData.Pointer, eventData.Pointer.PointerId);
         }
 
         public override void OnFocusChanged(FocusEventData eventData)
@@ -78,7 +78,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             base.OnFocusChanged(eventData);
             Debug.LogFormat("OnBeforeFocusChange\r\nPointer: {0} | Pointer SourceId: {1}\n" +
                             "Old Focused Object: {2} | New Focused Object: {3} | Pointer Focus Count {4}\n",
-                            eventData.Pointer, eventData.Pointer.SourceId,
+                            eventData.Pointer, eventData.Pointer.PointerId,
                             eventData.OldFocusedObject == null ? "None" : eventData.OldFocusedObject.name,
                             eventData.NewFocusedObject == null ? "None" : eventData.NewFocusedObject.name,
                             Focusers.Count);

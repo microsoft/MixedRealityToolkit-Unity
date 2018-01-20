@@ -13,7 +13,9 @@ namespace HoloToolkit.Unity.InputModule
     {
         uint SourceId { get; }
 
-        string Name { get; }
+        string SourceName { get; }
+
+        IPointer[] Pointers { get; }
 
         /// <summary>
         /// Returns the input info that the input source can provide.

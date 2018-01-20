@@ -67,7 +67,7 @@ namespace HoloToolkit.Unity.InputModule
         private FadeManager fadeControl;
 
         private bool isTeleportValid;
-        private IPointingSource currentPointingSource;
+        private IPointer currentPointer;
         private uint currentSourceId;
 
         private void Start()
@@ -103,7 +103,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Update()
         {
-            if (currentPointingSource != null)
+            if (currentPointer != null)
             {
                 PositionMarker();
             }
@@ -128,21 +128,21 @@ namespace HoloToolkit.Unity.InputModule
 
             if (EnableTeleport)
             {
-                if (currentPointingSource == null && eventData.InputPosition.y > 0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
+                if (currentPointer == null && eventData.InputPosition.y > 0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
                 {
-                    if (FocusManager.Instance.TryGetPointingSource(eventData, out currentPointingSource))
+                    if (FocusManager.Instance.TryGetPointingSource(eventData, out currentPointer))
                     {
                         currentSourceId = eventData.SourceId;
                         StartTeleport();
                     }
                 }
-                else if (currentPointingSource != null && currentSourceId == eventData.SourceId && eventData.InputPosition.magnitude < 0.2)
+                else if (currentPointer != null && currentSourceId == eventData.SourceId && eventData.InputPosition.magnitude < 0.2)
                 {
                     FinishTeleport();
                 }
             }
 
-            if (EnableStrafe && currentPointingSource == null)
+            if (EnableStrafe && currentPointer == null)
             {
                 if (eventData.InputPosition.y < -0.8 && Math.Abs(eventData.InputPosition.x) < 0.3)
                 {
@@ -150,7 +150,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            if (EnableRotation && currentPointingSource == null)
+            if (EnableRotation && currentPointer == null)
             {
                 if (eventData.InputPosition.x < -0.8 && Math.Abs(eventData.InputPosition.y) < 0.3)
                 {
@@ -165,7 +165,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public void StartTeleport()
         {
-            if (currentPointingSource != null && !fadeControl.Busy)
+            if (currentPointer != null && !fadeControl.Busy)
             {
                 EnableMarker();
                 PositionMarker();
@@ -174,9 +174,9 @@ namespace HoloToolkit.Unity.InputModule
 
         private void FinishTeleport()
         {
-            if (currentPointingSource != null)
+            if (currentPointer != null)
             {
-                currentPointingSource = null;
+                currentPointer = null;
 
                 if (isTeleportValid)
                 {
@@ -264,7 +264,7 @@ namespace HoloToolkit.Unity.InputModule
         private void PositionMarker()
         {
             FocusDetails focusDetails;
-            if (FocusManager.Instance.TryGetFocusDetails(currentPointingSource, out focusDetails) &&
+            if (FocusManager.Instance.TryGetFocusDetails(currentPointer, out focusDetails) &&
                 focusDetails.Object != null &&
                 Vector3.Dot(focusDetails.Normal, Vector3.up) > 0.90f)
             {

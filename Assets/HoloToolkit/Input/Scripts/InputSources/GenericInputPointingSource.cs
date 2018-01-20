@@ -8,64 +8,50 @@ namespace HoloToolkit.Unity.InputModule
     /// <summary>
     /// Generic Input Pointing source that does not inherit from MonoBehaviour.
     /// </summary>
-    public class GenericInputPointingSource : GenericInputSource, IPointingSource
+    public class GenericInputPointingSource : GenericInputSource
     {
-        public GenericInputPointingSource(uint sourceId, string name) : base(sourceId, name) { }
+        public GenericInputPointingSource(string name) : base(name) { }
 
-        public GenericInputPointingSource(uint sourceId, string name, SupportedInputInfo supportedInputInfo) : base(sourceId, name, supportedInputInfo) { }
+        public GenericInputPointingSource(string name, SupportedInputInfo supportedInputInfo) : base(name, supportedInputInfo) { }
 
-        public BaseCursor BaseCursor { get; set; }
-
-        public CursorModifier CursorModifier { get; set; }
-
-        public bool InteractionEnabled { get { return true; } }
-
-        public bool FocusLocked { get; set; }
-
-        public float? ExtentOverride { get; set; }
-
-        public RayStep[] Rays { get { return rays; } }
-        private readonly RayStep[] rays = { new RayStep(Vector3.zero, Vector3.forward) };
-
-        public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
-
-        public IFocusHandler FocusTarget { get; set; }
-
-        public PointerResult Result { get; set; }
-
-        public BaseRayStabilizer RayStabilizer { get; set; }
-
-        public virtual void OnPreRaycast()
+        public virtual bool TryGetPointerPosition(IPointer pointer, out Vector3 position)
         {
-            Ray pointingRay;
-            if (TryGetPointingRay(out pointingRay))
+            foreach (var sourcePointer in Pointers)
             {
-                rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
+                if (sourcePointer.PointerId == pointer.PointerId)
+                {
+                    return sourcePointer.TryGetPointerPosition(out position);
+                }
             }
 
-            if (RayStabilizer != null)
-            {
-                RayStabilizer.UpdateStability(rays[0].Origin, rays[0].Direction);
-                rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
-            }
-        }
-
-        public virtual void OnPostRaycast() { }
-
-        public virtual bool TryGetPointerPosition(out Vector3 position)
-        {
             position = Vector3.zero;
             return false;
         }
 
-        public virtual bool TryGetPointingRay(out Ray pointingRay)
+        public virtual bool TryGetPointingRay(IPointer pointer, out Ray pointingRay)
         {
+            foreach (var sourcePointer in Pointers)
+            {
+                if (sourcePointer.PointerId == pointer.PointerId)
+                {
+                    return sourcePointer.TryGetPointingRay(out pointingRay);
+                }
+            }
+
             pointingRay = default(Ray);
             return false;
         }
 
-        public virtual bool TryGetPointerRotation(out Quaternion rotation)
+        public virtual bool TryGetPointerRotation(IPointer pointer, out Quaternion rotation)
         {
+            foreach (var sourcePointer in Pointers)
+            {
+                if (sourcePointer.PointerId == pointer.PointerId)
+                {
+                    return sourcePointer.TryGetPointerRotation(out rotation);
+                }
+            }
+
             rotation = Quaternion.identity;
             return false;
         }

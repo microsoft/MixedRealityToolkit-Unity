@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA
             public readonly InteractionSource Source;
 
-            public InteractionInputSource(InteractionSource source, uint sourceId, string name) : base(sourceId, name)
+            public InteractionInputSource(InteractionSource source, string name) : base(name)
             {
                 Source = source;
             }
@@ -111,7 +111,7 @@ namespace HoloToolkit.Unity.InputModule
             public bool RotationUpdated;
             public bool SelectPressedAmountUpdated;
 
-            public override bool TryGetPointerPosition(out Vector3 position)
+            public override bool TryGetPointerPosition(IPointer pointer, out Vector3 position)
             {
                 position = Vector3.zero;
                 if (PointerPosition.IsSupported && PointerPosition.IsAvailable)
@@ -123,7 +123,7 @@ namespace HoloToolkit.Unity.InputModule
                 return false;
             }
 
-            public override bool TryGetPointerRotation(out Quaternion rotation)
+            public override bool TryGetPointerRotation(IPointer pointer, out Quaternion rotation)
             {
                 rotation = Quaternion.identity;
                 if (PointerRotation.IsSupported && PointerRotation.IsAvailable)
@@ -135,7 +135,7 @@ namespace HoloToolkit.Unity.InputModule
                 return false;
             }
 
-            public override bool TryGetPointingRay(out Ray pointingRay)
+            public override bool TryGetPointingRay(IPointer pointer, out Ray pointingRay)
             {
                 pointingRay = default(Ray);
                 if (PointingRay.IsSupported && PointingRay.IsAvailable)
@@ -726,7 +726,8 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            var sourceData = new InteractionInputSource(interactionSource, InputManager.GenerateNewSourceId(),
+            var sourceData = new InteractionInputSource(
+                    interactionSource,
                     string.Format("{0} {1}", interactionSource.handedness, interactionSource.kind));
             interactionInputSources.Add(sourceData);
 

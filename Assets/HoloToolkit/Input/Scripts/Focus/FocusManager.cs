@@ -95,7 +95,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private class PointerData : PointerResult, IEquatable<PointerData>
         {
-            public readonly IPointingSource PointingSource;
+            public readonly IPointer Pointer;
             private FocusDetails focusDetails;
 
             private GraphicInputEventData graphicData;
@@ -114,9 +114,9 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            public PointerData(IPointingSource pointingSource)
+            public PointerData(IPointer pointer)
             {
-                PointingSource = pointingSource;
+                Pointer = pointer;
             }
 
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
@@ -151,8 +151,8 @@ namespace HoloToolkit.Unity.InputModule
             {
                 PreviousPointerTarget = End.Object;
 
-                RayStep firstStep = PointingSource.Rays[0];
-                RayStep finalStep = PointingSource.Rays[PointingSource.Rays.Length - 1];
+                RayStep firstStep = Pointer.Rays[0];
+                RayStep finalStep = Pointer.Rays[Pointer.Rays.Length - 1];
                 RayStepIndex = 0;
 
                 StartPoint = firstStep.Origin;
@@ -182,7 +182,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (ReferenceEquals(null, other)) return false;
                 if (ReferenceEquals(this, other)) return true;
-                return PointingSource.SourceId == other.PointingSource.SourceId;
+                return Pointer.PointerId == other.Pointer.PointerId;
             }
 
             public override bool Equals(object obj)
@@ -195,7 +195,7 @@ namespace HoloToolkit.Unity.InputModule
 
             public override int GetHashCode()
             {
-                return PointingSource != null ? PointingSource.GetHashCode() : 0;
+                return Pointer != null ? Pointer.GetHashCode() : 0;
             }
         }
 
@@ -229,10 +229,10 @@ namespace HoloToolkit.Unity.InputModule
             FocusDetails focusDetails;
             if (!TryGetFocusDetails(eventData, out focusDetails)) { return null; }
 
-            IPointingSource pointingSource;
-            if (TryGetPointingSource(eventData, out pointingSource))
+            IPointer pointer;
+            if (TryGetPointingSource(eventData, out pointer))
             {
-                GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointingSource);
+                GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointer);
                 Debug.Assert(graphicInputEventData != null);
                 graphicInputEventData.selectedObject = focusDetails.Object;
             }
@@ -248,11 +248,11 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns>True, if event data pointer input source is registered.</returns>
         public bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails)
         {
-            foreach (var pointer in pointers)
+            foreach (var pointerData in pointers)
             {
-                if (pointer.PointingSource.SourceId == eventData.SourceId)
+                if (pointerData.Pointer.InputSourceParent.SourceId == eventData.SourceId)
                 {
-                    focusDetails = pointer.End;
+                    focusDetails = pointerData.End;
                     return true;
                 }
             }
@@ -265,20 +265,20 @@ namespace HoloToolkit.Unity.InputModule
         /// Try to get the registered pointer source that raised the event.
         /// </summary>
         /// <param name="eventData"></param>
-        /// <param name="pointingSource"></param>
+        /// <param name="pointer"></param>
         /// <returns>True, if event datas pointer input source is registered.</returns>
-        public bool TryGetPointingSource(BaseInputEventData eventData, out IPointingSource pointingSource)
+        public bool TryGetPointingSource(BaseInputEventData eventData, out IPointer pointer)
         {
-            foreach (var pointer in pointers)
+            foreach (var pointerData in pointers)
             {
-                if (pointer.PointingSource.SourceId == eventData.SourceId)
+                if (pointerData.Pointer.InputSourceParent.SourceId == eventData.SourceId)
                 {
-                    pointingSource = pointer.PointingSource;
+                    pointer = pointerData.Pointer;
                     return true;
                 }
             }
 
-            pointingSource = null;
+            pointer = null;
             return false;
         }
 
@@ -291,7 +291,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="pointingSource"></param>
         /// <returns></returns>
-        public float GetPointingExtent(IPointingSource pointingSource)
+        public float GetPointingExtent(IPointer pointingSource)
         {
             return pointingSource.ExtentOverride ?? pointingExtent;
         }
@@ -302,7 +302,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="pointingSource"></param>
         /// <returns>Currently Focused Object.</returns>
-        public GameObject GetFocusedObject(IPointingSource pointingSource)
+        public GameObject GetFocusedObject(IPointer pointingSource)
         {
             if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
 
@@ -320,15 +320,15 @@ namespace HoloToolkit.Unity.InputModule
         /// Gets the currently focused object for the pointing source.
         /// <para><remarks>If the pointing source is not registered, then the Gaze's <see cref="FocusDetails"/> is returned.</remarks></para>
         /// </summary>
-        /// <param name="pointingSource"></param>
+        /// <param name="pointer"></param>
         /// <param name="focusDetails"></param>
-        public bool TryGetFocusDetails(IPointingSource pointingSource, out FocusDetails focusDetails)
+        public bool TryGetFocusDetails(IPointer pointer, out FocusDetails focusDetails)
         {
-            foreach (var pointer in pointers)
+            foreach (var pointerData in pointers)
             {
-                if (pointer.PointingSource.SourceId == pointingSource.SourceId)
+                if (pointerData.Pointer.PointerId == pointer.PointerId)
                 {
-                    focusDetails = pointer.End;
+                    focusDetails = pointerData.End;
                     return true;
                 }
             }
@@ -341,18 +341,18 @@ namespace HoloToolkit.Unity.InputModule
         /// Checks if exactly one pointer is registered and returns it if so.
         /// </summary>
         /// <returns>The registered pointer if exactly one is registered, null otherwise.</returns>
-        public bool TryGetSinglePointer(out IPointingSource pointingSource)
+        public bool TryGetSinglePointer(out IPointer pointer)
         {
             if (pointers.Count == 1)
             {
-                foreach (var pointer in pointers)
+                foreach (var pointerData in pointers)
                 {
-                    pointingSource = pointer.PointingSource;
+                    pointer = pointerData.Pointer;
                     return true;
                 }
             }
 
-            pointingSource = null;
+            pointer = null;
             return false;
         }
 
@@ -361,7 +361,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         /// <param name="pointer"></param>
         /// <returns></returns>
-        public GraphicInputEventData GetSpecificPointerGraphicEventData(IPointingSource pointer)
+        public GraphicInputEventData GetSpecificPointerGraphicEventData(IPointer pointer)
         {
             var pointerData = GetPointerData(pointer);
             return pointerData == null ? null : pointerData.GraphicEventData;
@@ -370,6 +370,21 @@ namespace HoloToolkit.Unity.InputModule
         #endregion Focus Details by IPointingSource
 
         #region Utilities
+
+        public static uint GenerateNewPointerId()
+        {
+            var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
+
+            foreach (var pointerData in Instance.pointers)
+            {
+                if (pointerData.Pointer.PointerId == newId)
+                {
+                    return GenerateNewPointerId();
+                }
+            }
+
+            return newId;
+        }
 
         /// <summary>
         /// Helper for assigning world space canvases event cameras.
@@ -394,15 +409,15 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Returns the registered PointerData for the provided pointing input source.
         /// </summary>
-        /// <param name="pointingSource"></param>
+        /// <param name="pointer"></param>
         /// <returns>Pointer Data if the pointing source is registered.</returns>
-        private PointerData GetPointerData(IPointingSource pointingSource)
+        private PointerData GetPointerData(IPointer pointer)
         {
-            foreach (var pointer in pointers)
+            foreach (var pointerData in pointers)
             {
-                if (pointer.PointingSource.SourceId == pointingSource.SourceId)
+                if (pointerData.Pointer.PointerId == pointer.PointerId)
                 {
-                    return pointer;
+                    return pointerData;
                 }
             }
 
@@ -419,7 +434,7 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (pointer.Equals(gazeManagerPointingData))
                 {
-                    Debug.Assert(gazeManagerPointingData.PointingSource.SourceId == GazeManager.Instance.SourceId);
+                    Debug.Assert(gazeManagerPointingData.Pointer.PointerId == GazeManager.Instance.Pointers[0].PointerId);
                     GazeManager.Instance.UpdateHitDetails(gazeManagerPointingData.End, gazeManagerPointingData.LastRaycastHit);
                 }
 
@@ -446,10 +461,10 @@ namespace HoloToolkit.Unity.InputModule
             // Call the pointer's OnPreRaycast function
             // This will give it a chance to prepare itself for raycasts
             // eg, by building its Rays array
-            pointer.PointingSource.OnPreRaycast();
+            pointer.Pointer.OnPreRaycast();
 
             // If pointer interaction isn't enabled, clear its result object and return
-            if (!pointer.PointingSource.InteractionEnabled)
+            if (!pointer.Pointer.InteractionEnabled)
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
                 pointer.ResetFocusedObjects(false);
@@ -460,10 +475,10 @@ namespace HoloToolkit.Unity.InputModule
                 // Keep the focus objects the same
                 // This will ensure that we execute events on those objects
                 // even if the pointer isn't pointing at them
-                if (!pointer.PointingSource.FocusLocked)
+                if (!pointer.Pointer.FocusLocked)
                 {
                     // Otherwise, continue
-                    var prioritizedLayerMasks = (pointer.PointingSource.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
+                    var prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
 
                     // Perform raycast to determine focused object
                     RaycastPhysics(pointer, prioritizedLayerMasks);
@@ -476,14 +491,14 @@ namespace HoloToolkit.Unity.InputModule
                     }
 
                     // Set the pointer's result last
-                    pointer.PointingSource.Result = pointer;
+                    pointer.Pointer.Result = pointer;
                 }
             }
 
             // Call the pointer's OnPostRaycast function
             // This will give it a chance to respond to raycast results
             // eg by updating its appearance
-            pointer.PointingSource.OnPostRaycast();
+            pointer.Pointer.OnPostRaycast();
         }
 
         /// <summary>
@@ -498,17 +513,17 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             RaycastHit physicsHit = default(RaycastHit);
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer");
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
 
             // Check raycast for each step in the pointing source
-            for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
+            for (int i = 0; i < pointer.Pointer.Rays.Length; i++)
             {
-                if (RaycastPhysicsStep(pointer.PointingSource.Rays[i], prioritizedLayerMasks, out physicsHit))
+                if (RaycastPhysicsStep(pointer.Pointer.Rays[i], prioritizedLayerMasks, out physicsHit))
                 {
                     // Set the pointer source's origin ray to this step
                     isHit = true;
-                    rayStep = pointer.PointingSource.Rays[i];
+                    rayStep = pointer.Pointer.Rays[i];
                     rayStepIndex = i;
                     // No need to continue once we've hit something
                     break;
@@ -597,16 +612,16 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer");
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
 
             // Cast rays for every step until we score a hit
-            for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
+            for (int i = 0; i < pointer.Pointer.Rays.Length; i++)
             {
-                if (RaycastUnityUIStep(pointer, pointer.PointingSource.Rays[i], prioritizedLayerMasks, out overridePhysicsRaycast, out raycastResult))
+                if (RaycastUnityUIStep(pointer, pointer.Pointer.Rays[i], prioritizedLayerMasks, out overridePhysicsRaycast, out raycastResult))
                 {
                     rayStepIndex = i;
-                    rayStep = pointer.PointingSource.Rays[i];
+                    rayStep = pointer.Pointer.Rays[i];
                     break;
                 }
             }
@@ -735,21 +750,21 @@ namespace HoloToolkit.Unity.InputModule
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                InputManager.Instance.RaisePreFocusChangedEvent(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
+                InputManager.Instance.RaisePreFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
                 {
-                    InputManager.Instance.RaiseFocusExit(change.PointingSource, pendingUnfocusObject);
+                    InputManager.Instance.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
                     pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    InputManager.Instance.RaiseFocusEnter(change.PointingSource, pendingFocusObject);
+                    InputManager.Instance.RaiseFocusEnter(change.Pointer, pendingFocusObject);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputManager.Instance.OnFocusChangedEvent(change.PointingSource, pendingUnfocusObject, pendingFocusObject);
+                InputManager.Instance.OnFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -763,73 +778,72 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            var pointingSource = eventData.PointingSource;
-            if (pointingSource == null) { return; }
-
-            PointerData pointer = GetPointerData(pointingSource);
-
-            Debug.Assert(pointer == null, "This pointing source is already registered!");
-
-            // Special Registration for Gaze
-            if (pointingSource.SourceId == GazeManager.Instance.SourceId)
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                if (gazeManagerPointingData == null)
+                PointerData pointerData = GetPointerData(sourcePointer);
+
+                Debug.Assert(pointerData == null, "This pointing source is already registered!");
+
+                // Special Registration for Gaze
+                if (eventData.InputSource.SourceId == GazeManager.Instance.SourceId)
                 {
-                    if (GazeManager.IsInitialized)
+                    if (gazeManagerPointingData == null)
                     {
-                        gazeManagerPointingData = new PointerData(GazeManager.Instance);
+                        if (GazeManager.IsInitialized)
+                        {
+                            gazeManagerPointingData = new PointerData(sourcePointer);
+                        }
                     }
+                    else
+                    {
+                        Debug.Assert(gazeManagerPointingData.Pointer.PointerId == GazeManager.Instance.Pointers[0].PointerId);
+                        gazeManagerPointingData.ResetFocusedObjects();
+                    }
+
+                    Debug.Assert(gazeManagerPointingData != null);
+                    pointerData = gazeManagerPointingData;
                 }
                 else
                 {
-                    Debug.Assert(gazeManagerPointingData.PointingSource.SourceId == GazeManager.Instance.SourceId);
-                    gazeManagerPointingData.ResetFocusedObjects();
+                    pointerData = new PointerData(sourcePointer);
                 }
 
-                Debug.Assert(gazeManagerPointingData != null);
-                pointer = gazeManagerPointingData;
+                pointers.Add(pointerData);
             }
-            else
-            {
-                pointer = new PointerData(pointingSource);
-            }
-
-            pointers.Add(pointer);
         }
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            var pointingSource = eventData.PointingSource;
-
-            if (pointingSource == null) { return; }
-
-            PointerData pointer = GetPointerData(pointingSource);
-            Debug.Assert(pointer != null, "Pointing Source was never registered!");
-
-            // Raise focus events if needed
-            if (pointer.CurrentPointerTarget != null)
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                GameObject unfocusedObject = pointer.CurrentPointerTarget;
-                bool objectIsStillFocusedByOtherPointer = false;
+                PointerData pointerData = GetPointerData(sourcePointer);
+                Debug.Assert(pointerData != null, "Pointing Source was never registered!");
 
-                foreach (var otherPointer in pointers)
+                // Raise focus events if needed
+                if (pointerData.CurrentPointerTarget != null)
                 {
-                    if (otherPointer.CurrentPointerTarget == unfocusedObject)
+                    GameObject unfocusedObject = pointerData.CurrentPointerTarget;
+                    bool objectIsStillFocusedByOtherPointer = false;
+
+                    foreach (var otherPointer in pointers)
                     {
-                        objectIsStillFocusedByOtherPointer = true;
-                        break;
+                        if (otherPointer.CurrentPointerTarget == unfocusedObject)
+                        {
+                            objectIsStillFocusedByOtherPointer = true;
+                            break;
+                        }
                     }
+
+                    if (!objectIsStillFocusedByOtherPointer)
+                    {
+                        InputManager.Instance.RaiseFocusExit(sourcePointer, unfocusedObject);
+                    }
+
+                    InputManager.Instance.RaisePreFocusChangedEvent(sourcePointer, unfocusedObject, null);
                 }
 
-                if (!objectIsStillFocusedByOtherPointer)
-                {
-                    InputManager.Instance.RaiseFocusExit(pointingSource, unfocusedObject);
-                }
-
-                InputManager.Instance.RaisePreFocusChangedEvent(pointingSource, unfocusedObject, null);
+                pointers.Remove(pointerData);
             }
-
-            pointers.Remove(pointer);
         }
 
         public void OnSourcePositionChanged(SourcePositionEventData eventData) { }

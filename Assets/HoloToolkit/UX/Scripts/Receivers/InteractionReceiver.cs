@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity.Receivers
         /// <summary>
         /// Protected pointer for the current selecting pointer
         /// </summary>
-        protected IPointingSource _selectingFocuser;
+        protected IPointer _selectingFocuser;
         #endregion
 
         /// <summary>
@@ -159,10 +159,10 @@ namespace HoloToolkit.Unity.Receivers
             return (interactables != null && interactables.Contains(interactable));
         }
 
-        private void CheckLockFocus(IPointingSource pointer)
+        private void CheckLockFocus(IPointer pointer)
         {
             // If our previous selecting pointer isn't the same
-            if (_selectingFocuser != null && _selectingFocuser.SourceId != pointer.SourceId)
+            if (_selectingFocuser != null && _selectingFocuser.PointerId != pointer.PointerId)
             {
                 // If our focus is currently locked, unlock it before moving on
                 if (LockFocus)
@@ -179,7 +179,7 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        private void LockFocuser(IPointingSource focuser)
+        private void LockFocuser(IPointer focuser)
         {
             if (focuser != null)
             {

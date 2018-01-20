@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer associated with this event.
         /// </summary>
-        public IPointingSource Pointer { get; private set; }
+        public IPointer Pointer { get; private set; }
 
         /// <summary>
         /// The old focused object.
@@ -28,13 +28,13 @@ namespace HoloToolkit.Unity.InputModule
 
         public FocusEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IPointingSource pointer)
+        public void Initialize(IPointer pointer)
         {
             Reset();
             Pointer = pointer;
         }
 
-        public void Initialize(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void Initialize(IPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             Reset();
             Pointer = pointer;
