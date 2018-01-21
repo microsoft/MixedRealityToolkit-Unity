@@ -58,9 +58,7 @@ namespace HoloToolkit.Unity.InputModule
                 Source = source;
             }
 #else
-            public InteractionInputSource(uint sourceId, string name) : base(sourceId, name) { }
-
-            public InteractionInputSource(uint sourceId, string name, SupportedInputInfo supportedInputInfo) : base(sourceId, name, supportedInputInfo) { }
+            public InteractionInputSource(string name) : base(name) { }
 #endif
 
             public override SupportedInputInfo GetSupportedInputInfo()
