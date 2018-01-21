@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
         /// </summary>
-        public IPointingSource Pointer
+        public IPointer Pointer
         {
             get { return pointer; }
             set
@@ -103,7 +103,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private IPointingSource pointer;
+        private IPointer pointer;
 
         public Vector3 Position
         {
@@ -199,7 +199,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
-            if (Pointer.SourceId == eventData.Pointer.SourceId)
+            if (Pointer.PointerId == eventData.Pointer.PointerId)
             {
                 TargetedObject = eventData.NewFocusedObject;
             }
@@ -217,9 +217,12 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnPointerDown(ClickEventData eventData)
         {
-            if (Pointer.SourceId == eventData.SourceId)
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                IsPointerDown = true;
+                if (sourcePointer.PointerId == Pointer.PointerId)
+                {
+                    IsPointerDown = true;
+                }
             }
         }
 
@@ -235,9 +238,12 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnPointerUp(ClickEventData eventData)
         {
-            if (Pointer.SourceId == eventData.SourceId)
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                IsPointerDown = false;
+                if (sourcePointer.PointerId == Pointer.PointerId)
+                {
+                    IsPointerDown = false;
+                }
             }
         }
 

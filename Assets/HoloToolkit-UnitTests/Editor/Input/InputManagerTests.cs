@@ -224,7 +224,7 @@ namespace HoloToolkit.Unity.Tests
         {
             var focusedHandler = CreateCubeTestHandler().CallInitialization();
 
-            InputManager.Instance.RaisePreFocusChangedEvent(GazeManager.Instance, null, focusedHandler);
+            InputManager.Instance.RaisePreFocusChangedEvent(GazeManager.Instance.Pointers[0], null, focusedHandler);
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(focusedHandler));

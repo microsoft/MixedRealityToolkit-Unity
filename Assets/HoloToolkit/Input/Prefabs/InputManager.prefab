@@ -224,15 +224,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1a2a33ffcac354298137001635a001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CursorPrefab: {fileID: 1000012072213228, guid: a611e772ef8ddf64d8106a9cbb70f31c,
+  cursorPrefab: {fileID: 1000012072213228, guid: a611e772ef8ddf64d8106a9cbb70f31c,
     type: 2}
-  MaxGazeCollisionDistance: 10
-  RaycastLayerMasks:
+  maxGazeCollisionDistance: 10
+  raycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291
-  Stabilizer: {fileID: 114000011980027866}
-  GazeTransform: {fileID: 0}
-  DebugDrawRay: 0
+  stabilizer: {fileID: 114000011980027866}
+  gazeTransform: {fileID: 0}
+  debugDrawRay: 0
 --- !u!114 &114000012434513746
 MonoBehaviour:
   m_ObjectHideFlags: 1

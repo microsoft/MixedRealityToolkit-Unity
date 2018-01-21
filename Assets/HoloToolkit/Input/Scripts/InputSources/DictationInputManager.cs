@@ -60,7 +60,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public uint SourceId { get; protected set; }
 
-        public string Name { get { return "Dictation"; } }
+        public string SourceName { get { return "Dictation"; } }
+
+        public IPointer[] Pointers { get { return null; } }
 
         public SupportedInputInfo GetSupportedInputInfo()
         {
@@ -78,7 +80,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool Equals(IInputSource other)
         {
-            return base.Equals(other) && SourceId == other.SourceId && string.Equals(Name, other.Name);
+            return base.Equals(other) && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }
 
         public override bool Equals(object obj)
@@ -118,7 +120,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)SourceId;
-                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
                 return hashCode;
             }
         }

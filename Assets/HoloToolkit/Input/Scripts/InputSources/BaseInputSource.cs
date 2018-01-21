@@ -13,11 +13,13 @@ namespace HoloToolkit.Unity.InputModule
     {
         public uint SourceId { get; protected set; }
 
-        public string Name
+        public string SourceName
         {
             get { return name; }
             set { name = value; }
         }
+
+        public IPointer[] Pointers { get { return null; } }
 
         public abstract SupportedInputInfo GetSupportedInputInfo();
 
@@ -30,7 +32,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private bool Equals(IInputSource other)
         {
-            return other != null && SourceId == other.SourceId && string.Equals(Name, other.Name);
+            return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }
 
         public override bool Equals(object obj)
@@ -70,7 +72,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 int hashCode = 0;
                 hashCode = (hashCode * 397) ^ (int)SourceId;
-                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
                 return hashCode;
             }
         }

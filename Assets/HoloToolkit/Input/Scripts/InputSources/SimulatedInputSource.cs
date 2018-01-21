@@ -346,7 +346,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(GazeManager.Instance);
+                    InputManager.Instance.RaisePointerDown(GazeManager.Instance, GazeManager.Instance.Pointers[0]);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -369,7 +369,7 @@ namespace HoloToolkit.Unity.InputModule
                         InputManager.Instance.RaiseInputClicked(GazeManager.Instance, 1);
                     }
 
-                    InputManager.Instance.RaisePointerUp(GazeManager.Instance);
+                    InputManager.Instance.RaisePointerUp(GazeManager.Instance, GazeManager.Instance.Pointers[0]);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -408,11 +408,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(GazeManager.Instance);
+                    InputManager.Instance.RaisePointerDown(GazeManager.Instance, GazeManager.Instance.Pointers[0]);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(GazeManager.Instance);
+                    InputManager.Instance.RaisePointerUp(GazeManager.Instance, GazeManager.Instance.Pointers[0]);
                 }
             }
 
@@ -420,11 +420,11 @@ namespace HoloToolkit.Unity.InputModule
             {
                 if (currentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaisePointerDown(GazeManager.Instance);
+                    InputManager.Instance.RaisePointerDown(GazeManager.Instance, GazeManager.Instance.Pointers[0]);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(GazeManager.Instance);
+                    InputManager.Instance.RaisePointerUp(GazeManager.Instance, GazeManager.Instance.Pointers[0]);
                 }
             }
         }

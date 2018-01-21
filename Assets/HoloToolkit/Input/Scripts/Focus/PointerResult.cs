@@ -17,8 +17,6 @@ namespace HoloToolkit.Unity.InputModule
 
         public GameObject PreviousPointerTarget { get; protected set; }
 
-        public RaycastHit LastRaycastHit { get; protected set; }
-
         /// <summary>
         /// The index of the step that produced the last raycast hit
         /// 0 when no raycast hit

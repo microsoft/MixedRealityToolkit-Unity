@@ -246,9 +246,9 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <returns>Placement position in front of the user</returns>
         private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
-            if (GazeManager.Instance.GazeTarget != null)
+            if (GazeManager.GazeTarget != null)
             {
-                return GazeManager.Instance.HitPosition;
+                return GazeManager.HitPosition;
             }
             return headPosition + gazeDirection * defaultGazeDistance;
         }
