@@ -6,7 +6,7 @@ using System;
 using System.Reflection;
 #endif
 
-namespace MixedRealityToolkit.Common
+namespace MixedRealityToolkit
 {
     public static class TypeUtils
     {

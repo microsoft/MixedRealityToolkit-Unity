@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace MixedRealityToolkit.Common.Extensions
+namespace MixedRealityToolkit
 {
 #if UNITY_WSA && !UNITY_EDITOR
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -174,7 +173,6 @@ namespace MixedRealityToolkit.Common.Extensions
         }
     }
 #else
-
     using System;
 
     public static class ReflectionExtensions
@@ -199,6 +197,5 @@ namespace MixedRealityToolkit.Common.Extensions
             return type.IsValueType;
         }
     }
-
 #endif
 }
