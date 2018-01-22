@@ -19,7 +19,6 @@ namespace HoloToolkit.Unity
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
         public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
         {
-            RaycastResults.Clear();
             eventSystem.RaycastAll(pointerEventData, RaycastResults);
             return PrioritizeRaycastResult(layerMasks);
         }
