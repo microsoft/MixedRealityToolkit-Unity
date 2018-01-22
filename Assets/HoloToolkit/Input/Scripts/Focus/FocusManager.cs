@@ -498,8 +498,9 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             RaycastHit physicsHit = default(RaycastHit);
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer");
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer");
+            // Comment back in GetType() only when debugging for a specific pointer.
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer "/* + pointer.GetType()*/);
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer "/* + pointer.GetType()*/);
 
             // Check raycast for each step in the pointing source
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -597,8 +598,9 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer");
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer");
+            // Comment back in GetType() only when debugging for a specific pointer.
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer "/* + pointer.GetType()*/);
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer "/* + pointer.GetType()*/);
 
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
