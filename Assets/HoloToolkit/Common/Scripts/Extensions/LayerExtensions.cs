@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -54,15 +53,16 @@ namespace HoloToolkit.Unity
         /// <param name="layer">Layer to search for</param>
         /// <param name="layerMasks">List of LayerMasks to search</param>
         /// <returns>LayerMaskList index, or -1 for not found</returns>
-        public static int FindLayerListIndex(this int layer, IEnumerable<LayerMask> layerMasks)
+        public static int FindLayerListIndex(this int layer, LayerMask[] layerMasks)
         {
             var i = 0;
-            foreach (var layerMask in layerMasks)
+            for (int j = 0; j < layerMasks.Length; j++)
             {
-                if (layer.IsInLayerMask(layerMask))
+                if (layer.IsInLayerMask(layerMasks[i]))
                 {
                     return i;
                 }
+
                 i++;
             }
             return -1;
@@ -81,15 +81,16 @@ namespace HoloToolkit.Unity
         /// Combines provided layers into a single layer mask.
         /// </summary>
         /// <returns>The combined layer mask</returns>
-        public static int Combine(this IEnumerable<LayerMask> layerMaskList)
+        public static int Combine(this LayerMask[] layerMaskList)
         {
             int combinedLayerMask = 0;
-            foreach (var layer in layerMaskList)
+            for (int i = 0; i < layerMaskList.Length; i++)
             {
-                combinedLayerMask = combinedLayerMask | layer.value;
+                combinedLayerMask = combinedLayerMask | layerMaskList[i].value;
             }
             return combinedLayerMask;
         }
+
         public static LayerMask ToMask(int layer)
         {
             return 1 << layer;
@@ -97,7 +98,7 @@ namespace HoloToolkit.Unity
 
         private static int GetLayerNumber(ref int cache, string layerName)
         {
-            if (cache == LayerExtensions.InvalidLayer)
+            if (cache == InvalidLayer)
             {
                 cache = LayerMask.NameToLayer(layerName);
             }
