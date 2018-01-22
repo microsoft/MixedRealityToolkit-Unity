@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
@@ -52,10 +51,13 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Should the cursor be hiding when this object is focused.")]
         public bool HideCursorOnFocus = false;
 
+        [SerializeField]
         [Tooltip("Cursor animation parameters to set when this object is focused. Leave empty for none.")]
-        public AnimatorParameter[] CursorParameters;
+        private AnimatorParameter[] cursorParameters;
 
         #region ICursorModifier Implementation
+
+        public AnimatorParameter[] CursorParameters { get { return cursorParameters; } }
 
         /// <summary>
         /// Return whether or not hide the cursor

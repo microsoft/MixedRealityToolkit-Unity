@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
         /// </summary>
-        public IPointer Pointer
+        public virtual IPointer Pointer
         {
             get { return pointer; }
             set
@@ -105,17 +105,17 @@ namespace HoloToolkit.Unity.InputModule
 
         private IPointer pointer;
 
-        public Vector3 Position
+        public virtual Vector3 Position
         {
             get { return transform.position; }
         }
 
-        public Quaternion Rotation
+        public virtual Quaternion Rotation
         {
             get { return transform.rotation; }
         }
 
-        public Vector3 LocalScale
+        public virtual Vector3 LocalScale
         {
             get { return transform.localScale; }
         }

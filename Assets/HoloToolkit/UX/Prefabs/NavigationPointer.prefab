@@ -35,7 +35,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4671461304012674}
   - component: {fileID: 114045951303966162}
-  - component: {fileID: 114498623830712114}
   - component: {fileID: 114444424106302830}
   - component: {fileID: 114041993943882784}
   - component: {fileID: 114664944855189834}
@@ -174,16 +173,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56faa334bbe04704cb8886fb83bd656e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handedness: 1
+  SetChildrenInactiveWhenDetached: 1
+  PositionOffset: {x: 0, y: 0, z: 0}
+  RotationOffset: {x: 0, y: 0, z: 0}
+  ScaleOffset: {x: 1, y: 1, z: 1}
+  SetScaleOnAttach: 0
   interactionEnabled: 1
-  pointerOrientation: 0
+  CurrentPointerOrientation: 0
   pointerExtent: 2
-  raycastOrigin: {fileID: 4418658049720718}
-  cursorOverride: {fileID: 0}
-  eventOrigin: Pointer
-  prioritizedLayerMasksOverride:
-  - serializedVersion: 2
-    m_Bits: 4294967295
-  lineColorSelected:
+  RaycastOrigin: {fileID: 0}
+  LineColorSelected:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 1, a: 0}
     key1: {r: 0, g: 0, b: 1, a: 1}
@@ -212,7 +212,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 4
-  lineColorValid:
+  LineColorValid:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 1, a: 0}
     key1: {r: 0, g: 0, b: 1, a: 1}
@@ -224,28 +224,28 @@ MonoBehaviour:
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
-    ctime2: 65535
+    ctime2: 0
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5590
-    atime2: 58789
-    atime3: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
-  lineColorNoTarget:
+    m_NumAlphaKeys: 2
+  LineColorNoTarget:
     serializedVersion: 2
-    key0: {r: 0.5, g: 0.5, b: 0.5, a: 0}
-    key1: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -260,21 +260,21 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5397
-    atime2: 57632
-    atime3: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
-  lineColorLockFocus:
+    m_NumAlphaKeys: 2
+  LineColorLockFocus:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 0}
-    key1: {r: 1, g: 0, b: 0, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -289,25 +289,25 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 6168
-    atime2: 57825
-    atime3: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
-  lineCastResolution: 64
+    m_NumAlphaKeys: 2
+  LineCastResolution: 25
   lineBase: {fileID: 114444424106302830}
-  input: {fileID: 114498623830712114}
-  minValidDot: 0.2
-  lineColorHotSpot:
+  LineRenderers: []
+  MinValidDot: 0.2
+  LineColorHotSpot:
     serializedVersion: 2
-    key0: {r: 0, g: 1, b: 0, a: 0}
-    key1: {r: 0, g: 1, b: 0, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -322,21 +322,21 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5783
-    atime2: 58789
-    atime3: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
-  lineColorInvalid:
+    m_NumAlphaKeys: 2
+  LineColorInvalid:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 0}
-    key1: {r: 1, g: 0, b: 0, a: 1}
-    key2: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -344,56 +344,32 @@ MonoBehaviour:
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
-    ctime2: 65535
+    ctime2: 0
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 6168
-    atime2: 58211
-    atime3: 65535
+    atime1: 65535
+    atime2: 0
+    atime3: 0
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
-  validLayers:
+    m_NumAlphaKeys: 2
+  ValidLayers:
     serializedVersion: 2
     m_Bits: 1
-  invalidLayers:
+  InvalidLayers:
     serializedVersion: 2
     m_Bits: 4
+  thumbstickThreshold: 0.05
   disableWhileActive: []
-  parabolaVelocityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: -1
-      value: 1
-      inSlope: -0.928599
-      outSlope: 0
-      tangentMode: 69
-    - serializedVersion: 2
-      time: -0.25
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0.5
-      inSlope: -0.8955804
-      outSlope: -0.8955804
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  parabolaVelocityMultiplier: 3.3
-  parabolaMain: {fileID: 114444424106302830}
+  physicsParabolaDataMain: {fileID: 114444424106302830}
 --- !u!114 &114444424106302830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -446,26 +422,6 @@ MonoBehaviour:
   TimeMultiplier: 1
   UseCustomGravity: 1
   Gravity: {x: 0, y: -9.8, z: 0}
---- !u!114 &114498623830712114
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586406594239866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67c1695499429c74794eea34b1239ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handedness: 2
-  element: 6
-  SetChildrenInactiveWhenDetached: 1
-  positionOffset: {x: 0, y: 0, z: 0}
-  rotationOffset: {x: 0, y: 0, z: 0}
-  scale: {x: 1, y: 1, z: 1}
-  setScaleOnAttach: 0
-  pointer: {fileID: 114045951303966162}
-  thumbstickThreshold: 0.2
 --- !u!114 &114664944855189834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -479,10 +435,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distortOrder: 0
   distortStrength: 1
-  LocalCenterOfGravity: {x: 0, y: 0, z: 0}
-  AxisStrength: {x: 1, y: 1, z: 1}
-  Radius: 0.5
-  GravityStrength:
+  localCenterOfGravity: {x: 0, y: 0, z: 0}
+  axisStrength: {x: 1, y: 1, z: 1}
+  radius: 0.5
+  gravityStrength:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2

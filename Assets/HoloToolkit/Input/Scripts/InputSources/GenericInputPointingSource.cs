@@ -10,8 +10,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class GenericInputPointingSource : GenericInputSource
     {
-        public GenericInputPointingSource(string name) : base(name) { }
-
         public GenericInputPointingSource(string name, SupportedInputInfo supportedInputInfo) : base(name, supportedInputInfo) { }
 
         public virtual bool TryGetPointerPosition(IPointer pointer, out Vector3 position)

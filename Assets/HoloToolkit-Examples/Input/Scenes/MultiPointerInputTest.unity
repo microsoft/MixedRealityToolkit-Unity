@@ -473,7 +473,7 @@ MonoBehaviour:
   SnapCursor: 0
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
-  CursorParameters: []
+  cursorParameters: []
 --- !u!1 &142212807
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,15 +1332,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4178194540594642, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1.996
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4178194540594642, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.528
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4178194540594642, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.978
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4178194540594642, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1365,16 +1365,6 @@ Prefab:
     - target: {fileID: 1446018650780946, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
       propertyPath: m_Name
       value: TeleportPadLeft
-      objectReference: {fileID: 0}
-    - target: {fileID: 114577944801463760, guid: 40eaddb1e796c604b90c9e53e914997a,
-        type: 2}
-      propertyPath: pointer
-      value: 
-      objectReference: {fileID: 1013886395}
-    - target: {fileID: 95678582371645096, guid: 40eaddb1e796c604b90c9e53e914997a,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
@@ -2002,7 +1992,8 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114812681035175298, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
   m_IsPrefabParent: 0
 --- !u!95 &526292728 stripped
@@ -2341,6 +2332,10 @@ Prefab:
       propertyPath: pointer
       value: 
       objectReference: {fileID: 56689330}
+    - target: {fileID: 1446018650780946, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 40eaddb1e796c604b90c9e53e914997a, type: 2}
   m_IsPrefabParent: 0
@@ -2411,7 +2406,7 @@ MonoBehaviour:
   SnapCursor: 1
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
-  CursorParameters: []
+  cursorParameters: []
 --- !u!114 &718516060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3045,12 +3040,6 @@ MonoBehaviour:
   ToolTipDelayTime: 0.5
   ButtonAnimator: {fileID: 1610941210}
   EnableActivation: 1
---- !u!114 &1013886395 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114045951303966162, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
-    type: 2}
-  m_PrefabInternal: {fileID: 424219259}
-  m_Script: {fileID: 11500000, guid: 56faa334bbe04704cb8886fb83bd656e, type: 3}
 --- !u!1 &1034531161
 GameObject:
   m_ObjectHideFlags: 0
@@ -3329,6 +3318,10 @@ Prefab:
       propertyPath: pointer
       value: 
       objectReference: {fileID: 1052760834}
+    - target: {fileID: 1445549289901480, guid: 3cbe4e7460d68df4ba04c2d8150d5d76, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3cbe4e7460d68df4ba04c2d8150d5d76, type: 2}
   m_IsPrefabParent: 0
@@ -4322,7 +4315,7 @@ MonoBehaviour:
   SnapCursor: 0
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
-  CursorParameters: []
+  cursorParameters: []
 --- !u!1 &1527663681
 GameObject:
   m_ObjectHideFlags: 0
@@ -6352,13 +6345,14 @@ Prefab:
         type: 2}
       propertyPath: input
       value: 
-      objectReference: {fileID: 2036775181}
+      objectReference: {fileID: 0}
     - target: {fileID: 114416834852078844, guid: 3cbe4e7460d68df4ba04c2d8150d5d76,
         type: 2}
       propertyPath: pointer
       value: 
       objectReference: {fileID: 2036775182}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114416834852078844, guid: 3cbe4e7460d68df4ba04c2d8150d5d76, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 3cbe4e7460d68df4ba04c2d8150d5d76, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &2036775180 stripped
@@ -6367,12 +6361,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 2036775179}
   m_Script: {fileID: 11500000, guid: bec4b46028f8fb94c9b03b88fca37bd6, type: 3}
---- !u!114 &2036775181 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114416834852078844, guid: 3cbe4e7460d68df4ba04c2d8150d5d76,
-    type: 2}
-  m_PrefabInternal: {fileID: 2036775179}
-  m_Script: {fileID: 11500000, guid: dd30aa84ed6fdf74b8612234fc9b1488, type: 3}
 --- !u!114 &2036775182 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114393094861329988, guid: 3cbe4e7460d68df4ba04c2d8150d5d76,

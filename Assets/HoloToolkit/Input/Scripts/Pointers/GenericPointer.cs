@@ -2,13 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using HoloToolkit.Unity.UX;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public class BasePointer : IPointer
+    /// <summary>
+    /// Base Class for pointers that don't inherit from MonoBehaviour.
+    /// </summary>
+    public class GenericPointer : IPointer
     {
-        public BasePointer(string pointerName, IInputSource inputSourceParent)
+        public GenericPointer(string pointerName, IInputSource inputSourceParent)
         {
             PointerId = FocusManager.GenerateNewPointerId();
             PointerName = pointerName;
@@ -23,13 +27,15 @@ namespace HoloToolkit.Unity.InputModule
 
         public BaseCursor BaseCursor { get; set; }
 
-        public CursorModifier CursorModifier { get; set; }
+        public ICursorModifier CursorModifier { get; set; }
+
+        public ITeleportTarget TeleportTarget { get; set; }
 
         public bool InteractionEnabled { get; set; }
 
         public bool FocusLocked { get; set; }
 
-        public float? ExtentOverride { get; set; }
+        public float? PointerExtent { get; set; }
 
         public RayStep[] Rays
         {
@@ -52,13 +58,13 @@ namespace HoloToolkit.Unity.InputModule
             Ray pointingRay;
             if (TryGetPointingRay(out pointingRay))
             {
-                rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
+                rays[0].CopyRay(pointingRay, (PointerExtent ?? FocusManager.GlobalPointingExtent));
             }
 
             if (RayStabilizer != null)
             {
                 RayStabilizer.UpdateStability(rays[0].Origin, rays[0].Direction);
-                rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
+                rays[0].CopyRay(RayStabilizer.StableRay, (PointerExtent ?? FocusManager.GlobalPointingExtent));
             }
         }
 

@@ -68,7 +68,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             {
                 Hit = GazeManager.GazeTarget != null,
                 Position = GazeManager.HitPosition,
-                Normal = GazeManager.GazeNormal
+                Normal = GazeManager.GazeDirection
             };
 
             return result;

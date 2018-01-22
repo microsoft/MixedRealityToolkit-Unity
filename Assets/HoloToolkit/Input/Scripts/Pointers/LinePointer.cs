@@ -2,107 +2,116 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity.UX;
 
-namespace HoloToolkit.Unity.UX
+namespace HoloToolkit.Unity.InputModule
 {
     [RequireComponent(typeof(DistorterGravity))]
     [UseWith(typeof(LineBase))]
     [UseWith(typeof(LineRendererBase))]
-    public class LinePointer : ControllerPointerBase
+    public class LinePointer : BasePointer
     {
         [Header("Colors")]
         [SerializeField]
         [GradientDefault(GradientDefaultAttribute.ColorEnum.Blue, GradientDefaultAttribute.ColorEnum.White, 1f, 0.25f)]
-        protected Gradient lineColorSelected;
+        protected Gradient LineColorSelected;
+
         [SerializeField]
         [GradientDefault(GradientDefaultAttribute.ColorEnum.Blue, GradientDefaultAttribute.ColorEnum.White, 1f, 0.5f)]
-        protected Gradient lineColorValid;
+        protected Gradient LineColorValid;
+
         [SerializeField]
         [GradientDefault(GradientDefaultAttribute.ColorEnum.Gray, GradientDefaultAttribute.ColorEnum.White, 1f, 0.5f)]
-        protected Gradient lineColorNoTarget;
+        protected Gradient LineColorNoTarget;
+
         [SerializeField]
         [GradientDefault(GradientDefaultAttribute.ColorEnum.Red, GradientDefaultAttribute.ColorEnum.Red, 1f, 0.5f)]
-        protected Gradient lineColorLockFocus;
+        protected Gradient LineColorLockFocus;
 
         [Range(5, 100)]
         [SerializeField]
-        protected int lineCastResolution = 25;
+        protected int LineCastResolution = 25;
+
         [SerializeField]
         [DropDownComponent(true, true)]
         protected LineBase lineBase;
+
         [SerializeField]
         [DropDownComponent(true, true)]
-        protected AttachToController input;
+        protected LineRendererBase[] LineRenderers;
 
-        protected LineRendererBase[] lineRenderers;
-        protected DistorterGravity distorterGravity;
+        protected DistorterGravity DistorterGravity;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
             lineBase = GetComponent<LineBase>();
-            distorterGravity = GetComponent<DistorterGravity>();
-            lineBase.AddDistorter(distorterGravity);
-            lineRenderers = lineBase.GetComponentsInChildren<LineRendererBase>();
+            DistorterGravity = GetComponent<DistorterGravity>();
+            lineBase.AddDistorter(DistorterGravity);
+            LineRenderers = lineBase.GetComponentsInChildren<LineRendererBase>();
         }
 
+        /// <summary>
+        /// Line pointer stays inactive until select is pressed for first time
+        /// </summary>
         public override bool InteractionEnabled
         {
             get
             {
-                // Line pointer stays inactive until select is pressed for first time
-                return selectPressedOnce & base.InteractionEnabled;
+                return SelectPressedOnce & base.InteractionEnabled;
             }
         }
 
         public override void OnPreRaycast()
         {
-            if (lineBase == null)
-                return;
+            if (lineBase == null) { return; }
+
+            Vector3 pointerPosition;
+            TryGetPointerPosition(out pointerPosition);
 
             // Set our first and last points
-            lineBase.FirstPoint = PointerOrigin;
-            lineBase.LastPoint = PointerOrigin + (PointerDirection * PointerExtent);
+            lineBase.FirstPoint = pointerPosition;
+            lineBase.LastPoint = pointerPosition + (PointerDirection * (PointerExtent ?? FocusManager.GlobalPointingExtent));
 
             // Make sure our array will hold
-            if (rays == null || rays.Length != lineCastResolution)
-                rays = new RayStep[lineCastResolution];
+            if (Rays == null || Rays.Length != LineCastResolution)
+            {
+                Rays = new RayStep[LineCastResolution];
+            }
 
             // Set up our rays
             if (!FocusLocked)
             {
                 // Turn off gravity so we get accurate rays
-                distorterGravity.enabled = false;
+                DistorterGravity.enabled = false;
             }
 
-            float stepSize = 1f / rays.Length;
+            float stepSize = 1f / Rays.Length;
             Vector3 lastPoint = lineBase.GetUnclampedPoint(0f);
-            Vector3 currentPoint = Vector3.zero;
 
-            for (int i = 0; i < rays.Length; i++)
+            for (int i = 0; i < Rays.Length; i++)
             {
-                currentPoint = lineBase.GetUnclampedPoint(stepSize * (i + 1));
-                rays[i] = new RayStep(lastPoint, currentPoint);
+                Vector3 currentPoint = lineBase.GetUnclampedPoint(stepSize * (i + 1));
+                Rays[i] = new RayStep(lastPoint, currentPoint);
                 lastPoint = currentPoint;
             }
         }
 
         public override void OnPostRaycast()
         {
-            // Use the results from the last update to set our HitResult
+            // Use the results from the last update to set our NavigationResult
             float clearWorldLength = 0f;
-            distorterGravity.enabled = false;
-            Gradient lineColor = lineColorNoTarget;
+            DistorterGravity.enabled = false;
+            Gradient lineColor = LineColorNoTarget;
 
             if (InteractionEnabled)
             {
                 lineBase.enabled = true;
 
-                if (selectPressed)
+                if (SelectPressed)
                 {
-                    lineColor = lineColorSelected;
+                    lineColor = LineColorSelected;
                 }
 
                 // If we hit something
@@ -119,22 +128,22 @@ namespace HoloToolkit.Unity.UX
                         else if (i < Result.RayStepIndex)
                         {
                             // Add the full length of the step to our total distance
-                            clearWorldLength += rays[i].Length;
+                            clearWorldLength += Rays[i].Length;
                         }
                     }
 
                     // Clamp the end of the parabola to the result hit's point
-                    lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, lineCastResolution);
+                    lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
 
                     if (FocusTarget != null)
                     {
-                        lineColor = lineColorValid;
+                        lineColor = LineColorValid;
                     }
 
                     if (FocusLocked)
                     {
-                        distorterGravity.enabled = true;
-                        distorterGravity.WorldCenterOfGravity = Result.CurrentPointerTarget.transform.position;
+                        DistorterGravity.enabled = true;
+                        DistorterGravity.WorldCenterOfGravity = Result.CurrentPointerTarget.transform.position;
                     }
                 }
                 else
@@ -149,20 +158,13 @@ namespace HoloToolkit.Unity.UX
 
             if (FocusLocked)
             {
-                lineColor = lineColorLockFocus;
+                lineColor = LineColorLockFocus;
             }
 
-            for (int i = 0; i < lineRenderers.Length; i++)
+            for (int i = 0; i < LineRenderers.Length; i++)
             {
-                lineRenderers[i].LineColor = lineColor;
+                LineRenderers[i].LineColor = lineColor;
             }
         }
-
-        #region custom editor
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(LinePointer))]
-        public new class CustomEditor : MRTKEditor { }
-#endif
-        #endregion
     }
 }

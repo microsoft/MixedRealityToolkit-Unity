@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.UX
 {
     /// <summary>
-    /// Adds or removes materials to target renderer for highlighting
+    /// Adds or removes materials to target renderer for highlighting Interactable
     /// Useful with focus targets
     /// </summary>
-    public class InteractibleHighlight : MonoBehaviour
+    public class InteractableHighlight : FocusTarget
     {
         [Flags]
         public enum MatStyleEnum
@@ -23,13 +23,16 @@ namespace HoloToolkit.Unity.UX
         public virtual void OnEnable()
         {
             if (targetRenderers == null || targetRenderers.Length == 0)
+            {
                 targetRenderers = GetComponentsInChildren<Renderer>();
+            }
 
             Refresh();
         }
 
         public virtual void OnDisable()
         {
+            Highlight = false;
             Refresh();
         }
 
@@ -79,16 +82,22 @@ namespace HoloToolkit.Unity.UX
 
         [SerializeField]
         private Color highlightColor = Color.green;
+
         [SerializeField]
         private Color outlineColor = Color.white;
+
         [SerializeField]
         private Renderer[] targetRenderers;
+
         [SerializeField]
         private Material highlightMat;
+
         [SerializeField]
         private Material overlayMat;
+
         [SerializeField]
         private MatStyleEnum targetStyle = MatStyleEnum.Highlight;
+
         [SerializeField]
         private bool highlight = false;
 
@@ -109,8 +118,7 @@ namespace HoloToolkit.Unity.UX
         private void AddHighlightMats()
         {
             // If we've added our focus mats already, split
-            if ((currentStyle & targetStyle) != 0)
-                return;
+            if ((currentStyle & targetStyle) != 0) { return; }
 
             if (materialsBeforeFocus == null)
             {
@@ -119,7 +127,8 @@ namespace HoloToolkit.Unity.UX
 
             for (int i = 0; i < targetRenderers.Length; i++)
             {
-                List<Material> preFocusMaterials = null;
+                List<Material> preFocusMaterials;
+
                 if (!materialsBeforeFocus.TryGetValue(targetRenderers[i], out preFocusMaterials))
                 {
                     preFocusMaterials = new List<Material>();
@@ -129,6 +138,7 @@ namespace HoloToolkit.Unity.UX
                 {
                     preFocusMaterials.Clear();
                 }
+
                 preFocusMaterials.AddRange(targetRenderers[i].sharedMaterials);
                 // Remove any references to outline and highlight materials
                 preFocusMaterials.Remove(highlightMat);
@@ -160,13 +170,13 @@ namespace HoloToolkit.Unity.UX
 
         private void RemoveHighlightMats()
         {
-            if (materialsBeforeFocus == null)
-                return;
+            if (materialsBeforeFocus == null) { return; }
 
             foreach (KeyValuePair<Renderer, List<Material>> preFocusMats in materialsBeforeFocus)
             {
                 preFocusMats.Key.sharedMaterials = preFocusMats.Value.ToArray();
             }
+
             materialsBeforeFocus.Clear();
             currentStyle = MatStyleEnum.None;
         }
@@ -176,16 +186,17 @@ namespace HoloToolkit.Unity.UX
             mat.SetColor(propName, color);
             for (int i = 0; i < renderers.Length; i++)
             {
-                if (renderers[i] != null)
+                if (renderers[i] == null) { continue; }
+
+                var currentMaterials = new List<Material>(renderers[i].sharedMaterials);
+
+                if (!currentMaterials.Contains(mat))
                 {
-                    List<Material> currentMaterials = new List<Material>(renderers[i].sharedMaterials);
-                    if (!currentMaterials.Contains(mat))
-                    {
-                        currentMaterials.Add(mat);
-                        renderers[i].sharedMaterials = currentMaterials.ToArray();
-                    }
+                    currentMaterials.Add(mat);
+                    renderers[i].sharedMaterials = currentMaterials.ToArray();
                 }
             }
+
             return mat;
         }
 
@@ -199,31 +210,45 @@ namespace HoloToolkit.Unity.UX
 
         private static void RemoveMatFromRenderers(Renderer[] renderers, Material mat)
         {
-            if (mat == null)
-            {
-                return;
-            }
+            if (mat == null) { return; }
 
             for (int i = 0; i < renderers.Length; i++)
             {
-                if (renderers[i] != null)
+                if (renderers[i] == null) { continue; }
+
+                var currentMaterials = new List<Material>(renderers[i].sharedMaterials);
+
+                //use the name because it may be instanced
+                for (int j = currentMaterials.Count - 1; j >= 0; j--)
                 {
-                    List<Material> currentMaterials = new List<Material>(renderers[i].sharedMaterials);
-                    //use the name because it may be instanced
-                    for (int j = currentMaterials.Count - 1; j >= 0; j--)
+                    if (currentMaterials[j] != null && currentMaterials[j].name == mat.name)
                     {
-                        Material currentMaterial = currentMaterials[j];
-                        if (currentMaterial != null && currentMaterial.name == mat.name)
-                        {
-                            currentMaterials.RemoveAt(j);
-                        }
+                        currentMaterials.RemoveAt(j);
                     }
-                    currentMaterials.Remove(mat);
-                    renderers[i].sharedMaterials = currentMaterials.ToArray();
                 }
+
+                currentMaterials.Remove(mat);
+                renderers[i].sharedMaterials = currentMaterials.ToArray();
             }
         }
 
         private Dictionary<Renderer, List<Material>> materialsBeforeFocus;
+
+        public override void OnFocusEnter(FocusEventData eventData)
+        {
+            base.OnFocusEnter(eventData);
+
+            if (HasFocus)
+            {
+                Highlight = true;
+            }
+        }
+
+        public override void OnFocusExit(FocusEventData eventData)
+        {
+            base.OnFocusExit(eventData);
+
+            Highlight = false;
+        }
     }
 }

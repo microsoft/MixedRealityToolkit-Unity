@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Normal of the gaze.
         /// </summary>
-        public static Vector3 GazeNormal { get { return pointers[0].Rays[0].Direction; } }
+        public static Vector3 GazeDirection { get { return pointers[0].Rays[0].Direction; } }
 
         private static float lastHitDistance = 2.0f;
 
@@ -118,12 +118,13 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IPointer Implementation
 
-        private class GazePointer : BasePointer
+        private class GazePointer : GenericPointer
         {
             public GazePointer(string pointerName, IInputSource inputSourceParent) : base(pointerName, inputSourceParent)
             {
                 PrioritizedLayerMasksOverride = Instance.raycastLayerMasks;
-                ExtentOverride = Instance.maxGazeCollisionDistance;
+                PointerExtent = Instance.maxGazeCollisionDistance;
+                InteractionEnabled = true;
             }
 
             public override void OnPreRaycast()
@@ -145,7 +146,7 @@ namespace HoloToolkit.Unity.InputModule
                         newGazeNormal = Instance.stabilizer.StableRay.direction;
                     }
 
-                    pointers[0].Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent(pointers[0])));
+                    pointers[0].Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (pointers[0].PointerExtent ?? FocusManager.GlobalPointingExtent)));
                 }
 
                 HitPosition = pointers[0].Rays[0].Origin + (lastHitDistance * pointers[0].Rays[0].Direction);
@@ -172,7 +173,7 @@ namespace HoloToolkit.Unity.InputModule
 
             public override bool TryGetPointingRay(out Ray pointingRay)
             {
-                pointingRay = new Ray(GazeOrigin, GazeNormal);
+                pointingRay = new Ray(GazeOrigin, GazeDirection);
                 return true;
             }
 

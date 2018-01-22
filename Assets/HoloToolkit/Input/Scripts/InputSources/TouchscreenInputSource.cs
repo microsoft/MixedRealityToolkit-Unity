@@ -111,7 +111,7 @@ namespace HoloToolkit.Unity.InputModule
                         else if (knownTouch.Lifetime < MaxTapContactTime)
                         {
                             InputManager.Instance.RaiseHoldCanceled(knownTouch);
-                            InputManager.Instance.RaiseInputClicked(knownTouch, knownTouch.TouchData.tapCount);
+                            InputManager.Instance.RaiseInputClicked(knownTouch.Pointers[0], knownTouch.TouchData.tapCount);
                         }
                         else
                         {

@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 using HoloToolkit.Unity.InputModule;
+using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
     public class SolverHandler : ControllerFinder
     {
-        #region public enums
         public enum TrackedObjectToReferenceEnum
         {
             /// <summary>
@@ -25,15 +25,12 @@ namespace HoloToolkit.Unity
             /// </summary>
             MotionControllerRight
         }
-        #endregion
 
-        #region public members
-        [Tooltip("Tracked object to calculate position and orrientation from. If you want to manually override and use a scene object, use the TransformTarget field")]
+        [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field")]
         public TrackedObjectToReferenceEnum TrackedObjectToReference = TrackedObjectToReferenceEnum.Head;
 
         [Tooltip("Manual override for TrackedObjectToReference if you want to use a scene object. Leave empty if you want to use Head or Motion controllers")]
         public Transform TransformTarget;
-        #endregion
 
         private List<Solver> m_Solvers = new List<Solver>();
         public Vector3 GoalPosition { get; set; }
@@ -51,11 +48,6 @@ namespace HoloToolkit.Unity
             GoalScale = Vector3.one;
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = 0.0f;
-        }
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
         }
 
         private void Update()
@@ -77,7 +69,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        [System.Serializable]
+        [Serializable]
         public struct Vector3Smoothed
         {
             public Vector3 Current { get; set; }
@@ -93,7 +85,7 @@ namespace HoloToolkit.Unity
 
             public void Update(float deltaTime)
             {
-                Current = Vector3.Lerp(Current, Goal, (System.Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
+                Current = Vector3.Lerp(Current, Goal, (Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
             }
 
             public void SetGoal(Vector3 newGoal)
@@ -102,7 +94,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        [System.Serializable]
+        [Serializable]
         public struct QuaternionSmoothed
         {
             public Quaternion Current { get; set; }
@@ -118,7 +110,7 @@ namespace HoloToolkit.Unity
 
             public void Update(float deltaTime)
             {
-                Current = Quaternion.Slerp(Current, Goal, (System.Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
+                Current = Quaternion.Slerp(Current, Goal, (Math.Abs(SmoothTime) < Mathf.Epsilon) ? 1.0f : deltaTime / SmoothTime);
             }
 
             public void SetGoal(Quaternion newGoal)

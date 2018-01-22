@@ -19,7 +19,9 @@ namespace HoloToolkit.Unity.InputModule
         /// Maximum distance at which the pointer can collide with an object.
         /// </summary>
         [SerializeField]
-        private float pointingExtent = 10f;
+        private static float pointingExtent = 10f;
+
+        public static float GlobalPointingExtent { get { return pointingExtent; } }
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
@@ -285,16 +287,6 @@ namespace HoloToolkit.Unity.InputModule
         #endregion Focus Details by EventData
 
         #region Focus Details by IPointer
-
-        /// <summary>
-        /// Get the pointing extent for the specified pointing source.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <returns></returns>
-        public float GetPointingExtent(IPointer pointer)
-        {
-            return pointer.ExtentOverride ?? pointingExtent;
-        }
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.

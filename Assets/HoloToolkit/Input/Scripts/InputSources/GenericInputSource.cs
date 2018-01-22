@@ -26,7 +26,12 @@ namespace HoloToolkit.Unity.InputModule
 
         public string SourceName { get; private set; }
 
-        public IPointer[] Pointers { get; set; }
+        private IPointer[] pointers = { GazeManager.Instance.Pointers[0] };
+        public IPointer[] Pointers
+        {
+            get { return pointers; }
+            set { pointers = value; }
+        }
 
         private SupportedInputInfo supportedInputInfo;
 

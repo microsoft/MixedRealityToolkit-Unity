@@ -11,6 +11,11 @@ namespace HoloToolkit.Unity.InputModule
     public interface ICursorModifier : IFocusChangedHandler
     {
         /// <summary>
+        /// Cursor animation parameters to set when this object is focused. Leave empty for none.
+        /// </summary>
+        AnimatorParameter[] CursorParameters { get; }
+
+        /// <summary>
         /// Indicates whether the cursor should be visible or not.
         /// </summary>
         /// <returns>True if cursor should be visible, false if not.</returns>

@@ -16,13 +16,15 @@ namespace HoloToolkit.Unity.InputModule
 
         BaseCursor BaseCursor { get; set; }
 
-        CursorModifier CursorModifier { get; set; }
+        ICursorModifier CursorModifier { get; set; }
+
+        ITeleportTarget TeleportTarget { get; set; }
 
         bool InteractionEnabled { get; }
 
         bool FocusLocked { get; set; }
 
-        float? ExtentOverride { get; set; }
+        float? PointerExtent { get; set; }
 
         RayStep[] Rays { get; }
 

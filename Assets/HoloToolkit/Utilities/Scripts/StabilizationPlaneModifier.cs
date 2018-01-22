@@ -149,13 +149,13 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Gets the direction of the gaze for purposes of placing the stabilization plane
         /// </summary>
-        private Vector3 GazeNormal
+        private Vector3 GazeDirection
         {
             get
             {
                 if (GazeManager.IsInitialized)
                 {
-                    return GazeManager.GazeNormal;
+                    return GazeManager.GazeDirection;
                 }
                 return CameraCache.Main.transform.forward;
             }
@@ -192,7 +192,7 @@ namespace HoloToolkit.Unity
 
 #if UNITY_WSA
             // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
-            HolographicSettings.SetFocusPointForFrame(planePosition, -GazeNormal, velocity);
+            HolographicSettings.SetFocusPointForFrame(planePosition, -GazeDirection, velocity);
 #endif
         }
 
@@ -202,7 +202,7 @@ namespace HoloToolkit.Unity
         private void ConfigureGazeManagerPlane(float deltaTime)
         {
             Vector3 gazeOrigin = GazeOrigin;
-            Vector3 gazeDirection = GazeNormal;
+            Vector3 gazeDirection = GazeDirection;
 
             // Calculate the delta between gaze origin's position and current hit position. If no object is hit, use default distance.
             float focusPointDistance;
@@ -235,7 +235,7 @@ namespace HoloToolkit.Unity
         private void ConfigureFixedDistancePlane(float deltaTime)
         {
             Vector3 gazeOrigin = GazeOrigin;
-            Vector3 gazeNormal = GazeNormal;
+            Vector3 gazeNormal = GazeDirection;
 
             float lerpPower = DefaultPlaneDistance > currentPlaneDistance ? LerpStabilizationPlanePowerFarther
                                                                           : LerpStabilizationPlanePowerCloser;
@@ -267,7 +267,7 @@ namespace HoloToolkit.Unity
         {
             if (Application.isPlaying && DrawGizmos)
             {
-                Vector3 focalPlaneNormal = -GazeNormal;
+                Vector3 focalPlaneNormal = -GazeDirection;
                 Vector3 planeUp = Vector3.Cross(Vector3.Cross(focalPlaneNormal, Vector3.up), focalPlaneNormal);
                 Gizmos.matrix = Matrix4x4.TRS(planePosition, Quaternion.LookRotation(focalPlaneNormal, planeUp), new Vector3(4.0f, 3.0f, 0.01f));
 

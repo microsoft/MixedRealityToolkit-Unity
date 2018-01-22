@@ -53,12 +53,12 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA
             public readonly InteractionSource Source;
 
-            public InteractionInputSource(InteractionSource source, string name) : base(name)
+            public InteractionInputSource(InteractionSource source, string name) : base(name, SupportedInputInfo.None)
             {
                 Source = source;
             }
 #else
-            public InteractionInputSource(string name) : base(name) { }
+            public InteractionInputSource(string name) : base(name, SupportedInputInfo.None) { }
 #endif
 
             public override SupportedInputInfo GetSupportedInputInfo()
@@ -931,7 +931,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void GestureRecognizer_Tapped(TappedEventArgs args)
         {
-            InputManager.Instance.RaiseInputClicked(GetOrAddInteractionSource(args.source), args.tapCount, (Handedness)args.source.handedness);
+            InputManager.Instance.RaiseInputClicked(GetOrAddInteractionSource(args.source).Pointers[0], args.tapCount, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)

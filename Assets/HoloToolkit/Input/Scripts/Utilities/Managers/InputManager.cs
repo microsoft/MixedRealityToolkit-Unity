@@ -65,6 +65,8 @@ namespace HoloToolkit.Unity.InputModule
         private NavigationEventData navigationEventData;
         private ManipulationEventData manipulationEventData;
 
+        private TeleportEventData teleportEventData;
+
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
@@ -85,6 +87,8 @@ namespace HoloToolkit.Unity.InputModule
 
             navigationEventData = new NavigationEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
+
+            teleportEventData = new TeleportEventData(EventSystem.current);
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             speechEventData = new SpeechEventData(EventSystem.current);
@@ -591,27 +595,27 @@ namespace HoloToolkit.Unity.InputModule
             return FocusManager.Instance.GetSpecificPointerGraphicEventData(pointingSource);
         }
 
-        public void RaisePointerDown(IInputSource source, IPointer pointer, object[] tags = null)
+        public void RaisePointerDown(IPointer pointer, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, tags);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
 
-        public void RaisePointerDown(IInputSource source, IPointer pointer, Handedness handedness, object[] tags = null)
+        public void RaisePointerDown(IPointer pointer, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, handedness, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, handedness, tags);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
 
 #if UNITY_WSA
-        public void RaisePointerDown(IInputSource source, IPointer pointer, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaisePointerDown(IPointer pointer, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, pressType, handedness, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, pressType, handedness, tags);
 
             if (pressType == InteractionSourcePressType.Select)
             {
@@ -639,27 +643,27 @@ namespace HoloToolkit.Unity.InputModule
             // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
         }
 
-        public void RaiseInputClicked(IInputSource source, int tapCount, object[] tags = null)
+        public void RaiseInputClicked(IPointer pointer, int tapCount, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, tapCount, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, tapCount, tags);
 
             HandleClick();
         }
 
-        public void RaiseInputClicked(IInputSource source, int tapCount, Handedness handedness, object[] tags = null)
+        public void RaiseInputClicked(IPointer pointer, int tapCount, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, tapCount, handedness, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, tapCount, handedness, tags);
 
             HandleClick();
         }
 
 #if UNITY_WSA
-        public void RaiseInputClicked(IInputSource source, int tapCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaiseInputClicked(IPointer pointer, int tapCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, tapCount, pressType, handedness, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, tapCount, pressType, handedness, tags);
 
             HandleClick();
         }
@@ -694,27 +698,27 @@ namespace HoloToolkit.Unity.InputModule
             return FocusManager.Instance.GetSpecificPointerGraphicEventData(pointingSource);
         }
 
-        public void RaisePointerUp(IInputSource source, IPointer pointer, object[] tags = null)
+        public void RaisePointerUp(IPointer pointer, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, tags);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }
 
-        public void RaisePointerUp(IInputSource source, IPointer pointer, Handedness handedness, object[] tags = null)
+        public void RaisePointerUp(IPointer pointer, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, handedness, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, handedness, tags);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }
 
 #if UNITY_WSA
-        public void RaisePointerUp(IInputSource source, IPointer pointer, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaisePointerUp(IPointer pointer, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
-            clickEventData.Initialize(source, pressType, handedness, tags);
+            clickEventData.Initialize(pointer.InputSourceParent, pressType, handedness, tags);
 
             if (pressType == InteractionSourcePressType.Select)
             {
@@ -1172,6 +1176,74 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion Manipulation Events
+
+        #region Teleport Events
+
+        private static readonly ExecuteEvents.EventFunction<ITeleportHandler> OnTeleportIntentHandler =
+                delegate (ITeleportHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                    handler.OnTeleportIntent(casted);
+                };
+
+        public void RaiseTeleportIntent(TeleportPointer pointer, object[] tags = null)
+        {
+            // Create input event
+            teleportEventData.Initialize(pointer.InputSourceParent, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(teleportEventData, OnTeleportIntentHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<ITeleportHandler> OnTeleportStartedHandler =
+                delegate (ITeleportHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                    handler.OnTeleportStarted(casted);
+                };
+
+        public void RaiseTeleportStarted(TeleportPointer pointer, object[] tags = null)
+        {
+            // Create input event
+            teleportEventData.Initialize(pointer.InputSourceParent, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(teleportEventData, OnTeleportStartedHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<ITeleportHandler> OnTeleportCompletedHandler =
+                delegate (ITeleportHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                    handler.OnTeleportCompleted(casted);
+                };
+
+        public void RaiseTeleportCompleted(TeleportPointer pointer, object[] tags = null)
+        {
+            // Create input event
+            teleportEventData.Initialize(pointer.InputSourceParent, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(teleportEventData, OnTeleportCompletedHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<ITeleportHandler> OnTeleportCanceledHandler =
+                delegate (ITeleportHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                    handler.OnTeleportCanceled(casted);
+                };
+
+        public void RaiseTeleportCanceled(TeleportPointer pointer, object[] tags = null)
+        {
+            // Create input event
+            teleportEventData.Initialize(pointer.InputSourceParent, tags);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(teleportEventData, OnTeleportCanceledHandler);
+        }
+
+        #endregion Teleport Events
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 

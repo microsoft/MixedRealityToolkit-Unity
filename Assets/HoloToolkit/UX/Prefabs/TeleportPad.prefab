@@ -285,7 +285,93 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c4412bc90a15d42bfd2a4928e5bc1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 95678582371645096}
+  MinCursorDistance: 1
+  DefaultCursorDistance: 10
+  SurfaceCursorDistance: 0.02
+  UseUnscaledTime: 1
+  PositionLerpTime: 0.01
+  ScaleLerpTime: 0.01
+  RotationLerpTime: 0.01
+  LookRotationBlend: 0.5
+  PrimaryCursorVisual: {fileID: 4784980869752344}
+  EnableStateData:
+    Name: 
+    CursorState: -1
+    Parameter:
+      Type: 0
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: 
+  DisableStateData:
+    Name: 
+    CursorState: -1
+    Parameter:
+      Type: 0
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: 
+  CursorStateData:
+  - Name: None
+    CursorState: 5
+    Parameter:
+      Type: 4
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 1
+      Name: Disabled
+  - Name: None
+    CursorState: 5
+    Parameter:
+      Type: 4
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: Valid
+  - Name: Invalid
+    CursorState: 0
+    Parameter:
+      Type: 4
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: Disabled
+  - Name: Invalid
+    CursorState: 0
+    Parameter:
+      Type: 4
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: Valid
+  - Name: Valid
+    CursorState: 1
+    Parameter:
+      Type: 4
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 0
+      Name: Disabled
+  - Name: Valid
+    CursorState: 1
+    Parameter:
+      Type: 4
+      DefaultInt: 0
+      DefaultFloat: 0
+      DefaultBool: 1
+      Name: Valid
+  InputEnabledParameter:
+    Type: 0
+    DefaultInt: 0
+    DefaultFloat: 0
+    DefaultBool: 0
+    Name: 
+  InputDisabledParameter:
+    Type: 0
+    DefaultInt: 0
+    DefaultFloat: 0
+    DefaultBool: 0
+    Name: 
+  CursorAnimator: {fileID: 95678582371645096}
   arrowTransform: {fileID: 4393380040038634}
-  baseTransform: {fileID: 4784980869752344}
-  pointer: {fileID: 0}

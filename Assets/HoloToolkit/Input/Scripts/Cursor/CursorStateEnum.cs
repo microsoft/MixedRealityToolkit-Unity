@@ -14,11 +14,11 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         None = -1,
         /// <summary>
-        /// Not IsHandDetected
+        /// Not IsHandDetected OR HasTeleportIntent
         /// </summary>
         Observe,
         /// <summary>
-        /// Not IsHandDetected AND not IsPointerDown AND TargetedObject exists
+        /// Not IsHandDetected AND not IsPointerDown AND TargetedObject exists OR HasTeleportIntent AND Teleport Surface IsValid
         /// </summary>
         ObserveHover,
         /// <summary>

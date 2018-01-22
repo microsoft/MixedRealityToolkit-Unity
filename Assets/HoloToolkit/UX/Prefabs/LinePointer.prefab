@@ -57,6 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LineStartClamp: 0
   LineEndClamp: 1
+  customLineTransform: {fileID: 0}
   RotationType: 1
   FlipUpVector: 0
   OriginOffset: {x: 0, y: 0, z: 0}
@@ -102,19 +103,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a23a9925788b274d88d0b0d8312553f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handedness: 1
+  SetChildrenInactiveWhenDetached: 1
+  PositionOffset: {x: 0, y: 0, z: 0}
+  RotationOffset: {x: 0, y: 0, z: 0}
+  ScaleOffset: {x: 1, y: 1, z: 1}
+  SetScaleOnAttach: 0
   interactionEnabled: 1
-  pointerOrientation: 0
+  CurrentPointerOrientation: 0
   pointerExtent: 2
-  raycastOrigin: {fileID: 0}
-  cursorOverride: {fileID: 0}
-  eventOrigin: Pointer
-  prioritizedLayerMasksOverride:
-  - serializedVersion: 2
-    m_Bits: 4294967295
-  lineColorSelected:
+  RaycastOrigin: {fileID: 0}
+  interactionEnabledKeyCode: 0
+  activeHoldKeyCode: 0
+  activeHoldPressType: 1
+  interactionEnabledPressType: 1
+  interactionRequiresHold: 0
+  LineColorSelected:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 0.25}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -130,7 +137,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 0
+    atime1: 65535
     atime2: 0
     atime3: 0
     atime4: 0
@@ -140,10 +147,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineColorValid:
+  LineColorValid:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 0.5}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -159,7 +166,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 0
+    atime1: 65535
     atime2: 0
     atime3: 0
     atime4: 0
@@ -169,10 +176,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineColorNoTarget:
+  LineColorNoTarget:
     serializedVersion: 2
-    key0: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 0.5}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -188,7 +195,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 0
+    atime1: 65535
     atime2: 0
     atime3: 0
     atime4: 0
@@ -198,10 +205,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineColorLockFocus:
+  LineColorLockFocus:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0, b: 0, a: 0.5}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -217,7 +224,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 0
+    atime1: 65535
     atime2: 0
     atime3: 0
     atime4: 0
@@ -227,9 +234,9 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineCastResolution: 25
+  LineCastResolution: 25
   lineBase: {fileID: 114023736100485690}
-  input: {fileID: 114416834852078844}
+  LineRenderers: []
 --- !u!114 &114416834852078844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,15 +250,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handedness: 1
   element: 6
+  elementTransform: {fileID: 0}
   SetChildrenInactiveWhenDetached: 1
-  positionOffset: {x: 0, y: 0, z: 0}
-  rotationOffset: {x: 0, y: 0, z: 0}
-  scale: {x: 1, y: 1, z: 1}
-  setScaleOnAttach: 0
-  pointer: {fileID: 114393094861329988}
-  activeHoldType: 1
-  selectPressType: 1
-  interactionRequiresHold: 0
+  PositionOffset: {x: 0, y: 0, z: 0}
+  RotationOffset: {x: 0, y: 0, z: 0}
+  ScaleOffset: {x: 1, y: 1, z: 1}
+  SetScaleOnAttach: 0
+  <IsAttached>k__BackingField: 0
 --- !u!114 &114659575208031024
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -355,10 +360,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distortOrder: 0
   distortStrength: 1
-  LocalCenterOfGravity: {x: 0, y: 0, z: 0}
-  AxisStrength: {x: 1, y: 1, z: 1}
-  Radius: 0.5
-  GravityStrength:
+  localCenterOfGravity: {x: 0, y: 0, z: 0}
+  axisStrength: {x: 1, y: 1, z: 1}
+  radius: 0.5
+  gravityStrength:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2

@@ -1,12 +1,32 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using HoloToolkit.Unity.UX;
 
-namespace HoloToolkit.Unity.Controllers
+namespace HoloToolkit.Unity.InputModule
 {
     [RequireComponent(typeof(ParabolaPhysical))]
     [RequireComponent(typeof(DistorterGravity))]
-    public class ParabolicPointer : NavigationPointer
+    public class ParabolicTeleportPointer : TeleportPointer
     {
+        [Header("Pointer Control")]
+        [SerializeField]
+        [Tooltip("Pointers that you want to disable while teleporting")]
+        private BasePointer[] disableWhileActive;
+
+        //[Header("Parabola settings")]
+        //[SerializeField]
+        //private AnimationCurve parabolaVelocityCurve = AnimationCurve.Linear(-1f, 1f, 1f, 1f);
+
+        //[SerializeField]
+        //[Range(1f, 36f)]
+        //private float parabolaVelocityMultiplier = 10f;
+
+        [SerializeField]
+        [DropDownComponent(true, true)]
+        private ParabolaPhysical physicsParabolaDataMain;
+
         public override void OnPreRaycast()
         {
             UpdateParabola();
@@ -18,8 +38,8 @@ namespace HoloToolkit.Unity.Controllers
         {
             // Make sure our parabola only rotates on y/x axis
             // NOTE: Parabola's custom line transform field should be set to a transform OTHER than its gameObject's transform
-            parabolaMain.Direction = transform.forward + Vector3.up;
-            parabolaMain.LineTransform.eulerAngles = Vector3.zero;
+            physicsParabolaDataMain.Direction = transform.forward + Vector3.up;
+            physicsParabolaDataMain.LineTransform.eulerAngles = Vector3.zero;
         }
 
         public override void OnSelectPressed()
@@ -35,9 +55,9 @@ namespace HoloToolkit.Unity.Controllers
             PointerTeleportManager.Instance.InitiateTeleport(this);
         }
 
-        public override void OnSelectReleased()
+        public override void OnInputReleased()
         {
-            base.OnSelectReleased();
+            base.OnInputReleased();
 
             for (int i = 0; i < disableWhileActive.Length; i++)
             {
@@ -48,36 +68,12 @@ namespace HoloToolkit.Unity.Controllers
             PointerTeleportManager.Instance.TryToTeleport();
         }
 
-        [Header("Pointer Control")]
-        [SerializeField]
-        [Tooltip("Pointers that you want to disable while teleporting")]
-        private ControllerPointerBase[] disableWhileActive;
-
-        //[Header("Parabola settings")]
-        //[SerializeField]
-        //private AnimationCurve parabolaVelocityCurve = AnimationCurve.Linear(-1f, 1f, 1f, 1f);
-
-        //[SerializeField]
-        //[Range(1f, 36f)]
-        //private float parabolaVelocityMultiplier = 10f;
-
-        [SerializeField]
-        [DropDownComponent(true, true)]
-        private ParabolaPhysical parabolaMain;
-
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             if (!Application.isPlaying)
             {
                 UpdateParabola();
             }
         }
-
-        #region custom editor
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(ParabolicPointer))]
-        public new class CustomEditor : MRTKEditor { }
-#endif
-        #endregion
     }
 }
