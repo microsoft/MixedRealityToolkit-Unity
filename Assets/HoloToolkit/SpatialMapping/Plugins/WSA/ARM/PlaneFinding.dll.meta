@@ -106,7 +106,7 @@ PluginImporter:
         CPU: ARM
         DontProcess: False
         PlaceholderPath: 
-        SDK: AnySDK
+        SDK: UWP
         ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
