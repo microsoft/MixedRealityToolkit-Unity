@@ -18,17 +18,26 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class ControllerFinder : MonoBehaviour
     {
-        public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
+        public MotionControllerInfo.ControllerElementEnum Element
+        {
+            get { return element; }
+            protected set { element = value; }
+        }
 
-        [Header("Controller Attachment Options")]
         [SerializeField]
-        protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
+        [HideInInspector]
+        private MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        public InteractionSourceHandedness Handedness { get { return handedness; } set { handedness = value; } }
+        public InteractionSourceHandedness Handedness
+        {
+            get { return handedness; }
+            set { handedness = value; }
+        }
 
         [SerializeField]
-        protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+        [HideInInspector]
+        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
 #endif
 
         public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
