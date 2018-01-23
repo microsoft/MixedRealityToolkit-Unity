@@ -2,9 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-using UnityEngine.XR.WSA.Input;
-#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -13,27 +10,19 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : ControllerFinder
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        [Header("AttachToController Elements")]
-        [SerializeField]
-        protected new InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
-#endif
-        [SerializeField]
-        protected new MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
-
         public bool SetChildrenInactiveWhenDetached = true;
 
         [SerializeField]
-        protected Vector3 positionOffset = Vector3.zero;
+        protected Vector3 PositionOffset = Vector3.zero;
 
         [SerializeField]
-        protected Vector3 rotationOffset = Vector3.zero;
+        protected Vector3 RotationOffset = Vector3.zero;
 
         [SerializeField]
-        protected Vector3 scale = Vector3.one;
+        protected Vector3 ScaleOffset = Vector3.one;
 
         [SerializeField]
-        protected bool setScaleOnAttach = false;
+        protected bool SetScaleOnAttach = false;
 
         public bool IsAttached { get; private set; }
 
@@ -46,9 +35,9 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
             {
-                AddControllerTransform(controller);
+                AddControllerTransform(ControllerInfo);
             }
 #endif 
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
@@ -58,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule
         protected override void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (!IsAttached && newController.Handedness == handedness)
+            if (!IsAttached && newController.Handedness == Handedness)
             {
                 base.AddControllerTransform(newController);
 
@@ -66,12 +55,12 @@ namespace HoloToolkit.Unity.InputModule
 
                 // Parent ourselves under the element and set our offsets
                 transform.parent = ElementTransform;
-                transform.localPosition = positionOffset;
-                transform.localEulerAngles = rotationOffset;
+                transform.localPosition = PositionOffset;
+                transform.localEulerAngles = RotationOffset;
 
-                if (setScaleOnAttach)
+                if (SetScaleOnAttach)
                 {
-                    transform.localScale = scale;
+                    transform.localScale = ScaleOffset;
                 }
 
                 // Announce that we're attached
@@ -85,7 +74,7 @@ namespace HoloToolkit.Unity.InputModule
         protected override void RemoveControllerTransform(MotionControllerInfo oldController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (IsAttached && oldController.Handedness == handedness)
+            if (IsAttached && oldController.Handedness == Handedness)
             {
                 base.RemoveControllerTransform(oldController);
 
