@@ -261,7 +261,7 @@ namespace HoloToolkit.Unity.InputModule
         private void Start()
         {
             RegisterManagers();
-            Debug.Assert(Pointer != null, String.Format("You must assign the {0} to a Pointer.", name));
+            Debug.Assert(Pointer != null, string.Format("You must assign the {0} to a Pointer.", name));
         }
 
         private void Update()
