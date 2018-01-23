@@ -26,20 +26,39 @@ namespace HoloToolkit.Unity
             MotionControllerRight
         }
 
+        [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field")]
-        public TrackedObjectToReferenceEnum TrackedObjectToReference = TrackedObjectToReferenceEnum.Head;
+        private TrackedObjectToReferenceEnum trackedObjectToReference = TrackedObjectToReferenceEnum.Head;
 
+        public TrackedObjectToReferenceEnum TrackedObjectToReference
+        {
+            get { return trackedObjectToReference; }
+            set { trackedObjectToReference = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Manual override for TrackedObjectToReference if you want to use a scene object. Leave empty if you want to use Head or Motion controllers")]
-        public Transform TransformTarget;
+        private Transform transformTarget;
 
-        private List<Solver> m_Solvers = new List<Solver>();
+        public Transform TransformTarget
+        {
+            get { return transformTarget; }
+            set { transformTarget = value; }
+        }
+
         public Vector3 GoalPosition { get; set; }
+
         public Quaternion GoalRotation { get; set; }
+
         public Vector3 GoalScale { get; set; }
+
         public Vector3Smoothed AltScale { get; set; }
+
         public float DeltaTime { get; set; }
 
         private float LastUpdateTime { get; set; }
+
+        private List<Solver> m_Solvers = new List<Solver>();
 
         private void Awake()
         {
