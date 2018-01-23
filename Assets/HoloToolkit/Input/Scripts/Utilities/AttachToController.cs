@@ -13,14 +13,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class AttachToController : ControllerFinder
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        [Header("AttachToController Elements")]
-        [SerializeField]
-        protected new InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
-#endif
-        [SerializeField]
-        protected new MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
-
         public bool SetChildrenInactiveWhenDetached = true;
 
         [SerializeField]
