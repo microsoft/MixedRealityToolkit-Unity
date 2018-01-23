@@ -25,7 +25,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         [SerializeField]
-        [HideInInspector]
         private MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
@@ -36,7 +35,6 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         [SerializeField]
-        [HideInInspector]
         private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
 #endif
 
