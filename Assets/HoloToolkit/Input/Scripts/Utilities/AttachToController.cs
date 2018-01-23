@@ -38,9 +38,9 @@ namespace HoloToolkit.Unity.InputModule
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
             {
-                AddControllerTransform(controller);
+                AddControllerTransform(ControllerInfo);
             }
 #endif 
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
