@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule
         public MotionControllerInfo.ControllerElementEnum Element
         {
             get { return element; }
-            protected set { element = value; }
+            set { element = value; }
         }
 
         [SerializeField]
