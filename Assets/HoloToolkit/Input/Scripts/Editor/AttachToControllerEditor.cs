@@ -2,24 +2,23 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using UnityEditor;
+using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
     [CustomEditor(typeof(AttachToController))]
-    public class AttachToControllerEditor : Editor
+    public class AttachToControllerEditor : ControllerFinderEditor
     {
-        private SerializedProperty handednessProperty;
-        private SerializedProperty elementProperty;
         private SerializedProperty positionOffsetProperty;
         private SerializedProperty rotationOffsetProperty;
         private SerializedProperty scaleOffsetProperty;
         private SerializedProperty setScaleOnAttachProperty;
         private SerializedProperty setChildrenInactiveWhenDetachedProperty;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            handednessProperty = serializedObject.FindProperty("handedness");
-            elementProperty = serializedObject.FindProperty("element");
+            base.OnEnable();
+
             positionOffsetProperty = serializedObject.FindProperty("PositionOffset");
             rotationOffsetProperty = serializedObject.FindProperty("RotationOffset");
             scaleOffsetProperty = serializedObject.FindProperty("ScaleOffset");
@@ -29,15 +28,21 @@ namespace HoloToolkit.Unity.InputModule
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
             serializedObject.Update();
+
             EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(handednessProperty);
-            EditorGUILayout.PropertyField(elementProperty);
+            EditorGUILayout.LabelField("Attachment Options", new GUIStyle("Label") { fontStyle = FontStyle.Bold });
+            EditorGUILayout.Space();
+            EditorGUI.indentLevel++;
+
             EditorGUILayout.PropertyField(positionOffsetProperty);
             EditorGUILayout.PropertyField(rotationOffsetProperty);
             EditorGUILayout.PropertyField(scaleOffsetProperty);
             EditorGUILayout.PropertyField(setScaleOnAttachProperty);
             EditorGUILayout.PropertyField(setChildrenInactiveWhenDetachedProperty);
+
+            EditorGUI.indentLevel--;
             serializedObject.ApplyModifiedProperties();
         }
     }
