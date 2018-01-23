@@ -205,10 +205,6 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         private RoomManagerAdapter roomManagerListener;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         #region Unity APIs
 
         protected override void Awake()

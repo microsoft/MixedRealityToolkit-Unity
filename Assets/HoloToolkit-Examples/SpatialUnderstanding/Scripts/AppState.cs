@@ -198,10 +198,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private KeywordRecognizer keywordRecognizer;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         // Functions
         private void Start()
         {

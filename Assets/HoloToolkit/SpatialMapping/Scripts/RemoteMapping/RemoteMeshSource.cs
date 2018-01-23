@@ -198,9 +198,5 @@ namespace HoloToolkit.Unity.SpatialMapping
             networkConnection.Dispose();
         }
 #endif
-
-        protected override void InitializeInternal()
-        {
-        }
     }
 }

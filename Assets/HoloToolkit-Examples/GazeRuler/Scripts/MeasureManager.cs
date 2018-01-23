@@ -24,10 +24,6 @@ namespace HoloToolkit.Examples.GazeRuler
         public GameObject ModeTipObject;
         public GameObject TextPrefab;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         private void Start()
         {
             InputManager.Instance.PushFallbackInputHandler(gameObject);

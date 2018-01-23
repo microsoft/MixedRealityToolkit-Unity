@@ -194,10 +194,6 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        protected override void InitializeInternal()
-        {
-        }
-
         private void InitializeEventDatas()
         {
             inputEventData = new InputEventData(EventSystem.current);

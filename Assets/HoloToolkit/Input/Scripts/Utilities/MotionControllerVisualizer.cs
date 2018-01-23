@@ -66,10 +66,6 @@ namespace HoloToolkit.Unity.InputModule
         private static extern bool TryGetMotionControllerModel([In] uint controllerId, [Out] out uint outputSize, [Out] out IntPtr outputBuffer);
 #endif
 
-        protected override void InitializeInternal()
-        {
-        }
-
         protected override void Awake()
         {
             base.Awake();

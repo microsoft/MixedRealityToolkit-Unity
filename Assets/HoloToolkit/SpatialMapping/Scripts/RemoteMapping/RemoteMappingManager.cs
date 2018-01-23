@@ -39,10 +39,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         private Dictionary<string, System.Action> keywordCollection;
 #endif
 
-        protected override void InitializeInternal()
-        {
-        }
-
         // Use this for initialization.
         private void Start()
         {

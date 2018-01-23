@@ -72,6 +72,12 @@ namespace HoloToolkit.Unity
             }
         }
 
+        public static bool CofirmInitialized()
+        {
+            T access = Instance;
+            return IsInitialized;
+        }
+
         [SerializeField]
         private bool DontDestroyParentRootOnLoad = true;
 
@@ -93,7 +99,15 @@ namespace HoloToolkit.Unity
             }
         }
 
-        protected abstract void InitializeInternal();
+        /// <summary>
+        /// Function called when singleton instance is assigned.
+        /// Enables lazy initialization. 
+        /// Important for ensuring auto-sorting of singleton initialization.
+        /// </summary>
+        protected virtual void InitializeInternal()
+        {
+            // No overall singleton initialization needed.
+        }
 
         /// <summary>
         /// Base Awake method that sets the Singleton's unique instance.

@@ -17,10 +17,6 @@ namespace HoloToolkit.Examples.GazeRuler
         public Stack<Polygon> Polygons = new Stack<Polygon>();
         public Polygon CurrentPolygon;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         /// <summary>
         ///  handle new point users place
         /// </summary>

@@ -59,10 +59,6 @@ namespace HoloToolkit.Unity.InputModule
         private IPointingSource currentPointingSource;
         private uint currentSourceId;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         private void Start()
         {
             fadeControl = FadeScript.Instance;

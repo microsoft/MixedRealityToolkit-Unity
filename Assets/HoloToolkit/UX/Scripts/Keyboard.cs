@@ -204,10 +204,6 @@ namespace HoloToolkit.UI.Keyboard
         /// </summary>
         private Vector3 m_ObjectBounds;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         /// <summary>
         /// Deactivate on Awake.
         /// </summary>

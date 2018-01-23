@@ -16,11 +16,8 @@ namespace HoloToolkit.Unity.InputModule
     public class FocusManager : Singleton<FocusManager>
     {
         #region MonoBehaviour Implementation
-
-        protected override void Awake()
+        protected override void InitializeInternal()
         {
-            base.Awake();
-
             if (registeredPointers != null)
             {
                 for (int iPointer = 0; iPointer < registeredPointers.Length; iPointer++)
@@ -47,14 +44,16 @@ namespace HoloToolkit.Unity.InputModule
                     RegisterPointer(pointingSource);
                 }
             }
-        }
 
-        private void Start()
-        {
-            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
+            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.CofirmInitialized())
             {
                 RegisterPointer(GazeManager.Instance);
             }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
         }
 
         private void Update()
@@ -62,15 +61,9 @@ namespace HoloToolkit.Unity.InputModule
             UpdatePointers();
             UpdateFocusedObjects();
         }
-
-        protected override void InitializeInternal()
-        {
-        }
-
         #endregion
 
         #region Settings
-
         /// <summary>
         /// Maximum distance at which the pointer can collide with an object.
         /// </summary>
@@ -107,7 +100,6 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
         #region Data
-
         private class PointerData : PointerResult
         {
             public readonly IPointingSource PointingSource;

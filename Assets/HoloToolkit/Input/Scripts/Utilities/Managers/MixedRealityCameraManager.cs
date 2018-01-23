@@ -60,10 +60,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public event DisplayEventHandler OnDisplayDetected;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         private void Start()
         {
             if (!Application.isEditor)

@@ -39,10 +39,6 @@ namespace HoloToolkit.Unity
             Debug.Assert(SceneButtonPrefab != null, "SceneLauncher.SceneButtonPrefab is not set.");
         }
 
-        protected override void InitializeInternal()
-        {
-        }
-
         protected override void Awake()
         {
             // If we have already initialized,

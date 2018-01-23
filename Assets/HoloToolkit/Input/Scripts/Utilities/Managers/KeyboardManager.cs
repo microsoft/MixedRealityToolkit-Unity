@@ -115,10 +115,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private List<KeyCodeEventPair> pendingKeyEvents = new List<KeyCodeEventPair>();
 
-        protected override void InitializeInternal()
-        {
-        }
-
         private void Update()
         {
             lock (detectedKeyEvents)

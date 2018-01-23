@@ -142,12 +142,6 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void InitializeInternal()
         {
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
             {
@@ -155,6 +149,11 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             FindGazeTransform();
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
         }
 
         private void Update()

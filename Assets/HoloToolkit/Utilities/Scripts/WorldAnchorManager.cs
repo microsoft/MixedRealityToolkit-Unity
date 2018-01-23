@@ -89,11 +89,7 @@ namespace HoloToolkit.Unity
         /// Internal list of anchors and their GameObject references.
         /// </summary>
         protected Dictionary<string, GameObject> AnchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
-
-        protected override void InitializeInternal()
-        {
-        }
-
+        
         #region Unity Methods
 
         protected override void Awake()

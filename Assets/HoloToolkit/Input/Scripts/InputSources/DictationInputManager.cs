@@ -100,10 +100,6 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Unity Methods
 
-        protected override void InitializeInternal()
-        {
-        }
-
         /// <summary>
         /// Turns on the dictation recognizer and begins recording audio from the default microphone.
         /// </summary>

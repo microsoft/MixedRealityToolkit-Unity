@@ -92,10 +92,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
 
         private Queue<Action> DeferredActionQueue = new Queue<Action>();
 
-        protected override void InitializeInternal()
-        {
-        }
-
         private void Update()
         {
             lock (DeferredActionQueue)

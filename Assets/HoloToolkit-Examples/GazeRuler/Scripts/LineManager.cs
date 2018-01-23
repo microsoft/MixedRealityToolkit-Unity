@@ -20,10 +20,6 @@ namespace HoloToolkit.Examples.GazeRuler
 
         private const float defaultLineScale = 0.005f;
 
-        protected override void InitializeInternal()
-        {
-        }
-
         // place point and lines
         public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
         {
