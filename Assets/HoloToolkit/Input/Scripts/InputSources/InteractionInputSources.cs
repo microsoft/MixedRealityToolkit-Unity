@@ -69,50 +69,44 @@ namespace HoloToolkit.Unity.InputModule
         {
 #if UNITY_WSA
             public readonly InteractionSource Source;
-            private static IPointer[] pointers;
+            public readonly BasePointer[] PointerSceneObjects;
 
-            public InteractionInputSource(InteractionSource source, string name, ControllerPointerOptions[] pointerOptions) : base(name, SupportedInputInfo.None, pointers)
+            public InteractionInputSource(InteractionSource source, string name, ControllerPointerOptions[] pointerOptions, IPointer[] pointers = null)
+                : base(name, SupportedInputInfo.None, pointers)
             {
                 Source = source;
-                var pointerList = new List<IPointer>(0);
+
+                var pointerList = new List<BasePointer>(0);
 
                 foreach (var pointerOption in pointerOptions)
                 {
-                    if (pointerOption.TargetController == Handedness.None) { continue; }
+                    Debug.Assert(pointerOption.TargetController != Handedness.None, "Interaction Source Pointer must be set to Left, Right, or Both.");
 
-                    // Create our first pointer.
+                    if (source.handedness == InteractionSourceHandedness.Unknown ||
+                        source.handedness == InteractionSourceHandedness.Left && pointerOption.TargetController == Handedness.Right ||
+                        source.handedness == InteractionSourceHandedness.Right && pointerOption.TargetController == Handedness.Left)
+                    {
+                        continue;
+                    }
+
                     var pointerObject = Instantiate(pointerOption.PointerPrefab);
                     var pointer = pointerObject.GetComponent<BasePointer>();
+                    pointer.Handedness = (Handedness)source.handedness;
+                    pointer.name = string.Format("{0}_{1}", pointer.InputSourceParent.SourceName, pointer.GetType().Name);
                     pointerList.Add(pointer);
-
-                    switch (pointerOption.TargetController)
-                    {
-                        case Handedness.Left:
-                            if (source.handedness == InteractionSourceHandedness.Left)
-                            {
-                                pointer.Handedness = Handedness.Left;
-                            }
-                            break;
-                        case Handedness.Right:
-                            if (source.handedness == InteractionSourceHandedness.Right)
-                            {
-                                pointer.Handedness = Handedness.Right;
-                            }
-                            break;
-                        case Handedness.Both:
-                            var pointerObjectClone = Instantiate(pointerOption.PointerPrefab);
-                            var pointerClone = pointerObjectClone.GetComponent<BasePointer>();
-                            pointerList.Add(pointerClone);
-
-                            pointer.Handedness = Handedness.Left;
-                            pointerClone.Handedness = Handedness.Right;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
                 }
 
-                pointers = pointerList.ToArray();
+                pointers = new IPointer[pointerList.Count];
+                for (var i = 0; i < pointerList.Count; i++)
+                {
+                    pointers[i] = pointerList[i];
+                }
+
+                PointerSceneObjects = pointerList.ToArray();
+                foreach (var pointer in PointerSceneObjects)
+                {
+                    pointer.InputSourceParent = this;
+                }
             }
 #else
             public InteractionInputSource(string name) : base(name, SupportedInputInfo.None) { }
@@ -315,14 +309,7 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                foreach (var inputSource in interactionInputSources)
-                {
-                    if (inputSource.Source.id == states[i].source.id)
-                    {
-                        InputManager.Instance.RaiseSourceLost(inputSource);
-                        interactionInputSources.Remove(inputSource);
-                    }
-                }
+                RemoveInteractionInputSource(GetOrAddInteractionSource(states[i].source));
             }
 #endif
         }
@@ -752,7 +739,7 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                InputManager.Instance.RaiseSourceDetected(GetOrAddInteractionSource(states[i].source));
+                GetOrAddInteractionSource(states[i].source);
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
@@ -783,11 +770,24 @@ namespace HoloToolkit.Unity.InputModule
 
             var sourceData = new InteractionInputSource(
                 interactionSource,
-                string.Format("{0} {1}", interactionSource.handedness, interactionSource.kind),
+                string.Format("{0}_{1}", interactionSource.handedness, interactionSource.kind),
                 pointerOptions);
             interactionInputSources.Add(sourceData);
 
+            InputManager.Instance.RaiseSourceDetected(sourceData);
+
             return sourceData;
+        }
+
+        private void RemoveInteractionInputSource(InteractionInputSource interactionSource)
+        {
+            InputManager.Instance.RaiseSourceLost(interactionSource);
+            interactionInputSources.Remove(interactionSource);
+
+            for (var j = 0; j < interactionSource.PointerSceneObjects.Length; j++)
+            {
+                Destroy(interactionSource.PointerSceneObjects[j].gameObject);
+            }
         }
 
         /// <summary>
@@ -963,14 +963,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
-            foreach (var inputSource in interactionInputSources)
-            {
-                if (inputSource.Source.id == args.state.source.id)
-                {
-                    InputManager.Instance.RaiseSourceLost(inputSource);
-                    interactionInputSources.Remove(inputSource);
-                }
-            }
+            RemoveInteractionInputSource(GetOrAddInteractionSource(args.state.source));
         }
 
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
@@ -979,8 +972,6 @@ namespace HoloToolkit.Unity.InputModule
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             UpdateInteractionSource(args.state, sourceData);
-
-            InputManager.Instance.RaiseSourceDetected(sourceData);
         }
 
         #endregion InteractionManager Events

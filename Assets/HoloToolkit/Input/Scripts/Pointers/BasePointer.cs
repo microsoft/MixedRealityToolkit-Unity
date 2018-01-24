@@ -63,6 +63,7 @@ namespace HoloToolkit.Unity.InputModule
             // Unsubscribe from interaction events
             InputManager.Instance.RemoveGlobalListener(gameObject);
         }
+
         // True if select is pressed right now
         protected bool SelectPressed = false;
 
@@ -94,10 +95,20 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Monobehaviour Implementation
 
+        protected virtual void Awake()
+        {
+            SetCursor();
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
             SelectPressed = false;
+
+            if (BaseCursor != null)
+            {
+                BaseCursor.enabled = true;
+            }
         }
 
         protected virtual void Start()
@@ -109,16 +120,27 @@ namespace HoloToolkit.Unity.InputModule
 
             PointerId = FocusManager.GenerateNewPointerId();
             PointerName = gameObject.name;
-
-            SetCursor();
-
-            // TODO register our pointer with the focus manager.
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             SelectPressed = false;
+
+            if (BaseCursor != null)
+            {
+                BaseCursor.enabled = false;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            if (BaseCursor != null)
+            {
+                Destroy(BaseCursor.gameObject);
+            }
+
+            base.OnDestroy();
         }
 
         #endregion  Monobehaviour Implementation
@@ -130,9 +152,11 @@ namespace HoloToolkit.Unity.InputModule
             if (CursorPrefab != null)
             {
                 var cursorObj = Instantiate(CursorPrefab, transform);
+                cursorObj.name = string.Format("{0}_Cursor", name);
                 BaseCursor = cursorObj.GetComponent<BaseCursor>();
                 Debug.Assert(BaseCursor != null, "Failed to load cursor");
                 BaseCursor.Pointer = this;
+                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
             }
         }
 
@@ -156,7 +180,7 @@ namespace HoloToolkit.Unity.InputModule
 
         public string PointerName { get; set; }
 
-        public IInputSource InputSourceParent { get; protected set; }
+        public IInputSource InputSourceParent { get; set; }
 
         public BaseCursor BaseCursor { get; set; }
 

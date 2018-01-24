@@ -91,6 +91,12 @@ namespace HoloToolkit.Unity.InputModule
 
         private static float lastHitDistance = 2.0f;
 
+        /// <summary>
+        /// Always true initially so we only initialize our interaction sources 
+        /// after all <see cref="Singleton{T}"/> Instances have been properly initialized.
+        /// </summary>
+        private bool delayInitialization = true;
+
         #region IInputSource Implementation
 
         public uint SourceId { get; protected set; }
@@ -239,7 +245,16 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Monobehaiour Implementation
 
-        private void Start()
+        protected virtual void OnEnable()
+        {
+            if (!delayInitialization)
+            {
+                // The first time we call OnEnable we skip this.
+                RegisterSource();
+            }
+        }
+
+        protected virtual void Start()
         {
             FocusManager.AssertIsInitialized();
             InputManager.AssertIsInitialized();
@@ -266,7 +281,11 @@ namespace HoloToolkit.Unity.InputModule
 
             FindGazeTransform();
 
-            InputManager.Instance.RaiseSourceDetected(this);
+            if (delayInitialization)
+            {
+                delayInitialization = false;
+                RegisterSource();
+            }
         }
 
         private void Update()
@@ -285,11 +304,36 @@ namespace HoloToolkit.Unity.InputModule
         private void OnDisable()
         {
             InputManager.Instance.RaiseSourceLost(this);
+
+            if (Pointers[0].BaseCursor != null)
+            {
+                Pointers[0].BaseCursor.enabled = false;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            if (Pointers[0].BaseCursor != null)
+            {
+                Destroy(Pointers[0].BaseCursor.gameObject);
+            }
+
+            base.OnDestroy();
         }
 
         #endregion Monobehaiour Implementation
 
         #region Utilities
+
+        private void RegisterSource()
+        {
+            if (Pointers[0].BaseCursor != null)
+            {
+                Pointers[0].BaseCursor.enabled = true;
+            }
+
+            InputManager.Instance.RaiseSourceDetected(this);
+        }
 
         private bool FindGazeTransform()
         {

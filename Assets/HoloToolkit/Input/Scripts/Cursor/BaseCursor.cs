@@ -346,7 +346,15 @@ namespace HoloToolkit.Unity.InputModule
             FocusDetails focusDetails;
             if (!FocusManager.Instance.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                Debug.LogError("Unable to get focus details!");
+                if (FocusManager.Instance.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
+                }
+                else
+                {
+                    Debug.LogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
+                }
+
                 return;
             }
 

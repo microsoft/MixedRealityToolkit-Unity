@@ -309,7 +309,6 @@ namespace HoloToolkit.Unity.InputModule
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.
-        /// <para><remarks>If the pointing source is not registered, then the Gaze's <see cref="FocusDetails"/> is returned.</remarks></para>
         /// </summary>
         /// <param name="pointer"></param>
         /// <param name="focusDetails"></param>
@@ -394,6 +393,11 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             return null;
+        }
+
+        public bool IsPointerRegistered(IPointer pointer)
+        {
+            return GetPointerData(pointer) != null;
         }
 
         private void UpdatePointers()
@@ -744,11 +748,24 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
+            int pointerCnt = 0;
+            if (eventData.InputSource.Pointers != null)
+            {
+                pointerCnt = eventData.InputSource.Pointers.Length;
+            }
+
+            Debug.LogFormat("Registering {1} pointers for {0}.", eventData.InputSource.SourceName, pointerCnt.ToString());
+
+            if (eventData.InputSource.Pointers == null) { return; }
+
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
                 PointerData pointerData = GetPointerData(sourcePointer);
 
-                Debug.Assert(pointerData == null, "This pointing source is already registered!");
+                // If we've already registered this pointer, then skip
+                if (pointerData != null) { continue; }
+
+                Debug.Log("Registering " + sourcePointer.PointerName);
 
                 // Special Registration for Gaze
                 if (eventData.InputSource.SourceId == GazeManager.Instance.SourceId)
@@ -780,10 +797,21 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
+            if (eventData.InputSource.Pointers == null) { return; }
+
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
                 PointerData pointerData = GetPointerData(sourcePointer);
                 Debug.Assert(pointerData != null, "Pointing Source was never registered!");
+
+                // If the source lost is not the gaze input source, then skip.
+                if (pointerData.Pointer.PointerId == gazeManagerPointingData.Pointer.PointerId &&
+                    eventData.SourceId != gazeManagerPointingData.Pointer.InputSourceParent.SourceId)
+                {
+                    continue;
+                }
+
+                Debug.Log("Unregistering " + sourcePointer.PointerName);
 
                 // Raise focus events if needed
                 if (pointerData.CurrentPointerTarget != null)

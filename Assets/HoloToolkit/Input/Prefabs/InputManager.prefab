@@ -261,8 +261,8 @@ MonoBehaviour:
   - TargetController: 3
     PointerPrefab: {fileID: 1586406594239866, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
       type: 2}
-  - TargetController: 2
-    PointerPrefab: {fileID: 1015308813860832, guid: 386281450e83e134c86df7ba7488be3c,
+  - TargetController: 3
+    PointerPrefab: {fileID: 1445549289901480, guid: 3cbe4e7460d68df4ba04c2d8150d5d76,
       type: 2}
 --- !u!114 &114000013868099214
 MonoBehaviour:

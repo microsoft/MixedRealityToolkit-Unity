@@ -44,6 +44,23 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void UpdateCursorTransform()
         {
+            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+
+            FocusDetails focusDetails;
+            if (!FocusManager.Instance.TryGetFocusDetails(Pointer, out focusDetails))
+            {
+                if (FocusManager.Instance.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
+                }
+                else
+                {
+                    Debug.LogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
+                }
+
+                return;
+            }
+
             if (!canUpdateTransform) { return; }
 
             transform.position = pointer.TeleportTargetPosition;
@@ -90,12 +107,14 @@ namespace HoloToolkit.Unity.InputModule
         public override Quaternion Rotation { get { return arrowTransform.rotation; } }
         public override Vector3 LocalScale { get { return PrimaryCursorVisual.localScale; } }
 
-        #endregion
+        #endregion ICursor Implementation
 
         #region ITeleport Implementation
 
         public void OnTeleportIntent(TeleportEventData eventData)
         {
+            if (eventData.InputSource.Pointers == null) { return; }
+
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 if (eventData.InputSource.Pointers[i].PointerId == pointer.PointerId)
@@ -109,6 +128,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnTeleportStarted(TeleportEventData eventData)
         {
+            if (eventData.InputSource.Pointers == null) { return; }
+
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 if (eventData.InputSource.Pointers[i].PointerId == pointer.PointerId)
@@ -122,6 +143,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnTeleportCompleted(TeleportEventData eventData)
         {
+            if (eventData.InputSource.Pointers == null) { return; }
+
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 if (eventData.InputSource.Pointers[i].PointerId == pointer.PointerId)
@@ -133,6 +156,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public void OnTeleportCanceled(TeleportEventData eventData)
         {
+            if (eventData.InputSource.Pointers == null) { return; }
+
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 if (eventData.InputSource.Pointers[i].PointerId == pointer.PointerId)
