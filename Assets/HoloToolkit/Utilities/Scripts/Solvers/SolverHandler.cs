@@ -6,6 +6,14 @@ using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
+#if UNITY_WSA
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
+#endif
+
 namespace HoloToolkit.Unity
 {
     public class SolverHandler : ControllerFinder
@@ -46,7 +54,7 @@ namespace HoloToolkit.Unity
         private Vector3 additionalOffset;
 
         [SerializeField]
-        [Tooltip("Add an additional rotation on top ofthe tracked object. Useful for tracking what is essentially the up or right/left vectors. Cannot be updated once Play begins.")]
+        [Tooltip("Add an additional rotation on top of the tracked object. Useful for tracking what is essentially the up or right/left vectors. Cannot be updated once Play begins.")]
         private Vector3 additionalRotation;
         
         public Vector3 AdditionalOffset
@@ -92,6 +100,62 @@ namespace HoloToolkit.Unity
             GoalScale = Vector3.one;
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = 0.0f;
+
+            //TransformTarget overrides TrackedObjectToReference
+            if (!TransformTarget)
+            {
+                switch (TrackedObjectToReference)
+                {
+                    case TrackedObjectToReferenceEnum.Head:
+                        if (RequiresOffset())
+                        {
+                            TransformTarget = MakeOffsetTransform(CameraCache.Main.transform);
+                        }
+                        else
+                        {
+                            //Base transform target to camera transform
+                            TransformTarget = CameraCache.Main.transform;
+                        }
+    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                        // No need to search for a controller if we've already attached to the head.
+                        Handedness = InteractionSourceHandedness.Unknown;
+    #endif
+                        break;
+                    case TrackedObjectToReferenceEnum.MotionControllerLeft:
+    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                        Handedness = InteractionSourceHandedness.Left;
+    #endif
+                        break;
+                    case TrackedObjectToReferenceEnum.MotionControllerRight:
+    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                        Handedness = InteractionSourceHandedness.Right;
+    #endif
+                        break;
+                }
+            }
+        }
+
+        protected override void OnControllerFound()
+        {
+            if (!TransformTarget && TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
+            {
+                if (RequiresOffset())
+                {
+                    TransformTarget = MakeOffsetTransform(ElementTransform);
+                }
+                else
+                {
+                    TransformTarget = ElementTransform;
+                }
+            }
+        }
+
+        protected override void OnControllerLost()
+        {
+            if (TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
+            {
+                TransformTarget = null;
+            }
         }
 
         private void Update()

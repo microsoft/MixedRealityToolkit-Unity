@@ -2,16 +2,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using UnityEngine;
-using System.Collections;
 using HoloToolkit.Unity.InputModule;
-#if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
-using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
-#endif
-#endif
+using UnityEngine;
+
 
 namespace HoloToolkit.Unity
 {
@@ -86,84 +79,6 @@ namespace HoloToolkit.Unity
             }
 
             lifetime = 0;
-        }
-
-        protected virtual void Start()
-        {
-            SeekTrackedObject();
-        }
-
-        /// <summary>
-        /// Restarts the coroutine that seeks out the proper attchment point, so this game object will begin tracking the object most recently assigned to it.
-        /// </summary>
-        public virtual void SeekTrackedObject()
-        {
-            //TransformTarget overrides ObjectToReferenceEnum
-            if (!solverHandler.TransformTarget)
-            {
-                StartCoroutine(CoStart());
-            }
-        }
-
-        protected IEnumerator CoStart()
-        {
-            // TODO: This really belongs in SolverHandler, everything in here is just passing SolverHandler member variables to SolverHandler functions. 
-            switch (solverHandler.TrackedObjectToReference)
-            {
-                case SolverHandler.TrackedObjectToReferenceEnum.Head:
-                    while (CameraCache.Main == null || CameraCache.Main.transform == null)
-                    {
-                        yield return null;
-                    }
-                    if (solverHandler.RequiresOffset())
-                    {
-                        solverHandler.TransformTarget = solverHandler.MakeOffsetTransform(CameraCache.Main.transform);
-                    }
-                    else
-                    {
-                        solverHandler.TransformTarget = CameraCache.Main.transform;
-                    }
-
-                    break;
-
-                case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                    solverHandler.Handedness = InteractionSourceHandedness.Left;
-                    while (solverHandler.ElementTransform == null)
-                    {
-                        yield return null;
-                    }
-                    if (solverHandler.RequiresOffset())
-                    {
-                        solverHandler.TransformTarget = solverHandler.MakeOffsetTransform(solverHandler.ElementTransform);
-                    }
-                    else
-                    {
-                        solverHandler.TransformTarget = solverHandler.ElementTransform;
-                    }
-#endif
-                    break;
-
-                case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                    solverHandler.Handedness = InteractionSourceHandedness.Right;
-
-                    while (solverHandler.ElementTransform == null)
-                    {
-                        yield return null;
-                    }
-                    //Base transform target on Motion controller transform
-                    if (solverHandler.RequiresOffset())
-                    {
-                        solverHandler.TransformTarget = solverHandler.MakeOffsetTransform(solverHandler.ElementTransform);
-                    }
-                    else
-                    {
-                        solverHandler.TransformTarget = solverHandler.ElementTransform;
-                    }
-#endif
-                    break;
-            }
         }
 
         // SolverLink will pass transform through
