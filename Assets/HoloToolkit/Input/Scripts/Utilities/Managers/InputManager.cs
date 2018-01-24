@@ -786,7 +786,7 @@ namespace HoloToolkit.Unity.InputModule
             inputPressedEventData.Initialize(source, pressAmount, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnInputPressedEventHandler);
+            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
         public void RaiseOnInputPressed(IInputSource source, double pressAmount, Handedness handedness, object[] tags = null)
@@ -795,7 +795,7 @@ namespace HoloToolkit.Unity.InputModule
             inputPressedEventData.Initialize(source, pressAmount, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnInputPressedEventHandler);
+            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
 #if UNITY_WSA
@@ -805,7 +805,7 @@ namespace HoloToolkit.Unity.InputModule
             inputPressedEventData.Initialize(source, pressAmount, pressType, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputEventData, OnInputPressedEventHandler);
+            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 #endif
         #endregion Input Up
