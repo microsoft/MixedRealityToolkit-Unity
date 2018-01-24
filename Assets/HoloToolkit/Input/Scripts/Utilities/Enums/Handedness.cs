@@ -7,6 +7,7 @@ namespace HoloToolkit.Unity.InputModule
     {
         None,
         Left,
-        Right
+        Right,
+        Both
     }
 }

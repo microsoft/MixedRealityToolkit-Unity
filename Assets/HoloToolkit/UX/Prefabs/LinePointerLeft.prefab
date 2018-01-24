@@ -226,12 +226,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a23a9925788b274d88d0b0d8312553f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  element: 6
   handedness: 1
   SetChildrenInactiveWhenDetached: 1
   PositionOffset: {x: 0, y: 0, z: 0}
   RotationOffset: {x: 0, y: 0, z: 0}
   ScaleOffset: {x: 1, y: 1, z: 1}
   SetScaleOnAttach: 0
+  CursorPrefab: {fileID: 0}
   interactionEnabled: 1
   CurrentPointerOrientation: 0
   pointerExtent: 2

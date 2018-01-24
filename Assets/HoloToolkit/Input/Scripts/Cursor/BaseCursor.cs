@@ -100,6 +100,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 pointer = value;
                 pointer.BaseCursor = this;
+                RegisterManagers();
             }
         }
 
@@ -143,7 +144,12 @@ namespace HoloToolkit.Unity.InputModule
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
 #if UNITY_WSA
-            var inputSource = (SimulatedInputSource)eventData.InputSource;
+            SimulatedInputSource inputSource = null;
+
+            if (Application.isEditor && eventData.InputSource.GetType() == typeof(SimulatedInputSource))
+            {
+                inputSource = (SimulatedInputSource)eventData.InputSource;
+            }
 
             InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
@@ -167,7 +173,12 @@ namespace HoloToolkit.Unity.InputModule
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
 #if UNITY_WSA
-            var inputSource = (SimulatedInputSource)eventData.InputSource;
+            SimulatedInputSource inputSource = null;
+
+            if (Application.isEditor && eventData.InputSource.GetType() == typeof(SimulatedInputSource))
+            {
+                inputSource = (SimulatedInputSource)eventData.InputSource;
+            }
 
             InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
@@ -256,12 +267,6 @@ namespace HoloToolkit.Unity.InputModule
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
             SetVisibility(isVisible);
-        }
-
-        private void Start()
-        {
-            RegisterManagers();
-            Debug.Assert(Pointer != null, string.Format("You must assign the {0} to a Pointer.", name));
         }
 
         private void Update()

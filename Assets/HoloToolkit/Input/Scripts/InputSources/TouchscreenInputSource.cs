@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private HashSet<TouchInputSource> activeTouches = new HashSet<TouchInputSource>();
 
-        private class TouchInputSource : GenericInputPointingSource
+        private class TouchInputSource : GenericInputSource
         {
             public readonly Touch TouchData;
             public readonly Ray ScreenPointRay;

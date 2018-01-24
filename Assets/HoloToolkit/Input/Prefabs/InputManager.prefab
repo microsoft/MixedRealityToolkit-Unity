@@ -230,7 +230,7 @@ MonoBehaviour:
   raycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291
-  stabilizer: {fileID: 114000011980027866}
+  stabilizer: {fileID: 0}
   gazeTransform: {fileID: 0}
   debugDrawRay: 0
 --- !u!114 &114000012434513746
@@ -255,15 +255,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d40781677294a0e4caffa3460012ae41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RecognizerStart: 0
-  UseRailsNavigation: 0
+  recognizerStart: 0
+  useRailsNavigation: 0
+  pointerOptions:
+  - TargetController: 3
+    PointerPrefab: {fileID: 1586406594239866, guid: abacd8b1e333a8c4d9c024a8a6a0d3a3,
+      type: 2}
+  - TargetController: 2
+    PointerPrefab: {fileID: 1015308813860832, guid: 386281450e83e134c86df7ba7488be3c,
+      type: 2}
 --- !u!114 &114000013868099214
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011070707148}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37870ab7a81bfb74b9fa277cf45b06d2, type: 3}
   m_Name: 
@@ -318,7 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb07a2de49ca4d478750eedc4858f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointingExtent: 10
   pointingRaycastLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291

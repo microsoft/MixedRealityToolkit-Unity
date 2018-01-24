@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
@@ -22,13 +23,29 @@ namespace HoloToolkit.Unity.InputModule
         /// set up the recognizer. The first causes the recognizer to start
         /// immediately. The second allows the recognizer to be manually started at a later time.
         /// </summary>
-        public enum RecognizerStartBehavior { AutoStart, ManualStart }
+        private enum RecognizerStartBehavior { AutoStart, ManualStart }
 
+        [SerializeField]
         [Tooltip("Whether the recognizer should be activated on start.")]
-        public RecognizerStartBehavior RecognizerStart;
+        private RecognizerStartBehavior recognizerStart;
 
+        [SerializeField]
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
-        public bool UseRailsNavigation;
+        private bool useRailsNavigation;
+
+        [Serializable]
+        private struct ControllerPointerOptions
+        {
+            [Tooltip("The Controller to assign the Pointer to.")]
+            public Handedness TargetController;
+
+            [Tooltip("The Pointer to assign.")]
+            public GameObject PointerPrefab;
+        }
+
+        [SerializeField]
+        [Tooltip("Set custom pointers for your controllers.")]
+        private ControllerPointerOptions[] pointerOptions;
 
         /// <summary>
         /// Always true initially so we only initialize our interaction sources 
@@ -48,14 +65,54 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IInputSource Capabilities and GenericInputPointingSource
 
-        private class InteractionInputSource : GenericInputPointingSource
+        private class InteractionInputSource : GenericInputSource
         {
 #if UNITY_WSA
             public readonly InteractionSource Source;
+            private static IPointer[] pointers;
 
-            public InteractionInputSource(InteractionSource source, string name) : base(name, SupportedInputInfo.None)
+            public InteractionInputSource(InteractionSource source, string name, ControllerPointerOptions[] pointerOptions) : base(name, SupportedInputInfo.None, pointers)
             {
                 Source = source;
+                var pointerList = new List<IPointer>(0);
+
+                foreach (var pointerOption in pointerOptions)
+                {
+                    if (pointerOption.TargetController == Handedness.None) { continue; }
+
+                    // Create our first pointer.
+                    var pointerObject = Instantiate(pointerOption.PointerPrefab);
+                    var pointer = pointerObject.GetComponent<BasePointer>();
+                    pointerList.Add(pointer);
+
+                    switch (pointerOption.TargetController)
+                    {
+                        case Handedness.Left:
+                            if (source.handedness == InteractionSourceHandedness.Left)
+                            {
+                                pointer.Handedness = Handedness.Left;
+                            }
+                            break;
+                        case Handedness.Right:
+                            if (source.handedness == InteractionSourceHandedness.Right)
+                            {
+                                pointer.Handedness = Handedness.Right;
+                            }
+                            break;
+                        case Handedness.Both:
+                            var pointerObjectClone = Instantiate(pointerOption.PointerPrefab);
+                            var pointerClone = pointerObjectClone.GetComponent<BasePointer>();
+                            pointerList.Add(pointerClone);
+
+                            pointer.Handedness = Handedness.Left;
+                            pointerClone.Handedness = Handedness.Right;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                pointers = pointerList.ToArray();
             }
 #else
             public InteractionInputSource(string name) : base(name, SupportedInputInfo.None) { }
@@ -205,7 +262,7 @@ namespace HoloToolkit.Unity.InputModule
             NavigationGestureRecognizer.NavigationCompleted += NavigationGestureRecognizer_NavigationCompleted;
             NavigationGestureRecognizer.NavigationCanceled += NavigationGestureRecognizer_NavigationCanceled;
 
-            if (UseRailsNavigation)
+            if (useRailsNavigation)
             {
                 NavigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationRailsX |
                                                                     GestureSettings.NavigationRailsY |
@@ -218,7 +275,7 @@ namespace HoloToolkit.Unity.InputModule
                                                                     GestureSettings.NavigationZ);
             }
 
-            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+            if (recognizerStart == RecognizerStartBehavior.AutoStart)
             {
                 GestureRecognizer.StartCapturingGestures();
                 NavigationGestureRecognizer.StartCapturingGestures();
@@ -687,7 +744,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.AssertIsInitialized();
 
 #if UNITY_WSA
-            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+            if (recognizerStart == RecognizerStartBehavior.AutoStart)
             {
                 StartGestureRecognizer();
             }
@@ -725,8 +782,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             var sourceData = new InteractionInputSource(
-                    interactionSource,
-                    string.Format("{0} {1}", interactionSource.handedness, interactionSource.kind));
+                interactionSource,
+                string.Format("{0} {1}", interactionSource.handedness, interactionSource.kind),
+                pointerOptions);
             interactionInputSources.Add(sourceData);
 
             return sourceData;

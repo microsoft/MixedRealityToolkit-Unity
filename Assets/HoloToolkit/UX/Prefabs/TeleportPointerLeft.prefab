@@ -9,16 +9,35 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1586406594239866}
+  m_RootGameObject: {fileID: 1311924199705636}
   m_IsPrefabParent: 1
---- !u!1 &1266471159078920
+--- !u!1 &1311924199705636
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4418658049720718}
+  - component: {fileID: 4886355789309908}
+  - component: {fileID: 114218305686259092}
+  - component: {fileID: 114950027858237056}
+  - component: {fileID: 114212374297144912}
+  - component: {fileID: 114192998013523560}
+  m_Layer: 0
+  m_Name: TeleportPointerLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1373150065686416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4545655095070846}
   m_Layer: 0
   m_Name: ParabolaCustomTransform
   m_TagString: Untagged
@@ -26,64 +45,79 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1586406594239866
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4671461304012674}
-  - component: {fileID: 114045951303966162}
-  - component: {fileID: 114444424106302830}
-  - component: {fileID: 114041993943882784}
-  - component: {fileID: 114664944855189834}
-  m_Layer: 0
-  m_Name: NavigationPointer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4418658049720718
+--- !u!4 &4545655095070846
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1266471159078920}
+  m_GameObject: {fileID: 1373150065686416}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4671461304012674}
+  m_Father: {fileID: 4886355789309908}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4671461304012674
+--- !u!4 &4886355789309908
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586406594239866}
+  m_GameObject: {fileID: 1311924199705636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4418658049720718}
+  - {fileID: 4545655095070846}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114041993943882784
+--- !u!114 &114192998013523560
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586406594239866}
+  m_GameObject: {fileID: 1311924199705636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3fb966fbcc0f44add9a39d15cd3d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distortOrder: 0
+  distortStrength: 1
+  localCenterOfGravity: {x: 0, y: 0, z: 0}
+  axisStrength: {x: 1, y: 1, z: 1}
+  radius: 0.5
+  gravityStrength:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &114212374297144912
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311924199705636}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9a4d6e2d0d55194788e9a2df9c0261f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 114444424106302830}
+  source: {fileID: 114950027858237056}
   LineColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -162,23 +196,26 @@ MonoBehaviour:
   RoundedEdges: 1
   RoundedCaps: 1
   lineRenderer: {fileID: 0}
---- !u!114 &114045951303966162
+--- !u!114 &114218305686259092
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586406594239866}
+  m_GameObject: {fileID: 1311924199705636}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56faa334bbe04704cb8886fb83bd656e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 0
+  element: 6
+  handedness: 1
   SetChildrenInactiveWhenDetached: 1
   PositionOffset: {x: 0, y: 0, z: 0}
   RotationOffset: {x: 0, y: 0, z: 0}
   ScaleOffset: {x: 1, y: 1, z: 1}
   SetScaleOnAttach: 0
+  CursorPrefab: {fileID: 1554777696564956, guid: bd7f4aafc03ff9b4fa42891cf788be9a,
+    type: 2}
   interactionEnabled: 1
   CurrentPointerOrientation: 0
   pointerExtent: 2
@@ -305,7 +342,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   LineCastResolution: 25
-  lineBase: {fileID: 114444424106302830}
+  lineBase: {fileID: 114950027858237056}
   LineRenderers: []
   MinValidDot: 0.2
   LineColorHotSpot:
@@ -374,13 +411,13 @@ MonoBehaviour:
     m_Bits: 4
   thumbstickThreshold: 0.05
   disableWhileActive: []
-  physicsParabolaDataMain: {fileID: 114444424106302830}
---- !u!114 &114444424106302830
+  physicsParabolaDataMain: {fileID: 114950027858237056}
+--- !u!114 &114950027858237056
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586406594239866}
+  m_GameObject: {fileID: 1311924199705636}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c10e66609ff772e4ba9fdc037fd280e1, type: 3}
@@ -388,7 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LineStartClamp: 0
   LineEndClamp: 1
-  customLineTransform: {fileID: 4418658049720718}
+  customLineTransform: {fileID: 4545655095070846}
   RotationType: 1
   FlipUpVector: 0
   OriginOffset: {x: 0, y: 0, z: 0}
@@ -427,37 +464,3 @@ MonoBehaviour:
   TimeMultiplier: 1
   UseCustomGravity: 1
   Gravity: {x: 0, y: -9.8, z: 0}
---- !u!114 &114664944855189834
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586406594239866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3be3fb966fbcc0f44add9a39d15cd3d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distortOrder: 0
-  distortStrength: 1
-  localCenterOfGravity: {x: 0, y: 0, z: 0}
-  axisStrength: {x: 1, y: 1, z: 1}
-  radius: 0.5
-  gravityStrength:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4

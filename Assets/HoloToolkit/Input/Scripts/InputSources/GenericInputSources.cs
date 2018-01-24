@@ -101,7 +101,7 @@ namespace HoloToolkit.Unity.InputModule
                          joystickNames[i].Equals(OpenVRControllerLeft) ||
                          joystickNames[i].Equals(OpenVRControllerRight))
                 {
-                    var inputSource = new GenericInputPointingSource(
+                    var inputSource = new GenericInputSource(
                         joystickNames[i],
                         SupportedInputInfo.Pointing |
                         SupportedInputInfo.Position |

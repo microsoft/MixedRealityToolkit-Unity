@@ -76,10 +76,13 @@ namespace HoloToolkit.Unity.InputModule
             get { return pointer; }
             set
             {
-                Debug.Assert(value.GetType() == typeof(TeleportPointer), "Teleport Cursor's Pointer must derive from TeleportPointer type.");
+                Debug.Assert(value.GetType() == typeof(TeleportPointer) ||
+                             value.GetType() == typeof(ParabolicTeleportPointer),
+                    "Teleport Cursor's Pointer must derive from TeleportPointer type.");
 
                 pointer = (TeleportPointer)value;
                 pointer.BaseCursor = this;
+                RegisterManagers();
             }
         }
 

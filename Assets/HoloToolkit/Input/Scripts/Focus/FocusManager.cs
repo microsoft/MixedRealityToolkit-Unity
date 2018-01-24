@@ -9,9 +9,8 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Focus manager is the bridge that handles different types of pointing sources like gaze cursor
-    /// or pointing ray enabled motion controllers.
-    /// If you don't have pointing ray enabled controllers, it defaults to GazeManager.
+    /// Focus manager handles the focused objects per input source.
+    /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
     public class FocusManager : Singleton<FocusManager>, ISourceStateHandler
     {

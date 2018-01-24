@@ -11,10 +11,14 @@ using UnityEngine.XR.WSA.Input;
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Base Pointer class for pointers that exist in the scene.
+    /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     public abstract class BasePointer : AttachToController, IInputHandler, IPointer
     {
+        [Header("Cursor")]
+        [SerializeField]
+        protected GameObject CursorPrefab;
+
         [Header("Interaction")]
         [SerializeField]
         private bool interactionEnabled = true;
@@ -98,8 +102,17 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void Start()
         {
+            FocusManager.AssertIsInitialized();
+            InputManager.AssertIsInitialized();
+            Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
+            Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
+
             PointerId = FocusManager.GenerateNewPointerId();
-            // TODO register our pointer.
+            PointerName = gameObject.name;
+
+            SetCursor();
+
+            // TODO register our pointer with the focus manager.
         }
 
         protected override void OnDisable()
@@ -109,6 +122,19 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #endregion  Monobehaviour Implementation
+
+        public void SetCursor(GameObject newCursor = null)
+        {
+            CursorPrefab = newCursor == null ? CursorPrefab : newCursor;
+
+            if (CursorPrefab != null)
+            {
+                var cursorObj = Instantiate(CursorPrefab, transform);
+                BaseCursor = cursorObj.GetComponent<BaseCursor>();
+                Debug.Assert(BaseCursor != null, "Failed to load cursor");
+                BaseCursor.Pointer = this;
+            }
+        }
 
         /// <summary>
         /// Call to initiate a select action for this pointer
