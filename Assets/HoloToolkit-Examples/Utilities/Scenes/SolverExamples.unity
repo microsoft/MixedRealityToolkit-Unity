@@ -88,6 +88,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -123,7 +124,6 @@ GameObject:
   - component: {fileID: 72954881}
   - component: {fileID: 72954880}
   - component: {fileID: 72954879}
-  - component: {fileID: 72954884}
   - component: {fileID: 72954883}
   - component: {fileID: 72954878}
   - component: {fileID: 72954877}
@@ -281,19 +281,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c87713fbad4edbc46a3cc23770b0b4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackedObjectToReference: 0
-  TransformTarget: {fileID: 0}
---- !u!114 &72954884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 72954876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb3fe1ca9da17a4dad15031f86b6f8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  element: 6
+  handedness: 1
+  trackedObjectToReference: 0
+  transformTarget: {fileID: 0}
 --- !u!1 &120386737
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +411,6 @@ GameObject:
   - component: {fileID: 236969297}
   - component: {fileID: 236969296}
   - component: {fileID: 236969295}
-  - component: {fileID: 236969299}
   - component: {fileID: 236969294}
   - component: {fileID: 236969293}
   m_Layer: 0
@@ -451,7 +441,7 @@ MonoBehaviour:
   GoalScale: {x: 1, y: 1, z: 1}
   Smoothing: 1
   Lifetime: 0
-  Orrientation: 1
+  Orientation: 1
   offset: {x: 0, y: 0.1, z: 0}
   RotationTether: 1
   TetherAngleSteps: 6
@@ -466,8 +456,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c87713fbad4edbc46a3cc23770b0b4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackedObjectToReference: 1
-  TransformTarget: {fileID: 0}
+  element: 6
+  handedness: 1
+  trackedObjectToReference: 1
+  transformTarget: {fileID: 0}
 --- !u!23 &236969295
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -535,17 +527,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &236969299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 236969292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb3fe1ca9da17a4dad15031f86b6f8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &342505150
 Prefab:
   m_ObjectHideFlags: 0
@@ -1356,7 +1337,6 @@ GameObject:
   - component: {fileID: 1299772964}
   - component: {fileID: 1299772963}
   - component: {fileID: 1299772962}
-  - component: {fileID: 1299772967}
   - component: {fileID: 1299772961}
   m_Layer: 0
   m_Name: SolverObject_SurfaceMagnetism
@@ -1415,8 +1395,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c87713fbad4edbc46a3cc23770b0b4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackedObjectToReference: 2
-  TransformTarget: {fileID: 0}
+  element: 6
+  handedness: 1
+  trackedObjectToReference: 2
+  transformTarget: {fileID: 0}
 --- !u!23 &1299772963
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1484,17 +1466,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1299772967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1299772960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb3fe1ca9da17a4dad15031f86b6f8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1391495929
 GameObject:
   m_ObjectHideFlags: 0
@@ -2128,7 +2099,6 @@ GameObject:
   - component: {fileID: 1878976468}
   - component: {fileID: 1878976467}
   - component: {fileID: 1878976466}
-  - component: {fileID: 1878976470}
   - component: {fileID: 1878976465}
   - component: {fileID: 1878976464}
   - component: {fileID: 1878976471}
@@ -2180,8 +2150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c87713fbad4edbc46a3cc23770b0b4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackedObjectToReference: 0
-  TransformTarget: {fileID: 1531362364}
+  element: 6
+  handedness: 1
+  trackedObjectToReference: 0
+  transformTarget: {fileID: 0}
 --- !u!23 &1878976466
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2249,17 +2221,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1878976470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1878976463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb3fe1ca9da17a4dad15031f86b6f8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1878976471
 MonoBehaviour:
   m_ObjectHideFlags: 0
