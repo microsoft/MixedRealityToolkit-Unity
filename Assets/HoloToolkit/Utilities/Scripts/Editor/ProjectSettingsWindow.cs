@@ -278,6 +278,25 @@ namespace HoloToolkit.Unity
             }
             else
             {
+                // HACK: Edits ProjectSettings.asset Directly
+                // TODO: replace with friendlier version that uses built in APIs when Unity fixes or makes available.
+                try
+                {
+                    // Enable the depth buffer sharing.
+                    string settingsPath = "ProjectSettings/ProjectSettings.asset";
+                    string matchPattern = @"(depthBufferSharingEnabled:) (\d+)";
+                    string replacement = @"$1 1";
+
+                    string settings = File.ReadAllText(settingsPath);
+                    settings = Regex.Replace(settings, matchPattern, replacement, RegexOptions.Singleline);
+
+                    File.WriteAllText(settingsPath, settings);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+
                 if (!Values[ProjectSetting.TargetOccludedDevices])
                 {
                     EditorUserBuildSettings.wsaSubtarget = WSASubtarget.HoloLens;
@@ -312,11 +331,11 @@ namespace HoloToolkit.Unity
                 {
                     // Find the WSA element under the platform quality list and replace it's value with the current level.
                     string settingsPath = "ProjectSettings/QualitySettings.asset";
-                    string matchPattern = @"(m_PerPlatformDefaultQuality.*Windows Store Apps:) (\d+)";
-                    string replacePattern = @"$1 " + currentQualityLevel;
+                    string matchPattern = @"(m_CurrentQuality:|Windows Store Apps:) (\d+)";
+                    string replacement = @"$1 " + currentQualityLevel;
 
                     string settings = File.ReadAllText(settingsPath);
-                    settings = Regex.Replace(settings, matchPattern, replacePattern, RegexOptions.Singleline);
+                    settings = Regex.Replace(settings, matchPattern, replacement, RegexOptions.Singleline);
 
                     File.WriteAllText(settingsPath, settings);
                 }
