@@ -42,18 +42,18 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public void OnNavigationCanceled(NavigationEventData eventData)
         {
             navigationDelta = Vector3.zero;
-            InputManager.Instance.OverrideFocusedObject = null;
+            FocusManager.Instance.OverrideFocusedObject = null;
         }
 
         public void OnNavigationCompleted(NavigationEventData eventData)
         {
             navigationDelta = Vector3.zero;
-            InputManager.Instance.OverrideFocusedObject = null;
+            FocusManager.Instance.OverrideFocusedObject = null;
         }
 
         public void OnNavigationStarted(NavigationEventData eventData)
         {
-            InputManager.Instance.OverrideFocusedObject = gameObject;
+            FocusManager.Instance.OverrideFocusedObject = gameObject;
             navigationDelta = eventData.NormalizedOffset;
         }
 

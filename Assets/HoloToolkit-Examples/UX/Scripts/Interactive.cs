@@ -19,20 +19,14 @@ namespace HoloToolkit.Examples.InteractiveElements
     /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on
     /// individual elements of the Interactive GameObject
     /// </summary>
-    public class Interactive : MonoBehaviour, IInputClickHandler, IFocusable, IInputHandler
+    public class Interactive : FocusTarget, IPointerHandler, IInputHandler
     {
-
         public GameObject ParentObject;
 
         /// <summary>
         /// Should the button listen to input?
         /// </summary>
         public bool IsEnabled = true;
-
-        /// <summary>
-        /// Does the GameObject currently have focus?
-        /// </summary>
-        public bool HasGaze { get; protected set; }
 
         /// <summary>
         /// Is the Tap currently in the down state?
@@ -105,7 +99,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         protected List<InteractiveWidget> mInteractiveWidgets = new List<InteractiveWidget>();
 
-        protected virtual void Awake()
+        private void Awake()
         {
             if (ParentObject == null)
             {
@@ -151,10 +145,11 @@ namespace HoloToolkit.Examples.InteractiveElements
             UpdateEffects();
         }
 
-        /// <summary>
-        /// An OnTap event occurred
-        /// </summary>
-        public virtual void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public virtual void OnPointerClicked(ClickEventData eventData)
         {
             if (!IsEnabled)
             {
@@ -177,14 +172,15 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// The gameObject received gaze
         /// </summary>
-        public virtual void OnFocusEnter()
+        /// <param name="eventData"></param>
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             if (!IsEnabled)
             {
                 return;
             }
-
-            HasGaze = true;
 
             SetKeywordListener(true);
 
@@ -194,9 +190,11 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// The gameObject no longer has gaze
         /// </summary>
-        public virtual void OnFocusExit()
+        /// <param name="eventData"></param>
+        public override void OnFocusExit(FocusEventData eventData)
         {
-            HasGaze = false;
+            base.OnFocusEnter(eventData);
+
             EndHoldDetection();
             mRollOffTimer = 0;
             mCheckRollOff = true;
@@ -266,7 +264,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         public virtual void OnInputDown(InputEventData eventData)
         {
-            if (!HasGaze)
+            if (!HasFocus)
             {
                 return;
             }
@@ -283,6 +281,10 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             OnDownEvent.Invoke();
         }
+
+        public virtual void OnInputPressed(InputPressedEventData eventData) { }
+
+        public virtual void OnInputPositionChanged(InputPositionEventData eventData) { }
 
         /// <summary>
         /// All tab, hold, and gesture events are completed
@@ -398,11 +400,11 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
 
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
-            if (args.text == Keyword && (!KeywordRequiresGaze || HasGaze) && IsEnabled)
+            if (args.text == Keyword && (!KeywordRequiresGaze || HasFocus) && IsEnabled)
             {
                 if (mKeywordDictionary == null)
                 {
-                    OnInputClicked(null);
+                    OnPointerClicked(null);
                 }
             }
         }
@@ -418,7 +420,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 // all states
                 if (IsSelected)
                 {
-                    if (HasGaze)
+                    if (HasFocus)
                     {
                         if (HasDown)
                         {
@@ -443,7 +445,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 }
                 else
                 {
-                    if (HasGaze)
+                    if (HasFocus)
                     {
                         if (HasDown)
                         {
@@ -539,7 +541,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         protected virtual void OnDisable()
         {
-            OnFocusExit();
+            OnFocusExit(null);
         }
     }
 }

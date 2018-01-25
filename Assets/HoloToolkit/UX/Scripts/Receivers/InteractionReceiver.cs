@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 
@@ -12,7 +11,7 @@ namespace HoloToolkit.Unity.Receivers
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
     /// based on events from those interactable objects.  This is the base abstract class to extend from.
     /// </summary>
-    public abstract class InteractionReceiver : MonoBehaviour, IInputHandler, IHoldHandler, IInputClickHandler, IManipulationHandler
+    public abstract class InteractionReceiver : FocusTarget, IInputHandler, IHoldHandler, IPointerHandler, IManipulationHandler, INavigationHandler
     {
         #region Public Members
         /// <summary>
@@ -50,9 +49,9 @@ namespace HoloToolkit.Unity.Receivers
         private bool lockFocus = false;
 
         /// <summary>
-        /// Protected focuser for the current selecting focuser
+        /// Protected pointer for the current selecting pointer
         /// </summary>
-        protected IPointingSource _selectingFocuser;
+        protected IPointer _selectingFocuser;
         #endregion
 
         /// <summary>
@@ -61,7 +60,6 @@ namespace HoloToolkit.Unity.Receivers
         public virtual void OnEnable()
         {
             InputManager.Instance.AddGlobalListener(gameObject);
-            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -72,11 +70,6 @@ namespace HoloToolkit.Unity.Receivers
             if (InputManager.IsInitialized)
             {
                 InputManager.Instance.RemoveGlobalListener(gameObject);
-            }
-
-            if (FocusManager.IsInitialized)
-            {
-                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
             }
         }
 
@@ -166,10 +159,10 @@ namespace HoloToolkit.Unity.Receivers
             return (interactables != null && interactables.Contains(interactable));
         }
 
-        private void CheckLockFocus(IPointingSource focuser)
+        private void CheckLockFocus(IPointer pointer)
         {
-            // If our previous selecting focuser isn't the same
-            if (_selectingFocuser != null && _selectingFocuser != focuser)
+            // If our previous selecting pointer isn't the same
+            if (_selectingFocuser != null && _selectingFocuser.PointerId != pointer.PointerId)
             {
                 // If our focus is currently locked, unlock it before moving on
                 if (LockFocus)
@@ -178,15 +171,15 @@ namespace HoloToolkit.Unity.Receivers
                 }
             }
 
-            // Set to the new focuser
-            _selectingFocuser = focuser;
+            // Set to the new pointer
+            _selectingFocuser = pointer;
             if (_selectingFocuser != null)
             {
                 _selectingFocuser.FocusLocked = LockFocus;
             }
         }
 
-        private void LockFocuser(IPointingSource focuser)
+        private void LockFocuser(IPointer focuser)
         {
             if (focuser != null)
             {
@@ -205,155 +198,172 @@ namespace HoloToolkit.Unity.Receivers
             }
         }
 
-        /// <summary>
-        /// Handle the pointer specific changes to fire focus enter and exit events
-        /// </summary>
-        /// <param name="pointer">The pointer associated with this focus change.</param>
-        /// <param name="oldFocusedObject">Object that was previously being focused.</param>
-        /// <param name="newFocusedObject">New object being focused.</param>
-        private void OnPointerSpecificFocusChanged(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
-        {
-            PointerSpecificEventData eventData = new PointerSpecificEventData(EventSystem.current);
-            eventData.Initialize(pointer);
-
-            if (newFocusedObject != null && Isinteractable(newFocusedObject))
-            {
-                FocusEnter(newFocusedObject, eventData);
-            }
-
-            if (oldFocusedObject != null && Isinteractable(oldFocusedObject))
-            {
-                FocusExit(oldFocusedObject, eventData);
-            }
-
-            CheckLockFocus(pointer);
-        }
-
         #region Global Listener Callbacks
-        public void OnInputDown(InputEventData eventData)
+
+        public override void OnBeforeFocusChange(FocusEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            base.OnBeforeFocusChange(eventData);
+
+            if (eventData.NewFocusedObject != null && Isinteractable(eventData.NewFocusedObject))
             {
-                InputDown(eventData.selectedObject, eventData);
+                FocusEnter(eventData.NewFocusedObject, eventData);
+            }
+
+            if (eventData.OldFocusedObject != null && Isinteractable(eventData.OldFocusedObject))
+            {
+                FocusExit(eventData.OldFocusedObject, eventData);
+            }
+
+            CheckLockFocus(eventData.Pointer);
+        }
+
+        void IInputHandler.OnInputDown(InputEventData eventData)
+        {
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
+            {
+                InputDown(focusedObject, eventData);
             }
         }
 
-        public void OnInputUp(InputEventData eventData)
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
+
+        void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                InputUp(eventData.selectedObject, eventData);
+                InputUp(focusedObject, eventData);
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                InputClicked(eventData.selectedObject, eventData);
+                InputClicked(focusedObject, eventData);
             }
         }
 
-        public void OnHoldStarted(HoldEventData eventData)
+        void IHoldHandler.OnHoldStarted(InputEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                HoldStarted(eventData.selectedObject, eventData);
+                HoldStarted(focusedObject, eventData);
             }
         }
 
-        public void OnHoldCompleted(HoldEventData eventData)
+        void IHoldHandler.OnHoldCompleted(InputEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                HoldCompleted(eventData.selectedObject, eventData);
+                HoldCompleted(focusedObject, eventData);
             }
         }
 
-        public void OnHoldCanceled(HoldEventData eventData)
+        void IHoldHandler.OnHoldCanceled(InputEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                HoldCanceled(eventData.selectedObject, eventData);
+                HoldCanceled(focusedObject, eventData);
             }
         }
 
-        public void OnManipulationStarted(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationStarted(ManipulationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                ManipulationStarted(eventData.selectedObject, eventData);
+                ManipulationStarted(focusedObject, eventData);
             }
         }
 
-        public void OnManipulationUpdated(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationUpdated(ManipulationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                ManipulationUpdated(eventData.selectedObject, eventData);
+                ManipulationUpdated(focusedObject, eventData);
             }
         }
 
-        public void OnManipulationCompleted(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationCompleted(ManipulationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                ManipulationCompleted(eventData.selectedObject, eventData);
+                ManipulationCompleted(focusedObject, eventData);
             }
         }
 
-        public void OnManipulationCanceled(ManipulationEventData eventData)
+        void IManipulationHandler.OnManipulationCanceled(ManipulationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                ManipulationCanceled(eventData.selectedObject, eventData);
+                ManipulationCanceled(focusedObject, eventData);
             }
         }
 
-        public void OnNavigationStarted(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationStarted(NavigationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                NavigationStarted(eventData.selectedObject, eventData);
+                NavigationStarted(focusedObject, eventData);
             }
         }
 
-        public void OnNavigationUpdated(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationUpdated(NavigationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                NavigationUpdated(eventData.selectedObject, eventData);
+                NavigationUpdated(focusedObject, eventData);
             }
         }
 
-        public void OnNavigationCompleted(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationCompleted(NavigationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                NavigationCompleted(eventData.selectedObject, eventData);
+                NavigationCompleted(focusedObject, eventData);
             }
         }
 
-        public void OnNavigationCanceled(NavigationEventData eventData)
+        void INavigationHandler.OnNavigationCanceled(NavigationEventData eventData)
         {
-            if (Isinteractable(eventData.selectedObject))
+            var focusedObject = FocusManager.Instance.GetFocusedObject(eventData);
+            if (Isinteractable(focusedObject))
             {
-                NavigationCanceled(eventData.selectedObject, eventData);
+                NavigationCanceled(focusedObject, eventData);
             }
         }
-        #endregion
+
+        #endregion Global Listener Callbacks
 
         #region Protected Virtual Callback Functions
-        protected virtual void FocusEnter(GameObject obj, PointerSpecificEventData eventData) { }
-        protected virtual void FocusExit(GameObject obj, PointerSpecificEventData eventData) { }
+        protected virtual void FocusEnter(GameObject obj, FocusEventData focusEventData) { }
+        protected virtual void FocusExit(GameObject obj, FocusEventData focusEventData) { }
 
         protected virtual void InputDown(GameObject obj, InputEventData eventData) { }
         protected virtual void InputUp(GameObject obj, InputEventData eventData) { }
-        protected virtual void InputClicked(GameObject obj, InputClickedEventData eventData) { }
+        protected virtual void InputClicked(GameObject obj, ClickEventData eventData) { }
 
-        protected virtual void HoldStarted(GameObject obj, HoldEventData eventData) { }
-        protected virtual void HoldCompleted(GameObject obj, HoldEventData eventData) { }
-        protected virtual void HoldCanceled(GameObject obj, HoldEventData eventData) { }
+        protected virtual void HoldStarted(GameObject obj, InputEventData eventData) { }
+        protected virtual void HoldCompleted(GameObject obj, InputEventData eventData) { }
+        protected virtual void HoldCanceled(GameObject obj, InputEventData eventData) { }
 
         protected virtual void ManipulationStarted(GameObject obj, ManipulationEventData eventData) { }
         protected virtual void ManipulationUpdated(GameObject obj, ManipulationEventData eventData) { }

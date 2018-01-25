@@ -6,12 +6,13 @@ using UnityEngine.EventSystems;
 
 namespace HoloToolkit.Unity.InputModule
 {
-    public class DictationEventData : InputEventData
+    public class DictationEventData : BaseInputEventData
     {
         /// <summary>
         /// String result of the current dictation.
         /// </summary>
         public string DictationResult { get; private set; }
+
         /// <summary>
         /// Audio Clip of the last Dictation recording Session.
         /// </summary>
@@ -19,9 +20,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public DictationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, string dictationResult, AudioClip dictationAudioClip = null)
+        public void Initialize(IInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, tags);
             DictationResult = dictationResult;
             DictationAudioClip = dictationAudioClip;
         }

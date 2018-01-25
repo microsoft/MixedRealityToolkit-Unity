@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using HoloToolkit.Unity.InputModule;
-using Cursor = HoloToolkit.Unity.InputModule.Cursor;
 
 namespace HoloToolkit.Unity
 {
@@ -28,23 +27,12 @@ namespace HoloToolkit.Unity
         /// </summary>
         private const string InputSystemPrefabGUID = "3eddd1c29199313478dd3f912bfab2ab";
 
-        /// <summary>
-        /// Can be found in the meta file of the camera prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
-        /// <remarks>Currently points to the DefaultCursor.prefab</remarks>
-        /// </summary>
-        private const string DefaultCursorPrefabGUID = "a611e772ef8ddf64d8106a9cbb70f31c";
-
-        #region Nested Types
-
         public enum SceneSetting
         {
             AddMixedRealityCamera,
             CameraToOrigin,
             AddInputSystem,
-            AddDefaultCursor,
         }
-
-        #endregion // Nested Types
 
         #region Overrides / Event Handlers
 
@@ -98,19 +86,6 @@ namespace HoloToolkit.Unity
                 FocusManager.Instance.UpdateCanvasEventSystems();
             }
 
-            if (Values[SceneSetting.AddDefaultCursor])
-            {
-                var cursors = FindObjectsOfType<Cursor>();
-                foreach (var cursor in cursors)
-                {
-                    DestroyImmediate(cursor.gameObject.GetParentRoot());
-                }
-
-                PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(DefaultCursorPrefabGUID)));
-
-                FindObjectOfType<InputManager>().GetComponent<SimpleSinglePointerSelector>().Cursor = FindObjectOfType<Cursor>();
-            }
-
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 
             Close();
@@ -118,15 +93,13 @@ namespace HoloToolkit.Unity
 
         protected override void LoadSettings()
         {
-            for (int i = 0; i <= (int)SceneSetting.AddDefaultCursor; i++)
+            for (int i = 0; i <= (int)SceneSetting.AddInputSystem; i++)
             {
                 Values[(SceneSetting)i] = true;
             }
         }
 
-        protected override void OnGuiChanged()
-        {
-        }
+        protected override void OnGuiChanged() { }
 
         protected override void LoadStrings()
         {
@@ -150,13 +123,6 @@ namespace HoloToolkit.Unity
                 "Adds the Input Manager Prefab to the scene.\n\n" +
                 "The prefab comes preset with all the components and options for automatically handling input for Mixed Reality Applications.\n\n" +
                 "<color=#ff0000ff><b>Warning!</b></color> This will remove and replace any currently existing Input Managers or Event Systems in your scene.";
-
-            Names[SceneSetting.AddDefaultCursor] = "Add the Default Cursor Prefab";
-            Descriptions[SceneSetting.AddDefaultCursor] =
-                "Recommended\n\n" +
-                "Adds the  Default Cursor Prefab to the scene.\n\n" +
-                "The prefab comes preset with all the components and options for automatically handling cursor animations for Mixed Reality Applications.\n\n" +
-                "<color=#ff0000ff><b>Warning!</b></color> This will remove and replace any currently existing Cursors in your scene.";
         }
 
         protected override void OnEnable()
@@ -166,6 +132,7 @@ namespace HoloToolkit.Unity
             minSize = new Vector2(350, 250);
             maxSize = minSize;
         }
-        #endregion // Overrides / Event Handlers
+
+        #endregion Overrides / Event Handlers
     }
 }

@@ -7,7 +7,7 @@ using HoloToolkit.Unity.InputModule;
 namespace HoloToolkit.Unity.SharingWithUNET
 {
 
-    public class JoinSelectedSessionButton : MonoBehaviour, IInputClickHandler
+    public class JoinSelectedSessionButton : MonoBehaviour, IPointerHandler
     {
         /// <summary>
         /// Shader property id for the text color so we can change it when selected.
@@ -77,11 +77,15 @@ namespace HoloToolkit.Unity.SharingWithUNET
             }
         }
 
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
         /// <summary>
         /// When the button is clicked try to join the selected session
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             ScrollingSessionListUIController.Instance.JoinSelectedSession();
             eventData.Use();

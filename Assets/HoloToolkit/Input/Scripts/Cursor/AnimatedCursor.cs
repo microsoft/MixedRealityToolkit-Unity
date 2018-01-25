@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// Animated cursor is a cursor driven using an animator to inject state information
     /// and animate accordingly
     /// </summary>
-    public class AnimatedCursor : Cursor
+    public class AnimatedCursor : BaseCursor
     {
         /// <summary>
         /// Enabled state Data when enabling
@@ -68,17 +68,16 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Override to set the cursor animation trigger
         /// </summary>
-        /// <param name="modifier"></param>
-        protected override void OnActiveModifier(CursorModifier modifier)
+        public override void OnFocusChanged(FocusEventData eventData)
         {
-            base.OnActiveModifier(modifier);
+            base.OnFocusChanged(eventData);
 
-            if (modifier != null)
+            if (Pointer.CursorModifier != null)
             {
-                if ((modifier.CursorParameters != null) && (modifier.CursorParameters.Length > 0))
+                if ((Pointer.CursorModifier.CursorParameters != null) && (Pointer.CursorModifier.CursorParameters.Length > 0))
                 {
                     OnCursorStateChange(CursorStateEnum.Contextual);
-                    foreach (var param in modifier.CursorParameters)
+                    foreach (var param in Pointer.CursorModifier.CursorParameters)
                     {
                         SetAnimatorParameter(param);
                     }

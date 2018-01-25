@@ -1,42 +1,82 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
-    /// Base class for an input source.
+    /// Base class for input sources that inherit from MonoBehaviour.
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
-        public abstract SupportedInputInfo GetSupportedInputInfo(uint sourceId);
+        public uint SourceId { get; protected set; }
 
-        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
+        public string SourceName
         {
-            return ((GetSupportedInputInfo(sourceId) & inputInfo) == inputInfo);
+            get { return name; }
+            set { name = value; }
         }
 
-        public abstract bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind);
+        public IPointer[] Pointers { get { return null; } }
 
-        public abstract bool TryGetPointerPosition(uint sourceId, out Vector3 position);
+        public abstract SupportedInputInfo GetSupportedInputInfo();
 
-        public abstract bool TryGetPointerRotation(uint sourceId, out Quaternion rotation);
+        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
+        {
+            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
+        }
 
-        public abstract bool TryGetPointingRay(uint sourceId, out Ray pointingRay);
+        #region IEquality Implementation
 
-        public abstract bool TryGetGripPosition(uint sourceId, out Vector3 position);
+        private bool Equals(IInputSource other)
+        {
+            return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
+        }
 
-        public abstract bool TryGetGripRotation(uint sourceId, out Quaternion rotation);
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) { return false; }
+            if (ReferenceEquals(this, obj)) { return true; }
+            if (obj.GetType() != GetType()) { return false; }
 
-        public abstract bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position);
+            return Equals((IInputSource)obj);
+        }
 
-        public abstract bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position);
+        public static bool Equals(IInputSource left, IInputSource right)
+        {
+            return left.SourceId == right.SourceId;
+        }
 
-        public abstract bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedValue);
+        bool IEqualityComparer.Equals(object x, object y)
+        {
+            var left = (IInputSource)x;
+            var right = (IInputSource)y;
+            if (left != null && right != null)
+            {
+                return Equals(left, right);
+            }
 
-        public abstract bool TryGetGrasp(uint sourceId, out bool isPressed);
+            return false;
+        }
 
-        public abstract bool TryGetMenu(uint sourceId, out bool isPressed);
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = 0;
+                hashCode = (hashCode * 397) ^ (int)SourceId;
+                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        #endregion IEquality Implementation
     }
 }

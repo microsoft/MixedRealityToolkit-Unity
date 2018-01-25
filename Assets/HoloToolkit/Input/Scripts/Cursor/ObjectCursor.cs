@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.InputModule
     /// The object cursor can switch between different game objects based on its state.
     /// It simply links the game object to set to active with its associated cursor state.
     /// </summary>
-    public class ObjectCursor : Cursor
+    public class ObjectCursor : BaseCursor
     {
         [Serializable]
         public struct ObjectCursorDatum
