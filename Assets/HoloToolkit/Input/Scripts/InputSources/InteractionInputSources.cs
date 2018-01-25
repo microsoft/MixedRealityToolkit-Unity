@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
@@ -22,13 +23,29 @@ namespace HoloToolkit.Unity.InputModule
         /// set up the recognizer. The first causes the recognizer to start
         /// immediately. The second allows the recognizer to be manually started at a later time.
         /// </summary>
-        public enum RecognizerStartBehavior { AutoStart, ManualStart }
+        private enum RecognizerStartBehavior { AutoStart, ManualStart }
 
+        [SerializeField]
         [Tooltip("Whether the recognizer should be activated on start.")]
-        public RecognizerStartBehavior RecognizerStart;
+        private RecognizerStartBehavior recognizerStart;
 
+        [SerializeField]
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
-        public bool UseRailsNavigation;
+        private bool useRailsNavigation;
+
+        [Serializable]
+        private struct ControllerPointerOptions
+        {
+            [Tooltip("The Controller to assign the Pointer to.")]
+            public Handedness TargetController;
+
+            [Tooltip("The Pointer to assign.")]
+            public GameObject PointerPrefab;
+        }
+
+        [SerializeField]
+        [Tooltip("Set custom pointers for your controllers.")]
+        private ControllerPointerOptions[] pointerOptions;
 
         /// <summary>
         /// Always true initially so we only initialize our interaction sources 
@@ -48,19 +65,51 @@ namespace HoloToolkit.Unity.InputModule
 
         #region IInputSource Capabilities and GenericInputPointingSource
 
-        private class InteractionInputSource : GenericInputPointingSource
+        private class InteractionInputSource : GenericInputSource
         {
 #if UNITY_WSA
             public readonly InteractionSource Source;
+            public readonly BasePointer[] PointerSceneObjects;
 
-            public InteractionInputSource(InteractionSource source, uint sourceId, string name) : base(sourceId, name)
+            public InteractionInputSource(InteractionSource source, string name, ControllerPointerOptions[] pointerOptions, IPointer[] pointers = null)
+                : base(name, SupportedInputInfo.None, pointers)
             {
                 Source = source;
+
+                var pointerList = new List<BasePointer>(0);
+
+                foreach (var pointerOption in pointerOptions)
+                {
+                    Debug.Assert(pointerOption.TargetController != Handedness.None, "Interaction Source Pointer must be set to Left, Right, or Both.");
+
+                    if (source.handedness == InteractionSourceHandedness.Unknown ||
+                        source.handedness == InteractionSourceHandedness.Left && pointerOption.TargetController == Handedness.Right ||
+                        source.handedness == InteractionSourceHandedness.Right && pointerOption.TargetController == Handedness.Left)
+                    {
+                        continue;
+                    }
+
+                    var pointerObject = Instantiate(pointerOption.PointerPrefab);
+                    var pointer = pointerObject.GetComponent<BasePointer>();
+                    pointer.Handedness = (Handedness)source.handedness;
+                    pointer.name = string.Format("{0}_{1}", pointer.InputSourceParent.SourceName, pointer.GetType().Name);
+                    pointerList.Add(pointer);
+                }
+
+                pointers = new IPointer[pointerList.Count];
+                for (var i = 0; i < pointerList.Count; i++)
+                {
+                    pointers[i] = pointerList[i];
+                }
+
+                PointerSceneObjects = pointerList.ToArray();
+                foreach (var pointer in PointerSceneObjects)
+                {
+                    pointer.InputSourceParent = this;
+                }
             }
 #else
-            public InteractionInputSource(uint sourceId, string name) : base(sourceId, name) { }
-
-            public InteractionInputSource(uint sourceId, string name, SupportedInputInfo supportedInputInfo) : base(sourceId, name, supportedInputInfo) { }
+            public InteractionInputSource(string name) : base(name, SupportedInputInfo.None) { }
 #endif
 
             public override SupportedInputInfo GetSupportedInputInfo()
@@ -111,7 +160,7 @@ namespace HoloToolkit.Unity.InputModule
             public bool RotationUpdated;
             public bool SelectPressedAmountUpdated;
 
-            public override bool TryGetPointerPosition(out Vector3 position)
+            public override bool TryGetPointerPosition(IPointer pointer, out Vector3 position)
             {
                 position = Vector3.zero;
                 if (PointerPosition.IsSupported && PointerPosition.IsAvailable)
@@ -123,7 +172,7 @@ namespace HoloToolkit.Unity.InputModule
                 return false;
             }
 
-            public override bool TryGetPointerRotation(out Quaternion rotation)
+            public override bool TryGetPointerRotation(IPointer pointer, out Quaternion rotation)
             {
                 rotation = Quaternion.identity;
                 if (PointerRotation.IsSupported && PointerRotation.IsAvailable)
@@ -135,7 +184,7 @@ namespace HoloToolkit.Unity.InputModule
                 return false;
             }
 
-            public override bool TryGetPointingRay(out Ray pointingRay)
+            public override bool TryGetPointingRay(IPointer pointer, out Ray pointingRay)
             {
                 pointingRay = default(Ray);
                 if (PointingRay.IsSupported && PointingRay.IsAvailable)
@@ -207,7 +256,7 @@ namespace HoloToolkit.Unity.InputModule
             NavigationGestureRecognizer.NavigationCompleted += NavigationGestureRecognizer_NavigationCompleted;
             NavigationGestureRecognizer.NavigationCanceled += NavigationGestureRecognizer_NavigationCanceled;
 
-            if (UseRailsNavigation)
+            if (useRailsNavigation)
             {
                 NavigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationRailsX |
                                                                     GestureSettings.NavigationRailsY |
@@ -220,7 +269,7 @@ namespace HoloToolkit.Unity.InputModule
                                                                     GestureSettings.NavigationZ);
             }
 
-            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+            if (recognizerStart == RecognizerStartBehavior.AutoStart)
             {
                 GestureRecognizer.StartCapturingGestures();
                 NavigationGestureRecognizer.StartCapturingGestures();
@@ -260,14 +309,7 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                foreach (var inputSource in interactionInputSources)
-                {
-                    if (inputSource.Source.id == states[i].source.id)
-                    {
-                        InputManager.Instance.RaiseSourceLost(inputSource);
-                        interactionInputSources.Remove(inputSource);
-                    }
-                }
+                RemoveInteractionInputSource(GetOrAddInteractionSource(states[i].source));
             }
 #endif
         }
@@ -689,7 +731,7 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.AssertIsInitialized();
 
 #if UNITY_WSA
-            if (RecognizerStart == RecognizerStartBehavior.AutoStart)
+            if (recognizerStart == RecognizerStartBehavior.AutoStart)
             {
                 StartGestureRecognizer();
             }
@@ -697,7 +739,7 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                InputManager.Instance.RaiseSourceDetected(GetOrAddInteractionSource(states[i].source));
+                GetOrAddInteractionSource(states[i].source);
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
@@ -726,11 +768,26 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            var sourceData = new InteractionInputSource(interactionSource, InputManager.GenerateNewSourceId(),
-                    string.Format("{0} {1}", interactionSource.handedness, interactionSource.kind));
+            var sourceData = new InteractionInputSource(
+                interactionSource,
+                string.Format("{0}_{1}", interactionSource.handedness, interactionSource.kind),
+                pointerOptions);
             interactionInputSources.Add(sourceData);
 
+            InputManager.Instance.RaiseSourceDetected(sourceData);
+
             return sourceData;
+        }
+
+        private void RemoveInteractionInputSource(InteractionInputSource interactionSource)
+        {
+            InputManager.Instance.RaiseSourceLost(interactionSource);
+            interactionInputSources.Remove(interactionSource);
+
+            for (var j = 0; j < interactionSource.PointerSceneObjects.Length; j++)
+            {
+                Destroy(interactionSource.PointerSceneObjects[j].gameObject);
+            }
         }
 
         /// <summary>
@@ -906,14 +963,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
-            foreach (var inputSource in interactionInputSources)
-            {
-                if (inputSource.Source.id == args.state.source.id)
-                {
-                    InputManager.Instance.RaiseSourceLost(inputSource);
-                    interactionInputSources.Remove(inputSource);
-                }
-            }
+            RemoveInteractionInputSource(GetOrAddInteractionSource(args.state.source));
         }
 
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
@@ -922,8 +972,6 @@ namespace HoloToolkit.Unity.InputModule
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             UpdateInteractionSource(args.state, sourceData);
-
-            InputManager.Instance.RaiseSourceDetected(sourceData);
         }
 
         #endregion InteractionManager Events
@@ -932,7 +980,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void GestureRecognizer_Tapped(TappedEventArgs args)
         {
-            InputManager.Instance.RaiseInputClicked(GetOrAddInteractionSource(args.source), args.tapCount, (Handedness)args.source.handedness);
+            InputManager.Instance.RaiseInputClicked(GetOrAddInteractionSource(args.source).Pointers[0], args.tapCount, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)

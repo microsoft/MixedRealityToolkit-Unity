@@ -55,7 +55,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 Debug.LogError("Must have a GazeManager somewhere in the scene.");
             }
 
-            if ((GazeManager.Instance.RaycastLayerMasks[0] & (1 << gameObject.layer)) != 0)
+            if ((GazeManager.Instance.Pointers[0].PrioritizedLayerMasksOverride[0] & (1 << gameObject.layer)) != 0)
             {
                 Debug.LogError("The cursor has a layer that is checked in the GazeManager's Raycast Layer Mask.  Change the cursor layer (e.g.: to Ignore Raycast) or uncheck the layer in GazeManager: " +
                     LayerMask.LayerToName(gameObject.layer));
@@ -66,9 +66,9 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         {
             var result = new RaycastResult
             {
-                Hit = (GazeManager.Instance.GazeTarget == null) ? false : true,
-                Position = GazeManager.Instance.HitPosition,
-                Normal = GazeManager.Instance.GazeNormal
+                Hit = GazeManager.GazeTarget != null,
+                Position = GazeManager.HitPosition,
+                Normal = GazeManager.GazeDirection
             };
 
             return result;

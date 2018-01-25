@@ -24,13 +24,13 @@ namespace HoloToolkit.Unity.InputModule
 
         private HashSet<TouchInputSource> activeTouches = new HashSet<TouchInputSource>();
 
-        private class TouchInputSource : GenericInputPointingSource
+        private class TouchInputSource : GenericInputSource
         {
             public readonly Touch TouchData;
             public readonly Ray ScreenPointRay;
             public float Lifetime;
 
-            public TouchInputSource(uint sourceId, string name, Touch touch, Ray ray) : base(sourceId, name, SupportedInputInfo.Position | SupportedInputInfo.Pointing)
+            public TouchInputSource(string name, Touch touch, Ray ray) : base(name, SupportedInputInfo.Position | SupportedInputInfo.Pointing)
             {
                 TouchData = touch;
                 ScreenPointRay = ray;
@@ -90,8 +90,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            uint newInputSourceId = InputManager.GenerateNewSourceId();
-            var newTouch = new TouchInputSource(newInputSourceId, string.Format("Touch {0}", newInputSourceId), touch, ray);
+            var newTouch = new TouchInputSource(string.Format("Touch {0}", touch.fingerId), touch, ray);
             activeTouches.Add(newTouch);
             InputManager.Instance.RaiseSourceDetected(newTouch);
             InputManager.Instance.RaiseHoldStarted(newTouch);
@@ -112,7 +111,7 @@ namespace HoloToolkit.Unity.InputModule
                         else if (knownTouch.Lifetime < MaxTapContactTime)
                         {
                             InputManager.Instance.RaiseHoldCanceled(knownTouch);
-                            InputManager.Instance.RaiseInputClicked(knownTouch, knownTouch.TouchData.tapCount);
+                            InputManager.Instance.RaiseInputClicked(knownTouch.Pointers[0], knownTouch.TouchData.tapCount);
                         }
                         else
                         {

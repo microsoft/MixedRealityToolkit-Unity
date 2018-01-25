@@ -93,29 +93,30 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
         /// </summary>
-        public IPointingSource Pointer
+        public virtual IPointer Pointer
         {
             get { return pointer; }
             set
             {
                 pointer = value;
                 pointer.BaseCursor = this;
+                RegisterManagers();
             }
         }
 
-        private IPointingSource pointer;
+        private IPointer pointer;
 
-        public Vector3 Position
+        public virtual Vector3 Position
         {
             get { return transform.position; }
         }
 
-        public Quaternion Rotation
+        public virtual Quaternion Rotation
         {
             get { return transform.rotation; }
         }
 
-        public Vector3 LocalScale
+        public virtual Vector3 LocalScale
         {
             get { return transform.localScale; }
         }
@@ -143,7 +144,12 @@ namespace HoloToolkit.Unity.InputModule
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
 #if UNITY_WSA
-            var inputSource = (SimulatedInputSource)eventData.InputSource;
+            SimulatedInputSource inputSource = null;
+
+            if (Application.isEditor && eventData.InputSource.GetType() == typeof(SimulatedInputSource))
+            {
+                inputSource = (SimulatedInputSource)eventData.InputSource;
+            }
 
             InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
@@ -167,7 +173,12 @@ namespace HoloToolkit.Unity.InputModule
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
 #if UNITY_WSA
-            var inputSource = (SimulatedInputSource)eventData.InputSource;
+            SimulatedInputSource inputSource = null;
+
+            if (Application.isEditor && eventData.InputSource.GetType() == typeof(SimulatedInputSource))
+            {
+                inputSource = (SimulatedInputSource)eventData.InputSource;
+            }
 
             InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
@@ -199,7 +210,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
-            if (Pointer.SourceId == eventData.Pointer.SourceId)
+            if (Pointer.PointerId == eventData.Pointer.PointerId)
             {
                 TargetedObject = eventData.NewFocusedObject;
             }
@@ -217,9 +228,12 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnPointerDown(ClickEventData eventData)
         {
-            if (Pointer.SourceId == eventData.SourceId)
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                IsPointerDown = true;
+                if (sourcePointer.PointerId == Pointer.PointerId)
+                {
+                    IsPointerDown = true;
+                }
             }
         }
 
@@ -235,9 +249,12 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="eventData"></param>
         public virtual void OnPointerUp(ClickEventData eventData)
         {
-            if (Pointer.SourceId == eventData.SourceId)
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                IsPointerDown = false;
+                if (sourcePointer.PointerId == Pointer.PointerId)
+                {
+                    IsPointerDown = false;
+                }
             }
         }
 
@@ -250,12 +267,6 @@ namespace HoloToolkit.Unity.InputModule
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
             SetVisibility(isVisible);
-        }
-
-        private void Start()
-        {
-            RegisterManagers();
-            Debug.Assert(Pointer != null, String.Format("You must assign the {0} to a Pointer.", name));
         }
 
         private void Update()
@@ -335,7 +346,15 @@ namespace HoloToolkit.Unity.InputModule
             FocusDetails focusDetails;
             if (!FocusManager.Instance.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                Debug.LogError("Unable to get focus details!");
+                if (FocusManager.Instance.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
+                }
+                else
+                {
+                    Debug.LogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
+                }
+
                 return;
             }
 

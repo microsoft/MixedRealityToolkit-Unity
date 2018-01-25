@@ -37,6 +37,8 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     nameStringHash = Animator.StringToHash(Name);
                 }
+
+                Debug.Assert(nameStringHash != null);
                 return nameStringHash.Value;
             }
         }

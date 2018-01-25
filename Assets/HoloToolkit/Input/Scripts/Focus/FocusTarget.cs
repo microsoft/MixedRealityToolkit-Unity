@@ -25,9 +25,9 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool HasFocus { get { return FocusEnabled && hasFocus; } }
 
-        private readonly List<IPointingSource> focusers = new List<IPointingSource>(0);
+        private readonly List<IPointer> focusers = new List<IPointer>(0);
 
-        public List<IPointingSource> Focusers { get { return focusers; } }
+        public List<IPointer> Focusers { get { return focusers; } }
 
         public virtual void OnFocusEnter(FocusEventData eventData) { }
 
