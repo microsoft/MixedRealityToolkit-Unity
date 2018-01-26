@@ -31,7 +31,8 @@ namespace HoloToolkit.Unity
             {
                 if (EditorUtility.DisplayDialog(
                         "Force Text Asset Serialization?",
-                        "MixedRealityToolkit is easier to maintain if the asset serialization mode for this project is set to \"Force Text\". Would you like to make this change?",
+                        "MixedRealityToolkit is easier to maintain if the asset serialization mode for this project is " +
+                            "set to \"Force Text\". Would you like to make this change?",
                         "Force Text Serialization",
                         "Later"))
                 {
@@ -45,7 +46,8 @@ namespace HoloToolkit.Unity
             {
                 if (EditorUtility.DisplayDialog(
                     "Make Meta Files Visible?",
-                    "MixedRealityToolkit would like to make meta files visible so they can be more easily handled with common version control systems. Would you like to make this change?",
+                    "MixedRealityToolkit would like to make meta files visible so they can be more easily handled with " +
+                        "common version control systems. Would you like to make this change?",
                     "Enable Visible Meta Files",
                     "Later"))
                 {
@@ -59,7 +61,9 @@ namespace HoloToolkit.Unity
             {
                 if (EditorUtility.DisplayDialog(
                     "Enable Depth Buffer Sharing?",
-                    "MixedRealityToolkit would like to enable the Depth Buffer Sharing in the Windows Mixed Reality SDK. Would you like to make this change?",
+                    "MixedRealityToolkit would like to enable the Depth Buffer Sharing in the Windows Mixed Reality SDK " +
+                        "providing your app's depth buffer to the system to enable per-pixel depth-based reprojection.  " +
+                        "Would you like to make this change?",
                     "Enable Depth Buffer Sharing",
                     "Later"))
                 {
