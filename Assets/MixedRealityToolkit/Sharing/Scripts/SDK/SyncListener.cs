@@ -8,6 +8,10 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
+#if WINDOWS_UWP
+using MixedRealityToolkit.Common.Extensions;
+#endif
+
 namespace MixedRealityToolkit.Sharing {
 
 public class SyncListener : Listener {
