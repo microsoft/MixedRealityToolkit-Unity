@@ -16,12 +16,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010656488092}
-  - 33: {fileID: 33000010690052214}
-  - 65: {fileID: 65000011648711326}
-  - 23: {fileID: 23000011516511122}
+  - component: {fileID: 4000010656488092}
+  - component: {fileID: 33000010690052214}
+  - component: {fileID: 65000011648711326}
+  - component: {fileID: 23000011516511122}
   m_Layer: 0
   m_Name: Line
   m_TagString: Untagged
@@ -51,12 +51,15 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c393ffe323091d04da2f72a3435b4657, type: 2}
-  m_SubsetIndices: 
+  - {fileID: 2100000, guid: a6d47f8eab86b0944a06a152a982514b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -64,11 +67,14 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33000010690052214
 MeshFilter:
