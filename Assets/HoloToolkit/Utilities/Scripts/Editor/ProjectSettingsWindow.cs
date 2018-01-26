@@ -278,24 +278,7 @@ namespace HoloToolkit.Unity
             }
             else
             {
-                // HACK: Edits ProjectSettings.asset Directly
-                // TODO: replace with friendlier version that uses built in APIs when Unity fixes or makes available.
-                try
-                {
-                    // Enable the depth buffer sharing.
-                    string settingsPath = "ProjectSettings/ProjectSettings.asset";
-                    string matchPattern = @"(depthBufferSharingEnabled:) (\d+)";
-                    string replacement = @"$1 1";
-
-                    string settings = File.ReadAllText(settingsPath);
-                    settings = Regex.Replace(settings, matchPattern, replacement, RegexOptions.Singleline);
-
-                    File.WriteAllText(settingsPath, settings);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
+                EnforceEditorSettings.SetDepthBufferSharing();
 
                 if (!Values[ProjectSetting.TargetOccludedDevices])
                 {
