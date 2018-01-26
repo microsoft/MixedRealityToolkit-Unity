@@ -33,7 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             SetChildrenActive(false);
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
             {
@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void AddControllerTransform(MotionControllerInfo newController)
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (!IsAttached && newController.Handedness == Handedness)
             {
                 base.AddControllerTransform(newController);
@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void RemoveControllerTransform(MotionControllerInfo oldController)
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (IsAttached && oldController.Handedness == Handedness)
             {
                 base.RemoveControllerTransform(oldController);

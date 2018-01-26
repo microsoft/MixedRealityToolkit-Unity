@@ -4,11 +4,7 @@
 using UnityEngine;
 
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
-#endif
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -27,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         public InteractionSourceHandedness Handedness
         {
             get { return handedness; }
@@ -45,7 +41,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void OnEnable()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
             {
@@ -76,7 +72,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (newController.Handedness == handedness)
             {
                 if (!newController.TryGetElement(element, out elementTransform))
@@ -94,7 +90,7 @@ namespace HoloToolkit.Unity.InputModule
 
         protected virtual void RemoveControllerTransform(MotionControllerInfo oldController)
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (oldController.Handedness == handedness)
             {
                 ControllerInfo = null;
