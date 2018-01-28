@@ -226,6 +226,9 @@ namespace HoloToolkit.Unity.InputModule
                 }
                 switch (oldState)
                 {
+                    case State.Start:
+                        OnManipulationStarted();
+                        break;
                     case State.Scaling:
                     case State.Rotating:
                     case State.RotatingScaling:
@@ -317,7 +320,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
-            OnManipulationStarted();
         }
 
         private void OnOneHandMoveStarted()
@@ -325,8 +327,6 @@ namespace HoloToolkit.Unity.InputModule
             Assert.IsTrue(m_handsPressedLocationsMap.Count == 1);
 
             m_moveLogic.Setup(m_handsPressedLocationsMap.Values.First(), HostTransform);
-
-            OnManipulationStarted();
         }
         private void OnManipulationStarted()
         {
