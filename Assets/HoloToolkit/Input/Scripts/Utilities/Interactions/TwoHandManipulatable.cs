@@ -363,10 +363,7 @@ namespace HoloToolkit.Unity.InputModule
             None,
             XAxisOnly,
             YAxisOnly,
-            ZAxisOnly,
-            // Make the object rotate about X if the hands are vertical initially
-            XOrYBasedOnInitialHandPosition,
-            PointToAxis
+            ZAxisOnly
         };
 
         private readonly RotationConstraint m_rotationConstraint;
@@ -390,29 +387,7 @@ namespace HoloToolkit.Unity.InputModule
         public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
 
-            if (m_rotationConstraint == RotationConstraint.XOrYBasedOnInitialHandPosition)
-            {
-                throw new NotImplementedException();
-                //var hand0 = HandManager.Instance.GetHandState(0);
-                //var hand1 = HandManager.Instance.GetHandState(1);
-                //var handDistance = Vector3.Distance(hand0.location, hand1.location);
-                //var hand0ToHand1 = Camera.main.WorldToScreenPoint(hand1.location) - Camera.main.WorldToScreenPoint(hand0.location);
-                //hand0ToHand1.Normalize();
-
-                //// Since the vector is normalized, the X component of hand1ToHand2 is just cos(theta)
-                //if (Math.Abs(hand0ToHand1.x) >= Mathf.Cos(Mathf.PI / 4) || handDistance < MinHandDistanceForPitchM)
-                //{
-                //    m_currentRotationConstraint = RotationConstraint.YAxisOnly;
-                //}
-                //else
-                //{
-                //    m_currentRotationConstraint = RotationConstraint.XAxisOnly;
-                //}
-            }
-            else
-            {
-                m_currentRotationConstraint = m_rotationConstraint;
-            }
+            m_currentRotationConstraint = m_rotationConstraint;
             m_previousHandlebarRotation = GetHandlebarDirection(handsPressedMap, manipulationRoot);
         }
 

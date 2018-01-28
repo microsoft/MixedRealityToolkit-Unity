@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 150548430}
-  TwoHandManipulationMode: 2
+  ManipulationMode: 4
   ConstraintOnRotation: 5
   OneHandMovement: 1
 --- !u!114 &150548432
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 293671890}
-  TwoHandManipulationMode: 4
+  ManipulationMode: 4
   ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!114 &293671892
@@ -446,7 +446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 330544710}
-  TwoHandManipulationMode: 1
+  ManipulationMode: 1
   ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!114 &330544705
@@ -931,8 +931,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 809834512}
-  TwoHandManipulationMode: 3
-  ConstraintOnRotation: 4
+  ManipulationMode: 3
+  ConstraintOnRotation: 3
   OneHandMovement: 1
 --- !u!114 &809834514
 MonoBehaviour:
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 826462193}
-  TwoHandManipulationMode: 1
+  ManipulationMode: 1
   ConstraintOnRotation: 2
   OneHandMovement: 1
 --- !u!114 &826462195
@@ -1249,7 +1249,7 @@ Prefab:
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
       propertyPath: m_Text
-      value: 'Move + Scale
+      value: 'Move + Rotate + Scale
 
         Point to Axis'
       objectReference: {fileID: 0}
@@ -1368,7 +1368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1270581480}
-  TwoHandManipulationMode: 3
+  ManipulationMode: 3
   ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!114 &1270581475
@@ -1538,7 +1538,7 @@ Prefab:
       propertyPath: m_Text
       value: 'Rotate + Scale
 
-        X or Y on initial hand position'
+        Z-Axis Only'
       objectReference: {fileID: 0}
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
@@ -1591,7 +1591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1512395851}
-  TwoHandManipulationMode: 0
+  ManipulationMode: 0
   ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!114 &1512395846
@@ -1731,7 +1731,7 @@ Prefab:
       propertyPath: m_Text
       value: 'Scale only
 
-        Z-Axis Only'
+        N/A'
       objectReference: {fileID: 0}
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
@@ -1798,8 +1798,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1596208171}
-  TwoHandManipulationMode: 0
-  ConstraintOnRotation: 3
+  ManipulationMode: 0
+  ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!114 &1596208173
 MonoBehaviour:
@@ -2219,7 +2219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1887701331}
-  TwoHandManipulationMode: 4
+  ManipulationMode: 4
   ConstraintOnRotation: 1
   OneHandMovement: 1
 --- !u!114 &1887701333
@@ -2334,7 +2334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1909326605}
-  TwoHandManipulationMode: 2
+  ManipulationMode: 2
   ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!114 &1909326600
