@@ -13,6 +13,9 @@ namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// TO DO
+    /// Notes:
+    /// - If host transform is not provided, will default to the GameObject the script is on.
+    /// - Grabbing any collidable on or below this gameobject will activate this script.
     /// </summary>
     public class TwoHandManipulatable : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
@@ -34,7 +37,7 @@ namespace HoloToolkit.Unity.InputModule
         };
 
         [Tooltip("What manipulation will two hands perform?")]
-        public TwoHandedManipulation TwoHandManipulationMode;
+        public TwoHandedManipulation ManipulationMode;
 
         [Tooltip("Constrain rotation along an axis")]
         public HandlebarRotateLogic.RotationConstraint ConstraintOnRotation = HandlebarRotateLogic.RotationConstraint.None;
@@ -161,7 +164,7 @@ namespace HoloToolkit.Unity.InputModule
                     }
                     else if (handsPressedCount > 1)
                     {
-                        switch (TwoHandManipulationMode)
+                        switch (ManipulationMode)
                         {
                             case TwoHandedManipulation.Scale:
                                 newState = State.Scaling;
