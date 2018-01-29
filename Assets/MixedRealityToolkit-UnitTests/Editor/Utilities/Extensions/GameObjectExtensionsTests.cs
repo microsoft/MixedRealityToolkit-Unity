@@ -221,7 +221,7 @@ namespace MixedRealityToolkit.Tests.Utilities.Extensions
             }
 
 #pragma warning disable 618
-            Assert.That(parent.GetFullPath(), Is.EqualTo(result));
+            Assert.That(parent.transform.GetFullPath(), Is.EqualTo(result));
 #pragma warning restore 618
         }
     }

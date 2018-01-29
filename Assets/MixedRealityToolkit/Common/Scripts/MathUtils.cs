@@ -14,27 +14,6 @@ namespace MixedRealityToolkit.Common
     public static class MathUtils
     {
         /// <summary>
-        /// Get the horizontal FOV from the stereo camera
-        /// </summary>
-        /// <returns></returns>
-        [System.Obsolete("Use CameraExtensions.GetHorizontalFieldOfViewRadians(Camera camera) instead.")]
-        public static float GetHorizontalFieldOfViewRadians()
-        {
-            return CameraCache.Main.GetHorizontalFieldOfViewRadians();
-        }
-
-        /// <summary>
-        /// Returns if a point will be rendered on the screen in either eye
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        [System.Obsolete("Use CameraExtensions.IsInFOV(Camera camera, Vector3 position) instead.")]
-        public static bool IsInFOV(Vector3 position)
-        {
-            return CameraCache.Main.IsInFOV(position);
-        }
-
-        /// <summary>
         /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct point in the coordinate space specified by the "to" transform
         /// applies rotation, scale and translation
         /// </summary>

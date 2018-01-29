@@ -95,27 +95,6 @@ namespace MixedRealityToolkit.Build
             set { EditorPrefsUtility.SetEditorPref(EditorPrefs_ConnectInfos, value); }
         }
 
-        [Obsolete("Use DevicePortalConnections")]
-        public static string DeviceUser
-        {
-            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_DeviceUser, string.Empty); }
-            set { EditorPrefsUtility.SetEditorPref(EditorPrefs_DeviceUser, value); }
-        }
-
-        [Obsolete("Use DevicePortalConnections")]
-        public static string DevicePassword
-        {
-            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_DevicePwd, string.Empty); }
-            set { EditorPrefsUtility.SetEditorPref(EditorPrefs_DevicePwd, value); }
-        }
-
-        [Obsolete("Use DevicePortalConnections")]
-        public static string TargetIPs
-        {
-            get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_TargetIPs, "127.0.0.1"); }
-            set { EditorPrefsUtility.SetEditorPref(EditorPrefs_TargetIPs, value); }
-        }
-
         public static bool UseSSL
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPrefs_UseSSL, true); }

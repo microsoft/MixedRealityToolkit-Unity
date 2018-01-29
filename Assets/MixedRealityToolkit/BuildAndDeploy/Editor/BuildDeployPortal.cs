@@ -325,12 +325,6 @@ namespace MixedRealityToolkit.Build
             return machineName;
         }
 
-        [Obsolete("Use IsAppInstalled(string packageFamilyName, ConnectInfo targetDevice)")]
-        public static bool IsAppInstalled(string packageFamilyName, string targetIp)
-        {
-            return QueryAppDetails(packageFamilyName, new ConnectInfo(targetIp, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)) != null;
-        }
-
         /// <summary>
         /// Determines if the target application is currently running on the target device.
         /// </summary>
@@ -340,12 +334,6 @@ namespace MixedRealityToolkit.Build
         public static bool IsAppInstalled(string packageFamilyName, ConnectInfo targetDevice)
         {
             return QueryAppDetails(packageFamilyName, targetDevice) != null;
-        }
-
-        [Obsolete("IsAppRunning(string appName, ConnectInfo targetDevice)")]
-        public static bool IsAppRunning(string appName, string targetDevice)
-        {
-            return IsAppRunning(appName, new ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
         }
 
         /// <summary>
@@ -532,12 +520,6 @@ namespace MixedRealityToolkit.Build
             return AppInstallStatus.InstallFail;
         }
 
-        [Obsolete("Use UninstallApp(string packageFamilyName, ConnectInfo targetDevice)")]
-        public static bool UninstallApp(string packageFamilyName, string targetIp)
-        {
-            return UninstallApp(packageFamilyName, new ConnectInfo(targetIp, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
-        }
-
         /// <summary>
         /// Uninstalls the target application on the target device.
         /// </summary>
@@ -600,12 +582,6 @@ namespace MixedRealityToolkit.Build
             return IsAppRunning(PlayerSettings.productName, targetDevice);
         }
 
-        [Obsolete("KillApp(string packageFamilyName, ConnectInfo targetDevice)")]
-        public static bool KillApp(string packageFamilyName, string targetIp)
-        {
-            return KillApp(packageFamilyName, new ConnectInfo(targetIp, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
-        }
-
         /// <summary>
         /// Kills the target application on the target device.
         /// </summary>
@@ -635,12 +611,6 @@ namespace MixedRealityToolkit.Build
             }
 
             return success;
-        }
-
-        [Obsolete("DeviceLogFile_View(string packageFamilyName, ConnectInfo targetDevice)")]
-        public static bool DeviceLogFile_View(string packageFamilyName, string targetIp)
-        {
-            return DeviceLogFile_View(packageFamilyName, new ConnectInfo(targetIp, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
         }
 
         /// <summary>

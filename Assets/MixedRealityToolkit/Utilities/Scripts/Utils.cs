@@ -12,12 +12,6 @@ namespace MixedRealityToolkit.Utilities
     /// </summary>
     public static class Utils
     {
-        [System.Obsolete("Use GameObjectExtensions.SetLayerRecursively(gameObject, layer) instead;")]
-        public static void SetLayerRecursively(GameObject gameObject, int layer)
-        {
-            gameObject.SetLayerRecursively(layer);
-        }
-
         /// <summary>
         /// This takes a value, whose proportions are defined by minA and maxA,
         /// and scales it to a space defined by minB and maxB. For example, 5 in

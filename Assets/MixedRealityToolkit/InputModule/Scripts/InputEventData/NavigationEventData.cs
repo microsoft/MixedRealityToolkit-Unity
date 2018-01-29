@@ -14,13 +14,6 @@ namespace MixedRealityToolkit.InputModule.EventData
     public class NavigationEventData : InputEventData
     {
         /// <summary>
-        /// The amount of manipulation that has occurred. Usually in the form of
-        /// delta position of a hand. 
-        /// </summary>
-        [Obsolete("Use NormalizedOffset")]
-        public Vector3 CumulativeDelta { get { return NormalizedOffset; } }
-
-        /// <summary>
         /// The amount of manipulation that has occurred. Sent in the form of
         /// a normalized offset of a hand. 
         /// </summary>

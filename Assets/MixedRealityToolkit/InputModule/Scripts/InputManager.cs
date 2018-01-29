@@ -80,12 +80,6 @@ namespace MixedRealityToolkit.InputModule
         }
 
         /// <summary>
-        /// Should the Unity UI events be fired?
-        /// </summary>
-        [Obsolete("Will be removed in a future release.  If you need to know if a specific pointer should send Unity UI Events use FocusManager.Instance.GetSpecificPointerEventData()!=null")]
-        public bool ShouldSendUnityUiEvents { get { return FocusManager.Instance.GetGazePointerEventData() != null && EventSystem.current != null; } }
-
-        /// <summary>
         /// Push a game object into the modal input stack. Any input handlers
         /// on the game object are given priority to input events before any focused objects.
         /// </summary>
@@ -813,16 +807,6 @@ namespace MixedRealityToolkit.InputModule
         }
 
         #endregion // Controller Events
-
-        [Obsolete("Use RaiseSourceDetected")]
-        public void RaiseGamePadDetected(IInputSource source, uint sourceId, string gamePadName)
-        {
-        }
-
-        [Obsolete("Use RaiseSourceLost")]
-        public void RaiseGamePadLost(IInputSource source, uint sourceId, string gamePadName)
-        {
-        }
 
         #region Xbox Controller Events
 
