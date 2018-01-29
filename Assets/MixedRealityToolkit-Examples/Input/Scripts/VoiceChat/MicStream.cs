@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.Examples.InputModule.VoiceChat
         // This class replaces Unity's Microphone object.
         // This class is made for HoloLens mic stream selection but should work well on all Windows 10 devices.
         // Choose from one of three possible microphone modes on HoloLens.
-        // There is an example of how to use this script in HoloToolkit-Tests\Input\Scripts\MicStreamDemo.cs.
+        // There is an example of how to use this script in MixedRealityToolkit-Examples\Input\Scripts\MicStreamDemo.cs.
 
         // Streams: LOW_QUALITY_VOICE is optimized for speech analysis.
         //          COMMUNICATIONS is higher quality voice and is probably preferred.

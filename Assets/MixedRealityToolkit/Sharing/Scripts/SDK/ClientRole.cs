@@ -8,7 +8,7 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
-namespace HoloToolkit.Sharing {
+namespace MixedRealityToolkit.Sharing {
 
 public enum ClientRole {
   Primary = 0,

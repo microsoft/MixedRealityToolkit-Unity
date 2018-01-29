@@ -8,7 +8,7 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
-namespace HoloToolkit.Sharing {
+namespace MixedRealityToolkit.Sharing {
 
 public class StringElement : Element {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;

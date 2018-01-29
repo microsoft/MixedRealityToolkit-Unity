@@ -8,9 +8,11 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
+#if WINDOWS_UWP
 using MixedRealityToolkit.Common.Extensions;
+#endif
 
-namespace HoloToolkit.Sharing {
+namespace MixedRealityToolkit.Sharing {
 
 public class RoomManagerListener : Listener {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;

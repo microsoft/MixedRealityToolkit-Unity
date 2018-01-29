@@ -4,7 +4,6 @@
 namespace MixedRealityToolkit.Common.Extensions
 {
 #if UNITY_WSA && !UNITY_EDITOR
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -174,7 +173,6 @@ namespace MixedRealityToolkit.Common.Extensions
         }
     }
 #else
-
     using System;
 
     public static class ReflectionExtensions
@@ -199,6 +197,5 @@ namespace MixedRealityToolkit.Common.Extensions
             return type.IsValueType;
         }
     }
-
 #endif
 }

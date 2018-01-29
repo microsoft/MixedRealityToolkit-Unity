@@ -3,7 +3,7 @@
 
 using System;
 
-namespace HoloToolkit.Sharing
+namespace MixedRealityToolkit.Sharing
 {
     public class DiscoveryClientAdapter : DiscoveryClientListener
     {

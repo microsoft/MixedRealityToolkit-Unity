@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Sharing;
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Sharing;
 using System;
@@ -18,7 +17,7 @@ namespace MixedRealityToolkit.Examples.Sharing
         /// <summary>
         /// Message enum containing our information bytes to share.
         /// The first message type has to start with UserMessageIDStart
-        /// so as not to conflict with HoloToolkit internal messages.
+        /// so as not to conflict with MixedRealityToolkit internal messages.
         /// </summary>
         public enum TestMessageID : byte
         {

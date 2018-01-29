@@ -8,9 +8,11 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
+#if WINDOWS_UWP
 using MixedRealityToolkit.Common.Extensions;
+#endif
 
-namespace HoloToolkit.Sharing {
+namespace MixedRealityToolkit.Sharing {
 
 public class LogWriter : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;

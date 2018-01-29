@@ -205,7 +205,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
         // Functions
         private void Start()
         {
-            // Default the scene & the HoloToolkit objects to the camera
+            // Default the scene & the MixedRealityToolkit objects to the camera
             Vector3 sceneOrigin = CameraCache.Main.transform.position;
             Parent_Scene.transform.position = sceneOrigin;
             MappingObserver.SetObserverOrigin(sceneOrigin);
