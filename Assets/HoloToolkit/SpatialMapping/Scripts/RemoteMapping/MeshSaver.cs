@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private static string fileExtension = ".obj";
 
-        private static int faceCount;
+        private static int faceOffset;
 
         /// <summary>
         /// Read-only property which returns the folder path where mesh files are stored.
@@ -62,7 +62,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             // Create the mesh file.
             String folderName = MeshFolderName;
             Debug.Log(String.Format("Saving mesh file: {0}", Path.Combine(folderName, fileName + fileExtension)));
-            faceCount = 0;
+            faceOffset = 0;
             using (StreamWriter outputFile = new StreamWriter(OpenFileForWrite(folderName, fileName + fileExtension)))
             {
 
@@ -71,7 +71,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 {
                     o++;
                     outputFile.WriteLine("o Object." + o);
-                    outputFile.Write(MeshToString(theMesh, faceCount));
+                    outputFile.Write(MeshToString(theMesh, faceOffset));
                     outputFile.WriteLine("");
                 }
             }
@@ -111,11 +111,11 @@ namespace HoloToolkit.Unity.SpatialMapping
                 int[] triangles = m.GetTriangles(material);
                 for (int i = 0; i < triangles.Length; i += 3)
                 {
-                    faceCount += 3;
                     sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
                         triangles[i] + 1 + lastFaceIndex, triangles[i + 1] + 1 + lastFaceIndex, triangles[i + 2] + 1 + lastFaceIndex));
                 }
             }
+            faceOffset += m.vertices.Length;
             return sb.ToString();
         }
 

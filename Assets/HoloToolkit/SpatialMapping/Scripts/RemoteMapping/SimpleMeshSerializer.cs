@@ -52,12 +52,10 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Serializes a list of MeshFilter objects into a byte array.
         /// Transforms vertices into world space before writing to the file.
-		/// Optionally transforms the vertices into the space of the supplied secondarySpace
         /// </summary>
         /// <param name="meshes">List of MeshFilter objects to be serialized.</param>
-        /// <param name="secondarySpace">New space to transform the vertices into.</param>
         /// <returns>Binary representation of the Mesh objects.</returns>
-        public static byte[] Serialize(IEnumerable<MeshFilter> meshes, Transform secondarySpace = null)
+        public static byte[] Serialize(IEnumerable<MeshFilter> meshes)
         {
             byte[] data = null;
 
@@ -67,7 +65,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 {
                     foreach (MeshFilter meshFilter in meshes)
                     {
-                        WriteMesh(writer, meshFilter.sharedMesh, meshFilter.transform, secondarySpace);
+                        WriteMesh(writer, meshFilter.sharedMesh, meshFilter.transform);
                     }
 
                     stream.Position = 0;
@@ -108,14 +106,13 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="writer">BinaryWriter representing the data stream.</param>
         /// <param name="mesh">The Mesh object to be written.</param>
         /// <param name="transform">If provided, will transform all vertices into world space before writing.</param>
-        /// <param name="secondarySpace">Secondary space to transform the vertices into.</param>
-        private static void WriteMesh(BinaryWriter writer, Mesh mesh, Transform transform = null, Transform secondarySpace = null)
+        private static void WriteMesh(BinaryWriter writer, Mesh mesh, Transform transform = null)
         {
             SysDiag.Debug.Assert(writer != null);
 
             // Write the mesh data.
-            WriteMeshHeader(writer, mesh.vertexCount, mesh.triangles.Length);
-            WriteVertices(writer, mesh.vertices, transform, secondarySpace);
+            WriteMeshHeader(writer, mesh.name, mesh.vertexCount, mesh.triangles.Length);
+            WriteVertices(writer, mesh.vertices, transform);
             WriteTriangleIndicies(writer, mesh.triangles);
         }
 
@@ -130,14 +127,15 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             int vertexCount = 0;
             int triangleIndexCount = 0;
-
+            string name;
             // Read the mesh data.
-            ReadMeshHeader(reader, out vertexCount, out triangleIndexCount);
+            ReadMeshHeader(reader, out name, out vertexCount, out triangleIndexCount);
             Vector3[] vertices = ReadVertices(reader, vertexCount);
             int[] triangleIndices = ReadTriangleIndicies(reader, triangleIndexCount);
 
             // Create the mesh.
             Mesh mesh = new Mesh();
+            mesh.name = name;
             mesh.vertices = vertices;
             mesh.triangles = triangleIndices;
             // Reconstruct the normals from the vertices and triangles.
@@ -152,25 +150,25 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="writer">BinaryWriter representing the data stream.</param>
         /// <param name="vertexCount">Count of vertices in the mesh.</param>
         /// <param name="triangleIndexCount">Count of triangle indices in the mesh.</param>
-        private static void WriteMeshHeader(BinaryWriter writer, int vertexCount, int triangleIndexCount)
+        private static void WriteMeshHeader(BinaryWriter writer, string name, int vertexCount, int triangleIndexCount)
         {
             SysDiag.Debug.Assert(writer != null);
 
+            writer.Write(name);
             writer.Write(vertexCount);
             writer.Write(triangleIndexCount);
-
         }
-
         /// <summary>
         /// Reads a mesh header from the data stream.
         /// </summary>
         /// <param name="reader">BinaryReader representing the data stream.</param>
         /// <param name="vertexCount">Count of vertices in the mesh.</param>
         /// <param name="triangleIndexCount">Count of triangle indices in the mesh.</param>
-        private static void ReadMeshHeader(BinaryReader reader, out int vertexCount, out int triangleIndexCount)
+        private static void ReadMeshHeader(BinaryReader reader, out string name, out int vertexCount, out int triangleIndexCount)
         {
             SysDiag.Debug.Assert(reader != null);
 
+            name = reader.ReadString();
             vertexCount = reader.ReadInt32();
             triangleIndexCount = reader.ReadInt32();
         }
@@ -181,8 +179,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <param name="reader">BinaryReader representing the data stream.</param>
         /// <param name="vertices">Array of Vector3 structures representing each vertex.</param>
         /// <param name="transform">If provided, will convert all vertices into world space before writing.</param>
-        /// <param name="secondarySpace">If provided, will convert the vertices local to this space.</param>
-        private static void WriteVertices(BinaryWriter writer, Vector3[] vertices, Transform transform = null, Transform secondarySpace = null)
+        private static void WriteVertices(BinaryWriter writer, Vector3[] vertices, Transform transform = null)
         {
             SysDiag.Debug.Assert(writer != null);
 
@@ -191,10 +188,6 @@ namespace HoloToolkit.Unity.SpatialMapping
                 for (int v = 0, vLength = vertices.Length; v < vLength; ++v)
                 {
                     Vector3 vertex = transform.TransformPoint(vertices[v]);
-                    if (secondarySpace != null)
-                    {
-                        vertex = secondarySpace.InverseTransformPoint(vertex);
-                    }
                     writer.Write(vertex.x);
                     writer.Write(vertex.y);
                     writer.Write(vertex.z);
