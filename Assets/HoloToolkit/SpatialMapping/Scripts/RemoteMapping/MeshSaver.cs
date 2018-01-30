@@ -22,7 +22,9 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// The extension given to mesh files.
         /// </summary>
-        private static string fileExtension = ".room";
+        private static string fileExtension = ".obj";
+
+        private static int faceCount;
 
         /// <summary>
         /// Read-only property which returns the folder path where mesh files are stored.
@@ -37,6 +39,84 @@ namespace HoloToolkit.Unity.SpatialMapping
                 return Application.persistentDataPath;
 #endif
             }
+        }
+        /// <summary>
+        /// Transforms all the mesh vertices into world position before saving to file.
+        /// </summary>
+        /// <param name="fileName">Name to give the saved mesh file. Exclude path and extension.</param>
+        /// <param name="meshes">The collection of Mesh objects to save.</param>
+        /// <returns>Fully qualified name of the saved mesh file.</returns>
+        /// <remarks>Determines the save path to use and automatically applies the file extension.</remarks>
+        public static string SaveAsObj(string fileName, IEnumerable<Mesh> meshes)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("Must specify a valid fileName.");
+            }
+
+            if (meshes == null)
+            {
+                throw new ArgumentNullException("Value of meshes cannot be null.");
+            }
+
+            // Create the mesh file.
+            String folderName = MeshFolderName;
+            Debug.Log(String.Format("Saving mesh file: {0}", Path.Combine(folderName, fileName + fileExtension)));
+            faceCount = 0;
+            using (StreamWriter outputFile = new StreamWriter(OpenFileForWrite(folderName, fileName + fileExtension)))
+            {
+
+                int o = 0;
+                foreach (Mesh theMesh in meshes)
+                {
+                    o++;
+                    outputFile.WriteLine("o Object." + o);
+                    outputFile.Write(MeshToString(theMesh, faceCount));
+                    outputFile.WriteLine("");
+                }
+            }
+
+            Debug.Log("Mesh file saved.");
+
+            return Path.Combine(folderName, fileName + fileExtension);
+        }
+
+        /// <summary>
+        /// Transforms the mesh into a string of vertices, vertex normals and faces 
+        /// </summary>
+        /// <param name="m">Mesh to Transform</param>
+        /// <param name="lastFaceIndex">Last FaceIndex of the previous object</param>
+        /// <returns></returns>
+        private static string MeshToString(Mesh m, int lastFaceIndex = 0)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Vector3 v in m.vertices)
+            {
+                sb.Append(string.Format("v {0} {1} {2}\n", v.x, v.y, v.z));
+            }
+            sb.Append("\n");
+            foreach (Vector3 v in m.normals)
+            {
+                sb.Append(string.Format("vn {0} {1} {2}\n", v.x, v.y, v.z));
+            }
+            sb.Append("\n");
+            foreach (Vector3 v in m.uv)
+            {
+                sb.Append(string.Format("vt {0} {1}\n", v.x, v.y));
+            }
+            for (int material = 0; material < m.subMeshCount; material++)
+            {
+
+                int[] triangles = m.GetTriangles(material);
+                for (int i = 0; i < triangles.Length; i += 3)
+                {
+                    faceCount += 3;
+                    sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
+                        triangles[i] + 1 + lastFaceIndex, triangles[i + 1] + 1 + lastFaceIndex, triangles[i + 2] + 1 + lastFaceIndex));
+                }
+            }
+            return sb.ToString();
         }
 
         /// <summary>
