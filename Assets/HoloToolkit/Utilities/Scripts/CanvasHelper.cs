@@ -28,6 +28,7 @@ namespace HoloToolkit.Unity
         private void Start()
         {
             FocusManager.AssertIsInitialized();
+            Debug.Assert(Canvas != null);
 
             if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {
