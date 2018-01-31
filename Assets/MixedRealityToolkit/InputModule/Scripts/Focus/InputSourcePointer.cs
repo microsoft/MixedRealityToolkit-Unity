@@ -23,9 +23,6 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         public bool OwnAllInput { get; set; }
 
-        [Obsolete("Will be removed in a later version. Use Rays instead.")]
-        public Ray Ray { get { return Rays[0]; } }
-
         public RayStep[] Rays
         {
             get
@@ -51,11 +48,6 @@ namespace MixedRealityToolkit.InputModule.Focus
         public bool FocusLocked { get; set; }
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
-
-        [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
-        public void UpdatePointer()
-        {
-        }
 
         public virtual void OnPreRaycast()
         {

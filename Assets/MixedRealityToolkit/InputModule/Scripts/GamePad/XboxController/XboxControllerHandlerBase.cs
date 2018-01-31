@@ -143,23 +143,5 @@ namespace MixedRealityToolkit.InputModule.GamePad
                 InputManager.Instance.RaiseNavigationUpdated(eventData.InputSource, eventData.SourceId, NormalizedOffset);
             }
         }
-
-        [Obsolete("Use XboxControllerMapping.GetButton_Up")]
-        protected static bool OnButton_Up(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
-        {
-            return XboxControllerMapping.GetButton_Up(buttonType, eventData);
-        }
-
-        [Obsolete("Use XboxControllerMapping.GetButton_Pressed")]
-        protected static bool OnButton_Pressed(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
-        {
-            return XboxControllerMapping.GetButton_Pressed(buttonType, eventData);
-        }
-
-        [Obsolete("Use XboxControllerMapping.GetButton_Down")]
-        protected static bool OnButton_Down(XboxControllerMappingTypes buttonType, XboxControllerEventData eventData)
-        {
-            return XboxControllerMapping.GetButton_Down(buttonType, eventData);
-        }
     }
 }

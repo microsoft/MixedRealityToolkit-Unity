@@ -12,12 +12,6 @@ namespace MixedRealityToolkit.Common.Extensions
     /// </summary>
     public static class GameObjectExtensions
     {
-        [Obsolete("Use the more extensive TransformExtensions.GetFullPath instead.")]
-        public static string GetFullPath(this GameObject go)
-        {
-            return go.transform.GetFullPath("/", "");
-        }
-
         /// <summary>
         /// Set the layer to the given object and the full hierarchy below it.
         /// </summary>

@@ -131,12 +131,6 @@ namespace MixedRealityToolkit.InputModule.Focus
                 PointingSource = pointingSource;
             }
 
-            [Obsolete("Use UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex) or UpdateHit (float extent)")]
-            public void UpdateHit(RaycastHit hit)
-            {
-                throw new NotImplementedException();
-            }
-
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
@@ -208,9 +202,6 @@ namespace MixedRealityToolkit.InputModule.Focus
         /// to do a gaze raycast even if gaze isn't used for focus.
         /// </summary>
         private PointerData gazeManagerPointingData;
-
-        [Obsolete("Use GetGazePointerEventData or GetSpecificPointerEventData")]
-        public PointerInputEventData UnityUIPointerEvent { get; private set; }
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -429,12 +420,6 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         public delegate void PointerSpecificFocusChangedMethod(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
         public event PointerSpecificFocusChangedMethod PointerSpecificFocusChanged;
-
-        [Obsolete("Use either GetGazePointerEventData or GetSpecificPointerEventData")]
-        public PointerInputEventData GetPointerEventData()
-        {
-            return GetGazePointerEventData();
-        }
 
         public PointerInputEventData GetGazePointerEventData()
         {
