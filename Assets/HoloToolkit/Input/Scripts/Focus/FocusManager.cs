@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.CofirmInitialized())
+            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.ConfirmInitialized())
             {
                 RegisterPointer(GazeManager.Instance);
             }

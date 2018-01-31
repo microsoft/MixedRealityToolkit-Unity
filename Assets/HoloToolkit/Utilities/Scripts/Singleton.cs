@@ -72,7 +72,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public static bool CofirmInitialized()
+        public static bool ConfirmInitialized()
         {
             T access = Instance;
             return IsInitialized;
