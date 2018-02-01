@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +8,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity.Buttons
 {
     /// <summary>
-    /// Concrete version of Button class used with other CompoundButton scripts (eg, CompoundButtonMesh)
+    /// Concrete version of Button class used with other CompoundButton scripts (e.g., CompoundButtonMesh)
     /// Also contains fields for commonly referenced components
     /// </summary>
     public class CompoundButton : Button
@@ -55,7 +54,7 @@ namespace HoloToolkit.Unity.Buttons
                             }
                         } else if (parentRigidBody == null) {
                             foundError = true;
-                            DrawError("Button requires a rigidbody if colliders are only present on child transforms.");
+                            DrawError("Button requires a Rigidbody if colliders are only present on child transforms.");
                             if (GUILayout.Button("Fix now")) {
                                 Rigidbody rb = cb.gameObject.AddComponent<Rigidbody>();
                                 rb.isKinematic = true;

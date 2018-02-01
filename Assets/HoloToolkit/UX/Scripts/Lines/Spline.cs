@@ -381,7 +381,7 @@ namespace HoloToolkit.Unity.UX
                     if (overlappingPointIndexes.Count > 0)
                     {
                         GUI.color = errorColor;
-                        if (GUILayout.Button("Fix overlappoing points"))
+                        if (GUILayout.Button("Fix overlapping points"))
                         {
                             // Move them slightly out of the way
                             foreach (int overlappoingPointIndex in overlappingPointIndexes)

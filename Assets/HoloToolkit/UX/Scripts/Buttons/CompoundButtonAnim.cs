@@ -1,7 +1,6 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
 using System;
 using HoloToolkit.Unity;
@@ -125,7 +124,7 @@ namespace HoloToolkit.Unity.Buttons
                 UnityEditor.EditorGUILayout.BeginVertical(UnityEditor.EditorStyles.helpBox);
                 UnityEditor.EditorGUILayout.LabelField("Animation states:", UnityEditor.EditorStyles.miniBoldLabel);
 
-                // Draw the editor for all the anim actions
+                // Draw the editor for all the animation actions
                 for (int i = 0; i < acb.AnimActions.Length; i++) {
                     acb.AnimActions[i] = DrawAnimActionEditor(acb.AnimActions[i], animParams);
                 }

@@ -10,9 +10,10 @@ using System.Runtime.InteropServices;
 #endif
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-using GLTF;
 using System.Collections;
+using System.IO;
 using UnityEngine.XR.WSA.Input;
+using UnityGLTF;
 
 #if !UNITY_EDITOR
 using Windows.Foundation;
@@ -32,9 +33,9 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
         public bool AnimateControllerModel = true;
 
-        [Tooltip("This setting will be used to determine if the model should always be the left alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        [Tooltip("This setting will be used to determine if the model should always be the left alternate. If false, the platform controller models will be preferred, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
         public bool AlwaysUseAlternateLeftModel = false;
-        [Tooltip("This setting will be used to determine if the model should always be the right alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        [Tooltip("This setting will be used to determine if the model should always be the right alternate. If false, the platform controller models will be preferred, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
         public bool AlwaysUseAlternateRightModel = false;
 
         [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. To override the platform left controller model set AlwaysUseAlternateModel to true; otherwise this will be the default if the model can't be found.")]
@@ -157,19 +158,31 @@ namespace HoloToolkit.Unity.InputModule
                     }
 
                     Vector3 newPosition;
-                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
+                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && ValidPosition(newPosition))
                     {
                         currentController.ControllerParent.transform.localPosition = newPosition;
                     }
 
                     Quaternion newRotation;
-                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
+                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && ValidRotation(newRotation))
                     {
                         currentController.ControllerParent.transform.localRotation = newRotation;
                     }
                 }
             }
 #endif
+        }
+
+        private bool ValidRotation(Quaternion newRotation)
+        {
+            return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w) &&
+                !float.IsInfinity(newRotation.x) && !float.IsInfinity(newRotation.y) && !float.IsInfinity(newRotation.z) && !float.IsInfinity(newRotation.w);
+        }
+
+        private bool ValidPosition(Vector3 newPosition)
+        {
+            return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z) &&
+                !float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
         }
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
@@ -351,12 +364,12 @@ namespace HoloToolkit.Unity.InputModule
 #endif
 
             controllerModelGameObject = new GameObject { name = "glTFController" };
-            GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
-            gltfScript.ColorMaterial = GLTFMaterial;
-            gltfScript.NoColorMaterial = GLTFMaterial;
-            gltfScript.GLTFData = fileBytes;
+            GLTFComponent gltfScript = controllerModelGameObject.AddComponent<GLTFComponent>();
+            gltfScript.GLTFConstant = gltfScript.GLTFStandard = gltfScript.GLTFStandardSpecular = GLTFMaterial.shader;
+            gltfScript.UseStream = true;
+            gltfScript.GLTFStream = new MemoryStream(fileBytes);
 
-            yield return gltfScript.LoadModel();
+            yield return gltfScript.WaitForModelLoad();
 
             FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }

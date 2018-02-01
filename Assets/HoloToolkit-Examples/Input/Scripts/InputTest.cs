@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     /// <summary>
-    /// Test behaviour that simply prints out a message very time a supported event is received from the input module.
+    /// Test MonoBehaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
     public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler

@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity.InputModule
 
             if (RayStabilizer != null)
             {
-                RayStabilizer.UpdateStability(rays[0].origin, rays[0].direction);
+                RayStabilizer.UpdateStability(rays[0].Origin, rays[0].Direction);
                 rays[0].CopyRay(RayStabilizer.StableRay, FocusManager.Instance.GetPointingExtent(this));
             }
         }

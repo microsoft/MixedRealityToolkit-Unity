@@ -1,7 +1,6 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using System;
 using System.Collections;
 using UnityEngine;
@@ -30,9 +29,9 @@ namespace HoloToolkit.Unity.Buttons
         public InteractionSourcePressInfo ButtonPressFilter = InteractionSourcePressInfo.Select;
 
         /// <summary>
-        /// If true the interactable will unselect when you look off of the object
+        /// If true the interactable will deselect when you look off of the object
         /// </summary>
-        [Tooltip("If RequireGaze then looking away will unselect object")]
+        [Tooltip("If RequireGaze then looking away will deselect object")]
         public bool RequireGaze = true;
 
         /// <summary>
@@ -258,7 +257,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        ///  On Source lost decrement hand count and set visiblity
+        ///  On Source lost decrement hand count and set visibility
         /// </summary>
         /// <param name="eventData"></param>
         public void OnSourceLost(SourceStateEventData eventData)
@@ -368,7 +367,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Event to fire off when hand visibity changes
+        /// Event to fire off when hand visibility changes
         /// </summary>
         /// <param name="visible"></param>
         public virtual void OnHandVisibleChange(bool visible)
@@ -425,7 +424,7 @@ namespace HoloToolkit.Unity.Buttons
         {
             ButtonState = newState;
 
-            // Send out the action/event for the statechange
+            // Send out the action/event for the state change
             if (StateChange != null)
             {
                 StateChange(newState);

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
 	/// <summary>
-	/// Tracks the gpu time spent rendering a camera.
+	/// Tracks the GPU time spent rendering a camera.
 	/// For stereo rendering sampling is made from the beginning of the left eye to the end of the right eye.
 	/// </summary>
 	public class GpuTimingCamera : MonoBehaviour

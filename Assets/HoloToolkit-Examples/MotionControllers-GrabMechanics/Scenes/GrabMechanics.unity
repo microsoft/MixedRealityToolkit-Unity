@@ -1879,6 +1879,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906323c940a3fad4f8f7e9e4fcd747f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containerObject: {fileID: 0}
+  alignmentType: 1
+  stationarySpaceTypePosition: {x: 0, y: 0, z: 1}
+  roomScaleSpaceTypePosition: {x: 0, y: 0.949095, z: 0}
 --- !u!4 &1926473061
 Transform:
   m_ObjectHideFlags: 0
