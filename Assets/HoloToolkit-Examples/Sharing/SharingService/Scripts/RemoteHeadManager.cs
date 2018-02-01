@@ -41,12 +41,6 @@ namespace HoloToolkit.Sharing.Tests
             }
         }
 
-        protected override void Awake()
-        {
-            // We don't want lazy evaluational for this class 
-            base.Awake();
-        }
-
         private void Connected(object sender = null, EventArgs e = null)
         {
             SharingStage.Instance.SharingManagerConnected -= Connected;
