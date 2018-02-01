@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// Very fast vertex lit shader that uses the Unity lighting model.
+// Very fast unlit shader.
+// No lighting, lightmap support, etc.
 // Compiles down to only performing the operations you're actually using.
 // Uses material property drawers rather than a custom editor for ease of maintenance.
 
-Shader "MixedRealityToolkit/Obsolete/Vertex Lit Configurable Transparent"
+Shader "MixedRealityToolkit/Obsolete/Unlit Configurable"
 {
     Properties
     {
@@ -17,12 +18,6 @@ Shader "MixedRealityToolkit/Obsolete/Vertex Lit Configurable Transparent"
         [Header(Base(RGB))]
         [Toggle] _UseMainTex("Enabled?", Float) = 1
         _MainTex("Base (RGB)", 2D) = "white" {}
-        [Space(20)]
-
-        // Uses UV scale, etc from main texture
-        [Header(Emission(RGB))]
-        [Toggle] _UseEmissionTex("Enabled?", Float) = 0
-        [NoScaleOffset] _EmissionTex("Emission (RGB)", 2D) = "white" {}
         [Space(20)]
 
         [Header(Blend State)]
@@ -39,7 +34,7 @@ Shader "MixedRealityToolkit/Obsolete/Vertex Lit Configurable Transparent"
 
     SubShader
     {
-        Tags { "RenderType" = "Transparent" "Queue" = "Transparent" "PerformanceChecks" = "False" }
+        Tags { "RenderType" = "Opaque" }
         LOD 100
         Blend[_SrcBlend][_DstBlend]
         ZTest[_ZTest]
@@ -50,13 +45,11 @@ Shader "MixedRealityToolkit/Obsolete/Vertex Lit Configurable Transparent"
         Pass
         {
             Name "FORWARD"
-            Tags{ "LightMode" = "ForwardBase" }
+            Tags { "LightMode" = "Always" }
 
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
-            #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
 
             // We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
@@ -65,11 +58,10 @@ Shader "MixedRealityToolkit/Obsolete/Vertex Lit Configurable Transparent"
 
             #pragma shader_feature _USECOLOR_ON
             #pragma shader_feature _USEMAINTEX_ON
-            #pragma shader_feature _USEEMISSIONTEX_ON
             #pragma multi_compile  __ _NEAR_PLANE_FADE_ON
 
-            #include "HoloToolkitCommon.cginc"
-            #include "VertexLitConfigurable.cginc"
+            #include "MixedRealityToolkitCommon.cginc"
+            #include "UnlitConfigurable.cginc"
 
             ENDCG
         }

@@ -4,7 +4,7 @@
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
-#include "HoloToolkitCommon.cginc"
+#include "MixedRealityToolkitCommon.cginc"
 #include "macro.cginc"
 
 #define USE_PER_PIXEL (_USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON || _FORCEPERPIXEL_ON)
@@ -91,7 +91,7 @@ struct v2f
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
-inline float4 HoloTKPreMultiplyAlpha(float4 color)
+inline float4 MixedRTKPreMultiplyAlpha(float4 color)
 {
 #if defined(_ALPHAPREMULTIPLY_ON)
     //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
@@ -100,7 +100,7 @@ inline float4 HoloTKPreMultiplyAlpha(float4 color)
     return color;
 }
 
-inline float3 HoloTKPreMultiplyAlphaWithReflectivity(float3 diffColor, float alpha, float oneMinusReflectivity, out float outModifiedAlpha)
+inline float3 MixedRTKPreMultiplyAlphaWithReflectivity(float3 diffColor, float alpha, float oneMinusReflectivity, out float outModifiedAlpha)
 {
 #if defined(_ALPHAPREMULTIPLY_ON)
     //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
@@ -114,12 +114,12 @@ inline float3 HoloTKPreMultiplyAlphaWithReflectivity(float3 diffColor, float alp
     return diffColor;
 }
 
-inline float3 HoloTKLightingLambertian(float3 normal, float3 lightDir, float3 lightCol)
+inline float3 MixedRTKLightingLambertian(float3 normal, float3 lightDir, float3 lightCol)
 {
     return lightCol * saturate(dot(normal, lightDir));
 }
 
-inline float3 HoloTKLightingBlinnPhong(float3 normal, float3 lightDir, float lightCol, float3 viewDir, float specularPower, float specularScale, float3 specularColor)
+inline float3 MixedRTKLightingBlinnPhong(float3 normal, float3 lightDir, float lightCol, float3 viewDir, float specularPower, float specularScale, float3 specularColor)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = saturate(dot(normal, h));
@@ -188,10 +188,10 @@ v2f vert(a2v v)
 
         #if !(USE_PER_PIXEL)
             #if defined(_USEDIFFUSE_ON)
-                o.vertexLighting += HoloTKLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+                o.vertexLighting += MixedRTKLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
             #if defined(_SPECULARHIGHLIGHTS_ON)
-                o.vertexLighting += HoloTKLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(worldPos), _Specular, _Gloss, _SpecColor);
+                o.vertexLighting += MixedRTKLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(worldPos), _Specular, _Gloss, _SpecColor);
             #endif
             #if defined(SHADE4_ON)
                 //handle point and spot lights
@@ -280,7 +280,7 @@ float4 frag(v2f IN) : SV_Target
             #endif					
         
             #if defined(_USEDIFFUSE_ON)
-                lightColorShadowAttenuated += HoloTKLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+                lightColorShadowAttenuated += MixedRTKLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
             #if defined(_SPECULARHIGHLIGHTS_ON)
                 float gloss = _Gloss;
@@ -291,7 +291,7 @@ float4 frag(v2f IN) : SV_Target
                 #if defined(_USESPECULAR_ON)
                     specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
                 #endif
-                lightColorShadowAttenuated += HoloTKLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(IN.worldPos), specular, gloss, _SpecColor);
+                lightColorShadowAttenuated += MixedRTKLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(IN.worldPos), specular, gloss, _SpecColor);
             #endif
             #if _SHADE4_ON
                 //handle point and directional lights
