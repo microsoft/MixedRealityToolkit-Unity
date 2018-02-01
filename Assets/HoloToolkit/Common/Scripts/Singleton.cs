@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Singleton behavior class, used for components that should only have one instance.
+    /// Singleton behaviour class, used for components that should only have one instance.
     /// <remarks>Singleton classes live on through scene transitions and will mark their 
     /// parent root GameObject with <see cref="Object.DontDestroyOnLoad"/></remarks>
     /// </summary>
