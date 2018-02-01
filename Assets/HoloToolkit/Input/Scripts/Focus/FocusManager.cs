@@ -16,6 +16,7 @@ namespace HoloToolkit.Unity.InputModule
     public class FocusManager : Singleton<FocusManager>
     {
         #region MonoBehaviour Implementation
+
         protected override void InitializeInternal()
         {
             if (registeredPointers != null)
@@ -56,6 +57,7 @@ namespace HoloToolkit.Unity.InputModule
             UpdatePointers();
             UpdateFocusedObjects();
         }
+
         #endregion
 
         #region Settings

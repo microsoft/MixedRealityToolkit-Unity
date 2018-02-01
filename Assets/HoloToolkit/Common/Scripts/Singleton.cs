@@ -93,7 +93,7 @@ namespace HoloToolkit.Unity
                     InitializeInternal();
                     if (DontDestroyParentRootOnLoad)
                     {
-                        instance.gameObject.GetParentRoot().DontDestroyOnLoad();;
+                        DontDestroyOnLoad(instance.transform.root);
                     }
                 }
             }

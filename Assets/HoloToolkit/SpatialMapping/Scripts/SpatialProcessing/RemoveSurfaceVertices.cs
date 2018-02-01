@@ -52,6 +52,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         private static readonly float FrameTime = .008f;
 #endif
 
+        // GameObject initialization. 
         private void Start()
         {
             boundingObjectsQueue = new Queue<Bounds>();

@@ -237,12 +237,6 @@ namespace HoloToolkit.Sharing
 
         #region Unity Methods
 
-        protected override void Awake()
-        {
-            // We don't want lazy initialization for this class
-            base.Awake();
-        }
-
         private void OnEnable()
         {
             Application.logMessageReceived += OnLogReceived;

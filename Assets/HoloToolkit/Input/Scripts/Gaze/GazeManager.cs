@@ -151,11 +151,6 @@ namespace HoloToolkit.Unity.InputModule
             FindGazeTransform();
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-
         private void Update()
         {
             if (!FindGazeTransform())
