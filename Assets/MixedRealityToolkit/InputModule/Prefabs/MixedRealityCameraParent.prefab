@@ -667,9 +667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
-  boundaryHeight: 10
-  opaqueTrackingSpaceType: 1
-  transparentTrackingSpaceType: 0
   renderFloor: 1
   renderBoundary: 1
 --- !u!114 &114180319962519104
@@ -685,6 +682,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseLastLayer: 1
   TargetSortingLayerName: Default
+  renderers: []
 --- !u!114 &114225625019075894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -784,7 +782,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493965172262900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
+  m_Script: {fileID: 11500000, guid: 114cb60cf4550d64c9562e87db4f19f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AnimateControllerModel: 1
@@ -838,6 +836,7 @@ MonoBehaviour:
   EnableTeleport: 1
   EnableRotation: 1
   EnableStrafe: 1
+  StayOnTheFloor: 0
   RotationSize: 45
   StrafeAmount: 0.5
   teleportMarker: {fileID: 1503526479864244, guid: 10d95b99055c6ad40b735cc8b3593745,

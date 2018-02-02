@@ -489,7 +489,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011070707148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acb07a2de49ca4d478750eedc4858f17, type: 3}
+  m_Script: {fileID: 11500000, guid: dcf2f060492f1d847a361796fb794288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pointingExtent: 10
@@ -500,7 +500,7 @@ MonoBehaviour:
   autoRegisterGazePointerIfNoPointersRegistered: 1
   debugDrawPointingRays: 0
   debugDrawPointingRayColors: []
-  uiRaycastCamera: {fileID: 20049547090947856}
+  uiRaycastCamera: {fileID: 0}
 --- !u!114 &114742747811649402
 MonoBehaviour:
   m_ObjectHideFlags: 1
