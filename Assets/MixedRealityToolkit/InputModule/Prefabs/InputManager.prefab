@@ -165,7 +165,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011070707148}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -500,7 +500,7 @@ MonoBehaviour:
   autoRegisterGazePointerIfNoPointersRegistered: 1
   debugDrawPointingRays: 0
   debugDrawPointingRayColors: []
-  uiRaycastCamera: {fileID: 0}
+  uiRaycastCamera: {fileID: 20049547090947856}
 --- !u!114 &114742747811649402
 MonoBehaviour:
   m_ObjectHideFlags: 1
