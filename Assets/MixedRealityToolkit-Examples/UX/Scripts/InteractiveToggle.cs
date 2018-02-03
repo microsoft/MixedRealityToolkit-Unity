@@ -92,7 +92,7 @@ namespace MixedRealityToolkit.Examples.UX
             ToggleLogic();
         }
 
-        public void ToggleLogic()
+        public virtual void ToggleLogic()
         {
             if (AllowSelection)
             {

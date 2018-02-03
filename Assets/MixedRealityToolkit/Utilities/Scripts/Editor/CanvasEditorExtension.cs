@@ -35,20 +35,24 @@ namespace MixedRealityToolkit.Utilities.EditorScript
             {
                 FocusManager.AssertIsInitialized();
 
-                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
+                // We only need to ask if the worldCamera is not already the UIRaycastCamera
+                if (canvas.worldCamera != FocusManager.Instance.UIRaycastCamera)
                 {
-                    userPermission = EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel");
-
-                    if (userPermission)
+                    if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace)
                     {
-                        canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
-                    }
-                }
+                        userPermission = EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel");
 
-                if (canvas.renderMode != RenderMode.WorldSpace || !userPermission)
-                {
-                    // Sets it back to MainCamera default
-                    canvas.worldCamera = null;
+                        if (userPermission)
+                        {
+                            canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
+                        }
+                    }
+
+                    if (canvas.renderMode != RenderMode.WorldSpace || !userPermission)
+                    {
+                        // Sets it back to MainCamera default
+                        canvas.worldCamera = null;
+                    }
                 }
             }
         }
