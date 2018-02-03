@@ -126,6 +126,6 @@ Shader "MixedRealityToolkit/Fast Configurable"
         }
     } 
 	
-	CustomEditor "HoloToolkit.Unity.FastConfigurableGUI"
+	CustomEditor "MixedRealityToolkit.Common.EditorScript.FastConfigurableGUI"
     Fallback "Legacy Shaders/VertexLit" //for shadow casting
 }
