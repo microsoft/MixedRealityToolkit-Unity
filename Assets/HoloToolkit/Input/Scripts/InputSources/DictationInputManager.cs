@@ -119,6 +119,8 @@ namespace HoloToolkit.Unity.InputModule
             IsListening = true;
             isTransitioning = true;
 
+            InputManager.Instance.PushModalInputHandler(Instance.gameObject);
+
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             {
                 PhraseRecognitionSystem.Shutdown();
@@ -149,6 +151,7 @@ namespace HoloToolkit.Unity.InputModule
             textSoFar = new StringBuilder();
             isTransitioning = false;
 #else
+            Debug.LogWarning("Unable to start recording!  Dictation is unsupported for this platform.");
             return null;
 #endif
         }
@@ -167,6 +170,8 @@ namespace HoloToolkit.Unity.InputModule
 
             IsListening = false;
             isTransitioning = true;
+
+            InputManager.Instance.PopModalInputHandler();
 
             Microphone.End(DeviceName);
 
