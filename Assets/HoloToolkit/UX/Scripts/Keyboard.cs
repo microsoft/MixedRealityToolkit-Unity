@@ -530,7 +530,7 @@ namespace HoloToolkit.UI.Keyboard
         private void BeginDictation()
         {
             ResetClosingTime();
-            StartCoroutine(DictationInputManager.StartRecording());
+            StartCoroutine(DictationInputManager.StartRecording(gameObject));
             SetMicrophoneRecording();
         }
 
