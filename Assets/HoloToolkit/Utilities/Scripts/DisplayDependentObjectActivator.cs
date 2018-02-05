@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
 #endif
 
@@ -17,9 +17,9 @@ public class DisplayDependentObjectActivator : MonoBehaviour
 
     protected void Awake()
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        if ((HolographicSettings.IsDisplayOpaque && !OpaqueDisplay) ||
-            (!HolographicSettings.IsDisplayOpaque && !TransparentDisplay))
+#if UNITY_WSA
+        if (HolographicSettings.IsDisplayOpaque && !OpaqueDisplay ||
+           !HolographicSettings.IsDisplayOpaque && !TransparentDisplay)
         {
             gameObject.SetActive(false);
         }

@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private void Start()
         {
             networkDiscovery = NetworkDiscoveryWithAnchors.Instance;
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque && !Application.isEditor)
             {
                 Debug.Log("Only HoloLens can host for now");
@@ -46,7 +46,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 // will currently not work in this mode.
 
                 if (
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
                     !UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque ||
 #endif
                     Application.isEditor)

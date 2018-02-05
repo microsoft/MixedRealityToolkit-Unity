@@ -42,7 +42,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private void Start()
         {
             // On the immersive device the UI is best placed a little closer than on a HoloLens
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
             {
                 gameObject.GetComponent<SimpleTagalong>().TagalongDistance = 1;

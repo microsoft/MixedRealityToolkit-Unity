@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
 
         private void Start()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             BoundaryManager.Instance.RenderBoundary = true;
             BoundaryManager.Instance.RenderFloor = true;
 

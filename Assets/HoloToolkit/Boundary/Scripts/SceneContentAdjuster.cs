@@ -3,12 +3,8 @@
 
 using UnityEngine;
 
-#if UNITY_2017_2_OR_NEWER
 using System.Collections;
 using UnityEngine.XR;
-#else
-using UnityEngine.VR;
-#endif
 
 namespace HoloToolkit.Unity.Boundary
 {
@@ -59,7 +55,6 @@ namespace HoloToolkit.Unity.Boundary
                 containerObject = transform;
             }
 
-#if UNITY_2017_2_OR_NEWER
             // If no XR device is present, the editor will default to (0, 0, 0) and no adjustment is needed.
             // This script runs on both opaque and transparent display devices, since the floor offset is based on
             // TrackingSpaceType and not display type.
@@ -68,11 +63,10 @@ namespace HoloToolkit.Unity.Boundary
                 StartCoroutine(SetContentHeight());
                 return;
             }
-#endif
+
             Destroy(this);
         }
 
-#if UNITY_2017_2_OR_NEWER
         private IEnumerator SetContentHeight()
         {
             if (frameWaitHack < 1)
@@ -103,6 +97,5 @@ namespace HoloToolkit.Unity.Boundary
                 containerObject.position = contentPosition;
             }
         }
-#endif
     }
 }

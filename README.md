@@ -19,8 +19,8 @@ _Note: The latest release should work for both HoloLens and Windows Mixed Realit
 [mrtk-version-badge]:            https://img.shields.io/github/tag/microsoft/MixedRealityToolkit-unity.svg?label=Latest%20Master%20Branch%20Release&colorB=9acd32
 [![Github Release][mrtk-version-badge]][github-rel]
 
-[unity-download]:                 https://unity3d.com/unity/whats-new/unity-2017.2.1
-[unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.2.1f1-green.svg
+[unity-download]:                 https://unity3d.com/unity/qa/patch-releases/2017.3.0p2
+[unity-version-badge]:            https://img.shields.io/badge/Current%20Unity%20Editor%20Version-2017.3.0p2-green.svg
 [![Github Release][unity-version-badge]][unity-download]
 
 > Check out the MRTK [Roadmap](/Roadmap.md) for Unity.

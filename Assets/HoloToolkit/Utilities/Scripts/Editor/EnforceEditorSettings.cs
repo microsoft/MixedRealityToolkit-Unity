@@ -3,38 +3,42 @@
 
 using System;
 using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// Sets Force Text Serialization and visible meta files in all projects that use the HoloToolkit.
+    /// Sets Force Text Serialization and visible meta files in all projects that use the MixedRealityToolkit.
     /// </summary>
     [InitializeOnLoad]
     public class EnforceEditorSettings
     {
-        private const string AssemblyReloadTimestampKey = "_HoloToolkit_Editor_LastAssemblyReload";
+        private const string AssemblyReloadTimestampKey = "_LastAssemblyReload";
 
         static EnforceEditorSettings()
         {
-            #region Editor Settings
-
             if (!IsNewEditorSession())
             {
                 return;
             }
 
+            bool hasUpdatedSettings = false;
+
             if (EditorSettings.serializationMode != SerializationMode.ForceText)
             {
                 if (EditorUtility.DisplayDialog(
                         "Force Text Asset Serialization?",
-                        "HoloToolkit is easier to maintain if the asset serialization mode for this project is set to \"Force Text\". Would you like to make this change?",
+                        "MixedRealityToolkit is easier to maintain if the asset serialization mode for this project is " +
+                            "set to \"Force Text\". Would you like to make this change?",
                         "Force Text Serialization",
                         "Later"))
                 {
                     EditorSettings.serializationMode = SerializationMode.ForceText;
                     Debug.Log("Setting Force Text Serialization");
+                    hasUpdatedSettings = true;
                 }
             }
 
@@ -42,16 +46,37 @@ namespace HoloToolkit.Unity
             {
                 if (EditorUtility.DisplayDialog(
                     "Make Meta Files Visible?",
-                    "HoloToolkit would like to make meta files visible so they can be more easily handled with common version control systems. Would you like to make this change?",
+                    "MixedRealityToolkit would like to make meta files visible so they can be more easily handled with " +
+                        "common version control systems. Would you like to make this change?",
                     "Enable Visible Meta Files",
                     "Later"))
                 {
                     EditorSettings.externalVersionControl = "Visible Meta Files";
                     Debug.Log("Updated external version control mode: " + EditorSettings.externalVersionControl);
+                    hasUpdatedSettings = true;
                 }
             }
 
-            #endregion
+            if (!EditorPrefsUtility.GetEditorPref("_DepthBufferSharingEnabled", false))
+            {
+                if (EditorUtility.DisplayDialog(
+                    "Enable Depth Buffer Sharing?",
+                    "MixedRealityToolkit would like to enable the Depth Buffer Sharing in the Windows Mixed Reality SDK " +
+                        "providing your app's depth buffer to the system to enable per-pixel depth-based reprojection.  " +
+                        "Would you like to make this change?",
+                    "Enable Depth Buffer Sharing",
+                    "Later"))
+                {
+                    SetDepthBufferSharing();
+                    Debug.Log("Enable Depth Buffer Sharing");
+                    hasUpdatedSettings = true;
+                }
+            }
+
+            if (hasUpdatedSettings)
+            {
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            }
         }
 
         /// <summary>
@@ -89,6 +114,33 @@ namespace HoloToolkit.Unity
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Enabled DepthBufferSharing for Windows Mixed Reality SDK found in XR Settings in the Player Settings Window.
+        /// </summary>
+        public static void SetDepthBufferSharing()
+        {
+            // HACK: Edits ProjectSettings.asset Directly
+            // TODO: replace with friendlier version that uses built in APIs when Unity fixes or makes available.
+            try
+            {
+                // Enable the depth buffer sharing.
+                string settingsPath = "ProjectSettings/ProjectSettings.asset";
+                string matchPattern = @"(depthBufferSharingEnabled:) (\d+)";
+                string replacement = @"$1 1";
+
+                string settings = File.ReadAllText(settingsPath);
+                settings = Regex.Replace(settings, matchPattern, replacement, RegexOptions.Singleline);
+
+                File.WriteAllText(settingsPath, settings);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+
+            EditorPrefsUtility.SetEditorPref("_DepthBufferSharingEnabled", true);
         }
     }
 }

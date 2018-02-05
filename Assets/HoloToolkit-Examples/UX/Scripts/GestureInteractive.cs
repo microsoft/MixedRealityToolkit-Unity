@@ -263,11 +263,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 GetCurrentHandPosition()
         {
             Vector3 handPosition;
-#if UNITY_2017_2_OR_NEWER
             mCurrentInputSource.TryGetGripPosition(mCurrentInputSourceId, out handPosition);
-#else
-            mCurrentInputSource.TryGetPointerPosition(mCurrentInputSourceId, out handPosition);
-#endif
             return handPosition;
         }
 

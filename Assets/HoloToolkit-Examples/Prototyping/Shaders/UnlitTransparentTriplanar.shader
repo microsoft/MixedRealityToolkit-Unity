@@ -52,9 +52,10 @@ Shader "MixedRealityToolkit/Examples/UnlitTransparentTriplanar"
 			fixed3 _LightDir;
 			float1 _LightIntensity;
 			float1 _CameraIntensity;
-			UNITY_INSTANCING_CBUFFER_START(Props)
+			UNITY_INSTANCING_BUFFER_START(Props)
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
-			UNITY_INSTANCING_CBUFFER_END
+#define _Color_arr Props
+			UNITY_INSTANCING_BUFFER_END(Props)
 
 
 			v2f vert(float4 pos : POSITION, float3 normal : NORMAL, appdata v)
@@ -81,7 +82,7 @@ Shader "MixedRealityToolkit/Examples/UnlitTransparentTriplanar"
 			{
 				UNITY_SETUP_INSTANCE_ID(i);
 				// Return the color with the diffuse color.
-				return UNITY_ACCESS_INSTANCED_PROP(_Color) * fixed4(i.diffuse, 1.0);
+				return UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color) * fixed4(i.diffuse, 1.0);
 			}
 			ENDCG
 		}

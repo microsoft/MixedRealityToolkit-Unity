@@ -116,11 +116,7 @@ namespace HoloToolkit.Unity
             {
                 if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
                 {
-#if UNITY_2017_1_OR_NEWER
                     EditorUserBuildSettings.SwitchActiveBuildTargetAsync(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
-#else
-                    EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
-#endif
                 }
                 else
                 {
@@ -177,11 +173,8 @@ namespace HoloToolkit.Unity
                 {
                     using (var webRequest = UnityWebRequest.Get(SharingServiceURL))
                     {
-#if UNITY_2017_2_OR_NEWER
                         webRequest.SendWebRequest();
-#else
-                        webRequest.Send();
-#endif
+
                         while (!webRequest.isDone)
                         {
                             if (webRequest.downloadProgress > -1)
@@ -194,11 +187,7 @@ namespace HoloToolkit.Unity
 
                         EditorUtility.ClearProgressBar();
 
-#if UNITY_2017_1_OR_NEWER
                         if (webRequest.isNetworkError || webRequest.isHttpError)
-#else
-                        if (webRequest.isError)
-#endif
                         {
                             Debug.LogError("Network Error: " + webRequest.error);
                         }
@@ -289,17 +278,12 @@ namespace HoloToolkit.Unity
             }
             else
             {
-#if !UNITY_2017_2_OR_NEWER
-                Values[ProjectSetting.TargetOccludedDevices] = false;
-#endif
+                EnforceEditorSettings.SetDepthBufferSharing();
+
                 if (!Values[ProjectSetting.TargetOccludedDevices])
                 {
                     EditorUserBuildSettings.wsaSubtarget = WSASubtarget.HoloLens;
-#if UNITY_2017_2_OR_NEWER
                     UnityEditorInternal.VR.VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "WindowsMR" });
-#else
-                    UnityEditorInternal.VR.VREditor.SetVREnabledDevicesOnTargetGroup(BuildTargetGroup.WSA, new[] { "HoloLens" });
-#endif
                     PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, Values[ProjectSetting.UseInputManagerAxes]);
                     BuildDeployPrefs.BuildPlatform = "x86";
 
@@ -330,11 +314,11 @@ namespace HoloToolkit.Unity
                 {
                     // Find the WSA element under the platform quality list and replace it's value with the current level.
                     string settingsPath = "ProjectSettings/QualitySettings.asset";
-                    string matchPattern = @"(m_PerPlatformDefaultQuality.*Windows Store Apps:) (\d+)";
-                    string replacePattern = @"$1 " + currentQualityLevel;
+                    string matchPattern = @"(m_CurrentQuality:|Windows Store Apps:) (\d+)";
+                    string replacement = @"$1 " + currentQualityLevel;
 
                     string settings = File.ReadAllText(settingsPath);
-                    settings = Regex.Replace(settings, matchPattern, replacePattern, RegexOptions.Singleline);
+                    settings = Regex.Replace(settings, matchPattern, replacement, RegexOptions.Singleline);
 
                     File.WriteAllText(settingsPath, settings);
                 }
@@ -387,9 +371,6 @@ namespace HoloToolkit.Unity
                 "Changes the target Device and updates the default quality settings, if needed. Occluded devices are generally VR hardware (like the Acer HMD) " +
                 "that do not have a 'see through' display, while transparent devices (like the HoloLens) are generally AR hardware where users can see " +
                 "and interact with digital elements in the physical world around them.\n\n" +
-#if !UNITY_2017_2_OR_NEWER
-                "<color=#ff0000ff><b>Warning!</b></color> Occluded Devices are only supported in Unity 2017.2 and newer and cannot be enabled.\n\n" +
-#endif
                 "<color=#ffff00ff><b>Note:</b></color> If you're not targeting Occluded devices, It's generally recommended that Transparent devices use " +
                 "the lowest default quality setting, and is set automatically for you. This can be manually changed in your the Project's Quality Settings.";
 
@@ -417,9 +398,7 @@ namespace HoloToolkit.Unity
         {
             base.OnEnable();
 
-#if UNITY_2017_1_OR_NEWER
             AutoConfigureMenu.ActiveBuildTargetChanged += UpdateSettings;
-#endif
 
             minSize = new Vector2(350, 350);
             maxSize = minSize;

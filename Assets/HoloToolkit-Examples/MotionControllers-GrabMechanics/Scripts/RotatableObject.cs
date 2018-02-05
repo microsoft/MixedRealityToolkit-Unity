@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
 using System.Collections;
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -23,7 +23,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         {
             base.OnEnable();
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             InteractionManager.InteractionSourceUpdated += GetTouchPadPosition;
 #endif
 
@@ -35,7 +35,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         protected override void OnDisable()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
             InteractionManager.InteractionSourceUpdated -= GetTouchPadPosition;
 #endif
 
@@ -50,13 +50,13 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         {
             if (baseGrabbable.GrabberPrimary != null)
             {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
                 StartCoroutine(MakeRotate());
 #endif
             }
         }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
         private IEnumerator MakeRotate()
         {
             while (UseState == UseStateEnum.Active && baseGrabbable.GrabberPrimary && touchPadPressed)

@@ -21,12 +21,7 @@ namespace HoloToolkit.Unity
     {
         private const float UpdateBuildsPeriod = 1.0f;
 
-        private const string SdkVersion =
-#if UNITY_2017_2_OR_NEWER
-                "10.0.16299.0";
-#else
-                "10.0.15063.0";
-#endif
+        private const string SdkVersion = "10.0.16299.0";
 
         private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
 

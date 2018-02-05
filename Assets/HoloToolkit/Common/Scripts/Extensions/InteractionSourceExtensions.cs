@@ -2,9 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
-#if !UNITY_2017_2_OR_NEWER
-using UnityEngine.VR.WSA.Input;
-#else
 using UnityEngine.XR.WSA.Input;
 #if !UNITY_EDITOR
 using System;
@@ -14,7 +11,6 @@ using Windows.Foundation;
 using Windows.Perception;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
-#endif
 #endif
 #endif
 
@@ -41,7 +37,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -79,7 +75,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -95,7 +91,7 @@ namespace HoloToolkit.Unity
 #endif
         }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;

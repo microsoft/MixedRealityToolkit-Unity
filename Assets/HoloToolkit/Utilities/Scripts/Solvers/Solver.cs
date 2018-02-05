@@ -1,16 +1,12 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Unity.InputModule;
+
 #if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
-#endif
 #endif
 
 namespace HoloToolkit.Unity
@@ -111,7 +107,7 @@ namespace HoloToolkit.Unity
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
                         solverHandler.Handedness = InteractionSourceHandedness.Left;
                         while (solverHandler.ElementTransform == null)
                         {
@@ -123,7 +119,7 @@ namespace HoloToolkit.Unity
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_WSA
                         solverHandler.Handedness = InteractionSourceHandedness.Right;
                         while (solverHandler.ElementTransform != null)
                         {
