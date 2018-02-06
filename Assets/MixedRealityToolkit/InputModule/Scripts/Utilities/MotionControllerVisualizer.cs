@@ -19,6 +19,7 @@ using UnityGLTF;
 #if !UNITY_EDITOR
 using Windows.Foundation;
 using Windows.Storage.Streams;
+using MixedRealityToolkit.Common.Extensions;
 #endif
 #endif
 
