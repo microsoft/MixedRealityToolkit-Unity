@@ -180,6 +180,7 @@ namespace HoloToolkit.Unity.InputModule
             if (hasListener)
             {
                 InputManager.Instance.PopModalInputHandler();
+                hasListener = false;
             }
 
             Microphone.End(DeviceName);
