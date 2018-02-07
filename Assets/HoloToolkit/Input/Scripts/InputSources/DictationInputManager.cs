@@ -53,6 +53,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private static bool isTransitioning;
         private static bool hasFailed;
+        private static bool hasListener;
 #endif
 
         #region Unity Methods
@@ -108,7 +109,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="autoSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input.</param>
         /// <param name="recordingTime">Length in seconds for the manager to listen.</param>
         /// <returns></returns>
-        public static IEnumerator StartRecording(GameObject listener, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
+        public static IEnumerator StartRecording(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsListening || isTransitioning)
@@ -120,7 +121,11 @@ namespace HoloToolkit.Unity.InputModule
             IsListening = true;
             isTransitioning = true;
 
-            InputManager.Instance.PushModalInputHandler(listener);
+            if (listener != null)
+            {
+                hasListener = true;
+                InputManager.Instance.PushModalInputHandler(listener);
+            }
 
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             {
@@ -172,7 +177,10 @@ namespace HoloToolkit.Unity.InputModule
             IsListening = false;
             isTransitioning = true;
 
-            InputManager.Instance.PopModalInputHandler();
+            if (hasListener)
+            {
+                InputManager.Instance.PopModalInputHandler();
+            }
 
             Microphone.End(DeviceName);
 
