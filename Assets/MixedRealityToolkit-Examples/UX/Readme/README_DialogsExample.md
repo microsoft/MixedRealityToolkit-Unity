@@ -13,9 +13,9 @@ You can find the code example in **LaunchDialogScript.cs** under SceneContent > 
 
 An instance of the Dialog is created using the following two lines of code: 
  
-**GameObject dialogPrefab Resources.Load("Dialog") as GameObject;
+**GameObject dialogPrefab Resources.Load("Dialog") as GameObject;**
 
-SimpleDialog dialog = SimpleDialog.Open(dialogPrefab, buttons, title, message);**
+**SimpleDialog dialog = SimpleDialog.Open(dialogPrefab, buttons, title, message);**
  
 The second argument to the Open function defines the caption or captions that the button(s) will have. 
 They are identified by defining an enumerated value using SimpleDialog.ButtonTypeEnum. 
