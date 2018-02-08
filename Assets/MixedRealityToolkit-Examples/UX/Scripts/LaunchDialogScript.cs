@@ -11,7 +11,7 @@ namespace MixedRealityToolkit.Examples.UX
         private const bool INSTANTIATE_DIALOGS = true;
 
         public GameObject dialogInstance = null;
-
+        public GameObject resultText;
         private bool isDialogLaunched = false;
 
         protected override void Start()
@@ -30,7 +30,7 @@ namespace MixedRealityToolkit.Examples.UX
 
             if (INSTANTIATE_DIALOGS)
             {
-                GameObject dialogPrefab = Resources.Load("SimpleDialogShell") as GameObject;
+                GameObject dialogPrefab = Resources.Load("Dialog") as GameObject;
                 dialog = SimpleDialog.Open(dialogPrefab, buttons, title, message);
                 dialog.OnClosed += OnClosed;
             }
@@ -59,13 +59,13 @@ namespace MixedRealityToolkit.Examples.UX
         {
             if (isDialogLaunched == false)
             {
-                StartCoroutine(LaunchDialog(SimpleDialog.ButtonTypeEnum.Yes | SimpleDialog.ButtonTypeEnum.No, "testTitle", "testMessage"));
+                StartCoroutine(LaunchDialog(SimpleDialog.ButtonTypeEnum.Yes | SimpleDialog.ButtonTypeEnum.No, "Title Text", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
             }
         }
 
         protected void OnClosed(SimpleDialogResult result)
         {
-            this.SetTitle( result.Result.ToString());
+            resultText.GetComponent<TextMesh>().text = result.Result.ToString();
         }
     }
 }

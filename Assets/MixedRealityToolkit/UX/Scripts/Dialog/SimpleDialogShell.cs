@@ -11,7 +11,7 @@ namespace MixedRealityToolkit.Examples.UX
     /// </summary>
     public class SimpleDialogShell : SimpleDialog
     {
-        public int MaxCharsPerLine = 40;
+        public int MaxCharsPerLine = 60;
 
         [SerializeField]
         private TextMesh titleText;
