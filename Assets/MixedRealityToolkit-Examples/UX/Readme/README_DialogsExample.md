@@ -2,6 +2,9 @@
 ![Dialog](/External/ReadMeImages/MRTK_Dialog.jpg)
 Dialog is a transient UI element which appears when something happens that requires notification, approval, or additional information from the user. Dialogs block interactions with the app window until being explicitly dismissed. They often request some kind of action from the user. Mixed Reality Design Labs' Dialog provides one or two button options.
 
+Dialog works on both HoloLens(gaze and gesture) and Immersive headset(motion controllers).
+![Dialogs on HoloLens and Immersive Headset](/External/ReadMeImages/MRTK_Dialog_Devices.jpg)
+
 ## Dialog prefab and SimpleDialogShell script
 Dialog prefab is located under **Resources** folder in **MixedRealityToolkit/UX** and dynamically instantiated with Unity's **Resources.Load()** function. This prefab contains SimpleDialogShell script and Solver scripts.
 
