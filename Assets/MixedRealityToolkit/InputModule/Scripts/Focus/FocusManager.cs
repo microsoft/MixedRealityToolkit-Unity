@@ -3,9 +3,7 @@
 
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
-using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.EventData;
-using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Gaze;
 using System;
 using System.Collections.Generic;
@@ -871,13 +869,14 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         /// <summary>
         /// Helper for assigning world space canvases event cameras.
-        /// <remarks>Can be used at runtime.</remarks>
+        /// <remarks>Warning! Very expensive. Use sparingly at runtime.</remarks>
         /// </summary>
         public void UpdateCanvasEventSystems()
         {
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before updating your canvases.");
 
             // This will also find disabled GameObjects in the scene.
+            // Warning! this look up is very expensive!
             var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
 
             for (var i = 0; i < sceneCanvases.Length; i++)

@@ -533,7 +533,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         private void BeginDictation()
         {
             ResetClosingTime();
-            StartCoroutine(DictationInputManager.StartRecording());
+            StartCoroutine(DictationInputManager.StartRecording(gameObject));
             SetMicrophoneRecording();
         }
 
