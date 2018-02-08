@@ -4,16 +4,13 @@
 | Target Unity release  | Release timeframe | Master release tag | Toolkit release features |
 | --- | --- | --- | --- |
 | 2017.2.0 | COMPLETED       | v1.2017.2.0        | <ul><li>Updated master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
-| 2017.3.0              | End Dec 2017      | 2017.3.0        | <ul><li>360 video player prefabs.</li><li>Scriptable foveated rendering prefabs.</li></ul>|
-
-### Dev_Unity_2017.2.0 branch - COMPLETED
-
-| Target Unity release  | Release timeframe | Branch release tag | Branch pre-release features | Status |
-| --- | --- | --- | --- | --- |
-| 2017.2.1              | Mid Oct 2017      | v1.Dev.2017.2.1 | <ul><li>Merge branch into master.</li></ul>| COMPLETED |
+| 2017.3.0              | End Jan 2018      | 2017.3.0        | <ul><li>Default to use Enable Depth Buffer Sharing.</li><li>Remove stabilization plane script from InputManager prefab.</li><li>Use reflection to enable setting via Configure window.</li><li>Editor and shader clean up work.</li><li>Namespace refactor work to MixedRealityToolkit instead of HoloToolkit.</li><li>Multi-pointer support for motion controllers.</li></ul>|
+| 2018.1.0              | End Feb 2018      | 2018.1.0        | <ul><li>Examples folder cleanup.</li></ul>|
 
 # Future work planning
 - Automated build for MRTK-Unity.
+- Building a plan for cross-device/platform VR support.
+- Adding 'Standalone' folder containing legacy toolkit scripts that don't depend on the toolkit input module to address developer feedback.
 - Unity packages for each release will be published to the Unity asset store.
 - Unity packages for each feature area like Input/SpatialMapping will also be added to the release notes. More work needs to happen to ensure feature areas don't have cross dependencies.
 - [Academy content](https://github.com/Microsoft/HolographicAcademy) will be updated with each major toolkit release.
