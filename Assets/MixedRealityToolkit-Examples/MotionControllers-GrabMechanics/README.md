@@ -4,6 +4,9 @@ Useful scripts and examples for implementing various types of grab interaction w
 
 ![](/External/ReadMeImages/MRTK_MotionController_GrabMechanics.jpg)
 
+# Demo Controls
+Use the motion controller joysticks for teleportation-based movement. This demo does not implement gaze or pointer based object grabbing. To activate grab mechanics, overlap your mixed reality controllers with a block. This should cause the block to change color. Press the grab button (middle finger) to interact with the block. 
+
 # Basic Architecture
  
 The Grab family consists of these categories of scripts: 
