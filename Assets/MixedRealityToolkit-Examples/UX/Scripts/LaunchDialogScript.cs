@@ -7,40 +7,18 @@ namespace MixedRealityToolkit.Examples.UX
 {
     public class LaunchDialogScript : Interactive
     {
-        //set to false to reuse existing instance of SimpleDialogShell called TestDialog
-        private const bool INSTANTIATE_DIALOGS = true;
-
-        public GameObject dialogInstance = null;
         public GameObject resultText;
         private bool isDialogLaunched = false;
-
-        protected override void Start()
-        {
-            if (dialogInstance == null)
-            {
-                dialogInstance = GameObject.Find("TestDialog");
-                dialogInstance.SetActive(false);
-            }
-        }
 
         protected IEnumerator LaunchDialog(SimpleDialog.ButtonTypeEnum buttons, string title, string message)
         {
             isDialogLaunched = true;
+            //instantiate a dialog instance from the prefab
             SimpleDialog dialog;
 
-            if (INSTANTIATE_DIALOGS)
-            {
-                GameObject dialogPrefab = Resources.Load("Dialog") as GameObject;
-                dialog = SimpleDialog.Open(dialogPrefab, buttons, title, message);
-                dialog.OnClosed += OnClosed;
-            }
-            else
-            {
-                dialogInstance.SetActive(true);
-                dialog = SimpleDialog.Open(dialogInstance, buttons, title, message);
-                dialog.OnClosed += OnClosed;
-                dialogInstance.SetActive(false);
-            }
+            GameObject dialogPrefab = Resources.Load("Dialog") as GameObject;
+            dialog = SimpleDialog.Open(dialogPrefab, buttons, title, message);
+            dialog.OnClosed += OnClosed;
 
             // Wait for dialog to close
             while (dialog.State < SimpleDialog.StateEnum.InputReceived)
@@ -48,8 +26,7 @@ namespace MixedRealityToolkit.Examples.UX
                 yield return null;
             }
 
-
-            //only let button create one dialog at a time
+            //only let one dialog be created at a time
             isDialogLaunched = false;
 
             yield break;
