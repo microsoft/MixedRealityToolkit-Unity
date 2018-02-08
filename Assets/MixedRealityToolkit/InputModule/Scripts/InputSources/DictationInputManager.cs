@@ -54,6 +54,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
         private static bool isTransitioning;
         private static bool hasFailed;
+        private static bool hasListener;
 #endif
 
         #region Unity Methods
@@ -104,11 +105,12 @@ namespace MixedRealityToolkit.InputModule.InputSources
         /// <summary>
         /// Turns on the dictation recognizer and begins recording audio from the default microphone.
         /// </summary>
+        /// <param name="listener">GameObject listening for the dictation input.</param>
         /// <param name="initialSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.</param>
         /// <param name="autoSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input.</param>
         /// <param name="recordingTime">Length in seconds for the manager to listen.</param>
         /// <returns></returns>
-        public static IEnumerator StartRecording(float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
+        public static IEnumerator StartRecording(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsListening || isTransitioning)
@@ -119,6 +121,12 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             IsListening = true;
             isTransitioning = true;
+
+            if (listener != null)
+            {
+                hasListener = true;
+                InputManager.Instance.PushModalInputHandler(listener);
+            }
 
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             {
@@ -150,6 +158,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             textSoFar = new StringBuilder();
             isTransitioning = false;
 #else
+            Debug.LogWarning("Unable to start recording!  Dictation is unsupported for this platform.");
             return null;
 #endif
         }
@@ -168,6 +177,12 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             IsListening = false;
             isTransitioning = true;
+
+            if (hasListener)
+            {
+                InputManager.Instance.PopModalInputHandler();
+                hasListener = false;
+            }
 
             Microphone.End(DeviceName);
 

@@ -221,6 +221,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
             AddButton("Positions on floor", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionsOnFloor(); timeLastQuery = DateTime.MinValue; });
             AddButton("Large positions on floor", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargestPositionsOnFloor(); timeLastQuery = DateTime.MinValue; });
             AddButton("Place objects positions", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionsPlaceable(); timeLastQuery = DateTime.MinValue; });
+            AddButton("Large positions sittable", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargePositionsSittable(); timeLastQuery = DateTime.MinValue; });
 
             // Shape queries
             ButtonPanels[(int)Panels.Shapes].Button.GetComponentInChildren<Text>().text = "Shape Queries";

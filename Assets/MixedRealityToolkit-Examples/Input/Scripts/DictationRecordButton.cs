@@ -58,7 +58,11 @@ namespace MixedRealityToolkit.Examples.InputModule
             else
             {
                 isRecording = true;
-                StartCoroutine(DictationInputManager.StartRecording(initialSilenceTimeout, autoSilenceTimeout, recordingTime));
+                StartCoroutine(DictationInputManager.StartRecording(
+                    gameObject,
+                    initialSilenceTimeout,
+                    autoSilenceTimeout,
+                    recordingTime));
                 speechToTextOutput.color = Color.green;
                 recordLight.SetActive(true);
                 buttonRenderer.enabled = false;
