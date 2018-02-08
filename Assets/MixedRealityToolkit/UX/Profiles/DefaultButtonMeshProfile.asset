@@ -20,13 +20,13 @@ MonoBehaviour:
   ButtonStates:
   - Name: Pressed
     ActiveState: 0
-    StateColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 0.49803922}
+    StateColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 0.197}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
   - Name: Targeted
     ActiveState: 1
-    StateColor: {r: 1, g: 1, b: 1, a: 0.316}
+    StateColor: {r: 1, g: 1, b: 1, a: 1}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}

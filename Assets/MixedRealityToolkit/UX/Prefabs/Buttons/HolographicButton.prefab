@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 114210285476315908}
   - component: {fileID: 65993064671435812}
   m_Layer: 5
-  m_Name: SquareButton
+  m_Name: HolographicButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,7 +252,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 11217bb60dac19b47854c8d47c51b871, type: 2}
+  - {fileID: 2100000, guid: 61c598ddff7a2cc4ea50c285c361691d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
