@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.Gaze;
+using MixedRealityToolkit.InputModule.Utilities.Interations;
 using System;
 using UnityEngine;
 

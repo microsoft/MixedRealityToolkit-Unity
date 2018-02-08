@@ -5,9 +5,9 @@
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
-using MixedRealityToolkit.InputModule.GamePad;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.InputModule.Pointers;
 using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.Utilities;
 using System;

@@ -9,7 +9,7 @@ namespace MixedRealityToolkit.UX.EditorScript
     [CustomEditor(typeof(KeyboardInputField))]
     public class KeyboardInputFieldEditor : Editor
     {
-        public KeyboardManager.LayoutType KeyboardLayout = KeyboardManager.LayoutType.Alpha;
+        public Keyboard.Keyboard.LayoutType KeyboardLayout = Keyboard.Keyboard.LayoutType.Alpha;
         protected KeyboardInputField KeyboardField;
 
         protected virtual void Awake()
@@ -19,7 +19,7 @@ namespace MixedRealityToolkit.UX.EditorScript
 
         public override void OnInspectorGUI()
         {
-            KeyboardField.KeyboardLayout = (KeyboardManager.LayoutType)EditorGUILayout.EnumPopup("Keyboard Type:", KeyboardField.KeyboardLayout);
+            KeyboardField.KeyboardLayout = (Keyboard.Keyboard.LayoutType)EditorGUILayout.EnumPopup("Keyboard Type:", KeyboardField.KeyboardLayout);
 
             EditorGUILayout.Separator();
             base.OnInspectorGUI();

@@ -5,6 +5,8 @@ using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Gaze;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.Pointers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

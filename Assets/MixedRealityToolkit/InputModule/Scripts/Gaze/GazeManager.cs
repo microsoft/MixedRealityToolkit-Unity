@@ -2,10 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.InputModule.Cursor;
 using MixedRealityToolkit.InputModule.Focus;
-using System;
+using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.InputModule.Pointers;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace MixedRealityToolkit.InputModule.Gaze
 {

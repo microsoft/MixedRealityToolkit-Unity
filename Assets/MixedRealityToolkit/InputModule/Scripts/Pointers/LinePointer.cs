@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using HoloToolkit.Unity.UX;
+using MixedRealityToolkit.UX.Distorters;
+using MixedRealityToolkit.UX.Lines;
+using MixedRealityToolkit.Utilities.Attributes;
+using MixedRealityToolkit.InputModule.Focus;
 
 namespace MixedRealityToolkit.InputModule.Pointers
 {

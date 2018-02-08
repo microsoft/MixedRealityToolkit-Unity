@@ -51,7 +51,7 @@ namespace MixedRealityToolkit.UX.Keyboard
             m_Button.onClick.RemoveAllListeners();
             m_Button.onClick.AddListener(FireAppendValue);
 
-            KeyboardManager.Instance.OnKeyboardShifted += Shift;
+            Keyboard.Instance.OnKeyboardShifted += Shift;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// </summary>
         private void FireAppendValue()
         {
-            KeyboardManager.Instance.AppendValue(this);
+            Keyboard.Instance.AppendValue(this);
         }
 
         /// <summary>

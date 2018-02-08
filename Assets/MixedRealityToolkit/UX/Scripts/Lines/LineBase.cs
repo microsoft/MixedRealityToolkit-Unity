@@ -419,7 +419,7 @@ namespace MixedRealityToolkit.UX.Lines
 
             Vector3 firstPos = GetPoint(0f);
             Vector3 lastPos = firstPos;
-            Gizmos.color = Color.Lerp(LineBaseEditor.DefaultDisplayLineColor, Color.clear, 0.25f);
+            Gizmos.color = Color.Lerp(Color.white, Color.clear, 0.25f);
             int numSteps = 16;
 
             for (int i = 1; i < numSteps; i++)

@@ -16,8 +16,8 @@ namespace MixedRealityToolkit.UX.Keyboard
         private void Update()
         {
             // Visual reflection of state.
-            m_PageBck.interactable = KeyboardManager.Instance.IsShifted;
-            m_PageFwd.interactable = !KeyboardManager.Instance.IsShifted;
+            m_PageBck.interactable = Keyboard.Instance.IsShifted;
+            m_PageFwd.interactable = !Keyboard.Instance.IsShifted;
         }
     }
 }

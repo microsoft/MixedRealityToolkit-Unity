@@ -667,6 +667,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FloorQuad: {fileID: 1520281459093612, guid: 08d25ccfbbc595b4a820c7edd551d095, type: 2}
+  boundaryHeight: 10
+  opaqueTrackingSpaceType: 1
   renderFloor: 1
   renderBoundary: 1
 --- !u!114 &114180319962519104
@@ -782,7 +784,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493965172262900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 114cb60cf4550d64c9562e87db4f19f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AnimateControllerModel: 1

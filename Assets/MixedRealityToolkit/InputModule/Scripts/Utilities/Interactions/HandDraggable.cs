@@ -8,6 +8,7 @@ using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
 using System;
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;

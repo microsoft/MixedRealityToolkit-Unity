@@ -3,6 +3,7 @@
 
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
+using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.Utilities;
 using System.Collections;
 using UnityEngine;

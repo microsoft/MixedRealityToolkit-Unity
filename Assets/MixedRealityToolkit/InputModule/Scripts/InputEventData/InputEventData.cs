@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.InputModule.InputSources;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 #if UNITY_WSA

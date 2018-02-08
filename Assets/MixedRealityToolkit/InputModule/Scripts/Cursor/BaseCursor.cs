@@ -3,7 +3,12 @@
 
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
+using MixedRealityToolkit.InputModule.Pointers;
 using UnityEngine;
+
+#if UNITY_WSA
+using MixedRealityToolkit.InputModule.InputSources;
+#endif
 
 namespace MixedRealityToolkit.InputModule.Cursor
 {
@@ -148,10 +153,10 @@ namespace MixedRealityToolkit.InputModule.Cursor
                 inputSource = eventData.InputSource as SimulatedInputSource;
             }
 
-            InteractionSourceKind sourceKind;
+            UnityEngine.XR.WSA.Input.InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
                 inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
-                && sourceKind == InteractionSourceKind.Hand)
+                && sourceKind == UnityEngine.XR.WSA.Input.InteractionSourceKind.Hand)
             {
                 visibleHandsCount++;
             }
@@ -177,10 +182,10 @@ namespace MixedRealityToolkit.InputModule.Cursor
                 inputSource = eventData.InputSource as SimulatedInputSource;
             }
 
-            InteractionSourceKind sourceKind;
+            UnityEngine.XR.WSA.Input.InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
                  inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
-                && sourceKind == InteractionSourceKind.Hand)
+                && sourceKind == UnityEngine.XR.WSA.Input.InteractionSourceKind.Hand)
             {
                 visibleHandsCount--;
             }

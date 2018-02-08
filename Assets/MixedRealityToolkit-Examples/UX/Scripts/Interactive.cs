@@ -8,6 +8,7 @@ using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.Examples.UX.Widgets;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.Examples.UX.Controls;
+using MixedRealityToolkit.InputModule.Focus;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;

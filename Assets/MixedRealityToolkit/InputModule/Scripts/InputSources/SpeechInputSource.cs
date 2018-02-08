@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.Common.Extensions;
 using System;
 using UnityEngine;
+using MixedRealityToolkit.InputModule.InputMapping;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;

@@ -1,16 +1,22 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using MixedRealityToolkit.Common;
 using System;
 using System.Collections.Generic;
-using MixedRealityToolkit.Common;
+using UnityEngine;
 
 namespace MixedRealityToolkit.InputModule.Utilities.Managers
 {
     /// <summary>
-    /// KeyboardManager allows other scripts to register for (or inject) key events.
+    /// A simple general use keyboard that is ideal for AR/VR applications.
     /// </summary>
+    /// 
+    /// NOTE: This keyboard will not automatically appear when you select an InputField in your
+    ///       Canvas. In order for the keyboard to appear you must call Keyboard.Instance.PresentKeyboard(string).
+    ///       To retrieve the input from the Keyboard, subscribe to the textEntered event. Note that
+    ///       tapping 'Close' on the Keyboard will not fire the textEntered event. You must tap 'Enter' to
+    ///       get the textEntered event.
     public class KeyboardManager : Singleton<KeyboardManager>
     {
         public enum KeyEvent

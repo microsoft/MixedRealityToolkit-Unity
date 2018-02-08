@@ -5,9 +5,9 @@ using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.Pointers;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace MixedRealityToolkit.UX.Receivers
 {
