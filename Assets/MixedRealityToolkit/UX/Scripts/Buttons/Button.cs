@@ -9,12 +9,16 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace MixedRealityToolkit.UX.Buttons
 {
     /// <summary>
     /// Base class for buttons.
     /// </summary>
-    public abstract class Button : MonoBehaviour, IInputHandler, IPointerSpecificFocusable, IHoldHandler, ISourceStateHandler, IInputClickHandler
+    public abstract class Button : FocusTarget, IInputHandler, IHoldHandler, ISourceStateHandler, IPointerHandler
     {
         #region Public Members
 
@@ -25,11 +29,13 @@ namespace MixedRealityToolkit.UX.Buttons
         [Tooltip("Current State of the Button")]
         public ButtonStateEnum ButtonState = ButtonStateEnum.Observation;
 
+#if UNITY_WSA
         /// <summary>
         /// Filter to apply for the correct button source
         /// </summary>
         [Tooltip("Filter for press info for click or press event")]
-        public InteractionSourcePressInfo ButtonPressFilter = InteractionSourcePressInfo.Select;
+        public InteractionSourcePressType ButtonPressFilter = InteractionSourcePressType.Select;
+#endif
 
         /// <summary>
         /// If true the interactable will deselect when you look off of the object
@@ -119,16 +125,22 @@ namespace MixedRealityToolkit.UX.Buttons
         {
             if (enabled)
             {
-                if(ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
+#if UNITY_WSA
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == eventData.PressType)
+#endif
                 {
                     DoButtonPressed();
 
                     // Set state to Pressed
                     ButtonStateEnum newState = ButtonStateEnum.Pressed;
-                    this.OnStateChange(newState);
+                    OnStateChange(newState);
                 }
             }
         }
+
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData) { }
 
         /// <summary>
         /// Handle on input up events from IInputSource
@@ -138,34 +150,41 @@ namespace MixedRealityToolkit.UX.Buttons
         {
             if (enabled)
             {
-                if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
+#if UNITY_WSA
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == eventData.PressType)
+#endif
                 {
                     DoButtonReleased();
                 }
             }
         }
 
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
         /// <summary>
         /// Handle clicked event
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (enabled)
             {
-                if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
+#if UNITY_WSA
+                if (ButtonPressFilter == InteractionSourcePressType.None || ButtonPressFilter == eventData.PressType)
+#endif
                 {
                     DoButtonPressed(true);
                 }
             }
         }
 
-
         /// <summary>
         /// Handle On Hold started from IHoldSource
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnHoldStarted(HoldEventData eventData)
+        public void OnHoldStarted(InputEventData eventData)
         {
             if (!m_disabled)
             {
@@ -177,7 +196,7 @@ namespace MixedRealityToolkit.UX.Buttons
         /// Handle On Hold started from IHoldSource
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnHoldCompleted(HoldEventData eventData)
+        public void OnHoldCompleted(InputEventData eventData)
         {
             if (!m_disabled && ButtonState == ButtonStateEnum.Pressed)
             {
@@ -185,15 +204,15 @@ namespace MixedRealityToolkit.UX.Buttons
 
                 // Unset state from pressed.
                 ButtonStateEnum newState = ButtonStateEnum.Targeted;
-                this.OnStateChange(newState);
+                OnStateChange(newState);
             }
         }
 
-                /// <summary>
+        /// <summary>
         /// Handle On Hold started from IHoldSource
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnHoldCanceled(HoldEventData eventData)
+        public void OnHoldCanceled(InputEventData eventData)
         {
             if (!m_disabled && ButtonState == ButtonStateEnum.Pressed)
             {
@@ -201,30 +220,26 @@ namespace MixedRealityToolkit.UX.Buttons
                 // Unset state from pressed.
 
                 ButtonStateEnum newState = ButtonStateEnum.Targeted;
-                this.OnStateChange(newState);
+                OnStateChange(newState);
             }
         }
 
-        /// <summary>
-        /// FocusManager SendMessage("FocusEnter") receiver.
-        /// </summary>
-        public void OnFocusEnter(PointerSpecificEventData eventData)
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             if (!m_disabled)
             {
                 ButtonStateEnum newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-                this.OnStateChange(newState);
+                OnStateChange(newState);
 
                 _bFocused = true;
             }
         }
 
-        /// <summary>
-        /// FocusManager SendMessage("FocusExit") receiver.
-        /// </summary>
-        public void OnFocusExit(PointerSpecificEventData eventData)
+        public override void OnFocusExit(FocusEventData eventData)
         {
-             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
+            if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
             {
                 if (ButtonState == ButtonStateEnum.Pressed)
                 {
@@ -235,7 +250,7 @@ namespace MixedRealityToolkit.UX.Buttons
 
                 if (RequireGaze || ButtonState != ButtonStateEnum.Pressed)
                 {
-                    this.OnStateChange(newState);
+                    OnStateChange(newState);
                 }
 
                 _bFocused = false;
@@ -248,15 +263,17 @@ namespace MixedRealityToolkit.UX.Buttons
         /// <param name="eventData"></param>
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            InteractionSourceInfo sourceInfo;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo))
+#if UNITY_WSA
+            InteractionSourceKind sourceKind;
+            if (InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind))
             {
-                if (sourceInfo == InteractionSourceInfo.Hand)
+                if (sourceKind == InteractionSourceKind.Hand)
                 {
                     _handCount++;
                     _bHandVisible = true;
                 }
             }
+#endif
         }
 
         /// <summary>
@@ -265,16 +282,23 @@ namespace MixedRealityToolkit.UX.Buttons
         /// <param name="eventData"></param>
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            InteractionSourceInfo sourceInfo;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo))
+#if UNITY_WSA
+            InteractionSourceKind sourceKind;
+            if (InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind))
             {
-                if (sourceInfo == InteractionSourceInfo.Hand)
+                if (sourceKind == InteractionSourceKind.Hand)
                 {
                     _handCount--;
                     _bHandVisible = _handCount <= 0;
                 }
             }
+#endif
         }
+
+        public void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
+
         #endregion
 
         /// <summary>
@@ -283,14 +307,14 @@ namespace MixedRealityToolkit.UX.Buttons
         protected void DoButtonPressed(bool bRelease = false)
         {
             ButtonStateEnum newState = ButtonStateEnum.Pressed;
-            this.OnStateChange(newState);
+            OnStateChange(newState);
 
             if (OnButtonPressed != null)
             {
                 OnButtonPressed(gameObject);
             }
 
-            if(OnButtonClicked != null)
+            if (OnButtonClicked != null)
             {
                 OnButtonClicked(gameObject);
             }
@@ -308,7 +332,7 @@ namespace MixedRealityToolkit.UX.Buttons
         {
             ButtonStateEnum newState;
 
-            if(_bFocused)
+            if (_bFocused)
             {
                 newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
             }
@@ -317,7 +341,7 @@ namespace MixedRealityToolkit.UX.Buttons
                 newState = _bHandVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
             }
 
-            this.OnStateChange(newState);
+            OnStateChange(newState);
 
             if (OnButtonReleased != null)
             {
@@ -382,25 +406,25 @@ namespace MixedRealityToolkit.UX.Buttons
             switch (ButtonState)
             {
                 case ButtonStateEnum.Interactive:
-                {
-                    newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+                        break;
+                    }
                 case ButtonStateEnum.Targeted:
-                {
-                    newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+                        break;
+                    }
                 case ButtonStateEnum.Observation:
-                {
-                    newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+                        break;
+                    }
                 case ButtonStateEnum.ObservationTargeted:
-                {
-                    newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-                    break;
-                }
+                    {
+                        newState = visible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+                        break;
+                    }
             }
 
             OnStateChange(newState);

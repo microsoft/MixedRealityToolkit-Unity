@@ -64,14 +64,14 @@ namespace MixedRealityToolkit.InputModule.Cursor
             base.OnCursorStateChange(state);
 
             // the cursor state has changed, reset the animation timer
-            if (mHasHand != this.IsHandVisible || mIsDown != this.IsInputSourceDown || mHasHover != (this.TargetedObject != null))
+            if (mHasHand != IsHandDetected || mIsDown != IsPointerDown || mHasHover != (TargetedObject != null))
             {
                 mTimer = 0;
             }
 
-            mHasHand = this.IsHandVisible;
-            mIsDown = this.IsInputSourceDown;
-            mHasHover = this.TargetedObject != null;
+            mHasHand = IsHandDetected;
+            mIsDown = IsPointerDown;
+            mHasHover = TargetedObject != null;
 
             mTargetScale = mBaseScale * DefaultScale;
             bool showRing = false;
@@ -113,9 +113,9 @@ namespace MixedRealityToolkit.InputModule.Cursor
             Dot.SetActive(!showRing);
 
             // added observation of CursorModifier
-            if (TargetedCursorModifier != null && mHasHover)
+            if (Pointer.CursorModifier != null && mHasHover)
             {
-                ElementVisibility(!TargetedCursorModifier.GetCursorVisibility());
+                ElementVisibility(!Pointer.CursorModifier.GetCursorVisibility());
             }
         }
 
@@ -135,14 +135,14 @@ namespace MixedRealityToolkit.InputModule.Cursor
                     mTimer = ScaleTime;
                 }
 
-                Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer/ScaleTime);
+                Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
                 Dot.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
             }
 
             // handle scale of main cursor go
-            float distance = Vector3.Distance(GazeManager.Instance.GazeOrigin, transform.position);
-            float smoothscaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
-            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothscaling);
+            float distance = Vector3.Distance(GazeManager.GazeOrigin, transform.position);
+            float smoothScaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
+            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothScaling);
         }
 
         /// <summary>

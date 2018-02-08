@@ -43,36 +43,37 @@ namespace MixedRealityToolkit.Utilities.Solvers
         public float MaxDistance = 2f;
 
         [Tooltip("The element will stay at least this far away from the center of view")]
-        public float MinViewDegrees = 0f;
+        public float MinViewDegrees;
         [Tooltip("The element will stay at least this close to the center of view")]
         public float MaxViewDegrees = 30f;
         [Tooltip("Apply a different clamp to vertical FOV than horizontal.  Vertical = Horizontal * AspectV")]
         public float AspectV = 1f;
 
         [Tooltip("Option to ignore angle clamping")]
-        public bool IgnoreAngleClamp = false;
+        public bool IgnoreAngleClamp;
         [Tooltip("Option to ignore distance clamping")]
-        public bool IgnoreDistanceClamp = false;
+        public bool IgnoreDistanceClamp;
 
         [Tooltip("If true, element will orient to ReferenceDirection, otherwise it will orient to ref pos (the head is the only option currently)")]
-        public bool OrientToRefDir = false;
+        public bool OrientToRefDir;
         #endregion
 
         /// <summary>
-        ///   ReferenceDirectoin is the direction of the cone.  Position to the view direction, or the movement direction
+        ///   Reference Direction is the direction of the cone.  Position to the view direction, or the movement direction
         /// </summary>
         /// <returns>Vector3, the forward direction to use for positioning</returns>
         private Vector3 GetReferenceDirection()
         {
-            Vector3 ret = Vector3.one;
+            Vector3 ret;
             if (ReferenceDirection == ReferenceDirectionEnum.HeadMoveDirection && solverHandler.TrackedObjectToReference == SolverHandler.TrackedObjectToReferenceEnum.Head)
             {
                 ret = Camera.main.GetComponent<CameraMotionInfo>().MoveDirection;
             }
             else
             {
-                ret = base.solverHandler.TransformTarget != null ? base.solverHandler.TransformTarget.forward : Vector3.forward;
+                ret = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.forward : Vector3.forward;
             }
+
             return ret;
         }
 
@@ -85,14 +86,15 @@ namespace MixedRealityToolkit.Utilities.Solvers
             Vector3 ret = Vector3.up;
             if (ReferenceDirection == ReferenceDirectionEnum.ObjectOriented)
             {
-                ret = base.solverHandler.TransformTarget != null ? base.solverHandler.TransformTarget.up : Vector3.up;
+                ret = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.up : Vector3.up;
             }
+
             return ret;
         }
 
         private Vector3 GetReferencePoint()
         {
-            return base.solverHandler.TransformTarget != null ? base.solverHandler.TransformTarget.position : Vector3.zero;
+            return solverHandler.TransformTarget != null ? solverHandler.TransformTarget.position : Vector3.zero;
         }
 
         /// <summary>
@@ -100,8 +102,7 @@ namespace MixedRealityToolkit.Utilities.Solvers
         /// </summary>
         public override void SolverUpdate()
         {
-
-            Vector3 desiredPos = this.WorkingPos;
+            Vector3 desiredPos = WorkingPos;
 
             if (IgnoreAngleClamp)
             {
@@ -121,7 +122,7 @@ namespace MixedRealityToolkit.Utilities.Solvers
 
             // Element orientation
             Vector3 refDirUp = GetReferenceUp();
-            Quaternion desiredRot = Quaternion.identity;
+            Quaternion desiredRot;
 
             if (OrientToRefDir)
             {
@@ -133,21 +134,21 @@ namespace MixedRealityToolkit.Utilities.Solvers
                 desiredRot = Quaternion.LookRotation(desiredPos - refPoint, refDirUp);
             }
 
-            // If gravity aligned then zero out the x and z eulers on the rotation
+            // If gravity aligned then zero out the x and z euler angles on the rotation
             if (ReferenceDirection == ReferenceDirectionEnum.GravityAligned)
             {
                 desiredRot.x = desiredRot.z = 0f;
             }
 
-            this.GoalPosition = desiredPos;
-            this.GoalRotation = desiredRot;
+            GoalPosition = desiredPos;
+            GoalRotation = desiredRot;
 
             UpdateWorkingPosToGoal();
             UpdateWorkingRotToGoal();
         }
 
         /// <summary>
-        ///   Optimized version of GetDesiredOrientation.  There should be a different solver for distance contraint though
+        ///   Optimized version of GetDesiredOrientation.  There should be a different solver for distance constraint though
         /// </summary>
         /// <param name="desiredPos"></param>
         private void GetDesiredOrientation_DistanceOnly(ref Vector3 desiredPos)
@@ -162,7 +163,7 @@ namespace MixedRealityToolkit.Utilities.Solvers
             // Clamp distance too
             float clampedDistance = Mathf.Clamp(elementDist, MinDistance, MaxDistance);
 
-            if (clampedDistance != elementDist)
+            if (!clampedDistance.Equals(elementDist))
             {
                 desiredPos = refPoint + clampedDistance * elementDir;
             }
@@ -186,12 +187,12 @@ namespace MixedRealityToolkit.Utilities.Solvers
             elementDirPerp.Normalize();
 
             // Calculate the clamping angles, accounting for aspect (need the angle relative to view plane)
-            float HtoVAng = Vector3.Angle(elementDirPerp, refDirUp);
-            float VAspectScale = Mathf.Lerp(AspectV, 1f, Mathf.Abs(Mathf.Sin(HtoVAng * Mathf.Deg2Rad)));
+            float angle = Vector3.Angle(elementDirPerp, refDirUp);
+            float aspectScale = Mathf.Lerp(AspectV, 1f, Mathf.Abs(Mathf.Sin(angle * Mathf.Deg2Rad)));
 
             // Calculate the current angle
             float angDegree = Vector3.Angle(elementDir, refDir);
-            float angDegreeClamped = Mathf.Clamp(angDegree, MinViewDegrees * VAspectScale, MaxViewDegrees * VAspectScale);
+            float angDegreeClamped = Mathf.Clamp(angDegree, MinViewDegrees * aspectScale, MaxViewDegrees * aspectScale);
 
             // Clamp distance too, if desired
             float clampedDistance = IgnoreDistanceClamp ? elementDist : Mathf.Clamp(elementDist, MinDistance, MaxDistance);
@@ -201,14 +202,14 @@ namespace MixedRealityToolkit.Utilities.Solvers
             {
                 desiredPos = refPoint + refDir;
             }
-            else if (angDegree != angDegreeClamped)
+            else if (!angDegree.Equals(angDegreeClamped))
             {
                 float angRad = angDegreeClamped * Mathf.Deg2Rad;
 
                 // Calculate new position
                 desiredPos = refPoint + clampedDistance * (refDir * Mathf.Cos(angRad) + elementDirPerp * Mathf.Sin(angRad));
             }
-            else if (clampedDistance != elementDist)
+            else if (!clampedDistance.Equals(elementDist))
             {
                 // Only need to apply distance
                 desiredPos = refPoint + clampedDistance * elementDir;

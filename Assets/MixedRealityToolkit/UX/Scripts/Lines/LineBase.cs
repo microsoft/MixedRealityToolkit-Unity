@@ -28,7 +28,10 @@ namespace MixedRealityToolkit.UX.Lines
         [Range(0f, 1f)]
         [Tooltip("Clamps the line's normalized end point. This setting will affect line renderers.")]
         public float LineEndClamp = 1f;
-        
+        [Tooltip("Transform to use when translating points from local to world space. If null, this object's transform is used.")]
+        [SerializeField]
+        protected Transform customLineTransform;
+
         public virtual bool Loops
         {
             get
@@ -48,9 +51,9 @@ namespace MixedRealityToolkit.UX.Lines
         public Vector3 OriginOffset = Vector3.zero;
 
         [Tooltip("The weight of manual up vectors in Velocity rotation mode")]
-        [Range(0f,1f)]
+        [Range(0f, 1f)]
         public float ManualUpVectorBlend = 0f;
-         
+
         [Tooltip("These vectors are used with ManualUpVectorBlend to determine rotation along the line in Velocity rotation mode. Vectors are distributed along the normalized length of the line.")]
         public Vector3[] ManualUpVectors = new Vector3[] { Vector3.up, Vector3.up, Vector3.up };
 
@@ -60,7 +63,7 @@ namespace MixedRealityToolkit.UX.Lines
         [Range(0f, 1f)]
         public float VelocityBlend = 0.5f;
 
-        [Header ("Distortion")]
+        [Header("Distortion")]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         public DistortionTypeEnum DistortionType = DistortionTypeEnum.NormalizedLength;
         public AnimationCurve DistortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
@@ -106,7 +109,7 @@ namespace MixedRealityToolkit.UX.Lines
         /// <returns></returns>
         protected virtual Vector3 GetUpVectorInternal(float normalizedLength)
         {
-            return transform.forward;
+            return LineTransform.forward;
         }
 
         /// <summary>
@@ -144,6 +147,14 @@ namespace MixedRealityToolkit.UX.Lines
             }
         }
 
+        public Transform LineTransform
+        {
+            get
+            {
+                return customLineTransform != null ? customLineTransform : transform;
+            }
+        }
+
         public void AddDistorter(Distorter newDistorter)
         {
             if (!distorters.Contains(newDistorter))
@@ -175,7 +186,7 @@ namespace MixedRealityToolkit.UX.Lines
         /// <param name="worldLength"></param>
         /// <param name="searchResolution"></param>
         /// <returns></returns>
-        public float GetNormalizedLengthFromWorldLength (float worldLength, int searchResolution = 10)
+        public float GetNormalizedLengthFromWorldLength(float worldLength, int searchResolution = 10)
         {
             Vector3 lastPoint = GetUnclampedPoint(0f);
             Vector3 currentPoint = Vector3.zero;
@@ -197,7 +208,7 @@ namespace MixedRealityToolkit.UX.Lines
                 };
             }
 
-            return Mathf.Clamp01 (normalizedLength);
+            return Mathf.Clamp01(normalizedLength);
         }
 
         /// <summary>
@@ -246,14 +257,14 @@ namespace MixedRealityToolkit.UX.Lines
 
                 case RotationTypeEnum.RelativeToOrigin:
                     Vector3 point = GetPoint(normalizedLength);
-                    Vector3 origin = transform.TransformPoint(OriginOffset);
+                    Vector3 origin = LineTransform.TransformPoint(OriginOffset);
                     rotationVector = (point - origin).normalized;
                     break;
             }
 
             if (rotationVector.magnitude < MinRotationMagnitude)
             {
-                return transform.rotation;
+                return LineTransform.rotation;
             }
 
             Vector3 upVector = GetUpVectorInternal(normalizedLength);
@@ -278,7 +289,7 @@ namespace MixedRealityToolkit.UX.Lines
         /// <param name="pointIndex"></param>
         /// <param name="rotationType"></param>
         /// <returns></returns>
-        public Quaternion GetRotation (int pointIndex, RotationTypeEnum rotationType = RotationTypeEnum.None)
+        public Quaternion GetRotation(int pointIndex, RotationTypeEnum rotationType = RotationTypeEnum.None)
         {
             return GetRotation((float)pointIndex / NumPoints, (rotationType != RotationTypeEnum.None) ? rotationType : RotationType);
         }
@@ -291,7 +302,7 @@ namespace MixedRealityToolkit.UX.Lines
         public Vector3 GetPoint(float normalizedLength)
         {
             normalizedLength = ClampedLength(normalizedLength);
-            return DistortPoint (transform.TransformPoint(GetPointInternal(normalizedLength)), normalizedLength);
+            return DistortPoint(LineTransform.TransformPoint(GetPointInternal(normalizedLength)), normalizedLength);
         }
 
         /// <summary>
@@ -302,7 +313,7 @@ namespace MixedRealityToolkit.UX.Lines
         public Vector3 GetUnclampedPoint(float normalizedLength)
         {
             normalizedLength = Mathf.Clamp01(normalizedLength);
-            return DistortPoint(transform.TransformPoint(GetPointInternal(normalizedLength)), normalizedLength);
+            return DistortPoint(LineTransform.TransformPoint(GetPointInternal(normalizedLength)), normalizedLength);
         }
 
         /// <summary>
@@ -310,14 +321,14 @@ namespace MixedRealityToolkit.UX.Lines
         /// </summary>
         /// <param name="pointIndex"></param>
         /// <returns></returns>
-        public Vector3 GetPoint (int pointIndex)
+        public Vector3 GetPoint(int pointIndex)
         {
             if (pointIndex < 0 || pointIndex >= NumPoints)
             {
                 throw new System.IndexOutOfRangeException();
             }
 
-            return transform.TransformPoint(GetPointInternal(pointIndex));
+            return LineTransform.TransformPoint(GetPointInternal(pointIndex));
         }
 
         /// <summary>
@@ -326,14 +337,14 @@ namespace MixedRealityToolkit.UX.Lines
         /// </summary>
         /// <param name="pointIndex"></param>
         /// <param name="point"></param>
-        public void SetPoint (int pointIndex, Vector3 point)
+        public void SetPoint(int pointIndex, Vector3 point)
         {
             if (pointIndex < 0 || pointIndex >= NumPoints)
             {
                 throw new System.IndexOutOfRangeException();
             }
 
-            SetPointInternal(pointIndex, transform.InverseTransformPoint(point));
+            SetPointInternal(pointIndex, LineTransform.InverseTransformPoint(point));
         }
 
         public virtual void AppendPoint(Vector3 point)
@@ -351,7 +362,7 @@ namespace MixedRealityToolkit.UX.Lines
             distorters.Sort();
         }
 
-        private Vector3 DistortPoint (Vector3 point, float normalizedLength)
+        private Vector3 DistortPoint(Vector3 point, float normalizedLength)
         {
             float strength = UniformDistortionStrength;
             switch (DistortionType)
@@ -378,7 +389,7 @@ namespace MixedRealityToolkit.UX.Lines
 
         private float ClampedLength(float normalizedLength)
         {
-            return Mathf.Lerp(Mathf.Max (LineStartClamp, 0.0001f), Mathf.Min (LineEndClamp, 0.9999f), Mathf.Clamp01(normalizedLength));
+            return Mathf.Lerp(Mathf.Max(LineStartClamp, 0.0001f), Mathf.Min(LineEndClamp, 0.9999f), Mathf.Clamp01(normalizedLength));
         }
 
         #endregion
@@ -408,7 +419,7 @@ namespace MixedRealityToolkit.UX.Lines
 
             Vector3 firstPos = GetPoint(0f);
             Vector3 lastPos = firstPos;
-            Gizmos.color = Color.Lerp (Color.white, Color.clear, 0.25f);
+            Gizmos.color = Color.Lerp(LineBaseEditor.DefaultDisplayLineColor, Color.clear, 0.25f);
             int numSteps = 16;
 
             for (int i = 1; i < numSteps; i++)

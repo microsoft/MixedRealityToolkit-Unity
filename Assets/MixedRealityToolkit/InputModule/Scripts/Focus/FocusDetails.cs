@@ -16,5 +16,6 @@ namespace MixedRealityToolkit.InputModule.Focus
         public Vector3 Point;
         public Vector3 Normal;
         public GameObject Object;
+        public RaycastHit LastRaycastHit;
     }
 }

@@ -15,15 +15,6 @@ namespace MixedRealityToolkit.InputModule.Cursor
         public CursorStateEnum CursorState { get { return cursorState; } }
         private CursorStateEnum cursorState = CursorStateEnum.None;
 
-        [SerializeField]
-        [Tooltip("Set this in the editor to an object with a component that implements IPointerSource to tell this cursor which pointer to follow. To set the pointer programmatically, set Pointer directly.")]
-        protected GameObject LoadPointer;
-
-        /// <summary>
-        /// The pointer that this cursor should follow and process input from.
-        /// </summary>
-        public IPointingSource Pointer { get; set; }
-
         /// <summary>
         /// Minimum distance for cursor if nothing is hit
         /// </summary>
@@ -74,43 +65,58 @@ namespace MixedRealityToolkit.InputModule.Cursor
         [Header("Transform References")]
         public Transform PrimaryCursorVisual;
 
-        public Vector3 Position
-        {
-            get { return transform.position; }
-        }
-
-        public Quaternion Rotation
-        {
-            get { return transform.rotation; }
-        }
-
-        public Vector3 LocalScale
-        {
-            get { return transform.localScale; }
-        }
+        /// <summary>
+        /// Indicates if the source is detected.
+        /// </summary>
+        protected bool IsHandDetected;
 
         /// <summary>
-        /// Indicates if hand is current in the view
+        /// Indicates pointer or air tap down
         /// </summary>
-        protected bool IsHandVisible;
-
-        /// <summary>
-        /// Indicates air tap down
-        /// </summary>
-        protected bool IsInputSourceDown;
+        protected bool IsPointerDown;
 
         protected GameObject TargetedObject;
-        protected ICursorModifier TargetedCursorModifier;
 
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
 
-        /// <summary>
-        /// Position, scale and rotational goals for cursor
-        /// </summary>
+        // Position, scale and rotational goals for cursor
         private Vector3 targetPosition;
         private Vector3 targetScale;
         private Quaternion targetRotation;
+
+        #region ICursor Implementation
+
+        /// <summary>
+        /// The pointer that this cursor should follow and process input from.
+        /// </summary>
+        public virtual IPointer Pointer
+        {
+            get { return pointer; }
+            set
+            {
+                pointer = value;
+                pointer.BaseCursor = this;
+                RegisterManagers();
+            }
+        }
+
+        private IPointer pointer;
+
+        public virtual Vector3 Position
+        {
+            get { return transform.position; }
+        }
+
+        public virtual Quaternion Rotation
+        {
+            get { return transform.rotation; }
+        }
+
+        public virtual Vector3 LocalScale
+        {
+            get { return transform.localScale; }
+        }
 
         /// <summary>
         /// Indicates if the cursor should be visible
@@ -124,19 +130,140 @@ namespace MixedRealityToolkit.InputModule.Cursor
             }
         }
 
-        #region MonoBehaviour Functions
+        #endregion ICursor Implementation
+
+        #region ISourceStateHandler Implementation
+
+        /// <summary>
+        /// Input source detected callback for the cursor
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnSourceDetected(SourceStateEventData eventData)
+        {
+#if UNITY_WSA
+            SimulatedInputSource inputSource = null;
+
+            if (Application.isEditor && eventData.InputSource.GetType() == typeof(SimulatedInputSource))
+            {
+                inputSource = eventData.InputSource as SimulatedInputSource;
+            }
+
+            InteractionSourceKind sourceKind;
+            if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
+                inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
+                && sourceKind == InteractionSourceKind.Hand)
+            {
+                visibleHandsCount++;
+            }
+#endif
+
+            if (visibleHandsCount > 0)
+            {
+                IsHandDetected = true;
+            }
+        }
+
+        /// <summary>
+        /// Input source lost callback for the cursor
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnSourceLost(SourceStateEventData eventData)
+        {
+#if UNITY_WSA
+            SimulatedInputSource inputSource = null;
+
+            if (Application.isEditor && eventData.InputSource.GetType() == typeof(SimulatedInputSource))
+            {
+                inputSource = eventData.InputSource as SimulatedInputSource;
+            }
+
+            InteractionSourceKind sourceKind;
+            if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
+                 inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
+                && sourceKind == InteractionSourceKind.Hand)
+            {
+                visibleHandsCount--;
+            }
+#endif
+
+            if (visibleHandsCount == 0)
+            {
+                IsHandDetected = false;
+                IsPointerDown = false;
+            }
+        }
+
+        public virtual void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
+
+        #endregion ISourceStateHandler Implementation
+
+        #region IFocusChangedHandler Implementation
+
+        /// <summary>
+        /// Updates the currently targeted object and cursor modifier upon getting
+        /// an event indicating that the focused object has changed.
+        /// </summary>
+        public virtual void OnBeforeFocusChange(FocusEventData eventData)
+        {
+            if (Pointer.PointerId == eventData.Pointer.PointerId)
+            {
+                TargetedObject = eventData.NewFocusedObject;
+            }
+        }
+
+        public virtual void OnFocusChanged(FocusEventData eventData) { }
+
+        #endregion IFocusChangedHandler Implementation
+
+        #region IPointerHandler Implementation
+
+        /// <summary>
+        /// Function for receiving OnPointerDown events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerDown(ClickEventData eventData)
+        {
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            {
+                if (sourcePointer.PointerId == Pointer.PointerId)
+                {
+                    IsPointerDown = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Function for receiving OnPointerClicked events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerClicked(ClickEventData eventData) { }
+
+        /// <summary>
+        /// Function for receiving OnPointerUp events from InputManager
+        /// </summary>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerUp(ClickEventData eventData)
+        {
+            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            {
+                if (sourcePointer.PointerId == Pointer.PointerId)
+                {
+                    IsPointerDown = false;
+                }
+            }
+        }
+
+        #endregion IPointerHandler Implementation
+
+        #region MonoBehaviour Impementation
 
         private void Awake()
         {
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
             SetVisibility(isVisible);
-        }
-
-        private void Start()
-        {
-            RegisterManagers();
-            TryLoadPointerIfNeeded();
         }
 
         private void Update()
@@ -150,10 +277,6 @@ namespace MixedRealityToolkit.InputModule.Cursor
         /// </summary>
         protected virtual void OnEnable()
         {
-            if (FocusManager.IsInitialized && Pointer != null)
-            {
-                OnPointerSpecificFocusChanged(Pointer, null, FocusManager.Instance.GetFocusedObject(Pointer));
-            }
             OnCursorStateChange(CursorStateEnum.None);
         }
 
@@ -163,9 +286,8 @@ namespace MixedRealityToolkit.InputModule.Cursor
         protected virtual void OnDisable()
         {
             TargetedObject = null;
-            TargetedCursorModifier = null;
             visibleHandsCount = 0;
-            IsHandVisible = false;
+            IsHandDetected = false;
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
 
@@ -174,7 +296,7 @@ namespace MixedRealityToolkit.InputModule.Cursor
             UnregisterManagers();
         }
 
-        #endregion
+        #endregion MonoBehaviour Impementation
 
         /// <summary>
         /// Register to events from the managers the cursor needs.
@@ -196,8 +318,6 @@ namespace MixedRealityToolkit.InputModule.Cursor
 
             InputManager.Instance.InputEnabled += OnInputEnabled;
             InputManager.Instance.InputDisabled += OnInputDisabled;
-
-            FocusManager.Instance.PointerSpecificFocusChanged += OnPointerSpecificFocusChanged;
         }
 
         /// <summary>
@@ -211,75 +331,6 @@ namespace MixedRealityToolkit.InputModule.Cursor
                 InputManager.Instance.InputDisabled -= OnInputDisabled;
                 InputManager.Instance.RemoveGlobalListener(gameObject);
             }
-
-            if (FocusManager.IsInitialized)
-            {
-                FocusManager.Instance.PointerSpecificFocusChanged -= OnPointerSpecificFocusChanged;
-            }
-        }
-
-        private void TryLoadPointerIfNeeded()
-        {
-            if (Pointer != null)
-            {
-                // Nothing to do. Keep the pointer that must have been set programmatically.
-            }
-            else if (LoadPointer != null)
-            {
-                Pointer = LoadPointer.GetComponent<IPointingSource>();
-
-                if (Pointer == null)
-                {
-                    Debug.LogErrorFormat("Load pointer object \"{0}\" is missing its {1} component.",
-                        LoadPointer.name,
-                        typeof(IPointingSource).Name
-                        );
-                }
-            }
-            else if (FocusManager.IsInitialized)
-            {
-                // For backward-compatibility, if a pointer wasn't specified, but there's exactly one
-                // pointer currently registered with FocusManager, we use it.
-                IPointingSource pointingSource;
-                if (FocusManager.Instance.TryGetSinglePointer(out pointingSource))
-                {
-                    Pointer = pointingSource;
-                }
-            }
-            else
-            {
-                // No options available, so we leave Pointer unset. It will need to be set programmatically later.
-            }
-        }
-
-        /// <summary>
-        /// Updates the currently targeted object and cursor modifier upon getting
-        /// an event indicating that the focused object has changed.
-        /// </summary>
-        /// <param name="pointer">The pointer associated with this focus change.</param>
-        /// <param name="oldFocusedObject">Object that was previously being focused.</param>
-        /// <param name="newFocusedObject">New object being focused.</param>
-        protected virtual void OnPointerSpecificFocusChanged(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
-        {
-            if (pointer == Pointer)
-            {
-                TargetedObject = newFocusedObject;
-
-                CursorModifier newModifier = (newFocusedObject == null)
-                    ? null
-                    : newFocusedObject.GetComponent<CursorModifier>();
-
-                OnActiveModifier(newModifier);
-            }
-        }
-
-        /// <summary>
-        /// Override function when a new modifier is found or no modifier is valid
-        /// </summary>
-        /// <param name="modifier"></param>
-        protected virtual void OnActiveModifier(CursorModifier modifier)
-        {
-            TargetedCursorModifier = modifier;
         }
 
         /// <summary>
@@ -287,9 +338,25 @@ namespace MixedRealityToolkit.InputModule.Cursor
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-            FocusDetails focusDetails = FocusManager.Instance.GetFocusDetails(Pointer);
-            GameObject newTargetedObject = focusDetails.Object;
-            Vector3 lookForward = Vector3.forward;
+            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+
+            FocusDetails focusDetails;
+            if (!FocusManager.Instance.TryGetFocusDetails(Pointer, out focusDetails))
+            {
+                if (FocusManager.Instance.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
+                }
+                else
+                {
+                    Debug.LogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
+                }
+
+                return;
+            }
+
+            GameObject newTargetedObject = FocusManager.Instance.GetFocusedObject(Pointer);
+            Vector3 lookForward;
 
             // Normalize scale on before update
             targetScale = Vector3.one;
@@ -298,7 +365,6 @@ namespace MixedRealityToolkit.InputModule.Cursor
             if (newTargetedObject == null)
             {
                 TargetedObject = null;
-                TargetedCursorModifier = null;
 
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, DefaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, DefaultCursorDistance);
@@ -309,9 +375,9 @@ namespace MixedRealityToolkit.InputModule.Cursor
                 // Update currently targeted object
                 TargetedObject = newTargetedObject;
 
-                if (TargetedCursorModifier != null)
+                if (Pointer.CursorModifier != null)
                 {
-                    TargetedCursorModifier.GetModifiedTransform(this, out targetPosition, out targetRotation, out targetScale);
+                    Pointer.CursorModifier.GetModifiedTransform(this, out targetPosition, out targetRotation, out targetScale);
                 }
                 else
                 {
@@ -354,7 +420,7 @@ namespace MixedRealityToolkit.InputModule.Cursor
         {
             // Reset visible hands on disable
             visibleHandsCount = 0;
-            IsHandVisible = false;
+            IsHandDetected = false;
 
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
@@ -365,71 +431,6 @@ namespace MixedRealityToolkit.InputModule.Cursor
         public virtual void OnInputEnabled()
         {
             OnCursorStateChange(CursorStateEnum.None);
-        }
-
-        /// <summary>
-        /// Function for consuming the OnInputUp events
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnInputUp(InputEventData eventData)
-        {
-            if (Pointer != null && Pointer.OwnsInput(eventData))
-            {
-                IsInputSourceDown = false;
-            }
-        }
-
-        /// <summary>
-        /// Function for receiving OnInputDown events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnInputDown(InputEventData eventData)
-        {
-            if (Pointer != null && Pointer.OwnsInput(eventData))
-            {
-                IsInputSourceDown = true;
-            }
-        }
-
-        /// <summary>
-        /// Function for receiving OnInputClicked events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnInputClicked(InputClickedEventData eventData)
-        {
-            // Open input socket for other cool stuff...
-        }
-
-
-        /// <summary>
-        /// Input source detected callback for the cursor
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnSourceDetected(SourceStateEventData eventData)
-        {
-            if (Pointer != null && Pointer.OwnsInput(eventData))
-            {
-                visibleHandsCount++;
-                IsHandVisible = true;
-            }
-        }
-
-
-        /// <summary>
-        /// Input source lost callback for the cursor
-        /// </summary>
-        /// <param name="eventData"></param>
-        public virtual void OnSourceLost(SourceStateEventData eventData)
-        {
-            if (Pointer != null && Pointer.OwnsInput(eventData))
-            {
-                visibleHandsCount--;
-                if (visibleHandsCount == 0)
-                {
-                    IsHandVisible = false;
-                    IsInputSourceDown = false;
-                }
-            }
         }
 
         /// <summary>
@@ -451,21 +452,24 @@ namespace MixedRealityToolkit.InputModule.Cursor
         {
             if (cursorState != CursorStateEnum.Contextual)
             {
-                if (IsInputSourceDown)
+                if (IsPointerDown)
                 {
                     return CursorStateEnum.Select;
                 }
-                else if (cursorState == CursorStateEnum.Select)
+
+                if (cursorState == CursorStateEnum.Select)
                 {
                     return CursorStateEnum.Release;
                 }
 
-                if (IsHandVisible)
+                if (IsHandDetected)
                 {
                     return TargetedObject != null ? CursorStateEnum.InteractHover : CursorStateEnum.Interact;
                 }
+
                 return TargetedObject != null ? CursorStateEnum.ObserveHover : CursorStateEnum.Observe;
             }
+
             return CursorStateEnum.Contextual;
         }
 

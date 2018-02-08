@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.Examples.Utilities
     /// <summary>
     /// Tap Test for text to speech. This voice will appear to emanate from the object
     /// </summary>
-    public class TextToSpeechOnTapTest : MonoBehaviour, IInputClickHandler
+    public class TextToSpeechOnTapTest : MonoBehaviour, IPointerHandler
     {
         private TextToSpeech textToSpeech;
 
@@ -21,11 +21,15 @@ namespace MixedRealityToolkit.Examples.Utilities
             textToSpeech = GetComponent<TextToSpeech>();
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.
-            if (textToSpeech != null && eventData.PressType == InteractionSourcePressInfo.Select)
+            if (textToSpeech != null)
             {
                 // Create message
                 var msg = string.Format(

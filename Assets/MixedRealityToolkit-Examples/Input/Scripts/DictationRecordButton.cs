@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace MixedRealityToolkit.Examples.InputModule
 {
-    public class DictationRecordButton : MonoBehaviour, IInputClickHandler, IDictationHandler
+    public class DictationRecordButton : MonoBehaviour, IPointerHandler, IDictationHandler
     {
         [SerializeField]
         [Range(0.1f, 5f)]
@@ -40,7 +40,11 @@ namespace MixedRealityToolkit.Examples.InputModule
             buttonRenderer = GetComponent<Renderer>();
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             ToggleRecording();
         }
@@ -58,11 +62,7 @@ namespace MixedRealityToolkit.Examples.InputModule
             else
             {
                 isRecording = true;
-                StartCoroutine(DictationInputManager.StartRecording(
-                    gameObject,
-                    initialSilenceTimeout,
-                    autoSilenceTimeout,
-                    recordingTime));
+                StartCoroutine(DictationInputManager.StartRecording(initialSilenceTimeout, autoSilenceTimeout, recordingTime));
                 speechToTextOutput.color = Color.green;
                 recordLight.SetActive(true);
                 buttonRenderer.enabled = false;

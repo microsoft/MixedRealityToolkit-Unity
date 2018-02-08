@@ -12,54 +12,21 @@ namespace MixedRealityToolkit.InputModule.Gaze
     /// <summary>
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
-    public class GazeManager : Singleton<GazeManager>, IPointingSource
+    public class GazeManager : Singleton<GazeManager>, IInputSource
     {
-        /// <summary>
-        /// HitInfo property gives access to information at the object being gazed at, if any.
-        /// </summary>
-        public RaycastHit HitInfo { get; private set; }
-
-        /// <summary>
-        /// The game object that is currently being gazed at, if any.
-        /// </summary>
-        public GameObject HitObject { get; private set; }
-
-        /// <summary>
-        /// Position at which the gaze manager hit an object.
-        /// If no object is currently being hit, this will use the last hit distance.
-        /// </summary>
-        public Vector3 HitPosition { get; private set; }
-
-        /// <summary>
-        /// Normal of the point at which the gaze manager hit an object.
-        /// If no object is currently being hit, this will return the previous normal.
-        /// </summary>
-        public Vector3 HitNormal { get; private set; }
-
-        /// <summary>
-        /// Origin of the gaze.
-        /// </summary>
-        public Vector3 GazeOrigin
-        {
-            get { return Rays[0].Origin; }
-        }
-
-        /// <summary>
-        /// Normal of the gaze.
-        /// </summary>
-        public Vector3 GazeNormal
-        {
-            get { return Rays[0].Direction; }
-        }
+        [SerializeField]
+        [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
+        private GameObject cursorPrefab;
 
         /// <summary>
         /// Maximum distance at which the gaze can collide with an object.
         /// </summary>
+        [SerializeField]
         [Tooltip("Maximum distance at which the gaze can collide with an object.")]
-        public float MaxGazeCollisionDistance = 10.0f;
+        private float maxGazeCollisionDistance = 10.0f;
 
         /// <summary>
-        /// The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.
+        /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
         ///
         /// Example Usage:
         ///
@@ -69,61 +36,259 @@ namespace MixedRealityToolkit.InputModule.Gaze
         /// int nonSR = Physics.DefaultRaycastLayers & ~sr;
         /// GazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
         /// </summary>
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.\n\nExample Usage:\n\n// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)\n\nint sr = LayerMask.GetMask(\"SR\");\nint nonSR = Physics.DefaultRaycastLayers & ~sr;\nGazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };")]
-        public LayerMask[] RaycastLayerMasks = { Physics.DefaultRaycastLayers };
+        [SerializeField]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.\n\nExample Usage:\n\n// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)\n\nint sr = LayerMask.GetMask(\"SR\");\nint nonSR = Physics.DefaultRaycastLayers & ~sr;\nGazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };")]
+        private LayerMask[] raycastLayerMasks = { Physics.DefaultRaycastLayers };
 
         /// <summary>
         /// Current stabilization method, used to smooth out the gaze ray data.
         /// If left null, no stabilization will be performed.
         /// </summary>
+        [SerializeField]
         [Tooltip("Stabilizer, if any, used to smooth out the gaze ray data.")]
-        public BaseRayStabilizer Stabilizer = null;
+        private BaseRayStabilizer stabilizer;
 
         /// <summary>
         /// Transform that should be used as the source of the gaze position and rotation.
         /// Defaults to the main camera.
         /// </summary>
+        [SerializeField]
         [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to CameraCache.Main")]
-        public Transform GazeTransform;
+        private Transform gazeTransform;
 
+        [SerializeField]
         [Tooltip("True to draw a debug view of the ray.")]
-        public bool DebugDrawRay;
-        public PointerResult Result { get; set; }
+        private bool debugDrawRay;
 
-        public RayStep[] Rays { get { return rays; } }
+        /// <summary>
+        /// The game object that is currently being gazed at, if any.
+        /// </summary>
+        public static GameObject GazeTarget { get; private set; }
 
-        private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.zero) };
+        /// <summary>
+        /// HitInfo property gives access to information at the object being gazed at, if any.
+        /// </summary>
+        public static RaycastHit HitInfo { get; private set; }
 
-        public float? ExtentOverride
+        /// <summary>
+        /// Position at which the gaze manager hit an object.
+        /// If no object is currently being hit, this will use the last hit distance.
+        /// </summary>
+        public static Vector3 HitPosition { get; private set; }
+
+        /// <summary>
+        /// Normal of the point at which the gaze manager hit an object.
+        /// If no object is currently being hit, this will return the previous normal.
+        /// </summary>
+        public static Vector3 HitNormal { get; private set; }
+
+        /// <summary>
+        /// Origin of the gaze.
+        /// </summary>
+        public static Vector3 GazeOrigin { get { return pointers[0].Rays[0].Origin; } }
+
+        /// <summary>
+        /// Normal of the gaze.
+        /// </summary>
+        public static Vector3 GazeDirection { get { return pointers[0].Rays[0].Direction; } }
+
+        private static float lastHitDistance = 2.0f;
+
+        /// <summary>
+        /// Always true initially so we only initialize our interaction sources 
+        /// after all <see cref="Singleton{T}"/> Instances have been properly initialized.
+        /// </summary>
+        private bool delayInitialization = true;
+
+        #region IInputSource Implementation
+
+        public uint SourceId { get; protected set; }
+
+        public string SourceName { get { return "Gaze"; } }
+
+        public IPointer[] Pointers
         {
-            get { return MaxGazeCollisionDistance; }
+            get { return pointers; }
         }
 
-        public LayerMask[] PrioritizedLayerMasksOverride
+        private static readonly IPointer[] pointers = new IPointer[1];
+
+        public SupportedInputInfo GetSupportedInputInfo()
         {
-            get { return RaycastLayerMasks; }
+            return SupportedInputInfo.Pointing;
         }
 
-        public bool InteractionEnabled
+        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
         {
-            get { return true; }
+            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
         }
 
-        public bool FocusLocked { get; set; }
+        #endregion IInputSource Implementation
 
-        private float lastHitDistance = 2.0f;
+        #region IPointer Implementation
 
-        protected override void Awake()
+        private class GazePointer : GenericPointer
         {
-            base.Awake();
+            public GazePointer(string pointerName, IInputSource inputSourceParent) : base(pointerName, inputSourceParent)
+            {
+                PrioritizedLayerMasksOverride = Instance.raycastLayerMasks;
+                PointerExtent = Instance.maxGazeCollisionDistance;
+                InteractionEnabled = true;
+            }
+
+            public override void OnPreRaycast()
+            {
+                if (Instance.gazeTransform == null)
+                {
+                    pointers[0].Rays[0] = default(RayStep);
+                }
+                else
+                {
+                    Vector3 newGazeOrigin = Instance.gazeTransform.position;
+                    Vector3 newGazeNormal = Instance.gazeTransform.forward;
+
+                    // Update gaze info from stabilizer
+                    if (Instance.stabilizer != null)
+                    {
+                        Instance.stabilizer.UpdateStability(newGazeOrigin, Instance.gazeTransform.rotation);
+                        newGazeOrigin = Instance.stabilizer.StablePosition;
+                        newGazeNormal = Instance.stabilizer.StableRay.direction;
+                    }
+
+                    pointers[0].Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (pointers[0].PointerExtent ?? FocusManager.GlobalPointingExtent)));
+                }
+
+                HitPosition = pointers[0].Rays[0].Origin + (lastHitDistance * pointers[0].Rays[0].Direction);
+            }
+
+            public override void OnPostRaycast()
+            {
+                HitInfo = pointers[0].Result.End.LastRaycastHit;
+                GazeTarget = pointers[0].Result.End.Object;
+
+                if (pointers[0].Result.End.Object != null)
+                {
+                    lastHitDistance = (pointers[0].Result.End.Point - Instance.Pointers[0].Rays[0].Origin).magnitude;
+                    HitPosition = pointers[0].Rays[0].Origin + (lastHitDistance * pointers[0].Rays[0].Direction);
+                    HitNormal = pointers[0].Result.End.Normal;
+                }
+            }
+
+            public override bool TryGetPointerPosition(out Vector3 position)
+            {
+                position = Instance.gazeTransform.position;
+                return true;
+            }
+
+            public override bool TryGetPointingRay(out Ray pointingRay)
+            {
+                pointingRay = new Ray(GazeOrigin, GazeDirection);
+                return true;
+            }
+
+            public override bool TryGetPointerRotation(out Quaternion rotation)
+            {
+                rotation = Quaternion.identity;
+                return false;
+            }
+        }
+
+        #endregion IPointer Implementation
+
+        #region IEquality Implementation
+
+        private bool Equals(IInputSource other)
+        {
+            return base.Equals(other) && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) { return false; }
+            if (ReferenceEquals(this, obj)) { return true; }
+            if (obj.GetType() != GetType()) { return false; }
+
+            return Equals((IInputSource)obj);
+        }
+
+        public static bool Equals(IInputSource left, IInputSource right)
+        {
+            return left.SourceId == right.SourceId;
+        }
+
+        bool IEqualityComparer.Equals(object x, object y)
+        {
+            var left = (IInputSource)x;
+            var right = (IInputSource)y;
+            if (left != null && right != null)
+            {
+                return Equals(left, right);
+            }
+
+            return false;
+        }
+
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)SourceId;
+                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        #endregion IEquality Implementation
+
+        #region Monobehaiour Implementation
+
+        protected virtual void OnEnable()
+        {
+            if (!delayInitialization)
+            {
+                // The first time we call OnEnable we skip this.
+                RegisterSource();
+            }
+        }
+
+        protected virtual void Start()
+        {
+            FocusManager.AssertIsInitialized();
+            InputManager.AssertIsInitialized();
+            Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
+
+            SourceId = InputManager.GenerateNewSourceId();
+
+            Pointers[0] = new GazePointer("Gaze Pointer", this);
+
+            if (cursorPrefab != null)
+            {
+                var cursorObj = Instantiate(cursorPrefab, transform);
+                Pointers[0].BaseCursor = cursorObj.GetComponent<BaseCursor>();
+                Debug.Assert(Pointers[0].BaseCursor != null, "Failed to load cursor");
+
+                Pointers[0].BaseCursor.Pointer = Pointers[0];
+            }
 
             // Add default RaycastLayers as first layerPriority
-            if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
+            if (raycastLayerMasks == null || raycastLayerMasks.Length == 0)
             {
-                RaycastLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
+                raycastLayerMasks = new LayerMask[] { Physics.DefaultRaycastLayers };
             }
 
             FindGazeTransform();
+
+            if (delayInitialization)
+            {
+                delayInitialization = false;
+                RegisterSource();
+            }
         }
 
         private void Update()
@@ -133,19 +298,53 @@ namespace MixedRealityToolkit.InputModule.Gaze
                 return;
             }
 
-            if (DebugDrawRay)
+            if (debugDrawRay)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
         }
 
+        private void OnDisable()
+        {
+            InputManager.Instance.RaiseSourceLost(this);
+
+            if (Pointers[0].BaseCursor != null)
+            {
+                Pointers[0].BaseCursor.enabled = false;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            if (Pointers[0].BaseCursor != null)
+            {
+                Destroy(Pointers[0].BaseCursor.gameObject);
+            }
+
+            base.OnDestroy();
+        }
+
+        #endregion Monobehaiour Implementation
+
+        #region Utilities
+
+        private void RegisterSource()
+        {
+            if (Pointers[0].BaseCursor != null)
+            {
+                Pointers[0].BaseCursor.enabled = true;
+            }
+
+            InputManager.Instance.RaiseSourceDetected(this);
+        }
+
         private bool FindGazeTransform()
         {
-            if (GazeTransform != null) { return true; }
+            if (gazeTransform != null) { return true; }
 
             if (CameraCache.Main != null)
             {
-                GazeTransform = CameraCache.Main.transform;
+                gazeTransform = CameraCache.Main.transform;
                 return true;
             }
 
@@ -153,74 +352,6 @@ namespace MixedRealityToolkit.InputModule.Gaze
             return false;
         }
 
-        /// <summary>
-        /// Updates the current gaze information, so that the gaze origin and normal are accurate.
-        /// </summary>
-        private void UpdateGazeInfo()
-        {
-            if (GazeTransform == null)
-            {
-                Rays[0] = default(RayStep);
-            }
-            else
-            {
-                Vector3 newGazeOrigin = GazeTransform.position;
-                Vector3 newGazeNormal = GazeTransform.forward;
-
-                // Update gaze info from stabilizer
-                if (Stabilizer != null)
-                {
-                    Stabilizer.UpdateStability(newGazeOrigin, GazeTransform.rotation);
-                    newGazeOrigin = Stabilizer.StablePosition;
-                    newGazeNormal = Stabilizer.StableRay.direction;
-                }
-
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * FocusManager.Instance.GetPointingExtent(this)));
-            }
-
-            UpdateHitPosition();
-        }
-
-        public virtual void OnPreRaycast()
-        {
-            UpdateGazeInfo();
-        }
-
-        public virtual void OnPostRaycast()
-        {
-            // Nothing needed
-        }
-
-        public bool OwnsInput(BaseEventData eventData)
-        {
-            // NOTE: This is a simple pointer and not meant to be used simultaneously with others.
-            return true;
-        }
-
-        /// <summary>
-        /// Notifies this gaze manager of its new hit details.
-        /// </summary>
-        /// <param name="focusDetails">Details of the current focus.</param>
-        /// <param name="hitInfo">Details of the focus raycast hit.</param>
-        /// <param name="isRegisteredForFocus">Whether or not this gaze manager is registered as a focus pointer.</param>
-        public void UpdateHitDetails(FocusDetails focusDetails, RaycastHit hitInfo, bool isRegisteredForFocus)
-        {
-            HitInfo = hitInfo;
-            HitObject = isRegisteredForFocus
-                ? focusDetails.Object
-                : null; // If we're not actually registered for focus, we keep HitObject as null so we don't mislead anyone.
-
-            if (focusDetails.Object != null)
-            {
-                lastHitDistance = (focusDetails.Point - Rays[0].Origin).magnitude;
-                UpdateHitPosition();
-                HitNormal = focusDetails.Normal;
-            }
-        }
-
-        private void UpdateHitPosition()
-        {
-            HitPosition = (Rays[0].Origin + (lastHitDistance * Rays[0].Direction));
-        }
+        #endregion Utilities
     }
 }

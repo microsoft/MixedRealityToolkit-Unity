@@ -5,59 +5,10 @@ using UnityEngine;
 
 namespace MixedRealityToolkit.UX.Lines
 {
-    public class Parabola : LineBase
+    public abstract class Parabola : LineBase
     {
         [Header("Parabola Settings")]
         public Vector3 Start = Vector3.zero;
-        public Vector3 End = Vector3.forward;
-        public Vector3 UpDirection = Vector3.up;
-        [Range(0.01f, 10f)]
-        public float Height = 1f;
-
-        public override int NumPoints
-        {
-            get
-            {
-                return 2;
-            }
-        }
-
-        protected override Vector3 GetPointInternal(int pointIndex)
-        {
-            switch (pointIndex)
-            {
-                case 0:
-                    return Start;
-
-                case 1:
-                    return End;
-
-                default:
-                    return Vector3.zero;
-            }
-        }
-
-        protected override void SetPointInternal(int pointIndex, Vector3 point)
-        {
-            switch (pointIndex)
-            {
-                case 0:
-                    Start = point;
-                    break;
-
-                case 1:
-                    End = point;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        protected override Vector3 GetPointInternal(float normalizedDistance)
-        {
-            return LineUtils.GetPointAlongParabola(Start, End, UpDirection, Height, normalizedDistance);
-        }
 
         protected override float GetUnclampedWorldLengthInternal()
         {

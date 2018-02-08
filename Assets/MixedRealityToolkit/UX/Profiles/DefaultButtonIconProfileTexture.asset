@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235c7917337f78f4b853694125a79865, type: 3}
   m_Name: DefaultButtonIconProfileTexture
   m_EditorClassIdentifier: Assembly-CSharp:HUX.Buttons:ButtonIconProfileTexture
-  _IconNotFound_: {fileID: 2800000, guid: 2adc8135dd936004db37d5cead85f951, type: 3}
+  _IconNotFound: {fileID: 0}
   AlphaTransitionSpeed: 0.25
   IconMaterial: {fileID: 2100000, guid: 4f37668d794e3694c9ee36b62447d99b, type: 2}
   IconMesh: {fileID: 4300010, guid: c68a88ae5c5b91f41b94c83aa4c4196e, type: 3}

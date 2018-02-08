@@ -33,7 +33,12 @@ namespace MixedRealityToolkit.InputModule.Cursor
         /// </summary>
         protected override void OnEnable()
         {
-            if(TargetRenderer == null)
+            if (CursorStateData == null)
+            {
+                CursorStateData = new SpriteCursorDatum[0];
+            }
+
+            if (TargetRenderer == null)
             {
                 TargetRenderer = GetComponentInChildren<SpriteRenderer>();
             }
@@ -75,7 +80,5 @@ namespace MixedRealityToolkit.InputModule.Cursor
                 TargetRenderer.color = stateDatum.CursorColor;
             }
         }
-
     }
-
 }

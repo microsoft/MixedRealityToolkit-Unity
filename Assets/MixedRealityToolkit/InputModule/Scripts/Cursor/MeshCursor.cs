@@ -34,7 +34,12 @@ namespace MixedRealityToolkit.InputModule.Cursor
         /// </summary>
         protected override void OnEnable()
         {
-            if(TargetRenderer == null)
+            if (CursorStateData == null)
+            {
+                CursorStateData = new MeshCursorDatum[0];
+            }
+
+            if (TargetRenderer == null)
             {
                 TargetRenderer = GetComponentInChildren<MeshRenderer>();
             }
@@ -73,7 +78,7 @@ namespace MixedRealityToolkit.InputModule.Cursor
             if (TargetRenderer != null)
             {
                 MeshFilter mf = TargetRenderer.gameObject.GetComponent<MeshFilter>();
-                if(mf != null && stateDatum.CursorMesh != null)
+                if (mf != null && stateDatum.CursorMesh != null)
                 {
                     mf.mesh = stateDatum.CursorMesh;
                 }

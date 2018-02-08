@@ -23,16 +23,23 @@ namespace MixedRealityToolkit.Tests.Input
         {
             TestUtils.ClearScene();
             receivedEventSources = new List<GameObject>();
+
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
-            inputManagerContainer.AddComponent<InputManager>();
-            inputManagerContainer.AddComponent<GazeManager>();
-            inputManagerContainer.AddComponent<FocusManager>();
             inputManagerContainer.AddComponent<EventSystem>();
+            inputManagerContainer.AddComponent<InputManager>();
+            inputManagerContainer.AddComponent<FocusManager>();
+            inputManagerContainer.AddComponent<GazeManager>();
 
-            inputManagerContainer.transform.position = inputManagerContainer.transform.forward * -5;
             //call awake and start 
             inputManagerContainer.CallInitialization();
+
+            // Create a test cursor
+            var testCursorObj = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            var testCursor = testCursorObj.AddComponent<MeshCursor>();
+            testCursor.gameObject.CallInitialization();
+
+            inputManagerContainer.transform.position = inputManagerContainer.transform.forward * -5;
         }
 
         [Test]
@@ -76,6 +83,7 @@ namespace MixedRealityToolkit.Tests.Input
 
             FireTestEvent();
 
+            Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(globalHandler));
         }
 
@@ -107,7 +115,7 @@ namespace MixedRealityToolkit.Tests.Input
         {
             var focusedHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             FireTestEvent();
 
             Assert.That(receivedEventSources, Is.Not.Empty);
@@ -159,7 +167,7 @@ namespace MixedRealityToolkit.Tests.Input
             var focusedHandler = CreateTestHandler().CallInitialization();
             var modalHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushModalInputHandler(modalHandler);
             FireTestEvent();
             InputManager.Instance.PopModalInputHandler();
@@ -175,7 +183,7 @@ namespace MixedRealityToolkit.Tests.Input
             var modalHandler = CreateTestHandler().CallInitialization();
             focusedHandler.transform.SetParent(modalHandler.transform);
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushModalInputHandler(modalHandler);
             FireTestEvent();
             InputManager.Instance.PopModalInputHandler();
@@ -193,7 +201,7 @@ namespace MixedRealityToolkit.Tests.Input
             var modalHandler = CreateTestHandler().CallInitialization();
             var fallbackHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.OverrideFocusedObject = focusedHandler;
+            FocusManager.Instance.OverrideFocusedObject = focusedHandler;
             InputManager.Instance.PushFallbackInputHandler(fallbackHandler);
 
             FireTestEvent();
@@ -218,14 +226,13 @@ namespace MixedRealityToolkit.Tests.Input
         [Test]
         public void FocusChangeFullIntegration()
         {
-            var handler = CreateCubeTestHandler().CallInitialization();
+            var focusedHandler = CreateCubeTestHandler().CallInitialization();
 
-            GazeManager.Instance.gameObject.CallUpdate();
+            InputManager.Instance.RaisePreFocusChangedEvent(GazeManager.Instance.Pointers[0], null, focusedHandler);
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
-            Assert.That(receivedEventSources[0], Is.EqualTo(handler));
+            Assert.That(receivedEventSources[0], Is.EqualTo(focusedHandler));
         }
-
 
         private GameObject CreateTestHandler()
         {
@@ -243,7 +250,6 @@ namespace MixedRealityToolkit.Tests.Input
             return gameObject;
         }
 
-
         private GameObject CreateGlobalTestHandler()
         {
             var testHandler = CreateTestHandler();
@@ -255,7 +261,7 @@ namespace MixedRealityToolkit.Tests.Input
         private void FireTestEvent()
         {
             receivedEventSources = new List<GameObject>();
-            InputManager.Instance.HandleEvent(new BaseEventData(EventSystem.current), TestEventHandler.OnTestHandler);
+            InputManager.Instance.HandleEvent(new InputEventData(EventSystem.current), TestEventHandler.OnTestHandler);
         }
 
         private void OnEventFired(GameObject source, BaseEventData baseEventData)

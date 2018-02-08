@@ -54,8 +54,79 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
         private static bool isTransitioning;
         private static bool hasFailed;
-        private static bool hasListener;
-#endif
+
+#endif // UNITY_WSA || UNITY_STANDALONE_WIN
+
+        #region IInputSource Implementation
+
+        public uint SourceId { get; protected set; }
+
+        public string SourceName { get { return "Dictation"; } }
+
+        public IPointer[] Pointers { get { return null; } }
+
+        public SupportedInputInfo GetSupportedInputInfo()
+        {
+            return SupportedInputInfo.Voice;
+        }
+
+        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
+        {
+            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
+        }
+
+        #endregion IInputSource Implementation
+
+        #region IEquality Implementation
+
+        private bool Equals(IInputSource other)
+        {
+            return base.Equals(other) && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) { return false; }
+            if (ReferenceEquals(this, obj)) { return true; }
+            if (obj.GetType() != GetType()) { return false; }
+
+            return Equals((IInputSource)obj);
+        }
+
+        public static bool Equals(IInputSource left, IInputSource right)
+        {
+            return left.SourceId == right.SourceId;
+        }
+
+        bool IEqualityComparer.Equals(object x, object y)
+        {
+            var left = (IInputSource)x;
+            var right = (IInputSource)y;
+            if (left != null && right != null)
+            {
+                return Equals(left, right);
+            }
+
+            return false;
+        }
+
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)SourceId;
+                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        #endregion IEquality Implementation
 
         #region Unity Methods
 
@@ -77,6 +148,11 @@ namespace MixedRealityToolkit.InputModule.InputSources
             Microphone.GetDeviceCaps(DeviceName, out minSamplingRate, out samplingRate);
         }
 
+        private void Start()
+        {
+            SourceId = InputManager.GenerateNewSourceId();
+        }
+
         private void LateUpdate()
         {
             if (IsListening && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
@@ -88,7 +164,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
                 hasFailed = true;
-                InputManager.Instance.RaiseDictationError(Instance, 0, "Dictation recognizer has failed!");
+                InputManager.Instance.RaiseDictationError(Instance, "Dictation recognizer has failed!");
             }
         }
 
@@ -105,12 +181,11 @@ namespace MixedRealityToolkit.InputModule.InputSources
         /// <summary>
         /// Turns on the dictation recognizer and begins recording audio from the default microphone.
         /// </summary>
-        /// <param name="listener">GameObject listening for the dictation input.</param>
         /// <param name="initialSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.</param>
         /// <param name="autoSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input.</param>
         /// <param name="recordingTime">Length in seconds for the manager to listen.</param>
         /// <returns></returns>
-        public static IEnumerator StartRecording(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
+        public static IEnumerator StartRecording(float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             if (IsListening || isTransitioning)
@@ -121,12 +196,6 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             IsListening = true;
             isTransitioning = true;
-
-            if (listener != null)
-            {
-                hasListener = true;
-                InputManager.Instance.PushModalInputHandler(listener);
-            }
 
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             {
@@ -144,7 +213,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             while (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
-                InputManager.Instance.RaiseDictationError(Instance, 0, "Dictation recognizer failed to start!");
+                InputManager.Instance.RaiseDictationError(Instance, "Dictation recognizer failed to start!");
                 yield break;
             }
 
@@ -158,7 +227,6 @@ namespace MixedRealityToolkit.InputModule.InputSources
             textSoFar = new StringBuilder();
             isTransitioning = false;
 #else
-            Debug.LogWarning("Unable to start recording!  Dictation is unsupported for this platform.");
             return null;
 #endif
         }
@@ -177,12 +245,6 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             IsListening = false;
             isTransitioning = true;
-
-            if (hasListener)
-            {
-                InputManager.Instance.PopModalInputHandler();
-                hasListener = false;
-            }
 
             Microphone.End(DeviceName);
 
@@ -204,6 +266,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         }
 
         #region Dictation Recognizer Callbacks
+
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 
         /// <summary>
@@ -215,7 +278,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
             dictationResult = textSoFar.ToString() + " " + text + "...";
 
-            InputManager.Instance.RaiseDictationHypothesis(Instance, 0, dictationResult);
+            InputManager.Instance.RaiseDictationHypothesis(Instance, dictationResult);
         }
 
         /// <summary>
@@ -229,7 +292,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             dictationResult = textSoFar.ToString();
 
-            InputManager.Instance.RaiseDictationResult(Instance, 0, dictationResult);
+            InputManager.Instance.RaiseDictationResult(Instance, dictationResult);
         }
 
         /// <summary>
@@ -247,7 +310,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
                 dictationResult = "Dictation has timed out. Please try again.";
             }
 
-            InputManager.Instance.RaiseDictationComplete(Instance, 0, dictationResult, dictationAudioClip);
+            InputManager.Instance.RaiseDictationComplete(Instance, dictationResult, dictationAudioClip);
             textSoFar = null;
             dictationResult = string.Empty;
         }
@@ -261,95 +324,13 @@ namespace MixedRealityToolkit.InputModule.InputSources
         {
             dictationResult = error + "\nHRESULT: " + hresult.ToString();
 
-            InputManager.Instance.RaiseDictationError(Instance, 0, dictationResult);
+            InputManager.Instance.RaiseDictationError(Instance, dictationResult);
             textSoFar = null;
             dictationResult = string.Empty;
         }
-#endif
+
+#endif // UNITY_WSA || UNITY_STANDALONE_WIN
+
         #endregion // Dictation Recognizer Callbacks
-
-        #region IInputSource Implementation
-
-        public bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
-        {
-            sourceKind = InteractionSourceInfo.Voice;
-            return true;
-        }
-
-        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;
-        }
-
-        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
-        {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
-        }
-
-        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
-        {
-            pointingRay = default(Ray);
-            return false;
-        }
-
-        public bool TryGetGripPosition(uint sourceId, out Vector3 position)
-        {
-            position = Vector3.zero;
-            return false;
-        }
-
-        public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
-        }
-
-        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
-        {
-            return SupportedInputInfo.None;
-        }
-
-        public bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
-        {
-            isPressed = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
-        {
-            isPressed = false;
-            isTouched = false;
-            position = Vector2.zero;
-            return false;
-        }
-
-        public bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
-        {
-            isPressed = false;
-            pressedAmount = 0.0;
-            return false;
-        }
-
-        public bool TryGetGrasp(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
-            return false;
-        }
-
-        public bool TryGetMenu(uint sourceId, out bool isPressed)
-        {
-            isPressed = false;
-            return false;
-        }
-
-        #endregion // IInputSource Implementation
     }
 }

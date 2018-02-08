@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace MixedRealityToolkit.Utilities
 {
-    public class HeadsetAdjustment : MonoBehaviour, IInputClickHandler, ISpeechHandler
+    public class HeadsetAdjustment : MonoBehaviour, IPointerHandler, ISpeechHandler
     {
         public string NextSceneName;
 
@@ -18,7 +18,11 @@ namespace MixedRealityToolkit.Utilities
             InputManager.Instance.AddGlobalListener(gameObject);
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             GotoNextScene();
         }

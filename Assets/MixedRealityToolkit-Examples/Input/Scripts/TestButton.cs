@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.Examples.InputModule
     /// receive pressed and released events.
     /// This class is an example of how an animated button can be created using the input module and Unity.
     /// </summary>
-    public class TestButton : MonoBehaviour, IInputClickHandler, IFocusable
+    public class TestButton : FocusTarget, IPointerHandler
     {
         public Transform ToolTip;
         public Renderer ToolTipRenderer;
@@ -36,20 +36,6 @@ namespace MixedRealityToolkit.Examples.InputModule
 
         private AnimatorControllerParameter[] animatorHashes;
         private Material cachedToolTipMaterial;
-
-        private bool focused;
-        public bool Focused
-        {
-            get { return focused; }
-            set
-            {
-                if (focused != value)
-                {
-                    focused = value;
-                    UpdateButtonAnimation();
-                }
-            }
-        }
 
         private bool stayFocused;
         public bool StayFocused
@@ -79,7 +65,7 @@ namespace MixedRealityToolkit.Examples.InputModule
             }
         }
 
-        protected virtual void Awake()
+        private void Awake()
         {
             if (focusedButtonId == 0)
             {
@@ -121,17 +107,17 @@ namespace MixedRealityToolkit.Examples.InputModule
 
         private void Update()
         {
-            if (ToolTipRenderer != null && (Focused && toolTipTimer < ToolTipFadeTime) || (!Focused && toolTipTimer > 0.0f))
+            if (ToolTipRenderer != null && (HasFocus && toolTipTimer < ToolTipFadeTime) || (!HasFocus && toolTipTimer > 0.0f))
             {
                 // Calculate the new time delta
-                toolTipTimer = toolTipTimer + (Focused ? Time.deltaTime : -Time.deltaTime);
+                toolTipTimer = toolTipTimer + (HasFocus ? Time.deltaTime : -Time.deltaTime);
 
                 // Stop the timer if it exceeds the limit.  Clamp doesn't work here since time can be outside the normal range in some situations
-                if (Focused && toolTipTimer > ToolTipFadeTime)
+                if (HasFocus && toolTipTimer > ToolTipFadeTime)
                 {
                     toolTipTimer = ToolTipFadeTime;
                 }
-                else if (!Focused && toolTipTimer < 0.0f)
+                else if (!HasFocus && toolTipTimer < 0.0f)
                 {
                     toolTipTimer = 0.0f;
                 }
@@ -144,6 +130,11 @@ namespace MixedRealityToolkit.Examples.InputModule
                     cachedToolTipMaterial.SetColor("_Color", tipColor);
                 }
             }
+        }
+
+        private void OnDestroy()
+        {
+            DestroyImmediate(cachedToolTipMaterial);
         }
 
         public void DehydrateButton()
@@ -166,9 +157,7 @@ namespace MixedRealityToolkit.Examples.InputModule
         }
 
         // Child classes can override to update button visuals
-        protected virtual void UpdateVisuals()
-        {
-        }
+        protected virtual void UpdateVisuals() { }
 
         private void UpdateButtonAnimation()
         {
@@ -183,7 +172,7 @@ namespace MixedRealityToolkit.Examples.InputModule
                 {
                     if (animatorHashes[i].nameHash == focusedButtonId)
                     {
-                        ButtonAnimator.SetBool(focusedButtonId, Focused);
+                        ButtonAnimator.SetBool(focusedButtonId, HasFocus);
                     }
 
                     if (animatorHashes[i].nameHash == selectedButtonId)
@@ -199,7 +188,11 @@ namespace MixedRealityToolkit.Examples.InputModule
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             if (!EnableActivation)
             {
@@ -216,29 +209,25 @@ namespace MixedRealityToolkit.Examples.InputModule
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
-            Focused = true;
+            base.OnFocusEnter(eventData);
+
 
             // The first time the button is focused and the timer hasn't started, start the timer in a delayed mode
-            if (Focused && toolTipTimer == 0.0f)
+            if (HasFocus && toolTipTimer.Equals(0f))
             {
                 toolTipTimer = -ToolTipDelayTime;
             }
 
             UpdateVisuals();
+            UpdateButtonAnimation();
         }
 
-        public void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
-            Focused = false;
-
             UpdateVisuals();
-        }
-
-        private void OnDestroy()
-        {
-            DestroyImmediate(cachedToolTipMaterial);
+            UpdateButtonAnimation();
         }
     }
 }

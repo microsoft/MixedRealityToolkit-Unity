@@ -13,7 +13,7 @@ namespace MixedRealityToolkit.Examples.GazeRuler
     /// <summary>
     /// manager all measure tools here
     /// </summary>
-    public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IInputClickHandler
+    public class MeasureManager : Singleton<MeasureManager>, IHoldHandler, IPointerHandler
     {
         private IGeometry manager;
         public GeometryMode Mode;
@@ -89,26 +89,24 @@ namespace MixedRealityToolkit.Examples.GazeRuler
             ModeTipObject.SetActive(true);
         }
 
-        public void OnHoldStarted(HoldEventData eventData)
+        public void OnHoldStarted(InputEventData eventData)
         {
             OnPolygonClose();
         }
 
-        public void OnHoldCompleted(HoldEventData eventData)
-        {
-            // Nothing to do
-        }
+        public void OnHoldCompleted(InputEventData eventData) { }
 
-        public void OnHoldCanceled(HoldEventData eventData)
-        {
-            // Nothing to do
-        }
+        public void OnHoldCanceled(InputEventData eventData) { }
 
-    public void OnInputClicked(InputClickedEventData eventData)
-    {
-        OnSelect();
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
+        {
+            OnSelect();
+        }
     }
-}
 
     public class Point
     {

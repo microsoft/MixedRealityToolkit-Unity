@@ -10,7 +10,7 @@ namespace MixedRealityToolkit.SharingWithUNET
     /// <summary>
     /// Represents a button on a list of sessions.  Tapping the button indicates the selected session
     /// </summary>
-    public class SessionListButton : MonoBehaviour, IInputClickHandler
+    public class SessionListButton : MonoBehaviour, IPointerHandler
     {
         /// <summary>
         /// Information about the session attached to this button
@@ -89,12 +89,16 @@ namespace MixedRealityToolkit.SharingWithUNET
             }
         }
 
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
         /// <summary>
         /// When the user clicks a session this will route that information to the 
         /// scrolling UI control so it knows which session is selected.
         /// </summary>
         /// <param name="eventData">Information about the click.</param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             scrollingUIController.SetSelectedSession(SessionInfo);
             eventData.Use();

@@ -8,29 +8,27 @@ using UnityEngine;
 
 namespace MixedRealityToolkit.Examples.InputModule
 {
-    public class TestOverrideFocusedObject : MonoBehaviour, IInputClickHandler
+    public class TestOverrideFocusedObject : MonoBehaviour, IPointerHandler
     {
-        private InputManager inputManager;
         private TextMesh textMesh;
 
         private void Start()
         {
-            inputManager = InputManager.Instance;
-
-            if (inputManager != null)
-            {
-                inputManager.OverrideFocusedObject = gameObject;
-            }
+            FocusManager.Instance.OverrideFocusedObject = gameObject;
 
             textMesh = FindObjectOfType<TextMesh>();
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
-            if (textMesh != null && inputManager != null)
+            if (textMesh != null)
             {
                 textMesh.text = "Air tap worked and OverrideFocusedObject is null.";
-                inputManager.OverrideFocusedObject = null;
+                FocusManager.Instance.OverrideFocusedObject = null;
             }
         }
     }

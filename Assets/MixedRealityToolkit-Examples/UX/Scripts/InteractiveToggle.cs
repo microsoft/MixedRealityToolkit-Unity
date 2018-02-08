@@ -19,7 +19,6 @@ namespace MixedRealityToolkit.Examples.UX
     /// </summary>
     public class InteractiveToggle : Interactive
     {
-
         /// <summary>
         /// Sets the button to act like a navigation button or toggle type button
         /// </summary>
@@ -31,10 +30,6 @@ namespace MixedRealityToolkit.Examples.UX
             set
             {
                 AllowSelection = value;
-                if (AllowSelection == false)
-                {
-                    HasGaze = false;
-                }
             }
         }
 
@@ -80,14 +75,14 @@ namespace MixedRealityToolkit.Examples.UX
             AllowSelection = allowSelect;
         }
 
-        public override void OnInputClicked(InputClickedEventData eventData)
+        public override void OnPointerClicked(ClickEventData eventData)
         {
             if (PassiveMode || !IsEnabled)
             {
                 return;
             }
 
-            base.OnInputClicked(eventData);
+            base.OnPointerClicked(eventData);
 
             ToggleLogic();
         }
@@ -112,11 +107,6 @@ namespace MixedRealityToolkit.Examples.UX
                     {
                         OnSelection.Invoke();
                     }
-
-                    if (!AllowDeselect)
-                    {
-                        HasGaze = false;
-                    }
                 }
             }
 
@@ -129,19 +119,19 @@ namespace MixedRealityToolkit.Examples.UX
             ToggleLogic();
         }
 
-        public override void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
             if (((AllowDeselect && IsSelected) || !IsSelected ) &&!PassiveMode)
             {
-                base.OnFocusEnter();
+                base.OnFocusEnter(eventData);
             }
         }
 
-        public override void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
             if (((AllowDeselect && IsSelected) || !IsSelected) && !PassiveMode)
             {
-                base.OnFocusExit();
+                base.OnFocusExit(eventData);
             }
         }
 
@@ -170,7 +160,6 @@ namespace MixedRealityToolkit.Examples.UX
             }
             else
             {
-                HasGaze = false;
                 HasDown = false;
                 UpdateEffects();
             }
@@ -196,7 +185,7 @@ namespace MixedRealityToolkit.Examples.UX
             base.KeywordRecognizer_OnPhraseRecognized(args);
             
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
-            if ((!KeywordRequiresGaze || HasGaze) && mKeywordDictionary != null)
+            if ((!KeywordRequiresGaze || HasFocus) && mKeywordDictionary != null)
             {
                 int index;
 

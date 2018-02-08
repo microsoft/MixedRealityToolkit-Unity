@@ -15,7 +15,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
     /// Controls player behavior (local and remote).
     /// </summary>
     [NetworkSettings(sendInterval = 0.033f)]
-    public class PlayerController : NetworkBehaviour, IInputClickHandler
+    public class PlayerController : NetworkBehaviour, IPointerHandler
     {
         private static PlayerController _Instance = null;
         /// <summary>
@@ -331,7 +331,11 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             Destroy(nextBullet, 8.0f);
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (isLocalPlayer)
             {

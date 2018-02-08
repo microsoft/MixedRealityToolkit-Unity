@@ -8,8 +8,13 @@ namespace MixedRealityToolkit.InputModule.Cursor
     /// <summary>
     /// Cursor Modifier Interface that provides basic overrides for cursor behavior.
     /// </summary>
-    public interface ICursorModifier
+    public interface ICursorModifier : IFocusChangedHandler
     {
+        /// <summary>
+        /// Cursor animation parameters to set when this object is focused. Leave empty for none.
+        /// </summary>
+        AnimatorParameter[] CursorParameters { get; }
+
         /// <summary>
         /// Indicates whether the cursor should be visible or not.
         /// </summary>

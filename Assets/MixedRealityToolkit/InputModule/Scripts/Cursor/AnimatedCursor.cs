@@ -13,6 +13,20 @@ namespace MixedRealityToolkit.InputModule.Cursor
     public class AnimatedCursor : BaseCursor
     {
         /// <summary>
+        /// Enabled state Data when enabling
+        /// </summary>
+        [Obsolete("Use InputEnabledParameter")]
+        [Tooltip("Cursor State Data to use when enabling the cursor")]
+        public AnimCursorDatum EnableStateData;
+
+        /// <summary>
+        /// Disabled state Data when disabled
+        /// </summary>
+        [Obsolete("Use InputDisabledParameter")]
+        [Tooltip("Cursor State Data to use when the cursor is disabled")]
+        public AnimCursorDatum DisableStateData;
+
+        /// <summary>
         /// Serialized set of cursor state data
         /// </summary>
         [Header("Animated Cursor State Data")]
@@ -54,17 +68,16 @@ namespace MixedRealityToolkit.InputModule.Cursor
         /// <summary>
         /// Override to set the cursor animation trigger
         /// </summary>
-        /// <param name="modifier"></param>
-        protected override void OnActiveModifier(CursorModifier modifier)
+        public override void OnFocusChanged(FocusEventData eventData)
         {
-            base.OnActiveModifier(modifier);
+            base.OnFocusChanged(eventData);
 
-            if (modifier != null)
+            if (Pointer.CursorModifier != null)
             {
-                if ((modifier.CursorParameters != null) && (modifier.CursorParameters.Length > 0))
+                if ((Pointer.CursorModifier.CursorParameters != null) && (Pointer.CursorModifier.CursorParameters.Length > 0))
                 {
                     OnCursorStateChange(CursorStateEnum.Contextual);
-                    foreach (var param in modifier.CursorParameters)
+                    foreach (var param in Pointer.CursorModifier.CursorParameters)
                     {
                         SetAnimatorParameter(param);
                     }

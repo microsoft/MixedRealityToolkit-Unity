@@ -25,7 +25,7 @@ namespace MixedRealityToolkit.Examples.InputModule
         public void OnSelectObject()
         {
             OnClearSelection();
-            selectedObject = GazeManager.Instance.HitObject;
+            selectedObject = GazeManager.GazeTarget;
             SendMessageToSelectedObject("OnSelectObject");
         }
 

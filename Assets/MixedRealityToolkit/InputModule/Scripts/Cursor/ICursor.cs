@@ -10,12 +10,12 @@ namespace MixedRealityToolkit.InputModule.Cursor
     /// <summary>
     /// Cursor Interface for handling input events and setting visibility.
     /// </summary>
-    public interface ICursor : IInputHandler, IInputClickHandler, ISourceStateHandler
+    public interface ICursor : IFocusChangedHandler, ISourceStateHandler, IPointerHandler
     {
         /// <summary>
         /// The pointer this cursor is associated with.
         /// </summary>
-        IPointingSource Pointer { get; }
+        IPointer Pointer { get; }
 
         /// <summary>
         /// Position of the cursor.

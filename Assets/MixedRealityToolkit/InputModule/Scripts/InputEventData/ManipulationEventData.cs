@@ -10,7 +10,7 @@ namespace MixedRealityToolkit.InputModule.EventData
     /// <summary>
     /// Describes an input event that involves content manipulation.
     /// </summary>
-    public class ManipulationEventData : BaseInputEventData
+    public class ManipulationEventData : InputEventData
     {
         /// <summary>
         /// The amount of manipulation that has occurred. Usually in the form of
@@ -18,13 +18,17 @@ namespace MixedRealityToolkit.InputModule.EventData
         /// </summary>
         public Vector3 CumulativeDelta { get; private set; }
 
-        public ManipulationEventData(EventSystem eventSystem) : base(eventSystem)
+        public ManipulationEventData(EventSystem eventSystem) : base(eventSystem) { }
+
+        public void Initialize(IInputSource inputSource, Vector3 cumulativeDelta, object[] tags = null)
         {
+            BaseInitialize(inputSource, tags);
+            CumulativeDelta = cumulativeDelta;
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 cumulativeDelta)
+        public void Initialize(IInputSource inputSource, Vector3 cumulativeDelta, Handedness handedness, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            Initialize(inputSource, handedness, tags);
             CumulativeDelta = cumulativeDelta;
         }
     }

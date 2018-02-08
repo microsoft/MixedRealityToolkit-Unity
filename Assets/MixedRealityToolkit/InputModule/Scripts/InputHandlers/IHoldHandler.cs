@@ -11,8 +11,8 @@ namespace MixedRealityToolkit.InputModule.InputHandlers
     /// </summary>
     public interface IHoldHandler : IEventSystemHandler
     {
-        void OnHoldStarted(HoldEventData eventData);
-        void OnHoldCompleted(HoldEventData eventData);
-        void OnHoldCanceled(HoldEventData eventData);
+        void OnHoldStarted(InputEventData eventData);
+        void OnHoldCompleted(InputEventData eventData);
+        void OnHoldCanceled(InputEventData eventData);
     }
 }

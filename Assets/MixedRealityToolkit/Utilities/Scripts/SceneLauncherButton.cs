@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace MixedRealityToolkit.Utilities
 {
-    public class SceneLauncherButton : MonoBehaviour, IInputClickHandler
+    public class SceneLauncherButton : MonoBehaviour, IPointerHandler
     {
         public int SceneIndex { get; set; }
 
@@ -40,7 +40,7 @@ namespace MixedRealityToolkit.Utilities
 
         private void Update()
         {
-            IsHighlighted = GazeManager.Instance.HitObject == gameObject;
+            IsHighlighted = GazeManager.GazeTarget == gameObject;
         }
 
         private bool IsHighlighted
@@ -51,7 +51,11 @@ namespace MixedRealityToolkit.Utilities
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (EnableDebug)
             {
