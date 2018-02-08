@@ -8,6 +8,7 @@ namespace MixedRealityToolkit.Examples.UX
     public class LaunchDialogScript : Interactive
     {
         public GameObject resultText;
+        public int numButtons;
         private bool isDialogLaunched = false;
 
         protected IEnumerator LaunchDialog(SimpleDialog.ButtonTypeEnum buttons, string title, string message)
@@ -36,7 +37,16 @@ namespace MixedRealityToolkit.Examples.UX
         {
             if (isDialogLaunched == false)
             {
-                StartCoroutine(LaunchDialog(SimpleDialog.ButtonTypeEnum.Yes | SimpleDialog.ButtonTypeEnum.No, "Title Text", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
+                if (numButtons == 1)
+                {
+                    // Launch Dialog with single button
+                    StartCoroutine(LaunchDialog(SimpleDialog.ButtonTypeEnum.OK, "Single Button Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
+                }
+                else if (numButtons == 2)
+                {
+                    // Launch Dialog with two buttons
+                    StartCoroutine(LaunchDialog(SimpleDialog.ButtonTypeEnum.Yes | SimpleDialog.ButtonTypeEnum.No, "Two Buttons Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
+                }
             }
         }
 
