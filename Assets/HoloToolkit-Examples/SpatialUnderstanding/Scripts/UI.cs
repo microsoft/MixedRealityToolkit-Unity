@@ -248,7 +248,6 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             AddButton("OnEdge NearCenter", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnEdge_NearCenter(); timeLastQuery = DateTime.MinValue; });
             AddButton("OnFloor AwayFromMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_AwayFromMe(); timeLastQuery = DateTime.MinValue; });
             AddButton("OnFloor NearMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_NearMe(); timeLastQuery = DateTime.MinValue; });
-            AddButton("Large positions sittable", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargePositionsSittable(); timeLastQuery = DateTime.MinValue; });
 
             // Default one of them active
             SetActiveTab(Panels.Topology);
