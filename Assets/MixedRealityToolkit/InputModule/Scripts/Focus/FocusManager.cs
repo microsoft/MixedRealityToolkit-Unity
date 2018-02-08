@@ -131,6 +131,12 @@ namespace MixedRealityToolkit.InputModule.Focus
                 PointingSource = pointingSource;
             }
 
+            [Obsolete("Use UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex) or UpdateHit (float extent)")]
+            public void UpdateHit(RaycastHit hit)
+            {
+                throw new NotImplementedException();
+            }
+
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
                 LastRaycastHit = hit;
@@ -202,6 +208,9 @@ namespace MixedRealityToolkit.InputModule.Focus
         /// to do a gaze raycast even if gaze isn't used for focus.
         /// </summary>
         private PointerData gazeManagerPointingData;
+
+        [Obsolete("Use GetGazePointerEventData or GetSpecificPointerEventData")]
+        public PointerInputEventData UnityUIPointerEvent { get; private set; }
 
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -421,6 +430,12 @@ namespace MixedRealityToolkit.InputModule.Focus
         public delegate void PointerSpecificFocusChangedMethod(IPointingSource pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
         public event PointerSpecificFocusChangedMethod PointerSpecificFocusChanged;
 
+        [Obsolete("Use either GetGazePointerEventData or GetSpecificPointerEventData")]
+        public PointerInputEventData GetPointerEventData()
+        {
+            return GetGazePointerEventData();
+        }
+
         public PointerInputEventData GetGazePointerEventData()
         {
             return gazeManagerPointingData.UnityUIPointerData;
@@ -541,8 +556,9 @@ namespace MixedRealityToolkit.InputModule.Focus
             RayStep rayStep = default(RayStep);
             RaycastHit physicsHit = default(RaycastHit);
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
+            // Comment back in GetType() only when debugging for a specific pointer.
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer "/* + pointer.GetType()*/);
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer "/* + pointer.GetType()*/);
 
             // Check raycast for each step in the pointing source
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -595,7 +611,7 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.End.Point != Vector3.zero, string.Format("No pointer {0} end point found to raycast against!", pointer.PointingSource.GetType()));
+            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before you can process uGUI raycasting.");
 
             RaycastResult uiRaycastResult = default(RaycastResult);
@@ -603,8 +619,9 @@ namespace MixedRealityToolkit.InputModule.Focus
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
+            // Comment back in GetType() only when debugging for a specific pointer.
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer "/* + pointer.GetType()*/);
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer "/* + pointer.GetType()*/);
 
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -618,7 +635,7 @@ namespace MixedRealityToolkit.InputModule.Focus
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid && 
+            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid &&
                  uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
@@ -852,13 +869,14 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         /// <summary>
         /// Helper for assigning world space canvases event cameras.
-        /// <remarks>Can be used at runtime.</remarks>
+        /// <remarks>Warning! Very expensive. Use sparingly at runtime.</remarks>
         /// </summary>
         public void UpdateCanvasEventSystems()
         {
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before updating your canvases.");
 
             // This will also find disabled GameObjects in the scene.
+            // Warning! this look up is very expensive!
             var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
 
             for (var i = 0; i < sceneCanvases.Length; i++)

@@ -5,20 +5,21 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MixedRealityToolkit.Common;
-using MixedRealityToolkit.Common.Extensions;
 
 #if UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
 #endif
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-using GLTF;
 using System.Collections;
+using System.IO;
 using UnityEngine.XR.WSA.Input;
+using UnityGLTF;
 
 #if !UNITY_EDITOR
 using Windows.Foundation;
 using Windows.Storage.Streams;
+using MixedRealityToolkit.Common.Extensions;
 #endif
 #endif
 
@@ -173,6 +174,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
             }
 #endif
         }
+
         private bool ValidRotation(Quaternion newRotation)
         {
             return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w) &&
@@ -184,6 +186,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
             return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z) &&
                 !float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
         }
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
         {
@@ -363,12 +366,12 @@ namespace MixedRealityToolkit.InputModule.Utilities
 #endif
 
             controllerModelGameObject = new GameObject { name = "glTFController" };
-            GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
-            gltfScript.ColorMaterial = GLTFMaterial;
-            gltfScript.NoColorMaterial = GLTFMaterial;
-            gltfScript.GLTFData = fileBytes;
+            GLTFComponent gltfScript = controllerModelGameObject.AddComponent<GLTFComponent>();
+            gltfScript.GLTFConstant = gltfScript.GLTFStandard = gltfScript.GLTFStandardSpecular = GLTFMaterial.shader;
+            gltfScript.UseStream = true;
+            gltfScript.GLTFStream = new MemoryStream(fileBytes);
 
-            yield return gltfScript.LoadModel();
+            yield return gltfScript.WaitForModelLoad();
 
             FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }

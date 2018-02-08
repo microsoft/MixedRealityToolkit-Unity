@@ -177,7 +177,7 @@ namespace MixedRealityToolkit.UX.Collections
                     break;
             }
 
-            _columns = Mathf.CeilToInt(NodeList.Count / Rows);
+            _columns = Mathf.CeilToInt((float)NodeList.Count / Rows);
             _width = _columns * CellWidth;
             _height = Rows * CellHeight;
             _halfCell = new Vector2(CellWidth / 2f, CellHeight / 2f);
